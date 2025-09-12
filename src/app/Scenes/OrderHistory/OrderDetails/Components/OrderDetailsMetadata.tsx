@@ -30,6 +30,11 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
   const dimensions = isArtworkOrEditionSet ? artworkOrEditionSet.dimensions : null
   const price = isArtworkOrEditionSet ? artworkOrEditionSet.price : null
 
+  const formattedDimensions =
+    dimensions?.in && dimensions?.cm
+      ? `${dimensions.in} | ${dimensions.cm}`
+      : dimensions?.in ?? dimensions?.cm
+
   const { height, width } = sizeToFit(
     {
       height: artworkImage?.height ?? imageContainer.height,
@@ -112,9 +117,9 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
         </Text>
       )}
 
-      {!!dimensions && (
+      {!!formattedDimensions && (
         <Text variant="sm" color="mono60">
-          {dimensions.in} | {dimensions.cm}
+          {formattedDimensions}
         </Text>
       )}
 

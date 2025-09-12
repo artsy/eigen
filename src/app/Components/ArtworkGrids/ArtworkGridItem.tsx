@@ -18,6 +18,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
@@ -469,6 +470,17 @@ const ArtworkHeartIcon: React.FC<{
   disableProgressiveOnboarding?: boolean
 }> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
   const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
+
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return (
+      <ArtworkSaveIconWrapper
+        isSaved={!!isSaved}
+        testID={isSaved ? "filled-heart-icon" : "empty-heart-icon"}
+      />
+    )
+  }
 
   if (isSaved) {
     return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />

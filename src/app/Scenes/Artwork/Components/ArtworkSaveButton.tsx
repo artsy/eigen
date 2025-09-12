@@ -1,8 +1,10 @@
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Box, Flex, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -15,22 +17,27 @@ interface ArtworkSaveButtonProps {
 
 interface IconProps {
   isSaved: boolean
+  isLot: boolean
 }
 
-const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
+const SaveButtonIcon: React.FC<IconProps> = ({ isSaved, isLot = false }) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
+
+  let accessibilityLabel = isLot ? "watch lot icon" : "Save icon"
+
   if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
+    accessibilityLabel = isLot ? "unwatch lot icon" : "Saved icon"
   }
 
-  return <HeartStrokeIcon accessibilityLabel="watch lot icon" />
-}
-
-const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
-  if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
+  if (enableArtworkHeartIconAnimation) {
+    return <ArtworkSaveIconWrapper isSaved={!!isSaved} accessibilityLabel={accessibilityLabel} />
   }
 
-  return <HeartStrokeIcon accessibilityLabel="Save icon" />
+  if (isSaved) {
+    return <HeartFillIcon accessibilityLabel={accessibilityLabel} fill="blue100" />
+  }
+
+  return <HeartStrokeIcon accessibilityLabel={accessibilityLabel} />
 }
 
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {
@@ -93,11 +100,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
       onPress={saveArtworkToLists}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        {openOrUpcomingSale ? (
-          <WatchLotIcon isSaved={!!isSaved} />
-        ) : (
-          <SaveButtonIcon isSaved={!!isSaved} />
-        )}
+        <SaveButtonIcon isSaved={!!isSaved} isLot={!!openOrUpcomingSale} />
+
         <Spacer x={0.5} />
 
         <Box position="relative">
@@ -110,7 +114,9 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
             </Text>
           )}
           <Box {...StyleSheet.absoluteFillObject}>
-            <Text variant="sm">{buttonCopy}</Text>
+            <Text variant="sm" selectable={false}>
+              {buttonCopy}
+            </Text>
           </Box>
         </Box>
       </Flex>
