@@ -13,7 +13,8 @@ export const ArtworkSaveIconWrapper: React.FC<{
   isSaved: boolean
   testID?: string
   accessibilityLabel?: string
-}> = ({ isSaved, testID, accessibilityLabel }) => {
+  fill?: string
+}> = ({ isSaved, testID, accessibilityLabel, fill }) => {
   const scaleAnimation = useSharedValue(1)
   const didMount = useRef(false)
 
@@ -48,7 +49,7 @@ export const ArtworkSaveIconWrapper: React.FC<{
       {!!isSaved ? (
         <HeartFillIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} fill="blue100" />
       ) : (
-        <HeartStrokeIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} />
+        <HeartStrokeIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} fill={fill} />
       )}
     </Animated.View>
   )
