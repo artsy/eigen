@@ -290,14 +290,12 @@ This patch allows us to animate the appearance of the bottom tabs. This is curre
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
 
-## DOM Polyfills in src/polyfills.js
+## Resolutions @react-native/dev-middleware
 
 #### When can we remove this:
 
-When libraries like `styled-components/native`, `moti`, and others properly isolate their web-specific code from React Native builds, or when React Native/Metro provides a way to completely exclude web code at the module parsing stage.
+When Rozenite stable release is published and no longer requires this resolution
 
 #### Explanation/Context:
 
-With the upgrade to React Native 0.79 and Expo 53, Metro (0.82+) and Hermes became stricter about module evaluation. Libraries that include DOM references (document, HTMLElement, window, etc.) even behind platform checks like `Platform.OS === 'web'` now cause "Property doesn't exist" errors because the modules are evaluated at bundle time, not runtime.
-
-The polyfill file provides stub implementations for DOM APIs that these libraries reference. This is a common workaround used by many production React Native apps. The polyfill must be imported at the very top of index.js before any other imports to ensure it's available when modules are loaded.
+This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
