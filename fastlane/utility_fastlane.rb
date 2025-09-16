@@ -86,7 +86,7 @@ lane :notify_beta_failed do |options|
   exception = options[:exception]
   message = <<~MSG
               :x: :iphone:
-              Looks like the latest beta failed to deploy!
+              Looks like the latest Eigen beta failed to deploy!
               See circle job for more details.
             MSG
   slack(
