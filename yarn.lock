@@ -32,13 +32,13 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.50.0.tgz#7e7987d1e6fb79aa4b6148771206af1f0087da10"
   integrity sha512-eCl7WIIJ30M+P51MzSrkH1osqsUr45bwq92tSKNw2klrajPGbBylqc3e6UgP63esW8MghB7wgEMtDkrPbycj1A==
 
-"@artsy/palette-mobile@18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-18.0.0.tgz#558dfb96538f08d7486e6928b259a3b78f72823c"
-  integrity sha512-5N+1FsXJkjb/3sTG9ZnM9kxktxHiNKtZ3ExlaD5hxRwaqZ5jZxou6FAD4g1JL0kT2W4A6ll7bRYlIpDHKAr3kw==
+"@artsy/palette-mobile@19.1.0":
+  version "19.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-19.1.0.tgz#718bc6e2ffbff946ff8df4b70054e5e69fc86723"
+  integrity sha512-kyCFbiUcFQy4seN5jdrc+hR/ymwQQ/D7vyW3IdA/HfennysAOMKDibzUzZh0nOZCUsfDziESFMnedwUPeoTfOw==
   dependencies:
     "@artsy/icons" "^3.49.0"
-    "@artsy/palette-tokens" "^7.0.0"
+    "@artsy/palette-tokens" "7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
     "@shopify/flash-list" "^1.8.3"
     "@styled-system/core" "^5.1.2"
@@ -47,14 +47,14 @@
     lodash "^4.17.21"
     moti "^0.25.3"
     react-nanny "^2.15.0"
-    react-native-blurhash "^2.1.1"
+    react-native-blurhash "2.1.1"
     react-native-collapsible-tab-view "^8.0.1"
     react-native-pager-view "6.5.0"
     react-native-popover-view "^6.1.0"
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@^7.0.0":
+"@artsy/palette-tokens@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-7.0.0.tgz#4c104f8504bb591e2b468f52d393c3da2573fbd7"
   integrity sha512-psM2CZt/4d9YHTMM/jMu+ueZjjGlHcrq9E+FA5XZvl/UtlK0AwL1me3nxbIA8pXPsfOWfQ+PPLJumB8UKSYV1g==
@@ -15102,7 +15102,7 @@ react-native-blob-util@0.19.11:
     base-64 "0.1.0"
     glob "^10.3.10"
 
-react-native-blurhash@2.1.1, react-native-blurhash@^2.1.1:
+react-native-blurhash@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-2.1.1.tgz#c8079881422664691b387e43b020b846dfd196e6"
   integrity sha512-b1aA5Tn31pPbqmaWnhJv7zSuN6o9M1t4yHciPunfP89LDkH2dvDIynvkE00Hen4Vmt6SnyXViSYH34MyvTvRiA==
