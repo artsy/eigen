@@ -33,11 +33,8 @@ jobs:
       - name: Install ninja
         run: sudo apt-get update && sudo apt-get install ninja-build
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.9.0"
-          cache: "yarn"
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
