@@ -2,6 +2,7 @@ import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { useLogger } from "@react-navigation/devtools"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -33,6 +34,8 @@ export const Navigation = () => {
   const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
     MODAL_NAVIGATION_STACK_STATE_KEY
   )
+
+  useReactNavigationDevTools({ ref: internal_navigationRef })
 
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
   const fpsCounter = useDevToggle("DTFPSCounter")

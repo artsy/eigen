@@ -24498,6 +24498,9 @@ type UserAddress {
   # Phone number country code
   phoneNumberCountryCode: String
 
+  # Phone number with parsing and validation details
+  phoneNumberParsed: PhoneNumberType
+
   # Postal Code
   postalCode: String
 
