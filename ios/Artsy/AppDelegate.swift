@@ -7,15 +7,13 @@ class AppDelegate: ExpoAppDelegate {
 
     var reactNativeDelegate: ExpoReactNativeFactoryDelegate?
     var reactNativeFactory: RCTReactNativeFactory?
-    
-    // Reference to the Objective-C helper
+
     let helper = ARAppDelegateHelper.sharedInstance()
 
     public override func application(
       _ application: UIApplication,
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-      // Initialize the helper with launch options
       helper?.setup(launchOptions: launchOptions)
 
       let delegate = ReactNativeDelegate()

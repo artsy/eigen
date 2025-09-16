@@ -9,7 +9,6 @@
 
 + (instancetype)sharedInstance;
 
-// Properties from original AppDelegate
 @property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) ArtsyEcho *echo;
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
@@ -24,11 +23,9 @@ typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
 
 @property (nonatomic, readwrite, assign) ARAppNotificationsRequestContext requestContext;
 
-// Braze
 + (Braze *)braze;
 + (void)setBraze:(Braze *)braze;
 
-// Core setup methods
 - (void)setupWithLaunchOptions:(NSDictionary *)launchOptions;
 - (void)applicationDidBecomeActive;
 - (void)setupAnalytics:(NSDictionary *)launchOptions;
