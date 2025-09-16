@@ -48,19 +48,17 @@ static Braze *_braze = nil;
     
     // Setup Echo - will be initialized via categories later
     self.echo = [[ArtsyEcho alloc] init];
-    
-    // Force cache custom fonts
+
     [self forceCacheCustomFonts];
-    
-    // Count number of runs
+
     [self countNumberOfRuns];
-    
-    // Start logging
+
     [[ARLogger sharedLogger] startLogging];
-    
-    // Setup analytics
+
     [self setupAnalytics:launchOptions];
-    
+
+    [self setupSharedEmission];
+
     // Configure Firebase
     BOOL ossUser = [[Keys publicFor:@"OSS"] isEqualToString:@"true"];
     if ([FIRApp defaultApp] == nil && !ossUser) {
@@ -70,11 +68,9 @@ static Braze *_braze = nil;
     // Setup Facebook
     [[FBSDKApplicationDelegate sharedInstance] application:[UIApplication sharedApplication]
         didFinishLaunchingWithOptions:launchOptions];
-    
-    // Start web view cache
+
     [ARWebViewCacheHost startup];
-    
-    // Register new session
+
     [self registerNewSessionOpened];
 }
 
