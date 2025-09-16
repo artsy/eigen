@@ -100,28 +100,6 @@ lane :notify_beta_failed do |options|
   )
 end
 
-desc "Notifies in slack if a build failed"
-lane :notify_build_failed do |options|
-  exception = options[:exception]
-  lane_name = options[:lane_name]
-  platform = options[:platform]
-  message = <<~MSG
-              :x: :#{platform}:
-              Build failed for #{lane_name}!
-              Dummy message - this will be edited later.
-            MSG
-  slack(
-    message: message,
-    success: false,
-    payload: {
-      'Exception' => exception.message,
-      'Lane' => lane_name,
-      'Platform' => platform
-    },
-    default_payloads: []
-  )
-end
-
 desc "Notifies in slack if a new beta is needed"
 lane :notify_beta_needed do
   message = <<~MSG
