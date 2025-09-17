@@ -205,7 +205,7 @@ lane :prepare_version_update_pr do |options|
   sh "git push origin HEAD:refs/heads/#{version_change_branch}"
 
   pr_url = create_pull_request(
-    api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+    api_token: ENV["GITHUB_TOKEN"],
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,

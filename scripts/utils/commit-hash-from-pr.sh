@@ -7,7 +7,6 @@
 ### Requires running `yarn setup:releases` to set up the environment variables
 
 source .env.releases
-GITHUB_TOKEN=${CHANGELOG_GITHUB_TOKEN_KEY}
 
 OWNER="artsy"
 REPO="eigen"

@@ -69,8 +69,6 @@ jobs:
           echo "changelog<<EOF" >> $GITHUB_ENV
           echo "$changelog" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-        env:
-          CHANGELOG_GITHUB_TOKEN_KEY: ${{ secrets.CHANGELOG_GITHUB_TOKEN_KEY }}
 
       - name: Create release
         env:
