@@ -5,6 +5,9 @@ set -euxo pipefail
 # Usage: ./check_build_status_gh.sh <platform>
 # Example: ./check_build_status_gh.sh ios
 
+source .env.releases
+GITHUB_TOKEN=${CHANGELOG_GITHUB_TOKEN_KEY}
+
 PLATFORM=$1
 
 if [ -z "$PLATFORM" ]; then
@@ -21,10 +24,10 @@ else
   exit 1
 fi
 
-# Check if GITHUB_TOKEN is set
+# Check if GITHUB_TOKEN is set (should be set from CHANGELOG_GITHUB_TOKEN_KEY above)
 if [ -z "${GITHUB_TOKEN:-}" ]; then
-  echo "Error: GITHUB_TOKEN environment variable is required."
-  echo "Please set it with a GitHub personal access token that has repo access."
+  echo "Error: GITHUB_TOKEN could not be set from CHANGELOG_GITHUB_TOKEN_KEY."
+  echo "Please run 'yarn setup:releases' to set up the environment variables."
   exit 1
 fi
 
