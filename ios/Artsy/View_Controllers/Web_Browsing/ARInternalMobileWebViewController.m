@@ -7,6 +7,7 @@
 #import "ARAppDelegateHelper.h"
 #import "AROptions.h"
 #import "AREmission.h"
+#import "Artsy-Swift.h"
 
 static void *ARProgressContext = &ARProgressContext;
 
@@ -153,9 +154,9 @@ static void *ARProgressContext = &ARProgressContext;
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
-            ARWindow *window = ARAppDelegateHelper.sharedInstance.window;
-            CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
-            CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
+            // TODO: Test that this works properly
+            CGPoint lastTouchPointInView = self.lastTapPoint;
+            CGRect position = (CGRect){ .origin = lastTouchPointInView, .size = CGSizeZero };
             [self.shareValidator shareURL:URL inView:self.view frame:position];
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));

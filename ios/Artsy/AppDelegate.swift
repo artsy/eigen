@@ -5,6 +5,10 @@ import ReactAppDependencyProvider
 class AppDelegate: ExpoAppDelegate {
     var window: UIWindow?
 
+    @objc static var shared: AppDelegate? {
+        return UIApplication.shared.delegate as? AppDelegate
+    }
+
     var reactNativeDelegate: ExpoReactNativeFactoryDelegate?
     var reactNativeFactory: RCTReactNativeFactory?
 
@@ -25,13 +29,7 @@ class AppDelegate: ExpoAppDelegate {
       bindReactNativeFactory(factory)
 
   #if os(iOS) || os(tvOS)
-      // Use ARWindow if it exists in helper, otherwise create UIWindow
-      if let arWindow = helper?.window {
-          window = arWindow
-      } else {
-          window = UIWindow(frame: UIScreen.main.bounds)
-          helper?.window = window as? ARWindow
-      }
+      window = UIWindow(frame: UIScreen.main.bounds)
       
       factory.startReactNative(
         withModuleName: "main",

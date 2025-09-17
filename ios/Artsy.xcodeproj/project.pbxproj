@@ -46,6 +46,7 @@
 		CB18284829DF3F75006A0805 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18284729DF3F75006A0805 /* Utilities.swift */; };
 		CB2033322E5656B700A06281 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033312E5656B700A06281 /* AppDelegate.swift */; };
 		CB2033342E56593C00A06281 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033332E56593700A06281 /* main.swift */; };
+		CB3A3DD52E7B4C0700161BF7 /* WebviewTapTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3A3DD42E7B4C0300161BF7 /* WebviewTapTracker.swift */; };
 		CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -601,6 +602,7 @@
 		CB18284729DF3F75006A0805 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CB2033312E5656B700A06281 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB2033332E56593700A06281 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CB3A3DD42E7B4C0300161BF7 /* WebviewTapTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewTapTracker.swift; sourceTree = "<group>"; };
 		CB3EFE562E69C8420004F49F /* ARAppDelegateHelper+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegateHelper+Testing.h"; sourceTree = "<group>"; };
 		CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegateHelper+Testing.m"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2610,6 +2612,7 @@
 		CBE324C327E275A100395A93 /* Web_Browsing */ = {
 			isa = PBXGroup;
 			children = (
+				CB3A3DD42E7B4C0300161BF7 /* WebviewTapTracker.swift */,
 				CBE324C427E275A100395A93 /* ARInternalMobileWebViewController.h */,
 				1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */,
 				1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */,
@@ -3698,9 +3701,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3715,9 +3722,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3788,9 +3799,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3979,6 +3994,7 @@
 				CBE3270827E275A300395A93 /* StoryboardConstants.swift in Sources */,
 				CBE326BC27E275A300395A93 /* LotListCollectionViewCell+Private.swift in Sources */,
 				CBE3271A27E275A300395A93 /* ARNavigationButton.m in Sources */,
+				CB3A3DD52E7B4C0700161BF7 /* WebviewTapTracker.swift in Sources */,
 				CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */,
 				CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */,
 				CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */,

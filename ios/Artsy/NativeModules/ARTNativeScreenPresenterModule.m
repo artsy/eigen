@@ -134,7 +134,7 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
 
 + (UIViewController *)currentlyPresentedVC
 {
-    UIViewController *vc = [[ARAppDelegateHelper sharedInstance] window].rootViewController;
+    UIViewController *vc = [AppDelegate.shared window].rootViewController;
 
     while ([vc presentedViewController]) {
         vc = [vc presentedViewController];

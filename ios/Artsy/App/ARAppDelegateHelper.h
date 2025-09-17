@@ -9,7 +9,6 @@
 
 + (instancetype)sharedInstance;
 
-@property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) ArtsyEcho *echo;
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
