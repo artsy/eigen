@@ -12,7 +12,7 @@ import yargs from "yargs/yargs"
 
 config({ path: resolve(__dirname, "../../.env.releases") })
 
-const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
 
 const SECTIONS = [
   "Cross-platform user-facing changes",
