@@ -40,7 +40,7 @@ IOS_BETA_TARGETS = {
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
-BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android].freeze
+BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android build_maestro_android build_maestro_ios deploy_android_beta deploy_ios_beta].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
 GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
@@ -115,7 +115,9 @@ lane :ship_beta_ios do |options|
   deploy_ios_beta(deployment_target: deployment_target)
 end
 
-def deploy_ios_beta(deployment_target:)
+desc 'Deploy iOS beta to TestFlight or Firebase'
+lane :deploy_ios_beta do |options|
+  deployment_target = options[:deployment_target]
   if deployment_target == 'testflight'
     api_key = generate_app_store_connect_api_key
 
@@ -320,7 +322,9 @@ lane :ship_beta_android do |options|
   deploy_android_beta(deployment_target: deployment_target)
 end
 
-def deploy_android_beta(deployment_target:)
+desc 'Deploy Android beta to Play Store or Firebase'
+lane :deploy_android_beta do |options|
+  deployment_target = options[:deployment_target]
   if deployment_target == 'play_store'
     supply(
       track: 'alpha',

@@ -86,14 +86,20 @@ lane :notify_beta_failed do |options|
   exception = options[:exception]
   message = <<~MSG
               :x: :iphone:
-              Looks like the latest beta failed to deploy!
-              See circle job for more details.
+              Looks like the latest eigen beta failed to deploy!
+              See GitHub action run for more details.
             MSG
+
+  # Construct GitHub Actions run URL
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
   slack(
     message: message,
     success: false,
     payload: {
-      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'GitHub Actions' => github_url,
       'Exception' => exception.message
     },
     default_payloads: []
