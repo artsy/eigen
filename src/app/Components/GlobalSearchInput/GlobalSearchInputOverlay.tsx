@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, RoundSearchInput, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { FadeIn } from "app/Components/FadeIn"
@@ -139,7 +139,7 @@ export const GlobalSearchInputOverlay: React.FC<{
 
             <Spacer y={2} />
 
-            <Suspense fallback={<Spinner />}>
+            <Suspense fallback={null}>
               <GlobalSearchInputOverlayContent query={query} />
             </Suspense>
           </Flex>
