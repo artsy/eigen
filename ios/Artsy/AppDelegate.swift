@@ -55,16 +55,6 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)
     }
 
-    // MARK: Universal Links
-    public override func application(
-      _ application: UIApplication,
-      continue userActivity: NSUserActivity,
-      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-      let result = RCTLinkingManager.application(application, continue: userActivity, restorationHandler: restorationHandler)
-      return super.application(application, continue: userActivity, restorationHandler: restorationHandler) || result
-    }
-
     // MARK: UserNotifications
     override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
@@ -95,7 +85,25 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
         helper?.application(application, performActionFor: shortcutItem, completionHandler: completionHandler)
     }
 
+    // MARK: ActivityContinuation + Universal Links
+    override func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+        return helper?.application(application, willContinueUserActivityWithType: userActivityType) ?? false
+    }
 
+    override func application(
+      _ application: UIApplication,
+      continue userActivity: NSUserActivity,
+      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        let result = helper?.application(
+            application,
+            continue: userActivity,
+            restorationHandler: { objects in
+                restorationHandler(objects as? [UIUserActivityRestoring])
+            }
+        )
+        return result ?? false
+    }
   }
 
   class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {

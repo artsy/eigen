@@ -8,6 +8,7 @@
 #import "ARAppDelegateHelper.h"
 #import "AppDelegate+Notifications.h"
 #import "AppDelegate+ShortcutItems.h"
+#import "AppDelegate+ActivityContinuation.h"
 
 #import "UIView+HitTestExpansion.h"
 #import "ARSeparatorViews.h"
