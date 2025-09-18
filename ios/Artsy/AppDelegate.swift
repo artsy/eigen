@@ -46,7 +46,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
         helper?.applicationDidBecomeActive()
     }
 
-    // Linking API
+    // MARK: Linking API
     public override func application(
       _ app: UIApplication,
       open url: URL,
@@ -55,7 +55,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       return super.application(app, open: url, options: options) || RCTLinkingManager.application(app, open: url, options: options)
     }
 
-    // Universal Links
+    // MARK: Universal Links
     public override func application(
       _ application: UIApplication,
       continue userActivity: NSUserActivity,
@@ -88,6 +88,14 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         helper?.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
     }
+
+    // MARK: Shortcut Items
+    override func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        super.application(application, performActionFor: shortcutItem, completionHandler: completionHandler)
+        helper?.application(application, performActionFor: shortcutItem, completionHandler: completionHandler)
+    }
+
+
   }
 
   class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
