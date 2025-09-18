@@ -33,9 +33,9 @@ jobs:
           # Get all iOS release tags and sort them
           ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" | head -n 10)
 
-          # Get the last and second-to-last iOS tags
-          last_ios_tag=$(echo "$ios_tags" | tail -n1)
-          second_last_ios_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+          # Get the last and second-to-last iOS tags (first and second in the sorted list)
+          last_ios_tag=$(echo "$ios_tags" | head -n1)
+          second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
           # Ensure tags are found
           if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ]; then
