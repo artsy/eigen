@@ -38,25 +38,25 @@ jobs:
           last_ios_tag=$(echo "$ios_tags" | head -n1)
           second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
-          # Find the corresponding Android tag for the same commit hash as the last iOS tag
-          commit_hash=$(git rev-list -n 1 "$last_ios_tag")
-          android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" 2>/dev/null | head -n1 || true)
+          # # Find the corresponding Android tag for the same commit hash as the last iOS tag
+          # commit_hash=$(git rev-list -n 1 "$last_ios_tag")
+          # android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" 2>/dev/null | head -n1 || true)
 
-          # Ensure tags are found
-          if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ] || [ -z "$android_tag" ]; then
-            echo "Error: Could not determine all required tags."
-            exit 1
-          fi
+          # # Ensure tags are found
+          # if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ] || [ -z "$android_tag" ]; then
+          #   echo "Error: Could not determine all required tags."
+          #   exit 1
+          # fi
 
           # Export tags as step outputs
           echo "last_ios_tag=$last_ios_tag" >> $GITHUB_OUTPUT
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_OUTPUT
-          echo "android_tag=$android_tag" >> $GITHUB_OUTPUT
+          # echo "android_tag=$android_tag" >> $GITHUB_OUTPUT
 
           # Also export to environment for later steps
           echo "last_ios_tag=$last_ios_tag" >> $GITHUB_ENV
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
-          echo "android_tag=$android_tag" >> $GITHUB_ENV
+          # echo "android_tag=$android_tag" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
@@ -71,7 +71,8 @@ jobs:
 
           # Add monitoring links
           ios_link="Monitor the iOS release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
-          android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
+          # android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
+          android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/releases/?project=5867225)"
 
           changelog="${base_changelog}\n\n$ios_link\n$android_link"
 
