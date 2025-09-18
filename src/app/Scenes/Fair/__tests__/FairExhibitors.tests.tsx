@@ -1,8 +1,9 @@
+import { waitFor } from "@testing-library/react-native"
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
 import { FairExhibitorRailQueryRenderer } from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACYAsync } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -10,7 +11,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const view = renderWithWrappersLEGACYAsync(
+    const view = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`
@@ -40,11 +41,11 @@ describe("FairExhibitors", () => {
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
 
-    return view
+    return { view, env }
   }
 
   it("renders the rails from exhibitors that have artworks", async () => {
-    const wrapper = getWrapper({
+    const { view } = getWrapper({
       Fair: () => ({
         exhibitors: {
           edges: [
@@ -70,12 +71,14 @@ describe("FairExhibitors", () => {
       }),
     })
 
-    const fairRails = await wrapper.waitForElements(FairExhibitorRailQueryRenderer, 2)
-    expect(fairRails).toHaveLength(2)
+    await waitFor(async () => {
+      const fairRails = await view.root.findAllByType(FairExhibitorRailQueryRenderer)
+      expect(fairRails).toHaveLength(2)
+    })
   })
 
   it("skips over any partners with no artworks", () => {
-    const wrapper = getWrapper()
-    expect(extractText(wrapper.root)).not.toContain("Partner Without Artworks")
+    const { view } = getWrapper()
+    expect(extractText(view.root)).not.toContain("Partner Without Artworks")
   })
 })
