@@ -3,14 +3,16 @@ name: Release with Changelog
 on:
   push:
     tags:
-      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-sultantest"
+      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-submission"
+    branches:
+      - gkartalis/test-release-notes
 
 permissions:
   contents: write
 
 jobs:
   generate-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
@@ -19,10 +21,12 @@ jobs:
       - name: Setup node.js
         uses: ./.github/actions/setup-node
 
-      - name: Fetch all tags
+      - name: Fetch submission tags
         run: |
-          git fetch --tags --depth=300 --jobs=8
-          echo "fetched tags!"
+          # Fetch only iOS and Android submission tags with more specific refspecs
+          git fetch origin '+refs/tags/ios-*-submission:refs/tags/ios-*-submission' --depth=300 --jobs=8
+          git fetch origin '+refs/tags/android-*-submission:refs/tags/android-*-submission' --depth=300 --jobs=8
+          echo "fetched submission tags!"
 
       - name: Determine iOS and Android tags
         id: determine_tags
@@ -44,7 +48,12 @@ jobs:
             exit 1
           fi
 
-          # Export tags for later steps
+          # Export tags as step outputs
+          echo "last_ios_tag=$last_ios_tag" >> $GITHUB_OUTPUT
+          echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_OUTPUT
+          echo "android_tag=$android_tag" >> $GITHUB_OUTPUT
+
+          # Also export to environment for later steps
           echo "last_ios_tag=$last_ios_tag" >> $GITHUB_ENV
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
           echo "android_tag=$android_tag" >> $GITHUB_ENV
