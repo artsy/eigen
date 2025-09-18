@@ -65,7 +65,7 @@ jobs:
           # Add monitoring links
           ios_link="Monitor the iOS release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
 
-          changelog="${base_changelog}\n\n$ios_link
+          changelog="${base_changelog}\n\n$ios_link"
 
           echo "changelog<<EOF" >> $GITHUB_ENV
           echo "$changelog" >> $GITHUB_ENV
