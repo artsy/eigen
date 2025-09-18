@@ -61,7 +61,7 @@ jobs:
         id: generate_changelog
         run: |
           # Generate changelog and clean up yarn output
-          base_changelog=$(yarn generate-changelog "${{ env.second_last_ios_tag }}" "${{ env.last_ios_tag }}" | sed '/^Done in [0-9.]*s\.$/d')
+          base_changelog=$(yarn generate-changelog "${{ env.second_last_ios_tag }}" "${{ env.last_ios_tag }}" | sed -e '/^yarn run v[0-9.]*$/d' -e '/^\$ tsx scripts\/changelog\/generateChangelog\.ts/d' -e '/^Done in [0-9.]*s\.$/d')
 
           # Extract version from iOS tag for Sentry link (remove -submission suffix)
           ios_version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^(ios-[0-9]+\.[0-9]+\.[0-9]+)-.*$/\1/')
