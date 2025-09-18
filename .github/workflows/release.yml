@@ -31,16 +31,16 @@ jobs:
       - name: Determine iOS and Android tags
         id: determine_tags
         run: |
-          # Get all iOS release tags and sort them
-          ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" | head -n 10)
+          # Get all iOS release tags and sort them (avoid broken pipe by using different approach)
+          ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" 2>/dev/null | head -n 10 || true)
 
-          # Get the last and second-to-last iOS tags
-          last_ios_tag=$(echo "$ios_tags" | tail -n1)
-          second_last_ios_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+          # Get the last and second-to-last iOS tags (first and second in the sorted list)
+          last_ios_tag=$(echo "$ios_tags" | head -n1)
+          second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
           # Find the corresponding Android tag for the same commit hash as the last iOS tag
           commit_hash=$(git rev-list -n 1 "$last_ios_tag")
-          android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" | head -n1)
+          android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" 2>/dev/null | head -n1 || true)
 
           # Ensure tags are found
           if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ] || [ -z "$android_tag" ]; then
