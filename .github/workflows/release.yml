@@ -78,7 +78,10 @@ jobs:
           # Extract the version from the iOS tag for the title
           version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
 
+          # Write changelog to a temporary file to avoid shell escaping issues
+          echo "${{ env.changelog }}" > /tmp/changelog.md
+
           gh release create "${{ env.last_ios_tag }}" \
               --repo "${{ github.repository }}" \
               --title "$version" \
-              --notes "${{ env.changelog }}"
+              --notes-file /tmp/changelog.md
