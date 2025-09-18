@@ -474,12 +474,7 @@ const ArtworkHeartIcon: React.FC<{
   const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
 
   if (enableArtworkHeartIconAnimation) {
-    return (
-      <ArtworkSaveIconWrapper
-        isSaved={!!isSaved}
-        testID={isSaved ? "filled-heart-icon" : "empty-heart-icon"}
-      />
-    )
+    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
   }
 
   if (isSaved) {

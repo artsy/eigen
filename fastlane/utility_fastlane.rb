@@ -86,14 +86,20 @@ lane :notify_beta_failed do |options|
   exception = options[:exception]
   message = <<~MSG
               :x: :iphone:
-              Looks like the latest beta failed to deploy!
-              See circle job for more details.
+              Looks like the latest eigen beta failed to deploy!
+              See GitHub action run for more details.
             MSG
+
+  # Construct GitHub Actions run URL
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
   slack(
     message: message,
     success: false,
     payload: {
-      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'GitHub Actions' => github_url,
       'Exception' => exception.message
     },
     default_payloads: []
@@ -199,7 +205,7 @@ lane :prepare_version_update_pr do |options|
   sh "git push origin HEAD:refs/heads/#{version_change_branch}"
 
   pr_url = create_pull_request(
-    api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+    api_token: ENV["GITHUB_TOKEN"],
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,
