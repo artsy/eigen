@@ -2,7 +2,7 @@ import Expo
 import React
 import ReactAppDependencyProvider
 
-class AppDelegate: ExpoAppDelegate {
+class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
     @objc static var shared: AppDelegate? {
@@ -63,6 +63,30 @@ class AppDelegate: ExpoAppDelegate {
     ) -> Bool {
       let result = RCTLinkingManager.application(application, continue: userActivity, restorationHandler: restorationHandler)
       return super.application(application, continue: userActivity, restorationHandler: restorationHandler) || result
+    }
+
+    // MARK: UserNotifications
+    override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        helper?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+
+    override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        super.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        helper?.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+    }
+
+    override func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        super.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+        helper?.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        helper?.userNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        helper?.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
     }
   }
 

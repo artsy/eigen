@@ -2367,16 +2367,16 @@
 			children = (
 				CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */,
 				CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */,
+				CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */,
+				CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */,
+				CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */,
+				CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */,
 				CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */,
 				CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */,
 				CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */,
 				CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */,
 				CBE324A027E275A100395A93 /* AppDelegate+Emission.h */,
 				CBE324B027E275A100395A93 /* AppDelegate+Emission.m */,
-				CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */,
-				CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */,
-				CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */,
-				CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */,
 			);
 			path = AppDelegateCategories;
 			sourceTree = "<group>";
