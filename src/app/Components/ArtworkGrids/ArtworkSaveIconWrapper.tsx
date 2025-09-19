@@ -47,9 +47,19 @@ export const ArtworkSaveIconWrapper: React.FC<{
   return (
     <Animated.View style={animatedStyles} testID={testID} accessibilityLabel={accessibilityLabel}>
       {!!isSaved ? (
-        <HeartFillIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} fill="blue100" />
+        <HeartFillIcon
+          height={HEART_ICON_SIZE}
+          width={HEART_ICON_SIZE}
+          fill="blue100"
+          testID="filled-heart-icon"
+        />
       ) : (
-        <HeartStrokeIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} fill={fill} />
+        <HeartStrokeIcon
+          height={HEART_ICON_SIZE}
+          width={HEART_ICON_SIZE}
+          fill={fill}
+          testID="empty-heart-icon"
+        />
       )}
     </Animated.View>
   )
