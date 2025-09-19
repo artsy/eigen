@@ -28,7 +28,6 @@ defaults_ignore_main: &ignore_main_branches
 
 orbs:
   node: circleci/node@7.2.0
-  queue: eddiewebb/queue@3.3.3
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
   android: circleci/android@3.1.0
@@ -143,11 +142,6 @@ commands:
       - update-echo
       - install-gems
       - install-cocoapods
-  install-bin-modules:
-    steps:
-      - run:
-          name: Install bin modules
-          command: ./scripts/setup/install-bin
   build-app-ios:
     parameters:
       build_type:
