@@ -14,13 +14,12 @@ function stringifyChildren(children: any): string {
 
 const basicRules = defaultRules({ modal: true })
 export class Markdown extends React.Component<Props & FlexProps> {
-  static defaultProps = {
-    rules: basicRules,
-  }
-
   // Be agressive with re-rendering this component
   shouldComponentUpdate(newProps: Props & { children: any }) {
-    if (newProps.rules !== this.props.rules) {
+    const rules = this.props.rules ?? basicRules
+    const newRules = newProps.rules ?? basicRules
+
+    if (newRules !== rules) {
       return true
     }
 
@@ -31,7 +30,8 @@ export class Markdown extends React.Component<Props & FlexProps> {
   }
 
   render() {
-    const { rules, ...rest } = this.props
+    const { rules: rulesProp, ...rest } = this.props
+    const rules = rulesProp ?? basicRules
 
     return <Flex {...rest}>{renderMarkdown(stringifyChildren(this.props.children), rules)}</Flex>
   }
