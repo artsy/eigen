@@ -38,6 +38,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
+          yarn-version: 4.10.0
           node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
