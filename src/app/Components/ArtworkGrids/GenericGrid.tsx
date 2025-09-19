@@ -40,12 +40,6 @@ type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer 
   : never
 
 export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
-  static defaultProps = {
-    sectionDirection: "column" as const,
-    sectionMargin: 20,
-    itemMargin: 20,
-  }
-
   state = this.props.width
     ? this.layoutState(this.props.width)
     : {
@@ -57,7 +51,8 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
   layoutState(width: number): State {
     const sectionCount = isTablet() ? 3 : 2
-    const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
+    const sectionMargin = this.props.sectionMargin ?? 20
+    const sectionMargins = sectionMargin * (sectionCount - 1)
     const artworkPadding = 20
     const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
 
@@ -129,8 +124,9 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
   }
 
   renderSections() {
+    const itemMargin = this.props.itemMargin ?? 20
     const spacerStyle = {
-      height: this.props.itemMargin,
+      height: itemMargin,
     }
     const sectionedArtworks = this.sectionedArtworks()
     const sections = []
@@ -167,9 +163,10 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
         }
       }
 
+      const sectionMargin = this.props.sectionMargin ?? 20
       const sectionSpecificStyle = {
         width: this.state.sectionDimension,
-        marginRight: column === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
+        marginRight: column === this.state.sectionCount - 1 ? 0 : sectionMargin,
       }
       sections.push(
         <View
