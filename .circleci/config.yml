@@ -38,7 +38,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          yarn-version: 4.10.0
+          yarn-version: << pipeline.parameters.yarn_version >>
           node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
@@ -64,6 +64,8 @@ commands:
           command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
+      - node/install-yarn:
+          version: << pipeline.parameters.yarn_version >>
       - node/install-packages:
           pkg-manager: yarn
           cache-version: v23
@@ -513,6 +515,9 @@ parameters:
   node_version:
     type: string
     default: "22.0.0"
+  yarn_version:
+    type: string
+    default: "4.10.0"
   fast_mac_runner:
     type: string
     default: "m4pro.medium"
