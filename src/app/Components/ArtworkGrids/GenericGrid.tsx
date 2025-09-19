@@ -16,7 +16,6 @@ interface Props {
   artistNamesTextStyle?: TextProps
   saleInfoTextStyle?: TextProps
   artworks: GenericGrid_artworks$data
-  sectionDirection?: "column" // FIXME: We don’t actually support more options atm
   sectionMargin?: number
   hidePartner?: boolean
   itemMargin?: number
