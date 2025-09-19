@@ -90,6 +90,14 @@ jobs:
       - name: Update echo
         run: ./scripts/setup/update-echo
 
+      - name: Cache bin Yarn cache
+        uses: actions/cache@v4
+        with:
+          path: bin/.yarn/cache
+          key: yarn-bin-${{ runner.os }}-${{ hashFiles('bin/yarn.lock') }}
+          restore-keys: |
+            yarn-bin-${{ runner.os }}-
+
       - name: Install bin modules
         run: ./scripts/setup/install-bin
 

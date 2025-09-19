@@ -178,3 +178,10 @@ web-build/
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+
+bin/.yarn/*
+!bin/.yarn/patches
+!bin/.yarn/plugins
+!bin/.yarn/releases
+!bin/.yarn/sdks
+!bin/.yarn/versions
