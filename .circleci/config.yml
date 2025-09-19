@@ -355,7 +355,7 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: small
+    resource_class: medium
     steps:
       - checkout
       - install-node-modules
