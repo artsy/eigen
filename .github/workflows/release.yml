@@ -32,14 +32,16 @@ jobs:
         id: determine_tags
         run: |
           # Get all iOS release tags and sort them
-          ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" | head -n 10)
+          ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" || true)
+          ios_tags=$(echo "$ios_tags" | head -n 10)
 
           # Get the last and second-to-last iOS tags (first and second in the sorted list)
           last_ios_tag=$(echo "$ios_tags" | head -n1)
           second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
           # Get all Android release tags and sort them
-          android_tags=$(git tag --sort=-creatordate | grep "^android.*submission$" | head -n 10)
+          android_tags=$(git tag --sort=-creatordate | grep "^android.*submission$" || true)
+          android_tags=$(echo "$android_tags" | head -n 10)
 
           # Get the last and second-to-last Android tags (first and second in the sorted list)
           last_android_tag=$(echo "$android_tags" | head -n1)
@@ -77,8 +79,12 @@ jobs:
           android_version=$(echo "${{ env.last_android_tag }}" | sed -E 's/^(android-[0-9]+\.[0-9]+\.[0-9]+)-.*$/\1/')
 
           # Add monitoring links with correct Sentry URL format
-          ios_link="Monitor the iOS release on Sentry [here :lock:](https://artsynet.sentry.io/explore/releases/${ios_version}/?project=5867225)"
-          android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/explore/releases/${android_version}/?project=5867225)"
+          ios_link="https://artsynet.sentry.io/explore/releases/${ios_version}/?project=5867225"
+          android_link="https://artsynet.sentry.io/explore/releases/${android_version}/?project=5867225"
+
+          sentry_header="Check the health of this release in Sentry:"
+          sentry_footer=":apple: [iOS](${ios_link}) | :robot: [Android](${android_link})"
+
 
           # Extract the version from the iOS tag for the title
           version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/v\1/')
@@ -88,4 +94,4 @@ jobs:
               --repo "${{ github.repository }}" \
               --title "$version" \
               --generate-notes \
-              --notes "$(printf "%s\n\n%s" "$ios_link" "$android_link")"
+              --notes "$(printf "$sentry_header" "%s\n%s" "$sentry_footer")"
