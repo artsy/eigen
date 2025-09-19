@@ -67,7 +67,7 @@ commands:
       - node/install-yarn:
           version: << pipeline.parameters.yarn_version >>
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           cache-version: v23
   run-relay-compiler:
     steps:
