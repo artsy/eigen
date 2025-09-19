@@ -170,3 +170,11 @@ web-build/
 
 # Cursor MCP server
 .cursor/mcp.json
+
+
+# yarn 4
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
