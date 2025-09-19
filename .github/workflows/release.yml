@@ -81,16 +81,11 @@ jobs:
           android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/explore/releases/${android_version}/?project=5867225)"
 
           # Extract the version from the iOS tag for the title
-          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
-
-          # Write changelog to a temporary file using heredoc to avoid shell escaping issues
-          cat > /tmp/changelog.md << 'EOF'
-          ${{ env.changelog }}
-          EOF
+          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/v\1/')
 
           gh release create "${{ env.last_ios_tag }}" \
               --notes-start-tag "${{ env.second_last_ios_tag }}" \
               --repo "${{ github.repository }}" \
               --title "$version" \
               --generate-notes \
-              --notes "${ios_link} \n\n ${android_link}"
+              --notes "$(printf "%s\n\n%s" "$ios_link" "$android_link")"
