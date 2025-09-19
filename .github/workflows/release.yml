@@ -3,14 +3,14 @@ name: Release with Changelog
 on:
   push:
     tags:
-      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-sultantest"
+      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-submission"
 
 permissions:
   contents: write
 
 jobs:
   generate-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
@@ -19,10 +19,12 @@ jobs:
       - name: Setup node.js
         uses: ./.github/actions/setup-node
 
-      - name: Fetch all tags
+      - name: Fetch submission tags
         run: |
-          git fetch --tags --depth=300 --jobs=8
-          echo "fetched tags!"
+          # Fetch only iOS and Android submission tags with more specific refspecs
+          git fetch origin '+refs/tags/ios-*-submission:refs/tags/ios-*-submission' --depth=300 --jobs=8
+          git fetch origin '+refs/tags/android-*-submission:refs/tags/android-*-submission' --depth=300 --jobs=8
+          echo "fetched submission tags!"
 
       - name: Determine iOS and Android tags
         id: determine_tags
@@ -30,54 +32,62 @@ jobs:
           # Get all iOS release tags and sort them
           ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" | head -n 10)
 
-          # Get the last and second-to-last iOS tags
-          last_ios_tag=$(echo "$ios_tags" | tail -n1)
-          second_last_ios_tag=$(echo "$ios_tags" | tail -n2 | head -n1)
+          # Get the last and second-to-last iOS tags (first and second in the sorted list)
+          last_ios_tag=$(echo "$ios_tags" | head -n1)
+          second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
-          # Find the corresponding Android tag for the same commit hash as the last iOS tag
-          commit_hash=$(git rev-list -n 1 "$last_ios_tag")
-          android_tag=$(git tag --contains "$commit_hash" | grep "android-.*-submission" | head -n1)
+          # Get all Android release tags and sort them
+          android_tags=$(git tag --sort=-creatordate | grep "^android.*submission$" | head -n 10)
+
+          # Get the last and second-to-last Android tags (first and second in the sorted list)
+          last_android_tag=$(echo "$android_tags" | head -n1)
+
 
           # Ensure tags are found
-          if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ] || [ -z "$android_tag" ]; then
-            echo "Error: Could not determine all required tags."
+          if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ]; then
+            echo "Error: Could not determine all required iOS tags."
             exit 1
           fi
 
-          # Export tags for later steps
+          if [ -z "$last_android_tag" ]; then
+            echo "Error: Could not determine all required Android tags."
+            exit 1
+          fi
+
+          # Export tags as step outputs
+          echo "last_ios_tag=$last_ios_tag" >> $GITHUB_OUTPUT
+          echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_OUTPUT
+          echo "last_android_tag=$last_android_tag" >> $GITHUB_OUTPUT
+
+          # Also export to environment for later steps
           echo "last_ios_tag=$last_ios_tag" >> $GITHUB_ENV
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
-          echo "android_tag=$android_tag" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
-          npm install -g yarn
-          yarn install
-          yarn global add tsx
-
-      - name: Generate changelog
-        id: generate_changelog
-        run: |
-          base_changelog=$(yarn generate-changelog "${{ env.second_last_ios_tag }}" "${{ env.last_ios_tag }}")
-
-          # Add monitoring links
-          ios_link="Monitor the iOS release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
-          android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
-
-          changelog="${base_changelog}\n\n$ios_link\n$android_link"
-
-          echo "changelog<<EOF" >> $GITHUB_ENV
-          echo "$changelog" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "last_android_tag=$last_android_tag" >> $GITHUB_ENV
 
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Extract version from iOS tag for Sentry link (remove -submission suffix)
+          ios_version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/-submission$//')
+
+          # Extract version from Android tag for Sentry link (remove -submission suffix)
+          android_version=$(echo "${{ env.last_android_tag }}" | sed -E 's/-submission$//')
+
+          # Add monitoring links with correct Sentry URL format
+          ios_link="https://artsynet.sentry.io/explore/releases/${ios_version}/?environment=production&project=5867225"
+          android_link="https://artsynet.sentry.io/explore/releases/${android_version}/?environment=production&project=5867225"
+
+          sentry_header="Check the health of this release in Sentry:"
+          sentry_footer=":apple: [iOS](${ios_link}) | :robot: [Android](${android_link})"
+
+
           # Extract the version from the iOS tag for the title
-          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/\1/')
+          version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^ios-([0-9]+\.[0-9]+\.[0-9]+)-.*/v\1/')
 
           gh release create "${{ env.last_ios_tag }}" \
+              --notes-start-tag "${{ env.second_last_ios_tag }}" \
               --repo "${{ github.repository }}" \
               --title "$version" \
-              --notes "${{ env.changelog }}"
+              --generate-notes \
+              --notes "$(printf "%s\n\n%s" "$sentry_header" "$sentry_footer")"
