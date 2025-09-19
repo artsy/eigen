@@ -53,15 +53,13 @@ jobs:
         id: cache-node-modules
         uses: actions/cache@v4
         with:
-          path: |
-            **/node_modules
-            ~/.cache/yarn
-          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: .yarn/cache
+          key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            yarn-${{ runner.os }}-
+            yarn-v4-${{ runner.os }}-
 
       - name: Install Node.js dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Cache cocoapods
         id: cache-pods
@@ -91,6 +89,14 @@ jobs:
 
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Cache bin Yarn cache
+        uses: actions/cache@v4
+        with:
+          path: bin/.yarn/cache
+          key: yarn-bin-${{ runner.os }}-${{ hashFiles('bin/yarn.lock') }}
+          restore-keys: |
+            yarn-bin-${{ runner.os }}-
 
       - name: Install bin modules
         run: ./scripts/setup/install-bin
