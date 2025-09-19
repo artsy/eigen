@@ -64,8 +64,6 @@ commands:
           command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
-      - node/install-yarn:
-          version: << pipeline.parameters.yarn_version >>
       - node/install-packages:
           pkg-manager: yarn-berry
           cache-version: v23
