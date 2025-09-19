@@ -1,10 +1,9 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NotificationsManager } from "app/NativeModules/NotificationsManager"
-import { navigate, navigationEvents } from "app/system/navigation/navigate"
-import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
+// This event listener needs to be imported so that the event listeners are setup before the app is mounted
+// @ts-ignore
+import "app/NativeModules/utils/listenToNativeEvents"
 import { InfoType } from "app/utils/track/providers"
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =
@@ -57,51 +56,4 @@ export const getNativeModel = (): NativeModel => ({
   setApplicationIconBadgeNumber: thunk((_actions, count) => {
     LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber(count)
   }),
-})
-
-export function listenToNativeEvents(cb: (event: NativeEvent) => void) {
-  return NotificationsManager.addListener("event", cb)
-}
-
-listenToNativeEvents((event: NativeEvent) => {
-  switch (event.type) {
-    case "IDENTIFY_TRACKING":
-      // Segment should automatically stitch identify calls to existing user even if userid is null
-      SegmentTrackingProvider.identify
-        ? SegmentTrackingProvider.identify(undefined, event.payload)
-        : (() => undefined)()
-      return
-    case "EVENT_TRACKING":
-      SegmentTrackingProvider.postEvent(event.payload)
-      return
-    case "STATE_CHANGED":
-      // We need to set the values we get from the native state on iOS to the global store
-      // to have parity between the auth on native and react-native
-      if (event.payload.userEmail && event.payload.userID && event.payload.authenticationToken) {
-        GlobalStore.actions.auth.setState({
-          userEmail: event.payload.userEmail,
-          userAccessToken: event.payload.authenticationToken,
-          userID: event.payload.userID,
-        })
-      }
-
-      return
-    case "NOTIFICATION_RECEIVED":
-      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-      return
-    case "REQUEST_NAVIGATION": {
-      const { route, props } = event.payload
-      navigationEvents.emit("requestModalDismiss")
-      navigate(route, { passProps: props })
-      return
-    }
-    case "MODAL_DISMISSED":
-      navigationEvents.emit("modalDismissed")
-      return
-    case "REQUEST_MODAL_DISMISS":
-      navigationEvents.emit("requestModalDismiss")
-      return
-    default:
-      assertNever(event)
-  }
 })
