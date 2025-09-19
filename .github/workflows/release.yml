@@ -69,10 +69,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Extract version from iOS tag for Sentry link (remove -submission suffix)
-          ios_version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/^(ios-[0-9]+\.[0-9]+\.[0-9]+)-.*$/\1/')
+          ios_version=$(echo "${{ env.last_ios_tag }}" | sed -E 's/-submission$//')
 
           # Extract version from Android tag for Sentry link (remove -submission suffix)
-          android_version=$(echo "${{ env.last_android_tag }}" | sed -E 's/^(android-[0-9]+\.[0-9]+\.[0-9]+)-.*$/\1/')
+          android_version=$(echo "${{ env.last_android_tag }}" | sed -E 's/-submission$//')
 
           # Add monitoring links with correct Sentry URL format
           ios_link="https://artsynet.sentry.io/explore/releases/${ios_version}/?project=5867225"
