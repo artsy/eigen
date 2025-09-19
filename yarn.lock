@@ -22,10 +22,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/icons@3.51.0":
-  version "3.51.0"
-  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.51.0.tgz#4ae461d689b86048e8628801f109af07de4db5f6"
-  integrity sha512-x750SOXPWSKiQRhdJanU8H3qi+WYDjCSi9jDoq/nPR/0uBAN6IOyzv//xWQTDFq9IXZ+I2O8Pe25iRBE7S4RGA==
+"@artsy/icons@3.52.0":
+  version "3.52.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.52.0.tgz#0e4f7474a88a22648948cafd1111325431bbc90f"
+  integrity sha512-1es1URf9nSy7xVHZk5kWizY9o0I3Bd2gt79weuNg4L3aXeZpFvVdb44dOjLGxJc16iDMYRhqOQ4OUj625i9ujQ==
 
 "@artsy/icons@^3.49.0":
   version "3.50.0"
