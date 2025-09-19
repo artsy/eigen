@@ -34,12 +34,6 @@ orbs:
   android: circleci/android@3.1.0
 
 commands:
-  install-node:
-    steps:
-      - node/install:
-          install-yarn: true
-          yarn-version: << pipeline.parameters.yarn_version >>
-          node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
       - run:
@@ -136,7 +130,6 @@ commands:
       - checkout
       - attach_workspace:
           at: .
-      - install-node
       - setup-awscli
       - setup-env-file
       - run:
@@ -187,7 +180,6 @@ commands:
       - checkout
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
-      - install-node
       - setup-awscli
       - setup-env-file
       - install-node-modules
@@ -291,7 +283,6 @@ jobs:
 
     steps:
       - checkout
-      - install-node
       - install-gems
       - setup-awscli
       - install-node-modules
@@ -384,7 +375,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
-      - install-node
+      - install-node-modules
       - install-gems
       - run:
           name: Check flags
@@ -513,9 +504,6 @@ parameters:
   node_version:
     type: string
     default: "22.0.0"
-  yarn_version:
-    type: string
-    default: "4.10.0"
   fast_mac_runner:
     type: string
     default: "m4pro.medium"
