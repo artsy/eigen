@@ -21,8 +21,8 @@ export function renderWithPlaceholder<Props>({
   showNotFoundView = true,
 }: {
   Container?: React.ComponentType<Props>
-  render?: (props: Props) => React.ReactChild
-  renderPlaceholder: (props?: any) => React.ReactChild
+  render?: (props: Props) => React.ReactNode
+  renderPlaceholder: (props?: any) => React.ReactNode
   renderFallback?: FallbackRenderer
   initialProps?: object
   placeholderProps?: object

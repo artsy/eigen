@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { Artwork, ArtworkScreen } from "app/Scenes/Artwork/Artwork"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
@@ -1025,15 +1025,18 @@ describe("Artwork", () => {
   })
 
   describe("Order webview callbacks", () => {
-    it("triggers navigating to the order details on Order Submission event", () => {
+    it("triggers navigating to the order details on Order Submission event", async () => {
       renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       resolveMostRecentRelayOperation(environment)
 
       act(() => callback?.({ orderId: "order-id", isPurchase: false }))
 
+      await flushPromiseQueue()
+
       expect(goBack).toHaveBeenCalled()
-      expect(navigate).toHaveBeenCalledWith("/orders/order-id/details")
+
+      await waitFor(() => expect(navigate).toHaveBeenCalledWith("/orders/order-id/details"))
     })
   })
 })

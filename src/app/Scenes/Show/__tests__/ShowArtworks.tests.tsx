@@ -5,6 +5,7 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { act } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -34,11 +35,13 @@ describe("ShowArtworks", () => {
   it("renders a grid of artworks", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Show: () => show,
-    })
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Show: () => show,
+      })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     expect(getByText("Show Artwork")).toBeTruthy()
   })
@@ -46,19 +49,21 @@ describe("ShowArtworks", () => {
   it("renders empty view if there are no artworks", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Show: () => ({
-        showArtworks: {
-          ...show.showArtworks,
-          edges: [],
-          counts: {
-            total: 0,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Show: () => ({
+          showArtworks: {
+            ...show.showArtworks,
+            edges: [],
+            counts: {
+              total: 0,
+            },
           },
-        },
-      }),
-    })
+        }),
+      })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     expect(getByText(/This show is currently unavailable./)).toBeTruthy()
   })

@@ -38,7 +38,7 @@ interface Props {
   includeTombstone?: boolean
   isPrivate?: boolean
   relay: RelayProp
-  RightButton?: JSX.Element
+  RightButton?: React.JSX.Element
   showFollowButton?: boolean
   uploadsCount?: number | null
   withFeedback?: boolean

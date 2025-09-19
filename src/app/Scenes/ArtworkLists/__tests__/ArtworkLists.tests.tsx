@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react-native"
 import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -16,14 +17,16 @@ describe("ArtworkLists", () => {
   it("renders Artwork lists", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        savedArtworksArtworkList,
-        customArtworkLists,
-      }),
-    })
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Me: () => ({
+          savedArtworksArtworkList,
+          customArtworkLists,
+        }),
+      })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     expect(getByText("Saved Artworks")).toBeTruthy()
     expect(getByText("Custom Artwork List 1")).toBeTruthy()
@@ -34,14 +37,16 @@ describe("ArtworkLists", () => {
     it("renders 'Artworks' label for more than 1 artworks", async () => {
       const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          savedArtworksArtworkList,
-          customArtworkLists,
-        }),
-      })
+      await act(async () => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
+      })
 
       // Saved Artworks
       expect(getByText("5 Artworks")).toBeTruthy()
@@ -53,14 +58,16 @@ describe("ArtworkLists", () => {
     it("renders 'Artwork' label for 1 artwork", async () => {
       const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          savedArtworksArtworkList,
-          customArtworkLists,
-        }),
-      })
+      await act(async () => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
+      })
 
       // Custom Artworks
       expect(getByText("1 Artwork")).toBeTruthy()

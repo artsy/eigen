@@ -1,11 +1,10 @@
-import { fireEvent } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { CareerHighlightsRailTestQuery } from "__generated__/CareerHighlightsRailTestQuery.graphql"
 import { CareerHighlightsRail } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsRail"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("CareerHighlightsRail", () => {
@@ -30,7 +29,7 @@ describe("CareerHighlightsRail", () => {
   it("renders the rail with data", async () => {
     const { getByTestId, getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
+    await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: {
           me: {
@@ -46,9 +45,8 @@ describe("CareerHighlightsRail", () => {
           },
         },
       })
+      await flushPromiseQueue()
     })
-
-    await flushPromiseQueue()
 
     expect(getByTestId("career-highlight-cards-flatlist")).toBeTruthy()
     // singular
@@ -70,7 +68,7 @@ describe("CareerHighlightsRail", () => {
   it("does not render when the count is 0 for all kinds", async () => {
     const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
+    await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: {
           me: {
@@ -86,16 +84,16 @@ describe("CareerHighlightsRail", () => {
           },
         },
       })
+      await flushPromiseQueue()
     })
-
-    await flushPromiseQueue()
 
     expect(queryByTestId("career-highlight-cards-flatlist")).toBeFalsy()
   })
 
   it("navigates to the correct screen with correct passProps", async () => {
     const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-    act(() => {
+
+    await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: {
           me: {
@@ -107,8 +105,8 @@ describe("CareerHighlightsRail", () => {
           },
         },
       })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     fireEvent(getByTestId("career-highlight-card-item"), "press")
     expect(navigate).toHaveBeenCalledWith("/my-collection/career-highlights", {

@@ -1,5 +1,5 @@
 import Geolocation from "@react-native-community/geolocation"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ShowsRailContainer } from "app/Scenes/HomeView/Components/ShowsRail"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -27,9 +27,13 @@ describe("ShowsRailContainer", () => {
     it("renders the title and the shows and handles title press", async () => {
       renderWithHookWrappersTL(<ShowsRailContainer title="Shows for You" />, environment)
 
-      environment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, { Me: () => meResponse })
-      )
+      await act(async () => {
+        environment.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, { Me: () => meResponse })
+        )
+
+        await flushPromiseQueue()
+      })
 
       expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
       expect(mockFetch).not.toHaveBeenCalled()

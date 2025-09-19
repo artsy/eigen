@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ShowCardTestsQuery } from "__generated__/ShowCardTestsQuery.graphql"
 import { ShowCardContainer, getShowCity } from "app/Components/ShowCard"
 import { navigate } from "app/system/navigation/navigate"
@@ -36,23 +36,25 @@ describe("ShowCard", () => {
   it("navigates to the show page", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Show: () => ({
-        href: "/show/berghain-art-show",
-        name: "Berghain Art Show",
-        city: "Berlin",
-        formattedStartAt: "Mar 1",
-        formattedEndAt: "Apr 14",
-        metaImage: {
-          url: "https://d32dm0rphc51dk.cloudfront.net/1Z5Y1Zq1GZ1Y1Zq1GZ/medium.jpg",
-        },
-        partner: {
-          city: "Paris",
-        },
-      }),
-    })
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Show: () => ({
+          href: "/show/berghain-art-show",
+          name: "Berghain Art Show",
+          city: "Berlin",
+          formattedStartAt: "Mar 1",
+          formattedEndAt: "Apr 14",
+          metaImage: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/1Z5Y1Zq1GZ1Y1Zq1GZ/medium.jpg",
+          },
+          partner: {
+            city: "Paris",
+          },
+        }),
+      })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     const button = screen.getByText("Berghain Art Show")
     fireEvent.press(button)
@@ -64,23 +66,25 @@ describe("ShowCard", () => {
   it("renders the show name, data and city ", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Show: () => ({
-        href: "/show/berghain-art-show",
-        name: "Berghain Art Show",
-        city: "Berlin",
-        formattedStartAt: "Mar 1",
-        formattedEndAt: "Apr 14",
-        metaImage: {
-          url: "https://d32dm0rphc51dk.cloudfront.net/1Z5Y1Zq1GZ1Y1Zq1GZ/medium.jpg",
-        },
-        partner: {
-          city: "Paris",
-        },
-      }),
-    })
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Show: () => ({
+          href: "/show/berghain-art-show",
+          name: "Berghain Art Show",
+          city: "Berlin",
+          formattedStartAt: "Mar 1",
+          formattedEndAt: "Apr 14",
+          metaImage: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/1Z5Y1Zq1GZ1Y1Zq1GZ/medium.jpg",
+          },
+          partner: {
+            city: "Paris",
+          },
+        }),
+      })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     const button = screen.getByText("Berghain Art Show")
     fireEvent.press(button)

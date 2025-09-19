@@ -1,4 +1,5 @@
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
+import { parse as parseQueryString } from "query-string"
 import { Variables } from "react-relay"
 
 export const CACHEABLE_DIRECTIVE_REGEX = /@\bcacheable\b/
@@ -17,13 +18,14 @@ export const isRequestCacheable = (req: GraphQLRequest) => {
 
 export const hasNoCacheParamPresent = (url: string) => {
   const queryString = url?.split("?")[1]
-  const urlParams = new URLSearchParams(queryString)
-  const noCache = urlParams.get("nocache")
-  if (noCache) {
-    return true
+  if (!queryString) {
+    return false
   }
 
-  return false
+  const params = parseQueryString(queryString)
+  console.log("[debug] queryString", queryString, params)
+  console.log("[debug] params.nocache", params.nocache)
+  return !!params.nocache
 }
 
 export const SKIP_CACHE_ARGUMENTS = ["includeArtworksByFollowedArtists", "isFollowed", "isSaved"]

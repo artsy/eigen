@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react-native"
 import { LotCurrentBidInfo_TestQuery } from "__generated__/LotCurrentBidInfo_TestQuery.graphql"
 import { LotCurrentBidInfo } from "app/Scenes/Artwork/Components/ArtworkLotDetails/LotCurrentBidInfo"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -35,10 +36,12 @@ describe("LotCurrentBidInfo", () => {
   it("should render `Current Bid` when no bids", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => artwork,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Starting bid")).toBeTruthy()
   })
@@ -46,18 +49,20 @@ describe("LotCurrentBidInfo", () => {
   it("should render `Current Bid` when bids present", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          counts: {
-            bidderPositions: 1,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            counts: {
+              bidderPositions: 1,
+            },
           },
-        },
-      }),
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText(/Current bid/)).toBeTruthy()
   })
@@ -65,18 +70,20 @@ describe("LotCurrentBidInfo", () => {
   it("should render `1 bid` label", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          counts: {
-            bidderPositions: 1,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            counts: {
+              bidderPositions: 1,
+            },
           },
-        },
-      }),
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Current bid (1 bid)")).toBeTruthy()
   })
@@ -84,18 +91,20 @@ describe("LotCurrentBidInfo", () => {
   it("should render `x bids` label", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          counts: {
-            bidderPositions: 5,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            counts: {
+              bidderPositions: 5,
+            },
           },
-        },
-      }),
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Current bid (5 bids)")).toBeTruthy()
   })
@@ -103,18 +112,20 @@ describe("LotCurrentBidInfo", () => {
   it("should render `x bids` label", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          counts: {
-            bidderPositions: 5,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            counts: {
+              bidderPositions: 5,
+            },
           },
-        },
-      }),
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Current bid (5 bids)")).toBeTruthy()
   })
@@ -122,16 +133,18 @@ describe("LotCurrentBidInfo", () => {
   it("should render only reserve label", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          reserveMessage: "This work has a reserve",
-        },
-      }),
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            reserveMessage: "This work has a reserve",
+          },
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Starting bid (this work has a reserve)")).toBeTruthy()
   })
@@ -139,19 +152,21 @@ describe("LotCurrentBidInfo", () => {
   it("should render reserve label with bids", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork: {
-          ...saleArtwork,
-          reserveMessage: "Reserve not met",
-          counts: {
-            bidderPositions: 5,
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          saleArtwork: {
+            ...saleArtwork,
+            reserveMessage: "Reserve not met",
+            counts: {
+              bidderPositions: 5,
+            },
           },
-        },
-      }),
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(queryByText("Current bid (5 bids, reserve not met)")).toBeTruthy()
   })
@@ -162,25 +177,27 @@ describe("LotCurrentBidInfo", () => {
       mockEnvironment
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        myLotStanding: [
-          {
-            mostRecentBid: {
-              isWinning: true,
-              maxBid: {
-                display: "$15,000",
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          myLotStanding: [
+            {
+              mostRecentBid: {
+                isWinning: true,
+                maxBid: {
+                  display: "$15,000",
+                },
+              },
+              activeBid: {
+                isWinning: true,
               },
             },
-            activeBid: {
-              isWinning: true,
-            },
-          },
-        ],
-      }),
+          ],
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(getByText("Your max: $15,000")).toBeTruthy()
     expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
@@ -192,23 +209,25 @@ describe("LotCurrentBidInfo", () => {
       mockEnvironment
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        myLotStanding: [
-          {
-            mostRecentBid: {
-              isWinning: false,
-              maxBid: {
-                display: "$400",
+    await act(async () => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artwork,
+          myLotStanding: [
+            {
+              mostRecentBid: {
+                isWinning: false,
+                maxBid: {
+                  display: "$400",
+                },
               },
+              activeBid: null,
             },
-            activeBid: null,
-          },
-        ],
-      }),
+          ],
+        }),
+      })
+      await flushPromiseQueue()
     })
-    await flushPromiseQueue()
 
     expect(getByText("Your max: $400")).toBeTruthy()
     expect(getByLabelText("My Bid Losing Icon")).toBeTruthy()

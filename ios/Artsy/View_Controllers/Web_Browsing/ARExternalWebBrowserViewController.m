@@ -13,7 +13,7 @@
 #import "ARDispatchManager.h"
 #import "ARTNativeScreenPresenterModule.h"
 
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import <CoreServices/CoreServices.h>
 
 #import "AREmission.h"
@@ -63,6 +63,11 @@
 
     ARWebViewCacheHost *webviewCache = [[ARWebViewCacheHost alloc] init];
     WKWebView *webView = [webviewCache dequeueWebView];
+
+    // Track user taps in the webview
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewTap:)];
+    tap.cancelsTouchesInView = NO;
+    [webView addGestureRecognizer:tap];
 
     webView.frame = self.view.bounds;
     webView.navigationDelegate = self;
@@ -153,6 +158,12 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return YES;
+}
+
+#pragma mark UITapGestureRecognizerDelegate
+
+- (void)handleWebViewTap:(UITapGestureRecognizer *)gesture {
+    self.lastTapPoint = [gesture locationInView:self.view];
 }
 
 #pragma mark WKWebViewDelegate

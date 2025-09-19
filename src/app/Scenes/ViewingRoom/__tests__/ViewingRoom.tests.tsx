@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react-native"
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { ViewingRoomArtworkRailContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
@@ -9,10 +10,10 @@ import {
 } from "app/Scenes/ViewingRoom/ViewingRoom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -37,13 +38,17 @@ describe("ViewingRoom", () => {
   })
 
   describe("not yet open", () => {
-    it("does not render normal sections", () => {
+    it("does not render normal sections", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ status: "scheduled" }),
+
+      await act(async () => {
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({ status: "scheduled" }),
+          })
+          return result
         })
-        return result
+        await flushPromiseQueue()
       })
 
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
@@ -53,13 +58,17 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
 
-    it("renders an 'opening soon' message", () => {
+    it("renders an 'opening soon' message", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ status: "scheduled" }),
+
+      await act(async () => {
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({ status: "scheduled" }),
+          })
+          return result
         })
-        return result
+        await flushPromiseQueue()
       })
       expect(extractText(tree.root.findByType(ClosedNotice))).toContain(
         "This viewing room is not yet open. We invite you to view this gallery’s current works."
@@ -72,19 +81,23 @@ describe("ViewingRoom", () => {
       status: "live",
     }
     describe("without any artworks", () => {
-      it("doesn't render artworks rail", () => {
+      it("doesn't render artworks rail", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
-        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-          const result = MockPayloadGenerator.generate(operation, {
-            ViewingRoom: () => ({
-              introStatement: "Foo",
-              pullQuote: "Bar",
-              body: "Baz",
-              artworks: null,
-              ...defaultProps,
-            }),
+
+        await act(async () => {
+          mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+            const result = MockPayloadGenerator.generate(operation, {
+              ViewingRoom: () => ({
+                introStatement: "Foo",
+                pullQuote: "Bar",
+                body: "Baz",
+                artworks: null,
+                ...defaultProps,
+              }),
+            })
+            return result
           })
-          return result
+          await flushPromiseQueue()
         })
         expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
         expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
@@ -94,19 +107,23 @@ describe("ViewingRoom", () => {
       })
     })
     describe("with artworks", () => {
-      it("renders all sections", () => {
+      it("renders all sections", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
-        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-          const result = MockPayloadGenerator.generate(operation, {
-            ViewingRoom: () => ({
-              introStatement: "Foo",
-              pullQuote: "Bar",
-              body: "Baz",
-              artworks: { totalCount: 5 },
-              ...defaultProps,
-            }),
+
+        await act(async () => {
+          mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+            const result = MockPayloadGenerator.generate(operation, {
+              ViewingRoom: () => ({
+                introStatement: "Foo",
+                pullQuote: "Bar",
+                body: "Baz",
+                artworks: { totalCount: 5 },
+                ...defaultProps,
+              }),
+            })
+            return result
           })
-          return result
+          await flushPromiseQueue()
         })
         expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
         expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
@@ -115,18 +132,22 @@ describe("ViewingRoom", () => {
         expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
       })
 
-      it("renders a button + calls tracking when body enters viewport", () => {
+      it("renders a button + calls tracking when body enters viewport", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
-        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-          const result = MockPayloadGenerator.generate(operation, {
-            ViewingRoom: () => ({
-              artworksForCount: { totalCount: 42 },
-              slug: "gallery-name-viewing-room-name",
-              internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-              ...defaultProps,
-            }),
+
+        await act(async () => {
+          mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+            const result = MockPayloadGenerator.generate(operation, {
+              ViewingRoom: () => ({
+                artworksForCount: { totalCount: 42 },
+                slug: "gallery-name-viewing-room-name",
+                internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+                ...defaultProps,
+              }),
+            })
+            return result
           })
-          return result
+          await flushPromiseQueue()
         })
 
         expect(tree.root.findAllByType(AnimatedBottomButton)).toHaveLength(1)
@@ -150,13 +171,17 @@ describe("ViewingRoom", () => {
   })
 
   describe("closed (past end datetime)", () => {
-    it("renders share button and no subsections", () => {
+    it("renders share button and no subsections", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ status: "closed" }),
+
+      await act(async () => {
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({ status: "closed" }),
+          })
+          return result
         })
-        return result
+        await flushPromiseQueue()
       })
 
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
@@ -166,13 +191,17 @@ describe("ViewingRoom", () => {
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
 
-    it("renders a 'closed' message", () => {
+    it("renders a 'closed' message", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          ViewingRoom: () => ({ status: "closed" }),
+
+      await act(async () => {
+        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+          const result = MockPayloadGenerator.generate(operation, {
+            ViewingRoom: () => ({ status: "closed" }),
+          })
+          return result
         })
-        return result
+        await flushPromiseQueue()
       })
 
       expect(extractText(tree.root.findByType(ClosedNotice))).toContain(

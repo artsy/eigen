@@ -2,7 +2,7 @@
 #import <CoreSpotlight/CoreSpotlight.h>
 #import <React/RCTLinkingManager.h>
 
-@implementation ARAppDelegate (ActivityContinuation)
+@implementation ARAppDelegateHelper (ActivityContinuation)
 
 - (BOOL)application:(UIApplication *)application willContinueUserActivityWithType:(NSString *)userActivityType;
 {

@@ -1,5 +1,5 @@
 #import "ARUserManager.h"
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
@@ -7,11 +7,11 @@
 SpecBegin(ARAppDelegateActivityContinuation);
 
 __block UIApplication *app = nil;
-__block id<UIApplicationDelegate> delegate = nil;
+__block id delegate = nil;
 
 beforeEach(^{
     app = [UIApplication sharedApplication];
-    delegate = [[ARAppDelegate alloc] init];
+    delegate = [[ARAppDelegateHelper alloc] init];
 });
 
 it(@"does not accept unsupported activities", ^{
@@ -51,7 +51,7 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         emissionMock = [OCMockObject partialMockForObject:[AREmission sharedInstance]];
         [[emissionMock expect] navigate:@"/artwork/andy-warhol-tree-frog"];
 
-        ARAppDelegate *delegate = [[ARAppDelegate alloc] init];
+        ARAppDelegateHelper *delegate = [[ARAppDelegateHelper alloc] init];
         appDelegateMock = [OCMockObject partialMockForObject:delegate];
 
         apiMock = [OCMockObject mockForClass:ArtsyAPI.class];

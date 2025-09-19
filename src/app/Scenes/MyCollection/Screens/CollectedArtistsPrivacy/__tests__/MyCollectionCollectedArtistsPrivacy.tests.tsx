@@ -1,83 +1,43 @@
+import { screen } from "@testing-library/react-native"
+import { MyCollectionCollectedArtistsPrivacyQuery } from "__generated__/MyCollectionCollectedArtistsPrivacyQuery.graphql"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { times } from "lodash"
+import { graphql } from "react-relay"
 
 describe("MyCollectionCollectedArtistsPrivacy", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsPrivacyQuery>({
+    Component: MyCollectionCollectedArtistsPrivacyQueryRenderer,
+    query: graphql`
+      query MyCollectionCollectedArtistsPrivacy_Test_Query @relay_test_operation {
+        me {
+          ...MyCollectionCollectedArtistsPrivacyArtistsList_me
+        }
+      }
+    `,
   })
 
-  it("does shows a list of collected artists", async () => {
-    const { getByText } = renderWithHookWrappersTL(
-      <MyCollectionCollectedArtistsPrivacyQueryRenderer />,
-      mockEnvironment
-    )
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("shows a list of collected artists", async () => {
+    renderWithRelay({
       Me: () => ({
         userInterestsConnection: {
-          edges: userInterestsEdges,
+          edges: times(5).map((i) => ({
+            internalID: `interest-${i + 1}`,
+            private: i % 2 === 0,
+            node: {
+              __typename: "Artist",
+              internalID: `artist-${i + 1}`,
+              name: `Artist ${i + 1}`,
+            },
+          })),
         },
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(getByText("Artist 1")).toBeTruthy()
-    expect(getByText("Artist 2")).toBeTruthy()
-    expect(getByText("Artist 3")).toBeTruthy()
-    expect(getByText("Artist 4")).toBeTruthy()
-    expect(getByText("Artist 5")).toBeTruthy()
+    expect(await screen.findByText("Artist 1")).toBeTruthy()
+    expect(screen.getByText("Artist 2")).toBeTruthy()
+    expect(screen.getByText("Artist 3")).toBeTruthy()
+    expect(screen.getByText("Artist 4")).toBeTruthy()
+    expect(screen.getByText("Artist 5")).toBeTruthy()
   })
 })
-
-const userInterestsEdges = [
-  {
-    internalID: "interest-1",
-    private: true,
-    node: {
-      __typename: "Artist",
-      internalID: "artist-1",
-      name: "Artist 1",
-    },
-  },
-  {
-    internalID: "interest-2",
-    private: false,
-    node: {
-      __typename: "Artist",
-      internalID: "artist-2",
-      name: "Artist 2",
-    },
-  },
-  {
-    __typename: "Artist",
-    internalID: "interest-3",
-    private: false,
-    node: {
-      internalID: "artist-3",
-      name: "Artist 3",
-    },
-  },
-  {
-    __typename: "Artist",
-    internalID: "interest-4",
-    private: false,
-    node: {
-      internalID: "artist-4",
-      name: "Artist 4",
-    },
-  },
-  {
-    __typename: "Artist",
-    internalID: "interest-5",
-    private: true,
-    node: {
-      internalID: "artist-5",
-      name: "Artist 5",
-    },
-  },
-]

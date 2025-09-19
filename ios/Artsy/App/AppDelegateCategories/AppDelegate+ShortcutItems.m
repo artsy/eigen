@@ -1,14 +1,7 @@
 #import "AppDelegate+ShortcutItems.h"
 #import "AREmission.h"
 
-@implementation ARAppDelegate (ShortcutItems)
-
-- (NSArray<UIApplicationShortcutItem *> *)shortcutItems
-{
-    UIApplicationShortcutItem *favoritesShortcut = [[UIApplicationShortcutItem alloc] initWithType:@"favorites" localizedTitle:@"Favorites"];
-
-    return @[ favoritesShortcut ];
-}
+@implementation ARAppDelegateHelper (ShortcutItems)
 
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler
 {

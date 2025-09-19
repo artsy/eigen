@@ -5,8 +5,8 @@ interface ZeroStateProps {
   bigTitle?: string
   subtitle?: string
   separators?: boolean
-  image?: JSX.Element
-  callToAction?: JSX.Element
+  image?: React.JSX.Element
+  callToAction?: React.JSX.Element
   minHeight?: number
   showBorder?: boolean
 }

@@ -374,7 +374,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ errorModalVisible: false })
   }
 
-  renderRequiredInfoForm(): JSX.Element | undefined {
+  renderRequiredInfoForm(): React.JSX.Element | undefined {
     const { missingInformation, isLoading } = this.state
 
     if (missingInformation === "payment") {
@@ -402,7 +402,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
-  renderRequiredInfoHint(): JSX.Element | undefined {
+  renderRequiredInfoHint(): React.JSX.Element | undefined {
     const { missingInformation } = this.state
     if (missingInformation === "payment") {
       return <Hint>A valid credit card is required.</Hint>

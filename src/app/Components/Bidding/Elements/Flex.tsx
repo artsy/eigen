@@ -32,7 +32,7 @@ export interface FlexProps
     SpaceProps,
     WidthProps {}
 
-export const Flex = styled.View.attrs<FlexProps>({})`
+export const Flex = styled.View.attrs({})`
   ${borders};
   ${borderColor};
   ${color};

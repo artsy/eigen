@@ -26,7 +26,9 @@ const [banksy, andyWarhol, keithHaring, yayoiKusama, joanMitchell, anniAlbers] =
 )
 
 const TestPage = () => (
-  <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
+  <SearchContext.Provider
+    value={{ inputRef: { current: null } as any, queryRef: { current: null } }}
+  >
     <RecentSearches />
   </SearchContext.Provider>
 )

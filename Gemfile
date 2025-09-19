@@ -14,6 +14,12 @@ gem 'down'
 gem 'dotenv'
 gem 'json'
 
+# Ruby 3.4.0 has removed some libraries from the standard library.
+gem 'bigdecimal'
+gem 'logger'
+gem 'benchmark'
+gem 'mutex_m'
+
 group :development do
   gem 'lowdown' # For handling notifications + certs
 end

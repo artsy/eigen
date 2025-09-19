@@ -1,6 +1,6 @@
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
-@interface ARAppDelegate (DeeplinkTimeout)
+@interface ARAppDelegateHelper (DeeplinkTimeout)
 
 - (void)startDeeplinkTimeoutWithRoute:(NSString *)route;
 - (void)invalidateDeeplinkTimeout;

@@ -1,8 +1,6 @@
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
- @interface ARAppDelegate (ShortCutItems)
-
- - (NSArray<UIApplicationShortcutItem *> *)shortcutItems;
+ @interface ARAppDelegateHelper (ShortCutItems)
 
  - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler;
 

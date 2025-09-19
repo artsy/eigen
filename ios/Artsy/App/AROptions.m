@@ -1,5 +1,5 @@
 #import "AROptions.h"
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AppDelegate+Emission.h"
 
 static NSDictionary *options = nil;
