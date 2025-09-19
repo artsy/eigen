@@ -32,10 +32,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.50.0.tgz#7e7987d1e6fb79aa4b6148771206af1f0087da10"
   integrity sha512-eCl7WIIJ30M+P51MzSrkH1osqsUr45bwq92tSKNw2klrajPGbBylqc3e6UgP63esW8MghB7wgEMtDkrPbycj1A==
 
-"@artsy/palette-mobile@19.2.0":
-  version "19.2.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-19.2.0.tgz#bc15034bd37488625be428c0c402001d722dd198"
-  integrity sha512-id97p/WGl9II4PF37wO12PprY3lA5Hw+HGkZm1+oDbaUjasPIhQxIP41kmEcpck8XBsIf5gfMEYkoaKtk5QzdA==
+"@artsy/palette-mobile@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-19.3.0.tgz#a10239f816d9bfdf4e8cfecff8eb37bd7cebce4a"
+  integrity sha512-P9Tr/WRpmZLwg+ktS+covPi/P9jupdQp4sNjDL+NaRx0INFAo0pPUivKrGuuNMt9fonUS7QpSxPgq53HUpxoaA==
   dependencies:
     "@artsy/icons" "^3.49.0"
     "@artsy/palette-tokens" "7.0.0"
