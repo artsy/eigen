@@ -14,3 +14,4 @@ runs:
         node-version: ${{ inputs.node-version }}
     - name: Enable Corepack
       run: corepack enable
+      shell: bash
