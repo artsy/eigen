@@ -77,7 +77,7 @@
   {
     "slug": "tokyo-japan",
     "name": "Tokyo",
-    "coordinates": { "lat": 35.69, "lng": 139.69 },
+    "coordinates": { "lat": 35.68, "lng": 139.76 },
     "maxBounds": { "sw": { "lat": 35.1, "lng": 138.966 }, "ne": { "lat": 36.276, "lng": 140.414 } }
   },
   {
@@ -143,7 +143,7 @@
   {
     "slug": "dubai-united-arab-emirates",
     "name": "Dubai",
-    "coordinates": { "lat": 25.2, "lng": 55.27 },
+    "coordinates": { "lat": 25.23, "lng": 55.29 },
     "maxBounds": { "sw": { "lat": 24.569, "lng": 54.574 }, "ne": { "lat": 25.828, "lng": 55.966 } }
   },
   {
