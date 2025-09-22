@@ -24,14 +24,15 @@ Sometimes we need to test a release build on the emulator or our local device, w
    ```
 2. Set environment variables with passwords from 1Password: Go to 1Password > Engineering > `Eigen release keystore password and secret json (google play store)`
    ```bash
-   export ANDROID_KEYSTORE_PASSWORD=<new keystore password (jan 9 2023)>
-   export ANDROID_KEY_PASSWORD=<new key password (jan 9 2023)>
+   export ANDROID_KEYSTORE_PASSWORD='<new keystore password (jan 9 2023)>'
+   export ANDROID_KEY_PASSWORD='<new key password (jan 9 2023)>'
    ```
 
 ### Generate standalone APK
 
 ```bash
-./android/gradlew assembleRelease
+cd android
+./gradlew assembleRelease
 ```
 
 ### Generate and install APK on emulator
