@@ -11,7 +11,8 @@ import {
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react"
-import { Modal, Platform, ScrollView, SafeAreaView } from "react-native"
+import { Modal, Platform, ScrollView } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
@@ -108,13 +109,13 @@ export const AutoHeightInfoModal: React.FC<{
 
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <FullWindowOverlay>{children}</FullWindowOverlay>
       )
     }
 
     if (Platform.OS === "android" && isPresentedModally) {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <Modal visible={visible} transparent statusBarTranslucent>
           {children}
         </Modal>
@@ -131,7 +132,6 @@ export const AutoHeightInfoModal: React.FC<{
     <AutoHeightBottomSheet
       visible={visible}
       onDismiss={onDismiss}
-      // @ts-expect-error REACT_18_UPGRADE
       containerComponent={containerComponent}
       handleIndicatorStyle={
         // Inside modals, the gesture detector is not working on Android.
@@ -143,11 +143,7 @@ export const AutoHeightInfoModal: React.FC<{
           : undefined
       }
     >
-      <SafeAreaView
-        style={{
-          paddingBottom: space(2),
-        }}
-      >
+      <SafeAreaView edges={["bottom", "top"]}>
         <Flex maxHeight={MAX_CONTENT_HEIGHT}>
           <Text mx={2} variant="lg-display">
             {modalTitle ?? title}
@@ -161,7 +157,7 @@ export const AutoHeightInfoModal: React.FC<{
 
           <Spacer y={2} />
 
-          <Flex px={2} pb={2}>
+          <Flex px={2}>
             <Button variant="outline" block onPress={onDismiss}>
               Close
             </Button>
