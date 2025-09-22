@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:19.2.0":
-  version: 19.2.0
-  resolution: "@artsy/palette-mobile@npm:19.2.0"
+"@artsy/palette-mobile@npm:19.3.0":
+  version: 19.3.0
+  resolution: "@artsy/palette-mobile@npm:19.3.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -102,7 +102,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/fad26f419cf6ced44cf79f5ab1d0675d24be6c0e233e3d8b3144c49866b11147a65f35f8836b3820ef5f8e22967735326006ea86bf8ded4151006983c92f9c94
+  checksum: 10c0/1b6f87cd452e30268dd2edddd7ce8b929518c8533323fd0ead1545c74eb8fd1ae74fce5a9ed28c925d694fb041641e535464bbc587318f766aef50d06fed3981
   languageName: node
   linkType: hard
 
@@ -6078,9 +6078,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnmapbox/maps@npm:10.1.38":
-  version: 10.1.38
-  resolution: "@rnmapbox/maps@npm:10.1.38"
+"@rnmapbox/maps@npm:10.1.44":
+  version: 10.1.44
+  resolution: "@rnmapbox/maps@npm:10.1.44"
   dependencies:
     "@turf/along": "npm:6.5.0"
     "@turf/distance": "npm:6.5.0"
@@ -6088,7 +6088,7 @@ __metadata:
     "@turf/length": "npm:6.5.0"
     "@turf/nearest-point-on-line": "npm:6.5.0"
     "@types/geojson": "npm:^7946.0.7"
-    debounce: "npm:^1.2.0"
+    debounce: "npm:^2.2.0"
   peerDependencies:
     expo: ">=47.0.0"
     mapbox-gl: ^2.9.0
@@ -6102,7 +6102,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/767ea41e1418d65b4a3cb252c7325c203d7440fec85659b449c3540378de207cf3e46b4cb043cce12347fac33659f26c92283a1f19bc80c217bb5c808dad4770
+  checksum: 10c0/4fb75556d31bfb19987a9e6441c2f0a197530e221d65c01fb12c269113c4780a753ec47a6ef32a907bb4b876e5ee48b8b214628ff8ba833ef18da2b79d2d03d8
   languageName: node
   linkType: hard
 
@@ -11672,10 +11672,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debounce@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "debounce@npm:1.2.0"
-  checksum: 10c0/6633e727c670bba97245d3a10f6a62b573c6bb99ea974947cafcf84d155a5dd9b8d5414df3aff2c369a0fcc87956f07755d6c11dd8cbb59a6e1fa5b2b39d68bb
+"debounce@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "debounce@npm:2.2.0"
+  checksum: 10c0/684536fe9a04c9eea46cf02f119f69aa4071813ba25b9b43370e1503ea60b34fd38d694c7145fa2be504f9d40e7e39354cb9ed155c70954a0eefa391aefe271c
   languageName: node
   linkType: hard
 
@@ -12295,7 +12295,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.302.0"
     "@artsy/icons": "npm:3.52.0"
-    "@artsy/palette-mobile": "npm:19.2.0"
+    "@artsy/palette-mobile": "npm:19.3.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:^7.25.2"
@@ -12335,7 +12335,7 @@ __metadata:
     "@react-navigation/native": "npm:7.1.17"
     "@react-navigation/native-stack": "npm:7.3.3"
     "@react-navigation/stack": "npm:7.3.3"
-    "@rnmapbox/maps": "npm:10.1.38"
+    "@rnmapbox/maps": "npm:10.1.44"
     "@rozenite/expo-atlas-plugin": "npm:1.0.0-alpha.14"
     "@rozenite/metro": "npm:^1.0.0-alpha.14"
     "@rozenite/network-activity-plugin": "npm:1.0.0-alpha.14"

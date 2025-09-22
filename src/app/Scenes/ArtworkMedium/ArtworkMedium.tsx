@@ -14,9 +14,10 @@ interface Props {
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
   return (
     <Screen>
-      <Screen.Body>
+      <Screen.Body fullwidth>
+        <Screen.Header onBack={goBack} />
         <ScrollView>
-          <Box py={2}>
+          <Box px={2}>
             <Join separator={<Spacer y={2} />} flatten>
               {!!artwork.mediumType && (
                 <>

@@ -135,16 +135,6 @@ If it is still an issue with old native navigation gone this can either be remov
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
 
-## @rnmapbox/maps patch
-
-#### When can we remove this:
-
-Once this issue is resolved: https://github.com/rnmapbox/maps/issues/3753
-
-#### Explanation/Context:
-
-This is a patch for the @rnmapbox/maps package that makes it compatible with RN 77
-
 ## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
 #### When can we remove this:
@@ -318,3 +308,13 @@ When Rozenite stable release is published and no longer requires this resolution
 #### Explanation/Context:
 
 This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
+
+## patch for react-native-reanimated
+
+#### Explanation/Context:
+
+This patch was added to support 16KB page size on Android. It's a copy paste from here https://github.com/software-mansion/react-native-reanimated/pull/7037
+
+#### When can we remove it
+
+It can be removed once we upgrade to any version past 3.17

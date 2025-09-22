@@ -546,11 +546,21 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork-certificate-of-authenticity",
     name: "ArtworkCertificateAuthenticity",
     Component: CertificateOfAuthenticity,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/artwork-classifications",
     name: "ArtworkAttributionClassFAQ",
     Component: ArtworkAttributionClassFAQQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     queries: [ArtworkAttributionClassFAQScreenQuery],
   },
   {
@@ -588,6 +598,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork/:artworkID/medium",
     name: "ArtworkMedium",
     Component: ArtworkMediumQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     queries: [ARTWORK_MEDIUM_QUERY],
   },
   {
