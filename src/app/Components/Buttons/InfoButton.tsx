@@ -110,9 +110,7 @@ export const AutoHeightInfoModal: React.FC<{
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
       return ({ children }: { children?: React.ReactNode }) => (
-        <FullWindowOverlay>
-          <Flex height="100%">{children}</Flex>
-        </FullWindowOverlay>
+        <FullWindowOverlay>{children}</FullWindowOverlay>
       )
     }
 
