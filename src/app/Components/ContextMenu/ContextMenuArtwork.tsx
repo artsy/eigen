@@ -78,12 +78,14 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   })
 
   const openViewInRoom = () => {
-    if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
+    if (!((artwork.widthCm && artwork.heightCm) || artwork.diameterCm) || image?.url == null) {
       return
     }
 
-    const heightIn = cm2in(artwork.heightCm)
-    const widthIn = cm2in(artwork.widthCm)
+    const artworkWidth = (artwork.widthCm || artwork.diameterCm) as number
+    const artworkHeight = (artwork.heightCm || artwork.diameterCm) as number
+    const heightIn = cm2in(artworkHeight)
+    const widthIn = cm2in(artworkWidth)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -292,6 +294,7 @@ const artworkFragment = graphql`
     }
     heightCm
     widthCm
+    diameterCm
   }
 `
 
