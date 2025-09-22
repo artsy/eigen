@@ -81,7 +81,7 @@ PODS:
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
-  - Expo (53.0.22):
+  - Expo (53.0.23):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -3194,7 +3194,7 @@ SPEC CHECKSUMS:
   EXManifests: 691a779b04e4f2c96da46fb9bef4f86174fefcb5
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
-  Expo: 0b8f6749a30425aea7ca0893372ee4743ec2270d
+  Expo: c8f323f74218c45c46e27eed40d8a53ba50667c3
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
   ExpoAsset: ef06e880126c375f580d4923fdd1cdf4ee6ee7d6
