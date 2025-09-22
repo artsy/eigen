@@ -896,7 +896,7 @@ describe("artsy.net routes", () => {
     `)
     expect(matchRoute("/partner/:partnerID/artists/:artistID")).toMatchInlineSnapshot(`
       {
-        "module": "Partner",
+        "module": "Artist",
         "params": {
           "artistID": ":artistID",
           "partnerID": ":partnerID",
