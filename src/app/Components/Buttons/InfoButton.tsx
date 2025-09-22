@@ -161,7 +161,7 @@ export const AutoHeightInfoModal: React.FC<{
 
           <Spacer y={2} />
 
-          <Flex px={2}>
+          <Flex px={2} pb={2}>
             <Button variant="outline" block onPress={onDismiss}>
               Close
             </Button>
