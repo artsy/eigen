@@ -4498,10 +4498,10 @@
     "@react-navigation/elements" "^2.4.3"
     color "^4.2.3"
 
-"@rnmapbox/maps@10.1.38":
-  version "10.1.38"
-  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.38.tgz#c2041be18d747522f4828add7135eba448a3a95e"
-  integrity sha512-TMKaVwh5C5Z+nqUx87mZlDfPB1zmsdJqU6jAjmM8OrZWpuxpaBo3r0AgijmLEhoXIcJ2ptREk/RRcVnNgwNxgQ==
+"@rnmapbox/maps@10.1.44":
+  version "10.1.44"
+  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.44.tgz#f9bae50e3d2b1de347c0e9d6f62cf46601f14752"
+  integrity sha512-rcfF1lLZLGwjpPDoxmvYIakKRfcTMH/w0raq+kUynneC8KOSaareGQi7LfYcCiEHhJ9as3CVPqU0hFTwZhv5tw==
   dependencies:
     "@turf/along" "6.5.0"
     "@turf/distance" "6.5.0"
@@ -4509,7 +4509,7 @@
     "@turf/length" "6.5.0"
     "@turf/nearest-point-on-line" "6.5.0"
     "@types/geojson" "^7946.0.7"
-    debounce "^1.2.0"
+    debounce "^2.2.0"
 
 "@rozenite/expo-atlas-plugin@1.0.0-alpha.14":
   version "1.0.0-alpha.14"
@@ -8584,10 +8584,10 @@ dayjs@^1.8.15:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.5.tgz#5600df4548fc2453b3f163ebb2abbe965ccfb986"
   integrity sha512-BUFis41ikLz+65iH6LHQCDm4YPMj5r1YFLdupPIyM4SGcXMmtiLQ7U37i+hGS8urIuqe7I/ou3IS1jVc4nbN4g==
 
-debounce@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
-  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
+debounce@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-2.2.0.tgz#f895fa2fbdb579a0f0d3dcf5dde19657e50eaad5"
+  integrity sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   version "2.6.9"
