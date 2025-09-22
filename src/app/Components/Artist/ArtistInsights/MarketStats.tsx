@@ -70,6 +70,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           }}
           modalTitle="Market Signals"
           modalContent={<InfoModalContent />}
+          isPresentedModally
         />
       </Flex>
       <Text variant="xs" color="mono60" my={0.5}>
