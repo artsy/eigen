@@ -135,16 +135,6 @@ If it is still an issue with old native navigation gone this can either be remov
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
 
-## @rnmapbox/maps patch
-
-#### When can we remove this:
-
-Once this issue is resolved: https://github.com/rnmapbox/maps/issues/3753
-
-#### Explanation/Context:
-
-This is a patch for the @rnmapbox/maps package that makes it compatible with RN 77
-
 ## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
 #### When can we remove this:
