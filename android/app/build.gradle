@@ -121,6 +121,12 @@ android {
         buildConfigField "String", "GITCommitHash", '"c77772ee1f32093109049504f7865f9737ad8474"'
         buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
         buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.git"'
+
+        externalNativeBuild {
+            cmake {
+                arguments += ["-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"]
+            }
+        }
     }
 
     signingConfigs {
