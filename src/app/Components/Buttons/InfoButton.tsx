@@ -110,7 +110,9 @@ export const AutoHeightInfoModal: React.FC<{
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
       return ({ children }: { children?: React.ReactNode }) => (
-        <FullWindowOverlay>{children}</FullWindowOverlay>
+        <FullWindowOverlay>
+          <Flex height="100%">{children}</Flex>
+        </FullWindowOverlay>
       )
     }
 
@@ -143,7 +145,10 @@ export const AutoHeightInfoModal: React.FC<{
           : undefined
       }
     >
-      <SafeAreaView edges={["bottom", "top"]}>
+      <SafeAreaView
+        edges={["bottom", "top"]}
+        style={Platform.OS === "ios" ? { paddingBottom: space(2) } : {}}
+      >
         <Flex maxHeight={MAX_CONTENT_HEIGHT}>
           <Text mx={2} variant="lg-display">
             {modalTitle ?? title}
