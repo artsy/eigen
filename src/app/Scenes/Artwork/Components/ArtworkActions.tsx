@@ -40,19 +40,21 @@ export const shareContent = (
 }
 
 export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
-  const { image, id, slug, heightCm, widthCm, isHangable, sale } = artwork
+  const { image, id, slug, heightCm, widthCm, diameterCm, isHangable, sale } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
 
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
-    if (image?.url == null || heightCm == null || widthCm == null) {
+    if (image?.url == null || !((widthCm && heightCm) || diameterCm)) {
       return
     }
 
-    const heightIn = cm2in(heightCm)
-    const widthIn = cm2in(widthCm)
+    const artworkWidth = (widthCm || diameterCm) as number
+    const artworkHeight = (heightCm || diameterCm) as number
+    const heightIn = cm2in(artworkHeight)
+    const widthIn = cm2in(artworkWidth)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -127,6 +129,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       }
       widthCm
       heightCm
+      diameterCm
       sale {
         isAuction
         isClosed

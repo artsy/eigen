@@ -1,3 +1,17 @@
+diff --git a/node_modules/react-native-reanimated/android/build.gradle b/node_modules/react-native-reanimated/android/build.gradle
+index 6129944..6aa8a6d 100644
+--- a/node_modules/react-native-reanimated/android/build.gradle
++++ b/node_modules/react-native-reanimated/android/build.gradle
+@@ -257,7 +257,8 @@ android {
+                         "-DJS_RUNTIME_DIR=${jsRuntimeDir}",
+                         "-DIS_NEW_ARCHITECTURE_ENABLED=${IS_NEW_ARCHITECTURE_ENABLED}",
+                         "-DIS_REANIMATED_EXAMPLE_APP=${isReanimatedExampleApp()}",
+-                        "-DREANIMATED_VERSION=${REANIMATED_VERSION}"
++                        "-DREANIMATED_VERSION=${REANIMATED_VERSION}",
++                        "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+                 abiFilters (*reactNativeArchitectures())
+             }
+         }
 diff --git a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts b/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts
 index adcfb6e..9244d1b 100644
 --- a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts

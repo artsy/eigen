@@ -15,9 +15,10 @@ interface Props {
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {
   return (
     <Screen>
-      <Screen.Body>
+      <Screen.Body fullwidth>
+        <Screen.Header onBack={goBack} />
         <ScrollView>
-          <Box py={2}>
+          <Box px={2}>
             <Join separator={<Spacer y={2} />}>
               <Text variant="lg-display">Artwork classifications</Text>
 
