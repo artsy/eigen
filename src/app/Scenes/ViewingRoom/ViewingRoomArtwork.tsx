@@ -45,11 +45,13 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const viewInAR = () => {
     if (
       !!selectedArtwork.isHangable &&
-      !!selectedArtwork?.widthCm &&
-      !!selectedArtwork?.heightCm &&
+      ((selectedArtwork.widthCm && selectedArtwork.heightCm) || selectedArtwork.diameterCm) &&
       !!selectedArtwork?.image?.url
     ) {
-      const [widthIn, heightIn] = [selectedArtwork.widthCm, selectedArtwork.heightCm].map(cm2in)
+      const artworkWidth = (selectedArtwork.widthCm || selectedArtwork.diameterCm) as number
+      const artworkHeight = (selectedArtwork.heightCm || selectedArtwork.diameterCm) as number
+
+      const [widthIn, heightIn] = [artworkWidth, artworkHeight].map(cm2in)
 
       LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
         selectedArtwork.image.url,
@@ -275,6 +277,7 @@ const selectedArtworkFragmentSpec = graphql`
     isHangable
     widthCm
     heightCm
+    diameterCm
     id
     figures {
       ...ImageCarousel_figures @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
