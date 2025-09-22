@@ -27,18 +27,12 @@ defaults_ignore_main: &ignore_main_branches
         - main
 
 orbs:
-  node: circleci/node@5.3.0
-  queue: eddiewebb/queue@3.3.3
+  node: circleci/node@7.2.0
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
   android: circleci/android@3.1.0
 
 commands:
-  install-node:
-    steps:
-      - node/install:
-          install-yarn: true
-          node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
       - run:
@@ -64,7 +58,7 @@ commands:
   install-node-modules:
     steps:
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           cache-version: << pipeline.parameters.node_modules_cache_key >>
   run-relay-compiler:
     steps:
@@ -135,7 +129,6 @@ commands:
       - checkout
       - attach_workspace:
           at: .
-      - install-node
       - setup-awscli
       - setup-env-file
       - run:
@@ -149,11 +142,6 @@ commands:
       - update-echo
       - install-gems
       - install-cocoapods
-  install-bin-modules:
-    steps:
-      - run:
-          name: Install bin modules
-          command: ./scripts/setup/install-bin
   build-app-ios:
     parameters:
       build_type:
@@ -186,7 +174,6 @@ commands:
       - checkout
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
-      - install-node
       - setup-awscli
       - setup-env-file
       - install-node-modules
@@ -290,7 +277,6 @@ jobs:
 
     steps:
       - checkout
-      - install-node
       - install-gems
       - setup-awscli
       - install-node-modules
@@ -354,7 +340,7 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: small
+    resource_class: medium
     steps:
       - checkout
       - install-node-modules
@@ -383,7 +369,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
-      - install-node
+      - install-node-modules
       - install-gems
       - run:
           name: Check flags
