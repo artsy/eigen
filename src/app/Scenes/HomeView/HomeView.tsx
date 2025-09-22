@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
@@ -210,6 +210,16 @@ export const HomeView: React.FC = memo(() => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
+        <Flex
+          alignContent="center"
+          alignItems="center"
+          justifyContent="center"
+          backgroundColor="purple"
+          height={100}
+          my={2}
+        >
+          <Text color="white">If you can see this expo updates works</Text>
+        </Flex>
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
