@@ -6,9 +6,10 @@ import { ScrollView } from "react-native"
 export const CertificateOfAuthenticity: React.FC = () => {
   return (
     <Screen>
-      <Screen.Body>
+      <Screen.Body fullwidth>
+        <Screen.Header onBack={goBack} />
         <ScrollView>
-          <Box py={2}>
+          <Box px={2}>
             <Join separator={<Spacer y={2} />}>
               <Text variant="lg-display">Certificate of Authenticity</Text>
               <Text>
