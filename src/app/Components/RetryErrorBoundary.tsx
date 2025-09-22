@@ -25,13 +25,6 @@ export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
-  static defaultProps = {
-    trackErrorBoundary: true,
-    showBackButton: false,
-    showCloseButton: false,
-    useSafeArea: true,
-  }
-
   static getDerivedStateFromError(error: Error | null): RetryErrorBoundaryState {
     // @ts-expect-error If we set the fetchKey here as well it will only increase once and be set to 0 again with the next error.
     return { error }
@@ -57,10 +50,10 @@ export class RetryErrorBoundary extends Component<
       notFoundTitle,
       notFoundText,
       notFoundBackButtonText,
-      trackErrorBoundary,
-      showBackButton,
-      showCloseButton,
-      useSafeArea,
+      trackErrorBoundary = true,
+      showBackButton = false,
+      showCloseButton = false,
+      useSafeArea = true,
     } = this.props
     const { error, fetchKey } = this.state
 
