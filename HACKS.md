@@ -308,3 +308,13 @@ When Rozenite stable release is published and no longer requires this resolution
 #### Explanation/Context:
 
 This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
+
+## patch for react-native-reanimated
+
+#### Explanation/Context:
+
+This patch was added to support 16KB page size on Android. It's a copy paste from here https://github.com/software-mansion/react-native-reanimated/pull/7037
+
+#### When can we remove it
+
+It can be removed once we upgrade to any version past 3.17
