@@ -11621,7 +11621,7 @@ __metadata:
     react-native-gesture-handler: "npm:~2.24.0"
     react-native-get-random-values: "npm:1.11.0"
     react-native-haptic-feedback: "npm:1.13.0"
-    react-native-image-crop-picker: "npm:0.42.0"
+    react-native-image-crop-picker: "npm:0.51.0"
     react-native-in-app-review: "npm:4.3.3"
     react-native-keychain: "npm:10.0.0"
     react-native-keys: "npm:0.7.13"
@@ -19763,12 +19763,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-crop-picker@npm:0.42.0":
-  version: 0.42.0
-  resolution: "react-native-image-crop-picker@npm:0.42.0"
+"react-native-image-crop-picker@npm:0.51.0":
+  version: 0.51.0
+  resolution: "react-native-image-crop-picker@npm:0.51.0"
   peerDependencies:
-    react-native: ">=0.40.0"
-  checksum: 10c0/8ebae127cf1701c07df6ad3a4304654da7088704628a475f1c2de4a1b99e0fcc7cefa3c34c19a76542c9311f6eaed04a9e402d34af86bdc4d1099c30c197bb8f
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/bd30c16485a8c2d870e35ade370cf1727246e6d5f82c8c351d746d4324112196dc7b0cf8d543f32c2901e0b5c444576c3a79d0d3fa5210e93ff44351a28ae1c3
   languageName: node
   linkType: hard
 
