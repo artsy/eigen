@@ -2239,7 +2239,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (14.0.0):
     - React-Core
-  - RNFastImage (8.10.0):
+  - RNFastImage (8.12.0):
     - libavif/core (~> 0.11.1)
     - libavif/libdav1d (~> 0.11.1)
     - React-Core
@@ -3345,7 +3345,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b44e8a4e798c3e1f56bffccd0f591f674fb9198f
   RNCClipboard: e1d17c9d093d8129ef50b39b63a17a0e8ccd0ade
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
-  RNFastImage: b508cbf84894005f533b980b1bf578e654827f7c
+  RNFastImage: d08eb15eaa651ba916e0304febfe2ee342afc65c
   RNFlashList: 3138e6f563d72e5ae5f54214b6d0489a7985a6d8
   RNGestureHandler: ce4a87dba81030b374d7f1993c4376f5c230da2e
   RNGoogleSignin: b8f09e3ec56e09497e1e53b0ff66d5a45916c6b1

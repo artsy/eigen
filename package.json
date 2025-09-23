@@ -110,7 +110,7 @@
     "@artsy/palette-mobile": "19.3.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "15.0.1",
-    "@d11/react-native-fast-image": "8.10.0",
+    "@d11/react-native-fast-image": "^8.12.0",
     "@expo/react-native-action-sheet": "4.1.1",
     "@gorhom/bottom-sheet": "5.1.2",
     "@gorhom/portal": "1.0.14",
