@@ -42,7 +42,8 @@ GEM
       fastlane (>= 2.0)
       mini_magick (>= 4.9.4, < 5.0.0)
     base64 (0.3.0)
-    bigdecimal (3.2.3)
+    benchmark (0.4.1)
+    bigdecimal (3.2.2)
     celluloid (0.18.0)
       timers (~> 4)
     celluloid-io (0.17.3)
@@ -323,6 +324,8 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (>= 6.1.7.5, != 7.1.0)
+  benchmark
+  bigdecimal
   cocoapods (= 1.16.2)
   cocoapods-check
   cocoapods-patch (~> 1.3.0)
@@ -333,7 +336,9 @@ DEPENDENCIES
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
   json
+  logger
   lowdown
+  mutex_m
   xcode-install
   xcodeproj
   xcpretty

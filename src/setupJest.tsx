@@ -263,7 +263,7 @@ jest.mock("@sentry/react-native", () => ({
   wrap: jest.fn().mockImplementation((component) => component),
   withProfiler: jest.fn().mockImplementation((component) => component),
   TimeToFullDisplay: () => null,
-  TimeToInitialDisplay: ({ children }: { children: React.ReactChildren }) => <>{children}</>,
+  TimeToInitialDisplay: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   reactNavigationIntegration: jest.fn().mockImplementation(() => ({
     registerNavigationContainer: jest.fn(),
   })),
@@ -646,7 +646,7 @@ jest.mock("@react-native-community/geolocation", () => ({
   stopObserving: jest.fn(),
 }))
 
-jest.mock("react-native-document-picker", () => ({
+jest.mock("@react-native-documents/picker", () => ({
   default: jest.fn(),
   pick: jest.fn(),
 }))

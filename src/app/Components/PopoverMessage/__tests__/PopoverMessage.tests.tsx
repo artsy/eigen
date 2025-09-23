@@ -1,4 +1,5 @@
 import { Touchable } from "@artsy/palette-mobile"
+import { act } from "@testing-library/react-native"
 import {
   AnimatedFlex,
   PopoverMessage,
@@ -8,7 +9,6 @@ import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageH
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
-import { act } from "react-test-renderer"
 
 const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
   const popoverMessage = usePopoverMessage()
@@ -34,7 +34,7 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
   })
@@ -52,8 +52,8 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
   })
@@ -69,7 +69,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     const popoverMessageInstance = tree.root.findByType(PopoverMessage)
     const textInstances = popoverMessageInstance.findAllByType(Text)
@@ -89,7 +89,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     const popoverMessageInstance = tree.root.findByType(AnimatedFlex)
 
@@ -109,7 +109,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     const popoverMessageInstance = tree.root.findByType(AnimatedFlex)
 
@@ -132,7 +132,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
 
@@ -156,7 +156,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     jest.advanceTimersByTime(3500)
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
@@ -181,8 +181,10 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
-    act(() => tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress())
+    await act(async () => buttonInstance.props.onPress())
+    await act(async () =>
+      tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress()
+    )
 
     jest.useRealTimers()
     await flushPromiseQueue()
@@ -203,8 +205,10 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
-    act(() => tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress())
+    await act(async () => buttonInstance.props.onPress())
+    await act(async () =>
+      tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress()
+    )
 
     expect(onUndoMock).toBeCalled()
   })
@@ -220,7 +224,7 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
+    await act(async () => buttonInstance.props.onPress())
 
     expect(tree.root.findByType(PopoverMessage).findAllByType(Touchable)).toHaveLength(0)
   })
@@ -238,8 +242,10 @@ describe("PopoverMessage", () => {
     )
 
     const buttonInstance = tree.root.findByType(Touchable)
-    act(() => buttonInstance.props.onPress())
-    act(() => tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress())
+    await act(async () => buttonInstance.props.onPress())
+    await act(async () =>
+      tree.root.findByType(PopoverMessage).findByType(Touchable).props.onPress()
+    )
 
     expect(onPress).toHaveBeenCalled()
   })

@@ -7,7 +7,7 @@ export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig
   count?: number
   onPress: () => void
-  RightAccessoryItem?: JSX.Element
+  RightAccessoryItem?: React.JSX.Element
 }
 
 export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (props) => {

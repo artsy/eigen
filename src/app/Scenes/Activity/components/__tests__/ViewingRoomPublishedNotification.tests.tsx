@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomPublishedNotification_Test_Query } from "__generated__/ViewingRoomPublishedNotification_Test_Query.graphql"
 import { ViewingRoomPublishedNotification } from "app/Scenes/Activity/components/ViewingRoomPublishedNotification"
 import { navigate } from "app/system/navigation/navigate"
@@ -44,7 +44,9 @@ describe("ViewingRoomPublishedNotification", () => {
       }),
     })
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(screen.getByText("Viewing Room")).toBeTruthy()
     expect(screen.getByText("1 viewing room published by Arton Contemporary")).toBeTruthy()
@@ -60,13 +62,17 @@ describe("ViewingRoomPublishedNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       const viewAllWorksByLink = screen.getByText("View Works")
 
       fireEvent.press(viewAllWorksByLink)
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       expect(navigate).toHaveBeenCalledWith('/viewing-room/<mock-value-for-field-"slug">')
     })

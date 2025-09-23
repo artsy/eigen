@@ -23,7 +23,7 @@ export const SelectModal: React.FC<{
   maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown, index: number): any
-  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  renderItemLabel?(value: SelectOption<unknown>): React.JSX.Element
   onModalFinishedClosing?(): void
   testID?: string
 }> = ({

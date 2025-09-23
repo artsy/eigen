@@ -598,7 +598,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
 interface ArtworkPageSection {
   key: string
-  element: JSX.Element
+  element: React.JSX.Element
   excludePadding?: boolean
   excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section

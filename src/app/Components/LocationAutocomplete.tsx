@@ -16,10 +16,10 @@ interface LocationAutocompleteProps extends Omit<InputComponentProps, "onChange"
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
   allowCustomLocation?: boolean
-  inputRef?: React.RefObject<Input>
+  inputRef?: React.Ref<Input>
   showError?: boolean
   onChange: (l: LocationWithDetails) => void
-  FooterComponent?: () => JSX.Element
+  FooterComponent?: () => React.JSX.Element
   bottomSheetInput?: boolean
 }
 

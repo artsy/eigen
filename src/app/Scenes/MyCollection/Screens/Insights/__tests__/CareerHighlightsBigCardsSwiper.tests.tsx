@@ -1,9 +1,8 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { CareerHighlightsBigCardsSwiper } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("CareerHighlightsBigCardsSwiper", () => {
@@ -40,13 +39,13 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   it("renders the swiper and all slides when the data for all types is available", async () => {
     renderWithHookWrappersTL(<TestRendererAllTypesAvailable />, mockEnvironment)
 
-    act(() => {
+    await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: mockResultAllInsights,
       })
-    })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
+    })
 
     expect(screen.getByTestId("career-highlighs-big-cards-swiper")).toBeTruthy()
 
@@ -62,13 +61,12 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   it("renders the swiper and the slides we have the data for when the data for some types is not available", async () => {
     renderWithHookWrappersTL(<TestRendererSomeTypesAvailable />, mockEnvironment)
 
-    act(() => {
+    await act(async () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: mockResultSomeInsights,
       })
+      await flushPromiseQueue()
     })
-
-    await flushPromiseQueue()
 
     expect(screen.getByTestId("career-highlighs-big-cards-swiper")).toBeTruthy()
 

@@ -6,7 +6,7 @@ import { useEffect } from "react"
 interface UseInputAutofocusProps {
   delay?: number
   enabled?: boolean
-  inputRef: React.RefObject<Input>
+  inputRef: React.RefObject<Input | null>
   screenName: AuthScreen["name"]
 }
 
@@ -27,7 +27,7 @@ export const useInputAutofocus = ({
       return
     }
 
-    let timeout: NodeJS.Timeout
+    let timeout: ReturnType<typeof setTimeout>
 
     requestAnimationFrame(() => {
       timeout = setTimeout(() => {

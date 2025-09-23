@@ -46,6 +46,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
                   </Text>
                 </Box>
                 <Image
+                  testID="article-thumbnail-image"
                   style={{ flexShrink: 1, width: 80, height: 60 }}
                   source={{ uri: thumbnailImage?.url ?? undefined }}
                 />

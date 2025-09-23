@@ -24,7 +24,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const { root } = renderWithWrappersLEGACY(
+    const wrapper = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorRailTestsQuery>
         environment={env}
         query={graphql`
@@ -50,11 +50,14 @@ describe("FairExhibitors", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    // Resolve the mock operation and trigger re-render
+    act(() => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
+    })
 
-    return { root }
+    return wrapper
   }
 
   it("renders an exhibitor rail", () => {

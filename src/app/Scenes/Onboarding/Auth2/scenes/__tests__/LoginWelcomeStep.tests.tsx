@@ -27,9 +27,6 @@ describe("LoginWelcomeStep", () => {
      * are completed before making assertions.
      */
     jest.useFakeTimers()
-
-    // Use iOS as the default platform to avoid having to mock the platform in every test.
-    Platform.OS = "ios"
   })
 
   afterEach(() => {
@@ -37,7 +34,7 @@ describe("LoginWelcomeStep", () => {
     jest.useRealTimers()
   })
 
-  it("expands the modal when the input field is tapped", async () => {
+  it("expands the modal when the input field is tapped", () => {
     renderWelcomeStep()
 
     expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
@@ -45,8 +42,6 @@ describe("LoginWelcomeStep", () => {
     expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveAnimatedStyle({ opacity: 1 })
 
     fireEvent(screen.getByA11yHint("Enter your email address"), "focus")
-
-    jest.advanceTimersByTime(1000)
 
     expect(screen.getByA11yHint("Go back to the previous screen")).toBeOnTheScreen()
     expect(screen.getByA11yHint("Continue to the next screen")).toBeOnTheScreen()
@@ -58,8 +53,9 @@ describe("LoginWelcomeStep", () => {
       renderExpandedWelcomeStep()
 
       fireEvent.press(screen.getByA11yHint("Go back to the previous screen"))
-
-      jest.advanceTimersByTime(1000)
+      act(() => {
+        jest.advanceTimersByTime(1000)
+      })
 
       expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
       expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
@@ -81,7 +77,6 @@ describe("LoginWelcomeStep", () => {
       renderExpandedWelcomeStep()
 
       fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
-      fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(() => fireEvent.press(screen.getByA11yHint("Continue to the next screen")))
@@ -158,8 +153,7 @@ describe("LoginWelcomeStep", () => {
   it("provides a link to the terms and conditions", async () => {
     renderWelcomeStep()
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(() => fireEvent.press(screen.getByA11yHint("View the Terms and Conditions")))
+    fireEvent.press(screen.getByA11yHint("View the Terms and Conditions"))
 
     expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/terms" })
   })
@@ -167,8 +161,7 @@ describe("LoginWelcomeStep", () => {
   it("provides a link to the privacy policy", async () => {
     renderWelcomeStep()
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(() => fireEvent.press(screen.getByA11yHint("View the Privacy Policy")))
+    fireEvent.press(screen.getByA11yHint("View the Privacy Policy"))
 
     expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/privacy" })
   })

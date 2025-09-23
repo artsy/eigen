@@ -263,7 +263,7 @@ export const ArtsyWebView = forwardRef<
 
       // In case of a webview presented modally, if the targetURL is a tab View,
       // we need to dismiss the modal first to avoid having a tab rendered within the modal
-      const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
+      const modulePathName = new URL(targetURL).href?.split(/\/+/).filter(Boolean) ?? []
 
       const shouldDismissModal =
         isPresentedModally && result.type === "match" && modulePathName.length > 0
@@ -398,10 +398,18 @@ class CookieRequestAttempt {
   }
 }
 
+function getAfterFirstQuestionMark(str: string) {
+  const index = str.indexOf("?")
+  if (index === -1) return "" // no question mark found
+  return str.slice(index + 1)
+}
+
 function expandGoogleAdLink(url: string) {
-  const parsed = new URL(url)
-  if (parsed.host === "googleads.g.doubleclick.net") {
-    const adurl = parseQueryString(parsed.search ?? "").adurl as string | undefined
+  const expandGoogleAdLinkUrl = new URL(url)
+  if (expandGoogleAdLinkUrl.href.includes("googleads.g.doubleclick.net")) {
+    const queryString = getAfterFirstQuestionMark(expandGoogleAdLinkUrl.href)
+
+    const adurl = parseQueryString(queryString ?? "").adurl as string | undefined
     if (adurl && new URL(adurl)) {
       return adurl
     }

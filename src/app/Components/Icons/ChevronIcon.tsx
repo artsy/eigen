@@ -10,10 +10,10 @@ interface ChevronIconProps {
 }
 
 const ChevronIcon: React.FC<ChevronIconProps> = ({
-  expanded,
-  initialDirection,
   width = 14,
   height = 14,
+  expanded,
+  initialDirection,
   color: colorProp,
 }) => {
   const color = useColor()

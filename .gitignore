@@ -120,6 +120,7 @@ local.properties
 *.keystore
 !debug.keystore
 android-secret.json
+.kotlin/
 
 # Fonts
 android/app/src/main/assets/fonts/*

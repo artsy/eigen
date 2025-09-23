@@ -30,7 +30,7 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   showPartnerName?: boolean
   ListFooterComponent?: ReactElement | null
   ListHeaderComponent?: ReactElement | null
-  listRef?: React.RefObject<FlatList<any>>
+  listRef?: React.Ref<FlatList<any>>
   itemHref?(artwork: Artwork): string
   onEndReached?: () => void
   onEndReachedThreshold?: number

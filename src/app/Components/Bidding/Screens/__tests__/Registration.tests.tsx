@@ -1,6 +1,6 @@
 import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { createToken } from "@stripe/stripe-react-native"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -172,11 +172,14 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
     const registrationComponent = await root.findByType(Registration)
-    registrationComponent.instance.setState({
-      conditionsOfSaleChecked: true,
-      billingAddress,
-      creditCardToken: stripeToken.token,
-    })
+
+    act(() =>
+      registrationComponent.instance.setState({
+        conditionsOfSaleChecked: true,
+        billingAddress,
+        creditCardToken: stripeToken.token,
+      })
+    )
 
     const registerButton = await root.findByProps({ testID: "register-button" })
     await registerButton.props.onPress()
@@ -216,12 +219,16 @@ describe("when pressing register button", () => {
   })
 
   it("when there is a credit card on file, it commits mutation", async () => {
+    relay.commitMutation = jest.fn()
     const view = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
-    ;(await view.root.findByType(Registration)).instance.setState({ conditionsOfSaleChecked: true })
 
-    relay.commitMutation = jest.fn()
+    await act(async () => {
+      ;(await view.root.findByType(Registration)).instance.setState({
+        conditionsOfSaleChecked: true,
+      })
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
@@ -237,15 +244,19 @@ describe("when pressing register button", () => {
 
     const registrationComponent = await root.findByType(Registration)
 
-    registrationComponent.instance.setState({
-      conditionsOfSaleChecked: true,
-      creditCardToken: stripeToken,
-      billingAddress,
+    act(() => {
+      registrationComponent.instance.setState({
+        conditionsOfSaleChecked: true,
+        creditCardToken: stripeToken,
+        billingAddress,
+      })
     })
 
     const registerButton = await root.findByProps({ testID: "register-button" })
 
-    registerButton.props.onPress()
+    act(() => {
+      registerButton.props.onPress()
+    })
 
     const buttons = await root.findAllByType(TouchableWithoutFeedback)
 
@@ -282,9 +293,18 @@ describe("when pressing register button", () => {
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     const registration = await view.root.findByType(Registration)
-    registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    act(() => {
+      registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
+    })
+
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
 
     const modal = await view.root.findByType(Modal)
     const texts = await modal.findAllByType(Text)
@@ -293,7 +313,9 @@ describe("when pressing register button", () => {
     expect(texts[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
-    ;(await modal.findByType(Button)).props.onPress()
+    await act(async () => {
+      ;(await modal.findByType(Button)).props.onPress()
+    })
 
     // it dismisses the modal
     expect(modal.props.visible).toEqual(false)
@@ -313,9 +335,17 @@ describe("when pressing register button", () => {
     )
 
     const registration = await view.root.findByType(Registration)
-    registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    act(() => {
+      registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
+    })
+
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
 
     const modal = await view.root.findByType(Modal)
     const texts = await modal.findAllByType(Text)
@@ -324,7 +354,9 @@ describe("when pressing register button", () => {
     expect(texts[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
-    ;(await modal.findByType(Button)).props.onPress()
+    await act(async () => {
+      ;(await modal.findByType(Button)).props.onPress()
+    })
 
     expect(modal.props.visible).toEqual(false)
   })
@@ -340,9 +372,18 @@ describe("when pressing register button", () => {
 
     // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     const registration = await view.root.findByType(Registration)
-    registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+
+    act(() => {
+      registration.instance.setState({ creditCardToken: stripeToken, billingAddress })
+    })
+
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
 
     const modal = await view.root.findByType(Modal)
     const texts = await modal.findAllByType(Text)
@@ -351,7 +392,10 @@ describe("when pressing register button", () => {
     expect(texts[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
-    ;(await modal.findByType(Button)).props.onPress()
+
+    await act(async () => {
+      ;(await modal.findByType(Button)).props.onPress()
+    })
 
     expect(modal.props.visible).toEqual(false)
   })
@@ -413,8 +457,12 @@ describe("when pressing register button", () => {
       }) as any
 
     // UNSAFELY getting the component instance to set state for testing purposes only
-    screen.UNSAFE_getByType(Registration).instance.setState({ billingAddress })
-    screen.UNSAFE_getByType(Registration).instance.setState({ creditCardToken: stripeToken })
+    act(() => {
+      screen.UNSAFE_getByType(Registration).instance.setState({ billingAddress })
+    })
+    act(() => {
+      screen.UNSAFE_getByType(Registration).instance.setState({ creditCardToken: stripeToken })
+    })
 
     // Check the checkbox and press the Register button
     fireEvent.press(screen.UNSAFE_getByType(Checkbox))
@@ -491,8 +539,13 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
 
     const modal = await view.root.findByType(Modal)
     const texts = await modal.findAllByType(Text)
@@ -501,8 +554,9 @@ describe("when pressing register button", () => {
     expect(texts[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
-    ;(await modal.findByType(Button)).props.onPress()
-
+    await act(async () => {
+      ;(await modal.findByType(Button)).props.onPress()
+    })
     expect(modal.props.visible).toEqual(false)
   })
 
@@ -518,9 +572,13 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
-
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
     const modal = await view.root.findByType(Modal)
     const texts = await modal.findAllByType(Text)
 
@@ -528,8 +586,9 @@ describe("when pressing register button", () => {
     expect(texts[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
-    ;(await modal.findByType(Button)).props.onPress()
-
+    await act(async () => {
+      ;(await modal.findByType(Button)).props.onPress()
+    })
     expect(modal.props.visible).toEqual(false)
   })
 
@@ -545,8 +604,12 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    await act(async () => {
+      ;(await view.root.findByType(Checkbox)).props.onPress()
+    })
+    await act(async () => {
+      ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    })
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: "sale-id",
@@ -575,7 +638,10 @@ describe("when pressing register button", () => {
 
     const view = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
@@ -596,7 +662,10 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -627,8 +696,15 @@ describe("when pressing register button", () => {
 
     const view = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
-    ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
+
+    await act(async () => {
+      const registerButton = await view.root.findByProps({ testID: "register-button" })
+      registerButton.props.onPress()
+    })
 
     expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
       needsIdentityVerification: true,

@@ -274,25 +274,6 @@ https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
 
 Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
 
-## patch-package for expo-updates
-
-When expo-updates merges and releases this change:
-https://github.com/expo/expo/pull/36893
-
-#### Explanation/Context:
-
-Expo updates was not returning the reason an update failed to be available on iOS making debugging difficult.
-
-## patch-package for expo-updates
-
-#### When can we remove this:
-
-When expo updates addresses this issue https://github.com/expo/expo/issues/35410
-
-#### Explanation/Context:
-
-Expo updates is interfering with the splash screen on iOS, causing it to flash white before the app is ready. This patch modifies the splash screen behavior to prevent that flash.
-
 ## patch-package for react-navigation/bottom-tabs
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.

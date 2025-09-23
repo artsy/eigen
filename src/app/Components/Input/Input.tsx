@@ -26,7 +26,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   description?: string
   descriptionColor?: Color
   error?: string
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   loading?: boolean
   disabled?: boolean
   optional?: boolean
@@ -63,7 +63,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   onClear?(): void
-  renderLeftHandSection?(): JSX.Element
+  renderLeftHandSection?(): React.JSX.Element
 }
 
 // wrapping some of the RNTextInput functionality, so we can call our own funcs too.
@@ -106,7 +106,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const inputRef = useRef<TextInput>()
+    const inputRef = useRef<TextInput>(null)
 
     const localClear = () => {
       inputRef.current?.clear()

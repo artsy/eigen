@@ -2,7 +2,7 @@ import { InputRef } from "@artsy/palette-mobile"
 import { createContext, Ref, RefObject, useRef } from "react"
 
 export const SearchContext = createContext<{
-  inputRef: RefObject<InputRef>
+  inputRef: RefObject<InputRef | null>
   queryRef: Ref<string>
 }>(null as any)
 

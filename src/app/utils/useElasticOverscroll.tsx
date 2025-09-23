@@ -1,6 +1,9 @@
 import { Animated } from "react-native"
 
-export const useElasticOverscroll = (header: JSX.Element, scrollAnim = new Animated.Value(0)) => {
+export const useElasticOverscroll = (
+  header: React.JSX.Element,
+  scrollAnim = new Animated.Value(0)
+) => {
   const onScroll = Animated.event(
     [
       {

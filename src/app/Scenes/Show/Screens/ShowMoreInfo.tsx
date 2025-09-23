@@ -19,7 +19,7 @@ const DISPLAYABLE_PARTNER_TYPES = {
 
 interface Section {
   key: string
-  element: JSX.Element
+  element: React.JSX.Element
 }
 
 export interface ShowMoreInfoProps {

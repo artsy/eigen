@@ -60,7 +60,7 @@ const ArtworksGrid: React.FC<{
   artworks: ExtractNodeType<
     SimilarToRecentlyViewed_artworksConnection$data["similarToRecentlyViewedConnection"]
   >[]
-  RefreshControl: JSX.Element
+  RefreshControl: React.JSX.Element
   hasNext: boolean
   isLoadingNext: boolean
   loadMore: (pageSize: number) => void

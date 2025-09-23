@@ -103,7 +103,7 @@ target 'Artsy' do
   pod 'INTUAnimationEngine'
 
   # Core
-  pod 'CocoaLumberjack', '3.7.2'
+  pod 'CocoaLumberjack', '3.9.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'

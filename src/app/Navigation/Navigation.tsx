@@ -53,7 +53,7 @@ export const Navigation = () => {
   if (__DEV__) {
     // It's safe to break the rul of hooks here because we are only using it in dev
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useLogger(internal_navigationRef)
+    useLogger(internal_navigationRef as React.RefObject<NavigationContainerRef<any>>)
   }
 
   if (!isReady) {

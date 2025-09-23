@@ -20,14 +20,14 @@ interface AboveTheFoldQueryRendererProps<
   render:
     | ((
         args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>
-      ) => React.ReactChild)
+      ) => React.ReactNode)
     // convenience option for using `renderWithPlaceholder` logic without too much boilerplate
     | {
         renderComponent: (args: {
           above: AboveQuery["response"]
           below: BelowQuery["response"] | null
-        }) => React.ReactChild
-        renderPlaceholder: () => React.ReactChild
+        }) => React.ReactNode
+        renderPlaceholder: () => React.ReactNode
       }
   fallback?: FallbackRenderer
   cacheConfig?: CacheConfig | null

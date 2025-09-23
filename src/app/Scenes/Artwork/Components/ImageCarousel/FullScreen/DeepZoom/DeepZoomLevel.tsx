@@ -47,11 +47,11 @@ export const DeepZoomLevel: React.FC<{
 }) => {
   // Store the rendered JSX for the tiles in state, so that we can be very selective about when to trigger
   // re-rendering
-  const [tiles, setTiles] = useState<JSX.Element[]>()
+  const [tiles, setTiles] = useState<React.JSX.Element[]>()
 
   // This is a tiny perf thing, but to help the react reconciler do less work, we cache the shallow JSX
   // for each tile
-  const tileCache: { [url: string]: JSX.Element } = useMemo(() => ({}), [])
+  const tileCache: { [url: string]: React.JSX.Element } = useMemo(() => ({}), [])
 
   // We use a 'fingerprint' of which rows and columns are currently being shown to decide whether to update
   // the `tiles` state.
@@ -205,7 +205,7 @@ export const DeepZoomLevel: React.FC<{
 
     lastFingerprint.current = fingerprint
 
-    const result: JSX.Element[] = []
+    const result: React.JSX.Element[] = []
 
     for (let row = minRow; row <= maxRow; row++) {
       for (let col = minCol; col <= maxCol; col++) {

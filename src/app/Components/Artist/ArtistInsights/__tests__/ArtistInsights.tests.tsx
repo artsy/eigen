@@ -5,6 +5,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -44,22 +45,29 @@ describe("ArtistInsights", () => {
     />
   )
 
-  it("renders list auction results", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+  it("renders list auction results", async () => {
+    const view = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation(() => ({
-      data: {
-        artist: {
-          statuses: {
-            auctionLots: true,
+    await act(async () => {
+      mockEnvironment.mock.resolveMostRecentOperation(() => ({
+        data: {
+          artist: {
+            internalID: "artist-id",
+            slug: "artist-slug",
+            statuses: { auctionLots: true },
           },
         },
-      },
-    }))
+      }))
+      await flushPromiseQueue()
+    })
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
-    expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
+    // now safe to assert
+    const auctionResults = await view.root.findAllByType(
+      ArtistInsightsAuctionResultsPaginationContainer
+    )
+    expect(auctionResults.length).toEqual(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", async () => {

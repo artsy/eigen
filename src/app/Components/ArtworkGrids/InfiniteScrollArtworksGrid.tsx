@@ -60,10 +60,10 @@ export interface Props extends ArtworkActionTrackingProps {
   itemMargin?: number
 
   /** A component to render at the top of all items */
-  HeaderComponent?: JSX.Element
+  HeaderComponent?: React.JSX.Element
 
   /** A component to render at the bottom of all items */
-  FooterComponent?: JSX.Element
+  FooterComponent?: React.JSX.Element
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
   shouldAddPadding?: boolean
@@ -308,10 +308,10 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
     const artworks = extractNodes(connection)
 
     const sectionedArtworks = getSectionedArtworks()
-    const sections: JSX.Element[] = []
+    const sections: React.JSX.Element[] = []
     const columnCount = sectionCount ?? 0
     for (let column = 0; column < columnCount; column++) {
-      const artworkComponents: JSX.Element[] = []
+      const artworkComponents: React.JSX.Element[] = []
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column

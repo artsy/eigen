@@ -17,12 +17,12 @@ import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
   isPresentedModally?: boolean
-  modalContent: JSX.Element
+  modalContent: React.JSX.Element
   modalTitle?: string
   onPress?: () => void
   subTitle?: string
   title?: string
-  titleElement?: JSX.Element
+  titleElement?: React.JSX.Element
   trackEvent?: () => void
 }
 
@@ -97,7 +97,7 @@ export const InfoButton = forwardRef<
 
 export const AutoHeightInfoModal: React.FC<{
   isPresentedModally?: boolean
-  modalContent: JSX.Element
+  modalContent: React.JSX.Element
   modalTitle?: string
   onDismiss: () => void
   title?: string

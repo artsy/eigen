@@ -39,7 +39,7 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
 const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ header, body }) => {
   const getHeader = (headerStr: string, bodyCount: number) => {
     let text = ""
-    let IconComponent: JSX.Element | null = null
+    let IconComponent: React.JSX.Element | null = null
     switch (headerStr) {
       case "Solo Show":
         text =
