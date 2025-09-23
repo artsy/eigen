@@ -174,9 +174,7 @@ describe("ArtsyWebViewPage", () => {
       const source = webViewProps(view).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
-        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
-          getAppVersion()
-        } Eigen/some-build-number/${getAppVersion()}`
+        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${getAppVersion()} Eigen/some-build-number/${getAppVersion()}`
       )
     })
   })
@@ -456,5 +454,11 @@ describe("expandGoogleAdLink", () => {
     expect(
       expandGoogleAdLink("https://google.com/search?q=artsy+good+website")
     ).toMatchInlineSnapshot(`"https://google.com/search?q=artsy+good+website"`)
+  })
+
+  it("splits links correctly when multiple question marks are present", () => {
+    const url =
+      "https://googleads.g.doubleclick.net/pcs/click?param1=value1?param2=value2&adurl=https://example.com?foo=bar"
+    expect(expandGoogleAdLink(url)).toMatchInlineSnapshot(`"https://example.com?foo=bar"`)
   })
 })

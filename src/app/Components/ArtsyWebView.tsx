@@ -398,10 +398,16 @@ class CookieRequestAttempt {
   }
 }
 
+function getAfterFirstQuestionMark(str: string) {
+  const index = str.indexOf("?")
+  if (index === -1) return "" // no question mark found
+  return str.slice(index + 1)
+}
+
 function expandGoogleAdLink(url: string) {
   const expandGoogleAdLinkUrl = new URL(url)
   if (expandGoogleAdLinkUrl.href.includes("googleads.g.doubleclick.net")) {
-    const queryString = expandGoogleAdLinkUrl.href?.split("?")[1]
+    const queryString = getAfterFirstQuestionMark(expandGoogleAdLinkUrl.href)
 
     const adurl = parseQueryString(queryString ?? "").adurl as string | undefined
     if (adurl && new URL(adurl)) {
