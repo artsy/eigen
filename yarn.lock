@@ -2956,13 +2956,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@d11/react-native-fast-image@npm:8.10.0, @d11/react-native-fast-image@npm:^8.10.0":
+"@d11/react-native-fast-image@npm:^8.10.0":
   version: 8.10.0
   resolution: "@d11/react-native-fast-image@npm:8.10.0"
   peerDependencies:
     react: "*"
     react-native: "*"
   checksum: 10c0/c6c4af5c54804a12fdffb301b1579ff27c7ac1c37883ed4d1edaf5c11d5e6c1a264316a40994bbda7d499a8e6610da2f643952ead1a54a12864f14df91ac338b
+  languageName: node
+  linkType: hard
+
+"@d11/react-native-fast-image@npm:^8.12.0":
+  version: 8.12.0
+  resolution: "@d11/react-native-fast-image@npm:8.12.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/9f3139b0796fbbaf7be5f9292dac13997d7da9c00916b8b26c7648271e07c593ebe1613b70f88057f93468a3889f0de133af87e36b85a460b31376b0820fa716
   languageName: node
   linkType: hard
 
@@ -11461,7 +11471,7 @@ __metadata:
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:^7.26.10"
     "@braze/react-native-sdk": "npm:15.0.1"
-    "@d11/react-native-fast-image": "npm:8.10.0"
+    "@d11/react-native-fast-image": "npm:^8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "npm:5.1.2"
     "@gorhom/portal": "npm:1.0.14"
