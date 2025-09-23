@@ -17426,6 +17426,9 @@ type Partner implements Node {
     # Return all partner-authenticated locations.
     private: Boolean
     size: Int
+
+    # Search term for locations.
+    term: String
   ): LocationConnection
   merchantAccount: PartnerMerchantAccount
   meta: PartnerMeta
