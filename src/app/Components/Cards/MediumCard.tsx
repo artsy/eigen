@@ -1,4 +1,13 @@
-import { Spacer, Flex, Box, BoxProps, useTheme, Text, Image } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Box,
+  BoxProps,
+  useTheme,
+  Text,
+  Image,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
@@ -7,29 +16,44 @@ export interface MediumCardProps extends BoxProps {
   title: string
   subtitle?: string | null
   tag?: CardTagProps
+  fullWidthCard?: boolean
 }
 
 export const MEDIUM_CARD_HEIGHT = 370
 export const MEDIUM_CARD_WIDTH = 280
-
+export const MEDIUM_CARD_ASPECT_RATIO = 3 / 4
 /**
  * `MediumCard` is a card with one image one tall image, and text for title and subtitle
  * at the bottom.
  */
-export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
+export const MediumCard: React.FC<MediumCardProps> = ({
+  image,
+  title,
+  subtitle,
+  tag,
+  fullWidthCard,
+  ...rest
+}) => {
   const { space } = useTheme()
+  const { width: screenWidth } = useScreenDimensions()
+  const imagewidth = screenWidth - space(2) * 2
+  const imageHeight = (imagewidth / 3) * 4
 
   return (
     <Box
-      width={MEDIUM_CARD_WIDTH}
-      height={MEDIUM_CARD_HEIGHT}
+      width={fullWidthCard ? imagewidth : MEDIUM_CARD_WIDTH}
+      height={fullWidthCard ? imageHeight : MEDIUM_CARD_HEIGHT}
       flexDirection="row"
       borderRadius={4}
       overflow="hidden"
       {...rest}
     >
       <Flex flex={2} backgroundColor="mono10">
-        <Image src={image} height={MEDIUM_CARD_HEIGHT} width={MEDIUM_CARD_WIDTH} />
+        <Image
+          src={image}
+          width={fullWidthCard ? imagewidth : MEDIUM_CARD_WIDTH}
+          height={fullWidthCard ? imageHeight : MEDIUM_CARD_HEIGHT}
+        />
       </Flex>
       <LinearGradient
         colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
