@@ -4,7 +4,7 @@ import parse from "autosuggest-highlight/parse"
 
 export const ResultWithHighlight: React.FC<{
   displayLabel: string
-  secondaryLabel?: string
+  secondaryLabel?: string | null
   highlight?: string
   numberOfLines?: number
   textAlign?: "center" | "end" | "justify" | "left" | "match-parent" | "right" | "start"
