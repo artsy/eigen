@@ -213,7 +213,10 @@ dependencies {
 
     // For WebP support, including animated WebP
     implementation 'com.facebook.fresco:animated-base-support:1.3.0'  // We need this to support android versions below API level 14
+    implementation 'com.facebook.fresco:animated-webp:3.6.0'
     implementation 'com.facebook.fresco:webpsupport:3.6.0'
+
+    implementation 'com.android.support:support-core-utils:24.2.1'
 
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
