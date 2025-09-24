@@ -11623,7 +11623,7 @@ __metadata:
     react-native-haptic-feedback: "npm:1.13.0"
     react-native-image-crop-picker: "npm:0.42.0"
     react-native-in-app-review: "npm:4.3.3"
-    react-native-keychain: "npm:9.2.2"
+    react-native-keychain: "npm:10.0.0"
     react-native-keys: "npm:0.7.13"
     react-native-launch-arguments: "npm:4.1.0"
     react-native-linear-gradient: "npm:2.8.3"
@@ -11632,7 +11632,7 @@ __metadata:
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:3.8.4"
     react-native-push-notification: "npm:8.1.1"
-    react-native-reanimated: "npm:~3.17.4"
+    react-native-reanimated: "npm:3.17.5"
     react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
     react-native-safe-area-context: "npm:5.4.1"
@@ -19799,10 +19799,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-keychain@npm:9.2.2":
-  version: 9.2.2
-  resolution: "react-native-keychain@npm:9.2.2"
-  checksum: 10c0/9f24f38ee6ff234e8bfcedda02f62b9625a08b14c2317ebc71b7cf1aa6f841209f6876890170142c2ad0f458ddfccf8d98e0d7ad099e9105093e9cba7678ca78
+"react-native-keychain@npm:10.0.0":
+  version: 10.0.0
+  resolution: "react-native-keychain@npm:10.0.0"
+  checksum: 10c0/a632ad27e58264506d2b373d329a867f042fb014e8a78db3a63031e953d61b5c98066eed1be238ee6c186d3f213d0efaa2a26526fb3a1d36a624c4460e982230
   languageName: node
   linkType: hard
 
@@ -19937,7 +19937,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:~3.17.4":
+"react-native-reanimated@npm:3.17.5":
   version: 3.17.5
   resolution: "react-native-reanimated@npm:3.17.5"
   dependencies:
