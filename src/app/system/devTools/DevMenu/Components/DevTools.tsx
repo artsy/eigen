@@ -90,7 +90,7 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Clear Keychain"
             onPress={() => {
-              Keychain.resetInternetCredentials(server).then(() => {
+              Keychain.resetInternetCredentials({ server }).then(() => {
                 toast.show("Keychain cleared ✅", "middle")
               })
             }}
