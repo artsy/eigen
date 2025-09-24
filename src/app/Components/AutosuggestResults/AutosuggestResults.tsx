@@ -159,9 +159,9 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const ListFooterComponentWithLoadingIndicator = useMemo(() => {
     return () => (
-      <Flex pb={6} height={250}>
+      <Flex pb={6}>
         {hasMoreResults ? (
-          <Flex justifyContent="center" pb={6} mt={1}>
+          <Flex justifyContent="center" mt={1}>
             <Spinner />
           </Flex>
         ) : (
@@ -206,7 +206,7 @@ const AutosuggestResultsFlatList: React.FC<{
   }
 
   return (
-    <Flex style={{ width: "100%", height: "100%" }}>
+    <Flex style={{ width: "100%", height: "100%" }} pb={2}>
       {!!showHeaderComponent && <HeaderComponent />}
       <InfiniteScrollFlashList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
