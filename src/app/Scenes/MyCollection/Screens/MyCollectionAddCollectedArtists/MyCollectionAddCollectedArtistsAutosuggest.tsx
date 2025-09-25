@@ -242,7 +242,7 @@ const CollectedArtistListItem: React.FC<{
         <Spacer y={0.5} />
 
         <ResultWithHighlight
-          secondaryLabel={artist.formattedNationalityAndBirthday}
+          secondaryLabel={artist.formattedNationalityAndBirthday || ""}
           displayLabel={artist.displayLabel || ""}
           numberOfLines={2}
           highlight={highlight}
