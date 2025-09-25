@@ -27,12 +27,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.303.0":
-  version: 4.303.0
-  resolution: "@artsy/cohesion@npm:4.303.0"
+"@artsy/cohesion@npm:4.304.0":
+  version: 4.304.0
+  resolution: "@artsy/cohesion@npm:4.304.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/d88f5904578b15831c6f0f7bf7252dfa240331b8aff952e708980a9f688ee2f7f8590925f81a331084bc8e781b3f104cfb411282880d080b4fcaec07f1b4d84b
+  checksum: 10c0/61af2439e6c5312fa587adb6d2124e4600220fecb43bb854cfb246a6240ce432991d0701a98bed215c4707dc8eea5cf488483485d6e8af1c3eca5353a576833d
   languageName: node
   linkType: hard
 
@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:19.3.0":
-  version: 19.3.0
-  resolution: "@artsy/palette-mobile@npm:19.3.0"
+"@artsy/palette-mobile@npm:19.5.0":
+  version: 19.5.0
+  resolution: "@artsy/palette-mobile@npm:19.5.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -102,7 +102,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/1b6f87cd452e30268dd2edddd7ce8b929518c8533323fd0ead1545c74eb8fd1ae74fce5a9ed28c925d694fb041641e535464bbc587318f766aef50d06fed3981
+  checksum: 10c0/bcdcfbdfdbfcab4d2ca364fc36dc4af0b177ccc0919d8918ab6973d153447df1a0fb3ff590afdc78eedcfbe3ebdc1f7cc9d6ce4132d912f0728a20f349c81913
   languageName: node
   linkType: hard
 
@@ -2956,13 +2956,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@d11/react-native-fast-image@npm:8.10.0, @d11/react-native-fast-image@npm:^8.10.0":
+"@d11/react-native-fast-image@npm:^8.10.0":
   version: 8.10.0
   resolution: "@d11/react-native-fast-image@npm:8.10.0"
   peerDependencies:
     react: "*"
     react-native: "*"
   checksum: 10c0/c6c4af5c54804a12fdffb301b1579ff27c7ac1c37883ed4d1edaf5c11d5e6c1a264316a40994bbda7d499a8e6610da2f643952ead1a54a12864f14df91ac338b
+  languageName: node
+  linkType: hard
+
+"@d11/react-native-fast-image@npm:^8.12.0":
+  version: 8.12.0
+  resolution: "@d11/react-native-fast-image@npm:8.12.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/9f3139b0796fbbaf7be5f9292dac13997d7da9c00916b8b26c7648271e07c593ebe1613b70f88057f93468a3889f0de133af87e36b85a460b31376b0820fa716
   languageName: node
   linkType: hard
 
@@ -11447,9 +11457,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/cohesion": "npm:4.303.0"
+    "@artsy/cohesion": "npm:4.304.0"
     "@artsy/icons": "npm:3.52.0"
-    "@artsy/palette-mobile": "npm:19.3.0"
+    "@artsy/palette-mobile": "npm:19.5.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:^7.25.2"
@@ -11461,7 +11471,7 @@ __metadata:
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:^7.26.10"
     "@braze/react-native-sdk": "npm:15.0.1"
-    "@d11/react-native-fast-image": "npm:8.10.0"
+    "@d11/react-native-fast-image": "npm:^8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "npm:5.1.2"
     "@gorhom/portal": "npm:1.0.14"
@@ -11611,9 +11621,9 @@ __metadata:
     react-native-gesture-handler: "npm:~2.24.0"
     react-native-get-random-values: "npm:1.11.0"
     react-native-haptic-feedback: "npm:1.13.0"
-    react-native-image-crop-picker: "npm:0.42.0"
+    react-native-image-crop-picker: "npm:0.51.0"
     react-native-in-app-review: "npm:4.3.3"
-    react-native-keychain: "npm:9.2.2"
+    react-native-keychain: "npm:10.0.0"
     react-native-keys: "npm:0.7.13"
     react-native-launch-arguments: "npm:4.1.0"
     react-native-linear-gradient: "npm:2.8.3"
@@ -19753,12 +19763,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-image-crop-picker@npm:0.42.0":
-  version: 0.42.0
-  resolution: "react-native-image-crop-picker@npm:0.42.0"
+"react-native-image-crop-picker@npm:0.51.0":
+  version: 0.51.0
+  resolution: "react-native-image-crop-picker@npm:0.51.0"
   peerDependencies:
-    react-native: ">=0.40.0"
-  checksum: 10c0/8ebae127cf1701c07df6ad3a4304654da7088704628a475f1c2de4a1b99e0fcc7cefa3c34c19a76542c9311f6eaed04a9e402d34af86bdc4d1099c30c197bb8f
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/bd30c16485a8c2d870e35ade370cf1727246e6d5f82c8c351d746d4324112196dc7b0cf8d543f32c2901e0b5c444576c3a79d0d3fa5210e93ff44351a28ae1c3
   languageName: node
   linkType: hard
 
@@ -19789,10 +19800,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-keychain@npm:9.2.2":
-  version: 9.2.2
-  resolution: "react-native-keychain@npm:9.2.2"
-  checksum: 10c0/9f24f38ee6ff234e8bfcedda02f62b9625a08b14c2317ebc71b7cf1aa6f841209f6876890170142c2ad0f458ddfccf8d98e0d7ad099e9105093e9cba7678ca78
+"react-native-keychain@npm:10.0.0":
+  version: 10.0.0
+  resolution: "react-native-keychain@npm:10.0.0"
+  checksum: 10c0/a632ad27e58264506d2b373d329a867f042fb014e8a78db3a63031e953d61b5c98066eed1be238ee6c186d3f213d0efaa2a26526fb3a1d36a624c4460e982230
   languageName: node
   linkType: hard
 

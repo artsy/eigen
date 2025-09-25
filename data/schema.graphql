@@ -5281,6 +5281,12 @@ type CollectorProfileType implements Node {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
+  # Up to three checkmark strings describing the collector in relation to the artwork/partner.
+  summaryAttributes(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): [String]
+
   # An artwork-specific paragraph describing the collector.
   summaryParagraph(
     # This can be specified, and is injected in a conversation context for convenience.
@@ -13934,6 +13940,12 @@ type InquirerCollectorProfile {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
+  # Up to three checkmark strings describing the collector in relation to the artwork/partner.
+  summaryAttributes(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): [String]
+
   # An artwork-specific paragraph describing the collector.
   summaryParagraph(
     # This can be specified, and is injected in a conversation context for convenience.
@@ -17414,6 +17426,9 @@ type Partner implements Node {
     # Return all partner-authenticated locations.
     private: Boolean
     size: Int
+
+    # Search term for locations.
+    term: String
   ): LocationConnection
   merchantAccount: PartnerMerchantAccount
   meta: PartnerMeta

@@ -28,18 +28,6 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
-## react-native-image-crop-picker getRootVC patch
-
-#### When can we remove this:
-
-Remove when we stop swizzling UIWindow via ARWindow or react-native-image-crop-picker provides a more robust way of finding the viewController to present on.
-
-#### Explanation/Context:
-
-https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
-
-We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
-
 ## Delay modal display after LoadingModal is dismissed
 
 #### When can we remove this:
@@ -61,19 +49,6 @@ Once https://github.com/facebook/react-native/pull/29664 is merged or https://gi
 As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
-
-## `react-native-screens` fragment crash on open from background on Android
-
-#### When can we remove this:
-
-Once https://github.com/software-mansion/react-native-screens/issues/17 is solved or we use another library for screen management.
-
-#### Explanation/Context:
-
-There is a known issue in react-native-screens that causes the app to crash on restoring from background. The react-native-screens team recommends the following workaround to be
-added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
-
-This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.
 
 ## typings/styled-components.native.d.ts
 
