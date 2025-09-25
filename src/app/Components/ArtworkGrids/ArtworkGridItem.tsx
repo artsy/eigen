@@ -346,15 +346,16 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     </Text>
                   )}
                   {!!artwork.artistNames && (
-                    <Text
-                      lineHeight="18px"
-                      weight="regular"
-                      variant="xs"
-                      numberOfLines={1}
-                      {...artistNamesTextStyle}
-                    >
-                      {artwork.artistNames}
-                    </Text>
+                    <RNText numberOfLines={1}>
+                      <Text
+                        lineHeight="18px"
+                        weight="regular"
+                        variant="xs"
+                        {...artistNamesTextStyle}
+                      >
+                        {artwork.artistNames}
+                      </Text>
+                    </RNText>
                   )}
                   {!!artwork.title && (
                     <RNText numberOfLines={1}>
