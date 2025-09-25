@@ -1,4 +1,4 @@
-import { Button, Flex, Screen, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, useScreenDimensions } from "@artsy/palette-mobile"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
@@ -32,30 +32,23 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body>
+      <Screen.Body disableKeyboardAvoidance>
         <Flex flex={1} mt={2}>
           <Suspense fallback={null}>
             <MyCollectionAddCollectedArtistsAutosuggest />
           </Suspense>
+        </Flex>
 
-          <Spacer y={4} />
-
-          <Flex
-            position="absolute"
-            bottom={0}
-            alignItems="center"
-            alignSelf="center"
-            pb={Platform.OS === "ios" ? 2 : 4}
-            right={0}
-            left={0}
-            backgroundColor="mono0"
+        <Flex pt={2} pb={Platform.OS === "android" ? 2 : 0} backgroundColor="mono0">
+          <Button
+            disabled={!count || isLoading}
+            block
+            onPress={handleSubmit}
+            haptic
+            mb={`${bottom}px`}
           >
-            <Button block disabled={!count || isLoading} onPress={handleSubmit} mb={`${bottom}px`}>
-              <Text color="mono0">
-                Add Selected {pluralize(`Artist`, count)} • {count}
-              </Text>
-            </Button>
-          </Flex>
+            Add Selected {pluralize(`Artist`, count)} • {count}
+          </Button>
         </Flex>
 
         <LoadingModal isVisible={isLoading} dark />

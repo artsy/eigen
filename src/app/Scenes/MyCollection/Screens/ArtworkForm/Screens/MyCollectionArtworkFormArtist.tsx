@@ -65,7 +65,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
       <NavigationHeader hideBottomDivider onLeftButtonPress={handleBack}>
         Select an Artist
       </NavigationHeader>
-      <ScreenMargin>
+      <ScreenMargin pb={6}>
         <ErrorBoundary fallback={<SimpleErrorMessage />}>
           <Suspense fallback={<Placeholder />}>
             <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />

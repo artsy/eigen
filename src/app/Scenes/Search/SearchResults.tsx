@@ -36,7 +36,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
 
   if (isTopPillSelected) {
     return (
-      <Flex mx={2} mb={4}>
+      <Flex flex={1} mx={2} pb={6}>
         <AutosuggestResults
           query={query}
           showResultType

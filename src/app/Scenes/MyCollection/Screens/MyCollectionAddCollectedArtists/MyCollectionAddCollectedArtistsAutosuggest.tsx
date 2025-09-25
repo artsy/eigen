@@ -1,15 +1,5 @@
 import { CheckmarkIcon } from "@artsy/icons/native"
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Input,
-  Spacer,
-  Text,
-  Touchable,
-  nbsp,
-} from "@artsy/palette-mobile"
+import { Avatar, Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import {
   AutosuggestResult,
@@ -113,7 +103,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
           autoCorrect={false}
         />
         {showResults ? (
-          <Box pb={6}>
+          <Box pb={4}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollectedArtists}
@@ -231,13 +221,7 @@ const CollectedArtistListItem: React.FC<{
   }
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      width={isTablet() ? "20%" : "50%"}
-      mt={2}
-      m="auto"
-    >
+    <Flex alignItems="center" justifyContent="center" width={isTablet() ? "20%" : "50%"} mx="auto">
       <Touchable accessibilityRole="button" onPress={handlePress} disabled={disabled}>
         <Flex width="100%" alignItems="center">
           <Flex
@@ -258,12 +242,14 @@ const CollectedArtistListItem: React.FC<{
         <Spacer y={0.5} />
 
         <ResultWithHighlight
-          secondaryLabel={artist.formattedNationalityAndBirthday || nbsp}
+          secondaryLabel={artist.formattedNationalityAndBirthday || ""}
           displayLabel={artist.displayLabel || ""}
           numberOfLines={2}
           highlight={highlight}
           textAlign="center"
         />
+
+        <Spacer y={2} />
       </Touchable>
     </Flex>
   )
