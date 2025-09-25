@@ -1,6 +1,7 @@
 import Expo
 import React
 import ReactAppDependencyProvider
+import UserNotifications
 
 class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
@@ -20,6 +21,9 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
     ) -> Bool {
       helper?.setup(launchOptions: launchOptions)
 
+      // Set the UNUserNotificationCenter delegate to enable notification tap handling
+      UNUserNotificationCenter.current().delegate = self
+
       let delegate = ReactNativeDelegate()
       let factory = ExpoReactNativeFactory(delegate: delegate)
       delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -30,7 +34,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
 
   #if os(iOS) || os(tvOS)
       window = UIWindow(frame: UIScreen.main.bounds)
-      
+
       factory.startReactNative(
         withModuleName: "main",
         in: window,
@@ -39,7 +43,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
 
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-    
+
     // Forward applicationDidBecomeActive to helper
     override func applicationDidBecomeActive(_ application: UIApplication) {
         super.applicationDidBecomeActive(application)
