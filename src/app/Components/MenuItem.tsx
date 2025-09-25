@@ -87,13 +87,16 @@ export const MenuItem: React.FC<{
           >
             {!!value && (
               <Flex width={showInline ? 200 : undefined}>
-                <RNText numberOfLines={1} ellipsizeMode="middle">
+                <RNText
+                  numberOfLines={1}
+                  ellipsizeMode={ellipsizeMode}
+                  style={{ textAlign: "right" }}
+                >
                   <Text
                     variant="sm-display"
                     color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
                     numberOfLines={1}
                     ellipsizeMode={ellipsizeMode}
-                    textAlign="right"
                   >
                     {value}
                   </Text>
