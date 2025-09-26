@@ -40,18 +40,16 @@ export const useRegisterForPushNotifications = () => {
       }
 
       // Save the token
-      try {
-        await saveToken(token)
-      } catch (error) {
-        console.error("DEBUG: Failed to save token:", error)
+      const savedToken = await saveToken(token)
+      if (!savedToken) {
+        console.error("DEBUG: Failed to save token:")
       }
 
       // Set up token refresh listener
       const unsubscribe = messaging().onTokenRefresh(async (newToken) => {
-        try {
-          await saveToken(newToken)
-        } catch (error) {
-          console.error("DEBUG: Failed to save refreshed token:", error)
+        const savedToken = await saveToken(newToken)
+        if (!savedToken) {
+          console.error("DEBUG: Failed to save refreshed token:")
         }
       })
 
