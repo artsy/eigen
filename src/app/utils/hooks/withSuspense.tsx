@@ -1,9 +1,11 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
+import { BottomSheetModalAwareView } from "app/Components/BottomSheetAwareView"
 import { FadeIn } from "app/Components/FadeIn"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
+import { View } from "react-native"
 
 /**
  * A symbol used to indicate that no error fallback should be rendered.
@@ -89,13 +91,7 @@ export const withSuspense = <T extends Object | any>({
             </ProvidePlaceholderContext>
           }
         >
-          {disableFadeIn ? (
-            <Component {...props} />
-          ) : (
-            <FadeIn style={{ flex: 1 }} slide={false}>
-              <Component {...props} />
-            </FadeIn>
-          )}
+          <Component {...props} />
         </Suspense>
       </ErrorBoundary>
     )
