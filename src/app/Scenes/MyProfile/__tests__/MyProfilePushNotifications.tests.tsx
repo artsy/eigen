@@ -6,7 +6,7 @@ import {
   MyProfilePushNotifications,
   UserPushNotificationSettings,
 } from "app/Scenes/MyProfile/MyProfilePushNotifications"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -14,6 +14,15 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { debounce } from "lodash"
 import { Platform } from "react-native"
 import relay, { graphql } from "react-relay"
+
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
+  getNotificationPermissionsStatus: jest.fn(),
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized",
+    Denied: "denied",
+  },
+}))
 
 jest.mock("lodash/debounce", () => jest.fn())
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({
@@ -57,6 +66,8 @@ describe(SwitchMenu, () => {
 })
 
 describe("MyProfilePushNotificationsQueryRenderer", () => {
+  // const mockFetchNotificationPermissions = getNotificationPermissionsStatus as jest.Mock
+
   const { renderWithRelay } = setupTestWrapper<MyProfilePushNotificationsTestQuery>({
     Component: (props) => {
       if (props?.me) {
@@ -74,11 +85,14 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
   })
 
   describe("on iOS", () => {
-    beforeEach(() => (Platform.OS = "ios"))
+    beforeEach(() => {
+      Platform.OS = "ios"
+      jest.clearAllMocks()
+    })
 
     it("should show the allow notification banner if the user was never prompted to allow push notifications", async () => {
-      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-        cb(null, PushAuthorizationStatus.NotDetermined)
+      mockFetchNotificationPermissions().mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.NotDetermined)
       )
 
       renderWithRelay({ Me: () => mockNotificationsPreferences })
@@ -90,11 +104,13 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
     })
 
     it("should show the open settings banner on iOS if the user did not allow push notifications", async () => {
-      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-        cb(null, PushAuthorizationStatus.Denied)
+      mockFetchNotificationPermissions().mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Denied)
       )
 
       renderWithRelay({ Me: () => mockNotificationsPreferences })
+
+      await flushPromiseQueue()
 
       expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
 
@@ -104,10 +120,16 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
   })
 
   describe("on Android", () => {
-    beforeEach(() => (Platform.OS = "android"))
+    beforeEach(() => {
+      Platform.OS = "android"
+      Platform.select = jest.fn().mockImplementation((obj) => obj.android)
+      ;(debounce as jest.Mock).mockImplementation((func) => func)
+    })
 
     it("should NEVER show Allow Notification Banner on android", () => {
-      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+      mockFetchNotificationPermissions().mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Authorized)
+      )
 
       renderWithRelay({ Me: () => mockNotificationsPreferences })
 
@@ -116,7 +138,9 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
 
     // FIXME: Platform.select always defaults to iOS, which breaks this test
     it.skip("should show the open settings banner on Android if the user did not allow push notifications", async () => {
-      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+      mockFetchNotificationPermissions().mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Denied)
+      )
 
       renderWithRelay({ Me: () => mockNotificationsPreferences })
 
@@ -133,13 +157,17 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
     relay.commitMutation = jest.fn()
 
     beforeEach(() => {
+      jest.clearAllMocks()
+      Platform.OS = "android"
+      Platform.select = jest.fn().mockImplementation((obj) => obj.android)
       ;(debounce as jest.Mock).mockImplementation((func) => func)
-      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-        cb(null, PushAuthorizationStatus.Authorized)
-      )
     })
 
     it("should set the notification preference to true and false", async () => {
+      mockFetchNotificationPermissions().mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Authorized)
+      )
+
       renderWithRelay({
         Me: () => mockNotificationsPreferences,
       })

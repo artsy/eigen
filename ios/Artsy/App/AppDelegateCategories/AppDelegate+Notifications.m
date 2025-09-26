@@ -99,13 +99,13 @@
     BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
                                                                                                                fetchCompletionHandler:handler];
     if (processedByBraze) {
-        NSString *url = userInfo[@"ab_uri"];
-        [self receivedNotification:userInfo];
-        [self tappedNotification:userInfo url:url];
+        // Still let React Native know about Braze notifications
+        [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:userInfo];
         return;
     }
 
-    [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
+    // Forward all notifications to React Native
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:userInfo];
 
     handler(UIBackgroundFetchResultNoData);
 }
@@ -115,25 +115,12 @@
     NSString *uiApplicationState = [UIApplicationStateEnum toString:applicationState];
     ARActionLog(@"Incoming notification in the %@ application state: %@", uiApplicationState, userInfo);
 
+    // Create enriched notification payload with application state
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
 
-    NSString *url = userInfo[@"url"];
-    BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
-
-    if (isConversation) {
-        [[[AREmission sharedInstance] notificationsManagerModule] notificationReceived];
-    }
-
-    if (applicationState == UIApplicationStateBackground) {
-        // A notification was received while the app is in the background.
-        [self receivedNotification:notificationInfo];
-
-    } else if (applicationState == UIApplicationStateInactive) {
-        // The user tapped a notification while the app was in background.
-        [self tappedNotification:notificationInfo url:url];
-
-    }
+    // Forward all notifications to React Native with enriched payload
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
 }
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
@@ -152,29 +139,7 @@
     return normalizedInfo;
 }
 
-- (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
-{
 
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:normalizedInfo];
-
-    NSDictionary *props = [self filteredProps:notificationInfo];
-    [[AREmission sharedInstance] navigate:url withProps:props];
-}
-
-- (NSDictionary *)filteredProps:(NSDictionary *)props;
-{
-    const NSArray *allowedKeys = @[@"searchCriteriaID"];
-
-    NSMutableDictionary *filteredDictionary = [NSMutableDictionary dictionary];
-    for (NSString *key in [props allKeys]) {
-        id value = props[key];
-        if ([allowedKeys containsObject:key] && ![value isKindOfClass:[NSNull class]]) {
-            filteredDictionary[key] = value;
-        }
-    }
-    return filteredDictionary;
-}
 
 - (UIWindow *)findVisibleWindow
 {
@@ -206,8 +171,11 @@
 
     NSDictionary *userInfo = notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
+    [notificationInfo setObject:@"Active" forKey:@"UIApplicationState"]; // Foreground state
 
-    [self receivedNotification:notificationInfo];
+    // Forward to React Native
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
+
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
 }
 
@@ -215,18 +183,18 @@
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleUserNotificationWithResponse:response
                                                                                                     withCompletionHandler:completionHandler];
+
+    // Only forward payload to React Native - let JS handle navigation
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
+    [notificationInfo setObject:@"Tapped" forKey:@"NotificationAction"]; // Indicate this was tapped
 
-    if (processedByBraze) {
-      NSString *url = userInfo[@"ab_uri"];
-      [self tappedNotification:userInfo url:url];
-      return;
+    // Forward to React Native regardless of whether Braze processed it
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
+
+    if (!processedByBraze) {
+        completionHandler();
     }
-
-
-    [self tappedNotification:notificationInfo url:userInfo[@"url"]];
-    completionHandler();
 }
 
 @end
