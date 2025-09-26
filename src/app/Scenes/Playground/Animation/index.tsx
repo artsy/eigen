@@ -9,7 +9,6 @@ import { Exercice } from "app/Scenes/Playground/Animation/L5-Exercice"
 // eslint-disable-next-line prefer-const
 let LEVEL = 5
 
-// @ts-ignore
 const Content: React.FC = () => {
   switch (LEVEL) {
     case 0:
