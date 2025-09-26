@@ -180,7 +180,6 @@ export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscove
     ErrorFallback: (_errorProps, props) => {
       return <InfiniteDiscoveryBottomSheetFooterErrorFallback {...props} />
     },
-    disableFadeIn: true,
   })
 
 const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
