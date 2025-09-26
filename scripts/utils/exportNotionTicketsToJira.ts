@@ -14,7 +14,7 @@ config({ path: resolve(__dirname, "../../.env.releases") })
 /**
  *
  * Convenience script for fetching notion cards from our mobile QA and creating Jira issues for them.
- * Usage: yarn export-notion-to-jira <databaseId>
+ * Usage: yarn export-notion-to-jira <databaseId> --app <eigen|energy>
  * To get the database id, go to the latest Mobile QA page, scroll to the bugs section,
  * click on the dots next to "Board View" and select "Copy Link".
  * The link should be of format: https://www.notion.so/artsy/<databaseId>?v=<version>&pvs=<pvs>
@@ -36,11 +36,20 @@ if (!JIRA_BASE_URL || !JIRA_EMAIL || !JIRA_API_TOKEN) {
   process.exit(1)
 }
 
-const argv = yargs(hideBin(process.argv)).argv as any
+const argv = yargs(hideBin(process.argv)).option("app", {
+  describe: "App name to prepend to ticket titles",
+  choices: ["eigen", "energy"],
+  demandOption: true,
+  type: "string",
+}).argv as any
+
 const databaseId = argv._[0]
+const appName = argv.app
 
 if (!databaseId) {
-  console.error(chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId>"))
+  console.error(
+    chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId> --app <eigen|energy>")
+  )
   process.exit(1)
 }
 
@@ -68,7 +77,12 @@ async function fetchNotionDatabase(databaseId: string) {
   }
 }
 
-async function createJiraIssue(issueSummary: string, issueLink: string, bugSeverity: string) {
+async function createJiraIssue(
+  issueSummary: string,
+  issueLink: string,
+  bugSeverity: string,
+  appName: string
+) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
     const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue`, {
@@ -82,7 +96,7 @@ async function createJiraIssue(issueSummary: string, issueLink: string, bugSever
           project: {
             key: "PBRW",
           },
-          summary: issueSummary,
+          summary: `[${appName}] ${issueSummary}`,
           description: {
             type: "doc",
             version: 1,
@@ -216,7 +230,12 @@ async function main() {
     }
 
     for (const issue of validIssues) {
-      const issueKey = await createJiraIssue(issue.summary, issue.notionUrl, issue.severity)
+      const issueKey = await createJiraIssue(
+        issue.summary,
+        issue.notionUrl,
+        issue.severity,
+        appName
+      )
       if (issueKey) {
         await updateJiraLabels(issueKey, [issue.team, "mobile"])
       }
