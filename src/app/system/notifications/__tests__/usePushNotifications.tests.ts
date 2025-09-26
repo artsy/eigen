@@ -1,10 +1,13 @@
 import { renderHook } from "@testing-library/react-native"
 import { useAndroidCreatePushNotificationChannels } from "app/system/notifications/useAndroidCreatePushNotificationChannels"
-import { useAndroidListenToFCMMessages } from "app/system/notifications/useAndroidListenToFCMMessages"
+import { useAndroidListenToPushNotifications } from "app/system/notifications/useAndroidListenToPushNotifications"
 import { useHandlePushNotifications } from "app/system/notifications/useHandlePushNotifications"
+import { useIOSListenToPushNotifications } from "app/system/notifications/useIOSListenToPushNotifications"
 import { usePushNotifications } from "app/system/notifications/usePushNotifications"
 import { useRegisterForPushNotifications } from "app/system/notifications/useRegisterForRemoteMessages"
+import { Platform } from "react-native"
 
+// Mock all hooks used by usePushNotifications
 jest.mock("../useAndroidCreatePushNotificationChannels", () => ({
   useAndroidCreatePushNotificationChannels: jest.fn(),
 }))
@@ -13,31 +16,89 @@ jest.mock("../useRegisterForRemoteMessages", () => ({
   useRegisterForPushNotifications: jest.fn(),
 }))
 
-jest.mock("../useAndroidListenToFCMMessages", () => ({
-  useAndroidListenToFCMMessages: jest.fn(),
+jest.mock("../useAndroidListenToPushNotifications", () => ({
+  useAndroidListenToPushNotifications: jest.fn(),
+}))
+
+jest.mock("../useIOSListenToPushNotifications", () => ({
+  useIOSListenToPushNotifications: jest.fn(),
 }))
 
 jest.mock("../useHandlePushNotifications", () => ({
   useHandlePushNotifications: jest.fn(),
 }))
 
+// Create mock references
+const mockUseAndroidCreatePushNotificationChannels =
+  useAndroidCreatePushNotificationChannels as jest.MockedFunction<
+    typeof useAndroidCreatePushNotificationChannels
+  >
+const mockUseRegisterForPushNotifications = useRegisterForPushNotifications as jest.MockedFunction<
+  typeof useRegisterForPushNotifications
+>
+const mockUseAndroidListenToPushNotifications =
+  useAndroidListenToPushNotifications as jest.MockedFunction<
+    typeof useAndroidListenToPushNotifications
+  >
+const mockUseIOSListenToPushNotifications = useIOSListenToPushNotifications as jest.MockedFunction<
+  typeof useIOSListenToPushNotifications
+>
+const mockUseHandlePushNotifications = useHandlePushNotifications as jest.MockedFunction<
+  typeof useHandlePushNotifications
+>
+
 describe("usePushNotifications", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it("should call all required hooks in correct order", () => {
-    renderHook(() => usePushNotifications())
+  describe("Android Platform", () => {
+    beforeEach(() => {
+      // Set platform to Android
+      Object.defineProperty(Platform, "OS", {
+        get: jest.fn(() => "android"),
+        configurable: true,
+      })
+    })
 
-    expect(useAndroidCreatePushNotificationChannels).toHaveBeenCalledTimes(1)
-    expect(useRegisterForPushNotifications).toHaveBeenCalledTimes(1)
-    expect(useAndroidListenToFCMMessages).toHaveBeenCalledTimes(1)
-    expect(useHandlePushNotifications).toHaveBeenCalledTimes(1)
+    it("calls Android-specific hooks when on Android", () => {
+      renderHook(() => usePushNotifications())
+
+      // Should call common hooks
+      expect(mockUseAndroidCreatePushNotificationChannels).toHaveBeenCalledTimes(1)
+      expect(mockUseRegisterForPushNotifications).toHaveBeenCalledTimes(1)
+      expect(mockUseHandlePushNotifications).toHaveBeenCalledTimes(1)
+
+      // Should call Android-specific listener
+      expect(mockUseAndroidListenToPushNotifications).toHaveBeenCalledTimes(1)
+
+      // Should NOT call iOS-specific listener
+      expect(mockUseIOSListenToPushNotifications).not.toHaveBeenCalled()
+    })
   })
 
-  it("should not throw errors during hook execution", () => {
-    expect(() => {
+  describe("iOS Platform", () => {
+    beforeEach(() => {
+      // Set platform to iOS
+      Object.defineProperty(Platform, "OS", {
+        get: jest.fn(() => "ios"),
+        configurable: true,
+      })
+    })
+
+    it("calls iOS-specific hooks when on iOS", () => {
       renderHook(() => usePushNotifications())
-    }).not.toThrow()
+
+      // Should call common hooks
+      expect(mockUseAndroidCreatePushNotificationChannels).toHaveBeenCalledTimes(1)
+      expect(mockUseRegisterForPushNotifications).toHaveBeenCalledTimes(1)
+      expect(mockUseHandlePushNotifications).toHaveBeenCalledTimes(1)
+
+      // Should call iOS-specific listener
+      expect(mockUseIOSListenToPushNotifications).toHaveBeenCalledTimes(1)
+
+      // Should NOT call Android-specific listener
+      expect(mockUseAndroidListenToPushNotifications).not.toHaveBeenCalled()
+    })
   })
 })
