@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Spacer, Text } from "@artsy/palette-mobile"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { CollectArtworks_viewer$key } from "__generated__/CollectArtworks_viewer.graphql"
 import { CollectArtworks_viewerAggregations$key } from "__generated__/CollectArtworks_viewerAggregations.graphql"
@@ -52,12 +53,14 @@ const CollectHeader: React.FC<CollectHeaderProps> = ({
   appliedFiltersCount,
   setIsArtworksFilterModalVisible,
 }) => {
+  const { title, subtitle } = useCollectScreenParams()
+
   return (
     <Flex mx={-2} gap={1}>
-      <Flex px={2}>
-        <Text variant="lg-display">Collect</Text>
-        <Spacer y={0.5} />
-        <Text variant="sm-display">Collect art and design online</Text>
+      <Flex px={2} gap={0.5}>
+        <Text variant="lg-display">{title}</Text>
+
+        {!!subtitle && <Text variant="sm-display">{subtitle}</Text>}
       </Flex>
 
       <ArtworksFilterHeader
@@ -239,24 +242,32 @@ const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
       </ArtworkFiltersStoreProvider>
     )
   },
-  LoadingFallback: () => (
-    <>
-      <Flex px={2}>
-        <Text variant="lg-display">Collect</Text>
-        <Spacer y={0.5} />
-        <Text variant="sm-display">Collect art and design online</Text>
-      </Flex>
-      <ArtworksFilterHeader
-        selectedFiltersCount={0}
-        onFilterPress={() => {}}
-        childrenPosition="left"
-      >
-        <Flex />
-      </ArtworksFilterHeader>
-      <Spacer y={2} />
-      <PlaceholderGrid />
-    </>
-  ),
+  LoadingFallback: () => {
+    const { title, subtitle } = useCollectScreenParams()
+
+    return (
+      <>
+        <Flex px={2}>
+          <Text variant="lg-display">{title}</Text>
+          {!!subtitle && (
+            <>
+              <Spacer y={0.5} />
+              <Text variant="sm-display">{subtitle}</Text>
+            </>
+          )}
+        </Flex>
+        <ArtworksFilterHeader
+          selectedFiltersCount={0}
+          onFilterPress={() => {}}
+          childrenPosition="left"
+        >
+          <Flex />
+        </ArtworksFilterHeader>
+        <Spacer y={2} />
+        <PlaceholderGrid />
+      </>
+    )
+  },
   ErrorFallback: (fallbackProps) => {
     return (
       <LoadFailureView
@@ -270,12 +281,13 @@ const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
 })
 
 export const Collect: React.FC<CollectQueryRendererProps> = (props) => {
+  const { title } = useCollectScreenParams()
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.collect })}
     >
       <Screen>
-        <Screen.AnimatedHeader onBack={goBack} title="Collect" />
+        <Screen.AnimatedHeader onBack={goBack} title={title} />
 
         <Screen.Body fullwidth>
           <CollectQueryRenderer {...props} />
@@ -283,4 +295,24 @@ export const Collect: React.FC<CollectQueryRendererProps> = (props) => {
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
+}
+
+type CollectParams = {
+  params?: {
+    title?: string
+    subtitle?: string
+    disableSubtitle?: string
+  }
+}
+
+const useCollectScreenParams = () => {
+  const { params } = useRoute<RouteProp<CollectParams>>()
+
+  const title = params?.title ?? "Collect"
+  const subtitle = params?.subtitle ?? "Collect art and design online"
+
+  return {
+    title,
+    subtitle: params?.disableSubtitle ? undefined : subtitle,
+  }
 }

@@ -1,5 +1,4 @@
 import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
-import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { CollectionsByCategoryBodyQuery } from "__generated__/CollectionsByCategoryBodyQuery.graphql"
 import { CollectionsByCategoryBody_viewer$key } from "__generated__/CollectionsByCategoryBody_viewer.graphql"
@@ -7,11 +6,11 @@ import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
 } from "app/Scenes/CollectionsByCategory/CollectionRail"
-import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
 } from "app/Scenes/CollectionsByCategory/CollectionsChips"
+import { useCollectionsByCategoryParams } from "app/Scenes/CollectionsByCategory/hooks/useCollectionsByCategoryParams"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -21,9 +20,7 @@ interface CollectionsByCategoryBodyProps {
 
 export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
-
-  const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const title = params.title
+  const { title } = useCollectionsByCategoryParams()
 
   if (!data?.marketingCollections) {
     return null
@@ -76,7 +73,7 @@ const CollectionsByCategoryBodyPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex gap={4}>
-        <Flex gap={2} px={2}>
+        <Flex gap={2} pl={2}>
           <SkeletonText variant="xl">Category</SkeletonText>
 
           <SkeletonText>Category description text</SkeletonText>
@@ -102,8 +99,7 @@ export const collectionsByCategoryQuery = graphql`
 
 export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
-    const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const slug = params.slug
+    const { slug } = useCollectionsByCategoryParams()
 
     const data = useLazyLoadQuery<CollectionsByCategoryBodyQuery>(collectionsByCategoryQuery, {
       categorySlug: slug,

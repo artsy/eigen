@@ -94,6 +94,8 @@ import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/C
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
+import { CollectionsByFilter } from "app/Scenes/CollectionsByFilter/CollectionsByFilter"
+import { collectionsByFilterQuery } from "app/Scenes/CollectionsByFilter/CollectionsByFilterBody"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { fairExhibitorsQuery } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
@@ -736,6 +738,17 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/collections-by-filter/:slug",
+    name: "CollectionsByFilter",
+    Component: CollectionsByFilter,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [collectionsByFilterQuery],
   },
   {
     path: "/collections-by-category/:slug",
