@@ -18,10 +18,7 @@ import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { getNativeModel, NativeModel } from "./NativeModel"
-import {
-  getPendingPushNotificationModel,
-  PendingPushNotificationModel,
-} from "./PendingPushNotificationModel"
+
 import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
@@ -45,7 +42,6 @@ interface GlobalStoreStateModel {
   auth: AuthModel
   onboarding: OnboardingModel
   toast: ToastModel
-  pendingPushNotification: PendingPushNotificationModel
   artsyPrefs: ArtsyPrefsModel
   userPrefs: UserPrefsModel
   devicePrefs: DevicePrefsModel
@@ -138,7 +134,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   onboarding: getOnboardingModel(),
   toast: getToastModel(),
   devicePrefs: getDevicePrefsModel(),
-  pendingPushNotification: getPendingPushNotificationModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
