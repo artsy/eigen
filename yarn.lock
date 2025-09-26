@@ -72,13 +72,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:19.5.0":
-  version: 19.5.0
-  resolution: "@artsy/palette-mobile@npm:19.5.0"
+"@artsy/palette-mobile@npm:^19.6.0":
+  version: 19.6.0
+  resolution: "@artsy/palette-mobile@npm:19.6.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
-    "@d11/react-native-fast-image": "npm:^8.10.0"
+    "@d11/react-native-fast-image": "npm:8.12.0"
     "@shopify/flash-list": "npm:^1.8.3"
     "@styled-system/core": "npm:^5.1.2"
     "@styled-system/theme-get": "npm:^5.1.2"
@@ -102,7 +102,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/bcdcfbdfdbfcab4d2ca364fc36dc4af0b177ccc0919d8918ab6973d153447df1a0fb3ff590afdc78eedcfbe3ebdc1f7cc9d6ce4132d912f0728a20f349c81913
+  checksum: 10c0/69049c0910bf4555325d876832caf9f93b1677711bd1a08e5654d2c7d49039cf26459002558de6c151e8fd29c0eb74cf51c68b39778421a112a1328ef652ef7a
   languageName: node
   linkType: hard
 
@@ -2956,17 +2956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@d11/react-native-fast-image@npm:^8.10.0":
-  version: 8.10.0
-  resolution: "@d11/react-native-fast-image@npm:8.10.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/c6c4af5c54804a12fdffb301b1579ff27c7ac1c37883ed4d1edaf5c11d5e6c1a264316a40994bbda7d499a8e6610da2f643952ead1a54a12864f14df91ac338b
-  languageName: node
-  linkType: hard
-
-"@d11/react-native-fast-image@npm:^8.12.0":
+"@d11/react-native-fast-image@npm:8.12.0, @d11/react-native-fast-image@npm:^8.12.0":
   version: 8.12.0
   resolution: "@d11/react-native-fast-image@npm:8.12.0"
   peerDependencies:
@@ -11459,7 +11449,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.304.0"
     "@artsy/icons": "npm:3.52.0"
-    "@artsy/palette-mobile": "npm:19.5.0"
+    "@artsy/palette-mobile": "npm:^19.6.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:^7.25.2"
