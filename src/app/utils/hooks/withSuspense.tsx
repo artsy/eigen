@@ -1,11 +1,8 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
-import { BottomSheetModalAwareView } from "app/Components/BottomSheetAwareView"
-import { FadeIn } from "app/Components/FadeIn"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
-import { View } from "react-native"
 
 /**
  * A symbol used to indicate that no error fallback should be rendered.
@@ -37,12 +34,6 @@ type WithSuspenseOptions<T> = {
   ErrorFallback:
     | ((props: FallbackProps, componentProps: T) => ReactElement | null)
     | typeof NoFallback
-
-  /**
-   * Skip the FadeIn animation for components that manage their own opacity/animation.
-   * Useful for components like BottomSheet footers that have conflicting animations.
-   */
-  disableFadeIn?: boolean
 }
 
 const DefaultLoadingFallback: React.FC = () => (
@@ -65,7 +56,6 @@ export const withSuspense = <T extends Object | any>({
   Component,
   LoadingFallback,
   ErrorFallback,
-  disableFadeIn = false,
 }: WithSuspenseOptions<T>): React.FC<T> => {
   const LoadingFallbackComponent =
     LoadingFallback === SpinnerFallback ? DefaultLoadingFallback : LoadingFallback
