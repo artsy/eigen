@@ -61,6 +61,9 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn install --immutable
 
+      - name: Apply patches
+        run: yarn patch-package
+
       - name: Cache cocoapods
         id: cache-pods
         uses: actions/cache@v4
