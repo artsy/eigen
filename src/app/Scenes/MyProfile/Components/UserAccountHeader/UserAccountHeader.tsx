@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   BriefcaseIcon,
   InstitutionIcon,
@@ -25,9 +26,11 @@ import {
 } from "__generated__/UserAccountHeader_me.graphql"
 import { MyCollectionPreview } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionPreview"
 import { ProfileErrorMessage } from "app/Scenes/MyProfile/Components/UserAccountHeader/ProfileErrorMessage"
+import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const PROFILE_IMAGE_SIZE = 70
 interface UserAccountHeaderProps extends UserAccountHeaderQRProps {
@@ -161,6 +164,9 @@ const CompleteProfileButton: React.FC<{
   me: UserAccountHeader_me$data
   isProfileComplete: boolean
 }> = ({ me, isProfileComplete }) => {
+  const { trackEvent } = useTracking()
+  const analytics = useAnalyticsContext()
+
   if (isProfileComplete) {
     return (
       <RouterLink hasChildTouchable to="/my-collection">
@@ -178,7 +184,12 @@ const CompleteProfileButton: React.FC<{
   }
 
   return (
-    <RouterLink hasChildTouchable to="/complete-my-profile" navigationProps={{ meKey: me }}>
+    <RouterLink
+      hasChildTouchable
+      to="/complete-my-profile"
+      navigationProps={{ meKey: me }}
+      onPress={() => trackEvent(tracks.tappedCompleteYourProfile(analytics))}
+    >
       <Button
         variant="outline"
         size="small"
@@ -309,4 +320,13 @@ const AccountCardWapper: React.FC<
       {children}
     </Flex>
   )
+}
+
+const tracks = {
+  tappedCompleteYourProfile: (analytics: AnalyticsContextProps) => ({
+    action: ActionType.tappedCompleteYourProfile,
+    context_module: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.profile,
+    context_screen_owner_id: analytics.contextScreenOwnerId,
+  }),
 }
