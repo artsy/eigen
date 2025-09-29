@@ -1,6 +1,7 @@
 #import "ARAppDelegateHelper.h"
 #import "AppDelegate+Echo.h"
 #import "AppDelegate+Emission.h"
+#import "AppDelegate+Notifications.h"
 #import "ARFonts.h"
 #import "ARLogger.h"
 #import "ARWebViewCacheHost.h"
@@ -56,6 +57,9 @@ static Braze *_braze = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupAnalytics:launchOptions];
+
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
 
     [self setupSharedEmission];
 
