@@ -277,6 +277,7 @@ jobs:
 
     steps:
       - checkout
+      - generate-checksums
       - install-gems
       - setup-awscli
       - install-node-modules
@@ -308,6 +309,7 @@ jobs:
     resource_class: large
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
       - run:
@@ -343,6 +345,7 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
       - run:
