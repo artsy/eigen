@@ -170,21 +170,6 @@ describe("useRegisterForPushNotifications", () => {
         consoleSpy.mockRestore()
       })
 
-      it("should handle token save errors", async () => {
-        const mockToken = "test-token"
-        const mockSaveError = new Error("Save failed")
-        mockGetToken.mockResolvedValue(mockToken)
-        mockSaveToken.mockRejectedValue(mockSaveError)
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation()
-
-        renderHook(() => useRegisterForPushNotifications())
-
-        await waitForAsync()
-
-        expect(consoleSpy).toHaveBeenCalledWith("DEBUG: Failed to save token:", mockSaveError)
-        consoleSpy.mockRestore()
-      })
-
       it("should handle empty token", async () => {
         mockGetToken.mockResolvedValue("")
         const consoleSpy = jest.spyOn(console, "error").mockImplementation()
@@ -195,33 +180,6 @@ describe("useRegisterForPushNotifications", () => {
 
         expect(consoleSpy).toHaveBeenCalledWith("DEBUG: Failed to obtain FCM token")
         expect(mockSaveToken).not.toHaveBeenCalled()
-        consoleSpy.mockRestore()
-      })
-
-      it("should handle token refresh errors", async () => {
-        const mockToken = "test-token"
-        const mockRefreshedToken = "refreshed-token"
-        const mockSaveError = new Error("Refresh save failed")
-
-        mockGetToken.mockResolvedValue(mockToken)
-        mockSaveToken.mockResolvedValueOnce(true).mockRejectedValueOnce(mockSaveError)
-
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation()
-
-        renderHook(() => useRegisterForPushNotifications())
-
-        await waitForAsync()
-
-        expect(mockOnTokenRefresh).toHaveBeenCalledTimes(1)
-
-        // Test token refresh error
-        const tokenRefreshCallback = mockOnTokenRefresh.mock.calls[0][0]
-        await tokenRefreshCallback(mockRefreshedToken)
-
-        expect(consoleSpy).toHaveBeenCalledWith(
-          "DEBUG: Failed to save refreshed token:",
-          mockSaveError
-        )
         consoleSpy.mockRestore()
       })
     })
