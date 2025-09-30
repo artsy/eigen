@@ -10,9 +10,6 @@ export const useAndroidCreatePushNotificationChannels = () => {
     // Request Notifee permissions first (important for both platforms)
     const requestPermissionsAndCreateChannels = async () => {
       try {
-        // Request Notifee permissions
-        await notifee.requestPermission()
-
         // Create Android channels if on Android
         if (Platform.OS === "android") {
           await createAndroidNotificationChannels()
