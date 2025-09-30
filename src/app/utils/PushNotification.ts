@@ -1,7 +1,10 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
+
+export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 
 /**
  * Saves the push notification token to the server
@@ -10,6 +13,15 @@ import DeviceInfo from "react-native-device-info"
  */
 export const saveToken = async (token: string) => {
   const { authenticationToken, userAgent } = getCurrentEmissionState()
+
+  const lastToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+
+  if (lastToken === token) {
+    if (__DEV__) {
+      console.log(`Push notification token ${token} already saved`)
+    }
+    return true
+  }
 
   // Check for valid authentication token before proceeding
   if (!authenticationToken) {
@@ -50,6 +62,8 @@ export const saveToken = async (token: string) => {
 
   try {
     const res = await fetch(request)
+    await AsyncStorage.setItem(PUSH_NOTIFICATION_TOKEN, token)
+
     response = await res.json()
   } catch (error) {
     if (__DEV__) {

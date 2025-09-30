@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { saveToken } from "app/utils/PushNotification"
 import { Platform } from "react-native"
@@ -47,6 +48,10 @@ describe("PushNotification", () => {
   })
 
   describe("saveToken", () => {
+    afterEach(() => {
+      AsyncStorage.clear()
+    })
+
     it("should save token successfully in production", async () => {
       const mockToken = "new-mock-token"
       mockUnsafe__getEnvironment.mockReturnValue({
@@ -166,6 +171,18 @@ describe("PushNotification", () => {
           body: expect.stringContaining('"production":false'),
         })
       )
+    })
+
+    it("should not save token when it is different from the last token", async () => {
+      const mockToken = "old-mock-token"
+
+      jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("old-mock-token")
+
+      const result = await saveToken(mockToken)
+
+      expect(mockFetch).not.toHaveBeenCalled()
+
+      expect(result).toBe(true)
     })
   })
 })
