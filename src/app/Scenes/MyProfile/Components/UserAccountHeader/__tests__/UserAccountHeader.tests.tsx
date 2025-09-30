@@ -3,6 +3,7 @@ import { UserAccountHeaderTestQuery } from "__generated__/UserAccountHeaderTestQ
 import { UserAccountHeader } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -12,6 +13,12 @@ import { graphql } from "react-relay"
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
+}))
+
+jest.mock("app/system/analytics/AnalyticsContext", () => ({
+  useAnalyticsContext: jest.fn(() => ({
+    contextScreenOwnerId: "123",
+  })),
 }))
 
 describe("UserAccountHeader", () => {
@@ -92,6 +99,25 @@ describe("UserAccountHeader", () => {
     fireEvent.press(completeProfileButton)
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/complete-my-profile", { passProps: expect.any(Object) })
+  })
+
+  it("tracks complete profile button press", () => {
+    renderWithRelay({
+      Me: () => ({ ...me, isIdentityVerified: false }),
+    })
+
+    const completeProfileButton = screen.getByTestId("complete-profile-button")
+
+    expect(completeProfileButton).toBeTruthy()
+
+    fireEvent.press(completeProfileButton)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCompleteYourProfile",
+      context_module: "collectorProfile",
+      context_screen_owner_type: "profile",
+      context_screen_owner_id: "123",
+    })
   })
 
   it("on view full profile press navigates to the full profile", () => {

@@ -12,16 +12,25 @@ import { DarkModeIcon } from "app/Components/Icons/DarkModeIcon"
 import { MenuItem } from "app/Components/MenuItem"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { getAppVersion } from "app/utils/appVersion"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import { Alert, ScrollView } from "react-native"
-import { getAppVersion } from "app/utils/appVersion"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
+  return (
+    <AnalyticsContextProvider contextScreenOwnerType={OwnerType.profile}>
+      <MyProfileSettingsContent />
+    </AnalyticsContextProvider>
+  )
+}
+
+const MyProfileSettingsContent: React.FC = () => {
   const appVersion = getAppVersion()
   const { updateTapCount } = useSetDevMode()
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
