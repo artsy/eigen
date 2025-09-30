@@ -102,7 +102,8 @@
   "dependenciesComments": {
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
-    "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
+    "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated",
+    "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
     "@artsy/cohesion": "4.305.0",
@@ -326,6 +327,8 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
+    "form-data@^3.0.0": "3.0.4",
+    "form-data@^4.0.0": "4.0.4",
     "@types/react": "~19.0.10",
     "@types/relay-runtime": "18.2.0",
     "@types/react-relay": "18.2.0",
