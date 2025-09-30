@@ -16,7 +16,7 @@ Explain why the hack was added.
 
 ## EchoNew.json
 
-#### When can we remove this:
+### When can we remove this:
 
 Maybe sometime end of 2020, we can change the file EchoNew.json back to Echo.json.
 
