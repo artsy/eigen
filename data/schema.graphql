@@ -3429,6 +3429,7 @@ type ArtworkImportTransformedData {
   height: String
   imageFileNames: String
   imageRights: String
+  importSource: String
   inventoryId: String
   materials: String
   medium: String
