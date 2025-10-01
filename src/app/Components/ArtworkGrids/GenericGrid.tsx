@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, TextProps, useScreenDimensions } from "@artsy/palette-mobile"
+import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
@@ -7,7 +8,7 @@ import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, StyleSheet, View, ViewabilityConfig, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
@@ -25,6 +26,9 @@ interface Props {
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   // Give explicit width to avoid resizing after mount
   width?: number
+  // Viewability tracking support
+  onViewableItemsChanged?: MasonryFlashListProps<GenericArtworkType>["onViewableItemsChanged"]
+  viewabilityConfig?: ViewabilityConfig
 }
 
 interface State {
@@ -180,7 +184,66 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
     return sections
   }
 
+  renderItem = ({ item }: { item: GenericArtworkType; index: number; columnIndex: number }) => {
+    const { contextModule, trackingFlow, trackTap } = this.props
+    const aspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = this.state.sectionDimension
+    const imgHeight = imgWidth / aspectRatio
+
+    // Calculate the item index based on its position in the original artworks array
+    const itemIndex = this.props.artworks.findIndex((artwork) => artwork.id === item.id)
+
+    return (
+      <Artwork
+        artwork={item}
+        height={imgHeight}
+        width={imgWidth}
+        trackingFlow={trackingFlow}
+        contextModule={contextModule}
+        itemIndex={itemIndex}
+        trackTap={trackTap}
+        {...this.props}
+      />
+    )
+  }
+
   render() {
+    const { onViewableItemsChanged, viewabilityConfig } = this.props
+    const shouldUseMasonryList = !!(onViewableItemsChanged && viewabilityConfig)
+
+    // If viewability tracking is enabled, use MasonryFlashList
+    if (shouldUseMasonryList && this.state.sectionDimension) {
+      const filteredArtworks = this.props.artworks.filter((artwork) => artwork.image)
+      const sectionMargin = this.props.sectionMargin ?? 20
+
+      return (
+        <AnalyticsContextProvider
+          contextScreenOwnerId={this.props.contextScreenOwnerId}
+          contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+          contextScreenOwnerType={this.props.contextScreenOwnerType}
+        >
+          <View onLayout={this.onLayout} style={{ flex: 1 }}>
+            <MasonryFlashList
+              data={filteredArtworks as unknown as readonly GenericArtworkType[]}
+              renderItem={this.renderItem}
+              keyExtractor={(item) => item.id}
+              numColumns={this.state.sectionCount}
+              estimatedItemSize={200}
+              onViewableItemsChanged={onViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
+              contentContainerStyle={{
+                paddingHorizontal: sectionMargin / 2,
+              }}
+              // Use scrollEnabled={false} to embed within ScrollView
+              scrollEnabled={false}
+            />
+            {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+          </View>
+        </AnalyticsContextProvider>
+      )
+    }
+
+    // Otherwise, use the original View-based layout
     const artworks = this.state.sectionDimension ? this.renderSections() : null
 
     return (
@@ -222,6 +285,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
+      internalID
       slug
       image(includeAll: false) {
         aspectRatio
