@@ -3393,6 +3393,9 @@ type ArtworkImportRowImage {
 }
 
 enum ArtworkImportSource {
+  ARTCLOUD
+  ARTLOGIC
+  BATCH_UPLOAD
   CONVECTION
   MY_COLLECTION
 }
