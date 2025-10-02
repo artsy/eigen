@@ -43,7 +43,7 @@ export const useAndroidListenToPushNotifications = ({
               ? {
                   smallIcon: "ic_notification",
                   channelId,
-                  badgeCount: Number(message.notification?.android?.count),
+                  badgeCount: Number(message.notification?.android?.count) || undefined,
                 }
               : undefined,
         })
