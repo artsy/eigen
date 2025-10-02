@@ -31,6 +31,7 @@ export const useHandlePushNotifications = ({
         label: pushNotification.data?.label,
         url: pushNotification.data?.url,
         message: pushNotification.message,
+        ...pushNotification.data,
       })
 
       // Validate URL before navigation to prevent errors
