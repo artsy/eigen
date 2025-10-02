@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:19.9.0":
-  version: 19.9.0
-  resolution: "@artsy/palette-mobile@npm:19.9.0"
+"@artsy/palette-mobile@npm:19.14.0":
+  version: 19.14.0
+  resolution: "@artsy/palette-mobile@npm:19.14.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -88,7 +88,7 @@ __metadata:
     react-nanny: "npm:^2.15.0"
     react-native-blurhash: "npm:2.1.1"
     react-native-collapsible-tab-view: "npm:^8.0.1"
-    react-native-pager-view: "npm:6.5.0"
+    react-native-pager-view: "npm:6.7.1"
     react-native-popover-view: "npm:^6.1.0"
     react-spring: "npm:8.0.23"
     styled-system: "npm:^5.1.5"
@@ -102,7 +102,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/5bad2c0e0513a2eacf65e953196b89ad74d57596c1b2c726d357282ee397350d909ff0cd29d2f3b023202e9a08bf9f0f49a89d5e6da3b30baa62b0f1957264c3
+  checksum: 10c0/b4d1b5f490d3d991fb8cfab1100d738962ba54e67aba340928888efa079ff653b2d64206d6c816fff83588cf5da82292c397c410c69afdb562bf314f3e5581ea
   languageName: node
   linkType: hard
 
@@ -11463,7 +11463,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.307.0"
     "@artsy/icons": "npm:3.52.0"
-    "@artsy/palette-mobile": "npm:19.9.0"
+    "@artsy/palette-mobile": "npm:19.14.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:^7.25.2"
@@ -19914,16 +19914,6 @@ __metadata:
     react-native-macos:
       optional: true
   checksum: 10c0/dc87a13cc0681eb5a524190edcbe589fdadec02cd94db7c86dbf6c03d18ece0333adee439b1419b1c01e9a73a2b0ee2fd37b7f881c0008b7770ccd9919ff32b6
-  languageName: node
-  linkType: hard
-
-"react-native-pager-view@npm:6.5.0":
-  version: 6.5.0
-  resolution: "react-native-pager-view@npm:6.5.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/43f5d9814904fcc0f40b5250e6f98c1ae8148e7b7fac4a9b129ec067095ff396c6b120950873c5e5e440b1493143ac2c88e2171a4fb7b472cc7e20084ebcf319
   languageName: node
   linkType: hard
 
