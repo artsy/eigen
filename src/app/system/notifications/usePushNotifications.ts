@@ -15,20 +15,25 @@ export type PushNotification = {
 
 /**
  * This hook is used to handle push notifications and displaying them
- * It does the following:
- * - Creates the Android notifications channels
- * - Registers the device for push notifications
- * - Listens to push notifications
- * - Handles the push notification
  */
 export const usePushNotifications = () => {
   const [pushNotification, setPushNotification] = useState<PushNotification | null>(null)
 
-  useAndroidCreatePushNotificationChannels()
+  // Preprare Android notifications channels
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  Platform.OS === "android" && useAndroidCreatePushNotificationChannels()
+
+  // Fetch token and save it to our backend
   useRegisterForPushNotifications()
+
+  // Listen to FCM messages
   // eslint-disable-next-line react-hooks/rules-of-hooks
   Platform.OS === "android" && useAndroidListenToPushNotifications({ setPushNotification })
+
+  // Listen to APNS messages
   // eslint-disable-next-line react-hooks/rules-of-hooks
   Platform.OS === "ios" && useIOSListenToPushNotifications({ setPushNotification })
+
+  // Handle the push notification
   useHandlePushNotifications({ pushNotification, setPushNotification })
 }

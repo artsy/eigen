@@ -6,20 +6,21 @@ import { Platform } from "react-native"
  * This hook is used to create the Android push notification channels
  */
 export const useAndroidCreatePushNotificationChannels = () => {
+  if (Platform.OS !== "android") {
+    throw new Error("useAndroidCreatePushNotificationChannels is used for Android only")
+  }
+
   useEffect(() => {
-    // Request Notifee permissions first (important for both platforms)
-    const requestPermissionsAndCreateChannels = async () => {
+    const createPushNotificationsChannels = async () => {
       try {
         // Create Android channels if on Android
-        if (Platform.OS === "android") {
-          await createAndroidNotificationChannels()
-        }
+        await createAndroidNotificationChannels()
       } catch (error) {
         console.error("DEBUG: Error requesting Notifee permissions:", error)
       }
     }
 
-    requestPermissionsAndCreateChannels()
+    createPushNotificationsChannels()
   }, [])
 }
 

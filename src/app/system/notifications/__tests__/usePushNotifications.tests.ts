@@ -90,7 +90,6 @@ describe("usePushNotifications", () => {
       renderHook(() => usePushNotifications())
 
       // Should call common hooks
-      expect(mockUseAndroidCreatePushNotificationChannels).toHaveBeenCalledTimes(1)
       expect(mockUseRegisterForPushNotifications).toHaveBeenCalledTimes(1)
       expect(mockUseHandlePushNotifications).toHaveBeenCalledTimes(1)
 
@@ -98,6 +97,7 @@ describe("usePushNotifications", () => {
       expect(mockUseIOSListenToPushNotifications).toHaveBeenCalledTimes(1)
 
       // Should NOT call Android-specific listener
+      expect(mockUseAndroidCreatePushNotificationChannels).not.toHaveBeenCalled()
       expect(mockUseAndroidListenToPushNotifications).not.toHaveBeenCalled()
     })
   })
