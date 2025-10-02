@@ -1,10 +1,14 @@
 {
-  "extends": ["@artsy:app", ":automergePatch", "helpers:pinGitHubActionDigests"],
+  "extends": [
+    "@artsy:app",
+    ":automergePatch",
+    "helpers:pinGitHubActionDigests"
+  ],
   "packageRules": [
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["cimg/android", "cimg/ruby"],
-      "matchPaths": [".circleci/config.yml"],
+      "matchFileNames": [".circleci/config.yml"],
       "enabled": false
     }
   ],
