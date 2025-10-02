@@ -157,6 +157,7 @@ describe("useHandlePushNotifications", () => {
       label: "test-label",
       url: "https://example.com/test",
       message: "Test body",
+      customData: "test-data",
     })
 
     // Should navigate to the URL
