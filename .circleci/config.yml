@@ -127,6 +127,7 @@ commands:
               circleci step halt
             fi
       - checkout
+      - generate-checksums
       - attach_workspace:
           at: .
       - setup-awscli
@@ -172,6 +173,7 @@ commands:
           name: Install ninja
           command: sudo apt-get install ninja-build
       - checkout
+      - generate-checksums
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
       - setup-awscli
@@ -277,6 +279,7 @@ jobs:
 
     steps:
       - checkout
+      - generate-checksums
       - install-gems
       - setup-awscli
       - install-node-modules
@@ -308,6 +311,7 @@ jobs:
     resource_class: large
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
       - run:
@@ -343,6 +347,7 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
       - run:

@@ -204,10 +204,8 @@ dependencies {
     api("com.squareup.okhttp3:logging-interceptor")
 
     implementation 'com.segment.analytics.android:analytics:4.11.3'
-    implementation platform('com.google.firebase:firebase-bom:28.1.0')
-
-    implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
-    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation platform('com.google.firebase:firebase-bom:32.7.1')
+    implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'commons-io:commons-io:2.8.0'
 
