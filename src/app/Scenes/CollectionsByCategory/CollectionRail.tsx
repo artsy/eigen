@@ -6,7 +6,6 @@ import { CollectionRail_marketingCollection$key } from "__generated__/Collection
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
@@ -44,31 +43,22 @@ export const CollectionRail: FC<CollectionRailProps> = ({
 
   return (
     <>
-      <Flex px={2}>
-        <Flex justifyContent="center">
-          <RouterLink to={`/collection/${collection.slug}`} onPress={handleTitlePress}>
-            <SectionTitle
-              title={collection.title}
-              titleVariant="md"
-              RightButtonContent={() => (
-                <Flex flexDirection="row" flex={1}>
-                  <Flex my="auto">
-                    <ChevronRightIcon fill="mono60" ml={0.5} />
-                  </Flex>
-                </Flex>
-              )}
-            />
-          </RouterLink>
-        </Flex>
+      <SectionTitle
+        href={`/collection/${collection.slug}`}
+        mx={2}
+        onPress={handleTitlePress}
+        RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
+        title={collection.title}
+        titleVariant="md"
+      />
 
-        <ArtworkRail
-          onPress={handleArtworkPress}
-          artworks={artworks}
-          ListHeaderComponent={null}
-          showSaveIcon
-          showPartnerName
-        />
-      </Flex>
+      <ArtworkRail
+        onPress={handleArtworkPress}
+        artworks={artworks}
+        ListHeaderComponent={null}
+        showSaveIcon
+        showPartnerName
+      />
 
       {!lastElement && <Separator borderColor="mono10" my={4} />}
     </>

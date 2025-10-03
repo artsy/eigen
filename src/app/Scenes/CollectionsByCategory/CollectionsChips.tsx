@@ -4,13 +4,13 @@ import {
   CollectionsChips_marketingCollections$key,
 } from "__generated__/CollectionsChips_marketingCollections.graphql"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 const { width } = Dimensions.get("window")
-const CHIP_WIDTH = 260
+export const CHIP_WIDTH = 260
 
 interface CollectionsChipsProps {
   marketingCollections: CollectionsChips_marketingCollections$key
@@ -28,13 +28,15 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
   }
 
   const numRows = !isTablet() ? 3 : 2
-  const numColumns = Math.ceil(marketingCollections.length / 3)
-  const rows = getRows(marketingCollections, numRows)
+  const numColumns = Math.ceil(marketingCollections.length / numRows)
+  const rows = getRows<CollectionsChips_marketingCollections$data[number]>(
+    marketingCollections,
+    numRows
+  )
   const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1))
 
   const handleChipPress = (slug: string, index: number) => {
     trackChipTap(slug, index)
-    navigate(`/collection/${slug}`)
   }
 
   return (
@@ -54,15 +56,13 @@ export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
           {item.map((item, index) => {
             return (
               <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                <Chip
-                  key={item.internalID}
-                  title={item.title}
-                  onPress={() => {
-                    if (item?.slug) {
-                      handleChipPress(item.slug, index)
-                    }
-                  }}
-                />
+                <RouterLink
+                  to={`/collection/${item.slug}`}
+                  hasChildTouchable
+                  onPress={() => handleChipPress(item.slug, index)}
+                >
+                  <Chip key={item.internalID} title={item.title} />
+                </RouterLink>
               </Flex>
             )
           })}
@@ -107,8 +107,8 @@ export const CollectionsChipsPlaceholder: React.FC = () => {
   )
 }
 
-const getRows = (data: CollectionsChips_marketingCollections$data, numRows: number) => {
-  const rows = []
+export function getRows<T>(data: ReadonlyArray<T>, numRows: number): T[][] {
+  const rows: T[][] = []
   for (let i = 0; i < data.length; i += numRows) {
     rows.push(data.slice(i, i + numRows))
   }
