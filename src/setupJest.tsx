@@ -460,6 +460,9 @@ function getNativeModules(): OurNativeModules {
       getPushToken: jest.fn(),
       clearUserData: jest.fn(),
       clearCache: jest.fn(),
+      checkForAppUpdate: jest.fn(),
+      completeAppUpdate: jest.fn(),
+      updateDownloaded: false,
     },
   }
 }

@@ -55,4 +55,18 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? NativeModules.ArtsyNativeModule.isBetaOrDev
       : (NativeModules.ArtsyNativeModule.getConstants().isBeta as boolean) || __DEV__,
+  checkForAppUpdate:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("checkForAppUpdate is not supported on iOS")
+        }
+      : NativeModules.ArtsyNativeModule.checkForAppUpdate,
+  updateDownloaded:
+    Platform.OS === "ios"
+      ? false
+      : (NativeModules.ArtsyNativeModule.getConstants().updateDownloaded as boolean),
+  completeAppUpdate:
+    Platform.OS === "ios"
+      ? console.error("completeAppUpdate is unsupported on iOS")
+      : NativeModules.ArtsyNativeModule.completeAppUpdate,
 }
