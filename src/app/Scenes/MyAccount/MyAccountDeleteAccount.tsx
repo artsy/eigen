@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { GavelIcon, GenomeIcon } from "@artsy/icons/native"
-import { Box, Button, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -11,7 +11,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useState } from "react"
-import { Alert, InteractionManager, KeyboardAvoidingView, ScrollView } from "react-native"
+import { Alert, InteractionManager, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { deleteUserAccount } from "./deleteUserAccount"
 
@@ -26,6 +26,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const space = useSpace()
 
   const navigation = useNavigation()
 
@@ -39,9 +40,16 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         context_screen_owner_type: OwnerType.accountDeleteMyAccount,
       })}
     >
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <ScrollView>
-          <Box pr={2} pl={2}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          contentContainerStyle={{ padding: space(2), paddingBottom: space(12) }}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
+          <Flex>
             <Text variant="lg-display" mt="6">
               Delete My Account
             </Text>
@@ -137,7 +145,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             <Button block variant="outline" onPress={() => navigation.goBack()}>
               Cancel
             </Button>
-          </Box>
+          </Flex>
         </ScrollView>
       </KeyboardAvoidingView>
     </ProvideScreenTrackingWithCohesionSchema>
