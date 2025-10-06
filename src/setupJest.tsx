@@ -10,6 +10,7 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
@@ -384,15 +385,34 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
-jest.mock("react-native-push-notification", () => ({
-  configure: jest.fn(),
-  onRegister: jest.fn(),
-  onNotification: jest.fn(),
-  addEventListener: jest.fn(),
-  requestPermissions: jest.fn(),
-  checkPermissions: jest.fn(),
+jest.mock("@notifee/react-native", () => ({
+  displayNotification: jest.fn(),
+  getNotificationSettings: jest.fn(),
+  onForegroundEvent: jest.fn(() => jest.fn()),
+  onBackgroundEvent: jest.fn(),
+  getInitialNotification: jest.fn(),
   createChannel: jest.fn(),
-  localNotification: jest.fn(),
+  AuthorizationStatus: {
+    AUTHORIZED: 1,
+    DENIED: 0,
+  },
+  EventType: {
+    PRESS: 1,
+    DELIVERED: 2,
+  },
+}))
+
+jest.mock("@react-native-firebase/messaging", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    registerDeviceForRemoteMessages: jest.fn(),
+    getToken: jest.fn(),
+    onMessage: jest.fn(() => jest.fn()),
+    setBackgroundMessageHandler: jest.fn(),
+    onTokenRefresh: jest.fn(() => jest.fn()),
+    getInitialNotification: jest.fn(() => jest.fn()),
+    onNotificationOpenedApp: jest.fn(() => jest.fn()),
+  })),
 }))
 
 jest.mock("react-native-keychain", () => ({
@@ -669,3 +689,12 @@ jest.mock("react-native-blurhash", () => {
     Blurhash: ReactNative.View as any,
   }
 })
+
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
+  getNotificationPermissionsStatus: mockFetchNotificationPermissions,
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized",
+    Denied: "denied",
+  },
+}))

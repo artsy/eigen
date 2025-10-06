@@ -9,8 +9,8 @@ import {
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { CreateSavedSearchAlertParams } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -76,7 +76,7 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
 
 describe("CreateSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const notificationPermissions = mockFetchNotificationPermissions(false)
+  const notificationPermissions = mockFetchNotificationPermissions()
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
@@ -97,9 +97,7 @@ describe("CreateSavedSearchAlert", () => {
   }
 
   const setStatusForPushNotifications = (status: PushAuthorizationStatus) => {
-    notificationPermissions.mockImplementation((cb) => {
-      cb(null, status)
-    })
+    notificationPermissions.mockImplementation(() => Promise.resolve(status))
   }
 
   const mockOperationByName = async (operationName: string, mockResolvers: MockResolvers) => {

@@ -7,9 +7,9 @@ import {
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
-  PushAuthorizationStatus,
   getNotificationPermissionsStatus,
-} from "app/utils/PushNotification"
+  PushAuthorizationStatus,
+} from "app/system/notifications/getNotificationsPermissions"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { isEqual, omit } from "lodash"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
@@ -72,6 +72,7 @@ export const checkOrRequestPushPermissions = async () => {
   const notificationStatus = await getNotificationPermissionsStatus()
 
   const pushPromptSettings = unsafe_getPushPromptSettings()
+
   if (!pushPromptSettings) {
     return
   }

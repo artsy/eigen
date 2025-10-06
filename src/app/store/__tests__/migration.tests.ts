@@ -1280,4 +1280,23 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.userPrefs.previouslySelectedCitySlug).toEqual(null)
     })
   })
+  describe("App version Versions.RemovePendingPushNotificationModel", () => {
+    it("should remove pendingPushNotification from store", () => {
+      const migrationToTest = Versions.RemovePendingPushNotificationModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.pendingPushNotification.notification).toEqual(null)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.pendingPushNotification).toEqual(undefined)
+    })
+  })
 })

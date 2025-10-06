@@ -6,6 +6,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import "AREmission.h"
+#import "ARNotificationsManager.h"
 #import "UserNotifications/UNNotification.h"
 #import "UserNotifications/UNNotificationRequest.h"
 #import "UserNotifications/UNNotificationContent.h"
@@ -35,6 +36,7 @@ describe(@"receiveRemoteNotification", ^{
     __block ARAppDelegateHelper *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
+    __block id mockNotificationsManager = nil;
     __block UNNotification *unNotification = nil;
     __block UNUserNotificationCenter *currentCenter = nil;
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
@@ -43,29 +45,37 @@ describe(@"receiveRemoteNotification", ^{
         delegate = [[ARAppDelegateHelper alloc] init];
         [ARAppDelegateHelper setSharedInstanceForTesting:delegate];
 
-        mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
+        mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];
+        mockNotificationsManager = [OCMockObject mockForClass:[ARNotificationsManager class]];
+
+        OCMStub([mockEmissionSharedInstance notificationsManagerModule]).andReturn(mockNotificationsManager);
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
+        [mockNotificationsManager stopMocking];
         [ARAppDelegateHelper setSharedInstanceForTesting:nil];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {
-        it(@"triggers an analytics event for receiving a notification", ^{
+        it(@"forwards notification to React Native", ^{
 
             BOOL isInForeground = [prefs[@"isInForeground"] boolValue];
 
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
-            [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
-
             if (isInForeground) {
+                // In foreground, should add "Active" state to payload
+                [[mockNotificationsManager expect] notificationReceivedWithPayload:[OCMArg checkWithBlock:^BOOL(NSDictionary *payload) {
+                    return [payload[@"UIApplicationState"] isEqualToString:@"Active"] &&
+                           [payload[@"url"] isEqualToString:@"http://artsy.net/works-for-you"];
+                }]];
                 [delegate userNotificationCenter:currentCenter willPresentNotification:unNotification withCompletionHandler:completionHandler];
             } else {
+                // In background, should add application state to payload
+                [[mockNotificationsManager expect] notificationReceivedWithPayload:DictionaryWithAppState(notification, appState)];
                 [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
             }
 
-            [mockEmissionSharedInstance verify];
+            [mockNotificationsManager verify];
         });
     });
 
@@ -82,31 +92,11 @@ describe(@"receiveRemoteNotification", ^{
             appState = UIApplicationStateInactive;
         });
 
-        describe(@"with stubbed top menu VC", ^{
-            it(@"navigates to the url provided", ^{
-                [[mockEmissionSharedInstance expect] navigate:@"http://artsy.net/works-for-you" withProps: @{}];
-                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+        it(@"forwards notification to React Native with UIApplicationState", ^{
+            [[mockNotificationsManager expect] notificationReceivedWithPayload:DictionaryWithAppState(notification, appState)];
+            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
-                [mockEmissionSharedInstance verify];
-            });
-
-            it(@"triggers an analytics event when a notification has been tapped", ^{
-                [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-                [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
-
-                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-                [mockEmissionSharedInstance verify];
-            });
-
-            it(@"does not display the message in aps/alert", ^{
-                id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-                [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
-                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-                [mock verify];
-                [mock stopMocking];
-            });
+            [mockNotificationsManager verify];
         });
     });
 
@@ -128,9 +118,11 @@ describe(@"receiveRemoteNotification", ^{
 
         itBehavesLike(@"when receiving a notification", @{@"isInForeground": @true});
 
-        it(@"triggers an analytics event when a notification has been tapped", ^{
-            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
+        it(@"forwards notification to React Native when tapped with NotificationAction", ^{
+            [[mockNotificationsManager expect] notificationReceivedWithPayload:[OCMArg checkWithBlock:^BOOL(NSDictionary *payload) {
+                return [payload[@"NotificationAction"] isEqualToString:@"Tapped"] &&
+                       [payload[@"url"] isEqualToString:@"http://artsy.net/works-for-you"];
+            }]];
 
             UNNotificationResponse *response = OCMClassMock([UNNotificationResponse class]);
             OCMStub([response notification]).andReturn(unNotification);
@@ -138,38 +130,36 @@ describe(@"receiveRemoteNotification", ^{
 
             [delegate userNotificationCenter:currentCenter didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
 
-
-            [mockEmissionSharedInstance verify];
+            [mockNotificationsManager verify];
         });
 
         it(@"handles notification with ab_uri", ^{
             // Notification With APPBOY Uri
-            NSDictionary *notification = @{
+            NSDictionary *abUriNotification = @{
                 @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
                 @"ab_uri": @"http://artsy.net/works-for-you",
             };
 
-            NSMutableDictionary *expectedNotification = [notification mutableCopy];
-            [expectedNotification removeObjectForKey:@"ab_uri"];
-            expectedNotification[@"url"] = notification[@"ab_uri"];
-
-            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(expectedNotification, appState)];
+            [[mockNotificationsManager expect] notificationReceivedWithPayload:[OCMArg checkWithBlock:^BOOL(NSDictionary *payload) {
+                return [payload[@"NotificationAction"] isEqualToString:@"Tapped"] &&
+                       [payload[@"ab_uri"] isEqualToString:@"http://artsy.net/works-for-you"];
+            }]];
 
             UNNotificationResponse *response = OCMClassMock([UNNotificationResponse class]);
+            UNNotification *abUriUnNotification = OCMClassMock([UNNotification class]);
             UNNotificationRequest *request = OCMClassMock([UNNotificationRequest class]);
             UNNotificationContent *content = OCMClassMock([UNMutableNotificationContent class]);
-            NSDictionary *userInfo = notification;
+            NSDictionary *userInfo = abUriNotification;
 
-            OCMStub([response notification]).andReturn(unNotification);
-            OCMStub([unNotification request]).andReturn(request);
+            OCMStub([response notification]).andReturn(abUriUnNotification);
+            OCMStub([abUriUnNotification request]).andReturn(request);
             OCMStub([request content]).andReturn(content);
             OCMStub([content userInfo]).andReturn(userInfo);
             void (^completionHandler)(void) = ^() {};
 
             [delegate userNotificationCenter:currentCenter didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
 
-            [mockEmissionSharedInstance verify];
+            [mockNotificationsManager verify];
         });
     });
 });
