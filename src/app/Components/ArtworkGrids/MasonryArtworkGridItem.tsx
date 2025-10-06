@@ -30,14 +30,15 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
+  enableImpressionsTracking?: boolean
+  hideSaleInfo?: boolean
+  hideSaveIcon?: boolean
   index: number
   item: Artwork
   numColumns?: number
   onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
-  hideSaveIcon?: boolean
-  hideSaleInfo?: boolean
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({

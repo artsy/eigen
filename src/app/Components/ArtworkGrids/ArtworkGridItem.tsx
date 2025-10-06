@@ -82,6 +82,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  enableImpressionsTracking?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -116,6 +117,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     trackTap,
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
+    enableImpressionsTracking = false,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
@@ -277,6 +279,12 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             haptic
             underlayColor={color("mono0")}
             onPress={handleTap}
+            onVisible={() => {
+              if (enableImpressionsTracking) {
+                console.log("artwork impression", artwork.internalID)
+              }
+            }}
+            visibilityThreshold={0.7}
             // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
             onLongPress={() => {
               // Adroid long press is tracked inside of the ContextMenuArtwork component
