@@ -28,8 +28,8 @@ export const useHandlePushNotifications = ({
 
       trackEvent({
         event_name: AnalyticsConstants.NotificationTapped.key,
-        label: pushNotification.data?.label,
-        url: pushNotification.data?.url,
+        label: pushNotification.label || pushNotification.data?.label,
+        url: pushNotification.url || pushNotification.data?.url,
         message: pushNotification.message,
         ...pushNotification.data,
       })

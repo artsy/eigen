@@ -204,7 +204,7 @@ describe("useHandlePushNotifications", () => {
     // Should track the notification tap event with undefined values
     expect(mockTrackEvent).toHaveBeenCalledWith({
       event_name: AnalyticsConstants.NotificationTapped.key,
-      label: undefined,
+      label: "Test Notification",
       url: undefined,
       message: "Test body",
     })
