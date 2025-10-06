@@ -134,14 +134,14 @@ async function fetchEverythingElseTickets(): Promise<JiraIssue[]> {
     // We'll fetch tickets in TO DO status that don't have team labels
     const jql = `project = PBRW AND status = "TO DO" AND (assignee is EMPTY OR labels not in (Sapphire, Amber, Diamond, Emerald, Onyx, Expedite))`
 
-    const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/search`, {
+    const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/search/jql`, {
       method: "POST",
       headers: {
         Authorization: getAuthHeader(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        jql,
+        jql: jql,
         fields: ["summary", "description", "labels"],
         maxResults: 200, // Adjust as needed
       }),
