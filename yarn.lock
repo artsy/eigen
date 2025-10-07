@@ -12718,7 +12718,7 @@ __metadata:
     react-native-blurhash: "npm:2.1.1"
     react-native-bootsplash: "npm:6.3.10"
     react-native-collapsible-tab-view: "npm:8.0.1"
-    react-native-context-menu-view: "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy"
+    react-native-context-menu-view: "git+https://github.com/artsy/react-native-context-menu-view.git#brian/new-arch-woes"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.24.0"
@@ -20949,13 +20949,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy":
-  version: 1.10.0
-  resolution: "react-native-context-menu-view@https://github.com/artsy/react-native-context-menu-view.git#commit=e5a6bf3abba774936cac9ae2988704f0d7443c14"
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#brian/new-arch-woes":
+  version: 1.11.0
+  resolution: "react-native-context-menu-view@https://github.com/artsy/react-native-context-menu-view.git#commit=8332543bf6534660d0781fa6b0d085b8d42aefc9"
   peerDependencies:
     react: ^16.8.1 || ^17.0.0 || ^18.0.0
     react-native: ">=0.60.0-rc.0 <1.0.x"
-  checksum: 10c0/d583a3508d9b35754ffddb5a971cf138f04cb3737ae9020a52b3b5a2552e9e2f35ff18491a5851202e211340c34dcffaeef31f2afe974481cb8d82f76d2cbb2e
+  checksum: 10c0/2acd060207d08bcf1e57aeb3639a85c507c97da4b1ee7f37d73b4a51124e314a13534819e1b693c9ea0b5a3bd0d468dd1702b80691a1632a91baf6689ac9c8b7
   languageName: node
   linkType: hard
 
