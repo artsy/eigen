@@ -1723,7 +1723,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-context-menu-view (1.10.0):
+  - react-native-context-menu-view (1.11.0):
     - React
   - react-native-cookies (6.0.11):
     - React-Core
@@ -3741,7 +3741,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: ff05e894231c44c21135d1d23a82b87656d98eeb
   react-native-blob-util: 5916380210f9a7b0164e3ed638e320baf5ac0baa
   react-native-blurhash: 773f3726f5932f05917a3f4828648f155f087c7d
-  react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
+  react-native-context-menu-view: dc362920c823ef1021e9a9ccd09d2e29c526852f
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: 83d9d2da9f2708162da3b92b87421182425e4487
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
