@@ -33,3 +33,51 @@ index cb4e310..ecacb80 100644
        // Absolutely position the tab bar so that the content is below it
        // This is needed to avoid gap at bottom when the tab bar is hidden
        position: isTabBarHidden ? 'absolute' : undefined
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+index 2438b03..eaa6d4b 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/types.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+@@ -239,6 +239,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
+    */
+   tabBarVariant?: Variant;
+ 
++  /**
++   * Whether the tab bar gets hidden when the screen is focused. Defaults to `false`.
++   */
++  tabBarVisible?: boolean;
++
+   /**
+    * Style object for the tab bar container.
+    */
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
+index 55b9c8f..816b028 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
+@@ -175,6 +175,7 @@ export function BottomTabBar({
+     tabBarVariant = 'uikit',
+     tabBarStyle,
+     tabBarBackground,
++    tabBarVisible = false,
+     tabBarActiveTintColor,
+     tabBarInactiveTintColor,
+     tabBarActiveBackgroundColor,
+@@ -205,7 +206,7 @@ export function BottomTabBar({
+ 
+   const onHeightChange = React.useContext(BottomTabBarHeightCallbackContext);
+ 
+-  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown);
++  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown) && !tabBarVisible
+ 
+   const visibilityAnimationConfigRef = React.useRef(
+     tabBarVisibilityAnimationConfig
+@@ -367,6 +368,10 @@ export function BottomTabBar({
+                         0,
+                       ],
+                     }),
++                    opacity: visible.interpolate({
++                      inputRange: [0, 1],
++                      outputRange: [0, 1],
++                    }),
+                   },
+                 ],
+                 // Absolutely position the tab bar so that the content is below it
