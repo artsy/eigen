@@ -25,6 +25,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -46,7 +47,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 }) => {
   const tracking = useHomeViewTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
-  // onyx_homeView-new-card-rail-type unleash key
+
+  const { variant } = useExperimentVariant("onyx_homeView-new-card-rail-type")
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
@@ -102,9 +104,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
-  // TODO:
-  const showeHomeViewCardRail = true
-  //  enableNewHomeViewCardRailType && section.internalID === "home-view-section-new-works-for-you"
+
+  const showeHomeViewCardRail = enableNewHomeViewCardRailType && variant.name === "experiment"
 
   return (
     <Flex {...flexProps}>
@@ -114,7 +115,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         title={section.component?.title}
         onPress={moreHref ? onSectionViewAll : undefined}
       />
-
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       {showeHomeViewCardRail ? (
