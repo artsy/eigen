@@ -136,7 +136,10 @@ sequenceDiagram
 
 ---
 
+# Sending a push notification to your beta/development build
+
+These are covered in the [Pulse 🔐](https://github.com/artsy/pulse/blob/main/doc/push_notifications.md).
+
 <!--
-TODO: //
-## Sending a push notification to your beta/development build
+TODO: Add further docs on sending a push notification to your beta/development build
 -->
