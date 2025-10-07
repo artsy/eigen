@@ -263,3 +263,14 @@ This patch was added to support 16KB page size on Android. It's a copy paste fro
 #### When can we remove it
 
 It can be removed once we upgrade to any version past 3.17
+
+## patch-pacakge for react-native-reanimatedAdd a comment on lines L230 to L236Add diff commentMarkdown input: edit mode selected.WritePreviewHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
+
+#### When can we remove this:
+
+When we can update the reanimated flatlist CellRendererComponent or it's style, or when this PR gets merged:
+https://github.com/software-mansion/react-native-reanimated/pull/6573
+
+#### Explanation/Context:
+
+In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
