@@ -216,7 +216,7 @@
 		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
 		CBA500F32C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */; };
 		CBA500F62C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */; };
-		CBC1F3F12E68CF11008CCF48 /* ARAppDelegateHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.m */; };
+		CBC1F3F12E68CF11008CCF48 /* ARAppDelegateHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.mm */; };
 		CBC1F3F42E68D0D7008CCF48 /* ARWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */; };
 		CBD794D72BBB5622003B3CB5 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */; };
 		CBD794DB2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */; };
@@ -916,7 +916,7 @@
 		CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTDeeplinkTimeoutModule.m; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBC1F3EF2E68CF11008CCF48 /* ARAppDelegateHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAppDelegateHelper.h; sourceTree = "<group>"; };
-		CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAppDelegateHelper.m; sourceTree = "<group>"; };
+		CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ARAppDelegateHelper.mm; sourceTree = "<group>"; };
 		CBC1F3F22E68D0CC008CCF48 /* ARWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARWindow.h; sourceTree = "<group>"; };
 		CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARWindow.m; sourceTree = "<group>"; };
 		CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarscreamExtensions.swift; sourceTree = "<group>"; };
@@ -2543,7 +2543,7 @@
 				CBC1F3F22E68D0CC008CCF48 /* ARWindow.h */,
 				CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */,
 				CBC1F3EF2E68CF11008CCF48 /* ARAppDelegateHelper.h */,
-				CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.m */,
+				CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.mm */,
 				CB2033332E56593700A06281 /* main.swift */,
 				CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
@@ -3948,7 +3948,7 @@
 				CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */,
 				CB18284829DF3F75006A0805 /* Utilities.swift in Sources */,
 				CBE3271D27E275A300395A93 /* ARNotificationView.m in Sources */,
-				CBC1F3F12E68CF11008CCF48 /* ARAppDelegateHelper.m in Sources */,
+				CBC1F3F12E68CF11008CCF48 /* ARAppDelegateHelper.mm in Sources */,
 				CBE3276C27E275A400395A93 /* MTLModel+Dictionary.m in Sources */,
 				CBE326E427E275A300395A93 /* ARNetworkErrorManager.m in Sources */,
 				CBE326A027E275A300395A93 /* ARUserActivity.m in Sources */,

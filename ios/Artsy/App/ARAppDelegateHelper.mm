@@ -10,11 +10,18 @@
 #import "ARUserManager.h"
 #import "Keys.h"
 #import "ARAppStatus.h"
-#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
+
+
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-swift.h>
+
+
 #import <Firebase.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 #import <BrazeUI/BrazeUI-Swift.h>
+
 
 @interface ARAppDelegateHelper ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
