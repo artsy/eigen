@@ -212,6 +212,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
+  AREnableExpandedCityGuide: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
