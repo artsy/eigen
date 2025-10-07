@@ -20,6 +20,7 @@ import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/Progre
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { ArtworksCard } from "app/Scenes/HomeView/Sections/ArtworksCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -44,6 +45,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
+  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
+  // onyx_homeView-new-card-rail-type unleash key
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
@@ -99,6 +102,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
+  // TODO:
+  const showeHomeViewCardRail = true
+  //  enableNewHomeViewCardRailType && section.internalID === "home-view-section-new-works-for-you"
 
   return (
     <Flex {...flexProps}>
@@ -111,21 +117,25 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
-      <ArtworkRail
-        contextModule={section.contextModule as ContextModule}
-        contextScreenOwnerType={OwnerType.home}
-        artworks={artworks}
-        onPress={handleOnArtworkPress}
-        showSaveIcon
-        moreHref={moreHref}
-        onMorePress={onMorePress}
-        {...(section.trackItemImpressions
-          ? {
-              onViewableItemsChanged: onViewableItemsChanged,
-              viewabilityConfig: viewabilityConfig,
-            }
-          : {})}
-      />
+      {showeHomeViewCardRail ? (
+        <ArtworksCard artworks={artworks} />
+      ) : (
+        <ArtworkRail
+          contextModule={section.contextModule as ContextModule}
+          contextScreenOwnerType={OwnerType.home}
+          artworks={artworks}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          moreHref={moreHref}
+          onMorePress={onMorePress}
+          {...(section.trackItemImpressions
+            ? {
+                onViewableItemsChanged: onViewableItemsChanged,
+                viewabilityConfig: viewabilityConfig,
+              }
+            : {})}
+        />
+      )}
 
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
@@ -159,6 +169,7 @@ const fragment = graphql`
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
+          ...ArtworksCard_artworks
         }
       }
     }
