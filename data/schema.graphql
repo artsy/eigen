@@ -4408,10 +4408,13 @@ type Author {
   initials(length: Int = 3): String
   instagramHandle: String @deprecated(reason: "Use `socials.instagram` instead")
 
-  # A type-specific ID.
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
   name: String!
   role: String
+
+  # A slug ID.
+  slug: ID
   socials: AuthorSocials
   twitterHandle: String @deprecated(reason: "Use `socials.x` instead")
 }
@@ -19189,7 +19192,7 @@ type Query {
 
   # An Editorial author
   author(
-    # The ID of the author
+    # The slug or ID of the author
     id: String!
   ): Author
   authorsConnection(
@@ -25163,7 +25166,7 @@ type Viewer {
 
   # An Editorial author
   author(
-    # The ID of the author
+    # The slug or ID of the author
     id: String!
   ): Author
   authorsConnection(
