@@ -1,4 +1,4 @@
-import { Flex, Image, useSpace, useScreenDimensions, Text } from "@artsy/palette-mobile"
+import { Flex, Image, useSpace, useScreenDimensions } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { graphql, useFragment } from "react-relay"
