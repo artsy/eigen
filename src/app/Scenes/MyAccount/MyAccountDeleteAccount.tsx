@@ -45,7 +45,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
-          contentContainerStyle={{ padding: space(2), paddingBottom: space(2) }}
+          contentContainerStyle={{ padding: space(2) }}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
