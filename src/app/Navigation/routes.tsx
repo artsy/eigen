@@ -206,6 +206,8 @@ import {
   SearchScreen,
   SearchScreenQuery,
 } from "app/Scenes/Search/Search"
+import { discoverSomethingNewQuery } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
+import { exploreByCategoryQuery } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import {
   ShowMoreInfoQueryRenderer,
   ShowMoreInfoScreenQuery,
@@ -1459,7 +1461,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [SearchScreenQuery],
+    queries: [SearchScreenQuery, exploreByCategoryQuery, discoverSomethingNewQuery],
     prepareVariables: [() => searchQueryDefaultVariables],
   },
   {
