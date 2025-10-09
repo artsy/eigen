@@ -1,17 +1,19 @@
 {
-  "extends": [
-    "@artsy:app",
-    ":automergePatch",
-    "helpers:pinGitHubActionDigests"
-  ],
+  "extends": ["@artsy:app", ":automergePatch", "helpers:pinGitHubActionDigests"],
   "packageRules": [
     {
       "matchDatasources": ["docker"],
       "matchPackageNames": ["cimg/android", "cimg/ruby"],
       "matchFileNames": [".circleci/config.yml"],
       "enabled": false
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["packageManager"],
+      "enabled": false
     }
   ],
+
   "assignees": ["gkartalis", "brainbicycle"],
   "reviewers": ["gkartalis", "brainbicycle"]
 }
