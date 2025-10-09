@@ -105,7 +105,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
-  const showeHomeViewCardRail = enableNewHomeViewCardRailType && variant.name === "experiment"
+  const showeHomeViewCardRail =
+    enableNewHomeViewCardRailType &&
+    variant.name === "experiment" &&
+    section.internalID === "home-view-section-new-works-for-you"
 
   return (
     <Flex {...flexProps}>

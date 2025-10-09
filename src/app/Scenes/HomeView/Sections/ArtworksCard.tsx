@@ -12,17 +12,22 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   const { width, height } = useScreenDimensions()
 
   const layout = artworksData[0].image.aspectRatio < 1 ? "horizontal" : "vertical"
+
+  const cardHeight = height / 2.5
+  const cardWidth = width - space(2) - space(2)
+
+  const smallArtworksDimentions = cardHeight / 2
   const mainArtworkDimantions =
     layout === "horizontal"
       ? {
-          width: width / 2 - space(0.5) / 2,
-          height: height / 2 + space(0.5),
+          width: cardWidth / 2 - space(0.5) / 2,
+          height: cardHeight + space(0.5),
         }
       : {
-          width: width,
-          height: height / 2,
+          width: cardWidth,
+          height: cardHeight,
         }
-  const smallArtworksDimentions = height / 4
+
   // Helper function to get artwork configuration
   const getArtworkConfig = (index: number) => {
     const artwork = artworksData[index]
@@ -36,20 +41,11 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
         aspectRatio: 1,
         href: artwork?.href,
       }
-    } else if (index === 1) {
-      return {
-        artwork,
-        imageURL: artwork?.image?.url,
-        width: width / 2 - space(0.5) / 2,
-        height: smallArtworksDimentions,
-        aspectRatio: artwork?.image?.aspectRatio,
-        href: artwork?.href,
-      }
     } else {
       return {
         artwork,
         imageURL: artwork?.image?.url,
-        width: width / 2 - space(0.5) / 2,
+        width: cardWidth / 2 - space(0.5) / 2,
         height: smallArtworksDimentions,
         aspectRatio: artwork?.image?.aspectRatio,
         href: artwork?.href,
@@ -63,7 +59,12 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   const rightArtwork = getArtworkConfig(2)
 
   return (
-    <Flex width={width} flexDirection={layout === "horizontal" ? "row" : "column"} gap={0.5}>
+    <Flex
+      width={cardWidth}
+      flexDirection={layout === "horizontal" ? "row" : "column"}
+      gap={0.5}
+      alignSelf="center"
+    >
       <RouterLink>
         <Image
           src={mainArtwork.imageURL || ""}
