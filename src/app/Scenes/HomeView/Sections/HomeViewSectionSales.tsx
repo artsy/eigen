@@ -98,7 +98,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
             />
           )
         }}
-        ListFooterComponent={
+        ListFooterComponent={() =>
           viewAll ? (
             <BrowseMoreRailCard
               href={viewAll.href}

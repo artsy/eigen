@@ -71,9 +71,9 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       keyboardShouldPersistTaps="handled"
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<FilteredArtworkGridZeroState />}
-      ListFooterComponent={
+      ListFooterComponent={() => (
         <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && !!isLoadingNext} />
-      }
+      )}
       onEndReached={loadMore}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
       renderItem={renderItem}

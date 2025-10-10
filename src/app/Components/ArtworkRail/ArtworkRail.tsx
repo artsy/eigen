@@ -12,7 +12,7 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import React, { memo, ReactElement, useCallback } from "react"
+import React, { memo, ReactElement, useCallback, useMemo } from "react"
 import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -88,6 +88,22 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       [hideArtistName, onPress, showPartnerName]
     )
 
+    const listFooterComponent = useMemo(() => {
+      return (
+        <>
+          {!!(onMorePress || moreHref) && (
+            <BrowseMoreRailCard
+              dark={dark}
+              href={moreHref}
+              onPress={onMorePress}
+              text="Browse All Artworks"
+            />
+          )}
+          {ListFooterComponent}
+        </>
+      )
+    }, [onMorePress, moreHref, dark, ListFooterComponent])
+
     return (
       <FlatList
         data={artworks}
@@ -96,19 +112,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
         disableVirtualization={!isNewArchitectureEnabled}
         keyExtractor={(item: Artwork) => item.internalID}
-        ListFooterComponent={
-          <>
-            {!!(onMorePress || moreHref) && (
-              <BrowseMoreRailCard
-                dark={dark}
-                href={moreHref}
-                onPress={onMorePress}
-                text="Browse All Artworks"
-              />
-            )}
-            {ListFooterComponent}
-          </>
-        }
+        ListFooterComponent={listFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
         ref={listRef}
         onEndReached={onEndReached}

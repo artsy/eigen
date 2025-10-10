@@ -62,7 +62,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

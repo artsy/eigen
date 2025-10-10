@@ -132,9 +132,9 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           }
           onEndReached={loadMore}
           onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-          ListFooterComponent={
+          ListFooterComponent={() => (
             <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-          }
+          )}
           renderItem={({ item, index, columnIndex }) => {
             const imgAspectRatio = item.image?.aspectRatio ?? 1
             const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)

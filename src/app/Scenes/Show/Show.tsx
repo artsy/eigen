@@ -107,7 +107,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter")]}
           viewabilityConfig={viewConfigRef.current}
-          ListFooterComponent={<Spacer y={2} />}
+          ListFooterComponent={() => <Spacer y={2} />}
           ItemSeparatorComponent={() => <Spacer y="15px" />}
           contentContainerStyle={{
             paddingBottom: 40,

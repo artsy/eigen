@@ -82,12 +82,10 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = m
           horizontal
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <Spacer x={2} />}
-          ListFooterComponent={
-            viewAll
-              ? () => (
-                  <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
-                )
-              : undefined
+          ListFooterComponent={() =>
+            viewAll ? (
+              <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
+            ) : null
           }
           disableVirtualization={!isNewArchitectureEnabled}
           ItemSeparatorComponent={() => <Spacer x={2} />}
