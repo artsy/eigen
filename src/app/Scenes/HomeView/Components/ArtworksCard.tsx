@@ -1,11 +1,12 @@
 import { Flex, Image, useSpace, useScreenDimensions } from "@artsy/palette-mobile"
+import { ArtworksCard_artworks$key } from "__generated__/ArtworksCard_artworks.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworksCardProps extends ArtworkActionTrackingProps {
-  artworks: any
+  artworks: ArtworksCard_artworks$key
 }
 
 export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
@@ -14,7 +15,9 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   const { width, height } = useScreenDimensions()
   const isIPad = isTablet()
 
-  const isLeadingImageVertical = artworksData[0].image.aspectRatio < 1 || isIPad
+  if (!artworksData || !artworksData[0] || !artworksData[0]?.image) return null
+
+  const isLeadingImageVertical = artworksData[0]?.image?.aspectRatio < 1 || !!isIPad
 
   const cardHeight = isIPad ? height / 2 : height / 2.5
   const cardWidth = width - space(4)
@@ -30,11 +33,13 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   const renderArtwork = (artwork: any, width: number, height: number) => (
     <RouterLink>
       <Image
+        accessibilityLabel="artwork image"
         src={artwork?.image?.url || ""}
         width={width}
         height={height}
         blurhash={artwork?.image?.blurhash}
         resizeMode="cover"
+        testID="artwork-image"
       />
     </RouterLink>
   )
@@ -45,6 +50,7 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
       flexDirection={isLeadingImageVertical ? "row" : "column"}
       gap={0.5}
       alignSelf="center"
+      testID="artworks-card"
     >
       {renderArtwork(artworksData[0], dimensions.main.width, dimensions.main.height)}
 
