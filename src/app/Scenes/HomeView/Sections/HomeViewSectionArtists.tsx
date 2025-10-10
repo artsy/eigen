@@ -28,6 +28,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
@@ -118,7 +119,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
       <CardRailFlatList<Artist>
         data={artists}
         keyExtractor={(artist) => artist.internalID}
-        disableVirtualization
+        disableVirtualization={!isNewArchitectureEnabled}
         onEndReached={onEndReached}
         ItemSeparatorComponent={() => <Spacer x={1} />}
         ListFooterComponent={() => {

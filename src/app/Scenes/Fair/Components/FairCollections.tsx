@@ -6,6 +6,7 @@ import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SmallCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { compact } from "lodash"
 import { memo, useCallback } from "react"
 import { isTablet } from "react-native-device-info"
@@ -59,7 +60,7 @@ export const FairCollections: React.FC<FairCollectionsProps> = memo(({ fair, ...
       <CardRailFlatList<Collection>
         // This is required to avoid broken virtualization on nested flatlists
         // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
-        disableVirtualization
+        disableVirtualization={!isNewArchitectureEnabled}
         data={fair.marketingCollections}
         keyExtractor={(_, i) => String(i)}
         renderItem={renderItem}
