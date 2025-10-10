@@ -31,13 +31,14 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   /** Do not show add to artworks list prompt */
   disableArtworksListPrompt?: boolean
   disableProgressiveOnboarding?: boolean
+  enableImpressionsTracking?: boolean
   hasMore?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
   hideCuratorsPick?: boolean
   hideIncreasedInterest?: boolean
-  hideViewFollowsLink?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
+  hideViewFollowsLink?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
   onPress?: (artworkID: string) => void
@@ -63,6 +64,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerType,
   disableArtworksListPrompt,
   disableProgressiveOnboarding,
+  enableImpressionsTracking,
   hasMore,
   hideCreateAlertOnArtworkPreview,
   hideCuratorsPick,
@@ -71,15 +73,15 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   hideSaveIcon,
   isLoading,
   ListEmptyComponent,
+  ListFooterComponent,
   ListHeaderComponent,
   loadMore,
   onPress,
+  onViewableItemsChanged,
   pageSize = MASONRY_LIST_PAGE_SIZE,
   partnerOffer,
   priceOfferMessage,
   refreshControl,
-  ListFooterComponent,
-  onViewableItemsChanged,
   viewabilityConfig,
   ...rest
 }) => {
@@ -112,6 +114,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
           // Extra space between items for one column artwork grids
           paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
         }}
+        enableImpressionsTracking={enableImpressionsTracking}
         partnerOffer={partnerOffer}
         priceOfferMessage={priceOfferMessage}
         onPress={onPress}

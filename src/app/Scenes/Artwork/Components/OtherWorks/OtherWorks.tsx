@@ -1,17 +1,14 @@
-import { ContextModule } from "@artsy/cohesion"
-import { Spacer, Box, Text, useSpace, Separator, Join } from "@artsy/palette-mobile"
+import { Box, Join, Separator } from "@artsy/palette-mobile"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
-import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
-import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
-import { Schema } from "app/utils/track"
+import { OtherWorksSection } from "app/Scenes/Artwork/Components/OtherWorks/OtherWorksSection"
 import { filter } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ContextGridCTA } from "./ContextGridCTA"
 
-type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>
+export type OtherWorksGrid = NonNullable<
+  NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]
+>
 type ArtworkGrid = NonNullable<
   NonNullable<Artwork_artworkBelowTheFold$data["contextGrids"]>[number]
 >
@@ -26,8 +23,6 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null | undefined> | 
 }
 
 const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork }) => {
-  const { width } = useScreenDimensions()
-  const space = useSpace()
   const grids = artwork.contextGrids
   const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
@@ -44,25 +39,7 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
       }
     >
       {gridsToShow.map((grid, index) => (
-        <React.Fragment key={`Grid-${index}`}>
-          <Text variant="md" textAlign="left">
-            {grid.title}
-          </Text>
-          <Spacer y={2} />
-          <GenericGrid
-            trackingFlow={Schema.Flow.RecommendedArtworks}
-            contextModule={grid.__typename as ContextModule}
-            artworks={extractNodes(grid.artworks)}
-            width={width - space(2)}
-          />
-          <Box mt={2}>
-            <ContextGridCTA
-              contextModule={grid.__typename}
-              href={grid.ctaHref || undefined}
-              label={grid.ctaTitle ?? ""}
-            />
-          </Box>
-        </React.Fragment>
+        <OtherWorksSection key={`Grid-${index}`} grid={grid} index={index} artwork={artwork} />
       ))}
     </Join>
   )
@@ -71,6 +48,8 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
 export const OtherWorksFragmentContainer = createFragmentContainer(OtherWorks, {
   artwork: graphql`
     fragment OtherWorks_artwork on Artwork {
+      internalID
+      slug
       contextGrids {
         __typename
         title
@@ -79,7 +58,15 @@ export const OtherWorksFragmentContainer = createFragmentContainer(OtherWorks, {
         artworks: artworksConnection(first: 6) {
           edges {
             node {
-              ...GenericGrid_artworks
+              id
+              slug
+              href
+              # ...GenericGrid_artworks
+              image(includeAll: false) {
+                aspectRatio
+                blurhash
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
         }
