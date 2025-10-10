@@ -24,8 +24,11 @@ export const useBottomTabsBadges = () => {
   const visualClueStyles = {
     backgroundColor: color("blue100"),
     top: 2,
+    // We are defining both max and min width and height to ensure the badge is a circle on the new architecture
     minWidth: VISUAL_CLUE_HEIGHT,
+    maxWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
+    minHeight: VISUAL_CLUE_HEIGHT,
     borderRadius: VISUAL_CLUE_HEIGHT / 2,
     borderColor: color("mono0"),
     borderWidth: 1,
