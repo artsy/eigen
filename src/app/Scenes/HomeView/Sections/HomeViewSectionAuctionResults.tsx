@@ -26,6 +26,7 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
@@ -107,7 +108,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
           data={auctionResults}
-          disableVirtualization
+          disableVirtualization={!isNewArchitectureEnabled}
           showsHorizontalScrollIndicator={false}
           renderItem={renderItem}
           keyExtractor={(item) => item.internalID}
