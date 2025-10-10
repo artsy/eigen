@@ -144,7 +144,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         )
       }}
       onEndReached={handleLoadMore}
-      ListFooterComponent={<ArtworkListsLoadingIndicator visible={hasNext} />}
+      ListFooterComponent={() => <ArtworkListsLoadingIndicator visible={hasNext} />}
     />
   )
 }

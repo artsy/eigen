@@ -93,7 +93,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
                 <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
               ) : undefined
             }
-            ListFooterComponent={
+            ListFooterComponent={() => (
               <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -103,7 +103,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
               >
                 <Spinner />
               </Flex>
-            }
+            )}
           />
         )
       }}

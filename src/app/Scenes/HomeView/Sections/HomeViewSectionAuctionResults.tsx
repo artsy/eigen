@@ -112,7 +112,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
           showsHorizontalScrollIndicator={false}
           renderItem={renderItem}
           keyExtractor={(item) => item.internalID}
-          ListFooterComponent={
+          ListFooterComponent={() =>
             viewAll ? (
               <BrowseMoreRailCard href={href} onPress={onViewAllPress} text={viewAll.buttonText} />
             ) : undefined

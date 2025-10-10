@@ -165,7 +165,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         refreshControl={refreshControl}
         style={{ paddingHorizontal: 10, flex: 0 }}
         contentContainerStyle={{ justifyContent: "flex-end", flexGrow: 1 }}
-        ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
+        ListFooterComponent={() => (
+          <LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />
+        )}
       />
     </>
   )

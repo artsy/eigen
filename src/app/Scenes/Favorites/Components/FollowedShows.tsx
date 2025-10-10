@@ -59,7 +59,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
       contentContainerStyle={{ paddingTop: headerHeight }}
       ListHeaderComponent={FollowOptionPicker}
       ItemSeparatorComponent={() => <Spacer y={1} />}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

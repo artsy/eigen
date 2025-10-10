@@ -284,7 +284,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           ItemSeparatorComponent={AuctionResultListSeparator}
           style={{ width: screenWidth, left: -20 }}
           onEndReached={loadMoreAuctionResults}
-          ListFooterComponent={
+          ListFooterComponent={() =>
             loadingMoreData ? (
               <Flex my={4}>
                 <Spinner />

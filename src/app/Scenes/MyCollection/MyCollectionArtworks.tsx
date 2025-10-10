@@ -132,9 +132,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
           }
         }}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        }
+        )}
         refreshControl={RefreshControl}
       />
     </Flex>

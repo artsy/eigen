@@ -60,7 +60,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
       refreshControl={RefreshControl}
       ListHeaderComponent={FollowOptionPicker}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

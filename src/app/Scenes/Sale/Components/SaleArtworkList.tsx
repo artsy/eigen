@@ -49,7 +49,7 @@ export const SaleArtworkList: React.FC<Props> = ({
       data={artworks}
       onEndReached={loadMoreArtworks}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
       }
       renderItem={({ item }) => (

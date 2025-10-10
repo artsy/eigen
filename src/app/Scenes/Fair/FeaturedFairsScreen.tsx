@@ -59,7 +59,7 @@ export const FeaturedFairs: React.FC<FeaturedFairsProps> = ({ viewer }) => {
             }}
             style={{ marginTop: 20 }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
-            ListFooterComponent={<Spacer y={2} />}
+            ListFooterComponent={() => <Spacer y={2} />}
           />
         </Screen.Body>
       </Screen>

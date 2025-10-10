@@ -91,7 +91,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
             <></>
           )
         }
-        ListFooterComponent={
+        ListFooterComponent={() =>
           isLoadingNext ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />

@@ -62,7 +62,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
       onEndReached={loadMoreExhibitors}
       // Only load the next page when the user is 20% away from the end of the list
       onEndReachedThreshold={0.5}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         shouldDisplaySpinner ? (
           <Box p={2}>
             <Flex flex={1} flexDirection="row" justifyContent="center">

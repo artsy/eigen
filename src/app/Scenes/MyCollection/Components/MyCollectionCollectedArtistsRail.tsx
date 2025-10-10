@@ -63,7 +63,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
           paddingBottom: space(4),
           paddingLeft: space(2),
         }}
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <Flex flexDirection="row" mr={1}>
             {!!isLoadingNext && (
               <Flex
@@ -77,7 +77,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
               </Flex>
             )}
           </Flex>
-        }
+        )}
         onEndReached={handleLoadMore}
       />
     </Flex>

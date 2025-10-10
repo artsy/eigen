@@ -185,7 +185,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       keyExtractor={(item) => item.id}
       numColumns={getAdjustedNumColumns()}
       renderItem={renderItem}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         hasMore ? (
           <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
         ) : null
