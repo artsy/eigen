@@ -7,6 +7,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 
+let mockIsNewArchitectureEnabled = false
+
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
 }))
@@ -14,6 +16,12 @@ jest.mock("app/utils/queryPrefetching", () => ({
 jest.mock("app/utils/Sentinel", () => ({
   __esModule: true,
   Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
+}))
+
+jest.mock("app/utils/isNewArchitectureEnabled", () => ({
+  get isNewArchitectureEnabled() {
+    return mockIsNewArchitectureEnabled
+  },
 }))
 
 describe("RouterLink", () => {
@@ -152,6 +160,22 @@ describe("RouterLink", () => {
 
       it("does not prefetch", () => {
         expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route")
+      })
+    })
+
+    describe("when isNewArchitectureEnabled is true", () => {
+      beforeAll(() => {
+        mockIsNewArchitectureEnabled = true
+      })
+
+      afterAll(() => {
+        mockIsNewArchitectureEnabled = false
+      })
+
+      it("does not prefetch", () => {
+        renderWithWrappers(<TestComponent />)
+
+        expect(mockPrefetch).not.toHaveBeenCalled()
       })
     })
   })
