@@ -26,19 +26,17 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
     return null
   }
 
-  const href = `/collections-by-category/${card.slug}`
   const navigationProps = {
     title: card.title,
   }
 
   const columns = NUM_COLUMNS_MASONRY
-
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
   const imageWidth = width / columns - space(2) - imageColumnGaps
 
   const handleCardPress = () => {
-    if (href) {
-      tracking.trackEvent(tracks.tappedCardGroup(card.slug, href, index))
+    if (card.href) {
+      tracking.trackEvent(tracks.tappedCardGroup(card.slug, card.href, index))
     }
   }
 
@@ -49,7 +47,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
      * as a variable, its viewer will be stored in its own cache key.
      */
     <RouterLink
-      to={href}
+      to={card.href}
       navigationProps={navigationProps}
       onPress={handleCardPress}
       prefetchVariables={{ categorySlug: card.slug }}
@@ -70,6 +68,7 @@ const fragment = graphql`
     category
     imageUrl @required(action: NONE)
     slug @required(action: NONE)
+    href
     title
   }
 `

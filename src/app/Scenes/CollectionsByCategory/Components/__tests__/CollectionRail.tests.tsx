@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { CollectionRailHomeViewSectionCardsTestQuery } from "__generated__/CollectionRailHomeViewSectionCardsTestQuery.graphql"
-import { CollectionRail } from "app/Scenes/CollectionsByCategory/CollectionRail"
+import { CollectionRail } from "app/Scenes/CollectionsByCategory/Components/CollectionRail"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"

@@ -8,7 +8,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 export const DiscoverSomethingNew: React.FC = memo(
   withSuspense({
     Component: () => {
-      const data = useLazyLoadQuery<DiscoverSomethingNewQuery>(query, {})
+      const data = useLazyLoadQuery<DiscoverSomethingNewQuery>(discoverSomethingNewQuery, {})
 
       if (!data?.collections) {
         return null
@@ -21,7 +21,7 @@ export const DiscoverSomethingNew: React.FC = memo(
   })
 )
 
-const query = graphql`
+export const discoverSomethingNewQuery = graphql`
   query DiscoverSomethingNewQuery @cacheable {
     collections: discoveryMarketingCollections {
       ...DiscoverSomethingNewChips_collection

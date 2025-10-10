@@ -8,7 +8,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 export const ExploreByCategory: React.FC = memo(
   withSuspense({
     Component: () => {
-      const data = useLazyLoadQuery<ExploreByCategoryQuery>(query, {})
+      const data = useLazyLoadQuery<ExploreByCategoryQuery>(exploreByCategoryQuery, {})
 
       if (!data?.categories) {
         return null
@@ -21,7 +21,7 @@ export const ExploreByCategory: React.FC = memo(
   })
 )
 
-const query = graphql`
+export const exploreByCategoryQuery = graphql`
   query ExploreByCategoryQuery @cacheable {
     categories: discoveryCategoriesConnection {
       ...ExploreByCategoryCards_category

@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { CollectionsByCategoryFooterTestQuery } from "__generated__/CollectionsByCategoryFooterTestQuery.graphql"
-import { CollectionsByCategoryFooter } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryFooter"
+import { CollectionsByCategoryFooter } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryFooter"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
