@@ -20,7 +20,7 @@ export const experiments = {
     description: "Add quick links section to home view",
   },
   "onyx_homeView-new-card-rail-type": {
-    description: "Change the card rail type to the new design",
+    description: "New card rail type for home view",
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

@@ -11,7 +11,7 @@ describe("ArtworksCard", () => {
       if (!props.artwork) {
         return null
       }
-      console.log("LOGD props.artwork", props.artwork)
+
       return <ArtworksCard artworks={[props.artwork]} />
     },
     query: graphql`

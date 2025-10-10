@@ -44,7 +44,7 @@ export const MenuItem: React.FC<{
   alignItems = "center",
 }) => {
   const showInline = PixelRatio.getFontScale() < 1.5 || !value
-  // onyx_homeView-new-card-rail-type
+
   return (
     <RouterLink onPress={onPress} to={href} underlayColor="mono5" disabled={disabled}>
       <Flex px={px ?? 2}>
