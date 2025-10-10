@@ -45,7 +45,6 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
       flexDirection={isLeadingImageVertical ? "row" : "column"}
       gap={0.5}
       alignSelf="center"
-      backgroundColor="red"
     >
       {renderArtwork(artworksData[0], dimensions.main.width, dimensions.main.height)}
 
@@ -93,15 +92,10 @@ function calculateDimensions(
 
 const artworksCard = graphql`
   fragment ArtworksCard_artworks on Artwork @relay(plural: true) {
-    href
-    internalID
-    slug
     image(includeAll: false) {
       blurhash
       url(version: ["larger", "large", "medium", "small", "square"])
       aspectRatio
-      width
-      height
     }
   }
 `
