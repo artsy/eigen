@@ -16846,6 +16846,9 @@ type Order {
   # Order code
   code: String!
 
+  # Order creation time
+  createdAt: String
+
   # Express Checkout wallet type
   creditCardWalletType: OrderCreditCardWalletTypeEnum
 
