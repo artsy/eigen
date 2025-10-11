@@ -59,5 +59,5 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
 
 export const Division = styled.View<{ horizontal?: boolean }>`
   border: 1px solid ${themeGet("colors.mono0")};
-  ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
+  ${({ horizontal }: { horizontal?: boolean }) => (horizontal ? "height" : "width")}: 1px;
 `

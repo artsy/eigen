@@ -203,7 +203,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
                 height="99"
                 width="99"
                 mr={2}
-                borderRadius="50"
+                borderRadius={50}
                 backgroundColor={color("mono10")}
                 justifyContent="center"
                 alignItems="center"
