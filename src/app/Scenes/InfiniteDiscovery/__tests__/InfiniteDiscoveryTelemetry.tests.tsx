@@ -1,7 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { render, waitFor } from "@testing-library/react-native"
 import { InfiniteDiscoveryQueryRenderer } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
-import React from "react"
 import { useLazyLoadQuery } from "react-relay"
 
 jest.mock("@sentry/react-native", () => ({

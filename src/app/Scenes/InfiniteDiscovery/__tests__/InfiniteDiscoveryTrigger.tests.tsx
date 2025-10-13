@@ -1,11 +1,12 @@
 import { render } from "@testing-library/react-native"
 import { InfiniteDiscovery } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import React from "react"
 
 const mockArtwork = {
   internalID: "artwork-1",
   slug: "test-artwork",
+  title: "Test Artwork",
   artists: [{ internalID: "artist-1" }],
+  " $fragmentSpreads": {} as any,
 }
 
 describe("InfiniteDiscovery Dynamic Trigger", () => {

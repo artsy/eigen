@@ -1,12 +1,13 @@
 import { render } from "@testing-library/react-native"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import React from "react"
 
 const mockArtwork: InfiniteDiscoveryArtwork = {
   internalID: "artwork-1",
   slug: "test-artwork",
+  title: "Test Artwork",
   artists: [{ internalID: "artist-1" }],
+  " $fragmentSpreads": {} as any,
 }
 
 describe("Swiper Last Card Navigation", () => {
