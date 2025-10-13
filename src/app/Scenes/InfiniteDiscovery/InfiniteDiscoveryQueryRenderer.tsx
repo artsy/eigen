@@ -1,5 +1,5 @@
 import { Flex, Screen } from "@artsy/palette-mobile"
-import { addBreadcrumb, captureException } from "@sentry/react-native"
+import { addBreadcrumb, captureException, captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryQueryRendererQuery } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
@@ -37,6 +37,22 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
+    // Add telemetry for fewer than 5 initial artworks
+    useEffect(() => {
+      if (initialArtworks.length < 5) {
+        captureMessage(
+          `Discovery daily received ${initialArtworks.length} initial artworks (expected 5)`,
+          {
+            level: "info",
+            extra: {
+              artworkCount: initialArtworks.length,
+              artworkIds: initialArtworks.map((a) => a.internalID),
+            },
+          }
+        )
+      }
+    }, [initialArtworks.length])
+
     // Retain the queries to not have them GCed when swiping many times
     const retainQuery = useCallback((excludeArtworkIds: string[]) => {
       const queryRequest = getRequest(infiniteDiscoveryQuery)
@@ -57,6 +73,22 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         const newArtworks = extractNodes(response?.discoverArtworks)
         if (newArtworks.length) {
           setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+
+          // Add telemetry for fewer than 5 fetched artworks
+          if (newArtworks.length < 5) {
+            captureMessage(
+              `Discovery daily fetch returned ${newArtworks.length} artworks (expected 5)`,
+              {
+                level: "info",
+                extra: {
+                  artworkCount: newArtworks.length,
+                  artworkIds: newArtworks.map((a) => a.internalID),
+                  excludeArtworkIds: excludeArtworkIds,
+                  isRetry,
+                },
+              }
+            )
+          }
         }
         retainQuery(excludeArtworkIds)
       } catch (error) {

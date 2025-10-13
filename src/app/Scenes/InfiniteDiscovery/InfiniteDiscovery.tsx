@@ -163,6 +163,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     fetchMoreArtworks(unswipedCardIds)
   }, [fetchMoreArtworks, unswipedCardIds])
 
+  const dynamicTriggerIndex = useMemo(() => {
+    if (artworks.length <= 1) return 0
+    if (artworks.length <= 2) return 0
+    if (artworks.length <= 3) return 1
+    return 2
+  }, [artworks.length])
+
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
@@ -186,7 +193,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Swiper
           cards={artworks}
           onReachTriggerIndex={handleFetchMore}
-          triggerIndex={2}
+          triggerIndex={dynamicTriggerIndex}
           onNewCardReached={handleNewCardReached}
           onRewind={handleRewind}
           onSwipe={handleSwipe}

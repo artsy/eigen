@@ -178,7 +178,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         const isSwipeLeft = translationX < 0
         const isLastCard = _activeIndex.value === cards.length - 1
 
-        // Fetching more cards on the 3rd, 8th, 13th... swipe
         if (isSwipeLeft && !isLastCard && cards.length - 1 - _activeIndex.value === triggerIndex) {
           runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
         }
@@ -192,6 +191,11 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         }
 
         if (isSwipeLeft && isLastCard) {
+          if (onReachTriggerIndex && swipedCardKey) {
+            runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
+            swipeLeft(swipedCardKey, swipedCardIndex)
+            return
+          }
           dragCardBackToTheDeck()
           return
         }
