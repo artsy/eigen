@@ -93,7 +93,7 @@ import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Colle
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
-import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
+import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryBody"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { fairExhibitorsQuery } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
@@ -206,6 +206,8 @@ import {
   SearchScreen,
   SearchScreenQuery,
 } from "app/Scenes/Search/Search"
+import { discoverSomethingNewQuery } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
+import { exploreByCategoryQuery } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import {
   ShowMoreInfoQueryRenderer,
   ShowMoreInfoScreenQuery,
@@ -1459,7 +1461,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [SearchScreenQuery],
+    queries: [SearchScreenQuery, exploreByCategoryQuery, discoverSomethingNewQuery],
     prepareVariables: [() => searchQueryDefaultVariables],
   },
   {

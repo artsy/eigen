@@ -1,8 +1,7 @@
 import { Flex, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
-import { useRoute } from "@react-navigation/native"
 import { CollectionsByCategoryFooterQuery } from "__generated__/CollectionsByCategoryFooterQuery.graphql"
 import { CollectionsByCategoryFooter_category$key } from "__generated__/CollectionsByCategoryFooter_category.graphql"
-import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
+import { useCollectionsByCategoryParams } from "app/Scenes/CollectionsByCategory/hooks/useCollectionsByCategoryParams"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -16,8 +15,7 @@ interface CollectionsByCategoryFooterProps {
 export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> = ({
   categories: categoriesProp,
 }) => {
-  const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const slug = params.slug
+  const { slug } = useCollectionsByCategoryParams()
 
   const connection = useFragment(fragment, categoriesProp)
 
