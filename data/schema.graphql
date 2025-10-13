@@ -9051,6 +9051,7 @@ type CreateArtworkImportArtworksFailure {
 
 input CreateArtworkImportArtworksInput {
   artworkImportID: String!
+  async: Boolean
   clientMutationId: String
 }
 
@@ -9067,6 +9068,7 @@ type CreateArtworkImportArtworksSuccess {
   artworkImport: ArtworkImport
   artworkImportID: String!
   createdArtworksCount: Int!
+  queued: Boolean
 }
 
 type CreateArtworkImportCellFlagFailure {
