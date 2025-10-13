@@ -221,7 +221,7 @@ export const HomeView: React.FC = memo(() => {
           renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
-          ListFooterComponent={
+          ListFooterComponent={() =>
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
                 <Spinner />
