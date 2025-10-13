@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNegativeSignalsBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
+import { calculateDynamicTriggerIndex } from "app/Scenes/InfiniteDiscovery/helpers"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -163,12 +164,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     fetchMoreArtworks(unswipedCardIds)
   }, [fetchMoreArtworks, unswipedCardIds])
 
-  const dynamicTriggerIndex = useMemo(() => {
-    if (artworks.length <= 1) return 0
-    if (artworks.length <= 2) return 0
-    if (artworks.length <= 3) return 1
-    return 2
-  }, [artworks.length])
+  const dynamicTriggerIndex = useMemo(
+    () => calculateDynamicTriggerIndex(artworks.length),
+    [artworks.length]
+  )
 
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
