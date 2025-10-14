@@ -74,7 +74,7 @@ export const MyProfileScreenWrapperPlaceholder: React.FC<
 
   return (
     <Screen>
-      <Screen.Header title={title} hideLeftElements={hideLeftElements} onBack={goBack} />
+      <Screen.Header title="" hideLeftElements={hideLeftElements} onBack={goBack} />
       <Screen.StickySubHeader title={title} />
       <Screen.Body fullwidth>
         <Screen.ScrollView
