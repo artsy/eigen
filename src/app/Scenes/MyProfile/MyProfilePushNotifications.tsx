@@ -8,7 +8,10 @@ import {
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import {
+  MyProfileScreenWrapper,
+  MyProfileScreenWrapperPlaceholder,
+} from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -157,7 +160,10 @@ const NotificationPermissionsBox = ({
 
 const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
   return (
-    <MyProfileScreenWrapper title="Notifications" contentContainerStyle={{ paddingHorizontal: 0 }}>
+    <MyProfileScreenWrapperPlaceholder
+      title="Notifications"
+      contentContainerStyle={{ paddingHorizontal: 0 }}
+    >
       <Flex>
         <Content
           userNotificationSettings={
@@ -179,7 +185,7 @@ const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
           notificationAuthorizationStatus={PushAuthorizationStatus.NotDetermined}
         />
       </Flex>
-    </MyProfileScreenWrapper>
+    </MyProfileScreenWrapperPlaceholder>
   )
 }
 
