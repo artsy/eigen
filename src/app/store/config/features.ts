@@ -216,7 +216,7 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     description: "Enable new rail type on home",
-    // echoFlagKey: "AREnableNewHomeViewCardRailType",
+    echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

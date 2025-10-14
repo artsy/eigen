@@ -12,23 +12,10 @@ interface ArtworksCardProps extends ArtworkActionTrackingProps {
 export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   const artworksData = useFragment(artworksCard, artworks)
   const space = useSpace()
-  const { width, height } = useScreenDimensions()
-  const isIPad = isTablet()
 
-  if (!artworksData || !artworksData[0] || !artworksData[0]?.image) return null
+  const dimensions = useArtworksCardDimensions(artworksData[0]?.image?.aspectRatio ?? 1, space)
 
-  const isLeadingImageVertical = artworksData[0]?.image?.aspectRatio < 1 || !!isIPad
-
-  const cardHeight = isIPad ? height / 2 : height / 2.5
-  const cardWidth = width - space(4)
-
-  const dimensions = calculateDimensions(
-    isLeadingImageVertical,
-    cardWidth,
-    cardHeight,
-    isIPad,
-    space(0.5)
-  )
+  if (!artworksData[0]?.image) return null
 
   const renderArtwork = (artwork: any, width: number, height: number) => (
     <RouterLink>
@@ -46,15 +33,15 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
 
   return (
     <Flex
-      width={cardWidth}
-      flexDirection={isLeadingImageVertical ? "row" : "column"}
+      width={dimensions.cardWidth}
+      flexDirection={dimensions.isVertical ? "row" : "column"}
       gap={0.5}
       alignSelf="center"
       testID="artworks-card"
     >
       {renderArtwork(artworksData[0], dimensions.main.width, dimensions.main.height)}
 
-      <Flex flexDirection={isLeadingImageVertical ? "column" : "row"} gap={0.5}>
+      <Flex flexDirection={dimensions.isVertical ? "column" : "row"} gap={0.5}>
         {renderArtwork(artworksData[1], dimensions.small.width, dimensions.small.height)}
         {renderArtwork(artworksData[2], dimensions.small.width, dimensions.small.height)}
       </Flex>
@@ -62,36 +49,55 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
   )
 }
 
-// helper function to get artworks dimentions
-function calculateDimensions(
-  isVertical: boolean,
-  cardWidth: number,
-  cardHeight: number,
-  isIPad: boolean,
-  gap: number
-) {
+// Custom hook that handles all dimension calculations
+interface CardDimensions {
+  cardWidth: number
+  cardHeight: number
+  isVertical: boolean
+  main: { width: number; height: number }
+  small: { width: number; height: number }
+}
+
+function useArtworksCardDimensions(
+  aspectRatio: number,
+  space: ReturnType<typeof useSpace>
+): CardDimensions {
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+  const isIPad = isTablet()
+
+  const cardWidth = screenWidth - space(4)
+  const cardHeight = isIPad ? screenHeight / 2 : screenHeight / 2.5
+  const isVertical = aspectRatio < 1 || isIPad
+  const gapSize = space(0.5)
+
   if (isVertical) {
     const mainWidth = isIPad ? (cardWidth * 2) / 3 : cardWidth / 2
     return {
+      cardWidth,
+      cardHeight,
+      isVertical,
       main: {
         width: mainWidth,
         height: cardHeight,
       },
       small: {
-        width: cardWidth - mainWidth - gap,
-        height: cardHeight / 2 - gap / 2,
+        width: cardWidth - mainWidth - gapSize,
+        height: cardHeight / 2 - gapSize / 2,
       },
     }
   }
 
   return {
+    cardWidth,
+    cardHeight,
+    isVertical,
     main: {
       width: cardWidth,
       height: cardWidth,
     },
     small: {
-      width: cardWidth / 2 - gap / 2,
-      height: cardWidth / 2 - gap / 2,
+      width: cardWidth / 2 - gapSize / 2,
+      height: cardWidth / 2 - gapSize / 2,
     },
   }
 }
