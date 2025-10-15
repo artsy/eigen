@@ -11,26 +11,23 @@ interface ArticleHeroProps {
 }
 
 export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
-  const { width, safeAreaInsets } = useScreenDimensions()
-  const otherWidth = 650
+  const { width, height: screenHeight, safeAreaInsets } = useScreenDimensions()
   const data = useFragment(ArticleHeroFragment, article)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const hasVideo = !!data.hero?.media
   const hasImage = !!data.hero?.image?.url
 
-  // Render video with text overlay
+  // Render video with text overlay (FULLSCREEN layout)
   if (hasVideo) {
-    const aspectRatio = data.hero.image?.aspectRatio || 16 / 9
-    const height = otherWidth / aspectRatio
+    // Calculate height similar to web: max(50vh - navHeight, 360px)
+    const navHeight = 50 + safeAreaInsets.top
+    const videoHeight = Math.max(screenHeight * 0.5 - navHeight, 360)
+
     return (
       <Flex style={{ marginTop: safeAreaInsets.top }}>
-        <Flex width={width} height={height} position="relative">
-          <ArticleHeroVideo
-            videoUrl={data.hero.media}
-            width={otherWidth}
-            aspectRatio={aspectRatio}
-          />
+        <Flex width={width} height={videoHeight} position="relative">
+          <ArticleHeroVideo videoUrl={data.hero.media} width={width} height={videoHeight} />
           <LinearGradient
             colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.6)"]}
             start={{ x: 0, y: 0 }}

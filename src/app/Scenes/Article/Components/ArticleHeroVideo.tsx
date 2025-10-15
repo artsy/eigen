@@ -6,15 +6,10 @@ import { WebView } from "react-native-webview"
 interface ArticleHeroVideoProps {
   videoUrl: string
   width: number
-  aspectRatio?: number
+  height: number
 }
 
-export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({
-  videoUrl,
-  width,
-  aspectRatio = 16 / 9,
-}) => {
-  const height = width / aspectRatio
+export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, width, height }) => {
   const color = useColor()
   const backgroundColor = color("mono30")
 
