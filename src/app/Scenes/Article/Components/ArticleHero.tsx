@@ -1,7 +1,9 @@
 import { Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleHero_article$key } from "__generated__/ArticleHero_article.graphql"
+import { ArticleHeroVideo } from "app/Scenes/Article/Components/ArticleHeroVideo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
+import LinearGradient from "react-native-linear-gradient"
 import { useFragment, graphql } from "react-relay"
 
 interface ArticleHeroProps {
@@ -13,9 +15,84 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   const data = useFragment(ArticleHeroFragment, article)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
+  const hasVideo = !!data.hero?.media
+  const hasImage = !!data.hero?.image?.url
+
+  // Render video with text overlay
+  if (hasVideo) {
+    const aspectRatio = data.hero.image?.aspectRatio || 16 / 9
+    const height = width / aspectRatio
+
+    return (
+      <Flex>
+        <Flex width={width} height={height} position="relative">
+          <ArticleHeroVideo videoUrl={data.hero.media} width={width} aspectRatio={aspectRatio} />
+          <LinearGradient
+            colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.6)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <Flex px={2} pb={2} pt={4}>
+              <Text variant="xs" color="white" fontWeight="bold">
+                {data.vertical}
+              </Text>
+
+              <Text
+                variant="lg-display"
+                color="white"
+                style={{
+                  textShadowColor: "rgba(0,0,0,0.8)",
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 4,
+                }}
+              >
+                {data.title}
+              </Text>
+
+              <Text
+                variant="xs"
+                color="white"
+                mt={0.5}
+                style={{
+                  textShadowColor: "rgba(0,0,0,0.8)",
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 4,
+                }}
+              >
+                {data.byline}
+              </Text>
+
+              {!!data.publishedAt && (
+                <Text
+                  color="white"
+                  variant="xs"
+                  mt={0.5}
+                  style={{
+                    textShadowColor: "rgba(0,0,0,0.8)",
+                    textShadowOffset: { width: 0, height: 1 },
+                    textShadowRadius: 4,
+                  }}
+                >
+                  {DateTime.fromISO(data.publishedAt).toFormat("MMM d, yyyy")}
+                </Text>
+              )}
+            </Flex>
+          </LinearGradient>
+        </Flex>
+      </Flex>
+    )
+  }
+
+  // Render image with text below
   return (
     <>
-      {!!data.hero?.image?.url && (
+      {hasImage ? (
         <>
           <Image
             width={width}
@@ -23,10 +100,9 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
             aspectRatio={data.hero.image.aspectRatio}
             blurhash={showBlurhash ? data.hero.image.blurhash : undefined}
           />
-
           <Spacer y={2} />
         </>
-      )}
+      ) : null}
 
       <Flex mx={2}>
         <Text variant="xs" color="mono100">
@@ -60,6 +136,7 @@ const ArticleHeroFragment = graphql`
     publishedAt
     hero {
       ... on ArticleFeatureSection {
+        media
         image {
           aspectRatio
           blurhash
