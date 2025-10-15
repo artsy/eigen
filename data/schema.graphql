@@ -1851,9 +1851,6 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   isDisplayAuctionLink: Boolean
   isFollowed: Boolean
 
-  # Temporary field to test SEO experiment
-  isInSeoExperiment: Boolean
-
   # Whether the artist has been created by a user.
   isPersonalArtist: Boolean
   isPublic: Boolean!
@@ -3225,6 +3222,9 @@ type ArtworkFilterNode {
 
   # The href for this filtered connection
   href: String!
+
+  # The slug for this filter, derived from the title
+  slug: String!
 
   # The display title for this filtered connection
   title: String!
@@ -9051,6 +9051,7 @@ type CreateArtworkImportArtworksFailure {
 
 input CreateArtworkImportArtworksInput {
   artworkImportID: String!
+  async: Boolean
   clientMutationId: String
 }
 
@@ -9067,6 +9068,7 @@ type CreateArtworkImportArtworksSuccess {
   artworkImport: ArtworkImport
   artworkImportID: String!
   createdArtworksCount: Int!
+  queued: Boolean
 }
 
 type CreateArtworkImportCellFlagFailure {
@@ -10990,6 +10992,38 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+# A discovery category that contains artwork filters
+type DiscoveryArtworksWithFiltersCollection implements Node {
+  # The ID of the category
+  category: String!
+
+  # A connection of artwork filters for this category
+  filtersForArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): FiltersForArtworksConnectionConnection
+
+  # The href of the category
+  href: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # The URL of the image representing this category
+  imageUrl: String
+
+  # A type-specific ID
+  internalID: String!
+
+  # The slug of the category
+  slug: String
+
+  # The display title of the category
+  title: String!
+}
+
 # A connection to a list of items.
 type DiscoveryCategoriesConnectionConnection {
   # A list of edges.
@@ -11042,6 +11076,41 @@ type DiscoveryCategory implements Node {
   title: String!
 }
 
+# A union of different discovery category types
+union DiscoveryCategoryUnion = DiscoveryArtworksWithFiltersCollection | DiscoveryMarketingCollection
+
+# A discovery category that contains marketing collections
+type DiscoveryMarketingCollection implements Node {
+  # The ID of the category
+  category: String!
+
+  # The href of the category
+  href: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # The URL of the image representing this category
+  imageUrl: String
+
+  # A type-specific ID
+  internalID: String!
+
+  # Marketing collections for this discovery category
+  marketingCollections(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [MarketingCollection!]!
+
+  # The slug of the category
+  slug: String
+
+  # The display title of the category
+  title: String!
+}
+
 input DislikeArtworkInput {
   artworkID: String!
   clientMutationId: String
@@ -11079,8 +11148,14 @@ type DismissTaskSuccess {
 
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
+  # Text prompt for the buyer to take action
+  actionPrompt: String
+
   # Granular order states specific type that should be directly interpreted by clients
   messageType: DisplayTextsMessageTypeEnum!
+
+  # Collector facing name for buyer state
+  stateName: String!
 
   # Text to display as a first message on the page (header)
   title: String!
@@ -11097,6 +11172,7 @@ enum DisplayTextsMessageTypeEnum {
   COMPLETED_SHIP
   DECLINED_BY_BUYER
   DECLINED_BY_SELLER
+  OFFER_RECEIVED
   PAYMENT_FAILED
   PROCESSING_PAYMENT_PICKUP
   PROCESSING_PAYMENT_SHIP
@@ -14773,6 +14849,9 @@ type Me implements Node {
     type: BankAccountTypes
   ): BankAccountConnection
 
+  # A connection of artwork recommendations, based on user saves
+  basedOnUserSaves(after: String, before: String, first: Int, last: Int): ArtworkConnection
+
   # Returns a single bidder position
   bidderPosition(id: String!): BidderPositionResult
 
@@ -16779,6 +16858,9 @@ type Order {
   # Order code
   code: String!
 
+  # Order creation time
+  createdAt: String
+
   # Express Checkout wallet type
   creditCardWalletType: OrderCreditCardWalletTypeEnum
 
@@ -16865,6 +16947,9 @@ enum OrderBuyerStateEnum {
 
   # Order is incomplete (pending or abandoned)
   INCOMPLETE
+
+  # Order is an offer avaiting responce from the buyer
+  OFFER_RECEIVED
 
   # Payment has failed
   PAYMENT_FAILED
@@ -19450,11 +19535,102 @@ type Query {
     last: Int
   ): DiscoveryCategoriesConnectionConnection
 
+  # Filter artworks by discovery category and specific filter
+  discoveryCategoryArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    categories: [String]
+
+    # The slug of the discovery category to filter artworks by
+    categorySlug: String!
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+
+    # The slug of the specific filter within the category to apply
+    filterSlug: String!
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    importSources: [String]
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+    showID: String
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A single discovery category for browsing art by slug
   discoveryCategoryConnection(
     # The slug of the discovery category to retrieve
     slug: String!
-  ): DiscoveryCategory
+  ): DiscoveryCategoryUnion
 
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
@@ -20124,9 +20300,6 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-
-  # A list of artists that are part of the SEO experiment
-  seoExperimentArtists: [String]
   shortcut(id: ID!): Shortcut
 
   # A Show
@@ -22710,6 +22883,9 @@ input UpdateArtworkEditionSetInput {
 
   # The availability of the artwork
   availability: String
+
+  # The ID of the image to set as the default for this artwork
+  defaultImageID: String
   delete: Boolean
 
   # Show/Hide the price range of an artwork
@@ -22849,6 +23025,9 @@ input UpdateArtworkMutationInput {
   # The availability of the artwork
   availability: String
   clientMutationId: String
+
+  # The ID of the image to set as the default for this artwork
+  defaultImageID: String
   delete: Boolean
 
   # Show/Hide the price range of an artwork
@@ -25319,11 +25498,102 @@ type Viewer {
     last: Int
   ): DiscoveryCategoriesConnectionConnection
 
+  # Filter artworks by discovery category and specific filter
+  discoveryCategoryArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    categories: [String]
+
+    # The slug of the discovery category to filter artworks by
+    categorySlug: String!
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+
+    # The slug of the specific filter within the category to apply
+    filterSlug: String!
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    importSources: [String]
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+    showID: String
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A single discovery category for browsing art by slug
   discoveryCategoryConnection(
     # The slug of the discovery category to retrieve
     slug: String!
-  ): DiscoveryCategory
+  ): DiscoveryCategoryUnion
 
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
@@ -25940,9 +26210,6 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-
-  # A list of artists that are part of the SEO experiment
-  seoExperimentArtists: [String]
   shortcut(id: ID!): Shortcut
 
   # A Show

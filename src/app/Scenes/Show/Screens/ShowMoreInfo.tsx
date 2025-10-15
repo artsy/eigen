@@ -145,7 +145,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
         data={sections}
         keyExtractor={({ key }) => key}
         ListHeaderComponent={<Spacer y={2} />}
-        ListFooterComponent={<Spacer y={2} />}
+        ListFooterComponent={() => <Spacer y={2} />}
         ItemSeparatorComponent={() => <Spacer y="15px" />}
         renderItem={({ item: { element } }) => element}
       />

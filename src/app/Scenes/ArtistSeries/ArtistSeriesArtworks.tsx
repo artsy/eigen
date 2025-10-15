@@ -152,9 +152,9 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
             <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
           </Tabs.SubTabBar>
         }
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        }
+        )}
       />
       <ArtworkFilterNavigator
         id={data.internalID}

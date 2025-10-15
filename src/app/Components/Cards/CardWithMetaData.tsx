@@ -121,7 +121,9 @@ export const CardsWithMetaDataListPlaceholder: React.FC<CardsWithMetaDataListPla
 
   return (
     <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title={title} />
+      {/* IMPORTANT: use a non animated header inside placeholders due to a bug that never
+      lets suspense resolve when used with an animated header and resulting on a blank screen. */}
+      <Screen.Header onBack={goBack} title="" />
       <Screen.Body fullwidth>
         <ProvidePlaceholderContext>
           <Flex testID={testID} flexDirection="column" justifyContent="space-between" height="100%">

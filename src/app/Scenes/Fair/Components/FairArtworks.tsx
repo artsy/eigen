@@ -181,7 +181,9 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
             </Tabs.SubTabBar>
           </>
         }
-        ListFooterComponent={<AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />}
+        ListFooterComponent={() => (
+          <AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />
+        )}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         renderItem={renderItem}
@@ -299,7 +301,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
           </Flex>
         }
         ListHeaderComponent={<HeaderArtworksFilterWithTotalArtworks onPress={handleFilterToggle} />}
-        ListFooterComponent={
+        ListFooterComponent={() =>
           !!isLoadingNext ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />

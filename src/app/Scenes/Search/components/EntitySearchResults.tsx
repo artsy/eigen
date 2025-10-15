@@ -88,11 +88,11 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       ListEmptyComponent={() => (
         <SingleIndexEmptyResultsMessage query={query} selectedPill={selectedPill} />
       )}
-      ListFooterComponent={
+      ListFooterComponent={() => (
         <Flex alignItems="center" my={4}>
           {isLoadingNext ? <Spinner testID="spinner" /> : null}
         </Flex>
-      }
+      )}
       onScrollBeginDrag={handleOnScrollBeginDrag}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}

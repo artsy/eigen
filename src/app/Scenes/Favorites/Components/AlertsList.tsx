@@ -103,7 +103,7 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
         )
       }}
       onEndReached={onLoadMore}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         fetchingMore ? (
           <Flex mt={2} mb={6} flexDirection="row" justifyContent="center">
             <Spinner />

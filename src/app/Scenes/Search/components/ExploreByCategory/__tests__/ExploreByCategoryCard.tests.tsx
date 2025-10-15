@@ -32,6 +32,7 @@ describe("ExploreByCategoryCard", () => {
     slug: "medium",
     title: "Medium",
     imageUrl: "https://example.com/image.jpg",
+    href: "/collections-by-category/medium",
   }
 
   const { renderWithRelay } = setupTestWrapper<ExploreByCategoryCardTestQuery>({
@@ -73,7 +74,10 @@ describe("ExploreByCategoryCard", () => {
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
-      DiscoveryCategory: () => mockCategory,
+      DiscoveryCategory: () => ({
+        ...mockCategory,
+        href: "/collections-by-category/medium",
+      }),
     })
 
     expect(mockRouterLinkProps.to).toBe("/collections-by-category/medium")
@@ -106,7 +110,10 @@ describe("ExploreByCategoryCard", () => {
       DiscoveryCategoriesConnectionConnection: () => ({
         edges: [{ node: mockCategory }],
       }),
-      DiscoveryCategory: () => mockCategory,
+      DiscoveryCategory: () => ({
+        ...mockCategory,
+        href: "/collections-by-category/medium",
+      }),
     })
 
     const routerLink = screen.getByTestId("router-link")
@@ -130,6 +137,7 @@ describe("ExploreByCategoryCard", () => {
       slug: "collect-by-color",
       title: "Color",
       imageUrl: "https://example.com/color.png",
+      href: "/collections-by-category/collect-by-color",
     }
 
     renderWithRelay({

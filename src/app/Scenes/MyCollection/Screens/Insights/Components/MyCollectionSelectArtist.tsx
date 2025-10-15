@@ -32,7 +32,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
       renderItem={({ item, index }) => (
         <ArtistItem isFirst={index === 0} artist={item} onPress={onItemPress} />
       )}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />
