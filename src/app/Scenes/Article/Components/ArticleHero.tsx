@@ -12,6 +12,7 @@ interface ArticleHeroProps {
 
 export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   const { width } = useScreenDimensions()
+  const otherWidth = 650
   const data = useFragment(ArticleHeroFragment, article)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
@@ -21,12 +22,16 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   // Render video with text overlay
   if (hasVideo) {
     const aspectRatio = data.hero.image?.aspectRatio || 16 / 9
-    const height = width / aspectRatio
+    const height = otherWidth / aspectRatio
 
     return (
       <Flex>
         <Flex width={width} height={height} position="relative">
-          <ArticleHeroVideo videoUrl={data.hero.media} width={width} aspectRatio={aspectRatio} />
+          <ArticleHeroVideo
+            videoUrl={data.hero.media}
+            width={otherWidth}
+            aspectRatio={aspectRatio}
+          />
           <LinearGradient
             colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.6)"]}
             start={{ x: 0, y: 0 }}
@@ -39,12 +44,12 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
             }}
           >
             <Flex px={2} pb={2} pt={4}>
-              <Text variant="xs" color="white" fontWeight="bold">
+              <Text variant="sm" color="white" fontWeight="bold">
                 {data.vertical}
               </Text>
 
               <Text
-                variant="lg-display"
+                variant="xl"
                 color="white"
                 style={{
                   textShadowColor: "rgba(0,0,0,0.25)",
@@ -56,9 +61,8 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
               </Text>
 
               <Text
-                variant="xs"
+                variant="md"
                 color="white"
-                mt={0.5}
                 style={{
                   textShadowColor: "rgba(0,0,0,0.25)",
                   textShadowOffset: { width: 0, height: 0 },
