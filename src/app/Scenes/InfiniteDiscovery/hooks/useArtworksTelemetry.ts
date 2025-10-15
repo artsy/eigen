@@ -5,13 +5,16 @@ import { useEffect } from "react"
 export const useArtworksTelemetry = (artworks: InfiniteDiscoveryArtwork[]) => {
   useEffect(() => {
     if (artworks.length < 5) {
-      captureMessage(`Discovery daily received ${artworks.length} initial artworks (expected 5)`, {
-        level: "info",
-        extra: {
-          artworkCount: artworks.length,
-          artworkIds: artworks.map((a) => a.internalID),
-        },
-      })
+      captureMessage(
+        `[DiscoveryDailyUnderFetch]: Received ${artworks.length} initial artworks (expected 5)`,
+        {
+          level: "info",
+          extra: {
+            artworkCount: artworks.length,
+            artworkIds: artworks.map((a) => a.internalID),
+          },
+        }
+      )
     }
   }, [artworks.length])
 }
@@ -30,7 +33,7 @@ export const captureArtworksTelemetry = (
       extra.excludeArtworkIds = excludeArtworkIds
     }
 
-    captureMessage(`Discovery daily fetch returned ${artworks.length} artworks (expected 5)`, {
+    captureMessage(`[DiscoveryDailyUnderFetch]: Fetched ${artworks.length} artworks (expected 5)`, {
       level: "info",
       extra,
     })
