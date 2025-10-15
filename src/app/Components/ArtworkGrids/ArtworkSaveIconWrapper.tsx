@@ -22,7 +22,7 @@ export const ArtworkSaveIconWrapper: React.FC<{
       Animated.sequence([
         Animated.spring(scaleAnimation, {
           toValue: 0.7,
-          mass: 0.05,
+          mass: 0.01,
           stiffness: 300,
           useNativeDriver: true,
         }),
