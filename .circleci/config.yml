@@ -530,14 +530,14 @@ parameters:
     default: v29-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v12-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v13-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
     default: v19-test-success
   android_native_cache_key:
     type: string
-    default: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v17-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
   nightly:
