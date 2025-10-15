@@ -28,6 +28,7 @@ describe("ArticleHero", () => {
     renderWithRelay({
       Article: () => ({
         hero: {
+          media: null,
           image: {
             url: "https://example.com/image.jpg",
             aspectRatio: 1.5,
@@ -50,6 +51,7 @@ describe("ArticleHero", () => {
     renderWithRelay({
       Article: () => ({
         hero: {
+          media: null,
           image: {
             url: "https://example.com/image.jpg",
             aspectRatio: 1.5,

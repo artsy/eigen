@@ -175,6 +175,12 @@ jest.mock("react-native-webview", () => {
   }
 })
 
+jest.mock("react-native-linear-gradient", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  return React.forwardRef((props: any, ref: any) => <View {...props} ref={ref} />)
+})
+
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
