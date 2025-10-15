@@ -47,9 +47,9 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                 variant="lg-display"
                 color="white"
                 style={{
-                  textShadowColor: "rgba(0,0,0,0.8)",
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 4,
+                  textShadowColor: "rgba(0,0,0,0.25)",
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 15,
                 }}
               >
                 {data.title}
@@ -60,9 +60,9 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                 color="white"
                 mt={0.5}
                 style={{
-                  textShadowColor: "rgba(0,0,0,0.8)",
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 4,
+                  textShadowColor: "rgba(0,0,0,0.25)",
+                  textShadowOffset: { width: 0, height: 0 },
+                  textShadowRadius: 15,
                 }}
               >
                 {data.byline}
@@ -74,9 +74,9 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                   variant="xs"
                   mt={0.5}
                   style={{
-                    textShadowColor: "rgba(0,0,0,0.8)",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 4,
+                    textShadowColor: "rgba(0,0,0,0.25)",
+                    textShadowOffset: { width: 0, height: 0 },
+                    textShadowRadius: 15,
                   }}
                 >
                   {DateTime.fromISO(data.publishedAt).toFormat("MMM d, yyyy")}
