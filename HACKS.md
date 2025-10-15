@@ -50,18 +50,6 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-## typings/styled-components.native.d.ts
-
-#### When can we remove this:
-
-When we upgrade styled-components to a version with types that don't complain when we run `yarn type-check`.
-
-#### Explanation/Context:
-
-I wasn't the one to add this file, so I don't have all the context, but I do know that styled-component types are missing and/or causing problems when we don't have that file.
-
-The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
-
 ## `react-native-push-notification` Requiring unknown module on ios
 
 #### When can we remove this:
