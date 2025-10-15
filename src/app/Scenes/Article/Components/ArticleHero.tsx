@@ -11,7 +11,7 @@ interface ArticleHeroProps {
 }
 
 export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
-  const { width } = useScreenDimensions()
+  const { width, safeAreaInsets } = useScreenDimensions()
   const otherWidth = 650
   const data = useFragment(ArticleHeroFragment, article)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
@@ -23,9 +23,8 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   if (hasVideo) {
     const aspectRatio = data.hero.image?.aspectRatio || 16 / 9
     const height = otherWidth / aspectRatio
-
     return (
-      <Flex>
+      <Flex style={{ marginTop: safeAreaInsets.top }}>
         <Flex width={width} height={height} position="relative">
           <ArticleHeroVideo
             videoUrl={data.hero.media}
