@@ -120,6 +120,7 @@ describe("AboutTheWorkTab", () => {
 })
 
 const artwork = {
+  collectorSignals: {},
   medium: "Oil on canvas",
   dimensions: {
     in: "20 × 24 in",
