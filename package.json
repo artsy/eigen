@@ -144,7 +144,7 @@
     "@styled-system/theme-get": "5.1.2",
     "@unleash/proxy-client-react": "4.5.2",
     "autosuggest-highlight": "3.3.4",
-    "easy-peasy": "6.0.5",
+    "easy-peasy": "6.1.0",
     "events": "3.3.0",
     "expo": "53.0.23",
     "expo-updates": "0.28.17",
