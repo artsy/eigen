@@ -18,7 +18,6 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   const hasVideo = !!data.hero?.media
   const hasImage = !!data.hero?.image?.url
 
-  // Render video with text overlay (FULLSCREEN layout)
   if (hasVideo) {
     // Calculate height similar to web: max(50vh - navHeight, 360px)
     const navHeight = 50 + safeAreaInsets.top
@@ -49,7 +48,6 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                 color="white"
                 style={{
                   textShadowColor: "rgba(0,0,0,0.25)",
-                  textShadowOffset: { width: 0, height: 0 },
                   textShadowRadius: 15,
                 }}
               >
@@ -61,7 +59,6 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                 color="white"
                 style={{
                   textShadowColor: "rgba(0,0,0,0.25)",
-                  textShadowOffset: { width: 0, height: 0 },
                   textShadowRadius: 15,
                 }}
               >
@@ -75,7 +72,6 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
                   mt={0.5}
                   style={{
                     textShadowColor: "rgba(0,0,0,0.25)",
-                    textShadowOffset: { width: 0, height: 0 },
                     textShadowRadius: 15,
                   }}
                 >
