@@ -39,5 +39,6 @@ const config = {
 const mergedConfig = mergeConfig(getSentryExpoConfig(__dirname), config)
 
 module.exports = withRozenite(mergedConfig, {
+  enabled: !!__DEV__,
   enhanceMetroConfig: (config) => withRozeniteExpoAtlasPlugin(config),
 })
