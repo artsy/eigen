@@ -4,19 +4,23 @@ import { useCollectorSignal_artwork$key } from "__generated__/useCollectorSignal
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
-type UseCollectorSignalResult =
-  | {
-      signalTitle?: null
-      signalDescription?: null
-      href?: null
-      SignalIcon?: null
-    }
-  | {
-      signalTitle: string
-      signalDescription: string
-      href?: string | null
-      SignalIcon: typeof FireIcon
-    }
+type EmptyCollectorSignal = {
+  signalTitle?: null
+  signalDescription?: null
+  href?: null
+  SignalIcon?: null
+  hasCollectorSignal: false
+}
+
+type CollectorSignal = {
+  signalTitle: string
+  signalDescription: string
+  href?: string | null
+  SignalIcon: typeof FireIcon
+  hasCollectorSignal: true
+}
+
+type UseCollectorSignalResult = EmptyCollectorSignal | CollectorSignal
 
 interface UseCollectorSignalProps {
   artwork?: useCollectorSignal_artwork$key | null
@@ -27,23 +31,18 @@ export const useCollectorSignal = ({
 }: UseCollectorSignalProps): UseCollectorSignalResult => {
   const data = useFragment(fragment, artwork)
 
-  if (
-    !data ||
-    !data.collectorSignals ||
-    (!data.collectorSignals.curatorsPick &&
-      !data.collectorSignals.increasedInterest &&
-      !data.collectorSignals.runningShow)
-  ) {
-    return empty
-  }
+  const { curatorsPick, increasedInterest, runningShow } = data?.collectorSignals ?? {}
 
-  const { curatorsPick, increasedInterest, runningShow } = data.collectorSignals
+  if (!curatorsPick && !increasedInterest && !runningShow) {
+    return NO_COLLECTOR_SIGNALS
+  }
 
   if (curatorsPick) {
     return {
       signalTitle: "Curators’ Pick",
       signalDescription: "Hand selected by Artsy curators this week",
       SignalIcon: FireIcon,
+      hasCollectorSignal: true,
     }
   }
 
@@ -52,6 +51,7 @@ export const useCollectorSignal = ({
       signalTitle: "Increased Interest",
       signalDescription: "Based on collector activity in the past 14 days",
       SignalIcon: TrendingIcon,
+      hasCollectorSignal: true,
     }
   }
 
@@ -69,10 +69,11 @@ export const useCollectorSignal = ({
       href: runningShow.href,
       signalDescription: runningShow.name,
       SignalIcon: FairIcon,
+      hasCollectorSignal: true,
     }
   }
 
-  return empty
+  return NO_COLLECTOR_SIGNALS
 }
 
 const fragment = graphql`
@@ -90,8 +91,9 @@ const fragment = graphql`
   }
 `
 
-const empty = {
+const NO_COLLECTOR_SIGNALS: EmptyCollectorSignal = {
   signalTitle: null,
   signalDescription: null,
   SignalIcon: null,
+  hasCollectorSignal: false,
 }

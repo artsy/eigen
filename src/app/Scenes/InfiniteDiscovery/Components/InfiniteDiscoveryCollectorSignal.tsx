@@ -13,9 +13,10 @@ interface InfiniteDiscoveryCollectorSignalProps {
 export const InfiniteDiscoveryCollectorSignal: FC<InfiniteDiscoveryCollectorSignalProps> = ({
   artwork,
 }) => {
-  const { SignalIcon, signalTitle, signalDescription, href } = useCollectorSignal({ artwork })
+  const { SignalIcon, signalTitle, signalDescription, href, hasCollectorSignal } =
+    useCollectorSignal({ artwork })
 
-  if (!signalTitle) {
+  if (!hasCollectorSignal) {
     return null
   }
 
