@@ -1,20 +1,12 @@
-import { captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { volleyClient } from "app/utils/volleyClient"
 import { useEffect } from "react"
+import { getVersion } from "react-native-device-info"
 
 export const useArtworksTelemetry = (artworks: InfiniteDiscoveryArtwork[]) => {
   useEffect(() => {
     if (artworks.length < 5) {
-      captureMessage(
-        `[DiscoveryDailyUnderFetch]: Received ${artworks.length} initial artworks (expected 5)`,
-        {
-          level: "info",
-          extra: {
-            artworkCount: artworks.length,
-            artworkIds: artworks.map((a) => a.internalID),
-          },
-        }
-      )
+      captureArtworksTelemetry(artworks)
     }
   }, [artworks.length])
 }
@@ -23,19 +15,15 @@ export const captureArtworksTelemetry = (
   artworks: InfiniteDiscoveryArtwork[],
   excludeArtworkIds?: string[]
 ) => {
-  if (artworks.length < 5) {
-    const extra: Record<string, any> = {
-      artworkCount: artworks.length,
-      artworkIds: artworks.map((a) => a.internalID),
-    }
-
-    if (excludeArtworkIds) {
-      extra.excludeArtworkIds = excludeArtworkIds
-    }
-
-    captureMessage(`[DiscoveryDailyUnderFetch]: Fetched ${artworks.length} artworks (expected 5)`, {
-      level: "info",
-      extra,
-    })
-  }
+  volleyClient.send({
+    type: "increment",
+    name: "discovery-daily-less-than-5",
+    tags: [
+      `arworkCount: ${artworks.length}`,
+      `arworkIds: ${artworks.map((a) => a.internalID).join(",")}`,
+      `appVersion: ${getVersion()}`,
+      `excludeArtworkCount: ${excludeArtworkIds?.length}`,
+      `excludeArtworkIds: ${excludeArtworkIds?.join(",")}`,
+    ],
+  })
 }

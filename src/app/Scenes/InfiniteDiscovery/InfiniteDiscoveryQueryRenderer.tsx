@@ -63,7 +63,9 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         const newArtworks = extractNodes(response?.discoverArtworks)
         if (newArtworks.length) {
           setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
-          captureArtworksTelemetry(newArtworks, excludeArtworkIds)
+          if (newArtworks.length < 5) {
+            captureArtworksTelemetry(newArtworks, excludeArtworkIds)
+          }
         }
         retainQuery(excludeArtworkIds)
       } catch (error) {
