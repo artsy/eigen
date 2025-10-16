@@ -7,7 +7,6 @@ then
 
   # install awscli
   if [ "$(uname)" == "Darwin" ]; then # MacOS
-    brew install six || brew link --overwrite six
     brew install awscli
   else # Assume Linux
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
