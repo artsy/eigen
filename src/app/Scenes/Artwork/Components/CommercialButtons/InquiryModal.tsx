@@ -69,6 +69,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   if (!artwork) {
     return null
   }
+  const availableInquiryQuestions = artwork.inquiryQuestions
 
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
@@ -156,25 +157,27 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
             >
               <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
               <Box px={2}>
-                <Box my={2}>
-                  <Text variant="sm">What information are you looking for?</Text>
-                  {artwork.inquiryQuestions?.map((inquiryQuestion) => {
-                    if (!inquiryQuestion) {
-                      return false
-                    }
-                    const { internalID: id, question } = inquiryQuestion
-                    return id === InquiryQuestionIDs.Shipping ? (
-                      <InquiryQuestionOption
-                        key={id}
-                        id={id}
-                        question={question}
-                        setShippingModalVisibility={setShippingModalVisibility}
-                      />
-                    ) : (
-                      <InquiryQuestionOption key={id} id={id} question={question} />
-                    )
-                  })}
-                </Box>
+                {!!availableInquiryQuestions && availableInquiryQuestions.length > 0 && (
+                  <Box my={2}>
+                    <Text variant="sm">What information are you looking for?</Text>
+                    {availableInquiryQuestions.map((inquiryQuestion) => {
+                      if (!inquiryQuestion) {
+                        return false
+                      }
+                      const { internalID: id, question } = inquiryQuestion
+                      return id === InquiryQuestionIDs.Shipping ? (
+                        <InquiryQuestionOption
+                          key={id}
+                          id={id}
+                          question={question}
+                          setShippingModalVisibility={setShippingModalVisibility}
+                        />
+                      ) : (
+                        <InquiryQuestionOption key={id} id={id} question={question} />
+                      )
+                    })}
+                  </Box>
+                )}
                 <Box
                   mb={4}
                   onLayout={({ nativeEvent }) => {
