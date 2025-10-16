@@ -50,7 +50,7 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
           loop
           muted
           playsinline
-          preload="metadata"
+          preload="auto"
           webkit-playsinline
         >
           <source src="${videoUrl}" type="video/mp4">
@@ -75,12 +75,14 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
         // Performance optimizations
         androidLayerType="hardware"
         androidHardwareAccelerationDisabled={false}
-        // Reduce memory usage
-        cacheEnabled={false}
+        cacheEnabled={true}
+        cacheMode="LOAD_DEFAULT"
         // Faster initial load
         startInLoadingState={false}
         // Prevent unnecessary re-renders
         setSupportMultipleWindows={false}
+        // Allow mixed content for better Android network performance
+        mixedContentMode="always"
       />
     </Flex>
   )
