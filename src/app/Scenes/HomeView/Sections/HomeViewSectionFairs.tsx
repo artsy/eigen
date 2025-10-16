@@ -148,7 +148,7 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
           <Spacer y={1} />
 
           <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
+            <Join separator={<Spacer x={2} />}>
               {times(2 + randomValue * 10).map((index) => (
                 <CardRailCard key={index}>
                   <Flex>

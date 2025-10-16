@@ -1,9 +1,12 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, FlexProps, Skeleton, SkeletonBox, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
-import { CARD_WIDTH, CardRailCard } from "app/Components/CardRail/CardRailCard"
-import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
+import {
+  CardRailFlatList,
+  CardRailFlatListPlaceholder,
+} from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
@@ -46,7 +49,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
 
       <CardRailFlatList
         data={cards}
-        initialNumToRender={cards.length}
+        initialNumToRender={3}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
           if (!item) {
@@ -65,9 +68,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   }}
                 >
                   <ThreeUpImageLayout imageURLs={imageURLs} />
-                  <Text key={index} py={1} pl={0.5}>
-                    {item?.title}
-                  </Text>
+                  <CardRailMetadataContainer>
+                    <Text key={index}>{item?.title}</Text>
+                  </CardRailMetadataContainer>
                 </RouterLink>
               </CardRailCard>
             </Flex>
@@ -115,18 +118,6 @@ const HomeViewSectionCardsFragment = graphql`
   }
 `
 
-const HomeViewSectionCardsPlaceholder: React.FC<FlexProps> = (flexProps) => {
-  return (
-    <Skeleton>
-      <Flex {...flexProps} flexDirection="row" gap={2} testID="HomeViewSectionCardsPlaceholder">
-        {Array.from({ length: 2 }).map((_, index) => (
-          <SkeletonBox key={index} width={CARD_WIDTH} height={CARD_WIDTH + 20 + 20} />
-        ))}
-      </Flex>
-    </Skeleton>
-  )
-}
-
 const homeViewSectionCardsQuery = graphql`
   query HomeViewSectionCardsQuery($id: String!) {
     homeView {
@@ -157,6 +148,6 @@ export const HomeViewSectionCardsQueryRenderer: React.FC<SectionSharedProps> = w
 
     return <HomeViewSectionCards section={data.homeView.section} index={index} {...flexProps} />
   },
-  LoadingFallback: HomeViewSectionCardsPlaceholder,
+  LoadingFallback: CardRailFlatListPlaceholder,
   ErrorFallback: NoFallback,
 })
