@@ -64,6 +64,27 @@ describe("ArticleHero", () => {
     expect(screen.UNSAFE_getByType(Image)).toBeTruthy()
   })
 
+  it("renders hero video if available", () => {
+    renderWithRelay({
+      Article: () => ({
+        hero: {
+          media: "https://example.com/video.mp4",
+          image: {
+            url: "https://example.com/image.jpg",
+            aspectRatio: 1.5,
+          },
+        },
+        vertical: "Vertical",
+        title: "Title",
+        byline: "Byline",
+        publishedAt: "2023-06-15T00:00:00.000Z",
+      }),
+    })
+
+    expect(screen.UNSAFE_queryByType(Image)).toBeNull()
+    expect(screen.getByTestId("ArticleHeroVideo")).toBeTruthy()
+  })
+
   it("does not render hero image if not available", () => {
     renderWithRelay({
       Article: () => ({

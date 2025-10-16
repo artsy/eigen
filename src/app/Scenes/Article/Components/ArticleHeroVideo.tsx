@@ -62,7 +62,7 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
   )
 
   return (
-    <Flex width={width} height={height} backgroundColor="mono30">
+    <Flex width={width} height={height} backgroundColor="mono30" testID="ArticleHeroVideo">
       <WebView
         source={{ html }}
         style={{ flex: 1, backgroundColor }}

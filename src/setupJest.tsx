@@ -167,11 +167,14 @@ jest.mock("react-native-webview", () => {
   const React = require("react")
   const { View } = require("react-native")
 
+  const MockWebView = React.forwardRef((props: any, ref: any) => {
+    return <View ref={ref} {...props} />
+  })
+
   return {
     __esModule: true,
-    default: React.forwardRef((props: any, ref: any) => {
-      return <View ref={ref} {...props} />
-    }),
+    default: MockWebView,
+    WebView: MockWebView,
   }
 })
 
