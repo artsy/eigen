@@ -26365,14 +26365,14 @@ type ViewingRoom {
   viewingRoomArtworks: [ViewingRoomArtwork!]!
 }
 
-# Relationship between a Viewing Room and an Artwork
 type ViewingRoomArtwork {
   artworkID: ID!
+
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
   published: Boolean!
 }
 
-# An input type for a Viewing Room artwork
 input ViewingRoomArtworkInput {
   artworkID: ID!
   delete: Boolean = false
@@ -26440,37 +26440,25 @@ enum ViewingRoomStatusEnum {
   scheduled
 }
 
-# Title, image, text, and caption for a viewing room section
 type ViewingRoomSubsection {
-  # Body copy
   body: String
-
-  # Image caption
   caption: String
-  image: ARImage
-
-  # Image URL
+  image: GravityARImage
   imageURL: String
 
-  # Unique ID for this subsection
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
-
-  # Section header
   title: String
 }
 
-# Attributes for creating or updating a viewing room subsection
 input ViewingRoomSubsectionAttributes {
   body: String
   caption: String
   title: String
 }
 
-# An input type for the creation of viewing room subsections
 input ViewingRoomSubsectionInput {
   attributes: ViewingRoomSubsectionAttributes
-
-  # If true, delete this subsection from the database
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
