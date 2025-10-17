@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/react-native"
-import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("ThreeUpImageLayout", () => {
+describe("MultipleImageLayout", () => {
   const mockImageURLs = [
     "https://example.com/image1.jpg",
     "https://example.com/image2.jpg",
@@ -10,7 +10,7 @@ describe("ThreeUpImageLayout", () => {
   ]
 
   it("renders three images", () => {
-    renderWithWrappers(<ThreeUpImageLayout imageURLs={mockImageURLs} />)
+    renderWithWrappers(<MultipleImageLayout imageURLs={mockImageURLs} />)
 
     expect(screen.getByTestId("image-1")).toBeDefined()
     expect(screen.getByTestId("image-2")).toBeDefined()
@@ -19,7 +19,7 @@ describe("ThreeUpImageLayout", () => {
 
   it("handles 2 out of 3 images by chanign the layout", () => {
     const twoImages = mockImageURLs.slice(0, 2)
-    renderWithWrappers(<ThreeUpImageLayout imageURLs={twoImages} />)
+    renderWithWrappers(<MultipleImageLayout imageURLs={twoImages} />)
 
     expect(screen.getByTestId("image-1")).toBeDefined()
     expect(screen.getByTestId("image-2")).toBeDefined()
@@ -28,7 +28,7 @@ describe("ThreeUpImageLayout", () => {
 
   it("handles 1 out of 3 images by chanign the layout", () => {
     const oneImage = mockImageURLs.slice(0, 1)
-    renderWithWrappers(<ThreeUpImageLayout imageURLs={oneImage} />)
+    renderWithWrappers(<MultipleImageLayout imageURLs={oneImage} />)
 
     expect(screen.getByTestId("image-1")).toBeDefined()
     expect(screen.queryAllByTestId("image-2")).toHaveLength(0)

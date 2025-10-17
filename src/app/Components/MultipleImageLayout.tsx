@@ -7,12 +7,12 @@ import styled from "styled-components/native"
 export const LARGE_IMAGE_SIZE = (CARD_WIDTH / 3) * 2
 export const SMALL_IMAGE_SIZE = LARGE_IMAGE_SIZE / 2
 
-interface ThreeUpImageLayoutProps {
+interface MultipleImageLayoutProps {
   imageURLs: string[]
   width?: number
 }
 
-export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
+export const MultipleImageLayout: React.FC<MultipleImageLayoutProps> = ({
   imageURLs,
   width = CARD_WIDTH,
 }) => {
@@ -48,7 +48,7 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
     </ImagesWrapper>
   )
 
-  const threeImageLauout1 = (
+  const threeImageLauout = (
     <ImagesWrapper>
       <ImageWithFallback
         testID="image-1"
@@ -83,7 +83,7 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
       return twoImageLayout
     }
     case 3: {
-      return threeImageLauout1
+      return threeImageLauout
     }
   }
 }

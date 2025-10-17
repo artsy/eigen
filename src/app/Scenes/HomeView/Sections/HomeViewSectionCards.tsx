@@ -7,8 +7,8 @@ import {
   CardRailFlatList,
   CardRailFlatListPlaceholder,
 } from "app/Components/CardRail/CardRailFlatList"
+import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
@@ -64,7 +64,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                     /* track */
                   }}
                 >
-                  <ThreeUpImageLayout imageURLs={imageURLs} />
+                  <MultipleImageLayout imageURLs={imageURLs} />
                   <CardRailMetadataContainer>
                     <Text key={index} color={imageURLs.length === 0 ? "mono30" : "mono100"}>
                       {item?.title}

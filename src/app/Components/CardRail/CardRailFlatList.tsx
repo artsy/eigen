@@ -13,8 +13,8 @@ import {
   AboveTheFoldFlatListProps,
 } from "app/Components/AboveTheFoldFlatList"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
+import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/MultipleImageLayout"
 import Spinner from "app/Components/Spinner"
-import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { Ref } from "react"
 import { FlatListProps, View } from "react-native"
 
