@@ -18,6 +18,8 @@ export interface RouterLinkProps {
   hasChildTouchable?: boolean
   prefetchVariables?: Variables
   children: React.ReactNode
+  onVisible?: (isVisible: boolean) => void
+  visibilityThreshold?: number
 }
 
 type PrefetchState = "started" | "complete" | null
@@ -34,8 +36,14 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   navigationProps,
   children,
   hasChildTouchable,
+  onVisible,
+  visibilityThreshold = 0,
   ...restProps
 }) => {
+  if (__DEV__ && visibilityThreshold > 1) {
+    throw new Error("visibilityThreshold must be greater or equal to 0 and less or equal to 1")
+  }
+
   const enablePrefetchingIndicator = useDevToggle("DTShowPrefetchingIndicator")
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
@@ -57,12 +65,15 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = (isVisible: boolean) => {
-    if (isPrefetchingEnabled && isVisible) {
-      if (enablePrefetchingIndicator) setPrefetchState("started")
+    if (isVisible) {
+      onVisible?.(isVisible)
+      if (isPrefetchingEnabled) {
+        if (enablePrefetchingIndicator) setPrefetchState("started")
 
-      prefetchUrl(to, prefetchVariables, () => {
-        if (enablePrefetchingIndicator) setPrefetchState("complete")
-      })
+        prefetchUrl(to, prefetchVariables, () => {
+          if (enablePrefetchingIndicator) setPrefetchState("complete")
+        })
+      }
     }
   }
 
@@ -77,9 +88,9 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   // If the child component is a touchable element, we don't add another touchable wrapper
-  if (hasChildTouchable && isPrefetchingEnabled) {
+  if (hasChildTouchable && (isPrefetchingEnabled || onVisible)) {
     return (
-      <Sentinel onChange={handleVisible} threshold={0}>
+      <Sentinel onChange={handleVisible} threshold={visibilityThreshold}>
         <Border prefetchState={prefetchState}>
           {React.Children.map(children, (child) => {
             return React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
@@ -104,7 +115,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   return (
-    <Sentinel onChange={handleVisible} threshold={0}>
+    <Sentinel onChange={handleVisible} threshold={visibilityThreshold}>
       <Border prefetchState={prefetchState}>
         <Touchable {...touchableProps}>{children}</Touchable>
       </Border>
