@@ -1,4 +1,4 @@
-import { Box, Flex } from "@artsy/palette-mobile"
+import { Box } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
@@ -16,26 +16,45 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
   imageURLs,
   width = CARD_WIDTH,
 }) => {
-  // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
-  const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
-    return [...acc, imageURLs[i] || acc[i - 1]]
-  }, [])
-
   const largeImageWidth = Math.floor((width * 2) / 3)
   const smallImageWidth = Math.floor(largeImageWidth / 2)
 
-  return (
-    <Flex
-      flexDirection="row"
-      justifyContent="space-between"
-      overflow="hidden"
-      maxHeight={largeImageWidth}
-    >
+  const oneImageLayout = (
+    <ImagesWrapper>
+      <ImageWithFallback
+        testID="image-1"
+        width={width}
+        height={largeImageWidth}
+        src={imageURLs[0]}
+      />
+    </ImagesWrapper>
+  )
+
+  const twoImageLayout = (
+    <ImagesWrapper>
+      <ImageWithFallback
+        testID="image-1"
+        width={width / 2}
+        height={largeImageWidth}
+        src={imageURLs[0]}
+      />
+      <Division />
+      <ImageWithFallback
+        testID="image-2"
+        width={width / 2}
+        height={largeImageWidth}
+        src={imageURLs[1]}
+      />
+    </ImagesWrapper>
+  )
+
+  const threeImageLauout1 = (
+    <ImagesWrapper>
       <ImageWithFallback
         testID="image-1"
         width={largeImageWidth}
         height={largeImageWidth}
-        src={artworkImageURLs[0]}
+        src={imageURLs[0]}
       />
       <Division />
       <Box>
@@ -43,21 +62,40 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
           testID="image-2"
           width={smallImageWidth}
           height={smallImageWidth}
-          src={artworkImageURLs[1]}
+          src={imageURLs[1]}
         />
         <Division horizontal />
         <ImageWithFallback
           testID="image-3"
           width={smallImageWidth}
           height={smallImageWidth}
-          src={artworkImageURLs[2]}
+          src={imageURLs[2]}
         />
       </Box>
-    </Flex>
+    </ImagesWrapper>
   )
+
+  switch (imageURLs.length) {
+    case 1: {
+      return oneImageLayout
+    }
+    case 2: {
+      return twoImageLayout
+    }
+    case 3: {
+      return threeImageLauout1
+    }
+  }
 }
 
 export const Division = styled.View<{ horizontal?: boolean }>`
   border: 1px solid ${themeGet("colors.mono0")};
   ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
+`
+
+const ImagesWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden;
+  max-height: ${LARGE_IMAGE_SIZE}px;
 `

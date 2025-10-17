@@ -52,21 +52,23 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         initialNumToRender={3}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
-          const images = item.images || []
-          const imageURLs = images.map((img) => img?.imageURL).filter((url): url is string => !!url)
+          const imageURLs =
+            item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
 
           return (
-            <Flex flexDirection="column">
+            <Flex>
               <CardRailCard key={index}>
                 <RouterLink
-                  to={item.href || "/"}
+                  to={item.href || "/auctions"}
                   onPress={() => {
                     /* track */
                   }}
                 >
                   <ThreeUpImageLayout imageURLs={imageURLs} />
                   <CardRailMetadataContainer>
-                    <Text key={index}>{item?.title}</Text>
+                    <Text key={index} color={imageURLs.length === 0 ? "mono30" : "mono100"}>
+                      {item?.title}
+                    </Text>
                   </CardRailMetadataContainer>
                 </RouterLink>
               </CardRailCard>
