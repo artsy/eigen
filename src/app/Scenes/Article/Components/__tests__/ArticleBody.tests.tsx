@@ -19,7 +19,13 @@ describe("ArticleBody", () => {
   })
 
   it("renders", () => {
-    renderWithRelay()
+    renderWithRelay({
+      Article: () => ({
+        hero: {
+          media: null,
+        },
+      }),
+    })
 
     expect(screen.UNSAFE_getByType(ArticleHero)).toBeTruthy()
     expect(screen.UNSAFE_getByType(ArticleSection)).toBeTruthy()
