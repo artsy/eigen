@@ -17,12 +17,21 @@ describe("ThreeUpImageLayout", () => {
     expect(screen.getByTestId("image-3")).toBeDefined()
   })
 
-  it("handles less than 3 images by reusing the last provided image", () => {
+  it("handles 2 out of 3 images by chanign the layout", () => {
     const twoImages = mockImageURLs.slice(0, 2)
     renderWithWrappers(<ThreeUpImageLayout imageURLs={twoImages} />)
 
     expect(screen.getByTestId("image-1")).toBeDefined()
     expect(screen.getByTestId("image-2")).toBeDefined()
-    expect(screen.getByTestId("image-3")).toBeDefined()
+    expect(screen.queryAllByTestId("image-3")).toHaveLength(0)
+  })
+
+  it("handles 1 out of 3 images by chanign the layout", () => {
+    const oneImage = mockImageURLs.slice(0, 1)
+    renderWithWrappers(<ThreeUpImageLayout imageURLs={oneImage} />)
+
+    expect(screen.getByTestId("image-1")).toBeDefined()
+    expect(screen.queryAllByTestId("image-2")).toHaveLength(0)
+    expect(screen.queryAllByTestId("image-3")).toHaveLength(0)
   })
 })
