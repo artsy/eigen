@@ -86,13 +86,10 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
       <Flex flexDirection="row">
         <Flex my={2} px={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <SkeletonText variant="xs" mt={1}>
-              XX Artworks
-            </SkeletonText>
+            <SkeletonText variant="xs">XX Artworks</SkeletonText>
           </Flex>
         </Flex>
       </Flex>
-      <Spacer y={2} />
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (

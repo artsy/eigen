@@ -30,7 +30,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const section = useFragment(HomeViewSectionCardsFragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
 
-  if (!cards) {
+  if (!section || cards.length === 0) {
     return null
   }
 
@@ -52,9 +52,6 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         initialNumToRender={3}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         renderItem={({ item, index }) => {
-          if (!item) {
-            return null
-          }
           const images = item.images || []
           const imageURLs = images.map((img) => img?.imageURL).filter((url): url is string => !!url)
 
