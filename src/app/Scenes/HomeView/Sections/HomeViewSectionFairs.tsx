@@ -7,8 +7,8 @@ import {
 } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/MultipleImageLayout"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { FairCard } from "app/Scenes/HomeView/Sections/FairCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -148,7 +148,7 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
           <Spacer y={1} />
 
           <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
+            <Join separator={<Spacer x={2} />}>
               {times(2 + randomValue * 10).map((index) => (
                 <CardRailCard key={index}>
                   <Flex>

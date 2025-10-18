@@ -1,20 +1,13 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import {
-  Flex,
-  FlexProps,
-  Join,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { HomeViewSectionSalesQuery } from "__generated__/HomeViewSectionSalesQuery.graphql"
 import { HomeViewSectionSales_section$key } from "__generated__/HomeViewSectionSales_section.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
-import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+import {
+  CardRailFlatList,
+  CardRailFlatListPlaceholder,
+} from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewSectionSalesItem } from "app/Scenes/HomeView/Sections/HomeViewSectionSalesItem"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -26,8 +19,6 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useMemoizedRandom } from "app/utils/placeholders"
-import { times } from "lodash"
 import { memo, useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -146,56 +137,6 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
-  const randomValue = useMemoizedRandom()
-  return (
-    <Skeleton>
-      <Flex {...flexProps}>
-        <Flex mx={2}>
-          <SkeletonText variant="sm-display">Auctions</SkeletonText>
-
-          <Spacer y={1} />
-
-          <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
-              {times(2 + randomValue * 10).map((index) => (
-                <CardRailCard key={index}>
-                  <Flex>
-                    <Flex flexDirection="row">
-                      <SkeletonBox height={LARGE_IMAGE_SIZE} width={LARGE_IMAGE_SIZE} />
-                      <Flex>
-                        <SkeletonBox
-                          height={SMALL_IMAGE_SIZE}
-                          width={SMALL_IMAGE_SIZE}
-                          borderLeftWidth={2}
-                          borderColor="mono0"
-                          borderBottomWidth={1}
-                        />
-                        <SkeletonBox
-                          height={SMALL_IMAGE_SIZE}
-                          width={SMALL_IMAGE_SIZE}
-                          borderLeftWidth={2}
-                          borderColor="mono0"
-                          borderTopWidth={1}
-                        />
-                      </Flex>
-                    </Flex>
-                    <CardRailMetadataContainer>
-                      <SkeletonText variant="lg-display" numberOfLines={2}>
-                        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                      </SkeletonText>
-                    </CardRailMetadataContainer>
-                  </Flex>
-                </CardRailCard>
-              ))}
-            </Join>
-          </Flex>
-        </Flex>
-      </Flex>
-    </Skeleton>
-  )
-}
-
 const homeViewSectionSalesQuery = graphql`
   query HomeViewSectionSalesQuery($id: String!) {
     homeView {
@@ -227,7 +168,7 @@ export const HomeViewSectionSalesQueryRenderer: React.FC<SectionSharedProps> = m
 
       return <HomeViewSectionSales section={data.homeView.section} index={index} {...flexProps} />
     },
-    LoadingFallback: HomeViewSectionSalesPlaceholder,
+    LoadingFallback: () => <CardRailFlatListPlaceholder numberOfLines={2} />,
     ErrorFallback: NoFallback,
   })
 )

@@ -10,7 +10,7 @@ import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
 import styled from "styled-components/native"
-import { ThreeUpImageLayout } from "./ThreeUpImageLayout"
+import { MultipleImageLayout } from "./MultipleImageLayout"
 
 interface GenericArtistSeriesRailProps {
   collections: CollectionArtistSeriesRail_collectionGroup$data["members"]
@@ -67,7 +67,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
               }}
             >
               <View>
-                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
+                <MultipleImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
                   <Text weight="medium" variant="sm" m="15px" mb={0}>

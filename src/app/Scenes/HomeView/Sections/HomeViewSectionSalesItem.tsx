@@ -8,7 +8,7 @@ import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/CardRail/CardRailCard"
-import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -45,7 +45,7 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
   return (
     <CardRailCard key={sale.href}>
       <RouterLink to={url} onPress={() => onPress?.(sale)}>
-        <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
+        <MultipleImageLayout imageURLs={availableArtworkImageURLs} />
         <MetadataContainer>
           <Text numberOfLines={2} lineHeight="20px" variant="sm">
             {sale.name}
