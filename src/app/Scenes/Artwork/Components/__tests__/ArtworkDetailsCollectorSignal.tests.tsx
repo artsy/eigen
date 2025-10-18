@@ -9,7 +9,7 @@ describe("ArtworkDetailsCollectorSignal", () => {
     query: graphql`
       query ArtworkDetailsCollectorSignalTestsQuery @relay_test_operation {
         artwork(id: "example") {
-          ...ArtworkDetailsCollectorSignal_artwork
+          ...useCollectorSignal_artwork
         }
       }
     `,

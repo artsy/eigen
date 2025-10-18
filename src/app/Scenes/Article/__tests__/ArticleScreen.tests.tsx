@@ -15,6 +15,9 @@ describe("ArticleScreen", () => {
       Article: () => ({
         title: "Article Title",
         layout: "STANDARD",
+        hero: {
+          media: null,
+        },
       }),
     })
 
@@ -32,6 +35,9 @@ describe("ArticleScreen", () => {
       Article: () => ({
         title: "Article Title",
         layout: "FEATURE",
+        hero: {
+          media: null,
+        },
       }),
     })
 

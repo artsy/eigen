@@ -19,7 +19,7 @@ function createGlobalStore() {
 
     if (__DEV__) {
       if (logAction) {
-        middleware.push(logger)
+        middleware.push(logger as Middleware)
       }
     }
   }
@@ -29,9 +29,9 @@ function createGlobalStore() {
   if (__TEST__ && __globalStoreTestUtils__) {
     __globalStoreTestUtils__.dispatchedActions = []
 
-    middleware.push((_api) => (next) => async (action) => {
-      if (action.type) {
-        __globalStoreTestUtils__.dispatchedActions.push(action)
+    middleware.push((_api) => (next) => async (action: unknown) => {
+      if (typeof action === "object" && action !== null && "type" in action) {
+        __globalStoreTestUtils__.dispatchedActions.push(action as Action)
       }
 
       const result = next(action)

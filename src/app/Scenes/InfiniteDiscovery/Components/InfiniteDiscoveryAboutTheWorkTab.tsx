@@ -24,10 +24,12 @@ import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
+import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
+import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -43,6 +45,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const { collapse } = useBottomSheet()
   const space = useSpace()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
+  const { signalTitle } = useCollectorSignal({ artwork: data })
 
   if (!data) {
     return null
@@ -50,6 +53,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 
   const attributionClass = data.attributionClass?.shortArrayDescription
   const hasCertificateOfAuthenticity = data.hasCertificateOfAuthenticity && !data.isBiddable
+  const hasCollectorSignal = !!signalTitle
 
   const handleOnVisible = (visible: boolean) => {
     if (visible) {
@@ -71,6 +75,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
       >
         <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
           <Flex gap={1}>
+            <InfiniteDiscoveryCollectorSignal artwork={data} />
+
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
                 <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
@@ -109,7 +115,9 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
             )}
           </Flex>
 
-          {!!attributionClass?.length && !!hasCertificateOfAuthenticity && <Divider />}
+          {(!!attributionClass?.length ||
+            !!hasCertificateOfAuthenticity ||
+            !!hasCollectorSignal) && <Divider />}
 
           <Flex gap={1}>
             <Flex flexDirection="row">
@@ -236,6 +244,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 const fragment = graphql`
   fragment InfiniteDiscoveryAboutTheWorkTab_artwork on Artwork {
     ...ContactGalleryButton_artwork
+    ...useCollectorSignal_artwork
 
     internalID @required(action: NONE)
     slug

@@ -101,6 +101,18 @@ describe("inquiry modal", () => {
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
 
+  it("does not show 'What information are you looking for?' when there are no inquiry questions", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+        inquiryQuestions: [],
+      }),
+    })
+
+    expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Add message")).toBeOnTheScreen()
+  })
+
   it("tracks an event when the inquiry modal is closed", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 

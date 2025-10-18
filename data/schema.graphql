@@ -11148,8 +11148,14 @@ type DismissTaskSuccess {
 
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
+  # Text prompt for the buyer to take action
+  actionPrompt: String
+
   # Granular order states specific type that should be directly interpreted by clients
   messageType: DisplayTextsMessageTypeEnum!
+
+  # Collector facing name for buyer state
+  stateName: String!
 
   # Text to display as a first message on the page (header)
   title: String!
@@ -11166,6 +11172,7 @@ enum DisplayTextsMessageTypeEnum {
   COMPLETED_SHIP
   DECLINED_BY_BUYER
   DECLINED_BY_SELLER
+  OFFER_RECEIVED
   PAYMENT_FAILED
   PROCESSING_PAYMENT_PICKUP
   PROCESSING_PAYMENT_SHIP
@@ -16940,6 +16947,9 @@ enum OrderBuyerStateEnum {
 
   # Order is incomplete (pending or abandoned)
   INCOMPLETE
+
+  # Order is an offer avaiting responce from the buyer
+  OFFER_RECEIVED
 
   # Payment has failed
   PAYMENT_FAILED
@@ -22873,6 +22883,9 @@ input UpdateArtworkEditionSetInput {
 
   # The availability of the artwork
   availability: String
+
+  # The ID of the image to set as the default for this artwork
+  defaultImageID: String
   delete: Boolean
 
   # Show/Hide the price range of an artwork
@@ -23012,6 +23025,9 @@ input UpdateArtworkMutationInput {
   # The availability of the artwork
   availability: String
   clientMutationId: String
+
+  # The ID of the image to set as the default for this artwork
+  defaultImageID: String
   delete: Boolean
 
   # Show/Hide the price range of an artwork
@@ -26349,14 +26365,14 @@ type ViewingRoom {
   viewingRoomArtworks: [ViewingRoomArtwork!]!
 }
 
-# Relationship between a Viewing Room and an Artwork
 type ViewingRoomArtwork {
   artworkID: ID!
+
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
   published: Boolean!
 }
 
-# An input type for a Viewing Room artwork
 input ViewingRoomArtworkInput {
   artworkID: ID!
   delete: Boolean = false
@@ -26424,37 +26440,25 @@ enum ViewingRoomStatusEnum {
   scheduled
 }
 
-# Title, image, text, and caption for a viewing room section
 type ViewingRoomSubsection {
-  # Body copy
   body: String
-
-  # Image caption
   caption: String
-  image: ARImage
-
-  # Image URL
+  image: GravityARImage
   imageURL: String
 
-  # Unique ID for this subsection
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
-
-  # Section header
   title: String
 }
 
-# Attributes for creating or updating a viewing room subsection
 input ViewingRoomSubsectionAttributes {
   body: String
   caption: String
   title: String
 }
 
-# An input type for the creation of viewing room subsections
 input ViewingRoomSubsectionInput {
   attributes: ViewingRoomSubsectionAttributes
-
-  # If true, delete this subsection from the database
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
