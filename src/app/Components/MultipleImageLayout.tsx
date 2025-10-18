@@ -76,6 +76,7 @@ export const MultipleImageLayout: React.FC<MultipleImageLayoutProps> = ({
   )
 
   switch (imageURLs.length) {
+    case 0:
     case 1: {
       return oneImageLayout
     }
