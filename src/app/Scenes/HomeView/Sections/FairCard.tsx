@@ -2,7 +2,7 @@ import { bullet, useTheme } from "@artsy/palette-mobile"
 import { FairCard_fair$data, FairCard_fair$key } from "__generated__/FairCard_fair.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardWithMetaData, useNumColumns } from "app/Components/Cards/CardWithMetaData"
-import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
 import { FC, memo } from "react"
@@ -48,7 +48,7 @@ export const FairCard: FC<FairCardProps> = memo(({ fair: fairFragment, onPress, 
       isFluid={isFluid}
       href={`/fair/${fair.slug}`}
       imageComponent={
-        <ThreeUpImageLayout
+        <MultipleImageLayout
           imageURLs={artworkImageURLs}
           width={isFluid ? screenWidth / numColumns - 2 * space(2) : CARD_WIDTH}
         />

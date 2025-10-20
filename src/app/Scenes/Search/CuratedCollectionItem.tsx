@@ -3,7 +3,7 @@ import { TappedCollectionGroup } from "@artsy/cohesion/dist/Schema/Events/Tap"
 import { Box, Text, TextProps } from "@artsy/palette-mobile"
 import { CuratedCollectionItem_collection$key } from "__generated__/CuratedCollectionItem_collection.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
-import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
@@ -34,7 +34,7 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
     <RouterLink to={`/collection/${item.slug}`} onPress={onPress} hasChildTouchable>
       <CardRailCard>
         <Box>
-          <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
+          <MultipleImageLayout imageURLs={availableArtworkImageURLs} />
           <CardRailMetadataContainer>
             <Text variant={textVariant} numberOfLines={1}>
               {item.title}
