@@ -55,22 +55,32 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
           const imageURLs =
             item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
 
+          const Card = (
+            <>
+              <MultipleImageLayout imageURLs={imageURLs} />
+              <CardRailMetadataContainer>
+                <Text key={index} color={imageURLs.length === 0 ? "mono30" : "mono100"}>
+                  {item?.title}
+                </Text>
+              </CardRailMetadataContainer>
+            </>
+          )
+
           return (
             <Flex>
               <CardRailCard key={index}>
-                <RouterLink
-                  to={item.href || "/auctions"}
-                  onPress={() => {
-                    /* track */
-                  }}
-                >
-                  <MultipleImageLayout imageURLs={imageURLs} />
-                  <CardRailMetadataContainer>
-                    <Text key={index} color={imageURLs.length === 0 ? "mono30" : "mono100"}>
-                      {item?.title}
-                    </Text>
-                  </CardRailMetadataContainer>
-                </RouterLink>
+                {imageURLs.length > 0 ? (
+                  <RouterLink
+                    to={item.href || "/auctions"}
+                    onPress={() => {
+                      /* track */
+                    }}
+                  >
+                    {Card}
+                  </RouterLink>
+                ) : (
+                  Card
+                )}
               </CardRailCard>
             </Flex>
           )
