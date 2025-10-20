@@ -17,7 +17,7 @@ describe("MultipleImageLayout", () => {
     expect(screen.getByTestId("image-3")).toBeDefined()
   })
 
-  it("handles 2 out of 3 images by chanign the layout", () => {
+  it("handles 2 out of 3 images by changing the layout", () => {
     const twoImages = mockImageURLs.slice(0, 2)
     renderWithWrappers(<MultipleImageLayout imageURLs={twoImages} />)
 
@@ -26,7 +26,7 @@ describe("MultipleImageLayout", () => {
     expect(screen.queryAllByTestId("image-3")).toHaveLength(0)
   })
 
-  it("handles 1 out of 3 images by chanign the layout", () => {
+  it("handles 1 out of 3 images by changing the layout", () => {
     const oneImage = mockImageURLs.slice(0, 1)
     renderWithWrappers(<MultipleImageLayout imageURLs={oneImage} />)
 

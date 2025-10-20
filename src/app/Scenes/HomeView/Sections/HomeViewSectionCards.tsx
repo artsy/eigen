@@ -50,8 +50,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
       <CardRailFlatList
         data={cards}
         initialNumToRender={3}
+        keyExtractor={(_, index) => String(index)}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           const imageURLs =
             item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
 
@@ -59,16 +60,14 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
             <>
               <MultipleImageLayout imageURLs={imageURLs} />
               <CardRailMetadataContainer>
-                <Text key={index} color={imageURLs.length === 0 ? "mono30" : "mono100"}>
-                  {item?.title}
-                </Text>
+                <Text color={imageURLs.length === 0 ? "mono30" : "mono100"}>{item?.title}</Text>
               </CardRailMetadataContainer>
             </>
           )
 
           return (
             <Flex>
-              <CardRailCard key={index}>
+              <CardRailCard>
                 {imageURLs.length > 0 ? (
                   <RouterLink
                     to={item.href || "/auctions"}

@@ -48,7 +48,7 @@ export const MultipleImageLayout: React.FC<MultipleImageLayoutProps> = ({
     </ImagesWrapper>
   )
 
-  const threeImageLauout = (
+  const threeImageLayout = (
     <ImagesWrapper>
       <ImageWithFallback
         testID="image-1"
@@ -84,7 +84,10 @@ export const MultipleImageLayout: React.FC<MultipleImageLayoutProps> = ({
       return twoImageLayout
     }
     case 3: {
-      return threeImageLauout
+      return threeImageLayout
+    }
+    default: {
+      return threeImageLayout
     }
   }
 }
