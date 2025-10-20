@@ -77,18 +77,14 @@ export const MultipleImageLayout: React.FC<MultipleImageLayoutProps> = ({
 
   switch (imageURLs.length) {
     case 0:
-    case 1: {
+    case 1:
       return oneImageLayout
-    }
-    case 2: {
+    case 2:
       return twoImageLayout
-    }
-    case 3: {
+    case 3:
       return threeImageLayout
-    }
-    default: {
+    default:
       return threeImageLayout
-    }
   }
 }
 
