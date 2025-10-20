@@ -23,10 +23,8 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
-import { shouldShowHomeViewCardRail } from "app/Scenes/HomeView/helpers/shouldShowHomeViewCardRail"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -48,8 +46,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 }) => {
   const tracking = useHomeViewTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
-
-  const { variant } = useExperimentVariant("onyx_homeView-new-card-rail-type")
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
@@ -106,11 +102,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
-  const showeHomeViewCardRail = shouldShowHomeViewCardRail(
-    section.internalID,
-    enableNewHomeViewCardRailType,
-    variant.name
-  )
+  const showeHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
 
   const subTitle =
     showeHomeViewCardRail && artworks.length > 0
@@ -181,7 +173,7 @@ const fragment = graphql`
     }
     ownerType
     trackItemImpressions
-
+    showArtworksCardView
     artworksConnection(first: 10) {
       edges {
         node {
@@ -256,13 +248,8 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
 
       const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
-      const { variant } = useExperimentVariant("onyx_homeView-new-card-rail-type")
 
-      const includeArtistNames = shouldShowHomeViewCardRail(
-        sectionID,
-        enableNewHomeViewCardRailType,
-        variant.name
-      )
+      const includeArtistNames = enableNewHomeViewCardRailType
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
