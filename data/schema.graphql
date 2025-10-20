@@ -20322,6 +20322,9 @@ type Query {
     hasLocation: Boolean
     ids: [String]
     last: Int
+
+    # Caps number of shows per partner (may result in uneven page sizes)
+    maxPerPartner: Int
     sort: ShowSorts
     status: EventStatus
 
@@ -26232,6 +26235,9 @@ type Viewer {
     hasLocation: Boolean
     ids: [String]
     last: Int
+
+    # Caps number of shows per partner (may result in uneven page sizes)
+    maxPerPartner: Int
     sort: ShowSorts
     status: EventStatus
 
