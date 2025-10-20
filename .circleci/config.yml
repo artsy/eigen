@@ -27,7 +27,7 @@ defaults_ignore_main: &ignore_main_branches
         - main
 
 orbs:
-  node: circleci/node@7.2.0
+  node: circleci/node@7.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
   android: circleci/android@3.1.0
