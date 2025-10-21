@@ -89,6 +89,7 @@ describe("HomeViewSectionArtworks", () => {
         component: {
           title: "New Works for You",
         },
+        showArtworksCardView: false,
         artworksConnection: {
           edges: [
             {
@@ -112,6 +113,9 @@ describe("HomeViewSectionArtworks", () => {
         },
       }),
     })
+
+    // Verify that new ArtworksCard is not rendered
+    expect(screen.queryByTestId("artworks-card")).not.toBeOnTheScreen()
 
     expect(screen.getByText("New Works for You")).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
@@ -383,10 +387,6 @@ describe("HomeViewSectionArtworks", () => {
 
   it("renders ArtworksCard when all criteria are met", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewHomeViewCardRailType: true })
-    ;(useExperimentVariant as jest.Mock).mockReturnValue({
-      enabled: true,
-      variant: { name: "experiment" },
-    })
 
     renderWithRelay({
       HomeViewSectionArtworks: () => ({
@@ -395,6 +395,7 @@ describe("HomeViewSectionArtworks", () => {
         component: {
           title: "New Works for You",
         },
+        showArtworksCardView: true,
         artworksConnection: {
           edges: [
             {
