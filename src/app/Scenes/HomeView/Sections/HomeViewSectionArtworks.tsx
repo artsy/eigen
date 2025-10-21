@@ -18,6 +18,7 @@ import {
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingLongPressContextMenu"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -44,6 +45,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
+  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
@@ -100,32 +102,47 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
+  const showeHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
+
+  const subTitle =
+    showeHomeViewCardRail && artworks.length > 0
+      ? artworks
+          .slice(0, 3)
+          .map((artwork) => artwork?.artistNames)
+          .filter(Boolean)
+          .join(", ")
+      : undefined
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
         href={moreHref}
         mx={2}
         title={section.component?.title}
+        subtitle={subTitle}
         onPress={moreHref ? onSectionViewAll : undefined}
       />
-
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
-      <ArtworkRail
-        contextModule={section.contextModule as ContextModule}
-        contextScreenOwnerType={OwnerType.home}
-        artworks={artworks}
-        onPress={handleOnArtworkPress}
-        showSaveIcon
-        moreHref={moreHref}
-        onMorePress={onMorePress}
-        {...(section.trackItemImpressions
-          ? {
-              onViewableItemsChanged: onViewableItemsChanged,
-              viewabilityConfig: viewabilityConfig,
-            }
-          : {})}
-      />
+      {showeHomeViewCardRail ? (
+        <ArtworksCard artworks={artworks} />
+      ) : (
+        <ArtworkRail
+          contextModule={section.contextModule as ContextModule}
+          contextScreenOwnerType={OwnerType.home}
+          artworks={artworks}
+          onPress={handleOnArtworkPress}
+          showSaveIcon
+          moreHref={moreHref}
+          onMorePress={onMorePress}
+          {...(section.trackItemImpressions
+            ? {
+                onViewableItemsChanged: onViewableItemsChanged,
+                viewabilityConfig: viewabilityConfig,
+              }
+            : {})}
+        />
+      )}
 
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
@@ -138,7 +155,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
 const fragment = graphql`
   fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks
-  @argumentDefinitions(enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }) {
+  @argumentDefinitions(
+    enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
+    includeArtistNames: { type: "Boolean", defaultValue: false }
+  ) {
     __typename
     internalID
     contextModule
@@ -153,12 +173,14 @@ const fragment = graphql`
     }
     ownerType
     trackItemImpressions
-
+    showArtworksCardView
     artworksConnection(first: 10) {
       edges {
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
+          artistNames @include(if: $includeArtistNames)
           ...ArtworkRail_artworks
+          ...ArtworksCard_artworks
         }
       }
     }
@@ -166,11 +188,18 @@ const fragment = graphql`
 `
 
 const homeViewSectionArtworksQuery = graphql`
-  query HomeViewSectionArtworksQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
+  query HomeViewSectionArtworksQuery(
+    $id: String!
+    $enableHidingDislikedArtworks: Boolean!
+    $includeArtistNames: Boolean!
+  ) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionArtworks_section
-          @arguments(enableHidingDislikedArtworks: $enableHidingDislikedArtworks)
+          @arguments(
+            enableHidingDislikedArtworks: $enableHidingDislikedArtworks
+            includeArtistNames: $includeArtistNames
+          )
       }
     }
   }
@@ -218,11 +247,16 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
     Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
 
+      const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
+
+      const includeArtistNames = enableNewHomeViewCardRailType
+
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
         {
           id: sectionID,
           enableHidingDislikedArtworks,
+          includeArtistNames,
         },
         {
           fetchKey: refetchKey,

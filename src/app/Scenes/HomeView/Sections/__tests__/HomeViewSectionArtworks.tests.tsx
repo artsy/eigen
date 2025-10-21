@@ -7,6 +7,7 @@ import {
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -28,9 +29,18 @@ const HomeViewStoreVisitor: React.FC = () => {
 
   return null
 }
+
+jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
+  useExperimentVariant: jest.fn(),
+}))
+
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
+    ;(useExperimentVariant as jest.Mock).mockReturnValue({
+      enabled: false,
+      variant: { name: "control" },
+    })
   })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
@@ -79,6 +89,7 @@ describe("HomeViewSectionArtworks", () => {
         component: {
           title: "New Works for You",
         },
+        showArtworksCardView: false,
         artworksConnection: {
           edges: [
             {
@@ -102,6 +113,9 @@ describe("HomeViewSectionArtworks", () => {
         },
       }),
     })
+
+    // Verify that new ArtworksCard is not rendered
+    expect(screen.queryByTestId("artworks-card")).not.toBeOnTheScreen()
 
     expect(screen.getByText("New Works for You")).toBeOnTheScreen()
     expect(screen.getByText(/Artwork 1/)).toBeOnTheScreen()
@@ -369,5 +383,60 @@ describe("HomeViewSectionArtworks", () => {
         position: 0,
       })
     })
+  })
+
+  it("renders ArtworksCard when all criteria are met", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewHomeViewCardRailType: true })
+
+    renderWithRelay({
+      HomeViewSectionArtworks: () => ({
+        internalID: "home-view-section-new-works-for-you",
+        contextModule: "newWorksForYouRail",
+        component: {
+          title: "New Works for You",
+        },
+        showArtworksCardView: true,
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                artistNames: "Artist One",
+                image: {
+                  url: "https://example1.com/image.jpg",
+                  aspectRatio: 1.5,
+                  blurhash: "bh1",
+                },
+              },
+            },
+            {
+              node: {
+                artistNames: "Artist Two",
+                image: {
+                  url: "https://example2.com/image.jpg",
+                  aspectRatio: 0.5,
+                  blurhash: "bh2",
+                },
+              },
+            },
+            {
+              node: {
+                artistNames: "Artist Three",
+                image: {
+                  url: "https://example3.com/image.jpg",
+                  aspectRatio: 0.5,
+                  blurhash: "bh3",
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.getByText("New Works for You")).toBeOnTheScreen()
+    expect(screen.getByTestId("artworks-card")).toBeOnTheScreen()
+
+    const images = screen.getAllByTestId("artwork-image")
+    expect(images).toHaveLength(3)
   })
 })

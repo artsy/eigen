@@ -212,6 +212,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
+  AREnableNewHomeViewCardRailType: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable new rail type on home",
+    echoFlagKey: "AREnableNewHomeViewCardRailType",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

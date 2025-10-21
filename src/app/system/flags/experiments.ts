@@ -19,6 +19,9 @@ export const experiments = {
   "onyx_quick-links-experiment": {
     description: "Add quick links section to home view",
   },
+  "onyx_nwfy-artworks-card-test": {
+    description: "New card rail type for home view nwfy section",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
