@@ -16166,6 +16166,11 @@ type Mutation {
     input: RemoveInstallShotFromPartnerShowMutationInput!
   ): RemoveInstallShotFromPartnerShowMutationPayload
 
+  # Reposition artwork images, determining their display order.
+  repositionArtworkImages(
+    input: RepositionArtworkImagesMutationInput!
+  ): RepositionArtworkImagesMutationPayload
+
   # Reposition artworks in a partner show, determining their display order.
   repositionArtworksInPartnerShow(
     input: RepositionArtworksInPartnerShowMutationInput!
@@ -20662,6 +20667,33 @@ union RemoveInstallShotFromPartnerShowResponseOrError =
 
 type RemoveInstallShotFromPartnerShowSuccess {
   show: Show
+}
+
+type RepositionArtworkImagesFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionArtworkImagesMutationInput {
+  # The ID of the artwork.
+  artworkId: String!
+  clientMutationId: String
+
+  # An ordered array of image IDs representing the new display order.
+  imageIds: [String!]!
+}
+
+type RepositionArtworkImagesMutationPayload {
+  # On success: the artwork with repositioned images. On error: the error that occurred.
+  artworkOrError: RepositionArtworkImagesResponseOrError
+  clientMutationId: String
+}
+
+union RepositionArtworkImagesResponseOrError =
+    RepositionArtworkImagesFailure
+  | RepositionArtworkImagesSuccess
+
+type RepositionArtworkImagesSuccess {
+  artwork: Artwork
 }
 
 type RepositionArtworksInPartnerShowFailure {
