@@ -12,6 +12,7 @@ import {
   TappedArtworkGroup,
   TappedAuctionGroup,
   TappedAuctionResultGroup,
+  TappedAuctionsHubGroup,
   TappedCardGroup,
   TappedChangePaymentMethod,
   TappedClearTask,
@@ -231,6 +232,38 @@ export const useHomeViewTracking = () => {
     ) => {
       const payload: TappedAuctionGroup = {
         action: ActionType.tappedAuctionGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: destinationOwnerType,
+        type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedAuctionsHubGroup: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType,
+      index: number
+    ) => {
+      const payload: TappedAuctionsHubGroup = {
+        action: ActionType.tappedAuctionsHubGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: destinationOwnerType,
+        horizontal_slide_position: index,
+        type: "thumbnail",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedAuctionsHubGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
+      const payload: TappedAuctionsHubGroup = {
+        action: ActionType.tappedAuctionsHubGroup,
         context_module: contextModule,
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: destinationOwnerType,
