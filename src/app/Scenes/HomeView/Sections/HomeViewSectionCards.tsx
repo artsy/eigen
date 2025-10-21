@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"

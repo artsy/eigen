@@ -3,6 +3,7 @@ import { HomeViewSectionCardsTestsQuery } from "__generated__/HomeViewSectionCar
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionCards } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -54,13 +55,21 @@ describe("HomeViewSectionCards", () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
+        contextModule: "auctionsHubRail",
         ...component,
         ...cardsConnection,
       }),
     })
 
     fireEvent.press(screen.getByText("Section Title"))
-    // TODO: test tracking
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedAuctionsHubGroup",
+      context_module: "auctionsHubRail",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "auctions",
+      type: "viewAll",
+    })
+
     expect(navigate).toHaveBeenCalledWith("/view-all-route")
   })
 
@@ -74,15 +83,36 @@ describe("HomeViewSectionCards", () => {
     })
 
     fireEvent.press(screen.getByText("Card Title 0"))
-    // TODO: test tracking
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedAuctionsHubGroup",
+      context_module: "lotsForYouCard",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "lotsForYou",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
     expect(navigate).toHaveBeenCalledWith("/0-route")
 
     fireEvent.press(screen.getByText("Card Title 1"))
-    // TODO: test tracking
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedAuctionsHubGroup",
+      context_module: "auctionResultsForArtistsYouFollowCard",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "auctionResultsForArtistsYouFollow",
+      horizontal_slide_position: 1,
+      type: "thumbnail",
+    })
     expect(navigate).toHaveBeenCalledWith("/1-route")
 
     fireEvent.press(screen.getByText("Card Title 2"))
-    // TODO: test tracking
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedAuctionsHubGroup",
+      context_module: "auctionsCard",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "auctions",
+      horizontal_slide_position: 2,
+      type: "thumbnail",
+    })
     expect(navigate).toHaveBeenCalledWith("/2-route")
   })
 })
@@ -93,6 +123,7 @@ const component = {
     behaviors: {
       viewAll: {
         href: "/view-all-route",
+        ownerType: "auctions",
       },
     },
   },
@@ -105,6 +136,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 0",
           href: "/0-route",
+          ownerType: "lotsForYou",
+          contextModule: "lotsForYouCard",
           images: [
             {
               imageURL: "https://url.com/image.jpg",
@@ -122,6 +155,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 1",
           href: "/1-route",
+          ownerType: "auctionResultsForArtistsYouFollow",
+          contextModule: "auctionResultsForArtistsYouFollowCard",
           images: [
             {
               imageURL: "https://url.com/image.jpg",
@@ -136,6 +171,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 2",
           href: "/2-route",
+          ownerType: "auctions",
+          contextModule: "auctionsCard",
           images: [
             {
               imageURL: "https://url.com/image.jpg",
