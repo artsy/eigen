@@ -58,7 +58,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
             />
           )
         }}
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <BrowseMoreRailCard
             href={href}
             onPress={() => {
@@ -66,7 +66,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
             }}
             text="Browse All Results"
           />
-        }
+        )}
       />
     </Flex>
   )

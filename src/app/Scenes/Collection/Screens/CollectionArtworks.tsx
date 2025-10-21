@@ -165,9 +165,9 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
             <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
           </Tabs.SubTabBar>
         }
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        }
+        )}
       />
       <ArtworkFilterNavigator
         id={collection.id}

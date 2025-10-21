@@ -123,11 +123,11 @@ export const PartnerShows: React.FC<{
       }}
       refreshing={isLoadingMore}
       ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
-      ListFooterComponent={
+      ListFooterComponent={() => (
         <Flex alignItems="center" justifyContent="center" height={space(6)}>
           {isLoadingMore ? <ActivityIndicator /> : null}
         </Flex>
-      }
+      )}
     />
   )
 }

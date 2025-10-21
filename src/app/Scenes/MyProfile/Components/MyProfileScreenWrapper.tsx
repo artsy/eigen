@@ -57,3 +57,49 @@ export const MyProfileScreenWrapper: React.FC<
     </Screen>
   )
 }
+
+/* IMPORTANT: use a non animated header inside placeholders due to a bug that never
+lets suspense resolve when used with an animated header and resulting on a blank screen. */
+export const MyProfileScreenWrapperPlaceholder: React.FC<
+  React.PropsWithChildren<MyProfileScreenWrapperProps>
+> = ({
+  children,
+  title,
+  onPress,
+  hideLeftElements = false,
+  contentContainerStyle,
+  RefreshControl,
+}) => {
+  const space = useSpace()
+
+  return (
+    <Screen>
+      <Screen.Header title="" hideLeftElements={hideLeftElements} onBack={goBack} />
+      <Screen.StickySubHeader title={title} />
+      <Screen.Body fullwidth>
+        <Screen.ScrollView
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={{
+            paddingTop: space(2),
+            paddingHorizontal: space(2),
+            // This is required to make room for the save button on top of the bottom tabs
+            // Screen.ScrollView doesn't consider the save button in its height calculation
+            paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
+            ...contentContainerStyle,
+          }}
+          refreshControl={RefreshControl}
+        >
+          {children}
+          {!!onPress && (
+            <Flex my={2}>
+              <Button block onPress={onPress} disabled loading>
+                Save
+              </Button>
+            </Flex>
+          )}
+        </Screen.ScrollView>
+      </Screen.Body>
+    </Screen>
+  )
+}

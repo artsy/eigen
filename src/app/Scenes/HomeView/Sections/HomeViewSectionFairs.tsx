@@ -7,8 +7,8 @@ import {
 } from "__generated__/HomeViewSectionFairs_section.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
+import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/MultipleImageLayout"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { FairCard } from "app/Scenes/HomeView/Sections/FairCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -20,6 +20,7 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
@@ -93,7 +94,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = memo(
           data={fairs}
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           renderItem={renderItem}
-          disableVirtualization
+          disableVirtualization={!isNewArchitectureEnabled}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         />
 
@@ -147,7 +148,7 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
           <Spacer y={1} />
 
           <Flex flexDirection="row">
-            <Join separator={<Spacer x="15px" />}>
+            <Join separator={<Spacer x={2} />}>
               {times(2 + randomValue * 10).map((index) => (
                 <CardRailCard key={index}>
                   <Flex>

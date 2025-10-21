@@ -1,13 +1,7 @@
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { useEffect, useRef } from "react"
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated"
+import { Animated, useAnimatedValue } from "react-native"
 
 export const ArtworkSaveIconWrapper: React.FC<{
   isSaved: boolean
@@ -15,12 +9,8 @@ export const ArtworkSaveIconWrapper: React.FC<{
   accessibilityLabel?: string
   fill?: string
 }> = ({ isSaved, testID, accessibilityLabel, fill }) => {
-  const scaleAnimation = useSharedValue(1)
+  const scaleAnimation = useAnimatedValue(1)
   const didMount = useRef(false)
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ scale: scaleAnimation.value }],
-  }))
 
   useEffect(() => {
     if (!didMount.current) {
@@ -29,23 +19,36 @@ export const ArtworkSaveIconWrapper: React.FC<{
     }
 
     if (isSaved) {
-      scaleAnimation.value = withSequence(
-        withSpring(isSaved ? 0.7 : 1, {
-          mass: 1,
+      Animated.sequence([
+        Animated.spring(scaleAnimation, {
+          toValue: 0.7,
+          mass: 0.01,
           stiffness: 300,
-          damping: 20,
+          useNativeDriver: true,
         }),
-        withTiming(1.1, { duration: 300 }),
-        withTiming(1, { duration: 200 })
-      )
+        Animated.timing(scaleAnimation, {
+          toValue: 1.1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnimation, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start()
     } else {
       // We don't want to animation the dislike
-      scaleAnimation.value = 1
+      scaleAnimation.setValue(1)
     }
   }, [isSaved, scaleAnimation])
 
   return (
-    <Animated.View style={animatedStyles} testID={testID} accessibilityLabel={accessibilityLabel}>
+    <Animated.View
+      style={{ transform: [{ scale: scaleAnimation }] }}
+      testID={testID}
+      accessibilityLabel={accessibilityLabel}
+    >
       {!!isSaved ? (
         <HeartFillIcon
           height={HEART_ICON_SIZE}

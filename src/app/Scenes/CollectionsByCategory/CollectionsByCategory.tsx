@@ -1,27 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
-import { CollectionsByCategoryBodyWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
-import { CollectionsByCategoryFooterWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryFooter"
+import { CollectionsByCategoryBodyWithSuspense } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryBody"
+import { CollectionsByCategoryFooterWithSuspense } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryFooter"
+import { useCollectionsByCategoryParams } from "app/Scenes/CollectionsByCategory/hooks/useCollectionsByCategoryParams"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { FC } from "react"
 
-export type CollectionsByCategoriesRouteProp = RouteProp<
-  {
-    collections: {
-      slug: string
-      title: string
-    }
-  },
-  "collections"
->
-
 export const CollectionsByCategory: FC = () => {
-  const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const slug = params.slug
-  const title = params.title
+  const { slug, title } = useCollectionsByCategoryParams()
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

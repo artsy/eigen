@@ -140,7 +140,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
         )
       }}
       onEndReached={onLoadMore}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         fetchingMore ? (
           <Flex alignItems="center" mt={2} mb={4}>
             <Spinner />

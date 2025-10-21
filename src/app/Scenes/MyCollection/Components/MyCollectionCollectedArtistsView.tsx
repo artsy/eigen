@@ -84,7 +84,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
             return null
           }}
           onEndReached={handleLoadMore}
-          ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
+          ListFooterComponent={() => (!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />)}
           ItemSeparatorComponent={() => <Spacer y={2} />}
           refreshControl={RefreshControl}
         />

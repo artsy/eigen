@@ -681,7 +681,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
-        ...ArtworkDetailsCollectorSignal_artwork
+        ...useCollectorSignal_artwork
         slug
         internalID
         isAcquireable

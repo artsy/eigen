@@ -565,8 +565,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
             {renderShowCard()}
           </Flex>
         )}
+        <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
       </Flex>
-      <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
     </ProvideScreenTracking>
   )
 }

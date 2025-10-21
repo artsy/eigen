@@ -2,12 +2,12 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
-import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/CardRail/CardRailFlatList"
+import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
@@ -32,6 +32,7 @@ interface Props extends ViewProps {
 
 const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
 
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(props.scrollRef, () => ({
@@ -116,8 +117,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         // and making this explicit fixes that.
         getItemLayout={(_data, index) => ({
           index,
-          offset: index * (CARD_WIDTH + INTER_CARD_PADDING),
-          length: CARD_WIDTH + INTER_CARD_PADDING,
+          offset: index * (CARD_WIDTH + space(2)),
+          length: CARD_WIDTH + space(2),
         })}
         renderItem={({ item: artist, index }) => {
           return (
@@ -138,7 +139,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
                 }}
                 onFollow={() => handleFollowChange(artist)}
               />
-              {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
+              {index === artists.length - 1 ? null : <View style={{ width: space(2) }} />}
             </View>
           )
         }}

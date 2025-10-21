@@ -2,7 +2,7 @@ import { Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Component } from "react"
-import { Animated } from "react-native"
+import { Animated, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 /**
@@ -24,10 +24,6 @@ interface TabBarProps {
   spaceEvenly?: boolean
 }
 
-const Button = styled.TouchableWithoutFeedback`
-  flex: 1;
-`
-
 const Underline = Animated.View
 
 const Tabs = styled.View`
@@ -41,8 +37,8 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   justify-content: center;
   padding-top: 5px;
   flex-grow: 1;
-  ${(p) => p.spaceEvenly && `flex: 1;`};
-  ${(p) =>
+  ${(p: { spaceEvenly?: boolean; active?: boolean }) => p.spaceEvenly && `flex: 1;`};
+  ${(p: { spaceEvenly?: boolean; active?: boolean }) =>
     !p.spaceEvenly &&
     p.active &&
     `
@@ -56,7 +52,8 @@ export default class TabBar extends Component<TabBarProps> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
-      <Button
+      <TouchableWithoutFeedback
+        style={{ flex: 1 }}
         key={name}
         accessible
         accessibilityLabel={name}
@@ -78,7 +75,7 @@ export default class TabBar extends Component<TabBarProps> {
             )}
           </ThemeAwareClassTheme>
         </TabButton>
-      </Button>
+      </TouchableWithoutFeedback>
     )
   }
 
