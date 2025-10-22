@@ -1,7 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { VideoWebView } from "app/Components/VideoWebView"
 import { useMemo } from "react"
-import { Platform } from "react-native"
-import { WebView } from "react-native-webview"
 
 interface FeatureVideoProps {
   videoUrl: string
@@ -104,29 +102,5 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
     return null
   }
 
-  return (
-    <Flex width={width} height={height} testID="FeatureVideo">
-      <WebView
-        source={{ html }}
-        style={{ width, height }}
-        allowsInlineMediaPlayback
-        mediaPlaybackRequiresUserAction={false}
-        scrollEnabled={false}
-        bounces={false}
-        // Prevent zooming
-        scalesPageToFit={Platform.OS === "android"}
-        // Performance optimizations
-        androidLayerType="hardware"
-        androidHardwareAccelerationDisabled={false}
-        cacheEnabled={true}
-        cacheMode="LOAD_DEFAULT"
-        // Faster initial load
-        startInLoadingState={false}
-        // Prevent unnecessary re-renders
-        setSupportMultipleWindows={false}
-        // Allow mixed content for better Android network performance
-        mixedContentMode="always"
-      />
-    </Flex>
-  )
+  return <VideoWebView html={html} width={width} height={height} testID="FeatureVideo" />
 }
