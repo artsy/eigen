@@ -1,10 +1,11 @@
-import { Spacer, Flex, Text, Separator, Box, useColor } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator, Box, useColor, Screen } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -191,21 +192,24 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   }
 
   return (
-    <AboveTheFoldFlatList<FlatListSection>
-      initialNumToRender={__TEST__ ? 100 : 6}
-      data={[
-        header,
-        ...flattenDeep(
-          addSeparatorBetweenAllSections(
-            contentSections,
-            "content",
-            <Separator mt={4} mb={4} style={{ borderColor: color("mono100") }} />
-          )
-        ),
-      ]}
-      renderItem={(item) => item.item.content}
-      contentContainerStyle={{ paddingBottom: 40 }}
-    />
+    <Screen>
+      <Screen.AnimatedHeader onBack={goBack} />
+      <AboveTheFoldFlatList<FlatListSection>
+        initialNumToRender={__TEST__ ? 100 : 6}
+        data={[
+          header,
+          ...flattenDeep(
+            addSeparatorBetweenAllSections(
+              contentSections,
+              "content",
+              <Separator mt={4} mb={4} style={{ borderColor: color("mono100") }} />
+            )
+          ),
+        ]}
+        renderItem={(item) => item.item.content}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      />
+    </Screen>
   )
 }
 
