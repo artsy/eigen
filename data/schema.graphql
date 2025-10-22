@@ -13332,11 +13332,13 @@ type HomeView {
 type HomeViewCard {
   badgeText: String
   buttonText: String
+  contextModule: String
   entityID: String
   entityType: String
   href: String
   image: Image
   images: [Image]
+  ownerType: String
   subtitle: String
   title: String!
 }
