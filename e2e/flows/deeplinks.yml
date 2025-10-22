@@ -62,11 +62,11 @@ appId: ${MAESTRO_APP_ID}
 # --- Third deeplink (Email link) ---
 - repeat:
     while:
-      notVisible: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
+      notVisible: "Maestro Test Artwork, 2025"
     times: 3
     commands:
       - openLink:
-          link: https://email-link.artsy.net/ls/click?upn=u001.XPbk8dXjc6dwd18Yq2uPM3eTWB4YbDUmeJTAXXTF512Nwxf-2FNcpcL5kGUjxOn0XjmNvG5yw2nVNZFI2le1Yx0w-3D-3DfZ1B_3Lcd1TF7D-2Bbgka3PNFgpIkcP2iHX23um7pkF2BCyljnib6N1sJsV-2BGlxlczyxod9rh2aScuXtPYUKaXhSrtEbUV4jQc1T3YnSWxnG96wRpa5KMlddofCuChfU9NmzxJrAC2dKNpz2KMYEDe3SXt-2BJLXpXrVUh9yeYxbwbRCm40X9N0g7qF5EkiIVDzUtdtotNJaYJEPW0cE9TIW8pFb7HqJBbMdblMaPdBelnX1zVgu2BP4tLUUrC2gxUmkiciwrDDtsDafwb8LYuopweJglNNVa75ptBoGjeR7wDCel1Ulf-2F0eKvL5GWxKDKimg-2B5Wmer60b4Pp0viUM1VXYJmknDBhuvH92ylAztTEKaH31kR65P5dadVftk7HnhiAzLX0Ax39kX2elwCodt8b-2FEkr9g-3D-3D
+          link: https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT
           autoVerify: true
       - runFlow:
           when:
@@ -77,6 +77,6 @@ appId: ${MAESTRO_APP_ID}
           timeout: 2000
 
 - scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
-    element: "Untitled, 2019"
+    element: "Maestro Test Artwork, 2025"
     timeout: 90000
     speed: 60
