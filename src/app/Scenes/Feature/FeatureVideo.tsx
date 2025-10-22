@@ -9,6 +9,23 @@ interface FeatureVideoProps {
   height: number
 }
 
+const ALLOWED_VIDEO_DOMAINS = ["player.vimeo.com", "www.youtube.com", "youtube.com"]
+
+function isValidVideoUrl(url: string): boolean {
+  try {
+    // Extract hostname from URL string
+    const urlPattern = /^https?:\/\/([^/:]+)/
+    const match = url.match(urlPattern)
+    if (!match) {
+      return false
+    }
+    const hostname = match[1]
+    return ALLOWED_VIDEO_DOMAINS.includes(hostname)
+  } catch {
+    return false
+  }
+}
+
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {
   // Add autoplay and loop parameters while preserving existing params
   const separator = videoUrl.includes("?") ? "&" : "?"
@@ -81,6 +98,12 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
   `,
     [adjustedURL, iframeWidth, iframeHeight]
   )
+
+  // Validate URL to prevent XSS attacks
+  if (!isValidVideoUrl(videoUrl)) {
+    console.warn(`FeatureVideo: Invalid video URL domain: ${videoUrl}`)
+    return null
+  }
 
   return (
     <Flex width={width} height={height} testID="FeatureVideo">
