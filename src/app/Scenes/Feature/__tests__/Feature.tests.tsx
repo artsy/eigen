@@ -1,8 +1,7 @@
-import { act } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 
 describe(FeatureQueryRenderer, () => {
@@ -13,7 +12,7 @@ describe(FeatureQueryRenderer, () => {
   })
 
   it("renders without failing", async () => {
-    const tree = renderWithWrappersLEGACY(<FeatureQueryRenderer slug="anything" />)
+    renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
 
     await act(async () => {
       mockRelayEnvironment.mock.resolveMostRecentOperation((op) => {
@@ -24,6 +23,9 @@ describe(FeatureQueryRenderer, () => {
               subheadline: "this is the subheadline",
               callout: "this is the callout",
               description: "this is the description",
+              video: {
+                url: "https://www.youtube.com/somevideo",
+              },
               sets: {
                 edges: [
                   {
@@ -94,14 +96,16 @@ describe(FeatureQueryRenderer, () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("this is the name")
-    expect(extractText(tree.root)).toContain("this is the subheadline")
-    expect(extractText(tree.root)).toContain("this is the callout")
-    expect(extractText(tree.root)).toContain("this is the description")
+    expect(screen.getByText("this is the name")).toBeTruthy()
+    expect(screen.getByText("this is the subheadline")).toBeTruthy()
+    expect(screen.getByText("this is the callout")).toBeTruthy()
+    expect(screen.getByText("this is the description")).toBeTruthy()
 
-    expect(extractText(tree.root)).toContain("set 0 description")
-    expect(extractText(tree.root)).toContain("set 0 name")
-    expect(extractText(tree.root)).toContain("set 1 description")
-    expect(extractText(tree.root)).toContain("set 1 name")
+    expect(screen.getByText("set 0 description")).toBeTruthy()
+    expect(screen.getByText("set 0 name")).toBeTruthy()
+    expect(screen.getByText("set 1 description")).toBeTruthy()
+    expect(screen.getByText("set 1 name")).toBeTruthy()
+
+    expect(screen.getByTestId("FeatureVideo")).toBeTruthy()
   })
 })
