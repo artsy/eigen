@@ -1,7 +1,13 @@
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { useEffect, useRef } from "react"
-import { Animated, useAnimatedValue } from "react-native"
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated"
 
 export const ArtworkSaveIconWrapper: React.FC<{
   isSaved: boolean
@@ -9,8 +15,12 @@ export const ArtworkSaveIconWrapper: React.FC<{
   accessibilityLabel?: string
   fill?: string
 }> = ({ isSaved, testID, accessibilityLabel, fill }) => {
-  const scaleAnimation = useAnimatedValue(1)
+  const scaleAnimation = useSharedValue(1)
   const didMount = useRef(false)
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleAnimation.value }],
+  }))
 
   useEffect(() => {
     if (!didMount.current) {
@@ -19,36 +29,23 @@ export const ArtworkSaveIconWrapper: React.FC<{
     }
 
     if (isSaved) {
-      Animated.sequence([
-        Animated.spring(scaleAnimation, {
-          toValue: 0.7,
-          mass: 0.01,
+      scaleAnimation.value = withSequence(
+        withSpring(isSaved ? 0.7 : 1, {
+          mass: 1,
           stiffness: 300,
-          useNativeDriver: true,
+          damping: 20,
         }),
-        Animated.timing(scaleAnimation, {
-          toValue: 1.1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnimation, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ]).start()
+        withTiming(1.1, { duration: 300 }),
+        withTiming(1, { duration: 200 })
+      )
     } else {
       // We don't want to animation the dislike
-      scaleAnimation.setValue(1)
+      scaleAnimation.value = 1
     }
   }, [isSaved, scaleAnimation])
 
   return (
-    <Animated.View
-      style={{ transform: [{ scale: scaleAnimation }] }}
-      testID={testID}
-      accessibilityLabel={accessibilityLabel}
-    >
+    <Animated.View style={animatedStyles} testID={testID} accessibilityLabel={accessibilityLabel}>
       {!!isSaved ? (
         <HeartFillIcon
           height={HEART_ICON_SIZE}
