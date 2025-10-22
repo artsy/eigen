@@ -5,6 +5,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
+import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -87,16 +88,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             </Flex>
           )}
           {!!feature.video?.url && (
-            <Flex height={videoHeight}>
-              <WebView
-                source={{
-                  uri: feature.video?.url,
-                }}
-                style={{ flex: 1 }}
-                allowsInlineMediaPlayback
-                mediaPlaybackRequiresUserAction={false}
-              />
-            </Flex>
+            <FeatureVideo videoUrl={feature.video.url} width={width} height={videoHeight} />
           )}
         </Flex>
       ),
