@@ -192,7 +192,6 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
       callout
       video {
         url
-        embed(autoPlay: true)
       }
       sets: setsConnection(first: 20) {
         edges {
