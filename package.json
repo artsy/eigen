@@ -308,7 +308,7 @@
     "json5": "2.2.3",
     "lint-staged": "13.2.3",
     "ora": "5.4.0",
-    "patch-package": "^8.0.1",
+    "patch-package": "8.0.1",
     "pod-install": "0.3.10",
     "postinstall-prepare": "1.0.1",
     "prettier": "3.1.1",

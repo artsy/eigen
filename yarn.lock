@@ -13011,7 +13011,7 @@ __metadata:
     moti: "npm:0.29.0"
     ora: "npm:5.4.0"
     ordinal: "npm:1.0.3"
-    patch-package: "npm:^8.0.1"
+    patch-package: "npm:8.0.1"
     pod-install: "npm:0.3.10"
     postinstall-prepare: "npm:1.0.1"
     prettier: "npm:3.1.1"
@@ -20608,7 +20608,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"patch-package@npm:^8.0.1":
+"patch-package@npm:8.0.1":
   version: 8.0.1
   resolution: "patch-package@npm:8.0.1"
   dependencies:
