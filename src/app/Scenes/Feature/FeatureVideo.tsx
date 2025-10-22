@@ -31,24 +31,24 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
   const separator = videoUrl.includes("?") ? "&" : "?"
   const adjustedURL = `${videoUrl}${separator}autoplay=1&loop=1&muted=1`
 
-  // Calculate dimensions for 16:9 aspect ratio with object-fit: cover behavior
-  const videoAspectRatio = 16 / 9
-  const containerAspectRatio = width / height
-
-  let iframeWidth = width
-  let iframeHeight = height
-
-  if (containerAspectRatio > videoAspectRatio) {
-    // Container is wider than video - scale to width
-    iframeHeight = width / videoAspectRatio
-  } else {
-    // Container is taller than video - scale to height
-    iframeWidth = height * videoAspectRatio
-  }
-
   // Memoize HTML to prevent re-renders
-  const html = useMemo(
-    () => `
+  const html = useMemo(() => {
+    // Calculate dimensions for 16:9 aspect ratio with object-fit: cover behavior
+    const videoAspectRatio = 16 / 9
+    const containerAspectRatio = width / height
+
+    let iframeWidth = width
+    let iframeHeight = height
+
+    if (containerAspectRatio > videoAspectRatio) {
+      // Container is wider than video - scale to width
+      iframeHeight = width / videoAspectRatio
+    } else {
+      // Container is taller than video - scale to height
+      iframeWidth = height * videoAspectRatio
+    }
+
+    return `
     <!DOCTYPE html>
     <html>
       <head>
@@ -95,9 +95,8 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
         </div>
       </body>
     </html>
-  `,
-    [adjustedURL, iframeWidth, iframeHeight]
-  )
+  `
+  }, [adjustedURL, width, height])
 
   // Validate URL to prevent XSS attacks
   if (!isValidVideoUrl(videoUrl)) {
