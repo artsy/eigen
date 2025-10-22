@@ -43,7 +43,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   return (
     <Flex {...flexProps}>
       <SectionTitle
-        href={viewAll?.href}
+        href={viewAll?.href || "/auctions"}
         mx={2}
         title={section.component?.title}
         onPress={() => {
