@@ -68,32 +68,32 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   // these are the major sections of the page which get separated by a black line
   const contentSections: FlatListSections = []
 
-  if (feature.description || feature.callout) {
+  if (feature.description || feature.callout || feature.video?.url) {
     contentSections.push({
-      key: "description+callout",
+      key: "description+callout+video",
       content: (
-        <Flex alignItems="center">
-          <Flex gap={4} pt={4} px={2} maxWidth={600}>
-            {!!feature.description && (
-              <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
-            )}
-            {!!feature.callout && (
-              <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
-            )}
-          </Flex>
+        <Flex>
+          {!!(feature.description || feature.callout) && (
+            <Flex alignItems="center">
+              <Flex gap={4} pt={4} px={2} maxWidth={600}>
+                {!!feature.description && (
+                  <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
+                )}
+                {!!feature.callout && (
+                  <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
+                )}
+              </Flex>
+            </Flex>
+          )}
           {!!feature.video?.url && (
-            <Flex backgroundColor="purple" height={videoHeight} width={width}>
+            <Flex height={videoHeight}>
               <WebView
                 source={{
-                  uri: "https://player.vimeo.com/video/1112304196?autoplay=1&loop=1&h=954f020153&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+                  uri: feature.video?.url,
                 }}
                 style={{ flex: 1 }}
                 allowsInlineMediaPlayback
                 mediaPlaybackRequiresUserAction={false}
-                scrollEnabled={false}
-                bounces={false}
-                androidLayerType="hardware"
-                androidHardwareAccelerationDisabled={false}
               />
             </Flex>
           )}
