@@ -114,7 +114,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
     >
       <ReanimatedSwipeable
         testID="swipeable-component"
-        ref={ref}
+        ref={ref as any}
         enabled={enabled}
         renderRightActions={RightActions}
         friction={FRICTION}

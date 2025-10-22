@@ -35,7 +35,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
-import { usePrevious } from "react-use"
+import usePrevious from "react-use/lib/usePrevious"
 
 const MAX_NUMBER_OF_TASKS = 10
 

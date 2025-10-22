@@ -1,7 +1,7 @@
 import { ActiveTabBorder, TabBarContainer } from "app/Components/LegacyTabs/LegacyTabBarContainer"
 import { StepTabs, Tab } from "app/Components/LegacyTabs/index"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { LayoutRectangle, TouchableOpacity, Pressable } from "react-native"
+import { LayoutRectangle, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 
 const tabLayouts: LayoutRectangle[] = [
@@ -34,7 +34,8 @@ describe("Tab", () => {
     const tree = renderWithWrappersLEGACY(
       <Tab onPress={mockOnPress} label="TabLabel" active={false} onLayout={() => null} />
     )
-    tree.root.findAllByType(Pressable)[0].props.onPress()
+    const pressable = tree.root.findByProps({ accessibilityRole: "button" })
+    pressable.props.onPress()
     expect(mockOnPress).toHaveBeenCalled()
   })
 })
