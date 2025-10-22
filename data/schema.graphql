@@ -2877,6 +2877,9 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean = true
   ): Partner
+
+  # Artwork genome data from the partner, containing category scores
+  partnerGenome: PartnerGenome
   partnerOffersConnection(
     after: String
     before: String
@@ -18376,6 +18379,48 @@ type PartnerEngagementCounts {
   ): Int!
   followedArtists: Int!
   savedArtworks: Int!
+}
+
+# Partner genome data for an artwork
+type PartnerGenome {
+  # A connection of genes with their values
+  genesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerGenomeGenesConnectionConnection
+}
+
+# A gene from the partner genome with its associated value
+type PartnerGenomeGene {
+  # The value/score for this gene (typically 0-100)
+  geneValue: Int!
+
+  # The name of the gene category
+  name: String!
+}
+
+# A connection to a list of items.
+type PartnerGenomeGenesConnectionConnection {
+  # A list of edges.
+  edges: [PartnerGenomeGenesConnectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # Total number of genes in the genome
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerGenomeGenesConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerGenomeGene
 }
 
 type PartnerInquiryRequest {
