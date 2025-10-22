@@ -52,8 +52,6 @@ echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 
 echo 'Setup Assets'
-# required for yarn 4
-yarn install
 yarn setup:artsy
 
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'

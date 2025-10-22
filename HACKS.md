@@ -269,4 +269,4 @@ This patch was added to fix the build on RN81.
 
 #### When can we remove this:
 
-It can be removed one there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
+It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
