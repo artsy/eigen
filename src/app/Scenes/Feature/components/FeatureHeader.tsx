@@ -48,13 +48,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       </Stack>
     </Flex>
   ) : (
-    <Stack
-      spacing={4}
-      borderBottomWidth={1}
-      borderBottomColor={color("mono100")}
-      pb={4}
-      backgroundColor="orange10"
-    >
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor={color("mono100")} pb={4}>
       {image}
       <Stack mx={2} alignItems="center">
         {title}
