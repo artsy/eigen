@@ -68,7 +68,9 @@ class LiveAuctionsSalesPerson: NSObject, LiveAuctionsSalesPersonType {
          auctionViewModelCreator: AuctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()) {
 
         self.sale = sale
-        self.lots = sale.saleArtworks.map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: biddingCredentials) }
+        // Defensive check: saleArtworks can be nil if the API response doesn't have the expected structure
+        // In such cases, we default to an empty array to prevent crashes
+        self.lots = (sale.saleArtworks ?? []).map { LiveAuctionLotViewModel(lot: $0, bidderCredentials: biddingCredentials) }
         self.bidderCredentials = biddingCredentials
 
         let host = ARRouter.baseCausalitySocketURLString()!

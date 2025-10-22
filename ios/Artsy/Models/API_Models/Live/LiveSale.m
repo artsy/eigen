@@ -41,8 +41,19 @@
 + (NSValueTransformer *)saleArtworksJSONTransformer
 {
     // Mantle doesn't have a clean way to handle data in the shape of a connection.
-    return [MTLValueTransformer transformerWithBlock:^id(NSDictionary *connection) {
+    // We need to be defensive here in case the API returns unexpected data
+    return [MTLValueTransformer transformerWithBlock:^id(id connection) {
+        // Handle nil or unexpected types gracefully
+        if (![connection isKindOfClass:[NSDictionary class]]) {
+            return @[];
+        }
+
         NSArray *edges = connection[@"edges"];
+        // If edges is not an array, return empty array to prevent crashes
+        if (![edges isKindOfClass:[NSArray class]]) {
+            return @[];
+        }
+
         return [edges map:^id(NSDictionary *edge) {
             return [LiveAuctionLot modelWithJSON:edge[@"node"]];
         }];
