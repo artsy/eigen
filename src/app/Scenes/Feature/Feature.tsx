@@ -12,6 +12,7 @@ import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
 import { isTablet } from "react-native-device-info"
+import { WebView } from "react-native-webview"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
@@ -54,7 +55,10 @@ interface FeatureAppProps {
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const color = useColor()
   const sets = extractNodes(feature.sets)
-  const { width, orientation } = useScreenDimensions()
+  const { width, height: screenHeight, orientation, safeAreaInsets } = useScreenDimensions()
+  // Calculate height similar to web: max(50vh - navHeight, 360px)
+  const navHeight = 50 + safeAreaInsets.top
+  const videoHeight = Math.max(screenHeight * 0.5 - navHeight, 360)
 
   const header: FlatListSection = {
     key: "header",
@@ -69,14 +73,30 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={4} pt={4} px={2} maxWidth={600}>
+          <Flex gap={4} pt={4} px={2} maxWidth={600}>
             {!!feature.description && (
               <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}
             {!!feature.callout && (
               <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
             )}
-          </Stack>
+          </Flex>
+          {!!feature.video?.url && (
+            <Flex backgroundColor="purple" height={videoHeight} width={width}>
+              <WebView
+                source={{
+                  uri: "https://player.vimeo.com/video/1112304196?autoplay=1&loop=1&h=954f020153&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479",
+                }}
+                style={{ flex: 1 }}
+                allowsInlineMediaPlayback
+                mediaPlaybackRequiresUserAction={false}
+                scrollEnabled={false}
+                bounces={false}
+                androidLayerType="hardware"
+                androidHardwareAccelerationDisabled={false}
+              />
+            </Flex>
+          )}
         </Flex>
       ),
     })
@@ -91,7 +111,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       // Nothing to render: it's possible to have a completely empty yet valid set
       (!set.name && !set.description && count === 0) ||
       // Or the set isn't a supported type (Sale, etc.)
-      !SUPPORTED_ITEM_TYPES.includes(set.itemType!)
+      !set.itemType ||
+      !SUPPORTED_ITEM_TYPES.includes(set.itemType)
     ) {
       continue
     }
@@ -195,6 +216,10 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
       ...FeatureHeader_feature
       description
       callout
+      video {
+        url
+        embed(autoPlay: true)
+      }
       sets: setsConnection(first: 20) {
         edges {
           node {
