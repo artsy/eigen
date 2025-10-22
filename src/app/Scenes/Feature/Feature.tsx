@@ -12,9 +12,8 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { chunk, flattenDeep } from "lodash"
+import { chunk } from "lodash"
 import { isTablet } from "react-native-device-info"
-import { WebView } from "react-native-webview"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
@@ -28,26 +27,6 @@ const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
 interface FlatListSection {
   key: string
   content: React.JSX.Element
-}
-
-type FlatListSections = Array<FlatListSection | FlatListSections>
-
-function addSeparatorBetweenAllSections(
-  sections: FlatListSections,
-  key: string,
-  element: React.JSX.Element
-) {
-  const result: FlatListSections = []
-  for (let i = 0; i < sections.length; i++) {
-    result.push(sections[i])
-    if (i !== sections.length - 1) {
-      result.push({
-        key: `${key}:separator:${i}`,
-        content: element,
-      })
-    }
-  }
-  return result
 }
 
 interface FeatureAppProps {
@@ -68,10 +47,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   }
 
   // these are the major sections of the page which get separated by a black line
-  const contentSections: FlatListSections = []
+  const allSections: FlatListSection[] = []
 
   if (feature.description || feature.callout || feature.video?.url) {
-    contentSections.push({
+    allSections.push({
       key: "description+callout+video",
       content: (
         <Flex>
@@ -96,7 +75,6 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   }
 
   for (const set of sets) {
-    const renderedSet: FlatListSections = []
     const items = extractNodes(set.orderedItems)
     const count = items.length
 
@@ -110,8 +88,16 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       continue
     }
 
+    // Add separator before this set (except for the first section)
+    if (allSections.length > 0) {
+      allSections.push({
+        key: `separator:${set.id}`,
+        content: <Separator mb={4} style={{ borderColor: color("mono100") }} />,
+      })
+    }
+
     if (set.name || set.description) {
-      renderedSet.push({
+      allSections.push({
         key: "setTitle:" + set.id,
         content: (
           <Flex pb={2} mx={2}>
@@ -138,10 +124,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           const columnWidth = (width - 20) / numColumns - 20
 
           const rows = chunk(items, numColumns)
-          const renderedRows: FlatListSections = []
 
-          for (const row of rows) {
-            renderedRows.push({
+          for (let i = 0; i < rows.length; i++) {
+            const row = rows[i]
+            allSections.push({
               key: "featuredLinkRow:" + row[0].id,
               content: (
                 <Stack horizontal px={2}>
@@ -157,16 +143,19 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
                 </Stack>
               ),
             })
+            // Add spacer between rows (except after the last row)
+            if (i < rows.length - 1) {
+              allSections.push({
+                key: `featuredLinkSpacer:${set.id}:${i}`,
+                content: <Spacer y={4} />,
+              })
+            }
           }
-
-          renderedSet.push(
-            addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer y={4} />)
-          )
 
           break
         }
         case "Artwork":
-          renderedSet.push({
+          allSections.push({
             key: "artworks:" + set.id,
             content: (
               <Flex mx={2}>
@@ -179,8 +168,6 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           console.warn("Feature pages only support FeaturedLinks and Artworks")
       }
     }
-
-    contentSections.push(renderedSet)
   }
 
   return (
@@ -188,16 +175,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       <Screen.AnimatedHeader onBack={goBack} />
       <AboveTheFoldFlatList<FlatListSection>
         initialNumToRender={__TEST__ ? 100 : 6}
-        data={[
-          header,
-          ...flattenDeep(
-            addSeparatorBetweenAllSections(
-              contentSections,
-              "content",
-              <Separator mt={4} mb={4} style={{ borderColor: color("mono100") }} />
-            )
-          ),
-        ]}
+        data={[header, ...allSections]}
         renderItem={(item) => item.item.content}
         contentContainerStyle={{ paddingBottom: 40 }}
       />
