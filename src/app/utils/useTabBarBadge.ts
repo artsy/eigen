@@ -1,6 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
-import { useInterval } from "react-use"
+import useInterval from "react-use/lib/useInterval"
 
 export const FETCH_NOTIFICATIONS_INFO_INTERVAL = 60 * 1000 // every 60 seconds
 
