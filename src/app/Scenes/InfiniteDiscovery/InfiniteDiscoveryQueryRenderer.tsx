@@ -8,6 +8,10 @@ import {
   InfiniteDiscovery,
   InfiniteDiscoveryArtwork,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import {
+  captureArtworksTelemetry,
+  useArtworksTelemetry,
+} from "app/Scenes/InfiniteDiscovery/hooks/useArtworksTelemetry"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -37,6 +41,8 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
+    useArtworksTelemetry(initialArtworks)
+
     // Retain the queries to not have them GCed when swiping many times
     const retainQuery = useCallback((excludeArtworkIds: string[]) => {
       const queryRequest = getRequest(infiniteDiscoveryQuery)
@@ -57,6 +63,9 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         const newArtworks = extractNodes(response?.discoverArtworks)
         if (newArtworks.length) {
           setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+          if (newArtworks.length < 5) {
+            captureArtworksTelemetry(newArtworks, excludeArtworkIds)
+          }
         }
         retainQuery(excludeArtworkIds)
       } catch (error) {
