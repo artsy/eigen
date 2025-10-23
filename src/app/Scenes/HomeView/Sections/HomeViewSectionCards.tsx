@@ -80,7 +80,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                     to={item.href || "/auctions"}
                     onPress={() => {
                       tracking.tappedCardGroup(
-                        item.entityID,
+                        item.entityID as string,
                         item.entityType as ScreenOwnerType,
                         item.href as string,
                         item.contextModule as ContextModule,
