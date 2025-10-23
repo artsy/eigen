@@ -2910,6 +2910,9 @@ type Artwork implements Node & Searchable & Sellable {
   pricePaid: Money
   pricingContext: AnalyticsPricingContext
 
+  # Private shortcut URL path for accessing the artwork
+  privateShortcutPath: String
+
   # Returns true if this work is eligible to be automatically opted into Artsy Domestic Shipping
   processWithArtsyShippingDomestic: Boolean
   provenance(format: Format): String
