@@ -63,7 +63,7 @@ describe("HomeViewSectionCards", () => {
 
     fireEvent.press(screen.getByText("Section Title"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedAuctionsHubGroup",
+      action: "tappedCardGroup",
       context_module: "auctionsHubRail",
       context_screen_owner_type: "home",
       destination_screen_owner_type: "auctions",
@@ -84,9 +84,11 @@ describe("HomeViewSectionCards", () => {
 
     fireEvent.press(screen.getByText("Card Title 0"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedAuctionsHubGroup",
+      action: "tappedCardGroup",
       context_module: "lotsForYouCard",
       context_screen_owner_type: "home",
+      destination_path: "/0-route",
+      destination_screen_owner_id: "card-0-id",
       destination_screen_owner_type: "lotsForYou",
       horizontal_slide_position: 0,
       type: "thumbnail",
@@ -95,9 +97,11 @@ describe("HomeViewSectionCards", () => {
 
     fireEvent.press(screen.getByText("Card Title 1"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedAuctionsHubGroup",
+      action: "tappedCardGroup",
       context_module: "auctionResultsForArtistsYouFollowCard",
       context_screen_owner_type: "home",
+      destination_path: "/1-route",
+      destination_screen_owner_id: "card-1-id",
       destination_screen_owner_type: "auctionResultsForArtistsYouFollow",
       horizontal_slide_position: 1,
       type: "thumbnail",
@@ -106,9 +110,11 @@ describe("HomeViewSectionCards", () => {
 
     fireEvent.press(screen.getByText("Card Title 2"))
     expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "tappedAuctionsHubGroup",
+      action: "tappedCardGroup",
       context_module: "auctionsCard",
       context_screen_owner_type: "home",
+      destination_path: "/2-route",
+      destination_screen_owner_id: "card-2-id",
       destination_screen_owner_type: "auctions",
       horizontal_slide_position: 2,
       type: "thumbnail",
@@ -136,7 +142,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 0",
           href: "/0-route",
-          ownerType: "lotsForYou",
+          entityID: "card-0-id",
+          entityType: "lotsForYou",
           contextModule: "lotsForYouCard",
           images: [
             {
@@ -155,7 +162,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 1",
           href: "/1-route",
-          ownerType: "auctionResultsForArtistsYouFollow",
+          entityID: "card-1-id",
+          entityType: "auctionResultsForArtistsYouFollow",
           contextModule: "auctionResultsForArtistsYouFollowCard",
           images: [
             {
@@ -171,7 +179,8 @@ const cardsConnection = {
         node: {
           title: "Card Title 2",
           href: "/2-route",
-          ownerType: "auctions",
+          entityID: "card-2-id",
+          entityType: "auctions",
           contextModule: "auctionsCard",
           images: [
             {

@@ -47,7 +47,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         mx={2}
         title={section.component?.title}
         onPress={() => {
-          tracking.tappedAuctionsHubGroupViewAll(
+          tracking.tappedCardGroupViewAll(
             section.contextModule as ContextModule,
             viewAll?.ownerType as ScreenOwnerType
           )
@@ -79,9 +79,11 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   <RouterLink
                     to={item.href || "/auctions"}
                     onPress={() => {
-                      tracking.tappedAuctionsHubGroup(
+                      tracking.tappedCardGroup(
+                        item.entityID,
+                        item.entityType as ScreenOwnerType,
+                        item.href as string,
                         item.contextModule as ContextModule,
-                        item.ownerType as ScreenOwnerType,
                         index
                       )
                     }}
@@ -123,7 +125,8 @@ const HomeViewSectionCardsFragment = graphql`
     cardsConnection(first: 3) {
       edges {
         node {
-          ownerType
+          entityID
+          entityType
           contextModule
           href
           title

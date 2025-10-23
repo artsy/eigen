@@ -12,7 +12,6 @@ import {
   TappedArtworkGroup,
   TappedAuctionGroup,
   TappedAuctionResultGroup,
-  TappedAuctionsHubGroup,
   TappedCardGroup,
   TappedChangePaymentMethod,
   TappedClearTask,
@@ -241,38 +240,6 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    tappedAuctionsHubGroup: (
-      contextModule: ContextModule,
-      destinationOwnerType: ScreenOwnerType,
-      index: number
-    ) => {
-      const payload: TappedAuctionsHubGroup = {
-        action: ActionType.tappedAuctionsHubGroup,
-        context_module: contextModule,
-        context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: destinationOwnerType,
-        horizontal_slide_position: index,
-        type: "thumbnail",
-      }
-
-      trackEvent(payload)
-    },
-
-    tappedAuctionsHubGroupViewAll: (
-      contextModule: ContextModule,
-      destinationOwnerType: ScreenOwnerType
-    ) => {
-      const payload: TappedAuctionsHubGroup = {
-        action: ActionType.tappedAuctionsHubGroup,
-        context_module: contextModule,
-        context_screen_owner_type: OwnerType.home,
-        destination_screen_owner_type: destinationOwnerType,
-        type: "viewAll",
-      }
-
-      trackEvent(payload)
-    },
-
     tappedAuctionResultGroup: (
       auctionResultID: string,
       auctionResultSlug: string | null | undefined,
@@ -315,7 +282,7 @@ export const useHomeViewTracking = () => {
     },
 
     tappedCardGroup: (
-      entityID: string,
+      entityID: string | undefined,
       entityType: ScreenOwnerType,
       href: string,
       contextModule: ContextModule,
@@ -330,6 +297,20 @@ export const useHomeViewTracking = () => {
         destination_screen_owner_id: entityID,
         horizontal_slide_position: index,
         type: "thumbnail",
+      } as TappedCardGroup
+      trackEvent(payload)
+    },
+
+    tappedCardGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
+      const payload: TappedCardGroup = {
+        action: ActionType.tappedCardGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: destinationOwnerType,
+        type: "viewAll",
       } as TappedCardGroup
       trackEvent(payload)
     },
