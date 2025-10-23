@@ -509,7 +509,7 @@ parameters:
     default: "m4pro.medium"
   normal_mac_runner:
     type: string
-    default: "m2pro.medium"
+    default: "m4pro.medium"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
