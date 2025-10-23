@@ -1,7 +1,6 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { useColor } from "@artsy/palette-mobile"
+import { VideoWebView } from "app/Components/VideoWebView"
 import { useMemo } from "react"
-import { Platform } from "react-native"
-import { WebView } from "react-native-webview"
 
 interface ArticleHeroVideoProps {
   videoUrl: string
@@ -61,29 +60,5 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
     [videoUrl, backgroundColor]
   )
 
-  return (
-    <Flex width={width} height={height} backgroundColor="mono30" testID="ArticleHeroVideo">
-      <WebView
-        source={{ html }}
-        style={{ flex: 1, backgroundColor }}
-        allowsInlineMediaPlayback
-        mediaPlaybackRequiresUserAction={false}
-        scrollEnabled={false}
-        bounces={false}
-        // Prevent zooming
-        scalesPageToFit={Platform.OS === "android"}
-        // Performance optimizations
-        androidLayerType="hardware"
-        androidHardwareAccelerationDisabled={false}
-        cacheEnabled={true}
-        cacheMode="LOAD_DEFAULT"
-        // Faster initial load
-        startInLoadingState={false}
-        // Prevent unnecessary re-renders
-        setSupportMultipleWindows={false}
-        // Allow mixed content for better Android network performance
-        mixedContentMode="always"
-      />
-    </Flex>
-  )
+  return <VideoWebView html={html} width={width} height={height} testID="ArticleHeroVideo" />
 }
