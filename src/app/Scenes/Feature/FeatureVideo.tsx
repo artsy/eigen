@@ -21,8 +21,11 @@ function isValidVideoUrl(urlString: string): boolean {
 
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {
   // Add autoplay and loop parameters while preserving existing params
-  const separator = videoUrl.includes("?") ? "&" : "?"
-  const adjustedURL = `${videoUrl}${separator}autoplay=1&loop=1&muted=1`
+  const url = new URL(videoUrl)
+  url.searchParams.set("autoplay", "1")
+  url.searchParams.set("loop", "1")
+  url.searchParams.set("muted", "1")
+  const adjustedURL = url.toString()
 
   // Memoize HTML to prevent re-renders
   const html = useMemo(() => {
