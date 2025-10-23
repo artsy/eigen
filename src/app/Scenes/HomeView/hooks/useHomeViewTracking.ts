@@ -282,7 +282,7 @@ export const useHomeViewTracking = () => {
     },
 
     tappedCardGroup: (
-      entityID: string | undefined,
+      entityID: string,
       entityType: ScreenOwnerType,
       href: string,
       contextModule: ContextModule,
