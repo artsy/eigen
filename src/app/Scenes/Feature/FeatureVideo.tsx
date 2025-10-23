@@ -1,5 +1,6 @@
 import { VideoWebView } from "app/Components/VideoWebView"
 import { useMemo } from "react"
+import { URL } from "react-native-url-polyfill"
 
 interface FeatureVideoProps {
   videoUrl: string
@@ -9,16 +10,10 @@ interface FeatureVideoProps {
 
 const ALLOWED_VIDEO_DOMAINS = ["player.vimeo.com", "www.youtube.com", "youtube.com"]
 
-function isValidVideoUrl(url: string): boolean {
+function isValidVideoUrl(urlString: string): boolean {
   try {
-    // Extract hostname from URL string
-    const urlPattern = /^https?:\/\/([^/:]+)/
-    const match = url.match(urlPattern)
-    if (!match) {
-      return false
-    }
-    const hostname = match[1]
-    return ALLOWED_VIDEO_DOMAINS.includes(hostname)
+    const url = new URL(urlString)
+    return ALLOWED_VIDEO_DOMAINS.includes(url.host)
   } catch {
     return false
   }
