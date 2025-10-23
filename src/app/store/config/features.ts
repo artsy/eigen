@@ -219,7 +219,7 @@ export const features = {
     echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
   AREnableRedirectForVideoFeatureType: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "If enabled redirect features with video to webviews",
     echoFlagKey: "AREnableRedirectForVideoFeatureType",
