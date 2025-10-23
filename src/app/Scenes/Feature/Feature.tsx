@@ -33,13 +33,16 @@ interface FeatureAppProps {
   feature: Feature_feature$data
 }
 
+const BASE_NAV_HEIGHT = 50
+const MAX_VIDEO_HEIGHT = 360
+
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const color = useColor()
   const sets = extractNodes(feature.sets)
   const { width, height: screenHeight, orientation, safeAreaInsets } = useScreenDimensions()
   // Calculate height similar to web: max(50vh - navHeight, 360px)
-  const navHeight = 50 + safeAreaInsets.top
-  const videoHeight = Math.max(screenHeight * 0.5 - navHeight, 360)
+  const navHeight = BASE_NAV_HEIGHT + safeAreaInsets.top
+  const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
 
   const header: FlatListSection = {
     key: "header",
