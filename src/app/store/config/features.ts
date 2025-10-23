@@ -218,6 +218,12 @@ export const features = {
     description: "Enable new rail type on home",
     echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
+  AREnableRedirectForVideoFeatureType: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "If enabled redirect features with video to webviews",
+    echoFlagKey: "AREnableRedirectForVideoFeatureType",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
