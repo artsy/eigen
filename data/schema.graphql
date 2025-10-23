@@ -2257,6 +2257,14 @@ type ArtistPartnerEdge {
   sortableID: String
 }
 
+enum ArtistRecommendationSource {
+  # Hybrid machine learning-based recommendations from Vortex.
+  HYBRID
+
+  # Based on UserSuggestedSimilarArtistsIndex in Gravity to find artists similar to the user's followed artists.
+  SIMILAR_TO_FOLLOWED
+}
+
 type ArtistRelatedData {
   artistsConnection(
     after: String
@@ -14884,6 +14892,9 @@ type Me implements Node {
     first: Int
     last: Int
     page: Int
+
+    # The source/algorithm to use for recommendations
+    source: ArtistRecommendationSource = HYBRID
   ): ArtistConnection
 
   # A list of the current user’s inquiry requests
