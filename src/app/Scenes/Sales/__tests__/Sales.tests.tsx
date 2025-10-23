@@ -48,7 +48,7 @@ describe("Sales", () => {
     })
     await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
-    expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
+    expect(screen.getByText("Your Auction Picks")).toBeOnTheScreen()
   })
 
   it("renders LatestAuctionResultsRail", async () => {
@@ -57,7 +57,7 @@ describe("Sales", () => {
     })
     await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
-    expect(screen.getByText("Latest Auction Results")).toBeOnTheScreen()
+    expect(screen.getByText("Auction Results for Artists You Follow")).toBeOnTheScreen()
   })
 
   it("tracks article tap with the correct event data", async () => {

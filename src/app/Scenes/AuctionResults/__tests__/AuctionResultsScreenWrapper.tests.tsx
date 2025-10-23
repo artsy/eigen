@@ -41,7 +41,7 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
 
     expect(
       extractText(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)[0])
-    ).toContain("Latest Auction Results")
+    ).toContain("Auction Results for Artists You Follow")
     expect(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
   })
 })
