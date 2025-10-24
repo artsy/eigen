@@ -86,7 +86,9 @@ static AREmission *_sharedInstance = nil;
 {
     NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
     if (result != nil && ![result isKindOfClass:NSString.class]) {
-        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
+        NSString *actualType = NSStringFromClass([result class]);
+        NSString *valueDescription = [NSString stringWithFormat:@"%@", result];
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string. Type: %@, Value: %@", stateKey, actualType, valueDescription];
     }
     return result;
 }
@@ -95,7 +97,9 @@ static AREmission *_sharedInstance = nil;
 {
     NSString *result = [self.notificationsManagerModule.reactState valueForKey:stateKey];
     if (result && ![result isKindOfClass:NSString.class]) {
-        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string.", stateKey];
+        NSString *actualType = NSStringFromClass([result class]);
+        NSString *valueDescription = [NSString stringWithFormat:@"%@", result];
+        [NSException raise:NSInternalInconsistencyException format:@"Value for key '%@' is not a string. Type: %@, Value: %@", stateKey, actualType, valueDescription];
     }
     return result;
 }
