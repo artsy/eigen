@@ -6,11 +6,15 @@
  */
 
 const path = require("path")
-const { mergeConfig } = require("@react-native/metro-config")
+const { mergeConfig, getDefaultConfig } = require("@react-native/metro-config")
 const { withRozeniteExpoAtlasPlugin } = require("@rozenite/expo-atlas-plugin")
 const { withRozenite } = require("@rozenite/metro")
 const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
+
+const {
+  resolver: { sourceExts, assetExts },
+} = getDefaultConfig(__dirname)
 
 const config = {
   // metro cache locally
@@ -26,13 +30,15 @@ const config = {
         inlineRequires: true,
       },
     }),
+    babelTransformerPath: require.resolve("react-native-svg-transformer"),
   },
-
   resolver: {
     resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
     extraNodeModules: {
       images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
     },
+    assetExts: assetExts.filter((ext) => ext !== "svg"),
+    sourceExts: [...sourceExts, "svg"],
   },
 }
 
