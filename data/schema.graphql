@@ -8914,6 +8914,9 @@ type ConversationMessageTemplateEdge {
 type ConversationMessageTemplateExample {
   body: String!
   description: String
+
+  # Internal identifier for the example, used for tracking purposes
+  internalID: ID
   title: String!
 }
 
