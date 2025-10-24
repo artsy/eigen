@@ -901,6 +901,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/feature/:slug",
     name: "Feature",
     Component: FeatureQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
     queries: [FeatureScreenQuery],
   },
   {

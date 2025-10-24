@@ -35,7 +35,7 @@ describe("HomeViewSectionAuctionResults", () => {
   it("renders nothing when there are no auction results", () => {
     const { toJSON } = renderWithRelay({
       HomeViewComponent: () => ({
-        title: "Latest Auction Results",
+        title: "Auction Results for Artists You Follow",
       }),
       AuctionResultConnection: () => ({
         totalCount: 0,
@@ -51,7 +51,7 @@ describe("HomeViewSectionAuctionResults", () => {
       HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
-          title: "Latest Auction Results",
+          title: "Auction Results for Artists You Follow",
           href: "/auction-results-for-artists-you-follow-href",
         },
         auctionResultsConnection: {
@@ -77,7 +77,7 @@ describe("HomeViewSectionAuctionResults", () => {
       }),
     })
 
-    expect(screen.getByText("Latest Auction Results")).toBeOnTheScreen()
+    expect(screen.getByText("Auction Results for Artists You Follow")).toBeOnTheScreen()
     expect(screen.getByText(/Auction result 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Auction result 2/)).toBeOnTheScreen()
 
@@ -106,7 +106,7 @@ describe("HomeViewSectionAuctionResults", () => {
       HomeViewSectionAuctionResults: () => ({
         internalID: "home-view-section-latest-auction-results",
         component: {
-          title: "Latest Auction Results",
+          title: "Auction Results for Artists You Follow",
           href: "/auction-results-for-artists-you-follow-href",
           behaviors: {
             viewAll: {
