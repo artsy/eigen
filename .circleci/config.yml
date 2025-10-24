@@ -223,7 +223,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.normal_mac_runner >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -258,7 +258,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.normal_mac_runner >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -276,7 +276,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.fast_mac_runner >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -370,7 +370,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.normal_mac_runner >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -444,7 +444,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.fast_mac_runner >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - attach_workspace:
@@ -504,12 +504,9 @@ parameters:
   node_version:
     type: string
     default: "22.0.0"
-  fast_mac_runner:
+  default_mac_runner:
     type: string
     default: "m4pro.medium"
-  normal_mac_runner:
-    type: string
-    default: "m2pro.medium"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
