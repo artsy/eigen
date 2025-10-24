@@ -124,6 +124,7 @@ export const infiniteDiscoveryQuery = graphql`
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
+          ...ArtworkCard_artwork
           ...InfiniteDiscoveryArtworkCard_artwork
 
           internalID @required(action: NONE)

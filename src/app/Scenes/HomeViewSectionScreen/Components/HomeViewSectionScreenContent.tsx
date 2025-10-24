@@ -1,6 +1,6 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenQuery$data } from "__generated__/HomeViewSectionScreenQuery.graphql"
-import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
+import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/Components/HomeViewSectionScreenArtworks"
 
 type HomeViewSectionScreenContentT = NonNullable<
   HomeViewSectionScreenQuery$data["homeView"]["section"]
