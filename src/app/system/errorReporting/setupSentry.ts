@@ -63,6 +63,10 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     dsn: sentryDSN,
     release: eigenSentryReleaseName(),
     dist: eigenSentryDist(),
+    // TODO: before releasing this should
+    // be set to a lower value like 0.1
+    replaysSessionSampleRate: 1.0,
+    replaysOnErrorSampleRate: 1.0,
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
@@ -70,7 +74,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     tracesSampleRate: props.debug ? 1.0 : 0.05,
     profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
-    integrations: [navigationInstrumentation],
+    integrations: [navigationInstrumentation, Sentry.mobileReplayIntegration()],
     ...props,
   })
 }

@@ -13,6 +13,9 @@ const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
 const config = {
+  // Part of sentry session replay
+  annotateReactComponents: true,
+
   // metro cache locally
   cacheStores: [new FileStore({ root: "./.cache/metro" })],
 
