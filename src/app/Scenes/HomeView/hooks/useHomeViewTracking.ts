@@ -301,6 +301,20 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
+    tappedCardGroupViewAll: (
+      contextModule: ContextModule,
+      destinationOwnerType: ScreenOwnerType
+    ) => {
+      const payload: TappedCardGroup = {
+        action: ActionType.tappedCardGroup,
+        context_module: contextModule,
+        context_screen_owner_type: OwnerType.home,
+        destination_screen_owner_type: destinationOwnerType,
+        type: "viewAll",
+      } as TappedCardGroup
+      trackEvent(payload)
+    },
+
     tappedClearTask: (
       contextModule: ContextModule,
       destinationPath: string,
