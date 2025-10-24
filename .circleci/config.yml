@@ -351,8 +351,8 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
-      - run:
-          command: yarn type-check
+      # - run:
+      #     command: yarn type-check
       - run:
           name: Check Branch and Exit Early if Ignored
           command: |

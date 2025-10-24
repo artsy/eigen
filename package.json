@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "22.x",
+    "node": "24.x",
     "yarn": "4.10.3"
   },
   "reactNativePermissionsIOS": [
