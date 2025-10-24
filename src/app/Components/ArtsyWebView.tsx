@@ -231,6 +231,9 @@ export const ArtsyWebView = forwardRef<
       if (result.type === "match" && result.module === "Article") {
         return
       }
+      if (result.type === "match" && result.module === "Feature") {
+        return
+      }
 
       // TODO: For not we are not redirecting to home from webviews because of artsy logo
       // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
