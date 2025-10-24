@@ -7,7 +7,6 @@ import {
 } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import backgroundImage from "images/WelcomeImage.webp"
 import { MotiView } from "moti"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
@@ -22,7 +21,7 @@ import { OnboardingNavigationStack } from "./Onboarding"
 
 type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">
 
-const imgProps = Image.resolveAssetSource(backgroundImage)
+const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.webp"))
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()

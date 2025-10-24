@@ -134,7 +134,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
               isLoading={fbLoading}
               icon={
                 <Image
-                  source={require(`images/facebook.webp`)}
+                  source={require("images/facebook.webp")}
                   resizeMode="contain"
                   style={{ marginRight: 10 }}
                 />
@@ -210,7 +210,7 @@ const MyAccountPlaceholder: React.FC = () => {
           isLoading
           icon={
             <Image
-              source={require(`images/facebook.webp`)}
+              source={require("images/facebook.webp")}
               resizeMode="contain"
               style={{ marginRight: 10 }}
             />
