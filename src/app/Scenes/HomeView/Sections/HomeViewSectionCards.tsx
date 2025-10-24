@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
@@ -12,6 +12,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -29,12 +30,15 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
 }) => {
   const section = useFragment(HomeViewSectionCardsFragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
+  const tracking = useHomeViewTracking()
 
   if (!section || cards.length === 0) {
     return null
   }
 
   const viewAll = section.component?.behaviors?.viewAll
+
+  // TODO: track Your Auction Picks item tap on the auctions screen
 
   return (
     <Flex {...flexProps}>
@@ -43,7 +47,10 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         mx={2}
         title={section.component?.title}
         onPress={() => {
-          /* track */
+          tracking.tappedCardGroupViewAll(
+            section.contextModule as ContextModule,
+            viewAll?.ownerType as ScreenOwnerType
+          )
         }}
       />
 
@@ -52,7 +59,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         initialNumToRender={3}
         keyExtractor={(_, index) => String(index)}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const imageURLs =
             item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
 
@@ -72,7 +79,13 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
                   <RouterLink
                     to={item.href || "/auctions"}
                     onPress={() => {
-                      /* track */
+                      tracking.tappedCardGroup(
+                        item.entityID as string,
+                        item.entityType as ScreenOwnerType,
+                        item.href as string,
+                        item.contextModule as ContextModule,
+                        index
+                      )
                     }}
                   >
                     {Card}
@@ -114,6 +127,7 @@ const HomeViewSectionCardsFragment = graphql`
         node {
           entityID
           entityType
+          contextModule
           href
           title
           images {

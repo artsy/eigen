@@ -122,7 +122,7 @@ export const Sales: React.FC = () => {
           <SaleListActiveBids me={data.me} />
 
           <RecommendedAuctionLotsRail
-            title="Auction Lots for You"
+            title="Your Auction Picks"
             artworkConnection={data.recommendedAuctionLots}
             contextScreenOwnerType={OwnerType.auctions}
           />

@@ -173,9 +173,9 @@ export enum AuctionResultsSorts {
 const getTitleByState = (state: AuctionResultsState) => {
   switch (state) {
     case AuctionResultsState.PAST:
-      return "Latest Auction Results"
+      return "Auction Results for Artists You Follow"
     case AuctionResultsState.ALL:
-      return "Latest Auction Results"
+      return "Auction Results for Artists You Follow"
   }
 }
 

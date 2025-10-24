@@ -34,7 +34,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
     <Flex>
       <SectionTitle
         href={href}
-        title="Latest Auction Results"
+        title="Auction Results for Artists You Follow"
         mx={2}
         onPress={() => trackEvent(tracks.tappedHeader())}
       />

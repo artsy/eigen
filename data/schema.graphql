@@ -12740,6 +12740,11 @@ type FormattedDaySchedules {
 # The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
+enum FromParticipantEnum {
+  BUYER
+  SELLER
+}
+
 # Buyer fulfillment details for order
 type FulfillmentDetails {
   # Shipping address line 1
@@ -13352,7 +13357,6 @@ type HomeViewCard {
   href: String
   image: Image
   images: [Image]
-  ownerType: String
   subtitle: String
   title: String!
 }
@@ -16950,6 +16954,33 @@ enum NotificationTypesEnum {
   VIEWING_ROOM_PUBLISHED
 }
 
+# An offer on an order
+type Offer {
+  # The buyer's total amount for this offer
+  amount: Money
+
+  # Offer creation time
+  createdAt: String
+
+  # Who the offer is from
+  fromParticipant: FromParticipantEnum!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Optional note for the offer
+  note: String
+
+  # The shipping total for this offer
+  shippingTotal: Money
+
+  # The tax total for this offer
+  taxTotal: Money
+}
+
 # Consignment Offer Response
 type OfferResponse {
   comments: String
@@ -17033,6 +17064,9 @@ type Order {
   lineItems: [LineItem]!
   mode: OrderModeEnum!
 
+  # List of offers for this order
+  offers: [Offer!]!
+
   # Payment method used for the order
   paymentMethod: OrderPaymentMethodEnum
 
@@ -17090,7 +17124,7 @@ enum OrderBuyerStateEnum {
   # Order is incomplete (pending or abandoned)
   INCOMPLETE
 
-  # Order is an offer avaiting responce from the buyer
+  # Order is an offer awaiting response from the buyer
   OFFER_RECEIVED
 
   # Payment has failed
