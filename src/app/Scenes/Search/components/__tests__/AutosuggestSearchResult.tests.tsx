@@ -4,7 +4,7 @@ import { AutosuggestSearchResult } from "app/Scenes/Search/components/Autosugges
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Pressable, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 
 const inputBlurMock = jest.fn()
@@ -236,17 +236,13 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    act(() => {
-      screen.UNSAFE_getAllByType(Pressable)[0].props.onPress()
-    })
+    fireEvent.press(screen.getByText("Artworks"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/artworks", {
       passProps: { initialTab: "Artworks" },
     })
 
-    act(() => {
-      screen.UNSAFE_getAllByType(Pressable)[1].props.onPress()
-    })
+    fireEvent.press(screen.getByText("Auction Results"))
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/auction-results", {
       passProps: { initialTab: "Insights" },

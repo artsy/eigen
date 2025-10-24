@@ -27,7 +27,6 @@ const config = {
       },
     }),
   },
-
   resolver: {
     resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
     extraNodeModules: {

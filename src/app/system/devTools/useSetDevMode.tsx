@@ -1,7 +1,7 @@
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
-import { useDebounce } from "react-use"
+import useDebounce from "react-use/lib/useDebounce"
 
 export const useSetDevMode = () => {
   const toast = useToast()

@@ -11,7 +11,7 @@ import { Schema } from "app/utils/track"
 import { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
-import { useThrottle } from "react-use"
+import useThrottle from "react-use/lib/useThrottle"
 
 export const useSearch = ({ query }: { query: string }) => {
   const throttledQuery = useThrottle(query, SEARCH_THROTTLE_INTERVAL)

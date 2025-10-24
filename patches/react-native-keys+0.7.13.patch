@@ -1,12 +1,72 @@
 diff --git a/node_modules/react-native-keys/android/build.gradle b/node_modules/react-native-keys/android/build.gradle
-index 7d07aae..56f223a 100644
+index 6e40322..da7f0f8 100644
 --- a/node_modules/react-native-keys/android/build.gradle
 +++ b/node_modules/react-native-keys/android/build.gradle
-@@ -156,6 +156,7 @@ android {
-       "**/libc++_shared.so",
-       "**/libfbjni.so",
-       "**/libreactnativejni.so",
-+      "**/libreactnative.so",
-       "**/libjsi.so",
-       "**/libreact_nativemodule_core.so",
-       "**/libturbomodulejsijni.so",
+@@ -33,7 +33,20 @@ def getExtOrDefault(name) {
+ }
+
+ def getExtOrIntegerDefault(name) {
+-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["Keys_" + name]).toInteger()
++  if (rootProject.ext.has(name)) {
++    return rootProject.ext.get(name)
++  }
++  def propName = "Keys_" + name
++  if (project.hasProperty(propName)) {
++    return project.property(propName).toInteger()
++  }
++  // Fallback values for React Native 0.80+ compatibility
++  switch(name) {
++    case "compileSdkVersion": return 35
++    case "targetSdkVersion": return 35
++    case "minSdkVersion": return 24
++    default: return 35
++  }
+ }
+
+ def reactNativeArchitectures() {
+@@ -47,18 +60,24 @@ def resolveReactNativeDirectory() {
+     return file(reactNativeLocation)
+   }
+
+-  // monorepo workaround
+-  // react-native can be hoisted or in project's own node_modules
++  // Try to find react-native in the project's node_modules
+   def reactNativeFromProjectNodeModules = file("${rootProject.projectDir}/../node_modules/react-native")
+   if (reactNativeFromProjectNodeModules.exists()) {
+     return reactNativeFromProjectNodeModules
+   }
+
++  // Try alternative paths for monorepo setups
+   def reactNativeFromNodeModulesWithReanimated = file("${projectDir}/../../react-native")
+   if (reactNativeFromNodeModulesWithReanimated.exists()) {
+     return reactNativeFromNodeModulesWithReanimated
+   }
+
++  // Try from the current project directory
++  def reactNativeFromCurrent = file("${projectDir}/../../../react-native")
++  if (reactNativeFromCurrent.exists()) {
++    return reactNativeFromCurrent
++  }
++
+   throw new Exception(
+     "[react-native-keys] Unable to resolve react-native location in " +
+       "node_modules. You should add project extension property (in app/build.gradle) " +
+@@ -94,6 +113,9 @@ if(!found){
+   while (basePath) {
+     nodeModulesDir = Paths.get(basePath.toString(), "node_modules")
+     reactNativeDir = Paths.get(nodeModulesDir.toString(), "react-native/android")
++    if (!reactNativeDir.toFile().exists()) {
++      reactNativeDir = Paths.get(nodeModulesDir.toString(), "react-native/ReactAndroid")
++    }
+     if (nodeModulesDir.toFile().exists() && reactNativeDir.toFile().exists()) {
+       found = true
+       break;
+@@ -136,7 +158,7 @@ android {
+   }
+
+   ndkVersion getExtOrDefault("ndkVersion")
+-  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
++  compileSdk getExtOrIntegerDefault("compileSdkVersion")
+
+   defaultConfig {
+     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
