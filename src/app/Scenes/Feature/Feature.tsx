@@ -2,6 +2,7 @@ import { Spacer, Flex, Text, Separator, Box, useColor, Screen } from "@artsy/pal
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
@@ -10,6 +11,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk } from "lodash"
@@ -43,6 +45,18 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   // Calculate height similar to web: max(50vh - navHeight, 360px)
   const navHeight = BASE_NAV_HEIGHT + safeAreaInsets.top
   const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
+
+  const shouldRedirectForVideoFeaturePages = useFeatureFlag("AREnableRedirectForVideoFeatureType")
+
+  if (shouldRedirectForVideoFeaturePages && feature.video?.url) {
+    const featurePath = "/feature/" + feature.slug
+    return (
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} />
+        <ArtsyWebView url={featurePath} />
+      </Screen>
+    )
+  }
 
   const header: FlatListSection = {
     key: "header",
@@ -193,6 +207,7 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
       ...FeatureHeader_feature
       description
       callout
+      slug
       video {
         url
       }

@@ -218,6 +218,12 @@ export const features = {
     description: "Enable new rail type on home",
     echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
+  AREnableRedirectForVideoFeatureType: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "If enabled redirect features with video to webviews",
+    echoFlagKey: "AREnableRedirectForVideoFeatureType",
+  },
   AREnableAuctionsHubOnHomeView: {
     description: "Enable Auctions Hub on Home View",
     readyForRelease: false,
