@@ -218,6 +218,12 @@ export const features = {
     description: "Enable new rail type on home",
     echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
+  AREnableAuctionsHubOnHomeView: {
+    description: "Enable Auctions Hub on Home View",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAuctionsHubOnHomeView",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
