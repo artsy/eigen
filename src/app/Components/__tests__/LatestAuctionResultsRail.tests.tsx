@@ -24,7 +24,7 @@ describe("LatestAuctionResultsRail", () => {
   it("renders the rail of auction results ", async () => {
     renderWithRelay({ Me: () => mockMe })
 
-    expect(screen.getByText("Latest Auction Results")).toBeTruthy()
+    expect(screen.getByText("Auction Results for Artists You Follow")).toBeTruthy()
     expect(screen.getByText("Artist Name")).toBeTruthy()
     expect(screen.getByText("Artist Name 1")).toBeTruthy()
   })

@@ -36,6 +36,8 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
 
   const viewAll = section.component?.behaviors?.viewAll
 
+  // TODO: track Your Auction Picks item tap on the auctions screen
+
   return (
     <Flex {...flexProps}>
       <SectionTitle

@@ -14,7 +14,7 @@ import { MotiPressable } from "moti/interactions"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
-export const SCREEN_TITLE = "Auction Lots for You"
+export const SCREEN_TITLE = "Your Auction Picks"
 
 export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
