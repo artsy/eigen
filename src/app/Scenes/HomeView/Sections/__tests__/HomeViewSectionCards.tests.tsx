@@ -122,7 +122,7 @@ describe("HomeViewSectionCards", () => {
     expect(navigate).toHaveBeenCalledWith("/2-route")
   })
 
-  fit("renders empty state images when empty state image is present", async () => {
+  it("renders empty state images when empty state image is present", async () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
         internalID: "home-view-section-auctions-hub",
@@ -222,7 +222,7 @@ const emptyStateCardsConnection = {
           entityID: "card-0-id",
           entityType: "lotsForYou",
           contextModule: "lotsForYouCard",
-          image: "some-image-url",
+          image: { imageURL: "some-image-url" },
           images: [],
         },
       },
@@ -233,7 +233,7 @@ const emptyStateCardsConnection = {
           entityID: "card-1-id",
           entityType: "auctionResultsForArtistsYouFollow",
           contextModule: "auctionResultsForArtistsYouFollowCard",
-          image: "some-image-url",
+          image: { imageURL: "some-image-url" },
           images: [],
         },
       },
@@ -244,7 +244,7 @@ const emptyStateCardsConnection = {
           entityID: "card-2-id",
           entityType: "auctions",
           contextModule: "auctionsCard",
-          image: "some-image-url",
+          image: { imageURL: "some-image-url" },
           images: [],
         },
       },
