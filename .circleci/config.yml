@@ -59,7 +59,7 @@ commands:
     steps:
       - node/install-packages:
           check-cache: always
-          pkg-manager: yarn-berry
+          pkg-manager: yarn
           cache-version: << pipeline.parameters.node_modules_cache_key >>
   run-relay-compiler:
     steps:
