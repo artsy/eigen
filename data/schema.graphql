@@ -17407,6 +17407,9 @@ type Partner implements Node {
   ): ArtistPartnerConnection
   analytics: AnalyticsPartnerStats
 
+  # Time frame selected for analytics page
+  analyticsPageTimeFrame: AnalyticsQueryPeriodEnum
+
   # A connection of articles related to a partner.
   articlesConnection(
     after: String
@@ -24111,6 +24114,9 @@ input UpdatePartnerMutationInput {
 
   # Alternate names or synonyms for this partner.
   alternateNames: [String]
+
+  # Time frame for partner analytics page.
+  analyticsPageTimeFrame: AnalyticsQueryPeriodEnum
 
   # Whether to charge sales tax on ecommerce orders.
   artsyCollectsSalesTax: Boolean
