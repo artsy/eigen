@@ -68,6 +68,7 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
     return (
       <Video
         source={{ uri: videoUrl }}
+        repeat
         style={{ width: width, height: height, aspectRatio: 16 / 9 }}
         testID="ArticleHeroVideo"
       />

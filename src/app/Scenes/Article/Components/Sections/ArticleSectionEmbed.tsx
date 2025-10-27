@@ -52,6 +52,7 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
       "https://artsy-media-uploads.s3.amazonaws.com/Oh9jZMOOy0QHo_t0AD1VlA%2FA_Artsy_Emily+Weiner_Editorial_B-Roll_Under-30mb.mp4"
     return (
       <Video
+        repeat
         source={{ uri: replacementURL }}
         style={{ height: height, width: "100%", aspectRatio: 16 / 9 }}
       />
