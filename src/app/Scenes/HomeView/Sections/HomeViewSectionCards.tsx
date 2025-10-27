@@ -63,9 +63,15 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
           const imageURLs =
             item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
 
+          const imagesToDisplay = imageURLs.length
+            ? imageURLs
+            : item.image?.imageURL
+              ? [item.image.imageURL]
+              : []
+
           const Card = (
             <>
-              <MultipleImageLayout imageURLs={imageURLs} />
+              <MultipleImageLayout imageURLs={imagesToDisplay} />
               <CardRailMetadataContainer>
                 <Text color={imageURLs.length === 0 ? "mono30" : "mono100"}>{item?.title}</Text>
               </CardRailMetadataContainer>
@@ -130,6 +136,9 @@ const HomeViewSectionCardsFragment = graphql`
           contextModule
           href
           title
+          image {
+            imageURL
+          }
           images {
             blurhash
             imageURL
