@@ -64,6 +64,7 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
   )
 
   if (useNewVideoComponent) {
+    console.log("[VIDEO] Using header component with uri", videoUrl)
     return (
       <Video
         source={{ uri: videoUrl }}
