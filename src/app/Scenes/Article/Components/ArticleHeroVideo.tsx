@@ -1,6 +1,8 @@
 import { useColor } from "@artsy/palette-mobile"
 import { VideoWebView } from "app/Components/VideoWebView"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMemo } from "react"
+import { Video } from "react-native-video"
 
 interface ArticleHeroVideoProps {
   videoUrl: string
@@ -9,6 +11,7 @@ interface ArticleHeroVideoProps {
 }
 
 export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, width, height }) => {
+  const useNewVideoComponent = useFeatureFlag("AREnableNewVideoView")
   const color = useColor()
   const backgroundColor = color("mono30")
 
@@ -59,6 +62,16 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
   `,
     [videoUrl, backgroundColor]
   )
+
+  if (useNewVideoComponent) {
+    return (
+      <Video
+        source={{ uri: videoUrl }}
+        style={{ width: width, height: height, aspectRatio: 16 / 9 }}
+        testID="ArticleHeroVideo"
+      />
+    )
+  }
 
   return <VideoWebView html={html} width={width} height={height} testID="ArticleHeroVideo" />
 }

@@ -230,6 +230,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionsHubOnHomeView",
   },
+  AREnableNewVideoView: {
+    description: "Enable New Video view in articles and features",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewVideoView",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
