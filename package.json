@@ -191,6 +191,7 @@
     "react-native-share": "12.0.9",
     "react-native-svg": "15.12.0",
     "react-native-url-polyfill": "2.0.0",
+    "react-native-video": "^6.17.0",
     "react-native-view-shot": "4.0.3",
     "react-native-vimeo-iframe": "1.2.1",
     "react-native-webview": "13.15.0",

@@ -12743,6 +12743,7 @@ __metadata:
     react-native-share: "npm:12.0.9"
     react-native-svg: "npm:15.12.0"
     react-native-url-polyfill: "npm:2.0.0"
+    react-native-video: "npm:^6.17.0"
     react-native-view-shot: "npm:4.0.3"
     react-native-vimeo-iframe: "npm:1.2.1"
     react-native-webview: "npm:13.15.0"
@@ -21300,6 +21301,16 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: 10c0/a48e6978f5a2c9e225bb93cc5f9985a8ac0fe7d8122105bcd88ef8d8420a3b33a67ce5d2bda2b606bf5fa94af9f6d04efce354580b60900e7c967fd2ebdc42cf
+  languageName: node
+  linkType: hard
+
+"react-native-video@npm:^6.17.0":
+  version: 6.17.0
+  resolution: "react-native-video@npm:6.17.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/a366943327d0186656fca1fe514c1d1270c93e78ba42c45450de6d859b682b1a5afd7e55cb0cf57411987a52ec8765bf8ff113cbb5f1968fedcb0288f0934ec5
   languageName: node
   linkType: hard
 
