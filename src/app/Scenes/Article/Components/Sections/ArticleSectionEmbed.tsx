@@ -2,6 +2,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { ArticleSectionEmbed_section$key } from "__generated__/ArticleSectionEmbed_section.graphql"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Platform } from "react-native"
+import performance from "react-native-performance"
 import { URL } from "react-native-url-polyfill"
 import Video from "react-native-video"
 import { WebView } from "react-native-webview"
@@ -50,9 +51,23 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
     // but going forward would want articles to contain the raw video links
     const replacementURL =
       "https://artsy-media-uploads.s3.amazonaws.com/Oh9jZMOOy0QHo_t0AD1VlA%2FA_Artsy_Emily+Weiner_Editorial_B-Roll_Under-30mb.mp4"
+
+    performance.mark("video_mount")
+
     return (
       <Video
         repeat
+        onLoad={() => {
+          // mark when the video has loaded
+          performance.mark("video_ready")
+          // now safely measure between the two marks
+          performance.measure("TTFP", "video_mount", "video_ready")
+
+          // read the measure
+          const measures = performance.getEntriesByName("TTFP")
+          const ttfp = measures[measures.length - 1]?.duration
+          console.log(`[VIDEO] Article Embed Time to first play: ${ttfp?.toFixed(2)}ms`)
+        }}
         source={{ uri: replacementURL }}
         style={{ height: height, width: "100%", aspectRatio: 16 / 9 }}
       />

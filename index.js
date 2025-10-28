@@ -1,5 +1,6 @@
 import { registerRootComponent } from "expo"
 import "expo-asset"
+import "react-native-performance"
 
 global.__TEST__ = false
 

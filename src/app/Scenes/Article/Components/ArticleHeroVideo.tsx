@@ -2,6 +2,7 @@ import { useColor } from "@artsy/palette-mobile"
 import { VideoWebView } from "app/Components/VideoWebView"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMemo } from "react"
+import performance from "react-native-performance"
 import { Video } from "react-native-video"
 
 interface ArticleHeroVideoProps {
@@ -65,10 +66,22 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
 
   if (useNewVideoComponent) {
     console.log("[VIDEO] Using header component with uri", videoUrl)
+    performance.mark("video_mount")
     return (
       <Video
         source={{ uri: videoUrl }}
         repeat
+        onLoad={() => {
+          // mark when the video has loaded
+          performance.mark("video_ready")
+          // now safely measure between the two marks
+          performance.measure("TTFP", "video_mount", "video_ready")
+
+          // read the measure
+          const measures = performance.getEntriesByName("TTFP")
+          const ttfp = measures[measures.length - 1]?.duration
+          console.log(`[VIDEO] Article Hero Time to first play: ${ttfp?.toFixed(2)}ms`)
+        }}
         style={{ width: width, height: height, aspectRatio: 16 / 9 }}
         testID="ArticleHeroVideo"
       />
