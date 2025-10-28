@@ -1,5 +1,4 @@
-import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { Flex, Join, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { CollectionsByCategoryBodyQuery } from "__generated__/CollectionsByCategoryBodyQuery.graphql"
 import { CollectionsByCategoryBody_viewer$key } from "__generated__/CollectionsByCategoryBody_viewer.graphql"
 import {
@@ -66,38 +65,32 @@ export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps>
       <Separator borderColor="mono10" />
 
       {discoveryCategory.__typename === "DiscoveryMarketingCollection" && (
-        <FlashList
-          estimatedItemSize={ESTIMATED_ITEM_SIZE}
-          data={discoveryCategory.marketingCollections}
-          keyExtractor={(item) => `artwork_rail_${item?.slug}`}
-          ItemSeparatorComponent={() => <Separator borderColor="mono10" my={4} />}
-          renderItem={({ item, index }) => {
+        <Join separator={<Separator borderColor="mono10" my={1} />}>
+          {discoveryCategory.marketingCollections.map((item, index) => {
             return (
               <CollectionRailWithSuspense
+                key={`artwork_rail_${item?.slug}`}
                 slug={item?.slug ?? ""}
                 lastElement={index === discoveryCategory.marketingCollections.length - 1}
               />
             )
-          }}
-        />
+          })}
+        </Join>
       )}
 
       {!!filtersForArtworks && (
-        <FlashList
-          estimatedItemSize={ESTIMATED_ITEM_SIZE}
-          data={filtersForArtworks}
-          keyExtractor={(item) => `artwork_filter_rail_${item?.href}`}
-          ItemSeparatorComponent={() => <Separator borderColor="mono10" my={4} />}
-          renderItem={({ item, index }) => {
+        <Join separator={<Separator borderColor="mono10" my={1} />}>
+          {filtersForArtworks.map((item, index) => {
             return (
               <CollectionsByCategoryArtworksWithFiltersRailWithSuspense
                 {...item}
                 filterSlug={item.slug}
+                key={`artwork_filter_rail_${item?.href}`}
                 lastElement={index === filtersForArtworks.length - 1}
               />
             )
-          }}
-        />
+          })}
+        </Join>
       )}
     </Flex>
   )

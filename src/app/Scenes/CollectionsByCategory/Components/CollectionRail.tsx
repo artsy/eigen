@@ -43,11 +43,11 @@ export const CollectionRail: FC<CollectionRailProps> = ({
 
   return (
     <>
-      <Flex pl={2}>
+      <Flex>
         <SectionTitle
           href={`/collection/${collection.slug}`}
           onPress={handleTitlePress}
-          pr={2}
+          px={2}
           RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
           title={collection.title}
           titleVariant="md"
@@ -56,7 +56,6 @@ export const CollectionRail: FC<CollectionRailProps> = ({
         <ArtworkRail
           onPress={handleArtworkPress}
           artworks={artworks}
-          ListHeaderComponent={null}
           showSaveIcon
           showPartnerName
         />
@@ -128,8 +127,7 @@ export const CollectionRailWithSuspense = withSuspense<
   Component: ({ slug, lastElement }) => {
     const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(
       CollectionsByCategoryCollectionRailQuery,
-      { slug },
-      { fetchPolicy: "store-and-network" }
+      { slug }
     )
 
     if (!data?.marketingCollection) {
