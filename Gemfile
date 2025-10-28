@@ -20,6 +20,9 @@ gem 'logger'
 gem 'benchmark'
 gem 'mutex_m'
 
+# For enabling video caching with react-native-video
+gem "cocoapods-swift-modular-headers"
+
 group :development do
   gem 'lowdown' # For handling notifications + certs
 end
