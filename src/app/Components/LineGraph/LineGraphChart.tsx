@@ -356,8 +356,12 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             style={{
               data: {
                 stroke: tintColor,
-                fill: ({ datum }: { datum: any }) =>
-                  datum.x === lastPressedDatum?.x || data.length === 1 ? tintColor : "transparent",
+                fill: (args) => {
+                  const { datum } = args
+                  return datum && (datum.x === lastPressedDatum?.x || data.length === 1)
+                    ? tintColor
+                    : "transparent"
+                },
               },
             }}
             data={data}

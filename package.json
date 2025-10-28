@@ -208,7 +208,7 @@
     "unleash-proxy-client": "3.7.6",
     "url": "0.11.3",
     "uuid": "10.0.0",
-    "victory-native": "36.6.8",
+    "victory-native": "37.3.4",
     "yup": "0.31.1"
   },
   "devDependencies": {
