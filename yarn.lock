@@ -6798,9 +6798,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/react-native@npm:6.22.0":
-  version: 6.22.0
-  resolution: "@sentry/react-native@npm:6.22.0"
+"@sentry/react-native@npm:6.21.0":
+  version: 6.21.0
+  resolution: "@sentry/react-native@npm:6.21.0"
   dependencies:
     "@sentry/babel-plugin-component-annotate": "npm:4.2.0"
     "@sentry/browser": "npm:8.55.0"
@@ -6818,7 +6818,7 @@ __metadata:
       optional: true
   bin:
     sentry-expo-upload-sourcemaps: scripts/expo-upload-sourcemaps.js
-  checksum: 10c0/c95430987b1a4f6803714f1f33cb79c41d3330f10ee66641a2b6efbf80bf8cc9325c12874fc2a34cfb6286f1b70f99663249fb4e8a0a35dfdb6fadc2ff4ca80b
+  checksum: 10c0/542e69feb99cc22a598568992dab1a8bd6cebebfb3060e66013efa2852cac944591ba7096254603583f980ba5c8818399b1b59096941d8bbe225ac51ee18f427
   languageName: node
   linkType: hard
 
@@ -12612,7 +12612,7 @@ __metadata:
     "@segment/analytics-react-native": "npm:2.20.3"
     "@segment/analytics-react-native-plugin-braze": "npm:0.6.1"
     "@segment/sovran-react-native": "npm:1.1.3"
-    "@sentry/react-native": "npm:6.22.0"
+    "@sentry/react-native": "npm:6.21.0"
     "@shopify/flash-list": "npm:1.8.3"
     "@stripe/stripe-react-native": "npm:0.50.3"
     "@styled-system/theme-get": "npm:5.1.2"
