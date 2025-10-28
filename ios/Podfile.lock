@@ -69,6 +69,7 @@ PODS:
     - CwlMachBadInstructionHandler (~> 2.2.2)
     - CwlPosixPreconditionTesting (~> 2.2.2)
   - DoubleConversion (1.1.6)
+  - DVAssetLoaderDelegate (0.3.3)
   - EASClient (0.14.4):
     - ExpoModulesCore
   - EXConstants (17.1.7):
@@ -1825,7 +1826,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-performance (5.1.4):
+  - react-native-performance (6.0.0):
     - React-Core
   - react-native-render-html (6.3.4):
     - React-Core
@@ -1854,6 +1855,57 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-video (6.17.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - react-native-video/Video (= 6.17.0)
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-video/Video (6.17.0):
+    - DoubleConversion
+    - DVAssetLoaderDelegate (~> 0.3.1)
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SPTPersistentCache (~> 1.1.0)
     - Yoga
   - react-native-view-shot (4.0.3):
     - DoubleConversion
@@ -2621,6 +2673,7 @@ PODS:
   - sovran-react-native (1.1.3):
     - React-Core
   - Specta (2.0.0)
+  - SPTPersistentCache (1.1.0)
   - Starscream (4.0.8)
   - Stripe (24.19.0):
     - StripeApplePay (= 24.19.0)
@@ -2681,6 +2734,7 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.9.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - DVAssetLoaderDelegate
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
@@ -2777,6 +2831,7 @@ DEPENDENCIES:
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-shake (from `../node_modules/react-native-shake`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -2838,6 +2893,7 @@ DEPENDENCIES:
   - sift-react-native (from `../node_modules/sift-react-native`)
   - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Specta (~> 2.0)
+  - SPTPersistentCache
   - Starscream (= 4.0.8)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
@@ -2860,6 +2916,7 @@ SPEC REPOS:
     - CwlMachBadInstructionHandler
     - CwlPosixPreconditionTesting
     - CwlPreconditionTesting
+    - DVAssetLoaderDelegate
     - Expecta
     - "Expecta+Snapshots"
     - FBAEMKit
@@ -2913,6 +2970,7 @@ SPEC REPOS:
     - Sift
     - SocketRocket
     - Specta
+    - SPTPersistentCache
     - Starscream
     - Stripe
     - StripeApplePay
@@ -3089,6 +3147,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-shake:
     :path: "../node_modules/react-native-shake"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
   react-native-webview:
@@ -3247,6 +3307,7 @@ SPEC CHECKSUMS:
   CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
   CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
+  DVAssetLoaderDelegate: 0caec20e4e08b8560b691131539e9180024d4bce
   EASClient: fe396f88189ce51edd819abe12df16c99e98bcd2
   EXConstants: 98bcf0f22b820f9b28f9fee55ff2daededadd2f8
   EXJSONUtils: 1d3e4590438c3ee593684186007028a14b3686cd
@@ -3360,10 +3421,11 @@ SPEC CHECKSUMS:
   react-native-launch-arguments: 165260aba9544f00c66fae3e136b11484d0cb49b
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pager-view: 9a5f74c91c2623082043a22b6978083d1c79b563
-  react-native-performance: 49e245623a3ecee9dc6b228ad7870a98dbedf9ea
+  react-native-performance: 981c27ade5c8b88d28b0e15dbbc720e554300314
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: dde2052b903c11d677c320b599c3244021c34ce8
   react-native-shake: 3696c383df1bef42981859b386377c5a14a0cc32
+  react-native-video: 138b17fee2b3bec15ccc2a6d4c9dfc95eb94cc11
   react-native-view-shot: 44e13d0424a6b0375eae31d89e161fc1153512e5
   react-native-webview: 0dceb35a9d050f5fa55f7fe2d8c4d1903651eb7d
   React-NativeModulesApple: d94850b316446b0c39a82eb278d6efaa1a634055
@@ -3430,6 +3492,7 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   sovran-react-native: a3ad3f8ff90c2002b2aa9790001a78b0b0a38594
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
+  SPTPersistentCache: df36ea46762d7cf026502bbb86a8b79d0080dff4
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: d1824162e4bcb6ead10401a0dc8e8a3d5ffee41f
   stripe-react-native: 4f749e365d363c17224c422b8ca1a94bc5519171
@@ -3449,6 +3512,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: dc7c21200195acacb62fa920c588e7c2106de45e
 
-PODFILE CHECKSUM: fdb732ca9cfc4a47ad63aecf8b85dc8421bec414
+PODFILE CHECKSUM: e3403c4065281634cf495e0810930a95de2c8f70
 
 COCOAPODS: 1.16.2

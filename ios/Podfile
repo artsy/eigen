@@ -28,7 +28,6 @@ prepare_react_native_project!
 # Enable Video Caching
 $RNVideoUseVideoCaching=true
 
-
 plugin 'cocoapods-patch'
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -132,6 +131,11 @@ target 'Artsy' do
   pod 'GoogleDataTransport', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'nanopb', :modular_headers => true
+
+  # Needed for react-native-video
+  pod 'SPTPersistentCache', :modular_headers => true
+  pod 'DVAssetLoaderDelegate', :modular_headers => true
+
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'
