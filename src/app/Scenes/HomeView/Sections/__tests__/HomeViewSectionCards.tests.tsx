@@ -121,6 +121,25 @@ describe("HomeViewSectionCards", () => {
     })
     expect(navigate).toHaveBeenCalledWith("/2-route")
   })
+
+  it("renders empty state images when empty state image is present", async () => {
+    renderWithRelay({
+      HomeViewSectionCards: () => ({
+        internalID: "home-view-section-auctions-hub",
+        ...component,
+        ...emptyStateCardsConnection,
+      }),
+    })
+
+    expect(screen.getByText("Card Title 0")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 1")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 2")).toBeOnTheScreen()
+
+    // renders oneImageLayout from MultipleImageLayout for all cards since they have 0 images in the images array
+    expect(screen.queryAllByTestId("image-1")).toHaveLength(3)
+    expect(screen.queryAllByTestId("image-2")).toHaveLength(0)
+    expect(screen.queryAllByTestId("image-3")).toHaveLength(0)
+  })
 })
 
 const component = {
@@ -187,6 +206,46 @@ const cardsConnection = {
               imageURL: "https://url.com/image.jpg",
             },
           ],
+        },
+      },
+    ],
+  },
+}
+
+const emptyStateCardsConnection = {
+  cardsConnection: {
+    edges: [
+      {
+        node: {
+          title: "Card Title 0",
+          href: "/0-route",
+          entityID: "card-0-id",
+          entityType: "lotsForYou",
+          contextModule: "lotsForYouCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
+        },
+      },
+      {
+        node: {
+          title: "Card Title 1",
+          href: "/1-route",
+          entityID: "card-1-id",
+          entityType: "auctionResultsForArtistsYouFollow",
+          contextModule: "auctionResultsForArtistsYouFollowCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
+        },
+      },
+      {
+        node: {
+          title: "Card Title 2",
+          href: "/2-route",
+          entityID: "card-2-id",
+          entityType: "auctions",
+          contextModule: "auctionsCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
         },
       },
     ],
