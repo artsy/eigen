@@ -127,8 +127,7 @@ export const CollectionRailWithSuspense = withSuspense<
   Component: ({ slug, lastElement }) => {
     const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(
       CollectionsByCategoryCollectionRailQuery,
-      { slug },
-      { fetchPolicy: "store-and-network" }
+      { slug }
     )
 
     if (!data?.marketingCollection) {
