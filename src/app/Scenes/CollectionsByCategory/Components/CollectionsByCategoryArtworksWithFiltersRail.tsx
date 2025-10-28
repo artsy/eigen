@@ -41,11 +41,11 @@ export const CollectionsByCategoryArtworksWithFiltersRail: FC<
 
   return (
     <>
-      <Flex pl={2}>
+      <Flex>
         <SectionTitle
           href={hrefWithParams(href, title)}
-          pr={2}
           onPress={handleTitlePress}
+          px={2}
           RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
           title={title}
           titleVariant="md"
@@ -54,7 +54,6 @@ export const CollectionsByCategoryArtworksWithFiltersRail: FC<
         <ArtworkRail
           onPress={handleArtworkPress}
           artworks={artworks}
-          ListHeaderComponent={null}
           showSaveIcon
           showPartnerName
         />
