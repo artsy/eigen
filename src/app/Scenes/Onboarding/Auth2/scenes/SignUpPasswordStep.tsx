@@ -101,7 +101,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         onChangeText={(text) => {
           handleChange("password")(text)
         }}
-        onSubmitEditing={handleSubmit}
+        onSubmitEditing={() => handleSubmit()}
       />
 
       <Spacer y={1} />
@@ -116,7 +116,7 @@ const SignUpPasswordStepForm: React.FC = () => {
       <Button
         block
         width="100%"
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         loading={isSubmitting}
         disabled={!isValid || !values.password}
         accessibilityHint="Continue to the next screen"

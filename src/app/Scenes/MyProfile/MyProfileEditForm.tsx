@@ -234,7 +234,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               handleIDVerification={handleIDVerification}
             />
 
-            <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
+            <Button flex={1} disabled={!touched} onPress={() => handleSubmit()} mb={2}>
               Save
             </Button>
           </Flex>

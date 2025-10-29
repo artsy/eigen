@@ -166,7 +166,7 @@ const ForgotPasswordStepForm: React.FC = () => {
           <Spacer y={1} />
 
           <Button
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             block
             haptic="impactMedium"
             loading={isSubmitting}
@@ -178,7 +178,7 @@ const ForgotPasswordStepForm: React.FC = () => {
         </>
       ) : (
         <Button
-          onPress={handleSubmit}
+          onPress={() => handleSubmit()}
           block
           variant="fillDark"
           haptic="impactMedium"

@@ -184,7 +184,7 @@ export const OnboardingSocialLink: React.FC<
                 setErrors({ password: undefined })
                 handleChange("password")(text)
               }}
-              onSubmitEditing={handleSubmit}
+              onSubmitEditing={() => handleSubmit()}
               blurOnSubmit={false}
               placeholder="Password"
               returnKeyType="go"
@@ -211,7 +211,7 @@ export const OnboardingSocialLink: React.FC<
             <Button
               block
               disabled={!(isValid && dirty) || isLoading}
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               testID="artsySocialLinkPasswordButton"
             >
               {permittedProviders.length === 1 && permittedProviders[0] === "email"

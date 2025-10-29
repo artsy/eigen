@@ -78,7 +78,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               </Button>
               <Spacer y={1} />
               <Button
-                onPress={handleSubmit}
+                onPress={() => handleSubmit()}
                 block
                 haptic="impactMedium"
                 disabled={!isValid || !dirty}
@@ -91,7 +91,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             </>
           ) : (
             <Button
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               block
               variant="fillDark"
               haptic="impactMedium"
