@@ -503,7 +503,7 @@ parameters:
     default: "16.2"
   node_version:
     type: string
-    default: "22.0.0"
+    default: "24.6.0"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
@@ -516,7 +516,7 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   node_modules_cache_key:
     type: string
-    default: v25-node_modules-{{ checksum ".manifests/node_modules" }}
+    default: v26-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
     default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -528,7 +528,7 @@ parameters:
     default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v14-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v15-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
