@@ -443,7 +443,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Button
             disabled={!formik.isValid || !isFormDirty()}
             block
-            onPress={formik.handleSubmit}
+            onPress={() => formik.handleSubmit()}
             testID="CompleteButton"
             haptic
             mb={`${bottom}px`}
