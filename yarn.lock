@@ -2841,10 +2841,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braze/react-native-sdk@npm:15.0.1":
-  version: 15.0.1
-  resolution: "@braze/react-native-sdk@npm:15.0.1"
-  checksum: 10c0/cc714326f2c1c4770ee0363bdd3d2a7dbf5e62137e28532861681d8cfff748621aef7d0fda617db785f230ddec9bf14f53df692796788b515b43c28b41e2858c
+"@braze/react-native-sdk@npm:17.0.1":
+  version: 17.0.1
+  resolution: "@braze/react-native-sdk@npm:17.0.1"
+  checksum: 10c0/916b3002dd227345b01dfc84a6cb3ee406353af91b612aca6ec86335961f3dcbef0fcabc05f6cdf57039801a08decaa15623bc613e3988ffaf69775652c06ea2
   languageName: node
   linkType: hard
 
@@ -6321,13 +6321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-react-native-plugin-braze@npm:0.6.1":
-  version: 0.6.1
-  resolution: "@segment/analytics-react-native-plugin-braze@npm:0.6.1"
+"@segment/analytics-react-native-plugin-braze@npm:0.9.0":
+  version: 0.9.0
+  resolution: "@segment/analytics-react-native-plugin-braze@npm:0.9.0"
   peerDependencies:
-    "@braze/react-native-sdk": ^5.x
+    "@braze/react-native-sdk": ^16.x
     "@segment/analytics-react-native": ^2.18.0
-  checksum: 10c0/8480eff6411a540c508a4bc28360ff366cc5e56043715fbac8be75e76a55ca1fa954d2844a334276993daf6300fdcadd1edbb16074a506625ad95a7a4ca740f5
+  checksum: 10c0/4a41433dbda013c22b1c96bd791995e547a256dcd0c471e562becd2a80a2464321bb443b260cc65029ed567cda3a3cc8ec202b854ee58f5f37ce2e68a87522fa
   languageName: node
   linkType: hard
 
@@ -12344,7 +12344,7 @@ __metadata:
     "@babel/preset-react": "npm:7.18.6"
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:7.26.10"
-    "@braze/react-native-sdk": "npm:15.0.1"
+    "@braze/react-native-sdk": "npm:17.0.1"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "npm:5.1.2"
@@ -12385,7 +12385,7 @@ __metadata:
     "@rozenite/performance-monitor-plugin": "npm:1.0.0-alpha.16"
     "@rozenite/react-navigation-plugin": "npm:1.0.0-alpha.16"
     "@segment/analytics-react-native": "npm:2.21.3"
-    "@segment/analytics-react-native-plugin-braze": "npm:0.6.1"
+    "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
     "@segment/sovran-react-native": "npm:1.1.3"
     "@sentry/react-native": "npm:6.20.0"
     "@shopify/flash-list": "npm:1.8.3"
