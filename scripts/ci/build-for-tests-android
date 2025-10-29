@@ -14,8 +14,6 @@ CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1
 pushd android
 
 echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"
-# Use --no-daemon and --max-workers to reduce memory usage in CI
-# Expo SDK 54 + RN 0.81 requires more memory during build
 ./gradlew assemble${CAPITALIZED_BUILD_TYPE}
 
 popd
