@@ -205,7 +205,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           snapToEnd={false}
           onScroll={onScrollHandlerList}
           onViewableItemsChanged={({ viewableItems, changed }) => {
-            const index = viewableItems[0].index
+            const index = viewableItems[0]?.index
             if (index !== null && index !== activeIndex) {
               setActiveIndex(index)
             }
