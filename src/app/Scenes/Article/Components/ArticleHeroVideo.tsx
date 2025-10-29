@@ -16,6 +16,9 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
   const color = useColor()
   const backgroundColor = color("mono30")
 
+  const overriddenVideoURL =
+    "https://artsy-public.s3.us-east-1.amazonaws.com/eigen/article-video-mobile.mp4"
+
   // Memoize HTML to prevent re-renders
   const html = useMemo(
     () => `
@@ -56,7 +59,7 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
           preload="auto"
           webkit-playsinline
         >
-          <source src="${videoUrl}" type="video/mp4">
+          <source src="${overriddenVideoURL}" type="video/mp4">
         </video>
       </body>
     </html>
@@ -65,12 +68,18 @@ export const ArticleHeroVideo: React.FC<ArticleHeroVideoProps> = ({ videoUrl, wi
   )
 
   if (useNewVideoComponent) {
+    const overriddenVideoURL =
+      "https://artsy-public.s3.us-east-1.amazonaws.com/eigen/article-video-mobile.mp4"
     console.log("[VIDEO] Using header component with uri", videoUrl)
     performance.mark("video_mount")
     return (
       <Video
-        source={{ uri: videoUrl }}
+        source={{ uri: overriddenVideoURL }}
         repeat
+        debug={{
+          enable: true,
+          thread: true,
+        }}
         onLoad={() => {
           // mark when the video has loaded
           performance.mark("video_ready")

@@ -45,7 +45,7 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
 
   const height = Number(data.mobileHeight || data.height || 300)
 
-  if (isValidVideoUrl(data.url) && useNewVideoComponent) {
+  if (isValidVideoUrl(data.url) && false) {
     console.log("[VIDEO]: Loading new video component", data.url)
     // TODO: Vimeo player urls don't work, we could detect and embed in html for this case
     // but going forward would want articles to contain the raw video links
@@ -56,6 +56,7 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
 
     return (
       <Video
+        debug={{ enable: true, thread: true }}
         repeat
         onLoad={() => {
           // mark when the video has loaded
