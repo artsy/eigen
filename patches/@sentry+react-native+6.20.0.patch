@@ -1,0 +1,17 @@
+diff --git a/node_modules/@sentry/react-native/dist/js/tools/sentryMetroSerializer.js b/node_modules/@sentry/react-native/dist/js/tools/sentryMetroSerializer.js
+index 1234567..abcdefg 100644
+--- a/node_modules/@sentry/react-native/dist/js/tools/sentryMetroSerializer.js
++++ b/node_modules/@sentry/react-native/dist/js/tools/sentryMetroSerializer.js
+@@ -14,10 +14,10 @@ const utils_1 = require("./utils");
+ const utils_2 = require("./vendor/metro/utils");
+ let countLines;
+ try {
+-    countLines = require('metro/private/lib/countLines');
++    countLines = require('metro/private/lib/countLines').default || require('metro/private/lib/countLines');
+ }
+ catch (e) {
+-    countLines = require('metro/src/lib/countLines');
++    countLines = require('metro/src/lib/countLines').default || require('metro/src/lib/countLines');
+ }
+ const DEBUG_ID_PLACE_HOLDER = '__debug_id_place_holder__';
+ const DEBUG_ID_MODULE_PATH = '__debugid__';
