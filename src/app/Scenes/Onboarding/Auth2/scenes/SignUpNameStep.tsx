@@ -166,7 +166,7 @@ const SignUpNameStepForm: React.FC = () => {
       <Button
         block
         width="100%"
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         disabled={!isValid || !values.name}
         loading={isSubmitting}
       >
