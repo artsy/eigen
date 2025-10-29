@@ -8887,6 +8887,8 @@ type ConversationMessageTemplate {
 
   # A type-specific ID.
   internalID: ID!
+  isDeleted: Boolean!
+  sourceExampleId: String
   title: String!
 }
 
@@ -9395,8 +9397,14 @@ input CreateConversationMessageTemplateInput {
   # Optional description of the template
   description: String
 
+  # Whether this is a soft-deleted/dismissed template
+  isDeleted: Boolean
+
   # The ID of the partner
   partnerId: String!
+
+  # ID of the example template this was created from
+  sourceExampleId: String
 
   # The title of the template
   title: String!
@@ -13989,6 +13997,9 @@ type Image {
   # An optional type-specific ID.
   internalID: ID
   isDefault: Boolean
+
+  # Indicates whether the image is currently being processed.
+  isProcessing: Boolean!
   isZoomable: Boolean
   maxTiledHeight: Int
   maxTiledWidth: Int
@@ -14001,6 +14012,9 @@ type Image {
 
   # Order position of the image, within the images array of the artwork. (1-indexed)
   position: Int
+
+  # Indicates whether image processing has failed.
+  processingFailed: Boolean!
   resized(
     height: Int
 
@@ -17538,7 +17552,7 @@ type Partner implements Node {
     last: Int
   ): ContactConnection
 
-  # Static example templates to help users get started
+  # Static example templates to help users get started, excluding those already claimed.
   conversationMessageTemplateExamples: [ConversationMessageTemplateExample!]!
 
   # A connection of conversation message templates for this partner
@@ -17546,6 +17560,9 @@ type Partner implements Node {
     after: String
     before: String
     first: Int
+
+    # Filter by deleted status. Defaults to false (active templates only)
+    isDeleted: Boolean = false
     last: Int
     page: Int
   ): ConversationMessageTemplateConnection
