@@ -108,7 +108,7 @@ export const LoginOTPStep: React.FC = () => {
               handleChange("otp")(text)
             }}
             onBlur={() => validateForm()}
-            onSubmitEditing={handleSubmit}
+            onSubmitEditing={() => handleSubmit()}
           />
 
           <Spacer y={1} />
@@ -129,7 +129,7 @@ export const LoginOTPStep: React.FC = () => {
           <Button
             block
             width="100%"
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             disabled={!isValid}
             loading={isSubmitting}
           >

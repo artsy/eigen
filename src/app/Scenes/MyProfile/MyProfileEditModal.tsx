@@ -120,7 +120,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
               block
               mt={2}
               mb={4}
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
               disabled={!isValid}
               loading={loading}
             >

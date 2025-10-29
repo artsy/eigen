@@ -259,7 +259,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           loading={isSubmitting}
           block
           width={100}
-          onPress={handleSubmit}
+          onPress={() => handleSubmit()}
         >
           Save
         </Button>
