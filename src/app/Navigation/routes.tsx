@@ -941,6 +941,18 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [HOME_SECTION_SCREEN_QUERY],
   },
   {
+    path: "/home-view/sections/:id/modal",
+    name: "HomeViewSectionScreenModal",
+    Component: HomeViewSectionScreenQueryRenderer,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [HOME_SECTION_SCREEN_QUERY],
+  },
+  {
     path: "/inbox",
     name: "Inbox",
     Component: InboxScreen,

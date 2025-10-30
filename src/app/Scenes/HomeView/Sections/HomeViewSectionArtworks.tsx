@@ -83,7 +83,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
   }
 
-  const moreHref = getHomeViewSectionHref(viewAll?.href, section)
+  const moreHref = getHomeViewSectionHref(viewAll?.href, section, enableNewHomeViewCardRailType)
 
   const onSectionViewAll = () => {
     tracking.tappedArtworkGroupViewAll(
@@ -102,10 +102,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
-  const showeHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
+  const showHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
 
   const subTitle =
-    showeHomeViewCardRail && artworks.length > 0
+    showHomeViewCardRail && artworks.length > 0
       ? artworks
           .slice(0, 3)
           .map((artwork) => artwork?.artistNames)
@@ -124,7 +124,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       />
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
-      {showeHomeViewCardRail ? (
+      {showHomeViewCardRail ? (
         <ArtworksCard artworks={artworks} />
       ) : (
         <ArtworkRail
