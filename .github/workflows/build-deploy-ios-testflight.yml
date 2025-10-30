@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-ios-testflight:
-    runs-on: macos-15
+    runs-on: macos-15-arm64
     timeout-minutes: 90
 
     steps:
