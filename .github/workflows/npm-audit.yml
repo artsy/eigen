@@ -8,6 +8,6 @@ on:
 
 jobs:
   npm-audit:
-    uses: artsy/duchamp/.github/workflows/run-npm-audit.yml@main
+    uses: artsy/duchamp/.github/workflows/npm-audit.yml@main
     with:
       severity-threshold: "critical"
