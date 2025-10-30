@@ -6331,16 +6331,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-react-native@npm:2.18.0":
-  version: 2.18.0
-  resolution: "@segment/analytics-react-native@npm:2.18.0"
+"@segment/analytics-react-native@npm:2.21.3":
+  version: 2.21.3
+  resolution: "@segment/analytics-react-native@npm:2.21.3"
   dependencies:
-    "@segment/tsub": "npm:^2"
+    "@segment/tsub": "npm:2.0.0"
+    "@stdlib/number-float64-base-normalize": "npm:0.0.8"
     deepmerge: "npm:^4.3.1"
     js-base64: "npm:^3.7.5"
     uuid: "npm:^9.0.1"
   peerDependencies:
-    "@react-native-async-storage/async-storage": 1.x
+    "@react-native-async-storage/async-storage": 2.x
     "@segment/sovran-react-native": ^1.1.0
     react: "*"
     react-native: "*"
@@ -6348,7 +6349,7 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-async-storage/async-storage":
       optional: true
-  checksum: 10c0/81d810a38d499c3d55c49808bb4a302973e21f6331a76b11fc82ab63c641ed34e36b83e4292186e4cf4588cdc6f887728ce47e27f9244b7d4545008f7c752f01
+  checksum: 10c0/ffa09ec546c710ee0f522a18f394389c37dba6bad89ba6a9356b659309bd5c74b729195134ade7f29d8bcd6613af10258446f4a381c3a4355a0bbd5dea47bf1d
   languageName: node
   linkType: hard
 
@@ -6372,7 +6373,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/tsub@npm:^2":
+"@segment/tsub@npm:2.0.0":
   version: 2.0.0
   resolution: "@segment/tsub@npm:2.0.0"
   dependencies:
@@ -7471,6 +7472,21 @@ __metadata:
     "@stdlib/number-float64-base-to-words": "npm:^0.0.x"
     "@stdlib/utils-library-manifest": "npm:^0.0.x"
   checksum: 10c0/d8b749157d77300c59980b11d5f0ede34db33bbbe55435e8daaae52a9f93e44890e9d10c665f8fbc13d0dbf159b9dd5b466a47061870e5b9909641e88702e303
+  conditions: (os=aix | os=darwin | os=freebsd | os=linux | os=macos | os=openbsd | os=sunos | os=win32 | os=windows)
+  languageName: node
+  linkType: hard
+
+"@stdlib/number-float64-base-normalize@npm:0.0.8":
+  version: 0.0.8
+  resolution: "@stdlib/number-float64-base-normalize@npm:0.0.8"
+  dependencies:
+    "@stdlib/constants-float64-smallest-normal": "npm:^0.0.x"
+    "@stdlib/math-base-assert-is-infinite": "npm:^0.0.x"
+    "@stdlib/math-base-assert-is-nan": "npm:^0.0.x"
+    "@stdlib/math-base-special-abs": "npm:^0.0.x"
+    "@stdlib/types": "npm:^0.0.x"
+    "@stdlib/utils-define-nonenumerable-read-only-property": "npm:^0.0.x"
+  checksum: 10c0/8b0f4d9d4cb7ca66636d22799ebb157a7b682374f1595f1c9124bf432d628a34984fd98ab9d73224b52e6d64584f4d33589adf4dbd50c839cc4a9920536bc7a6
   conditions: (os=aix | os=darwin | os=freebsd | os=linux | os=macos | os=openbsd | os=sunos | os=win32 | os=windows)
   languageName: node
   linkType: hard
@@ -12368,7 +12384,7 @@ __metadata:
     "@rozenite/network-activity-plugin": "npm:1.0.0-alpha.16"
     "@rozenite/performance-monitor-plugin": "npm:1.0.0-alpha.16"
     "@rozenite/react-navigation-plugin": "npm:1.0.0-alpha.16"
-    "@segment/analytics-react-native": "npm:2.18.0"
+    "@segment/analytics-react-native": "npm:2.21.3"
     "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
     "@segment/sovran-react-native": "npm:1.1.3"
     "@sentry/react-native": "npm:6.21.0"
