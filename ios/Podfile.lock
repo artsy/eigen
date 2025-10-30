@@ -53,11 +53,11 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - BrazeKit (13.2.0)
-  - BrazeLocation (13.2.0):
-    - BrazeKit (= 13.2.0)
-  - BrazeUI (13.2.0):
-    - BrazeKit (= 13.2.0)
+  - BrazeKit (13.2.1)
+  - BrazeLocation (13.2.1):
+    - BrazeKit (= 13.2.1)
+  - BrazeUI (13.2.1):
+    - BrazeKit (= 13.2.1)
   - BVLinearGradient (2.8.3):
     - React-Core
   - CocoaLumberjack (3.9.0):
@@ -3314,7 +3314,7 @@ PODS:
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
-  - segment-analytics-react-native (2.18.0):
+  - segment-analytics-react-native (2.21.3):
     - React-Core
     - sovran-react-native
   - Sentry/HybridSDK (8.53.2)
@@ -3380,9 +3380,9 @@ DEPENDENCIES:
   - AFNetworking/NSURLSession (= 2.7.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
-  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeKit.podspec`)
-  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeLocation.podspec`)
-  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeUI.podspec`)
+  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec`)
+  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec`)
+  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.9.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -3641,11 +3641,11 @@ EXTERNAL SOURCES:
   braze-react-native-sdk:
     :path: "../node_modules/@braze/react-native-sdk"
   BrazeKit:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeKit.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec
   BrazeLocation:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeLocation.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec
   BrazeUI:
-    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.0/BrazeUI.podspec
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -3944,9 +3944,9 @@ SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   braze-react-native-sdk: 85a849ef0e6a2d35cc261f982013d06f0e0907ef
-  BrazeKit: 2ff8038a167f0ef13e0bd04ba7b0a6981c9169e6
-  BrazeLocation: 83e0da8ac9538cf411b1bb210d3a586bb8b0b251
-  BrazeUI: 727d898efaeaf43276d4a99335e03f4450850473
+  BrazeKit: 4dff9532234bb6faa1721a87f7927cc4c2880f28
+  BrazeLocation: 7c828b42008203ae512e0ed846c4e0e294c27052
+  BrazeUI: df3abdd46d2fe158cac147e9a8651d56be67a337
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: 5644158777912b7de7469fa881f8a3f259c2512a
   CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
@@ -4132,7 +4132,7 @@ SPEC CHECKSUMS:
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
-  segment-analytics-react-native: dde37891889e2ea12ca01b983c56c571a9c6c70d
+  segment-analytics-react-native: a0c29c75ede1989118b50cac96b9495ea5c91a1d
   Sentry: 59993bffde4a1ac297ba6d268dc4bbce068d7c1b
   Sift: 742454b5796a717df185f6dbae569e5dce357322
   sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
@@ -4158,6 +4158,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: f54cc307fd0259bb3ec85ea8a29e87d78333c89f
+PODFILE CHECKSUM: f3790c93d54682971a16b91465ae379544733d26
 
 COCOAPODS: 1.16.2
