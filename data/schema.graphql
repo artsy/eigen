@@ -2729,6 +2729,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Flags if artwork located in one of EU local shipping countries.
   euShippingOrigin: Boolean
   exhibitionHistory(format: Format): String
+
+  # External provider identity.
+  externalID: String
   fair: Fair
 
   # Featured slot (if set, will boost the work to the top of the artwork grid. Should be set between 1 and 20).
