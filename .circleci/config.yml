@@ -350,6 +350,7 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - update-echo
       - run:
           command: yarn type-check
       - run:
