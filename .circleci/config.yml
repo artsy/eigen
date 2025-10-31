@@ -522,10 +522,10 @@ parameters:
     default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
   cocoapods_cache_key:
     type: string
-    default: v34-pods-{{ checksum ".manifests/cocoapods" }}
+    default: v31-pods-{{ checksum ".manifests/cocoapods" }}
   app_build_ios_cache_key:
     type: string
-    default: v29-app_build_ios-{{ checksum ".manifests/app_build" }}
+    default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
     default: v14-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
