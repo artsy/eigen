@@ -58,7 +58,6 @@ commands:
   install-node-modules:
     steps:
       - node/install-packages:
-          check-cache: always
           pkg-manager: yarn
           cache-version: << pipeline.parameters.node_modules_cache_key >>
   run-relay-compiler:
@@ -351,6 +350,7 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - update-echo
       - run:
           command: yarn type-check
       - run:
