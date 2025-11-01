@@ -152,7 +152,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           handleChange("email")(text.trim())
         }}
         onFocus={handleEmailFocus}
-        onSubmitEditing={handleSubmit}
+        onSubmitEditing={() => handleSubmit()}
       />
 
       {!!isModalExpanded && (
@@ -166,7 +166,7 @@ const LoginWelcomeStepForm: React.FC = () => {
           <Button
             block
             width="100%"
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             loading={isSubmitting}
             disabled={!isValid || !values.email}
             accessibilityHint="Continue to the next screen"

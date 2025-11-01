@@ -180,7 +180,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
                 accessibilityLabel="Submit Add Artist"
                 disabled={!dirty || !isValid}
                 flex={1}
-                onPress={handleSubmit}
+                onPress={() => handleSubmit()}
                 testID="submit-add-artist-button"
               >
                 Add Artist

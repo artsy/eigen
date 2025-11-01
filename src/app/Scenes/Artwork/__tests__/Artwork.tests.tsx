@@ -24,7 +24,7 @@ import { goBack, navigate, navigationEvents } from "app/system/navigation/naviga
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import { ActivityIndicator } from "react-native"
@@ -311,7 +311,7 @@ describe("Artwork", () => {
 
   it("updates the above-the-fold content on re-appear", async () => {
     // eslint-disable-next-line testing-library/render-result-naming-convention
-    const tree = renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {

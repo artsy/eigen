@@ -96,9 +96,9 @@ export function AboveTheFoldQueryRenderer<
       return
     }
 
-    const immediate = setImmediate(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
+    const immediate = setTimeout(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
 
-    return () => clearImmediate(immediate)
+    return () => clearTimeout(immediate)
   }, [])
 
   return (

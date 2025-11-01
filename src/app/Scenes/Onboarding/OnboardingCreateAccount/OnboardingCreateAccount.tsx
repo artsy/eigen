@@ -244,7 +244,7 @@ export const OnboardingCreateAccountButton: React.FC = () => {
   return (
     <Flex px={2} paddingBottom={2} backgroundColor="mono0" pt={0.5}>
       <Button
-        onPress={handleSubmit}
+        onPress={() => handleSubmit()}
         block
         haptic="impactMedium"
         disabled={!!isLastStep && !values.acceptedTerms}

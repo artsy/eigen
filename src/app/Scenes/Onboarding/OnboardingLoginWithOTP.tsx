@@ -121,7 +121,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
         <BackButton onPress={() => navigation.goBack()} />
         <Flex px={2} paddingBottom={2}>
           <Button
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             block
             haptic="impactMedium"
             disabled={!(isValid && dirty) || isSubmitting}

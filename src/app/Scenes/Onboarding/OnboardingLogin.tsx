@@ -167,7 +167,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
         <BackButton onPress={() => navigation.goBack()} />
         <Flex px={2} paddingBottom={2}>
           <Button
-            onPress={handleSubmit}
+            onPress={() => handleSubmit()}
             block
             haptic="impactMedium"
             disabled={!isValid || !valuesNotEmpty}

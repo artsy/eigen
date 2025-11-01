@@ -39,7 +39,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
           }
           handleChange("password")(text)
         }}
-        onSubmitEditing={handleSubmit}
+        onSubmitEditing={() => handleSubmit()}
         blurOnSubmit={false}
         placeholderTextColor={color("mono30")}
         placeholder="Password"

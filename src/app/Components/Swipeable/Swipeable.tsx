@@ -1,6 +1,6 @@
 import { Color, Flex, Touchable, useColor } from "@artsy/palette-mobile"
 import { debounce } from "lodash"
-import { forwardRef } from "react"
+import { forwardRef, RefObject } from "react"
 import ReanimatedSwipeable, {
   SwipeableMethods,
   SwipeableProps,
@@ -114,7 +114,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
     >
       <ReanimatedSwipeable
         testID="swipeable-component"
-        ref={ref}
+        ref={ref as RefObject<SwipeableMethods>}
         enabled={enabled}
         renderRightActions={RightActions}
         friction={FRICTION}
