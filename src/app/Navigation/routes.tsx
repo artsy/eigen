@@ -135,6 +135,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { LiveAuctionsScreen, LiveAuctionsScreenQuery } from "app/Scenes/LiveAuctions/LiveAuctions"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -703,6 +704,17 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/live-auctions",
+    name: "LiveAuctions",
+    Component: LiveAuctionsScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [LiveAuctionsScreenQuery],
   },
   {
     path: "/city-fair/:citySlug",
