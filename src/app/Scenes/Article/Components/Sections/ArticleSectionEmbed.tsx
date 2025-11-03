@@ -75,6 +75,9 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
     )
   }
 
+  console.log("[VIDEO] rendering webview for embed")
+  performance.mark("webview_embed_mount")
+
   return (
     <Flex height={height} my={2}>
       <WebView
@@ -82,6 +85,17 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
         style={{ flex: 1 }}
         allowsInlineMediaPlayback
         mediaPlaybackRequiresUserAction={false}
+        onLoadEnd={() => {
+          // mark when the webview has loaded
+          performance.mark("webview_embed_ready")
+          // now safely measure between the two marks
+          performance.measure("TTFP_WebView", "webview_embed_mount", "webview_embed_ready")
+
+          // read the measure
+          const measures = performance.getEntriesByName("TTFP_WebView")
+          const ttfp = measures[measures.length - 1]?.duration
+          console.log(`[VIDEO] Article Embed WebView Time to load: ${ttfp?.toFixed(2)}ms`)
+        }}
       />
     </Flex>
   )
