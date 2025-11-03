@@ -40,9 +40,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app
-
       - name: Set up environment for CI
         run: |
           touch .env.shared && touch keys.shared.json
@@ -89,6 +86,9 @@ jobs:
 
       - name: Update echo
         run: ./scripts/setup/update-echo
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
 
       - name: Cache bin Yarn cache
         uses: actions/cache@v4
