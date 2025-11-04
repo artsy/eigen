@@ -9484,6 +9484,30 @@ type CreateArtworkSuccess {
   artwork: Artwork
 }
 
+type CreateArtworkTemplateFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkTemplateInput {
+  artworkId: String!
+  clientMutationId: String
+  partnerId: String!
+  title: String!
+}
+
+type CreateArtworkTemplatePayload {
+  artworkTemplateOrError: CreateArtworkTemplateResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkTemplateResponseOrError =
+    CreateArtworkTemplateFailure
+  | CreateArtworkTemplateSuccess
+
+type CreateArtworkTemplateSuccess {
+  artworkTemplate: ArtworkTemplate
+}
+
 input CreateBackupSecondFactorsInput {
   clientMutationId: String
   password: String!
@@ -10729,6 +10753,17 @@ union DeleteArtworkResponseOrError = DeleteArtworkFailure | DeleteArtworkSuccess
 
 type DeleteArtworkSuccess {
   artwork: Artwork
+}
+
+input DeleteArtworkTemplateInput {
+  artworkTemplateID: ID!
+  clientMutationId: String
+  partnerID: ID!
+}
+
+type DeleteArtworkTemplatePayload {
+  artworkTemplate: ArtworkTemplate!
+  clientMutationId: String
 }
 
 input DeleteBankAccountInput {
@@ -16184,6 +16219,7 @@ type Mutation {
   createArtworkImportImageMatch(
     input: CreateArtworkImportImageMatchInput!
   ): CreateArtworkImportImageMatchPayload
+  createArtworkTemplate(input: CreateArtworkTemplateInput!): CreateArtworkTemplatePayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -16351,6 +16387,7 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+  deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
 
   # Remove a bank account
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload

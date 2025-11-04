@@ -1,5 +1,6 @@
 import { act, screen } from "@testing-library/react-native"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
@@ -12,6 +13,10 @@ describe(FeatureQueryRenderer, () => {
   })
 
   it("renders without failing", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableRedirectForVideoFeatureType: false,
+    })
+
     renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
 
     await act(async () => {
