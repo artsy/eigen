@@ -9272,6 +9272,32 @@ type CreateArtworkFailure {
   mutationError: GravityMutationError
 }
 
+type CreateArtworkFromTemplateFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkFromTemplateInput {
+  # The ID of the artwork template.
+  artworkTemplateID: ID!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerID: ID!
+}
+
+type CreateArtworkFromTemplatePayload {
+  artworkOrError: CreateArtworkFromTemplateResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkFromTemplateResponseOrError =
+    CreateArtworkFromTemplateFailure
+  | CreateArtworkFromTemplateSuccess
+
+type CreateArtworkFromTemplateSuccess {
+  artwork: Artwork
+}
+
 type CreateArtworkImportArtistAssignmentFailure {
   mutationError: GravityMutationError
 }
@@ -10755,15 +10781,31 @@ type DeleteArtworkSuccess {
   artwork: Artwork
 }
 
+type DeleteArtworkTemplateFailure {
+  mutationError: GravityMutationError
+}
+
 input DeleteArtworkTemplateInput {
+  # The ID of the artwork template to delete.
   artworkTemplateID: ID!
   clientMutationId: String
+
+  # The ID of the partner.
   partnerID: ID!
 }
 
 type DeleteArtworkTemplatePayload {
-  artworkTemplate: ArtworkTemplate!
+  # On success: the deleted artwork template. On failure: MutationError.
+  artworkTemplateOrError: DeleteArtworkTemplateResponseOrError
   clientMutationId: String
+}
+
+union DeleteArtworkTemplateResponseOrError =
+    DeleteArtworkTemplateFailure
+  | DeleteArtworkTemplateSuccess
+
+type DeleteArtworkTemplateSuccess {
+  artworkTemplate: ArtworkTemplate
 }
 
 input DeleteBankAccountInput {
@@ -16203,6 +16245,11 @@ type Mutation {
 
   # Creates a new artwork with an associated image.
   createArtwork(input: CreateArtworkMutationInput!): CreateArtworkMutationPayload
+
+  # Create an artwork from an artwork template.
+  createArtworkFromTemplate(
+    input: CreateArtworkFromTemplateInput!
+  ): CreateArtworkFromTemplatePayload
   createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createArtworkImportArtistAssignment(
     input: CreateArtworkImportArtistAssignmentInput!
@@ -16387,6 +16434,8 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+
+  # Delete an artwork template.
   deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
 
   # Remove a bank account
@@ -17523,7 +17572,7 @@ type OrderedSetEdge {
   node: OrderedSet
 }
 
-union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show
+union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show | Video
 
 # A connection to a list of items.
 type OrderedSetItemConnection {
@@ -20935,6 +20984,9 @@ type Query {
     # Recaptcha token.
     recaptchaToken: String!
   ): VerifyUser
+
+  # Find a video by ID
+  video(id: ID!): Video
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -25659,12 +25711,17 @@ type VerifyUser {
 
 # An object containing video metadata
 type Video {
+  description(format: Format): String
+
   # The height of the video
   height: Int!
   id: ID!
 
   # Returns a full-qualified url that can be embedded in an iframe player
   playerUrl: String!
+
+  # Title of the video
+  title: String
 
   # The width of the video
   width: Int!
@@ -26879,6 +26936,9 @@ type Viewer {
     # Recaptcha token.
     recaptchaToken: String!
   ): VerifyUser
+
+  # Find a video by ID
+  video(id: ID!): Video
 
   # Find a viewing room by ID
   viewingRoom(id: ID!): ViewingRoom
