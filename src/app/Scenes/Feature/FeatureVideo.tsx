@@ -39,6 +39,7 @@ const extractYouTubeId = (urlString: string): string | null => {
 
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {
   const ytId = extractYouTubeId(videoUrl)
+
   const { videoId: vimeoId, token } = extractVimeoVideoDataFromUrl(videoUrl)
   const playerRef = useRef(null)
 
@@ -49,23 +50,31 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
 
   if (isYouTube(videoUrl) && ytId) {
     return (
-      <YoutubePlayer
-        ref={playerRef}
-        height={height}
-        width={width}
-        play={true}
-        videoId={ytId}
-        webViewProps={{
-          allowsInlineMediaPlayback: true,
-          mediaPlaybackRequiresUserAction: false,
-        }}
-      />
+      <Flex testID="FeatureVideo">
+        <YoutubePlayer
+          testID="FeatureVideo"
+          ref={playerRef}
+          height={height}
+          width={width}
+          play={true}
+          videoId={ytId}
+          webViewProps={{
+            allowsInlineMediaPlayback: true,
+            mediaPlaybackRequiresUserAction: false,
+          }}
+        />
+      </Flex>
     )
   }
 
-  if (isVimeo(videoUrl) && vimeoId) {
+  if (isVimeo(videoUrl) && vimeoId && token) {
     return (
-      <Flex accessibilityLabel="Vimeo Video Player Controls" width={width} height={height}>
+      <Flex
+        testID="FeatureVideo"
+        accessibilityLabel="Vimeo Video Player Controls"
+        width={width}
+        height={height}
+      >
         <Vimeo
           videoId={vimeoId}
           params={`h=${token}&loop=true&autoplay=0&transparent=0&background=false`}

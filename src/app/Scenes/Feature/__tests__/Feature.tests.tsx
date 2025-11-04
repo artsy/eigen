@@ -29,7 +29,7 @@ describe(FeatureQueryRenderer, () => {
               callout: "this is the callout",
               description: "this is the description",
               video: {
-                url: "https://www.youtube.com/somevideo",
+                url: "https://www.youtube.com/somevideo?v=12345",
               },
               sets: {
                 edges: [
