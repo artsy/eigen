@@ -3,7 +3,6 @@ import { extractVimeoVideoDataFromUrl } from "app/Scenes/Artwork/Components/Imag
 import React, { useRef } from "react"
 import { URL } from "react-native-url-polyfill"
 import { Vimeo } from "react-native-vimeo-iframe"
-import { WebView } from "react-native-webview"
 import YoutubePlayer from "react-native-youtube-iframe"
 
 interface FeatureVideoProps {
@@ -43,6 +42,11 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
   const { videoId: vimeoId, token } = extractVimeoVideoDataFromUrl(videoUrl)
   const playerRef = useRef(null)
 
+  if (!isValidVideoUrl(videoUrl)) {
+    console.warn(`FeatureVideo: Invalid video URL domain: ${videoUrl}`)
+    return null
+  }
+
   if (isYouTube(videoUrl) && ytId) {
     return (
       <YoutubePlayer
@@ -71,18 +75,6 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
     )
   }
 
-  if (!isValidVideoUrl(videoUrl)) {
-    console.warn(`FeatureVideo: Invalid video URL domain: ${videoUrl}`)
-    return null
-  }
-
-  // fallback if unknown provider
-  return (
-    <WebView
-      originWhitelist={["*"]}
-      source={{ uri: videoUrl }}
-      style={{ width, height }}
-      allowsInlineMediaPlayback
-    />
-  )
+  // render nothing if unknown provider
+  return null
 }
