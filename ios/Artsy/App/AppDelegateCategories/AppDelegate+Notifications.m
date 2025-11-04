@@ -96,16 +96,16 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:userInfo];
+    BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
+                                                                                                               fetchCompletionHandler:handler];
     if (processedByBraze) {
         // Still let React Native know about Braze notifications
-        [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+        [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:userInfo];
         return;
     }
 
     // Forward all notifications to React Native
-    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:userInfo];
 
     handler(UIBackgroundFetchResultNoData);
 }
@@ -118,10 +118,9 @@
     // Create enriched notification payload with application state
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
 
     // Forward all notifications to React Native with enriched payload
-    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
 }
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
@@ -175,8 +174,7 @@
     [notificationInfo setObject:@"Active" forKey:@"UIApplicationState"]; // Foreground state
 
     // Forward to React Native
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
-    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
 }
@@ -190,10 +188,9 @@
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Tapped" forKey:@"NotificationAction"]; // Indicate this was tapped
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
 
     // Forward to React Native regardless of whether Braze processed it
-    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+    [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:notificationInfo];
 
     if (!processedByBraze) {
         completionHandler();
