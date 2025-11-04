@@ -81,6 +81,10 @@ import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
+import {
+  AuctionsOverviewScreen,
+  AuctionsOverviewScreenQuery,
+} from "app/Scenes/AuctionsOverview/AuctionsOverview"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
 import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
@@ -135,7 +139,6 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
-import { LiveAuctionsScreen, LiveAuctionsScreenQuery } from "app/Scenes/LiveAuctions/LiveAuctions"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -706,15 +709,15 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/live-auctions",
-    name: "LiveAuctions",
-    Component: LiveAuctionsScreen,
+    path: "/auctions/overview",
+    name: "AuctionsOverview",
+    Component: AuctionsOverviewScreen,
     options: {
       screenOptions: {
         headerShown: false,
       },
     },
-    queries: [LiveAuctionsScreenQuery],
+    queries: [AuctionsOverviewScreenQuery],
   },
   {
     path: "/city-fair/:citySlug",

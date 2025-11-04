@@ -1,12 +1,12 @@
 import { act, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { LiveAuctionsScreen } from "app/Scenes/LiveAuctions/LiveAuctions"
+import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOverview"
 import { CurrentlyRunningAuctions } from "app/Scenes/Sales/CurrentlyRunningAuctions"
 import { UpcomingAuctions } from "app/Scenes/Sales/UpcomingAuctions"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-describe("LiveAuctions", () => {
+describe("AuctionsOverview", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: () => <LiveAuctionsScreen />,
+    Component: () => <AuctionsOverviewScreen />,
   })
 
   const upcomingAuctionsRefreshMock = jest.fn()
@@ -15,20 +15,20 @@ describe("LiveAuctions", () => {
   it("renders without Errors", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("LiveAuctionsPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("AuctionsOverviewPlaceholder"))
 
-    expect(screen.getByTestId("Live-Auctions-Screen-ScrollView")).toBeOnTheScreen()
+    expect(screen.getByTestId("Auctions-Overview-Screen-ScrollView")).toBeOnTheScreen()
   })
 
   it("Can refresh current and upcoming auctions", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("LiveAuctionsPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("AuctionsOverviewPlaceholder"))
 
     const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
     const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
 
-    const ScrollView = screen.getByTestId("Live-Auctions-Screen-ScrollView")
+    const ScrollView = screen.getByTestId("Auctions-Overview-Screen-ScrollView")
 
     await act(() => {
       CurrentAuction.props.setRefetchPropOnParent(currentAuctionsRefreshMock)

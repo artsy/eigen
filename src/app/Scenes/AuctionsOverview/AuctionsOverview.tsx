@@ -1,6 +1,6 @@
-import { OwnerType } from "@artsy/cohesion"
+import { OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
-import { LiveAuctionsQuery } from "__generated__/LiveAuctionsQuery.graphql"
+import { AuctionsOverviewQuery } from "__generated__/AuctionsOverviewQuery.graphql"
 import { ZeroState } from "app/Scenes/Sales/Components/ZeroState"
 import {
   CurrentlyRunningAuctions,
@@ -16,8 +16,8 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const LiveAucitonsQueryRenderer = <></>
 
-export const LiveAuctionsScreenQuery = graphql`
-  query LiveAuctionsQuery {
+export const AuctionsOverviewScreenQuery = graphql`
+  query AuctionsOverviewQuery {
     currentlyRunningAuctions: viewer {
       ...CurrentlyRunningAuctions_viewer
     }
@@ -27,9 +27,9 @@ export const LiveAuctionsScreenQuery = graphql`
   }
 `
 
-export const LiveAuctions = () => {
-  const data = useLazyLoadQuery<LiveAuctionsQuery>(
-    LiveAuctionsScreenQuery,
+export const AuctionsOverview = () => {
+  const data = useLazyLoadQuery<AuctionsOverviewQuery>(
+    AuctionsOverviewScreenQuery,
     {},
     {
       fetchPolicy: "store-and-network",
@@ -72,7 +72,7 @@ export const LiveAuctions = () => {
       <Screen.StickySubHeader title="Current and Upcoming Auctions" />
 
       <Screen.ScrollView
-        testID="Live-Auctions-Screen-ScrollView"
+        testID="Auctions-Overview-Screen-ScrollView"
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Flex pb={2} gap={4}>
@@ -93,11 +93,11 @@ export const LiveAuctions = () => {
   )
 }
 
-export const LiveAuctionsScreen = () => {
+export const AuctionsOverviewScreen = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
-        context_screen_owner_type: OwnerType.liveAuctions,
+        context_screen_owner_type: "auctionsOverview" as ScreenOwnerType, // OwnerType.auctionsOverview,
       })}
     >
       <Suspense
@@ -106,13 +106,13 @@ export const LiveAuctionsScreen = () => {
             <Screen.Header title="" onBack={goBack} />
             <Screen.Body fullwidth>
               <Flex flex={1} justifyContent="center" alignItems="center">
-                <Spinner testID="LiveAuctionsPlaceholder" />
+                <Spinner testID="AuctionsOverviewPlaceholder" />
               </Flex>
             </Screen.Body>
           </Screen>
         }
       >
-        <LiveAuctions />
+        <AuctionsOverview />
       </Suspense>
     </ProvideScreenTrackingWithCohesionSchema>
   )
