@@ -1,7 +1,12 @@
 import { Flex } from "@artsy/palette-mobile"
-import { extractVimeoVideoDataFromUrl } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
+import {
+  extractVimeoVideoDataFromUrl,
+  extractYouTubeId,
+  isValidVideoUrl,
+  isVimeo,
+  isYouTube,
+} from "app/utils/videoHelpers"
 import React, { useRef } from "react"
-import { URL } from "react-native-url-polyfill"
 import { Vimeo } from "react-native-vimeo-iframe"
 import YoutubePlayer from "react-native-youtube-iframe"
 
@@ -9,32 +14,6 @@ interface FeatureVideoProps {
   videoUrl: string
   width: number
   height: number
-}
-
-const ALLOWED_VIDEO_DOMAINS = ["player.vimeo.com", "www.youtube.com", "youtube.com", "youtu.be"]
-
-const isValidVideoUrl = (urlString: string): boolean => {
-  try {
-    const url = new URL(urlString)
-    return ALLOWED_VIDEO_DOMAINS.includes(url.host)
-  } catch {
-    return false
-  }
-}
-
-const isYouTube = (url: string) => /youtu(\.be|be\.com)/.test(url)
-const isVimeo = (url: string) => /vimeo\.com/.test(url)
-
-const extractYouTubeId = (urlString: string): string | null => {
-  try {
-    const url = new URL(urlString)
-    if (url.host.includes("youtu.be")) return url.pathname.slice(1)
-    if (url.searchParams.get("v")) return url.searchParams.get("v")
-    const match = url.pathname.match(/\/embed\/([^/?]+)/)
-    return match ? match[1] : null
-  } catch {
-    return null
-  }
 }
 
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {

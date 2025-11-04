@@ -1,6 +1,6 @@
-import { extractVimeoVideoDataFromUrl } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
+import { extractVimeoVideoDataFromUrl } from "app/utils/videoHelpers"
 
-describe("ImageCarouselVimeoVideo", () => {
+describe("videoUtils.ts", () => {
   describe("extractVimeoVideoDataFromUrl", () => {
     it("extracts the video props from vimeo url", () => {
       const url = "https://player.vimeo.com/video/123456789?h=123456789&width=640&height=360"
