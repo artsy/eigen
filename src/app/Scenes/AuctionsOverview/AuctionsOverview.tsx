@@ -1,4 +1,4 @@
-import { OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { AuctionsOverviewQuery } from "__generated__/AuctionsOverviewQuery.graphql"
 import { ZeroState } from "app/Scenes/Sales/Components/ZeroState"
@@ -97,7 +97,7 @@ export const AuctionsOverviewScreen = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
-        context_screen_owner_type: "auctionsOverview" as ScreenOwnerType, // OwnerType.auctionsOverview,
+        context_screen_owner_type: OwnerType.auctionsOverview,
       })}
     >
       <Suspense
