@@ -58,7 +58,7 @@ commands:
   install-node-modules:
     steps:
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           cache-version: << pipeline.parameters.node_modules_cache_key >>
   run-relay-compiler:
     steps:
@@ -344,7 +344,7 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - generate-checksums
@@ -516,7 +516,7 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   node_modules_cache_key:
     type: string
-    default: v25-node_modules-{{ checksum ".manifests/node_modules" }}
+    default: v27-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
     default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
