@@ -131,8 +131,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       {showHomeViewCardRail ? (
         <ArtworksCard
           artworks={artworks}
-          contextModule={section.contextModule as ContextModule}
-          contextScreenOwnerType={OwnerType.home}
           {...(section.trackItemImpressions
             ? {
                 trackViewsFromCards: trackViewsFromCards(
