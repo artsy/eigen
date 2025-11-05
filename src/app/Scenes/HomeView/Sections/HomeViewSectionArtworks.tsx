@@ -9,6 +9,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
+import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
@@ -74,13 +75,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   const handleOnArtworkPress = (
-    artwork: ArtworkRail_artworks$data[0] | ArtworkRail_artworks$data[0],
+    artwork: ArtworkRail_artworks$data[number] | ArtworksCard_artworks$data[number],
     position: number
   ) => {
     tracking.tappedArtworkGroup(
       artwork.internalID,
       artwork.slug,
-      artwork.collectorSignals,
+      artwork[" $fragmentType"] !== "ArtworksCard_artworks" ? artwork?.collectorSignals : null,
       section.contextModule as ContextModule,
       position
     )
@@ -130,6 +131,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {showHomeViewCardRail ? (
         <ArtworksCard
+          href={moreHref}
+          onPress={handleOnArtworkPress}
           artworks={artworks}
           {...(section.trackItemImpressions
             ? {

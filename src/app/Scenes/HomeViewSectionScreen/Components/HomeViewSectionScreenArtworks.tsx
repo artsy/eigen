@@ -9,12 +9,14 @@ import {
   Touchable,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
+import { useRoute } from "@react-navigation/native"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { HomeViewSectionScreenRouteProp } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -38,6 +40,7 @@ interface ArtworksScreenHomeSection {
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const { params } = useRoute<HomeViewSectionScreenRouteProp>()
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { width, height } = useScreenDimensions()
@@ -200,13 +203,23 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           bounces={false}
           pagingEnabled
           decelerationRate="fast"
+          initialScrollIndex={parseInt(params.artworkIndex ?? "0")}
+          getItemLayout={(_, index) => {
+            return {
+              index,
+              length: width,
+              offset: width * index,
+            }
+          }}
+          initialNumToRender={4}
           snapToInterval={width}
           snapToAlignment="start"
           snapToEnd={false}
           onScroll={onScrollHandlerList}
+          viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={({ viewableItems, changed }) => {
             const index = viewableItems[0]?.index
-            if (index !== null && index !== activeIndex) {
+            if (index != null && index !== activeIndex) {
               setActiveIndex(index)
             }
             if (section.trackItemImpressions) {
