@@ -12746,6 +12746,7 @@ __metadata:
     react-native-view-shot: "npm:4.0.3"
     react-native-vimeo-iframe: "npm:1.2.1"
     react-native-webview: "npm:13.15.0"
+    react-native-youtube-iframe: "npm:^2.4.1"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
     react-test-renderer: "npm:19.0.0"
@@ -21336,6 +21337,25 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/29b8ad4c1c8623c62e868893e829d20ef1ab51b38f44d0f422e0c19df9d8747ae25d1fcceec4e6d78106f263dce66b7984eeb12c0e5046c7c898b81673b0b6d6
+  languageName: node
+  linkType: hard
+
+"react-native-youtube-iframe@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "react-native-youtube-iframe@npm:2.4.1"
+  dependencies:
+    events: "npm:^3.3.0"
+  peerDependencies:
+    react: ">=16.8.6"
+    react-native: ">=0.60"
+    react-native-web-webview: ">=1.0.2"
+    react-native-webview: ">=7.0.0"
+  peerDependenciesMeta:
+    react-native-web-webview:
+      optional: true
+    react-native-webview:
+      optional: true
+  checksum: 10c0/966fe52c3a298b01e58259d3f9bf9c94d8764ec7452918f9e0b2cc7f977461b8d9d8e3023a1b5fcc6ca0d470ec0ea3cc4dc1714a6e6ae62b3b16e552faf8deda
   languageName: node
   linkType: hard
 
