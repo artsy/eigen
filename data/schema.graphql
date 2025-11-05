@@ -23522,6 +23522,7 @@ input UpdateArtworkEditionSetInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+  title: String
 }
 
 type UpdateArtworkImportFailure {
@@ -23670,6 +23671,7 @@ input UpdateArtworkMutationInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+  title: String
 }
 
 type UpdateArtworkMutationPayload {
