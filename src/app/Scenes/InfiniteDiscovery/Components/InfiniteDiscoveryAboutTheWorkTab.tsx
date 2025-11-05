@@ -3,6 +3,7 @@ import { ArtworkIcon, CertificateIcon, EnvelopeIcon } from "@artsy/icons/native"
 import {
   Flex,
   FlexProps,
+  Join,
   LinkText,
   SimpleMessage,
   Skeleton,
@@ -73,165 +74,169 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}
       >
-        <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
-          <Flex gap={1}>
-            <InfiniteDiscoveryCollectorSignal artwork={data} />
+        <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }}>
+          <Join separator={<Spacer y={2} />}>
+            <Flex gap={1}>
+              <InfiniteDiscoveryCollectorSignal artwork={data} />
 
-            {!!attributionClass?.length && (
-              <Sentinel onChange={handleOnVisible}>
-                <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
-                  <ArtworkIcon height={18} width={18} fill="mono60" />
-                  {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
-                  <RouterLink
-                    to="/artwork-classifications"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">{attributionClass[1]}</LinkText>
-                  </RouterLink>
+              {!!attributionClass?.length && (
+                <Sentinel onChange={handleOnVisible}>
+                  <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
+                    <ArtworkIcon height={18} width={18} fill="mono60" />
+                    {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
+                    <RouterLink
+                      to="/artwork-classifications"
+                      hasChildTouchable
+                      onPress={handleCollapse}
+                    >
+                      <LinkText variant="xs">{attributionClass[1]}</LinkText>
+                    </RouterLink>
+                  </Flex>
+                </Sentinel>
+              )}
+
+              {!!hasCertificateOfAuthenticity && (
+                <Flex
+                  flexDirection="row"
+                  gap={0.5}
+                  alignItems="center"
+                  testID="authenticity-certificate"
+                >
+                  <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
+                  <Flex flexDirection="row">
+                    <Text variant="xs">Includes a </Text>
+                    <RouterLink
+                      to="/artwork-certificate-of-authenticity"
+                      hasChildTouchable
+                      onPress={handleCollapse}
+                    >
+                      <LinkText variant="xs">Certificate of Authenticity</LinkText>
+                    </RouterLink>
+                  </Flex>
                 </Flex>
-              </Sentinel>
-            )}
+              )}
+            </Flex>
 
-            {!!hasCertificateOfAuthenticity && (
+            {(!!attributionClass?.length ||
+              !!hasCertificateOfAuthenticity ||
+              !!hasCollectorSignal) && <Divider />}
+
+            <Flex gap={1}>
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Materials</Text>
+                <Text {...valueStyle}>{data.medium}</Text>
+              </Flex>
+
+              {dimensionsPresent(data.dimensions) && (
+                <Flex flexDirection="row">
+                  <Text {...labelStyle}>Dimensions</Text>
+                  <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
+                </Flex>
+              )}
+
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Rarity</Text>
+                <Text {...valueStyle}>{data.attributionClass?.name}</Text>
+              </Flex>
+
+              {!!data.mediumType?.name && (
+                <Flex flexDirection="row" width="100%">
+                  <Text {...labelStyle}>Medium</Text>
+                  <Text {...valueStyle}>{data.mediumType?.name}</Text>
+                </Flex>
+              )}
+
+              {!!data.condition?.displayText && (
+                <Flex flexDirection="row">
+                  <Text {...labelStyle}>Condition</Text>
+                  <Text {...valueStyle}>{data.condition.displayText}</Text>
+                </Flex>
+              )}
+
+              {!!data.signatureInfo?.details && (
+                <Flex flexDirection="row">
+                  <Text {...labelStyle}>Signature</Text>
+                  <Text {...valueStyle}>{data.signatureInfo.details}</Text>
+                </Flex>
+              )}
+
+              {!!data.certificateOfAuthenticity?.details && (
+                <Flex flexDirection="row">
+                  <Text {...labelStyle}>Certificate of Authenticity</Text>
+                  <Text {...valueStyle}>{data.certificateOfAuthenticity.details}</Text>
+                </Flex>
+              )}
+
+              {!!data.publisher && (
+                <Flex flexDirection="row">
+                  <Text {...labelStyle}>Publisher</Text>
+                  <Text {...valueStyle}>{data.publisher}</Text>
+                </Flex>
+              )}
+
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Frame</Text>
+                <Text {...valueStyle}>
+                  {data.isFramed ? "Frame included" : "Frame not included"}
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Divider />
+
+            <Flex gap={1}>
+              {!!data.artists?.length && (
+                <Text variant="sm-display">Artist{data.artists.length > 1 ? `s` : ``}</Text>
+              )}
+              <Flex gap={2}>
+                {data.artists?.map((artist, index) => {
+                  if (!artist) {
+                    return null
+                  }
+
+                  return (
+                    <ArtistListItemContainer
+                      key={`artist-${index}`}
+                      artist={artist}
+                      onPress={() => handleCollapse()}
+                    />
+                  )
+                })}
+              </Flex>
+            </Flex>
+
+            <Divider />
+
+            <Flex gap={1}>
+              <Text variant="sm-display">Gallery</Text>
+
+              <PartnerListItemShort
+                disabledLocation
+                partner={data.partner}
+                onPress={() => handleCollapse()}
+              />
               <Flex
                 flexDirection="row"
-                gap={0.5}
+                flexWrap="wrap"
+                justifyContent="space-between"
                 alignItems="center"
-                testID="authenticity-certificate"
               >
-                <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
-                <Flex flexDirection="row">
-                  <Text variant="xs">Includes a </Text>
-                  <RouterLink
-                    to="/artwork-certificate-of-authenticity"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">Certificate of Authenticity</LinkText>
-                  </RouterLink>
+                <Text variant="xs" color="mono60">
+                  Questions about this piece? 123123
+                </Text>
+
+                <Flex>
+                  <ContactGalleryButton
+                    artwork={data}
+                    me={me}
+                    variant="outlineGray"
+                    size="small"
+                    icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
+                  />
                 </Flex>
               </Flex>
-            )}
-          </Flex>
-
-          {(!!attributionClass?.length ||
-            !!hasCertificateOfAuthenticity ||
-            !!hasCollectorSignal) && <Divider />}
-
-          <Flex gap={1}>
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Materials</Text>
-              <Text {...valueStyle}>{data.medium}</Text>
             </Flex>
-
-            {dimensionsPresent(data.dimensions) && (
-              <Flex flexDirection="row">
-                <Text {...labelStyle}>Dimensions</Text>
-                <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
-              </Flex>
-            )}
-
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Rarity</Text>
-              <Text {...valueStyle}>{data.attributionClass?.name}</Text>
-            </Flex>
-
-            {!!data.mediumType?.name && (
-              <Flex flexDirection="row" width="100%">
-                <Text {...labelStyle}>Medium</Text>
-                <Text {...valueStyle}>{data.mediumType?.name}</Text>
-              </Flex>
-            )}
-
-            {!!data.condition?.displayText && (
-              <Flex flexDirection="row">
-                <Text {...labelStyle}>Condition</Text>
-                <Text {...valueStyle}>{data.condition.displayText}</Text>
-              </Flex>
-            )}
-
-            {!!data.signatureInfo?.details && (
-              <Flex flexDirection="row">
-                <Text {...labelStyle}>Signature</Text>
-                <Text {...valueStyle}>{data.signatureInfo.details}</Text>
-              </Flex>
-            )}
-
-            {!!data.certificateOfAuthenticity?.details && (
-              <Flex flexDirection="row">
-                <Text {...labelStyle}>Certificate of Authenticity</Text>
-                <Text {...valueStyle}>{data.certificateOfAuthenticity.details}</Text>
-              </Flex>
-            )}
-
-            {!!data.publisher && (
-              <Flex flexDirection="row">
-                <Text {...labelStyle}>Publisher</Text>
-                <Text {...valueStyle}>{data.publisher}</Text>
-              </Flex>
-            )}
-
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Frame</Text>
-              <Text {...valueStyle}>{data.isFramed ? "Frame included" : "Frame not included"}</Text>
-            </Flex>
-          </Flex>
-
-          <Divider />
-
-          <Flex gap={1}>
-            {!!data.artists?.length && (
-              <Text variant="sm-display">Artist{data.artists.length > 1 ? `s` : ``}</Text>
-            )}
-            <Flex gap={2}>
-              {data.artists?.map((artist, index) => {
-                if (!artist) {
-                  return null
-                }
-
-                return (
-                  <ArtistListItemContainer
-                    key={`artist-${index}`}
-                    artist={artist}
-                    onPress={() => handleCollapse()}
-                  />
-                )
-              })}
-            </Flex>
-          </Flex>
-
-          <Divider />
-
-          <Flex gap={1}>
-            <Text variant="sm-display">Gallery</Text>
-
-            <PartnerListItemShort
-              disabledLocation
-              partner={data.partner}
-              onPress={() => handleCollapse()}
-            />
-            <Flex
-              flexDirection="row"
-              flexWrap="wrap"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text variant="xs" color="mono60">
-                Questions about this piece?
-              </Text>
-
-              <Flex>
-                <ContactGalleryButton
-                  artwork={data}
-                  me={me}
-                  variant="outlineGray"
-                  size="small"
-                  icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
+          </Join>
         </Flex>
 
         <Spacer y={12} />
