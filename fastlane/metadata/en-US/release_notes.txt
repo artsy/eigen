@@ -1,5 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
-- Video headers in editorial articles
+- Fix push notification navigation from lock screen
 
 Have feedback? Email us at support@artsy.net
