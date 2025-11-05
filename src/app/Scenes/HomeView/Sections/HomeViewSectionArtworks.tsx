@@ -125,7 +125,17 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       {showHomeViewCardRail ? (
-        <ArtworksCard artworks={artworks} />
+        <ArtworksCard
+          artworks={artworks}
+          contextModule={section.contextModule as ContextModule}
+          contextScreenOwnerType={OwnerType.home}
+          {...(section.trackItemImpressions
+            ? {
+                onViewableItemsChanged: onViewableItemsChanged,
+                viewabilityConfig: viewabilityConfig,
+              }
+            : {})}
+        />
       ) : (
         <ArtworkRail
           contextModule={section.contextModule as ContextModule}
