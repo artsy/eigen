@@ -225,9 +225,9 @@ export const features = {
     echoFlagKey: "AREnableRedirectForVideoFeatureType",
   },
   AREnableFeatureVideoPhase2Type: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
-    description: "Enable feature video headers, falls back to webview if disabled",
+    description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
   AREnableAuctionsHubOnHomeView: {
