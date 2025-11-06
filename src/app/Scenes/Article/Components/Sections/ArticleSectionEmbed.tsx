@@ -75,7 +75,7 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
     )
   }
 
-  console.log("[VIDEO] rendering webview for embed")
+  console.log("[VIDEO] rendering webview for embed", { url: data.url })
   performance.mark("webview_embed_mount")
 
   return (
