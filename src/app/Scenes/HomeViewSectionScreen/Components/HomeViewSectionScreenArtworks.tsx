@@ -235,6 +235,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           artworkID={artworks[activeIndex].internalID}
           artworkSlug={artworks[activeIndex].slug}
           artistIDs={artworks[activeIndex].artists.map((data) => data?.internalID ?? "")}
+          contextModule={section.contextModule as ContextModule}
         />
       )}
     </Screen.Body>
