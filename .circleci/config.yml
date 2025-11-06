@@ -45,6 +45,8 @@ commands:
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/android_native_tests
+            scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
       - run:
@@ -240,6 +242,8 @@ jobs:
       - image: cimg/android:2025.10.1-node
     resource_class: xlarge
     steps:
+      - restore_cache:
+          key: << pipeline.parameters.android_native_tests_cache_key >>
       - prep-android-env
       - run:
           name: Run Android unit tests
@@ -248,6 +252,10 @@ jobs:
           path: android/app/build/test-results
       - store_artifacts:
           path: android/app/build/reports/tests
+      - save_cache:
+          key: << pipeline.parameters.android_native_tests_cache_key >>
+          paths:
+            - .manifests/android_native_tests
 
   nightly-create-next-version:
     environment:
@@ -409,9 +417,6 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - run:
-          name: Generate app_build manifest
-          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -537,6 +542,9 @@ parameters:
   android_native_cache_key:
     type: string
     default: v18-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+  android_native_tests_cache_key:
+    type: string
+    default: v1-native-tests-success-{{ checksum ".manifests/android_native_tests" }}
 
 workflows:
   nightly:
