@@ -12,7 +12,6 @@ import {
   Tabs,
   Text,
   TextProps,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
@@ -340,13 +339,12 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
   })
 
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
-  const space = useSpace()
-
   return (
     <BottomSheetScrollView scrollEnabled={false}>
       <Skeleton>
-        <Flex gap={2} px={2} flex={1} style={{ paddingTop: 50 + space(2) }}>
-          <Flex gap={1}>
+        <Flex gap={2} px={2} flex={1}>
+          <Spacer y={4} />
+          <Flex gap={1} pt={1}>
             <Flex flexDirection="row" gap={0.5} alignItems="center">
               <SkeletonBox size={18} />
               <SkeletonText variant="xs">Classification</SkeletonText>
