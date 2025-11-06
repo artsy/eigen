@@ -108,6 +108,11 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
+  print-out-echo:
+    steps:
+      - run:
+          name: Print out echo file
+          command: cat ios/Artsy/App/EchoNew.json
   prep-ios-env:
     steps:
       # we can quit the macos build early if there were no native code changes
@@ -314,6 +319,7 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - print-out-echo
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
