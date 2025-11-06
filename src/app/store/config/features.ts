@@ -213,7 +213,7 @@ export const features = {
     echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
   AREnableNewHomeViewCardRailType: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable new rail type on home",
     echoFlagKey: "AREnableNewHomeViewCardRailType",
@@ -226,7 +226,7 @@ export const features = {
   },
   AREnableAuctionsHubOnHomeView: {
     description: "Enable Auctions Hub on Home View",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionsHubOnHomeView",
   },
