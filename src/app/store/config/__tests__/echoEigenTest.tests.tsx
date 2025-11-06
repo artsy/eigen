@@ -9,7 +9,7 @@ const TestComponent: React.FC = () => {
   return (
     <>
       <Text>This is a test component</Text>
-      {!!isFeatureFlagEnabled && <Text>The failing test echo flag is enabled</Text>}
+      {!isFeatureFlagEnabled && <Text>The failing test echo flag is enabled</Text>}
     </>
   )
 }
