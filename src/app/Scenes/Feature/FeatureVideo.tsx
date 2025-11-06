@@ -28,14 +28,17 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
   }
 
   if (isYouTube(videoUrl) && ytId) {
+    // YouTube videos are typically 16:9, calculate height based on width
+    const youtubeHeight = width / (16 / 9)
+
     return (
-      <Flex testID="FeatureVideo">
+      <Flex testID="FeatureVideo" width={width} height={youtubeHeight}>
         <YoutubePlayer
           testID="FeatureVideo"
           ref={playerRef}
-          height={height}
           width={width}
-          play={true}
+          height={youtubeHeight}
+          play={false}
           videoId={ytId}
           webViewProps={{
             allowsInlineMediaPlayback: true,

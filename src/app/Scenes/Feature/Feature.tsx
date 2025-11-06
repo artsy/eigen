@@ -174,7 +174,15 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           break
         case "Video":
           if (items.length > 0 && !!items[0].playerUrl) {
-            const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
+            let videoHeight
+            if (items[0].height && items[0].width) {
+              // Calculate height from aspect ratio: height = width / (width/height ratio)
+              const aspectRatio = items[0].width / items[0].height
+              videoHeight = width / aspectRatio
+            } else {
+              // Default to 16:9 if dimensions not available
+              videoHeight = width / (16 / 9)
+            }
             allSections.push({
               key: "video:" + set.id,
               content: (
@@ -185,13 +193,13 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           }
           break
         default:
-          console.warn("Feature pages only support FeaturedLinks and Artworks")
+          console.warn("Feature pages only support FeaturedLinks, Artworks and Video")
       }
     }
   }
 
   const shouldRedirectForVideoFeaturePages = !enableFeatureVideoPhase2 && containsVideo
-  if (shouldRedirectForVideoFeaturePages && feature.video?.url) {
+  if (shouldRedirectForVideoFeaturePages) {
     const featurePath = "/feature/" + feature.slug
     return (
       <Screen>
@@ -246,6 +254,8 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
                   }
                   ... on Video {
                     playerUrl
+                    width
+                    height
                   }
                   ...FeatureFeaturedLink_featuredLink
                 }
