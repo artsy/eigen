@@ -566,7 +566,9 @@ workflows:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
       - build-echo-test-js
-      - test-js
+      - test-js:
+          requires:
+            - build-echo-test-js
 
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
