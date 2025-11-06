@@ -15586,6 +15586,23 @@ type Me implements Node {
     sort: CommerceOrderConnectionSortEnum
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
+  ordersConnection(
+    after: String
+
+    # Filter by artwork ID in line items
+    artworkID: String
+    before: String
+
+    # Filter by buyer states
+    buyerState: [OrderBuyerStateEnum]
+
+    # Filter by edition set ID in line items (requires artworkID)
+    editionSetID: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): MeOrdersConnection
 
   # Collector's position with relevant institutions
   otherRelevantPosition: String @deprecated(reason: "Use `otherRelevantPositions` instead")
@@ -15802,6 +15819,26 @@ type MeCounts {
   followedProfiles: Int!
   savedArtworks: Int!
   savedSearches: Int!
+}
+
+# A connection to a list of items.
+type MeOrdersConnection {
+  # A list of edges.
+  edges: [MeOrdersEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MeOrdersEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Order
 }
 
 type MergeArtistsFailure {
@@ -17469,8 +17506,8 @@ enum OrderBuyerStateEnum {
   # Order has been approved
   APPROVED
 
-  # Order has been cancelled
-  CANCELLED
+  # Order has been canceled
+  CANCELED
 
   # Order is completed
   COMPLETED
