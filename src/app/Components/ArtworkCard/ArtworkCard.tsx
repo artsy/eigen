@@ -308,7 +308,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               artist={artwork.artists[0]}
               avatarSize="xxs"
               includeTombstone={false}
-              contextModule={contextModule ?? ContextModule.newWorksForYouRail}
+              contextModule={contextModule}
               contextScreenOwnerId={artwork.internalID}
               contextScreenOwnerSlug={artwork.slug}
             />
