@@ -46,10 +46,6 @@ interface Props {
   showMoreIcon?: boolean
 }
 
-// https://www.notion.so/artsy/Tap-on-the-artist-name-is-not-tracked-2a1cab0764a0808b9c47d172bea61a43?source=copy_link
-// https://www.notion.so/artsy/NWFY-Under-X-card-new-artworks-carousel-QA-2a1cab0764a080fb919ef99cba34a4a6?p=2a1cab0764a080bdb151f62ff0cf1ca6&pm=s
-// https://www.notion.so/artsy/ios-swipedUp-event-has-infiniteDiscovery-as-context_module-and-context_screen_owner_type-can-we-c-2a1cab0764a080c8be50ed079c0d97f4?source=copy_link
-
 export const formatTombstoneText = (
   nationality: string | null | undefined,
   birthday: string | null | undefined,

@@ -9,6 +9,7 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
+import { GlobalStore } from "app/store/GlobalStore"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -73,6 +74,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const saveAnimationProgress = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
+    const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
     const color = useColor()
 
@@ -312,7 +314,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 position: "absolute",
                 width: "100%",
                 height: "100%",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                backgroundColor:
+                  theme === "light" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)",
                 justifyContent: "center",
                 alignItems: "center",
                 zIndex: 100,
