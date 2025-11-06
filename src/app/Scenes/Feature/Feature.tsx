@@ -173,8 +173,16 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           })
           break
         case "Video":
-          containsVideo = true
-          // Render some video
+          if (items.length > 0 && !!items[0].playerUrl) {
+            const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
+            allSections.push({
+              key: "video:" + set.id,
+              content: (
+                <FeatureVideo videoUrl={items[0].playerUrl} width={width} height={videoHeight} />
+              ),
+            })
+            containsVideo = true
+          }
           break
         default:
           console.warn("Feature pages only support FeaturedLinks and Artworks")
@@ -235,6 +243,9 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
                   }
                   ... on Artwork {
                     ...GenericGrid_artworks
+                  }
+                  ... on Video {
+                    playerUrl
                   }
                   ...FeatureFeaturedLink_featuredLink
                 }
