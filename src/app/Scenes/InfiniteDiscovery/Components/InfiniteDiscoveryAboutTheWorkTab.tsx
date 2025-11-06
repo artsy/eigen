@@ -218,7 +218,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               alignItems="center"
             >
               <Text variant="xs" color="mono60">
-                Questions about this piece? 123123
+                Questions about this piece?
               </Text>
 
               <Flex>
