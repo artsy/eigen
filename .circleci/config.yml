@@ -239,7 +239,7 @@ jobs:
 
   run-native-tests-android:
     docker:
-      - image: cimg/android:2025.03.1-node
+      - image: cimg/android:2025.10.1-node
     resource_class: xlarge
     steps:
       - prep-android-env
@@ -473,15 +473,13 @@ jobs:
 
       - store_artifacts:
           path: xcode_build_raw.log
-          prefix: build
 
       - store_artifacts:
           path: xcode_test_raw.log
-          prefix: tests
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2025.03.1-node
+      - image: cimg/android:2025.10.1-node
     resource_class: xlarge
     steps:
       - attach_workspace:
@@ -496,7 +494,6 @@ jobs:
 
       - store_artifacts:
           path: android/app/build/reports
-          prefix: android-build
 
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
@@ -578,6 +575,8 @@ workflows:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       - run-native-tests-android
+      - build-test-app-android:
+          <<: *ignore_beta_branches
       # - detect-secrets:
       #     <<: *ignore_main_branches
 
