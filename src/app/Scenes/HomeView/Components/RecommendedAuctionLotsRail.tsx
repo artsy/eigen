@@ -7,7 +7,7 @@ import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
-import React, { memo, useRef } from "react"
+import { memo, useRef } from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -70,8 +70,9 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
 )
 
 const artworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
-    artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
+  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer
+  @argumentDefinitions(includeBackfill: { type: "Boolean!", defaultValue: true }) {
+    artworksForUser(includeBackfill: $includeBackfill, first: 10, onlyAtAuction: true) {
       edges {
         node {
           title

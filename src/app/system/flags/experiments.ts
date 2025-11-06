@@ -22,6 +22,10 @@ export const experiments = {
   "onyx_nwfy-artworks-card-test": {
     description: "New card rail type for home view nwfy section",
   },
+  onyx_auctions_hub: {
+    description:
+      "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
