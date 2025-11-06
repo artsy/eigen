@@ -11,7 +11,10 @@ import { graphql } from "react-relay"
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
-    params: { artworkIndex: "0" },
+    params: {
+      artworkIndex: "0",
+      id: "home-view-section-new-works-for-you",
+    },
   }),
 }))
 
