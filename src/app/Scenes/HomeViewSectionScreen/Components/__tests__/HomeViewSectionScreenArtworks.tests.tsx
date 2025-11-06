@@ -8,6 +8,13 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useRoute: () => ({
+    params: { artworkIndex: "0" },
+  }),
+}))
+
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({
