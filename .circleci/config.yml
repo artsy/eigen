@@ -319,6 +319,15 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - when:
+          condition: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-staging-echo
+      - when:
+          condition:
+            not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-echo
       - print-out-echo
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
@@ -399,7 +408,6 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      - update-echo
       - generate-query-map
       - run:
           name: Check generated folder
