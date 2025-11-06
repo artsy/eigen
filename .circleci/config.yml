@@ -174,8 +174,6 @@ commands:
           command: sudo apt-get install ninja-build
       - checkout
       - generate-checksums
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - setup-awscli
       - setup-env-file
       - install-node-modules
