@@ -19,7 +19,7 @@ interface FeatureVideoProps {
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {
   const ytId = extractYouTubeId(videoUrl)
 
-  const { videoId: vimeoId, token } = extractVimeoVideoDataFromUrl(videoUrl)
+  const { videoId: vimeoId } = extractVimeoVideoDataFromUrl(videoUrl)
   const playerRef = useRef(null)
 
   if (!isValidVideoUrl(videoUrl)) {
@@ -46,7 +46,7 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
     )
   }
 
-  if (isVimeo(videoUrl) && vimeoId && token) {
+  if (isVimeo(videoUrl) && vimeoId) {
     return (
       <Flex
         testID="FeatureVideo"
@@ -54,11 +54,7 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
         width={width}
         height={height}
       >
-        <Vimeo
-          videoId={vimeoId}
-          params={`h=${token}&loop=true&autoplay=0&transparent=0&background=false`}
-          allowsFullscreenVideo
-        />
+        <Vimeo videoId={vimeoId} allowsFullscreenVideo />
       </Flex>
     )
   }
