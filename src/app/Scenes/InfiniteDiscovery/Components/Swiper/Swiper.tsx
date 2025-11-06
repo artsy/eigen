@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
@@ -225,6 +226,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                     artwork={c}
                     key={c.internalID}
                     containerStyle={cardStyle}
+                    contextModule={ContextModule.infiniteDiscovery}
+                    ownerType={OwnerType.infiniteDiscovery}
                     isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
                     index={i}
                     isTopCard={activeIndex === i}
