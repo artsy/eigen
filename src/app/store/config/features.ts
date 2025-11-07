@@ -221,8 +221,14 @@ export const features = {
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     showInDevMenu: true,
-    description: "If enabled redirect features with video to webviews",
+    description: "Enable Redirecting feature pages with video to webviews",
     echoFlagKey: "AREnableRedirectForVideoFeatureType",
+  },
+  AREnableFeatureVideoPhase2Type: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable feature videos phase 2, falls back to webview if disabled",
+    echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
   AREnableAuctionsHubOnHomeView: {
     description: "Enable Auctions Hub on Home View",

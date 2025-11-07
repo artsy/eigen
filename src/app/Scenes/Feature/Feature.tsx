@@ -24,7 +24,7 @@ import {
 } from "./components/FeatureHeader"
 import { FeatureMarkdown } from "./components/FeatureMarkdown"
 
-const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
+const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork", "Video"]
 
 interface FlatListSection {
   key: string
@@ -46,17 +46,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const navHeight = BASE_NAV_HEIGHT + safeAreaInsets.top
   const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
 
-  const shouldRedirectForVideoFeaturePages = useFeatureFlag("AREnableRedirectForVideoFeatureType")
-
-  if (shouldRedirectForVideoFeaturePages && feature.video?.url) {
-    const featurePath = "/feature/" + feature.slug
-    return (
-      <Screen>
-        <Screen.AnimatedHeader onBack={goBack} />
-        <ArtsyWebView url={featurePath} />
-      </Screen>
-    )
-  }
+  const enableFeatureVideoPhase2 = useFeatureFlag("AREnableFeatureVideoPhase2Type")
+  let containsVideo = !!feature.video?.url
 
   const header: FlatListSection = {
     key: "header",
@@ -181,10 +172,41 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             ),
           })
           break
+        case "Video":
+          if (items.length > 0 && !!items[0].playerUrl) {
+            let videoHeight
+            if (items[0].height && items[0].width) {
+              // Calculate height from aspect ratio: height = width / (width/height ratio)
+              const aspectRatio = items[0].width / items[0].height
+              videoHeight = width / aspectRatio
+            } else {
+              // Default to 16:9 if dimensions not available
+              videoHeight = width / (16 / 9)
+            }
+            allSections.push({
+              key: "video:" + set.id,
+              content: (
+                <FeatureVideo videoUrl={items[0].playerUrl} width={width} height={videoHeight} />
+              ),
+            })
+            containsVideo = true
+          }
+          break
         default:
-          console.warn("Feature pages only support FeaturedLinks and Artworks")
+          console.warn("Feature pages only support FeaturedLinks, Artworks and Video")
       }
     }
+  }
+
+  const shouldRedirectForVideoFeaturePages = !enableFeatureVideoPhase2 && containsVideo
+  if (shouldRedirectForVideoFeaturePages) {
+    const featurePath = "/feature/" + feature.slug
+    return (
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} />
+        <ArtsyWebView url={featurePath} />
+      </Screen>
+    )
   }
 
   return (
@@ -229,6 +251,11 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
                   }
                   ... on Artwork {
                     ...GenericGrid_artworks
+                  }
+                  ... on Video {
+                    playerUrl
+                    width
+                    height
                   }
                   ...FeatureFeaturedLink_featuredLink
                 }
