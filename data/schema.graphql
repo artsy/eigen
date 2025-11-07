@@ -25790,13 +25790,18 @@ type Video {
 
   # The height of the video
   height: Int!
+
+  # A globally unique ID
   id: ID!
+
+  # A database ID for the Gravity Video instance (not available in Artwork context)
+  internalID: ID!
 
   # Returns a full-qualified url that can be embedded in an iframe player
   playerUrl: String!
 
   # Title of the video
-  title: String
+  title: String!
 
   # The width of the video
   width: Int!
