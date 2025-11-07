@@ -45,6 +45,7 @@ commands:
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
       - run:
@@ -174,8 +175,6 @@ commands:
           command: sudo apt-get install ninja-build
       - checkout
       - generate-checksums
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - setup-awscli
       - setup-env-file
       - install-node-modules
@@ -411,9 +410,6 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - run:
-          name: Generate app_build manifest
-          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -473,11 +469,9 @@ jobs:
 
       - store_artifacts:
           path: xcode_build_raw.log
-          prefix: build
 
       - store_artifacts:
           path: xcode_test_raw.log
-          prefix: tests
 
   build-test-app-android:
     docker:
@@ -496,7 +490,6 @@ jobs:
 
       - store_artifacts:
           path: android/app/build/reports
-          prefix: android-build
 
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
