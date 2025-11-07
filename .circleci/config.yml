@@ -44,7 +44,7 @@ commands:
             scripts/ci/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
-            scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example' .manifests/android_native_tests
+            scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
@@ -242,15 +242,9 @@ jobs:
     resource_class: xlarge
     steps:
       - prep-android-env
-      - restore_cache:
-          key: << pipeline.parameters.android_native_tests_cache_key >>
       - run:
           name: Run Android unit tests
           command: yarn android:test:ci
-      - save_cache:
-          key: << pipeline.parameters.android_native_tests_cache_key >>
-          paths:
-            - .manifests/android_native_tests
       - store_test_results:
           path: android/app/build/test-results
       - store_artifacts:
@@ -541,9 +535,6 @@ parameters:
   android_native_cache_key:
     type: string
     default: v18-test-success-{{ checksum "../workspace/.manifests/android_native" }}
-  android_native_tests_cache_key:
-    type: string
-    default: v1-test-success-{{ checksum "../workspace/.manifests/android_native_tests" }}
 
 workflows:
   nightly:
@@ -579,8 +570,6 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - run-native-tests-android
-
       - detect-secrets:
           <<: *ignore_main_branches
 
