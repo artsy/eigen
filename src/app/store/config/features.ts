@@ -236,12 +236,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionsHubOnHomeView",
   },
-  AREnableFailingTestEcho: {
-    description: "Enable a failing test echo flag",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableFailingTestEcho",
-  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

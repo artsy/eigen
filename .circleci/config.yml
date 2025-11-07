@@ -108,11 +108,6 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
-  print-out-echo:
-    steps:
-      - run:
-          name: Print out echo file
-          command: cat ios/Artsy/App/EchoNew.json
   prep-ios-env:
     steps:
       # we can quit the macos build early if there were no native code changes
@@ -328,7 +323,6 @@ jobs:
             not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
           steps:
             - update-echo
-      - print-out-echo
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
@@ -440,8 +434,6 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      # would it be possible to differentiate this with a flag in order to not duplicate code?
-      - update-staging-echo
       - generate-query-map
       - run:
           name: Check generated folder
@@ -580,9 +572,7 @@ workflows:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
       - build-echo-test-js
-      - test-js:
-          requires:
-            - build-echo-test-js
+      - test-js
 
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
