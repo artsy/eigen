@@ -42,10 +42,12 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
   const { params } = useRoute<HomeViewSectionScreenRouteProp>()
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
-  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { width, height } = useScreenDimensions()
   const scrollX = useSharedValue(0)
   const [activeIndex, setActiveIndex] = useState(0)
+  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
+  const isNewWorksForYouCarouselEnabled =
+    enableNewHomeViewCardRailType && params.id === "home-view-section-new-works-for-you"
 
   const {
     data: section,
@@ -109,7 +111,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     [width, scrollX]
   )
 
-  if (!enableNewHomeViewCardRailType) {
+  if (!isNewWorksForYouCarouselEnabled) {
     return (
       <>
         <Screen.AnimatedHeader
@@ -235,6 +237,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           artworkID={artworks[activeIndex].internalID}
           artworkSlug={artworks[activeIndex].slug}
           artistIDs={artworks[activeIndex].artists.map((data) => data?.internalID ?? "")}
+          contextModule={section.contextModule as ContextModule}
         />
       )}
     </Screen.Body>

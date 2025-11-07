@@ -11,7 +11,10 @@ import { graphql } from "react-relay"
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
-    params: { artworkIndex: "0" },
+    params: {
+      artworkIndex: "0",
+      id: "home-view-section-new-works-for-you",
+    },
   }),
 }))
 
@@ -606,6 +609,42 @@ describe("HomeViewSectionArtworks", () => {
         item_id: "artwork-1-id",
         position: 0,
       })
+    })
+
+    it("renders legacy grid when route ID is different from new works for you", () => {
+      jest.spyOn(require("@react-navigation/native"), "useRoute").mockReturnValue({
+        params: {
+          artworkIndex: "0",
+          id: "home-view-section-other-section",
+        },
+      })
+
+      renderWithRelay({
+        HomeViewSectionArtworks: () => ({
+          internalID: "home-view-section-other-section",
+          ownerType: "newWorksForYou",
+          component: {
+            title: "Other Section",
+          },
+          trackItemImpressions: false,
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "artwork-1-id",
+                  slug: "artwork-1-slug",
+                  title: "Artwork 1",
+                  href: "/artwork-1-href",
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
+      expect(screen.queryByTestId("carousel-flatlist")).not.toBeOnTheScreen()
+      expect(screen.getAllByText("Other Section")[0]).toBeOnTheScreen()
     })
   })
 })

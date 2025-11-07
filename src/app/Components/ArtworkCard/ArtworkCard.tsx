@@ -1,24 +1,17 @@
-import { ContextModule } from "@artsy/cohesion"
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
-import {
-  Flex,
-  Image,
-  Text,
-  Touchable,
-  useColor,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { HeartFillIcon } from "@artsy/icons/native"
+import { Flex, Image, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkCard_artwork$key } from "__generated__/ArtworkCard_artwork.graphql"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
+import { ArtworkCardSaveButton } from "app/Components/ArtworkCard/ArtworkCardSaveButton"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
-import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
+import { GlobalStore } from "app/store/GlobalStore"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
@@ -35,11 +28,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
-const HEART_ICON_SIZE = 18
-const HEART_CIRCLE_SIZE = 50
-const SAVE_BUTTON_WIDTH = 105
 const PAGINATION_BAR_HEIGHT = 11
 const PAGINATION_BAR_MARGIN_TOP = 10
 
@@ -52,9 +43,9 @@ interface ArtworkCardProps {
   index: number
   showPager?: boolean
   isSaved?: boolean
-  onSave?: (isSaved: boolean) => void
   onImageSwipe?: () => void
   contextModule?: ContextModule
+  ownerType?: OwnerType
   maxHeight?: number
   scrollX?: SharedValue<number>
   isTopCard?: boolean
@@ -67,9 +58,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     showPager = true,
     containerStyle,
     isSaved: isSavedProp,
-    onSave,
     onImageSwipe,
     contextModule,
+    ownerType,
     maxHeight,
     scrollX,
     index,
@@ -77,11 +68,13 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
   }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const space = useSpace()
+    const { trackEvent } = useTracking()
     const effectiveWidth = screenWidth
     const paddingHorizontal = space(2)
     const saveAnimationProgress = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
+    const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
     const color = useColor()
 
@@ -102,7 +95,12 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
       onCompleted: (isArtworkSaved) => {
-        onSave?.(isArtworkSaved)
+        trackEvent(
+          tracks.saveOrUnsaveArtwork(!!isArtworkSaved, {
+            context_module: contextModule,
+            context_screen_owner_type: ownerType,
+          })
+        )
       },
     })
 
@@ -250,11 +248,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           if (!isSaved) {
             Haptic.trigger("impactLight")
             setShowScreenTapToSave(true)
-            if (onSave) {
-              onSave(true)
-            } else {
-              saveArtworkToLists()
-            }
+            saveArtworkToLists()
           }
           return true
         }
@@ -280,11 +274,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     }
 
     const handleSavePress = () => {
-      if (onSave) {
-        onSave(!isSaved)
-      } else {
-        saveArtworkToLists()
-      }
+      saveArtworkToLists()
     }
 
     const firstImage = displayImages[0]
@@ -308,7 +298,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               artist={artwork.artists[0]}
               avatarSize="xxs"
               includeTombstone={false}
-              contextModule={contextModule ?? ContextModule.newWorksForYouRail}
+              contextModule={contextModule}
               contextScreenOwnerId={artwork.internalID}
               contextScreenOwnerSlug={artwork.slug}
             />
@@ -324,7 +314,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 position: "absolute",
                 width: "100%",
                 height: "100%",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                backgroundColor:
+                  theme === "light" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)",
                 justifyContent: "center",
                 alignItems: "center",
                 zIndex: 100,
@@ -443,70 +434,16 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
             )}
           </Flex>
 
-          <Touchable
-            accessibilityRole="button"
-            haptic
-            hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
+          <ArtworkCardSaveButton
+            isSaved={!!isSaved}
             onPress={handleSavePress}
-            testID="save-artwork-icon"
-          >
-            <Flex
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-              style={{
-                width: SAVE_BUTTON_WIDTH,
-                height: HEART_CIRCLE_SIZE,
-                borderRadius: 30,
-                backgroundColor: color("mono5"),
-              }}
-            >
-              <ArtworkCardSaveIcon isSaved={!!isSaved} animatedStyles={animatedSaveButtonStyles} />
-              <Flex minWidth={45}>
-                <Text ml={0.5} variant="xs">
-                  {isSaved ? "Saved" : "Save"}
-                </Text>
-              </Flex>
-            </Flex>
-          </Touchable>
+            animatedStyle={animatedSaveButtonStyles}
+          />
         </AnimatedFlex>
       </AnimatedFlex>
     )
   }
 )
-
-const ArtworkCardSaveIcon: React.FC<{
-  isSaved: boolean
-  animatedStyles: ViewStyle
-}> = ({ isSaved, animatedStyles }) => {
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-  }
-
-  if (isSaved) {
-    return (
-      <Animated.View style={animatedStyles}>
-        <HeartFillIcon
-          testID="filled-heart-icon"
-          height={HEART_ICON_SIZE}
-          width={HEART_ICON_SIZE}
-          fill="blue100"
-        />
-      </Animated.View>
-    )
-  }
-
-  return (
-    <HeartStrokeIcon
-      testID="empty-heart-icon"
-      height={HEART_ICON_SIZE}
-      width={HEART_ICON_SIZE}
-      fill="mono100"
-    />
-  )
-}
 
 const artworkCardFragment = graphql`
   fragment ArtworkCard_artwork on Artwork {

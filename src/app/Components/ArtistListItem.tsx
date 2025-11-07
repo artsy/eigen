@@ -89,7 +89,7 @@ const ArtistListItem: React.FC<Props> = ({
   const color = useColor()
   const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
 
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const handleFollowArtist = async () => {
     await followArtistMutation({
@@ -105,7 +105,7 @@ const ArtistListItem: React.FC<Props> = ({
   }
 
   const handleShowSuccessfullyUpdated = () => {
-    tracking.trackEvent(
+    trackEvent(
       tracks.successfulUpdate(artist, contextModule, contextScreenOwnerId, contextScreenOwnerSlug)
     )
   }
@@ -151,7 +151,7 @@ const ArtistListItem: React.FC<Props> = ({
     onPress?.()
 
     if (href && !disableNavigation) {
-      tracks.tapArtistGroup(artist)
+      trackEvent(tracks.tapArtistGroup(artist))
     }
   }
 

@@ -15,12 +15,14 @@ interface InfiniteDiscoveryBottomSheetProps {
   artworkID: string
   artworkSlug: string
   artistIDs: string[]
+  contextModule: ContextModule
 }
 
 export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps> = ({
   artworkID,
   artworkSlug,
   artistIDs,
+  contextModule,
 }) => {
   const { bottom } = useSafeAreaInsets()
   const [footerVisible, setFooterVisible] = useState(true)
@@ -67,7 +69,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         onChange={(index) => {
           const maxSnapPointIndex = 1
           if (index === maxSnapPointIndex) {
-            trackEvent(tracks.swipedUp(artworkID, artworkSlug))
+            trackEvent(tracks.swipedUp(artworkID, artworkSlug, contextModule))
           }
         }}
       >
@@ -103,9 +105,9 @@ export const aboutTheWorkQuery = graphql`
 `
 
 const tracks = {
-  swipedUp: (artworkId: string, artworkSlug: string) => ({
+  swipedUp: (artworkId: string, artworkSlug: string, contextModule: ContextModule) => ({
     action: ActionType.swipedUp,
-    context_module: ContextModule.infiniteDiscovery,
+    context_module: contextModule,
     context_screen_owner_id: artworkId,
     context_screen_owner_slug: artworkSlug,
     context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
