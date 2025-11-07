@@ -45,7 +45,6 @@ commands:
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
-            scripts/ci/generate-manifest.js .manifests/android_native_tests '^\.manifests/android_native' '^android/app/src/test/'
             scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
@@ -542,9 +541,6 @@ parameters:
   android_native_cache_key:
     type: string
     default: v18-test-success-{{ checksum "../workspace/.manifests/android_native" }}
-  android_native_tests_cache_key:
-    type: string
-    default: v1-native-tests-success-{{ checksum "../workspace/.manifests/android_native_tests" }}
 
 workflows:
   nightly:
@@ -580,40 +576,39 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - run-native-tests-android
-      # - detect-secrets:
-      #     <<: *ignore_main_branches
+      - detect-secrets:
+          <<: *ignore_main_branches
 
-      # - check-code:
-      #     context: danger-github-oss
+      - check-code:
+          context: danger-github-oss
 
-      # - horizon/block:
-      #     <<: *beta_branches_only
-      #     context: horizon
-      #     project_id: 37
+      - horizon/block:
+          <<: *beta_branches_only
+          context: horizon
+          project_id: 37
 
-      # - check-and-deploy:
-      #     <<: *main_only
+      - check-and-deploy:
+          <<: *main_only
 
-      # - test-js:
-      #     <<: *ignore_beta_branches
+      - test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-js:
-      #     <<: *ignore_beta_branches
+      - build-test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-app-ios:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-ios:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - build-test-app-android:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-android:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - update-metaphysics:
-      #     <<: *beta_branches_only
+      - update-metaphysics:
+          <<: *beta_branches_only
