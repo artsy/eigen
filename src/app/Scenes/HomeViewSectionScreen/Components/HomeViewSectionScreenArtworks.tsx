@@ -212,7 +212,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
               offset: width * index,
             }
           }}
-          initialNumToRender={4}
+          removeClippedSubviews={false}
           snapToInterval={width}
           snapToAlignment="start"
           snapToEnd={false}
