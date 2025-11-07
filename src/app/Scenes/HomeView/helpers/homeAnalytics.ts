@@ -11,6 +11,7 @@ import {
   tappedEntityGroup,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
+import { TrackableItemType } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
@@ -373,7 +374,7 @@ export default class HomeAnalytics {
     contextModule: ContextModule
     contextScreenOwnerType?: OwnerType
     position: number
-    type: "artwork"
+    type: TrackableItemType
   }): ItemViewed {
     return {
       action: ActionType.itemViewed,
