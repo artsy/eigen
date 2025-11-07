@@ -101,7 +101,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           supportMultipleImages={false}
           showPager={false}
           contextModule={ContextModule.newWorksForYouRail}
-          isSaved={!!item.isSaved}
           index={index}
           scrollX={scrollX}
           containerStyle={{ backgroundColor: "transparent" }}
