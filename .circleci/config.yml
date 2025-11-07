@@ -241,20 +241,20 @@ jobs:
       - image: cimg/android:2025.03.1-node
     resource_class: xlarge
     steps:
+      - prep-android-env
       - restore_cache:
           key: << pipeline.parameters.android_native_tests_cache_key >>
-      - prep-android-env
       - run:
           name: Run Android unit tests
           command: yarn android:test:ci
-      - store_test_results:
-          path: android/app/build/test-results
-      - store_artifacts:
-          path: android/app/build/reports/tests
       - save_cache:
           key: << pipeline.parameters.android_native_tests_cache_key >>
           paths:
             - .manifests/android_native_tests
+      - store_test_results:
+          path: android/app/build/test-results
+      - store_artifacts:
+          path: android/app/build/reports/tests
 
   nightly-create-next-version:
     environment:
