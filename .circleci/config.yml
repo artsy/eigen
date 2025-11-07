@@ -541,6 +541,9 @@ parameters:
   android_native_cache_key:
     type: string
     default: v18-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+  android_native_tests_cache_key:
+    type: string
+    default: v1-test-success-{{ checksum "../workspace/.manifests/android_native_tests" }}
 
 workflows:
   nightly:
@@ -576,6 +579,8 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
+      - run-native-tests-android
+
       - detect-secrets:
           <<: *ignore_main_branches
 
