@@ -101,7 +101,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           supportMultipleImages={false}
           showPager={false}
           contextModule={ContextModule.newWorksForYouRail}
-          isSaved={!!item.isSaved}
           index={index}
           scrollX={scrollX}
           containerStyle={{ backgroundColor: "transparent" }}
@@ -213,7 +212,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
               offset: width * index,
             }
           }}
-          initialNumToRender={4}
+          removeClippedSubviews={false}
           snapToInterval={width}
           snapToAlignment="start"
           snapToEnd={false}
