@@ -10,9 +10,11 @@ import {
 import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { HORIZONTAL_FLATLIST_WINDOW_SIZE } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -31,6 +33,17 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const section = useFragment(HomeViewSectionCardsFragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
   const tracking = useHomeViewTracking()
+
+  const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
+
+  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+    // It is important here to tell if the rail is visible or not, because the viewability config
+    // default behavior, doesn't take into account the fact that the rail could be not visible
+    // on the screen because it's within a scrollable container.
+    isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
+    contextModule: section.contextModule as ContextModule,
+    itemType: "card",
+  })
 
   if (!section || cards.length === 0) {
     return null
@@ -59,6 +72,10 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         initialNumToRender={3}
         keyExtractor={(_, index) => String(index)}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+        onViewableItemsChanged={({ viewableItems, changed }) => {
+          onViewableItemsChanged({ viewableItems, changed })
+        }}
+        viewabilityConfig={viewabilityConfig}
         renderItem={({ item, index }) => {
           const imageURLs =
             item.images?.map((img) => img?.imageURL).filter((url): url is string => !!url) || []
@@ -118,6 +135,7 @@ const HomeViewSectionCardsFragment = graphql`
     __typename
     internalID
     contextModule
+    trackItemImpressions
     component {
       title
       description
