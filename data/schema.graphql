@@ -13895,6 +13895,7 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
 
   # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   ownerType: String
+  trackItemImpressions: Boolean!
 }
 
 # A fairs section in the home view

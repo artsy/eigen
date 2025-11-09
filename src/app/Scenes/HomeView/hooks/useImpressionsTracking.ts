@@ -8,15 +8,18 @@ import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reani
 import { useTracking } from "react-tracking"
 
 type TrackableItem = { id: string; index: number | null }
+export type TrackableItemType = "artwork" | "card"
 
 export const useItemsImpressionsTracking = ({
   isInViewport = true,
   contextModule,
   contextScreenOwnerType,
+  itemType = "artwork",
 }: {
   contextModule: ContextModule
   isInViewport: boolean
   contextScreenOwnerType?: OwnerType
+  itemType?: TrackableItemType
 }) => {
   // Use different state management for test vs production
   const renderedItems = useSharedValue<Array<TrackableItem>>([])
@@ -39,7 +42,7 @@ export const useItemsImpressionsTracking = ({
             tracking.trackEvent(
               HomeAnalytics.trackItemViewed({
                 artworkId: id,
-                type: "artwork",
+                type: itemType,
                 contextModule: contextModule,
                 contextScreenOwnerType: contextScreenOwnerType,
                 position: index,
@@ -55,6 +58,7 @@ export const useItemsImpressionsTracking = ({
       isInViewport,
       trackedItems,
       tracking,
+      itemType,
       contextModule,
       contextScreenOwnerType,
     ]
@@ -66,7 +70,7 @@ export const useItemsImpressionsTracking = ({
         const newRenderedItems: Array<TrackableItem> = []
 
         viewableItems.forEach(({ item, index }) => {
-          newRenderedItems.push({ id: item.internalID, index })
+          newRenderedItems.push({ id: item.internalID ?? item.entityID, index })
         })
 
         if (__TEST__) {
