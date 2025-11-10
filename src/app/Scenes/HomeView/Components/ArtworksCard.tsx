@@ -1,5 +1,8 @@
 import { Flex, Image, useSpace, useScreenDimensions } from "@artsy/palette-mobile"
-import { ArtworksCard_artworks$key } from "__generated__/ArtworksCard_artworks.graphql"
+import {
+  ArtworksCard_artworks$data,
+  ArtworksCard_artworks$key,
+} from "__generated__/ArtworksCard_artworks.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { isTablet } from "react-native-device-info"
@@ -7,9 +10,11 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworksCardProps extends ArtworkActionTrackingProps {
   artworks: ArtworksCard_artworks$key
+  href: string
+  onPress: (artwork: ArtworksCard_artworks$data[number], index: number) => void
 }
 
-export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
+export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks, href, onPress }) => {
   const artworksData = useFragment(artworksCard, artworks)
   const space = useSpace()
 
@@ -17,19 +22,23 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
 
   if (!artworksData[0]?.image) return null
 
-  const renderArtwork = (artwork: any, width: number, height: number) => (
-    <RouterLink>
-      <Image
-        accessibilityLabel="artwork image"
-        src={artwork?.image?.url || ""}
-        width={width}
-        height={height}
-        blurhash={artwork?.image?.blurhash}
-        resizeMode="cover"
-        testID="artwork-image"
-      />
-    </RouterLink>
-  )
+  const renderArtwork = (index: number, width: number, height: number) => {
+    const artwork = artworksData[index]
+    const to = `${href}${href.includes("?") ? "&" : "?"}artworkIndex=${index.toString()}`
+    return (
+      <RouterLink to={to} onPress={() => onPress(artwork, index)}>
+        <Image
+          accessibilityLabel="artwork image"
+          src={artwork.image?.url || ""}
+          width={width}
+          height={height}
+          blurhash={artwork?.image?.blurhash}
+          resizeMode="cover"
+          testID="artwork-image"
+        />
+      </RouterLink>
+    )
+  }
 
   return (
     <Flex
@@ -39,11 +48,11 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks }) => {
       alignSelf="center"
       testID="artworks-card"
     >
-      {renderArtwork(artworksData[0], dimensions.main.width, dimensions.main.height)}
+      {renderArtwork(0, dimensions.main.width, dimensions.main.height)}
 
       <Flex flexDirection={dimensions.isVertical ? "column" : "row"} gap={0.5}>
-        {renderArtwork(artworksData[1], dimensions.small.width, dimensions.small.height)}
-        {renderArtwork(artworksData[2], dimensions.small.width, dimensions.small.height)}
+        {renderArtwork(1, dimensions.small.width, dimensions.small.height)}
+        {renderArtwork(2, dimensions.small.width, dimensions.small.height)}
       </Flex>
     </Flex>
   )
@@ -104,6 +113,8 @@ function useArtworksCardDimensions(
 
 const artworksCard = graphql`
   fragment ArtworksCard_artworks on Artwork @relay(plural: true) {
+    internalID
+    slug
     image(includeAll: false) {
       blurhash
       url(version: ["larger", "large", "medium", "small", "square"])

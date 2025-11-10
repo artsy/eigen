@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
@@ -197,6 +198,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
               artworkID={topArtwork.internalID}
               artworkSlug={topArtwork.slug}
               artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+              contextModule={ContextModule.infiniteDiscovery}
             />
             {!!negativeSignalsEnabled && (
               <InfiniteDiscoveryNegativeSignalsBottomSheet

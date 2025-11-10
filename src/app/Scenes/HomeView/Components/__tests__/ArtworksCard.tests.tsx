@@ -12,7 +12,13 @@ describe("ArtworksCard", () => {
         return null
       }
 
-      return <ArtworksCard artworks={[props.artwork]} />
+      return (
+        <ArtworksCard
+          artworks={[props.artwork, props.artwork, props.artwork]}
+          href="/test-href"
+          onPress={() => {}}
+        />
+      )
     },
     query: graphql`
       query ArtworksCardTestQuery($artworkID: String!) {

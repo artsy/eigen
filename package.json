@@ -14,7 +14,7 @@
   "scripts": {
     "android": "react-native run-android --active-arch-only",
     "android:test": "cd android && ./gradlew testDebugUnitTest --parallel && cd ..",
-    "android:test:ci": "cd android && ./gradlew testDebugUnitTest --parallel --no-daemon && cd ..",
+    "android:test:ci": "cd android && ./gradlew testDebugUnitTest --parallel --no-daemon --max-workers=2 && cd ..",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "ci:lint": "yarn lint --format json --out eslint-errors.json",
@@ -106,8 +106,8 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.315.0",
-    "@artsy/icons": "3.53.0",
+    "@artsy/cohesion": "4.319.0",
+    "@artsy/icons": "3.54.0",
     "@artsy/palette-mobile": "21.0.0--canary.417.4951.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "16.1.0",
@@ -194,6 +194,7 @@
     "react-native-view-shot": "4.0.3",
     "react-native-vimeo-iframe": "1.2.1",
     "react-native-webview": "13.15.0",
+    "react-native-youtube-iframe": "^2.4.1",
     "react-relay": "18.2.0",
     "react-tracking": "9.3.2",
     "react-use": "17.6.0",

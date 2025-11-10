@@ -1,6 +1,6 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { Screen, Text } from "@artsy/palette-mobile"
-import { useFocusEffect } from "@react-navigation/native"
+import { RouteProp, useFocusEffect } from "@react-navigation/native"
 import {
   HomeViewSectionScreenQuery,
   HomeViewSectionScreenQuery$data,
@@ -16,6 +16,17 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 interface HomeSectionScreenProps {
   section: NonNullable<HomeViewSectionScreenQuery$data["homeView"]["section"]>
 }
+
+export type HomeViewSectionScreenRouteProp = RouteProp<
+  {
+    "/home-view/sections": {
+      id: string
+      sectionType?: string
+      artworkIndex?: string
+    }
+  },
+  "/home-view/sections"
+>
 
 export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ section }) => {
   const tracking = useHomeViewTracking()

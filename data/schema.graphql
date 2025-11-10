@@ -2673,6 +2673,15 @@ type Artwork implements Node & Searchable & Sellable {
     first: Int
     last: Int
   ): AuctionResultConnection
+
+  # A checklist of items indicating how to improve the completeness score (ranked by importance)
+  completenessChecklist: [ArtworkCompletenessChecklistItem]
+
+  # A score representing the listing quality of the artwork
+  completenessScore: Int
+
+  # The tier classification of the completeness score (Incomplete, Good, or Excellent)
+  completenessTier: ArtworkCompletenessTier
   condition: ArtworkCondition
   conditionDescription: ArtworkInfoRow
 
@@ -3081,6 +3090,30 @@ enum ArtworkAttributionClassType {
   OPEN_EDITION
   UNIQUE
   UNKNOWN_EDITION
+}
+
+type ArtworkCompletenessChecklistItem {
+  # Whether this checklist item is completed
+  completed: Boolean!
+
+  # The key/identifier of the validation
+  key: ArtworkCompletenessChecklistItemKey!
+}
+
+enum ArtworkCompletenessChecklistItemKey {
+  CERTIFICATE
+  DESCRIPTION
+  HIGH_RES_IMAGE
+  MULTIPLE_IMAGES
+  PRICE_VISIBILITY
+  PUBLISHABLE
+  SIGNATURE
+}
+
+enum ArtworkCompletenessTier {
+  EXCELLENT
+  GOOD
+  INCOMPLETE
 }
 
 type ArtworkCondition {
@@ -9239,6 +9272,44 @@ type CreateArtworkFailure {
   mutationError: GravityMutationError
 }
 
+type CreateArtworkFromTemplateFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkFromTemplateInput {
+  # The ID of the artwork template.
+  artworkTemplateID: ID!
+  clientMutationId: String
+
+  # The S3 bucket where the artwork image is stored.
+  imageS3Bucket: String
+
+  # The S3 buckets where the artwork images are stored. This is a list of bucket names.
+  imageS3Buckets: [String!]
+
+  # The S3 key for the artwork image.
+  imageS3Key: String
+
+  # The S3 keys for the artwork images. This is a list of object keys.
+  imageS3Keys: [String!]
+
+  # The ID of the partner.
+  partnerID: ID!
+}
+
+type CreateArtworkFromTemplatePayload {
+  artworkOrError: CreateArtworkFromTemplateResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkFromTemplateResponseOrError =
+    CreateArtworkFromTemplateFailure
+  | CreateArtworkFromTemplateSuccess
+
+type CreateArtworkFromTemplateSuccess {
+  artwork: Artwork
+}
+
 type CreateArtworkImportArtistAssignmentFailure {
   mutationError: GravityMutationError
 }
@@ -9449,6 +9520,30 @@ union CreateArtworkResponseOrError = CreateArtworkFailure | CreateArtworkSuccess
 
 type CreateArtworkSuccess {
   artwork: Artwork
+}
+
+type CreateArtworkTemplateFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkTemplateInput {
+  artworkId: String!
+  clientMutationId: String
+  partnerId: String!
+  title: String!
+}
+
+type CreateArtworkTemplatePayload {
+  artworkTemplateOrError: CreateArtworkTemplateResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkTemplateResponseOrError =
+    CreateArtworkTemplateFailure
+  | CreateArtworkTemplateSuccess
+
+type CreateArtworkTemplateSuccess {
+  artworkTemplate: ArtworkTemplate
 }
 
 input CreateBackupSecondFactorsInput {
@@ -10696,6 +10791,33 @@ union DeleteArtworkResponseOrError = DeleteArtworkFailure | DeleteArtworkSuccess
 
 type DeleteArtworkSuccess {
   artwork: Artwork
+}
+
+type DeleteArtworkTemplateFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteArtworkTemplateInput {
+  # The ID of the artwork template to delete.
+  artworkTemplateID: ID!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerID: ID!
+}
+
+type DeleteArtworkTemplatePayload {
+  # On success: the deleted artwork template. On failure: MutationError.
+  artworkTemplateOrError: DeleteArtworkTemplateResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtworkTemplateResponseOrError =
+    DeleteArtworkTemplateFailure
+  | DeleteArtworkTemplateSuccess
+
+type DeleteArtworkTemplateSuccess {
+  artworkTemplate: ArtworkTemplate
 }
 
 input DeleteBankAccountInput {
@@ -13773,6 +13895,7 @@ type HomeViewSectionCards implements HomeViewSectionGeneric & Node {
 
   # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   ownerType: String
+  trackItemImpressions: Boolean!
 }
 
 # A fairs section in the home view
@@ -15464,6 +15587,23 @@ type Me implements Node {
     sort: CommerceOrderConnectionSortEnum
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
+  ordersConnection(
+    after: String
+
+    # Filter by artwork ID in line items
+    artworkID: String
+    before: String
+
+    # Filter by buyer states
+    buyerState: [OrderBuyerStateEnum]
+
+    # Filter by edition set ID in line items (requires artworkID)
+    editionSetID: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): MeOrdersConnection
 
   # Collector's position with relevant institutions
   otherRelevantPosition: String @deprecated(reason: "Use `otherRelevantPositions` instead")
@@ -15680,6 +15820,26 @@ type MeCounts {
   followedProfiles: Int!
   savedArtworks: Int!
   savedSearches: Int!
+}
+
+# A connection to a list of items.
+type MeOrdersConnection {
+  # A list of edges.
+  edges: [MeOrdersEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MeOrdersEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Order
 }
 
 type MergeArtistsFailure {
@@ -16135,6 +16295,11 @@ type Mutation {
 
   # Creates a new artwork with an associated image.
   createArtwork(input: CreateArtworkMutationInput!): CreateArtworkMutationPayload
+
+  # Create an artwork from an artwork template.
+  createArtworkFromTemplate(
+    input: CreateArtworkFromTemplateInput!
+  ): CreateArtworkFromTemplatePayload
   createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createArtworkImportArtistAssignment(
     input: CreateArtworkImportArtistAssignmentInput!
@@ -16151,6 +16316,7 @@ type Mutation {
   createArtworkImportImageMatch(
     input: CreateArtworkImportImageMatchInput!
   ): CreateArtworkImportImageMatchPayload
+  createArtworkTemplate(input: CreateArtworkTemplateInput!): CreateArtworkTemplatePayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -16164,6 +16330,9 @@ type Mutation {
 
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
+
+  # Create a buyer offer on an order
+  createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
   # Create a canonical artist
   createCanonicalArtist(
@@ -16318,6 +16487,9 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+
+  # Delete an artwork template.
+  deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
 
   # Remove a bank account
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
@@ -16623,6 +16795,9 @@ type Mutation {
   updateArtworkImportRowImages(
     input: UpdateArtworkImportRowImagesInput!
   ): UpdateArtworkImportRowImagesPayload
+
+  # Update a buyer offer
+  updateBuyerOffer(input: updateBuyerOfferInput!): updateBuyerOfferPayload
 
   # Updates the flags on a partner.
   updateCMSLastAccessTimestamp(
@@ -17179,11 +17354,29 @@ type Offer {
   # Optional note for the offer
   note: String
 
+  # The order this offer belongs to
+  order: Order
+
   # The shipping total for this offer
   shippingTotal: Money
 
   # The tax total for this offer
   taxTotal: Money
+}
+
+type OfferExchangeError {
+  code: String!
+  message: String!
+}
+
+type OfferMutationError {
+  mutationError: OfferExchangeError!
+}
+
+union OfferMutationResponse = OfferMutationError | OfferMutationSuccess
+
+type OfferMutationSuccess {
+  offer: Offer!
 }
 
 # Consignment Offer Response
@@ -17314,8 +17507,8 @@ enum OrderBuyerStateEnum {
   # Order has been approved
   APPROVED
 
-  # Order has been cancelled
-  CANCELLED
+  # Order has been canceled
+  CANCELED
 
   # Order is completed
   COMPLETED
@@ -17453,7 +17646,7 @@ type OrderedSetEdge {
   node: OrderedSet
 }
 
-union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show
+union OrderedSetItem = Artist | Artwork | FeaturedLink | Gene | Profile | Sale | Show | Video
 
 # A connection to a list of items.
 type OrderedSetItemConnection {
@@ -20866,6 +21059,9 @@ type Query {
     recaptchaToken: String!
   ): VerifyUser
 
+  # Find a video by ID
+  video(id: ID!): Video
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
@@ -23400,6 +23596,7 @@ input UpdateArtworkEditionSetInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+  title: String
 }
 
 type UpdateArtworkImportFailure {
@@ -23548,6 +23745,7 @@ input UpdateArtworkMutationInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+  title: String
 }
 
 type UpdateArtworkMutationPayload {
@@ -25589,12 +25787,22 @@ type VerifyUser {
 
 # An object containing video metadata
 type Video {
+  description(format: Format): String
+
   # The height of the video
   height: Int!
+
+  # A globally unique ID
   id: ID!
+
+  # A database ID for the Gravity Video instance (not available in Artwork context)
+  internalID: ID!
 
   # Returns a full-qualified url that can be embedded in an iframe player
   playerUrl: String!
+
+  # Title of the video
+  title: String!
 
   # The width of the video
   width: Int!
@@ -26810,6 +27018,9 @@ type Viewer {
     recaptchaToken: String!
   ): VerifyUser
 
+  # Find a video by ID
+  video(id: ID!): Video
+
   # Find a viewing room by ID
   viewingRoom(id: ID!): ViewingRoom
 
@@ -27108,6 +27319,23 @@ input createAlertInput {
 type createAlertPayload {
   clientMutationId: String
   responseOrError: CreateAlertResponseOrError
+}
+
+input createBuyerOfferInput {
+  # Offer amount in minor units (cents).
+  amountMinor: Long!
+  clientMutationId: String
+
+  # Optional note for the offer.
+  note: String
+
+  # Order id.
+  orderID: ID!
+}
+
+type createBuyerOfferPayload {
+  clientMutationId: String
+  offerOrError: OfferMutationResponse
 }
 
 input createCollectionInput {
@@ -27515,6 +27743,26 @@ union updateArtworkResponseOrError = updateArtworkFailure | updateArtworkSuccess
 
 type updateArtworkSuccess {
   artwork: Artwork
+}
+
+input updateBuyerOfferInput {
+  # Offer amount in minor units (cents).
+  amountMinor: Long
+  clientMutationId: String
+
+  # Optional note for the offer.
+  note: String
+
+  # Offer id.
+  offerID: ID!
+
+  # Order id.
+  orderID: ID!
+}
+
+type updateBuyerOfferPayload {
+  clientMutationId: String
+  offerOrError: OfferMutationResponse
 }
 
 input updateCollectionInput {

@@ -9,6 +9,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
+import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
@@ -39,6 +40,8 @@ interface HomeViewSectionArtworksProps extends FlexProps {
   index: number
 }
 
+const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD = 3
+
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
   index,
@@ -50,13 +53,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
-  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-    // It is important here to tell if the rail is visible or not, because the viewability config
-    // default behavior, doesn't take into account the fact that the rail could be not visible
-    // on the screen because it's within a scrollable container.
-    isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
-    contextModule: section.contextModule as ContextModule,
-  })
+  const { onViewableItemsChanged, viewabilityConfig, trackViewsFromCards } =
+    useItemsImpressionsTracking({
+      // It is important here to tell if the rail is visible or not, because the viewability config
+      // default behavior, doesn't take into account the fact that the rail could be not visible
+      // on the screen because it's within a scrollable container.
+      isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
+      contextModule: section.contextModule as ContextModule,
+    })
 
   let artworks = extractNodes(section.artworksConnection)
 
@@ -71,13 +75,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   const handleOnArtworkPress = (
-    artwork: ArtworkRail_artworks$data[0] | ArtworkRail_artworks$data[0],
+    artwork: ArtworkRail_artworks$data[number] | ArtworksCard_artworks$data[number],
     position: number
   ) => {
     tracking.tappedArtworkGroup(
       artwork.internalID,
       artwork.slug,
-      artwork.collectorSignals,
+      artwork[" $fragmentType"] !== "ArtworksCard_artworks" ? artwork?.collectorSignals : null,
       section.contextModule as ContextModule,
       position
     )
@@ -104,10 +108,11 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const showHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
 
+  const artowrksForArtworksCards = artworks.slice(0, NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD)
+
   const subTitle =
     showHomeViewCardRail && artworks.length > 0
-      ? artworks
-          .slice(0, 3)
+      ? artowrksForArtworksCards
           .map((artwork) => artwork?.artistNames)
           .filter(Boolean)
           .join(", ")
@@ -125,7 +130,23 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       {showHomeViewCardRail ? (
-        <ArtworksCard artworks={artworks} />
+        <ArtworksCard
+          href={moreHref}
+          onPress={handleOnArtworkPress}
+          artworks={artworks}
+          {...(section.trackItemImpressions
+            ? {
+                trackViewsFromCards: trackViewsFromCards(
+                  artowrksForArtworksCards
+                    .map((artwork, index) => ({
+                      id: artwork.internalID,
+                      index: index,
+                    }))
+                    .filter((item) => !!item.id)
+                ),
+              }
+            : {})}
+        />
       ) : (
         <ArtworkRail
           contextModule={section.contextModule as ContextModule}
@@ -179,6 +200,7 @@ const fragment = graphql`
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
           artistNames @include(if: $includeArtistNames)
+          internalID
           ...ArtworkRail_artworks
           ...ArtworksCard_artworks
         }

@@ -9,12 +9,14 @@ import {
   Touchable,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
+import { useRoute } from "@react-navigation/native"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { HomeViewSectionScreenRouteProp } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -38,11 +40,14 @@ interface ArtworksScreenHomeSection {
 
 export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> = (props) => {
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const { params } = useRoute<HomeViewSectionScreenRouteProp>()
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
-  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { width, height } = useScreenDimensions()
   const scrollX = useSharedValue(0)
   const [activeIndex, setActiveIndex] = useState(0)
+  const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
+  const isNewWorksForYouCarouselEnabled =
+    enableNewHomeViewCardRailType && params.id === "home-view-section-new-works-for-you"
 
   const {
     data: section,
@@ -96,7 +101,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           supportMultipleImages={false}
           showPager={false}
           contextModule={ContextModule.newWorksForYouRail}
-          isSaved={!!item.isSaved}
           index={index}
           scrollX={scrollX}
           containerStyle={{ backgroundColor: "transparent" }}
@@ -106,7 +110,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     [width, scrollX]
   )
 
-  if (!enableNewHomeViewCardRailType) {
+  if (!isNewWorksForYouCarouselEnabled) {
     return (
       <>
         <Screen.AnimatedHeader
@@ -200,13 +204,23 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           bounces={false}
           pagingEnabled
           decelerationRate="fast"
+          initialScrollIndex={parseInt(params.artworkIndex ?? "0")}
+          getItemLayout={(_, index) => {
+            return {
+              index,
+              length: width,
+              offset: width * index,
+            }
+          }}
+          removeClippedSubviews={false}
           snapToInterval={width}
           snapToAlignment="start"
           snapToEnd={false}
           onScroll={onScrollHandlerList}
+          viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={({ viewableItems, changed }) => {
             const index = viewableItems[0]?.index
-            if (index !== null && index !== activeIndex) {
+            if (index != null && index !== activeIndex) {
               setActiveIndex(index)
             }
             if (section.trackItemImpressions) {
@@ -222,6 +236,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           artworkID={artworks[activeIndex].internalID}
           artworkSlug={artworks[activeIndex].slug}
           artistIDs={artworks[activeIndex].artists.map((data) => data?.internalID ?? "")}
+          contextModule={section.contextModule as ContextModule}
         />
       )}
     </Screen.Body>
