@@ -84,9 +84,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:20.9.0":
-  version: 20.9.0
-  resolution: "@artsy/palette-mobile@npm:20.9.0"
+"@artsy/palette-mobile@npm:21.0.0--canary.417.4951.0":
+  version: 21.0.0--canary.417.4951.0
+  resolution: "@artsy/palette-mobile@npm:21.0.0--canary.417.4951.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -98,7 +98,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     moti: "npm:^0.25.3"
     react-nanny: "npm:^2.15.0"
-    react-native-blurhash: "npm:2.1.1"
+    react-native-blurhash: "npm:2.1.2"
     react-native-collapsible-tab-view: "npm:^8.0.1"
     react-native-pager-view: "npm:6.7.1"
     react-native-popover-view: "npm:^6.1.0"
@@ -113,7 +113,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/159afb1579a9db83192d9f3bc3110ac595d12c831181279472fc5597d44eddf4313a0882f7c0b787f7e57614224da490a8a85c25ff1df64afb58300f5d897502
+  checksum: 10c0/b2e5c39dafd785b5b4511dae07bdd141cd49ee64efff8e08e6e2a3355893a02dfd8a228f80e74342b8c395fe6416672a29998b824d91332d2871d0c5b6ed3036
   languageName: node
   linkType: hard
 
@@ -12286,7 +12286,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.315.0"
     "@artsy/icons": "npm:3.53.0"
-    "@artsy/palette-mobile": "npm:20.9.0"
+    "@artsy/palette-mobile": "npm:21.0.0--canary.417.4951.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:7.25.2"
@@ -21176,6 +21176,16 @@ __metadata:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
   checksum: 10c0/9ffefa93bb7f8578020b274112e9d5e40b152c94a7828c45e8f7ef71a20794e021accc6dd175857e334ae4727e5bc4d5cf7cf069c9b01e454478e8e31d912336
+  languageName: node
+  linkType: hard
+
+"react-native-blurhash@npm:2.1.2":
+  version: 2.1.2
+  resolution: "react-native-blurhash@npm:2.1.2"
+  peerDependencies:
+    react: ">=16.8.1"
+    react-native: ">=0.60.0-rc.0 <1.0.x"
+  checksum: 10c0/ebce5c07fdbedbe0704272057d0db9d7aa6fa0775d273ba9d080025ab4b60d49367a52c8839d07456bdc54765aaab37c5888c728db2db2bb1a4cce8eee736ed3
   languageName: node
   linkType: hard
 
