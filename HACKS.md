@@ -224,7 +224,7 @@ https://github.com/numandev1/react-native-keys/pull/117
 
 #### Explanation/Context:
 
-Because RN >= 0.80 has extracted the example out of the core, the previous path is no longer valid
+Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
 
 ## patch-package for react-navigation/bottom-tabs
 
@@ -264,6 +264,8 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
 
 ## patch for react-native-blurhash
+
+#### Explanation/Context:
 
 This patch was added to fix the build on RN81.
 
