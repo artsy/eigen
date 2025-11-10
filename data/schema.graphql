@@ -10528,6 +10528,36 @@ type CreateVerifiedRepresentativeSuccess {
   verifiedRepresentative: VerifiedRepresentative
 }
 
+type CreateVideoFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateVideoInput {
+  clientMutationId: String
+  description: String
+
+  # Video height in pixels
+  height: Int!
+
+  # URL suitable for embedding in an iframe
+  playerUrl: String!
+  title: String!
+
+  # Video width in pixels
+  width: Int!
+}
+
+type CreateVideoPayload {
+  clientMutationId: String
+  videoOrError: CreateVideoResponseOrError
+}
+
+union CreateVideoResponseOrError = CreateVideoFailure | CreateVideoSuccess
+
+type CreateVideoSuccess {
+  video: Video
+}
+
 input CreateViewingRoomInput {
   attributes: ViewingRoomAttributes
 
@@ -11325,6 +11355,30 @@ union DeleteVerifiedRepresentativeResponseOrError =
 
 type DeleteVerifiedRepresentativeSuccess {
   verifiedRepresentative: VerifiedRepresentative
+}
+
+type DeleteVideoFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteVideoMutationInput {
+  clientMutationId: String
+
+  # The ID of the video to delete
+  id: String!
+}
+
+type DeleteVideoMutationPayload {
+  clientMutationId: String
+
+  # Success or Error, on success the deleted Video is returned
+  videoOrError: DeleteVideoResponseOrErrorType
+}
+
+union DeleteVideoResponseOrErrorType = DeleteVideoFailure | DeleteVideoSuccess
+
+type DeleteVideoSuccess {
+  video: Video
 }
 
 input DeleteViewingRoomInput {
@@ -16506,6 +16560,9 @@ type Mutation {
   createVerifiedRepresentative(
     input: CreateVerifiedRepresentativeInput!
   ): CreateVerifiedRepresentativePayload
+
+  # Create a video
+  createVideo(input: CreateVideoInput!): CreateVideoPayload
   createViewingRoom(input: CreateViewingRoomInput!): CreateViewingRoomPayload
 
   # Deletes an alert
@@ -16628,6 +16685,9 @@ type Mutation {
   deleteVerifiedRepresentative(
     input: DeleteVerifiedRepresentativeMutationInput!
   ): DeleteVerifiedRepresentativeMutationPayload
+
+  # Delete a video
+  deleteVideo(input: DeleteVideoMutationInput!): DeleteVideoMutationPayload
   deleteViewingRoom(input: DeleteViewingRoomInput!): DeleteViewingRoomPayload
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
@@ -16975,6 +17035,9 @@ type Mutation {
   updateUserSaleProfile(
     input: UpdateUserSaleProfileMutationInput!
   ): UpdateUserSaleProfileMutationPayload
+
+  # Update a video
+  updateVideo(input: UpdateVideoInput!): UpdateVideoPayload
   updateViewingRoom(input: UpdateViewingRoomInput!): UpdateViewingRoomPayload
   updateViewingRoomArtworks(
     input: UpdateViewingRoomArtworksInput!
@@ -21108,6 +21171,14 @@ type Query {
 
   # Find a video by ID
   video(id: ID!): Video
+  videosConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: VideoSorts = UPDATED_AT_DESC
+    term: String
+  ): VideoConnection
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -25159,6 +25230,39 @@ type UpdateUserSaleProfileMutationPayload {
   clientMutationId: String
 }
 
+type UpdateVideoFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateVideoInput {
+  clientMutationId: String
+  description: String
+
+  # Video height in pixels
+  height: Int
+
+  # The ID of the video to update
+  id: String!
+
+  # URL suitable for embedding in an iframe
+  playerUrl: String
+  title: String
+
+  # Video width in pixels
+  width: Int
+}
+
+type UpdateVideoPayload {
+  clientMutationId: String
+  videoOrError: UpdateVideoResponseOrError
+}
+
+union UpdateVideoResponseOrError = UpdateVideoFailure | UpdateVideoSuccess
+
+type UpdateVideoSuccess {
+  video: Video
+}
+
 input UpdateViewingRoomArtworksInput {
   artworks: [ViewingRoomArtworkInput!]!
   clientMutationId: String
@@ -25859,6 +25963,33 @@ type Video {
 
   # The width of the video
   width: Int!
+}
+
+# A connection to a list of items.
+type VideoConnection {
+  # A list of edges.
+  edges: [VideoEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type VideoEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Video
+}
+
+enum VideoSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
 }
 
 # A wildcard used to support complex root queries in Relay
@@ -27079,6 +27210,14 @@ type Viewer {
 
   # Find a video by ID
   video(id: ID!): Video
+  videosConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: VideoSorts = UPDATED_AT_DESC
+    term: String
+  ): VideoConnection
 
   # Find a viewing room by ID
   viewingRoom(id: ID!): ViewingRoom
