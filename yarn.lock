@@ -84,9 +84,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:21.0.0--canary.417.4951.0":
-  version: 21.0.0--canary.417.4951.0
-  resolution: "@artsy/palette-mobile@npm:21.0.0--canary.417.4951.0"
+"@artsy/palette-mobile@npm:21.0.0--canary.417.4974.0":
+  version: 21.0.0--canary.417.4974.0
+  resolution: "@artsy/palette-mobile@npm:21.0.0--canary.417.4974.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -113,7 +113,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/b2e5c39dafd785b5b4511dae07bdd141cd49ee64efff8e08e6e2a3355893a02dfd8a228f80e74342b8c395fe6416672a29998b824d91332d2871d0c5b6ed3036
+  checksum: 10c0/7b8c5f2f5d12dbb348eb675535b95a4e977b0e7c468978e695247746730dd05bd6aa61ebfa4fc7dafc58d4dd36db3c454427e28dd0a5796193c8dfbe9b61f20d
   languageName: node
   linkType: hard
 
@@ -12286,7 +12286,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.319.0"
     "@artsy/icons": "npm:3.54.0"
-    "@artsy/palette-mobile": "npm:21.0.0--canary.417.4951.0"
+    "@artsy/palette-mobile": "npm:21.0.0--canary.417.4974.0"
     "@artsy/to-title-case": "npm:1.1.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:7.25.2"
@@ -12462,7 +12462,7 @@ __metadata:
     react-native-pager-view: "npm:6.7.1"
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:3.8.4"
-    react-native-reanimated: "npm:3.19.3"
+    react-native-reanimated: "npm:3.19.4"
     react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
     react-native-safe-area-context: "npm:5.6.1"
@@ -21456,9 +21456,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.19.3":
-  version: 3.19.3
-  resolution: "react-native-reanimated@npm:3.19.3"
+"react-native-reanimated@npm:3.19.4":
+  version: 3.19.4
+  resolution: "react-native-reanimated@npm:3.19.4"
   dependencies:
     "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
     "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
@@ -21476,7 +21476,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/adf06db4961bbb9dd3acf432f6359c74ee497a71cea6350ed0380c9f231d89e19e6458ac41b298b85e31cc1caffd537f18908f9050dd3d8ae4c5dc95322fc884
+  checksum: 10c0/265946c8056812685874cfd502e340ffc289128b90b897f274068608b624a757045686c987403f4557c9bf92753864b205e895dbc8111c7fc995b0943c7c5879
   languageName: node
   linkType: hard
 
