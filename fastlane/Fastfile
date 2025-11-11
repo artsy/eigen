@@ -113,6 +113,11 @@ lane :ship_beta_ios do |options|
   end
 
   deploy_ios_beta(deployment_target: deployment_target)
+
+  # Save the generated version for CI/CD to use
+  version_info = "#{latest_version} (#{bundle_version})"
+  File.write('fastlane/ios_beta_version.txt', version_info)
+  UI.success("✅ iOS beta version saved: #{version_info}")
 end
 
 desc 'Deploy iOS beta to TestFlight or Firebase'
@@ -320,6 +325,11 @@ lane :ship_beta_android do |options|
   end
 
   deploy_android_beta(deployment_target: deployment_target)
+
+  # Save the generated version for CI/CD to use
+  version_info = "#{vname} (#{vcode})"
+  File.write('fastlane/android_beta_version.txt', version_info)
+  UI.success("✅ Android beta version saved: #{version_info}")
 end
 
 desc 'Deploy Android beta to Play Store or Firebase'
