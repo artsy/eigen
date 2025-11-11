@@ -230,12 +230,6 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
-  AREnableAuctionsHubOnHomeView: {
-    description: "Enable Auctions Hub on Home View",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAuctionsHubOnHomeView",
-  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
