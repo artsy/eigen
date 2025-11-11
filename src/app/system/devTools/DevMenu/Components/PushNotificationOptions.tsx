@@ -13,6 +13,7 @@ interface PushPayload {
   aps?: {
     alert?: string | { title?: string; body?: string }
   }
+  _receivedAt?: string
   [key: string]: any
 }
 
@@ -36,6 +37,35 @@ const getAlertText = (payload: PushPayload): string => {
   }
 
   return "No alert text"
+}
+
+const formatTimestamp = (timestamp?: string): string | null => {
+  if (!timestamp) return null
+
+  try {
+    // Format: "2025-11-11 13:46:47 +0000"
+    const date = new Date(timestamp.replace(" +0000", "Z"))
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 1) return "Just now"
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    if (diffDays < 7) return `${diffDays}d ago`
+
+    // Fallback to formatted date
+    return date.toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    })
+  } catch {
+    return null
+  }
 }
 
 export const PushNotificationOptions: React.FC<{}> = () => {
@@ -83,9 +113,8 @@ export const PushNotificationOptions: React.FC<{}> = () => {
             }}
           />
         </Flex>
-
         <Flex my={2}>
-          <Expandable label="Recent Push Payloads" expanded={false}>
+          <Expandable label="🔔 Recent Push Payloads" expanded={false}>
             {pushPayloads.length === 0 ? (
               <Flex my={2}>
                 <Text variant="xs" color="black60">
@@ -95,6 +124,7 @@ export const PushNotificationOptions: React.FC<{}> = () => {
             ) : (
               pushPayloads.map((payload, index) => {
                 const alertText = getAlertText(payload)
+                const timestamp = formatTimestamp(payload._receivedAt)
                 return (
                   <Flex key={index} my={1}>
                     <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -102,6 +132,11 @@ export const PushNotificationOptions: React.FC<{}> = () => {
                         <Text variant="xs" numberOfLines={2}>
                           {alertText}
                         </Text>
+                        {!!timestamp && (
+                          <Text variant="xs" color="mono60">
+                            {timestamp}
+                          </Text>
+                        )}
                       </Flex>
                       <Button
                         size="small"

@@ -42,8 +42,7 @@ RCT_EXPORT_METHOD(getRecentPushPayloads:(RCTPromiseResolveBlock)completion rejec
     if ([ARAppStatus isBetaOrDev]) {
         NSArray *pushPayloads = [[NSUserDefaults standardUserDefaults] arrayForKey:ARAPNSRecentPushPayloadsKey];
         if (!pushPayloads) pushPayloads = @[];
-        NSArray *sortedPayloads = [[pushPayloads reverseObjectEnumerator] allObjects];
-        completion(sortedPayloads);
+        completion(pushPayloads);
     } else {
         completion(@[]);
     }
