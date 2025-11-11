@@ -132,6 +132,7 @@ export const OnboardingWelcomeScreens = () => {
       <StackNavigator.Group
         screenOptions={{
           orientation: !isTablet() ? "portrait" : "default",
+          presentation: "fullScreenModal",
         }}
       >
         {!!userIsDev && (
