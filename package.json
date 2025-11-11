@@ -167,7 +167,7 @@
     "react-native-blurhash": "2.1.1",
     "react-native-bootsplash": "6.3.10",
     "react-native-collapsible-tab-view": "8.0.1",
-    "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
+    "react-native-context-menu-view": "github:artsy/react-native-context-menu-view#brian/yarn-4-woes",
     "react-native-device-info": "14.0.0",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.24.0",
