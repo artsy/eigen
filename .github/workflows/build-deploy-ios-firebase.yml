@@ -113,43 +113,16 @@ jobs:
       - name: Extract beta version
         if: always()
         id: extract-version
-        run: |
-          if [ -f "fastlane/ios_beta_version.txt" ]; then
-            VERSION=$(cat fastlane/ios_beta_version.txt)
-            echo "beta_version=$VERSION" >> $GITHUB_OUTPUT
-            echo "Beta version: $VERSION"
-          else
-            echo "No beta version file found"
-          fi
+        run: ./.github/scripts/extract-beta-version.sh fastlane/ios_beta_version.txt
 
       - name: Find and comment on PR
         if: always() && steps.extract-version.outputs.beta_version
         uses: actions/github-script@v7
+        env:
+          BETA_VERSION: ${{ steps.extract-version.outputs.beta_version }}
+          PLATFORM: ios
+          DEPLOYMENT_TARGET: firebase
         with:
           script: |
-            const version = '${{ steps.extract-version.outputs.beta_version }}';
-
-            // Find PR associated with this commit
-            const { data: pullRequests } = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              head: context.ref.replace('refs/heads/', '')
-            });
-
-            if (pullRequests.length > 0) {
-              const pr = pullRequests[0];
-
-              const comment = `🎉🍏 iOS beta version generated: **${version}**\n\nThis beta is now available on Firebase!`;
-
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: pr.number,
-                body: comment
-              });
-
-              console.log(`Posted comment on PR #${pr.number}`);
-            } else {
-              console.log('No open PR found for this branch');
-            }
+            const script = require('./.github/scripts/comment-pr-beta.js');
+            await script({ github, context, core });
