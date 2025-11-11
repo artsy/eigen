@@ -14,6 +14,8 @@ extern NSString *const ARXAppToken;
 extern NSString *const ARAPNSDeviceTokenKey;
 extern NSString *const ARAPNSHasSeenPushDialog;
 
+extern NSString *const ARAPNSRecentPushPayloadsKey;
+
 extern NSString *const ARNetworkAvailableNotification;
 extern NSString *const ARNetworkUnavailableNotification;
 

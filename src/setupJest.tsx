@@ -543,6 +543,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
     },
   },
 }))

@@ -8,6 +8,11 @@ import type { Image as RNCImage } from "react-native-image-crop-picker"
 const noop: any = (name: string) => () =>
   console.warn(`method ${name} doesn't exist on android yet`)
 
+type PushPayload = Record<string, unknown> & {
+  _receivedAt?: string
+  _source?: string
+}
+
 /**
  * This file is a gateway to our iOS-specific native modules that either
  *
@@ -31,6 +36,7 @@ interface LegacyNativeModules {
     updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
     clearUserData(): Promise<void>
     getPushToken(): Promise<string | null>
+    getRecentPushPayloads(): Promise<PushPayload[]>
   }
   ARNotificationsManager: {
     getConstants(): NativeState
@@ -108,6 +114,7 @@ const LegacyNativeModulesAndroid = {
     updateAuthState: noop("updateAuthState"),
     clearUserData: () => Promise.resolve(),
     getPushToken: () => AsyncStorage.getItem("PUSH_NOTIFICATION_TOKEN"),
+    getRecentPushPayloads: () => noop("getRecentPushPayloads"),
   },
 
   ARNotificationsManager: {
