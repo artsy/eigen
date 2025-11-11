@@ -5048,6 +5048,12 @@ input BulkUpdateArtworksMetadataInput {
   # The artist IDs to be assigned
   artistIds: [String]
 
+  # Whether Artsy Shipping is enabled for domestic shipments
+  artsyShippingDomestic: Boolean
+
+  # Whether Artsy Shipping is enabled for international shipments
+  artsyShippingInternational: Boolean
+
   # The attribution class to be assigned, E.g. unique, open edition, limited edition
   attributionClass: String
 
@@ -5107,6 +5113,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Whether the artworks must be listed as Make Offer
   offer: Boolean
+
+  # Whether pickup is available for the artworks
+  pickupAvailable: Boolean
 
   # Adjusts the artworks' prices according to the value passed (percentage).
   priceAdjustment: Int
