@@ -4,14 +4,14 @@
 
 Our push notifications can mostly be divided into 2 categories:
 
-**Internal or transactional push notifications**: These are push notifications that happen in response to some event in our systems. Things like, an auction opening a user is registered for, a work is published matching a saved alert for a user, a users order gets shipped. These are sent through [pulse](https://github.com/artsy/pulse)
+**Internal or transactional push notifications**: These are push notifications that happen in response to some event in our systems. Things like: an auction opening a user is registered for, a work is published matching a saved alert for a user, a user's order gets shipped. These are sent through [pulse](https://github.com/artsy/pulse).
 **Marketing and recommendations push notifications**: These are push notifications sent by marketing and editorial either as one offs or on a scheduled basis. They can be things like recommended artworks based on user preferences, an announcement of a big artworld event coverage like vanguard or curated editorial content.
 
 ## iOS Push Testing
 
 ### Sandbox vs Production Environments
 
-There are 2 different environments pushes can be sent on and tokens can be registered on. It is important
+There are 2 different environments pushes can be sent on and tokens can be registered to. It is important
 to understand the difference when debugging push notifications.
 
 **Production**: environment used to send pushes to Testflight and AppStore builds.
@@ -65,8 +65,7 @@ This is useful for a couple scenarios:
 1. You are debugging an issue you think related to a specific push payload
 2. You want to debug a system that defaults to using the **production** push environment.
 
-For 2, remember you can't send from the **production** push environment to a dev build, so you use all your nice debugging tools or change the running code. One option is to update the system to point to the **sandbox** environment, this is system dependent and may affect other users. An easier option is to capture a payload in question from the real system and then use that payload to
-replay using the PushNotifications app to the sandbox environment. For all intents and purposes this is exactly the same as sending from the system in question.
+For 2, remember you can't send from the **production** push environment to a dev build, so you can't use all your nice debugging tools or change the running code, but we would like to do that when debugging :). One option is to update the system to point to the **sandbox** environment, this is system dependent and may affect other users. An easier option is to capture a payload in question from the real system and then use that payload to replay using the PushNotifications app to the sandbox environment. For all intents and purposes this is exactly the same as sending from the system in question.
 
 ##### Steps
 
