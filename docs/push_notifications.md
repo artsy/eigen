@@ -138,7 +138,7 @@ sequenceDiagram
 
 # Sending push notifications to dev or store builds
 
-See our [Push Testing Docs](/push_notifications_testing.md).
+See our [Push Testing Docs](./push_notifications_testing.md).
 
 <!--
 TODO: Add further docs on sending a push notification to your beta/development build
