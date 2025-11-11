@@ -3067,7 +3067,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (3.19.3):
+  - RNReanimated (3.19.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -3094,11 +3094,11 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.19.3)
-    - RNReanimated/worklets (= 3.19.3)
+    - RNReanimated/reanimated (= 3.19.4)
+    - RNReanimated/worklets (= 3.19.4)
     - SocketRocket
     - Yoga
-  - RNReanimated/reanimated (3.19.3):
+  - RNReanimated/reanimated (3.19.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -3125,10 +3125,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.19.3)
+    - RNReanimated/reanimated/apple (= 3.19.4)
     - SocketRocket
     - Yoga
-  - RNReanimated/reanimated/apple (3.19.3):
+  - RNReanimated/reanimated/apple (3.19.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -3157,7 +3157,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNReanimated/worklets (3.19.3):
+  - RNReanimated/worklets (3.19.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -3184,10 +3184,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/worklets/apple (= 3.19.3)
+    - RNReanimated/worklets/apple (= 3.19.4)
     - SocketRocket
     - Yoga
-  - RNReanimated/worklets/apple (3.19.3):
+  - RNReanimated/worklets/apple (3.19.4):
     - boost
     - DoubleConversion
     - fast_float
@@ -4124,7 +4124,7 @@ SPEC CHECKSUMS:
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
-  RNReanimated: 7302108cff8306ca3460b472d2498833b84a5766
+  RNReanimated: 9282065c1fb748d2d1945ba46d6592c2cf4e5cc8
   RNScreens: 35525ebfe219c8709da0d26aebbc9a5e02e1077b
   RNSentry: 5610abc54c3671db8fc807853486d9646bd806e0
   RNShare: d6b60469ede41726ec1d6eadbcc83f07ffb6efb1
