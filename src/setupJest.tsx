@@ -487,6 +487,7 @@ function getNativeModules(): OurNativeModules {
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
       clearUserData: jest.fn(),
       clearCache: jest.fn(),
     },
