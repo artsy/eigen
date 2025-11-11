@@ -143,7 +143,7 @@ jobs:
             if (pullRequests.length > 0) {
               const pr = pullRequests[0];
 
-              const comment = `🎉 Beta version generated: **${version}**\n\nThis beta is now available on the Play Store!`;
+              const comment = `🎉🤖 Android beta version generated: **${version}**\n\nThis beta is now available on the Play Store!`;
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,

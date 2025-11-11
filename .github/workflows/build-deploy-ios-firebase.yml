@@ -140,7 +140,7 @@ jobs:
             if (pullRequests.length > 0) {
               const pr = pullRequests[0];
 
-              const comment = `🎉 Beta version generated: **${version}**\n\nThis beta is now available on Firebase!`;
+              const comment = `🎉🍏 iOS beta version generated: **${version}**\n\nThis beta is now available on Firebase!`;
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
