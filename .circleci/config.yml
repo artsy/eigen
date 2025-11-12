@@ -14,7 +14,6 @@ defaults_ignore_beta: &ignore_beta_branches
         - beta-ios
         - beta-android
 
-defaults_main: &main_only
   filters:
     branches:
       only:
@@ -581,8 +580,7 @@ workflows:
           context: horizon
           project_id: 37
 
-      - check-and-deploy:
-          <<: *main_only
+      - check-and-deploy
 
       - test-js:
           <<: *ignore_beta_branches
