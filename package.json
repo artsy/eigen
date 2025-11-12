@@ -106,9 +106,9 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.319.0",
-    "@artsy/icons": "3.54.0",
-    "@artsy/palette-mobile": "20.9.0",
+    "@artsy/cohesion": "4.321.0",
+    "@artsy/icons": "3.56.0",
+    "@artsy/palette-mobile": "20.11.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "15.0.1",
     "@d11/react-native-fast-image": "8.12.0",

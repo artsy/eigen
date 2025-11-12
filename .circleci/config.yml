@@ -30,7 +30,7 @@ orbs:
   node: circleci/node@7.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
-  android: circleci/android@3.1.0
+  android: circleci/android@3.2.0
 
 commands:
   generate-checksums:
@@ -393,7 +393,7 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - generate-checksums

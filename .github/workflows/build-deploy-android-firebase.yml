@@ -112,3 +112,20 @@ jobs:
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Extract beta version
+        if: always()
+        id: extract-version
+        run: ./.github/scripts/extract-beta-version.sh fastlane/android_beta_version.txt
+
+      - name: Find and comment on PR
+        if: always() && steps.extract-version.outputs.beta_version
+        uses: actions/github-script@v7
+        env:
+          BETA_VERSION: ${{ steps.extract-version.outputs.beta_version }}
+          PLATFORM: android
+          DEPLOYMENT_TARGET: firebase
+        with:
+          script: |
+            const script = require('./.github/scripts/comment-pr-beta.js');
+            await script({ github, context, core });

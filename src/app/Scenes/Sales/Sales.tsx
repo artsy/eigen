@@ -7,7 +7,6 @@ import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBi
 // eslint-disable-next-line no-restricted-imports
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useRef, useState } from "react"
@@ -45,12 +44,10 @@ export const SalesScreenQuery = graphql`
 `
 
 export const Sales: React.FC = () => {
-  const enableAuctionsHubOnHomeView = useFeatureFlag("AREnableAuctionsHubOnHomeView")
   const { variant } = useExperimentVariant("onyx_auctions_hub")
 
   // include backfill in case of not using AuctionsHub HomeView section
-  const includeBackfill =
-    !enableAuctionsHubOnHomeView || !(variant && variant.enabled && variant.name === "experiment")
+  const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
 
   const data = useLazyLoadQuery<SalesQuery>(
     SalesScreenQuery,

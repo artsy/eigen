@@ -37,7 +37,6 @@ export interface SectionSharedProps extends FlexProps {
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
-  const enableAuctionsHub = useFeatureFlag("AREnableAuctionsHubOnHomeView")
   const { variant: quickLinksExperimentVariant } = useExperimentVariant(
     "onyx_quick-links-experiment"
   )
@@ -66,11 +65,7 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
     case "HomeViewSectionCard":
       return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards": {
-      if (section.internalID === "home-view-section-auctions-hub") {
-        if (enableAuctionsHub) {
-          return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
-        } else return null
-      } else return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
+      return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
     }
     case "HomeViewSectionGeneric":
       return <HomeViewSectionGeneric section={section} {...rest} />
