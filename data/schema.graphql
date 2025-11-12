@@ -16388,7 +16388,7 @@ type Mutation {
   # Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
 
-  # Creates a new artwork with an associated image.
+  # Creates a new artwork, optionally with associated images.
   createArtwork(input: CreateArtworkMutationInput!): CreateArtworkMutationPayload
 
   # Create an artwork from an artwork template.
