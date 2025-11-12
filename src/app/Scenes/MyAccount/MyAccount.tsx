@@ -125,7 +125,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
 
         {!!showLinkedAccounts && (
           <Flex mt={4}>
-            <SectionTitle title="Linked Accounts" titleVariant="xs" titleColor="mono60" mx={2} />
+            <SectionTitle title="Linked Accounts" variant="small" titleColor="mono60" mx={2} />
 
             <MenuItemSocialItem
               title="Facebook"
@@ -201,7 +201,7 @@ const MyAccountPlaceholder: React.FC = () => {
       <MenuItem title="Phone" ellipsizeMode="middle" href="my-account/edit-email" />
 
       <Flex mt={4}>
-        <SectionTitle title="Linked Accounts" titleVariant="xs" titleColor="mono60" mx={2} />
+        <SectionTitle title="Linked Accounts" variant="small" titleColor="mono60" mx={2} />
 
         <MenuItemSocialItem
           title="Facebook"

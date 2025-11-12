@@ -48,9 +48,8 @@ export const CollectionRail: FC<CollectionRailProps> = ({
           href={`/collection/${collection.slug}`}
           onPress={handleTitlePress}
           px={2}
-          RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
           title={collection.title}
-          titleVariant="md"
+          variant="large"
         />
 
         <ArtworkRail
