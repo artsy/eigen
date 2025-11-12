@@ -28,7 +28,7 @@ const config = {
     }),
   },
   resolver: {
-    resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
+    resolverMainFields: ["react-native", "browser", "main"],
     extraNodeModules: {
       images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
     },
@@ -39,4 +39,5 @@ const mergedConfig = mergeConfig(getSentryExpoConfig(__dirname), config)
 
 module.exports = withRozenite(mergedConfig, {
   enhanceMetroConfig: (config) => withRozeniteExpoAtlasPlugin(config),
+  enabled: process.env.WITH_ROZENITE === "true", // enable only in dev environment
 })
