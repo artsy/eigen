@@ -5,7 +5,7 @@
 Our push notifications can mostly be divided into 2 categories:
 
 **Internal or transactional push notifications**: These are push notifications that happen in response to some event in our systems. Things like: an auction opening a user is registered for, a work is published matching a saved alert for a user, a user's order gets shipped. These are sent through [pulse](https://github.com/artsy/pulse).
-**Marketing and recommendations push notifications**: These are push notifications sent by marketing and editorial either as one offs or on a scheduled basis. They can be things like recommended artworks based on user preferences, an announcement of a big artworld event coverage like vanguard or curated editorial content.
+**Marketing and recommendations push notifications**: These are push notifications sent by marketing and editorial either as one offs or on a scheduled basis. They can be things like recommended artworks based on user preferences, an announcement of a big artworld event coverage like vanguard or curated editorial content. These are sent through [Braze](https://www.braze.com).
 
 ## iOS Push Testing
 
