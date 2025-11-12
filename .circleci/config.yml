@@ -393,7 +393,7 @@ jobs:
     executor:
       name: node/default
       tag: << pipeline.parameters.node_version >>
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - generate-checksums
