@@ -28,7 +28,7 @@ const config = {
     }),
   },
   resolver: {
-    resolverMainFields: ["react-native", "browser", "main"], // needed for storybook
+    resolverMainFields: ["react-native", "browser", "main"],
     extraNodeModules: {
       images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
     },
