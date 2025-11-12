@@ -1,4 +1,5 @@
-import { Flex, Join, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
+import { Flex, Separator, Skeleton, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import { CollectionsByCategoryBodyQuery } from "__generated__/CollectionsByCategoryBodyQuery.graphql"
 import { CollectionsByCategoryBody_viewer$key } from "__generated__/CollectionsByCategoryBody_viewer.graphql"
 import {
@@ -9,6 +10,7 @@ import {
   CollectionsByCategoryArtworksWithFiltersRailWithSuspense,
   hrefWithParams,
 } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryArtworksWithFiltersRail"
+import { CollectionsByCategoryFooterWithSuspense } from "app/Scenes/CollectionsByCategory/Components/CollectionsByCategoryFooter"
 import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
@@ -16,6 +18,7 @@ import {
 import { useCollectionsByCategoryParams } from "app/Scenes/CollectionsByCategory/hooks/useCollectionsByCategoryParams"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { compact } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface CollectionsByCategoryBodyProps {
@@ -51,48 +54,69 @@ export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps>
       ? extractNodes(discoveryCategory.filtersForArtworksConnection)
       : null
 
-  return (
-    <Flex gap={4}>
-      <Flex gap={2}>
-        <Text variant="xl" px={2}>
-          {title}
-        </Text>
-        <Text px={2}>Explore collections by {title.toLowerCase()}</Text>
-
-        <CollectionsChips chips={chips} />
-      </Flex>
-
-      <Separator borderColor="mono10" />
-
-      {discoveryCategory.__typename === "DiscoveryMarketingCollection" && (
-        <Join separator={<Separator borderColor="mono10" my={1} />}>
-          {discoveryCategory.marketingCollections.map((item, index) => {
-            return (
+  const discoverMarketingCollectionsRails =
+    discoveryCategory.__typename === "DiscoveryMarketingCollection"
+      ? discoveryCategory.marketingCollections.map((item, index) => {
+          return {
+            key: `artwork_rail_${item?.slug}`,
+            jsx: () => (
               <CollectionRailWithSuspense
                 key={`artwork_rail_${item?.slug}`}
                 slug={item?.slug ?? ""}
                 lastElement={index === discoveryCategory.marketingCollections.length - 1}
               />
-            )
-          })}
-        </Join>
-      )}
+            ),
+          }
+        })
+      : []
 
-      {!!filtersForArtworks && (
-        <Join separator={<Separator borderColor="mono10" my={1} />}>
-          {filtersForArtworks.map((item, index) => {
-            return (
-              <CollectionsByCategoryArtworksWithFiltersRailWithSuspense
-                {...item}
-                filterSlug={item.slug}
-                key={`artwork_filter_rail_${item?.href}`}
-                lastElement={index === filtersForArtworks.length - 1}
-              />
-            )
-          })}
-        </Join>
-      )}
-    </Flex>
+  const filterForArtworksRails = filtersForArtworks
+    ? filtersForArtworks.map((item, index) => {
+        return {
+          key: `artwork_filter_rail_${item?.href}`,
+          jsx: () => (
+            <CollectionsByCategoryArtworksWithFiltersRailWithSuspense
+              {...item}
+              filterSlug={item.slug}
+              key={`artwork_filter_rail_${item?.href}`}
+              lastElement={index === filtersForArtworks.length - 1}
+            />
+          ),
+        }
+      })
+    : []
+
+  const sections = compact([
+    {
+      key: "collectionChips",
+      jsx: () => <CollectionsChips chips={chips} key="collectionChips" />,
+    },
+    ...discoverMarketingCollectionsRails,
+    ...filterForArtworksRails,
+    {
+      key: "collectionsByCategoryFooter",
+      jsx: () => <CollectionsByCategoryFooterWithSuspense />,
+    },
+  ])
+
+  return (
+    <FlashList
+      data={sections}
+      ListHeaderComponent={() => {
+        return (
+          <Flex mb={2}>
+            <Text variant="xl" px={2}>
+              {title}
+            </Text>
+            <Text px={2}>Explore collections by {title.toLowerCase()}</Text>
+          </Flex>
+        )
+      }}
+      renderItem={({ item }) => item.jsx()}
+      estimatedItemSize={230} // Value from RN Debugger Inspector
+      keyExtractor={(item) => item.key}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
+    />
   )
 }
 
