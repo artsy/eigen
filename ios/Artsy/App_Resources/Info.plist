@@ -143,6 +143,8 @@
 	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
+	<key>RCTNewArchEnabled</key>
+	<false/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Unica77LL-Italic.otf</string>

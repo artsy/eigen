@@ -219,12 +219,12 @@ promotion. We added custom logic to work around this.
 
 #### When can we remove this:
 
-When react-native-keys fixes and releases the this issue:
-https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
+When react-native-keys merges this PR
+https://github.com/numandev1/react-native-keys/pull/117
 
 #### Explanation/Context:
 
-Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
+Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
 
 ## patch-package for react-navigation/bottom-tabs
 
@@ -262,3 +262,13 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 #### Explanation/Context:
 
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
+
+## patch for react-native-blurhash
+
+#### Explanation/Context:
+
+This patch was added to fix the build on RN81.
+
+#### When can we remove this:
+
+It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206

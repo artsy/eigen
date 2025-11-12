@@ -12,6 +12,8 @@
 #import "ARDispatchManager.h"
 #import "ARMediaPreviewController.h"
 
+@import React;
+
 @interface ARTNativeScreenPresenterModule ()
 @end
 

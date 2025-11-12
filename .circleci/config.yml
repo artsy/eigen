@@ -455,7 +455,7 @@ jobs:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       - prep-ios-env
       - macos/preboot-simulator:
-          version: "18.2"
+          version: << pipeline.parameters.simulator_version >>
           platform: "iOS"
           device: "iPhone 16 Pro"
       - build-app-ios
@@ -499,10 +499,13 @@ jobs:
 parameters:
   xcode_version:
     type: string
-    default: "16.2"
+    default: "16.4"
   node_version:
     type: string
-    default: "22.0.0"
+    default: "24.6.0"
+  simulator_version:
+    type: string
+    default: "18.5"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
@@ -527,7 +530,7 @@ parameters:
     default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v14-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v15-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum

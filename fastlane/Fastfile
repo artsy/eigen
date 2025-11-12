@@ -86,6 +86,9 @@ lane :ship_beta_ios do |options|
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
+  # Select Xcode version
+  xcode_select("/Applications/Xcode_16.4.app")
+
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
 
@@ -574,6 +577,9 @@ desc 'Build iOS app and upload to S3 for Maestro testing'
 lane :build_maestro_ios do
   bundle_version = set_build_version_ios
   set_git_properties_ios
+
+  # Select Xcode version
+  xcode_select("/Applications/Xcode_16.4.app")
 
   # Build iOS app with QA scheme for simulator (no codesigning needed)
   build_params = ios_build_params('maestro')

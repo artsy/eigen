@@ -8,7 +8,7 @@ on:
 jobs:
   build-ios-qa:
     if: github.ref == 'refs/heads/main'
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 60
 
     steps:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.1.6"
+          ruby-version: "3.1.7"
           bundler-cache: true
 
       - name: Install Ruby dependencies
@@ -62,9 +62,9 @@ jobs:
           path: |
             ios/Pods
             ~/Library/Caches/CocoaPods
-          key: pods-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+          key: pods-v2-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
-            pods-${{ runner.os }}-
+            pods-v2-${{ runner.os }}-
 
       - name: Download fonts from s3
         run: ./scripts/setup/download-fonts
@@ -79,7 +79,7 @@ jobs:
         run: yarn relay
 
       - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
 
       - name: Build iOS app and upload to S3 for Maestro
         run: bundle exec fastlane build_maestro_ios
