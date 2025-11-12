@@ -14,11 +14,12 @@ import { ExpoUpdatesOptions } from "app/system/devTools/DevMenu/Components/ExpoU
 import { FeatureFlags } from "app/system/devTools/DevMenu/Components/FeatureFlags"
 import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
+import { PushNotificationOptions } from "app/system/devTools/DevMenu/Components/PushNotificationOptions"
 import { goBack } from "app/system/navigation/navigate"
+import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React, { useEffect } from "react"
 import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
-import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
 
 export const DevMenu: React.FC<{}> = () => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -83,8 +84,7 @@ export const DevMenu: React.FC<{}> = () => {
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">
-          v{getAppVersion()}, build {getBuildNumber()} (
-          {ArtsyNativeModule.gitCommitShortHash})
+          v{getAppVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
       </Text>
       <Text variant="xs" color="grey" mx={2}>
@@ -99,6 +99,7 @@ export const DevMenu: React.FC<{}> = () => {
         <NavigateTo />
         <EnvironmentOptions onClose={goBack} />
         <ExpoUpdatesOptions />
+        <PushNotificationOptions />
         <FeatureFlags />
         <Experiments />
         <DevTools />

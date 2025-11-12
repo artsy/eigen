@@ -5,7 +5,6 @@ import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
 import { useToast } from "app/Components/Toast/toastHook"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevToggleName, devToggles } from "app/store/config/features"
 import { Versions } from "app/store/migration"
@@ -16,12 +15,10 @@ import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironm
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
-import { saveToken } from "app/utils/PushNotification"
 import { _removeVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
-import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
-import { Alert, Button, Platform } from "react-native"
+import { Alert, Button } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import Keys from "react-native-keys"
@@ -182,33 +179,6 @@ export const DevTools: React.FC<{}> = () => {
             title={`Device ID: ${DeviceInfo.getUniqueIdSync()}`}
             onPress={() => {
               Clipboard.setString(DeviceInfo.getUniqueIdSync())
-              toast.show("Copied to clipboard", "middle")
-            }}
-          />
-          <DevMenuButtonItem
-            title="Request push registration"
-            onPress={async () => {
-              const status = await requestSystemPermissions()
-              toast.show(`Push registration status: ${status}`, "middle")
-
-              // On android onRegister is not called when permissions are already granted, make sure token is saved in this env
-              if (Platform.OS === "android" && status === "granted") {
-                const token = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
-                if (token) {
-                  saveToken(token)
-                }
-              }
-            }}
-          />
-          <DevMenuButtonItem
-            title="Copy push token"
-            onPress={async () => {
-              const pushToken = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
-              Clipboard.setString(pushToken ?? "")
-              if (!pushToken) {
-                toast.show("No push token found", "middle")
-                return
-              }
               toast.show("Copied to clipboard", "middle")
             }}
           />

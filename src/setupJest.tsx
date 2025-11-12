@@ -487,6 +487,7 @@ function getNativeModules(): OurNativeModules {
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
       clearUserData: jest.fn(),
       clearCache: jest.fn(),
     },
@@ -543,6 +544,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
     },
   },
 }))

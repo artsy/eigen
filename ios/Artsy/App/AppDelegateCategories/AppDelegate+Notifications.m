@@ -1,5 +1,6 @@
 #import "AppDelegate+Notifications.h"
 #import "ARAppConstants.h"
+#import "ARAppStatus.h"
 #import "ARAnalyticsConstants.h"
 #import "UIApplicationStateEnum.h"
 #import "ARLogger.h"
@@ -97,6 +98,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
     BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+    [self recordRawPushPayload:userInfo source:@"didReceiveRemoteNotification"];
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:userInfo];
     if (processedByBraze) {
         // Still let React Native know about Braze notifications
@@ -118,48 +120,11 @@
     // Create enriched notification payload with application state
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
+    [self recordRawPushPayload:notificationInfo source:@"applicationDidReceiveRemoteNotification"];
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
 
     // Forward all notifications to React Native with enriched payload
     [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
-}
-
-- (void)receivedNotification:(NSDictionary *)notificationInfo;
-{
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
-}
-
-- (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {
-    NSMutableDictionary *normalizedInfo = [notificationInfo mutableCopy];
-
-    if (notificationInfo[@"ab_uri"] != nil) {
-        normalizedInfo[@"url"] = notificationInfo[@"ab_uri"];
-    }
-
-    return normalizedInfo;
-}
-
-
-
-- (UIWindow *)findVisibleWindow
-{
-    NSArray *windows = [[UIApplication sharedApplication] windows];
-    for (UIWindow *window in [windows reverseObjectEnumerator]) {
-        if (!window.hidden) {
-            return window;
-        }
-    }
-    return nil;
-}
-
-- (BOOL)tokensAreTheSame:(NSString *)newToken previousToken:(NSString * _Nullable)previousToken;
-{
-    if (!previousToken) {
-        return NO;
-    } else {
-        return [newToken isEqualToString:previousToken];
-    }
 }
 
 // Handle the notification view on when the app is in the foreground
@@ -171,6 +136,8 @@
     }
 
     NSDictionary *userInfo = notification.request.content.userInfo;
+    [self recordRawPushPayload:userInfo source:@"willPresentNotification"];
+
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Active" forKey:@"UIApplicationState"]; // Foreground state
 
@@ -188,6 +155,7 @@
 
     // Only forward payload to React Native - let JS handle navigation
     NSDictionary *userInfo = response.notification.request.content.userInfo;
+    [self recordRawPushPayload:userInfo source:@"didReceiveNotificationResponse"];
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Tapped" forKey:@"NotificationAction"]; // Indicate this was tapped
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
@@ -199,5 +167,50 @@
         completionHandler();
     }
 }
+
+- (void)receivedNotification:(NSDictionary *)notificationInfo;
+{
+    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
+}
+
+
+- (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {
+    NSMutableDictionary *normalizedInfo = [notificationInfo mutableCopy];
+
+    if (notificationInfo[@"ab_uri"] != nil) {
+        normalizedInfo[@"url"] = notificationInfo[@"ab_uri"];
+    }
+
+    return normalizedInfo;
+}
+
+
+- (BOOL)tokensAreTheSame:(NSString *)newToken previousToken:(NSString * _Nullable)previousToken;
+{
+    if (!previousToken) {
+        return NO;
+    } else {
+        return [newToken isEqualToString:previousToken];
+    }
+}
+
+- (void)recordRawPushPayload:(NSDictionary *)userInfo source:(NSString *)source {
+    if ([ARAppStatus isBetaOrDev]) {
+        NSMutableDictionary *record = [NSMutableDictionary dictionaryWithDictionary:userInfo];
+        record[@"_receivedAt"] = [[NSDate date] description];
+        record[@"_source"] = source;
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *existing = [[defaults arrayForKey:ARAPNSRecentPushPayloadsKey] mutableCopy] ?: [NSMutableArray array];
+        [existing insertObject:record atIndex:0];
+        if (existing.count > 10) {
+            [existing removeLastObject];
+        }
+        [defaults setObject:existing forKey:ARAPNSRecentPushPayloadsKey];
+        [defaults synchronize];
+    }
+}
+
 
 @end

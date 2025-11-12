@@ -37,6 +37,17 @@ RCT_EXPORT_METHOD(getPushToken:(RCTPromiseResolveBlock)completion reject:(RCTPro
     completion(pushToken);
 }
 
+RCT_EXPORT_METHOD(getRecentPushPayloads:(RCTPromiseResolveBlock)completion reject:(RCTPromiseRejectBlock) _reject)
+{
+    if ([ARAppStatus isBetaOrDev]) {
+        NSArray *pushPayloads = [[NSUserDefaults standardUserDefaults] arrayForKey:ARAPNSRecentPushPayloadsKey];
+        if (!pushPayloads) pushPayloads = @[];
+        completion(pushPayloads);
+    } else {
+        completion(@[]);
+    }
+}
+
 + (BOOL)requiresMainQueueSetup
 {
     return YES;

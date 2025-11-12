@@ -25,4 +25,6 @@ NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 NSString *const ARAPNSHasSeenPushDialog = @"apns_has_seen_push_dialog";
 
+NSString *const ARAPNSRecentPushPayloadsKey = @"apns_recent_push_payloads";
+
 BOOL ARPerformWorkAsynchronously = YES;
