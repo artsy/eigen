@@ -12760,7 +12760,7 @@ __metadata:
     react-native-blurhash: "npm:2.1.1"
     react-native-bootsplash: "npm:6.3.10"
     react-native-collapsible-tab-view: "npm:8.0.1"
-    react-native-context-menu-view: "github:artsy/react-native-context-menu-view#brian/yarn-4-woes"
+    react-native-context-menu-view: "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.24.0"
@@ -20992,9 +20992,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-context-menu-view@github:artsy/react-native-context-menu-view#brian/yarn-4-woes":
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy":
   version: 1.10.0
-  resolution: "react-native-context-menu-view@https://github.com/artsy/react-native-context-menu-view.git#commit=1efd287d9d6b845004140001d81943b3ceedc592"
+  resolution: "react-native-context-menu-view@https://github.com/artsy/react-native-context-menu-view.git#commit=e5a6bf3abba774936cac9ae2988704f0d7443c14"
   peerDependencies:
     react: ^16.8.1 || ^17.0.0 || ^18.0.0
     react-native: ">=0.60.0-rc.0 <1.0.x"
