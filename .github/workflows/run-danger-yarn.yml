@@ -1,0 +1,11 @@
+name: ☢️ Danger - Yarn
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  run-danger-yarn:
+    uses: artsy/duchamp/.github/workflows/danger-yarn.yml@main
+    secrets:
+      danger-token: ${{ secrets.DANGER_TOKEN }}
