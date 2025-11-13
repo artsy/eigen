@@ -39,9 +39,9 @@ module.exports = async ({ github, context, core }) => {
 
   console.log("context:", { context })
   console.log("github:", { github })
-  console.log("pullRequest:", { pullRequest })
+  console.log("pullRequest:", { pullRequestNumber })
 
-  if (pullRequest) {
+  if (pullRequestNumber) {
     const platformLabel = platform === "ios" ? "iOS" : "Android"
     const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
 
