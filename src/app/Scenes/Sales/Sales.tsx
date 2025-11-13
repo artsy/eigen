@@ -4,8 +4,8 @@ import { SalesQuery } from "__generated__/SalesQuery.graphql"
 import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRail"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
 import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBids"
-// eslint-disable-next-line no-restricted-imports
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -13,6 +13,7 @@ import { Suspense, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
+import { IVariant } from "unleash-proxy-client"
 import { ZeroState } from "./Components/ZeroState"
 import {
   CurrentlyRunningAuctions,
@@ -43,11 +44,15 @@ export const SalesScreenQuery = graphql`
   }
 `
 
+export const shouldIncludeAuctionLotsRecsBackfill = (variant: IVariant): boolean => {
+  return !(variant && variant.enabled && variant.name === "experiment")
+}
+
 export const Sales: React.FC = () => {
   const { variant } = useExperimentVariant("onyx_auctions_hub")
 
   // include backfill in case of not using AuctionsHub HomeView section
-  const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
+  const includeBackfill = shouldIncludeAuctionLotsRecsBackfill(variant)
 
   const data = useLazyLoadQuery<SalesQuery>(
     SalesScreenQuery,

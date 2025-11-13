@@ -196,7 +196,11 @@ import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { RecommendedAuctionLotsQueryRenderer } from "app/Scenes/RecommendedAuctionLots/RecommendedAuctionLots"
 import { SaleQueryRenderer, SaleScreenQuery } from "app/Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "app/Scenes/SaleInfo/SaleInfo"
-import { SalesScreen, SalesScreenQuery } from "app/Scenes/Sales/Sales"
+import {
+  SalesScreen,
+  SalesScreenQuery,
+  shouldIncludeAuctionLotsRecsBackfill,
+} from "app/Scenes/Sales/Sales"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import {
@@ -245,6 +249,7 @@ import {
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
@@ -696,6 +701,13 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [SalesScreenQuery],
+    prepareVariables: [
+      () => {
+        const { variant } = useExperimentVariant("onyx_auctions_hub")
+        const includeBackfill = shouldIncludeAuctionLotsRecsBackfill(variant)
+        return { includeBackfill: includeBackfill }
+      },
+    ],
   },
   {
     path: "/auctions/lots-for-you-ending-soon",
