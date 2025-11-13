@@ -1,7 +1,7 @@
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
-import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
+import { ArtworkCardBottomSheetBackdrop } from "app/Components/ArtworkCard/ArtworkCardBottomSheetBackdrop"
 import {
   InfiniteDiscoveryNegativeSignals,
   InfiniteDiscoveryNegativeSignalsPlaceholder,
@@ -73,7 +73,7 @@ export const InfiniteDiscoveryNegativeSignalsBottomSheet: FC<
         backgroundColor: color("mono0"),
       }}
       backdropComponent={(props) => (
-        <InfiniteDiscoveryBottomSheetBackdrop {...props} disappearsOnIndex={0} appearsOnIndex={1} />
+        <ArtworkCardBottomSheetBackdrop {...props} disappearsOnIndex={0} appearsOnIndex={1} />
       )}
     >
       <Suspense fallback={<InfiniteDiscoveryNegativeSignalsPlaceholder />}>

@@ -13,12 +13,12 @@ import { useRoute } from "@react-navigation/native"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
+import { ArtworkCardBottomSheet } from "app/Components/ArtworkCard/ArtworkCardBottomSheet"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { HomeViewSectionScreenRouteProp } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
-import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -232,7 +232,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       </Flex>
 
       {artworks.length > 0 && !!artworks[activeIndex] && (
-        <InfiniteDiscoveryBottomSheet
+        <ArtworkCardBottomSheet
           artworkID={artworks[activeIndex].internalID}
           artworkSlug={artworks[activeIndex].slug}
           artistIDs={artworks[activeIndex].artists.map((data) => data?.internalID ?? "")}

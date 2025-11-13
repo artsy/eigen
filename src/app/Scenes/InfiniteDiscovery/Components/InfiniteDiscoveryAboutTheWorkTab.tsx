@@ -302,7 +302,7 @@ const infiniteDiscoveryAboutTheWorkQuery = graphql`
       ...useSendInquiry_me
       ...MyProfileEditModal_me
       ...BidButton_me
-      ...InfiniteDiscoveryBottomSheetFooter_me
+      ...ArtworkCardBottomSheetFooter_me
     }
   }
 `

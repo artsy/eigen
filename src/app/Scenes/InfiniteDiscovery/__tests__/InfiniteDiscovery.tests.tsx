@@ -11,8 +11,8 @@ jest.mock("react-relay", () => ({
   ...jest.requireActual("react-relay"),
   fetchQuery: jest.fn(),
 }))
-jest.mock("app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet", () => ({
-  InfiniteDiscoveryBottomSheet: () => null,
+jest.mock("app/Components/ArtworkCard/ArtworkCardBottomSheet", () => ({
+  ArtworkCardBottomSheet: () => null,
 }))
 
 xdescribe("InfiniteDiscovery", () => {
