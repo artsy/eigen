@@ -37,6 +37,8 @@ module.exports = async ({ github, context, core }) => {
   // Find PR associated with this commit (if triggered from a PR)
   const pullRequest = context.payload.pull_request
 
+  console.log("pullRequest:", { pullRequest })
+
   if (pullRequest) {
     const platformLabel = platform === "ios" ? "iOS" : "Android"
     const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
