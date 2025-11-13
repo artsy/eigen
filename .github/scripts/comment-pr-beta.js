@@ -35,7 +35,7 @@ module.exports = async ({ github, context, core }) => {
   }
 
   // Find PR associated with this commit (if triggered from a PR)
-  const pullRequest = github.event.pull_request.number
+  const pullRequestNumber = github.event.pull_request.number
 
   console.log("context:", { context })
   console.log("github:", { github })
@@ -48,7 +48,7 @@ module.exports = async ({ github, context, core }) => {
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      issue_number: pullRequest.number,
+      issue_number: pullRequestNumber,
       body: comment,
     })
 
