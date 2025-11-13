@@ -5,7 +5,6 @@
 //   DEPLOYMENT_TARGET - Either 'testflight', 'firebase', or 'play_store'
 
 module.exports = async ({ github, context, core }) => {
-  console.log({ github })
   const version = process.env.BETA_VERSION
   const platform = process.env.PLATFORM
   const deploymentTarget = process.env.DEPLOYMENT_TARGET
