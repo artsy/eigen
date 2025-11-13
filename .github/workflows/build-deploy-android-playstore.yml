@@ -107,11 +107,11 @@ jobs:
           VERSION_CODE=$(cat fastlane/next_version_code.txt)
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
-      - name: Build and deploy Android to Play Store
-        run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
-        env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      # - name: Build and deploy Android to Play Store
+      #   run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
+      #   env:
+      #     ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
       - name: Extract beta version
         if: always()
