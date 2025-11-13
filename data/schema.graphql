@@ -25955,6 +25955,9 @@ type VerifyUser {
 type Video {
   description(format: Format): String
 
+  # Only YouTube and Vimeo are supported
+  embed(autoPlay: Boolean = false): String
+
   # The height of the video
   height: Int!
 
