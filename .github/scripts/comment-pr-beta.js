@@ -5,6 +5,7 @@
 //   DEPLOYMENT_TARGET - Either 'testflight', 'firebase', or 'play_store'
 
 module.exports = async ({ github, context, core }) => {
+  console.log({ github })
   const version = process.env.BETA_VERSION
   const platform = process.env.PLATFORM
   const deploymentTarget = process.env.DEPLOYMENT_TARGET
@@ -35,25 +36,25 @@ module.exports = async ({ github, context, core }) => {
   }
 
   // Find PR associated with this commit (if triggered from a PR)
-  const pullRequestNumber = github.event.pull_request.number
+  // const pullRequestNumber = github.event.pull_request.number
 
   console.log("context:", { context })
   console.log("github:", { github })
   console.log("pullRequest:", { pullRequestNumber })
 
-  if (pullRequestNumber) {
-    const platformLabel = platform === "ios" ? "iOS" : "Android"
-    const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
+  // if (pullRequestNumber) {
+  //   const platformLabel = platform === "ios" ? "iOS" : "Android"
+  //   const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
 
-    await github.rest.issues.createComment({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: pullRequestNumber,
-      body: comment,
-    })
+  //   await github.rest.issues.createComment({
+  //     owner: context.repo.owner,
+  //     repo: context.repo.repo,
+  //     issue_number: pullRequestNumber,
+  //     body: comment,
+  //   })
 
-    console.log(`Posted comment on PR #${pullRequest.number}`)
-  } else {
-    console.log("Beta was not triggered from a PR - no comment posted")
-  }
+  //   console.log(`Posted comment on PR #${pullRequest.number}`)
+  // } else {
+  //   console.log("Beta was not triggered from a PR - no comment posted")
+  // }
 }
