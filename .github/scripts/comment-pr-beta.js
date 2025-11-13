@@ -35,26 +35,36 @@ module.exports = async ({ github, context, core }) => {
     return
   }
 
-  // Find PR associated with this commit (if triggered from a PR)
-  // const pullRequestNumber = github.event.pull_request.number
+  // Find PR associated with this commit
+  try {
+    const { data: pullRequests } = await github.rest.pulls.list({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      state: "open",
+      per_page: 100,
+    })
 
-  console.log("context:", { context })
-  console.log("github:", { github })
-  console.log("pullRequest:", { pullRequestNumber })
+    // Find the PR that contains this commit
+    const associatedPR = pullRequests.find((pr) => {
+      return pr.head.sha === context.sha
+    })
 
-  // if (pullRequestNumber) {
-  //   const platformLabel = platform === "ios" ? "iOS" : "Android"
-  //   const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
+    if (associatedPR) {
+      const platformLabel = platform === "ios" ? "iOS" : "Android"
+      const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
 
-  //   await github.rest.issues.createComment({
-  //     owner: context.repo.owner,
-  //     repo: context.repo.repo,
-  //     issue_number: pullRequestNumber,
-  //     body: comment,
-  //   })
+      await github.rest.issues.createComment({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: associatedPR.number,
+        body: comment,
+      })
 
-  //   console.log(`Posted comment on PR #${pullRequest.number}`)
-  // } else {
-  //   console.log("Beta was not triggered from a PR - no comment posted")
-  // }
+      console.log(`Posted comment on PR #${associatedPR.number}`)
+    } else {
+      console.log("Beta was not triggered from an open PR - no comment posted")
+    }
+  } catch (error) {
+    core.warning(`Failed to find or comment on PR: ${error.message}`)
+  }
 }
