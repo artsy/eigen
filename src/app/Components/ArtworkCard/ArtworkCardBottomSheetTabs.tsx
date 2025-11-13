@@ -10,7 +10,7 @@ import { FC } from "react"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
 import { useTracking } from "react-tracking"
 
-interface InfiniteDiscoveryOtherWorksTabProps {
+interface ArtworkCardBottomSheetTabsProps {
   artistIDs: string[]
   artworkID: string
   onTabChange: TabsContainerProps["onTabChange"]
@@ -27,7 +27,7 @@ const TABS = [
   },
 ]
 
-export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
+export const ArtworkCardBottomSheetTabs: FC<ArtworkCardBottomSheetTabsProps> = ({
   artistIDs,
   artworkID,
   onTabChange,
@@ -58,7 +58,7 @@ export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
   )
 }
 
-export const InfiniteDiscoveryTabsSkeleton: FC = () => {
+export const ArtworkCardBottomSheetTabsSkeleton: FC = () => {
   return (
     <Skeleton>
       <Tabs>

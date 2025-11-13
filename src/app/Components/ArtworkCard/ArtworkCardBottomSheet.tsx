@@ -1,24 +1,24 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
-import { InfiniteDiscoveryBottomSheetFooterQueryRenderer } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetFooter"
-import { InfiniteDiscoveryBottomeSheetHandle } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetHandle"
-import { InfiniteDiscoveryTabs } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
+import { ArtworkCardBottomSheetBackdrop } from "app/Components/ArtworkCard/ArtworkCardBottomSheetBackdrop"
+import { ArtworkCardBottomSheetFooterQueryRenderer } from "app/Components/ArtworkCard/ArtworkCardBottomSheetFooter"
+import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/ArtworkCardBottomSheetHandle"
+import { ArtworkCardBottomSheetTabs } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface InfiniteDiscoveryBottomSheetProps {
+interface ArtworkCardBottomSheetProps {
   artworkID: string
   artworkSlug: string
   artistIDs: string[]
   contextModule: ContextModule
 }
 
-export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps> = ({
+export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
   artworkID,
   artworkSlug,
   artistIDs,
@@ -46,25 +46,19 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         index={0}
         backdropComponent={(props) => {
           return (
-            <InfiniteDiscoveryBottomSheetBackdrop
-              {...props}
-              disappearsOnIndex={0}
-              appearsOnIndex={1}
-            />
+            <ArtworkCardBottomSheetBackdrop {...props} disappearsOnIndex={0} appearsOnIndex={1} />
           )
         }}
         backgroundStyle={{
           backgroundColor: color("mono0"),
         }}
-        handleComponent={InfiniteDiscoveryBottomeSheetHandle}
+        handleComponent={ArtworkCardBottomSheetHandle}
         footerComponent={(props) => {
           if (!footerVisible) {
             return null
           }
 
-          return (
-            <InfiniteDiscoveryBottomSheetFooterQueryRenderer artworkID={artworkID} {...props} />
-          )
+          return <ArtworkCardBottomSheetFooterQueryRenderer artworkID={artworkID} {...props} />
         }}
         onChange={(index) => {
           const maxSnapPointIndex = 1
@@ -73,12 +67,12 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
           }
         }}
       >
-        <InfiniteDiscoveryTabs
+        <ArtworkCardBottomSheetTabs
           artistIDs={artistIDs}
           artworkID={artworkID}
           onTabChange={handleOnTabChange}
           // this key resets the state of the tabs when the artwork changes
-          key={`infinite_discovery_tabs_${artworkID}`}
+          key={`artwork_card_bottom_sheet_tabs_${artworkID}`}
         />
       </BottomSheet>
     </>
@@ -88,18 +82,18 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
 const { height } = Dimensions.get("screen")
 
 export const aboutTheWorkQuery = graphql`
-  query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
+  query ArtworkCardBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
     ...InfiniteDiscoveryMoreWorksTab_artworks @arguments(artistIDs: $artistIDs)
 
     me {
       ...useSendInquiry_me
       ...MyProfileEditModal_me
       ...BidButton_me
-      ...InfiniteDiscoveryBottomSheetFooter_me
+      ...ArtworkCardBottomSheetFooter_me
     }
     artwork(id: $id) {
       ...InfiniteDiscoveryAboutTheWorkTab_artwork
-      ...InfiniteDiscoveryBottomSheetFooter_artwork
+      ...ArtworkCardBottomSheetFooter_artwork
     }
   }
 `

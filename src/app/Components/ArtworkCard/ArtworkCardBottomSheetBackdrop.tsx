@@ -13,7 +13,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdropProps> = ({
+export const ArtworkCardBottomSheetBackdrop: FC<BottomSheetDefaultBackdropProps> = ({
   disappearsOnIndex,
   appearsOnIndex,
   animatedIndex,

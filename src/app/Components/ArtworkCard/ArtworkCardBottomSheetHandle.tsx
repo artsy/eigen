@@ -2,11 +2,11 @@ import { ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { BottomSheetDefaultHandleProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetHandle/types"
-import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
+import { useBottomSheetAnimatedStyles } from "app/Components/ArtworkCard/useBottomSheetAnimatedStyles"
 import { FC } from "react"
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
-export const InfiniteDiscoveryBottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
+export const ArtworkCardBottomSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
   const { opacityStyle, heightTextStyle } = useBottomSheetAnimatedStyles()
   const { animatedIndex } = useBottomSheet()
 
