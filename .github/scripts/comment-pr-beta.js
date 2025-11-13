@@ -37,6 +37,7 @@ module.exports = async ({ github, context, core }) => {
   // Find PR associated with this commit (if triggered from a PR)
   const pullRequest = context.payload.pull_request
 
+  console.log("context:", { context })
   console.log("pullRequest:", { pullRequest })
 
   if (pullRequest) {
