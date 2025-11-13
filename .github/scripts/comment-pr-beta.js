@@ -5,58 +5,51 @@
 //   DEPLOYMENT_TARGET - Either 'testflight', 'firebase', or 'play_store'
 
 module.exports = async ({ github, context, core }) => {
-  const version = process.env.BETA_VERSION;
-  const platform = process.env.PLATFORM;
-  const deploymentTarget = process.env.DEPLOYMENT_TARGET;
+  const version = process.env.BETA_VERSION
+  const platform = process.env.PLATFORM
+  const deploymentTarget = process.env.DEPLOYMENT_TARGET
 
   if (!version) {
-    core.warning('No beta version provided');
-    return;
+    core.warning("No beta version provided")
+    return
   }
 
   if (!platform || !deploymentTarget) {
-    core.setFailed('PLATFORM and DEPLOYMENT_TARGET environment variables are required');
-    return;
+    core.setFailed("PLATFORM and DEPLOYMENT_TARGET environment variables are required")
+    return
   }
 
   // Determine platform emoji
-  const platformEmoji = platform === 'ios' ? '🍏' : '🤖';
+  const platformEmoji = platform === "ios" ? "🍏" : "🤖"
 
   // Determine deployment target name
   const deploymentTargetName = {
-    'testflight': 'TestFlight',
-    'firebase': 'Firebase',
-    'play_store': 'Play Store'
-  }[deploymentTarget];
+    testflight: "TestFlight",
+    firebase: "Firebase",
+    play_store: "Play Store",
+  }[deploymentTarget]
 
   if (!deploymentTargetName) {
-    core.setFailed(`Invalid DEPLOYMENT_TARGET: ${deploymentTarget}`);
-    return;
+    core.setFailed(`Invalid DEPLOYMENT_TARGET: ${deploymentTarget}`)
+    return
   }
 
-  // Find PR associated with this commit
-  const { data: pullRequests } = await github.rest.pulls.list({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    state: 'open',
-    head: context.ref.replace('refs/heads/', '')
-  });
+  // Find PR associated with this commit (if triggered from a PR)
+  const pullRequest = context.payload.pull_request
 
-  if (pullRequests.length > 0) {
-    const pr = pullRequests[0];
-
-    const platformLabel = platform === 'ios' ? 'iOS' : 'Android';
-    const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`;
+  if (pullRequest) {
+    const platformLabel = platform === "ios" ? "iOS" : "Android"
+    const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
 
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      issue_number: pr.number,
-      body: comment
-    });
+      issue_number: pullRequest.number,
+      body: comment,
+    })
 
-    console.log(`Posted comment on PR #${pr.number}`);
+    console.log(`Posted comment on PR #${pullRequest.number}`)
   } else {
-    console.log('No open PR found for this branch');
+    console.log("Beta was not triggered from a PR - no comment posted")
   }
-};
+}
