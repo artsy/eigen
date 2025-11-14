@@ -24,7 +24,7 @@ module.exports = (api) => {
     "relay",
 
     ["module-resolver", { alias: moduleResolverAlias }],
-    "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
+    "react-native-worklets/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
   ]
 
   const prodPlugins = [["transform-remove-console", { exclude: ["error"] }], ...plugins]

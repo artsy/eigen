@@ -1,10 +1,10 @@
 import { Touchable, useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
-import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
+import Animated, { AnimatedProps, AnimatedStyle, FadeIn, FadeOut } from "react-native-reanimated"
 
-interface HeaderButtonProps extends AnimateProps<ViewProps> {
-  style?: StyleProp<Animated.AnimateStyle<ViewStyle>>
+interface HeaderButtonProps extends AnimatedProps<ViewProps> {
+  style?: StyleProp<AnimatedStyle<ViewStyle>>
   shouldHide?: boolean
   position: "left" | "right"
   applySafeAreaTopInsets?: boolean
