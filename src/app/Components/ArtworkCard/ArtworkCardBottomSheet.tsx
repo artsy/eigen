@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SkeletonText, Tabs, useColor } from "@artsy/palette-mobile"
-import BottomSheet, { useBottomSheet } from "@gorhom/bottom-sheet"
+import BottomSheet from "@gorhom/bottom-sheet"
 import { ArtworkCardBottomSheetBackdrop } from "app/Components/ArtworkCard/ArtworkCardBottomSheetBackdrop"
 import { ArtworkCardBottomSheetFooterQueryRenderer } from "app/Components/ArtworkCard/ArtworkCardBottomSheetFooter"
 import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/ArtworkCardBottomSheetHandle"
 import {
   ArtworkCardBottomSheetTabs,
-  ArtworkCardBottomSheetTabsSkeleton,
   TABS,
 } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
 import { InfiniteDiscoveryAboutTheWorkTabSkeleton } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
