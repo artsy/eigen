@@ -70,6 +70,8 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
       showsVerticalScrollIndicator={false}
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
+      // This is needed to make sure we are getting the right column index for each item
+      optimizeItemArrangement={false}
       keyExtractor={(item) => item.id}
       keyboardShouldPersistTaps="handled"
       onEndReached={loadMore}
