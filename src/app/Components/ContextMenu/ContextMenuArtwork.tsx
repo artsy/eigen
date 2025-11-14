@@ -110,6 +110,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
         onPress: () => {
           if (title && href) {
             InteractionManager.runAfterInteractions(() => {
+              const imageUrl = artwork.contextMenuImage?.url || artwork.image?.url
               showShareSheet({
                 type: "artwork",
                 artists: artists,
@@ -117,7 +118,14 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
                 internalID: internalID,
                 title: title,
                 href: href,
-                images: [],
+                images: imageUrl
+                  ? [
+                      {
+                        __typename: "Image" as const,
+                        imageURL: imageUrl,
+                      },
+                    ]
+                  : [],
               })
             })
           }
