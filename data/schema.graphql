@@ -10291,6 +10291,49 @@ type CreateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
 }
 
+type CreateShippingPresetFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateShippingPresetMutationInput {
+  # Whether Artsy handles domestic shipping.
+  artsyShippingDomestic: Boolean
+
+  # Whether Artsy handles international shipping.
+  artsyShippingInternational: Boolean
+  clientMutationId: String
+
+  # Domestic shipping fee in cents.
+  domesticShippingFeeCents: Int
+
+  # International shipping fee in cents.
+  internationalShippingFeeCents: Int
+
+  # The name of the shipping preset.
+  name: String!
+
+  # The ID of the partner to create the shipping preset for.
+  partnerId: String!
+
+  # Whether pickup is available.
+  pickupAvailable: Boolean
+}
+
+type CreateShippingPresetMutationPayload {
+  clientMutationId: String
+
+  # On success: the created shipping preset. On error: the error that occurred.
+  shippingPresetOrError: CreateShippingPresetResponseOrError
+}
+
+union CreateShippingPresetResponseOrError =
+    CreateShippingPresetFailure
+  | CreateShippingPresetSuccess
+
+type CreateShippingPresetSuccess {
+  shippingPreset: ShippingPreset
+}
+
 input CreateSmsSecondFactorInput {
   attributes: SmsSecondFactorAttributes!
   clientMutationId: String
@@ -11216,6 +11259,32 @@ union DeletePurchaseResponseOrError = DeletePurchaseFailure | DeletePurchaseSucc
 
 type DeletePurchaseSuccess {
   purchase: Purchase
+}
+
+type DeleteShippingPresetFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteShippingPresetMutationInput {
+  clientMutationId: String
+
+  # The ID of the shipping preset to delete.
+  id: String!
+}
+
+type DeleteShippingPresetMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted shipping preset. On error: the error that occurred.
+  shippingPresetOrError: DeleteShippingPresetResponseOrError
+}
+
+union DeleteShippingPresetResponseOrError =
+    DeleteShippingPresetFailure
+  | DeleteShippingPresetSuccess
+
+type DeleteShippingPresetSuccess {
+  shippingPreset: ShippingPreset
 }
 
 input DeleteUserAddressInput {
@@ -16507,6 +16576,11 @@ type Mutation {
 
   # Creates a static Markdown-backed sale agreement.
   createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
+
+  # Creates a shipping preset for a partner.
+  createShippingPreset(
+    input: CreateShippingPresetMutationInput!
+  ): CreateShippingPresetMutationPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload
 
@@ -16635,6 +16709,11 @@ type Mutation {
 
   # Deletes a purchase
   deletePurchase(input: deletePurchaseInput!): deletePurchasePayload
+
+  # Deletes a shipping preset for a partner.
+  deleteShippingPreset(
+    input: DeleteShippingPresetMutationInput!
+  ): DeleteShippingPresetMutationPayload
 
   # Delete a User
   deleteUser(input: DeleteUserInput!): DeleteUserPayload
@@ -16994,6 +17073,11 @@ type Mutation {
 
   # Updates a saleAgreement.
   updateSaleAgreement(input: UpdateSaleAgreementMutationInput!): UpdateSaleAgreementMutationPayload
+
+  # Updates a shipping preset for a partner.
+  updateShippingPreset(
+    input: UpdateShippingPresetMutationInput!
+  ): UpdateShippingPresetMutationPayload
   updateSmsSecondFactor(input: UpdateSmsSecondFactorInput!): UpdateSmsSecondFactorPayload
 
   # Update the user
@@ -18213,6 +18297,14 @@ type Partner implements Node {
   profile: Profile
   profileArtistsLayout: String
   profileBannerDisplay: String
+
+  # A connection of shipping presets for this partner.
+  shippingPresetsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ShippingPresetConnection
   showPromoted: Boolean
 
   # A connection of shows from a Partner.
@@ -21030,6 +21122,12 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+
+  # A ShippingPreset
+  shippingPreset(
+    # The ID of the ShippingPreset
+    id: String!
+  ): ShippingPreset
   shortcut(id: ID!): Shortcut
 
   # A Show
@@ -22617,6 +22715,67 @@ type ShippingLine {
 
   # Display name of the shipping line
   displayName: String!
+}
+
+type ShippingPreset implements Node {
+  # Whether Artsy handles domestic shipping
+  artsyShippingDomestic: Boolean
+
+  # Whether Artsy handles international shipping
+  artsyShippingInternational: Boolean
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Domestic shipping fee in cents
+  domesticShippingFeeCents: Int
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # International shipping fee in cents
+  internationalShippingFeeCents: Int
+
+  # The name of the shipping preset
+  name: String!
+
+  # The ID of the partner this shipping preset belongs to
+  partnerID: String!
+
+  # Whether pickup is available
+  pickupAvailable: Boolean
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
+
+# A connection to a list of items.
+type ShippingPresetConnection {
+  # A list of edges.
+  edges: [ShippingPresetEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ShippingPresetEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ShippingPreset
 }
 
 type Shortcut {
@@ -25043,6 +25202,49 @@ type UpdateSaleAgreementSuccess {
   saleAgreement: SaleAgreement
 }
 
+type UpdateShippingPresetFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateShippingPresetMutationInput {
+  # Whether Artsy handles domestic shipping.
+  artsyShippingDomestic: Boolean
+
+  # Whether Artsy handles international shipping.
+  artsyShippingInternational: Boolean
+  clientMutationId: String
+
+  # Domestic shipping fee in cents.
+  domesticShippingFeeCents: Int
+
+  # The ID of the shipping preset to update.
+  id: String!
+
+  # International shipping fee in cents.
+  internationalShippingFeeCents: Int
+
+  # The name of the shipping preset.
+  name: String
+
+  # Whether pickup is available.
+  pickupAvailable: Boolean
+}
+
+type UpdateShippingPresetMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated shipping preset. On error: the error that occurred.
+  shippingPresetOrError: UpdateShippingPresetResponseOrError
+}
+
+union UpdateShippingPresetResponseOrError =
+    UpdateShippingPresetFailure
+  | UpdateShippingPresetSuccess
+
+type UpdateShippingPresetSuccess {
+  shippingPreset: ShippingPreset
+}
+
 input UpdateSmsSecondFactorInput {
   attributes: SmsSecondFactorAttributes!
   clientMutationId: String
@@ -27105,6 +27307,12 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+
+  # A ShippingPreset
+  shippingPreset(
+    # The ID of the ShippingPreset
+    id: String!
+  ): ShippingPreset
   shortcut(id: ID!): Shortcut
 
   # A Show
