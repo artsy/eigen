@@ -163,8 +163,12 @@ describe("useUnleashInitializer", () => {
 
     const flags = [
       {
-        name: "onyx_internal-testing-experiment",
-        variant: { name: "experiment-a", enabled: true, payload: { type: "string", value: "p" } },
+        name: "test_test-experiment",
+        variant: {
+          name: "experiment-a",
+          enabled: true,
+          payload: { type: "string", value: "experiment-b" },
+        },
       },
       { name: "some_other_flag", variant: { name: "control", enabled: false } },
     ]
@@ -175,10 +179,9 @@ describe("useUnleashInitializer", () => {
 
     expect(mockSetUnleashVariants).toHaveBeenCalled()
     const calledWith = mockSetUnleashVariants.mock.calls[0][0]
-    expect(calledWith).toHaveProperty("unleashVariants")
-    expect(calledWith.unleashVariants["onyx_internal-testing-experiment"].name).toEqual(
-      "experiment-a"
-    )
+    expect(calledWith["test_test-experiment"].name).toEqual("experiment-a")
+    expect(calledWith["test_test-experiment"].enabled).toEqual(true)
+    expect(calledWith["test_test-experiment"].payload.value).toEqual("experiment-b")
   })
 
   it("writes an empty map when no flags are present", () => {
