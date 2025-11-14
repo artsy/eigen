@@ -13,7 +13,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
+import { FlashListRef, ListRenderItem } from "@shopify/flash-list"
 import {
   ArtistArtworksQuery,
   ArtistArtworksQuery$data,
@@ -50,7 +50,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
+  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -106,7 +106,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
 
   const artworksCount = artist.artworks?.counts?.total ?? 0
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -181,32 +181,30 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }
 
-  const renderItem: MasonryListRenderItem<ArtworkType> = useCallback(
-    ({ item, index, columnIndex }) => {
-      const imgAspectRatio = item.image?.aspectRatio ?? 1
-      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-      const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<ArtworkType> = useCallback(({ item, index }) => {
+    const columnIndex = getColumnIndex(index)
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
 
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <ArtworkGridItem
-            {...props}
-            itemIndex={index}
-            contextScreenOwnerType={OwnerType.artist}
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-            artwork={item}
-            height={imgHeight}
-          />
-        </Flex>
-      )
-    },
-    []
-  )
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          {...props}
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerId={artist.internalID}
+          contextScreenOwnerSlug={artist.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
 
   const listFooterComponent = useMemo(
     () => (
@@ -276,7 +274,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={

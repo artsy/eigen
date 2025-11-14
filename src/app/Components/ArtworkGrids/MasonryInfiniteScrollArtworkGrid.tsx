@@ -1,24 +1,20 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { useSpace } from "@artsy/palette-mobile"
-import { FlashListProps, MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
+import { FlashList, FlashListProps, ListRenderItem } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
-  masonryRenderItemProps,
+  getColumnIndex,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import React, { FC, useCallback, useMemo } from "react"
 import Animated from "react-native-reanimated"
 
-type MasonryFlashListOmittedProps = Omit<
-  MasonryFlashListProps<MasonryArtworkItem[]>,
-  "renderItem" | "data"
->
+type MasonryFlashListOmittedProps = Omit<FlashListProps<MasonryArtworkItem>, "renderItem" | "data">
 
 interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedProps {
   animated?: boolean
@@ -93,37 +89,41 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     }
   }, [hasMore, isLoading, loadMore, pageSize])
 
-  const renderItem = useCallback(
-    ({ item, index, columnIndex }: masonryRenderItemProps) => (
-      <MasonryArtworkGridItem
-        index={index}
-        item={item}
-        columnIndex={columnIndex}
-        contextModule={contextModule}
-        contextScreenOwnerType={contextScreenOwnerType}
-        contextScreen={contextScreen}
-        contextScreenOwnerId={contextScreenOwnerId}
-        contextScreenOwnerSlug={contextScreenOwnerSlug}
-        numColumns={rest.numColumns}
-        artworkMetaStyle={{
-          // Since the grid is full width,
-          // we need to add padding to the artwork meta to make sure its readable
-          paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
-          // Extra space between items for one column artwork grids
-          paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
-        }}
-        partnerOffer={partnerOffer}
-        priceOfferMessage={priceOfferMessage}
-        onPress={onPress}
-        hideSaleInfo={hideSaleInfo}
-        hideSaveIcon={hideSaveIcon}
-        disableArtworksListPrompt={disableArtworksListPrompt}
-        disableProgressiveOnboarding={disableProgressiveOnboarding}
-        hideIncreasedInterestSignal={hideIncreasedInterest}
-        hideCuratorsPickSignal={hideCuratorsPick}
-        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
-      />
-    ),
+  const renderItem: ListRenderItem<MasonryArtworkItem> = useCallback(
+    ({ item, index }) => {
+      const columnIndex = getColumnIndex(index, rest.numColumns)
+
+      return (
+        <MasonryArtworkGridItem
+          index={index}
+          item={item}
+          columnIndex={columnIndex}
+          contextModule={contextModule}
+          contextScreenOwnerType={contextScreenOwnerType}
+          contextScreen={contextScreen}
+          contextScreenOwnerId={contextScreenOwnerId}
+          contextScreenOwnerSlug={contextScreenOwnerSlug}
+          numColumns={rest.numColumns}
+          artworkMetaStyle={{
+            // Since the grid is full width,
+            // we need to add padding to the artwork meta to make sure its readable
+            paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+            // Extra space between items for one column artwork grids
+            paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
+          }}
+          partnerOffer={partnerOffer}
+          priceOfferMessage={priceOfferMessage}
+          onPress={onPress}
+          hideSaleInfo={hideSaleInfo}
+          hideSaveIcon={hideSaveIcon}
+          disableArtworksListPrompt={disableArtworksListPrompt}
+          disableProgressiveOnboarding={disableProgressiveOnboarding}
+          hideIncreasedInterestSignal={hideIncreasedInterest}
+          hideCuratorsPickSignal={hideCuratorsPick}
+          hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+        />
+      )
+    },
     [
       contextModule,
       contextScreenOwnerType,
@@ -146,7 +146,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     ]
   )
 
-  const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
+  const FlashlistComponent = animated ? AnimatedMasonryFlashList : FlashList
 
   const getAdjustedNumColumns = useCallback(() => {
     return rest.numColumns ?? NUM_COLUMNS_MASONRY
@@ -160,6 +160,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl: refreshControl,
       onScroll: rest.onScroll,
       testID: "masonry-artwork-grid",
+      // masonry: true,
     } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
   }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
 
@@ -181,7 +182,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   return (
     <FlashlistComponent
       {...flashlistComponentProps}
-      data={artworks as unknown as readonly MasonryArtworkItem[]}
+      data={artworks}
       keyExtractor={(item) => item.id}
       numColumns={getAdjustedNumColumns()}
       renderItem={renderItem}
@@ -190,7 +191,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
           <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
         ) : null
       }
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       onEndReached={onEndReached}
       contentContainerStyle={{
         // No paddings are needed for single column grids
@@ -219,5 +219,5 @@ const Footer: FC<{
 }
 
 const AnimatedMasonryFlashList = Animated.createAnimatedComponent(
-  MasonryFlashList
-) as unknown as typeof MasonryFlashList
+  FlashList
+) as unknown as typeof FlashList

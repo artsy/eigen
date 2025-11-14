@@ -8,7 +8,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryListRenderItem } from "@shopify/flash-list"
+import { ListRenderItem } from "@shopify/flash-list"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -17,7 +17,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
+  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -85,7 +85,9 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem: MasonryListRenderItem<Artwork> = useCallback(({ item, columnIndex }) => {
+  const renderItem: ListRenderItem<Artwork> = useCallback(({ item, index }) => {
+    const columnIndex = getColumnIndex(index)
+
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
@@ -112,7 +114,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           initialArtworksTotal ? (

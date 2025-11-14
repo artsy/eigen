@@ -110,7 +110,6 @@ export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) 
         artworks={artworks}
         isLoading={isLoadingNext}
         hasMore={hasNext}
-        disableAutoLayout
         pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.show}
         contextScreenOwnerId={data.internalID}
