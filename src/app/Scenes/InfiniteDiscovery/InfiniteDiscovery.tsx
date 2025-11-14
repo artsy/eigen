@@ -3,7 +3,7 @@ import { Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
 import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
-import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { ArtworkCardBottomSheet } from "app/Components/ArtworkCard/ArtworkCardBottomSheet"
 import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
 import {
   InfiniteDiscoveryNegativeSignalsBottomSheet,
@@ -194,7 +194,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         />
         {!!topArtwork && (
           <>
-            <InfiniteDiscoveryBottomSheet
+            <ArtworkCardBottomSheet
               artworkID={topArtwork.internalID}
               artworkSlug={topArtwork.slug}
               artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}

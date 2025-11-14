@@ -9,18 +9,18 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetFooterProps } from "@gorhom/bottom-sheet"
-import { InfiniteDiscoveryBottomSheetFooterQuery } from "__generated__/InfiniteDiscoveryBottomSheetFooterQuery.graphql"
+import { ArtworkCardBottomSheetFooterQuery } from "__generated__/ArtworkCardBottomSheetFooterQuery.graphql"
 import {
-  InfiniteDiscoveryBottomSheetFooter_artwork$data,
-  InfiniteDiscoveryBottomSheetFooter_artwork$key,
-} from "__generated__/InfiniteDiscoveryBottomSheetFooter_artwork.graphql"
-import { InfiniteDiscoveryBottomSheetFooter_me$key } from "__generated__/InfiniteDiscoveryBottomSheetFooter_me.graphql"
+  ArtworkCardBottomSheetFooter_artwork$data,
+  ArtworkCardBottomSheetFooter_artwork$key,
+} from "__generated__/ArtworkCardBottomSheetFooter_artwork.graphql"
+import { ArtworkCardBottomSheetFooter_me$key } from "__generated__/ArtworkCardBottomSheetFooter_me.graphql"
+import { useBottomSheetAnimatedStyles } from "app/Components/ArtworkCard/useBottomSheetAnimatedStyles"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { artworkModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkCommercialButtons } from "app/Scenes/Artwork/Components/ArtworkCommercialButtons"
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
-import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import {
   AuctionWebsocketChannelInfo,
@@ -31,12 +31,12 @@ import { FC } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface InfiniteDiscoveryBottomSheetFooterProps extends BottomSheetFooterProps {
-  artwork: InfiniteDiscoveryBottomSheetFooter_artwork$key
-  me: InfiniteDiscoveryBottomSheetFooter_me$key
+interface ArtworkCardBottomSheetFooterProps extends BottomSheetFooterProps {
+  artwork: ArtworkCardBottomSheetFooter_artwork$key
+  me: ArtworkCardBottomSheetFooter_me$key
 }
 
-export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheetFooterProps> = ({
+export const ArtworkCardBottomSheetFooter: FC<ArtworkCardBottomSheetFooterProps> = ({
   artwork: _artwork,
   me: _me,
   ...bottomSheetFooterProps
@@ -109,7 +109,7 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
 }
 
 const artworkFragment = graphql`
-  fragment InfiniteDiscoveryBottomSheetFooter_artwork on Artwork {
+  fragment ArtworkCardBottomSheetFooter_artwork on Artwork {
     ...ArtworkPrice_artwork
     ...ArtworkCommercialButtons_artwork
 
@@ -128,7 +128,7 @@ const artworkFragment = graphql`
 `
 
 const meFragment = graphql`
-  fragment InfiniteDiscoveryBottomSheetFooter_me on Me {
+  fragment ArtworkCardBottomSheetFooter_me on Me {
     ...ArtworkCommercialButtons_me
     ...MyProfileEditModal_me
     ...useSendInquiry_me
@@ -145,26 +145,26 @@ const meFragment = graphql`
   }
 `
 
-interface InfiniteDiscoveryBottomSheetFooterQueryRendererProps extends BottomSheetFooterProps {
+interface ArtworkCardBottomSheetFooterQueryRendererProps extends BottomSheetFooterProps {
   artworkID: string
 }
 
-const infiniteDiscoveryBottomSheetFooterQuery = graphql`
-  query InfiniteDiscoveryBottomSheetFooterQuery($id: String!) {
+const artworkCardBottomSheetFooterQuery = graphql`
+  query ArtworkCardBottomSheetFooterQuery($id: String!) {
     me {
-      ...InfiniteDiscoveryBottomSheetFooter_me
+      ...ArtworkCardBottomSheetFooter_me
     }
     artwork(id: $id) {
-      ...InfiniteDiscoveryBottomSheetFooter_artwork
+      ...ArtworkCardBottomSheetFooter_artwork
     }
   }
 `
 
-export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscoveryBottomSheetFooterQueryRendererProps> =
+export const ArtworkCardBottomSheetFooterQueryRenderer: FC<ArtworkCardBottomSheetFooterQueryRendererProps> =
   withSuspense({
     Component: ({ artworkID, ...rest }) => {
-      const data = useLazyLoadQuery<InfiniteDiscoveryBottomSheetFooterQuery>(
-        infiniteDiscoveryBottomSheetFooterQuery,
+      const data = useLazyLoadQuery<ArtworkCardBottomSheetFooterQuery>(
+        artworkCardBottomSheetFooterQuery,
         {
           id: artworkID,
         }
@@ -174,16 +174,16 @@ export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscove
         return null
       }
 
-      return <InfiniteDiscoveryBottomSheetFooter artwork={data.artwork} me={data.me} {...rest} />
+      return <ArtworkCardBottomSheetFooter artwork={data.artwork} me={data.me} {...rest} />
     },
-    LoadingFallback: (props) => <InfiniteDiscoveryBottomSheetFooterSkeleton {...props} />,
+    LoadingFallback: (props) => <ArtworkCardBottomSheetFooterSkeleton {...props} />,
     ErrorFallback: (_errorProps, props) => {
-      return <InfiniteDiscoveryBottomSheetFooterErrorFallback {...props} />
+      return <ArtworkCardBottomSheetFooterErrorFallback {...props} />
     },
   })
 
-const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
-  InfiniteDiscoveryBottomSheetFooterQueryRendererProps
+const ArtworkCardBottomSheetFooterErrorFallback: React.FC<
+  ArtworkCardBottomSheetFooterQueryRendererProps
 > = (props) => {
   const color = useColor()
   const space = useSpace()
@@ -203,7 +203,7 @@ const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
   )
 }
 const getInitialAuctionTimerState = (
-  artwork: NonNullable<InfiniteDiscoveryBottomSheetFooter_artwork$data>
+  artwork: NonNullable<ArtworkCardBottomSheetFooter_artwork$data>
 ) => {
   if (!artwork.isInAuction) {
     return null
@@ -218,7 +218,7 @@ const getInitialAuctionTimerState = (
   })
 }
 
-export const InfiniteDiscoveryBottomSheetFooterSkeleton: FC<BottomSheetFooterProps> = (props) => {
+export const ArtworkCardBottomSheetFooterSkeleton: FC<BottomSheetFooterProps> = (props) => {
   const { bottom } = useSafeAreaInsets()
   const color = useColor()
 

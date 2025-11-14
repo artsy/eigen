@@ -394,7 +394,7 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
-      // The InfiniteDiscoveryBottomSheet should be rendered with the first artwork's data
+      // The ArtworkCardBottomSheet should be rendered with the first artwork's data
       expect(screen.getByText("New Works For You")).toBeOnTheScreen()
     })
 
