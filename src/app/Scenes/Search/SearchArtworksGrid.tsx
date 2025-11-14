@@ -114,6 +114,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           data={artworks}
           keyExtractor={(item) => item.id}
           numColumns={NUM_COLUMNS_MASONRY}
+          // This is needed to make sure we are getting the right column index for each item
+          optimizeItemArrangement={false}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           ListEmptyComponent={
