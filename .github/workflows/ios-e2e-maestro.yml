@@ -65,11 +65,11 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
-      - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
+      - name: Create and boot iPhone 16 Pro iOS 18.5 simulator
         run: |
-          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
+          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.5..."
           # Create the simulator
-          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-5)
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
