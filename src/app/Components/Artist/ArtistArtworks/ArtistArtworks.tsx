@@ -293,6 +293,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         ListHeaderComponent={
           <>
             <Tabs.SubTabBar>

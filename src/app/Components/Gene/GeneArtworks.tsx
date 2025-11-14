@@ -128,6 +128,8 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
             </Box>
           )
         }
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
