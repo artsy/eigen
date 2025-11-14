@@ -3826,42 +3826,9 @@ type ArtworkTemplate {
   metric: String
   partnerID: String!
   priceCurrency: String
-
-  # A formatted price with various currency formatting options.
-  priceListed(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # A formatted price with various currency formatting options.
-  priceMax(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-
-  # A formatted price with various currency formatting options.
-  priceMin(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
+  priceListed: Money
+  priceMax: Money
+  priceMin: Money
   publisher(format: Format): String
   series(format: Format): String
   shippingNotes: String
