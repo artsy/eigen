@@ -1,11 +1,13 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
+import { EXPERIMENT_NAME } from "app/system/flags/experiments"
 import { logAction } from "app/utils/loggers"
 import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import logger from "redux-logger"
+import { IVariant } from "unleash-proxy-client"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
@@ -142,6 +144,33 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
   }
   return features[key].readyForRelease
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used in a react component. Use `useExperimentVariant` instead.
+ * It is safe to use in contexts that don't require reactivity.
+ */
+export function unsafe_getExperiment(key: EXPERIMENT_NAME): IVariant | null {
+  const state = globalStoreInstance().getState() ?? null
+
+  if (state) {
+    const effectiveVariant = {
+      name:
+        state.artsyPrefs.experiments.localVariantOverrides[key] ||
+        state.artsyPrefs.experiments.unleashVariants[key]?.name ||
+        null,
+      enabled: state.artsyPrefs.experiments.localVariantOverrides[key]
+        ? true
+        : state.artsyPrefs.experiments.unleashVariants[key]?.enabled || undefined,
+      payload: state.artsyPrefs.experiments.unleashVariants[key]?.payload || undefined,
+    } as IVariant
+    return effectiveVariant
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
+  }
+  return null
 }
 
 /**

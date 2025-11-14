@@ -44,7 +44,7 @@ export const SalesScreenQuery = graphql`
   }
 `
 
-export const shouldIncludeAuctionLotsRecsBackfill = (variant: IVariant): boolean => {
+export const shouldIncludeAuctionLotsRecsBackfill = (variant: IVariant | null): boolean => {
   return !(variant && variant.enabled && variant.name === "experiment")
 }
 

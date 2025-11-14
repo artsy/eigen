@@ -1,16 +1,19 @@
 import { assignDeep } from "app/store/persistence"
 import { EXPERIMENT_NAME } from "app/system/flags/experiments"
 import { action, Action } from "easy-peasy"
+import { IVariant } from "unleash-proxy-client"
 
 export interface ExperimentsModel {
   sessionState: {
     isReady: boolean
     lastUpdate: string | null
   }
+  unleashVariants: { [k in EXPERIMENT_NAME]?: IVariant }
   localVariantOverrides: { [k in EXPERIMENT_NAME]?: string }
   localPayloadOverrides: { [k in EXPERIMENT_NAME]?: string }
 
   setSessionState: Action<this, Partial<this["sessionState"]>>
+  setUnleashVariants: Action<ExperimentsModel, { [k in EXPERIMENT_NAME]?: IVariant }>
   setLocalVariantOverride: Action<
     ExperimentsModel,
     { key: EXPERIMENT_NAME; value: string | undefined | null }
@@ -27,11 +30,19 @@ export const getExperimentsModel = (): ExperimentsModel => ({
     isReady: false,
     lastUpdate: null,
   },
+  unleashVariants: {},
   localVariantOverrides: {},
   localPayloadOverrides: {},
 
-  setSessionState: action((state, payload) => {
-    assignDeep(state, { sessionState: payload })
+  setSessionState: action<ExperimentsModel, Partial<ExperimentsModel["sessionState"]>>(
+    (state, payload) => {
+      assignDeep(state, { sessionState: payload })
+    }
+  ),
+
+  // Explicitly set Unleash variants; keep this separate from sessionState for clarity and typing.
+  setUnleashVariants: action((state, payload) => {
+    state.unleashVariants = payload || {}
   }),
   setLocalVariantOverride: action((state, { key, value }) => {
     if (!value) {

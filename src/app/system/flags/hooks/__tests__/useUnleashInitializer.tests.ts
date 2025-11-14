@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-native"
-import { useUnleashClient } from "@unleash/proxy-client-react"
+import { useUnleashClient, useFlags } from "@unleash/proxy-client-react"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
 import { jwtDecode } from "jwt-decode"
@@ -20,6 +20,7 @@ jest.mock("react-native", () => ({
 }))
 
 const mockUseUnleashClient = useUnleashClient as jest.MockedFunction<typeof useUnleashClient>
+const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 const mockJwtDecode = jwtDecode as jest.MockedFunction<typeof jwtDecode>
 
 const mockClient = {
@@ -33,12 +34,18 @@ const mockGlobalStore = {
   useAppState: jest.fn(),
 }
 
+const mockSetUnleashVariants = jest.fn()
+
 describe("useUnleashInitializer", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockUseUnleashClient.mockReturnValue(mockClient as any)
     ;(GlobalStore as any).useAppState = mockGlobalStore.useAppState
+    ;(GlobalStore as any).actions = {
+      artsyPrefs: { experiments: { setUnleashVariants: mockSetUnleashVariants } },
+    }
     mockClient.getContext.mockReturnValue({ userId: undefined })
+    mockUseFlags.mockReturnValue([] as any)
   })
 
   it("does not start client when userID is not available", () => {
@@ -146,5 +153,46 @@ describe("useUnleashInitializer", () => {
 
     expect(mockClient.setContextField).toHaveBeenCalledTimes(3) // userId + userRoles on second call
     expect(mockClient.start).toHaveBeenCalledTimes(2)
+  })
+
+  it("populates GlobalStore.unleashVariants from flags", () => {
+    mockGlobalStore.useAppState.mockImplementation((selector) => {
+      const state = { auth: { userID: "user123", userAccessToken: null } }
+      return selector(state)
+    })
+
+    const flags = [
+      {
+        name: "onyx_internal-testing-experiment",
+        variant: { name: "experiment-a", enabled: true, payload: { type: "string", value: "p" } },
+      },
+      { name: "some_other_flag", variant: { name: "control", enabled: false } },
+    ]
+
+    mockUseFlags.mockReturnValue(flags as any)
+
+    renderHook(() => useUnleashInitializer())
+
+    expect(mockSetUnleashVariants).toHaveBeenCalled()
+    const calledWith = mockSetUnleashVariants.mock.calls[0][0]
+    expect(calledWith).toHaveProperty("unleashVariants")
+    expect(calledWith.unleashVariants["onyx_internal-testing-experiment"].name).toEqual(
+      "experiment-a"
+    )
+  })
+
+  it("writes an empty map when no flags are present", () => {
+    mockGlobalStore.useAppState.mockImplementation((selector) => {
+      const state = { auth: { userID: "user123", userAccessToken: null } }
+      return selector(state)
+    })
+
+    mockUseFlags.mockReturnValue([] as any)
+
+    renderHook(() => useUnleashInitializer())
+
+    expect(mockSetUnleashVariants).toHaveBeenCalled()
+    const calledWith = mockSetUnleashVariants.mock.calls[0][0]
+    expect(calledWith).toEqual({})
   })
 })

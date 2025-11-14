@@ -1,5 +1,6 @@
-import { useUnleashClient } from "@unleash/proxy-client-react"
+import { useUnleashClient, useFlags, IVariant } from "@unleash/proxy-client-react"
 import { GlobalStore } from "app/store/GlobalStore"
+import { experiments, EXPERIMENT_NAME } from "app/system/flags/experiments"
 import { jwtDecode } from "jwt-decode"
 import { useEffect } from "react"
 
@@ -29,5 +30,23 @@ export const useUnleashInitializer = () => {
     return () => {
       client.stop()
     }
-  }, [userID, userAccessToken])
+  }, [userID, userAccessToken, client])
+
+  // Populate GlobalStore with Unleash variants whenever flags update
+  const flags = useFlags()
+
+  useEffect(() => {
+    const map = Object.keys(experiments).reduce(
+      (acc, key) => {
+        const found = flags.find((f) => f.name === key)
+        if (found) {
+          acc[key as EXPERIMENT_NAME] = found.variant as IVariant
+        }
+        return acc
+      },
+      {} as Record<EXPERIMENT_NAME, IVariant>
+    )
+
+    GlobalStore.actions.artsyPrefs.experiments.setUnleashVariants?.(map)
+  }, [flags])
 }

@@ -247,9 +247,8 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getExperiment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
@@ -703,8 +702,9 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [SalesScreenQuery],
     prepareVariables: [
       () => {
-        const { variant } = useExperimentVariant("onyx_auctions_hub")
-        const includeBackfill = shouldIncludeAuctionLotsRecsBackfill(variant)
+        const experiment = unsafe_getExperiment("onyx_auctions_hub")
+        const includeBackfill = shouldIncludeAuctionLotsRecsBackfill(experiment)
+
         return { includeBackfill: includeBackfill }
       },
     ],
