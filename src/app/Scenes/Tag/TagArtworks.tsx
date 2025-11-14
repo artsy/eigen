@@ -121,6 +121,8 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         ListEmptyComponent={
           initialArtworksTotal ? (
             <Box mt={1}>

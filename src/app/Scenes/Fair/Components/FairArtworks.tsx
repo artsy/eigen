@@ -158,6 +158,8 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Flex mb={6}>
@@ -286,6 +288,8 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Flex mb={6}>
