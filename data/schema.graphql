@@ -23814,6 +23814,8 @@ type UpdateArtistSuccess {
 }
 
 input UpdateArtworkEditionSetInput {
+  # Additional information about the artwork
+  additionalInformation: String
   artistProofs: String
 
   # The availability of the artwork
@@ -23956,6 +23958,8 @@ type UpdateArtworkImportSuccess {
 }
 
 input UpdateArtworkMutationInput {
+  # Additional information about the artwork
+  additionalInformation: String
   artistProofs: String
 
   # The availability of the artwork
