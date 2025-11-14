@@ -5,6 +5,7 @@ import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
 import { useToast } from "app/Components/Toast/toastHook"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevToggleName, devToggles } from "app/store/config/features"
 import { Versions } from "app/store/migration"
@@ -182,6 +183,15 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Copied to clipboard", "middle")
             }}
           />
+
+          <DevMenuButtonItem
+            title="Crash test"
+            onPress={() => {
+              // TODO: revert me, testing expo crash behavior
+              LegacyNativeModules.ARTemporaryAPIModule.getUserEmail()
+            }}
+          />
+
           <DevMenuButtonItem
             title="Log out"
             titleColor="red100"

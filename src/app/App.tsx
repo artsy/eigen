@@ -84,8 +84,7 @@ const Main = () => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
-    // TODO: revert me, testing expo crash behavior
-    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail()
+
     Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
