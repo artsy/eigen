@@ -160,7 +160,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl: refreshControl,
       onScroll: rest.onScroll,
       testID: "masonry-artwork-grid",
-      // masonry: true,
+      masonry: true,
+      // This is needed to make sure we are getting the right column index for each item
+      optimizeItemArrangement: false,
     } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
   }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
 
