@@ -42,7 +42,7 @@ export const getExperimentsModel = (): ExperimentsModel => ({
 
   // Explicitly set Unleash variants; keep this separate from sessionState for clarity and typing.
   setUnleashVariants: action((state, payload) => {
-    state.unleashVariants = payload || {}
+    state.unleashVariants = payload ?? {}
   }),
   setLocalVariantOverride: action((state, { key, value }) => {
     if (!value) {
