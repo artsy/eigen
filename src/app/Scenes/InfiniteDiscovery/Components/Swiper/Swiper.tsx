@@ -58,7 +58,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const [cards, setCards] = useState(_cards)
     const swipedCardX = useSharedValue(-width)
     const _activeIndex = useSharedValue(0)
-    const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
+    const [activeIndex, setActiveIndex] = useState(_activeIndex.get())
 
     const swipedKeys = useSharedValue<Key[]>([])
     // a list of cards that the user has seen
