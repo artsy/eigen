@@ -155,15 +155,18 @@ export function unsafe_getExperiment(key: EXPERIMENT_NAME): IVariant | null {
   const state = globalStoreInstance().getState() ?? null
 
   if (state) {
+    const hasLocalOverride = !!state.artsyPrefs.experiments.localVariantOverrides[key];
     const effectiveVariant = {
       name:
         state.artsyPrefs.experiments.localVariantOverrides[key] ||
         state.artsyPrefs.experiments.unleashVariants[key]?.name ||
         null,
-      enabled: state.artsyPrefs.experiments.localVariantOverrides[key]
+      enabled: hasLocalOverride
         ? true
         : state.artsyPrefs.experiments.unleashVariants[key]?.enabled || undefined,
-      payload: state.artsyPrefs.experiments.unleashVariants[key]?.payload || undefined,
+      payload: hasLocalOverride
+        ? (state.artsyPrefs.experiments.localPayloadOverrides?.[key] ?? undefined)
+        : state.artsyPrefs.experiments.unleashVariants[key]?.payload || undefined,
     } as IVariant
     return effectiveVariant
   }
