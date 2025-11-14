@@ -651,7 +651,6 @@ jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")
   return {
     ...jest.requireActual("@shopify/flash-list"),
-    MasonryFlashList: FlatList,
     FlashList: FlatList,
   }
 })

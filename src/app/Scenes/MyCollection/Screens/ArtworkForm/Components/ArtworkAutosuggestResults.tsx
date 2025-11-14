@@ -8,7 +8,7 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashList } from "@shopify/flash-list"
+import { FlashList } from "@shopify/flash-list"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -19,7 +19,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
+  getColumnIndex,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
@@ -64,13 +64,13 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   }, [viewer.artworks?.edges?.length])
 
   return (
-    <MasonryFlashList
+    <FlashList
+      masonry
       contentContainerStyle={{ paddingBottom: space(12) }}
       showsVerticalScrollIndicator={false}
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
       keyExtractor={(item) => item.id}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       keyboardShouldPersistTaps="handled"
       onEndReached={loadMore}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
@@ -96,7 +96,8 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
           </Box>
         </Box>
       }
-      renderItem={({ item, index, columnIndex }) => {
+      renderItem={({ item, index }) => {
+        const columnIndex = getColumnIndex(index)
         const imgAspectRatio = item.image?.aspectRatio ?? 1
         const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
 
