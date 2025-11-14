@@ -15,7 +15,7 @@ import {
 } from "@artsy/icons/native"
 import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
-import Sentry, { captureException, captureMessage } from "@sentry/react-native"
+import { captureException, captureMessage } from "@sentry/react-native"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
