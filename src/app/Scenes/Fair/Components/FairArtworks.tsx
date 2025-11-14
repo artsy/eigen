@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, SkeletonText, Spacer, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashList, MasonryListRenderItem } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import {
   FairArtworks_fair$data,
@@ -23,7 +23,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
+  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -94,31 +94,29 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
-  const renderItem: MasonryListRenderItem<FairArtworkType> = useCallback(
-    ({ item, index, columnIndex }) => {
-      const imgAspectRatio = item.image?.aspectRatio ?? 1
-      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-      const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<FairArtworkType> = useCallback(({ item, index }) => {
+    const columnIndex = getColumnIndex(index)
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
 
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <ArtworkGridItem
-            itemIndex={index}
-            contextScreenOwnerType={OwnerType.fair}
-            contextScreenOwnerId={data.internalID}
-            contextScreenOwnerSlug={data.slug}
-            artwork={item}
-            height={imgHeight}
-          />
-        </Flex>
-      )
-    },
-    []
-  )
+    return (
+      <Flex
+        pl={columnIndex === 0 ? 0 : 1}
+        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+        mt={2}
+      >
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.fair}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      </Flex>
+    )
+  }, [])
 
   if (!data) {
     return null
@@ -160,7 +158,6 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Flex mb={6}>
@@ -285,11 +282,10 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
 
   return (
     <>
-      <MasonryFlashList
+      <FlashList
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Flex mb={6}>
@@ -310,7 +306,9 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         }
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        renderItem={({ item, index, columnIndex }) => {
+        renderItem={({ item, index }) => {
+          const columnIndex = getColumnIndex(index)
+
           const imgAspectRatio = item.image?.aspectRatio ?? 1
           const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
           const imgHeight = imgWidth / imgAspectRatio

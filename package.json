@@ -108,7 +108,7 @@
   "dependencies": {
     "@artsy/cohesion": "4.324.0",
     "@artsy/icons": "3.56.0",
-    "@artsy/palette-mobile": "22.0.0",
+    "@artsy/palette-mobile": "22.1.0--canary.424.5073.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
     "@d11/react-native-fast-image": "8.12.0",
@@ -139,7 +139,7 @@
     "@segment/analytics-react-native-plugin-braze": "0.9.0",
     "@segment/sovran-react-native": "1.1.3",
     "@sentry/react-native": "6.21.0",
-    "@shopify/flash-list": "1.8.3",
+    "@shopify/flash-list": "2.2.0",
     "@stripe/stripe-react-native": "0.50.3",
     "@styled-system/theme-get": "5.1.2",
     "@unleash/proxy-client-react": "4.5.2",
