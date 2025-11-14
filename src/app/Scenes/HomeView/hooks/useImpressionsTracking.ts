@@ -4,7 +4,8 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { ViewToken } from "react-native"
-import { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
+import { useAnimatedReaction, useSharedValue } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 import { useTracking } from "react-tracking"
 
 type TrackableItem = { id: string; index: number | null }
@@ -103,7 +104,7 @@ export const useItemsImpressionsTracking = ({
     () => renderedItems.value,
     (currentItems) => {
       if (!__TEST__) {
-        runOnJS(trackItems)(currentItems)
+        scheduleOnRN(trackItems, currentItems)
       }
     },
     [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
