@@ -119,6 +119,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
         data={filteredArtworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState hideClearButton />

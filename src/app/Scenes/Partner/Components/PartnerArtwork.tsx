@@ -92,6 +92,8 @@ export const PartnerArtwork: React.FC<{
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <TabEmptyState text={emptyText} />

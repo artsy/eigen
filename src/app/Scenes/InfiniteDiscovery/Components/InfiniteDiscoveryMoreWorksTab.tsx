@@ -72,6 +72,8 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
       keyboardShouldPersistTaps="handled"
+      // This is needed to make sure we are getting the right column index for each item
+      optimizeItemArrangement={false}
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<FilteredArtworkGridZeroState />}
       ListFooterComponent={() => (
