@@ -272,3 +272,15 @@ This patch was added to fix the build on RN81.
 #### When can we remove this:
 
 It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
+
+## react-native-reanimated package.json flags
+
+### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
+
+#### Explanation/Context:
+
+This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+
+#### When can we remove this:
+
+When reanimated adopts this by default.

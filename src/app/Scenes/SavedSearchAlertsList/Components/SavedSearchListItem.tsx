@@ -10,11 +10,11 @@ import { Alert } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   Easing,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -58,7 +58,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
     .activeOffsetX([-5, 5])
     .withTestId(`pan-alert-${alert.internalID}`)
     .onBegin(() => {
-      runOnJS(onSwipeBegin)(alert.internalID)
+      scheduleOnRN(onSwipeBegin, alert.internalID)
     })
     .onChange((event) => {
       // Prevent swiping to the right
