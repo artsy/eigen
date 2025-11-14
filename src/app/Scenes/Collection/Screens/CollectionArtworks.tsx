@@ -142,6 +142,8 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState

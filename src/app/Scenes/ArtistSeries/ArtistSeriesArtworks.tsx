@@ -125,6 +125,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
       <Tabs.Masonry
         testID="ArtistSeriesArtworksGrid"
         data={artworksList}
+        // This is needed to make sure we are getting the right column index for each item
+        optimizeItemArrangement={false}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
