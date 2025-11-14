@@ -283,3 +283,15 @@ not reset. This causes the module to never start listening again causing events 
 #### When can we remove this:
 
 It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
+
+## react-native-reanimated package.json flags
+
+### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
+
+#### Explanation/Context:
+
+This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+
+#### When can we remove this:
+
+When reanimated adopts this by default.
