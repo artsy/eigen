@@ -2,6 +2,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin"
 import { usePerformanceMonitorDevTools } from "@rozenite/performance-monitor-plugin"
 import * as Sentry from "@sentry/react-native"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
@@ -83,6 +84,8 @@ const Main = () => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
+    // TODO: revert me, testing expo crash behavior
+    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail()
     Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)

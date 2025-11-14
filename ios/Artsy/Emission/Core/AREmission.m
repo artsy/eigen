@@ -84,19 +84,23 @@ static AREmission *_sharedInstance = nil;
 
 - (NSString *)stateStringForKey:(NSString *)stateKey
 {
-    id result = [self.notificationsManagerModule.state valueForKey:stateKey];
-    if (result == nil || result == [NSNull null]) {
-        return nil;
-    }
+    [NSException raise:NSInternalInconsistencyException
+                    format:@"Testing expo crash behavior"];
 
-    if (![result isKindOfClass:NSString.class]) {
-        [NSException raise:NSInternalInconsistencyException
-                        format:@"Value for key '%@' is not a string. Type: %@, Value: %@",
-                                   stateKey,
-                                   NSStringFromClass([result class]),
-                                   result];
-    }
-    return result;
+
+//    id result = [self.notificationsManagerModule.state valueForKey:stateKey];
+//    if (result == nil || result == [NSNull null]) {
+//        return nil;
+//    }
+//
+//    if (![result isKindOfClass:NSString.class]) {
+//        [NSException raise:NSInternalInconsistencyException
+//                        format:@"Value for key '%@' is not a string. Type: %@, Value: %@",
+//                                   stateKey,
+//                                   NSStringFromClass([result class]),
+//                                   result];
+//    }
+    return @"blongus";
 }
 
 - (NSString *)reactStateStringForKey:(NSString *)stateKey
