@@ -2,8 +2,8 @@ import { Flex, Spacer, Tabs, Text } from "@artsy/palette-mobile"
 import { ListRenderItem } from "@shopify/flash-list"
 import { PartnerOverviewListArtistsQuery } from "__generated__/PartnerOverviewListArtistsQuery.graphql"
 import {
-  PartnerOverviewListArtists_partner$key,
   PartnerOverviewListArtists_partner$data,
+  PartnerOverviewListArtists_partner$key,
 } from "__generated__/PartnerOverviewListArtists_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
@@ -55,7 +55,6 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
 
   return (
     <Tabs.FlashList
-      estimatedItemSize={85}
       data={artists}
       keyExtractor={keyExtractor}
       ListHeaderComponent={() => {

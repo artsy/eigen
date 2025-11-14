@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
-  Text,
+  Flex,
   SimpleMessage,
   Tabs,
+  Text,
   useScreenDimensions,
-  Flex,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryListRenderItem } from "@shopify/flash-list"
+import { ListRenderItem } from "@shopify/flash-list"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
@@ -18,7 +18,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
+  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -91,7 +91,9 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem: MasonryListRenderItem<TagArtworkType> = useCallback(({ item, columnIndex }) => {
+  const renderItem: ListRenderItem<TagArtworkType> = useCallback(({ item, index }) => {
+    const columnIndex = getColumnIndex(index)
+
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
@@ -118,7 +120,6 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           initialArtworksTotal ? (
