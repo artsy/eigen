@@ -17517,6 +17517,9 @@ type Offer {
   # The order this offer belongs to
   order: Order
 
+  # Pricing breakdown lines
+  pricingBreakdownLines: [PricingBreakdownLineUnion]!
+
   # The shipping total for this offer
   shippingTotal: Money
 
@@ -17619,11 +17622,14 @@ type Order {
 
   # The total amount of the line items
   itemsTotal: Money
+
+  # The last offer for this order
+  lastSubmittedOffer: Offer
   lineItems: [LineItem]!
   mode: OrderModeEnum!
 
-  # List of offers for this order
-  offers: [Offer!]
+  # List of submitted offers for this order
+  offers: [Offer!]! @deprecated(reason: "Use `submittedOffers` field instead")
 
   # Payment method used for the order
   paymentMethod: OrderPaymentMethodEnum
@@ -17631,7 +17637,10 @@ type Order {
   # The payment method details that was used for the order
   paymentMethodDetails: PaymentMethodUnion
 
-  # Order pricing breakdown lines
+  # The pending offer for this order
+  pendingOffer: Offer
+
+  # Pricing breakdown lines
   pricingBreakdownLines: [PricingBreakdownLineUnion]!
 
   # The selected fulfillment option for the order
@@ -17651,6 +17660,9 @@ type Order {
 
   # Stripe confirmation token for the order
   stripeConfirmationToken: String
+
+  # List of submitted offers for this order
+  submittedOffers: [Offer!]!
 
   # The total amount for tax
   taxTotal: Money
