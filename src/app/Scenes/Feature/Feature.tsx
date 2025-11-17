@@ -118,13 +118,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           <Flex pb={2} mx={2}>
             {!!set.name && <Text variant="lg-display">{set.name}</Text>}
             {!!set.description && (
-              <Box py={1}>
-                <ReadMore
-                  content={set.description}
-                  maxChars={200}
-                  textVariant="md"
-                  linkTextVariant="md"
-                />
+              <Box>
+                <ReadMore content={set.description} maxChars={200} color="mono60" textStyle="new" />
               </Box>
             )}
           </Flex>
