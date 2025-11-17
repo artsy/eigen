@@ -1,6 +1,9 @@
 name: Android E2E Tests (Maestro)
 
 on:
+  push:
+    branches:
+      - gkartalis/increase-android-maestro-disk
   workflow_run:
     workflows: ["Build Android QA App for Maestro"]
     types:
@@ -9,7 +12,7 @@ on:
 
 jobs:
   e2e-tests:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
     strategy:
