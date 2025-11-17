@@ -71,12 +71,12 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
         <Flex>
           {!!(feature.description || feature.callout) && (
             <Flex alignItems="center">
-              <Flex gap={4} pt={4} px={2} maxWidth={600}>
+              <Flex gap={1} pt={4} px={2} maxWidth={600}>
                 {!!feature.description && (
-                  <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
+                  <FeatureMarkdown content={feature.description} textProps={{ variant: "sm" }} />
                 )}
                 {!!feature.callout && (
-                  <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
+                  <FeatureMarkdown content={feature.callout} textProps={{ variant: "sm" }} />
                 )}
               </Flex>
             </Flex>
@@ -115,11 +115,18 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       allSections.push({
         key: "setTitle:" + set.id,
         content: (
-          <Flex pb={2} mx={2}>
+          <Flex pb={2} gap={2} mx={2}>
             {!!set.name && <Text variant="lg-display">{set.name}</Text>}
             {!!set.description && (
               <Box>
-                <ReadMore content={set.description} maxChars={200} color="mono60" textStyle="new" />
+                <ReadMore
+                  content={set.description}
+                  maxChars={200}
+                  color="mono60"
+                  textStyle="new"
+                  textVariant="sm"
+                  linkTextVariant="sm"
+                />
               </Box>
             )}
           </Flex>
