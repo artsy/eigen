@@ -3,7 +3,12 @@ import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mo
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
-const STATES = {
+type SectionTitleVariants = "small" | "default" | "large"
+
+const STATES: Record<
+  SectionTitleVariants,
+  { titleVariant: TextProps["variant"]; iconSize: number }
+> = {
   small: {
     titleVariant: "xs",
     iconSize: 12,
@@ -17,8 +22,6 @@ const STATES = {
     iconSize: 24,
   },
 }
-
-type SectionTitleVariants = keyof typeof STATES
 
 export const SectionTitle: React.FC<
   {
