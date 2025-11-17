@@ -46,9 +46,8 @@ export const CollectionsByCategoryArtworksWithFiltersRail: FC<
           href={hrefWithParams(href, title)}
           onPress={handleTitlePress}
           px={2}
-          RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
           title={title}
-          titleVariant="md"
+          variant="large"
         />
 
         <ArtworkRail
@@ -107,7 +106,7 @@ export const CollectionsByCategoryArtworksWithFiltersRailPlaceholder: FC<
           onPress={() => {}}
           RightButtonContent={() => <ChevronRightIcon fill="mono60" ml={0.5} />}
           title={title}
-          titleVariant="md"
+          variant="large"
         />
 
         <Spacer y={1} />
