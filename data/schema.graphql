@@ -10324,6 +10324,9 @@ input CreateShippingPresetMutationInput {
 
   # Whether pickup is available.
   pickupAvailable: Boolean
+
+  # Currency of the shipping fee
+  priceCurrency: String
 }
 
 type CreateShippingPresetMutationPayload {
@@ -22745,12 +22748,6 @@ type ShippingPreset implements Node {
 
   # Whether Artsy handles international shipping
   artsyShippingInternational: Boolean
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
 
   # Domestic shipping fee in cents
   domesticShippingFeeCents: Int
@@ -22772,12 +22769,9 @@ type ShippingPreset implements Node {
 
   # Whether pickup is available
   pickupAvailable: Boolean
-  updatedAt(
-    format: String
 
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
+  # Currency of the shipping fee
+  priceCurrency: String
 }
 
 # A connection to a list of items.
