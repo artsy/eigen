@@ -50,16 +50,68 @@ module.exports = async ({ github, context, core }) => {
 
     if (associatedPR) {
       const platformLabel = platform === "ios" ? "iOS" : "Android"
-      const comment = `🎉${platformEmoji} ${platformLabel} beta version generated: **${version}**\n\nThis beta is now available on ${deploymentTargetName}!`
+      const commitHash = context.sha.substring(0, 7) // Short hash
+      const newBetaEntry = `- **${version}** - Available on ${deploymentTargetName}`
 
-      await github.rest.issues.createComment({
+      // Comment marker to identify our beta versions comment for this specific commit
+      const commentMarker = `<!-- beta-versions-comment-${commitHash} -->`
+
+      // Get all comments on the PR
+      const { data: comments } = await github.rest.issues.listComments({
         owner: context.repo.owner,
         repo: context.repo.repo,
         issue_number: associatedPR.number,
-        body: comment,
       })
 
-      console.log(`Posted comment on PR #${associatedPR.number}`)
+      // Find existing beta versions comment
+      const existingComment = comments.find((comment) => comment.body.includes(commentMarker))
+
+      if (existingComment) {
+        // Parse existing comment and add new beta
+        let commentBody = existingComment.body
+
+        // Check if this platform section already exists
+        const platformSectionRegex = new RegExp(
+          `### ${platformLabel} ${platformEmoji}([\\s\\S]*?)(?=###|$)`
+        )
+        const platformSectionMatch = commentBody.match(platformSectionRegex)
+
+        if (platformSectionMatch) {
+          // Platform section exists, append to it
+          const existingSection = platformSectionMatch[0]
+          const updatedSection = existingSection.trimEnd() + "\n" + newBetaEntry
+          commentBody = commentBody.replace(existingSection, updatedSection)
+        } else {
+          // Platform section doesn't exist, add it
+          commentBody += `\n\n### ${platformLabel} ${platformEmoji}\n${newBetaEntry}`
+        }
+
+        // Update the existing comment
+        await github.rest.issues.updateComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          comment_id: existingComment.id,
+          body: commentBody,
+        })
+
+        console.log(`Updated existing comment on PR #${associatedPR.number}`)
+      } else {
+        // Create new comment with structured format
+        const comment = `${commentMarker}
+## 🎉 Beta Versions Generated (commit: \`${commitHash}\`)
+
+### ${platformLabel} ${platformEmoji}
+${newBetaEntry}`
+
+        await github.rest.issues.createComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: associatedPR.number,
+          body: comment,
+        })
+
+        console.log(`Created new comment on PR #${associatedPR.number}`)
+      }
     } else {
       console.log("Beta was not triggered from an open PR - no comment posted")
     }
