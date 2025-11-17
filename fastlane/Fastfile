@@ -454,13 +454,27 @@ end
 
 desc 'Get next android build version code'
 lane :get_next_android_build_version do
+  # Generate date-based build number in format YYYYMMDDHH (e.g., 2025111310)
+  # This matches iOS format but without dots since Google Play Console doesn't accept them
+  now = Time.now.utc
+  next_version_code = now.strftime('%Y%m%d%H')
+
+  # Check if this version code already exists in the alpha track
   current_version_code = google_play_track_version_codes(
-      track: 'alpha'
+    track: 'alpha'
   ).first
-  next_version_code = current_version_code + 1
+
+  # If the generated version code matches the current version code (same hour),
+  # append minutes to create a unique version (YYYYMMDDHHMI format)
+  if current_version_code && next_version_code.to_i == current_version_code.to_i
+    next_version_code = now.strftime('%Y%m%d%H%M')
+    puts "Version code conflict detected. Using extended format with minutes: #{next_version_code}"
+  end
+
   file_dir = "#{Dir.pwd}/next_version_code.txt"
   puts "Writing next version code to: #{file_dir}"
-  File.write(file_dir, next_version_code.to_s)
+  puts "Generated date-based version code: #{next_version_code}"
+  File.write(file_dir, next_version_code)
 end
 
 desc 'Set some git properties on android for reading in builds'
