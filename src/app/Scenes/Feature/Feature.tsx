@@ -4,6 +4,7 @@ import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
+import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Stack } from "app/Components/Stack"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
@@ -40,14 +41,20 @@ const MAX_VIDEO_HEIGHT = 360
 
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const color = useColor()
-  const sets = extractNodes(feature.sets)
+
   const { width, height: screenHeight, orientation, safeAreaInsets } = useScreenDimensions()
   // Calculate height similar to web: max(50vh - navHeight, 360px)
   const navHeight = BASE_NAV_HEIGHT + safeAreaInsets.top
   const videoHeight = Math.max(screenHeight * 0.5 - navHeight, MAX_VIDEO_HEIGHT)
 
   const enableFeatureVideoPhase2 = useFeatureFlag("AREnableFeatureVideoPhase2Type")
+
+  if (!feature) {
+    return <NotFoundFailureView title="Feature not found" />
+  }
+
   let containsVideo = !!feature.video?.url
+  const sets = extractNodes(feature.sets)
 
   const header: FlatListSection = {
     key: "header",
@@ -96,8 +103,8 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       continue
     }
 
-    // Add separator before this set (except for the first section)
-    if (allSections.length > 0) {
+    // Add separator before this set (except for the first section and video sections)
+    if (allSections.length > 0 && set.itemType != "Video") {
       allSections.push({
         key: `separator:${set.id}`,
         content: <Separator mb={4} style={{ borderColor: color("mono100") }} />,
@@ -166,7 +173,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           allSections.push({
             key: "artworks:" + set.id,
             content: (
-              <Flex mx={2}>
+              <Flex mx={2} mb={2}>
                 <GenericGrid artworks={items as any} width={width - 40} />
               </Flex>
             ),
