@@ -41,6 +41,8 @@ export const LoginWelcomeStep: React.FC = () => {
     action: "verify_email",
   })
 
+  console.log("[RECAPTCHA] got token", token)
+
   return (
     <>
       <Recaptcha active={isCurrentScreen} />

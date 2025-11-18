@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { RecaptchaWebView } from "app/Components/Recaptcha/RecaptchaWebView"
-import { useCallback, useState } from "react"
+import { act, useCallback, useState } from "react"
 
 type State = "idle" | "error" | undefined
 type UseRecaptchaProps = { source: string; action: string }
@@ -11,15 +11,18 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
   const [state, setState] = useState<State>()
   const [refreshKey, setRefreshKey] = useState(0)
 
-  const handleOnToken = (token: string) => {
+  const handleOnToken = useCallback((token: string) => {
     setToken(token)
     setTokenTimestamp(Date.now())
-  }
+  }, [])
 
-  const handleOnError = (error: string) => {
-    console.log(`[Recaptcha error [${source} for action ${action}]`, error)
-    setState("error")
-  }
+  const handleOnError = useCallback(
+    (error: string) => {
+      console.log(`[Recaptcha error [${source} for action ${action}]`, error)
+      setState("error")
+    },
+    [action, source]
+  )
 
   // Check if token is still valid (tokens expire after ~2 minutes)
   const isTokenValid = useCallback(() => {
