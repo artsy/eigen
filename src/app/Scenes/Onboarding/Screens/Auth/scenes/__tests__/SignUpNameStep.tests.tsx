@@ -21,7 +21,7 @@ jest.mock("app/Scenes/Onboarding/Auth/hooks/useCountryCode", () => ({
   }),
 }))
 
-jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation", () => ({
+jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation", () => ({
   useAuthNavigation: jest.fn(),
   useAuthScreen: jest.fn().mockReturnValue({
     currentScreen: "SignUpNameStep",

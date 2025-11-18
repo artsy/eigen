@@ -6,7 +6,7 @@ import {
 import { SignUpPasswordStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/SignUpPasswordStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation", () => ({
+jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation", () => ({
   useAuthNavigation: jest.fn().mockReturnValue({
     navigate: jest.fn(),
     goBack: jest.fn(),
