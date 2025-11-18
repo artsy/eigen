@@ -7,9 +7,10 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { isTablet } from "react-native-device-info"
 import { ForgotPassword } from "./ForgotPassword"
-import { OTPMode } from "./OnboardingLoginWithOTP"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
+
+export type OTPMode = "on_demand" | "standard"
 
 export type OnboardingNavigationStack = {
   OnboardingHome: undefined
