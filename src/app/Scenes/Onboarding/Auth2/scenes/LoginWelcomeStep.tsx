@@ -46,20 +46,9 @@ export const LoginWelcomeStep: React.FC = () => {
     resetForm: () => void
   } | null>(null)
 
-  // Log token state changes
-  useEffect(() => {
-    console.log("[RECAPTCHA] Token state changed:", {
-      hasToken: !!token,
-      isValid: token ? isTokenValid() : "no token",
-      tokenLength: token?.length,
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
-
   // Retry submission when new token arrives
   useEffect(() => {
     if (pendingSubmission && token && isTokenValid()) {
-      console.log("[RECAPTCHA] New valid token received, retrying submission")
       const { email, resetForm } = pendingSubmission
       setPendingSubmission(null)
 
@@ -96,17 +85,12 @@ export const LoginWelcomeStep: React.FC = () => {
             .required("Email field is required"),
         })}
         onSubmit={async ({ email }, { resetForm }) => {
-          console.log("[RECAPTCHA] Form submitted, checking token...")
-
           // Check if token is missing or expired
           if (!token || !isTokenValid()) {
-            console.log("[RECAPTCHA] Token is", !token ? "missing" : "expired", "- refreshing...")
             setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
             refreshToken()
             return
           }
-
-          console.log("[RECAPTCHA] Token valid, proceeding with submission")
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
