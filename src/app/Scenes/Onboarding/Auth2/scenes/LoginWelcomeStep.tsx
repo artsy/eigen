@@ -21,7 +21,7 @@ import { useSocialLogin } from "app/utils/auth/socialSignInHelpers"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
@@ -36,12 +36,51 @@ export const LoginWelcomeStep: React.FC = () => {
 
   const navigation = useAuthNavigation()
 
-  const { Recaptcha, token } = useRecaptcha({
+  const { Recaptcha, token, isTokenValid, refreshToken } = useRecaptcha({
     source: "authentication",
     action: "verify_email",
   })
 
-  console.log("[RECAPTCHA] got token", token)
+  const [pendingSubmission, setPendingSubmission] = useState<{
+    email: string
+    resetForm: () => void
+  } | null>(null)
+
+  // Log token state changes
+  useEffect(() => {
+    console.log("[RECAPTCHA] Token state changed:", {
+      hasToken: !!token,
+      isValid: token ? isTokenValid() : "no token",
+      tokenLength: token?.length,
+    })
+  }, [token, isTokenValid])
+
+  // Retry submission when new token arrives
+  useEffect(() => {
+    if (pendingSubmission && token && isTokenValid()) {
+      console.log("[RECAPTCHA] New valid token received, retrying submission")
+      const { email, resetForm } = pendingSubmission
+      setPendingSubmission(null)
+
+      // Execute the submission
+      ;(async () => {
+        const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
+
+        if (res === "user_exists") {
+          navigation.navigate({ name: "LoginPasswordStep", params: { email } })
+        } else if (res === "user_does_not_exist") {
+          navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
+        } else if (res === "something_went_wrong") {
+          navigation.navigate({
+            name: "LoginPasswordStep",
+            params: { email, showSignUpLink: true },
+          })
+        }
+
+        resetForm()
+      })()
+    }
+  }, [pendingSubmission, token, isTokenValid, navigation])
 
   return (
     <>
@@ -55,14 +94,17 @@ export const LoginWelcomeStep: React.FC = () => {
             .required("Email field is required"),
         })}
         onSubmit={async ({ email }, { resetForm }) => {
-          // FIXME
-          if (!token) {
-            navigation.navigate({
-              name: "LoginPasswordStep",
-              params: { email, showSignUpLink: true },
-            })
+          console.log("[RECAPTCHA] Form submitted, checking token...")
+
+          // Check if token is missing or expired
+          if (!token || !isTokenValid()) {
+            console.log("[RECAPTCHA] Token is", !token ? "missing" : "expired", "- refreshing...")
+            setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
+            refreshToken()
             return
           }
+
+          console.log("[RECAPTCHA] Token valid, proceeding with submission")
 
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
