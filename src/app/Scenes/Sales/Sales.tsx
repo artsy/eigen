@@ -43,7 +43,6 @@ export const SalesScreenQuery = graphql`
 `
 
 export const Sales: React.FC = () => {
-  // include backfill in case of not using AuctionsHub HomeView section
 
   const data = useLazyLoadQuery<SalesQuery>(
     SalesScreenQuery,
