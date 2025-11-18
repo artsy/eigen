@@ -95,15 +95,15 @@ lane :upload_dsyms_to_sentry do |options|
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
-  Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-    # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-    sentry_debug_files_upload(
+   sentry_debug_files_upload(
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       org_slug: org_slug,
       project_slug: project_slug,
-      path: dsym_path,
-      include_sources: true
     )
+
+  Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
+    # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
+
 
     puts "Uploaded dsym for #{project_slug}"
   end
