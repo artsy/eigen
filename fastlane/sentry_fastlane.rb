@@ -101,7 +101,7 @@ lane :upload_dsyms_to_sentry do |options|
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       org_slug: org_slug,
       project_slug: project_slug,
-      path: dsym_path
+      path: dsym_path,
       include_sources: true
     )
 
