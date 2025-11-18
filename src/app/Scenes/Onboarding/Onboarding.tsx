@@ -5,7 +5,6 @@ import { AuthApp } from "app/Scenes/Onboarding/Auth2/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isTablet } from "react-native-device-info"
 import { ForgotPassword } from "./ForgotPassword"
 import {
@@ -63,71 +62,29 @@ export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
   const color = useColor()
 
-  const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
-
   return (
     <StackNavigator.Navigator
-      initialRouteName={signupLoginFusionEnabled ? "OnboardingHome" : "OnboardingWelcome"}
+      initialRouteName="OnboardingHome"
       screenOptions={{
         headerShown: false,
       }}
     >
-      {signupLoginFusionEnabled ? (
-        <StackNavigator.Group
-          screenOptions={{
-            animation: "slide_from_right",
-            orientation: !isTablet() ? "portrait" : "default",
-          }}
-        >
-          <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
-          <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-          {/**
-           * There are two "Forgot Password?" forms in this flow:
-           * 1. The ForgotPasswordStep step in the OnboardingHome screen
-           * 2. The ForgotPassword screen linked-to in the OnboardingSocialLink screen
-           */}
-          <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-          <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-        </StackNavigator.Group>
-      ) : (
-        <StackNavigator.Group
-          screenOptions={{
-            orientation: !isTablet() ? "portrait" : "default",
-            animation: "slide_from_right",
-          }}
-        >
-          <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-          <StackNavigator.Screen
-            name="OnboardingLogin"
-            component={OnboardingLogin}
-            options={({ route: { params } }) => ({
-              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
-            })}
-          />
-          <StackNavigator.Screen
-            name="OnboardingLoginWithEmail"
-            component={OnboardingLoginWithEmail}
-            options={({ route: { params } }) => ({
-              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
-            })}
-          />
-          <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccount"
-            component={OnboardingCreateAccount}
-            options={({ route: { params } }) => ({
-              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
-            })}
-          />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountWithEmail"
-            component={OnboardingCreateAccountWithEmail}
-          />
-          <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-          <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-          <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-        </StackNavigator.Group>
-      )}
+      <StackNavigator.Group
+        screenOptions={{
+          animation: "slide_from_right",
+          orientation: !isTablet() ? "portrait" : "default",
+        }}
+      >
+        <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
+        <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+        {/**
+         * There are two "Forgot Password?" forms in this flow:
+         * 1. The ForgotPasswordStep step in the OnboardingHome screen
+         * 2. The ForgotPassword screen linked-to in the OnboardingSocialLink screen
+         */}
+        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+        <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+      </StackNavigator.Group>
 
       <StackNavigator.Group
         screenOptions={{
