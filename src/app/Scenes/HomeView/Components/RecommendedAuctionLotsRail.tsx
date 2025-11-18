@@ -73,9 +73,8 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
 )
 
 const artworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer
-  @argumentDefinitions(includeBackfill: { type: "Boolean!", defaultValue: true }) {
-    artworksForUser(includeBackfill: $includeBackfill, first: 10, onlyAtAuction: true) {
+  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
+    artworksForUser(first: 10, onlyAtAuction: true) {
       edges {
         node {
           title

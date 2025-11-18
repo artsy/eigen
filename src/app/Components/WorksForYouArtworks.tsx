@@ -13,7 +13,7 @@ import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-export const PAGE_SIZE = 20
+const PAGE_SIZE = 20
 
 interface NewWorksForYouProps {
   viewer: WorksForYouArtworks_viewer$key

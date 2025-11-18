@@ -5,7 +5,6 @@ import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRai
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
 import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBids"
 // eslint-disable-next-line no-restricted-imports
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -24,7 +23,7 @@ export const SUPPORT_ARTICLE_URL =
   "https://support.artsy.net/s/article/The-Complete-Guide-to-Auctions-on-Artsy"
 
 export const SalesScreenQuery = graphql`
-  query SalesQuery($includeBackfill: Boolean!) {
+  query SalesQuery {
     currentlyRunningAuctions: viewer {
       ...CurrentlyRunningAuctions_viewer
     }
@@ -32,7 +31,7 @@ export const SalesScreenQuery = graphql`
       ...UpcomingAuctions_viewer
     }
     recommendedAuctionLots: viewer {
-      ...RecommendedAuctionLotsRail_artworkConnection @arguments(includeBackfill: $includeBackfill)
+      ...RecommendedAuctionLotsRail_artworkConnection
     }
     me {
       ...SaleListActiveBids_me
@@ -44,14 +43,11 @@ export const SalesScreenQuery = graphql`
 `
 
 export const Sales: React.FC = () => {
-  const { variant } = useExperimentVariant("onyx_auctions_hub")
-
   // include backfill in case of not using AuctionsHub HomeView section
-  const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
 
   const data = useLazyLoadQuery<SalesQuery>(
     SalesScreenQuery,
-    { includeBackfill: includeBackfill },
+    {},
     {
       fetchPolicy: "store-and-network",
     }
