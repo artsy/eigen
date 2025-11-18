@@ -10,10 +10,9 @@ import {
   useColor,
 } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { useScreenDimensions } from "app/utils/hooks"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
@@ -34,8 +33,6 @@ export interface OnboardingLoginWithOTPValuesSchema {
 }
 
 export type OTPMode = "on_demand" | "standard"
-
-const initialValues: OnboardingLoginWithOTPValuesSchema = { otp: "" }
 
 export const otpSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
@@ -134,47 +131,5 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
         </Flex>
       </KeyboardAvoidingView>
     </Flex>
-  )
-}
-
-export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
-  navigation,
-  route,
-}) => {
-  const email = route.params.email
-  const password = route.params.password
-  const otpMode = route.params.otpMode
-  const onSignIn = route.params.onSignIn
-
-  const formik = useFormik<OnboardingLoginWithOTPValuesSchema>({
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: true,
-    initialValues,
-    initialErrors: {},
-    onSubmit: async ({ otp }, { setErrors, validateForm }) => {
-      validateForm()
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email,
-        password,
-        otp: otp.trim(),
-        onSignIn,
-      })
-
-      if (res === "invalid_otp") {
-        setErrors({ otp: "Invalid two-factor authentication code" })
-      } else if (res !== "success") {
-        setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
-      }
-    },
-    validationSchema: otpSchema,
-  })
-
-  return (
-    <FormikProvider value={formik}>
-      <OnboardingLoginWithOTPForm navigation={navigation} route={route} otpMode={otpMode} />
-    </FormikProvider>
   )
 }

@@ -7,15 +7,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { isTablet } from "react-native-device-info"
 import { ForgotPassword } from "./ForgotPassword"
-import {
-  OnboardingCreateAccount,
-  OnboardingCreateAccountWithEmail,
-} from "./OnboardingCreateAccount/OnboardingCreateAccount"
-import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
-import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
+import { OTPMode } from "./OnboardingLoginWithOTP"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
-import { OnboardingWelcome } from "./OnboardingWelcome"
 
 export type OnboardingNavigationStack = {
   OnboardingHome: undefined

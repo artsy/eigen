@@ -1,29 +1,15 @@
 import { Box, Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import {
-  NavigationContainer,
-  NavigationContainerRef,
-  NavigationIndependentTree,
-} from "@react-navigation/native"
-import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { NavigationContainerRef } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
-import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
-import { GlobalStore } from "app/store/GlobalStore"
+import { OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { BackButton } from "app/system/navigation/BackButton"
-import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
-import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, KeyboardAvoidingView, ScrollView } from "react-native"
+import { useFormikContext } from "formik"
+import React, { useEffect, useRef } from "react"
+import { Animated, ScrollView } from "react-native"
 import * as Yup from "yup"
-import {
-  OnboardingCreateAccountEmail,
-  OnboardingCreateAccountEmailParams,
-} from "./OnboardingCreateAccountEmail"
-import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
-import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
-
-export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mode="signup" />
+import { OnboardingCreateAccountEmailParams } from "./OnboardingCreateAccountEmail"
 
 export type OnboardingCreateAccountProps = StackScreenProps<
   OnboardingNavigationStack,
@@ -36,8 +22,6 @@ export type OnboardingCreateAccountNavigationStack = {
   OnboardingCreateAccountName: undefined
   OnboardingWebView: { url: OnboardingWebViewRoute }
 }
-
-const StackNavigator = createStackNavigator<OnboardingCreateAccountNavigationStack>()
 
 export const __unsafe__createAccountNavigationRef: React.MutableRefObject<NavigationContainerRef<any> | null> =
   {
@@ -76,119 +60,6 @@ export const getCurrentRoute = () =>
   __unsafe__createAccountNavigationRef?.current?.getCurrentRoute()?.name as
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
-
-export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({
-  navigation,
-}) => {
-  const [currentRoute, setCurrentRoute] = useState<keyof OnboardingCreateAccountNavigationStack>(
-    "OnboardingCreateAccountEmail"
-  )
-
-  const formik = useFormik<FormikSchema>({
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: true,
-    initialValues: {
-      email: "",
-      password: "",
-      name: "",
-      acceptedTerms: false,
-      agreedToReceiveEmails: false,
-    },
-    initialErrors: {},
-    onSubmit: async ({ email, password, name, agreedToReceiveEmails, acceptedTerms }) => {
-      switch (currentRoute) {
-        case "OnboardingCreateAccountEmail":
-          // continue with the sign up
-          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
-          break
-        case "OnboardingCreateAccountPassword":
-          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
-          break
-        case "OnboardingCreateAccountName":
-          if (acceptedTerms) {
-            const res = await GlobalStore.actions.auth.signUp({
-              oauthProvider: "email",
-              oauthMode: "email",
-              email,
-              password,
-              name: name.trim(),
-              agreedToReceiveEmails,
-            })
-
-            if (!res.success) {
-              if (res.error === "blocked_attempt") {
-                showBlockedAuthError("sign up")
-              } else {
-                Alert.alert("Try again", res.message)
-              }
-            }
-          }
-          break
-
-        default:
-          break
-      }
-    },
-    validationSchema: () => {
-      switch (currentRoute) {
-        case "OnboardingCreateAccountEmail":
-          return emailSchema
-        case "OnboardingCreateAccountPassword":
-          return passwordSchema
-        case "OnboardingCreateAccountName":
-          return nameSchema
-        default:
-          break
-      }
-    },
-  })
-
-  return (
-    <Flex flex={1} backgroundColor="mono0" flexGrow={1} pb={1}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <FormikProvider value={formik}>
-          <NavigationIndependentTree>
-            <NavigationContainer
-              onStateChange={(state) => {
-                const routes = state?.routes
-                const index = state?.index
-                if (index !== undefined && routes) {
-                  setCurrentRoute(routes[index].name as any)
-                }
-              }}
-              ref={__unsafe__createAccountNavigationRef}
-            >
-              <StackNavigator.Navigator
-                screenOptions={{
-                  ...TransitionPresets.SlideFromRightIOS,
-                  headerShown: false,
-                  headerMode: "screen",
-                }}
-              >
-                <StackNavigator.Screen
-                  name="OnboardingCreateAccountEmail"
-                  component={OnboardingCreateAccountEmail}
-                  initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-                />
-                <StackNavigator.Screen
-                  name="OnboardingCreateAccountPassword"
-                  component={OnboardingCreateAccountPassword}
-                />
-                <StackNavigator.Screen
-                  name="OnboardingCreateAccountName"
-                  component={OnboardingCreateAccountName}
-                />
-                <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-              </StackNavigator.Navigator>
-              {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
-            </NavigationContainer>
-          </NavigationIndependentTree>
-        </FormikProvider>
-      </KeyboardAvoidingView>
-    </Flex>
-  )
-}
 
 interface OnboardingCreateAccountScreenWrapperProps {
   onBackButtonPress?: () => void

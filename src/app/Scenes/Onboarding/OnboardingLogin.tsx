@@ -1,19 +1,12 @@
 import { Box, Button, Flex, Input, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
+import { useFormikContext } from "formik"
 import React, { useEffect, useRef } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
-import { OnboardingSocialPick } from "./OnboardingSocialPick"
-
-export const OnboardingLogin: React.FC = () => {
-  return <OnboardingSocialPick mode="login" />
-}
 
 export type OnboardingLoginProps = StackScreenProps<
   OnboardingNavigationStack,
@@ -180,49 +173,5 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
         </Flex>
       </KeyboardAvoidingView>
     </Flex>
-  )
-}
-
-const initialValues: OnboardingLoginValuesSchema = { email: "", password: "" }
-
-export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
-  const formik = useFormik<OnboardingLoginValuesSchema>({
-    enableReinitialize: true,
-    validateOnChange: false,
-    validateOnBlur: true,
-    initialValues,
-    initialErrors: {},
-    onSubmit: async ({ email, password }, { setErrors, validateForm }) => {
-      validateForm()
-      const res = await GlobalStore.actions.auth.signIn({
-        oauthProvider: "email",
-        oauthMode: "email",
-        email,
-        password,
-      })
-
-      if (res === "otp_missing") {
-        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
-      } else if (res === "on_demand_otp_missing") {
-        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
-      }
-
-      if (res === "auth_blocked") {
-        showBlockedAuthError("sign in")
-        return
-      }
-
-      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
-        // For security purposes, we are returning a generic error message
-        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
-      }
-    },
-    validationSchema: loginSchema,
-  })
-
-  return (
-    <FormikProvider value={formik}>
-      <OnboardingLoginWithEmailForm navigation={navigation} route={route} />
-    </FormikProvider>
   )
 }
