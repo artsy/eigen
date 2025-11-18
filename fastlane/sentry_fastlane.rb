@@ -102,6 +102,7 @@ lane :upload_dsyms_to_sentry do |options|
       org_slug: org_slug,
       project_slug: project_slug,
       path: dsym_path
+      include_sources: true
     )
 
     puts "Uploaded dsym for #{project_slug}"
