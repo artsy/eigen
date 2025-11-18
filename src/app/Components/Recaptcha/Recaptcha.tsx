@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { RecaptchaWebView } from "app/Components/Recaptcha/RecaptchaWebView"
-import { act, useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 
 type State = "idle" | "error" | undefined
 type UseRecaptchaProps = { source: string; action: string }

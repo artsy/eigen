@@ -53,7 +53,8 @@ export const LoginWelcomeStep: React.FC = () => {
       isValid: token ? isTokenValid() : "no token",
       tokenLength: token?.length,
     })
-  }, [token, isTokenValid])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token])
 
   // Retry submission when new token arrives
   useEffect(() => {
@@ -80,7 +81,8 @@ export const LoginWelcomeStep: React.FC = () => {
         resetForm()
       })()
     }
-  }, [pendingSubmission, token, isTokenValid, navigation])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingSubmission, token, navigation])
 
   return (
     <>
