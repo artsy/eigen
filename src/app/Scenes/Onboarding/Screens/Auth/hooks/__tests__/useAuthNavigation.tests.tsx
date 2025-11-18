@@ -3,7 +3,7 @@ import {
   useAuthScreen,
 } from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation")
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation")
 
 describe("useAuthNavigation", () => {
   const mockUseAuthNavigation = useAuthNavigation as jest.Mock

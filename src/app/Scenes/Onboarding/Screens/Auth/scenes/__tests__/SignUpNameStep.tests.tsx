@@ -14,14 +14,14 @@ jest.mock("@artsy/palette-mobile", () => ({
 
 const mockUseCountryCode = useCountryCode as jest.Mock
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useCountryCode", () => ({
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useCountryCode", () => ({
   useCountryCode: jest.fn().mockReturnValue({
     loading: false,
     isAutomaticallySubscribed: false,
   }),
 }))
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation", () => ({
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation", () => ({
   useAuthNavigation: jest.fn(),
   useAuthScreen: jest.fn().mockReturnValue({
     currentScreen: "SignUpNameStep",

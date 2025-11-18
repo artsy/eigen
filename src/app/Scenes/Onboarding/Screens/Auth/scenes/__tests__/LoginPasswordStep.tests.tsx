@@ -8,7 +8,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation")
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation")
 
 describe("LoginPasswordStep", () => {
   const mockUseAuthNavigation = useAuthNavigation as jest.Mock

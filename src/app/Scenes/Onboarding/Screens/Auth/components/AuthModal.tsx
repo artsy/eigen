@@ -1,6 +1,6 @@
 import { Box, Flex, useTheme } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
-import { useOnboardingAuth2Tracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuth2Tracking"
+import { useOnboardingAuthTracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuthTracking"
 import { MotiView } from "moti"
 import { useEffect, useMemo } from "react"
 import { Dimensions } from "react-native"
@@ -25,7 +25,7 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { color, space } = useTheme()
   const insets = useSafeAreaInsets()
 
-  const tracking = useOnboardingAuth2Tracking()
+  const tracking = useOnboardingAuthTracking()
 
   useEffect(() => {
     tracking.authImpression()

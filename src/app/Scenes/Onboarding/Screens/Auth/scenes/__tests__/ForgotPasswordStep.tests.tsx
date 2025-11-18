@@ -7,7 +7,7 @@ import { ForgotPasswordStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/Fo
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation", () => ({
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation", () => ({
   useAuthNavigation: jest.fn(),
   useAuthScreen: jest.fn().mockReturnValue({
     params: { email: "foo@bar.baz" },

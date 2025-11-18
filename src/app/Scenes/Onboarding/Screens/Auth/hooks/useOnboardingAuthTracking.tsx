@@ -1,7 +1,7 @@
 import { ActionType, AuthImpression } from "@artsy/cohesion"
 import { useTracking } from "react-tracking"
 
-export const useOnboardingAuth2Tracking = () => {
+export const useOnboardingAuthTracking = () => {
   const { trackEvent } = useTracking()
 
   return {

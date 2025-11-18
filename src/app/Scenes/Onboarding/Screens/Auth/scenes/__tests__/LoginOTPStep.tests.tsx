@@ -4,7 +4,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const mockUseAuthScreen = jest.fn()
 
-jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation", () => ({
+jest.mock("app/Scenes/Onboarding/Auth/hooks/useAuthNavigation", () => ({
   useAuthNavigation: jest.fn(),
   useAuthScreen: () => mockUseAuthScreen(),
 }))
