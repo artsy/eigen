@@ -1,4 +1,4 @@
-import { AuthContext, AuthScreen } from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
+import { AuthContext, AuthScreen } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 
 export const useAuthNavigation = () => {
   const actions = AuthContext.useStoreActions((actions) => actions)

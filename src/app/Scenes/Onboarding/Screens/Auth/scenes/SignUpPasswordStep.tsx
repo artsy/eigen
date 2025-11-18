@@ -11,9 +11,9 @@ import {
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useInputAutofocus"
-import { waitForSubmit } from "app/Scenes/Onboarding/Screens/Auth2/utils/waitForSubmit"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
+import { waitForSubmit } from "app/Scenes/Onboarding/Screens/Auth/utils/waitForSubmit"
 import { Formik, useFormikContext } from "formik"
 import React, { useRef } from "react"
 import * as Yup from "yup"

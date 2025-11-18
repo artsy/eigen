@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { LoginOTPStep } from "app/Scenes/Onboarding/Screens/Auth2/scenes/LoginOTPStep"
+import { LoginOTPStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/LoginOTPStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const mockUseAuthScreen = jest.fn()

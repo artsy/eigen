@@ -1,6 +1,6 @@
 import { Box, Flex, useTheme } from "@artsy/palette-mobile"
-import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
-import { useOnboardingAuth2Tracking } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useOnboardingAuth2Tracking"
+import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
+import { useOnboardingAuth2Tracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuth2Tracking"
 import { MotiView } from "moti"
 import { useEffect, useMemo } from "react"
 import { Dimensions } from "react-native"

@@ -1,7 +1,7 @@
 import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { AuthApp } from "app/Scenes/Onboarding/Screens/Auth2/AuthApp"
+import { AuthApp } from "app/Scenes/Onboarding/Screens/Auth/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"

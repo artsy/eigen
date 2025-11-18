@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { LoginPasswordStep } from "app/Scenes/Onboarding/Screens/Auth2/scenes/LoginPasswordStep"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { LoginPasswordStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/LoginPasswordStep"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"

@@ -1,13 +1,13 @@
 import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/Components/EmailSubscriptionCheckbox"
+import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/Components/TermsOfServiceCheckbox"
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useCountryCode"
-import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useInputAutofocus"
-import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/Components/EmailSubscriptionCheckbox"
-import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/Components/TermsOfServiceCheckbox"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"

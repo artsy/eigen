@@ -12,8 +12,8 @@ import {
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useInputAutofocus"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"

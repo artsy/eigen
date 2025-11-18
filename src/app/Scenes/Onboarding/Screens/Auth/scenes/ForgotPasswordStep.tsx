@@ -2,8 +2,8 @@ import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useInputAutofocus"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik, useFormikContext } from "formik"
 import { useEffect, useRef } from "react"

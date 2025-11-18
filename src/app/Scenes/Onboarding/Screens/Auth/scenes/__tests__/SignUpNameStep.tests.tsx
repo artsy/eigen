@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth2/hooks/useCountryCode"
-import { SignUpNameStep } from "app/Scenes/Onboarding/Screens/Auth2/scenes/SignUpNameStep"
+import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode"
+import { SignUpNameStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/SignUpNameStep"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"

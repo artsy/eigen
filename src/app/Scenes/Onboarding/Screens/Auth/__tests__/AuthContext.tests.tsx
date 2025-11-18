@@ -3,7 +3,7 @@ import {
   AuthContext,
   AuthContextModel,
   defaultState,
-} from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
+} from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 
 describe("AuthContext", () => {
   const setup = (initialState: Partial<AuthContextModel>) => {

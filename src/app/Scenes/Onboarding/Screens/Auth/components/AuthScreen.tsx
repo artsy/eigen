@@ -2,7 +2,7 @@ import { Flex } from "@artsy/palette-mobile"
 import {
   AuthContext,
   AuthScreen as AuthScreenItem,
-} from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
+} from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 
 interface AuthScreenProps {
   name: AuthScreenItem["name"]

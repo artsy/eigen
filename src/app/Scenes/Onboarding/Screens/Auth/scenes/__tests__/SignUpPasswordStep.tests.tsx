@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
-import { SignUpPasswordStep } from "app/Scenes/Onboarding/Screens/Auth2/scenes/SignUpPasswordStep"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
+import { SignUpPasswordStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/SignUpPasswordStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation", () => ({

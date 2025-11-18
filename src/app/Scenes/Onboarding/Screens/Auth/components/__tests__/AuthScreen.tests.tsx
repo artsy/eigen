@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
-import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
-import { AuthScreen } from "app/Scenes/Onboarding/Screens/Auth2/components/AuthScreen"
+import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
+import { AuthScreen } from "app/Scenes/Onboarding/Screens/Auth/components/AuthScreen"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("AuthScreen", () => {

@@ -1,6 +1,6 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
-import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth2/AuthContext"
+import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { MotiView } from "moti"
 import React from "react"
 import { Image } from "react-native"

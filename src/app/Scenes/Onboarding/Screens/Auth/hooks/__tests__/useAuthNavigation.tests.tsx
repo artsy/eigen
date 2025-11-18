@@ -1,7 +1,7 @@
 import {
   useAuthNavigation,
   useAuthScreen,
-} from "app/Scenes/Onboarding/Screens/Auth2/hooks/useAuthNavigation"
+} from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
 
 jest.mock("app/Scenes/Onboarding/Auth2/hooks/useAuthNavigation")
 
