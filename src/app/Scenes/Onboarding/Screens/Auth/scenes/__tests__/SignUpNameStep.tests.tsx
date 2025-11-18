@@ -14,7 +14,7 @@ jest.mock("@artsy/palette-mobile", () => ({
 
 const mockUseCountryCode = useCountryCode as jest.Mock
 
-jest.mock("app/Scenes/Onboarding/Auth/hooks/useCountryCode", () => ({
+jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode", () => ({
   useCountryCode: jest.fn().mockReturnValue({
     loading: false,
     isAutomaticallySubscribed: false,

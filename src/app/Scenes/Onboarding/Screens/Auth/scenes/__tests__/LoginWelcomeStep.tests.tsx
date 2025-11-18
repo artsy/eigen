@@ -10,7 +10,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
 
 jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation")
-jest.mock("app/Scenes/Onboarding/Auth/hooks/useInputAutofocus")
+jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus")
 jest.mock("app/utils/platformUtil")
 jest.mock("app/Components/Recaptcha/Recaptcha", () => ({
   useRecaptcha: jest.fn().mockReturnValue({ Recaptcha: () => {}, token: "recaptcha-token" }),
