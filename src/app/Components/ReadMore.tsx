@@ -52,6 +52,7 @@ export const ReadMore = React.memo(
       setIsExpandedState(expanded)
       onExpand?.(expanded)
     }
+
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
@@ -115,6 +116,39 @@ export const ReadMore = React.memo(
           return (
             <TextComponent {...textProps} color={color || "mono100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
+              {output(node.content, state)}
+            </TextComponent>
+          )
+        },
+      },
+      em: {
+        ...basicRules.em,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          return (
+            <TextComponent {...textProps} italic color={color || "mono100"} key={state.key}>
+              {output(node.content, state)}
+            </TextComponent>
+          )
+        },
+      },
+      strong: {
+        ...basicRules.strong,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          return (
+            <TextComponent
+              {...textProps}
+              weight="medium"
+              color={color || "mono100"}
+              key={state.key}
+            >
               {output(node.content, state)}
             </TextComponent>
           )

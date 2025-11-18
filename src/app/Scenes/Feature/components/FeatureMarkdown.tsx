@@ -6,6 +6,7 @@ export const FeatureMarkdown: React.FC<{
   content: string
   textProps?: Partial<React.ComponentProps<typeof Text>>
 }> = ({ content, textProps }) => {
+  // eslint-disable-next-line testing-library/render-result-naming-convention
   const rendered = renderMarkdown(content, {
     ...defaultRules({
       modal: false,
@@ -15,6 +16,24 @@ export const FeatureMarkdown: React.FC<{
           react: (node, output, state) => {
             return (
               <Text variant="sm" key={state.key} {...textProps}>
+                {output(node.content, state)}
+              </Text>
+            )
+          },
+        },
+        em: {
+          react: (node, output, state) => {
+            return (
+              <Text variant="sm" italic key={state.key} {...textProps}>
+                {output(node.content, state)}
+              </Text>
+            )
+          },
+        },
+        strong: {
+          react: (node, output, state) => {
+            return (
+              <Text variant="sm" weight="medium" key={state.key} {...textProps}>
                 {output(node.content, state)}
               </Text>
             )
