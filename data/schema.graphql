@@ -15328,6 +15328,7 @@ union Match =
   | Sale
   | Show
   | Tag
+  | Video
 
 # A connection to a list of items.
 type MatchConnection {
@@ -20746,6 +20747,7 @@ type Query {
       SALE
       SHOW
       TAG
+      VIDEO
       VIEWING_ROOM
     ]
     first: Int
@@ -22480,6 +22482,7 @@ enum SearchEntity {
   SALE
   SHOW
   TAG
+  VIDEO
   VIEWING_ROOM
 }
 
@@ -27014,6 +27017,7 @@ type Viewer {
       SALE
       SHOW
       TAG
+      VIDEO
       VIEWING_ROOM
     ]
     first: Int
