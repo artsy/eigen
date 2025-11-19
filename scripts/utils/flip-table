@@ -4,6 +4,9 @@ set -euxo pipefail
 
 # Clear local caches and build files
 
+echo 'Clear watchman (┛ಠ_ಠ)┛彡┻━┻'
+watchman watch-del-all
+
 echo 'Clear gradle cache'
 if [ -d node_modules ]; then
 	cd android
