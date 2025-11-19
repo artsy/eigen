@@ -1,5 +1,14 @@
 import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "@artsy/cohesion"
-import { Box, Flex, Join, Separator, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Join,
+  Separator,
+  Text,
+  Touchable,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
@@ -15,13 +24,15 @@ import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { InteractionManager, Platform, SafeAreaView } from "react-native"
-import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import * as ContextMenu from "zeego/context-menu"
 
-interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
+interface ContextAction {
+  title: string
+  systemIcon: string
   onPress?: () => void
 }
 
@@ -177,14 +188,11 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
 
   const contextActions = getContextMenuActions()
 
-  const handleContextPress: ContextMenuProps["onPress"] = (event) => {
+  const handleItemPress = (onPress?: () => void) => {
     if (haptic) {
       trigger?.(haptic === true ? "impactLight" : haptic)
     }
-
-    const onPressToCall = contextActions[event.nativeEvent.index].onPress
-
-    onPressToCall?.()
+    onPress?.()
   }
 
   const artworkPreviewComponent = (
@@ -196,20 +204,39 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
     )
   }
 
+  const space = useSpace()
+
   const [androidVisible, setAndroidVisible] = useState(false)
 
   // TODO: Enable in test enrivonment and fix broken tests
   if (isIOS && enableContextMenuIOS && !__TEST__) {
     return (
-      <ContextMenu
-        actions={contextActions}
-        onPress={handleContextPress}
-        preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
-        hideShadows={true}
-        previewBackgroundColor={!!dark ? color("mono100") : color("mono0")}
-      >
-        {children}
-      </ContextMenu>
+      <ContextMenu.Root>
+        <ContextMenu.Trigger style={{ paddingTop: 10 }}>{children}</ContextMenu.Trigger>
+
+        <ContextMenu.Content>
+          <ContextMenu.Preview
+            backgroundColor={!!dark ? color("mono100") : color("mono0")}
+            borderRadius={space(1)}
+          >
+            {() => artworkPreviewComponent(artwork, artworkDisplayProps)}
+          </ContextMenu.Preview>
+
+          {contextActions.map((action, index) => (
+            <ContextMenu.Item
+              key={`${action.title}-${index}`}
+              onSelect={() => handleItemPress(action.onPress)}
+            >
+              <ContextMenu.ItemIcon
+                ios={{
+                  name: action.systemIcon,
+                }}
+              />
+              <ContextMenu.ItemTitle>{action.title}</ContextMenu.ItemTitle>
+            </ContextMenu.Item>
+          ))}
+        </ContextMenu.Content>
+      </ContextMenu.Root>
     )
   }
 
