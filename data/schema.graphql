@@ -5094,6 +5094,9 @@ input BulkUpdateArtworksMetadataInput {
   # Adjusts the artworks' prices according to the value passed (percentage).
   priceAdjustment: Int
 
+  # The currency for the artworks. Required when setting flat shipping fees.
+  priceCurrency: String
+
   # Set artwork price visibility to price on request
   priceHidden: Boolean
 
