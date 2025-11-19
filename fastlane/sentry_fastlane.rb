@@ -99,6 +99,7 @@ lane :upload_dsyms_to_sentry do |options|
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       org_slug: org_slug,
       project_slug: project_slug,
+      include_sources: true
     )
 
   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
