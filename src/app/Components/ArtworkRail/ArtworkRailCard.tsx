@@ -1,8 +1,7 @@
-import { Box, Flex, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MAX_WIDTH,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
@@ -58,7 +57,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
     const isIOS = Platform.OS === "ios"
 
     const { trackEvent } = useTracking()
-    const space = useSpace()
 
     const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
     const disappearableRef = useRef<Disappearable>(null)
@@ -114,9 +112,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
                 }}
               >
                 <Flex
-                  height={
-                    ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
-                  }
                   minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
                   maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
                   justifyContent="flex-start"
