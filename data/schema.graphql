@@ -18325,6 +18325,9 @@ type Partner implements Node {
     before: String
     first: Int
     last: Int
+
+    # Filter by price currency. Returns presets with matching currency AND presets with no currency (which apply to all currencies).
+    priceCurrency: String
   ): ShippingPresetConnection
   showPromoted: Boolean
 
