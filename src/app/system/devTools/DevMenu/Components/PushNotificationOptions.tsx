@@ -115,7 +115,7 @@ export const PushNotificationOptions: React.FC<{}> = () => {
         </Flex>
         <Flex my={2}>
           <Expandable label="🔔 Recent Push Payloads" expanded={false}>
-            {pushPayloads.length === 0 ? (
+            {!pushPayloads || pushPayloads.length === 0 ? (
               <Flex my={2}>
                 <Text variant="xs" color="black60">
                   No recent push payloads
