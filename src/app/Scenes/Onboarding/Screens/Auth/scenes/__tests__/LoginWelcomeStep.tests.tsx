@@ -13,7 +13,12 @@ jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation")
 jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus")
 jest.mock("app/utils/platformUtil")
 jest.mock("app/Components/Recaptcha/Recaptcha", () => ({
-  useRecaptcha: jest.fn().mockReturnValue({ Recaptcha: () => {}, token: "recaptcha-token" }),
+  useRecaptcha: jest.fn().mockReturnValue({
+    Recaptcha: () => {},
+    token: "recaptcha-token",
+    isTokenValid: jest.fn(() => true),
+    refreshToken: jest.fn(),
+  }),
 }))
 
 describe("LoginWelcomeStep", () => {
@@ -109,26 +114,89 @@ describe("LoginWelcomeStep", () => {
       })
     })
 
-    it("navigates to the login password step if recaptcha fails", async () => {
-      mockUseRecaptcha.mockReturnValueOnce({ Recaptcha: () => {}, token: null })
+    it("triggers token refresh when token is missing and retries after refresh", async () => {
+      const refreshTokenSpy = jest.fn()
+      const isTokenValidSpy = jest.fn()
+      let tokenValue: string | null = null
+
+      isTokenValidSpy.mockImplementation(() => tokenValue !== null)
+
+      mockUseRecaptcha.mockReturnValue({
+        Recaptcha: () => {},
+        get token() {
+          return tokenValue
+        },
+        isTokenValid: isTokenValidSpy,
+        refreshToken: () => {
+          refreshTokenSpy()
+          // Simulate token refresh completing
+          tokenValue = "new-recaptcha-token"
+        },
+      })
+
+      GlobalStore.actions.auth.verifyUser = jest.fn().mockResolvedValue("user_exists") as any
 
       const navigateSpy = jest.fn()
-      mockUseAuthNavigation.mockReturnValueOnce({
+      mockUseAuthNavigation.mockReturnValue({
         navigate: navigateSpy,
       })
 
       renderExpandedWelcomeStep()
 
       fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
-      fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
 
       // eslint-disable-next-line testing-library/no-unnecessary-act
-      await act(() => fireEvent.press(screen.getByA11yHint("Continue to the next screen")))
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      })
 
+      // Advance timers to allow async operations to complete
+      act(() => {
+        jest.advanceTimersByTime(100)
+      })
+
+      expect(refreshTokenSpy).toHaveBeenCalled()
+      expect(GlobalStore.actions.auth.verifyUser).toHaveBeenCalledWith({
+        email: "foo@bar.baz",
+        recaptchaToken: "new-recaptcha-token",
+      })
       expect(navigateSpy).toHaveBeenCalledWith({
         name: "LoginPasswordStep",
-        params: { email: "foo@bar.baz", showSignUpLink: true },
+        params: { email: "foo@bar.baz" },
       })
+    })
+
+    it("triggers token refresh when token is expired", async () => {
+      const refreshTokenSpy = jest.fn()
+      const isTokenValidSpy = jest.fn(() => false)
+
+      mockUseRecaptcha.mockReturnValue({
+        Recaptcha: () => {},
+        token: "expired-token",
+        isTokenValid: isTokenValidSpy,
+        refreshToken: refreshTokenSpy,
+      })
+
+      const navigateSpy = jest.fn()
+      mockUseAuthNavigation.mockReturnValue({
+        navigate: navigateSpy,
+      })
+
+      renderExpandedWelcomeStep()
+
+      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+
+      // eslint-disable-next-line testing-library/no-unnecessary-act
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      })
+
+      act(() => {
+        jest.advanceTimersByTime(50)
+      })
+
+      expect(refreshTokenSpy).toHaveBeenCalled()
+      expect(navigateSpy).not.toHaveBeenCalled()
     })
   })
 
