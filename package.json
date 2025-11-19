@@ -165,10 +165,9 @@
     "react-fps": "1.0.6",
     "react-native": "0.81.5",
     "react-native-blob-util": "0.19.11",
-    "react-native-blurhash": "2.1.1",
+    "react-native-blurhash": "^2.1.2",
     "react-native-bootsplash": "6.3.10",
     "react-native-collapsible-tab-view": "8.0.1",
-    "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#brian/new-arch-woes",
     "react-native-device-info": "14.0.0",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.28.0",
@@ -176,6 +175,8 @@
     "react-native-haptic-feedback": "1.13.0",
     "react-native-image-crop-picker": "0.51.0",
     "react-native-in-app-review": "4.3.3",
+    "react-native-ios-context-menu": "3.2.0",
+    "react-native-ios-utilities": "5.2.0",
     "react-native-keychain": "10.0.0",
     "react-native-keys": "0.7.13",
     "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.0.1-new-arch",
@@ -212,7 +213,8 @@
     "url": "0.11.3",
     "uuid": "10.0.0",
     "victory-native": "37.3.4",
-    "yup": "0.31.1"
+    "yup": "0.31.1",
+    "zeego": "^3.0.6"
   },
   "devDependencies": {
     "@artsy/update-repo": "0.7.0",
