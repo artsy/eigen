@@ -16,7 +16,7 @@ The onboarding workflow consists of:
 
 ### Step 1: Create Your New Screen Component
 
-Create a new file in `src/app/Scenes/Onboarding/OnboardingQuiz/` directory:
+Create a new file in `src/app/Scenes/Onboarding/Screens/OnboardingQuiz/` directory:
 
 ```typescript
 // OnboardingYourNewScreen.tsx
