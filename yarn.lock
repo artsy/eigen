@@ -112,14 +112,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/to-title-case@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@artsy/to-title-case@npm:1.1.0"
+"@artsy/to-title-case@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@artsy/to-title-case@npm:1.2.0"
   dependencies:
     lodash.deburr: "npm:^4.1.0"
     lodash.isnumber: "npm:^3.0.3"
     lodash.upperfirst: "npm:^4.3.1"
-  checksum: 10c0/dbe59a040c190c52171de85824b71d4ba828361d82ad133fb10dac412adc86e60187fa101089f25e510dba3d40dd5409f843febc13741f997400abe589190f01
+  checksum: 10c0/22a69f74ed814bcf27721cc507e9be09fa7dbcde199b0434516b8e527cb7f1ebddd9c07cc6337cd0df5e1316c8332106a0cf9eab9c939e22b3e63b8128883ca8
   languageName: node
   linkType: hard
 
@@ -12570,7 +12570,7 @@ __metadata:
     "@artsy/cohesion": "npm:4.324.0"
     "@artsy/icons": "npm:3.56.0"
     "@artsy/palette-mobile": "npm:22.0.0"
-    "@artsy/to-title-case": "npm:1.1.0"
+    "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:7.25.2"
     "@babel/plugin-proposal-decorators": "npm:7.18.9"
