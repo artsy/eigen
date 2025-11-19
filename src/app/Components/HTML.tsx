@@ -78,6 +78,7 @@ export const HTML: React.FC<HTMLProps> = ({
             p: {
               fontFamily: FONTS.regular,
               color: color("mono100"),
+              marginBottom: "1em",
               ...variantStyles,
             },
             em: {
@@ -86,11 +87,19 @@ export const HTML: React.FC<HTMLProps> = ({
             },
             h2: {
               fontFamily: FONTS.medium,
+              fontSize: theme.textTreatments["lg-display"].fontSize,
+              lineHeight: theme.textTreatments["lg-display"].lineHeight,
+              letterSpacing: theme.textTreatments["lg-display"].letterSpacing,
+              marginBottom: "1em",
               fontWeight: "normal",
               color: color("mono100"),
             },
             h3: {
               fontFamily: FONTS.regular,
+              fontSize: theme.textTreatments["md"].fontSize,
+              lineHeight: theme.textTreatments["md"].lineHeight,
+              letterSpacing: theme.textTreatments["md"].letterSpacing,
+              marginBottom: "1em",
               fontWeight: "normal",
               color: color("mono100"),
             },
