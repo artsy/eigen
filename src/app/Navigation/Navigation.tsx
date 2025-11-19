@@ -11,7 +11,7 @@ import {
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
-import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"

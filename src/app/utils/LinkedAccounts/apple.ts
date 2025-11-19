@@ -5,7 +5,7 @@ import {
 import { apple_LinkAccountMutation } from "__generated__/apple_LinkAccountMutation.graphql"
 import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { AppleToken } from "app/Scenes/Onboarding/OnboardingSocialLink"
+import { AppleToken } from "app/Scenes/Onboarding/Screens/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEffect, useRef, useState } from "react"

@@ -134,12 +134,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
-  AREnableSignupLoginFusion: {
-    description: "Enable the fused signup and login flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSignupLoginFusion",
-  },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,

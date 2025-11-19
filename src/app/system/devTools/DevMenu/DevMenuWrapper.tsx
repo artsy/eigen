@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
+import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
