@@ -12767,7 +12767,7 @@ __metadata:
     styled-components: "npm:6.1.19"
     styled-system: "npm:5.1.5"
     supercluster: "npm:7.1.5"
-    title-case: "npm:^4.3.2"
+    title-case: "npm:4.3.2"
     tmp: "npm:0.2.4"
     tsx: "npm:4.19.1"
     typescript: "npm:5.8.3"
@@ -24599,7 +24599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"title-case@npm:^4.3.2":
+"title-case@npm:4.3.2":
   version: 4.3.2
   resolution: "title-case@npm:4.3.2"
   checksum: 10c0/f040c5b0586e3a4ac5881e59ac060ebfa56dae611b0d513ad211fa7f92597d418395fa902fe9d7ee49f98e557e88421e274680b22a3b04dd1ce1c577225444d3
