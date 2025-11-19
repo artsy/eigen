@@ -190,7 +190,10 @@ android {
                 expoUpdatesCheckOnLaunch: "NEVER",
                 expoUpdatesChannel: "canary",
                 expoRuntimeVersion: getRuntimeVersion(),
-                expoUpdatesDisableAntibrickingMeasures: "true"
+                expoUpdatesDisableAntibrickingMeasures: "true",
+                // explicitly disable cleartext traffic for beta builds same as release
+                // see https://github.com/artsy/eigen/pull/13016 for more info
+                usesCleartextTraffic: "false"
             ]
         }
     }
