@@ -158,8 +158,7 @@ android {
                 expoUpdatesCheckOnLaunch: "NEVER",
                 expoUpdatesChannel: "canary",
                 expoRuntimeVersion: getRuntimeVersion(),
-                expoUpdatesDisableAntibrickingMeasures: "false",
-                usesCleartextTraffic: "true"
+                expoUpdatesDisableAntibrickingMeasures: "false"
             ]
         }
         release {
@@ -176,8 +175,7 @@ android {
                 expoUpdatesCheckOnLaunch: "ALWAYS",
                 expoUpdatesChannel: "production",
                 expoRuntimeVersion: getRuntimeVersion(),
-                expoUpdatesDisableAntibrickingMeasures: "false",
-                usesCleartextTraffic: "false"
+                expoUpdatesDisableAntibrickingMeasures: "false"
             ]
         }
         beta {
