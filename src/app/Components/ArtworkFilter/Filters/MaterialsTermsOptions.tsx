@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   FilterData,
@@ -26,7 +26,7 @@ export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenPr
   const options: FilterData[] = (aggregation?.counts ?? []).map(
     ({ value: paramValue, name, count }) => {
       return {
-        displayText: toTitleCase(name),
+        displayText: titleCase(name),
         paramName: FilterParamName.materialsTerms,
         paramValue,
         count,

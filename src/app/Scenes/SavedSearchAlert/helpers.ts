@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { cmToIn, inToCm, parseRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import {
   SearchCriteria,
@@ -284,6 +284,6 @@ export const inferSeriesName = (seriesValue: string, artistNames: string[]) => {
       .trim()
     label = label.replace(new RegExp(`${artistName}`, "i"), "")
   })
-  label = toTitleCase(label.replace(/\s\s+/, " ").trim())
+  label = titleCase(label.replace(/\s\s+/, " ").trim())
   return label
 }

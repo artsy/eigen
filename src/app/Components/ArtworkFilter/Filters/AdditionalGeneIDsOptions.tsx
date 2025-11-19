@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -33,7 +33,7 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
     options = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
       return {
         paramName: FilterParamName.additionalGeneIDs,
-        displayText: toTitleCase(displayText),
+        displayText: titleCase(displayText),
         paramValue,
       }
     })

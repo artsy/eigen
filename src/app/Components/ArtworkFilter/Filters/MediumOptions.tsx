@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -31,7 +31,7 @@ export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ naviga
   const aggregation = aggregationForFilter(paramName, aggregations)
   const options = aggregation?.counts.map((aggCount) => {
     return {
-      displayText: toTitleCase(aggCount.name),
+      displayText: titleCase(aggCount.name),
       paramValue: aggCount.value,
       paramName,
       count: aggCount.count,

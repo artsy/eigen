@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   FilterData,
@@ -23,7 +23,7 @@ export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptio
   const { aggregation } = useArtworkFiltersAggregation({ paramName: PARAM_NAME })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    return { displayText: toTitleCase(name), paramName: PARAM_NAME, paramValue }
+    return { displayText: titleCase(name), paramName: PARAM_NAME, paramValue }
   })
 
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({

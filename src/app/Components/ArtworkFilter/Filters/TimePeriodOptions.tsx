@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -21,7 +21,7 @@ export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = (
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
     const label = getDisplayNameForTimePeriod(name)
-    const displayText = toTitleCase(label)
+    const displayText = titleCase(label)
 
     return { displayText, paramName: FilterParamName.timePeriod, paramValue }
   })

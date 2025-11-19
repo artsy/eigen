@@ -1,4 +1,4 @@
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
 import { compact } from "lodash"
@@ -65,11 +65,11 @@ export const getShowCity = ({
       }
     })
 
-    return matchingCity ? toTitleCase(matchingCity) : null
+    return matchingCity ? titleCase(matchingCity) : null
   }
 
   if (externalPartnerCity && showName.toLowerCase().includes(externalPartnerCity?.toLowerCase())) {
-    return toTitleCase(externalPartnerCity)
+    return titleCase(externalPartnerCity)
   }
 
   return null

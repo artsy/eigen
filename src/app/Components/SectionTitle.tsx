@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@artsy/icons/native"
 import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mobile"
-import { toTitleCase } from "@artsy/to-title-case"
+import { titleCase } from "title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
 type SectionTitleVariants = "small" | "default" | "large"
@@ -51,7 +51,7 @@ export const SectionTitle: React.FC<
   let titleText
 
   if (typeof title === "string") {
-    titleText = capitalized ? toTitleCase(title) : title
+    titleText = capitalized ? titleCase(title) : title
   }
 
   return (

@@ -27,18 +27,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.324.0":
-  version: 4.324.0
-  resolution: "@artsy/cohesion@npm:4.324.0"
+"@artsy/cohesion@npm:4.319.0":
+  version: 4.319.0
+  resolution: "@artsy/cohesion@npm:4.319.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/5af2dbb6e399c77c801133edb15b5aae9110517ad28daa44a31813e495550f40c005063370d7bf497208deb23350d12b3ea5665dc74056bd58ac73bf7638e6d3
+  checksum: 10c0/fd59d0354e4fc051fbb09c809b93d8ff56156ef739ab2ddff2bd2d0c0d900c9ebc48638ebfcfbc1c2911cd25f577901958e55bffdf514d3769df3f30483416ed
   languageName: node
   linkType: hard
 
-"@artsy/icons@npm:3.56.0":
-  version: 3.56.0
-  resolution: "@artsy/icons@npm:3.56.0"
+"@artsy/icons@npm:3.54.0":
+  version: 3.54.0
+  resolution: "@artsy/icons@npm:3.54.0"
   peerDependencies:
     react: ">=16.2.0"
     react-native: ">=0.70.15"
@@ -50,7 +50,7 @@ __metadata:
       optional: true
     react-native-svg:
       optional: true
-  checksum: 10c0/e204b0531c77e695598928a9d46c398c2d4c28414b52710c28781cacd5a5c5a1876b8fa08165130e421178ed7c7a70aabfd282c52ecc1dd78f44e5f7d95eeeec
+  checksum: 10c0/3481165d2f6cf7281a3d1e588da99a5b17fa88684e5cefbbba9abe3c4bea80a3821ba3e8c1879458284bd215a8488795668d88f18581b7ada9fb75f447e41ce9
   languageName: node
   linkType: hard
 
@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.0.0":
-  version: 22.0.0
-  resolution: "@artsy/palette-mobile@npm:22.0.0"
+"@artsy/palette-mobile@npm:20.9.0":
+  version: 20.9.0
+  resolution: "@artsy/palette-mobile@npm:20.9.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -86,7 +86,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     moti: "npm:^0.25.3"
     react-nanny: "npm:^2.15.0"
-    react-native-blurhash: "npm:2.1.2"
+    react-native-blurhash: "npm:2.1.1"
     react-native-collapsible-tab-view: "npm:^8.0.1"
     react-native-pager-view: "npm:6.7.1"
     react-native-popover-view: "npm:^6.1.0"
@@ -101,7 +101,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/481e1ea786f9d1da9d7376f08c7da57e2d1c0e9bbc16d64197b978c61ab5d82336281f38b73da5c8ab5806fe31918d4870419d63e480e1c5d1a67b05d6e39d1a
+  checksum: 10c0/159afb1579a9db83192d9f3bc3110ac595d12c831181279472fc5597d44eddf4313a0882f7c0b787f7e57614224da490a8a85c25ff1df64afb58300f5d897502
   languageName: node
   linkType: hard
 
@@ -109,17 +109,6 @@ __metadata:
   version: 7.0.0
   resolution: "@artsy/palette-tokens@npm:7.0.0"
   checksum: 10c0/74addf56dffbdf98dfd3ad3e19223c575c3f7c45e224e0ca4d0fb1333e8dcf26f1a02c86787afe3fdf3dd72c2884d88efa488d784a55e441fe0579f8c390e01c
-  languageName: node
-  linkType: hard
-
-"@artsy/to-title-case@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@artsy/to-title-case@npm:1.1.0"
-  dependencies:
-    lodash.deburr: "npm:^4.1.0"
-    lodash.isnumber: "npm:^3.0.3"
-    lodash.upperfirst: "npm:^4.3.1"
-  checksum: 10c0/dbe59a040c190c52171de85824b71d4ba828361d82ad133fb10dac412adc86e60187fa101089f25e510dba3d40dd5409f843febc13741f997400abe589190f01
   languageName: node
   linkType: hard
 
@@ -3141,10 +3130,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braze/react-native-sdk@npm:16.1.0":
-  version: 16.1.0
-  resolution: "@braze/react-native-sdk@npm:16.1.0"
-  checksum: 10c0/dbb509c38157570f6be412442e3fdea7418b7084ed71421f3b34584fceda1d7b7cfe7cb0ebea05db4d2ffa85df7d90600122cf668371f4396d3aa0998bdd59ca
+"@braze/react-native-sdk@npm:15.0.1":
+  version: 15.0.1
+  resolution: "@braze/react-native-sdk@npm:15.0.1"
+  checksum: 10c0/cc714326f2c1c4770ee0363bdd3d2a7dbf5e62137e28532861681d8cfff748621aef7d0fda617db785f230ddec9bf14f53df692796788b515b43c28b41e2858c
   languageName: node
   linkType: hard
 
@@ -12567,10 +12556,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/cohesion": "npm:4.324.0"
-    "@artsy/icons": "npm:3.56.0"
-    "@artsy/palette-mobile": "npm:22.0.0"
-    "@artsy/to-title-case": "npm:1.1.0"
+    "@artsy/cohesion": "npm:4.319.0"
+    "@artsy/icons": "npm:3.54.0"
+    "@artsy/palette-mobile": "npm:20.9.0"
     "@artsy/update-repo": "npm:0.6.0"
     "@babel/core": "npm:7.25.2"
     "@babel/plugin-proposal-decorators": "npm:7.18.9"
@@ -12580,7 +12568,7 @@ __metadata:
     "@babel/preset-react": "npm:7.18.6"
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:7.26.10"
-    "@braze/react-native-sdk": "npm:16.1.0"
+    "@braze/react-native-sdk": "npm:15.0.1"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "npm:5.1.2"
@@ -12779,6 +12767,7 @@ __metadata:
     styled-components: "npm:6.1.19"
     styled-system: "npm:5.1.5"
     supercluster: "npm:7.1.5"
+    title-case: "npm:^4.3.2"
     tmp: "npm:0.2.4"
     tsx: "npm:4.19.1"
     typescript: "npm:5.8.3"
@@ -18214,13 +18203,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.deburr@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "lodash.deburr@npm:4.1.0"
-  checksum: 10c0/30c068e9c3b21d65d260887a8849fa7b94692f868adcc4527136c296b4e71ced7149f58e0f37154d3c56d7950cc605ad3e10b2ee0baedf5638af0befc5013ebc
-  languageName: node
-  linkType: hard
-
 "lodash.find@npm:^4.6.0":
   version: 4.6.0
   resolution: "lodash.find@npm:4.6.0"
@@ -18239,13 +18221,6 @@ __metadata:
   version: 4.3.0
   resolution: "lodash.includes@npm:4.3.0"
   checksum: 10c0/7ca498b9b75bf602d04e48c0adb842dfc7d90f77bcb2a91a2b2be34a723ad24bc1c8b3683ec6b2552a90f216c723cdea530ddb11a3320e08fa38265703978f4b
-  languageName: node
-  linkType: hard
-
-"lodash.isnumber@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "lodash.isnumber@npm:3.0.3"
-  checksum: 10c0/2d01530513a1ee4f72dd79528444db4e6360588adcb0e2ff663db2b3f642d4bb3d687051ae1115751ca9082db4fdef675160071226ca6bbf5f0c123dbf0aa12d
   languageName: node
   linkType: hard
 
@@ -18302,13 +18277,6 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.uniq@npm:4.5.0"
   checksum: 10c0/262d400bb0952f112162a320cc4a75dea4f66078b9e7e3075ffbc9c6aa30b3e9df3cf20e7da7d566105e1ccf7804e4fbd7d804eee0b53de05d83f16ffbf41c5e
-  languageName: node
-  linkType: hard
-
-"lodash.upperfirst@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "lodash.upperfirst@npm:4.3.1"
-  checksum: 10c0/435625da4b3ee74e7a1367a780d9107ab0b13ef4359fc074b2a1a40458eb8d91b655af62f6795b7138d493303a98c0285340160341561d6896e4947e077fa975
   languageName: node
   linkType: hard
 
@@ -21450,16 +21418,6 @@ __metadata:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
   checksum: 10c0/9ffefa93bb7f8578020b274112e9d5e40b152c94a7828c45e8f7ef71a20794e021accc6dd175857e334ae4727e5bc4d5cf7cf069c9b01e454478e8e31d912336
-  languageName: node
-  linkType: hard
-
-"react-native-blurhash@npm:2.1.2":
-  version: 2.1.2
-  resolution: "react-native-blurhash@npm:2.1.2"
-  peerDependencies:
-    react: ">=16.8.1"
-    react-native: ">=0.60.0-rc.0 <1.0.x"
-  checksum: 10c0/ebce5c07fdbedbe0704272057d0db9d7aa6fa0775d273ba9d080025ab4b60d49367a52c8839d07456bdc54765aaab37c5888c728db2db2bb1a4cce8eee736ed3
   languageName: node
   linkType: hard
 
@@ -24638,6 +24596,13 @@ __metadata:
     fdir: "npm:^6.5.0"
     picomatch: "npm:^4.0.3"
   checksum: 10c0/869c31490d0d88eedb8305d178d4c75e7463e820df5a9b9d388291daf93e8b1eb5de1dad1c1e139767e4269fe75f3b10d5009b2cc14db96ff98986920a186844
+  languageName: node
+  linkType: hard
+
+"title-case@npm:^4.3.2":
+  version: 4.3.2
+  resolution: "title-case@npm:4.3.2"
+  checksum: 10c0/f040c5b0586e3a4ac5881e59ac060ebfa56dae611b0d513ad211fa7f92597d418395fa902fe9d7ee49f98e557e88421e274680b22a3b04dd1ce1c577225444d3
   languageName: node
   linkType: hard
 
