@@ -16,8 +16,8 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
 
   const [activeTab, setActiveTab] = useState<TabName>("worksYouLiked")
 
-  const savedArtworks = queryResult?.savedArtworks!
-  const recommendedArtworks = queryResult?.recommendedArtworks!
+  const savedArtworks = queryResult?.savedArtworks ?? []
+  const recommendedArtworks = queryResult?.recommendedArtworks ?? []
   const title =
     activeTab === "worksYouLiked" ? "Explore Your Quiz Results" : "Explore Art We Think You'll Love"
 
@@ -34,19 +34,13 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
       BelowTitleHeaderComponent={() => <BelowHeaderComponent activeTab={activeTab} />}
     >
       <Tabs.Tab name="worksYouLiked" label="Works you liked">
-        <Tabs.Lazy>
-          <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
-        </Tabs.Lazy>
+        <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
       </Tabs.Tab>
       <Tabs.Tab name="worksForYou" label="Works for You">
-        <Tabs.Lazy>
-          <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
-        </Tabs.Lazy>
+        <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
       </Tabs.Tab>
       <Tabs.Tab name="artistsForYou" label="Artists for You">
-        <Tabs.Lazy>
-          <ArtQuizExploreArtists savedArtworks={savedArtworks} />
-        </Tabs.Lazy>
+        <ArtQuizExploreArtists savedArtworks={savedArtworks} />
       </Tabs.Tab>
     </Tabs.TabsWithHeader>
   )

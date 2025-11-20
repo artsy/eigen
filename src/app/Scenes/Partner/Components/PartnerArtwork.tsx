@@ -13,7 +13,6 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
 
 import {
-  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -62,19 +61,13 @@ export const PartnerArtwork: React.FC<{
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
 
-  const renderItem: ListRenderItem<PartnerArtworkType> = useCallback(({ item, index }) => {
-    const columnIndex = getColumnIndex(index)
-
+  const renderItem: ListRenderItem<PartnerArtworkType> = useCallback(({ item }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
+      <Flex px={1} mt={2}>
         <ArtworkGridItem
           contextScreenOwnerType={OwnerType.partner}
           contextScreenOwnerId={partner.internalID}
@@ -92,8 +85,7 @@ export const PartnerArtwork: React.FC<{
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <TabEmptyState text={emptyText} />
@@ -110,12 +102,14 @@ export const PartnerArtwork: React.FC<{
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <ArtworksFilterHeader
-              selectedFiltersCount={appliedFiltersCount}
-              onFilterPress={() => setIsFilterArtworksModalVisible(true)}
-            />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <ArtworksFilterHeader
+                selectedFiltersCount={appliedFiltersCount}
+                onFilterPress={() => setIsFilterArtworksModalVisible(true)}
+              />
+            </Tabs.SubTabBar>
+          </Flex>
         }
       />
 
