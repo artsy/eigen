@@ -12,7 +12,7 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
+import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
@@ -227,7 +227,7 @@ const homeViewSectionArtworksQuery = graphql`
   }
 `
 
-const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
+export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
 
   return (

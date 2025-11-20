@@ -1,64 +1,50 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
-import { AuctionsOverviewQuery } from "__generated__/AuctionsOverviewQuery.graphql"
+import { AuctionsOverviewCurrentlyRunningAuctionsQuery } from "__generated__/AuctionsOverviewCurrentlyRunningAuctionsQuery.graphql"
+import { AuctionsOverviewUpcomingAuctionsQuery } from "__generated__/AuctionsOverviewUpcomingAuctionsQuery.graphql"
 import { ZeroState } from "app/Scenes/Sales/Components/ZeroState"
-import {
-  CurrentlyRunningAuctions,
-  CurrentlyRunningAuctionsRefetchType,
-} from "app/Scenes/Sales/CurrentlyRunningAuctions"
-import { UpcomingAuctions, UpcomingAuctionsRefetchType } from "app/Scenes/Sales/UpcomingAuctions"
+import { CurrentlyRunningAuctions } from "app/Scenes/Sales/CurrentlyRunningAuctions"
+import { UpcomingAuctions } from "app/Scenes/Sales/UpcomingAuctions"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Suspense, useRef, useState } from "react"
-import { RefreshControl } from "react-native"
+import { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const LiveAucitonsQueryRenderer = <></>
 
-export const AuctionsOverviewScreenQuery = graphql`
-  query AuctionsOverviewQuery {
-    currentlyRunningAuctions: viewer {
+export const AuctionsOverviewCurrentlyRunningAuctionsScreenQuery = graphql`
+  query AuctionsOverviewCurrentlyRunningAuctionsQuery {
+    viewer {
       ...CurrentlyRunningAuctions_viewer
     }
-    upcomingAuctions: viewer {
+  }
+`
+
+export const AuctionsOverviewUpcomingAuctionsScreenQuery = graphql`
+  query AuctionsOverviewUpcomingAuctionsQuery {
+    viewer {
       ...UpcomingAuctions_viewer
     }
   }
 `
 
 export const AuctionsOverview = () => {
-  const data = useLazyLoadQuery<AuctionsOverviewQuery>(
-    AuctionsOverviewScreenQuery,
+  const currentlyRunningAuctionsData =
+    useLazyLoadQuery<AuctionsOverviewCurrentlyRunningAuctionsQuery>(
+      AuctionsOverviewCurrentlyRunningAuctionsScreenQuery,
+      {},
+      { fetchPolicy: "store-and-network" }
+    )
+
+  const upcomingAuctionsData = useLazyLoadQuery<AuctionsOverviewUpcomingAuctionsQuery>(
+    AuctionsOverviewUpcomingAuctionsScreenQuery,
     {},
-    {
-      fetchPolicy: "store-and-network",
-    }
+    { fetchPolicy: "store-and-network" }
   )
 
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-  // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
-  // to initially render
   const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
   const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
-
-  const currentAuctionsRefreshRef = useRef<CurrentlyRunningAuctionsRefetchType>(null)
-
-  const upcomingAuctionsRefreshRef = useRef<UpcomingAuctionsRefetchType>(null)
-
-  const setCurrentAuctionsRefreshProp = (refreshProp: CurrentlyRunningAuctionsRefetchType) =>
-    (currentAuctionsRefreshRef.current = refreshProp)
-
-  const setUpcomongAuctionsRefreshProp = (refreshProp: UpcomingAuctionsRefetchType) =>
-    (upcomingAuctionsRefreshRef.current = refreshProp)
-
-  const handleRefresh = () => {
-    setIsRefreshing(true)
-    currentAuctionsRefreshRef.current?.({})
-    upcomingAuctionsRefreshRef.current?.({})
-    setIsRefreshing(false)
-  }
 
   const totalSalesCount = currentSalesCount + upcomingSalesCount
 
@@ -71,21 +57,16 @@ export const AuctionsOverview = () => {
       <Screen.AnimatedHeader onBack={goBack} title="Current and Upcoming Auctions" />
       <Screen.StickySubHeader title="Current and Upcoming Auctions" />
 
-      <Screen.ScrollView
-        testID="Auctions-Overview-Screen-ScrollView"
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      >
+      <Screen.ScrollView testID="Auctions-Overview-Screen-ScrollView">
         <Flex pb={2} gap={4}>
           <CurrentlyRunningAuctions
-            sales={data.currentlyRunningAuctions}
-            setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
-            setSalesCountOnParent={(count: number) => setCurrentSalesCount(count)}
+            sales={currentlyRunningAuctionsData.viewer}
+            setSalesCountOnParent={setCurrentSalesCount}
           />
 
           <UpcomingAuctions
-            sales={data.upcomingAuctions}
-            setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
-            setSalesCountOnParent={(count: number) => setUpcomingSalesCount(count)}
+            sales={upcomingAuctionsData.viewer}
+            setSalesCountOnParent={setUpcomingSalesCount}
           />
         </Flex>
       </Screen.ScrollView>
