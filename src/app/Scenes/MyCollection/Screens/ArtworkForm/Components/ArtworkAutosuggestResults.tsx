@@ -18,11 +18,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
-import {
-  getColumnIndex,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback, useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -66,12 +62,10 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   return (
     <FlashList
       masonry
-      contentContainerStyle={{ paddingBottom: space(12) }}
+      contentContainerStyle={{ paddingBottom: space(12), paddingHorizontal: space(1) }}
       showsVerticalScrollIndicator={false}
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
-      // This is needed to make sure we are getting the right column index for each item
-      optimizeItemArrangement={false}
       keyExtractor={(item) => item.id}
       keyboardShouldPersistTaps="handled"
       onEndReached={loadMore}
@@ -99,18 +93,13 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         </Box>
       }
       renderItem={({ item, index }) => {
-        const columnIndex = getColumnIndex(index)
         const imgAspectRatio = item.image?.aspectRatio ?? 1
         const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
 
         const imgHeight = imgWidth / imgAspectRatio
 
         return (
-          <Flex
-            pl={columnIndex === 0 ? 0 : 1}
-            pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-            mt={2}
-          >
+          <Flex px={1} mt={2}>
             <ArtworkGridItem
               hideSaveIcon
               itemIndex={index}

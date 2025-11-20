@@ -19,11 +19,7 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import {
-  getColumnIndex,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import {
   MY_COLLECTION_REFRESH_KEY,
@@ -42,6 +38,7 @@ interface MyCollectionArtworksProps {
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }) => {
+  const space = useSpace()
   const { setIsFilterModalVisible, setFiltersCount } = MyCollectionTabsStore.useStoreActions(
     (actions) => actions
   )
@@ -75,21 +72,13 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     cleanLocalImages()
   }, [])
 
-  const renderItem: ListRenderItem<(typeof filteredArtworks)[0]> = useCallback(
-    ({ item, index }) => {
-      const columnIndex = getColumnIndex(index)
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <MyCollectionArtworkGridItemFragmentContainer artwork={item} />
-        </Flex>
-      )
-    },
-    []
-  )
+  const renderItem: ListRenderItem<(typeof filteredArtworks)[0]> = useCallback(({ item }) => {
+    return (
+      <Flex px={1} mt={2}>
+        <MyCollectionArtworkGridItemFragmentContainer artwork={item} />
+      </Flex>
+    )
+  }, [])
 
   const RefreshControl = useRefreshControl(refetch)
 
@@ -119,8 +108,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
         data={filteredArtworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState hideClearButton />
