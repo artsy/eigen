@@ -123,14 +123,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/update-repo@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@artsy/update-repo@npm:0.6.0"
+"@artsy/update-repo@npm:0.7.0":
+  version: 0.7.0
+  resolution: "@artsy/update-repo@npm:0.7.0"
   dependencies:
     "@octokit/rest": "npm:^17.2.0"
     kleur: "npm:^3.0.3"
     tmp: "npm:^0.1.0"
-  checksum: 10c0/2de0d5ef01a4bbe8be92f527ef36453655ce571d5a39159572e091074b1f1a23e32e5f1366087bb12e527662e036779fec95a1ca4ba55f120626a58a331982bf
+  checksum: 10c0/38a47ef9a2b4d85c3d8863fcbeaec93fb48c013a4aceaa199c20a84ea9f76bc302771f077cdf5555015df5fab09c6c585a3f6a5ff8a8ff30311fa28a71f86ca2
   languageName: node
   linkType: hard
 
@@ -12571,7 +12571,7 @@ __metadata:
     "@artsy/icons": "npm:3.56.0"
     "@artsy/palette-mobile": "npm:22.0.0"
     "@artsy/to-title-case": "npm:1.2.0"
-    "@artsy/update-repo": "npm:0.6.0"
+    "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
     "@babel/plugin-proposal-decorators": "npm:7.18.9"
     "@babel/plugin-transform-flow-strip-types": "npm:7.18.9"
