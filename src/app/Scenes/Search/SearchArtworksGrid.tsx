@@ -20,11 +20,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  getColumnIndex,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 
 import { Schema } from "app/utils/track"
@@ -114,8 +110,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           data={artworks}
           keyExtractor={(item) => item.id}
           numColumns={NUM_COLUMNS_MASONRY}
-          // This is needed to make sure we are getting the right column index for each item
-          optimizeItemArrangement={false}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           ListEmptyComponent={
@@ -137,19 +131,13 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
             <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
           )}
           renderItem={({ item, index }) => {
-            const columnIndex = getColumnIndex(index)
-
             const imgAspectRatio = item.image?.aspectRatio ?? 1
             const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
 
             const imgHeight = imgWidth / imgAspectRatio
 
             return (
-              <Flex
-                pl={columnIndex === 0 ? 0 : 1}
-                pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-                mt={2}
-              >
+              <Flex px={1} mt={2}>
                 <ArtworkGridItem
                   itemIndex={index}
                   contextScreenOwnerType={OwnerType.search}
@@ -161,7 +149,10 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
               </Flex>
             )
           }}
-          contentContainerStyle={{ paddingBottom: SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET }}
+          contentContainerStyle={{
+            paddingBottom: SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET,
+            paddingHorizontal: space(1),
+          }}
         />
       </Flex>
     </>
