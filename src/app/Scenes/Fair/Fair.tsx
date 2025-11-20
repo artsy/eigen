@@ -128,16 +128,12 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         }}
       >
         <Tabs.Tab name="Overview" label="Overview">
-          <Tabs.Lazy>
-            <FairOverviewQueryRenderer fairID={data.internalID} />
-          </Tabs.Lazy>
+          <FairOverviewQueryRenderer fairID={data.internalID} />
         </Tabs.Tab>
 
         {!!hasExhibitors ? (
           <Tabs.Tab name="Exhibitors" label="Exhibitors">
-            <Tabs.Lazy>
-              <FairExhibitorsQueryRenderer fairID={data.internalID} />
-            </Tabs.Lazy>
+            <FairExhibitorsQueryRenderer fairID={data.internalID} />
           </Tabs.Tab>
         ) : null}
 

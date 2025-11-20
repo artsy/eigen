@@ -23,8 +23,8 @@ interface Artwork {
 }
 
 interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
+  fullWidth?: boolean
   artworkMetaStyle?: ViewProps["style"]
-  columnIndex: number
   contextModule?: ContextModule
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
@@ -41,8 +41,8 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
+  fullWidth = false,
   artworkMetaStyle = {},
-  columnIndex,
   contextModule,
   contextScreen,
   contextScreenOwnerId,
@@ -65,7 +65,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   const imgHeight = imgWidth / imgAspectRatio
 
   return (
-    <Flex pl={columnIndex === 0 ? 0 : 1} pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1} mt={2}>
+    <Flex px={fullWidth ? 0 : 1} mt={2}>
       <ArtworkGridItem
         {...rest}
         artwork={item}

@@ -116,38 +116,32 @@ export const Artist: React.FC<ArtistProps> = ({
           }}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <ArtistArtworksQueryRenderer
-                artistID={artistAboveTheFold.internalID}
-                input={input}
-                searchCriteria={searchCriteria}
-                predefinedFilters={predefinedFilters}
-                scrollToArtworksGrid={scrollToArtworksGrid}
-              />
-            </Tabs.Lazy>
+            <ArtistArtworksQueryRenderer
+              artistID={artistAboveTheFold.internalID}
+              input={input}
+              searchCriteria={searchCriteria}
+              predefinedFilters={predefinedFilters}
+              scrollToArtworksGrid={scrollToArtworksGrid}
+            />
           </Tabs.Tab>
 
           <Tabs.Tab name="Insights" label="Auction Results">
-            <Tabs.Lazy>
-              {artistBelowTheFold ? (
-                <ArtistInsightsFragmentContainer
-                  artist={artistBelowTheFold}
-                  initialFilters={auctionResultsInitialFilters}
-                />
-              ) : (
-                <LoadingPage />
-              )}
-            </Tabs.Lazy>
+            {artistBelowTheFold ? (
+              <ArtistInsightsFragmentContainer
+                artist={artistBelowTheFold}
+                initialFilters={auctionResultsInitialFilters}
+              />
+            ) : (
+              <LoadingPage />
+            )}
           </Tabs.Tab>
 
           <Tabs.Tab name="Overview" label="About">
-            <Tabs.Lazy>
-              {artistBelowTheFold ? (
-                <ArtistAboutContainer artist={artistBelowTheFold} />
-              ) : (
-                <LoadingPage />
-              )}
-            </Tabs.Lazy>
+            {artistBelowTheFold ? (
+              <ArtistAboutContainer artist={artistBelowTheFold} />
+            ) : (
+              <LoadingPage />
+            )}
           </Tabs.Tab>
         </Tabs.TabsWithHeader>
       </ArtworkFiltersStoreProvider>

@@ -11,7 +11,6 @@ import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtw
 import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
 import {
-  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -107,8 +106,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   }
 
   const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
-    const columnIndex = getColumnIndex(index)
-
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
@@ -116,11 +113,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
+      <Flex px={1} mt={2}>
         <ArtworkGridItem
           itemIndex={index}
           contextScreenOwnerType={OwnerType.collection}
@@ -142,8 +135,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState
@@ -160,10 +151,13 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
+            </Tabs.SubTabBar>
+          </Flex>
         }
         ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
