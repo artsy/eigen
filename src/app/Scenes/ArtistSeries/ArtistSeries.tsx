@@ -53,18 +53,14 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           }}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <Suspense fallback={<PlaceholderGrid />}>
-                <ArtistSeriesArtworks artistSeries={data} />
-              </Suspense>
-            </Tabs.Lazy>
+            <Suspense fallback={<PlaceholderGrid />}>
+              <ArtistSeriesArtworks artistSeries={data} />
+            </Suspense>
           </Tabs.Tab>
           <Tabs.Tab name="About" label="About">
-            <Tabs.Lazy>
-              <Tabs.ScrollView>
-                <ArtistSeriesMetaFragmentContainer artistSeries={data} />
-              </Tabs.ScrollView>
-            </Tabs.Lazy>
+            <Tabs.ScrollView>
+              <ArtistSeriesMetaFragmentContainer artistSeries={data} />
+            </Tabs.ScrollView>
           </Tabs.Tab>
         </Tabs.TabsWithHeader>
       </ArtworkFiltersStoreProvider>

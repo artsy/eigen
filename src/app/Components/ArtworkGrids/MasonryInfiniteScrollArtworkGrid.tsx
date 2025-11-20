@@ -8,7 +8,6 @@ import {
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
-  getColumnIndex,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import React, { FC, useCallback, useMemo } from "react"
@@ -91,13 +90,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
 
   const renderItem: ListRenderItem<MasonryArtworkItem> = useCallback(
     ({ item, index }) => {
-      const columnIndex = getColumnIndex(index, rest.numColumns)
-
       return (
         <MasonryArtworkGridItem
           index={index}
           item={item}
-          columnIndex={columnIndex}
+          fullWidth={rest.numColumns === 1}
           contextModule={contextModule}
           contextScreenOwnerType={contextScreenOwnerType}
           contextScreen={contextScreen}
@@ -161,8 +158,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onScroll: rest.onScroll,
       testID: "masonry-artwork-grid",
       masonry: true,
-      // This is needed to make sure we are getting the right column index for each item
-      optimizeItemArrangement: false,
     } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
   }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
 
@@ -196,7 +191,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onEndReached={onEndReached}
       contentContainerStyle={{
         // No paddings are needed for single column grids
-        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
+        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(1),
       }}
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={viewabilityConfig}

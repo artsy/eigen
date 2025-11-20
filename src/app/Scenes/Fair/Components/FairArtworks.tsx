@@ -23,7 +23,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
-  getColumnIndex,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -95,17 +94,12 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   }, [artworksTotal])
 
   const renderItem: ListRenderItem<FairArtworkType> = useCallback(({ item, index }) => {
-    const columnIndex = getColumnIndex(index)
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
+      <Flex px={1} mt={2}>
         <ArtworkGridItem
           itemIndex={index}
           contextScreenOwnerType={OwnerType.fair}
@@ -158,9 +152,8 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           <Flex mb={6}>
             <FilteredArtworkGridZeroState
@@ -174,11 +167,11 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <>
+          <Flex px={1}>
             <Tabs.SubTabBar>
               <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
             </Tabs.SubTabBar>
-          </>
+          </Flex>
         }
         ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />
@@ -288,9 +281,8 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         data={filteredArtworks}
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           <Flex mb={6}>
             <FilteredArtworkGridZeroState
@@ -311,18 +303,12 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         renderItem={({ item, index }) => {
-          const columnIndex = getColumnIndex(index)
-
           const imgAspectRatio = item.image?.aspectRatio ?? 1
           const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
           const imgHeight = imgWidth / imgAspectRatio
 
           return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
+            <Flex px={1} mt={2}>
               <ArtworkGridItem
                 itemIndex={index}
                 contextScreenOwnerType={OwnerType.fair}

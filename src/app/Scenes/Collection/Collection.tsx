@@ -103,15 +103,11 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
           }}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <CollectionArtworks collection={data} />
-            </Tabs.Lazy>
+            <CollectionArtworks collection={data} />
           </Tabs.Tab>
           {!!shouldRenderOverviewTab ? (
             <Tabs.Tab name="Overview" label="Overview">
-              <Tabs.Lazy>
-                <CollectionOverview collection={data} />
-              </Tabs.Lazy>
+              <CollectionOverview collection={data} />
             </Tabs.Tab>
           ) : null}
         </Tabs.TabsWithHeader>
