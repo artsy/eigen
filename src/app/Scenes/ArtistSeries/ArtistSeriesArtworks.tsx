@@ -12,11 +12,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  getColumnIndex,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
@@ -97,17 +93,12 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   }
 
   const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
-    const columnIndex = getColumnIndex(index)
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
+      <Flex px={1} mt={2}>
         <ArtworkGridItem
           itemIndex={index}
           contextScreenOwnerType={OwnerType.artistSeries}
@@ -125,8 +116,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
       <Tabs.Masonry
         testID="ArtistSeriesArtworksGrid"
         data={artworksList}
-        // This is needed to make sure we are getting the right column index for each item
-        optimizeItemArrangement={false}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
@@ -146,10 +135,13 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
+            </Tabs.SubTabBar>
+          </Flex>
         }
         ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
