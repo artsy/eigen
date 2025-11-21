@@ -13323,7 +13323,7 @@ __metadata:
     react-fps: "npm:1.0.6"
     react-native: "npm:0.81.5"
     react-native-blob-util: "npm:0.19.11"
-    react-native-blurhash: "npm:^2.1.2"
+    react-native-blurhash: "npm:2.1.2"
     react-native-bootsplash: "npm:6.3.10"
     react-native-collapsible-tab-view: "npm:8.0.1"
     react-native-device-info: "npm:14.0.0"
@@ -22037,7 +22037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-blurhash@npm:2.1.2, react-native-blurhash@npm:^2.1.2":
+"react-native-blurhash@npm:2.1.2":
   version: 2.1.2
   resolution: "react-native-blurhash@npm:2.1.2"
   peerDependencies:
