@@ -10,10 +10,8 @@ import { useEffect, useState } from "react"
 import { Platform } from "react-native"
 
 interface PushPayload {
-  aps?: {
-    alert?: string | { title?: string; body?: string }
-  }
-  _receivedAt?: string
+  json: string
+  receivedAt?: string
   [key: string]: any
 }
 
@@ -123,8 +121,9 @@ export const PushNotificationOptions: React.FC<{}> = () => {
               </Flex>
             ) : (
               pushPayloads.map((payload, index) => {
-                const alertText = getAlertText(payload)
-                const timestamp = formatTimestamp(payload._receivedAt)
+                const payloadJSON = JSON.parse(payload.json)
+                const alertText = getAlertText(payloadJSON)
+                const timestamp = formatTimestamp(payload.receivedAt)
                 return (
                   <Flex key={index} my={1}>
                     <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -142,7 +141,8 @@ export const PushNotificationOptions: React.FC<{}> = () => {
                         size="small"
                         variant="outline"
                         onPress={() => {
-                          Clipboard.setString(JSON.stringify(payload, null, 2))
+                          const parsedPayload = JSON.parse(payload.json)
+                          Clipboard.setString(JSON.stringify(parsedPayload, null, 2))
                           toast.show("Payload copied to clipboard", "middle")
                         }}
                       >
