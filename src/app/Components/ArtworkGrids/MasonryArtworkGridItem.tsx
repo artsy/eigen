@@ -65,7 +65,15 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   const imgHeight = imgWidth / imgAspectRatio
 
   return (
-    <Flex px={fullWidth ? 0 : 1} mt={2}>
+    <Flex
+      left={
+        fullWidth
+          ? // When displayed full width, we want artworks to be displayed full width
+            // Therefore, we need to remove the padding that comes from artwork grid item
+            -space(1)
+          : 0
+      }
+    >
       <ArtworkGridItem
         {...rest}
         artwork={item}
