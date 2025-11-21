@@ -137,16 +137,14 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
             const imgHeight = imgWidth / imgAspectRatio
 
             return (
-              <Flex px={1} mt={2}>
-                <ArtworkGridItem
-                  itemIndex={index}
-                  contextScreenOwnerType={OwnerType.search}
-                  contextScreenQuery={keyword}
-                  contextScreen={Schema.PageNames.Search}
-                  artwork={item}
-                  height={imgHeight}
-                />
-              </Flex>
+              <ArtworkGridItem
+                itemIndex={index}
+                contextScreenOwnerType={OwnerType.search}
+                contextScreenQuery={keyword}
+                contextScreen={Schema.PageNames.Search}
+                artwork={item}
+                height={imgHeight}
+              />
             )
           }}
           contentContainerStyle={{

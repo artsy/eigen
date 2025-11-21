@@ -99,16 +99,14 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         const imgHeight = imgWidth / imgAspectRatio
 
         return (
-          <Flex px={1} mt={2}>
-            <ArtworkGridItem
-              hideSaveIcon
-              itemIndex={index}
-              contextScreenQuery={keyword}
-              artwork={item}
-              height={imgHeight}
-              onPress={handlePress}
-            />
-          </Flex>
+          <ArtworkGridItem
+            hideSaveIcon
+            itemIndex={index}
+            contextScreenQuery={keyword}
+            artwork={item}
+            height={imgHeight}
+            onPress={handlePress}
+          />
         )
       }}
     />

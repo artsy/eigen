@@ -113,18 +113,16 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.collection}
-          contextScreenOwnerId={collection.id}
-          contextScreenOwnerSlug={collection.slug}
-          artwork={item}
-          height={imgHeight}
-          hideCuratorsPickSignal={hideSignals}
-          hideIncreasedInterestSignal={hideSignals}
-        />
-      </Flex>
+      <ArtworkGridItem
+        itemIndex={index}
+        contextScreenOwnerType={OwnerType.collection}
+        contextScreenOwnerId={collection.id}
+        contextScreenOwnerSlug={collection.slug}
+        artwork={item}
+        height={imgHeight}
+        hideCuratorsPickSignal={hideSignals}
+        hideIncreasedInterestSignal={hideSignals}
+      />
     )
   }, [])
 
