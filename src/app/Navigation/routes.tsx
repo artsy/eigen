@@ -81,11 +81,7 @@ import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
-import {
-  AuctionsOverviewCurrentlyRunningAuctionsScreenQuery,
-  AuctionsOverviewScreen,
-  AuctionsOverviewUpcomingAuctionsScreenQuery,
-} from "app/Scenes/AuctionsOverview/AuctionsOverview"
+import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOverview"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
 import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
@@ -198,7 +194,7 @@ import { RecommendedAuctionLotsQueryRenderer } from "app/Scenes/RecommendedAucti
 import { SaleQueryRenderer, SaleScreenQuery } from "app/Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "app/Scenes/SaleInfo/SaleInfo"
 import { SalesActiveBidsScreenQuery } from "app/Scenes/Sales/Components/SalesActiveBids"
-import { SalesAuctionsScreenQuery } from "app/Scenes/Sales/Components/SalesAuctions"
+import { SalesAuctionsOverviewScreenQuery } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
 import { SalesLatestAuctionResultsScreenQuery } from "app/Scenes/Sales/Components/SalesLatestAuctionResults"
 import { SalesScreen } from "app/Scenes/Sales/Sales"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
@@ -703,7 +699,7 @@ export const artsyDotNetRoutes = defineRoutes([
       SalesActiveBidsScreenQuery,
       // SalesRecommendedAuctionLotsScreenQuery,
       SalesLatestAuctionResultsScreenQuery,
-      SalesAuctionsScreenQuery,
+      SalesAuctionsOverviewScreenQuery,
     ],
   },
   {
@@ -726,10 +722,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [
-      AuctionsOverviewCurrentlyRunningAuctionsScreenQuery,
-      AuctionsOverviewUpcomingAuctionsScreenQuery,
-    ],
+    queries: [SalesAuctionsOverviewScreenQuery],
   },
   {
     path: "/city-fair/:citySlug",

@@ -1,52 +1,28 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
-import { AuctionsOverviewCurrentlyRunningAuctionsQuery } from "__generated__/AuctionsOverviewCurrentlyRunningAuctionsQuery.graphql"
-import { AuctionsOverviewUpcomingAuctionsQuery } from "__generated__/AuctionsOverviewUpcomingAuctionsQuery.graphql"
+import { SalesAuctionsOverviewQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
 import { ZeroState } from "app/Scenes/Sales/Components/ZeroState"
-import { CurrentlyRunningAuctions } from "app/Scenes/Sales/CurrentlyRunningAuctions"
-import { UpcomingAuctions } from "app/Scenes/Sales/UpcomingAuctions"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
-
-export const LiveAucitonsQueryRenderer = <></>
-
-export const AuctionsOverviewCurrentlyRunningAuctionsScreenQuery = graphql`
-  query AuctionsOverviewCurrentlyRunningAuctionsQuery {
-    viewer {
-      ...CurrentlyRunningAuctions_viewer
-    }
-  }
-`
-
-export const AuctionsOverviewUpcomingAuctionsScreenQuery = graphql`
-  query AuctionsOverviewUpcomingAuctionsQuery {
-    viewer {
-      ...UpcomingAuctions_viewer
-    }
-  }
-`
+import { RefreshControl } from "react-native"
 
 export const AuctionsOverview = () => {
-  const currentlyRunningAuctionsData =
-    useLazyLoadQuery<AuctionsOverviewCurrentlyRunningAuctionsQuery>(
-      AuctionsOverviewCurrentlyRunningAuctionsScreenQuery,
-      {},
-      { fetchPolicy: "store-and-network" }
-    )
-
-  const upcomingAuctionsData = useLazyLoadQuery<AuctionsOverviewUpcomingAuctionsQuery>(
-    AuctionsOverviewUpcomingAuctionsScreenQuery,
-    {},
-    { fetchPolicy: "store-and-network" }
-  )
-
   const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
   const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [fetchKey, setFetchKey] = useState(0)
 
   const totalSalesCount = currentSalesCount + upcomingSalesCount
+
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    setFetchKey((prev) => prev + 1)
+    setTimeout(() => {
+      setIsRefreshing(false)
+    }, 300)
+  }
 
   if (totalSalesCount < 1) {
     return <ZeroState />
@@ -57,16 +33,15 @@ export const AuctionsOverview = () => {
       <Screen.AnimatedHeader onBack={goBack} title="Current and Upcoming Auctions" />
       <Screen.StickySubHeader title="Current and Upcoming Auctions" />
 
-      <Screen.ScrollView testID="Auctions-Overview-Screen-ScrollView">
+      <Screen.ScrollView
+        testID="Auctions-Overview-Screen-ScrollView"
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      >
         <Flex pb={2} gap={4}>
-          <CurrentlyRunningAuctions
-            sales={currentlyRunningAuctionsData.viewer}
-            setSalesCountOnParent={setCurrentSalesCount}
-          />
-
-          <UpcomingAuctions
-            sales={upcomingAuctionsData.viewer}
-            setSalesCountOnParent={setUpcomingSalesCount}
+          <SalesAuctionsOverviewQueryRenderer
+            key={fetchKey}
+            setCurrentSalesCountOnParent={setCurrentSalesCount}
+            setUpcomingSalesCountOnParent={setUpcomingSalesCount}
           />
         </Flex>
       </Screen.ScrollView>

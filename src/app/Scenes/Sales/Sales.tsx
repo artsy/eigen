@@ -1,14 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Flex, LinkText, Screen, Text } from "@artsy/palette-mobile"
 import { SalesActiveBidsQueryRenderer } from "app/Scenes/Sales/Components/SalesActiveBids"
-import { SalesAuctionsQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctions"
+import { SalesAuctionsOverviewQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
 import { SalesLatestAuctionResultsQueryRenderer } from "app/Scenes/Sales/Components/SalesLatestAuctionResults"
 import { SalesRecommendedAuctionLotsQueryRenderer } from "app/Scenes/Sales/Components/SalesRecommendedAuctionLots"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Suspense, useState } from "react"
+import { useState } from "react"
+import { RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
 import { ZeroState } from "./Components/ZeroState"
 
@@ -18,10 +19,20 @@ export const SUPPORT_ARTICLE_URL =
 export const Sales: React.FC = () => {
   const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
   const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [fetchKey, setFetchKey] = useState(0)
 
   const totalSalesCount = currentSalesCount + upcomingSalesCount
 
   const { trackEvent } = useTracking()
+
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    setFetchKey((prev) => prev + 1)
+    setTimeout(() => {
+      setIsRefreshing(false)
+    }, 300)
+  }
 
   const trackArticleTap = () => {
     trackEvent({
@@ -41,7 +52,10 @@ export const Sales: React.FC = () => {
       <Screen.AnimatedHeader onBack={goBack} title="Auctions" />
       <Screen.StickySubHeader title="Auctions" />
 
-      <Screen.ScrollView testID="Sales-Screen-ScrollView">
+      <Screen.ScrollView
+        testID="Sales-Screen-ScrollView"
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      >
         <Flex pb={2} gap={4}>
           <Box mx={2}>
             <Text variant="sm-display">
@@ -60,20 +74,17 @@ export const Sales: React.FC = () => {
             </Text>
           </Box>
 
-          <SalesActiveBidsQueryRenderer />
+          <SalesActiveBidsQueryRenderer key={`active-bids-${fetchKey}`} />
 
-          <SalesRecommendedAuctionLotsQueryRenderer />
+          <SalesRecommendedAuctionLotsQueryRenderer key={`recommended-${fetchKey}`} />
 
-          <Suspense>
-            <SalesLatestAuctionResultsQueryRenderer />
-          </Suspense>
+          <SalesLatestAuctionResultsQueryRenderer key={`latest-results-${fetchKey}`} />
 
-          <Suspense>
-            <SalesAuctionsQueryRenderer
-              setCurrentSalesCountOnParent={setCurrentSalesCount}
-              setUpcomingSalesCountOnParent={setUpcomingSalesCount}
-            />
-          </Suspense>
+          <SalesAuctionsOverviewQueryRenderer
+            key={`auctions-${fetchKey}`}
+            setCurrentSalesCountOnParent={setCurrentSalesCount}
+            setUpcomingSalesCountOnParent={setUpcomingSalesCount}
+          />
         </Flex>
       </Screen.ScrollView>
     </Screen>

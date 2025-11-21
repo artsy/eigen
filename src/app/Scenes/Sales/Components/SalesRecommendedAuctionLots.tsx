@@ -17,7 +17,7 @@ export const SalesRecommendedAuctionLotsScreenQuery = graphql`
 export const SalesRecommendedAuctionLotsQueryRenderer = withSuspense({
   Component: () => {
     const { variant } = useExperimentVariant("onyx_auctions_hub")
-    const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
+    const includeBackfill = true // !(variant && variant.enabled && variant.name === "experiment")
 
     const data = useLazyLoadQuery<SalesRecommendedAuctionLotsQuery>(
       SalesRecommendedAuctionLotsScreenQuery,
@@ -40,7 +40,7 @@ export const SalesRecommendedAuctionLotsQueryRenderer = withSuspense({
   LoadingFallback: HomeViewSectionArtworksPlaceholder,
   ErrorFallback: ({ error }) => {
     if (__DEV__) {
-      console.error("[SalesRecommendedAuctionLots] Query Error:", error)
+      console.error("LOGD [SalesRecommendedAuctionLots] Query Error:", error)
     }
     return null
   },
