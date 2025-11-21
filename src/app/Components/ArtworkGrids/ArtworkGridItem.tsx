@@ -277,6 +277,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             haptic
             underlayColor={color("mono0")}
             onPress={handleTap}
+            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
             onLongPress={() => {
               // Adroid long press is tracked inside of the ContextMenuArtwork component
               if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
@@ -289,6 +290,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                 )
               }
             }}
+            delayLongPress={400}
             navigationProps={navigationProps}
             to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
