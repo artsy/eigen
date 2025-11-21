@@ -6498,6 +6498,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-menu/menu@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-native-menu/menu@npm:2.0.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/1e88e1892730c70e28a654a8df6427f80f1b88880eaa62f2744072b9cebead4e834490d15ef7f0b91eadf9cb1ec9241b29f116ce7e94661685b41faf10af3fa3
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.81.5":
   version: 0.81.5
   resolution: "@react-native/assets-registry@npm:0.81.5"
@@ -13188,6 +13198,7 @@ __metadata:
     "@react-native-firebase/app": "npm:23.1.0"
     "@react-native-firebase/messaging": "npm:23.1.0"
     "@react-native-google-signin/google-signin": "npm:11.0.1"
+    "@react-native-menu/menu": "npm:^2.0.0"
     "@react-native/babel-preset": "npm:0.81.5"
     "@react-native/eslint-config": "npm:0.81.5"
     "@react-native/metro-config": "npm:0.81.5"
