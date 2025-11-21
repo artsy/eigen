@@ -2344,7 +2344,7 @@ PODS:
     - Yoga
   - react-native-launch-arguments (4.1.0):
     - React
-  - react-native-menu (2.0.0):
+  - react-native-menu (1.2.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4644,7 +4644,7 @@ SPEC CHECKSUMS:
   react-native-ios-utilities: d9ed1f5ea011650e9c7e9cb7c82272c1f0363e44
   react-native-keys: 80dc5f204b236ff384be06a514294eb24c65bd1f
   react-native-launch-arguments: 165260aba9544f00c66fae3e136b11484d0cb49b
-  react-native-menu: 8d2c831a735c9e6528c28b26ca14e57591d87e14
+  react-native-menu: 5962c8b2413669b5013c3579554df4d8b856c887
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pager-view: 4669cb3244c99fec52997f8906dd92f44b6ae17e
   react-native-performance: 1cff1830de6c7b64d56b5c0c92b6dbece74acc03
