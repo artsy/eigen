@@ -212,7 +212,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   if (isIOS && enableContextMenuIOS && !__TEST__) {
     return (
       <ContextMenu.Root>
-        <ContextMenu.Trigger style={{ paddingTop: 10 }}>{children}</ContextMenu.Trigger>
+        <ContextMenu.Trigger style={{ padding: space(1) }}>{children}</ContextMenu.Trigger>
 
         <ContextMenu.Content>
           <ContextMenu.Preview
