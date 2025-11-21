@@ -98,13 +98,6 @@ jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
 }))
 
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
-  }
-})
-
 require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
@@ -691,12 +684,6 @@ jest.mock("app/utils/Sentinel", () => {
   return {
     __esModule: true,
     Sentinel: View,
-  }
-})
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
   }
 })
 
