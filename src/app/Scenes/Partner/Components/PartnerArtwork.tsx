@@ -67,15 +67,13 @@ export const PartnerArtwork: React.FC<{
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.partner}
-          contextScreenOwnerId={partner.internalID}
-          contextScreenOwnerSlug={partner.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.partner}
+        contextScreenOwnerId={partner.internalID}
+        contextScreenOwnerSlug={partner.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 

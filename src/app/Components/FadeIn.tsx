@@ -1,13 +1,6 @@
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
-import React, { useEffect } from "react"
-import { ViewStyle } from "react-native"
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from "react-native-reanimated"
+import React, { useEffect, useRef } from "react"
+import { Animated, ViewStyle } from "react-native"
 
 export const FadeIn: React.FC<
   React.PropsWithChildren<{
@@ -23,23 +16,35 @@ export const FadeIn: React.FC<
   style,
   duration = DEFAULT_SCREEN_ANIMATION_DURATION,
 }) => {
-  const showing = useSharedValue(0)
+  const animatedValue = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
-    showing.value = withDelay(
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration,
       delay,
-      withTiming(1, {
-        duration,
+      useNativeDriver: true,
+    }).start()
+  }, [animatedValue, delay, duration])
+
+  const translateY = slide
+    ? animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [10, 0],
       })
-    )
-  }, [])
+    : 0
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: slide ? interpolate(showing.get(), [0, 1], [10, 0]) : 0 }],
-      opacity: showing.get(),
-    }
-  })
-
-  return <Animated.View style={[animatedStyle, style]}>{children}</Animated.View>
+  return (
+    <Animated.View
+      style={[
+        {
+          opacity: animatedValue,
+          transform: [{ translateY }],
+        },
+        style,
+      ]}
+    >
+      {children}
+    </Animated.View>
+  )
 }
