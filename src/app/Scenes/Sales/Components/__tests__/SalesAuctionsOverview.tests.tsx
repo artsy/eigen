@@ -1,7 +1,7 @@
 import { SalesAuctionsOverviewQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-describe("SalesAuctions", () => {
+describe("SalesAuctionsOverview", () => {
   const mockSetCurrentSalesCount = jest.fn()
   const mockSetUpcomingSalesCount = jest.fn()
 

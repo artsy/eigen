@@ -1,5 +1,6 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
 import { SalesScreen, SUPPORT_ARTICLE_URL } from "app/Scenes/Sales/Sales"
+import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -30,13 +31,6 @@ describe("Sales", () => {
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
 
-  it("renders with sales count state", () => {
-    const { UNSAFE_getByType } = renderWithRelay()
-
-    // Verify the component renders and has the scroll view
-    expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
-  })
-
   it("tracks article tap with the correct event data", () => {
     renderWithRelay()
 
@@ -49,47 +43,7 @@ describe("Sales", () => {
       context_screen_owner_type: "auctions",
       destination_path: SUPPORT_ARTICLE_URL,
     })
+
+    expect(navigate).toHaveBeenCalledWith(SUPPORT_ARTICLE_URL)
   })
 })
-
-const artwork = {
-  slug: "artwork-one-slug",
-  id: "artwork-one-id",
-  image: {
-    aspectRatio: 1.27,
-    url: "https://d32dm0rphc51dk.cloudfront.net/ZRMpZo7ikbEdx3yqBNlDVA/large.jpg",
-  },
-  title: "Sunflower Seeds Exhibition",
-  date: "2010",
-  saleMessage: "US$1,750",
-  internalID: "artwork-one-internalID",
-  artistNames: "Ai Weiwei",
-  href: "/artwork/ai-weiwei-sunflower-seeds-exhibition",
-  sale: null,
-  saleArtwork: null,
-  partner: {
-    name: "West Chelsea Contemporary",
-  },
-}
-
-const viewer = {
-  artworksForUser: {
-    includeBackfill: true,
-    first: 10,
-    onlyAtAuction: true,
-    edges: [{ node: artwork }],
-  },
-}
-
-const me = {
-  auctionResultsByFollowedArtists: {
-    first: 10,
-    edges: [
-      {
-        node: {
-          id: "an-id",
-        },
-      },
-    ],
-  },
-}

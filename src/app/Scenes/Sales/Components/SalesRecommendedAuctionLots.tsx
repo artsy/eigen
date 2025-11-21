@@ -17,7 +17,7 @@ export const SalesRecommendedAuctionLotsScreenQuery = graphql`
 export const SalesRecommendedAuctionLotsQueryRenderer = withSuspense({
   Component: () => {
     const { variant } = useExperimentVariant("onyx_auctions_hub")
-    const includeBackfill = true // !(variant && variant.enabled && variant.name === "experiment")
+    const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
 
     const data = useLazyLoadQuery<SalesRecommendedAuctionLotsQuery>(
       SalesRecommendedAuctionLotsScreenQuery,
