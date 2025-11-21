@@ -59,26 +59,15 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const followButtonTranslateX = useDerivedValue(() =>
     displayFollowButton.value ? 0 : followAreaDeltaX
   )
-  const followButtonOpacity = useDerivedValue(() => (displayFollowButton.value ? 1 : 0))
 
   const viewStyle = useAnimatedStyle(
     () => ({
-      transform: [
-        {
-          translateX: withTiming(followButtonTranslateX.value, {
-            duration: 200,
-            easing: Easing.sin,
-          }),
-        },
-      ],
+      left: withTiming(followButtonTranslateX.value, { duration: 200, easing: Easing.sin }),
     }),
     [followAreaDeltaX]
   )
   const spacerStyle = useAnimatedStyle(() => ({
     width: withTiming(spacerWidth.value, { duration: 200 }),
-  }))
-  const followButtonStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
   }))
 
   const handleSharePress = useCallback(() => {
@@ -114,18 +103,16 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
 
         <MotiView style={spacerStyle} />
 
-        <MotiView style={followButtonStyle}>
-          <FollowButton
-            haptic
-            isFollowed={isFollowed}
-            longestText="Following 999.9k"
-            followCount={artist?.counts.follows}
-            onPress={() => setIsFollowed(!isFollowed)}
-            // Using maxWidth and minWidth to prevent the button from changing width when the text changes
-            maxWidth={followButtonWidth}
-            minWidth={followButtonWidth}
-          />
-        </MotiView>
+        <FollowButton
+          haptic
+          isFollowed={isFollowed}
+          longestText="Following 999.9k"
+          followCount={artist?.counts.follows}
+          onPress={() => setIsFollowed(!isFollowed)}
+          // Using maxWidth and minWidth to prevent the button from changing width when the text changes
+          maxWidth={followButtonWidth}
+          minWidth={followButtonWidth}
+        />
       </Flex>
     </MotiView>
   )

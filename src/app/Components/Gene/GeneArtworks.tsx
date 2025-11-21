@@ -90,15 +90,13 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.gene}
-          contextScreenOwnerId={gene.internalID}
-          contextScreenOwnerSlug={gene.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.gene}
+        contextScreenOwnerId={gene.internalID}
+        contextScreenOwnerSlug={gene.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 
