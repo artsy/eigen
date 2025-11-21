@@ -136,7 +136,6 @@
     }
 
     NSDictionary *userInfo = notification.request.content.userInfo;
-    [self recordRawPushPayload:userInfo source:@"willPresentNotification"];
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Active" forKey:@"UIApplicationState"]; // Foreground state
