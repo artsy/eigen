@@ -186,17 +186,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          {...props}
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId={artist.internalID}
-          contextScreenOwnerSlug={artist.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        {...props}
+        itemIndex={index}
+        contextScreenOwnerType={OwnerType.artist}
+        contextScreenOwnerId={artist.internalID}
+        contextScreenOwnerSlug={artist.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 

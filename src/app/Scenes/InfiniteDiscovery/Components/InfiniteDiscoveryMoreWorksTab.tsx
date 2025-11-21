@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ListRenderItem } from "@shopify/flash-list"
 import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
@@ -41,17 +41,15 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       const imgHeight = imgWidth / imgAspectRatio
 
       return (
-        <Flex px={1} mt={2}>
-          <ArtworkGridItem
-            itemIndex={index}
-            contextModule={ContextModule.infiniteDiscoveryDrawer}
-            contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
-            contextScreenOwnerId={item.internalID}
-            contextScreenOwnerSlug={item.slug}
-            artwork={item}
-            height={imgHeight}
-          />
-        </Flex>
+        <ArtworkGridItem
+          itemIndex={index}
+          contextModule={ContextModule.infiniteDiscoveryDrawer}
+          contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
+          contextScreenOwnerId={item.internalID}
+          contextScreenOwnerSlug={item.slug}
+          artwork={item}
+          height={imgHeight}
+        />
       )
     },
     []

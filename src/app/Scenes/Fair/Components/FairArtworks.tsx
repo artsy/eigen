@@ -99,16 +99,14 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.fair}
-          contextScreenOwnerId={data.internalID}
-          contextScreenOwnerSlug={data.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        itemIndex={index}
+        contextScreenOwnerType={OwnerType.fair}
+        contextScreenOwnerId={data.internalID}
+        contextScreenOwnerSlug={data.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 
@@ -308,16 +306,14 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
           const imgHeight = imgWidth / imgAspectRatio
 
           return (
-            <Flex px={1} mt={2}>
-              <ArtworkGridItem
-                itemIndex={index}
-                contextScreenOwnerType={OwnerType.fair}
-                contextScreenOwnerId={data.internalID}
-                contextScreenOwnerSlug={data.slug}
-                artwork={item}
-                height={imgHeight}
-              />
-            </Flex>
+            <ArtworkGridItem
+              itemIndex={index}
+              contextScreenOwnerType={OwnerType.fair}
+              contextScreenOwnerId={data.internalID}
+              contextScreenOwnerSlug={data.slug}
+              artwork={item}
+              height={imgHeight}
+            />
           )
         }}
       />
