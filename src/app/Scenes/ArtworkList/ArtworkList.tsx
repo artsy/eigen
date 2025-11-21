@@ -107,7 +107,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         hasMore={hasNext}
         isLoading={isLoadingNext}
         ListHeaderComponent={
-          <Box mx={-2}>
+          <Box mx={-1}>
             <ArtworkListArtworksGridHeader
               title={artworkList?.name ?? ""}
               artworksCount={artworksCount}

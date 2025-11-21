@@ -96,15 +96,13 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex px={1} mt={2}>
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.tag}
-          contextScreenOwnerId={tag?.internalID}
-          contextScreenOwnerSlug={tag?.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.tag}
+        contextScreenOwnerId={tag?.internalID}
+        contextScreenOwnerSlug={tag?.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 
