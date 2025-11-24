@@ -5467,6 +5467,24 @@ type CollectionsEdge {
   node: Collection
 }
 
+enum CollectorAttributeKey {
+  HAS_BOUGHT_WORKS_FROM_PARTNER
+  HAS_BOUGHT_WORKS_FROM_SIMILAR_PARTNERS
+  HAS_DEMONSTRATED_BUDGET
+  HAS_ENABLED_ALERTS_ON_ARTIST
+  HAS_ENABLED_ALERTS_ON_A_REPRESENTED_ARTIST
+  HAS_FOLLOWED_A_REPRESENTED_ARTIST
+  HAS_FOLLOWED_PARTNER
+  HAS_INQUIRED_ABOUT_WORKS_FROM_ARTIST
+  HAS_INQUIRED_ABOUT_WORKS_FROM_PARTNER
+  HAS_INQUIRED_WITH_SIMILAR_PARTNERS
+  HAS_SAVED_WORKS_FROM_PARTNER
+  IS_ACTIVE_USER
+  IS_CONFIRMED_BUYER
+  IS_RECENT_SIGN_UP
+  IS_REPEAT_BUYER
+}
+
 type CollectorProfileType implements Node {
   artsyUserSince(
     format: String
@@ -5476,6 +5494,12 @@ type CollectorProfileType implements Node {
   ): String
   bio: String
   collectedArtworksCount: Int!
+
+  # Structured attributes describing the collector in relation to the artwork/partner.
+  collectorAttributes(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): [CollectorSummaryAttribute!]!
   collectorLevel: Int
   companyName: String
   companyWebsite: String
@@ -5498,6 +5522,9 @@ type CollectorProfileType implements Node {
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
+
+  # Collector's Instagram handle
+  instagram: String
   institutionalAffiliations: String
   intents: [String]
   interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
@@ -5515,6 +5542,9 @@ type CollectorProfileType implements Node {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # Collector's LinkedIn handle
+  linkedIn: String
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -5650,6 +5680,17 @@ type CollectorSignals {
 
   # Most recent running Show or Fair booth the artwork is currently in, sorted by relevance
   runningShow: Show
+}
+
+type CollectorSummaryAttribute {
+  # The key identifying this attribute type
+  key: CollectorAttributeKey!
+
+  # The display text shown to the user
+  label: String!
+
+  # Whether this attribute is true for the collector
+  value: Boolean!
 }
 
 # Represents either an action or a potential failure
@@ -14560,6 +14601,12 @@ type InquirerCollectorProfile {
   ): String
   bio: String
   collectedArtworksCount: Int!
+
+  # Structured attributes describing the collector in relation to the artwork/partner.
+  collectorAttributes(
+    # This can be specified, and is injected in a conversation context for convenience.
+    artworkID: String
+  ): [CollectorSummaryAttribute!]!
   collectorLevel: Int
   companyName: String
   companyWebsite: String
@@ -14585,6 +14632,9 @@ type InquirerCollectorProfile {
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryRequestsCount: Int!
+
+  # Collector's Instagram handle
+  instagram: String
   institutionalAffiliations: String
   intents: [String]
   interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
@@ -14602,6 +14652,9 @@ type InquirerCollectorProfile {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # Collector's LinkedIn handle
+  linkedIn: String
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -24186,8 +24239,14 @@ input UpdateCollectorProfileInput {
   clientMutationId: String
   companyName: String
   companyWebsite: String
+
+  # Collector's Instagram handle
+  instagram: String
   institutionalAffiliations: String
   intents: [Intents]
+
+  # Collector's LinkedIn handle
+  linkedIn: String
   loyaltyApplicant: Boolean
   professionalBuyer: Boolean
 
@@ -24229,8 +24288,14 @@ input UpdateCollectorProfileWithIDInput {
 
   # The internal ID of the collector profile to update
   id: String
+
+  # Collector's Instagram handle
+  instagram: String
   institutionalAffiliations: String
   intents: [Intents]
+
+  # Collector's LinkedIn handle
+  linkedIn: String
   loyaltyApplicant: Boolean
   professionalBuyer: Boolean
 
@@ -24516,11 +24581,17 @@ input UpdateMyProfileInput {
   # Works in the art industry?
   industry: String
 
+  # Collector's Instagram handle
+  instagram: String
+
   # Is a collector?
   isCollector: Boolean
 
   # Length unit preference of the user
   lengthUnitPreference: LengthUnitPreference
+
+  # Collector's LinkedIn handle
+  linkedIn: String
 
   # The given location of the user as structured data
   location: EditableLocation
