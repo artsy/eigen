@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
@@ -12,22 +13,23 @@ import {
   Easing,
   Extrapolation,
   interpolate,
-  runOnJS,
   useAnimatedReaction,
   useSharedValue,
   withDelay,
   withSequence,
   withTiming,
 } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 
 type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
+  cardStyle?: ViewStyle
+  containerStyle?: ViewStyle
+  HeaderComponent?: () => React.ReactNode
+  isArtworkSaved?: (index: number) => boolean
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
-  containerStyle?: ViewStyle
-  cardStyle?: ViewStyle
-  isArtworkSaved?: (index: number) => boolean
 } & (
   | { onReachTriggerIndex?: never; triggerIndex?: never }
   | { onReachTriggerIndex: (activeIndex: number) => void; triggerIndex: number }
@@ -41,14 +43,15 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
       cards: _cards,
+      cardStyle,
+      containerStyle,
+      HeaderComponent,
+      isArtworkSaved,
       onNewCardReached,
+      onReachTriggerIndex,
       onRewind,
       onSwipe,
-      onReachTriggerIndex,
       triggerIndex,
-      containerStyle,
-      cardStyle,
-      isArtworkSaved,
     },
     ref
   ) => {
@@ -58,7 +61,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const [cards, setCards] = useState(_cards)
     const swipedCardX = useSharedValue(-width)
     const _activeIndex = useSharedValue(0)
-    const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
+    const [activeIndex, setActiveIndex] = useState(_activeIndex.get())
 
     const swipedKeys = useSharedValue<Key[]>([])
     // a list of cards that the user has seen
@@ -71,7 +74,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       () => _activeIndex.value,
       (current, previous) => {
         if (current !== previous) {
-          runOnJS(setActiveIndex)(current)
+          scheduleOnRN(setActiveIndex, current)
         }
       }
     )
@@ -130,7 +133,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
           // if this is the first time that the user has navigated to this card, record it
           if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
             seenCardKeys.value = [...seenCardKeys.value, nextCardKey]
-            runOnJS(onNewCardReached)(nextCardKey)
+            scheduleOnRN(onNewCardReached, nextCardKey)
           }
 
           activeCardX.value = withTiming(-width, { duration: 300, easing: Easing.linear }, () => {
@@ -140,7 +143,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
             return
           })
 
-          runOnJS(onSwipe)(swipedCardKey, nextCardKey)
+          scheduleOnRN(onSwipe, swipedCardKey, nextCardKey)
         }
 
         const swipeRight = () => {
@@ -159,7 +162,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                 swipedCardX.value = -width
               }
             )
-            runOnJS(onRewind)(lastSwipedCardKey as Key)
+            scheduleOnRN(onRewind, lastSwipedCardKey as Key)
             return
           }
 
@@ -184,7 +187,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // Fetching more cards on the 3rd, 8th, 13th... swipe
         if (isSwipeLeft && !isLastCard && cards.length - 1 - _activeIndex.value === triggerIndex) {
-          runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
+          scheduleOnRN(onReachTriggerIndex, _activeIndex.value + 1)
         }
 
         const swipedCardIndex = _activeIndex.value
@@ -206,45 +209,48 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     return (
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
-          {cards.map((c, i) => {
-            if (i < initialSliceIndex) {
-              return null
-            }
+          {!!HeaderComponent && <HeaderComponent />}
+          <Flex>
+            {cards.map((c, i) => {
+              if (i < initialSliceIndex) {
+                return null
+              }
 
-            return (
-              <AnimatedView
-                index={i}
-                activeCardX={activeCardX}
-                activeIndex={_activeIndex}
-                swipedKeys={swipedKeys}
-                swipedCardX={swipedCardX}
-                key={c.internalID}
-                internalID={c.internalID}
-              >
-                {enableNewHomeViewCardRailType ? (
-                  <ArtworkCard
-                    artwork={c}
-                    key={c.internalID}
-                    containerStyle={cardStyle}
-                    contextModule={ContextModule.infiniteDiscovery}
-                    ownerType={OwnerType.infiniteDiscovery}
-                    isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
-                    index={i}
-                    isTopCard={activeIndex === i}
-                  />
-                ) : (
-                  <InfiniteDiscoveryArtworkCard
-                    artwork={c}
-                    key={c.internalID}
-                    containerStyle={cardStyle}
-                    isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
-                    index={i}
-                    isTopCard={activeIndex === i}
-                  />
-                )}
-              </AnimatedView>
-            )
-          })}
+              return (
+                <AnimatedView
+                  index={i}
+                  activeCardX={activeCardX}
+                  activeIndex={_activeIndex}
+                  swipedKeys={swipedKeys}
+                  swipedCardX={swipedCardX}
+                  key={c.internalID}
+                  internalID={c.internalID}
+                >
+                  {enableNewHomeViewCardRailType ? (
+                    <ArtworkCard
+                      artwork={c}
+                      key={c.internalID}
+                      containerStyle={cardStyle}
+                      contextModule={ContextModule.infiniteDiscovery}
+                      ownerType={OwnerType.infiniteDiscovery}
+                      isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
+                      index={i}
+                      isTopCard={activeIndex === i}
+                    />
+                  ) : (
+                    <InfiniteDiscoveryArtworkCard
+                      artwork={c}
+                      key={c.internalID}
+                      containerStyle={cardStyle}
+                      isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
+                      index={i}
+                      isTopCard={activeIndex === i}
+                    />
+                  )}
+                </AnimatedView>
+              )
+            })}
+          </Flex>
         </View>
       </GestureDetector>
     )

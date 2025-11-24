@@ -47,7 +47,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     onPress,
     onEndReached,
     onEndReachedThreshold,
-    ListHeaderComponent = <Spacer x={2} />,
+    ListHeaderComponent = <Spacer x={1} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
     listRef,

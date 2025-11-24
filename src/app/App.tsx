@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
-import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
+// import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { usePushNotifications } from "app/system/notifications/usePushNotifications"
@@ -28,6 +28,7 @@ import { NativeModules, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
+import { enableFreeze } from "react-native-screens"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -40,6 +41,8 @@ import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndF
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 require("./system/ignoreLogs")
+
+enableFreeze(true)
 
 if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
@@ -73,7 +76,7 @@ const Main = () => {
   // Rozenite plugins end
 
   useRageShakeDevMenu()
-  useMaestroInitialization()
+  // useMaestroInitialization()
 
   useEffect(() => {
     const oss = Keys.OSS
