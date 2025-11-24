@@ -9,8 +9,9 @@ const noop: any = (name: string) => () =>
   console.warn(`method ${name} doesn't exist on android yet`)
 
 type PushPayload = Record<string, unknown> & {
-  _receivedAt?: string
-  _source?: string
+  receivedAt: string
+  source: string
+  json: string
 }
 
 /**
