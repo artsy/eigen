@@ -27,12 +27,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.324.0":
-  version: 4.324.0
-  resolution: "@artsy/cohesion@npm:4.324.0"
+"@artsy/cohesion@npm:4.325.0":
+  version: 4.325.0
+  resolution: "@artsy/cohesion@npm:4.325.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/5af2dbb6e399c77c801133edb15b5aae9110517ad28daa44a31813e495550f40c005063370d7bf497208deb23350d12b3ea5665dc74056bd58ac73bf7638e6d3
+  checksum: 10c0/c6539fa1391ad7f4284b6ef91d9dde7d0d3cb566d70440e0f70c4efa9050654ac051bf2ad502d3d2a9da36dcb1bd553194c01d44d2af0b103c3cf8aa95e49d9a
   languageName: node
   linkType: hard
 
@@ -12567,7 +12567,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/cohesion": "npm:4.324.0"
+    "@artsy/cohesion": "npm:4.325.0"
     "@artsy/icons": "npm:3.56.0"
     "@artsy/palette-mobile": "npm:22.0.0"
     "@artsy/to-title-case": "npm:1.2.0"
