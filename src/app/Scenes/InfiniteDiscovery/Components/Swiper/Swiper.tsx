@@ -221,27 +221,14 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                 key={c.internalID}
                 internalID={c.internalID}
               >
-                {enableNewHomeViewCardRailType ? (
-                  <ArtworkCard
-                    artwork={c}
-                    key={c.internalID}
-                    containerStyle={cardStyle}
-                    contextModule={ContextModule.infiniteDiscovery}
-                    ownerType={OwnerType.infiniteDiscovery}
-                    isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
-                    index={i}
-                    isTopCard={activeIndex === i}
-                  />
-                ) : (
-                  <InfiniteDiscoveryArtworkCard
-                    artwork={c}
-                    key={c.internalID}
-                    containerStyle={cardStyle}
-                    isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
-                    index={i}
-                    isTopCard={activeIndex === i}
-                  />
-                )}
+                <InfiniteDiscoveryArtworkCard
+                  artwork={c}
+                  key={c.internalID}
+                  containerStyle={cardStyle}
+                  isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
+                  index={i}
+                  isTopCard={activeIndex === i}
+                />
               </AnimatedView>
             )
           })}

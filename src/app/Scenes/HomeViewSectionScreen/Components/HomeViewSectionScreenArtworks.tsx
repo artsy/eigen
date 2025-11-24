@@ -98,7 +98,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       <Flex width={width}>
         <ArtworkCard
           artwork={item}
-          supportMultipleImages={false}
+          supportMultipleImages={true}
           showPager={false}
           contextModule={ContextModule.newWorksForYouRail}
           index={index}

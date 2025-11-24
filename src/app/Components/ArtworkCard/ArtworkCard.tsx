@@ -8,13 +8,18 @@ import { ArtworkCardSaveButton } from "app/Components/ArtworkCard/ArtworkCardSav
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import {
+  FlatList,
+  GestureResponderEvent,
+  ScrollView,
+  Text as RNText,
+  ViewStyle,
+} from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -203,17 +208,19 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       } else {
         heartOpacity.value = withTiming(0, { duration: 300 })
       }
-    }, [isSavedProp, showScreenTapToSave])
+    }, [isSavedProp, showScreenTapToSave, heartOpacity])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
     }
 
-    const DEFAULT_MAX_ARTWORK_HEIGHT = screenHeight * 0.55
+    const DEFAULT_MAX_ARTWORK_HEIGHT = screenHeight * 0.5 //0.55
     const actualMaxHeight = maxHeight || DEFAULT_MAX_ARTWORK_HEIGHT
 
-    const hasMultipleImages = supportMultipleImages && artwork.images.length > 1
-    const displayImages = supportMultipleImages ? artwork.images : [artwork.images[0]]
+    const hasMultipleImages = supportMultipleImages // && artwork.images.length > 1
+    const displayImages = supportMultipleImages
+      ? artwork.images.concat(artwork.images, artwork.images)
+      : [artwork.images[0]]
     const shouldShowPager = showPager && hasMultipleImages
 
     // When there are multiple images and pager is shown, adjust the max height to allow space for pagination bar
@@ -347,56 +354,59 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           />
 
           {/* Image Display */}
-          {supportMultipleImages ? (
-            <FlatList
-              data={displayImages}
-              ref={imageCarouselRef}
-              renderItem={({ item }) => {
-                const size = sizeToFit(
-                  { width: item?.width ?? 0, height: item?.height ?? 0 },
-                  { width: effectiveWidth, height: adjustedMaxHeight }
-                )
-
-                return (
-                  <Flex width={effectiveWidth} alignItems="center">
-                    <Image
-                      src={item?.url ?? ""}
-                      width={size.width}
-                      height={size.height}
-                      blurhash={item?.blurhash}
-                    />
-                  </Flex>
-                )
-              }}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+          <Flex width="100%" alignItems="center">
+            <Image
+              src={displayImages[currentImageIndex]?.url ?? ""}
+              width={size.width}
+              height={size.height}
+              blurhash={displayImages[currentImageIndex]?.blurhash}
             />
-          ) : (
-            <Flex width="100%" alignItems="center">
-              <Image
-                src={firstImage?.url ?? ""}
-                width={size.width}
-                height={size.height}
-                blurhash={firstImage?.blurhash}
-              />
-            </Flex>
-          )}
+          </Flex>
         </Flex>
 
-        {/* Pagination Bar */}
-        {!!shouldShowPager && (
-          <Flex
-            mt={1}
-            height={PAGINATION_BAR_HEIGHT}
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-          >
-            <PaginationBars currentIndex={currentImageIndex} length={displayImages.length} />
+        {/* Thumbnail Gallery */}
+        {!!hasMultipleImages && (
+          <Flex mt={1} width={screenWidth} alignItems="center" justifyContent="center" height={42}>
+            <Flex width={size.width * 0.75} overflow="visible" alignSelf="center">
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                nestedScrollEnabled
+                contentContainerStyle={{
+                  alignItems: "center",
+                  justifyContent: displayImages.length <= 3 ? "center" : "flex-start",
+                  paddingHorizontal: space(1),
+                }}
+              >
+                {displayImages.map((item, idx) => {
+                  const isActive = idx === currentImageIndex
+                  const thumbnailSize = sizeToFit(
+                    { width: item?.width ?? 0, height: item?.height ?? 0 },
+                    { width: 32, height: 40 }
+                  )
+
+                  return (
+                    <Flex
+                      key={idx}
+                      mr={1}
+                      borderWidth={isActive ? 2 : 1}
+                      borderColor={isActive ? color("mono100") : color("mono60")}
+                      onStartShouldSetResponder={() => true}
+                      onResponderRelease={() => {
+                        setCurrentImageIndex(idx)
+                      }}
+                    >
+                      <Image
+                        src={item?.url ?? ""}
+                        width={thumbnailSize.width}
+                        height={thumbnailSize.height}
+                        blurhash={item?.blurhash}
+                      />
+                    </Flex>
+                  )
+                })}
+              </ScrollView>
+            </Flex>
           </Flex>
         )}
 
