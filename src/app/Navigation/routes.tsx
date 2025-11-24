@@ -223,6 +223,7 @@ import {
   SimilarToRecentlyViewedScreenQuery,
 } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer, TagScreenQuery } from "app/Scenes/Tag/Tag"
+import { Typeform } from "app/Scenes/Typeform/Typeform"
 import {
   VanityURLEntityRenderer,
   VanityURLEntityScreenQuery,
@@ -1635,6 +1636,18 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [TagScreenQuery],
+  },
+  {
+    path: "/typeform/:id",
+    name: "Typeform",
+    Component: Typeform,
+    options: {
+      alwaysPresentModally: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerTitle: "Survey",
+      },
+    },
   },
   {
     path: "/unlisted-artworks-faq",
