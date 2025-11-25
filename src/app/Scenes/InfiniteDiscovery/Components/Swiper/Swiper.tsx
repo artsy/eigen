@@ -1,10 +1,7 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { forwardRef, Key, useEffect, useImperativeHandle, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -52,7 +49,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     },
     ref
   ) => {
-    const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
     const width = useScreenWidthWithOffset()
     const activeCardX = useSharedValue(0)
     const [cards, setCards] = useState(_cards)
