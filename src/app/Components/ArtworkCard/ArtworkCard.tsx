@@ -388,6 +388,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 decelerationRate="fast"
                 snapToInterval={33 + space(1)}
                 snapToAlignment="center"
+                nestedScrollEnabled={true}
                 contentContainerStyle={{
                   alignItems: "center",
                   paddingHorizontal: (size.width * 0.9) / 2 - 16,
