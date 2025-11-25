@@ -97,6 +97,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
     const isUserScrolling = useRef(false)
+    const isAnimatingToIndex = useRef(false)
 
     // Use the hook to manage saving if no custom onSave is provided
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -212,14 +213,18 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }
     }, [isSavedProp, showScreenTapToSave, heartOpacity])
 
-    // Sync thumbnail scroll when main image changes (but not when user is actively scrolling)
+    // Sync thumbnail scroll when tapping thumbnail (not during manual scrolling)
     useEffect(() => {
       if (thumbnailScrollRef.current && supportMultipleImages && !isUserScrolling.current) {
+        isAnimatingToIndex.current = true
         const itemWidth = 33 + space(1)
         thumbnailScrollRef.current.scrollTo({
           x: currentImageIndex * itemWidth,
           animated: true,
         })
+        setTimeout(() => {
+          isAnimatingToIndex.current = false
+        }, 300)
       }
     }, [currentImageIndex, supportMultipleImages, space])
 
@@ -404,7 +409,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                   isUserScrolling.current = false
                 }}
                 onScroll={(event) => {
-                  if (!isUserScrolling.current) return
+                  // Ignore scroll events during tap navigation animation
+                  if (!isUserScrolling.current || isAnimatingToIndex.current) return
 
                   const scrollPosition = event.nativeEvent.contentOffset.x
                   const itemWidth = 33 + space(1)
