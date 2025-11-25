@@ -79,6 +79,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const saveAnimationProgress = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
+    const thumbnailScrollRef = useRef<ScrollView>(null)
     const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
     const color = useColor()
@@ -95,6 +96,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     // State to track the current image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
+    const isUserScrolling = useRef(false)
 
     // Use the hook to manage saving if no custom onSave is provided
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -209,6 +211,17 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         heartOpacity.value = withTiming(0, { duration: 300 })
       }
     }, [isSavedProp, showScreenTapToSave, heartOpacity])
+
+    // Sync thumbnail scroll when main image changes (but not when user is actively scrolling)
+    useEffect(() => {
+      if (thumbnailScrollRef.current && supportMultipleImages && !isUserScrolling.current) {
+        const itemWidth = 33 + space(1)
+        thumbnailScrollRef.current.scrollTo({
+          x: currentImageIndex * itemWidth,
+          animated: true,
+        })
+      }
+    }, [currentImageIndex, supportMultipleImages, space])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
@@ -367,16 +380,41 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         {/* Thumbnail Gallery */}
         {!!hasMultipleImages && (
           <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
-            <Flex width={size.width * 0.9} overflow="hidden">
+            <Flex width={size.width * 0.9} overflow="visible">
               <ScrollView
+                ref={thumbnailScrollRef}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                nestedScrollEnabled
+                decelerationRate="fast"
+                snapToInterval={33 + space(1)}
+                snapToAlignment="center"
                 contentContainerStyle={{
                   alignItems: "center",
-                  justifyContent: "center",
-                  flexGrow: 1,
+                  paddingHorizontal: (size.width * 0.9) / 2 - 16,
                 }}
+                onScrollBeginDrag={() => {
+                  isUserScrolling.current = true
+                }}
+                onMomentumScrollBegin={() => {
+                  isUserScrolling.current = true
+                }}
+                onMomentumScrollEnd={() => {
+                  isUserScrolling.current = false
+                }}
+                onScroll={(event) => {
+                  if (!isUserScrolling.current) return
+
+                  const scrollPosition = event.nativeEvent.contentOffset.x
+                  const itemWidth = 33 + space(1)
+                  const newIndex = Math.round(scrollPosition / itemWidth)
+                  const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
+
+                  if (clampedIndex !== currentImageIndex) {
+                    setCurrentImageIndex(clampedIndex)
+                  }
+                }}
+                scrollEventThrottle={16}
+                disableIntervalMomentum
               >
                 {displayImages.map((item, idx) => {
                   const isActive = idx === currentImageIndex
@@ -394,6 +432,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                       onStartShouldSetResponder={() => true}
                       onResponderRelease={() => {
                         setCurrentImageIndex(idx)
+                        onImageSwipe?.()
                       }}
                     >
                       <Image
