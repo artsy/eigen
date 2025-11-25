@@ -215,6 +215,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           removeClippedSubviews={false}
           snapToInterval={width}
           snapToAlignment="start"
+          disableIntervalMomentum
           snapToEnd={false}
           onScroll={onScrollHandlerList}
           viewabilityConfig={viewabilityConfig}
