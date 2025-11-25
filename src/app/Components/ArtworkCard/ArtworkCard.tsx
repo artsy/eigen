@@ -366,16 +366,16 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
         {/* Thumbnail Gallery */}
         {!!hasMultipleImages && (
-          <Flex mt={1} width={screenWidth} alignItems="center" justifyContent="center" height={42}>
-            <Flex width={size.width * 0.75} overflow="visible" alignSelf="center">
+          <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
+            <Flex width={size.width * 0.9} overflow="hidden">
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 nestedScrollEnabled
                 contentContainerStyle={{
                   alignItems: "center",
-                  justifyContent: displayImages.length <= 3 ? "center" : "flex-start",
-                  paddingHorizontal: space(1),
+                  justifyContent: "center",
+                  flexGrow: 1,
                 }}
               >
                 {displayImages.map((item, idx) => {
@@ -389,8 +389,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                     <Flex
                       key={idx}
                       mr={1}
-                      borderWidth={isActive ? 2 : 1}
-                      borderColor={isActive ? color("mono100") : color("mono60")}
+                      borderWidth={isActive ? 2 : 0}
+                      borderColor={isActive ? color("mono100") : undefined}
                       onStartShouldSetResponder={() => true}
                       onResponderRelease={() => {
                         setCurrentImageIndex(idx)
