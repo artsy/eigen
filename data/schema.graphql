@@ -28229,8 +28229,14 @@ input submitOrderInput {
   # Stripe confirmation token.
   confirmationToken: String
 
+  # Confirmed setup intent ID for offer orders.
+  confirmedSetupIntentId: String
+
   # Order id.
   id: ID!
+
+  # Offer ID for submitting an offer-order.
+  offerID: ID
 
   # Whether the credit card should be one-time use.
   oneTimeUse: Boolean
