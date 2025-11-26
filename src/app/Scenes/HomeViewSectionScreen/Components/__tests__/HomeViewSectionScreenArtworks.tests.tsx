@@ -326,8 +326,8 @@ describe("HomeViewSectionArtworks", () => {
       })
 
       // Should render the new carousel header instead of the legacy header
-      expect(screen.getByText("New Works For You")).toBeOnTheScreen()
-      expect(screen.getByLabelText("Exit New Works For you")).toBeOnTheScreen()
+      expect(screen.getByText("New Works for You")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Exit New Works for You")).toBeOnTheScreen()
     })
 
     it("renders artworks in horizontal carousel format", () => {
@@ -421,7 +421,7 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
-      const closeButton = screen.getByLabelText("Exit New Works For you")
+      const closeButton = screen.getByLabelText("Exit New Works for You")
       fireEvent.press(closeButton)
 
       expect(navigate).toHaveBeenCalled()
