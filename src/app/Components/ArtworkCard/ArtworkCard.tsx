@@ -291,17 +291,16 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
             onImageSwipe?.()
           }}
         >
-          <Flex
-            borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
-            borderColor={isActive ? color("mono100") : undefined}
-          >
-            <Image
-              src={item?.url ?? ""}
-              width={thumbnailSize.width}
-              height={thumbnailSize.height}
-              blurhash={item?.blurhash}
-            />
-          </Flex>
+          <Image
+            src={item?.url ?? ""}
+            width={thumbnailSize.width}
+            height={thumbnailSize.height}
+            blurhash={item?.blurhash}
+            style={{
+              borderWidth: isActive ? ACTIVE_THUMBNAIL_BORDER : 0,
+              borderColor: isActive ? color("mono100") : undefined,
+            }}
+          />
         </Flex>
       )
     }
