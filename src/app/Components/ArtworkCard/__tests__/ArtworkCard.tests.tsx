@@ -261,7 +261,7 @@ describe("ArtworkCard", () => {
       }),
     })
 
-    // Should render main image and thumbnails (3 images * 3 repetitions = 9 total)
+    // Should render 3 thumbnail images for the 3 provided images
     const images = screen.getAllByTestId("thumbnail-image")
     expect(images.length).toBe(3)
   })
