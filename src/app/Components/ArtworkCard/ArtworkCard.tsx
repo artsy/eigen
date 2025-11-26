@@ -60,7 +60,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const space = useSpace()
     const { trackEvent } = useTracking()
-    const effectiveWidth = screenWidth
     const paddingHorizontal = space(2)
     const saveAnimationProgress = useSharedValue(0)
     const heartOpacity = useSharedValue(0)
@@ -148,7 +147,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
       // For InfiniteDiscovery mode, don't apply any animations since AnimatedView handles them
       return {}
-    }, [scrollX, index, effectiveWidth, isTopCard])
+    }, [scrollX, index, screenWidth, isTopCard])
 
     const animatedFadeStyle = useAnimatedStyle(() => {
       // If scrollX is provided, use carousel fade animations
@@ -217,12 +216,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       return null
     }
 
-    const actualMaxHeight = screenHeight * 0.5
+    const maxImageHeight = screenHeight * 0.5
+    const maxImageWidth = screenWidth - paddingHorizontal * 2
 
     const displayImages = artwork.images.concat(artwork.images, artwork.images)
-
-    const adjustedMaxHeight = actualMaxHeight
-    // actualMaxHeight - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
 
     const handleWrapperTaps = () => {
       const now = Date.now()
@@ -253,9 +250,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     }
 
     const firstImage = displayImages[0]
+
     const size = sizeToFit(
       { width: firstImage?.width ?? 0, height: firstImage?.height ?? 0 },
-      { width: screenWidth - paddingHorizontal * 2, height: adjustedMaxHeight }
+      { width: maxImageWidth, height: maxImageHeight }
     )
 
     return (
@@ -281,7 +279,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         )}
 
         {/* Image Section */}
-        <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
+        <Flex alignItems="center" height={maxImageHeight} justifyContent="center">
           {/* Save Animation Overlay */}
           <Animated.View
             style={[
