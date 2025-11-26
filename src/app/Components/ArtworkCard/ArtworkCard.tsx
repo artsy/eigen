@@ -30,6 +30,9 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
+const THUMBNAIL_HEIGHT = 40
+const THUMBNAIL_WIDTH = 32
+const ACTIVE_THUMBNAIL_BORDER = 2
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -59,15 +62,21 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
   }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const space = useSpace()
+    const color = useColor()
     const { trackEvent } = useTracking()
     const paddingHorizontal = space(2)
     const saveAnimationProgress = useSharedValue(0)
     const heartOpacity = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const thumbnailScrollRef = useRef<ScrollView>(null)
+    // Tracks whether user is manually scrolling thumbnails (drag/momentum)
+    const isUserScrolling = useRef(false)
+    // Prevents onScroll updates during programmatic scroll (tap navigation)
+    const isAnimatingToIndex = useRef(false)
     const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-    const color = useColor()
+    // State to track the current image index
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
 
     const artwork = useFragment<ArtworkCard_artwork$key>(artworkCardFragment, artworkProp)
 
@@ -77,12 +86,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         artwork.collectorSignals as ArtworkGridItem_artwork$data["collectorSignals"],
       auctionSignals: artwork.collectorSignals?.auction,
     })
-
-    // State to track the current image index
-    const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
-    const isUserScrolling = useRef(false)
-    const isAnimatingToIndex = useRef(false)
 
     // Use the hook to manage saving if no custom onSave is provided
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -198,19 +201,19 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     }, [isSavedProp, showScreenTapToSave, heartOpacity])
 
     // Sync thumbnail scroll when tapping thumbnail (not during manual scrolling)
+    const thumbnailWidthPaddings = THUMBNAIL_WIDTH + space(1)
     useEffect(() => {
       if (thumbnailScrollRef.current && !isUserScrolling.current) {
         isAnimatingToIndex.current = true
-        const itemWidth = 33 + space(1)
         thumbnailScrollRef.current.scrollTo({
-          x: currentImageIndex * itemWidth,
+          x: currentImageIndex * thumbnailWidthPaddings,
           animated: true,
         })
         setTimeout(() => {
           isAnimatingToIndex.current = false
         }, 300)
       }
-    }, [currentImageIndex, space])
+    }, [currentImageIndex, space, thumbnailWidthPaddings])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
@@ -255,6 +258,50 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       { width: firstImage?.width ?? 0, height: firstImage?.height ?? 0 },
       { width: maxImageWidth, height: maxImageHeight }
     )
+
+    const handleThumbnailScroll = (event: any) => {
+      // Ignore scroll events during tap navigation animation
+      if (!isUserScrolling.current || isAnimatingToIndex.current) return
+
+      const scrollPosition = event.nativeEvent.contentOffset.x
+      const newIndex = Math.round(scrollPosition / thumbnailWidthPaddings)
+      const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
+
+      if (clampedIndex !== currentImageIndex) {
+        setCurrentImageIndex(clampedIndex)
+      }
+    }
+
+    const renderThumbnail = (item: any, idx: number) => {
+      const isActive = idx === currentImageIndex
+      const thumbnailSize = sizeToFit(
+        { width: item?.width ?? 0, height: item?.height ?? 0 },
+        { width: THUMBNAIL_WIDTH, height: THUMBNAIL_HEIGHT }
+      )
+
+      return (
+        <Flex
+          key={idx}
+          mr={1}
+          borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
+          borderColor={isActive ? color("mono100") : undefined}
+          // Allow this component to handle touch events
+          onStartShouldSetResponder={() => true}
+          // Handle thumbnail tap to switch image
+          onResponderRelease={() => {
+            setCurrentImageIndex(idx)
+            onImageSwipe?.()
+          }}
+        >
+          <Image
+            src={item?.url ?? ""}
+            width={thumbnailSize.width}
+            height={thumbnailSize.height}
+            blurhash={item?.blurhash}
+          />
+        </Flex>
+      )
+    }
 
     return (
       <AnimatedFlex
@@ -301,6 +348,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
           {/* Touch Handler */}
           <Flex
+            // Claim touch events, but reject multi-touch gestures
             onStartShouldSetResponder={(event) => {
               if (event.nativeEvent.touches && event.nativeEvent.touches.length > 1) {
                 return false
@@ -332,19 +380,20 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
         {/* Thumbnail Gallery */}
         <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
-          <Flex width={size.width * 0.9} overflow="visible">
+          <Flex width={size.width} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
               horizontal
               showsHorizontalScrollIndicator={false}
               decelerationRate="fast"
-              snapToInterval={33 + space(1)}
+              snapToInterval={thumbnailWidthPaddings}
               nestedScrollEnabled={true}
-              bounces={false}
               overScrollMode="never"
               contentContainerStyle={{
                 alignItems: "center",
-                paddingHorizontal: (size.width * 0.9) / 2 - 16,
+                backgroundColor: "pink", // For debugging
+                // Center the active thumbnail: half image width minus half thumbnail width and border
+                paddingHorizontal: size.width / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
               onScrollBeginDrag={() => {
                 isUserScrolling.current = true
@@ -355,50 +404,11 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               onMomentumScrollEnd={() => {
                 isUserScrolling.current = false
               }}
-              onScroll={(event) => {
-                // Ignore scroll events during tap navigation animation
-                if (!isUserScrolling.current || isAnimatingToIndex.current) return
-
-                const scrollPosition = event.nativeEvent.contentOffset.x
-                const itemWidth = 33 + space(1)
-                const newIndex = Math.round(scrollPosition / itemWidth)
-                const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
-
-                if (clampedIndex !== currentImageIndex) {
-                  setCurrentImageIndex(clampedIndex)
-                }
-              }}
+              onScroll={handleThumbnailScroll}
               scrollEventThrottle={16}
               disableIntervalMomentum
             >
-              {displayImages.map((item, idx) => {
-                const isActive = idx === currentImageIndex
-                const thumbnailSize = sizeToFit(
-                  { width: item?.width ?? 0, height: item?.height ?? 0 },
-                  { width: 32, height: 40 }
-                )
-
-                return (
-                  <Flex
-                    key={idx}
-                    mr={1}
-                    borderWidth={isActive ? 2 : 0}
-                    borderColor={isActive ? color("mono100") : undefined}
-                    onStartShouldSetResponder={() => true}
-                    onResponderRelease={() => {
-                      setCurrentImageIndex(idx)
-                      onImageSwipe?.()
-                    }}
-                  >
-                    <Image
-                      src={item?.url ?? ""}
-                      width={thumbnailSize.width}
-                      height={thumbnailSize.height}
-                      blurhash={item?.blurhash}
-                    />
-                  </Flex>
-                )
-              })}
+              {displayImages.map(renderThumbnail)}
             </ScrollView>
           </Flex>
         </Flex>
@@ -456,19 +466,11 @@ const artworkCardFragment = graphql`
     collectorSignals {
       ...ArtworkAuctionTimer_collectorSignals
 
-      primaryLabel
       auction {
         bidCount
         liveBiddingStarted
         lotClosesAt
         lotWatcherCount
-      }
-      partnerOffer {
-        endAt
-        isAvailable
-        priceWithDiscount {
-          display
-        }
       }
     }
 
@@ -476,7 +478,6 @@ const artworkCardFragment = graphql`
     slug
     title
     date
-    artistNames
     saleMessage
     isSaved
     artists(shallow: true) {
@@ -486,7 +487,6 @@ const artworkCardFragment = graphql`
       url(version: "large")
       width
       height
-      aspectRatio
       blurhash
     }
     sale {
