@@ -379,7 +379,14 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         </Flex>
 
         {/* Thumbnail Gallery */}
-        <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
+        <AnimatedFlex
+          my={1}
+          width={screenWidth}
+          alignItems="center"
+          justifyContent="center"
+          height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
+          style={animatedFadeStyle}
+        >
           <Flex width={size.width} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
@@ -391,7 +398,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               overScrollMode="never"
               contentContainerStyle={{
                 alignItems: "center",
-                backgroundColor: "pink", // For debugging
                 // Center the active thumbnail: half image width minus half thumbnail width and border
                 paddingHorizontal: size.width / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
@@ -411,7 +417,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               {displayImages.map(renderThumbnail)}
             </ScrollView>
           </Flex>
-        </Flex>
+        </AnimatedFlex>
 
         {/* Artwork Info and Save Button */}
         <AnimatedFlex
