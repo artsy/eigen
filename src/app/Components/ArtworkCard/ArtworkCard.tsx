@@ -222,8 +222,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const maxImageHeight = screenHeight * 0.5
     const maxImageWidth = screenWidth - paddingHorizontal * 2
 
-    const displayImages = artwork.images.concat(artwork.images, artwork.images)
-
     const handleWrapperTaps = () => {
       const now = Date.now()
       const state = gestureState.current
@@ -252,6 +250,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       saveArtworkToLists()
     }
 
+    const displayImages = artwork.images
     const firstImage = displayImages[0]
 
     const size = sizeToFit(
@@ -381,15 +380,14 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         </Flex>
 
         {/* Thumbnail Gallery */}
-        <AnimatedFlex
+        <Flex
           my={1}
           width={screenWidth}
           alignItems="center"
           justifyContent="center"
           height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
-          style={animatedFadeStyle}
         >
-          <Flex width={size.width} overflow="visible">
+          <Flex width={size.width * 0.9} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
               horizontal
@@ -400,8 +398,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               overScrollMode="never"
               contentContainerStyle={{
                 alignItems: "center",
-                // Center the active thumbnail: half image width minus half thumbnail width and border
-                paddingHorizontal: size.width / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
+                // Center the active thumbnail: half thumbnail gallery width minus half thumbnail width and border
+                paddingHorizontal:
+                  (size.width * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
               onScrollBeginDrag={() => {
                 isUserScrolling.current = true
@@ -419,7 +418,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               {displayImages.map(renderThumbnail)}
             </ScrollView>
           </Flex>
-        </AnimatedFlex>
+        </Flex>
 
         {/* Artwork Info and Save Button */}
         <AnimatedFlex
