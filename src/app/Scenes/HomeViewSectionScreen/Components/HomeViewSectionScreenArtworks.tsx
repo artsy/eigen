@@ -101,6 +101,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           contextModule={section.contextModule as ContextModule}
           index={index}
           scrollX={scrollX}
+          containerStyle={{ backgroundColor: "transparent" }}
         />
       </Flex>
     ),
