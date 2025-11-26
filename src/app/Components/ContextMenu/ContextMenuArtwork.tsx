@@ -14,10 +14,11 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
-import { InteractionManager, Platform, SafeAreaView } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
