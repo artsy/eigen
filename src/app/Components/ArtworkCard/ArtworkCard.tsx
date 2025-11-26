@@ -282,9 +282,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       return (
         <Flex
           key={idx}
-          mr={1}
-          borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
-          borderColor={isActive ? color("mono100") : undefined}
+          pr={1}
           // Allow this component to handle touch events
           onStartShouldSetResponder={() => true}
           // Handle thumbnail tap to switch image
@@ -293,12 +291,17 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
             onImageSwipe?.()
           }}
         >
-          <Image
-            src={item?.url ?? ""}
-            width={thumbnailSize.width}
-            height={thumbnailSize.height}
-            blurhash={item?.blurhash}
-          />
+          <Flex
+            borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
+            borderColor={isActive ? color("mono100") : undefined}
+          >
+            <Image
+              src={item?.url ?? ""}
+              width={thumbnailSize.width}
+              height={thumbnailSize.height}
+              blurhash={item?.blurhash}
+            />
+          </Flex>
         </Flex>
       )
     }
