@@ -419,7 +419,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               scrollEventThrottle={16}
               disableIntervalMomentum
             >
-              {displayImages.map(renderThumbnail)}
+              {displayImages.map((item, idx) => renderThumbnail(item, idx))}
             </ScrollView>
           </Flex>
         </Flex>
