@@ -271,7 +271,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }
     }
 
-    const renderThumbnail = (item: any, idx: number) => {
+    const renderThumbnail = (
+      item: ArtworkGridItem_artwork$data["images"][number],
+      idx: number
+    ) => {
       const isActive = idx === currentImageIndex
       const thumbnailSize = sizeToFit(
         { width: item?.width ?? 0, height: item?.height ?? 0 },
