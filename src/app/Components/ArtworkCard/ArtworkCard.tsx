@@ -388,7 +388,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           justifyContent="center"
           height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
         >
-          <Flex width={size.width * 0.9} overflow="visible">
+          <Flex width={maxImageWidth * 0.9} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
               horizontal
@@ -401,7 +401,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 alignItems: "center",
                 // Center the active thumbnail: half thumbnail gallery width minus half thumbnail width and border
                 paddingHorizontal:
-                  (size.width * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
+                  (maxImageWidth * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
               onScrollBeginDrag={() => {
                 isUserScrolling.current = true
