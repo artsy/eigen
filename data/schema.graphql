@@ -5583,12 +5583,6 @@ type CollectorProfileType implements Node {
   savedArtworksCount: Int!
   selfReportedPurchases: String
 
-  # Up to three checkmark strings describing the collector in relation to the artwork/partner.
-  summaryAttributes(
-    # This can be specified, and is injected in a conversation context for convenience.
-    artworkID: String
-  ): [String]
-
   # An artwork-specific paragraph describing the collector.
   summaryParagraph(
     # This can be specified, and is injected in a conversation context for convenience.
@@ -14692,12 +14686,6 @@ type InquirerCollectorProfile {
   ): String
   savedArtworksCount: Int!
   selfReportedPurchases: String
-
-  # Up to three checkmark strings describing the collector in relation to the artwork/partner.
-  summaryAttributes(
-    # This can be specified, and is injected in a conversation context for convenience.
-    artworkID: String
-  ): [String]
 
   # An artwork-specific paragraph describing the collector.
   summaryParagraph(
