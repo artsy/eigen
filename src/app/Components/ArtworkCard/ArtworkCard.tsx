@@ -34,6 +34,8 @@ const THUMBNAIL_HEIGHT = 40
 const THUMBNAIL_WIDTH = 32
 const ACTIVE_THUMBNAIL_BORDER = 2
 
+// TODO: crop THUMBNAIL image when the image is either too long or too wide
+
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 interface ArtworkCardProps {
@@ -388,7 +390,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           justifyContent="center"
           height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
         >
-          <Flex width={maxImageWidth * 0.9} overflow="visible">
+          <Flex width={size.width * 0.9} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
               horizontal
@@ -401,7 +403,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 alignItems: "center",
                 // Center the active thumbnail: half thumbnail gallery width minus half thumbnail width and border
                 paddingHorizontal:
-                  (maxImageWidth * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
+                  (size.width * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
               onScrollBeginDrag={() => {
                 isUserScrolling.current = true
