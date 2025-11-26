@@ -13,13 +13,7 @@ import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import {
-  FlatList,
-  GestureResponderEvent,
-  ScrollView,
-  Text as RNText,
-  ViewStyle,
-} from "react-native"
+import { ScrollView, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -36,22 +30,17 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
-const PAGINATION_BAR_HEIGHT = 11
-const PAGINATION_BAR_MARGIN_TOP = 10
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 interface ArtworkCardProps {
   artwork: ArtworkCard_artwork$key
-  supportMultipleImages?: boolean
   containerStyle?: ViewStyle
   index: number
-  showPager?: boolean
   isSaved?: boolean
   onImageSwipe?: () => void
   contextModule?: ContextModule
   ownerType?: OwnerType
-  maxHeight?: number
   scrollX?: SharedValue<number>
   isTopCard?: boolean
 }
@@ -59,14 +48,11 @@ interface ArtworkCardProps {
 export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
   ({
     artwork: artworkProp,
-    supportMultipleImages = true,
-    showPager = true,
     containerStyle,
     isSaved: isSavedProp,
     onImageSwipe,
     contextModule,
     ownerType,
-    maxHeight,
     scrollX,
     index,
     isTopCard,
@@ -77,8 +63,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const effectiveWidth = screenWidth
     const paddingHorizontal = space(2)
     const saveAnimationProgress = useSharedValue(0)
+    const heartOpacity = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
-    const imageCarouselRef = useRef<FlatList>(null)
     const thumbnailScrollRef = useRef<ScrollView>(null)
     const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
@@ -163,6 +149,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       // For InfiniteDiscovery mode, don't apply any animations since AnimatedView handles them
       return {}
     }, [scrollX, index, effectiveWidth, isTopCard])
+
     const animatedFadeStyle = useAnimatedStyle(() => {
       // If scrollX is provided, use carousel fade animations
       if (scrollX) {
@@ -194,8 +181,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       })
     }, [isSavedProp, saveAnimationProgress])
 
-    const heartOpacity = useSharedValue(0)
-
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
         opacity: heartOpacity.value,
@@ -215,7 +200,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
     // Sync thumbnail scroll when tapping thumbnail (not during manual scrolling)
     useEffect(() => {
-      if (thumbnailScrollRef.current && supportMultipleImages && !isUserScrolling.current) {
+      if (thumbnailScrollRef.current && !isUserScrolling.current) {
         isAnimatingToIndex.current = true
         const itemWidth = 33 + space(1)
         thumbnailScrollRef.current.scrollTo({
@@ -226,75 +211,40 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           isAnimatingToIndex.current = false
         }, 300)
       }
-    }, [currentImageIndex, supportMultipleImages, space])
+    }, [currentImageIndex, space])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
     }
 
-    const DEFAULT_MAX_ARTWORK_HEIGHT = screenHeight * 0.5 //0.55
-    const actualMaxHeight = maxHeight || DEFAULT_MAX_ARTWORK_HEIGHT
+    const actualMaxHeight = screenHeight * 0.5
 
-    const hasMultipleImages = supportMultipleImages // && artwork.images.length > 1
-    const displayImages = supportMultipleImages
-      ? artwork.images.concat(artwork.images, artwork.images)
-      : [artwork.images[0]]
-    const shouldShowPager = showPager && hasMultipleImages
+    const displayImages = artwork.images.concat(artwork.images, artwork.images)
 
-    // When there are multiple images and pager is shown, adjust the max height to allow space for pagination bar
-    const adjustedMaxHeight = shouldShowPager
-      ? actualMaxHeight - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
-      : actualMaxHeight
+    const adjustedMaxHeight = actualMaxHeight
+    // actualMaxHeight - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
 
-    const handleWrapperTaps = (event: GestureResponderEvent) => {
+    const handleWrapperTaps = () => {
       const now = Date.now()
       const state = gestureState.current
-      const { nativeEvent } = event
-      const { locationX } = nativeEvent
-
-      const widthFifth = effectiveWidth / 5
-      // Determine which part of the screen was tapped
-      const leftFifth = locationX < widthFifth
-      const rightFifth = locationX > effectiveWidth - widthFifth
-      const middleSection = !leftFifth && !rightFifth
 
       // Handle double-tap to save - only works in middle section or when single image
-      if (middleSection || displayImages.length === 1) {
-        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
-          state.numTaps += 1
-        } else {
-          state.numTaps = 1
-        }
-
-        state.lastTapTimestamp = now
-
-        if (state.numTaps === 2) {
-          state.numTaps = 0
-          if (!isSaved) {
-            Haptic.trigger("impactLight")
-            setShowScreenTapToSave(true)
-            saveArtworkToLists()
-          }
-          return true
-        }
+      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
+        state.numTaps += 1
+      } else {
+        state.numTaps = 1
       }
 
-      // Handle image navigation for multiple images
-      if (hasMultipleImages) {
-        if (leftFifth && currentImageIndex > 0) {
-          Haptic.trigger("impactLight")
-          onImageSwipe?.()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
-          setCurrentImageIndex(currentImageIndex - 1)
-          return true
-        }
+      state.lastTapTimestamp = now
 
-        if (rightFifth && currentImageIndex < displayImages.length - 1) {
+      if (state.numTaps === 2) {
+        state.numTaps = 0
+        if (!isSaved) {
           Haptic.trigger("impactLight")
-          onImageSwipe?.()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
-          setCurrentImageIndex(currentImageIndex + 1)
+          setShowScreenTapToSave(true)
+          saveArtworkToLists()
         }
+        return true
       }
     }
 
@@ -383,79 +333,77 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         </Flex>
 
         {/* Thumbnail Gallery */}
-        {!!hasMultipleImages && (
-          <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
-            <Flex width={size.width * 0.9} overflow="visible">
-              <ScrollView
-                ref={thumbnailScrollRef}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                decelerationRate="fast"
-                snapToInterval={33 + space(1)}
-                nestedScrollEnabled={true}
-                bounces={false}
-                overScrollMode="never"
-                contentContainerStyle={{
-                  alignItems: "center",
-                  paddingHorizontal: (size.width * 0.9) / 2 - 16,
-                }}
-                onScrollBeginDrag={() => {
-                  isUserScrolling.current = true
-                }}
-                onMomentumScrollBegin={() => {
-                  isUserScrolling.current = true
-                }}
-                onMomentumScrollEnd={() => {
-                  isUserScrolling.current = false
-                }}
-                onScroll={(event) => {
-                  // Ignore scroll events during tap navigation animation
-                  if (!isUserScrolling.current || isAnimatingToIndex.current) return
+        <Flex my={1} width={screenWidth} alignItems="center" justifyContent="center" height={44}>
+          <Flex width={size.width * 0.9} overflow="visible">
+            <ScrollView
+              ref={thumbnailScrollRef}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              decelerationRate="fast"
+              snapToInterval={33 + space(1)}
+              nestedScrollEnabled={true}
+              bounces={false}
+              overScrollMode="never"
+              contentContainerStyle={{
+                alignItems: "center",
+                paddingHorizontal: (size.width * 0.9) / 2 - 16,
+              }}
+              onScrollBeginDrag={() => {
+                isUserScrolling.current = true
+              }}
+              onMomentumScrollBegin={() => {
+                isUserScrolling.current = true
+              }}
+              onMomentumScrollEnd={() => {
+                isUserScrolling.current = false
+              }}
+              onScroll={(event) => {
+                // Ignore scroll events during tap navigation animation
+                if (!isUserScrolling.current || isAnimatingToIndex.current) return
 
-                  const scrollPosition = event.nativeEvent.contentOffset.x
-                  const itemWidth = 33 + space(1)
-                  const newIndex = Math.round(scrollPosition / itemWidth)
-                  const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
+                const scrollPosition = event.nativeEvent.contentOffset.x
+                const itemWidth = 33 + space(1)
+                const newIndex = Math.round(scrollPosition / itemWidth)
+                const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
 
-                  if (clampedIndex !== currentImageIndex) {
-                    setCurrentImageIndex(clampedIndex)
-                  }
-                }}
-                scrollEventThrottle={16}
-                disableIntervalMomentum
-              >
-                {displayImages.map((item, idx) => {
-                  const isActive = idx === currentImageIndex
-                  const thumbnailSize = sizeToFit(
-                    { width: item?.width ?? 0, height: item?.height ?? 0 },
-                    { width: 32, height: 40 }
-                  )
+                if (clampedIndex !== currentImageIndex) {
+                  setCurrentImageIndex(clampedIndex)
+                }
+              }}
+              scrollEventThrottle={16}
+              disableIntervalMomentum
+            >
+              {displayImages.map((item, idx) => {
+                const isActive = idx === currentImageIndex
+                const thumbnailSize = sizeToFit(
+                  { width: item?.width ?? 0, height: item?.height ?? 0 },
+                  { width: 32, height: 40 }
+                )
 
-                  return (
-                    <Flex
-                      key={idx}
-                      mr={1}
-                      borderWidth={isActive ? 2 : 0}
-                      borderColor={isActive ? color("mono100") : undefined}
-                      onStartShouldSetResponder={() => true}
-                      onResponderRelease={() => {
-                        setCurrentImageIndex(idx)
-                        onImageSwipe?.()
-                      }}
-                    >
-                      <Image
-                        src={item?.url ?? ""}
-                        width={thumbnailSize.width}
-                        height={thumbnailSize.height}
-                        blurhash={item?.blurhash}
-                      />
-                    </Flex>
-                  )
-                })}
-              </ScrollView>
-            </Flex>
+                return (
+                  <Flex
+                    key={idx}
+                    mr={1}
+                    borderWidth={isActive ? 2 : 0}
+                    borderColor={isActive ? color("mono100") : undefined}
+                    onStartShouldSetResponder={() => true}
+                    onResponderRelease={() => {
+                      setCurrentImageIndex(idx)
+                      onImageSwipe?.()
+                    }}
+                  >
+                    <Image
+                      src={item?.url ?? ""}
+                      width={thumbnailSize.width}
+                      height={thumbnailSize.height}
+                      blurhash={item?.blurhash}
+                    />
+                  </Flex>
+                )
+              })}
+            </ScrollView>
           </Flex>
-        )}
+        </Flex>
 
         {/* Artwork Info and Save Button */}
         <AnimatedFlex

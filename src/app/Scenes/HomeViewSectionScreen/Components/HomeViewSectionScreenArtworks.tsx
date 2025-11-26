@@ -98,16 +98,13 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       <Flex width={width}>
         <ArtworkCard
           artwork={item}
-          supportMultipleImages={true}
-          showPager={false}
-          contextModule={ContextModule.newWorksForYouRail}
+          contextModule={section.contextModule as ContextModule}
           index={index}
           scrollX={scrollX}
-          containerStyle={{ backgroundColor: "transparent" }}
         />
       </Flex>
     ),
-    [width, scrollX]
+    [width, section.contextModule, scrollX]
   )
 
   if (!isNewWorksForYouCarouselEnabled) {
@@ -187,7 +184,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           </Touchable>
         }
         hideLeftElements
-        title="New Works For You"
+        title={section.component?.title || ""}
       />
 
       <Flex height={height}>
