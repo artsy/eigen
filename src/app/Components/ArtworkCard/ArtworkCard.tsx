@@ -291,6 +291,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           }}
         >
           <Image
+            testID="thumbnail-image"
             src={item?.url ?? ""}
             width={thumbnailSize.width}
             height={thumbnailSize.height}
