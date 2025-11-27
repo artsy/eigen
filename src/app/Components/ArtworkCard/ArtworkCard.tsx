@@ -261,20 +261,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       saveArtworkToLists()
     }
 
-    const displayImages = artwork.images.concat(
-      {
-        url: "https://d7hftxdivxxvm.cloudfront.net/?height=506&quality=80&resize_to=fit&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FYnw2A09bhmWapizD3PHePw%2Fmain.jpg&width=1600",
-        width: 1600,
-        height: 430,
-        blurhash: "LKO2?U%2Tw=^}pM{Rj[Rj~q%MRjof",
-      },
-      {
-        url: "https://d7hftxdivxxvm.cloudfront.net/?height=1600&quality=80&resize_to=fit&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FlFHzO4bnt4yHmxZ4inTRqw%2Fmain.jpg&width=430",
-        width: 430,
-        height: 1600,
-        blurhash: "LKO2?U%2Tw=^}pM{Rj[Rj~q%MRjof",
-      }
-    )
+    const displayImages = artwork.images
 
     const currentImage = displayImages[currentImageIndex]
     const currentImageSize = sizeToFit(
