@@ -33,6 +33,7 @@ const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
 const THUMBNAIL_HEIGHT = 40
 const THUMBNAIL_WIDTH = 32
 const ACTIVE_THUMBNAIL_BORDER = 2
+const THUMBNAIL_WIDTH_WITH_PADDING = THUMBNAIL_WIDTH + 10 // 10px padding between thumbnails
 
 // TODO: crop THUMBNAIL image when the image is either too long or too wide
 
@@ -203,19 +204,15 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     }, [isSavedProp, showScreenTapToSave, heartOpacity])
 
     // Sync thumbnail scroll when tapping thumbnail (not during manual scrolling)
-    const thumbnailWidthPaddings = THUMBNAIL_WIDTH + space(1)
     useEffect(() => {
       if (thumbnailScrollRef.current && !isUserScrolling.current) {
         isAnimatingToIndex.current = true
         thumbnailScrollRef.current.scrollTo({
-          x: currentImageIndex * thumbnailWidthPaddings,
+          x: currentImageIndex * THUMBNAIL_WIDTH_WITH_PADDING,
           animated: true,
         })
-        setTimeout(() => {
-          isAnimatingToIndex.current = false
-        }, 300)
       }
-    }, [currentImageIndex, space, thumbnailWidthPaddings])
+    }, [currentImageIndex])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
@@ -261,11 +258,11 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     )
 
     const handleThumbnailScroll = (event: any) => {
-      // Ignore scroll events during tap navigation animation
+      // Only respond to user-initiated scrolls
       if (!isUserScrolling.current || isAnimatingToIndex.current) return
 
       const scrollPosition = event.nativeEvent.contentOffset.x
-      const newIndex = Math.round(scrollPosition / thumbnailWidthPaddings)
+      const newIndex = Math.round(scrollPosition / THUMBNAIL_WIDTH_WITH_PADDING)
       const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
 
       if (clampedIndex !== currentImageIndex) {
@@ -396,7 +393,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               horizontal
               showsHorizontalScrollIndicator={false}
               decelerationRate="fast"
-              snapToInterval={thumbnailWidthPaddings}
+              snapToInterval={THUMBNAIL_WIDTH_WITH_PADDING}
               nestedScrollEnabled={true}
               overScrollMode="never"
               contentContainerStyle={{
@@ -413,6 +410,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               }}
               onMomentumScrollEnd={() => {
                 isUserScrolling.current = false
+                isAnimatingToIndex.current = false
               }}
               onScroll={handleThumbnailScroll}
               scrollEventThrottle={16}
