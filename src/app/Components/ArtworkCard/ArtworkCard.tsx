@@ -1,6 +1,14 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { HeartFillIcon } from "@artsy/icons/native"
-import { Flex, Image, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  useColor,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkCard_artwork$key } from "__generated__/ArtworkCard_artwork.graphql"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
@@ -249,13 +257,28 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       saveArtworkToLists()
     }
 
-    const displayImages = artwork.images
-    const firstImage = displayImages[0]
+    const displayImages = artwork.images.concat(
+      {
+        url: "https://d7hftxdivxxvm.cloudfront.net/?height=506&quality=80&resize_to=fit&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FYnw2A09bhmWapizD3PHePw%2Fmain.jpg&width=1600",
+        width: 1600,
+        height: 430,
+        blurhash: "LKO2?U%2Tw=^}pM{Rj[Rj~q%MRjof",
+      },
+      {
+        url: "https://d7hftxdivxxvm.cloudfront.net/?height=1600&quality=80&resize_to=fit&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2FlFHzO4bnt4yHmxZ4inTRqw%2Fmain.jpg&width=430",
+        width: 430,
+        height: 1600,
+        blurhash: "LKO2?U%2Tw=^}pM{Rj[Rj~q%MRjof",
+      }
+    )
 
-    const size = sizeToFit(
-      { width: firstImage?.width ?? 0, height: firstImage?.height ?? 0 },
+    const currentImage = displayImages[currentImageIndex]
+    const currentImageSize = sizeToFit(
+      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
       { width: maxImageWidth, height: maxImageHeight }
     )
+
+    const thumbnailGalleryWidth = maxImageWidth * 0.9
 
     const handleThumbnailScroll = (event: any) => {
       // Only respond to user-initiated scrolls
@@ -277,6 +300,11 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         { width: THUMBNAIL_WIDTH, height: THUMBNAIL_HEIGHT }
       )
 
+      const thumbnailWidth =
+        thumbnailSize.width / THUMBNAIL_WIDTH < 0.5 ? THUMBNAIL_WIDTH : thumbnailSize.width
+      const thumbnailHeight =
+        thumbnailSize.height / THUMBNAIL_HEIGHT < 0.5 ? THUMBNAIL_HEIGHT : thumbnailSize.height
+
       return (
         <Flex
           key={idx}
@@ -289,17 +317,18 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
             onImageSwipe?.()
           }}
         >
-          <Image
-            testID="thumbnail-image"
-            src={item?.url ?? ""}
-            width={thumbnailSize.width}
-            height={thumbnailSize.height}
-            blurhash={item?.blurhash}
-            style={{
-              borderWidth: isActive ? ACTIVE_THUMBNAIL_BORDER : 0,
-              borderColor: isActive ? color("mono100") : undefined,
-            }}
-          />
+          <Box
+            borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
+            borderColor={isActive ? color("mono100") : undefined}
+          >
+            <Image
+              testID="thumbnail-image"
+              src={item?.url ?? ""}
+              width={thumbnailWidth}
+              height={thumbnailHeight}
+              blurhash={item?.blurhash}
+            />
+          </Box>
         </Flex>
       )
     }
@@ -371,9 +400,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           {/* Image Display */}
           <Flex width="100%" alignItems="center">
             <Image
+              key={`main-image-${currentImageIndex}`}
               src={displayImages[currentImageIndex]?.url ?? ""}
-              width={size.width}
-              height={size.height}
+              width={currentImageSize.width}
+              height={currentImageSize.height}
               blurhash={displayImages[currentImageIndex]?.blurhash}
             />
           </Flex>
@@ -387,7 +417,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           justifyContent="center"
           height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
         >
-          <Flex width={size.width * 0.9} overflow="visible">
+          <Flex width={thumbnailGalleryWidth} overflow="visible">
             <ScrollView
               ref={thumbnailScrollRef}
               horizontal
@@ -400,7 +430,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 alignItems: "center",
                 // Center the active thumbnail: half thumbnail gallery width minus half thumbnail width and border
                 paddingHorizontal:
-                  (size.width * 0.9) / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
+                  thumbnailGalleryWidth / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
               }}
               onScrollBeginDrag={() => {
                 isUserScrolling.current = true
