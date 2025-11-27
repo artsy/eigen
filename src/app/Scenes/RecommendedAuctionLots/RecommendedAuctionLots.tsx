@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
 import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { WorksForYouArtworksQR, PAGE_SIZE } from "app/Components/WorksForYouArtworks"
+import { WorksForYouArtworksQR } from "app/Components/WorksForYouArtworks"
 import { ICON_SIZE } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -53,12 +53,6 @@ export const RecommendedAuctionLotsQueryRenderer: React.FC = () => {
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
-
-export const recommendedAuctionLotsDefaultVariables = () => ({
-  count: PAGE_SIZE,
-  includeBackfill: true,
-  onlyAtAuction: true,
-})
 
 export const RecommendedAuctionLotsPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
   defaultViewOption,

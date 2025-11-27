@@ -22,6 +22,9 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
   const { trackEvent } = useTracking()
 
   const data = useFragment(latestAuctionResultsRailFragment, me)
+
+  console.log("LOGD [SalesLatestAuctionResults] = ", data)
+
   const auctionResultsByFollowedArtists = extractNodes(data?.auctionResultsByFollowedArtists)
 
   if (!auctionResultsByFollowedArtists?.length) {

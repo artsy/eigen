@@ -227,7 +227,7 @@ const homeViewSectionArtworksQuery = graphql`
   }
 `
 
-const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
+export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
 
   return (
