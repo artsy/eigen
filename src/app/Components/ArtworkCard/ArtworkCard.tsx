@@ -220,6 +220,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           animated: true,
         })
       }
+
+      setTimeout(() => {
+        isAnimatingToIndex.current = false
+      }, 300)
     }, [currentImageIndex])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
@@ -411,7 +415,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
         {/* Thumbnail Gallery */}
         <Flex
-          my={1}
+          my={2}
           width={screenWidth}
           alignItems="center"
           justifyContent="center"
@@ -440,7 +444,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               }}
               onMomentumScrollEnd={() => {
                 isUserScrolling.current = false
-                isAnimatingToIndex.current = false
               }}
               onScroll={handleThumbnailScroll}
               scrollEventThrottle={16}
