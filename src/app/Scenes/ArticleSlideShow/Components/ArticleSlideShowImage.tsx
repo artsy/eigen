@@ -58,7 +58,13 @@ export const ArticleSlideShowImage: React.FC<ArticleSlideShowImageProps> = ({ fi
       {viewSize.height === 0 ? (
         <Spinner />
       ) : (
-        <Image src={image} width={size.width} height={size.height} testID="slide-image" />
+        <Image
+          src={image}
+          width={size.width}
+          height={size.height}
+          resizeMode="contain"
+          testID="slide-image"
+        />
       )}
     </Flex>
   )
