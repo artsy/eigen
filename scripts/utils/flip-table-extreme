@@ -68,5 +68,3 @@ yarn setup:artsy
 
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all
-
-./scripts/setup/update-echo

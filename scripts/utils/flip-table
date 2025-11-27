@@ -24,9 +24,15 @@ rm -rf "$TMPDIR/haste-map-*"
 echo "Clear CocoaPods cache (ノಠ益ಠ)ノ彡┻━┻"
 rm -rf ~/Library/Caches/CocoaPods
 
+echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+# sometimes this fails on first try even with -rf
+# but a second try takes it home
+if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+	rm -rf ~/Library/Developer/Xcode/DerivedData
+fi
+
 echo "Clear Gems (┛ಠ_ಠ)┛彡┻━┻"
 rm -rf .vendor
-
 
 echo "Reinstall dependencies ┬─┬ノ( º _ ºノ)"
 
@@ -37,4 +43,3 @@ bundle install
 yarn setup:artsy
 
 yarn install:all
-
