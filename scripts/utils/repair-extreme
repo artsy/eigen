@@ -3,10 +3,24 @@ set -euxo pipefail
 
 # When to use this script:
 #
-# Use this script when you want to do a complete clean of your development environment.
-# This is useful when you are experiencing persistent issues that are not resolved by
-# the standard flip-table script, such as build failures, caching issues, or native dependency
-# conflicts.
+# Use this script when you want to do a COMPLETE NUCLEAR clean of your development environment.
+# This is the most aggressive repair option and should only be used when you are experiencing
+# persistent issues that are not resolved by the standard `yarn repair` script.
+#
+# Use this when:
+# - yarn repair didn't fix the issue
+# - You have deep caching issues across global caches
+# - Native dependency conflicts that won't resolve
+# - Relay or GraphQL codegen issues
+# - You've been using a locally linked palette-mobile package
+#
+# This script does EVERYTHING that yarn clean does, PLUS:
+# - Cleans global yarn & pod caches
+# - Clears relay and GraphQL caches
+# - Resets yalc linked packages (palette-mobile)
+# - Clears build artifacts
+#
+# For most issues, try `yarn repair` first. Only use this when necessary.
 
 # Clear global and local caches and build files
 echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
