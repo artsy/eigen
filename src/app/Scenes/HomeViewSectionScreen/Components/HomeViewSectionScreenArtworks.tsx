@@ -177,7 +177,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="Exit New Works for you"
+            accessibilityLabel="Exit New Works for You"
             hitSlop={DEFAULT_HIT_SLOP}
             onPress={() => goBack()}
           >
