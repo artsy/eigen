@@ -1,6 +1,14 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { HeartFillIcon } from "@artsy/icons/native"
-import { Flex, Image, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Image,
+  Text,
+  useColor,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkCard_artwork$key } from "__generated__/ArtworkCard_artwork.graphql"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
@@ -8,13 +16,12 @@ import { ArtworkCardSaveButton } from "app/Components/ArtworkCard/ArtworkCardSav
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { tracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import { ScrollView, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -31,22 +38,23 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
-const PAGINATION_BAR_HEIGHT = 11
-const PAGINATION_BAR_MARGIN_TOP = 10
+const THUMBNAIL_HEIGHT = 40
+const THUMBNAIL_WIDTH = 32
+const ACTIVE_THUMBNAIL_BORDER = 2
+const THUMBNAIL_WIDTH_WITH_PADDING = THUMBNAIL_WIDTH + 10 // 10px padding between thumbnails
+
+// TODO: crop THUMBNAIL image when the image is either too long or too wide
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 interface ArtworkCardProps {
   artwork: ArtworkCard_artwork$key
-  supportMultipleImages?: boolean
   containerStyle?: ViewStyle
   index: number
-  showPager?: boolean
   isSaved?: boolean
   onImageSwipe?: () => void
   contextModule?: ContextModule
   ownerType?: OwnerType
-  maxHeight?: number
   scrollX?: SharedValue<number>
   isTopCard?: boolean
 }
@@ -54,29 +62,32 @@ interface ArtworkCardProps {
 export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
   ({
     artwork: artworkProp,
-    supportMultipleImages = true,
-    showPager = true,
     containerStyle,
     isSaved: isSavedProp,
     onImageSwipe,
     contextModule,
     ownerType,
-    maxHeight,
     scrollX,
     index,
     isTopCard,
   }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const space = useSpace()
+    const color = useColor()
     const { trackEvent } = useTracking()
-    const effectiveWidth = screenWidth
     const paddingHorizontal = space(2)
     const saveAnimationProgress = useSharedValue(0)
+    const heartOpacity = useSharedValue(0)
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
-    const imageCarouselRef = useRef<FlatList>(null)
+    const thumbnailScrollRef = useRef<ScrollView>(null)
+    // Tracks whether user is manually scrolling thumbnails (drag/momentum)
+    const isUserScrolling = useRef(false)
+    // Prevents onScroll updates during programmatic scroll (tap navigation)
+    const isAnimatingToIndex = useRef(false)
     const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-    const color = useColor()
+    // State to track the current image index
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
 
     const artwork = useFragment<ArtworkCard_artwork$key>(artworkCardFragment, artworkProp)
 
@@ -86,10 +97,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         artwork.collectorSignals as ArtworkGridItem_artwork$data["collectorSignals"],
       auctionSignals: artwork.collectorSignals?.auction,
     })
-
-    // State to track the current image index
-    const [currentImageIndex, setCurrentImageIndex] = useState(0)
-    const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
 
     // Use the hook to manage saving if no custom onSave is provided
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -154,7 +161,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
       // For InfiniteDiscovery mode, don't apply any animations since AnimatedView handles them
       return {}
-    }, [scrollX, index, effectiveWidth, isTopCard])
+    }, [scrollX, index, screenWidth, isTopCard])
+
     const animatedFadeStyle = useAnimatedStyle(() => {
       // If scrollX is provided, use carousel fade animations
       if (scrollX) {
@@ -186,8 +194,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       })
     }, [isSavedProp, saveAnimationProgress])
 
-    const heartOpacity = useSharedValue(0)
-
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
         opacity: heartOpacity.value,
@@ -203,73 +209,51 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       } else {
         heartOpacity.value = withTiming(0, { duration: 300 })
       }
-    }, [isSavedProp, showScreenTapToSave])
+    }, [isSavedProp, showScreenTapToSave, heartOpacity])
+
+    // Sync thumbnail scroll when tapping thumbnail (not during manual scrolling)
+    useEffect(() => {
+      if (thumbnailScrollRef.current && !isUserScrolling.current) {
+        isAnimatingToIndex.current = true
+        thumbnailScrollRef.current.scrollTo({
+          x: currentImageIndex * THUMBNAIL_WIDTH_WITH_PADDING,
+          animated: true,
+        })
+      }
+
+      setTimeout(() => {
+        isAnimatingToIndex.current = false
+      }, 300)
+    }, [currentImageIndex])
 
     if (!artwork || !artwork.images || artwork.images.length === 0) {
       return null
     }
 
-    const DEFAULT_MAX_ARTWORK_HEIGHT = screenHeight * 0.55
-    const actualMaxHeight = maxHeight || DEFAULT_MAX_ARTWORK_HEIGHT
+    const maxImageHeight = screenHeight * 0.5
+    const maxImageWidth = screenWidth - paddingHorizontal * 2
 
-    const hasMultipleImages = supportMultipleImages && artwork.images.length > 1
-    const displayImages = supportMultipleImages ? artwork.images : [artwork.images[0]]
-    const shouldShowPager = showPager && hasMultipleImages
-
-    // When there are multiple images and pager is shown, adjust the max height to allow space for pagination bar
-    const adjustedMaxHeight = shouldShowPager
-      ? actualMaxHeight - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
-      : actualMaxHeight
-
-    const handleWrapperTaps = (event: GestureResponderEvent) => {
+    const handleWrapperTaps = () => {
       const now = Date.now()
       const state = gestureState.current
-      const { nativeEvent } = event
-      const { locationX } = nativeEvent
-
-      const widthFifth = effectiveWidth / 5
-      // Determine which part of the screen was tapped
-      const leftFifth = locationX < widthFifth
-      const rightFifth = locationX > effectiveWidth - widthFifth
-      const middleSection = !leftFifth && !rightFifth
 
       // Handle double-tap to save - only works in middle section or when single image
-      if (middleSection || displayImages.length === 1) {
-        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
-          state.numTaps += 1
-        } else {
-          state.numTaps = 1
-        }
-
-        state.lastTapTimestamp = now
-
-        if (state.numTaps === 2) {
-          state.numTaps = 0
-          if (!isSaved) {
-            Haptic.trigger("impactLight")
-            setShowScreenTapToSave(true)
-            saveArtworkToLists()
-          }
-          return true
-        }
+      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
+        state.numTaps += 1
+      } else {
+        state.numTaps = 1
       }
 
-      // Handle image navigation for multiple images
-      if (hasMultipleImages) {
-        if (leftFifth && currentImageIndex > 0) {
-          Haptic.trigger("impactLight")
-          onImageSwipe?.()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
-          setCurrentImageIndex(currentImageIndex - 1)
-          return true
-        }
+      state.lastTapTimestamp = now
 
-        if (rightFifth && currentImageIndex < displayImages.length - 1) {
+      if (state.numTaps === 2) {
+        state.numTaps = 0
+        if (!isSaved) {
           Haptic.trigger("impactLight")
-          onImageSwipe?.()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
-          setCurrentImageIndex(currentImageIndex + 1)
+          setShowScreenTapToSave(true)
+          saveArtworkToLists()
         }
+        return true
       }
     }
 
@@ -277,11 +261,68 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       saveArtworkToLists()
     }
 
-    const firstImage = displayImages[0]
-    const size = sizeToFit(
-      { width: firstImage?.width ?? 0, height: firstImage?.height ?? 0 },
-      { width: screenWidth - paddingHorizontal * 2, height: adjustedMaxHeight }
+    const displayImages = artwork.images
+
+    const currentImage = displayImages[currentImageIndex]
+    const currentImageSize = sizeToFit(
+      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
+      { width: maxImageWidth, height: maxImageHeight }
     )
+
+    const thumbnailGalleryWidth = maxImageWidth * 0.9
+
+    const handleThumbnailScroll = (event: any) => {
+      // Only respond to user-initiated scrolls
+      if (!isUserScrolling.current || isAnimatingToIndex.current) return
+
+      const scrollPosition = event.nativeEvent.contentOffset.x
+      const newIndex = Math.round(scrollPosition / THUMBNAIL_WIDTH_WITH_PADDING)
+      const clampedIndex = Math.max(0, Math.min(displayImages.length - 1, newIndex))
+
+      if (clampedIndex !== currentImageIndex) {
+        setCurrentImageIndex(clampedIndex)
+      }
+    }
+
+    const renderThumbnail = (item: any, idx: number) => {
+      const isActive = idx === currentImageIndex
+      const thumbnailSize = sizeToFit(
+        { width: item?.width ?? 0, height: item?.height ?? 0 },
+        { width: THUMBNAIL_WIDTH, height: THUMBNAIL_HEIGHT }
+      )
+
+      const thumbnailWidth =
+        thumbnailSize.width / THUMBNAIL_WIDTH < 0.5 ? THUMBNAIL_WIDTH : thumbnailSize.width
+      const thumbnailHeight =
+        thumbnailSize.height / THUMBNAIL_HEIGHT < 0.5 ? THUMBNAIL_HEIGHT : thumbnailSize.height
+
+      return (
+        <Flex
+          key={idx}
+          pr={1}
+          // Allow this component to handle touch events
+          onStartShouldSetResponder={() => true}
+          // Handle thumbnail tap to switch image
+          onResponderRelease={() => {
+            setCurrentImageIndex(idx)
+            onImageSwipe?.()
+          }}
+        >
+          <Box
+            borderWidth={isActive ? ACTIVE_THUMBNAIL_BORDER : 0}
+            borderColor={isActive ? color("mono100") : undefined}
+          >
+            <Image
+              testID="thumbnail-image"
+              src={item?.url ?? ""}
+              width={thumbnailWidth}
+              height={thumbnailHeight}
+              blurhash={item?.blurhash}
+            />
+          </Box>
+        </Flex>
+      )
+    }
 
     return (
       <AnimatedFlex
@@ -306,7 +347,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         )}
 
         {/* Image Section */}
-        <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
+        <Flex alignItems="center" height={maxImageHeight} justifyContent="center">
           {/* Save Animation Overlay */}
           <Animated.View
             style={[
@@ -328,6 +369,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
           {/* Touch Handler */}
           <Flex
+            // Claim touch events, but reject multi-touch gestures
             onStartShouldSetResponder={(event) => {
               if (event.nativeEvent.touches && event.nativeEvent.touches.length > 1) {
                 return false
@@ -347,58 +389,57 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           />
 
           {/* Image Display */}
-          {supportMultipleImages ? (
-            <FlatList
-              data={displayImages}
-              ref={imageCarouselRef}
-              renderItem={({ item }) => {
-                const size = sizeToFit(
-                  { width: item?.width ?? 0, height: item?.height ?? 0 },
-                  { width: effectiveWidth, height: adjustedMaxHeight }
-                )
-
-                return (
-                  <Flex width={effectiveWidth} alignItems="center">
-                    <Image
-                      src={item?.url ?? ""}
-                      width={size.width}
-                      height={size.height}
-                      blurhash={item?.blurhash}
-                    />
-                  </Flex>
-                )
-              }}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+          <Flex width="100%" alignItems="center">
+            <Image
+              key={`main-image-${currentImageIndex}`}
+              src={displayImages[currentImageIndex]?.url ?? ""}
+              width={currentImageSize.width}
+              height={currentImageSize.height}
+              blurhash={displayImages[currentImageIndex]?.blurhash}
             />
-          ) : (
-            <Flex width="100%" alignItems="center">
-              <Image
-                src={firstImage?.url ?? ""}
-                width={size.width}
-                height={size.height}
-                blurhash={firstImage?.blurhash}
-              />
-            </Flex>
-          )}
+          </Flex>
         </Flex>
 
-        {/* Pagination Bar */}
-        {!!shouldShowPager && (
-          <Flex
-            mt={1}
-            height={PAGINATION_BAR_HEIGHT}
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-          >
-            <PaginationBars currentIndex={currentImageIndex} length={displayImages.length} />
+        {/* Thumbnail Gallery */}
+        <Flex
+          my={2}
+          width={screenWidth}
+          alignItems="center"
+          justifyContent="center"
+          height={THUMBNAIL_HEIGHT + ACTIVE_THUMBNAIL_BORDER * 2}
+        >
+          <Flex width={thumbnailGalleryWidth} overflow="visible">
+            <ScrollView
+              ref={thumbnailScrollRef}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              decelerationRate="fast"
+              snapToInterval={THUMBNAIL_WIDTH_WITH_PADDING}
+              nestedScrollEnabled={true}
+              overScrollMode="never"
+              contentContainerStyle={{
+                alignItems: "center",
+                // Center the active thumbnail: half thumbnail gallery width minus half thumbnail width and border
+                paddingHorizontal:
+                  thumbnailGalleryWidth / 2 - THUMBNAIL_WIDTH / 2 - ACTIVE_THUMBNAIL_BORDER,
+              }}
+              onScrollBeginDrag={() => {
+                isUserScrolling.current = true
+              }}
+              onMomentumScrollBegin={() => {
+                isUserScrolling.current = true
+              }}
+              onMomentumScrollEnd={() => {
+                isUserScrolling.current = false
+              }}
+              onScroll={handleThumbnailScroll}
+              scrollEventThrottle={16}
+              disableIntervalMomentum
+            >
+              {displayImages.map((item, idx) => renderThumbnail(item, idx))}
+            </ScrollView>
           </Flex>
-        )}
+        </Flex>
 
         {/* Artwork Info and Save Button */}
         <AnimatedFlex
@@ -453,19 +494,11 @@ const artworkCardFragment = graphql`
     collectorSignals {
       ...ArtworkAuctionTimer_collectorSignals
 
-      primaryLabel
       auction {
         bidCount
         liveBiddingStarted
         lotClosesAt
         lotWatcherCount
-      }
-      partnerOffer {
-        endAt
-        isAvailable
-        priceWithDiscount {
-          display
-        }
       }
     }
 
@@ -473,7 +506,6 @@ const artworkCardFragment = graphql`
     slug
     title
     date
-    artistNames
     saleMessage
     isSaved
     artists(shallow: true) {
@@ -483,7 +515,6 @@ const artworkCardFragment = graphql`
       url(version: "large")
       width
       height
-      aspectRatio
       blurhash
     }
     sale {

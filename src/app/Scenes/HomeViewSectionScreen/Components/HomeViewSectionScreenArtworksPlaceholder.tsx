@@ -52,7 +52,7 @@ export const HomeViewSectionScreenArtworksPlaceholder: React.FC = () => {
           rightElements={
             <Touchable
               accessibilityRole="button"
-              accessibilityLabel="Exit New Works For you"
+              accessibilityLabel="Exit New Works for You"
               hitSlop={DEFAULT_HIT_SLOP}
               onPress={() => goBack()}
             >

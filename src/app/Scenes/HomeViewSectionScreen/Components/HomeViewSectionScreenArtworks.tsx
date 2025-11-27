@@ -98,16 +98,14 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
       <Flex width={width}>
         <ArtworkCard
           artwork={item}
-          supportMultipleImages={false}
-          showPager={false}
-          contextModule={ContextModule.newWorksForYouRail}
+          contextModule={section.contextModule as ContextModule}
           index={index}
           scrollX={scrollX}
           containerStyle={{ backgroundColor: "transparent" }}
         />
       </Flex>
     ),
-    [width, scrollX]
+    [width, section.contextModule, scrollX]
   )
 
   if (!isNewWorksForYouCarouselEnabled) {
@@ -179,7 +177,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="Exit New Works For you"
+            accessibilityLabel="Exit New Works for You"
             hitSlop={DEFAULT_HIT_SLOP}
             onPress={() => goBack()}
           >
@@ -187,7 +185,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           </Touchable>
         }
         hideLeftElements
-        title="New Works For You"
+        title={section.component?.title || ""}
       />
 
       <Flex height={height}>
@@ -215,6 +213,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           removeClippedSubviews={false}
           snapToInterval={width}
           snapToAlignment="start"
+          disableIntervalMomentum
           snapToEnd={false}
           onScroll={onScrollHandlerList}
           viewabilityConfig={viewabilityConfig}
