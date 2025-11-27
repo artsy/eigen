@@ -12710,7 +12710,7 @@ __metadata:
     luxon: "npm:2.5.2"
     moment: "npm:2.29.4"
     moment-timezone: "npm:0.5.40"
-    moti: "npm:0.29.0"
+    moti: "npm:0.30.0"
     ora: "npm:5.4.0"
     ordinal: "npm:1.0.3"
     patch-package: "npm:8.0.1"
@@ -19615,14 +19615,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moti@npm:0.29.0":
-  version: 0.29.0
-  resolution: "moti@npm:0.29.0"
+"moti@npm:0.30.0":
+  version: 0.30.0
+  resolution: "moti@npm:0.30.0"
   dependencies:
     framer-motion: "npm:^6.5.1"
   peerDependencies:
     react-native-reanimated: "*"
-  checksum: 10c0/f78454bc96965947e4370a9a3890e3344c1d037314016223520614d5b8d2c164f9d948b5c88f12e7180e51ee61b886c40579e8670803c782558e6f7759ce0ea8
+  checksum: 10c0/9ef9f8c75cfd126a4d50e6a1cddaac2ef7dc6aefee532843903b34b381b8f5f96ef84458b1cd6d05739dd6032be4f07ebda17b4e33bf2818c860bad6cf524038
   languageName: node
   linkType: hard
 
