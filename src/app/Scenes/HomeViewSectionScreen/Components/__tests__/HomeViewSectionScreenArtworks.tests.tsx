@@ -395,7 +395,7 @@ describe("HomeViewSectionArtworks", () => {
       })
 
       // The ArtworkCardBottomSheet should be rendered with the first artwork's data
-      expect(screen.getByText("New Works For You")).toBeOnTheScreen()
+      expect(screen.getByText("New Works for You")).toBeOnTheScreen()
     })
 
     it("handles close button press in carousel view", () => {
@@ -558,7 +558,7 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
-      expect(screen.getByText("New Works For You")).toBeOnTheScreen()
+      expect(screen.getByText("New Works for You")).toBeOnTheScreen()
       const carouselList = screen.getByTestId("carousel-flatlist")
       expect(carouselList).toBeOnTheScreen()
     })
