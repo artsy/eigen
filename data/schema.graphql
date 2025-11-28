@@ -16933,6 +16933,9 @@ type Mutation {
   repositionPartnerLocations(
     input: RepositionPartnerLocationsMutationInput!
   ): RepositionPartnerLocationsMutationPayload
+
+  # Requests Gravity to reprocess the original asset for an artwork image.
+  reprocessArtworkImage(input: ReprocessArtworkImageInput!): ReprocessArtworkImagePayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
 
   # Attach an gemini asset to a consignment submission
@@ -21752,6 +21755,29 @@ type RepositionPartnerLocationsSuccess {
 union RepositionPartnerLocationsSuccessOrError =
     RepositionPartnerLocationsFailure
   | RepositionPartnerLocationsSuccess
+
+type ReprocessArtworkImageFailure {
+  mutationError: GravityMutationError
+}
+
+input ReprocessArtworkImageInput {
+  artworkID: String!
+  clientMutationId: String
+  imageID: String!
+}
+
+union ReprocessArtworkImageMutationType =
+    ReprocessArtworkImageFailure
+  | ReprocessArtworkImageSuccess
+
+type ReprocessArtworkImagePayload {
+  artworkOrError: ReprocessArtworkImageMutationType
+  clientMutationId: String
+}
+
+type ReprocessArtworkImageSuccess {
+  success: Boolean
+}
 
 type Request {
   # IP Address of the current request, useful for debugging
