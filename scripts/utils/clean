@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# When to use this script:
+#
+# Use this script to get your development environment into a clean state.
+# This clears all dependencies, caches, and build artifacts but does NOT
+# reinstall anything. After running this, you'll need to run yarn install:all
+# and yarn setup:artsy to get back to a working state.
+#
+# This is useful when:
+# - You're experiencing issues that may be related to corrupted caches
+# - Dependencies are outdated or in a bad state
+# - After major dependency upgrades (e.g. React Native, react-native-reanimated)
+# - You want a clean slate before starting fresh
+#
+# For a complete fix workflow, use `yarn repair` instead, which runs:
+# yarn clean && yarn setup:artsy && yarn install:all
+
+
+echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf node_modules
+
+echo "Clear caches (linting and metro) (┛◉Д◉)┛彡┻━┻"
+rm -rf .cache
+rm -rf "$TMPDIR/metro*"
+
+echo "Clear hastemap (╯ರ ~ ರ）╯︵ ┻━┻"
+rm -rf "$TMPDIR/haste-map-*"
+
+echo "Clear CocoaPods cache (ノಠ益ಠ)ノ彡┻━┻"
+rm -rf ~/Library/Caches/CocoaPods
+
+echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+# sometimes this fails on first try even with -rf
+# but a second try takes it home
+if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+	rm -rf ~/Library/Developer/Xcode/DerivedData
+fi
+
+echo "Clear Gems (┛ಠ_ಠ)┛彡┻━┻"
+rm -rf .vendor
+
+echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
+if [ -d android ]; then
+	cd android
+	./gradlew clean
+	cd -
+fi
+
+echo '✅ Clean complete!'
