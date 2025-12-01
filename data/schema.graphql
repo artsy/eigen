@@ -2656,6 +2656,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Can a user request a lot conditions report for this artwork?
   canRequestLotConditionsReport: Boolean
+  canShareImage: Boolean
 
   # This field is intended for use exclusively on the individual Artwork page for alt tags
   caption: String
