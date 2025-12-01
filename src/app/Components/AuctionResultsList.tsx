@@ -142,7 +142,9 @@ export const AuctionResultsListItemLoadingSkeleton: React.FC = () => {
   )
 }
 
-export const LoadingSkeleton: React.FC<{ listHeader: React.ReactElement }> = ({ listHeader }) => {
+export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactElement }> = ({
+  listHeader,
+}) => {
   const placeholderResults = []
   for (let i = 0; i < 6; i++) {
     placeholderResults.push(
