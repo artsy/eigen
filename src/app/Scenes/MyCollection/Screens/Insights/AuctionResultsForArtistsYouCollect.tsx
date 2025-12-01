@@ -63,9 +63,7 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 
   return (
     <Screen>
-      <Suspense
-        fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
-      >
+      <Suspense fallback={<LoadingSkeleton listHeader={<ListHeader />} />}>
         <ListOfresults />
       </Suspense>
 
