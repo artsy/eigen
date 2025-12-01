@@ -170,18 +170,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableLongPressContextMenuOnboarding",
   },
-  AREnableHomeViewQuickLinks: {
-    description: "Enable Home View Quick Links",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableHomeViewQuickLinks",
-  },
-  AREnableQuickLinksAnimation2: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable quick links animation",
-    echoFlagKey: "AREnableQuickLinksAnimation2",
-  },
   AREnableProgressiveOnboardingPriceRangeHome: {
     readyForRelease: true,
     showInDevMenu: true,
