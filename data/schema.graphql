@@ -5388,6 +5388,29 @@ type ClientFeatureFlagVariant {
   weight: Int!
 }
 
+# A connection to a list of items.
+type CollectedArtistConnection {
+  # A list of edges.
+  edges: [CollectedArtistEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type CollectedArtistEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artist
+
+  # A representative medium/category for this artist based on the user's collection
+  representativeCategory: String
+}
+
 # A collection of artworks
 type Collection {
   artworksConnection(
@@ -5494,6 +5517,17 @@ type CollectorProfileType implements Node {
     timezone: String
   ): String
   bio: String
+
+  # Artists collected by this user, sorted by relevance with representative medium categories
+  collectedArtistsConnection(
+    after: String
+
+    # Artwork ID for context-aware sorting. Can be injected in conversation context.
+    artworkID: String
+    before: String
+    first: Int
+    last: Int
+  ): CollectedArtistConnection
   collectedArtworksCount: Int!
 
   # Structured attributes describing the collector in relation to the artwork/partner.
@@ -14595,6 +14629,17 @@ type InquirerCollectorProfile {
     timezone: String
   ): String
   bio: String
+
+  # Artists collected by this user, sorted by relevance with representative medium categories
+  collectedArtistsConnection(
+    after: String
+
+    # Artwork ID for context-aware sorting. Can be injected in conversation context.
+    artworkID: String
+    before: String
+    first: Int
+    last: Int
+  ): CollectedArtistConnection
   collectedArtworksCount: Int!
 
   # Structured attributes describing the collector in relation to the artwork/partner.
