@@ -19,7 +19,7 @@ set -euxo pipefail
 # - You want to start fresh without worrying about the details
 #
 # For even more aggressive cleanup (global caches, relay, etc), use:
-# yarn repair:extreme
+# yarn flip_table_extreme
 
 
 echo '🔧 Starting full environment repair...'

@@ -32,7 +32,7 @@
     "export-notion-to-jira": "tsx scripts/utils/exportNotionTicketsToJira.ts",
     "assign-team-labels-pbrw-tickets": "tsx scripts/utils/assignPBRWTicketsToTeams.ts",
     "repair": "./scripts/utils/repair",
-    "repair:extreme": "./scripts/utils/repair-extreme",
+    "flip-table-extreme": "./scripts/utils/flip-table-extreme",
     "generate-cities-cache": "node scripts/city-guide/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/city-guide/generate-cities-objc.js",
     "generate-changelog": "tsx scripts/changelog/generateChangelog.ts",
