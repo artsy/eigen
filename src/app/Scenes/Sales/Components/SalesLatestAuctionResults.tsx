@@ -1,5 +1,6 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { SalesLatestAuctionResultsQuery } from "__generated__/SalesLatestAuctionResultsQuery.graphql"
+import { AuctionResultsListItemLoadingSkeleton } from "app/Components/AuctionResultsList"
 import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRail"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -28,7 +29,20 @@ export const SalesLatestAuctionResultsQueryRenderer = withSuspense({
 
     return <LatestAuctionResultsRail me={data.me} />
   },
-  LoadingFallback: () => <Text variant="lg">Loading latest auction results...</Text>,
+  LoadingFallback: () => {
+    return (
+      <Skeleton>
+        <Flex mx={2}>
+          <SkeletonText variant="sm-display">Arwtworks Rail</SkeletonText>
+          <Spacer y={2} />
+
+          <Flex flexDirection="row" gap={2}>
+            <AuctionResultsListItemLoadingSkeleton />
+          </Flex>
+        </Flex>
+      </Skeleton>
+    )
+  },
   ErrorFallback: ({ error }) => {
     if (__DEV__) {
       console.log("LOGD [SalesLatestAuctionResults] Query Error:", error)

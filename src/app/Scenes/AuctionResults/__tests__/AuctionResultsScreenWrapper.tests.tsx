@@ -1,9 +1,9 @@
+import { screen } from "@testing-library/react-native"
 import { AuctionResultsScreenWrapperTestsQuery } from "__generated__/AuctionResultsScreenWrapperTestsQuery.graphql"
 import {
   AuctionResultsScreenWrapperContainer,
   AuctionResultsState,
 } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -29,7 +29,7 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
   })
 
   it("Renders list of auction results for artists you follow", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {
@@ -39,10 +39,8 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
       }),
     })
 
-    expect(
-      extractText(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)[0])
-    ).toContain("Auction Results for Artists You Follow")
-    expect(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
+    expect(screen.getByText("See auction results for the artists you follow")).toBeTruthy()
+    expect(screen.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
   })
 })
 
