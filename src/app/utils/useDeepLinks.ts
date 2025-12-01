@@ -54,18 +54,7 @@ export function useDeepLinks() {
       }
     }
 
-    let deepLinkUrl = targetURL ?? url
-
-    // Handle partner artist list URLs with hash fragments
-    // Convert /partner/:partnerID/artists#artistSlug to /partner/:partnerID/artists/:artistSlug
-    const partnerArtistHashMatch = deepLinkUrl.match(/\/partner\/([^\/]+)\/artists#(.+)/)
-    if (partnerArtistHashMatch) {
-      const [, partnerID, artistSlug] = partnerArtistHashMatch
-      deepLinkUrl = deepLinkUrl.replace(
-        `/partner/${partnerID}/artists#${artistSlug}`,
-        `/partner/${partnerID}/artists/${artistSlug}`
-      )
-    }
+    const deepLinkUrl = targetURL ?? url
 
     // We track the deep link opened event
     trackEvent(tracks.deepLink(deepLinkUrl))

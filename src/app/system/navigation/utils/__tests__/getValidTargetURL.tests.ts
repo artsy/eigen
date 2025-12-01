@@ -45,4 +45,10 @@ describe("getValidTargetURL", () => {
     const result = await getValidTargetURL(originalUrl)
     expect(result).toEqual(redirectedUrl)
   })
+
+  it("should transform partner artist URLs with hash fragments to proper paths", async () => {
+    const url = "https://www.artsy.net/partner/escat-gallery/artists#celia-lees"
+    const result = await getValidTargetURL(url)
+    expect(result).toEqual("https://www.artsy.net/partner/escat-gallery/artists/celia-lees")
+  })
 })

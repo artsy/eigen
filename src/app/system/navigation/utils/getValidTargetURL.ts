@@ -11,6 +11,17 @@ export const getValidTargetURL = async (url: string) => {
 
   targetURL = url.replace("artsy://", "")
 
+  // Handle partner artist list URLs with hash fragments
+  // Convert /partner/:partnerID/artists#artistSlug to /partner/:partnerID/artists/:artistSlug
+  const partnerArtistHashMatch = targetURL.match(/\/partner\/([^\/]+)\/artists#(.+)/)
+  if (partnerArtistHashMatch) {
+    const [, partnerID, artistSlug] = partnerArtistHashMatch
+    targetURL = targetURL.replace(
+      `/partner/${partnerID}/artists#${artistSlug}`,
+      `/partner/${partnerID}/artists/${artistSlug}`
+    )
+  }
+
   // marketing url requires redirect
   if (targetURL.startsWith("https://click.artsy.net")) {
     let response
