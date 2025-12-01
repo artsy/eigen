@@ -9,7 +9,6 @@ interface SalesAuctionsOverviewProps {
   setUpcomingSalesCountOnParent: (count: number) => void
 }
 
-// TODO: rename
 export const SalesAuctionsOverviewScreenQuery = graphql`
   query SalesAuctionsOverviewQuery {
     currentlyRunningAuctions: viewer {

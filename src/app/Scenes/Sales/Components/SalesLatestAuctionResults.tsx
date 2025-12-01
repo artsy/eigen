@@ -21,8 +21,6 @@ export const SalesLatestAuctionResultsQueryRenderer = withSuspense({
       { fetchPolicy: "store-and-network" }
     )
 
-    console.log("LOGD [SalesLatestAuctionResults] = ", data)
-
     if (!data.me) {
       return null
     }
@@ -33,7 +31,7 @@ export const SalesLatestAuctionResultsQueryRenderer = withSuspense({
     return (
       <Skeleton>
         <Flex mx={2}>
-          <SkeletonText variant="sm-display">Arwtworks Rail</SkeletonText>
+          <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
           <Spacer y={2} />
 
           <Flex flexDirection="row" gap={2}>

@@ -26,7 +26,7 @@ export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> =
 
   useEffect(() => {
     setSalesCountOnParent(nodes.length)
-  }, [nodes, setSalesCountOnParent])
+  }, [nodes.length, setSalesCountOnParent])
 
   return (
     <Flex>

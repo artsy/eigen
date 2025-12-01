@@ -697,6 +697,10 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [
       SalesActiveBidsScreenQuery,
+      // Prefetching SalesRecommendedAuctionLotsScreenQuery requires a variable
+      // that currently depends on an experiment-specific value.
+      // Adding that logic here would introduce unnecessary complexity at this stage.
+      // TODO: Revisit after the experiment finishes.
       // SalesRecommendedAuctionLotsScreenQuery,
       SalesLatestAuctionResultsScreenQuery,
       SalesAuctionsOverviewScreenQuery,
