@@ -220,4 +220,49 @@ describe("ArtworkCard", () => {
     expect(screen.getByTestId("save-artwork-icon")).toBeOnTheScreen()
     expect(screen.queryByText("Test Artist")).not.toBeOnTheScreen()
   })
+
+  it("renders thumbnails for multiple images", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "test-artwork-id",
+        title: "Test Artwork",
+        date: "2024",
+        slug: "test-artwork-slug",
+        artists: [
+          {
+            internalID: "artist-1",
+            name: "Test Artist",
+          },
+        ],
+        images: [
+          {
+            url: "https://example.com/image1.jpg",
+            width: 800,
+            height: 600,
+            aspectRatio: 1.33,
+            blurhash: "test-blurhash-1",
+          },
+          {
+            url: "https://example.com/image2.jpg",
+            width: 900,
+            height: 700,
+            aspectRatio: 1.29,
+            blurhash: "test-blurhash-2",
+          },
+          {
+            url: "https://example.com/image3.jpg",
+            width: 1000,
+            height: 800,
+            aspectRatio: 1.25,
+            blurhash: "test-blurhash-3",
+          },
+        ],
+        isSaved: false,
+      }),
+    })
+
+    // Should render 3 thumbnail images for the 3 provided images
+    const images = screen.getAllByTestId("thumbnail-image")
+    expect(images.length).toBe(3)
+  })
 })

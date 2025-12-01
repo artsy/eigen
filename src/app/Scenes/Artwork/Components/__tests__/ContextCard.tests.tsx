@@ -97,7 +97,7 @@ const auctionContextArtwork = {
     isAuction: true,
     formattedStartDateTime: "Ended Oct 25, 2018",
     coverImage: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/bMu0vqXOVlpABBsWVxVIJA/large_rectangle.jpg",
+      url: "https://d32dm0rphc51dk.cloudfront.net/bMu0vqXOVlpABBsWVxVIJA/main.jpg",
     },
   },
   shows: [],

@@ -136,7 +136,6 @@
     }
 
     NSDictionary *userInfo = notification.request.content.userInfo;
-    [self recordRawPushPayload:userInfo source:@"willPresentNotification"];
 
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Active" forKey:@"UIApplicationState"]; // Foreground state
@@ -196,20 +195,34 @@
 }
 
 - (void)recordRawPushPayload:(NSDictionary *)userInfo source:(NSString *)source {
-    if ([ARAppStatus isBetaOrDev]) {
-        NSMutableDictionary *record = [NSMutableDictionary dictionaryWithDictionary:userInfo];
-        record[@"_receivedAt"] = [[NSDate date] description];
-        record[@"_source"] = source;
+    if (![ARAppStatus isBetaOrDev]) return;
 
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSMutableArray *existing = [[defaults arrayForKey:ARAPNSRecentPushPayloadsKey] mutableCopy] ?: [NSMutableArray array];
-        [existing insertObject:record atIndex:0];
-        if (existing.count > 10) {
-            [existing removeLastObject];
-        }
-        [defaults setObject:existing forKey:ARAPNSRecentPushPayloadsKey];
-        [defaults synchronize];
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo
+                                                       options:0
+                                                         error:&error];
+    if (error || !jsonData) {
+        NSLog(@"[PushDebug] Failed to encode JSON: %@", error);
+        return;
     }
+
+    NSDictionary *record = @{
+        @"rawJSON": jsonData,
+        @"_receivedAt": [[NSDate date] description],
+        @"_source": source
+    };
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *existing =
+    [[defaults arrayForKey:ARAPNSRecentPushPayloadsKey] mutableCopy]
+    ?: [NSMutableArray array];
+
+    [existing insertObject:record atIndex:0];
+    if (existing.count > 10) {
+        [existing removeLastObject];
+    }
+
+    [defaults setObject:existing forKey:ARAPNSRecentPushPayloadsKey];
 }
 
 

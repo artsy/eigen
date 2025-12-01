@@ -5,8 +5,9 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Modal, SafeAreaView, TouchableWithoutFeedback } from "react-native"
+import { LayoutAnimation, Modal, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 interface InfiniteDiscoveryOnboardingProps {
   artworks: InfiniteDiscoveryArtwork[]
