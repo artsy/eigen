@@ -1,9 +1,84 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+# When to use this script:
+#
+# Use this script when you want to do a COMPLETE NUCLEAR clean of your development environment.
+# This is the most aggressive repair option and should only be used when you are experiencing
+# persistent issues that are not resolved by the standard `yarn repair` script.
+#
+# Use this when:
+# - yarn repair didn't fix the issue
+# - You have deep caching issues across global caches
+# - Native dependency conflicts that won't resolve
+# - Relay or GraphQL codegen issues
+# - You've been using a locally linked palette-mobile package
+#
+# This script does EVERYTHING that yarn clean does, PLUS:
+# - Cleans global yarn & pod caches
+# - Clears relay and GraphQL caches
+# - Resets yalc linked packages (palette-mobile)
+# - Clears build artifacts
+#
+# For most issues, try `yarn repair` first. Only use this when necessary.
 
 # Clear global and local caches and build files
 echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 yarn cache clean
 bundle exec pod cache clean --all
-./scripts/utils/flip-table
+
+# Clear local caches and build files
+echo 'Clear gradle cache'
+if [ -d node_modules ]; then
+	cd android
+	./gradlew clean
+	cd -
+fi
+
+echo 'Clear JS caches (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf .cache
+
+echo 'Clear gems (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf .vendor
+
+echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf node_modules
+
+echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
+rm -rf Pods
+
+echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+# sometimes this fails on first try even with -rf
+# but a second try takes it home
+if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+	rm -rf ~/Library/Developer/Xcode/DerivedData
+fi
+
+echo 'Clear Xcode generated .env (╯°□°)╯︵ ┻━┻'
+rm -rf ios/.xcode.env.local
+
+echo 'Reset yalc linked packages (ﾉಠдಠ)ﾉ︵┻━┻'
+if command -v yalc &> /dev/null
+then
+	yalc remove @artsy/palette-mobile
+fi
+
+echo 'Clear relay, relay query map, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
+rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
+rm -rf data/complete.queryMap.json
+rm -rf .cache
+rm -rf "$TMPDIR"/metro*
+rm -rf src/__generated__/*.graphql.ts
+
+
+
+echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
+find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
+
+echo 'Setup Assets'
+# Required for yarn 4
+yarn install
+yarn setup:artsy
+
+echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
+yarn install:all
