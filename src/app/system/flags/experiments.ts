@@ -12,10 +12,6 @@ export const experiments = {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
-  "onyx_internal-testing-experiment": {
-    description: "Non-visible experiment to test variant assignment from a multi-variant setup.",
-    variantSuggestions: ["control", "experiment-a", "experiment-b"],
-  },
   "onyx_quick-links-experiment": {
     description: "Add quick links section to home view",
   },
