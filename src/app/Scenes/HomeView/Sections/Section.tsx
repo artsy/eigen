@@ -18,8 +18,6 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { memo } from "react"
 
@@ -36,11 +34,6 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
-  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
-  const { variant: quickLinksExperimentVariant } = useExperimentVariant(
-    "onyx_quick-links-experiment"
-  )
-
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -94,19 +87,10 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
       return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
-    case "HomeViewSectionNavigationPills": {
-      if (
-        enableNavigationPills &&
-        quickLinksExperimentVariant.enabled &&
-        quickLinksExperimentVariant.name === "experiment"
-      ) {
-        return (
-          <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
-        )
-      }
-
-      return null
-    }
+    case "HomeViewSectionNavigationPills":
+      return (
+        <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+      )
 
     default:
       if (__DEV__) {

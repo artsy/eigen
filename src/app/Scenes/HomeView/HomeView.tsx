@@ -96,22 +96,13 @@ export const HomeView: React.FC = memo(() => {
     }
   )
 
-  const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
-    "onyx_quick-links-experiment"
-  )
   const { trackExperiment: trackHomeViewCardRailExperiment } = useExperimentVariant(
     "onyx_nwfy-artworks-card-test"
   )
 
-  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
-
   const enableHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
   useEffect(() => {
-    if (enableNavigationPills) {
-      trackQuickLinksExperiment()
-    }
-
     if (enableHomeViewCardRailType) {
       trackHomeViewCardRailExperiment()
     }
