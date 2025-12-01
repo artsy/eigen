@@ -22,14 +22,12 @@ import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHome
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -95,18 +93,6 @@ export const HomeView: React.FC = memo(() => {
       fetchKey,
     }
   )
-
-  const { trackExperiment: trackHomeViewCardRailExperiment } = useExperimentVariant(
-    "onyx_nwfy-artworks-card-test"
-  )
-
-  const enableHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
-
-  useEffect(() => {
-    if (enableHomeViewCardRailType) {
-      trackHomeViewCardRailExperiment()
-    }
-  }, [])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
