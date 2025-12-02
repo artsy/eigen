@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesAuctionsOverviewQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
-import { ZeroState } from "app/Scenes/Sales/Components/ZeroState"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -9,12 +8,8 @@ import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
 
 export const AuctionsOverview = () => {
-  const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
-  const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [fetchKey, setFetchKey] = useState(0)
-
-  const totalSalesCount = currentSalesCount + upcomingSalesCount
 
   const handleRefresh = () => {
     setIsRefreshing(true)
@@ -22,10 +17,6 @@ export const AuctionsOverview = () => {
     setTimeout(() => {
       setIsRefreshing(false)
     }, 300)
-  }
-
-  if (totalSalesCount < 1) {
-    return <ZeroState />
   }
 
   return (
@@ -38,11 +29,7 @@ export const AuctionsOverview = () => {
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Flex pb={2} gap={4}>
-          <SalesAuctionsOverviewQueryRenderer
-            key={fetchKey}
-            setCurrentSalesCountOnParent={setCurrentSalesCount}
-            setUpcomingSalesCountOnParent={setUpcomingSalesCount}
-          />
+          <SalesAuctionsOverviewQueryRenderer key={fetchKey} />
         </Flex>
       </Screen.ScrollView>
     </Screen>

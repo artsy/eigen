@@ -4,11 +4,6 @@ import { UpcomingAuctions } from "app/Scenes/Sales/UpcomingAuctions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-interface SalesAuctionsOverviewProps {
-  setCurrentSalesCountOnParent: (count: number) => void
-  setUpcomingSalesCountOnParent: (count: number) => void
-}
-
 export const SalesAuctionsOverviewScreenQuery = graphql`
   query SalesAuctionsOverviewQuery {
     currentlyRunningAuctions: viewer {
@@ -20,8 +15,8 @@ export const SalesAuctionsOverviewScreenQuery = graphql`
   }
 `
 
-export const SalesAuctionsOverviewQueryRenderer = withSuspense<SalesAuctionsOverviewProps>({
-  Component: ({ setCurrentSalesCountOnParent, setUpcomingSalesCountOnParent }) => {
+export const SalesAuctionsOverviewQueryRenderer = withSuspense({
+  Component: ({}) => {
     const data = useLazyLoadQuery<SalesAuctionsOverviewQuery>(
       SalesAuctionsOverviewScreenQuery,
       {},
@@ -30,15 +25,9 @@ export const SalesAuctionsOverviewQueryRenderer = withSuspense<SalesAuctionsOver
 
     return (
       <>
-        <CurrentlyRunningAuctions
-          sales={data.currentlyRunningAuctions}
-          setSalesCountOnParent={setCurrentSalesCountOnParent}
-        />
+        <CurrentlyRunningAuctions sales={data.currentlyRunningAuctions} />
 
-        <UpcomingAuctions
-          sales={data.upcomingAuctions}
-          setSalesCountOnParent={setUpcomingSalesCountOnParent}
-        />
+        <UpcomingAuctions sales={data.upcomingAuctions} />
       </>
     )
   },

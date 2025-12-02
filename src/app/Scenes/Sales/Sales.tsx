@@ -11,18 +11,13 @@ import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
-import { ZeroState } from "./Components/ZeroState"
 
 export const SUPPORT_ARTICLE_URL =
   "https://support.artsy.net/s/article/The-Complete-Guide-to-Auctions-on-Artsy"
 
 export const Sales: React.FC = () => {
-  const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
-  const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [fetchKey, setFetchKey] = useState(0)
-
-  const totalSalesCount = currentSalesCount + upcomingSalesCount
 
   const { trackEvent } = useTracking()
 
@@ -41,10 +36,6 @@ export const Sales: React.FC = () => {
       context_screen_owner_type: OwnerType.auctions,
       destination_path: SUPPORT_ARTICLE_URL,
     })
-  }
-
-  if (totalSalesCount < 1) {
-    return <ZeroState />
   }
 
   return (
@@ -80,11 +71,7 @@ export const Sales: React.FC = () => {
 
           <SalesLatestAuctionResultsQueryRenderer key={`latest-results-${fetchKey}`} />
 
-          <SalesAuctionsOverviewQueryRenderer
-            key={`auctions-${fetchKey}`}
-            setCurrentSalesCountOnParent={setCurrentSalesCount}
-            setUpcomingSalesCountOnParent={setUpcomingSalesCount}
-          />
+          <SalesAuctionsOverviewQueryRenderer key={`auctions-${fetchKey}`} />
         </Flex>
       </Screen.ScrollView>
     </Screen>
