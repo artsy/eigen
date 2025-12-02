@@ -225,6 +225,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           disableIntervalMomentum
           snapToEnd={false}
           onScroll={onScrollHandlerList}
+          viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={({ viewableItems, changed }) => {
             const index = viewableItems[0]?.index
             if (index != null && index !== activeIndex) {
