@@ -18,6 +18,10 @@ const jestModuleNameMap = list.reduce((acc, name) => {
 }, {})
 jestModuleNameMap["^images/(.*)"] = "<rootDir>/images/$1"
 
+// Mock moti to reduce memory usage - catches both top-level and nested node_modules
+jestModuleNameMap["^moti$"] = "<rootDir>/__mocks__/moti.js"
+jestModuleNameMap["^moti/(.*)$"] = "<rootDir>/__mocks__/moti/$1.js"
+
 module.exports = {
   babelModuleResolverAlias,
   jestModuleNameMap,
