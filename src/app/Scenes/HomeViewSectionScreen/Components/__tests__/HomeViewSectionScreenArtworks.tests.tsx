@@ -425,6 +425,11 @@ describe("HomeViewSectionArtworks", () => {
       fireEvent.press(closeButton)
 
       expect(navigate).toHaveBeenCalled()
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedClose",
+        context_module: '<mock-value-for-field-"contextModule">',
+      })
     })
 
     it("updates active index when viewable items change", () => {
@@ -603,7 +608,7 @@ describe("HomeViewSectionArtworks", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "item_viewed",
-        context_module: "artworkGrid",
+        context_module: "artworkCarousel",
         context_screen: "newWorksForYou",
         item_type: "artwork",
         item_id: "artwork-1-id",
