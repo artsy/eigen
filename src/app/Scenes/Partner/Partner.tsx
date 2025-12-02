@@ -12,11 +12,12 @@ import {
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React from "react"
+import React, { useEffect } from "react"
 
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
@@ -28,6 +29,7 @@ import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } f
 interface PartnerProps {
   partner: Partner_partner$data
   initialTab?: string
+  artistSlug?: string
   relay: RelayRefetchProp
 }
 
@@ -129,7 +131,18 @@ export const PartnerContainer = createRefetchContainer(
 export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
-}> = ({ partnerID, ...others }) => {
+  artistSlug?: string
+}> = ({ partnerID, artistSlug, ...others }) => {
+  useEffect(() => {
+    if (artistSlug) {
+      navigate(`/partner/${partnerID}/artists/${artistSlug}`)
+    }
+  }, [artistSlug, partnerID])
+
+  if (artistSlug) {
+    return null
+  }
+
   return (
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
