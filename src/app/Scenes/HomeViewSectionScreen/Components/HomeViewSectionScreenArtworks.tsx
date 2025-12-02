@@ -62,7 +62,9 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     isInViewport: true,
-    contextModule: ContextModule.artworkGrid,
+    contextModule: isNewWorksForYouCarouselEnabled
+      ? ContextModule.artworkCarousel
+      : ContextModule.artworkGrid,
     contextScreenOwnerType: section.ownerType as OwnerType,
   })
 
@@ -101,7 +103,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           contextModule={section.contextModule as ContextModule}
           index={index}
           scrollX={scrollX}
-          containerStyle={{ backgroundColor: "transparent" }}
         />
       </Flex>
     ),
@@ -216,7 +217,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           disableIntervalMomentum
           snapToEnd={false}
           onScroll={onScrollHandlerList}
-          viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={({ viewableItems, changed }) => {
             const index = viewableItems[0]?.index
             if (index != null && index !== activeIndex) {
