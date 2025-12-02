@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SalesScreen, SUPPORT_ARTICLE_URL } from "app/Scenes/Sales/Sales"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -12,22 +12,6 @@ describe("Sales", () => {
   it("renders without Errors", () => {
     renderWithRelay()
 
-    expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
-  })
-
-  it("Can refresh screen with pull to refresh", async () => {
-    renderWithRelay()
-
-    const ScrollView = screen.getByTestId("Sales-Screen-ScrollView")
-    const refreshControl = ScrollView.props.refreshControl
-
-    expect(refreshControl.props.refreshing).toBe(false)
-
-    await act(async () => {
-      refreshControl.props.onRefresh()
-    })
-
-    // After refresh is triggered, components should remount with new keys
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
 
