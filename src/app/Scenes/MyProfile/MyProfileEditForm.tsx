@@ -48,6 +48,26 @@ interface EditMyProfileValuesSchema extends UserProfileFormikSchema {
 
 const editMyProfileSchema = userProfileYupSchema.shape({
   photo: Yup.string(),
+  instagram: Yup.string()
+    .nullable()
+    .test(
+      "instagram-format",
+      "Instagram handle can only contain letters, numbers, underscores, and periods",
+      (value) => {
+        if (value === null || value === undefined || value === "") return true
+        return /^@?[a-zA-Z0-9_.]+$/.test(value)
+      }
+    ),
+  linkedIn: Yup.string()
+    .nullable()
+    .test(
+      "linkedin-format",
+      "LinkedIn handle can only contain letters, numbers, and hyphens",
+      (value) => {
+        if (value === null || value === undefined || value === "") return true
+        return /^[a-zA-Z0-9\-]+$/.test(value)
+      }
+    ),
 })
 
 interface MyProfileEditFormProps {
@@ -101,6 +121,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
     location,
     profession,
     otherRelevantPositions,
+    instagram,
+    linkedIn,
   }: Partial<EditMyProfileValuesSchema>) => {
     const updatedLocation = { ...location }
     delete updatedLocation.display
@@ -109,6 +131,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       location: updatedLocation,
       profession,
       otherRelevantPositions,
+      instagram,
+      linkedIn,
     }
 
     try {
@@ -130,6 +154,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       },
       profession: me?.profession ?? "",
       otherRelevantPositions: me?.otherRelevantPositions ?? "",
+      instagram: me?.collectorProfile?.instagram ?? "",
+      linkedIn: me?.collectorProfile?.linkedIn ?? "",
       photo: me?.icon?.url || "",
     },
     initialErrors: {},
@@ -272,6 +298,8 @@ const meFragment = graphql`
     canRequestEmailConfirmation
     collectorProfile {
       isProfileComplete
+      instagram
+      linkedIn
     }
   }
 `

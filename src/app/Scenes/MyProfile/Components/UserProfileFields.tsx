@@ -16,6 +16,8 @@ export interface UserProfileFormikSchema {
   location: Partial<EditableLocationProps> | null | undefined
   profession: string
   otherRelevantPositions: string
+  instagram: string
+  linkedIn: string
 }
 
 export const userProfileYupSchema = Yup.object().shape({
@@ -34,6 +36,8 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
   const locationInputRef = useRef<Input>(null)
   const professionInputRef = useRef<Input>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
+  const instagramInputRef = useRef<Input>(null)
+  const linkedInInputRef = useRef<Input>(null)
 
   const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 
@@ -106,10 +110,42 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
         title="Other Relevant Positions"
         onChangeText={handleChange("otherRelevantPositions")}
         onBlur={() => validateForm()}
+        blurOnSubmit={false}
         error={errors.otherRelevantPositions}
         value={values.otherRelevantPositions}
         placeholder="Memberships, institutions, positions"
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          instagramInputRef.current?.focus()
+        }}
+      />
+      <InputComponent
+        ref={instagramInputRef}
+        title="Instagram"
+        onChangeText={handleChange("instagram")}
+        onBlur={() => validateForm()}
+        blurOnSubmit={false}
+        error={errors.instagram}
+        value={values.instagram}
+        placeholder="Instagram handle"
+        returnKeyType="next"
+        maxLength={256}
+        autoCapitalize="none"
+        onSubmitEditing={() => {
+          linkedInInputRef.current?.focus()
+        }}
+      />
+      <InputComponent
+        ref={linkedInInputRef}
+        title="LinkedIn"
+        onChangeText={handleChange("linkedIn")}
+        onBlur={() => validateForm()}
+        error={errors.linkedIn}
+        value={values.linkedIn}
+        placeholder="LinkedIn handle"
         returnKeyType="done"
+        maxLength={256}
+        autoCapitalize="none"
       />
     </Flex>
   )
