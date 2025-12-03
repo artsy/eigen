@@ -318,6 +318,7 @@
     "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "19.1.0",
     "reactotron-react-native": "5.1.14",
+    "reassure": "^1.4.0",
     "recursive-readdir-sync": "1.0.6",
     "redux-logger": "3.0.6",
     "relay-compiler": "18.2.0",

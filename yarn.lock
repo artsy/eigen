@@ -2873,7 +2873,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.5, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.5, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.25.7, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.9.2":
   version: 7.28.4
   resolution: "@babel/runtime@npm:7.28.4"
   checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
@@ -3145,6 +3145,62 @@ __metadata:
   version: 16.1.0
   resolution: "@braze/react-native-sdk@npm:16.1.0"
   checksum: 10c0/dbb509c38157570f6be412442e3fdea7418b7084ed71421f3b34584fceda1d7b7cfe7cb0ebea05db4d2ffa85df7d90600122cf668371f4396d3aa0998bdd59ca
+  languageName: node
+  linkType: hard
+
+"@callstack/reassure-cli@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@callstack/reassure-cli@npm:1.4.0"
+  dependencies:
+    "@callstack/reassure-compare": "npm:1.4.0"
+    "@callstack/reassure-logger": "npm:1.4.0"
+    chalk: "npm:4.1.2"
+    simple-git: "npm:^3.27.0"
+    yargs: "npm:^17.7.2"
+  bin:
+    reassure: lib/commonjs/bin.js
+  checksum: 10c0/b42388dbad9232324e183c0f6c3b254a95ad87bca00f7eaf09e7ef9ce46c680d8fbe4843824e52245a5f60967ba17b1f48f3d742006d69fd5543cb5efe15766f
+  languageName: node
+  linkType: hard
+
+"@callstack/reassure-compare@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@callstack/reassure-compare@npm:1.4.0"
+  dependencies:
+    "@callstack/reassure-logger": "npm:1.4.0"
+    ts-markdown-builder: "npm:0.4.1"
+    ts-regex-builder: "npm:^1.8.2"
+    zod: "npm:^3.24.2"
+  checksum: 10c0/4453ef4dc23fba254a5cb1b3e429d57d7667819e7d479771ee2bd8eda74d859aa4ab589c224f4957512f58643b6fff307e44464ee781ebd4562d1fe72215848f
+  languageName: node
+  linkType: hard
+
+"@callstack/reassure-danger@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@callstack/reassure-danger@npm:1.4.0"
+  checksum: 10c0/fe27cdd5b7f6628e63e0cb400244ff876f6840cbbfec5ee2a12f7e72d2572a401a7e0019a2d570b401be595add9f9e8651cc0593f07c24e0d29350b4a928d6f2
+  languageName: node
+  linkType: hard
+
+"@callstack/reassure-logger@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@callstack/reassure-logger@npm:1.4.0"
+  dependencies:
+    chalk: "npm:4.1.2"
+  checksum: 10c0/83371f039965cba644119ee972db8b8b95150c178da11880e76faee669c4bdbcce83d0cec69b8b87ebf2acbc9647113ba847dc0bb902e7489c102f63690317a1
+  languageName: node
+  linkType: hard
+
+"@callstack/reassure-measure@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@callstack/reassure-measure@npm:1.4.0"
+  dependencies:
+    "@callstack/reassure-logger": "npm:1.4.0"
+    mathjs: "npm:^13.2.3"
+    pretty-format: "npm:^29.7.0"
+  peerDependencies:
+    react: ">=18.0.0"
+  checksum: 10c0/0a10604fbaa8d2fde7e62f5c11ecddfdf318cfbf1592a29f77ad82507e7153ca4989e0ccd5e0b4488fdbb4cc9f8c265d20fe605808d0907ced21c4aa348783c1
   languageName: node
   linkType: hard
 
@@ -5071,6 +5127,22 @@ __metadata:
   dependencies:
     eventemitter3: "npm:4.0.7"
   checksum: 10c0/731074226de02d8b976b149e3796c70d62792dc0be8a013f34ec845afc4dea0a86141b5a2cc18d7577de15938e033d84f1c3e33e1acebafc1a5ea7fb3d700531
+  languageName: node
+  linkType: hard
+
+"@kwsites/file-exists@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@kwsites/file-exists@npm:1.1.1"
+  dependencies:
+    debug: "npm:^4.1.1"
+  checksum: 10c0/39e693239a72ccd8408bb618a0200e4a8d61682057ca7ae2c87668d7e69196e8d7e2c9cde73db6b23b3b0230169a15e5f1bfe086539f4be43e767b2db68e8ee4
+  languageName: node
+  linkType: hard
+
+"@kwsites/promise-deferred@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@kwsites/promise-deferred@npm:1.1.1"
+  checksum: 10c0/ef1ad3f1f50991e3bed352b175986d8b4bc684521698514a2ed63c1d1fc9848843da4f2bc2df961c9b148c94e1c34bf33f0da8a90ba2234e452481f2cc9937b1
   languageName: node
   linkType: hard
 
@@ -10890,7 +10962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:*, chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
+"chalk@npm:*, chalk@npm:4.1.2, chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -11309,6 +11381,13 @@ __metadata:
   version: 1.0.1
   resolution: "commondir@npm:1.0.1"
   checksum: 10c0/33a124960e471c25ee19280c9ce31ccc19574b566dc514fe4f4ca4c34fa8b0b57cf437671f5de380e11353ea9426213fca17687dd2ef03134fea2dbc53809fd6
+  languageName: node
+  linkType: hard
+
+"complex.js@npm:^2.2.5":
+  version: 2.4.3
+  resolution: "complex.js@npm:2.4.3"
+  checksum: 10c0/c61b225c4c2925c922ebaf2c4c6d7d0c2f9cebf4fb5eb8dce231aea7508f15db0920b52107279fdd9947b54a0320eae2911d430a421c2db8d0d24df6c2cb2cf8
   languageName: node
   linkType: hard
 
@@ -12087,6 +12166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"decimal.js@npm:^10.4.3":
+  version: 10.6.0
+  resolution: "decimal.js@npm:10.6.0"
+  checksum: 10c0/07d69fbcc54167a340d2d97de95f546f9ff1f69d2b45a02fd7a5292412df3cd9eb7e23065e532a318f5474a2e1bccf8392fdf0443ef467f97f3bf8cb0477e5aa
+  languageName: node
+  linkType: hard
+
 "decode-uri-component@npm:^0.2.0, decode-uri-component@npm:^0.2.2":
   version: 0.2.2
   resolution: "decode-uri-component@npm:0.2.2"
@@ -12764,6 +12850,7 @@ __metadata:
     react-tracking: "npm:9.3.2"
     react-use: "npm:17.6.0"
     reactotron-react-native: "npm:5.1.14"
+    reassure: "npm:^1.4.0"
     recursive-readdir-sync: "npm:1.0.6"
     redux-logger: "npm:3.0.6"
     relay-compiler: "npm:18.2.0"
@@ -13348,6 +13435,13 @@ __metadata:
   version: 1.0.3
   resolution: "escape-html@npm:1.0.3"
   checksum: 10c0/524c739d776b36c3d29fa08a22e03e8824e3b2fd57500e5e44ecf3cc4707c34c60f9ca0781c0e33d191f2991161504c295e98f68c78fe7baa6e57081ec6ac0a3
+  languageName: node
+  linkType: hard
+
+"escape-latex@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "escape-latex@npm:1.2.0"
+  checksum: 10c0/b77ea1594a38625295793a61105222c283c1792d1b2511bbfd6338cf02cc427dcabce7e7c1e22ec2f5c40baf3eaf2eeaf229a62dbbb74c6e69bb4a4209f2544f
   languageName: node
   linkType: hard
 
@@ -14798,6 +14892,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fraction.js@npm:^4.3.7":
+  version: 4.3.7
+  resolution: "fraction.js@npm:4.3.7"
+  checksum: 10c0/df291391beea9ab4c263487ffd9d17fed162dbb736982dee1379b2a8cc94e4e24e46ed508c6d278aded9080ba51872f1bc5f3a5fd8d7c74e5f105b508ac28711
+  languageName: node
+  linkType: hard
+
 "fragment-cache@npm:^0.2.1":
   version: 0.2.1
   resolution: "fragment-cache@npm:0.2.1"
@@ -15986,6 +16087,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"import-local@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "import-local@npm:3.2.0"
+  dependencies:
+    pkg-dir: "npm:^4.2.0"
+    resolve-cwd: "npm:^3.0.0"
+  bin:
+    import-local-fixture: fixtures/cli.js
+  checksum: 10c0/94cd6367a672b7e0cb026970c85b76902d2710a64896fa6de93bd5c571dd03b228c5759308959de205083e3b1c61e799f019c9e36ee8e9c523b993e1057f0433
+  languageName: node
+  linkType: hard
+
 "imurmurhash@npm:^0.1.4":
   version: 0.1.4
   resolution: "imurmurhash@npm:0.1.4"
@@ -16981,6 +17094,13 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: 10c0/6acc10d139eaefdbe04d2f679e6191b3abf073f111edf10b1de5302c97ec93fffeb2fdd8681ed17f16268aa9dd4f8c588ed9d1d3bffbbfa6e8bf897cbb3149b9
+  languageName: node
+  linkType: hard
+
+"javascript-natural-sort@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "javascript-natural-sort@npm:0.7.1"
+  checksum: 10c0/340f8ffc5d30fb516e06dc540e8fa9e0b93c865cf49d791fed3eac3bdc5fc71f0066fc81d44ec1433edc87caecaf9f13eec4a1fce8c5beafc709a71eaedae6fe
   languageName: node
   linkType: hard
 
@@ -18508,6 +18628,25 @@ __metadata:
   version: 1.1.0
   resolution: "math-intrinsics@npm:1.1.0"
   checksum: 10c0/7579ff94e899e2f76ab64491d76cf606274c874d8f2af4a442c016bd85688927fcfca157ba6bf74b08e9439dc010b248ce05b96cc7c126a354c3bae7fcb48b7f
+  languageName: node
+  linkType: hard
+
+"mathjs@npm:^13.2.3":
+  version: 13.2.3
+  resolution: "mathjs@npm:13.2.3"
+  dependencies:
+    "@babel/runtime": "npm:^7.25.7"
+    complex.js: "npm:^2.2.5"
+    decimal.js: "npm:^10.4.3"
+    escape-latex: "npm:^1.2.0"
+    fraction.js: "npm:^4.3.7"
+    javascript-natural-sort: "npm:^0.7.1"
+    seedrandom: "npm:^3.0.5"
+    tiny-emitter: "npm:^2.1.0"
+    typed-function: "npm:^4.2.1"
+  bin:
+    mathjs: bin/cli.js
+  checksum: 10c0/a8c160931e926a65e59b983f285672ce3797682d703074670e39c11b36a15ceec01e2044de1ef5929227695da21ed2e401ef715c333d564eebff4aaa5c9c48cf
   languageName: node
   linkType: hard
 
@@ -22159,6 +22298,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"reassure@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "reassure@npm:1.4.0"
+  dependencies:
+    "@callstack/reassure-cli": "npm:1.4.0"
+    "@callstack/reassure-compare": "npm:1.4.0"
+    "@callstack/reassure-danger": "npm:1.4.0"
+    "@callstack/reassure-measure": "npm:1.4.0"
+    import-local: "npm:^3.2.0"
+  bin:
+    reassure: lib/commonjs/bin/reassure.js
+  checksum: 10c0/3437d30279f2cd0f95b59c1e883abe602541ef41fc90fdb3f3ebe27fe5819d63ca33e45b2cef8433ebba0adbb205ce5bd7d4ecc99c92ad3c6946e0ca425dbf4b
+  languageName: node
+  linkType: hard
+
 "recast@npm:^0.20.3":
   version: 0.20.5
   resolution: "recast@npm:0.20.5"
@@ -23042,6 +23196,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"seedrandom@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "seedrandom@npm:3.0.5"
+  checksum: 10c0/929752ac098ff4990b3f8e0ac39136534916e72879d6eb625230141d20db26e2f44c4d03d153d457682e8cbaab0fb7d58a1e7267a157cf23fd8cf34e25044e88
+  languageName: node
+  linkType: hard
+
 "semver@npm:7.5.2":
   version: 7.5.2
   resolution: "semver@npm:7.5.2"
@@ -23493,6 +23654,17 @@ __metadata:
     once: "npm:^1.3.1"
     simple-concat: "npm:^1.0.0"
   checksum: 10c0/b0649a581dbca741babb960423248899203165769747142033479a7dc5e77d7b0fced0253c731cd57cf21e31e4d77c9157c3069f4448d558ebc96cf9e1eebcf0
+  languageName: node
+  linkType: hard
+
+"simple-git@npm:^3.27.0":
+  version: 3.30.0
+  resolution: "simple-git@npm:3.30.0"
+  dependencies:
+    "@kwsites/file-exists": "npm:^1.1.1"
+    "@kwsites/promise-deferred": "npm:^1.1.1"
+    debug: "npm:^4.4.0"
+  checksum: 10c0/ca123580944d55c7f93d17f7a89b39cd43245916b35ed3a8b1269d1f2ae9200e17f098e42af4a2572313726f1273641cbe0748a1ea37d8c803c181fb69068b1d
   languageName: node
   linkType: hard
 
@@ -24796,10 +24968,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-markdown-builder@npm:0.4.1":
+  version: 0.4.1
+  resolution: "ts-markdown-builder@npm:0.4.1"
+  checksum: 10c0/9ceaeb38548f8fea67e8108c14f02b2dd92163fdc3dfa6e0652aa89d574ec70393428f04f17fc37b0b46b4a38f526debde2a52ed8f1c955db9b6b2f215d9e121
+  languageName: node
+  linkType: hard
+
 "ts-object-utils@npm:0.0.5":
   version: 0.0.5
   resolution: "ts-object-utils@npm:0.0.5"
   checksum: 10c0/0279f8a7504b3905f2b14769769985f214154f1aedc60077c3baaced078369ae465aecc6acc04c614f40893e559d05697f6f4ef9fc411e3b6d1d15e6269a5e14
+  languageName: node
+  linkType: hard
+
+"ts-regex-builder@npm:^1.8.2":
+  version: 1.8.2
+  resolution: "ts-regex-builder@npm:1.8.2"
+  checksum: 10c0/d839e30dff6b373e578cce752c4f6c590f060379a1222148ad7813fa64394eba1fc53e86da3bdd53afdf695ba77fb8f51a8568f1bef99ef6a19f9f14d332e7c1
   languageName: node
   linkType: hard
 
@@ -25064,6 +25250,13 @@ __metadata:
     possible-typed-array-names: "npm:^1.0.0"
     reflect.getprototypeof: "npm:^1.0.6"
   checksum: 10c0/e38f2ae3779584c138a2d8adfa8ecf749f494af3cd3cdafe4e688ce51418c7d2c5c88df1bd6be2bbea099c3f7cea58c02ca02ed438119e91f162a9de23f61295
+  languageName: node
+  linkType: hard
+
+"typed-function@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "typed-function@npm:4.2.1"
+  checksum: 10c0/0b4e9a359e456f7df50f3d7cc53e2408d23a516f27b50c2c0654f388110ecf407c0595b1bf2296d3d8667fae6aae311ec2af90c602385777d12fe724bae99156
   languageName: node
   linkType: hard
 
@@ -26708,7 +26901,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.76":
+"zod@npm:^3.24.2, zod@npm:^3.25.76":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
