@@ -1,16 +1,20 @@
-import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
 import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
 } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { useScreenDimensions } from "app/utils/hooks"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
-import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
+import {
+  AUCTION_RESULT_CARD_IMAGE_HEIGHT,
+  AUCTION_RESULT_CARD_IMAGE_WIDTH,
+  AuctionResultListItemFragmentContainer,
+} from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
 
 interface AuctionResultsListProps {
@@ -107,42 +111,49 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   )
 }
 
+export const AuctionResultsListItemLoadingSkeleton: React.FC = () => {
+  return (
+    <Flex flexDirection="row" flexGrow={1}>
+      {/* Image */}
+      <SkeletonBox
+        width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
+        height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
+      />
+      <Spacer x="15px" />
+      <Flex justifyContent="space-between" py={0.5} flexGrow={1}>
+        <Flex gap={0.5}>
+          {/* Artist name */}
+          <SkeletonText variant="xxs">Artist Name</SkeletonText>
+          {/* Artwork name */}
+          <SkeletonText variant="xxs">Artwork Name</SkeletonText>
+          {/* Artwork medium */}
+          <SkeletonText variant="xxs">Medium</SkeletonText>
+          {/* Auction Date & Place */}
+          <SkeletonText variant="xxs">Date & Place</SkeletonText>
+        </Flex>
+        <Flex gap={0.5}>
+          {/* Price */}
+          <SkeletonText variant="xxs">Some price value</SkeletonText>
+          {/* Mid estimate */}
+          <SkeletonText variant="xxs">Some mid estimate</SkeletonText>
+        </Flex>
+      </Flex>
+    </Flex>
+  )
+}
+
 export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactElement }> = ({
   listHeader,
 }) => {
   const placeholderResults = []
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 6; i++) {
     placeholderResults.push(
       <React.Fragment key={i}>
-        <Spacer y={2} />
-        <Flex flexDirection="row" flexGrow={1}>
-          {/* Image */}
-          <PlaceholderBox width={60} height={60} />
-          <Spacer x="15px" />
-          <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
-            <Flex>
-              {/* Artist name */}
-              <PlaceholderText width={100} />
-              {/* Artwork name */}
-              <PlaceholderText width={150} />
-              {/* Artwork medium */}
-              <PlaceholderText width={125} />
-              {/* Auction Date & Place */}
-              <PlaceholderText width={100} />
-            </Flex>
-            <Flex alignItems="flex-end" pr={1}>
-              {/* Price */}
-              <PlaceholderText width={40} />
-              {/* Mid estimate */}
-              <PlaceholderText width={65} />
-            </Flex>
-          </Flex>
-        </Flex>
-        <Spacer y={1} />
-        <Separator borderColor="mono10" />
+        <AuctionResultsListItemLoadingSkeleton />
       </React.Fragment>
     )
   }
+
   return (
     <ProvidePlaceholderContext>
       <Spacer y={6} />
@@ -150,10 +161,9 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
       {listHeader}
       <Flex mx={2}>
         <Spacer y={2} />
-        <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer y={1} />
-        <Separator borderColor="mono10" />
-        {placeholderResults}
+        <SkeletonText variant="xs">Auctions date</SkeletonText>
+        <Spacer y={2} />
+        <Flex gap={2}>{placeholderResults}</Flex>
       </Flex>
     </ProvidePlaceholderContext>
   )
