@@ -20,12 +20,10 @@ export const useHandlePushNotifications = ({
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const { trackEvent } = useTracking()
 
-  // Navigate to the notification URL if the user is logged in
+  // Track notification taps immediately when they arrive, regardless of login/navigation state
+  // This matches the previous native behavior and is used as a session start event
   useEffect(() => {
-    if (isLoggedIn && isNavigationReady && pushNotification) {
-      navigationEvents.emit("requestModalDismiss")
-      const url = pushNotification.data?.url as string
-
+    if (pushNotification) {
       trackEvent({
         event_name: AnalyticsConstants.NotificationTapped.key,
         label: pushNotification.label || pushNotification.data?.label,
@@ -33,6 +31,14 @@ export const useHandlePushNotifications = ({
         message: pushNotification.message,
         ...pushNotification.data,
       })
+    }
+  }, [pushNotification])
+
+  // Navigate to the notification URL if the user is logged in
+  useEffect(() => {
+    if (isLoggedIn && isNavigationReady && pushNotification) {
+      navigationEvents.emit("requestModalDismiss")
+      const url = pushNotification.data?.url as string
 
       // Validate URL before navigation to prevent errors
       if (url) {
