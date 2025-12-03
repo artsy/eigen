@@ -123,6 +123,32 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }
     }, [])
 
+    const maxImageHeight = screenHeight * 0.5
+    const maxImageWidth = screenWidth - paddingHorizontal * 2 - paddingHorizontal * 2
+
+    const displayImages = artwork.images
+
+    const currentImage = displayImages ? displayImages[currentImageIndex] : null
+    const nextImage =
+      displayImages && currentImageIndex + 1 < displayImages.length
+        ? displayImages[currentImageIndex + 1]
+        : null
+    const prevImage =
+      displayImages && currentImageIndex - 1 >= 0 ? displayImages[currentImageIndex - 1] : null
+
+    const previmageSize = sizeToFit(
+      { width: prevImage?.width ?? 0, height: prevImage?.height ?? 0 },
+      { width: maxImageWidth, height: maxImageHeight }
+    )
+    const nextImageSize = sizeToFit(
+      { width: nextImage?.width ?? 0, height: nextImage?.height ?? 0 },
+      { width: maxImageWidth, height: maxImageHeight }
+    )
+
+    const currentImageSize = sizeToFit(
+      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
+      { width: maxImageWidth, height: maxImageHeight }
+    )
     // Width related to the X position
     const prevCardWidth = (index - 1) * screenWidth
     const cardWidth = index * screenWidth
@@ -132,18 +158,23 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       // If scrollX is provided, use carousel animations
       if (scrollX) {
         return {
-          opacity: interpolate(
+          /*           opacity: interpolate(
             scrollX.value,
             [prevCardWidth, cardWidth, nextCardWidth],
             [0.9, 1, 0.9],
             Extrapolation.CLAMP
-          ),
+          ), */
           transform: [
             {
               translateX: interpolate(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
-                [-screenWidth * 0.12, 0, screenWidth * 0.12],
+                [
+                  // previmageSize.width here is too small
+                  (-screenWidth - (screenWidth - previmageSize.width - paddingHorizontal)) * 0.12,
+                  0,
+                  (screenWidth + (screenWidth - nextImageSize.width - paddingHorizontal)) * 0.12,
+                ],
                 Extrapolation.CLAMP
               ),
             },
@@ -151,7 +182,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               scale: interpolate(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
-                [0.9, 1, 0.9],
+                [0.8, 1, 0.8],
                 Extrapolation.CLAMP
               ),
             },
@@ -226,12 +257,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }, 300)
     }, [currentImageIndex])
 
-    if (!artwork || !artwork.images || artwork.images.length === 0) {
+    if (!artwork || !artwork.images || artwork.images.length === 0 || !displayImages) {
       return null
     }
-
-    const maxImageHeight = screenHeight * 0.5
-    const maxImageWidth = screenWidth - paddingHorizontal * 2
 
     const handleWrapperTaps = () => {
       const now = Date.now()
@@ -260,14 +288,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const handleSavePress = () => {
       saveArtworkToLists()
     }
-
-    const displayImages = artwork.images
-
-    const currentImage = displayImages[currentImageIndex]
-    const currentImageSize = sizeToFit(
-      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
-      { width: maxImageWidth, height: maxImageHeight }
-    )
 
     const thumbnailGalleryWidth = maxImageWidth * 0.9
 
@@ -327,7 +347,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     return (
       <AnimatedFlex
         width={screenWidth}
-        height="100%"
+        //  height="100%"
         style={[
           containerStyle || { borderRadius: 10, backgroundColor: color("mono0") },
           animatedCardStyle,
@@ -348,6 +368,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
         {/* Image Section */}
         <Flex alignItems="center" height={maxImageHeight} justifyContent="center">
+          <Text>
+            {currentImageSize?.width} : {maxImageWidth}
+          </Text>
           {/* Save Animation Overlay */}
           <Animated.View
             style={[
