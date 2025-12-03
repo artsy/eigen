@@ -50,24 +50,33 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   })
 
   // convert the space into primitive types to be user on the UI thread
-  const space1 = space(1)
   const space2 = space(2)
-  const spacerWidth = useDerivedValue(
-    () => (displayFollowButton.value ? space1 : space2),
-    [space1, space2]
-  )
+
   const followButtonTranslateX = useDerivedValue(() =>
     displayFollowButton.value ? 0 : followAreaDeltaX
   )
 
+  const followButtonOpacity = useDerivedValue(() => (displayFollowButton.value ? 1 : 0))
+
   const viewStyle = useAnimatedStyle(
     () => ({
-      left: withTiming(followButtonTranslateX.value, { duration: 200, easing: Easing.sin }),
+      transform: [
+        {
+          translateX: withTiming(
+            followButtonTranslateX.value - (displayFollowButton.value ? 0 : space2),
+            {
+              duration: 200,
+              easing: Easing.sin,
+            }
+          ),
+        },
+      ],
     }),
     [followAreaDeltaX]
   )
-  const spacerStyle = useAnimatedStyle(() => ({
-    width: withTiming(spacerWidth.value, { duration: 200 }),
+
+  const followButtonStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
   }))
 
   const handleSharePress = useCallback(() => {
@@ -101,18 +110,18 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
         </TouchableOpacity>
 
-        <MotiView style={spacerStyle} />
-
-        <FollowButton
-          haptic
-          isFollowed={isFollowed}
-          longestText="Following 999.9k"
-          followCount={artist?.counts.follows}
-          onPress={() => setIsFollowed(!isFollowed)}
-          // Using maxWidth and minWidth to prevent the button from changing width when the text changes
-          maxWidth={followButtonWidth}
-          minWidth={followButtonWidth}
-        />
+        <MotiView style={followButtonStyle}>
+          <FollowButton
+            haptic
+            isFollowed={isFollowed}
+            longestText="Following 999.9k"
+            followCount={artist?.counts.follows}
+            onPress={() => setIsFollowed(!isFollowed)}
+            // Using maxWidth and minWidth to prevent the button from changing width when the text changes
+            maxWidth={followButtonWidth}
+            minWidth={followButtonWidth}
+          />
+        </MotiView>
       </Flex>
     </MotiView>
   )
