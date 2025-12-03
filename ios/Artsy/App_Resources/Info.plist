@@ -114,6 +114,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIDesignRequiresCompatibility</key>
+	<true />
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MGLGlyphsRasterizationMode</key>
