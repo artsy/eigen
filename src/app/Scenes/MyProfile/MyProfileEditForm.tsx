@@ -48,26 +48,6 @@ interface EditMyProfileValuesSchema extends UserProfileFormikSchema {
 
 const editMyProfileSchema = userProfileYupSchema.shape({
   photo: Yup.string(),
-  instagram: Yup.string()
-    .nullable()
-    .test(
-      "instagram-format",
-      "Instagram handle can only contain letters, numbers, underscores, and periods",
-      (value) => {
-        if (value === null || value === undefined || value === "") return true
-        return /^[a-zA-Z0-9_.]+$/.test(value)
-      }
-    ),
-  linkedIn: Yup.string()
-    .nullable()
-    .test(
-      "linkedin-format",
-      "LinkedIn handle can only contain letters, numbers, and hyphens",
-      (value) => {
-        if (value === null || value === undefined || value === "") return true
-        return /^[a-zA-Z0-9\-]+$/.test(value)
-      }
-    ),
 })
 
 interface MyProfileEditFormProps {
