@@ -1389,15 +1389,19 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/partner/:partnerID/artists/:artistID",
-    name: "Artist",
-    Component: ArtistQueryRenderer,
-    queries: [ArtistScreenQuery, artistArtworksQuery],
+    name: "Partner",
+    Component: PartnerQueryRenderer,
+    queries: [PartnerScreenQuery],
     options: {
       screenOptions: {
         headerShown: false,
       },
     },
-    prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Overview",
+      artistSlug: params.artistID,
+    }),
   },
   {
     path: "/partner/:partnerID/artists",

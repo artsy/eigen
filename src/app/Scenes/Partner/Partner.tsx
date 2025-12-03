@@ -34,8 +34,14 @@ interface PartnerProps {
 }
 
 const Partner: React.FC<PartnerProps> = (props) => {
-  const { partner, initialTab } = props
+  const { partner, initialTab, artistSlug } = props
   const { partnerType, displayFullPartnerPage } = partner
+
+  useEffect(() => {
+    if (artistSlug) {
+      navigate(`/artist/${artistSlug}`)
+    }
+  }, [artistSlug])
 
   if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
@@ -133,16 +139,6 @@ export const PartnerQueryRenderer: React.FC<{
   isVisible: boolean
   artistSlug?: string
 }> = ({ partnerID, artistSlug, ...others }) => {
-  useEffect(() => {
-    if (artistSlug) {
-      navigate(`/partner/${partnerID}/artists/${artistSlug}`)
-    }
-  }, [artistSlug, partnerID])
-
-  if (artistSlug) {
-    return null
-  }
-
   return (
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
@@ -155,7 +151,7 @@ export const PartnerQueryRenderer: React.FC<{
       }}
       render={renderWithPlaceholder({
         Container: PartnerContainer,
-        initialProps: others,
+        initialProps: { ...others, artistSlug },
         renderPlaceholder: () => <PartnerSkeleton />,
       })}
     />
