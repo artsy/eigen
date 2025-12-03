@@ -46,6 +46,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={nameInputRef}
         title="Full name"
+        accessibilityLabel="Full name"
         onChangeText={handleChange("name")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -62,6 +63,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
           enableClearButton
           inputRef={locationInputRef}
           title="Primary location"
+          accessibilityLabel="Primary location"
           placeholder="City name"
           returnKeyType="next"
           blurOnSubmit={false}
@@ -94,6 +96,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={professionInputRef}
         title="Profession"
+        accessibilityLabel="Profession"
         onChangeText={handleChange("profession")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -107,7 +110,8 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       />
       <InputComponent
         ref={relevantPositionsInputRef}
-        title="Other Relevant Positions"
+        title="Other relevant positions"
+        accessibilityLabel="Other relevant positions"
         onChangeText={handleChange("otherRelevantPositions")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -122,6 +126,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={instagramInputRef}
         title="Instagram"
+        accessibilityLabel="Instagram handle"
         onChangeText={handleChange("instagram")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -138,6 +143,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={linkedInInputRef}
         title="LinkedIn"
+        accessibilityLabel="LinkedIn handle"
         onChangeText={handleChange("linkedIn")}
         onBlur={() => validateForm()}
         error={errors.linkedIn}

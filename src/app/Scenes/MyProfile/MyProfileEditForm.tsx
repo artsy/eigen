@@ -55,7 +55,7 @@ const editMyProfileSchema = userProfileYupSchema.shape({
       "Instagram handle can only contain letters, numbers, underscores, and periods",
       (value) => {
         if (value === null || value === undefined || value === "") return true
-        return /^@?[a-zA-Z0-9_.]+$/.test(value)
+        return /^[a-zA-Z0-9_.]+$/.test(value)
       }
     ),
   linkedIn: Yup.string()
@@ -177,7 +177,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
     validationSchema: editMyProfileSchema,
   })
 
-  const { handleSubmit, handleChange, dirty, values } = formikBag
+  const { handleSubmit, handleChange, dirty, values, isValid } = formikBag
 
   // We want to keep the "Save" button enabled as soon as the user edits an input
   const touched = useHasBeenTrue(dirty)
@@ -260,7 +260,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               handleIDVerification={handleIDVerification}
             />
 
-            <Button flex={1} disabled={!touched} onPress={() => handleSubmit()} mb={2}>
+            <Button flex={1} disabled={!touched || !isValid} onPress={() => handleSubmit()} mb={2}>
               Save
             </Button>
           </Flex>
