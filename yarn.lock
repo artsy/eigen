@@ -4575,9 +4575,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:5.2.6":
-  version: 5.2.6
-  resolution: "@gorhom/bottom-sheet@npm:5.2.6"
+"@gorhom/bottom-sheet@npm:5.1.8":
+  version: 5.1.8
+  resolution: "@gorhom/bottom-sheet@npm:5.1.8"
   dependencies:
     "@gorhom/portal": "npm:1.0.14"
     invariant: "npm:^2.2.4"
@@ -4593,7 +4593,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 10c0/6caa4b963608bae84e4f8be17140e46b38d982c0c5531f98191d98185864dd1221e21cac464df3db6ce5e4733d03887ecb75bc0d044a25501e599604962aab80
+  checksum: 10c0/b1faa4bf495f2be814cc2477893fbe758282142b5e4a404eacabd0b76475975f17339fabce388719645a02c17ee999e86cffa26e847a40c9c38e98c5c342ee45
   languageName: node
   linkType: hard
 
@@ -13179,7 +13179,7 @@ __metadata:
     "@braze/react-native-sdk": "npm:16.1.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
-    "@gorhom/bottom-sheet": "npm:5.2.6"
+    "@gorhom/bottom-sheet": "npm:5.1.8"
     "@gorhom/portal": "npm:1.0.14"
     "@invertase/react-native-apple-authentication": "npm:2.1.5"
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"
