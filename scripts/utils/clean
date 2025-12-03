@@ -18,6 +18,12 @@ set -euxo pipefail
 # For a complete fix workflow, use `yarn repair` instead, which runs:
 # yarn clean && yarn setup:artsy && yarn install:all
 
+echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
+if [ -d android ]; then
+	cd android
+	./gradlew clean
+	cd -
+fi
 
 echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf node_modules
@@ -41,12 +47,5 @@ fi
 
 echo "Clear Gems (┛ಠ_ಠ)┛彡┻━┻"
 rm -rf .vendor
-
-echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
-if [ -d android ]; then
-	cd android
-	./gradlew clean
-	cd -
-fi
 
 echo '✅ Clean complete!'
