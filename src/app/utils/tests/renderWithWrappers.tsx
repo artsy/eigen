@@ -12,7 +12,7 @@ export interface WrappersProps {
   includeArtworkLists?: boolean
 }
 
-const Wrappers: React.FC<React.PropsWithChildren<WrappersProps>> = ({
+export const Wrappers: React.FC<React.PropsWithChildren<WrappersProps>> = ({
   skipRelay,
   includeNavigation,
   includeArtworkLists,

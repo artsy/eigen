@@ -19,6 +19,7 @@ import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
+import { configure } from "reassure"
 
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
 require("setimmediate")
@@ -29,6 +30,7 @@ require("setimmediate")
 // @ts-expect-error
 global.__TEST__ = true
 declare const process: any
+configure({ testingLibrary: "react-native" })
 
 expect.extend(matchers)
 
