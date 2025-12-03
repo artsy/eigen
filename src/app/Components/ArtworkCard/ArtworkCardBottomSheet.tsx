@@ -1,10 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { useColor } from "@artsy/palette-mobile"
+import { SkeletonText, Tabs, useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { ArtworkCardBottomSheetBackdrop } from "app/Components/ArtworkCard/ArtworkCardBottomSheetBackdrop"
 import { ArtworkCardBottomSheetFooterQueryRenderer } from "app/Components/ArtworkCard/ArtworkCardBottomSheetFooter"
 import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/ArtworkCardBottomSheetHandle"
-import { ArtworkCardBottomSheetTabs } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
+import {
+  ArtworkCardBottomSheetTabs,
+  TABS,
+} from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
+import { InfiniteDiscoveryAboutTheWorkTabSkeleton } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -24,6 +28,7 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
   artistIDs,
   contextModule,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
   const { bottom } = useSafeAreaInsets()
   const [footerVisible, setFooterVisible] = useState(true)
   const color = useColor()
@@ -63,17 +68,31 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
         onChange={(index) => {
           const maxSnapPointIndex = 1
           if (index === maxSnapPointIndex) {
+            setIsExpanded(true)
             trackEvent(tracks.swipedUp(artworkID, artworkSlug, contextModule))
+          } else {
+            setIsExpanded(false)
           }
         }}
       >
-        <ArtworkCardBottomSheetTabs
-          artistIDs={artistIDs}
-          artworkID={artworkID}
-          onTabChange={handleOnTabChange}
-          // this key resets the state of the tabs when the artwork changes
-          key={`artwork_card_bottom_sheet_tabs_${artworkID}`}
-        />
+        {!!isExpanded ? (
+          <ArtworkCardBottomSheetTabs
+            artistIDs={artistIDs}
+            artworkID={artworkID}
+            onTabChange={handleOnTabChange}
+            // this key resets the state of the tabs when the artwork changes
+            key={`artwork_card_bottom_sheet_tabs_${artworkID}`}
+          />
+        ) : (
+          <Tabs>
+            <Tabs.Tab name={TABS[0].name} label={TABS[0].name}>
+              <InfiniteDiscoveryAboutTheWorkTabSkeleton />
+            </Tabs.Tab>
+            <Tabs.Tab name={TABS[1].name} label={TABS[1].name}>
+              <SkeletonText variant="xs">{TABS[1].name}</SkeletonText>
+            </Tabs.Tab>
+          </Tabs>
+        )}
       </BottomSheet>
     </>
   )
