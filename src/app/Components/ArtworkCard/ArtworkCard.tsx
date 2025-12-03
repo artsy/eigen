@@ -57,6 +57,8 @@ interface ArtworkCardProps {
   ownerType?: OwnerType
   scrollX?: SharedValue<number>
   isTopCard?: boolean
+  prevCardImageSize?: { width: number; height: number }
+  nextCardImageSize?: { width: number; height: number }
 }
 
 export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
@@ -70,6 +72,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     scrollX,
     index,
     isTopCard,
+    prevCardImageSize,
+    nextCardImageSize,
   }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const space = useSpace()
@@ -129,21 +133,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const displayImages = artwork.images
 
     const currentImage = displayImages ? displayImages[currentImageIndex] : null
-    const nextImage =
-      displayImages && currentImageIndex + 1 < displayImages.length
-        ? displayImages[currentImageIndex + 1]
-        : null
-    const prevImage =
-      displayImages && currentImageIndex - 1 >= 0 ? displayImages[currentImageIndex - 1] : null
 
-    const previmageSize = sizeToFit(
-      { width: prevImage?.width ?? 0, height: prevImage?.height ?? 0 },
-      { width: maxImageWidth, height: maxImageHeight }
-    )
-    const nextImageSize = sizeToFit(
-      { width: nextImage?.width ?? 0, height: nextImage?.height ?? 0 },
-      { width: maxImageWidth, height: maxImageHeight }
-    )
+    const previmageWidth = prevCardImageSize?.width ?? 0
+    const nextimageWidth = nextCardImageSize?.width ?? 0
 
     const currentImageSize = sizeToFit(
       { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
@@ -170,10 +162,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
                 [
-                  // previmageSize.width here is too small
-                  (-screenWidth - (screenWidth - previmageSize.width - paddingHorizontal)) * 0.12,
+                  (-screenWidth - (screenWidth - previmageWidth - paddingHorizontal / 2)) * 0.2,
                   0,
-                  (screenWidth + (screenWidth - nextImageSize.width - paddingHorizontal)) * 0.12,
+                  (screenWidth + (screenWidth - nextimageWidth - paddingHorizontal / 2)) * 0.2,
                 ],
                 Extrapolation.CLAMP
               ),
@@ -368,9 +359,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
         {/* Image Section */}
         <Flex alignItems="center" height={maxImageHeight} justifyContent="center">
-          <Text>
-            {currentImageSize?.width} : {maxImageWidth}
-          </Text>
           {/* Save Animation Overlay */}
           <Animated.View
             style={[
