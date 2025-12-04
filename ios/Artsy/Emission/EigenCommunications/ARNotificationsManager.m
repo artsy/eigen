@@ -218,22 +218,12 @@ RCT_EXPORT_MODULE();
     [self.bootstrapQueue removeAllObjects];
 }
 
-// Override invalidate to reset listener count for singleton pattern
-// This fixes a React Native bug where _listenerCount isn't reset on bridge reload
-// causing startObserving to never be called again after dev reload/Expo Updates
+// Override invalidate to ensure proper cleanup for singleton pattern
+// Note: We patch RCTEventEmitter to reset _listenerCount in invalidate
+// See patches/react-native+0.81.5.patch for details
 - (void)invalidate
 {
     [super invalidate];
-
-    // TODO: Probably safer to put this in a patch
-    // Reset the internal _listenerCount using KVC since it's a private ivar
-    // This is necessary because RCTEventEmitter doesn't reset _listenerCount on invalidate
-    // and our singleton pattern preserves it across bridge reloads
-    @try {
-        [self setValue:@0 forKey:@"_listenerCount"];
-    } @catch (NSException *exception) {
-        NSLog(@"ARNotificationManager: Failed to reset _listenerCount: %@", exception);
-    }
 }
 
 - (void)afterBootstrap:(void (^)(void))completion
