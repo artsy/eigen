@@ -459,7 +459,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
         <AnimatedFlex
           flexDirection="row"
           justifyContent="space-between"
-          p={2}
+          px={2}
+          pb={2}
           gap={1}
           style={animatedFadeStyle}
         >
