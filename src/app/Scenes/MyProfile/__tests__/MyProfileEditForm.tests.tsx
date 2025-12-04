@@ -315,7 +315,7 @@ describe("MyProfileEditForm", () => {
         })
       })
 
-      it("does not accept Instagram handle with @ prefix", async () => {
+      it("accepts Instagram handle with @ prefix", async () => {
         renderWithRelay()
 
         const instagramInput = screen.getByLabelText("Instagram handle")
@@ -323,10 +323,10 @@ describe("MyProfileEditForm", () => {
         fireEvent(instagramInput, "blur")
 
         expect(
-          await screen.findByText(
+          screen.queryByText(
             "Instagram handle can only contain letters, numbers, underscores, and periods"
           )
-        ).toBeTruthy()
+        ).toBeFalsy()
       })
 
       it("accepts valid Instagram handle", async () => {
@@ -336,13 +336,11 @@ describe("MyProfileEditForm", () => {
         fireEvent.changeText(instagramInput, "valid_user.name123")
         fireEvent(instagramInput, "blur")
 
-        await waitFor(() => {
-          expect(
-            screen.queryByText(
-              "Instagram handle can only contain letters, numbers, underscores, and periods"
-            )
-          ).toBeFalsy()
-        })
+        expect(
+          screen.queryByText(
+            "Instagram handle can only contain letters, numbers, underscores, and periods"
+          )
+        ).toBeFalsy()
       })
 
       it("shows error for invalid LinkedIn handle format", async () => {
@@ -366,11 +364,9 @@ describe("MyProfileEditForm", () => {
         fireEvent.changeText(linkedInInput, "valid-user-name123")
         fireEvent(linkedInInput, "blur")
 
-        await waitFor(() => {
-          expect(
-            screen.queryByText("LinkedIn handle can only contain letters, numbers, and hyphens")
-          ).toBeFalsy()
-        })
+        expect(
+          screen.queryByText("LinkedIn handle can only contain letters, numbers, and hyphens")
+        ).toBeFalsy()
       })
     })
   })

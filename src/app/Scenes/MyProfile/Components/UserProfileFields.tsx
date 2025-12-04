@@ -29,7 +29,7 @@ export const userProfileYupSchema = Yup.object().shape({
       "Instagram handle can only contain letters, numbers, underscores, and periods",
       (value) => {
         if (value === null || value === undefined || value === "") return true
-        return /^[a-zA-Z0-9_.]+$/.test(value)
+        return /^@?[a-zA-Z0-9_.]+$/.test(value)
       }
     ),
   linkedIn: Yup.string()
