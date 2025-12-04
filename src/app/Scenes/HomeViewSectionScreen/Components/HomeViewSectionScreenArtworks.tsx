@@ -8,6 +8,7 @@ import {
   Text,
   Touchable,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
@@ -26,6 +27,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { sizeToFit } from "app/utils/useSizeToFit"
 import { MotiPressable } from "moti/interactions"
 import { useCallback, useState } from "react"
 import { ListRenderItem } from "react-native"
@@ -45,6 +47,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
   const { width, height } = useScreenDimensions()
   const scrollX = useSharedValue(0)
+  const space = useSpace()
   const [activeIndex, setActiveIndex] = useState(0)
   const { trackEvent } = useTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
@@ -97,18 +100,49 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     }
   }
 
+  const maxImageWidth = width - space(2) * 4
+  const maxImageHeight = height * 0.5
+
   const renderItem = useCallback<ListRenderItem<(typeof artworks)[number]>>(
-    ({ item, index }) => (
-      <Flex width={width}>
-        <ArtworkCard
-          artwork={item}
-          contextModule={section.contextModule as ContextModule}
-          index={index}
-          scrollX={scrollX}
-        />
-      </Flex>
-    ),
-    [width, section.contextModule, scrollX]
+    ({ item, index }) => {
+      // Get the primary image dimensions for adjacent cards
+      // Using the image field that's available in the fragment
+      const prevCardImage = index > 0 ? artworks[index - 1]?.images?.[0] : null
+      const nextCardImage = index < artworks.length - 1 ? artworks[index + 1]?.images?.[0] : null
+
+      const prevCardFittedSize = prevCardImage
+        ? sizeToFit(
+            { width: prevCardImage.width ?? 0, height: prevCardImage.height ?? 0 },
+            { width: maxImageWidth, height: maxImageHeight }
+          )
+        : { width: maxImageWidth, height: maxImageHeight }
+
+      const nextCardFittedSize = nextCardImage
+        ? sizeToFit(
+            { width: nextCardImage.width ?? 0, height: nextCardImage.height ?? 0 },
+            { width: maxImageWidth, height: maxImageHeight }
+          )
+        : { width: maxImageWidth, height: maxImageHeight }
+
+      return (
+        <Flex width={width}>
+          <ArtworkCard
+            artwork={item}
+            contextModule={section.contextModule as ContextModule}
+            index={index}
+            scrollX={scrollX}
+            prevCardImageSize={prevCardFittedSize}
+            nextCardImageSize={nextCardFittedSize}
+            maxImageWidth={maxImageWidth}
+            maxImageHeight={maxImageHeight}
+            containerStyle={{
+              backgroundColor: "transparent",
+            }}
+          />
+        </Flex>
+      )
+    },
+    [artworks, maxImageWidth, maxImageHeight, width, section.contextModule, scrollX]
   )
 
   if (!isNewWorksForYouCarouselEnabled) {
@@ -280,6 +314,12 @@ export const artworksFragment = graphql`
           }
           image(includeAll: false) {
             aspectRatio
+            blurhash
+          }
+          images {
+            url(version: "large")
+            width
+            height
             blurhash
           }
         }

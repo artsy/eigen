@@ -57,6 +57,10 @@ interface ArtworkCardProps {
   ownerType?: OwnerType
   scrollX?: SharedValue<number>
   isTopCard?: boolean
+  prevCardImageSize?: { width: number; height: number }
+  nextCardImageSize?: { width: number; height: number }
+  maxImageWidth: number
+  maxImageHeight: number
 }
 
 export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
@@ -70,8 +74,12 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     scrollX,
     index,
     isTopCard,
+    prevCardImageSize,
+    nextCardImageSize,
+    maxImageWidth,
+    maxImageHeight,
   }) => {
-    const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+    const { width: screenWidth } = useScreenDimensions()
     const space = useSpace()
     const color = useColor()
     const { trackEvent } = useTracking()
@@ -123,6 +131,17 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }
     }, [])
 
+    const displayImages = artwork.images
+
+    const currentImage = displayImages ? displayImages[currentImageIndex] : null
+
+    const previmageWidth = prevCardImageSize?.width ?? 0
+    const nextimageWidth = nextCardImageSize?.width ?? 0
+
+    const currentImageSize = sizeToFit(
+      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
+      { width: maxImageWidth, height: maxImageHeight }
+    )
     // Width related to the X position
     const prevCardWidth = (index - 1) * screenWidth
     const cardWidth = index * screenWidth
@@ -132,18 +151,24 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       // If scrollX is provided, use carousel animations
       if (scrollX) {
         return {
-          opacity: interpolate(
-            scrollX.value,
-            [prevCardWidth, cardWidth, nextCardWidth],
-            [0.9, 1, 0.9],
-            Extrapolation.CLAMP
-          ),
           transform: [
             {
               translateX: interpolate(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
-                [-screenWidth * 0.12, 0, screenWidth * 0.12],
+                [
+                  (-screenWidth -
+                    (screenWidth -
+                      (previmageWidth > (maxImageWidth * 2) / 3 ? previmageWidth : maxImageWidth) -
+                      paddingHorizontal / 2)) *
+                    0.14,
+                  0,
+                  (screenWidth +
+                    (screenWidth -
+                      (nextimageWidth > (maxImageWidth * 2) / 3 ? nextimageWidth : maxImageWidth) -
+                      paddingHorizontal / 2)) *
+                    0.14,
+                ],
                 Extrapolation.CLAMP
               ),
             },
@@ -226,12 +251,9 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }, 300)
     }, [currentImageIndex])
 
-    if (!artwork || !artwork.images || artwork.images.length === 0) {
+    if (!artwork || artwork?.images?.length === 0 || !displayImages) {
       return null
     }
-
-    const maxImageHeight = screenHeight * 0.5
-    const maxImageWidth = screenWidth - paddingHorizontal * 2
 
     const handleWrapperTaps = () => {
       const now = Date.now()
@@ -260,14 +282,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     const handleSavePress = () => {
       saveArtworkToLists()
     }
-
-    const displayImages = artwork.images
-
-    const currentImage = displayImages[currentImageIndex]
-    const currentImageSize = sizeToFit(
-      { width: currentImage?.width ?? 0, height: currentImage?.height ?? 0 },
-      { width: maxImageWidth, height: maxImageHeight }
-    )
 
     const thumbnailGalleryWidth = maxImageWidth * 0.9
 
