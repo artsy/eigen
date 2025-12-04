@@ -341,7 +341,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     return (
       <AnimatedFlex
         width={screenWidth}
-        //  height="100%"
+        height="100%"
         style={[
           containerStyle || { borderRadius: 10, backgroundColor: color("mono0") },
           animatedCardStyle,
