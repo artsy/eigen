@@ -195,7 +195,7 @@ export const features = {
     echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
   AREnableNewHomeViewCardRailType: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable new rail type on home",
     echoFlagKey: "AREnableNewHomeViewCardRailType",
