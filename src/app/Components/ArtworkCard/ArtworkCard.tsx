@@ -161,13 +161,13 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
                     (screenWidth -
                       (previmageWidth > (maxImageWidth * 2) / 3 ? previmageWidth : maxImageWidth) -
                       paddingHorizontal / 2)) *
-                    0.19,
+                    0.14,
                   0,
                   (screenWidth +
                     (screenWidth -
                       (nextimageWidth > (maxImageWidth * 2) / 3 ? nextimageWidth : maxImageWidth) -
                       paddingHorizontal / 2)) *
-                    0.19,
+                    0.14,
                 ],
                 Extrapolation.CLAMP
               ),
@@ -176,7 +176,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
               scale: interpolate(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
-                [0.8, 1, 0.8],
+                [0.9, 1, 0.9],
                 Extrapolation.CLAMP
               ),
             },
@@ -251,7 +251,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }, 300)
     }, [currentImageIndex])
 
-    if (!artwork || !artwork.images || artwork.images.length === 0 || !displayImages) {
+    if (!artwork || artwork?.images?.length === 0 || !displayImages) {
       return null
     }
 
