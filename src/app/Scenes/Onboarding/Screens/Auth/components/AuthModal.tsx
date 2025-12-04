@@ -78,6 +78,5 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
         </Flex>
       </MotiView>
     </Box>
-    // </KeyboardAvoidingView>
   )
 }
