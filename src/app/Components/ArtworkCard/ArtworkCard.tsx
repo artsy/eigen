@@ -59,6 +59,8 @@ interface ArtworkCardProps {
   isTopCard?: boolean
   prevCardImageSize?: { width: number; height: number }
   nextCardImageSize?: { width: number; height: number }
+  maxImageWidth: number
+  maxImageHeight: number
 }
 
 export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
@@ -74,8 +76,10 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
     isTopCard,
     prevCardImageSize,
     nextCardImageSize,
+    maxImageWidth,
+    maxImageHeight,
   }) => {
-    const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+    const { width: screenWidth } = useScreenDimensions()
     const space = useSpace()
     const color = useColor()
     const { trackEvent } = useTracking()
@@ -127,9 +131,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       }
     }, [])
 
-    const maxImageHeight = screenHeight * 0.5
-    const maxImageWidth = screenWidth - paddingHorizontal * 2 - paddingHorizontal * 2
-
     const displayImages = artwork.images
 
     const currentImage = displayImages ? displayImages[currentImageIndex] : null
@@ -150,21 +151,23 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
       // If scrollX is provided, use carousel animations
       if (scrollX) {
         return {
-          /*           opacity: interpolate(
-            scrollX.value,
-            [prevCardWidth, cardWidth, nextCardWidth],
-            [0.9, 1, 0.9],
-            Extrapolation.CLAMP
-          ), */
           transform: [
             {
               translateX: interpolate(
                 scrollX.value,
                 [prevCardWidth, cardWidth, nextCardWidth],
                 [
-                  (-screenWidth - (screenWidth - previmageWidth - paddingHorizontal / 2)) * 0.2,
+                  (-screenWidth -
+                    (screenWidth -
+                      (previmageWidth > (maxImageWidth * 2) / 3 ? previmageWidth : maxImageWidth) -
+                      paddingHorizontal / 2)) *
+                    0.19,
                   0,
-                  (screenWidth + (screenWidth - nextimageWidth - paddingHorizontal / 2)) * 0.2,
+                  (screenWidth +
+                    (screenWidth -
+                      (nextimageWidth > (maxImageWidth * 2) / 3 ? nextimageWidth : maxImageWidth) -
+                      paddingHorizontal / 2)) *
+                    0.19,
                 ],
                 Extrapolation.CLAMP
               ),

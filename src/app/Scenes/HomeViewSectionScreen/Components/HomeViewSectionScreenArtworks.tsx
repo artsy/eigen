@@ -96,8 +96,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     }
   }
 
-  const paddingHorizontal = space(2)
-  const maxImageWidth = width - paddingHorizontal * 2
+  const maxImageWidth = width - space(2) * 4
   const maxImageHeight = height * 0.5
 
   const renderItem = useCallback<ListRenderItem<(typeof artworks)[number]>>(
@@ -123,7 +122,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 
       return (
         <Flex width={width}>
-          <Text>{maxImageWidth}</Text>
           <ArtworkCard
             artwork={item}
             contextModule={section.contextModule as ContextModule}
@@ -131,11 +129,10 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
             scrollX={scrollX}
             prevCardImageSize={prevCardFittedSize}
             nextCardImageSize={nextCardFittedSize}
+            maxImageWidth={maxImageWidth}
+            maxImageHeight={maxImageHeight}
             containerStyle={{
               backgroundColor: "transparent",
-              borderRadius: 10,
-              borderColor: "red",
-              borderWidth: 2,
             }}
           />
         </Flex>
