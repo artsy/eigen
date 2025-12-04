@@ -40,13 +40,17 @@ export const useHandlePushNotifications = ({
       navigationEvents.emit("requestModalDismiss")
       const url = pushNotification.data?.url as string
 
-      // Validate URL before navigation to prevent errors
-      if (url) {
-        navigate(url, {
-          passProps: pushNotification.data,
-          ignoreDebounce: true,
-        })
-      }
+      // Use requestAnimationFrame to ensure navigation happens after AuthenticatedRoutes
+      // has mounted and initialized (important when navigating after login)
+      requestAnimationFrame(() => {
+        // Validate URL before navigation to prevent errors
+        if (url) {
+          navigate(url, {
+            passProps: pushNotification.data,
+            ignoreDebounce: true,
+          })
+        }
+      })
 
       // Reset the notification payload after navigation attempt
       setPushNotification(null)
