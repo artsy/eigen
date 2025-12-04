@@ -251,7 +251,7 @@ export const HomeView: React.FC = memo(() => {
   )
 })
 
-const HomeViewScreenComponent: React.FC = () => {
+export const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)

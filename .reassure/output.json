@@ -1,0 +1,279 @@
+{
+  "metadata": {
+    "current": {
+      "branch": "gkartalis/reassure-spike",
+      "commitHash": "ed16d327fb9eaa22b5645e1e149b5ef4c18b2f7c",
+      "creationDate": "2025-12-04T14:03:27.003Z"
+    },
+    "baseline": {
+      "branch": "gkartalis/reassure-spike",
+      "commitHash": "ed16d327fb9eaa22b5645e1e149b5ef4c18b2f7c",
+      "creationDate": "2025-12-04T13:59:42.493Z"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "significant": [],
+  "meaningless": [
+    {
+      "name": "HomeView Performance Tests HomeView initial mount performance",
+      "type": "render",
+      "baseline": {
+        "name": "HomeView Performance Tests HomeView initial mount performance",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.08258766667697476,
+        "stdevDuration": 0.013770483806417403,
+        "durations": [
+          0.114082000014605, 0.08104200000525452, 0.08754199999384582, 0.08145900000818074,
+          0.08462400003918447, 0.07283299998380244, 0.07995800001663156, 0.07850000000325963,
+          0.0632490000280086
+        ],
+        "warmupDurations": [255.3632079999952],
+        "outlierDurations": [0.25037500000325963],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "current": {
+        "name": "HomeView Performance Tests HomeView initial mount performance",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.08232060000100319,
+        "stdevDuration": 0.011087076271747473,
+        "durations": [
+          0.09495700000115903, 0.07470900000225811, 0.09666599999945902, 0.08695799999986775,
+          0.07754100000056496, 0.08241700000144192, 0.0748330000005808, 0.09725100000105158,
+          0.06975000000238651, 0.06812400000126217
+        ],
+        "warmupDurations": [9.976998000000094],
+        "outlierDurations": [],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "durationDiff": -0.00026706667597156675,
+      "relativeDurationDiff": -0.0032337355772036154,
+      "isDurationDiffSignificant": false,
+      "countDiff": 0,
+      "relativeCountDiff": 0
+    },
+    {
+      "name": "HomeView Performance Tests HomeView re-render after state update",
+      "type": "render",
+      "baseline": {
+        "name": "HomeView Performance Tests HomeView re-render after state update",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 6.628730800081394,
+        "stdevDuration": 0.6471050536126093,
+        "durations": [
+          6.185797000071034, 5.973329000087688, 7.035009000130231, 6.886915000010049,
+          6.324981999699958, 5.888879999751225, 6.41062100007548, 6.811709000292467,
+          8.108414000511402, 6.661652000184404
+        ],
+        "warmupDurations": [6.947408000065479],
+        "outlierDurations": [],
+        "meanCount": 3,
+        "stdevCount": 0,
+        "counts": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": [2]
+        }
+      },
+      "current": {
+        "name": "HomeView Performance Tests HomeView re-render after state update",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 6.8302343000072145,
+        "stdevDuration": 0.5532964394197791,
+        "durations": [
+          7.766659000040818, 7.334037999913562, 7.160379999975703, 6.8896529999692575,
+          7.334540000127163, 6.457427000001189, 6.623154999993858, 6.410120000033203,
+          6.231745000004594, 6.094626000012795
+        ],
+        "warmupDurations": [7.174956000002567],
+        "outlierDurations": [],
+        "meanCount": 3,
+        "stdevCount": 0,
+        "counts": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": [2]
+        }
+      },
+      "durationDiff": 0.2015034999258205,
+      "relativeDurationDiff": 0.030398504027851946,
+      "isDurationDiffSignificant": false,
+      "countDiff": 0,
+      "relativeCountDiff": 0
+    },
+    {
+      "name": "HomeView Performance Tests HomeView with many sections",
+      "type": "render",
+      "baseline": {
+        "name": "HomeView Performance Tests HomeView with many sections",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.06604610000504181,
+        "stdevDuration": 0.00849679850687012,
+        "durations": [
+          0.06170900000142865, 0.06087499999557622, 0.06437499998719431, 0.07350100000621751,
+          0.0636670000385493, 0.06166699997265823, 0.05495900003006682, 0.06654100000741892,
+          0.06720900002983399, 0.08595799998147413
+        ],
+        "warmupDurations": [0.22333399998024106],
+        "outlierDurations": [],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "current": {
+        "name": "HomeView Performance Tests HomeView with many sections",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.06867129999882308,
+        "stdevDuration": 0.01457983439168355,
+        "durations": [
+          0.05895799999780138, 0.05787600000257953, 0.0605840000025637, 0.10262599999987287,
+          0.06354300000020885, 0.05433400000038091, 0.07658299999820883, 0.063916999992216,
+          0.06683399999747053, 0.08145799999692827
+        ],
+        "warmupDurations": [0.21866600000066683],
+        "outlierDurations": [],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "durationDiff": 0.0026251999937812742,
+      "relativeDurationDiff": 0.03974799410685676,
+      "isDurationDiffSignificant": false,
+      "countDiff": 0,
+      "relativeCountDiff": 0
+    },
+    {
+      "name": "HomeView Performance Tests HomeView with minimal sections",
+      "type": "render",
+      "baseline": {
+        "name": "HomeView Performance Tests HomeView with minimal sections",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.06745420000515878,
+        "stdevDuration": 0.00731401487116123,
+        "durations": [
+          0.07516700000269338, 0.060541999962879345, 0.061040000000502914, 0.06475100002717227,
+          0.06779200001619756, 0.07712499998160638, 0.061917000013636425, 0.0792080000101123,
+          0.06750100004137494, 0.059498999995412305
+        ],
+        "warmupDurations": [0.20191700002760626],
+        "outlierDurations": [],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "current": {
+        "name": "HomeView Performance Tests HomeView with minimal sections",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 0.06657520000062504,
+        "stdevDuration": 0.007015412347427114,
+        "durations": [
+          0.07179200000064156, 0.05816599999889149, 0.06066800000371586, 0.06400100000064413,
+          0.06529200000113633, 0.0634989999980462, 0.06833400000323309, 0.06420800000341842,
+          0.08341700000164565, 0.06637499999487773
+        ],
+        "warmupDurations": [0.1974580000005517],
+        "outlierDurations": [],
+        "meanCount": 1,
+        "stdevCount": 0,
+        "counts": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": []
+        }
+      },
+      "durationDiff": -0.0008790000045337393,
+      "relativeDurationDiff": -0.013031064106705214,
+      "isDurationDiffSignificant": false,
+      "countDiff": 0,
+      "relativeCountDiff": 0
+    }
+  ],
+  "countChanged": [],
+  "renderIssues": [
+    {
+      "name": "HomeView Performance Tests HomeView re-render after state update",
+      "type": "render",
+      "baseline": {
+        "name": "HomeView Performance Tests HomeView re-render after state update",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 6.628730800081394,
+        "stdevDuration": 0.6471050536126093,
+        "durations": [
+          6.185797000071034, 5.973329000087688, 7.035009000130231, 6.886915000010049,
+          6.324981999699958, 5.888879999751225, 6.41062100007548, 6.811709000292467,
+          8.108414000511402, 6.661652000184404
+        ],
+        "warmupDurations": [6.947408000065479],
+        "outlierDurations": [],
+        "meanCount": 3,
+        "stdevCount": 0,
+        "counts": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": [2]
+        }
+      },
+      "current": {
+        "name": "HomeView Performance Tests HomeView re-render after state update",
+        "type": "render",
+        "runs": 10,
+        "meanDuration": 6.8302343000072145,
+        "stdevDuration": 0.5532964394197791,
+        "durations": [
+          7.766659000040818, 7.334037999913562, 7.160379999975703, 6.8896529999692575,
+          7.334540000127163, 6.457427000001189, 6.623154999993858, 6.410120000033203,
+          6.231745000004594, 6.094626000012795
+        ],
+        "warmupDurations": [7.174956000002567],
+        "outlierDurations": [],
+        "meanCount": 3,
+        "stdevCount": 0,
+        "counts": [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        "issues": {
+          "initialUpdateCount": 0,
+          "redundantUpdates": [2]
+        }
+      },
+      "durationDiff": 0.2015034999258205,
+      "relativeDurationDiff": 0.030398504027851946,
+      "isDurationDiffSignificant": false,
+      "countDiff": 0,
+      "relativeCountDiff": 0
+    }
+  ],
+  "added": [],
+  "removed": []
+}
