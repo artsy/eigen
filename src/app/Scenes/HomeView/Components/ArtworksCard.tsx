@@ -19,6 +19,7 @@ interface ArtworksCardProps extends ArtworkActionTrackingProps {
   onPress: (artwork: ArtworksCard_artworks$data[number], index: number) => void
   contextModule: ContextModule
   ownerType: OwnerType
+  trackingEnabled?: boolean
 }
 
 export const ArtworksCard: React.FC<ArtworksCardProps> = ({
@@ -27,6 +28,7 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({
   onPress,
   contextModule,
   ownerType,
+  trackingEnabled,
 }) => {
   const artworksData = useFragment(artworksCard, artworks)
   const space = useSpace()
@@ -36,7 +38,7 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({
 
   const handleVisibilityChange = useCallback(
     (visible: boolean, index: number) => {
-      if (visible) {
+      if (visible && trackingEnabled) {
         trackEvent(
           HomeAnalytics.trackItemViewed({
             artworkId: artworksData[index].internalID,
@@ -48,7 +50,7 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({
         )
       }
     },
-    [artworksData, contextModule, ownerType, trackEvent]
+    [artworksData, contextModule, ownerType, trackEvent, trackingEnabled]
   )
 
   if (!artworksData[0]?.image) return null

@@ -20,6 +20,7 @@ describe("ArtworksCard", () => {
           ownerType={OwnerType.home}
           href="/test-href"
           onPress={() => {}}
+          trackingEnabled
         />
       )
     },

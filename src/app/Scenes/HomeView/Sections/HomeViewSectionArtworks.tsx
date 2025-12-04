@@ -135,6 +135,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           artworks={artworks}
           contextModule={section.contextModule as ContextModule}
           ownerType={OwnerType.home}
+          trackingEnabled={section.trackItemImpressions}
         />
       ) : (
         <ArtworkRail
