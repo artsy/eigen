@@ -109,16 +109,8 @@ export const useItemsImpressionsTracking = ({
     [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
   )
 
-  const trackViewsFromCards = useCallback(
-    (items: Array<TrackableItem>) => {
-      trackItems(items)
-    },
-    [trackItems]
-  )
-
   return {
     onViewableItemsChanged,
     viewabilityConfig,
-    trackViewsFromCards,
   }
 }

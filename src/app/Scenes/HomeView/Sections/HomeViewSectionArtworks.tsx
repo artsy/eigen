@@ -53,14 +53,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
-  const { onViewableItemsChanged, viewabilityConfig, trackViewsFromCards } =
-    useItemsImpressionsTracking({
-      // It is important here to tell if the rail is visible or not, because the viewability config
-      // default behavior, doesn't take into account the fact that the rail could be not visible
-      // on the screen because it's within a scrollable container.
-      isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
-      contextModule: section.contextModule as ContextModule,
-    })
+  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+    // It is important here to tell if the rail is visible or not, because the viewability config
+    // default behavior, doesn't take into account the fact that the rail could be not visible
+    // on the screen because it's within a scrollable container.
+    isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
+    contextModule: section.contextModule as ContextModule,
+  })
 
   let artworks = extractNodes(section.artworksConnection)
 
@@ -134,18 +133,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           href={moreHref}
           onPress={handleOnArtworkPress}
           artworks={artworks}
-          {...(section.trackItemImpressions
-            ? {
-                trackViewsFromCards: trackViewsFromCards(
-                  artowrksForArtworksCards
-                    .map((artwork, index) => ({
-                      id: artwork.internalID,
-                      index: index,
-                    }))
-                    .filter((item) => !!item.id)
-                ),
-              }
-            : {})}
+          contextModule={section.contextModule as ContextModule}
+          ownerType={OwnerType.home}
+          trackingEnabled={section.trackItemImpressions}
         />
       ) : (
         <ArtworkRail

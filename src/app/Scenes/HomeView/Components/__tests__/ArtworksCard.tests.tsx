@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { screen } from "@testing-library/react-native"
 import { ArtworksCardTestQuery } from "__generated__/ArtworksCardTestQuery.graphql"
 import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
@@ -15,8 +16,11 @@ describe("ArtworksCard", () => {
       return (
         <ArtworksCard
           artworks={[props.artwork, props.artwork, props.artwork]}
+          contextModule={ContextModule.newWorksForYouRail}
+          ownerType={OwnerType.home}
           href="/test-href"
           onPress={() => {}}
+          trackingEnabled
         />
       )
     },
