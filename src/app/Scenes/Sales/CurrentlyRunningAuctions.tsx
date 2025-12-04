@@ -3,28 +3,15 @@ import { CurrentlyRunningAuctionsRefetchQuery } from "__generated__/CurrentlyRun
 import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 
 import { extractNodes } from "app/utils/extractNodes"
-import React, { useEffect } from "react"
-import { graphql, RefetchFnDynamic, useRefetchableFragment } from "react-relay"
-import { Options } from "react-relay/relay-hooks/useRefetchableFragmentNode"
+import React from "react"
+import { graphql, useRefetchableFragment } from "react-relay"
 import { SaleList } from "./Components/SaleList"
-
-export type CurrentlyRunningAuctionsRefetchType = RefetchFnDynamic<
-  CurrentlyRunningAuctionsRefetchQuery,
-  CurrentlyRunningAuctions_viewer$key,
-  Options
->
 
 interface CurrentlyRunningAuctionsProps {
   sales: CurrentlyRunningAuctions_viewer$key | null | undefined
-  setRefetchPropOnParent: (refetchProp: CurrentlyRunningAuctionsRefetchType) => void
-  setSalesCountOnParent: (count: number) => void
 }
-export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> = ({
-  sales,
-  setRefetchPropOnParent,
-  setSalesCountOnParent,
-}) => {
-  const [data, refetch] = useRefetchableFragment<
+export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> = ({ sales }) => {
+  const [data] = useRefetchableFragment<
     CurrentlyRunningAuctionsRefetchQuery,
     CurrentlyRunningAuctions_viewer$key
   >(currentSalesFragment, sales)
@@ -32,14 +19,6 @@ export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> =
   const nodes = extractNodes(data?.sales)
   const liveAuctions = nodes.filter((a) => !!a.live_start_at)
   const timedAuctions = nodes.filter((a) => !a.live_start_at)
-
-  useEffect(() => {
-    setRefetchPropOnParent(refetch)
-  }, [])
-
-  useEffect(() => {
-    setSalesCountOnParent(nodes.length)
-  }, [nodes])
 
   return (
     <Flex>

@@ -227,14 +227,14 @@ const homeViewSectionArtworksQuery = graphql`
   }
 `
 
-const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
+export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
 
   return (
     <Skeleton>
       <Flex {...flexProps}>
         <Flex mx={2}>
-          <SkeletonText variant="sm-display">Arwtworks Rail</SkeletonText>
+          <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
           <Spacer y={2} />
 
           <Flex flexDirection="row">

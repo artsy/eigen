@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { CloseIcon, FullWidthIcon, GridIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
@@ -33,6 +33,7 @@ import { useCallback, useState } from "react"
 import { ListRenderItem } from "react-native"
 import Animated, { useAnimatedScrollHandler, useSharedValue } from "react-native-reanimated"
 import { graphql, usePaginationFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const ICON_SIZE = 26
 
@@ -48,6 +49,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const scrollX = useSharedValue(0)
   const space = useSpace()
   const [activeIndex, setActiveIndex] = useState(0)
+  const { trackEvent } = useTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const isNewWorksForYouCarouselEnabled =
     enableNewHomeViewCardRailType && params.id === "home-view-section-new-works-for-you"
@@ -65,7 +67,9 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     isInViewport: true,
-    contextModule: ContextModule.artworkGrid,
+    contextModule: isNewWorksForYouCarouselEnabled
+      ? ContextModule.artworkCarousel
+      : ContextModule.artworkGrid,
     contextScreenOwnerType: section.ownerType as OwnerType,
   })
 
@@ -212,7 +216,13 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
             accessibilityRole="button"
             accessibilityLabel="Exit New Works for You"
             hitSlop={DEFAULT_HIT_SLOP}
-            onPress={() => goBack()}
+            onPress={() => {
+              trackEvent({
+                action: ActionType.tappedClose,
+                context_module: section.contextModule,
+              })
+              goBack()
+            }}
           >
             <CloseIcon />
           </Touchable>

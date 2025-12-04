@@ -1,89 +1,33 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Flex, LinkText, Screen, Spinner, Text } from "@artsy/palette-mobile"
-import { SalesQuery } from "__generated__/SalesQuery.graphql"
-import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRail"
-import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
-import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBids"
+import { Box, Flex, LinkText, Screen, Text } from "@artsy/palette-mobile"
+import { SalesActiveBidsQueryRenderer } from "app/Scenes/Sales/Components/SalesActiveBids"
+import { SalesAuctionsOverviewQueryRenderer } from "app/Scenes/Sales/Components/SalesAuctionsOverview"
+import { SalesLatestAuctionResultsQueryRenderer } from "app/Scenes/Sales/Components/SalesLatestAuctionResults"
+import { SalesRecommendedAuctionLotsQueryRenderer } from "app/Scenes/Sales/Components/SalesRecommendedAuctionLots"
 // eslint-disable-next-line no-restricted-imports
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Suspense, useRef, useState } from "react"
+import { useState } from "react"
 import { RefreshControl } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ZeroState } from "./Components/ZeroState"
-import {
-  CurrentlyRunningAuctions,
-  CurrentlyRunningAuctionsRefetchType,
-} from "./CurrentlyRunningAuctions"
-import { UpcomingAuctions, UpcomingAuctionsRefetchType } from "./UpcomingAuctions"
 
 export const SUPPORT_ARTICLE_URL =
   "https://support.artsy.net/s/article/The-Complete-Guide-to-Auctions-on-Artsy"
 
-export const SalesScreenQuery = graphql`
-  query SalesQuery($includeBackfill: Boolean!) {
-    currentlyRunningAuctions: viewer {
-      ...CurrentlyRunningAuctions_viewer
-    }
-    upcomingAuctions: viewer {
-      ...UpcomingAuctions_viewer
-    }
-    recommendedAuctionLots: viewer {
-      ...RecommendedAuctionLotsRail_artworkConnection @arguments(includeBackfill: $includeBackfill)
-    }
-    me {
-      ...SaleListActiveBids_me
-    }
-    latestAuctioResults: me {
-      ...LatestAuctionResultsRail_me
-    }
-  }
-`
-
 export const Sales: React.FC = () => {
-  const { variant } = useExperimentVariant("onyx_auctions_hub")
-
-  // include backfill in case of not using AuctionsHub HomeView section
-  const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
-
-  const data = useLazyLoadQuery<SalesQuery>(
-    SalesScreenQuery,
-    { includeBackfill: includeBackfill },
-    {
-      fetchPolicy: "store-and-network",
-    }
-  )
-
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [fetchKey, setFetchKey] = useState(0)
 
-  // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
-  // to initially render
-  const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
-  const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
-
-  const currentAuctionsRefreshRef = useRef<CurrentlyRunningAuctionsRefetchType>(null)
-
-  const upcomingAuctionsRefreshRef = useRef<UpcomingAuctionsRefetchType>(null)
-
-  const setCurrentAuctionsRefreshProp = (refreshProp: CurrentlyRunningAuctionsRefetchType) =>
-    (currentAuctionsRefreshRef.current = refreshProp)
-
-  const setUpcomongAuctionsRefreshProp = (refreshProp: UpcomingAuctionsRefetchType) =>
-    (upcomingAuctionsRefreshRef.current = refreshProp)
+  const { trackEvent } = useTracking()
 
   const handleRefresh = () => {
     setIsRefreshing(true)
-    currentAuctionsRefreshRef.current?.({})
-    upcomingAuctionsRefreshRef.current?.({})
-    setIsRefreshing(false)
+    setFetchKey((prev) => prev + 1)
+    setTimeout(() => {
+      setIsRefreshing(false)
+    }, 300)
   }
-
-  const totalSalesCount = currentSalesCount + upcomingSalesCount
-
-  const { trackEvent } = useTracking()
 
   const trackArticleTap = () => {
     trackEvent({
@@ -92,10 +36,6 @@ export const Sales: React.FC = () => {
       context_screen_owner_type: OwnerType.auctions,
       destination_path: SUPPORT_ARTICLE_URL,
     })
-  }
-
-  if (totalSalesCount < 1) {
-    return <ZeroState />
   }
 
   return (
@@ -125,27 +65,13 @@ export const Sales: React.FC = () => {
             </Text>
           </Box>
 
-          <SaleListActiveBids me={data.me} />
+          <SalesActiveBidsQueryRenderer key={`active-bids-${fetchKey}`} />
 
-          <RecommendedAuctionLotsRail
-            title="Your Auction Picks"
-            artworkConnection={data.recommendedAuctionLots}
-            contextScreenOwnerType={OwnerType.auctions}
-          />
+          <SalesRecommendedAuctionLotsQueryRenderer key={`recommended-${fetchKey}`} />
 
-          <LatestAuctionResultsRail me={data.latestAuctioResults} />
+          <SalesLatestAuctionResultsQueryRenderer key={`latest-results-${fetchKey}`} />
 
-          <CurrentlyRunningAuctions
-            sales={data.currentlyRunningAuctions}
-            setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
-            setSalesCountOnParent={(count: number) => setCurrentSalesCount(count)}
-          />
-
-          <UpcomingAuctions
-            sales={data.upcomingAuctions}
-            setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
-            setSalesCountOnParent={(count: number) => setUpcomingSalesCount(count)}
-          />
+          <SalesAuctionsOverviewQueryRenderer key={`auctions-${fetchKey}`} />
         </Flex>
       </Screen.ScrollView>
     </Screen>
@@ -157,15 +83,7 @@ export const SalesScreen = () => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}
     >
-      <Suspense
-        fallback={
-          <Flex flex={1} justifyContent="center" alignItems="center">
-            <Spinner testID="SalePlaceholder" />
-          </Flex>
-        }
-      >
-        <Sales />
-      </Suspense>
+      <Sales />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
