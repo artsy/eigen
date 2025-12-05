@@ -58,6 +58,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
       },
       profession: data.profession ?? "",
       otherRelevantPositions: data.otherRelevantPositions ?? "",
+      instagram: data?.collectorProfile?.instagram ?? "",
+      linkedIn: data?.collectorProfile?.linkedIn ?? "",
     },
     onSubmit: (values) => {
       setLoading(true)
@@ -143,6 +145,10 @@ const meFragmentQuery = graphql`
     }
     profession
     otherRelevantPositions
+    collectorProfile {
+      instagram
+      linkedIn
+    }
   }
 `
 

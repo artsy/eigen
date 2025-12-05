@@ -1397,6 +1397,38 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    path: "/partner/:partnerID/artists/:artistID",
+    name: "Partner",
+    Component: PartnerQueryRenderer,
+    queries: [PartnerScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Overview",
+      artistSlug: params.artistID,
+    }),
+  },
+  {
+    path: "/partner/:partnerID/artists",
+    name: "Partner",
+    Component: PartnerQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [PartnerScreenQuery],
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Overview",
+      artistSlug: params.hashFragment,
+    }),
+  },
+  {
     path: "/partner/:partnerID",
     name: "Partner",
     Component: PartnerQueryRenderer,
@@ -1406,18 +1438,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [PartnerScreenQuery],
-  },
-  {
-    path: "/partner/:partnerID/artists/:artistID",
-    name: "Artist",
-    Component: ArtistQueryRenderer,
-    queries: [ArtistScreenQuery, artistArtworksQuery],
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
   {
     path: "/partner/:partnerID/shows",

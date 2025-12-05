@@ -9034,6 +9034,12 @@ type Conversation implements Node {
 
   # The participant who initiated the conversation
   from: ConversationInitiator!
+  fromLastViewedMessageAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   fromLastViewedMessageID: String
 
   # The collector profile of the user who initiated the conversation
@@ -9115,6 +9121,12 @@ type Conversation implements Node {
 
   # The participant(s) responding to the conversation
   to: ConversationResponder!
+  toLastViewedMessageAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   toLastViewedMessageID: String
 
   # True if there is an unread message by the Collector(from).

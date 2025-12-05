@@ -12,11 +12,12 @@ import {
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React from "react"
+import React, { useEffect } from "react"
 
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
@@ -28,12 +29,19 @@ import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } f
 interface PartnerProps {
   partner: Partner_partner$data
   initialTab?: string
+  artistSlug?: string
   relay: RelayRefetchProp
 }
 
 const Partner: React.FC<PartnerProps> = (props) => {
-  const { partner, initialTab } = props
+  const { partner, initialTab, artistSlug } = props
   const { partnerType, displayFullPartnerPage } = partner
+
+  useEffect(() => {
+    if (artistSlug) {
+      navigate(`/artist/${artistSlug}`)
+    }
+  }, [artistSlug])
 
   if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
@@ -129,7 +137,8 @@ export const PartnerContainer = createRefetchContainer(
 export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
-}> = ({ partnerID, ...others }) => {
+  artistSlug?: string
+}> = ({ partnerID, artistSlug, ...others }) => {
   return (
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
@@ -142,7 +151,7 @@ export const PartnerQueryRenderer: React.FC<{
       }}
       render={renderWithPlaceholder({
         Container: PartnerContainer,
-        initialProps: others,
+        initialProps: { ...others, artistSlug },
         renderPlaceholder: () => <PartnerSkeleton />,
       })}
     />

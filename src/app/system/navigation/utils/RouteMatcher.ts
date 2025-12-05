@@ -45,7 +45,7 @@ Routes should not end with a forward slash.
       })
   }
 
-  match(pathParts: string[]): object | null {
+  match(pathParts: string[], queryParams?: object): object | null {
     const hasWildcard = this.parts[this.parts.length - 1]?.type === "wildcard"
     if (!hasWildcard && pathParts.length !== this.parts.length) {
       return null
@@ -68,6 +68,7 @@ Routes should not end with a forward slash.
       }
     }
 
-    return this.paramsMapper?.(params) ?? params
+    const allParams = { ...queryParams, ...params }
+    return this.paramsMapper?.(allParams) ?? allParams
   }
 }

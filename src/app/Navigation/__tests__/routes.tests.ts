@@ -896,10 +896,24 @@ describe("artsy.net routes", () => {
     `)
     expect(matchRoute("/partner/:partnerID/artists/:artistID")).toMatchInlineSnapshot(`
       {
-        "module": "Artist",
+        "module": "Partner",
         "params": {
           "artistID": ":artistID",
+          "artistSlug": ":artistID",
+          "initialTab": "Overview",
           "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/escat-gallery/artists/celia-lees")).toMatchInlineSnapshot(`
+      {
+        "module": "Partner",
+        "params": {
+          "artistID": "celia-lees",
+          "artistSlug": "celia-lees",
+          "initialTab": "Overview",
+          "partnerID": "escat-gallery",
         },
         "type": "match",
       }

@@ -101,6 +101,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
     location,
     profession,
     otherRelevantPositions,
+    instagram,
+    linkedIn,
   }: Partial<EditMyProfileValuesSchema>) => {
     const updatedLocation = { ...location }
     delete updatedLocation.display
@@ -109,6 +111,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       location: updatedLocation,
       profession,
       otherRelevantPositions,
+      instagram,
+      linkedIn,
     }
 
     try {
@@ -130,6 +134,8 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       },
       profession: me?.profession ?? "",
       otherRelevantPositions: me?.otherRelevantPositions ?? "",
+      instagram: me?.collectorProfile?.instagram ?? "",
+      linkedIn: me?.collectorProfile?.linkedIn ?? "",
       photo: me?.icon?.url || "",
     },
     initialErrors: {},
@@ -151,7 +157,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
     validationSchema: editMyProfileSchema,
   })
 
-  const { handleSubmit, handleChange, dirty, values } = formikBag
+  const { handleSubmit, handleChange, dirty, values, isValid } = formikBag
 
   // We want to keep the "Save" button enabled as soon as the user edits an input
   const touched = useHasBeenTrue(dirty)
@@ -234,7 +240,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               handleIDVerification={handleIDVerification}
             />
 
-            <Button flex={1} disabled={!touched} onPress={() => handleSubmit()} mb={2}>
+            <Button flex={1} disabled={!touched || !isValid} onPress={() => handleSubmit()} mb={2}>
               Save
             </Button>
           </Flex>
@@ -272,6 +278,8 @@ const meFragment = graphql`
     canRequestEmailConfirmation
     collectorProfile {
       isProfileComplete
+      instagram
+      linkedIn
     }
   }
 `

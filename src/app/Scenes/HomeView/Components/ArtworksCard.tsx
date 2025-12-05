@@ -1,30 +1,64 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Image, useSpace, useScreenDimensions } from "@artsy/palette-mobile"
 import {
   ArtworksCard_artworks$data,
   ArtworksCard_artworks$key,
 } from "__generated__/ArtworksCard_artworks.graphql"
+import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { Sentinel } from "app/utils/Sentinel"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
+import { useCallback } from "react"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworksCardProps extends ArtworkActionTrackingProps {
   artworks: ArtworksCard_artworks$key
   href: string
   onPress: (artwork: ArtworksCard_artworks$data[number], index: number) => void
+  contextModule: ContextModule
+  ownerType: OwnerType
+  trackingEnabled?: boolean
 }
 
-export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks, href, onPress }) => {
+export const ArtworksCard: React.FC<ArtworksCardProps> = ({
+  artworks,
+  href,
+  onPress,
+  contextModule,
+  ownerType,
+  trackingEnabled,
+}) => {
   const artworksData = useFragment(artworksCard, artworks)
   const space = useSpace()
+  const { trackEvent } = useTracking()
 
   const dimensions = useArtworksCardDimensions(artworksData[0]?.image?.aspectRatio ?? 1, space)
+
+  const handleVisibilityChange = useCallback(
+    (visible: boolean, index: number) => {
+      if (visible && trackingEnabled) {
+        trackEvent(
+          HomeAnalytics.trackItemViewed({
+            artworkId: artworksData[index].internalID,
+            type: "artwork",
+            contextModule,
+            contextScreenOwnerType: ownerType,
+            position: index,
+          })
+        )
+      }
+    },
+    [artworksData, contextModule, ownerType, trackEvent, trackingEnabled]
+  )
 
   if (!artworksData[0]?.image) return null
 
   const renderArtwork = (index: number, width: number, height: number) => {
     const artwork = artworksData[index]
     const to = `${href}${href.includes("?") ? "&" : "?"}artworkIndex=${index.toString()}`
+
     return (
       <RouterLink to={to} onPress={() => onPress(artwork, index)}>
         <Image
@@ -36,6 +70,8 @@ export const ArtworksCard: React.FC<ArtworksCardProps> = ({ artworks, href, onPr
           resizeMode="cover"
           testID="artwork-image"
         />
+
+        <Sentinel onChange={(visible) => handleVisibilityChange(visible, index)} />
       </RouterLink>
     )
   }
