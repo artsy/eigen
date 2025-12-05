@@ -8,7 +8,6 @@ extern NSString *const ARAnalyticsAppUsageCountProperty;
 // Notifications
 
 extern NSString *const ARAnalyticsNotificationReceived;
-extern NSString *const ARAnalyticsNotificationTapped;
 
 // Push notifications
 

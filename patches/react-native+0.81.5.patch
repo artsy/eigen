@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native/React/Modules/RCTEventEmitter.m b/node_modules/react-native/React/Modules/RCTEventEmitter.m
+index 6cdec32..8f7cf70 100644
+--- a/node_modules/react-native/React/Modules/RCTEventEmitter.m
++++ b/node_modules/react-native/React/Modules/RCTEventEmitter.m
+@@ -89,6 +89,10 @@
+
+   if (_listenerCount > 0) {
+     [self stopObserving];
++    // Reset listener count to allow proper re-initialization on bridge reload
++    // This is necessary for modules that persist across bridge reloads (singletons, dev reload, Expo Updates)
++    // Without this reset, startObserving will never be called again because _listenerCount > 1
++    _listenerCount = 0;
+   }
+ }
+
