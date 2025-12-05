@@ -51,8 +51,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const [activeIndex, setActiveIndex] = useState(0)
   const { trackEvent } = useTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
-  const isNewWorksForYouCarouselEnabled =
-    enableNewHomeViewCardRailType && params.id === "home-view-section-new-works-for-you"
 
   const {
     data: section,
@@ -64,6 +62,10 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     artworksFragment,
     props.section
   )
+
+  const isNewWorksForYouCarouselEnabled =
+    enableNewHomeViewCardRailType && section.showArtworksCardView
+  params.id === "home-view-section-new-works-for-you"
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     isInViewport: true,
@@ -296,6 +298,7 @@ export const artworksFragment = graphql`
     ownerType
     contextModule
     trackItemImpressions
+    showArtworksCardView
     artworksConnection(after: $cursor, first: $count)
       @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {
       totalCount

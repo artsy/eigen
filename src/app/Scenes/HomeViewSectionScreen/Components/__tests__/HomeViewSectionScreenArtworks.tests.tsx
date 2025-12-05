@@ -302,6 +302,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -338,6 +339,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -378,6 +380,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -406,6 +409,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -440,6 +444,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -477,6 +482,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -504,6 +510,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [],
           },
@@ -521,6 +528,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -548,6 +556,7 @@ describe("HomeViewSectionArtworks", () => {
             title: "New Works for You",
           },
           ownerType: "newWorksForYou",
+          showArtworksCardView: true,
           artworksConnection: {
             edges: [
               {
@@ -576,6 +585,7 @@ describe("HomeViewSectionArtworks", () => {
           component: {
             title: "New Works For You",
           },
+          showArtworksCardView: true,
           trackItemImpressions: true,
           artworksConnection: {
             edges: [
@@ -650,6 +660,35 @@ describe("HomeViewSectionArtworks", () => {
       expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
       expect(screen.queryByTestId("carousel-flatlist")).not.toBeOnTheScreen()
       expect(screen.getAllByText("Other Section")[0]).toBeOnTheScreen()
+    })
+
+    it("renders legacy grid when showArtworksCardView is false", () => {
+      renderWithRelay({
+        HomeViewSectionArtworks: () => ({
+          internalID: "home-view-section-new-works-for-you",
+          component: {
+            title: "New Works for You",
+          },
+          ownerType: "newWorksForYou",
+          showArtworksCardView: false,
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "artwork-1-id",
+                  slug: "artwork-1-slug",
+                  title: "Artwork 1",
+                  href: "/artwork-1-href",
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
+      expect(screen.queryByTestId("carousel-flatlist")).not.toBeOnTheScreen()
+      expect(screen.getAllByText("New Works for You")).toBeDefined()
     })
   })
 })
