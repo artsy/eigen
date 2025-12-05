@@ -272,3 +272,14 @@ This patch was added to fix the build on RN81.
 #### When can we remove this:
 
 It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
+
+## patch for react-native RCTEventEmitter
+
+#### Explanation/Context:
+
+We use a singleton pattern for our ARNotificationsManagerModule, which is also an RCTEventEmitter for things like push notification handling, there is a bug in react native where stopObserving is called when bridge is invalidated but listenerCount is
+not reset. This causes the module to never start listening again causing events not to be sent over the bridge.
+
+#### When can we remove this:
+
+It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
