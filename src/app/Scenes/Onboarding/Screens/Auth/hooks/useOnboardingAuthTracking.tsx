@@ -15,7 +15,7 @@ export const useOnboardingAuthTracking = () => {
       trackEvent(payload)
     },
     authModalScreenView: () => {
-      const payload = screen({ context_screen_owner_type: OwnerType.authModal as any })
+      const payload = screen({ context_screen_owner_type: OwnerType.authModal })
       trackEvent(payload)
     },
   }
