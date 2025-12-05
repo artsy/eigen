@@ -29,6 +29,7 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     tracking.authImpression()
+    tracking.authModalScreenView()
   }, [])
 
   const screenHeight = Dimensions.get("window").height
