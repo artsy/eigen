@@ -1,4 +1,5 @@
-import { ActionType, AuthImpression } from "@artsy/cohesion"
+import { ActionType, AuthImpression, OwnerType } from "@artsy/cohesion"
+import { screen } from "app/utils/track/helpers"
 import { useTracking } from "react-tracking"
 
 export const useOnboardingAuthTracking = () => {
@@ -11,6 +12,10 @@ export const useOnboardingAuthTracking = () => {
         trigger: "tap",
       }
 
+      trackEvent(payload)
+    },
+    authModalScreenView: () => {
+      const payload = screen({ context_screen_owner_type: OwnerType.authModal })
       trackEvent(payload)
     },
   }
