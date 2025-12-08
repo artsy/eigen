@@ -180,7 +180,7 @@
     "react-native-ios-utilities": "5.2.0",
     "react-native-keychain": "10.0.0",
     "react-native-keys": "0.7.13",
-    "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-v2",
+    "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture",
     "react-native-linear-gradient": "2.8.3",
     "react-native-localize": "3.5.2",
     "react-native-pager-view": "7.0.1",
