@@ -19,6 +19,7 @@ const LoadingModal: React.FC<LoadingModalProps & ModalProps> = ({
       {...(rest as any)}
       transparent
       statusBarTranslucent
+      presentationStyle="overFullScreen"
     >
       <LoadingSpinner dark={dark} />
     </Modal>

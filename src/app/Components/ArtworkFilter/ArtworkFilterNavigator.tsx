@@ -342,6 +342,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           onDismiss={handleClosingModal}
           animationType="slide"
           testID="artwork-filter-navigator"
+          presentationStyle="overFullScreen"
         >
           <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
             <Stack.Navigator
