@@ -2683,6 +2683,16 @@ type Artwork implements Node & Searchable & Sellable {
   # The location of the artwork in My Collection
   collectorLocation: MyLocation
 
+  # A connection of orders for this artwork from the collector's perspective.
+  collectorOrdersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): MeOrdersConnection
+
   # Collector signals on artwork
   collectorSignals: CollectorSignals
 
@@ -2982,6 +2992,19 @@ type Artwork implements Node & Searchable & Sellable {
     size: Int
     sort: PartnerOfferSorts
   ): PartnerOfferConnection
+
+  # A connection of orders for this artwork from the partner's perspective.
+  partnerOrdersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # Partner ID to fetch orders for
+    partnerID: String!
+    size: Int
+  ): PartnerOrdersConnection
   pickupAvailable: Boolean
   price: String
   priceCurrency: String
@@ -9011,6 +9034,16 @@ type Conversation implements Node {
     last: Int
   ): UserInterestConnection
 
+  # A connection of orders for artworks in this conversation from the collector's perspective.
+  collectorOrdersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): MeOrdersConnection
+
   # The collector profile of the user who initiated the conversation. Do not use this field for Partners
   collectorResume: CollectorResume
   createdAt(
@@ -9118,6 +9151,19 @@ type Conversation implements Node {
     state: CommerceOrderStateEnum
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
+
+  # A connection of orders for artworks in this conversation from the partner's perspective.
+  partnerOrdersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # Partner ID to fetch orders for
+    partnerID: String!
+    size: Int
+  ): PartnerOrdersConnection
 
   # The participant(s) responding to the conversation
   to: ConversationResponder!
@@ -17634,9 +17680,12 @@ type Offer {
 
   # The buyer total for this offer, if a complete total is available
   buyerTotal: Money
+  createdAt(
+    format: String
 
-  # Offer creation time
-  createdAt: String
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # Who the offer is from
   fromParticipant: FromParticipantEnum!
@@ -17721,18 +17770,25 @@ type Order {
 
   # Calculated state of the order that defines buyer facing state/actions
   buyerState: OrderBuyerStateEnum
+  buyerStateExpiresAt(
+    format: String
 
-  # Expiration for the current state of the order
-  buyerStateExpiresAt: String
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # The total amount the buyer is expected to pay
   buyerTotal: Money
 
   # Order code
   code: String!
+  commissionFee: Money
+  createdAt(
+    format: String
 
-  # Order creation time
-  createdAt: String
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # Express Checkout wallet type
   creditCardWalletType: OrderCreditCardWalletTypeEnum
@@ -17787,6 +17843,14 @@ type Order {
 
   # The seller of the order
   seller: SellerType
+  sellerState: OrderSellerStateEnum
+  sellerStateExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  sellerTotal: Money
 
   # Display short version of order's artwork location
   shippingOrigin: String
@@ -17808,6 +17872,9 @@ type Order {
 
   # The total list price of items (accounting for limited partner offer if applicable)
   totalListPrice: Money
+
+  # The transaction fee for the order
+  transactionFee: Money
 }
 
 type OrderActionData {
@@ -17892,6 +17959,53 @@ enum OrderPaymentMethodEnum {
   SEPA_DEBIT
   US_BANK_ACCOUNT
   WIRE_TRANSFER
+}
+
+enum OrderSellerStateEnum {
+  # Approved - action is for seller to print Artsy label, pack and ship
+  APPROVED_ARTSY_SELF_SHIP
+
+  # Approved - action is for seller to wait for Artsy pickup
+  APPROVED_ARTSY_SHIP
+
+  # Approved - action is to coordinate pickup
+  APPROVED_PICKUP
+
+  # Approved - action is for seller to pack and ship
+  APPROVED_SELLER_SHIP
+
+  # Order has been canceled
+  CANCELED
+
+  # Order is completed
+  COMPLETED
+
+  # Order is incomplete (not actionable by seller)
+  INCOMPLETE
+
+  # Order is in transit
+  IN_TRANSIT
+
+  # Offer has been received from buyer
+  OFFER_RECEIVED
+
+  # Offer has been sent to buyer
+  OFFER_SENT
+
+  # Order has been received
+  ORDER_RECEIVED
+
+  # Payment has failed
+  PAYMENT_FAILED
+
+  # Processing payment
+  PROCESSING_PAYMENT
+
+  # Order has been refunded
+  REFUNDED
+
+  # Order status is unknown
+  UNKNOWN
 }
 
 enum OrderSourceEnum {
@@ -18438,6 +18552,25 @@ type Partner implements Node {
   merchantAccount: PartnerMerchantAccount
   meta: PartnerMeta
   name: String
+
+  # A single order for this partner.
+  order(
+    # The ID of the order
+    id: String!
+  ): Order
+
+  # A connection of orders for the Partner.
+  ordersConnection(
+    after: String
+
+    # Filter by artwork ID in line items
+    artworkID: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): PartnerOrdersConnection
 
   # A connection of search criteria hits from a Partner.
   partnerAlertHitsConnection(
@@ -19378,6 +19511,26 @@ enum PartnerOfferToCollectorSorts {
   CREATED_AT_DESC
   END_AT_ASC
   END_AT_DESC
+}
+
+# A connection to a list of items.
+type PartnerOrdersConnection {
+  # A list of edges.
+  edges: [PartnerOrdersEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerOrdersEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Order
 }
 
 # A connection to a list of items.
