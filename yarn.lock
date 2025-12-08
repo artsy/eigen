@@ -13337,7 +13337,7 @@ __metadata:
     react-native-ios-utilities: "npm:5.2.0"
     react-native-keychain: "npm:10.0.0"
     react-native-keys: "npm:0.7.13"
-    react-native-launch-arguments: "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-v2"
+    react-native-launch-arguments: "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture"
     react-native-linear-gradient: "npm:2.8.3"
     react-native-localize: "npm:3.5.2"
     react-native-pager-view: "npm:7.0.1"
@@ -22223,13 +22223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-launch-arguments@git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-v2":
+"react-native-launch-arguments@git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture":
   version: 4.1.0
-  resolution: "react-native-launch-arguments@https://github.com/artsy/react-native-launch-arguments.git#commit=918275c255661d897287c6112ea928a7fb0f9767"
+  resolution: "react-native-launch-arguments@https://github.com/artsy/react-native-launch-arguments.git#commit=c870e0469deef35920bcc267da48d77cd7521924"
   peerDependencies:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
-  checksum: 10c0/85d67917c3ec449f6154ccb3ad06a3c3ec0d72e50a9d7275b5e848d374323807d77789c777a71691cd4dcd2a7ddbfadd4797e7c932ff97f824f15aa6041ea702
+  checksum: 10c0/75046c7efff16d148527c7e89475c706227c5ddb066ca8dcb8a9a4d2ab7f2d11934a34b036a91b0999098a7692c9465374de2f7194adc53a6ca42bb1a12b9637
   languageName: node
   linkType: hard
 
