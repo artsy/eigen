@@ -194,17 +194,13 @@ If at some point the track properties change, then the snapshot will need to be 
 
 ### Async Testing
 
-Use `waitFor` for async operations:
+Use `findBy*` for async operations:
 
 ```typescript
-import { waitFor } from "@testing-library/react-native"
-
 it("loads data asynchronously", async () => {
   renderWithRelay()
 
-  await waitFor(() => {
-    expect(screen.getByText("Loaded Data")).toBeOnTheScreen()
-  })
+  await screen.findByText("Loaded Data").toBeOnTheScreen()
 })
 ```
 
@@ -221,7 +217,7 @@ These utilities are deprecated - avoid in new tests:
 - `renderWithWrappersLEGACY` → use `renderWithWrappers`
 - `setupTestWrapper_LEGACY` → use `setupTestWrapper`
 - `resolveMostRecentRelayOperation` → use `setupTestWrapper`
-- `flushPromiseQueue` → use `waitFor`
+- `flushPromiseQueue` → use `findBy*`
 - `waitUntil` → use `waitFor`
 - `extractText` → use Testing Library queries
 - `renderWithLayout` → use `renderWithWrappers`
