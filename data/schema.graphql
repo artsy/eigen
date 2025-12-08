@@ -7269,6 +7269,10 @@ type CommerceOrderEdge {
   node: CommerceOrder
 }
 
+type CommerceOrderError {
+  requestError: RequestError
+}
+
 # Represents either a state change or new offer
 union CommerceOrderEventUnion = CommerceOfferSubmittedEvent | CommerceOrderStateChangedEvent
 
@@ -7313,6 +7317,8 @@ type CommerceOrderRequiresAction {
   # Data related to action needed
   actionData: CommerceOrderActionData!
 }
+
+union CommerceOrderResult = CommerceBuyOrder | CommerceOfferOrder | CommerceOrderError
 
 enum CommerceOrderSourceEnum {
   # The order was originated on the artwork page
@@ -20545,6 +20551,7 @@ type Query {
 
   # Find an order by ID
   commerceOrder(code: String, id: ID): CommerceOrder
+  commerceOrderResult(code: String, id: String): CommerceOrderResult
 
   # Find list of orders
   commerceOrders(
