@@ -3,7 +3,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ArtsyEcho.h"
-#import "AROptions.h"
 #import "AppDelegate+Echo.h"
 #import "ARAuctionWebViewController.h"
 #import "ARRouter.h"
@@ -48,7 +47,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             config.artworkID = artworkId;
             config.artworkSlug = artworkSlug;
             config.floorBasedVIR = YES;
-            config.debugMode = [AROptions boolForOption:AROptionsDebugARVIR];
+            config.debugMode = NO; // set to YES; to debug
 
             if (allowedAccess) {
                 if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection

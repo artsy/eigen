@@ -5,7 +5,6 @@
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegateHelper.h"
-#import "AROptions.h"
 #import "AREmission.h"
 #import "Artsy-Swift.h"
 
@@ -78,7 +77,8 @@ static void *ARProgressContext = &ARProgressContext;
     // KVO on progress for when we can show the page
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew & NSKeyValueObservingOptionOld context:ARProgressContext];
 
-    if ([AROptions boolForOption:AROptionsShowMartsyOnScreen]) {
+    bool showMartsyOnScreen = NO; // set to YES; to debug
+    if (showMartsyOnScreen) {
         [self displayDebugMartsyIndicator];
     }
 }

@@ -1,6 +1,5 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import "ARDefaults.h"
-#import "AROptions.h"
 #import "ARKeychainable.h"
 #import "AREmission.h"
 

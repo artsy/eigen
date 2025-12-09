@@ -10,7 +10,6 @@
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
-#import "AROptions.h"
 #import "UIDevice-Hardware.h"
 #import "ARMenuAwareViewController.h"
 #import "ARAugmentedRealityConfig.h"

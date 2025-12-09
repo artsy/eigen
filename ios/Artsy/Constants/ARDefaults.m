@@ -1,5 +1,4 @@
 #import "ARDefaults.h"
-#import "AROptions.h"
 #import "ARAnalyticsConstants.h"
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
