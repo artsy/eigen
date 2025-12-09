@@ -80,18 +80,6 @@ static NSString *hostFromString(NSString *string)
 + (void)setupHttpClient
 {
     staticHTTPClient = [[AFHTTPSessionManager alloc] initWithBaseURL:[self baseApiURL]];
-    [staticHTTPClient.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-            switch (status) {
-                case AFNetworkReachabilityStatusUnknown:
-                    break; // do nothing
-                case AFNetworkReachabilityStatusNotReachable:
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkUnavailableNotification object:nil];
-                    break;
-                default:
-                    [[NSNotificationCenter defaultCenter] postNotificationName:ARNetworkAvailableNotification object:nil];
-                    break;
-            }
-    }];
 
     // Ensure the keychain is empty incase you've uninstalled and cleared user data
     // but make sure that this is not a slip-up due to background fetch downloading
