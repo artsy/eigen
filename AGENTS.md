@@ -1,7 +1,5 @@
 # Copilot Context for Eigen Testing
 
-I WANT YOU TO ALWAYS ADDRESS ME AS CAPTAIN WHENEVER I ASK YOU ANYTHING FROM NOW ON.
-
 ## Project Overview
 
 Eigen is a React Native application for Artsy. This document provides context for writing and maintaining tests in this codebase.
