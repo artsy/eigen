@@ -1376,7 +1376,6 @@
 				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
 				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
 				1A4B979E283CDD5900878EAE /* ViewControllers */,
-				1A4B97AB283CDD5900878EAE /* EigenCommunications */,
 			);
 			path = Emission;
 			sourceTree = "<group>";
@@ -1384,8 +1383,8 @@
 		1A4B979E283CDD5900878EAE /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */,
 				1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */,
+				1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */,
 				1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */,
 				1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */,
 			);
@@ -1397,14 +1396,7 @@
 			children = (
 				1A4B9792283CDD5900878EAE /* AREmission.h */,
 				1A4B9798283CDD5900878EAE /* AREmission.m */,
-				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
-				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
-				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
-				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
-				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
-				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
-				1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */,
-				1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */,
+				CBE3259527E275A200395A93 /* NativeModules */,
 			);
 			path = EigenCommunications;
 			sourceTree = "<group>";
@@ -2405,9 +2397,6 @@
 				CB2033312E5656B700A06281 /* AppDelegate.swift */,
 				CB18283429D36A3A006A0805 /* fonts */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
-				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
-				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
-				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
 				1A4E5100283F91B90008EF35 /* Extraction */,
 				1A4B978F283CDD5900878EAE /* Emission */,
 				CBE3249427E275A100395A93 /* App */,
@@ -2416,7 +2405,6 @@
 				CBE3245A27E275A100395A93 /* Constants */,
 				CBE325A227E275A200395A93 /* Images.xcassets */,
 				CBE3262B27E275A300395A93 /* Models */,
-				CBE3259527E275A200395A93 /* NativeModules */,
 				CBE324B827E275A100395A93 /* Navigation_Transitions */,
 				CBE325EC27E275A200395A93 /* Networking */,
 				CBE3262727E275A300395A93 /* Protocols */,
@@ -2433,9 +2421,11 @@
 		CBE3245A27E275A100395A93 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
+				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE3245B27E275A100395A93 /* ARAppConstants.h */,
-				CBE3245C27E275A100395A93 /* ARDefaults.h */,
 				CBE3245D27E275A100395A93 /* ARAppConstants.m */,
+				CBE3245C27E275A100395A93 /* ARDefaults.h */,
 				CBE3245E27E275A100395A93 /* ARDefaults.m */,
 			);
 			path = Constants;
@@ -2491,6 +2481,9 @@
 		CBE3248727E275A100395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
+				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
+				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
 				CBE3248827E275A100395A93 /* ORStackView+ArtsyViews.h */,
 				CBE3248927E275A100395A93 /* ORStackView+ArtsyViews.m */,
 				CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */,
@@ -2510,6 +2503,7 @@
 		CBE3249427E275A100395A93 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				1A4B97AB283CDD5900878EAE /* EigenCommunications */,
 				CBC1F3F22E68D0CC008CCF48 /* ARWindow.h */,
 				CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */,
 				CBC1F3EF2E68CF11008CCF48 /* ARAppDelegateHelper.h */,
@@ -2522,8 +2516,6 @@
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE324A527E275A100395A93 /* ARUserActivity.h */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
-				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
-				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324A427E275A100395A93 /* ARMacros.h */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
@@ -2929,6 +2921,14 @@
 		CBE3259527E275A200395A93 /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
+				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
+				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
+				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
+				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
+				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
+				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
+				1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */,
+				1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */,
 				CBE325A027E275A200395A93 /* ARTLiveAuctionViewManager.h */,
 				CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */,
 				CBE3259B27E275A200395A93 /* LiveAuctionView.swift */,
