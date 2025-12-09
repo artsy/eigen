@@ -1374,36 +1374,14 @@
 		1A4B978F283CDD5900878EAE /* Emission */ = {
 			isa = PBXGroup;
 			children = (
-				1A4B9790283CDD5900878EAE /* Core */,
-				1A4B979B283CDD5900878EAE /* TemporaryAPI */,
+				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
+				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
+				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
+				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
 				1A4B979E283CDD5900878EAE /* ViewControllers */,
 				1A4B97AB283CDD5900878EAE /* EigenCommunications */,
 			);
 			path = Emission;
-			sourceTree = "<group>";
-		};
-		1A4B9790283CDD5900878EAE /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
-				1A4B9792283CDD5900878EAE /* AREmission.h */,
-				1A4B9798283CDD5900878EAE /* AREmission.m */,
-				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
-				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
-				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
-				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
-				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		1A4B979B283CDD5900878EAE /* TemporaryAPI */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */,
-				1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */,
-			);
-			path = TemporaryAPI;
 			sourceTree = "<group>";
 		};
 		1A4B979E283CDD5900878EAE /* ViewControllers */ = {
@@ -1420,10 +1398,16 @@
 		1A4B97AB283CDD5900878EAE /* EigenCommunications */ = {
 			isa = PBXGroup;
 			children = (
+				1A4B9792283CDD5900878EAE /* AREmission.h */,
+				1A4B9798283CDD5900878EAE /* AREmission.m */,
+				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
+				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
 				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
 				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
 				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
 				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
+				1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */,
+				1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */,
 			);
 			path = EigenCommunications;
 			sourceTree = "<group>";
@@ -1431,6 +1415,8 @@
 		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
+				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
 				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
 				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
 				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
@@ -1443,12 +1429,10 @@
 			isa = PBXGroup;
 			children = (
 				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
-				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
 				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
 				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
 				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
 				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
-				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
 				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
 			);
 			path = Extraction;
