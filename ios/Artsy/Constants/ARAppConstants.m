@@ -1,10 +1,5 @@
 #import "ARAppConstants.h"
 
-// Don't go wild, this is just a standard account I
-// signed up with one day.
-NSString *const ARTestAccountLogin = @"energy_test_bot@gmail.com";
-NSString *const ARTestAccountPassword = @"zaqwsxcde";
-
 const NSTimeInterval ARAnimationQuickDuration = 0.15;
 const NSTimeInterval ARAnimationDuration = 0.3;
 

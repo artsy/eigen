@@ -2849,12 +2849,12 @@
 		CBE3256F27E275A100395A93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3257027E275A100395A93 /* ARCountdownView.m */,
 				CBE3257127E275A100395A93 /* Auction */,
 				CBE3257627E275A100395A93 /* Core */,
 				CBE3257827E275A100395A93 /* AuctionColors.swift */,
 				CBE3257927E275A100395A93 /* Utilities */,
-				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3258527E275A100395A93 /* Styled_Subclasses */,
 				CBE3258F27E275A100395A93 /* RefinableType.swift */,
 				CBE3259027E275A100395A93 /* Notifications */,
@@ -2925,8 +2925,8 @@
 		CBE3259027E275A100395A93 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				CBE3259127E275A100395A93 /* ARNotificationView.m */,
 				CBE3259227E275A100395A93 /* ARNotificationView.h */,
+				CBE3259127E275A100395A93 /* ARNotificationView.m */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";

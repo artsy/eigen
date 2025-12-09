@@ -1,9 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-extern NSString *const ARTestAccountLogin;
-extern NSString *const ARTestAccountPassword;
-
 extern const NSTimeInterval ARAnimationQuickDuration;
 extern const NSTimeInterval ARAnimationDuration;
 
