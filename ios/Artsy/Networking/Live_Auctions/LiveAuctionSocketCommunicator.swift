@@ -204,10 +204,18 @@ extension PublicFunctions {
         ] as NSDictionary)
     }
 
+    func stringify(_ json: NSObject) throws -> String {
+        let data = try JSONSerialization.data(withJSONObject: self, options: [])
+        // Note we're using the crash! operator. At this point in the function execution, we
+        // have successfully encoded ourselves into JSON and decoding into a string should succeed.
+        // Otherwise Foundation is broken.
+        return (NSString(data: data, encoding: String.Encoding.utf8.rawValue) ?? "") as String
+    }
+
     func writeJSON(_ json: NSObject) {
         do {
-            print(try json.stringify())
-            socket.write(string: try json.stringify(), completion: nil)
+            print(try stringify(json))
+            socket.write(string: try stringify(json), completion: nil)
         } catch {
             print("Error creating JSON string of socket event")
             return print(error)
