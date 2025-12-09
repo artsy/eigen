@@ -14,7 +14,6 @@
 #import "UIDevice-Hardware.h"
 #import "ARMenuAwareViewController.h"
 #import "ARAugmentedRealityConfig.h"
-#import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "Artsy-Swift.h"

@@ -6,7 +6,6 @@
 
 #import "UIView+HitTestExpansion.h"
 #import "UIViewController+InnermostTopViewController.h"
-#import "UIViewController+SimpleChildren.h"
 
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
