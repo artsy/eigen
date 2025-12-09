@@ -1,10 +1,9 @@
 import { Box, Flex, useTheme } from "@artsy/palette-mobile"
-import { useFocusEffect } from "@react-navigation/native"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useOnboardingAuthTracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuthTracking"
 import { MotiView } from "moti"
-import { useEffect, useMemo, useRef } from "react"
-import { AppState, Dimensions, Linking } from "react-native"
+import { useEffect, useMemo } from "react"
+import { Dimensions, Linking } from "react-native"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -27,14 +26,9 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
   const insets = useSafeAreaInsets()
 
   const tracking = useOnboardingAuthTracking()
-  const appState = useRef(AppState.currentState)
 
   useEffect(() => {
     tracking.authImpression()
-  }, [])
-
-  // Track initial screen view
-  useFocusEffect(() => {
     // Check if app was opened with a deep link
     Linking.getInitialURL().then((url) => {
       // Only fire screen tracking if there's no initial deep link
@@ -43,21 +37,7 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
         tracking.authModalScreenView()
       }
     })
-  })
-
-  // Track when app comes back to foreground
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === "active") {
-        tracking.authModalScreenView()
-      }
-      appState.current = nextAppState
-    })
-
-    return () => {
-      subscription.remove()
-    }
-  }, [])
+  }, [tracking])
 
   const screenHeight = Dimensions.get("window").height
 
