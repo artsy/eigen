@@ -74,6 +74,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
         <Screen.StickySubHeader title="Shows for You" />
         <Screen.Body fullwidth>
           <Screen.FlatList
+            testID="shows-for-you-flat-list"
             numColumns={numColumns}
             key={`${numColumns}`}
             data={shows}
@@ -98,7 +99,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
                 pb={6}
                 style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
               >
-                <ActivityIndicator />
+                <ActivityIndicator testID="activity-indicator" />
               </Flex>
             )}
           />
