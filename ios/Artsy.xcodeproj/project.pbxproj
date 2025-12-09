@@ -238,7 +238,6 @@
 		CBE3268027E275A300395A93 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */; };
 		CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */; };
 		CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248127E275A100395A93 /* NSDate+DateRange.m */; };
-		CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */; };
 		CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */; };
 		CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248627E275A100395A93 /* PanDirectionGestureRecognizer.swift */; };
 		CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248927E275A100395A93 /* ORStackView+ArtsyViews.m */; };
@@ -940,7 +939,6 @@
 		CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AsyncImageLoading.m"; sourceTree = "<group>"; };
 		CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FullScreenLoading.h"; sourceTree = "<group>"; };
 		CBE3247127E275A100395A93 /* NSDate+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
-		CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		CBE3247427E275A100395A93 /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
 		CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		CBE3247727E275A100395A93 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
@@ -953,7 +951,6 @@
 		CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSKeyedUnarchiver+ErrorLogging.m"; sourceTree = "<group>"; };
 		CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SimpleChildren.m"; sourceTree = "<group>"; };
 		CBE3248127E275A100395A93 /* NSDate+DateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateRange.m"; sourceTree = "<group>"; };
-		CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		CBE3248427E275A100395A93 /* NSDate+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
 		CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FullScreenLoading.m"; sourceTree = "<group>"; };
 		CBE3248627E275A100395A93 /* PanDirectionGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanDirectionGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -2502,8 +2499,6 @@
 				CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */,
 				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
 				CBE3248127E275A100395A93 /* NSDate+DateRange.m */,
-				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
-				CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */,
 				CBE3248427E275A100395A93 /* NSDate+Util.h */,
 				CBE3247127E275A100395A93 /* NSDate+Util.m */,
 				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
@@ -3907,7 +3902,6 @@
 				CBE3278C27E275A400395A93 /* Artist.m in Sources */,
 				CBE3277627E275A400395A93 /* ArtsyAPI+Following.m in Sources */,
 				CBE326C927E275A300395A93 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
-				CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */,
 				CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
 				CBE326D927E275A300395A93 /* ARScrollNavigationChief.m in Sources */,
 				1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */,

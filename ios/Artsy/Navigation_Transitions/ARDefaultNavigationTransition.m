@@ -1,6 +1,5 @@
 #import "ARDefaultNavigationTransition.h"
 
-#import "UIView+OldSchoolSnapshots.h"
 #import "ARAppConstants.h"
 #import "ARNavigationController.h"
 
@@ -44,87 +43,6 @@
             fromVC.view.transform = CGAffineTransformIdentity;
 
             [transitionContext completeTransition:YES];
-        }];
-}
-
-- (void)popTransitionFrom:(UIViewController *)fromVC to:(UIViewController *)toVC withContext:(id<UIViewControllerContextTransitioning>)context
-{
-    CGRect fullFrame = [context initialFrameForViewController:fromVC];
-    CGRect offScreen = fullFrame;
-    offScreen.origin.x = offScreen.size.width;
-
-    // To = Coming up
-    // From = Moving to the Side
-
-    [context.containerView addSubview:toVC.view];
-    [context.containerView addSubview:fromVC.view];
-
-    UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseOut;
-
-    ARNavigationController *navigationController = (ARNavigationController *)fromVC.navigationController;
-
-    UIView *backButtonSnapshot;
-
-    CGFloat originalBackButtonAlpha = navigationController.backButton.alpha;
-    if ([context isInteractive] && [navigationController isKindOfClass:ARNavigationController.class]) {
-        options = UIViewAnimationOptionCurveLinear;
-
-        // For interactive transitions, we copy snapshots of the buttons to the
-        // top of the context view.
-
-        // Set the alpha to 1 so we know that there is something to take a
-        // snapshot of.
-        navigationController.backButton.alpha = 1;
-
-        // We don't use the iOS snapshotting API because we can't wait
-        // for a screen update to reflect our changes.
-        backButtonSnapshot = [navigationController.backButton ar_snapshot];
-
-        // Make sure the snapshots match the original views in alpha and appear
-        // at the right position
-        backButtonSnapshot.alpha = originalBackButtonAlpha;
-
-        backButtonSnapshot.frame = [context.containerView convertRect:navigationController.backButton.frame fromView:navigationController.view];
-
-        // Restore the original alpha values
-        navigationController.backButton.alpha = originalBackButtonAlpha;
-
-        // Hide the original buttons for the duration of the animation, we'll
-        // revert this after the transition has finished.
-        navigationController.backButton.hidden = YES;
-
-        [context.containerView addSubview:backButtonSnapshot];
-    }
-
-    toVC.view.alpha = 0.2;
-    toVC.view.frame = [context finalFrameForViewController:toVC];
-    toVC.view.transform = CGAffineTransformMakeScale(0.9, 0.9);
-
-    [UIView animateWithDuration:[self transitionDuration:context]
-        delay:0.0
-        options:options
-        animations:^{
-            toVC.view.alpha = 1;
-            toVC.view.transform = CGAffineTransformIdentity;
-
-            fromVC.view.frame = offScreen;
-
-            backButtonSnapshot.alpha = self.backButtonTargetAlpha;
-        }
-        completion:^(BOOL finished) {
-            toVC.view.alpha = 1;
-            toVC.view.transform = CGAffineTransformIdentity;
-
-            // Unhide the buttons
-            navigationController.backButton.hidden = NO;
-
-            [backButtonSnapshot removeFromSuperview];
-
-            if ([context transitionWasCancelled]) {
-                fromVC.view.frame = fullFrame;
-            }
-
-            [context completeTransition:![context transitionWasCancelled]];
         }];
 }
 
