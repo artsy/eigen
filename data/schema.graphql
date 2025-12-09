@@ -17082,6 +17082,9 @@ type Mutation {
     input: setOrderFulfillmentOptionInput!
   ): setOrderFulfillmentOptionPayload
 
+  # Set payment method for an order.
+  setOrderPayment(input: setOrderPaymentInput!): setOrderPaymentPayload
+
   # Start an identity verification flow for a pending identity verification
   startIdentityVerification(
     input: startIdentityVerificationMutationInput!
@@ -17203,7 +17206,7 @@ type Mutation {
     input: updateNotificationPreferencesMutationInput!
   ): updateNotificationPreferencesMutationPayload
 
-  # Update an order
+  # Update an order. NOTE: For payment-related updates, use setOrderPayment mutation instead.
   updateOrder(input: updateOrderInput!): updateOrderPayload
 
   # Update an order's shipping address
@@ -28444,6 +28447,30 @@ type setOrderFulfillmentOptionPayload {
   orderOrError: OrderMutationResponse
 }
 
+input setOrderPaymentInput {
+  clientMutationId: String
+
+  # Credit card wallet type (e.g., Apple Pay, Google Pay).
+  creditCardWalletType: OrderCreditCardWalletTypeEnum
+
+  # Order id.
+  id: ID!
+
+  # Payment method.
+  paymentMethod: OrderPaymentMethodEnum!
+
+  # Saved payment method id (credit card or bank account).
+  paymentMethodId: String
+
+  # Stripe confirmation token.
+  stripeConfirmationToken: String
+}
+
+type setOrderPaymentPayload {
+  clientMutationId: String
+  orderOrError: OrderMutationResponse
+}
+
 enum sort {
   ASC
   DESC
@@ -28626,15 +28653,18 @@ input updateOrderInput {
 
   # Credit card wallet type
   creditCardWalletType: OrderCreditCardWalletTypeEnum
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 
   # Order id.
   id: ID!
 
   # Payment method.
   paymentMethod: OrderPaymentMethodEnum
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 
   # Stripe confirmation token
   stripeConfirmationToken: String
+    @deprecated(reason: "Use setOrderPayment mutation instead for setting payment methods.")
 }
 
 type updateOrderPayload {
