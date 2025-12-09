@@ -19,7 +19,6 @@ import {
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
@@ -87,7 +86,6 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = m
               <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
             ) : null
           }
-          disableVirtualization={!isNewArchitectureEnabled}
           ItemSeparatorComponent={() => <Spacer x={2} />}
           data={notifications}
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
