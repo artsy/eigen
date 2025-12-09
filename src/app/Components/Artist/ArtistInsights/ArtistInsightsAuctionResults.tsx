@@ -1,7 +1,8 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, bullet, Flex, Separator, Spacer, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
+import { MarketStatsQueryRenderer } from "app/Components/Artist/ArtistInsights/MarketStats"
 import {
   FilterArray,
   filterArtworksParams,
@@ -18,43 +19,31 @@ import {
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import Spinner from "app/Components/Spinner"
-import { PAGE_SIZE } from "app/Components/constants"
+import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  SectionList,
-  View,
-} from "react-native"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { LayoutChangeEvent, SectionList, SectionListRenderItem } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
   relay: RelayPaginationProp
-  scrollToTop: () => void
   initialFilters?: FilterArray
   onLayout?: (event: LayoutChangeEvent) => void
-  onScrollEndDragChange: ((event: NativeSyntheticEvent<NativeScrollEvent>) => void) | undefined
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
   artist,
   relay,
-  scrollToTop,
   initialFilters,
   onLayout,
-  onScrollEndDragChange,
 }) => {
   const tracking = useTracking()
-  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
-
+  const listRef = useRef<SectionList>(null)
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
@@ -76,6 +65,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [keywordFilterRefetching, setKeywordFilterRefetching] = useState(false)
+
+  const space = useSpace()
 
   const endKeywordFilterRefetching = useMemo(
     () => debounce(() => setKeywordFilterRefetching(false), DEBOUNCE_DELAY),
@@ -120,7 +111,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     aggregations,
     componentPath: "ArtistInsights/ArtistAuctionResults",
     refetchVariables: filterParams,
-    onApply: () => scrollToTop(),
+    onApply: () => {
+      listRef?.current?.scrollToLocation({
+        animated: true,
+        sectionIndex: 0,
+        itemIndex: 0,
+        // Adding 150px to the offset to account for the header and the filter button
+        // Those are unfortunately not counted for in react-native
+        // See https://reactnative.dev/docs/sectionlist#scrolltolocation
+        viewOffset: 160,
+      })
+    },
     onRefetch: () => endKeywordFilterRefetching(),
   })
 
@@ -216,21 +217,37 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     return res.filter((section) => section.count > 0 && (__TEST__ || section.data.length > 0))
   }, [auctionResults, appliedFilters])
 
+  const renderItem: SectionListRenderItem<
+    ExtractNodeType<ArtistInsightsAuctionResults_artist$data["auctionResultsConnection"]>
+  > = useCallback(
+    ({ item }) => (
+      <AuctionResultListItemFragmentContainer
+        auctionResult={item}
+        onPress={() => {
+          tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+        }}
+      />
+    ),
+    [artist.internalID]
+  )
+
   if (!artist.statuses?.auctionLots) {
     return (
-      <View onLayout={onLayout}>
+      <Tabs.ScrollView>
         <ArtistInsightsEmpty my={6} />
-      </View>
+      </Tabs.ScrollView>
     )
   }
 
-  return (
-    <View
-      // Setting min height to keep scroll position when user searches with the keyword filter.
-      style={{ minHeight: screenHeight }}
-      onLayout={onLayout}
-    >
-      <Flex>
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const ListHeaderComponent = useMemo(() => {
+    return () => (
+      <Flex px={2} onLayout={onLayout}>
+        <MarketStatsQueryRenderer
+          artistInternalID={artist.internalID}
+          environment={relay.environment}
+        />
+
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
             titleElement={
@@ -256,53 +273,53 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           artistId={artist.internalID}
           artistSlug={artist.slug}
           loading={keywordFilterRefetching}
-          onFocus={scrollToTop}
           onTypingStart={() => setKeywordFilterRefetching(true)}
         />
       </Flex>
-      {auctionResults.length ? (
-        <SectionList
-          sections={auctionResultsByState}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <AuctionResultListItemFragmentContainer
-              auctionResult={item}
-              onPress={() => {
-                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-              }}
+    )
+  }, [artist.internalID, relay.environment])
+
+  return (
+    <Flex>
+      <Tabs.SectionList
+        sections={auctionResultsByState}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={ListHeaderComponent}
+        contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
+        ref={listRef}
+        renderItem={renderItem}
+        renderSectionHeader={({ section: { title, count } }) => (
+          <Flex px={2} my={2}>
+            <Text variant="sm-display">{title}</Text>
+            <Text variant="xs" color="mono60">
+              {count} result{count > 1 ? "s" : ""}
+            </Text>
+          </Flex>
+        )}
+        style={{
+          marginTop: space(2),
+          paddingBottom: space(4),
+        }}
+        ItemSeparatorComponent={AuctionResultListSeparator}
+        onEndReached={loadMoreAuctionResults}
+        ListEmptyComponent={() => (
+          <Box py={4}>
+            <FilteredArtworkGridZeroState
+              id={artist.id}
+              slug={artist.slug}
+              hideClearButton={isKeywordFilterActive}
             />
-          )}
-          renderSectionHeader={({ section: { title, count } }) => (
-            <Flex px={2} my={2}>
-              <Text variant="sm-display">{title}</Text>
-              <Text variant="xs" color="mono60">
-                {count} result{count > 1 ? "s" : ""}
-              </Text>
+          </Box>
+        )}
+        ListFooterComponent={() =>
+          loadingMoreData ? (
+            <Flex my={4}>
+              <Spinner />
             </Flex>
-          )}
-          onScrollEndDrag={onScrollEndDragChange}
-          ItemSeparatorComponent={AuctionResultListSeparator}
-          style={{ width: screenWidth, left: -20 }}
-          onEndReached={loadMoreAuctionResults}
-          ListFooterComponent={() =>
-            loadingMoreData ? (
-              <Flex my={4}>
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
-      ) : (
-        <Box my="80px">
-          <FilteredArtworkGridZeroState
-            id={artist.id}
-            slug={artist.slug}
-            hideClearButton={isKeywordFilterActive}
-          />
-        </Box>
-      )}
-    </View>
+          ) : null
+        }
+      />
+    </Flex>
   )
 }
 
