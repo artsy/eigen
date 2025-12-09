@@ -40,31 +40,6 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
     return operation;
 }
 
-+ (AFHTTPRequestOperation *)performGraphQLRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSError *error))failure
-{
-    return [self performRequest:request removeNullsFromResponse:YES success:^(id json) {
-        // Parse out metadata from GraphQL response.
-        NSArray *errors = json[@"errors"];
-        if (errors) {
-            // GraphQL queries that fail will return 200s but indicate failures with the "errors" key. We need to check them.
-            NSLog(@"Failure fetching GraphQL query: %@", errors);
-            [[AREmission sharedInstance] sendEvent:ARAnalyticsGraphQLResponseError traits:json];
-            if (failure) {
-                failure([NSError errorWithDomain:@"GraphQL" code:0 userInfo:json]);
-            }
-            return;
-        }
-        if (success) {
-            success(json);
-        }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (failure) {
-            NSLog(@"Network failure fetching GraphQL query: %@", error);
-            failure(error);
-        }
-    }];
-}
-
 + (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
     return [self performRequest:request removeNullsFromResponse:NO success:success failure:failure];

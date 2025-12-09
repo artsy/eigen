@@ -34,5 +34,3 @@ extern NSInteger const ARNavButtonNotificationsTag;
 /// Auctions
 
 extern NSString *const ARAnalyticsAuctionContactTapped;
-
-extern NSString *const ARAnalyticsGraphQLResponseError;

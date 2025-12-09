@@ -17,5 +17,3 @@ NSString *const ARAnalyticsErrorFailedToGetFacebookCredentials = @"error failed 
 NSInteger const ARNavButtonNotificationsTag = (NSInteger)&ARNavButtonNotificationsTag;
 
 NSString *const ARAnalyticsAuctionContactTapped = @"Tapped Auction Contact";
-
-NSString *const ARAnalyticsGraphQLResponseError = @"GraphQL Response Error";
