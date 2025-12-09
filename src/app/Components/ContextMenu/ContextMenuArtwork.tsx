@@ -262,6 +262,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
           delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
           onPress={undefined}
           testID="android-context-menu-trigger"
+          style={{ padding: space(1) }}
         >
           {children}
         </TouchableHighlight>
