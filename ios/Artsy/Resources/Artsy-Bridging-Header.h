@@ -83,9 +83,6 @@
 
 #import "ARTNativeScreenPresenterModule.h"
 
-
-
-
 // Sentry Swift Access
 #import "ARSentryReporter.h"
 

@@ -354,7 +354,7 @@
 		CBE3271627E275A300395A93 /* ARWhitespaceGobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258227E275A100395A93 /* ARWhitespaceGobbler.m */; };
 		CBE3271727E275A300395A93 /* AROfflineView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258327E275A100395A93 /* AROfflineView.m */; };
 		CBE3271827E275A300395A93 /* ARBidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258727E275A100395A93 /* ARBidButton.m */; };
-		CBE3271927E275A300395A93 /* ARNvagiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258827E275A100395A93 /* ARNvagiationButton+Swift.swift */; };
+		CBE3271927E275A300395A93 /* ARNavgiationButton+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258827E275A100395A93 /* ARNavgiationButton+Swift.swift */; };
 		CBE3271A27E275A300395A93 /* ARNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258B27E275A100395A93 /* ARNavigationButton.m */; };
 		CBE3271B27E275A300395A93 /* ARTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258E27E275A100395A93 /* ARTextView.m */; };
 		CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3258F27E275A100395A93 /* RefinableType.swift */; };
@@ -1125,7 +1125,7 @@
 		CBE3258327E275A100395A93 /* AROfflineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROfflineView.m; sourceTree = "<group>"; };
 		CBE3258427E275A100395A93 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CBE3258727E275A100395A93 /* ARBidButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButton.m; sourceTree = "<group>"; };
-		CBE3258827E275A100395A93 /* ARNvagiationButton+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARNvagiationButton+Swift.swift"; sourceTree = "<group>"; };
+		CBE3258827E275A100395A93 /* ARNavgiationButton+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARNavgiationButton+Swift.swift"; sourceTree = "<group>"; };
 		CBE3258927E275A100395A93 /* ARNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationButton.h; sourceTree = "<group>"; };
 		CBE3258A27E275A100395A93 /* ARBidButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBidButton.h; sourceTree = "<group>"; };
 		CBE3258B27E275A100395A93 /* ARNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButton.m; sourceTree = "<group>"; };
@@ -1368,29 +1368,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A4B978F283CDD5900878EAE /* Emission */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
-				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
-				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
-				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
-				1A4B979E283CDD5900878EAE /* ViewControllers */,
-			);
-			path = Emission;
-			sourceTree = "<group>";
-		};
-		1A4B979E283CDD5900878EAE /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */,
-				1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */,
-				1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */,
-				1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
 		1A4B97AB283CDD5900878EAE /* EigenCommunications */ = {
 			isa = PBXGroup;
 			children = (
@@ -1414,19 +1391,6 @@
 			path = ArtsyUILabels;
 			sourceTree = "<group>";
 		};
-		1A4E5100283F91B90008EF35 /* Extraction */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
-				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
-				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
-				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
-				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
-				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
-			);
-			path = Extraction;
-			sourceTree = "<group>";
-		};
 		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
 			isa = PBXGroup;
 			children = (
@@ -1443,15 +1407,6 @@
 				1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */,
 			);
 			path = ArtsyUIFonts;
-			sourceTree = "<group>";
-		};
-		1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
-				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
-			);
-			path = ArtsyUIButtons;
 			sourceTree = "<group>";
 		};
 		2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */ = {
@@ -2396,9 +2351,6 @@
 			children = (
 				CB2033312E5656B700A06281 /* AppDelegate.swift */,
 				CB18283429D36A3A006A0805 /* fonts */,
-				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
-				1A4E5100283F91B90008EF35 /* Extraction */,
-				1A4B978F283CDD5900878EAE /* Emission */,
 				CBE3249427E275A100395A93 /* App */,
 				CBE3262027E275A200395A93 /* App_Resources */,
 				CBE3245F27E275A100395A93 /* Categories */,
@@ -2486,6 +2438,10 @@
 				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
 				CBE3248827E275A100395A93 /* ORStackView+ArtsyViews.h */,
 				CBE3248927E275A100395A93 /* ORStackView+ArtsyViews.m */,
+				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
+				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
+				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
+				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
 				CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */,
 			);
 			path = Artsy;
@@ -2670,8 +2626,10 @@
 		CBE324FE27E275A100395A93 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CBE324FF27E275A100395A93 /* ARViewInRoomViewController.h */,
-				CBE3250027E275A100395A93 /* ARViewInRoomViewController.m */,
+				1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */,
+				1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */,
+				1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */,
+				1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */,
 				CBE3250127E275A100395A93 /* UIViewController+BlurredStatusView.swift */,
 			);
 			path = Core;
@@ -2758,6 +2716,8 @@
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
+				CBE324FF27E275A100395A93 /* ARViewInRoomViewController.h */,
+				CBE3250027E275A100395A93 /* ARViewInRoomViewController.m */,
 				CB762B2E2911A5E100881194 /* Assets */,
 				CBE3253227E275A100395A93 /* Nodes */,
 				CBE3253727E275A100395A93 /* ARAugmentedRealityConfig.h */,
@@ -2815,6 +2775,8 @@
 		CBE3256727E275A100395A93 /* Tooling */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
+				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
 				CBE3256827E275A100395A93 /* Generated */,
 				CBE3256B27E275A100395A93 /* ARDispatchManager.m */,
 				CBE3256C27E275A100395A93 /* ARWebViewCacheHost.h */,
@@ -2836,6 +2798,8 @@
 		CBE3256F27E275A100395A93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
+				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
 				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3257027E275A100395A93 /* ARCountdownView.m */,
 				CBE3257127E275A100395A93 /* Auction */,
@@ -2900,9 +2864,11 @@
 		CBE3258627E275A100395A93 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
+				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
 				CBE3258A27E275A100395A93 /* ARBidButton.h */,
 				CBE3258727E275A100395A93 /* ARBidButton.m */,
-				CBE3258827E275A100395A93 /* ARNvagiationButton+Swift.swift */,
+				CBE3258827E275A100395A93 /* ARNavgiationButton+Swift.swift */,
 				CBE3258927E275A100395A93 /* ARNavigationButton.h */,
 				CBE3258B27E275A100395A93 /* ARNavigationButton.m */,
 			);
@@ -2921,6 +2887,8 @@
 		CBE3259527E275A200395A93 /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
+				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
+				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
 				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
 				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
 				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
@@ -3935,7 +3903,7 @@
 				CBE3270B27E275A300395A93 /* ARWebViewCacheHost.m in Sources */,
 				CBE3279E27E275A400395A93 /* SaleArtwork.m in Sources */,
 				CBE326E527E275A300395A93 /* ARFeedImageLoader.m in Sources */,
-				CBE3271927E275A300395A93 /* ARNvagiationButton+Swift.swift in Sources */,
+				CBE3271927E275A300395A93 /* ARNavgiationButton+Swift.swift in Sources */,
 				CBE326C627E275A300395A93 /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
 				CBE326C327E275A300395A93 /* LiveAuctionCurrentLotView.swift in Sources */,
 				CBE327A027E275A400395A93 /* Bidder.m in Sources */,
