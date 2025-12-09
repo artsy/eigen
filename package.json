@@ -107,7 +107,7 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.330.0",
+    "@artsy/cohesion": "4.333.0",
     "@artsy/icons": "3.62.0",
     "@artsy/palette-mobile": "22.1.0",
     "@artsy/to-title-case": "1.2.0",
