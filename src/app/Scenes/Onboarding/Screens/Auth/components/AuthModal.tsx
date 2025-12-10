@@ -28,9 +28,13 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
   const tracking = useOnboardingAuthTracking()
 
   useEffect(() => {
-    tracking.authImpression()
-    tracking.authModalScreenView()
-  }, [])
+    // Delay tracking so deeplink and push events are tracked first
+    setTimeout(() => {
+      tracking.authImpression()
+      tracking.authModalScreenView()
+      return
+    }, 1000)
+  }, [tracking])
 
   const screenHeight = Dimensions.get("window").height
 
