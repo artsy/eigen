@@ -7,6 +7,7 @@ import React, { useRef } from "react"
 import { Platform } from "react-native"
 
 const MAX_DURATION_BETWEEN_TAPS = 300
+const MIN_DURATION_BETWEEN_TAPS = 5
 
 export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
@@ -27,7 +28,11 @@ export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) 
         const now = Date.now()
         const state = gestureState.current
 
-        if (now - state.lastTapTimestamp < MAX_DURATION_BETWEEN_TAPS) {
+        if (
+          now - state.lastTapTimestamp < MAX_DURATION_BETWEEN_TAPS &&
+          // We need to set a minimum duration between taps to avoid triggering the dev menu on mouse scroll
+          now - state.lastTapTimestamp > MIN_DURATION_BETWEEN_TAPS
+        ) {
           state.numTaps += 1
         } else {
           state.numTaps = 1
