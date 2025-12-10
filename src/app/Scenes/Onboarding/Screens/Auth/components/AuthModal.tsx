@@ -3,7 +3,7 @@ import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useOnboardingAuthTracking } from "app/Scenes/Onboarding/Screens/Auth/hooks/useOnboardingAuthTracking"
 import { MotiView } from "moti"
 import { useEffect, useMemo } from "react"
-import { Dimensions, Linking } from "react-native"
+import { Dimensions } from "react-native"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
