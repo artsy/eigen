@@ -61,7 +61,15 @@ describe("ArtistInsightsAuctionResults", () => {
                 ...initialData,
               }}
             >
-              <ArtistInsightsAuctionResultsPaginationContainer artist={props.artist} />
+              <ArtistInsightsAuctionResultsPaginationContainer
+                artist={props.artist}
+                scrollToTop={() => {
+                  console.log("do nothing")
+                }}
+                onScrollEndDragChange={() => {
+                  console.log("do nothing")
+                }}
+              />
             </ArtworkFiltersStoreProvider>
           )
         }
