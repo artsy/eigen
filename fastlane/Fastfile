@@ -472,8 +472,8 @@ lane :get_next_android_build_version do
   end
 
   file_dir = "#{Dir.pwd}/next_version_code.txt"
-  puts "Writing next version code to: #{file_dir}"
-  File.write(file_dir, next_version_code.to_s)
+  puts "Generated date-based version code: #{next_version_code}"
+  File.write(file_dir, next_version_code)
 end
 
 desc 'Set some git properties on android for reading in builds'
