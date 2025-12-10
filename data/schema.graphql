@@ -9165,9 +9165,6 @@ type Conversation implements Node {
     first: Int
     last: Int
     page: Int
-
-    # Partner ID to fetch orders for
-    partnerID: String!
     size: Int
   ): PartnerOrdersConnection
 
