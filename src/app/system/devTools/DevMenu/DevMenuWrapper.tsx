@@ -1,8 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
-import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigateToDevMenu } from "app/system/devTools/DevMenu/utils/navigateToDevMenu"
 // eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
@@ -43,11 +42,7 @@ export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) 
         if (state.numTaps >= 5 && !isDeepZoomModalVisible) {
           state.numTaps = 0
 
-          if (!isLoggedIn) {
-            __unsafe__onboardingNavigationRef.current?.navigate("DevMenu")
-          } else {
-            navigate("/dev-menu")
-          }
+          navigateToDevMenu({ isLoggedIn })
         }
         return false
       }}
