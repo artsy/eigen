@@ -63,8 +63,21 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     }
   }, [query])
 
+  // Store query and selectedPill in refs so renderItem always has access to the latest values
+  const queryRef = useRef(query)
+  queryRef.current = query
+  const selectedPillRef = useRef(selectedPill)
+  selectedPillRef.current = selectedPill
+
   const renderItem: ListRenderItem<SearchResultInterface> = useCallback(({ item, index }) => {
-    return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
+    return (
+      <SearchResult
+        result={item}
+        selectedPill={selectedPillRef.current}
+        query={queryRef.current}
+        position={index}
+      />
+    )
   }, [])
 
   return (
@@ -78,6 +91,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
         paddingBottom: space(6),
       }}
       data={hits}
+      extraData={{ query, selectedPill }}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={renderItem}
       estimatedItemSize={ESTIMATED_ITEM_SIZE}
