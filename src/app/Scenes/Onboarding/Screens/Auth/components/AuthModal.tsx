@@ -28,15 +28,12 @@ export const AuthModal: React.FC<React.PropsWithChildren> = ({ children }) => {
   const tracking = useOnboardingAuthTracking()
 
   useEffect(() => {
-    tracking.authImpression()
-    // Check if app was opened with a deep link
-    Linking.getInitialURL().then((url) => {
-      // Only fire screen tracking if there's no initial deep link
-      // The deep link tracking will fire its own event
-      if (!url) {
-        tracking.authModalScreenView()
-      }
-    })
+    // Delay tracking so deeplink and push events are tracked first
+    setTimeout(() => {
+      tracking.authImpression()
+      tracking.authModalScreenView()
+      return
+    }, 1000)
   }, [tracking])
 
   const screenHeight = Dimensions.get("window").height
