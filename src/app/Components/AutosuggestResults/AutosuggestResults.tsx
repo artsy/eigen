@@ -171,15 +171,19 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults, noResults, ListFooterComponent])
 
+  // Store query in a ref so renderItem always has access to the latest value
+  const queryRef = useRef(query)
+  queryRef.current = query
+
   const renderItem: ListRenderItem<AutosuggestResult> = useCallback(({ item, index }) => {
     if (CustomListItemComponent) {
-      return <CustomListItemComponent item={item} highlight={query} />
+      return <CustomListItemComponent item={item} highlight={queryRef.current} />
     }
 
     return (
       <Flex mb={2}>
         <AutosuggestSearchResult
-          highlight={query}
+          highlight={queryRef.current}
           result={item}
           showResultType={showResultType}
           onResultPress={onResultPress}
@@ -213,6 +217,7 @@ const AutosuggestResultsFlatList: React.FC<{
         listRef={flatListRef}
         initialNumToRender={isTablet() ? 24 : 12}
         data={allNodes}
+        extraData={query}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={ListFooterComponentWithLoadingIndicator}
         keyboardDismissMode="on-drag"
