@@ -95,16 +95,15 @@ lane :notify_beta_failed do |options|
   run_id = ENV['GITHUB_RUN_ID']
   github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
 
-  # TODO: Enable again
-  # slack(
-  #   message: message,
-  #   success: false,
-  #   payload: {
-  #     'GitHub Actions' => github_url,
-  #     'Exception' => exception.message
-  #   },
-  #   default_payloads: []
-  # )
+  slack(
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url,
+      'Exception' => exception.message
+    },
+    default_payloads: []
+  )
 end
 
 desc "Notifies in slack if a new beta is needed"
