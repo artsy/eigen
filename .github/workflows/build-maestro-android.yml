@@ -4,10 +4,13 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows manual trigger
+  push:
+    branches:
+      - moplat/new-arch-revisited
 
 jobs:
   build-android-qa:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -54,9 +57,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .yarn/cache
-          key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: yarn-v5-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            yarn-v4-${{ runner.os }}-
+            yarn-v5-${{ runner.os }}-
 
       - name: Install Node.js dependencies
         run: yarn install --immutable
@@ -68,9 +71,9 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             android/.gradle
-          key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: gradle-v3-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            gradle-v2-${{ runner.os }}-
+            gradle-v3-${{ runner.os }}-
 
       - name: Download fonts from s3
         run: ./scripts/setup/download-fonts
