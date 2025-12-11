@@ -413,8 +413,8 @@ type Alert {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -1799,8 +1799,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -2240,8 +2240,8 @@ type ArtistPartnerEdge {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -2402,8 +2402,8 @@ type ArtistSeries implements Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -3304,8 +3304,8 @@ type ArtworkFilterNode {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -12075,8 +12075,8 @@ interface EntityWithFilterArtworksConnectionInterface {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -12370,8 +12370,8 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -12910,8 +12910,8 @@ input FilterArtworksInput {
   color: String
   colors: [String]
 
-  # Filter by artwork completeness tier.
-  completenessTier: String
+  # Filter by artwork completeness tiers. Accepts multiple values.
+  completenessTier: [String]
   dimensionRange: String
 
   # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -13460,8 +13460,8 @@ type Gene implements Node & Searchable {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -15326,8 +15326,8 @@ type MarketingCollection implements Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -18434,8 +18434,8 @@ type Partner implements Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -18801,8 +18801,8 @@ type PartnerArtist {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -18996,8 +18996,8 @@ type PartnerArtistEdge {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -20312,8 +20312,8 @@ type Query {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -20704,8 +20704,8 @@ type Query {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -23237,8 +23237,8 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -23801,8 +23801,8 @@ type Tag implements Node {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -26755,8 +26755,8 @@ type Viewer {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
@@ -27027,8 +27027,8 @@ type Viewer {
     color: String
     colors: [String]
 
-    # Filter by artwork completeness tier.
-    completenessTier: String
+    # Filter by artwork completeness tiers. Accepts multiple values.
+    completenessTier: [String]
     dimensionRange: String
 
     # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
