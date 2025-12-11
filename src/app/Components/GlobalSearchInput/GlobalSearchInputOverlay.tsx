@@ -2,9 +2,9 @@ import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
-import { FadeIn } from "app/Components/FadeIn"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
+import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -15,6 +15,12 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 
@@ -85,8 +91,10 @@ export const GlobalSearchInputOverlay: React.FC<{
   hideModal: () => void
 }> = ({ hideModal, ownerType, visible }) => {
   const [query, setQuery] = useState("")
+  const [shouldRender, setShouldRender] = useState(false)
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
+  const opacity = useSharedValue(0)
 
   useBackHandler(() => {
     if (!!canGoBack()) {
@@ -103,48 +111,61 @@ export const GlobalSearchInputOverlay: React.FC<{
   })
 
   useEffect(() => {
-    if (!visible) {
+    if (visible) {
+      setShouldRender(true)
+      opacity.value = withTiming(1, { duration: DEFAULT_SCREEN_ANIMATION_DURATION })
+    } else {
+      opacity.value = withTiming(0, { duration: DEFAULT_SCREEN_ANIMATION_DURATION }, (finished) => {
+        if (finished) {
+          runOnJS(setShouldRender)(false)
+        }
+      })
       setQuery("")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible])
 
-  if (!visible) {
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+    }
+  })
+
+  if (!shouldRender) {
     return null
   }
 
   return (
-    <FadeIn style={{ flex: 1 }} slide={false}>
-      <Portal hostName={`${ownerType}-SearchOverlay`}>
-        <Flex style={{ ...StyleSheet.absoluteFillObject }}>
-          <Flex
-            flex={1}
-            backgroundColor="mono0"
-            style={{ top: insets.top, marginBottom: insets.bottom }}
-          >
-            <Flex px={2} mt={2}>
-              <RoundSearchInput
-                placeholder={SEARCH_INPUT_PLACEHOLDER}
-                accessibilityHint="Search artists, artworks, galleries etc."
-                accessibilityLabel="Search artists, artworks, galleries etc."
-                maxLength={55}
-                numberOfLines={1}
-                onChangeText={setQuery}
-                autoFocus
-                multiline={false}
-                onLeftIconPress={() => {
-                  hideModal()
-                }}
-              />
-            </Flex>
-
-            <Spacer y={2} />
-
-            <Suspense fallback={null}>
-              <GlobalSearchInputOverlayContent query={query} />
-            </Suspense>
+    <Portal hostName={`${ownerType}-SearchOverlay`}>
+      <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
+        <Flex
+          flex={1}
+          backgroundColor="mono0"
+          style={{ top: insets.top, marginBottom: insets.bottom }}
+        >
+          <Flex px={2} mt={2}>
+            <RoundSearchInput
+              placeholder={SEARCH_INPUT_PLACEHOLDER}
+              accessibilityHint="Search artists, artworks, galleries etc."
+              accessibilityLabel="Search artists, artworks, galleries etc."
+              maxLength={55}
+              numberOfLines={1}
+              onChangeText={setQuery}
+              autoFocus
+              multiline={false}
+              onLeftIconPress={() => {
+                hideModal()
+              }}
+            />
           </Flex>
+
+          <Spacer y={2} />
+
+          <Suspense fallback={null}>
+            <GlobalSearchInputOverlayContent query={query} />
+          </Suspense>
         </Flex>
-      </Portal>
-    </FadeIn>
+      </Animated.View>
+    </Portal>
   )
 }
