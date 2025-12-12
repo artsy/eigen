@@ -4,7 +4,7 @@
 "use strict"
 
 import { resolve } from "path"
-import Octokit, { PullsGetResponse } from "@octokit/rest"
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest"
 import chalk from "chalk"
 import { config } from "dotenv"
 import { hideBin } from "yargs/helpers"
@@ -21,7 +21,9 @@ const SECTIONS = [
   "Dev changes",
 ]
 
-async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetResponse[]> {
+type PullRequest = RestEndpointMethodTypes["pulls"]["get"]["response"]["data"]
+
+async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullRequest[]> {
   const compare = await octokit.repos.compareCommits({
     owner: "artsy",
     repo: "eigen",
@@ -29,7 +31,7 @@ async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetRe
     head: tag2,
   })
 
-  const prs: PullsGetResponse[] = []
+  const prs: PullRequest[] = []
   for (const commit of compare.data.commits) {
     const match = commit.commit.message.match(/\(#(\d+)\)/m)
     if (match) {
@@ -90,13 +92,13 @@ const parseSectionPositions = (section: string, body: string) => {
   return null
 }
 
-async function getChangelogFromPrs(prs: PullsGetResponse[]) {
+async function getChangelogFromPrs(prs: PullRequest[]) {
   let changelog = ""
-  const prsWithoutChangelog: PullsGetResponse[] = []
-  const prsWithNoChangelog: PullsGetResponse[] = []
+  const prsWithoutChangelog: PullRequest[] = []
+  const prsWithNoChangelog: PullRequest[] = []
   for (const pr of prs) {
     // pr body without comments except <!-- end_changelog_updates --> (used in parseSectionPositions)
-    const prBody = pr.body.replace(/<!--((?!end_changelog).)*-->/g, "")
+    const prBody = (pr.body ?? "").replace(/<!--((?!end_changelog).)*-->/g, "")
     let prHasChangelog = false
     for (const section of SECTIONS) {
       const positions = parseSectionPositions(section, prBody)
