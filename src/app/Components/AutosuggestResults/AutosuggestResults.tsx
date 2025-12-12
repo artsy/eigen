@@ -175,25 +175,29 @@ const AutosuggestResultsFlatList: React.FC<{
   const queryRef = useRef(query)
   queryRef.current = query
 
-  const renderItem: ListRenderItem<AutosuggestResult> = useCallback(({ item, index }) => {
-    if (CustomListItemComponent) {
-      return <CustomListItemComponent item={item} highlight={queryRef.current} />
-    }
+  const renderItem: ListRenderItem<AutosuggestResult> = useCallback(
+    ({ item, index }) => {
+      if (CustomListItemComponent) {
+        return <CustomListItemComponent item={item} highlight={queryRef.current} />
+      }
 
-    return (
-      <Flex mb={2}>
-        <AutosuggestSearchResult
-          highlight={queryRef.current}
-          result={item}
-          showResultType={showResultType}
-          onResultPress={onResultPress}
-          showQuickNavigationButtons={showQuickNavigationButtons}
-          trackResultPress={trackResultPress}
-          itemIndex={index}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex mb={2}>
+          <AutosuggestSearchResult
+            highlight={queryRef.current}
+            result={item}
+            showResultType={showResultType}
+            onResultPress={onResultPress}
+            showQuickNavigationButtons={showQuickNavigationButtons}
+            trackResultPress={trackResultPress}
+            itemIndex={index}
+          />
+        </Flex>
+      )
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [trackResultPress]
+  )
 
   if (shouldShowLoadingPlaceholder) {
     return (
