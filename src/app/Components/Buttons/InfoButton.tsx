@@ -13,7 +13,6 @@ import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBott
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react"
 import { Modal, Platform, ScrollView } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
   isPresentedModally?: boolean
@@ -108,19 +107,11 @@ export const AutoHeightInfoModal: React.FC<{
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   const containerComponent = useMemo(() => {
-    if (Platform.OS === "ios") {
-      return ({ children }: { children?: React.ReactNode }) => (
-        <FullWindowOverlay>{children}</FullWindowOverlay>
-      )
-    }
-
-    if (Platform.OS === "android" && isPresentedModally) {
-      return ({ children }: { children?: React.ReactNode }) => (
-        <Modal visible={visible} transparent statusBarTranslucent>
-          {children}
-        </Modal>
-      )
-    }
+    return ({ children }: { children?: React.ReactNode }) => (
+      <Modal visible={visible} transparent statusBarTranslucent presentationStyle="overFullScreen">
+        {children}
+      </Modal>
+    )
 
     return undefined
   }, [visible, isPresentedModally])

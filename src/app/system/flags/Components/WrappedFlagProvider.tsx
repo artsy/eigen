@@ -39,7 +39,7 @@ export const WrappedFlagProvider: React.FC<React.PropsWithChildren> = ({ childre
   }
 
   return (
-    <FlagProvider config={config} startClient={false}>
+    <FlagProvider startTransition={(fn) => fn()} config={config} startClient={false}>
       <UnleashInitializer>{children}</UnleashInitializer>
     </FlagProvider>
   )

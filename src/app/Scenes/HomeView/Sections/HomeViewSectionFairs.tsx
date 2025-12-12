@@ -20,7 +20,6 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
@@ -94,7 +93,6 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = memo(
           data={fairs}
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           renderItem={renderItem}
-          disableVirtualization={!isNewArchitectureEnabled}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         />
 

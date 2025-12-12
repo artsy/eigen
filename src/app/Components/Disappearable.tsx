@@ -1,10 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from "react"
-import Animated, {
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated"
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 
 export interface Disappearable {
   disappear(): Promise<void>
@@ -32,7 +28,7 @@ export const Disappearable = forwardRef<Disappearable, React.PropsWithChildren<{
         async disappear() {
           opacity.set(() =>
             withTiming(0, { duration: 500 }, () => {
-              runOnJS(setShowContent)(false)
+              scheduleOnRN(setShowContent, false)
             })
           )
         },

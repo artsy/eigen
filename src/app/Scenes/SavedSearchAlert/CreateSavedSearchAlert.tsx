@@ -49,7 +49,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         <NavigationContainer theme={theme}>
           <Modal
             visible={visible}
-            presentationStyle="fullScreen"
+            presentationStyle="overFullScreen"
             statusBarTranslucent
             animationType="slide"
           >
