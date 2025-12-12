@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -exo pipefail
+
+echo "Building cache for iOS"
+
+yarn
+
+yarn setup:artsy
+
+yarn setup:releases
+
+bundle exec npx expo run:ios
