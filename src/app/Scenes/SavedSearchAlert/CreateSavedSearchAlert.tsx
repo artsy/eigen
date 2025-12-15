@@ -13,7 +13,7 @@ import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/Confirma
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { KeyboardAvoidingView, Modal, Platform } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
