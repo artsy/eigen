@@ -25629,6 +25629,9 @@ input UpdateShippingPresetMutationInput {
 
   # Whether pickup is available.
   pickupAvailable: Boolean
+
+  # Currency of the shipping fee
+  priceCurrency: String
 }
 
 type UpdateShippingPresetMutationPayload {
