@@ -60,26 +60,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
     return null
   }
 
-  const getBirthdayString = () => {
-    const birthday = artistData.birthday
-    if (!birthday) {
-      return ""
-    }
+  const descriptiveString = artistData.formattedNationalityAndBirthday || ""
 
-    const leadingSubstring = artistData.nationality ? ", b." : ""
-
-    if (birthday.includes("born")) {
-      return birthday.replace("born", leadingSubstring)
-    } else if (birthday.includes("Est.") || birthday.includes("Founded")) {
-      return " " + birthday
-    }
-
-    return leadingSubstring + " " + birthday
-  }
-
-  const descriptiveString = (artistData.nationality || "") + getBirthdayString()
-
-  const bylineRequired = artistData.nationality || artistData.birthday
+  const bylineRequired = !!artistData.formattedNationalityAndBirthday
 
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
@@ -160,7 +143,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 const artistFragment = graphql`
   fragment ArtistHeader_artist on Artist {
     slug
-    birthday
+    formattedNationalityAndBirthday
     coverArtwork {
       title
       image {
@@ -170,7 +153,6 @@ const artistFragment = graphql`
     }
     internalID
     name
-    nationality
     verifiedRepresentatives {
       partner {
         internalID
