@@ -18,9 +18,9 @@ import {
   SavedSearchAlertFormValues,
   SavedSearchPill,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { MotiView } from "moti"
 import { Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -206,47 +206,45 @@ export const Form: React.FC<FormProps> = ({
         <Spacer y={2} />
       </ScrollView>
 
-      <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} delay={200}>
-        <Flex
-          p={2}
-          mb={`${bottom}px`}
-          pb={Platform.OS === "android" ? 2 : 0}
-          borderTopWidth={1}
-          borderTopColor="mono10"
+      <Flex
+        p={2}
+        mb={`${bottom}px`}
+        pb={Platform.OS === "android" ? 2 : 0}
+        borderTopWidth={1}
+        borderTopColor="mono10"
+      >
+        <Button
+          testID="save-alert-button"
+          disabled={isSaveAlertButtonDisabled}
+          loading={isSubmitting || isLoading}
+          size="large"
+          block
+          onPress={onSubmitPress}
         >
-          <Button
-            testID="save-alert-button"
-            disabled={isSaveAlertButtonDisabled}
-            loading={isSubmitting || isLoading}
-            size="large"
-            block
-            onPress={onSubmitPress}
-          >
-            {isEditMode ? "Save Alert" : "Create Alert"}
-          </Button>
+          {isEditMode ? "Save Alert" : "Create Alert"}
+        </Button>
 
-          {!!isEditMode && (
-            <>
-              <Spacer y={2} />
-              <Button
-                testID="delete-alert-button"
-                variant="outline"
-                size="large"
-                block
-                onPress={onDeletePress}
-              >
-                Delete Alert
-              </Button>
-            </>
-          )}
+        {!!isEditMode && (
+          <>
+            <Spacer y={2} />
+            <Button
+              testID="delete-alert-button"
+              variant="outline"
+              size="large"
+              block
+              onPress={onDeletePress}
+            >
+              Delete Alert
+            </Button>
+          </>
+        )}
 
-          {!isEditMode && (
-            <Text variant="xs" color="mono60" textAlign="center" mt={2}>
-              Access all your alerts in your profile.
-            </Text>
-          )}
-        </Flex>
-      </MotiView>
+        {!isEditMode && (
+          <Text variant="xs" color="mono60" textAlign="center" mt={2}>
+            Access all your alerts in your profile.
+          </Text>
+        )}
+      </Flex>
     </>
   )
 }
