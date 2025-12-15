@@ -32,6 +32,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
             type: result.displayType || result.__typename,
             slug: result.slug,
             position: itemIndex,
+            // @ts-expect-error
             query: queryRef?.current ?? "",
             contextModule: ContextModule.topTab,
           })
