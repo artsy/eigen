@@ -46,24 +46,20 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
 
   return (
     <ArtworkFiltersStoreProvider>
-      <ScrollView>
-        <Box px="15px">
-          <FairArtworksWithoutTabs
-            fair={fair}
-            initiallyAppliedFilter={initialFilter}
-            aggregations={fairForFilters.filterArtworksConnection?.aggregations as Aggregations}
-            followedArtistCount={fairForFilters.filterArtworksConnection?.counts?.followedArtists}
-          />
-          <ArtworkFilterNavigator
-            visible={isFilterArtworksModalVisible}
-            id={fair.internalID}
-            slug={fair.slug}
-            mode={FilterModalMode.Fair}
-            exitModal={handleFilterArtworksModal}
-            closeModal={handleFilterArtworksModal}
-          />
-        </Box>
-      </ScrollView>
+      <FairArtworksWithoutTabs
+        fair={fair}
+        initiallyAppliedFilter={initialFilter}
+        aggregations={fairForFilters.filterArtworksConnection?.aggregations as Aggregations}
+        followedArtistCount={fairForFilters.filterArtworksConnection?.counts?.followedArtists}
+      />
+      <ArtworkFilterNavigator
+        visible={isFilterArtworksModalVisible}
+        id={fair.internalID}
+        slug={fair.slug}
+        mode={FilterModalMode.Fair}
+        exitModal={handleFilterArtworksModal}
+        closeModal={handleFilterArtworksModal}
+      />
       <AnimatedArtworkFilterButton isVisible onPress={handleFilterArtworksModal} />
     </ArtworkFiltersStoreProvider>
   )
