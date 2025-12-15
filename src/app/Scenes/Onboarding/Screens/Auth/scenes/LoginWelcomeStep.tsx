@@ -280,7 +280,7 @@ const SocialLoginButtons: React.FC = () => {
           >
             <Flex alignItems="center" justifyContent="center">
               {/* On iOS, the icons need to be nudged down to be centered in the button. */}
-              <AppleIcon width={23} height={23} style={{ top: 4 }} />
+              <AppleIcon width={23} height={23} />
             </Flex>
           </Button>
         )}
@@ -291,7 +291,7 @@ const SocialLoginButtons: React.FC = () => {
           accessibilityLabel="Google"
         >
           <Flex alignItems="center" justifyContent="center">
-            <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
+            <GoogleIcon width={23} height={23} />
           </Flex>
         </Button>
         <Button
@@ -301,7 +301,7 @@ const SocialLoginButtons: React.FC = () => {
           accessibilityLabel="Facebook"
         >
           <Flex alignItems="center" justifyContent="center">
-            <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
+            <FacebookIcon width={23} height={23} />
           </Flex>
         </Button>
       </Flex>
