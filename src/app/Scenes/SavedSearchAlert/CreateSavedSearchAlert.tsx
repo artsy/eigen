@@ -1,4 +1,4 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
@@ -53,7 +53,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             statusBarTranslucent
             animationType="slide"
           >
-            <SafeAreaView
+            <Flex
               style={{
                 flex: 1,
                 backgroundColor: color("background"),
@@ -106,7 +106,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   />
                 </Stack.Navigator>
               </KeyboardAvoidingView>
-            </SafeAreaView>
+            </Flex>
           </Modal>
         </NavigationContainer>
       </NavigationIndependentTree>
