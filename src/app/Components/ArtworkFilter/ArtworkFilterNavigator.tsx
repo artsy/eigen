@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import {
@@ -344,7 +344,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           testID="artwork-filter-navigator"
           presentationStyle="overFullScreen"
         >
-          <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
+          <Flex style={{ flex: 1, backgroundColor: color("background") }}>
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
               detachInactiveScreens={false}
@@ -446,7 +446,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               attributes={attributes}
               sizeMetric={filterState.sizeMetric}
             />
-          </SafeAreaView>
+          </Flex>
         </Modal>
       </NavigationContainer>
     </NavigationIndependentTree>
