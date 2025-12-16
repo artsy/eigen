@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@artsy/cohesion"
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
@@ -26,7 +25,6 @@ import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/C
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
-import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -469,27 +467,17 @@ const ArtworkHeartIcon: React.FC<{
   isSaved: boolean | null
   index?: number
   disableProgressiveOnboarding?: boolean
-}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
-  const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
-
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-  }
-
-  if (isSaved) {
-    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
-  }
+}> = ({ isSaved, index, disableProgressiveOnboarding }) => {
   if (index === 0 && !disableProgressiveOnboarding) {
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>
-        <HeartStrokeIcon {...iconProps} />
+        <ArtworkSaveIconWrapper isSaved={!!isSaved} />
       </ProgressiveOnboardingSaveArtwork>
     )
   }
-  return <HeartStrokeIcon {...iconProps} />
+
+  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
 }
 
 export default createFragmentContainer(Artwork, {
