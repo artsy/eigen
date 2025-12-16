@@ -227,7 +227,7 @@ export function defaultRules({
       ),
     },
     hr: {
-      react: () => <Separator mb={2} />,
+      react: (_node, _output, state) => <Separator mb={2} key={state.key} />,
     },
     ...ruleOverrides,
   })
