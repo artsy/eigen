@@ -219,19 +219,12 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
             testID="save-artwork-icon"
             underlayColor={backgroundColor}
           >
-            <ArtworkRailCardMetaSaveIcon isSaved={!!isSaved} primaryColor={primaryColor} />
+            <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
           </Touchable>
         </Flex>
       )}
     </Flex>
   )
-}
-
-const ArtworkRailCardMetaSaveIcon: React.FC<{
-  isSaved: boolean
-  primaryColor: string
-}> = ({ isSaved, primaryColor }) => {
-  return <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
 }
 
 const artworkMetaFragment = graphql`

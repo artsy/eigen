@@ -98,7 +98,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       saveAnimationProgress.value = withTiming(isSavedProp ? 1 : 0, {
         duration: 300,
       })
-    }, [isSavedProp, saveAnimationProgress])
+    }, [isSavedProp])
 
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
@@ -314,7 +314,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   backgroundColor: color("mono5"),
                 }}
               >
-                <InfiniteDiscoveryArtworkCardSaveIcon isSaved={!!isSaved} />
+                <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                 <Flex
                   // Avoid the shift that happens after saving
                   minWidth={45}
@@ -331,12 +331,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
-
-const InfiniteDiscoveryArtworkCardSaveIcon: React.FC<{
-  isSaved: boolean
-}> = ({ isSaved }) => {
-  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-}
 
 const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {

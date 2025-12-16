@@ -1,19 +1,13 @@
 import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { FC } from "react"
-import { ViewStyle } from "react-native"
 
 interface ArtworkCardSaveButtonProps {
   isSaved: boolean
   onPress: () => void
-  animatedStyle: ViewStyle
 }
 
-export const ArtworkCardSaveButton: FC<ArtworkCardSaveButtonProps> = ({
-  onPress,
-  isSaved,
-  animatedStyle,
-}) => {
+export const ArtworkCardSaveButton: FC<ArtworkCardSaveButtonProps> = ({ onPress, isSaved }) => {
   const color = useColor()
 
   return (
@@ -35,7 +29,7 @@ export const ArtworkCardSaveButton: FC<ArtworkCardSaveButtonProps> = ({
           backgroundColor: color("mono5"),
         }}
       >
-        <ArtworkCardSaveButtonIcon isSaved={!!isSaved} animatedStyle={animatedStyle} />
+        <ArtworkCardSaveButtonIcon isSaved={!!isSaved} />
         <Flex minWidth={45}>
           <Text ml={0.5} variant="xs">
             {isSaved ? "Saved" : "Save"}
@@ -51,7 +45,6 @@ const SAVE_BUTTON_WIDTH = 105
 
 const ArtworkCardSaveButtonIcon: React.FC<{
   isSaved: boolean
-  animatedStyle: ViewStyle
 }> = ({ isSaved }) => {
   return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
 }
