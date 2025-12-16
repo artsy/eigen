@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
@@ -65,9 +65,9 @@ export class Notification extends React.Component<Props> {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <View style={styles.gridContainer}>
-              <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
-            </View>
+            <Flex mx={-2} my={2}>
+              <GenericGrid artworks={artworks} />
+            </Flex>
           </View>
         )}
       </ThemeAwareClassTheme>
