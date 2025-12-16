@@ -372,15 +372,17 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     </RNText>
                   )}
                   {!hidePartner && !!artwork.partner?.name && (
-                    <Text
-                      variant="xs"
-                      lineHeight="18px"
-                      color="mono60"
-                      numberOfLines={1}
-                      {...partnerNameTextStyle}
-                    >
-                      {artwork.partner.name}
-                    </Text>
+                    <RNText numberOfLines={1}>
+                      <Text
+                        variant="xs"
+                        lineHeight="18px"
+                        color="mono60"
+                        numberOfLines={1}
+                        {...partnerNameTextStyle}
+                      >
+                        {artwork.partner.name}
+                      </Text>
+                    </RNText>
                   )}
                   {!!displayPriceOfferMessage && (
                     <Flex flexDirection="row">
