@@ -9,8 +9,8 @@ echo "🧹 🧽 🧼 🧹"
 
 echo "Clearing android specific caches"
 
-rm -rf ~/.gradle/caches
-rm -rf ~/.gradle/daemon
+# rm -rf ~/.gradle/caches
+# rm -rf ~/.gradle/daemon
 
 rm -rf .gradle
 rm -rf build
