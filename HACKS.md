@@ -295,3 +295,14 @@ This feature flag was added to fix performance issues with scrolling. See https:
 #### When can we remove this:
 
 When reanimated adopts this by default.
+
+## react-native-webview passing constant for decelerationRate prop
+
+#### Explanation/Context:
+
+This is a bug on the new architecture on Android with this prop and react-native-webview.
+
+#### When can we remove this:
+
+When this is merged and we update react-native-webview to a version that contains it:
+https://github.com/react-native-webview/react-native-webview/pull/3885
