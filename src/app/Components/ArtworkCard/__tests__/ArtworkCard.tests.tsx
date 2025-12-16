@@ -22,9 +22,6 @@ describe("ArtworkCard", () => {
   })
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableArtworkSaveIconAnimation: false,
-    })
     defaultProps = {
       supportMultipleImages: false,
       showPager: false,
