@@ -10474,8 +10474,14 @@ input CreateShippingPresetMutationInput {
   # Domestic shipping fee in cents.
   domesticShippingFeeCents: Int
 
+  # The type of domestic shipping option.
+  domesticType: DomesticType
+
   # International shipping fee in cents.
   internationalShippingFeeCents: Int
+
+  # The type of international shipping option.
+  internationalType: InternationalType
 
   # The name of the shipping preset.
   name: String!
@@ -11912,6 +11918,18 @@ type DoNotUseThisPartner {
   slug: String
   subscriptionState: String
   subscription_state: String @deprecated(reason: "Use subscriptionState")
+}
+
+# The type of domestic shipping option
+enum DomesticType {
+  # Artsy handles domestic shipping
+  ARTSY_SHIPPING
+
+  # Flat fee for domestic shipping
+  FLAT_FEE
+
+  # Free domestic shipping
+  FREE_SHIPPING
 }
 
 input EditableLocation {
@@ -14848,6 +14866,21 @@ enum Intents {
   READ_ART_MARKET_NEWS
   RESEARCH_ART_PRICES
   SELL_ART_AND_DESIGN
+}
+
+# The type of international shipping option
+enum InternationalType {
+  # Artsy handles international shipping
+  ARTSY_SHIPPING
+
+  # Flat fee for international shipping
+  FLAT_FEE
+
+  # Free international shipping
+  FREE_SHIPPING
+
+  # International shipping is not supported
+  NOT_SUPPORTED
 }
 
 type Invoice {
@@ -23085,6 +23118,9 @@ type ShippingPreset implements Node {
   # Domestic shipping fee in cents
   domesticShippingFeeCents: Int
 
+  # The type of domestic shipping option
+  domesticType: DomesticType
+
   # A globally unique ID.
   id: ID!
 
@@ -23093,6 +23129,9 @@ type ShippingPreset implements Node {
 
   # International shipping fee in cents
   internationalShippingFeeCents: Int
+
+  # The type of international shipping option
+  internationalType: InternationalType
 
   # The name of the shipping preset
   name: String!
@@ -25618,11 +25657,17 @@ input UpdateShippingPresetMutationInput {
   # Domestic shipping fee in cents.
   domesticShippingFeeCents: Int
 
+  # The type of domestic shipping option.
+  domesticType: DomesticType
+
   # The ID of the shipping preset to update.
   id: String!
 
   # International shipping fee in cents.
   internationalShippingFeeCents: Int
+
+  # The type of international shipping option.
+  internationalType: InternationalType
 
   # The name of the shipping preset.
   name: String
