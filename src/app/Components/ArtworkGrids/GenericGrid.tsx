@@ -51,7 +51,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
             hidePartner={hidePartner}
           />
         </View>
-        {isLoading ? <Spinner style={styles.spinner} /> : null}
+        {isLoading ? <Spinner style={styles.spinner} testID="spinner" /> : null}
       </Flex>
     </AnalyticsContextProvider>
   )
