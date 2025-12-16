@@ -76,7 +76,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   showLotLabel?: boolean
   titleTextStyle?: TextProps
   trackTap?: (artworkSlug: string, index?: number) => void
-  trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean

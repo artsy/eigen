@@ -170,8 +170,6 @@ interface MatchingArtworksProps {
 }
 
 const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection, closeModal }) => {
-  const screen = useScreenDimensions()
-  const { space } = useTheme()
   const { trackEvent } = useTracking()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const artworks = extractNodes(artworksConnection)
@@ -218,15 +216,16 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 
       <Spacer y={2} />
 
-      <GenericGrid
-        width={screen.width - space(2)}
-        artworks={artworks}
-        hideSaveIcon
-        onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
-          closeModal?.()
-          trackEvent(tracks.tappedArtworkGroup(slug, artwork?.collectorSignals))
-        }}
-      />
+      <Flex mx={-2}>
+        <GenericGrid
+          artworks={artworks}
+          hideSaveIcon
+          onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
+            closeModal?.()
+            trackEvent(tracks.tappedArtworkGroup(slug, artwork?.collectorSignals))
+          }}
+        />
+      </Flex>
 
       <Spacer y={4} />
 
