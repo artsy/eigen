@@ -16,12 +16,13 @@ import { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
   artistNamesTextStyle?: TextProps
-  saleInfoTextStyle?: TextProps
   artworks: GenericGrid_artworks$key
-  hidePartner?: boolean
-  itemMargin?: number
-  isLoading?: boolean
   contextModule?: ContextModule
+  hidePartner?: boolean
+  isLoading?: boolean
+  itemMargin?: number
+  onPress?: (artworkID: string) => void
+  saleInfoTextStyle?: TextProps
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
 }
 
@@ -32,8 +33,10 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
-  isLoading,
   hidePartner = false,
+  isLoading,
+  onPress,
+  trackTap,
 }) => {
   const artworks = useFragment(genericGridFragment, artworksProp)
 
@@ -49,6 +52,8 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
             artworks={artworks as unknown as MasonryArtworkItem[]}
             scrollEnabled={false}
             hidePartner={hidePartner}
+            trackTap={trackTap}
+            onPress={onPress}
           />
         </View>
         {isLoading ? <Spinner style={styles.spinner} testID="spinner" /> : null}

@@ -42,6 +42,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   saleInfoTextStyle?: TextProps
+  trackTap?: (artworkSlug: string, itemIndex?: number) => void
 }
 
 /**
@@ -82,6 +83,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   refreshControl,
   saleInfoTextStyle,
   scrollEnabled = true,
+  trackTap,
   viewabilityConfig,
   ...rest
 }) => {
@@ -128,6 +130,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
           partnerOffer={partnerOffer}
           priceOfferMessage={priceOfferMessage}
           saleInfoTextStyle={saleInfoTextStyle}
+          trackTap={trackTap}
         />
       )
     },
@@ -153,6 +156,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       rest.numColumns,
       saleInfoTextStyle,
       space,
+      trackTap,
     ]
   )
 
