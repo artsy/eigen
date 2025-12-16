@@ -74,7 +74,6 @@ export const useSearch = ({ query }: { query: string }) => {
       return
     }
 
-    // Detect paste event
     const isPaste = detectPasteEvent(query, previousQuery)
     if (isPaste) {
       trackEvent(tracks.trackPaste(contextScreenOwnerType, query))
