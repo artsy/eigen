@@ -48,33 +48,34 @@ export const useSearch = ({ query }: { query: string }) => {
     trackEvent(tracks.tappedPill(contextModule, contextScreenOwnerType, pill.displayName, query))
   }
 
-  /**
-   * Detects paste events using heuristic-based approach
-   * If text length changes by more than 1 character in a single change event,
-   * it's likely a paste (multiple characters added at once) rather than typing
-   */
-  const detectPasteEvent = (newQuery: string, previousQuery: string): boolean => {
-    const lengthDifference = Math.abs(newQuery.length - previousQuery.length)
-    return lengthDifference > 1
-  }
+  // Initialize refs on mount
+  useEffect(() => {
+    didMount.current = true
+    previousQueryRef.current = query
+  }, [query])
 
+  // Handle query reset when cleared
   useEffect(() => {
     if (!didMount.current) {
-      didMount.current = true
-      previousQueryRef.current = query
+      return
+    }
+
+    if (query.length === 0) {
+      trackEvent(tracks.trackSearchCleared(contextScreenOwnerType))
+      handleResetSearchInput()
+    }
+  }, [query, contextScreenOwnerType, trackEvent])
+
+  // Detect paste events and track search activity
+  useEffect(() => {
+    if (!didMount.current || query.length === 0) {
       return
     }
 
     const previousQuery = previousQueryRef.current
     previousQueryRef.current = query
 
-    if (query.length === 0) {
-      trackEvent(tracks.trackSearchCleared(contextScreenOwnerType))
-      handleResetSearchInput()
-      return
-    }
-
-    const isPaste = detectPasteEvent(query, previousQuery)
+    const isPaste = detectInputPasteEvent(query, previousQuery)
     if (isPaste) {
       trackEvent(tracks.trackPaste(contextScreenOwnerType, query))
     }
@@ -132,4 +133,14 @@ const tracks = {
     context_screen_owner_type: contextScreenOwnerType,
     query,
   }),
+}
+
+/**
+ * Detects paste events using heuristic-based approach
+ * If text length changes by more than 1 character in a single change event,
+ * it's likely a paste (multiple characters added at once) rather than typing
+ */
+const detectInputPasteEvent = (newQuery: string, previousQuery: string): boolean => {
+  const lengthDifference = Math.abs(newQuery.length - previousQuery.length)
+  return lengthDifference > 1
 }
