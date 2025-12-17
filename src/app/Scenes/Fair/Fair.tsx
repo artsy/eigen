@@ -23,7 +23,6 @@ import {
 } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairOverviewQueryRenderer } from "app/Scenes/Fair/FairOverview"
 import { goBack } from "app/system/navigation/navigate"
-import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { Suspense, useCallback, useEffect } from "react"
@@ -95,67 +94,60 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const hasExhibitors = !!data._exhibitors?.totalCount
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.FairPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-        context_screen_owner_id: data.internalID,
-        context_screen_owner_slug: data.slug,
-      }}
-    >
-      <Tabs.TabsWithHeader
-        pagerProps={{
-          scrollEnabled: false,
-        }}
-        initialTabName="Overview"
-        title={`${data.name}`}
-        showLargeHeaderText={false}
-        BelowTitleHeaderComponent={renderBelowHeaderComponent}
-        onTabChange={({ tabName }) => handleTabChange(tabName)}
-        headerProps={{
-          onBack: goBack,
-          rightElements: (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityLabel="Share Fair"
-              onPress={() => {
-                handleSharePress()
-              }}
-            >
-              <ShareIcon width={24} height={24} />
-            </TouchableOpacity>
-          ),
+    <ArtworkFiltersStoreProvider>
+      <ProvideScreenTracking
+        info={{
+          context_screen: Schema.PageNames.FairPage,
+          context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+          context_screen_owner_id: data.internalID,
+          context_screen_owner_slug: data.slug,
         }}
       >
-        <Tabs.Tab name="Overview" label="Overview">
-          <FairOverviewQueryRenderer fairID={data.internalID} />
-        </Tabs.Tab>
-
-        {!!hasExhibitors ? (
-          <Tabs.Tab name="Exhibitors" label="Exhibitors">
-            <FairExhibitorsQueryRenderer fairID={data.internalID} />
+        <Tabs.TabsWithHeader
+          pagerProps={{
+            scrollEnabled: false,
+          }}
+          initialTabName="Overview"
+          title={`${data.name}`}
+          showLargeHeaderText={false}
+          BelowTitleHeaderComponent={renderBelowHeaderComponent}
+          onTabChange={({ tabName }) => handleTabChange(tabName)}
+          allowHeaderOverscroll
+          headerProps={{
+            onBack: goBack,
+            rightElements: (
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Share Fair"
+                onPress={() => {
+                  handleSharePress()
+                }}
+              >
+                <ShareIcon width={24} height={24} />
+              </TouchableOpacity>
+            ),
+          }}
+        >
+          <Tabs.Tab name="Overview" label="Overview">
+            <FairOverviewQueryRenderer fairID={data.internalID} />
           </Tabs.Tab>
-        ) : null}
 
-        <Tabs.Tab name="Artworks" label="Artworks">
-          <ArtworkFiltersStoreProvider>
-            <Suspense
-              fallback={
-                <Flex flex={1} alignItems="center">
-                  <Flex width="100%" justifyContent="space-between" py={2} flexDirection="row">
-                    <SkeletonText variant="xs">Showing X works</SkeletonText>
-                    <SkeletonText variant="xs">Sort & Filter</SkeletonText>
-                  </Flex>
-                  <PlaceholderGrid />
-                </Flex>
-              }
-            >
+          {!!hasExhibitors ? (
+            <Tabs.Tab name="Exhibitors" label="Exhibitors">
+              <Tabs.Lazy>
+                <FairExhibitorsQueryRenderer fairID={data.internalID} />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          ) : null}
+
+          <Tabs.Tab name="Artworks" label="Artworks">
+            <Tabs.Lazy>
               <FairArtworksQueryRenderer fairID={data.internalID} />
-            </Suspense>
-          </ArtworkFiltersStoreProvider>
-        </Tabs.Tab>
-      </Tabs.TabsWithHeader>
-    </ProvideScreenTracking>
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </Tabs.TabsWithHeader>
+      </ProvideScreenTracking>
+    </ArtworkFiltersStoreProvider>
   )
 }
 
