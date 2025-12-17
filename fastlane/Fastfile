@@ -314,7 +314,7 @@ lane :ship_beta_android do |options|
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon")
+  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
   if (deployment_target == 'play_store')
     # important! this must match the release version specified
@@ -472,6 +472,7 @@ lane :get_next_android_build_version do
   end
 
   file_dir = "#{Dir.pwd}/next_version_code.txt"
+  puts "Writing next version code to: #{file_dir}"
   puts "Generated date-based version code: #{next_version_code}"
   File.write(file_dir, next_version_code)
 end
