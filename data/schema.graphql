@@ -4667,6 +4667,7 @@ type Author {
   slug: ID
   socials: AuthorSocials
   twitterHandle: String @deprecated(reason: "Use `socials.x` instead")
+  website: String
 }
 
 # A connection to a list of items.
