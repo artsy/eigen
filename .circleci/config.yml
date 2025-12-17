@@ -488,8 +488,7 @@ jobs:
           name: Move artifacts to
           command: |
             mkdir -p /tmp/artifacts
-            find .gradle/daemon -type f -exec cp {} /tmp/artifacts \;
-            find android/build/reports -type f -exec cp {} /tmp/artifacts \;
+            find ~/.gradle/daemon -type f -exec cp {} /tmp/artifacts \;
           when: on_fail
       - run:
           name: Save success file
