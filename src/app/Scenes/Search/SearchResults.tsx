@@ -5,8 +5,10 @@ import {
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
+import { useCallback, useContext } from "react"
 import { useTracking } from "react-tracking"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
+import { SearchContext } from "./SearchContext"
 import { ARTWORKS_PILL, TOP_PILL, tracks } from "./constants"
 import { PillType } from "./types"
 
@@ -18,21 +20,26 @@ interface SearchResultsProps {
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query }) => {
   const { trackEvent } = useTracking()
+  const { queryRef } = useContext(SearchContext)
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
 
-  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
-    if (typeof itemIndex === "number" && !!result.slug)
-      trackEvent(
-        tracks.tappedSearchResult({
-          type: result.displayType || result.__typename,
-          slug: result.slug,
-          position: itemIndex,
-          query,
-          contextModule: ContextModule.topTab,
-        })
-      )
-  }
+  const handleTrackAutosuggestResultPress = useCallback(
+    (result: AutosuggestResult, itemIndex?: number) => {
+      if (typeof itemIndex === "number" && !!result.slug)
+        trackEvent(
+          tracks.tappedSearchResult({
+            type: result.displayType || result.__typename,
+            slug: result.slug,
+            position: itemIndex,
+            // @ts-expect-error
+            query: queryRef?.current ?? "",
+            contextModule: ContextModule.topTab,
+          })
+        )
+    },
+    [queryRef, trackEvent]
+  )
 
   if (isTopPillSelected) {
     return (
