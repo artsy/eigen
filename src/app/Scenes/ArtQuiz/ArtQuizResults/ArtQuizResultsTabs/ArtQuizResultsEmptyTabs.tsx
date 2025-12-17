@@ -28,14 +28,10 @@ export const ArtQuizResultsEmptyTabs = () => {
       )}
     >
       <Tabs.Tab name="trendingCollections" label="Trending Collections">
-        <Tabs.Lazy>
-          <ArtQuizTrendingCollections viewer={queryResult.viewer} />
-        </Tabs.Lazy>
+        <ArtQuizTrendingCollections viewer={queryResult.viewer} />
       </Tabs.Tab>
       <Tabs.Tab name="trendingArtists" label="Trending Artists">
-        <Tabs.Lazy>
-          <ArtQuizTrendingArtists viewer={queryResult.viewer} />
-        </Tabs.Lazy>
+        <ArtQuizTrendingArtists viewer={queryResult.viewer} />
       </Tabs.Tab>
     </Tabs.TabsWithHeader>
   )

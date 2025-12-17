@@ -103,7 +103,7 @@ const AppTabs: React.FC = () => {
           currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
 
         return {
-          animation: "fade",
+          animation: "none",
           headerShown: false,
           tabBarStyle: {
             animate: true,

@@ -90,9 +90,6 @@ const SimilarArtworksPlaceholder: React.FC = () => {
 
 const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> = withSuspense({
   Component: ({ attributes }) => {
-    const screen = useScreenDimensions()
-    const { space } = useTheme()
-
     const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
       first: NUMBER_OF_ARTWORKS_TO_SHOW,
       input: {
@@ -114,7 +111,9 @@ const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes 
 
     return (
       <>
-        <GenericGrid width={screen.width - space(2)} artworks={artworks} />
+        <Flex mx={-2}>
+          <GenericGrid artworks={artworks} />
+        </Flex>
         <Spacer y={2} />
         <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
       </>

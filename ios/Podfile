@@ -98,7 +98,7 @@ target 'Artsy' do
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
-    new_arch_enabled: false
+    new_arch_enabled: true
   )
 
   # Networking

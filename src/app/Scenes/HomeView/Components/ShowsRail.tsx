@@ -15,7 +15,6 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { Suspense, memo, useCallback } from "react"
@@ -98,7 +97,6 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
-          disableVirtualization={isNewArchitectureEnabled}
           data={shows.slice(0, NUMBER_OF_SHOWS)}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={renderItem}

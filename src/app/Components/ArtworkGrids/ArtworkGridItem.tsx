@@ -78,7 +78,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   showLotLabel?: boolean
   titleTextStyle?: TextProps
   trackTap?: (artworkSlug: string, index?: number) => void
-  trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
@@ -374,15 +373,17 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     </RNText>
                   )}
                   {!hidePartner && !!artwork.partner?.name && (
-                    <Text
-                      variant="xs"
-                      lineHeight="18px"
-                      color="mono60"
-                      numberOfLines={1}
-                      {...partnerNameTextStyle}
-                    >
-                      {artwork.partner.name}
-                    </Text>
+                    <RNText numberOfLines={1}>
+                      <Text
+                        variant="xs"
+                        lineHeight="18px"
+                        color="mono60"
+                        numberOfLines={1}
+                        {...partnerNameTextStyle}
+                      >
+                        {artwork.partner.name}
+                      </Text>
+                    </RNText>
                   )}
                   {!!displayPriceOfferMessage && (
                     <Flex flexDirection="row">
