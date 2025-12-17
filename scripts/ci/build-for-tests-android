@@ -9,11 +9,12 @@ else
 	echo "Building Android App in Release mode"
 	MODE="release"
 fi
+CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
 
 pushd android
 
-echo "Running Gradle task: assemble${BUILD_TYPE}"
-yarn react-native build-android --mode=${BUILD_TYPE} --extra-params='--no-daemon --max-workers=8'
+echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"
+./gradlew assemble${CAPITALIZED_BUILD_TYPE} --no-daemon --max-workers=2
 
 popd
 
