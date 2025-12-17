@@ -18,9 +18,11 @@ export const useSearch = ({ query }: { query: string }) => {
   const throttledQuery = useThrottle(query, SEARCH_THROTTLE_INTERVAL)
   const selectedTab = useSelectedTab()
 
-  const contextScreenOwnerType = selectedTab === "home" ? OwnerType.home : OwnerType.search
+  const contextScreenOwnerType =
+    selectedTab.toLocaleLowerCase() === "home" ? OwnerType.home : OwnerType.search
 
   const didMount = useRef(false)
+  const previousQueryRef = useRef(query)
   const searchPillsRef = useRef<ScrollView>(null)
 
   const {
@@ -46,21 +48,40 @@ export const useSearch = ({ query }: { query: string }) => {
     trackEvent(tracks.tappedPill(contextModule, contextScreenOwnerType, pill.displayName, query))
   }
 
+  // Initialize refs on mount
+  useEffect(() => {
+    didMount.current = true
+    previousQueryRef.current = query
+  }, [query])
+
+  // Handle query reset when cleared
   useEffect(() => {
     if (!didMount.current) {
-      didMount.current = true
       return
     }
 
     if (query.length === 0) {
       trackEvent(tracks.trackSearchCleared(contextScreenOwnerType))
       handleResetSearchInput()
+    }
+  }, [query, contextScreenOwnerType, trackEvent])
 
+  // Detect paste events and track search activity
+  useEffect(() => {
+    if (!didMount.current || query.length === 0) {
       return
     }
 
+    const previousQuery = previousQueryRef.current
+    previousQueryRef.current = query
+
+    const isPaste = detectInputPasteEvent(query, previousQuery)
+    if (isPaste) {
+      trackEvent(tracks.trackPaste(contextScreenOwnerType, query))
+    }
+
     trackEvent(tracks.trackSearchStarted(contextScreenOwnerType, query))
-  }, [query.trim()])
+  }, [query, contextScreenOwnerType, trackEvent])
 
   const handleResetSearchInput = () => {
     searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
@@ -107,4 +128,19 @@ const tracks = {
     action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
     context_screen_owner_type: contextScreenOwnerType,
   }),
+  trackPaste: (contextScreenOwnerType: OwnerType, query: string) => ({
+    action_type: "pastedSearchQuery",
+    context_screen_owner_type: contextScreenOwnerType,
+    query,
+  }),
+}
+
+/**
+ * Detects paste events using heuristic-based approach
+ * If text length changes by more than 1 character in a single change event,
+ * it's likely a paste (multiple characters added at once) rather than typing
+ */
+const detectInputPasteEvent = (newQuery: string, previousQuery: string): boolean => {
+  const lengthDifference = Math.abs(newQuery.length - previousQuery.length)
+  return lengthDifference > 1
 }
