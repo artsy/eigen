@@ -6,6 +6,11 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 
+// Mock ProgressiveOnboardingSaveArtwork to avoid its Relay query in tests
+jest.mock("app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork", () => ({
+  ProgressiveOnboardingSaveArtwork: ({ children }: { children: React.ReactNode }) => children,
+}))
+
 describe("PartnerOfferCreatedNotification", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerOfferCreatedNotification_Test_Query>({
     Component: (props) => (
