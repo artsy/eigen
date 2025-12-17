@@ -3,10 +3,10 @@ set -exo pipefail
 
 BUILD_TYPE=${1:-release} # default to release
 if [ "$BUILD_TYPE" == "beta" ]; then
-	echo "Building Android App in Beta mode."
+	echo "Building Android App in Beta mode"
 	MODE="beta"
 else
-	echo "Building Android App in Release mode."
+	echo "Building Android App in Release mode"
 	MODE="release"
 fi
 CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
