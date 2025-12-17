@@ -485,14 +485,18 @@ jobs:
       - prep-android-env
       - build-app-android
       - run:
+          name: Move artifacts to
+          command: |
+            mkdir -p /tmp/artifacts
+            find android/app/build/reports -type f -exec cp {} /tmp/artifacts \;
+            find .gradle/daemon -type f -exec cp {} /tmp/artifacts \;
+          when: on_fail
+      - run:
           name: Save success file
           command: echo yes > 'build-success.log'
 
       - store_artifacts:
-          path: android/app/build/reports
-
-      - store_artifacts:
-          path: .gradle/daemon/
+          path: /tmp/artifacts/
 
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
