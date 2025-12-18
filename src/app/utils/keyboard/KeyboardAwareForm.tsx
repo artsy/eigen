@@ -1,5 +1,9 @@
+import { forwardRef } from "react"
 import { ScrollViewProps } from "react-native"
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
+import {
+  KeyboardAwareScrollView,
+  KeyboardAwareScrollViewRef,
+} from "react-native-keyboard-controller"
 
 interface KeyboardAwareFormProps extends ScrollViewProps {
   bottomOffset?: number
@@ -8,27 +12,35 @@ interface KeyboardAwareFormProps extends ScrollViewProps {
   disableScrollOnKeyboardHide?: boolean
 }
 
-export const KeyboardAwareForm: React.FC<KeyboardAwareFormProps> = ({
-  children,
-  contentContainerStyle,
-  bottomOffset = 20,
-  extraKeyboardSpace,
-  enabled = true,
-  disableScrollOnKeyboardHide,
-  ...scrollViewProps
-}) => {
-  return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={contentContainerStyle}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      bottomOffset={bottomOffset}
-      extraKeyboardSpace={extraKeyboardSpace}
-      enabled={enabled}
-      disableScrollOnKeyboardHide={disableScrollOnKeyboardHide}
-      {...scrollViewProps}
-    >
-      {children}
-    </KeyboardAwareScrollView>
-  )
-}
+export const KeyboardAwareForm = forwardRef<KeyboardAwareScrollViewRef, KeyboardAwareFormProps>(
+  (
+    {
+      children,
+      contentContainerStyle,
+      bottomOffset = 20,
+      extraKeyboardSpace,
+      enabled = true,
+      disableScrollOnKeyboardHide,
+      keyboardDismissMode = "on-drag",
+      keyboardShouldPersistTaps = "handled",
+      ...scrollViewProps
+    },
+    ref
+  ) => {
+    return (
+      <KeyboardAwareScrollView
+        ref={ref}
+        contentContainerStyle={contentContainerStyle}
+        keyboardDismissMode={keyboardDismissMode}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+        bottomOffset={bottomOffset}
+        extraKeyboardSpace={extraKeyboardSpace}
+        enabled={enabled}
+        disableScrollOnKeyboardHide={disableScrollOnKeyboardHide}
+        {...scrollViewProps}
+      >
+        {children}
+      </KeyboardAwareScrollView>
+    )
+  }
+)

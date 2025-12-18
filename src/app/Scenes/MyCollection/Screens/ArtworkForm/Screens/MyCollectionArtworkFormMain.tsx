@@ -10,6 +10,7 @@ import {
   Text,
   useColor,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -37,11 +38,13 @@ import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from "react-native"
+import { Alert, Platform, TouchableOpacity } from "react-native"
+import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
@@ -59,6 +62,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const { formik } = useArtworkForm()
   const color = useColor()
+  const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
   const androidCustomSheetStyles = useAndroidActionSheetStyles()
@@ -192,7 +196,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   // To make the location input auto-suggestion dropdown visible when the keyboard is up,
   // we scroll the y position of the location input to move it to the top of the screen.
   const [locationInputYCoordinate, setLocationInputYCoordinate] = useState<number>(0)
-  const scrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
 
   const scrollToLocationInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: locationInputYCoordinate })
@@ -231,215 +235,211 @@ export const MyCollectionArtworkFormMain: React.FC<
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
-    <>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        {formikValues.artistSearchResult?.internalID ? (
-          <MyCollectionArtworkFormDeleteArtworkModal
-            visible={showDeleteArtistModal}
-            hideModal={() => setShowDeleteArtistModal(false)}
-            deleteArtwork={deleteArtwork}
-            artistID={formikValues.artistSearchResult.internalID}
-          />
-        ) : null}
-
-        <NavigationHeader
-          onLeftButtonPress={() => {
-            if (isFormDirty() && mode === "edit") {
-              setShowAbandonModal(true)
-            } else {
-              handleBackButtonPress()
-            }
-          }}
-          rightButtonText={isFormDirty() ? "Clear" : undefined}
-          onRightButtonPress={
-            isFormDirty()
-              ? () => {
-                  clearForm()
-                }
-              : undefined
-          }
-          hideBottomDivider
-        >
-          {addOrEditLabel} Details
-        </NavigationHeader>
-
-        <AbandonFlowModal
-          isVisible={!!showAbandonModal && mode === "edit"}
-          title="Leave without saving?"
-          subtitle="Changes you have made so far will not be saved."
-          leaveButtonTitle="Leave Without Saving"
-          continueButtonTitle="Continue Editing"
-          onDismiss={() => setShowAbandonModal(false)}
-          onLeave={handleBackButtonPress}
+    <Flex>
+      {formikValues.artistSearchResult?.internalID ? (
+        <MyCollectionArtworkFormDeleteArtworkModal
+          visible={showDeleteArtistModal}
+          hideModal={() => setShowDeleteArtistModal(false)}
+          deleteArtwork={deleteArtwork}
+          artistID={formikValues.artistSearchResult.internalID}
         />
+      ) : null}
 
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          ref={scrollViewRef}
-        >
-          <Flex style={{ paddingBottom: 160 }}>
-            <Flex p={2}>
-              <Join separator={<Spacer y={2} />}>
-                <ArtistField />
+      <NavigationHeader
+        onLeftButtonPress={() => {
+          if (isFormDirty() && mode === "edit") {
+            setShowAbandonModal(true)
+          } else {
+            handleBackButtonPress()
+          }
+        }}
+        rightButtonText={isFormDirty() ? "Clear" : undefined}
+        onRightButtonPress={
+          isFormDirty()
+            ? () => {
+                clearForm()
+              }
+            : undefined
+        }
+        hideBottomDivider
+      >
+        {addOrEditLabel} Details
+      </NavigationHeader>
 
-                <Input
-                  title="Title"
-                  onChangeText={formik.handleChange("title")}
-                  onBlur={formik.handleBlur("title")}
-                  testID="TitleInput"
-                  required
-                  accessibilityLabel="Title"
-                  value={formikValues.title}
-                />
+      <AbandonFlowModal
+        isVisible={!!showAbandonModal && mode === "edit"}
+        title="Leave without saving?"
+        subtitle="Changes you have made so far will not be saved."
+        leaveButtonTitle="Leave Without Saving"
+        continueButtonTitle="Continue Editing"
+        onDismiss={() => setShowAbandonModal(false)}
+        onLeave={handleBackButtonPress}
+      />
 
-                <CategoryPicker<string>
-                  value={formikValues.category}
-                  options={artworkMediumCategories}
-                  handleChange={handleCategory}
-                />
+      <KeyboardAwareForm ref={scrollViewRef}>
+        <Flex style={{ paddingBottom: 160 }}>
+          <Flex p={2}>
+            <Join separator={<Spacer y={2} />}>
+              <ArtistField />
 
-                <Input
-                  title="Year"
-                  keyboardType="number-pad"
-                  placeholder="Year created"
-                  onChangeText={formik.handleChange("date")}
-                  onBlur={formik.handleBlur("date")}
-                  testID="DateInput"
-                  accessibilityLabel="Year"
-                  value={formikValues.date}
-                />
+              <Input
+                title="Title"
+                onChangeText={formik.handleChange("title")}
+                onBlur={formik.handleBlur("title")}
+                testID="TitleInput"
+                required
+                accessibilityLabel="Title"
+                value={formikValues.title}
+              />
 
-                <Input
-                  title="Materials"
-                  placeholder="Oil on canvas, mixed media, lithograph.."
-                  onChangeText={formik.handleChange("medium")}
-                  onBlur={formik.handleBlur("medium")}
-                  testID="MaterialsInput"
-                  accessibilityLabel="Materials"
-                  value={formikValues.medium}
-                />
+              <CategoryPicker<string>
+                value={formikValues.category}
+                options={artworkMediumCategories}
+                handleChange={handleCategory}
+              />
 
-                <Rarity />
+              <Input
+                title="Year"
+                keyboardType="number-pad"
+                placeholder="Year created"
+                onChangeText={formik.handleChange("date")}
+                onBlur={formik.handleBlur("date")}
+                testID="DateInput"
+                accessibilityLabel="Year"
+                value={formikValues.date}
+              />
 
-                <Dimensions />
+              <Input
+                title="Materials"
+                placeholder="Oil on canvas, mixed media, lithograph.."
+                onChangeText={formik.handleChange("medium")}
+                onBlur={formik.handleBlur("medium")}
+                testID="MaterialsInput"
+                accessibilityLabel="Materials"
+                value={formikValues.medium}
+              />
 
-                <MoneyInput
-                  accessibilityLabel="Price paid"
-                  currencyTextVariant="xs"
-                  format
-                  initialValues={{
-                    currency: initialCurrency as Currency,
-                    amount: formikValues.pricePaidDollars,
+              <Rarity />
+
+              <Dimensions />
+
+              <MoneyInput
+                accessibilityLabel="Price paid"
+                currencyTextVariant="xs"
+                format
+                initialValues={{
+                  currency: initialCurrency as Currency,
+                  amount: formikValues.pricePaidDollars,
+                }}
+                keyboardType="decimal-pad"
+                onChange={(values) => {
+                  formik.handleChange("pricePaidDollars")(values.amount ?? "")
+                  formik.handleChange("pricePaidCurrency")(values.currency ?? "")
+                  GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
+                }}
+                placeholder="Price paid"
+                shouldDisplayLocalError={false}
+                title="Price Paid"
+              />
+
+              <Input
+                multiline
+                title="Provenance"
+                maxLength={500}
+                showLimit
+                placeholder="Describe how you acquired the artwork"
+                value={formikValues.provenance}
+                accessibilityLabel="Describe how you acquired the artwork"
+                onChangeText={formik.handleChange("provenance")}
+                testID="ProvenanceInput"
+              />
+
+              <Box
+                onLayout={({ nativeEvent }) => {
+                  setLocationInputYCoordinate(nativeEvent.layout.y)
+                }}
+              >
+                <LocationAutocomplete
+                  allowCustomLocation
+                  title="Location"
+                  testID="LocationInput"
+                  placeholder="Enter city where artwork is located"
+                  displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
+                  onFocus={scrollToLocationInput}
+                  onChange={(location: LocationWithDetails) => {
+                    formik.setFieldValue("collectorLocation", {
+                      city: location.city,
+                      state: location.state,
+                      country: location.country,
+                      countryCode: location.countryCode,
+                    })
                   }}
-                  keyboardType="decimal-pad"
-                  onChange={(values) => {
-                    formik.handleChange("pricePaidDollars")(values.amount ?? "")
-                    formik.handleChange("pricePaidCurrency")(values.currency ?? "")
-                    GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
-                  }}
-                  placeholder="Price paid"
-                  shouldDisplayLocalError={false}
-                  title="Price Paid"
+                  accessibilityLabel="Enter city where the artwork is located"
                 />
+              </Box>
 
-                <Input
-                  multiline
-                  title="Provenance"
-                  maxLength={500}
-                  showLimit
-                  placeholder="Describe how you acquired the artwork"
-                  value={formikValues.provenance}
-                  accessibilityLabel="Describe how you acquired the artwork"
-                  onChangeText={formik.handleChange("provenance")}
-                  testID="ProvenanceInput"
-                />
-
-                <Box
-                  onLayout={({ nativeEvent }) => {
-                    setLocationInputYCoordinate(nativeEvent.layout.y)
-                  }}
-                >
-                  <LocationAutocomplete
-                    allowCustomLocation
-                    title="Location"
-                    testID="LocationInput"
-                    placeholder="Enter city where artwork is located"
-                    displayLocation={buildLocationDisplay(formikValues.collectorLocation)}
-                    onFocus={scrollToLocationInput}
-                    onChange={(location: LocationWithDetails) => {
-                      formik.setFieldValue("collectorLocation", {
-                        city: location.city,
-                        state: location.state,
-                        country: location.country,
-                        countryCode: location.countryCode,
-                      })
-                    }}
-                    accessibilityLabel="Enter city where the artwork is located"
-                  />
-                </Box>
-
-                <Input
-                  multiline
-                  maxLength={500}
-                  showLimit
-                  title="Notes"
-                  onChangeText={formik.handleChange("confidentialNotes")}
-                  onBlur={formik.handleBlur("confidentialNotes")}
-                  testID="NotesInput"
-                  accessibilityLabel="Notes"
-                  value={formikValues.confidentialNotes}
-                />
-              </Join>
-            </Flex>
-
-            <Spacer y={1} />
-
-            <PhotosButton
-              testID="PhotosButton"
-              onPress={() => {
-                if (isEmpty(artworkState.sessionState.formValues.photos)) {
-                  showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
-                    artworkActions.addPhotos(photos)
-                  })
-                } else {
-                  requestAnimationFrame(() => {
-                    navigation.navigate("AddPhotos")
-                  })
-                }
-              }}
-            />
-
-            <Spacer y={2} />
-
-            <ScreenMargin>
-              {mode === "edit" && !!artwork && (
-                <Text
-                  my={4}
-                  variant="sm"
-                  underline
-                  color={color("red100")}
-                  textAlign="center"
-                  onPress={() => setShowDeleteArtistModal(true)}
-                  testID="DeleteButton"
-                >
-                  Delete artwork
-                </Text>
-              )}
-            </ScreenMargin>
-
-            {/* Show validation errors during development */}
-            {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
-              <ScreenMargin>
-                <Box my={2}>
-                  <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
-                </Box>
-              </ScreenMargin>
-            )}
+              <Input
+                multiline
+                maxLength={500}
+                showLimit
+                title="Notes"
+                onChangeText={formik.handleChange("confidentialNotes")}
+                onBlur={formik.handleBlur("confidentialNotes")}
+                testID="NotesInput"
+                accessibilityLabel="Notes"
+                value={formikValues.confidentialNotes}
+              />
+            </Join>
           </Flex>
-        </ScrollView>
 
-        <Flex p={2} pb={Platform.OS === "android" ? 2 : 0}>
+          <Spacer y={1} />
+
+          <PhotosButton
+            testID="PhotosButton"
+            onPress={() => {
+              if (isEmpty(artworkState.sessionState.formValues.photos)) {
+                showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
+                  artworkActions.addPhotos(photos)
+                })
+              } else {
+                requestAnimationFrame(() => {
+                  navigation.navigate("AddPhotos")
+                })
+              }
+            }}
+          />
+
+          <Spacer y={2} />
+
+          <ScreenMargin>
+            {mode === "edit" && !!artwork && (
+              <Text
+                my={4}
+                variant="sm"
+                underline
+                color={color("red100")}
+                textAlign="center"
+                onPress={() => setShowDeleteArtistModal(true)}
+                testID="DeleteButton"
+              >
+                Delete artwork
+              </Text>
+            )}
+          </ScreenMargin>
+
+          {/* Show validation errors during development */}
+          {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
+            <ScreenMargin>
+              <Box my={2}>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
+              </Box>
+            </ScreenMargin>
+          )}
+        </Flex>
+
+        <KeyboardStickyView
+          style={{ padding: space(2), paddingBottom: Platform.OS === "android" ? space(2) : 0 }}
+        >
           <Button
             disabled={!formik.isValid || !isFormDirty()}
             block
@@ -450,9 +450,9 @@ export const MyCollectionArtworkFormMain: React.FC<
           >
             {mode === "edit" ? "Save changes" : "Complete"}
           </Button>
-        </Flex>
-      </KeyboardAvoidingView>
-    </>
+        </KeyboardStickyView>
+      </KeyboardAwareForm>
+    </Flex>
   )
 }
 

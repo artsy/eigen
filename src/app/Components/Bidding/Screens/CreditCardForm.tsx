@@ -14,9 +14,9 @@ import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
 import { memo, useCallback, useRef } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 type CreditCardFormProps = NativeStackScreenProps<BiddingNavigationStackParams, "CreditCardForm">
 
@@ -104,19 +104,12 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const phoneRef = useRef<Input>(null)
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <Flex>
       <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
         Add Credit Card
       </NavigationHeader>
 
-      <ScrollView
-        contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-      >
+      <KeyboardAwareForm contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}>
         <Flex>
           <>
             <CreditCardField onCardChange={handleOnCardChange} />
@@ -248,7 +241,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           {"\n"}A valid credit card is required in order to bid. Please enter your credit card
           information below. The name on your Artsy account must match the name on the card.
         </Text>
-      </ScrollView>
+      </KeyboardAwareForm>
 
       <Spacer y={1} />
 
@@ -264,7 +257,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           Save
         </Button>
       </Box>
-    </KeyboardAvoidingView>
+    </Flex>
   )
 }
 
