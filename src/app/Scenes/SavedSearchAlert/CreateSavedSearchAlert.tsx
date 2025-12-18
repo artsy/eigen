@@ -11,8 +11,9 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { KeyboardAvoidingView, Modal, Platform } from "react-native"
+import { Modal, Platform } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -60,10 +61,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 paddingTop: Platform.OS === "ios" ? topInset : 0,
               }}
             >
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-              >
+              <KeyboardAvoidingContainer>
                 <Stack.Navigator
                   // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                   detachInactiveScreens={false}
@@ -105,7 +103,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                     }}
                   />
                 </Stack.Navigator>
-              </KeyboardAvoidingView>
+              </KeyboardAvoidingContainer>
             </SafeAreaView>
           </Modal>
         </NavigationContainer>

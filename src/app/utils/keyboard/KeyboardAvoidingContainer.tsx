@@ -1,13 +1,15 @@
 import { KeyboardAvoidingView, KeyboardAvoidingViewProps } from "react-native-keyboard-controller"
 
-export const KeyboardAvoidingContainer: React.FC<KeyboardAvoidingViewProps> = ({
+type KeyboardAvoidingContainerProps = Omit<
+  KeyboardAvoidingViewProps,
+  "behaviour" | "contentContainerStyle"
+>
+
+export const KeyboardAvoidingContainer: React.FC<KeyboardAvoidingContainerProps> = ({
   children,
   style,
   enabled = true,
   keyboardVerticalOffset = 0,
-  // deconstrucing `contentContainerStyle` since it's not applicable when `behavior="padding"`
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  contentContainerStyle,
   ...restProps
 }) => {
   return (
