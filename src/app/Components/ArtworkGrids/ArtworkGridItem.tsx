@@ -467,7 +467,7 @@ const ArtworkHeartIcon: React.FC<{
   isSaved: boolean | null
   index?: number
   disableProgressiveOnboarding?: boolean
-}> = ({ isSaved, index, disableProgressiveOnboarding }) => {
+}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
   if (index === 0 && !disableProgressiveOnboarding) {
     // We only try to show the save onboard Popover in the 1st element
     return (
