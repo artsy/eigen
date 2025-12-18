@@ -1,4 +1,4 @@
-import { Box, Button, Separator, Spacer } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -12,6 +12,7 @@ import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils
 import React from "react"
 import { KeyboardAvoidingView, View } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 
@@ -97,25 +98,27 @@ export const BottomAlignedButton: React.FC<React.PropsWithChildren<BottomAligned
   disabled,
   showSeparator = true,
 }) => (
-  <KeyboardAvoidingView style={{ flex: 1 }}>
+  <Flex>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
-    {!!showSeparator && <Separator key="separator" />}
-    <Spacer y={1} />
-    <Box px={2}>
-      <Button
-        accessibilityLabel={buttonText}
-        block
-        width="100%"
-        onPress={onPress}
-        disabled={disabled}
-      >
-        {buttonText}
-      </Button>
-    </Box>
-    <Spacer y={1} />
-  </KeyboardAvoidingView>
+    <KeyboardStickyView>
+      {!!showSeparator && <Separator key="separator" />}
+      <Spacer y={1} />
+      <Box px={2}>
+        <Button
+          accessibilityLabel={buttonText}
+          block
+          width="100%"
+          onPress={onPress}
+          disabled={disabled}
+        >
+          {buttonText}
+        </Button>
+      </Box>
+      <Spacer y={1} />
+    </KeyboardStickyView>
+  </Flex>
 )
 
 interface Props {
