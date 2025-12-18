@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, View } from "react-native"
+import { View } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 
 export interface BottomAlignedProps {
