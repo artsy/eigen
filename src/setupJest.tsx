@@ -17,6 +17,7 @@ import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
+import mockKeyboardController from "react-native-keyboard-controller/jest"
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
@@ -427,6 +428,8 @@ jest.mock("@react-native-firebase/messaging", () => ({
 jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
+
+jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
 
 /**
  * Mocks for our code
