@@ -1,15 +1,11 @@
 import { Button, Flex, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  TouchableWithoutFeedback,
-} from "react-native"
+import { Platform, TextInput, TouchableWithoutFeedback } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -55,7 +51,7 @@ const ComposerInner: React.FC<
     if (onSubmit && text) {
       onSubmit(text)
       setText(null)
-      Keyboard.dismiss()
+      KeyboardController.dismiss()
     }
   }
 
@@ -90,8 +86,7 @@ const ComposerInner: React.FC<
     }
   }, [forwardedRef])
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
+    <KeyboardAvoidingContainer
       keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 80}
       style={{ flex: 1, justifyContent: "space-between" }}
     >
@@ -123,7 +118,7 @@ const ComposerInner: React.FC<
           </TouchableWithoutFeedback>
         </Container>
       </Flex>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingContainer>
   )
 }
 
