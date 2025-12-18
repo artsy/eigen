@@ -2,6 +2,11 @@ import { screen, waitForElementToBeRemoved } from "@testing-library/react-native
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
+// Mock ProgressiveOnboardingSaveArtwork to avoid its Relay query in tests
+jest.mock("app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork", () => ({
+  ProgressiveOnboardingSaveArtwork: ({ children }: { children: React.ReactNode }) => children,
+}))
+
 describe("RecentlyViewed", () => {
   it("renders RecentlyViewed", async () => {
     const { renderWithRelay } = setupTestWrapper({
