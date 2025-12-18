@@ -10465,11 +10465,6 @@ type CreateShippingPresetFailure {
 }
 
 input CreateShippingPresetMutationInput {
-  # Whether Artsy handles domestic shipping.
-  artsyShippingDomestic: Boolean
-
-  # Whether Artsy handles international shipping.
-  artsyShippingInternational: Boolean
   clientMutationId: String
 
   # Domestic shipping fee in cents.
@@ -23104,11 +23099,6 @@ type ShippingLine {
 }
 
 type ShippingPreset implements Node {
-  # Whether Artsy handles domestic shipping
-  artsyShippingDomestic: Boolean
-
-  # Whether Artsy handles international shipping
-  artsyShippingInternational: Boolean
   createdAt(
     format: String
 
@@ -25648,11 +25638,6 @@ type UpdateShippingPresetFailure {
 }
 
 input UpdateShippingPresetMutationInput {
-  # Whether Artsy handles domestic shipping.
-  artsyShippingDomestic: Boolean
-
-  # Whether Artsy handles international shipping.
-  artsyShippingInternational: Boolean
   clientMutationId: String
 
   # Domestic shipping fee in cents.
