@@ -1,0 +1,143 @@
+diff --git a/node_modules/react-native-collapsible-tab-view/lib/commonjs/FlashList.js b/node_modules/react-native-collapsible-tab-view/lib/commonjs/FlashList.js
+index 804f3d6..d4b49de 100644
+--- a/node_modules/react-native-collapsible-tab-view/lib/commonjs/FlashList.js
++++ b/node_modules/react-native-collapsible-tab-view/lib/commonjs/FlashList.js
+@@ -47,7 +47,6 @@ function FlashListImpl({
+     contentInset
+   } = (0, _hooks.useTabsContext)();
+   const ref = (0, _hooks.useSharedAnimatedRef)(passRef);
+-  const recyclerRef = (0, _hooks.useSharedAnimatedRef)(null);
+   const {
+     scrollHandler,
+     enable
+@@ -68,8 +67,8 @@ function FlashListImpl({
+     contentContainerStyle
+   } = (0, _hooks.useCollapsibleStyle)();
+   _react.default.useEffect(() => {
+-    setRef(name, recyclerRef);
+-  }, [name, recyclerRef, setRef]);
++    setRef(name, ref);
++  }, [name, ref, setRef]);
+   const scrollContentSizeChange = (0, _hooks.useUpdateScrollViewContentSize)({
+     name
+   });
+@@ -89,22 +88,13 @@ function FlashListImpl({
+     paddingTop: contentContainerStyle.paddingTop,
+     ..._contentContainerStyle
+   }), [_contentContainerStyle, contentContainerStyle.paddingTop]);
+-  const refWorkaround = (0, _react.useCallback)(value => {
+-    // https://github.com/Shopify/flash-list/blob/2d31530ed447a314ec5429754c7ce88dad8fd087/src/FlashList.tsx#L829
+-    // We are not accessing the right element or view of the Flashlist (recyclerlistview). So we need to give
+-    // this ref the access to it
+-    // eslint-ignore
+-    ;
+-    recyclerRef(value?.recyclerlistview_unsafe);
+-    ref(value);
+-  }, [recyclerRef, ref]);
+   return (
+     /*#__PURE__*/
+     // @ts-expect-error typescript complains about `unknown` in the memo, it should be T
+     (0, _jsxRuntime.jsx)(FlashListMemo, {
+       ...rest,
+       onLoad: onLoad,
+-      ref: refWorkaround,
++      ref: ref,
+       contentContainerStyle: memoContentContainerStyle,
+       bouncesZoom: false,
+       onScroll: scrollHandler,
+diff --git a/node_modules/react-native-collapsible-tab-view/lib/module/FlashList.js b/node_modules/react-native-collapsible-tab-view/lib/module/FlashList.js
+index 63abc88..b5dfe6b 100644
+--- a/node_modules/react-native-collapsible-tab-view/lib/module/FlashList.js
++++ b/node_modules/react-native-collapsible-tab-view/lib/module/FlashList.js
+@@ -41,7 +41,6 @@ function FlashListImpl({
+     contentInset
+   } = useTabsContext();
+   const ref = useSharedAnimatedRef(passRef);
+-  const recyclerRef = useSharedAnimatedRef(null);
+   const {
+     scrollHandler,
+     enable
+@@ -62,8 +61,8 @@ function FlashListImpl({
+     contentContainerStyle
+   } = useCollapsibleStyle();
+   React.useEffect(() => {
+-    setRef(name, recyclerRef);
+-  }, [name, recyclerRef, setRef]);
++    setRef(name, ref);
++  }, [name, ref, setRef]);
+   const scrollContentSizeChange = useUpdateScrollViewContentSize({
+     name
+   });
+@@ -83,22 +82,13 @@ function FlashListImpl({
+     paddingTop: contentContainerStyle.paddingTop,
+     ..._contentContainerStyle
+   }), [_contentContainerStyle, contentContainerStyle.paddingTop]);
+-  const refWorkaround = useCallback(value => {
+-    // https://github.com/Shopify/flash-list/blob/2d31530ed447a314ec5429754c7ce88dad8fd087/src/FlashList.tsx#L829
+-    // We are not accessing the right element or view of the Flashlist (recyclerlistview). So we need to give
+-    // this ref the access to it
+-    // eslint-ignore
+-    ;
+-    recyclerRef(value?.recyclerlistview_unsafe);
+-    ref(value);
+-  }, [recyclerRef, ref]);
+   return (
+     /*#__PURE__*/
+     // @ts-expect-error typescript complains about `unknown` in the memo, it should be T
+     _jsx(FlashListMemo, {
+       ...rest,
+       onLoad: onLoad,
+-      ref: refWorkaround,
++      ref: ref,
+       contentContainerStyle: memoContentContainerStyle,
+       bouncesZoom: false,
+       onScroll: scrollHandler,
+diff --git a/node_modules/react-native-collapsible-tab-view/src/FlashList.tsx b/node_modules/react-native-collapsible-tab-view/src/FlashList.tsx
+index 9ce60da..4fa8a86 100644
+--- a/node_modules/react-native-collapsible-tab-view/src/FlashList.tsx
++++ b/node_modules/react-native-collapsible-tab-view/src/FlashList.tsx
+@@ -69,7 +69,6 @@ function FlashListImpl<R>(
+   const name = useTabNameContext()
+   const { setRef, contentInset } = useTabsContext()
+   const ref = useSharedAnimatedRef<any>(passRef)
+-  const recyclerRef = useSharedAnimatedRef<any>(null)
+ 
+   const { scrollHandler, enable } = useScrollHandlerY(name)
+ 
+@@ -93,8 +92,8 @@ function FlashListImpl<R>(
+   const { progressViewOffset, contentContainerStyle } = useCollapsibleStyle()
+ 
+   React.useEffect(() => {
+-    setRef(name, recyclerRef)
+-  }, [name, recyclerRef, setRef])
++    setRef(name, ref)
++  }, [name, ref, setRef])
+ 
+   const scrollContentSizeChange = useUpdateScrollViewContentSize({
+     name,
+@@ -135,24 +134,12 @@ function FlashListImpl<R>(
+     [_contentContainerStyle, contentContainerStyle.paddingTop]
+   )
+ 
+-  const refWorkaround = useCallback(
+-    (value: FlashListMemoRef | null): void => {
+-      // https://github.com/Shopify/flash-list/blob/2d31530ed447a314ec5429754c7ce88dad8fd087/src/FlashList.tsx#L829
+-      // We are not accessing the right element or view of the Flashlist (recyclerlistview). So we need to give
+-      // this ref the access to it
+-      // eslint-ignore
+-      ;(recyclerRef as any)(value?.recyclerlistview_unsafe)
+-      ;(ref as any)(value)
+-    },
+-    [recyclerRef, ref]
+-  )
+-
+   return (
+     // @ts-expect-error typescript complains about `unknown` in the memo, it should be T
+     <FlashListMemo
+       {...rest}
+       onLoad={onLoad}
+-      ref={refWorkaround}
++      ref={ref}
+       contentContainerStyle={memoContentContainerStyle}
+       bouncesZoom={false}
+       onScroll={scrollHandler}
