@@ -28,11 +28,11 @@ import {
   useReloadedDevNavigationState,
 } from "app/system/navigation/useReloadedDevNavigationState"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import React, { useCallback, useEffect } from "react"
-import { KeyboardAvoidingView } from "react-native"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -129,7 +129,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingContainer>
         <SavedSearchStoreProvider
           runtimeModel={{
             ...savedSearchModel,
@@ -191,7 +191,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             </NavigationContainer>
           </NavigationIndependentTree>
         </SavedSearchStoreProvider>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingContainer>
     </ProvideScreenTracking>
   )
 }
