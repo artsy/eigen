@@ -645,12 +645,15 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
   })),
 }))
 
-jest.mock("@gorhom/bottom-sheet", () => ({
-  __esModule: true,
-  SCROLLABLE_TYPE: {},
-  createBottomSheetScrollableComponent: () => ({}),
-  ...require("@gorhom/bottom-sheet/mock"),
-}))
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  return {
+    __esModule: true,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    ...require("@gorhom/bottom-sheet/mock"),
+  }
+})
 
 jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")

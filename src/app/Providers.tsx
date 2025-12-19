@@ -79,7 +79,6 @@ export const TestProviders: React.FC<
       includeArtworkLists && ArtworkListsProvider,
       ToastProvider,
       ShareSheetProvider,
-      KeyboardControllerProvider,
     ],
     children
   )
