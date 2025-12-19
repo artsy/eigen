@@ -38,7 +38,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { Keyboard, Modal, Platform, ViewProps } from "react-native"
+import { Modal, Platform, ViewProps } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
@@ -319,7 +320,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const handleCreateAlertPress = () => {
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
     requestAnimationFrame(() => {
       setIsCreateAlertModalVisible(true)
       tracking.trackEvent(tracks.tappedCreateAlert(id as string, name as string))
