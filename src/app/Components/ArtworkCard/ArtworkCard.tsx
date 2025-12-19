@@ -121,16 +121,6 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
 
-    const animatedSaveButtonStyles = useAnimatedStyle(() => {
-      return {
-        transform: [
-          {
-            scale: interpolate(saveAnimationProgress.value, [0, 0.5, 1], [1, 1.2, 1]),
-          },
-        ],
-      }
-    }, [])
-
     const displayImages = artwork.images
 
     const currentImage = displayImages ? displayImages[currentImageIndex] : null
@@ -490,11 +480,7 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
             )}
           </Flex>
 
-          <ArtworkCardSaveButton
-            isSaved={!!isSaved}
-            onPress={handleSavePress}
-            animatedStyle={animatedSaveButtonStyles}
-          />
+          <ArtworkCardSaveButton isSaved={!!isSaved} onPress={handleSavePress} />
         </AnimatedFlex>
       </AnimatedFlex>
     )

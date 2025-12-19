@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkCardTestsQuery } from "__generated__/ArtworkCardTestsQuery.graphql"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -22,9 +21,6 @@ describe("ArtworkCard", () => {
   })
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableArtworkSaveIconAnimation: false,
-    })
     defaultProps = {
       supportMultipleImages: false,
       showPager: false,

@@ -1,10 +1,8 @@
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Box, Flex, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -21,23 +19,13 @@ interface IconProps {
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved, isLot = false }) => {
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
   let accessibilityLabel = isLot ? "watch lot icon" : "Save icon"
 
   if (isSaved) {
     accessibilityLabel = isLot ? "unwatch lot icon" : "Saved icon"
   }
 
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} accessibilityLabel={accessibilityLabel} />
-  }
-
-  if (isSaved) {
-    return <HeartFillIcon accessibilityLabel={accessibilityLabel} fill="blue100" />
-  }
-
-  return <HeartStrokeIcon accessibilityLabel={accessibilityLabel} />
+  return <ArtworkSaveIconWrapper isSaved={!!isSaved} accessibilityLabel={accessibilityLabel} />
 }
 
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {

@@ -188,12 +188,6 @@ export const features = {
     description: "Enable price range toast prompting users to update a price range",
     echoFlagKey: "AREnablePriceRangeToast",
   },
-  AREnableArtworkSaveIconAnimation: {
-    description: "Enable artwork save icon animation",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkSaveIconAnimation",
-  },
   AREnableNewHomeViewCardRailType: {
     readyForRelease: true,
     showInDevMenu: true,

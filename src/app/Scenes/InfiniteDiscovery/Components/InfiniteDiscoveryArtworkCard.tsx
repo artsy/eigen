@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { HeartFillIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import {
   InfiniteDiscoveryArtworkCard_artwork$data,
@@ -12,14 +12,12 @@ import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscover
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
-  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -87,16 +85,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
     const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
-
-    const animatedSaveButtonStyles = useAnimatedStyle(() => {
-      return {
-        transform: [
-          {
-            scale: interpolate(saveAnimationProgress.value, [0, 0.5, 1], [1, 1.2, 1]),
-          },
-        ],
-      }
-    })
 
     useEffect(() => {
       // Revert showScreenTapToSave if the artwork is not saved
@@ -326,10 +314,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   backgroundColor: color("mono5"),
                 }}
               >
-                <InfiniteDiscoveryArtworkCardSaveIcon
-                  isSaved={!!isSaved}
-                  animatedStyles={animatedSaveButtonStyles}
-                />
+                <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                 <Flex
                   // Avoid the shift that happens after saving
                   minWidth={45}
@@ -346,39 +331,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
-
-const InfiniteDiscoveryArtworkCardSaveIcon: React.FC<{
-  isSaved: boolean
-  animatedStyles: ViewStyle
-}> = ({ isSaved, animatedStyles }) => {
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-  }
-
-  if (isSaved) {
-    return (
-      <Animated.View style={animatedStyles}>
-        <HeartFillIcon
-          testID="filled-heart-icon"
-          height={HEART_ICON_SIZE}
-          width={HEART_ICON_SIZE}
-          fill="blue100"
-        />
-      </Animated.View>
-    )
-  }
-
-  return (
-    <HeartStrokeIcon
-      testID="empty-heart-icon"
-      height={HEART_ICON_SIZE}
-      width={HEART_ICON_SIZE}
-      fill="mono100"
-    />
-  )
-}
 
 const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
@@ -403,7 +355,6 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
   }
 `
 
-const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
 const PAGINATION_BAR_HEIGHT = 11

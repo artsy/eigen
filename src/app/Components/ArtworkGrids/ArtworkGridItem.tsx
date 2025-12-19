@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@artsy/cohesion"
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
@@ -25,8 +24,7 @@ import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessag
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
-import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
-import { HEART_ICON_SIZE } from "app/Components/constants"
+// import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -97,7 +95,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     contextScreenQuery,
     disableArtworksListPrompt = false,
     height,
-    disableProgressiveOnboarding = false,
+    // disableProgressiveOnboarding = false,
     hideCuratorsPickSignal = false,
     hideIncreasedInterestSignal = false,
     hidePartner = false,
@@ -442,11 +440,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                       testID="save-artwork-icon"
                     >
-                      <ArtworkHeartIcon
-                        isSaved={!!isSaved}
-                        index={itemIndex}
-                        disableProgressiveOnboarding={disableProgressiveOnboarding}
-                      />
+                      <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                     </Touchable>
                   </Flex>
                 )}
@@ -465,32 +459,27 @@ export const Artwork: React.FC<ArtworkProps> = memo(
   }
 )
 
-const ArtworkHeartIcon: React.FC<{
+/*
+TODO: replace <ArtworkSaveIconWrapper isSaved={!!isSaved} /> with ArtworkHeartIcon when there
+is a solution for the failing tests after adding ProgressiveOnboardingSaveArtwork
+*/
+
+/* const ArtworkHeartIcon: React.FC<{
   isSaved: boolean | null
   index?: number
   disableProgressiveOnboarding?: boolean
 }> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
-  const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
-
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-  }
-
-  if (isSaved) {
-    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
-  }
   if (index === 0 && !disableProgressiveOnboarding) {
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>
-        <HeartStrokeIcon {...iconProps} />
+        <ArtworkSaveIconWrapper isSaved={!!isSaved} />
       </ProgressiveOnboardingSaveArtwork>
     )
   }
-  return <HeartStrokeIcon {...iconProps} />
-}
+
+  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
+} */
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
