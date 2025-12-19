@@ -24,7 +24,7 @@ import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessag
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
-import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+// import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -95,7 +95,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     contextScreenQuery,
     disableArtworksListPrompt = false,
     height,
-    disableProgressiveOnboarding = false,
+    // disableProgressiveOnboarding = false,
     hideCuratorsPickSignal = false,
     hideIncreasedInterestSignal = false,
     hidePartner = false,
