@@ -20,7 +20,6 @@ import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
@@ -57,10 +56,6 @@ const AppTabs: React.FC = () => {
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
-
-  const enableProgressiveOnboardingPriceRangeHome = useFeatureFlag(
-    "AREnableProgressiveOnboardingPriceRangeHome"
-  )
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
@@ -147,7 +142,7 @@ const AppTabs: React.FC = () => {
               )
             }
 
-            if (route.name === "profile" && enableProgressiveOnboardingPriceRangeHome) {
+            if (route.name === "profile") {
               return <WrappedIcon />
             }
 
