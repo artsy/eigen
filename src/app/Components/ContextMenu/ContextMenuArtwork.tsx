@@ -9,7 +9,6 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
@@ -57,8 +56,6 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
 
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
-  const enableContextMenuAndroid = useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
   const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -200,7 +197,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   const [androidVisible, setAndroidVisible] = useState(false)
 
   // TODO: Enable in test enrivonment and fix broken tests
-  if (isIOS && enableContextMenuIOS && !__TEST__) {
+  if (isIOS && !__TEST__) {
     return (
       <ContextMenu
         actions={contextActions}
@@ -224,7 +221,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   }
 
   // Fall back to a bottom sheet on Android
-  if (!isIOS && enableContextMenuAndroid) {
+  if (!isIOS) {
     return (
       <>
         <TouchableHighlight
