@@ -440,11 +440,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                       testID="save-artwork-icon"
                     >
-                      <ArtworkHeartIcon
-                        isSaved={!!isSaved}
-                        index={itemIndex}
-                        disableProgressiveOnboarding={disableProgressiveOnboarding}
-                      />
+                      <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                     </Touchable>
                   </Flex>
                 )}
@@ -463,7 +459,12 @@ export const Artwork: React.FC<ArtworkProps> = memo(
   }
 )
 
-const ArtworkHeartIcon: React.FC<{
+/*
+TODO: replace <ArtworkSaveIconWrapper isSaved={!!isSaved} /> with ArtworkHeartIcon when there
+is a solution for the failing tests after adding ProgressiveOnboardingSaveArtwork
+*/
+
+/* const ArtworkHeartIcon: React.FC<{
   isSaved: boolean | null
   index?: number
   disableProgressiveOnboarding?: boolean
@@ -478,7 +479,7 @@ const ArtworkHeartIcon: React.FC<{
   }
 
   return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-}
+} */
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
