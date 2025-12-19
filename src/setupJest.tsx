@@ -647,6 +647,8 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
 
 jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
+  SCROLLABLE_TYPE: {},
+  createBottomSheetScrollableComponent: () => ({}),
   ...require("@gorhom/bottom-sheet/mock"),
 }))
 
