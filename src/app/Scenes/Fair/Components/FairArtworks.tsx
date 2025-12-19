@@ -32,8 +32,6 @@ import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { Platform } from "react-native"
-import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -407,12 +405,13 @@ export const FairArtworksQueryRenderer: React.FC<FairArtworksQueryRendererProps>
 
 const FairArtworksPlaceholder: React.FC = () => {
   const space = useSpace()
-  const { height } = useHeaderMeasurements()
-  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const paddingTop = Platform.OS === "android" ? height + 80 : space(2)
 
   return (
-    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop, width: "100%" }}>
+    <Tabs.ScrollView
+      contentContainerStyle={{ marginTop: space(2) }}
+      // Do not allow scrolling while the fair is loading because there is nothing to show
+      scrollEnabled={false}
+    >
       <Flex>
         <Flex flexDirection="row" justifyContent="space-between" px={2}>
           <SkeletonText>100 Artworks</SkeletonText>

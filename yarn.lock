@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.2.0--canary.425.5134.0":
-  version: 22.2.0--canary.425.5134.0
-  resolution: "@artsy/palette-mobile@npm:22.2.0--canary.425.5134.0"
+"@artsy/palette-mobile@npm:22.2.0--canary.425.5159.0":
+  version: 22.2.0--canary.425.5159.0
+  resolution: "@artsy/palette-mobile@npm:22.2.0--canary.425.5159.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -87,7 +87,7 @@ __metadata:
     moti: "npm:0.30.0"
     react-nanny: "npm:^2.15.0"
     react-native-blurhash: "npm:2.1.2"
-    react-native-collapsible-tab-view: "npm:^8.0.1"
+    react-native-collapsible-tab-view: "npm:9.0.0-rc.0"
     react-native-pager-view: "npm:6.7.1"
     react-native-popover-view: "npm:^6.1.0"
     styled-system: "npm:^5.1.5"
@@ -101,7 +101,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/8faf76baf78931a6e249ed63f3f2431fc1cb01e99c886ed075910eb0f0f1f73428b35dec8dcd02ca8225363d9c30f9114bc05dbd58f4afb8530f4204e843816e
+  checksum: 10c0/10d113d67c810036b9c264c4b9246214183e7000d826540d8852f2db8aeae927609ef9b1ca2c1ee81c14fd92512fb376176b92b997ea6b3ee3f26f89029ba476
   languageName: node
   linkType: hard
 
@@ -13163,15 +13163,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-<<<<<<< HEAD
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.63.0"
-    "@artsy/palette-mobile": "npm:22.2.0--canary.425.5130.0"
-=======
-    "@artsy/cohesion": "npm:4.335.0"
-    "@artsy/icons": "npm:3.62.0"
-    "@artsy/palette-mobile": "npm:22.2.0--canary.425.5134.0"
->>>>>>> b944009a52 (chore: bump palette-mobile again)
+    "@artsy/palette-mobile": "npm:22.2.0--canary.425.5159.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
@@ -13331,7 +13325,7 @@ __metadata:
     react-native-blob-util: "npm:0.19.11"
     react-native-blurhash: "npm:2.1.2"
     react-native-bootsplash: "npm:6.3.10"
-    react-native-collapsible-tab-view: "npm:8.0.1"
+    react-native-collapsible-tab-view: "npm:9.0.0-rc.0"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.28.0"
@@ -22082,21 +22076,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-collapsible-tab-view@npm:8.0.1, react-native-collapsible-tab-view@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "react-native-collapsible-tab-view@npm:8.0.1"
+"react-native-collapsible-tab-view@npm:9.0.0-rc.0":
+  version: 9.0.0-rc.0
+  resolution: "react-native-collapsible-tab-view@npm:9.0.0-rc.0"
   dependencies:
     use-deep-compare: "npm:^1.1.0"
   peerDependencies:
-    "@shopify/flash-list": ">=1.0.0"
+    "@shopify/flash-list": ">=2.0.0"
     react: "*"
     react-native: "*"
     react-native-pager-view: "*"
-    react-native-reanimated: ">=3.8.1"
+    react-native-reanimated: ">=4.1.0"
+    react-native-worklets: ">=0.5.1"
   peerDependenciesMeta:
     "@shopify/flash-list":
       optional: true
-  checksum: 10c0/b4d8c8936cb8b647fc50a5e8ccbb4875d74cc68f90864e13980ec5351b9b49acbe84890c629dc1343f23730295483bd25c219435fd738dd3ac7ac879f221e620
+  checksum: 10c0/6297022971370d3e8819cb866203e20bbcaab50009b8f5e8cecb9bf04ae96361131aef073d4c4cc8ffa7e625934a18c2a7ee3d5bb180560c8579bea523035361
   languageName: node
   linkType: hard
 
