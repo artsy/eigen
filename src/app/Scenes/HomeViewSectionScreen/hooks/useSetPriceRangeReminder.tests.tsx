@@ -4,7 +4,6 @@ import {
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -40,7 +39,6 @@ const TestComponent = (props: any) => {
 describe("useSetPriceRangeReminder", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePriceRangeToast: true })
   })
 
   it("shows toast when all conditions are met", async () => {
