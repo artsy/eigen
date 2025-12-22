@@ -170,12 +170,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableLongPressContextMenuOnboarding",
   },
-  AREnableProgressiveOnboardingPriceRangeHome: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable progressive onboarding price range home",
-    echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",
-  },
   ARShowOnboardingPriceRangeScreen: {
     readyForRelease: true,
     showInDevMenu: true,
