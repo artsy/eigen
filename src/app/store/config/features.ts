@@ -182,12 +182,6 @@ export const features = {
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
-  AREnablePriceRangeToast: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable price range toast prompting users to update a price range",
-    echoFlagKey: "AREnablePriceRangeToast",
-  },
   AREnableNewHomeViewCardRailType: {
     readyForRelease: true,
     showInDevMenu: true,
