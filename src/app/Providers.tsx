@@ -95,7 +95,9 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
 )
 
 const KeyboardControllerProvider = (props: { children?: React.ReactNode }) => (
-  <KeyboardProvider>{props.children}</KeyboardProvider>
+  <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+    {props.children}
+  </KeyboardProvider>
 )
 
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {

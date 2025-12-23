@@ -1,5 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { NavigationHeader } from "app/Components/NavigationHeader"
@@ -12,13 +20,16 @@ import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/
 import { SavedSearchFilterSize } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterSize"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
-import { Alert, Platform, ScrollView } from "react-native"
+import { Alert } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
 
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
+  const space = useSpace()
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
@@ -35,7 +46,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       >
         Filters
       </NavigationHeader>
-      <ScrollView>
+      <KeyboardAwareForm>
         <SavedSearchFilterAppliedFilters />
         <SavedSearchFilterAdditionalGeneIDs />
         <SavedSearchFilterRarity />
@@ -45,13 +56,21 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <SavedSearchFilterWaysToBuy />
         <SavedSearchFilterColor />
         <Spacer y={2} />
-      </ScrollView>
+      </KeyboardAwareForm>
 
-      <Flex p={2} pb={Platform.OS === "android" ? 2 : 0} borderTopWidth={1} borderTopColor="mono10">
-        <Button block onPress={navigation.goBack} haptic mb={`${bottom}px`}>
-          Set Filters
-        </Button>
-      </Flex>
+      <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
+        <Flex
+          p={2}
+          pb={`${bottom}px`}
+          borderTopWidth={1}
+          borderTopColor="mono10"
+          backgroundColor="mono0"
+        >
+          <Button block onPress={navigation.goBack} haptic>
+            Set Filters
+          </Button>
+        </Flex>
+      </KeyboardStickyView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

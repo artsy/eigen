@@ -10,7 +10,6 @@ import {
   Text,
   useColor,
   useScreenDimensions,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -43,7 +42,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, Platform, TouchableOpacity } from "react-native"
+import { Alert, TouchableOpacity } from "react-native"
 import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 
@@ -62,7 +61,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const { formik } = useArtworkForm()
   const color = useColor()
-  const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
   const androidCustomSheetStyles = useAndroidActionSheetStyles()
@@ -235,7 +233,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
-    <Flex>
+    <Flex flex={1}>
       {formikValues.artistSearchResult?.internalID ? (
         <MyCollectionArtworkFormDeleteArtworkModal
           visible={showDeleteArtistModal}
@@ -276,8 +274,8 @@ export const MyCollectionArtworkFormMain: React.FC<
         onLeave={handleBackButtonPress}
       />
 
-      <KeyboardAwareForm ref={scrollViewRef}>
-        <Flex style={{ paddingBottom: 160 }}>
+      <KeyboardAwareForm ref={scrollViewRef} bottomOffset={bottom + 90}>
+        <Flex>
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
               <ArtistField />
@@ -414,7 +412,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <ScreenMargin>
             {mode === "edit" && !!artwork && (
               <Text
-                my={4}
+                my={2}
                 variant="sm"
                 underline
                 color={color("red100")}
@@ -436,22 +434,21 @@ export const MyCollectionArtworkFormMain: React.FC<
             </ScreenMargin>
           )}
         </Flex>
+      </KeyboardAwareForm>
 
-        <KeyboardStickyView
-          style={{ padding: space(2), paddingBottom: Platform.OS === "android" ? space(2) : 0 }}
-        >
+      <KeyboardStickyView offset={{ opened: bottom }}>
+        <Box p={2} backgroundColor="mono0">
           <Button
             disabled={!formik.isValid || !isFormDirty()}
             block
             onPress={() => formik.handleSubmit()}
             testID="CompleteButton"
             haptic
-            mb={`${bottom}px`}
           >
             {mode === "edit" ? "Save changes" : "Complete"}
           </Button>
-        </KeyboardStickyView>
-      </KeyboardAwareForm>
+        </Box>
+      </KeyboardStickyView>
     </Flex>
   )
 }
