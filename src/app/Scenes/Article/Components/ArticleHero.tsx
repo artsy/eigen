@@ -101,15 +101,15 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
       ) : null}
 
       <Flex mx={2}>
-        <Text variant="xs" color="mono100">
+        <Text variant="sm" color="mono100">
           {data.vertical}
         </Text>
 
-        <Text variant="lg-display" color="mono100">
+        <Text variant="xl" color="mono100">
           {data.title}
         </Text>
 
-        <Text variant="xs" color="mono100" mt={0.5}>
+        <Text variant="md" color="mono100" mt={0.5}>
           {data.byline}
         </Text>
 
