@@ -1,7 +1,7 @@
 import { SelectButton } from "app/Components/Select/Components/SelectButton"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { isEqual } from "lodash"
-import React, { useState } from "react"
+import React, { useImperativeHandle, useState } from "react"
 import { TextInput } from "react-native"
 
 export interface SelectOption<ValueType> {
@@ -9,6 +9,11 @@ export interface SelectOption<ValueType> {
   label: NonNullable<React.ReactNode>
   searchTerms?: string[]
   searchImportance?: number
+}
+
+export interface SelectRef {
+  openSelectModal: () => void
+  closeSelectModal: () => void
 }
 
 export interface SelectProps<ValueType> {
@@ -31,6 +36,7 @@ export interface SelectProps<ValueType> {
   title?: string
   tooltipText?: string | React.JSX.Element
   value: ValueType | null | undefined
+  ref?: React.Ref<SelectRef>
 }
 
 export const Select = <ValueType,>({
@@ -53,6 +59,7 @@ export const Select = <ValueType,>({
   onModalFinishedClosing,
   testID,
   error,
+  ref,
 }: SelectProps<ValueType>) => {
   const [showingModal, setShowingModal] = useState(false)
 
@@ -89,6 +96,11 @@ export const Select = <ValueType,>({
 
     return isEqual(o.value, value)
   })
+
+  useImperativeHandle(ref, () => ({
+    openSelectModal: open,
+    closeSelectModal: close,
+  }))
 
   return (
     <>

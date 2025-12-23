@@ -13,6 +13,7 @@ import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { SelectRef } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
@@ -105,6 +106,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const stateRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const phoneRef = useRef<Input>(null)
+  const countryPickerRef = useRef<SelectRef>(null)
 
   return (
     <Flex flex={1}>
@@ -217,12 +219,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             error={showError("phoneNumber")}
             onChangeText={handleChange("phoneNumber")}
             onBlur={handleBlur("phoneNumber")}
-            onSubmitEditing={() => phoneRef.current?.blur()}
+            returnKeyType="next"
+            onSubmitEditing={() => countryPickerRef.current?.openSelectModal()}
+            submitBehavior="submit"
           />
 
           <Spacer y={2} />
 
           <CountrySelect
+            ref={countryPickerRef}
             onSelectValue={(countryCode: string) =>
               setFieldValue("country", {
                 shortName: countryCode,
