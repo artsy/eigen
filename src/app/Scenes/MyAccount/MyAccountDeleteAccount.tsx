@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
@@ -14,6 +15,7 @@ import { screen } from "app/utils/track/helpers"
 import React, { useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { deleteUserAccount } from "./deleteUserAccount"
 
@@ -28,6 +30,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const { bottom } = useSafeAreaInsets()
   const space = useSpace()
 
   const navigation = useNavigation()
@@ -42,7 +45,10 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         context_screen_owner_type: OwnerType.accountDeleteMyAccount,
       })}
     >
-      <KeyboardAwareForm contentContainerStyle={{ padding: space(2) }}>
+      <KeyboardAwareForm
+        contentContainerStyle={{ padding: space(2) }}
+        bottomOffset={BOTTOM_TABS_HEIGHT + bottom + 90}
+      >
         <Flex>
           <Text variant="lg-display">Delete My Account</Text>
           <Spacer y={2} />
@@ -69,7 +75,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               Private Sales, etc
             </Text>
           </Flex>
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Input
             multiline
             placeholder="Please share with us why you are leaving"
@@ -77,7 +83,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             defaultValue={explanation}
             error={!hasPassword ? error : undefined}
           />
-          <Spacer y={4} />
+          <Spacer y={2} />
           <Text variant="xs" color="mono100" pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.
@@ -96,8 +102,10 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             </>
           )}
         </Flex>
+      </KeyboardAwareForm>
 
-        <KeyboardStickyView style={{ margin: space(1) }}>
+      <KeyboardStickyView offset={{ opened: BOTTOM_TABS_HEIGHT + bottom }}>
+        <Flex p={1} backgroundColor="mono0">
           <Button
             block
             disabled={!enableDelete}
@@ -141,8 +149,8 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Button block variant="outline" onPress={() => navigation.goBack()}>
             Cancel
           </Button>
-        </KeyboardStickyView>
-      </KeyboardAwareForm>
+        </Flex>
+      </KeyboardStickyView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

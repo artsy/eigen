@@ -17,6 +17,8 @@ import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
 import { memo, useCallback, useRef } from "react"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type CreditCardFormProps = NativeStackScreenProps<BiddingNavigationStackParams, "CreditCardForm">
 
@@ -28,6 +30,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     params: { onSubmit, billingAddress },
   },
 }) => {
+  const { bottom } = useSafeAreaInsets()
   const space = useSpace()
   const initialValues: CreditCardFormValues = {
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
@@ -104,12 +107,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const phoneRef = useRef<Input>(null)
 
   return (
-    <Flex>
+    <Flex flex={1}>
       <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
         Add Credit Card
       </NavigationHeader>
 
-      <KeyboardAwareForm contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}>
+      <KeyboardAwareForm
+        bottomOffset={bottom + 90}
+        contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}
+      >
         <Flex>
           <>
             <CreditCardField onCardChange={handleOnCardChange} />
@@ -241,22 +247,24 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           {"\n"}A valid credit card is required in order to bid. Please enter your credit card
           information below. The name on your Artsy account must match the name on the card.
         </Text>
+
+        <Spacer y={1} />
       </KeyboardAwareForm>
 
-      <Spacer y={1} />
-
-      <Box p={2} mb={2}>
-        <Button
-          testID="credit-card-form-button"
-          disabled={!isValid || !dirty}
-          loading={isSubmitting}
-          block
-          width={100}
-          onPress={() => handleSubmit()}
-        >
-          Save
-        </Button>
-      </Box>
+      <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
+        <Box p={2} pb={`${bottom}px`} backgroundColor="mono0">
+          <Button
+            testID="credit-card-form-button"
+            disabled={!isValid || !dirty}
+            loading={isSubmitting}
+            block
+            width={100}
+            onPress={() => handleSubmit()}
+          >
+            Save
+          </Button>
+        </Box>
+      </KeyboardStickyView>
     </Flex>
   )
 }
