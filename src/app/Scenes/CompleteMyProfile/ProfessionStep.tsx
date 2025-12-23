@@ -20,7 +20,7 @@ export const ProfessionStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
         <KeyboardAvoidingContainer style={{ justifyContent: "space-between" }}>
           <Flex px={2} onLayout={() => ref.current?.focus()}>
             <Text variant="lg-display">Add your profession</Text>
@@ -44,9 +44,9 @@ export const ProfessionStep: FC = () => {
               ref={ref}
             />
           </Flex>
-
-          <Footer isFormDirty={!!profession} onGoNext={goNext} />
         </KeyboardAvoidingContainer>
+
+        <Footer isFormDirty={!!profession} onGoNext={goNext} />
       </Screen.Body>
     </Screen>
   )

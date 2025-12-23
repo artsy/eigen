@@ -12,7 +12,6 @@ import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils
 import React from "react"
 import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 
@@ -98,26 +97,24 @@ export const BottomAlignedButton: React.FC<React.PropsWithChildren<BottomAligned
   disabled,
   showSeparator = true,
 }) => (
-  <Flex>
+  <Flex flex={1}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
-    <KeyboardStickyView>
-      {!!showSeparator && <Separator key="separator" />}
-      <Spacer y={1} />
-      <Box px={2}>
-        <Button
-          accessibilityLabel={buttonText}
-          block
-          width="100%"
-          onPress={onPress}
-          disabled={disabled}
-        >
-          {buttonText}
-        </Button>
-      </Box>
-      <Spacer y={1} />
-    </KeyboardStickyView>
+    {!!showSeparator && <Separator key="separator" />}
+    <Spacer y={1} />
+    <Box px={2}>
+      <Button
+        accessibilityLabel={buttonText}
+        block
+        width="100%"
+        onPress={onPress}
+        disabled={disabled}
+      >
+        {buttonText}
+      </Button>
+    </Box>
+    <Spacer y={1} />
   </Flex>
 )
 
