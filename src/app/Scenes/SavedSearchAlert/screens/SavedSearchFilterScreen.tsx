@@ -46,7 +46,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       >
         Filters
       </NavigationHeader>
-      <KeyboardAwareForm>
+      <KeyboardAwareForm bottomOffset={bottom + 90}>
         <SavedSearchFilterAppliedFilters />
         <SavedSearchFilterAdditionalGeneIDs />
         <SavedSearchFilterRarity />

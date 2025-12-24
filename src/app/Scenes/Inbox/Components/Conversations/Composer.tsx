@@ -4,8 +4,9 @@ import { Composer_conversation$data } from "__generated__/Composer_conversation.
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform, TextInput, TouchableWithoutFeedback } from "react-native"
+import { TextInput, TouchableWithoutFeedback } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -37,6 +38,7 @@ interface Props {
 const ComposerInner: React.FC<
   React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInput> }>
 > = ({ disabled, onSubmit, value, conversation, children, forwardedRef }) => {
+  const { bottom } = useSafeAreaInsets()
   const [active, setActive] = useState(false)
   const [text, setText] = useState<string | null>(null)
   const inputRef = useRef<TextInput>(null)
@@ -87,8 +89,8 @@ const ComposerInner: React.FC<
   }, [forwardedRef])
   return (
     <KeyboardAvoidingContainer
-      keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 80}
-      style={{ flex: 1, justifyContent: "space-between" }}
+      keyboardVerticalOffset={bottom + 80}
+      style={{ justifyContent: "space-between" }}
     >
       {children}
       <Flex flexDirection="column">
