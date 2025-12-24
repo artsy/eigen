@@ -96,7 +96,10 @@ export const Form: React.FC<FormProps> = ({
 
   return (
     <>
-      <KeyboardAwareForm contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}>
+      <KeyboardAwareForm
+        bottomOffset={bottom + 180}
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+      >
         {!isEditMode && (
           <>
             <InfoButton
