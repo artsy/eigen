@@ -12737,6 +12737,7 @@ __metadata:
     react-native-haptic-feedback: "npm:1.13.0"
     react-native-image-crop-picker: "npm:0.51.0"
     react-native-in-app-review: "npm:4.3.3"
+    react-native-keyboard-controller: "npm:^1.20.2"
     react-native-keychain: "npm:10.0.0"
     react-native-keys: "npm:0.7.13"
     react-native-launch-arguments: "npm:4.1.0"
@@ -21597,6 +21598,19 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/87d20b900aded7d44c90afb946a7aa03c23a94ca3dd547bdddc2303b85357e4aab22567a57b19f1558d6c8be7058e3dcf34faa1e15182d1604f90974266d9a1d
+  languageName: node
+  linkType: hard
+
+"react-native-keyboard-controller@npm:^1.20.2":
+  version: 1.20.2
+  resolution: "react-native-keyboard-controller@npm:1.20.2"
+  dependencies:
+    react-native-is-edge-to-edge: "npm:^1.2.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10c0/39e23c778fa4b52b36c71d0c3970508c47dafe7a3a16ece12c87e87a290bddca0b334bd26356fb31cae9be9d8a213d8f8d009d68c6b5ed574035dc1a11a2479c
   languageName: node
   linkType: hard
 

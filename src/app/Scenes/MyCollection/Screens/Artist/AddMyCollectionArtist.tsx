@@ -4,9 +4,10 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
 import React, { useEffect, useRef, useState } from "react"
-import { Keyboard, KeyboardAvoidingView, ScrollView } from "react-native"
+import { KeyboardAwareScrollViewRef, KeyboardController } from "react-native-keyboard-controller"
 import * as Yup from "yup"
 
 export interface MyCollectionCustomArtistSchema {
@@ -31,7 +32,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
 
-  const scrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
   const nameInputRef = useRef<InputRef>(null)
   const nationalityInputRef = useRef<InputRef>(null)
   const birthYearInputRef = useRef<InputRef>(null)
@@ -41,7 +42,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
 
   useEffect(() => {
     if (isFocused) {
-      Keyboard.dismiss()
+      KeyboardController.dismiss()
     }
   }, [isFocused])
 
@@ -85,110 +86,104 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
 
   return (
     <Screen safeArea={false}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        {!props.useNativeHeader && (
-          <NavigationHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
-            Add New Artist
-          </NavigationHeader>
-        )}
+      {!props.useNativeHeader && (
+        <NavigationHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
+          Add New Artist
+        </NavigationHeader>
+      )}
 
-        <AbandonFlowModal
-          continueButtonTitle="Continue Editing"
-          isVisible={!!showAbandonModal}
-          leaveButtonTitle="Leave Without Saving"
-          onDismiss={() => setShowAbandonModal(false)}
-          onLeave={navigation.goBack}
-          subtitle="Changes you have made so far will not be saved."
-          title="Leave without saving?"
-        />
+      <AbandonFlowModal
+        continueButtonTitle="Continue Editing"
+        isVisible={!!showAbandonModal}
+        leaveButtonTitle="Leave Without Saving"
+        onDismiss={() => setShowAbandonModal(false)}
+        onLeave={navigation.goBack}
+        subtitle="Changes you have made so far will not be saved."
+        title="Leave without saving?"
+      />
 
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          ref={scrollViewRef}
-        >
-          <Flex px={2}>
-            <Join separator={<Spacer y={2} />}>
-              <Input
-                accessibilityLabel="Artist Name"
-                autoCorrect={false}
-                error={errors.name}
-                onBlur={() => validateField("name")}
-                onChange={() => handleChange}
-                onChangeText={(text) => handleOnChangeText("name", text)}
-                onSubmitEditing={() => nationalityInputRef.current?.focus()}
-                ref={nameInputRef}
-                required
-                returnKeyType="next"
-                title="Artist Name"
-                value={values.name}
-                testID="artist-input"
-              />
-              <Input
-                accessibilityLabel="Nationality"
-                autoCorrect={false}
-                error={errors.nationality}
-                onBlur={() => validateField("nationality")}
-                onChange={() => handleChange}
-                onChangeText={(text) => handleOnChangeText("nationality", text)}
-                onSubmitEditing={() => birthYearInputRef.current?.focus()}
-                ref={nationalityInputRef}
-                returnKeyType="next"
-                title="Nationality"
-                value={values.nationality}
-                testID="nationality-input"
-              />
-              <Flex flexDirection="row" flex={2}>
-                <Join separator={<Spacer x={4} />}>
-                  <Flex flex={1}>
-                    <Input
-                      accessibilityLabel="Birth Year"
-                      autoCorrect={false}
-                      error={errors.birthYear}
-                      keyboardType="numeric"
-                      maxLength={4}
-                      onBlur={() => validateField("birthYear")}
-                      onChange={() => handleChange}
-                      onChangeText={(text) => handleOnChangeText("birthYear", text)}
-                      ref={birthYearInputRef}
-                      title="Birth Year"
-                      value={values.birthYear}
-                      testID="birth-year-input"
-                    />
-                  </Flex>
-                  <Flex flex={1}>
-                    <Input
-                      accessibilityLabel="Death Year"
-                      autoCorrect={false}
-                      error={errors.deathYear}
-                      keyboardType="numeric"
-                      maxLength={4}
-                      onBlur={() => validateField("deathYear")}
-                      onChange={() => handleChange}
-                      onChangeText={(text) => handleOnChangeText("deathYear", text)}
-                      ref={deathYearInputRef}
-                      title="Death Year"
-                      value={values.deathYear}
-                      testID="death-year-input"
-                    />
-                  </Flex>
-                </Join>
-              </Flex>
-              <Spacer y={1} />
+      <KeyboardAwareForm ref={scrollViewRef}>
+        <Flex px={2}>
+          <Join separator={<Spacer y={2} />}>
+            <Input
+              accessibilityLabel="Artist Name"
+              autoCorrect={false}
+              error={errors.name}
+              onBlur={() => validateField("name")}
+              onChange={() => handleChange}
+              onChangeText={(text) => handleOnChangeText("name", text)}
+              onSubmitEditing={() => nationalityInputRef.current?.focus()}
+              ref={nameInputRef}
+              required
+              returnKeyType="next"
+              title="Artist Name"
+              value={values.name}
+              testID="artist-input"
+            />
+            <Input
+              accessibilityLabel="Nationality"
+              autoCorrect={false}
+              error={errors.nationality}
+              onBlur={() => validateField("nationality")}
+              onChange={() => handleChange}
+              onChangeText={(text) => handleOnChangeText("nationality", text)}
+              onSubmitEditing={() => birthYearInputRef.current?.focus()}
+              ref={nationalityInputRef}
+              returnKeyType="next"
+              title="Nationality"
+              value={values.nationality}
+              testID="nationality-input"
+            />
+            <Flex flexDirection="row" flex={2}>
+              <Join separator={<Spacer x={4} />}>
+                <Flex flex={1}>
+                  <Input
+                    accessibilityLabel="Birth Year"
+                    autoCorrect={false}
+                    error={errors.birthYear}
+                    keyboardType="numeric"
+                    maxLength={4}
+                    onBlur={() => validateField("birthYear")}
+                    onChange={() => handleChange}
+                    onChangeText={(text) => handleOnChangeText("birthYear", text)}
+                    ref={birthYearInputRef}
+                    title="Birth Year"
+                    value={values.birthYear}
+                    testID="birth-year-input"
+                  />
+                </Flex>
+                <Flex flex={1}>
+                  <Input
+                    accessibilityLabel="Death Year"
+                    autoCorrect={false}
+                    error={errors.deathYear}
+                    keyboardType="numeric"
+                    maxLength={4}
+                    onBlur={() => validateField("deathYear")}
+                    onChange={() => handleChange}
+                    onChangeText={(text) => handleOnChangeText("deathYear", text)}
+                    ref={deathYearInputRef}
+                    title="Death Year"
+                    value={values.deathYear}
+                    testID="death-year-input"
+                  />
+                </Flex>
+              </Join>
+            </Flex>
+            <Spacer y={1} />
 
-              <Button
-                accessibilityLabel="Submit Add Artist"
-                disabled={!dirty || !isValid}
-                flex={1}
-                onPress={() => handleSubmit()}
-                testID="submit-add-artist-button"
-              >
-                Add Artist
-              </Button>
-            </Join>
-          </Flex>
-        </ScrollView>
-      </KeyboardAvoidingView>
+            <Button
+              accessibilityLabel="Submit Add Artist"
+              disabled={!dirty || !isValid}
+              flex={1}
+              onPress={() => handleSubmit()}
+              testID="submit-add-artist-button"
+            >
+              Add Artist
+            </Button>
+          </Join>
+        </Flex>
+      </KeyboardAwareForm>
     </Screen>
   )
 }
