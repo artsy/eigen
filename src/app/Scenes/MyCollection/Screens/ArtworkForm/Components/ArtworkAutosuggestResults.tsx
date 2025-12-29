@@ -214,10 +214,11 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
 
 export const ArtworkAutosuggestResultsPlaceholder: React.FC = () => {
   const screen = useScreenDimensions()
+  const space = useSpace()
 
   return (
-    <Flex accessibilityLabel="Artwork results are loading" mt={2} mr={2}>
-      <GenericGridPlaceholder width={screen.width - 40} />
+    <Flex accessibilityLabel="Artwork results are loading" mt={2} mx={2}>
+      <GenericGridPlaceholder width={screen.width - 2 * space(2)} />
     </Flex>
   )
 }

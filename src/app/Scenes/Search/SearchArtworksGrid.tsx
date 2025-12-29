@@ -103,7 +103,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         </Text>
       </ArtworksFilterHeader>
 
-      <Flex flex={1} justifyContent="center" mx={2}>
+      <Flex flex={1} justifyContent="center">
         <FlashList
           masonry
           showsVerticalScrollIndicator={false}
