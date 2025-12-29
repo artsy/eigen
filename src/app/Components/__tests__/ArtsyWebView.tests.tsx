@@ -374,6 +374,65 @@ describe("ArtsyWebViewPage", () => {
         expect(mockGoBack).not.toHaveBeenCalled()
       })
     })
+
+    describe("nested modal routes", () => {
+      it("intercepts navigation to /terms from a modal webview and opens it as a new modal", () => {
+        const view = render({
+          isPresentedModally: true,
+          url: "https://staging.artsy.net/orders/123",
+        })
+        const onShouldStartLoadWithRequest = webViewProps(view).onShouldStartLoadWithRequest
+
+        const result = onShouldStartLoadWithRequest?.({
+          url: "https://staging.artsy.net/terms",
+        } as any)
+
+        expect(result).toBe(false) // Prevent navigation
+        expect(navigate).toHaveBeenCalledWith("https://staging.artsy.net/terms")
+      })
+
+      it("allows initial load of /terms when the webview is opened directly to /terms", () => {
+        const view = render({ isPresentedModally: true, url: "https://staging.artsy.net/terms" })
+        const onShouldStartLoadWithRequest = webViewProps(view).onShouldStartLoadWithRequest
+
+        const result = onShouldStartLoadWithRequest?.({
+          url: "https://staging.artsy.net/terms",
+        } as any)
+
+        expect(result).toBe(true) // Allow navigation
+        expect(navigate).not.toHaveBeenCalled()
+      })
+
+      it("allows navigation to /terms when not in a modal webview", () => {
+        const view = render({
+          isPresentedModally: false,
+          url: "https://staging.artsy.net/orders/123",
+        })
+        const onShouldStartLoadWithRequest = webViewProps(view).onShouldStartLoadWithRequest
+
+        const result = onShouldStartLoadWithRequest?.({
+          url: "https://staging.artsy.net/terms",
+        } as any)
+
+        expect(result).toBe(true) // Allow navigation
+        expect(navigate).not.toHaveBeenCalled()
+      })
+
+      it("allows navigation to non-nested modal routes", () => {
+        const view = render({
+          isPresentedModally: true,
+          url: "https://staging.artsy.net/orders/123",
+        })
+        const onShouldStartLoadWithRequest = webViewProps(view).onShouldStartLoadWithRequest
+
+        const result = onShouldStartLoadWithRequest?.({
+          url: "https://staging.artsy.net/some-other-page",
+        } as any)
+
+        expect(result).toBe(true) // Allow navigation
+        expect(navigate).not.toHaveBeenCalled()
+      })
+    })
   })
 })
 
