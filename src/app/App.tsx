@@ -28,6 +28,7 @@ import { NativeModules, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
+import { enableFreeze } from "react-native-screens"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -40,6 +41,8 @@ import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndF
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 require("./system/ignoreLogs")
+
+enableFreeze(true)
 
 if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
