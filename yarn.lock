@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.2.0--canary.425.5159.0":
-  version: 22.2.0--canary.425.5159.0
-  resolution: "@artsy/palette-mobile@npm:22.2.0--canary.425.5159.0"
+"@artsy/palette-mobile@npm:22.2.0--canary.425.5168.0":
+  version: 22.2.0--canary.425.5168.0
+  resolution: "@artsy/palette-mobile@npm:22.2.0--canary.425.5168.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -101,7 +101,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/10d113d67c810036b9c264c4b9246214183e7000d826540d8852f2db8aeae927609ef9b1ca2c1ee81c14fd92512fb376176b92b997ea6b3ee3f26f89029ba476
+  checksum: 10c0/7e074b6cf02860688492151c0f7c51077385f43bd298f74696ce5a3970071d2fe6ac6aa66d20f2797ad64eec5bc2c72ed256e2fe79feeaca480907e79c120e76
   languageName: node
   linkType: hard
 
@@ -13165,7 +13165,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.63.0"
-    "@artsy/palette-mobile": "npm:22.2.0--canary.425.5159.0"
+    "@artsy/palette-mobile": "npm:22.2.0--canary.425.5168.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
