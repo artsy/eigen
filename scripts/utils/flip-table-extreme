@@ -64,10 +64,11 @@ then
 fi
 
 echo 'Clear relay, relay query map, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
-rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
+rm -rf "${TMPDIR%/}"/RelayFindGraphQLTags-*
 rm -rf data/complete.queryMap.json
 rm -rf .cache
-rm -rf "$TMPDIR"/metro*
+rm -rf "${TMPDIR%/}"/metro-*
+rm -rf "${TMPDIR%/}"/haste-map-*
 rm -rf src/__generated__/*.graphql.ts
 
 

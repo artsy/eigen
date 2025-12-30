@@ -30,10 +30,10 @@ rm -rf node_modules
 
 echo "Clear caches (linting and metro) (┛◉Д◉)┛彡┻━┻"
 rm -rf .cache
-rm -rf "$TMPDIR/metro*"
+rm -rf "${TMPDIR%/}"/metro-*
 
 echo "Clear hastemap (╯ರ ~ ರ）╯︵ ┻━┻"
-rm -rf "$TMPDIR/haste-map-*"
+rm -rf "${TMPDIR%/}"/haste-map-*
 
 echo "Clear CocoaPods cache (ノಠ益ಠ)ノ彡┻━┻"
 rm -rf ~/Library/Caches/CocoaPods
