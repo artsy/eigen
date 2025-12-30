@@ -25,6 +25,7 @@ import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState
 import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
+import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 
@@ -221,6 +222,15 @@ export const ArtsyWebView = forwardRef<
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
+    // Track the initial path of this webview to avoid intercepting its own initial load
+    const getInitialPath = () => {
+      try {
+        return new URL(uri).pathname
+      } catch {
+        return ""
+      }
+    }
+    const initialPath = useRef<string>(getInitialPath())
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -263,13 +273,27 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
+        ["ReactWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(result.module)
       ) {
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
         }
+        return
+      } else if (result.type === "match" && result.module === "ModalWebView") {
+        // For ModalWebView routes we want a separate modal to be presented to avoid
+        // navigation issues with the original webview.
+        const targetPath = new URL(targetURL).pathname
+
+        // Don't intercept if this is the initial load
+        if (targetPath === initialPath.current) {
+          return
+        }
+
+        if (!__TEST__) {
+          innerRef.current?.stopLoading()
+        }
+
+        navigate(targetURL)
         return
       } else {
         const needToGoBack =
