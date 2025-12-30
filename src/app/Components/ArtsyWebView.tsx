@@ -80,20 +80,6 @@ export const ArtsyWebViewPage = ({
   const ref = useRef<WebViewWithShareTitleUrl>(null)
   const tracking = useTracking()
 
-  // Check if hideCloseButton query parameter is present
-  const shouldHideCloseButton = (() => {
-    try {
-      const fullUrl = url.startsWith("/") ? webURL + url : url
-      const queryIndex = fullUrl.indexOf("?")
-      if (queryIndex === -1) return false
-      const queryString = fullUrl.slice(queryIndex + 1)
-      const params = parseQueryString(queryString)
-      return params.hideCloseButton === "true"
-    } catch {
-      return false
-    }
-  })()
-
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
     /*
@@ -165,7 +151,7 @@ export const ArtsyWebViewPage = ({
       <Flex flex={1} backgroundColor="background">
         <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
-            useXButton={!shouldHideCloseButton && !!isPresentedModally && !canGoBack}
+            useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
             useShareButton={showShareButton}
             rightCloseButton={useRightCloseButton}
