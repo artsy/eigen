@@ -25,12 +25,8 @@ import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState
 import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
-import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-
-// Routes that should open as nested modals when linked from within a modal webview
-const NESTED_MODAL_ROUTES = ["/terms"]
 
 export interface ArtsyWebViewConfig {
   title?: string
@@ -82,6 +78,20 @@ export const ArtsyWebViewPage = ({
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
   const tracking = useTracking()
+
+  // Check if hideCloseButton query parameter is present
+  const shouldHideCloseButton = (() => {
+    try {
+      const fullUrl = url.startsWith("/") ? webURL + url : url
+      const queryIndex = fullUrl.indexOf("?")
+      if (queryIndex === -1) return false
+      const queryString = fullUrl.slice(queryIndex + 1)
+      const params = parseQueryString(queryString)
+      return params.hideCloseButton === "true"
+    } catch {
+      return false
+    }
+  })()
 
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
@@ -154,7 +164,7 @@ export const ArtsyWebViewPage = ({
       <Flex flex={1} backgroundColor="background">
         <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
-            useXButton={!!isPresentedModally && !canGoBack}
+            useXButton={!shouldHideCloseButton && !!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
             useShareButton={showShareButton}
             rightCloseButton={useRightCloseButton}
@@ -202,8 +212,6 @@ export const ArtsyWebView = forwardRef<
     const userAgent = GlobalStore.useAppState((state) => state.native?.sessionState?.userAgent)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
-    // Track if we're already handling a nested modal navigation to prevent duplicate modals
-    const handlingNestedModalRef = useRef<string | null>(null)
 
     const enableDarkMode = useFeatureFlag("ARDarkModeSupport")
     const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
@@ -213,15 +221,6 @@ export const ArtsyWebView = forwardRef<
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
-    // Track the initial path of this webview to avoid intercepting its own initial load
-    const getInitialPath = () => {
-      try {
-        return new URL(uri).pathname
-      } catch {
-        return ""
-      }
-    }
-    const initialPath = useRef<string>(getInitialPath())
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -231,50 +230,6 @@ export const ArtsyWebView = forwardRef<
         innerRef.current?.goBack()
       }
     }, 500)
-
-    // Handle navigation requests BEFORE they happen (to prevent history pollution)
-    const onShouldStartLoadWithRequest = (request: any) => {
-      const targetURL = expandGoogleAdLink(request.url)
-      const result = matchRoute(targetURL)
-
-      // Check if we should intercept nested modal routes
-      if (
-        isPresentedModally &&
-        result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
-      ) {
-        const targetPath = new URL(targetURL).pathname
-
-        // Don't intercept if this is the initial load
-        if (targetPath === initialPath.current) {
-          return true
-        }
-
-        // Intercept nested modal routes
-        if (NESTED_MODAL_ROUTES.some((route) => targetPath === route)) {
-          // Check if we're already handling this to prevent duplicates
-          if (handlingNestedModalRef.current === targetPath) {
-            return false
-          }
-
-          handlingNestedModalRef.current = targetPath
-
-          // Open as new modal instead
-          navigate(targetURL)
-
-          // Reset guard
-          setTimeout(() => {
-            handlingNestedModalRef.current = null
-          }, 1000)
-
-          return false // Prevent this navigation
-        }
-      }
-
-      return true // Allow navigation
-    }
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
       onNavigationStateChangeProp?.(evt)
@@ -384,7 +339,6 @@ export const ArtsyWebView = forwardRef<
               console.log("error parsing webview message data", e, data)
             }
           }}
-          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
           onNavigationStateChange={onNavigationStateChange}
         />
         {!!showDevToggleIndicator && (
