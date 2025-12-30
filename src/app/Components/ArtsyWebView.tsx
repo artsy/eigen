@@ -29,9 +29,6 @@ import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 
-// Routes that should open as nested modals when linked from within a modal webview
-const NESTED_MODAL_ROUTES = ["/terms"]
-
 export interface ArtsyWebViewConfig {
   title?: string
   /**
@@ -202,8 +199,6 @@ export const ArtsyWebView = forwardRef<
     const userAgent = GlobalStore.useAppState((state) => state.native?.sessionState?.userAgent)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
-    // Track if we're already handling a nested modal navigation to prevent duplicate modals
-    const handlingNestedModalRef = useRef<string | null>(null)
 
     const enableDarkMode = useFeatureFlag("ARDarkModeSupport")
     const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
@@ -222,6 +217,8 @@ export const ArtsyWebView = forwardRef<
       }
     }
     const initialPath = useRef<string>(getInitialPath())
+    // Track if the webview has finished its initial load (including redirects)
+    const hasFinishedInitialLoad = useRef(false)
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -232,52 +229,11 @@ export const ArtsyWebView = forwardRef<
       }
     }, 500)
 
-    // Handle navigation requests BEFORE they happen (to prevent history pollution)
-    const onShouldStartLoadWithRequest = (request: any) => {
-      const targetURL = expandGoogleAdLink(request.url)
-      const result = matchRoute(targetURL)
-
-      // Check if we should intercept nested modal routes
-      if (
-        isPresentedModally &&
-        result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
-      ) {
-        const targetPath = new URL(targetURL).pathname
-
-        // Don't intercept if this is the initial load
-        if (targetPath === initialPath.current) {
-          return true
-        }
-
-        // Intercept nested modal routes
-        if (NESTED_MODAL_ROUTES.some((route) => targetPath === route)) {
-          // Check if we're already handling this to prevent duplicates
-          if (handlingNestedModalRef.current === targetPath) {
-            return false
-          }
-
-          handlingNestedModalRef.current = targetPath
-
-          // Open as new modal instead
-          navigate(targetURL)
-
-          // Reset guard
-          setTimeout(() => {
-            handlingNestedModalRef.current = null
-          }, 1000)
-
-          return false // Prevent this navigation
-        }
-      }
-
-      return true // Allow navigation
-    }
-
     const onNavigationStateChange = (evt: WebViewNavigation) => {
       onNavigationStateChangeProp?.(evt)
+
+      // Save the current state before we potentially update it
+      const isStillInitialLoad = !hasFinishedInitialLoad.current
 
       const targetURL = expandGoogleAdLink(evt.url)
 
@@ -308,13 +264,31 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
+        ["ReactWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(result.module)
       ) {
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
         }
+        return
+      } else if (result.type === "match" && result.module === "ModalWebView") {
+        // For ModalWebView routes we want a separate modal to be presented to avoid
+        // navigation issues with the original webview.
+        const targetPath = new URL(targetURL).pathname
+
+        // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
+        if (targetPath === initialPath.current || isStillInitialLoad) {
+          // Mark initial load as complete after the page finishes loading
+          if (isStillInitialLoad && !evt.loading) {
+            hasFinishedInitialLoad.current = true
+          }
+          return
+        }
+
+        if (!__TEST__) {
+          innerRef.current?.stopLoading()
+        }
+
+        navigate(targetURL)
         return
       } else {
         const needToGoBack =
@@ -384,7 +358,6 @@ export const ArtsyWebView = forwardRef<
               console.log("error parsing webview message data", e, data)
             }
           }}
-          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
           onNavigationStateChange={onNavigationStateChange}
         />
         {!!showDevToggleIndicator && (
