@@ -217,6 +217,8 @@ export const ArtsyWebView = forwardRef<
       }
     }
     const initialPath = useRef<string>(getInitialPath())
+    // Track if the webview has finished its initial load (including redirects)
+    const hasFinishedInitialLoad = useRef(false)
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -229,6 +231,9 @@ export const ArtsyWebView = forwardRef<
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
       onNavigationStateChangeProp?.(evt)
+
+      // Save the current state before we potentially update it
+      const isStillInitialLoad = !hasFinishedInitialLoad.current
 
       const targetURL = expandGoogleAdLink(evt.url)
 
@@ -270,8 +275,12 @@ export const ArtsyWebView = forwardRef<
         // navigation issues with the original webview.
         const targetPath = new URL(targetURL).pathname
 
-        // Don't intercept if this is the initial load
-        if (targetPath === initialPath.current) {
+        // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
+        if (targetPath === initialPath.current || isStillInitialLoad) {
+          // Mark initial load as complete after the page finishes loading
+          if (isStillInitialLoad && !evt.loading) {
+            hasFinishedInitialLoad.current = true
+          }
           return
         }
 
