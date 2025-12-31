@@ -295,7 +295,6 @@ export const ArtsyWebView = forwardRef<
         }
 
         // We're intercepting this navigation - don't notify parent
-        // because we're canceling it with stopLoading/goBack
 
         // Stop loading and go back to undo the navigation history entry
         // This prevents canGoBack from becoming true and changing the X button to a back button
