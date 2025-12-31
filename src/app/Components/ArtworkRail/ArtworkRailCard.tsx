@@ -15,7 +15,6 @@ import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/C
 import { Disappearable } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { memo, useRef, useState } from "react"
 import { GestureResponderEvent, PixelRatio, Platform } from "react-native"
@@ -54,7 +53,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
     testID,
     ...restProps
   }) => {
-    const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
     const isIOS = Platform.OS === "ios"
 
     const { trackEvent } = useTracking()
@@ -86,7 +84,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
               // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
               onLongPress={() => {
                 // Android long press is tracked inside of the ContextMenuArtwork component
-                if (contextModule && contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+                if (contextModule && contextScreenOwnerType && isIOS) {
                   trackEvent(
                     trackLongPress.longPressedArtwork(
                       contextModule,

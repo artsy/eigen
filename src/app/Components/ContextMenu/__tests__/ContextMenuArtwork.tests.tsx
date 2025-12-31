@@ -25,10 +25,6 @@ describe("ContextMenuArtwork", () => {
   describe("on Android", () => {
     beforeEach(() => {
       Platform.OS = "android"
-
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableArtworkCardContextMenuAndroid: true,
-      })
     })
 
     it("shows context menu on long press", async () => {
@@ -43,26 +39,6 @@ describe("ContextMenuArtwork", () => {
       })
       await waitFor(() => {
         expect(screen.getByText("Share")).toBeOnTheScreen()
-      })
-    })
-
-    describe("when feature flag is disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableArtworkCardContextMenuAndroid: false,
-        })
-      })
-
-      it("does NOT show context menu on long press", async () => {
-        renderWithRelay()
-
-        const artworkCard = screen.getByTestId("artwork-card")
-
-        fireEvent(artworkCard, "onLongPress")
-
-        await waitFor(() => {
-          expect(screen.queryByText("Create alert")).not.toBeOnTheScreen()
-        })
       })
     })
   })
