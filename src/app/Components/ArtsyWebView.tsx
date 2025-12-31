@@ -238,6 +238,11 @@ export const ArtsyWebView = forwardRef<
       // Save the current state before we potentially update it
       const isStillInitialLoad = !hasFinishedInitialLoad.current
 
+      // Mark initial load as complete when any page finishes loading
+      if (isStillInitialLoad && !evt.loading) {
+        hasFinishedInitialLoad.current = true
+      }
+
       const targetURL = expandGoogleAdLink(evt.url)
 
       const result = matchRoute(targetURL)
@@ -285,10 +290,6 @@ export const ArtsyWebView = forwardRef<
 
         // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
         if (targetPath === initialPath.current || isStillInitialLoad) {
-          // Mark initial load as complete after the page finishes loading
-          if (isStillInitialLoad && !evt.loading) {
-            hasFinishedInitialLoad.current = true
-          }
           notifyParentOfNavigation()
           return
         }
@@ -296,12 +297,10 @@ export const ArtsyWebView = forwardRef<
         // We're intercepting this navigation - don't notify parent
         // because we're canceling it with stopLoading/goBack
 
-        if (!__TEST__) {
-          innerRef.current?.stopLoading()
-          // Go back to undo the navigation history entry that was added when the navigation started
-          // This prevents canGoBack from becoming true and changing the X button to a back button
-          innerRef.current?.goBack()
-        }
+        // Stop loading and go back to undo the navigation history entry
+        // This prevents canGoBack from becoming true and changing the X button to a back button
+        innerRef.current?.stopLoading()
+        innerRef.current?.goBack()
 
         navigate(targetURL)
         return
