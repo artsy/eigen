@@ -17,12 +17,13 @@ import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform } from "react-native"
+import { Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import { URL } from "react-native-url-polyfill"
@@ -149,7 +150,7 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="background">
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingContainer>
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -174,7 +175,7 @@ export const ArtsyWebViewPage = ({
                 : undefined
             }
           />
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingContainer>
       </Flex>
     </Screen>
   )

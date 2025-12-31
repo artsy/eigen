@@ -32,7 +32,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import React, { useCallback, useEffect } from "react"
-import { KeyboardAvoidingView } from "react-native"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -129,69 +128,67 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <SavedSearchStoreProvider
-          runtimeModel={{
-            ...savedSearchModel,
-            currentAlertID: savedSearchAlertId,
-            attributes: localizeHeightAndWidthAttributes({
-              attributes: attributes as SearchCriteriaAttributes,
-              // Sizes are always injected in inches
-              from: "in",
-              to: localizedUnit,
-            }),
-            entity,
-            unit: localizedUnit,
-          }}
-        >
-          <NavigationIndependentTree>
-            <NavigationContainer
-              initialState={initialState}
-              onStateChange={(state) => {
-                saveSession(state)
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...savedSearchModel,
+          currentAlertID: savedSearchAlertId,
+          attributes: localizeHeightAndWidthAttributes({
+            attributes: attributes as SearchCriteriaAttributes,
+            // Sizes are always injected in inches
+            from: "in",
+            to: localizedUnit,
+          }),
+          entity,
+          unit: localizedUnit,
+        }}
+      >
+        <NavigationIndependentTree>
+          <NavigationContainer
+            initialState={initialState}
+            onStateChange={(state) => {
+              saveSession(state)
+            }}
+            theme={theme}
+          >
+            <Stack.Navigator
+              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+              detachInactiveScreens={false}
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+                cardStyle: { backgroundColor: color("background") },
               }}
-              theme={theme}
             >
-              <Stack.Navigator
-                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                detachInactiveScreens={false}
-                screenOptions={{
-                  ...TransitionPresets.SlideFromRightIOS,
-                  headerShown: false,
-                  cardStyle: { backgroundColor: color("background") },
+              <Stack.Screen
+                name="EditSavedSearchAlertContent"
+                component={EditSavedSearchAlertContent}
+                initialParams={params}
+              />
+              <Stack.Screen
+                name="AlertArtworks"
+                component={AlertArtworks}
+                initialParams={{ alertId: savedSearchAlertId }}
+              />
+              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+              <Stack.Screen
+                name="AlertPriceRange"
+                component={AlertPriceRangeScreenQueryRenderer}
+                options={{
+                  // Avoid PanResponser conflicts between the slider and the slide back gesture
+                  gestureEnabled: false,
                 }}
-              >
-                <Stack.Screen
-                  name="EditSavedSearchAlertContent"
-                  component={EditSavedSearchAlertContent}
-                  initialParams={params}
-                />
-                <Stack.Screen
-                  name="AlertArtworks"
-                  component={AlertArtworks}
-                  initialParams={{ alertId: savedSearchAlertId }}
-                />
-                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                <Stack.Screen
-                  name="AlertPriceRange"
-                  component={AlertPriceRangeScreenQueryRenderer}
-                  options={{
-                    // Avoid PanResponser conflicts between the slider and the slide back gesture
-                    gestureEnabled: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="SavedSearchFilterScreen"
-                  component={SavedSearchFilterScreen}
-                  options={{
-                    gestureEnabled: false,
-                  }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </NavigationIndependentTree>
-        </SavedSearchStoreProvider>
-      </KeyboardAvoidingView>
+              />
+              <Stack.Screen
+                name="SavedSearchFilterScreen"
+                component={SavedSearchFilterScreen}
+                options={{
+                  gestureEnabled: false,
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </NavigationIndependentTree>
+      </SavedSearchStoreProvider>
     </ProvideScreenTracking>
   )
 }

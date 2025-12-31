@@ -12,8 +12,8 @@ import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResultsProps {
@@ -54,7 +54,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
 
   const handleOnScrollBeginDrag = () => {
     inputRef.current?.blur()
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
   }
 
   useEffect(() => {
