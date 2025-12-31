@@ -305,6 +305,26 @@ export const ArtsyWebView = forwardRef<
 
         navigate(targetURL)
         return
+      } else if (result.type === "match" && result.module === "ModalWebView") {
+        // For ModalWebView routes we want a separate modal to be presented to avoid
+        // navigation issues with the original webview.
+        const targetPath = new URL(targetURL).pathname
+
+        // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
+        if (targetPath === initialPath.current || isStillInitialLoad) {
+          // Mark initial load as complete after the page finishes loading
+          if (isStillInitialLoad && !evt.loading) {
+            hasFinishedInitialLoad.current = true
+          }
+          return
+        }
+
+        if (!__TEST__) {
+          innerRef.current?.stopLoading()
+        }
+
+        navigate(targetURL)
+        return
       } else {
         // Don't notify parent - we're canceling this navigation
         const needToGoBack =
