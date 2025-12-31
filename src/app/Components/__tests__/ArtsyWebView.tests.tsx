@@ -155,7 +155,7 @@ describe("ArtsyWebViewPage", () => {
       url: "https://staging.artsy.net/meet-the-specialists",
     })
 
-    // Complete initial load
+    // Complete the initial load
     act(() => {
       webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
