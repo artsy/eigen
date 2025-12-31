@@ -230,7 +230,10 @@ export const ArtsyWebView = forwardRef<
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
-      onNavigationStateChangeProp?.(evt)
+      // Helper to notify parent of navigation state changes when we allow navigation to complete
+      const notifyParentOfNavigation = () => {
+        onNavigationStateChangeProp?.(evt)
+      }
 
       // Save the current state before we potentially update it
       const isStillInitialLoad = !hasFinishedInitialLoad.current
@@ -244,9 +247,11 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        notifyParentOfNavigation()
         return
       }
       if (result.type === "match" && result.module === "Feature") {
+        notifyParentOfNavigation()
         return
       }
 
@@ -254,6 +259,7 @@ export const ArtsyWebView = forwardRef<
       // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
       // when in eigen purchase flow.
       if (result.type === "match" && result.module === "Home") {
+        // Don't notify parent - we're canceling this navigation
         stopLoading(true)
         return
       }
@@ -262,6 +268,7 @@ export const ArtsyWebView = forwardRef<
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
+
       if (
         result.type === "match" &&
         ["ReactWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(result.module)
@@ -269,6 +276,7 @@ export const ArtsyWebView = forwardRef<
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
         }
+        notifyParentOfNavigation()
         return
       } else if (result.type === "match" && result.module === "ModalWebView") {
         // For ModalWebView routes we want a separate modal to be presented to avoid
@@ -281,16 +289,24 @@ export const ArtsyWebView = forwardRef<
           if (isStillInitialLoad && !evt.loading) {
             hasFinishedInitialLoad.current = true
           }
+          notifyParentOfNavigation()
           return
         }
 
+        // We're intercepting this navigation - don't notify parent
+        // because we're canceling it with stopLoading/goBack
+
         if (!__TEST__) {
           innerRef.current?.stopLoading()
+          // Go back to undo the navigation history entry that was added when the navigation started
+          // This prevents canGoBack from becoming true and changing the X button to a back button
+          innerRef.current?.goBack()
         }
 
         navigate(targetURL)
         return
       } else {
+        // Don't notify parent - we're canceling this navigation
         const needToGoBack =
           result.type !== "external_url" ||
           (result.type === "external_url" && Platform.OS === "android")
