@@ -1,4 +1,4 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
@@ -13,7 +13,7 @@ import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/Confirma
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { KeyboardAvoidingView, Modal, Platform } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -49,15 +49,15 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         <NavigationContainer theme={theme}>
           <Modal
             visible={visible}
-            presentationStyle="fullScreen"
+            presentationStyle="overFullScreen"
             statusBarTranslucent
             animationType="slide"
           >
-            <SafeAreaView
+            <Flex
               style={{
                 flex: 1,
                 backgroundColor: color("background"),
-                paddingTop: Platform.OS === "ios" ? topInset : 0,
+                paddingTop: topInset,
               }}
             >
               <KeyboardAvoidingView
@@ -106,7 +106,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   />
                 </Stack.Navigator>
               </KeyboardAvoidingView>
-            </SafeAreaView>
+            </Flex>
           </Modal>
         </NavigationContainer>
       </NavigationIndependentTree>

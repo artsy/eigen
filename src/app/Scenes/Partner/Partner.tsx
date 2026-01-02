@@ -85,21 +85,15 @@ const Partner: React.FC<PartnerProps> = (props) => {
         headerProps={{ onBack: goBack }}
       >
         <Tabs.Tab name="Overview" label="Overview">
-          <Tabs.Lazy>
-            <PartnerOverview partner={partner} />
-          </Tabs.Lazy>
+          <PartnerOverview partner={partner} />
         </Tabs.Tab>
         <Tabs.Tab name="Artworks" label="Artworks">
-          <Tabs.Lazy>
-            <ArtworkFiltersStoreProvider>
-              <PartnerArtwork partner={partner} />
-            </ArtworkFiltersStoreProvider>
-          </Tabs.Lazy>
+          <ArtworkFiltersStoreProvider>
+            <PartnerArtwork partner={partner} />
+          </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
         <Tabs.Tab name="Shows" label="Shows">
-          <Tabs.Lazy>
-            <PartnerShows partner={partner} />
-          </Tabs.Lazy>
+          <PartnerShows partner={partner} />
         </Tabs.Tab>
       </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
