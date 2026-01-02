@@ -81,8 +81,26 @@ export const HTML: React.FC<HTMLProps> = ({
               marginBottom: "1em",
               ...variantStyles,
             },
+            ul: {
+              marginBottom: "1em",
+            },
+            li: {
+              fontFamily: FONTS.regular,
+              color: color("mono100"),
+              marginBottom: "1em",
+              ...variantStyles,
+            },
             em: {
               fontFamily: FONTS.italic,
+              color: color("mono100"),
+            },
+            h1: {
+              fontFamily: FONTS.medium,
+              fontSize: theme.textTreatments["xl"].fontSize,
+              lineHeight: theme.textTreatments["xl"].lineHeight,
+              letterSpacing: theme.textTreatments["xl"].letterSpacing,
+              marginBottom: "1em",
+              fontWeight: "normal",
               color: color("mono100"),
             },
             h2: {
