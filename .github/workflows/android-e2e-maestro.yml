@@ -65,6 +65,17 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
+      - name: Free up disk space
+        run: |
+          echo "🧹 Before cleanup:"
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          echo "🧹 After cleanup:"
+          df -h
+
       - name: Run tests with Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -73,7 +84,7 @@ jobs:
           arch: x86_64
           ram-size: "8192M"
           heap-size: "4096M"
-          disk-size: "10G"
+          disk-size: "8G"
           cores: 4
           disable-animations: false
           disable-spellchecker: true
