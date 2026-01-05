@@ -5,7 +5,6 @@ import RNShake from "react-native-shake"
 
 export const useRageShakeDevMenu = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
 
   useEffect(() => {
@@ -14,11 +13,11 @@ export const useRageShakeDevMenu = () => {
         return
       }
 
-      navigateToDevMenu({ isLoggedIn })
+      navigateToDevMenu()
     })
 
     return () => {
       subscription.remove()
     }
-  }, [userIsDev, isHydrated, isLoggedIn])
+  }, [userIsDev, isHydrated])
 }

@@ -11,7 +11,6 @@ const MIN_DURATION_BETWEEN_TAPS = 70
 
 export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isDeepZoomModalVisible = GlobalStore.useAppState(
     (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
   )
@@ -41,7 +40,7 @@ export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) 
     if (state.numTaps >= 5 && !isDeepZoomModalVisible) {
       state.numTaps = 0
 
-      navigateToDevMenu({ isLoggedIn })
+      navigateToDevMenu()
     }
     return false
   }, [isDeepZoomModalVisible])
