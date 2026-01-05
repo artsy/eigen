@@ -102,7 +102,7 @@ const addArtistsToCollectiontInfo = {
 
 const collectorProfileInfo = {
   title: "Tell us a little bit more about you.",
-  body: "By completing your profile, you're more likely to receive quick responses from galleries.",
+  body: "By completing your profile, you’re more likely to receive quick responses from galleries.",
   prompt: "CollectorProfile",
 }
 
