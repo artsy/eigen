@@ -108,7 +108,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.336.0",
-    "@artsy/icons": "3.63.0",
+    "@artsy/icons": "3.64.0",
     "@artsy/palette-mobile": "22.1.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
