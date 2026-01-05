@@ -3,6 +3,7 @@ import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAu
 import {
   CareerHighlightBottomSheet,
   makeCareerHighlightMap,
+  MINIMUM_YEAR,
 } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { MedianSalePriceAtAuctionScreenQuery } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import {
@@ -64,16 +65,17 @@ describe(makeCareerHighlightMap, () => {
 
   it("Prepares the eventDigest and creates a map of each year to the highlight kind", () => {
     const result = makeCareerHighlightMap(
-      "2017 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America"
+      `2020 Group Show @ MOCA Los Angeles; ${MINIMUM_YEAR} Reviewed Solo Show @ The Guardian; 2018 Reviewed Solo Show @ Art in America`
     )
 
     expect(result).toEqual({
-      2017: { "Group Show": ["MOCA Los Angeles"] },
+      [MINIMUM_YEAR]: { Review: ["The Guardian", "Art in America"] },
+      2020: { "Group Show": ["MOCA Los Angeles"] },
     })
   })
 
-  it("Returns an empty object if the year is less than 2014", async () => {
-    const result = await makeCareerHighlightMap(
+  it("Returns an empty object if the year is outside the 8-year window", () => {
+    const result = makeCareerHighlightMap(
       "2013 Group Show @ MOCA Los Angeles; 2012 Reviewed Solo Show @ The Guardian; 2011 Reviewed Solo Show @ Art in America"
     )
 
@@ -87,17 +89,17 @@ const bottomSheetDataMock = {
       {
         node: {
           eventDigest:
-            "2018 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
+            "2020 Group Show @ MOCA Los Angeles; 2018 Reviewed Solo Show @ The Guardian; 2018 Reviewed Solo Show @ Art in America; ",
           sparkles: "0",
-          year: "year_2017",
+          year: "year_2019",
         },
       },
       {
         node: {
           eventDigest:
-            "2018 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
+            "2020 Group Show @ MOCA Los Angeles; 2018 Reviewed Solo Show @ The Guardian; 2018 Reviewed Solo Show @ Art in America; ",
           sparkles: "10",
-          year: "year_2018",
+          year: "year_2020",
         },
       },
     ],

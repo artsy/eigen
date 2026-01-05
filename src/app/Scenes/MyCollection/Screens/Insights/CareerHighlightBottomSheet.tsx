@@ -164,6 +164,8 @@ const careerHighlighsBottomSheetFragment = graphql`
   }
 `
 
+const MAX_YEAR_DIFFERENCE = 8
+export const MINIMUM_YEAR = new Date().getFullYear() - MAX_YEAR_DIFFERENCE
 /**
  * Prepares the eventDigest and creates a map of each year to the highlight kind
  * @param eventDigest
@@ -183,7 +185,7 @@ const careerHighlighsBottomSheetFragment = graphql`
 export const makeCareerHighlightMap = (
   eventDigest: string
 ): Record<number, Record<CareerHighlightKindValueType, string[]>> => {
-  const minimumYear = new Date().getFullYear() - 8
+  const minimumYear = MINIMUM_YEAR
   const result: Record<number, Record<CareerHighlightKindValueType, string[]>> = {}
   const arr = eventDigest ? eventDigest.split(";") : []
   if (!arr.length) {
