@@ -1002,9 +1002,8 @@ export const getAuthModel = (): AuthModel => ({
       await AsyncStorage.clear(),
       CookieManager.clearAll(),
       _globalCacheRef?.clear(),
+      actions.setSessionState({ isUserIdentified: true }),
     ])
-
-    actions.setSessionState({ isUserIdentified: true })
   }),
   verifyUser: thunk(async (actions, { email, recaptchaToken }) => {
     let result: Response
