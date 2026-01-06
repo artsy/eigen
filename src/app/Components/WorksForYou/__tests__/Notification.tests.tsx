@@ -31,7 +31,7 @@ describe("Notification", () => {
     expect(screen.getByText("Jean-Michel Basquiat")).toBeTruthy()
   })
 
-  it.only("renders without throwing an error if no avatar image exists", () => {
+  it("renders without throwing an error if no avatar image exists", () => {
     const props = notification()
     const convertedProps = {
       ...props,
