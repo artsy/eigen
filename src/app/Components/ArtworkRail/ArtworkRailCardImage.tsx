@@ -1,6 +1,5 @@
 import { Image, Flex } from "@artsy/palette-mobile"
 import { ArtworkRailCardImage_artwork$key } from "__generated__/ArtworkRailCardImage_artwork.graphql"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
 export interface ArtworkRailCardImageProps {
@@ -14,7 +13,6 @@ export const ARTWORK_RAIL_CARD_MAX_WIDTH = 340
 const PADDING = 10
 
 export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...restProps }) => {
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { image } = artwork
@@ -70,7 +68,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           width={displayImageWidth}
           height={displayImageHeight}
           aspectRatio={image.aspectRatio}
-          blurhash={showBlurhash ? image.blurhash : undefined}
+          blurhash={image.blurhash}
           resizeMode="cover"
           testID="artwork-rail-card-image"
         />

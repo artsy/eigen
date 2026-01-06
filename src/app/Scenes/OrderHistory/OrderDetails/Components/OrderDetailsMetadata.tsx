@@ -1,7 +1,6 @@
 import { Box, Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { OrderDetailsMetadata_order$key } from "__generated__/OrderDetailsMetadata_order.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -16,7 +15,6 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
   const { width: screenWidth } = useScreenDimensions()
   const imageContainer = { height: IMAGE_MAX_HEIGHT, width: screenWidth - 40 }
   const orderData = useFragment(fragment, order)
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const artwork = orderData.lineItems?.[0]?.artwork
   const artworkVersion = orderData.lineItems?.[0]?.artworkVersion
@@ -59,7 +57,7 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
                   aspectRatio={artworkImage.aspectRatio ?? 1}
                   width={width}
                   height={height}
-                  blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+                  blurhash={artworkImage.blurhash}
                   geminiResizeMode="fit"
                   resizeMode="contain"
                 />
@@ -73,7 +71,7 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
                 aspectRatio={artworkImage.aspectRatio ?? 1}
                 width={width}
                 height={height}
-                blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+                blurhash={artworkImage.blurhash}
                 geminiResizeMode="fit"
                 resizeMode="contain"
               />

@@ -11,7 +11,6 @@ import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBad
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,8 +27,6 @@ const NEW_ARTWORK_IMAGE_SIZE = 60
 
 export const ActivityItem: React.FC<ActivityItemProps> = memo(
   ({ isVisible, notification: _notification }) => {
-    const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-
     const markAsRead = useMarkNotificationAsRead()
     const tracking = useTracking()
     const notification = useFragment(activityItemFragment, _notification)
@@ -89,7 +86,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                             width={NEW_ARTWORK_IMAGE_SIZE}
                             height={NEW_ARTWORK_IMAGE_SIZE}
                             showLoadingState={!isVisible}
-                            blurhash={enableBlurhash ? image.blurhash : undefined}
+                            blurhash={image.blurhash}
                           />
                         </Flex>
                       )

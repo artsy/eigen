@@ -12,7 +12,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import moment from "moment"
 import React from "react"
 import { Linking } from "react-native"
@@ -99,7 +98,6 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const { displayState, buyerAction } = order
   const [lineItem] = extractNodes(order.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
 
   let buyerDisplayState: BuyerDisplayStateEnum = displayState
@@ -125,7 +123,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             {!!artworkImageUrl ? (
               <Image
                 src={artworkImageUrl}
-                blurhash={showBlurhash ? artworkVersion.image.blurhash : undefined}
+                blurhash={artworkVersion.image.blurhash}
                 performResize={false}
                 height={50}
                 width={50}
