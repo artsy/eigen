@@ -7,8 +7,9 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Suspense, useState } from "react"
-import { Animated } from "react-native"
+import { Animated, NativeSyntheticEvent } from "react-native"
 import PagerView from "react-native-pager-view"
+import { OnPageSelectedEventData } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import {
   CareerHighlightBigCardBiennial,
@@ -102,7 +103,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
     },
   ])
 
-  const setSliderPage = (event: any) => {
+  const setSliderPage = (event: NativeSyntheticEvent<OnPageSelectedEventData>) => {
     const { currentPage } = sliderState
     const currentSlide = event.nativeEvent.position
 
