@@ -390,6 +390,7 @@ const App = () => {
 ### Common Patterns
 
 **Using `KeyboardStickyView` with `KeyboardAwareForm`**
+
 This is one of the most common patterns we have for keyboard management.
 
 ```typescript
@@ -406,7 +407,7 @@ const App = () => {
   return (
     <>
       <KeyboardAwareForm
-        // `bottomOffset` is the extra height to make the focused input visible above the sticky view
+        // `bottomOffset` is the extra height needed to make the focused input visible above the sticky view
         bottomOffset={bottomOffset}
       >
         <Input title="Name" />
