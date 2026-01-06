@@ -1,15 +1,18 @@
 name: iOS E2E Tests (Maestro)
 
 on:
-  workflow_run:
-    workflows: ["Build iOS QA App for Maestro"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Build iOS QA App for Maestro"]
+  #   types:
+  #     - completed
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - moplat/new-arch-revisited
 
 jobs:
   e2e-tests:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
