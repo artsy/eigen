@@ -4,7 +4,6 @@ import {
   ArtworkPreview_artwork$data,
   ArtworkPreview_artwork$key,
 } from "__generated__/ArtworkPreview_artwork.graphql"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
