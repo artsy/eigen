@@ -23,7 +23,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormikContext } from "formik"
 import { MotiView } from "moti"
-import { StyleProp, ViewStyle } from "react-native"
+import { Platform, StyleProp, ViewStyle } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -60,6 +60,7 @@ export const Form: React.FC<FormProps> = ({
   const tracking = useTracking()
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const stickyOffset = Platform.select({ android: bottom, ios: bottom + space(2) })
 
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
@@ -96,10 +97,7 @@ export const Form: React.FC<FormProps> = ({
 
   return (
     <>
-      <KeyboardAwareForm
-        bottomOffset={bottom + 180}
-        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
-      >
+      <KeyboardAwareForm contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}>
         {!isEditMode && (
           <>
             <InfoButton
@@ -208,7 +206,7 @@ export const Form: React.FC<FormProps> = ({
         <Spacer y={2} />
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
+      <KeyboardStickyView offset={{ opened: stickyOffset }}>
         <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} delay={200}>
           <Flex
             p={2}
