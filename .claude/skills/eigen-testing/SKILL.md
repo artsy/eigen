@@ -1,5 +1,5 @@
 ---
-name: Eigen Testing
+name: eigen-testing
 description: Write and maintain tests for Eigen, a React Native application using React Native Testing Library and Relay Test Utils. Use this skill when writing new tests, fixing failing tests, adding test coverage, updating existing tests, or when asked about testing best practices for Eigen. Triggers on requests like "write tests for this component", "add test coverage", "fix this test", "how should I test this", or any testing-related questions for the Eigen codebase.
 ---
 
