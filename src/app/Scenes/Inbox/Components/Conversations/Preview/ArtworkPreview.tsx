@@ -46,7 +46,6 @@ export interface ArtworkPreviewProps {
 
 export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelected }) => {
   const artworkData = useFragment(ArtworkPreviewFragment, artwork)
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const { image: artworkImage } = artworkData
   const color = useColor()
@@ -74,7 +73,7 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
               src={artworkImage.url ?? ""}
               aspectRatio={artworkImage.aspectRatio}
               width={250}
-              blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+              blurhash={artworkImage.blurhash}
             />
           </ImageContainer>
         )}

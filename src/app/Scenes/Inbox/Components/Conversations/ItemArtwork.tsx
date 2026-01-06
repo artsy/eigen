@@ -1,7 +1,6 @@
 import { Box, Flex, Image, Separator, Text } from "@artsy/palette-mobile"
 import { ItemArtwork_artwork$data } from "__generated__/ItemArtwork_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ItemArtworkProps {
@@ -9,8 +8,6 @@ interface ItemArtworkProps {
 }
 
 export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-
   return (
     <>
       <Flex flexDirection="column" p={2}>
@@ -27,7 +24,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
                   src={artwork.image?.thumbnailUrl}
                   width={100}
                   height={100}
-                  blurhash={showBlurhash ? artwork.image?.blurhash : undefined}
+                  blurhash={artwork.image?.blurhash}
                 />
               )}
             </Box>

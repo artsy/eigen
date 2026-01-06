@@ -13,7 +13,6 @@ import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBad
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -26,8 +25,6 @@ export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
 export const ACTIVITY_RAIL_ITEM_WIDTH = 240
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = memo((props) => {
-  const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
@@ -63,7 +60,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = memo((props) =>
               src={image.url}
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-              blurhash={enableBlurhash ? image.blurhash : undefined}
+              blurhash={image.blurhash}
             />
           )}
         </Flex>

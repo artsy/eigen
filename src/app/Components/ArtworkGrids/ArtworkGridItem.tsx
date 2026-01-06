@@ -122,7 +122,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const color = useColor()
     const tracking = useTracking()
     const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-    const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
     const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
     const isIOS = Platform.OS === "ios"
 
@@ -301,7 +300,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     aspectRatio={artwork.image.aspectRatio ?? 1}
                     height={height}
                     width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+                    blurhash={artwork.image.blurhash}
                     resizeMode="contain"
                   />
                 </View>

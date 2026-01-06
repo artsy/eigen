@@ -1,7 +1,6 @@
 import { Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleHero_article$key } from "__generated__/ArticleHero_article.graphql"
 import { ArticleHeroVideo } from "app/Scenes/Article/Components/ArticleHeroVideo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
 import LinearGradient from "react-native-linear-gradient"
 import { useFragment, graphql } from "react-relay"
@@ -13,7 +12,6 @@ interface ArticleHeroProps {
 export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   const { width, height: screenHeight, safeAreaInsets } = useScreenDimensions()
   const data = useFragment(ArticleHeroFragment, article)
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const hasVideo = !!data.hero?.media
   const hasImage = !!data.hero?.image?.url
@@ -94,7 +92,7 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
             width={width}
             src={data.hero.image.url}
             aspectRatio={data.hero.image.aspectRatio}
-            blurhash={showBlurhash ? data.hero.image.blurhash : undefined}
+            blurhash={data.hero.image.blurhash}
           />
           <Spacer y={2} />
         </>
