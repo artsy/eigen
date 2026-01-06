@@ -17,7 +17,7 @@ export const KeyboardAwareForm = forwardRef<KeyboardAwareScrollViewRef, Keyboard
     {
       children,
       contentContainerStyle,
-      bottomOffset = 20,
+      bottomOffset = 40,
       extraKeyboardSpace,
       enabled = true,
       disableScrollOnKeyboardHide,
