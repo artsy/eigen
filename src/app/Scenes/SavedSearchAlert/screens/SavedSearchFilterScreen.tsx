@@ -24,13 +24,15 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const space = useSpace()
   const { bottom } = useScreenDimensions().safeAreaInsets
+
+  const stickyOffset = Platform.select({ android: bottom, ios: bottom + space(2) })
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -46,7 +48,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       >
         Filters
       </NavigationHeader>
-      <KeyboardAwareForm bottomOffset={bottom + 90}>
+      <KeyboardAwareForm>
         <SavedSearchFilterAppliedFilters />
         <SavedSearchFilterAdditionalGeneIDs />
         <SavedSearchFilterRarity />
@@ -58,7 +60,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <Spacer y={2} />
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
+      <KeyboardStickyView offset={{ opened: stickyOffset }}>
         <Flex
           p={2}
           pb={`${bottom}px`}

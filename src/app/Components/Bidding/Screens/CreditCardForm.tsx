@@ -17,7 +17,8 @@ import { SelectRef } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
-import { memo, useCallback, useRef } from "react"
+import { memo, useCallback, useRef, useState } from "react"
+import { LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -33,10 +34,18 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
 }) => {
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
+  const [bottomOffset, setBottomOffset] = useState(0)
   const initialValues: CreditCardFormValues = {
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
     ...billingAddress,
   }
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   const handleFormSubmit = useCallback(
     async (values: CreditCardFormValues) => {
@@ -115,7 +124,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
       </NavigationHeader>
 
       <KeyboardAwareForm
-        bottomOffset={bottom + 90}
+        bottomOffset={bottomOffset}
         contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}
       >
         <Flex>
@@ -256,8 +265,8 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         <Spacer y={1} />
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
-        <Box p={2} pb={`${bottom}px`} backgroundColor="mono0">
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: bottom }}>
+        <Box p={2} backgroundColor="mono0">
           <Button
             testID="credit-card-form-button"
             disabled={!isValid || !dirty}

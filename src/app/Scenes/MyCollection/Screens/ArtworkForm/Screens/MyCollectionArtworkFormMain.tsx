@@ -42,7 +42,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert, LayoutChangeEvent, TouchableOpacity } from "react-native"
 import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 
@@ -58,9 +58,11 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [showDeleteArtistModal, setShowDeleteArtistModal] = useState(false)
+  const [bottomOffset, setBottomOffset] = useState(0)
 
   const { formik } = useArtworkForm()
   const color = useColor()
+  const { bottom } = useScreenDimensions().safeAreaInsets
 
   const { showActionSheetWithOptions } = useActionSheet()
   const androidCustomSheetStyles = useAndroidActionSheetStyles()
@@ -230,7 +232,12 @@ export const MyCollectionArtworkFormMain: React.FC<
     }
   }
 
-  const { bottom } = useScreenDimensions().safeAreaInsets
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   return (
     <Flex flex={1}>
@@ -274,7 +281,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         onLeave={handleBackButtonPress}
       />
 
-      <KeyboardAwareForm ref={scrollViewRef} bottomOffset={bottom + 90}>
+      <KeyboardAwareForm ref={scrollViewRef} bottomOffset={bottomOffset}>
         <Flex>
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
@@ -436,7 +443,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         </Flex>
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: bottom }}>
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: bottom }}>
         <Box p={2} backgroundColor="mono0">
           <Button
             disabled={!formik.isValid || !isFormDirty()}

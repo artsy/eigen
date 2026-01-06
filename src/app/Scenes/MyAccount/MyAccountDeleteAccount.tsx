@@ -12,8 +12,8 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useState } from "react"
-import { Alert, InteractionManager } from "react-native"
+import React, { useCallback, useState } from "react"
+import { Alert, InteractionManager, LayoutChangeEvent } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -30,10 +30,18 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [bottomOffset, setBottomOffset] = useState(0)
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
 
   const navigation = useNavigation()
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   const enableDelete = hasPassword
     ? password.length > 0 && explanation.length > 0
@@ -41,14 +49,9 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.accountDeleteMyAccount,
-      })}
+      info={screen({ context_screen_owner_type: OwnerType.accountDeleteMyAccount })}
     >
-      <KeyboardAwareForm
-        contentContainerStyle={{ padding: space(2) }}
-        bottomOffset={BOTTOM_TABS_HEIGHT + bottom + 90}
-      >
+      <KeyboardAwareForm contentContainerStyle={{ padding: space(2) }} bottomOffset={bottomOffset}>
         <Flex>
           <Text variant="lg-display">Delete My Account</Text>
           <Spacer y={2} />
@@ -104,7 +107,10 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         </Flex>
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: BOTTOM_TABS_HEIGHT + bottom }}>
+      <KeyboardStickyView
+        onLayout={handleOnLayout}
+        offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
+      >
         <Flex p={1} backgroundColor="mono0">
           <Button
             block
