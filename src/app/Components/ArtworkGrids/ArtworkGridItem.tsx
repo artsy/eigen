@@ -33,7 +33,6 @@ import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTracki
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -122,7 +121,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const color = useColor()
     const tracking = useTracking()
     const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-    const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
     const isIOS = Platform.OS === "ios"
 
     let filterParams: any = undefined
@@ -300,7 +298,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     aspectRatio={artwork.image.aspectRatio ?? 1}
                     height={height}
                     width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+                    blurhash={artwork.image.blurhash}
                     resizeMode="contain"
                   />
                 </View>

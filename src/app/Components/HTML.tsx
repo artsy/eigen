@@ -10,7 +10,7 @@ import {
 import { CustomH2Renderer } from "app/Scenes/Article/CustomH2Renderer"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { merge } from "lodash"
+import { merge, omit } from "lodash"
 import RenderHtml, { CustomBlockRenderer, MixedStyleRecord } from "react-native-render-html"
 
 interface HTMLProps extends FlexProps {
@@ -81,8 +81,23 @@ export const HTML: React.FC<HTMLProps> = ({
               marginBottom: "1em",
               ...variantStyles,
             },
+            li: {
+              fontFamily: FONTS.regular,
+              color: color("mono100"),
+              marginBottom: "1em",
+              ...omit(variantStyles, "lineHeight"), // to prevent mis-aligned markers
+            },
             em: {
               fontFamily: FONTS.italic,
+              color: color("mono100"),
+            },
+            h1: {
+              fontFamily: FONTS.medium,
+              fontSize: theme.textTreatments["xl"].fontSize,
+              lineHeight: theme.textTreatments["xl"].lineHeight,
+              letterSpacing: theme.textTreatments["xl"].letterSpacing,
+              marginBottom: "1em",
+              fontWeight: "normal",
               color: color("mono100"),
             },
             h2: {

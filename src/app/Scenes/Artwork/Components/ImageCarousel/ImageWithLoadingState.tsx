@@ -1,5 +1,4 @@
 import { Image } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
@@ -28,13 +27,12 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
     // color backgrounds
     // show a loading spinner only after a short delay, if the image is taking a while to load
     const { width, height, imageURL, blurhash, onPress } = props
-    const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
     return (
       <TouchableWithoutFeedback onPress={onPress} accessibilityLabel="Image with Loading State">
         <View style={[{ width, height }, props.style]} ref={ref}>
           <Image
-            blurhash={showBlurhash ? blurhash : undefined}
+            blurhash={blurhash}
             src={imageURL}
             performResize={false}
             aspectRatio={width / height}

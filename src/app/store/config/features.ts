@@ -116,12 +116,7 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
-  ARShowBlurhashImagePlaceholder: {
-    description: "Show blurhash image placeholder (works only when using Palette Image Component)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARShowBlurhashImagePlaceholder",
-  },
+
   AREnableAlertBottomSheet: {
     description: "Enable tapping on alerts to show bottom sheet",
     readyForRelease: true,
