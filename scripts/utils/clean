@@ -28,6 +28,9 @@ fi
 echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf node_modules
 
+echo "Reset watchman (ノಠ益ಠ)ノ彡┻━┻"
+watchman watch-del .
+
 echo "Clear caches (linting and metro) (┛◉Д◉)┛彡┻━┻"
 rm -rf .cache
 rm -rf "${TMPDIR%/}"/metro-*

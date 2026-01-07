@@ -23,6 +23,9 @@ echo "Clear caches (linting and metro) (┛◉Д◉)┛彡┻━┻"
 rm -rf .cache
 rm -rf "$TMPDIR/metro*"
 
+echo "Reset watchman (ノಠ益ಠ)ノ彡┻━┻"
+watchman watch-del .
+
 echo "Clear hastemap (╯ರ ~ ರ）╯︵ ┻━┻"
 rm -rf "$TMPDIR/haste-map-*"
 
