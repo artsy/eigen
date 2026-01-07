@@ -1,6 +1,5 @@
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, useColor, Image } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
 export interface MyCollectionImageViewProps {
@@ -24,7 +23,6 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   blurhash,
 }) => {
   const color = useColor()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (!imageURL) {
     return (
@@ -49,7 +47,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         width={imageWidth}
         aspectRatio={aspectRatio}
         performResize={!useRawURL}
-        blurhash={showBlurhash ? blurhash : undefined}
+        blurhash={blurhash}
       />
     </Flex>
   )

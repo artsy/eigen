@@ -25,6 +25,7 @@ import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState
 import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
+import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 
@@ -207,6 +208,17 @@ export const ArtsyWebView = forwardRef<
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
+    // Track the initial path of this webview to avoid intercepting its own initial load
+    const getInitialPath = () => {
+      try {
+        return new URL(uri).pathname
+      } catch {
+        return ""
+      }
+    }
+    const initialPath = useRef<string>(getInitialPath())
+    // Track if the webview has finished its initial load (including redirects)
+    const hasFinishedInitialLoad = useRef(false)
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -218,7 +230,18 @@ export const ArtsyWebView = forwardRef<
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
-      onNavigationStateChangeProp?.(evt)
+      // Helper to notify parent of navigation state changes when we allow navigation to complete
+      const notifyParentOfNavigation = () => {
+        onNavigationStateChangeProp?.(evt)
+      }
+
+      // Save the current state before we potentially update it
+      const isStillInitialLoad = !hasFinishedInitialLoad.current
+
+      // Mark initial load as complete when any page finishes loading
+      if (isStillInitialLoad && !evt.loading) {
+        hasFinishedInitialLoad.current = true
+      }
 
       const targetURL = expandGoogleAdLink(evt.url)
 
@@ -229,9 +252,11 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        notifyParentOfNavigation()
         return
       }
       if (result.type === "match" && result.module === "Feature") {
+        notifyParentOfNavigation()
         return
       }
 
@@ -239,6 +264,7 @@ export const ArtsyWebView = forwardRef<
       // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
       // when in eigen purchase flow.
       if (result.type === "match" && result.module === "Home") {
+        // Don't notify parent - we're canceling this navigation
         stopLoading(true)
         return
       }
@@ -247,17 +273,38 @@ export const ArtsyWebView = forwardRef<
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
+
       if (
         result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
+        ["ReactWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(result.module)
       ) {
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
         }
+        notifyParentOfNavigation()
+        return
+      } else if (result.type === "match" && result.module === "ModalWebView") {
+        // For ModalWebView routes we want a separate modal to be presented to avoid
+        // navigation issues with the original webview.
+        const targetPath = new URL(targetURL).pathname
+
+        // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
+        if (targetPath === initialPath.current || isStillInitialLoad) {
+          notifyParentOfNavigation()
+          return
+        }
+
+        // We're intercepting this navigation - don't notify parent
+
+        // Stop loading and go back to undo the navigation history entry
+        // This prevents canGoBack from becoming true and changing the X button to a back button
+        innerRef.current?.stopLoading()
+        innerRef.current?.goBack()
+
+        navigate(targetURL)
         return
       } else {
+        // Don't notify parent - we're canceling this navigation
         const needToGoBack =
           result.type !== "external_url" ||
           (result.type === "external_url" && Platform.OS === "android")

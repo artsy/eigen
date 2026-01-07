@@ -11865,6 +11865,24 @@ type DismissTaskSuccess {
   task: Task!
 }
 
+# Display texts for the order based on its seller_state and order shipping states
+type DisplaySellerTexts {
+  # Text prompt for the seller to take action
+  actionPrompt: String
+
+  # State name for conversation display
+  conversationStateTitle: String!
+
+  # Icon name to display for the order state (e.g. ClockFillIcon, CheckmarkIcon, CloseStrokeIcon)
+  icon: String
+
+  # Whether the action should be displayed as primary or secondary
+  isPrimaryAction: Boolean
+
+  # Seller facing name for the state
+  stateName: String!
+}
+
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
   # Text prompt for the buyer to take action
@@ -17833,6 +17851,9 @@ type Order {
 
   # Details about the shipment of an order
   deliveryInfo: DeliveryInfo
+
+  # Display texts for the order based on its seller_state and order shipping states
+  displaySellerTexts: DisplaySellerTexts!
 
   # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
