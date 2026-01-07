@@ -34,13 +34,19 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
       BelowTitleHeaderComponent={() => <BelowHeaderComponent activeTab={activeTab} />}
     >
       <Tabs.Tab name="worksYouLiked" label="Works you liked">
-        <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
+        <Tabs.Lazy>
+          <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
+        </Tabs.Lazy>
       </Tabs.Tab>
       <Tabs.Tab name="worksForYou" label="Works for You">
-        <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
+        <Tabs.Lazy>
+          <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
+        </Tabs.Lazy>
       </Tabs.Tab>
       <Tabs.Tab name="artistsForYou" label="Artists for You">
-        <ArtQuizExploreArtists savedArtworks={savedArtworks} />
+        <Tabs.Lazy>
+          <ArtQuizExploreArtists savedArtworks={savedArtworks} />
+        </Tabs.Lazy>
       </Tabs.Tab>
     </Tabs.TabsWithHeader>
   )

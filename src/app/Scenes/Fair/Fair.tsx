@@ -129,17 +129,23 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           }}
         >
           <Tabs.Tab name="Overview" label="Overview">
-            <FairOverviewQueryRenderer fairID={data.internalID} />
+            <Tabs.Lazy>
+              <FairOverviewQueryRenderer fairID={data.internalID} />
+            </Tabs.Lazy>
           </Tabs.Tab>
 
           {!!hasExhibitors ? (
             <Tabs.Tab name="Exhibitors" label="Exhibitors">
-              <FairExhibitorsQueryRenderer fairID={data.internalID} />
+              <Tabs.Lazy>
+                <FairExhibitorsQueryRenderer fairID={data.internalID} />
+              </Tabs.Lazy>
             </Tabs.Tab>
           ) : null}
 
           <Tabs.Tab name="Artworks" label="Artworks">
-            <FairArtworksQueryRenderer fairID={data.internalID} />
+            <Tabs.Lazy>
+              <FairArtworksQueryRenderer fairID={data.internalID} />
+            </Tabs.Lazy>
           </Tabs.Tab>
         </Tabs.TabsWithHeader>
       </ProvideScreenTracking>
