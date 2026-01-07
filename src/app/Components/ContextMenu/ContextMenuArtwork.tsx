@@ -269,31 +269,33 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
 
         <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
           <SafeAreaView>
-            <Flex mx={2} mb={4}>
-              <Flex ml={-1} mb={1}>
+            <Flex mb={4}>
+              <Flex ml={-1} mb={1} justifyContent="center">
                 {/* Always show light mode on Android for the bottom sheet */}
                 {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })}
               </Flex>
 
-              <Join separator={<Separator borderColor="mono10" my={1} />}>
-                {contextActions.map((action, index) => {
-                  return (
-                    <Touchable
-                      accessibilityRole="button"
-                      key={index}
-                      onPress={() => {
-                        setAndroidVisible(false)
+              <Flex mx={2}>
+                <Join separator={<Separator borderColor="mono10" my={1} />}>
+                  {contextActions.map((action, index) => {
+                    return (
+                      <Touchable
+                        accessibilityRole="button"
+                        key={index}
+                        onPress={() => {
+                          setAndroidVisible(false)
 
-                        action.onPress?.()
-                      }}
-                    >
-                      <Box>
-                        <Text>{action.title}</Text>
-                      </Box>
-                    </Touchable>
-                  )
-                })}
-              </Join>
+                          action.onPress?.()
+                        }}
+                      >
+                        <Box>
+                          <Text>{action.title}</Text>
+                        </Box>
+                      </Touchable>
+                    )
+                  })}
+                </Join>
+              </Flex>
             </Flex>
           </SafeAreaView>
         </AutoHeightBottomSheet>
