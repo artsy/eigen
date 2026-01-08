@@ -33,6 +33,7 @@ export const HTMLTest: React.FC = () => {
           <Section title="Blockquote" html={blockquote} />
           <Section title="Details" html={details} />
           <Section title="Horizontal Rule" html={rule} />
+          <Section title="Table" html={table} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -169,4 +170,41 @@ const details = `
 
 const rule = `
 <hr>
+`
+
+const table = `
+<table>
+  <caption>Table Caption</caption>
+  <thead>
+    <tr>
+      <th>Table Heading 1</th>
+      <th>Table Heading 2</th>
+      <th>Table Heading 3</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th>Table Footer 1</th>
+      <th>Table Footer 2</th>
+      <th>Table Footer 3</th>
+    </tr>
+  </tfoot>
+  <tbody>
+    <tr>
+      <td>Table Row 1 Cell 1</td>
+      <td>Table Row 1 Cell 2</td>
+      <td>Table Row 1 Cell 3</td>
+    </tr>
+    <tr>
+      <td>Table Row 2 Cell 1</td>
+      <td>Table Row 2 Cell 2</td>
+      <td>Table Row 2 Cell 3</td>
+    </tr>
+    <tr>
+      <td>Table Row 3 Cell 1</td>
+      <td>Table Row 3 Cell 2</td>
+      <td>Table Row 3 Cell 3</td>
+    </tr>
+  </tbody>
+</table>
 `
