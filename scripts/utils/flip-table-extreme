@@ -27,13 +27,17 @@ echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 yarn cache clean
 bundle exec pod cache clean --all
 
-# Clear local caches and build files
+# Clear local gradle caches and build files
 echo 'Clear gradle cache'
 if [ -d node_modules ]; then
 	cd android
 	./gradlew clean
 	cd -
 fi
+
+rm -rf android/.gradle
+rm -rf android/build
+rm -rf android/app/build
 
 echo 'Clear JS caches (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf .cache
@@ -70,7 +74,6 @@ rm -rf .cache
 rm -rf "${TMPDIR%/}"/metro-*
 rm -rf "${TMPDIR%/}"/haste-map-*
 rm -rf src/__generated__/*.graphql.ts
-
 
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
