@@ -31,6 +31,7 @@ export const HTMLTest: React.FC = () => {
           <Section title="Paragraphs" html={paragraphs} />
           <Section title="Lists" html={lists} />
           <Section title="Blockquote" html={blockquote} />
+          <Section title="Details" html={details} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -155,4 +156,12 @@ const lists = `
     <li>List Item 3</li>
   </ul>
 </div>
+`
+
+const details = `
+<p>A &lt;details&gt; element with &lt;summary&gt;:</p>
+<details>
+  <summary>Expand for details</summary>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio! Odio natus ullam ad quaerat, eaque necessitatibus, aliquid distinctio similique voluptatibus dicta consequuntur animi. Quaerat facilis quidem unde eos! Ipsa.</p>
+</details>
 `
