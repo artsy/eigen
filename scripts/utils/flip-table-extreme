@@ -79,6 +79,12 @@ rm -rf src/__generated__/*.graphql.ts
 echo 'Clear build artifacts (╯ರ ~ ರ）╯︵ ┻━┻'
 find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 
+echo "Reset watchman (ノಠ益ಠ)ノ彡┻━┻"
+watchman watch-del .
+
+echo "Re-enable watchman 👀"
+watchman watch-project .
+
 echo 'Setup Assets'
 # Required for yarn 4
 yarn install
