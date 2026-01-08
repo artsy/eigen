@@ -42,6 +42,9 @@ export const HTMLTest: React.FC = () => {
           <Section title="Video" html={video} />
           <Section title="Canvas" html={canvas} />
           <Section title="SVG" html={svg} />
+          <Section title="IFrame" html={iframe} />
+          <Section title="Embed" html={embed} />
+          <Section title="Object" html={object} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -308,4 +311,19 @@ const svg = `
 <svg width="100px" height="100px">
 <circle cx="100" cy="100" r="100" fill="#1fa3ec"></circle>
 </svg>
+`
+
+const iframe = `
+<p>&lt;iframe&gt; element:</p>
+<iframe src="https://www.example.com" height="300"></iframe>
+`
+
+const embed = `
+<p>&lt;embed&gt; element:</p>
+<embed src="https://www.example.com" height="300"></embed>
+`
+
+const object = `
+<p>&lt;object&gt; element:</p>
+<object data="https://www.example.com" height="300"></object>
 `
