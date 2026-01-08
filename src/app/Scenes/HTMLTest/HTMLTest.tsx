@@ -16,6 +16,7 @@ export const HTMLTest: React.FC = () => {
 
           <Section title="Headings" html={headings} />
           <Section title="Paragraphs" html={paragraphs} />
+          <Section title="Blockquote" html={blockquote} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -52,4 +53,12 @@ const paragraphs = `
 <p>These paragraphs are rendered via plain &lt;p&gt; tags.</p>
 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non labore optio natus quas accusamus facilis id quae. Ducimus ullam quibusdam qui impedit at maxime illum est? Ipsa incidunt nihil cumque.</p>
 <p>Ab tenetur, labore, dolore molestias vitae similique doloremque porro sed officiis, nihil fugit? Id soluta unde odit minima? Esse laudantium est quas!</p>
+`
+
+const blockquote = `
+<blockquote>
+  <p>A block quotation (also known as a long quotation or extract) is a quotation in a written document, that is set off from the main text as a paragraph, or block of text.</p>
+  <p>It is typically distinguished visually using indentation and a different typeface or smaller size quotation. It may or may not include a citation, usually placed at the bottom.</p>
+  <cite>—Example citation</cite>
+</blockquote>
 `
