@@ -32,6 +32,7 @@ export const HTMLTest: React.FC = () => {
           <Section title="Lists" html={lists} />
           <Section title="Blockquote" html={blockquote} />
           <Section title="Details" html={details} />
+          <Section title="Horizontal Rule" html={rule} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -164,4 +165,8 @@ const details = `
   <summary>Expand for details</summary>
   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, odio! Odio natus ullam ad quaerat, eaque necessitatibus, aliquid distinctio similique voluptatibus dicta consequuntur animi. Quaerat facilis quidem unde eos! Ipsa.</p>
 </details>
+`
+
+const rule = `
+<hr>
 `
