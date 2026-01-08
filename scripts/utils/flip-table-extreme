@@ -76,7 +76,7 @@ rm -rf "${TMPDIR%/}"/haste-map-*
 rm -rf src/__generated__/*.graphql.ts
 
 
-echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
+echo 'Clear build artifacts (╯ರ ~ ರ）╯︵ ┻━┻'
 find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 
 echo 'Setup Assets'
