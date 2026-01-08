@@ -40,6 +40,8 @@ export const HTMLTest: React.FC = () => {
           <Section title="Images" html={images} />
           <Section title="Audio" html={audio} />
           <Section title="Video" html={video} />
+          <Section title="Canvas" html={canvas} />
+          <Section title="SVG" html={svg} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -294,4 +296,16 @@ const audio = `
 const video = `
 <p>&lt;video&gt; element:</p>
 <div><video controls="">video</video></div>
+`
+
+const canvas = `
+<p>&lt;canvas&gt; element:</p>
+<canvas>canvas</canvas>
+`
+
+const svg = `
+<p>&lt;svg&gt; element:</p>
+<svg width="100px" height="100px">
+<circle cx="100" cy="100" r="100" fill="#1fa3ec"></circle>
+</svg>
 `
