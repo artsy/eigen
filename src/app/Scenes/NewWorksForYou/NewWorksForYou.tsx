@@ -13,7 +13,6 @@ import { MotiPressable } from "moti/interactions"
 import { LayoutAnimation } from "react-native"
 
 export const SCREEN_TITLE = "New Works for You"
-export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
 export const DEFAULT_RECS_MODEL_VERSION = "C"
 
 export interface NewWorksForYouScreenProps {
