@@ -38,6 +38,8 @@ export const HTMLTest: React.FC = () => {
           <Section title="Inline elements" html={inline} />
           <Section title="Comments" html={comments} />
           <Section title="Images" html={images} />
+          <Section title="Audio" html={audio} />
+          <Section title="Video" html={video} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -282,4 +284,14 @@ const images = `
     <img src="https://placecats.com/480/480" alt="Photo of a cat" />
   </picture>
 </figure><br/>
+`
+
+const audio = `
+<p>&lt;audio&gt; element:</p>
+<audio controls="">audio</audio>
+`
+
+const video = `
+<p>&lt;video&gt; element:</p>
+<div><video controls="">video</video></div>
 `
