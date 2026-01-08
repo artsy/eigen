@@ -1,6 +1,12 @@
-import { Box, Screen, Text } from "@artsy/palette-mobile"
+import { Box, LinkText, Screen, Text } from "@artsy/palette-mobile"
 import { HTML } from "app/Components/HTML"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
+
+const CREDIT = {
+  repo: "cbracco/html5-test-page",
+  url: "https://github.com/cbracco/html5-test-page",
+}
 
 export const HTMLTest: React.FC = () => {
   return (
@@ -12,6 +18,13 @@ export const HTMLTest: React.FC = () => {
 
           <Text variant="xs" mt={1} color="mono60">
             This screen provides a kitchen sink test of the HTML component used throughout the app.
+          </Text>
+
+          <Text variant="xs" mt={1} color="mono60">
+            Adapted from{" "}
+            <LinkText variant="xs" accessibilityRole="link" onPress={() => navigate(CREDIT.url)}>
+              {CREDIT.repo}
+            </LinkText>
           </Text>
 
           <Section title="Headings" html={headings} />
