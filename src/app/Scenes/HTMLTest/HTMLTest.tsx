@@ -14,7 +14,7 @@ export const HTMLTest: React.FC = () => {
       <Screen.AnimatedHeader title="HTML Test" onBack={goBack} />
       <Screen.Body>
         <Screen.ScrollView>
-          <Text variant="lg">HTML Test Screen</Text>
+          <Text variant="xl">HTML Test</Text>
 
           <Text variant="xs" mt={1} color="mono60">
             This screen provides a kitchen sink test of the HTML component used throughout the app.
@@ -36,6 +36,7 @@ export const HTMLTest: React.FC = () => {
           <Section title="Table" html={table} />
           <Section title="Code" html={code} />
           <Section title="Inline elements" html={inline} />
+          <Section title="Comments" html={comments} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -246,4 +247,15 @@ const inline = `
 <p>The <mark>mark element</mark> indicates a highlight.</p>
 <p>The <var>variable element</var>, such as <var>x</var> = <var>y</var>.</p>
 <p>The time element: <time datetime="2013-04-06T12:32+00:00">2 weeks ago</time></p>
+`
+
+const comments = `
+<p>Code comments should <em>not</em> be displayed in the output.</p>
+<p>There is an inline comment here: <!--This comment should not be displayed--></p>
+<p>There is a multiline comment, including html tags, below here:</p>
+<!--
+<p><a href="#!">This is a text link. But it should not be displayed in a comment</a>.</p>
+<p><strong>Strong is used to indicate strong importance. But, it should not be displayed in a comment</strong></p>
+<p><em>This text has added emphasis. But, it should not be displayed in a comment</em></p>
+-->
 `
