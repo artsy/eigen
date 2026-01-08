@@ -37,6 +37,7 @@ export const HTMLTest: React.FC = () => {
           <Section title="Code" html={code} />
           <Section title="Inline elements" html={inline} />
           <Section title="Comments" html={comments} />
+          <Section title="Images" html={images} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -258,4 +259,27 @@ const comments = `
 <p><strong>Strong is used to indicate strong importance. But, it should not be displayed in a comment</strong></p>
 <p><em>This text has added emphasis. But, it should not be displayed in a comment</em></p>
 -->
+`
+
+const images = `
+<p>Plain &lt;img&gt; element</p>
+<p><img src="https://placecats.com/480/480" alt="Photo of a cat"></p>
+
+<p>&lt;figure&gt; element with &lt;img&gt; element</p>
+<figure><img src="https://placecats.com/480/480" alt="Photo of a cat"></figure><br/>
+
+<p>&lt;figure&gt; element with &lt;img&gt; and &lt;figcaption&gt; elements</p>
+<figure>
+  <img src="https://placecats.com/480/480" alt="Photo of a cat">
+  <figcaption>Here is a caption for this image.</figcaption><br/>
+</figure>
+
+<p>&lt;figure&gt; element with a &lt;picture&gt; element</p>
+<figure>
+  <picture>
+    <source srcset="https://placecats.com/800/800"
+      media="(min-width: 800px)">
+    <img src="https://placecats.com/480/480" alt="Photo of a cat" />
+  </picture>
+</figure><br/>
 `
