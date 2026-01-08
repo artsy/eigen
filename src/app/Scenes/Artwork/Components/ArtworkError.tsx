@@ -8,11 +8,7 @@ import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/HomeView/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/HomeView/Components/ArtworkRecommendationsRail"
 import { NewWorksForYouRail } from "app/Scenes/HomeView/Components/NewWorksForYouRail"
-import {
-  DEFAULT_RECS_MODEL_VERSION,
-  RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-} from "app/Scenes/NewWorksForYou/NewWorksForYou"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+import { DEFAULT_RECS_MODEL_VERSION } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ScrollView } from "react-native"
@@ -77,11 +73,10 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
 
 export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
   Component: () => {
-    const { variant } = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
     const data = useLazyLoadQuery<ArtworkErrorQuery>(
       ArtworkErrorScreenQuery,
       {
-        version: variant.payload?.value || DEFAULT_RECS_MODEL_VERSION,
+        version: DEFAULT_RECS_MODEL_VERSION,
       },
       { fetchPolicy: "network-only" }
     )
