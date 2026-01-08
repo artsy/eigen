@@ -1,4 +1,4 @@
-import { Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Screen, Text } from "@artsy/palette-mobile"
 import { HTML } from "app/Components/HTML"
 import { goBack } from "app/system/navigation/navigate"
 
@@ -10,18 +10,31 @@ export const HTMLTest: React.FC = () => {
         <Screen.ScrollView>
           <Text variant="lg">HTML Test Screen</Text>
 
-          <Text my={1}>
+          <Text variant="xs" mt={1} color="mono60">
             This screen provides a kitchen sink test of the HTML component used throughout the app.
           </Text>
 
-          <Text variant="xl" color="brand">
-            Headings
-          </Text>
-
-          <HTML html={headings} />
+          <Section title="Headings" html={headings} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
+  )
+}
+
+interface SectionProps {
+  title: string
+  html: string
+}
+
+const Section: React.FC<SectionProps> = ({ title, html }) => {
+  return (
+    <Box my={2} borderTopWidth={1} borderTopColor="mono10" pt={2}>
+      <Text variant="xl" color="brand" pb={1}>
+        {title}
+      </Text>
+
+      <HTML html={html} />
+    </Box>
   )
 }
 
