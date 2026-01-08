@@ -45,6 +45,8 @@ export const HTMLTest: React.FC = () => {
           <Section title="IFrame" html={iframe} />
           <Section title="Embed" html={embed} />
           <Section title="Object" html={object} />
+          <Section title="Meter" html={meter} />
+          <Section title="Progress" html={progress} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -326,4 +328,14 @@ const embed = `
 const object = `
 <p>&lt;object&gt; element:</p>
 <object data="https://www.example.com" height="300"></object>
+`
+
+const meter = `
+<p>&lt;meter&gt; element:</p>
+<meter value="2" min="0" max="10">2 out of 10</meter>
+`
+
+const progress = `
+<p>&lt;progress&gt; element:</p>
+<progress>progress</progress>
 `
