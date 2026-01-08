@@ -15,6 +15,7 @@ export const HTMLTest: React.FC = () => {
           </Text>
 
           <Section title="Headings" html={headings} />
+          <Section title="Paragraphs" html={paragraphs} />
         </Screen.ScrollView>
       </Screen.Body>
     </Screen>
@@ -45,4 +46,10 @@ const headings = `
 <h4>Heading 4</h4>
 <h5>Heading 5</h5>
 <h6>Heading 6</h6>
+`
+
+const paragraphs = `
+<p>These paragraphs are rendered via plain &lt;p&gt; tags.</p>
+<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non labore optio natus quas accusamus facilis id quae. Ducimus ullam quibusdam qui impedit at maxime illum est? Ipsa incidunt nihil cumque.</p>
+<p>Ab tenetur, labore, dolore molestias vitae similique doloremque porro sed officiis, nihil fugit? Id soluta unde odit minima? Esse laudantium est quas!</p>
 `
