@@ -23,7 +23,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormikContext } from "formik"
 import { MotiView } from "moti"
-import { Platform, StyleProp, ViewStyle } from "react-native"
+import { useCallback, useState } from "react"
+import { LayoutChangeEvent, Platform, StyleProp, ViewStyle } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -60,7 +61,9 @@ export const Form: React.FC<FormProps> = ({
   const tracking = useTracking()
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
-  const stickyOffset = Platform.select({ android: bottom, ios: bottom + space(2) })
+  const [bottomOffset, setBottomOffset] = useState(0)
+
+  const stickyOffset = Platform.select({ android: bottom, ios: bottom - space(2) })
 
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
@@ -92,12 +95,22 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
+
   const isArtistPill = (pill: SavedSearchPill) =>
     pill.paramName === SearchCriteria.artistID || pill.paramName === SearchCriteria.artistIDs
 
   return (
     <>
-      <KeyboardAwareForm contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}>
+      <KeyboardAwareForm
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+        bottomOffset={bottomOffset}
+      >
         {!isEditMode && (
           <>
             <InfoButton
@@ -206,7 +219,7 @@ export const Form: React.FC<FormProps> = ({
         <Spacer y={2} />
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: stickyOffset }}>
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: stickyOffset }}>
         <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} delay={200}>
           <Flex
             p={2}

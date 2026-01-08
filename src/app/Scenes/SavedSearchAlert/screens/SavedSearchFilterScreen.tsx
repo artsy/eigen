@@ -24,15 +24,24 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
-import { Alert, Platform } from "react-native"
+import { useCallback, useState } from "react"
+import { Alert, LayoutChangeEvent, Platform } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const space = useSpace()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const [bottomOffset, setBottomOffset] = useState(0)
 
-  const stickyOffset = Platform.select({ android: bottom, ios: bottom + space(2) })
+  const stickyOffset = Platform.select({ android: bottom, ios: bottom - space(2) })
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -48,7 +57,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       >
         Filters
       </NavigationHeader>
-      <KeyboardAwareForm>
+      <KeyboardAwareForm bottomOffset={bottomOffset}>
         <SavedSearchFilterAppliedFilters />
         <SavedSearchFilterAdditionalGeneIDs />
         <SavedSearchFilterRarity />
@@ -60,7 +69,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <Spacer y={2} />
       </KeyboardAwareForm>
 
-      <KeyboardStickyView offset={{ opened: stickyOffset }}>
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: stickyOffset }}>
         <Flex
           p={2}
           pb={`${bottom}px`}
