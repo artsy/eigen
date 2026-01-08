@@ -3451,27 +3451,42 @@ type ArtworkImportEdge {
 enum ArtworkImportError {
   ARTWORK_CREATION_FAILED
   DUPLICATE_IMAGE_FILENAMES
+  INVALID_ARTIST_PROOF
   INVALID_CERTIFICATE_OF_AUTHENTICITY
   INVALID_CLASSIFICATION
+  INVALID_CURRENCY
   INVALID_DEPTH
   INVALID_DIAMETER
+  INVALID_DIMENSION_METRIC
+  INVALID_ESTIMATE
+  INVALID_EXCLUDE_FROM_MARKETING
   INVALID_FRAMED_DEPTH
   INVALID_FRAMED_DIAMETER
   INVALID_FRAMED_HEIGHT
   INVALID_FRAMED_WIDTH
   INVALID_HEIGHT
+  INVALID_HIGH_ESTIMATE
+  INVALID_LOT_NUMBER
+  INVALID_LOW_ESTIMATE
   INVALID_MEDIUM
+  INVALID_OPENING_BID
+  INVALID_POSITION
   INVALID_PRICE
+  INVALID_RESERVE
   INVALID_SIGNATURE
   INVALID_TITLE
   INVALID_WEIGHT
   INVALID_WIDTH
   MISSING_ARTIST
   MISSING_DATE
+  MISSING_POSITION
   MISSING_PRICE
+  MISSING_SALE_SLUG
   MISSING_TITLE
+  SALE_ARTWORK_CREATION_FAILED
   UNMATCHED_ARTIST
   UNMATCHED_IMAGE
+  UNMATCHED_SALE_SLUG
   UNSUPPORTED_IMAGE_SEPERATOR
 }
 
@@ -3564,29 +3579,45 @@ type ArtworkImportSummary {
 
 type ArtworkImportTransformedData {
   artistNames: String
+  artistProofs: String
   artworkCondition: String
   artworkDescription: String
   artworkTitle: String
+  availableEditions: String
   bibliography: String
   certificateOfAuthenticity: String
   classification: String
+  confidentialNotes: String
+  currency: String
   date: String
   depth: String
   diameter: String
+  dimensionMetric: String
+  editionSize: String
+  estimate: String
+  excludeFromMarketing: String
   exhibitionHistory: String
   framedDepth: String
   framedDiameter: String
   framedHeight: String
   framedWidth: String
   height: String
+  highEstimate: String
   imageFileNames: String
   imageRights: String
   importSource: String
   inventoryId: String
+  lotNumber: String
+  lowEstimate: String
   materials: String
   medium: String
+  openingBid: String
+  position: String
   price: String
   provenance: String
+  publisher: String
+  reserve: String
+  saleSlug: String
   series: String
   signature: [String]
   signatureDetails: String
