@@ -29,6 +29,7 @@ export const HTMLTest: React.FC = () => {
 
           <Section title="Headings" html={headings} />
           <Section title="Paragraphs" html={paragraphs} />
+          <Section title="Lists" html={lists} />
           <Section title="Blockquote" html={blockquote} />
         </Screen.ScrollView>
       </Screen.Body>
@@ -74,4 +75,84 @@ const blockquote = `
   <p>It is typically distinguished visually using indentation and a different typeface or smaller size quotation. It may or may not include a citation, usually placed at the bottom.</p>
   <cite>—Example citation</cite>
 </blockquote>
+`
+
+const lists = `
+<div>
+  <h3>Dictionary List</h3>
+  <dl>
+    <dt>Dictionary List term</dt>
+    <dd>This is a Dictionary List definition.</dd>
+    <dt>Another term</dt>
+    <dd>Another definition.</dd>
+  </dl>
+  <h3>Ordered List</h3>
+  <ol type="1">
+    <li>List Item 1</li>
+    <li>
+      List Item 2
+      <ol type="A">
+        <li>List Item 1</li>
+        <li>
+          List Item 2
+          <ol type="a">
+            <li>List Item 1</li>
+            <li>
+              List Item 2
+              <ol type="I">
+                <li>List Item 1</li>
+                <li>
+                  List Item 2
+                  <ol type="i">
+                    <li>List Item 1</li>
+                    <li>List Item 2</li>
+                    <li>List Item 3</li>
+                  </ol>
+                </li>
+                <li>List Item 3</li>
+              </ol>
+            </li>
+            <li>List Item 3</li>
+          </ol>
+        </li>
+        <li>List Item 3</li>
+      </ol>
+    </li>
+    <li>List Item 3</li>
+  </ol>
+  <h3>Unordered List</h3>
+  <ul>
+    <li>List Item 1</li>
+    <li>
+      List Item 2
+      <ul>
+        <li>List Item 1</li>
+        <li>
+          List Item 2
+          <ul>
+            <li>List Item 1</li>
+            <li>
+              List Item 2
+              <ul>
+                <li>List Item 1</li>
+                <li>
+                  List Item 2
+                  <ul>
+                    <li>List Item 1</li>
+                    <li>List Item 2</li>
+                    <li>List Item 3</li>
+                  </ul>
+                </li>
+                <li>List Item 3</li>
+              </ul>
+            </li>
+            <li>List Item 3</li>
+          </ul>
+        </li>
+        <li>List Item 3</li>
+      </ul>
+    </li>
+    <li>List Item 3</li>
+  </ul>
+</div>
 `
