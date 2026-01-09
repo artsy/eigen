@@ -5,7 +5,6 @@ import {
 } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
 import React from "react"
@@ -24,10 +23,8 @@ interface AuctionResultsListProps {
   refreshing: boolean
   handleRefresh: () => void
   onEndReached: () => void
-  ListHeaderComponent?: React.FC
   onItemPress: (item: AuctionResultListItem_auctionResult$data) => void
   isLoadingNext: boolean
-  floatingHeaderTitle?: string
 }
 
 interface SectionT {
@@ -39,10 +36,8 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   refreshing,
   handleRefresh,
   onEndReached,
-  ListHeaderComponent,
   onItemPress,
   isLoadingNext,
-  floatingHeaderTitle,
 }) => {
   const groupedAuctionResults = groupBy(auctionResults, (item) =>
     moment(item!.saleDate!).format("YYYY-MM")
@@ -55,59 +50,43 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
       return { sectionTitle, data }
     })
 
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          {floatingHeaderTitle}
-        </Text>
-      </Flex>
-    ),
-  })
-
   return (
-    <Flex flexDirection="column" justifyContent="space-between" pt={6}>
-      <Animated.SectionList
-        testID="Results_Section_List"
-        sections={groupedAuctionResultSections}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-        onEndReached={onEndReached}
-        keyExtractor={(item) => item.internalID}
-        stickySectionHeadersEnabled
-        ListHeaderComponent={ListHeaderComponent}
-        ItemSeparatorComponent={() => <Flex mt={2} />}
-        renderSectionHeader={({ section: { sectionTitle } }) => (
-          <Flex backgroundColor="mono0" mx={2}>
-            <Text my={2} variant="sm-display">
-              {sectionTitle}
-            </Text>
+    <Animated.SectionList
+      testID="Results_Section_List"
+      sections={groupedAuctionResultSections}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      onEndReached={onEndReached}
+      keyExtractor={(item) => item.internalID}
+      stickySectionHeadersEnabled
+      ItemSeparatorComponent={() => <Flex mt={2} />}
+      renderSectionHeader={({ section: { sectionTitle } }) => (
+        <Flex backgroundColor="mono0" mx={2}>
+          <Text my={2} variant="sm-display">
+            {sectionTitle}
+          </Text>
+        </Flex>
+      )}
+      renderItem={({ item, index }) =>
+        item ? (
+          <AuctionResultListItemFragmentContainer
+            first={index === 0}
+            auctionResult={item}
+            showArtistName
+            onPress={() => onItemPress(item)}
+          />
+        ) : (
+          <></>
+        )
+      }
+      ListFooterComponent={() =>
+        isLoadingNext ? (
+          <Flex my={4} flexDirection="row" justifyContent="center">
+            <Spinner />
           </Flex>
-        )}
-        renderItem={({ item, index }) =>
-          item ? (
-            <AuctionResultListItemFragmentContainer
-              first={index === 0}
-              auctionResult={item}
-              showArtistName
-              onPress={() => onItemPress(item)}
-            />
-          ) : (
-            <></>
-          )
-        }
-        ListFooterComponent={() =>
-          isLoadingNext ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
-        }
-        style={{ width: useScreenDimensions().width, paddingBottom: 40 }}
-        {...scrollProps}
-      />
-
-      {headerElement}
-    </Flex>
+        ) : null
+      }
+      style={{ width: useScreenDimensions().width, paddingBottom: 40 }}
+    />
   )
 }
 

@@ -39,22 +39,24 @@ export const ListOfresults: React.FC<{}> = () => {
 
     loadNext(articlesQueryVariables.count)
   }
-
+  // here too !!!
   return (
-    <Flex flex={1}>
-      <AuctionResultsList
-        auctionResults={auctionResults}
-        refreshing={refreshing}
-        handleRefresh={handleRefresh}
-        onEndReached={handleLoadMore}
-        onItemPress={(item: any) => {
-          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-        }}
-        ListHeaderComponent={ListHeader}
-        isLoadingNext={isLoadingNext}
-        floatingHeaderTitle="Recently Sold at Auctions"
-      />
-    </Flex>
+    <>
+      <Screen.AnimatedHeader onBack={goBack} title="Recently Sold at Auctions" />
+      <Screen.StickySubHeader title="Recently Sold at Auctions" />
+      <Screen.Body fullwidth>
+        <AuctionResultsList
+          auctionResults={auctionResults}
+          refreshing={refreshing}
+          handleRefresh={handleRefresh}
+          onEndReached={handleLoadMore}
+          onItemPress={(item: any) => {
+            navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+          }}
+          isLoadingNext={isLoadingNext}
+        />
+      </Screen.Body>
+    </>
   )
 }
 

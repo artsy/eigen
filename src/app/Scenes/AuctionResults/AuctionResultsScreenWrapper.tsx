@@ -65,8 +65,14 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
         context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
       })}
     >
-      <ArtworkFiltersStoreProvider>
-        <Flex flex={1}>
+      <Screen.AnimatedHeader onBack={goBack} title={getTitleByState(state)} />
+      <Screen.StickySubHeader title={getTitleByState(state)} />
+      <Screen.Body fullwidth>
+        <Text variant="xs" mx={2}>
+          {getDescriptionByState(state)}
+        </Text>
+
+        <ArtworkFiltersStoreProvider>
           <AuctionResultsList
             auctionResults={auctionResults}
             refreshing={refreshing}
@@ -76,12 +82,10 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
               trackEvent(tracks.tapAuctionGroup(item.internalID))
               navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
             }}
-            ListHeaderComponent={() => <ListHeader state={state} />}
             isLoadingNext={loadingMoreData}
-            floatingHeaderTitle={getTitleByState(state)}
           />
-        </Flex>
-      </ArtworkFiltersStoreProvider>
+        </ArtworkFiltersStoreProvider>
+      </Screen.Body>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
