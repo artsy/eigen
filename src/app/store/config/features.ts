@@ -141,29 +141,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableViewPortPrefetching",
   },
-  AREnableArtworkCardContextMenuIOS: {
-    description: "Enable long press menu on artwork cards for iOS",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuIOS",
-  },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
-  },
-  AREnableArtworkCardContextMenuAndroid: {
-    description: "Enable long press menu on artwork cards for Android",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
-  },
-  AREnableLongPressContextMenuOnboarding: {
-    description: "Enable long press context menu onboarding",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableLongPressContextMenuOnboarding",
   },
   ARShowOnboardingPriceRangeScreen: {
     readyForRelease: true,

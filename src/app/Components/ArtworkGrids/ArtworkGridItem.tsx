@@ -33,7 +33,6 @@ import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTracki
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -122,7 +121,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const color = useColor()
     const tracking = useTracking()
     const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-    const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
     const isIOS = Platform.OS === "ios"
 
     let filterParams: any = undefined
@@ -277,7 +275,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
             onLongPress={() => {
               // Adroid long press is tracked inside of the ContextMenuArtwork component
-              if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+              if (contextScreenOwnerType && isIOS) {
                 tracking.trackEvent(
                   trackLongPress.longPressedArtwork(
                     ContextModule.artworkGrid,

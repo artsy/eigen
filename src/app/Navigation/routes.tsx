@@ -110,6 +110,7 @@ import { Favorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
+import { HTMLTest } from "app/Scenes/HTMLTest/HTMLTest"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
   HOME_SECTION_SCREEN_QUERY,
@@ -830,6 +831,16 @@ export const artsyDotNetRoutes = defineRoutes([
         headerLeft: () => {
           return <Flex />
         },
+      },
+    },
+  },
+  {
+    path: "/html",
+    name: "HTMLTest",
+    Component: HTMLTest,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
