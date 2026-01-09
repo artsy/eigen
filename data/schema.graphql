@@ -3498,7 +3498,9 @@ type ArtworkImportRow {
   currency: String!
   dimensionMetric: String!
   errors: [ArtworkImportRowError!]!
+  estimate: Money
   excludedFromImport: Boolean!
+  highEstimate: Money
 
   # A globally unique ID.
   id: ID!
@@ -3506,8 +3508,11 @@ type ArtworkImportRow {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  lowEstimate: Money
+  openingBid: Money
   priceListed: Money
   rawData: JSON!
+  reserve: Money
   transformedData: ArtworkImportTransformedData!
   weightMetric: String!
 }
