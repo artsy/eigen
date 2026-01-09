@@ -68,10 +68,6 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
       <Screen.AnimatedHeader onBack={goBack} title={getTitleByState(state)} />
       <Screen.StickySubHeader title={getTitleByState(state)} />
       <Screen.Body fullwidth>
-        <Text variant="xs" mx={2}>
-          {getDescriptionByState(state)}
-        </Text>
-
         <ArtworkFiltersStoreProvider>
           <AuctionResultsList
             auctionResults={auctionResults}
