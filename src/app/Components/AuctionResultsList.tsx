@@ -35,6 +35,7 @@ interface AuctionItem {
   type: "auction-item"
   item: AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null | undefined }
   index: number
+  internalID: string
 }
 
 type FlatListItem = SectionItem | AuctionItem
@@ -50,17 +51,21 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   const [currentSectionTitle, setCurrentSectionTitle] = useState<string | null>(null)
 
   const flatListData = useMemo(() => {
-    const groupedAuctionResults = groupBy(auctionResults, (item) =>
-      moment(item!.saleDate!).format("YYYY-MM")
-    )
+    // Group auction results by sale date (formatted as YYYY-MM)
+    // Items without a saleDate are grouped under "no-date" key
+    const groupedAuctionResults = groupBy(auctionResults, (item) => {
+      if (!item?.saleDate) return "no-date"
+      return moment(item.saleDate).format("YYYY-MM")
+    })
 
     const flatData: FlatListItem[] = []
     Object.entries(groupedAuctionResults).forEach(([date, items]) => {
-      const sectionTitle = moment(date).format("MMMM, YYYY")
+      // Format section title: either "MMMM, YYYY" for dated items or "No Date" for items without dates
+      const sectionTitle = date === "no-date" ? "No Date" : moment(date).format("MMMM, YYYY")
       flatData.push({ type: "section-header", sectionTitle })
 
       items.forEach((item, index) => {
-        flatData.push({ type: "auction-item", item, index })
+        flatData.push({ type: "auction-item", item, index, internalID: (item as any).internalID })
       })
     })
 
@@ -74,34 +79,25 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
 
   const onViewableItemsChanged = useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      if (viewableItems.length > 0) {
-        // Find the first auction item that's visible
-        let firstAuctionItemIndex: number | null = null
+      if (viewableItems.length === 0) return
 
-        for (let i = 0; i < viewableItems.length; i++) {
-          const item = viewableItems[i].item as FlatListItem
-          if (item.type === "auction-item") {
-            // Find the index of this item in the flatListData
-            const index = flatListData.findIndex(
-              (dataItem) =>
-                dataItem.type === "auction-item" &&
-                dataItem.item.internalID === item.item.internalID
-            )
-            if (index !== -1) {
-              firstAuctionItemIndex = index
-              break
-            }
-          }
-        }
+      // Find first visible auction item
+      const firstAuctionItem = viewableItems.find(
+        (v) => (v.item as FlatListItem).type === "auction-item"
+      )
 
-        // If we found an auction item, search backwards for the section header
-        if (firstAuctionItemIndex !== null) {
-          for (let i = firstAuctionItemIndex; i >= 0; i--) {
-            const item = flatListData[i]
-            if (item.type === "section-header") {
-              setCurrentSectionTitle(item.sectionTitle)
-              return
-            }
+      if (firstAuctionItem) {
+        const visibleItemIndex = flatListData.findIndex(
+          (item) =>
+            item.type === "auction-item" &&
+            item.internalID === (firstAuctionItem.item as AuctionItem).internalID
+        )
+
+        // Search backwards for the section header
+        for (let i = visibleItemIndex; i >= 0; i--) {
+          if (flatListData[i].type === "section-header") {
+            setCurrentSectionTitle((flatListData[i] as SectionItem).sectionTitle)
+            return
           }
         }
       }
@@ -109,11 +105,11 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
     [flatListData]
   )
 
-  const keyExtractor = (item: FlatListItem, index: number) => {
+  const keyExtractor = (item: FlatListItem) => {
     if (item.type === "section-header") {
       return `section-${item.sectionTitle}`
     }
-    return item.item.internalID
+    return item.internalID
   }
 
   return (
@@ -123,16 +119,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
       </Text>
 
       {!!currentSectionTitle && (
-        <Flex
-          //  backgroundColor="mono0"
-          mx={2}
-          py={2}
-          /*   position="absolute"
-          top={0}
-          left={0}
-          right={0} */
-          zIndex={100}
-        >
+        <Flex mx={2} py={2} zIndex={100}>
           <Text variant="sm-display">{currentSectionTitle}</Text>
         </Flex>
       )}
@@ -161,16 +148,25 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
             )
           }
 
-          return (
-            <>
-              {index === 1 && <Spacer y={-2} />}
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item.item}
-                showArtistName
-                onPress={() => onItemPress(item.item as AuctionResultListItem_auctionResult$data)}
-              />
-            </>
-          )
+          if (item.type === "auction-item") {
+            const auctionItem = item as AuctionItem
+            return (
+              <>
+                {index === 1 && <Spacer y={-2} />}
+                <AuctionResultListItemFragmentContainer
+                  auctionResult={auctionItem.item}
+                  showArtistName
+                  onPress={() =>
+                    onItemPress(
+                      auctionItem.item as unknown as AuctionResultListItem_auctionResult$data
+                    )
+                  }
+                />
+              </>
+            )
+          }
+
+          return null
         }}
         ListFooterComponent={() =>
           isLoadingNext ? (
