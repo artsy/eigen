@@ -12162,6 +12162,8 @@ type EditionSet implements Sellable {
   price: String
   priceDisplay: String
   priceListed: Money
+  priceMax: Money
+  priceMin: Money
   prototypes: String
 
   # Is the edition set parent-artwork published?
