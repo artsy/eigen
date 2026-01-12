@@ -1,4 +1,4 @@
-import { Select, SelectOption } from "app/Components/Select"
+import { Select, SelectOption, SelectRef } from "app/Components/Select"
 
 interface ArtworkCategoryPickerProps<T> {
   error?: string
@@ -7,6 +7,7 @@ interface ArtworkCategoryPickerProps<T> {
   options: Array<SelectOption<T>>
   required?: boolean
   value: T | null | undefined
+  ref?: React.Ref<SelectRef>
 }
 
 export const CategoryPicker = <ValueType,>({
@@ -16,9 +17,11 @@ export const CategoryPicker = <ValueType,>({
   options,
   required = true,
   value,
+  ref,
 }: ArtworkCategoryPickerProps<ValueType>) => {
   return (
     <Select<ValueType>
+      ref={ref}
       enableSearch={false}
       error={error}
       onModalFinishedClosing={onModalFinishedClosing}

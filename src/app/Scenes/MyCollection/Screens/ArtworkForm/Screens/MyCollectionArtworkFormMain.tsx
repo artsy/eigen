@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Input,
+  InputRef,
   Join,
   Separator,
   Spacer,
@@ -18,6 +19,7 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { SelectRef } from "app/Components/Select"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
 import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistCustomArtist"
@@ -75,6 +77,18 @@ export const MyCollectionArtworkFormMain: React.FC<
   const initialCurrency = formikValues.pricePaidCurrency?.length
     ? formikValues.pricePaidCurrency
     : preferredCurrency
+
+  // Input refs
+  const titleRef = useRef<InputRef>(null)
+  const categoryRef = useRef<SelectRef>(null)
+  const yearRef = useRef<InputRef>(null)
+  const materialsRef = useRef<InputRef>(null)
+  const rarityRef = useRef<SelectRef>(null)
+  const dimensionsRef = useRef<InputRef>(null)
+  const priceRef = useRef<InputRef>(null)
+  const provenanceRef = useRef<InputRef>(null)
+  const locationRef = useRef<Input>(null)
+  const notesRef = useRef<InputRef>(null)
 
   useEffect(() => {
     const isDirty = isFormDirty()
@@ -184,6 +198,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const handleCategory = (category: string) => {
     formik.handleChange("category")(category)
+    yearRef.current?.focus()
   }
 
   const handleBackButtonPress = () => {
@@ -288,6 +303,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <ArtistField />
 
               <Input
+                ref={titleRef}
                 title="Title"
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
@@ -295,15 +311,20 @@ export const MyCollectionArtworkFormMain: React.FC<
                 required
                 accessibilityLabel="Title"
                 value={formikValues.title}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => categoryRef.current?.openSelectModal()}
               />
 
               <CategoryPicker<string>
+                ref={categoryRef}
                 value={formikValues.category}
                 options={artworkMediumCategories}
                 handleChange={handleCategory}
               />
 
               <Input
+                ref={yearRef}
                 title="Year"
                 keyboardType="number-pad"
                 placeholder="Year created"
@@ -312,9 +333,13 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DateInput"
                 accessibilityLabel="Year"
                 value={formikValues.date}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => materialsRef.current?.focus()}
               />
 
               <Input
+                ref={materialsRef}
                 title="Materials"
                 placeholder="Oil on canvas, mixed media, lithograph.."
                 onChangeText={formik.handleChange("medium")}
@@ -322,13 +347,20 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
                 value={formikValues.medium}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => rarityRef.current?.openSelectModal()}
               />
 
-              <Rarity />
+              <Rarity
+                selectRef={rarityRef}
+                onSubmitEditing={() => dimensionsRef.current?.focus()}
+              />
 
-              <Dimensions />
+              <Dimensions ref={dimensionsRef} onSubmitEditing={() => priceRef.current?.focus()} />
 
               <MoneyInput
+                ref={priceRef}
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
                 format
@@ -345,9 +377,13 @@ export const MyCollectionArtworkFormMain: React.FC<
                 placeholder="Price paid"
                 shouldDisplayLocalError={false}
                 title="Price Paid"
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => provenanceRef.current?.focus()}
               />
 
               <Input
+                ref={provenanceRef}
                 multiline
                 title="Provenance"
                 maxLength={500}
@@ -365,6 +401,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 }}
               >
                 <LocationAutocomplete
+                  inputRef={locationRef}
                   allowCustomLocation
                   title="Location"
                   testID="LocationInput"
@@ -380,10 +417,14 @@ export const MyCollectionArtworkFormMain: React.FC<
                     })
                   }}
                   accessibilityLabel="Enter city where the artwork is located"
+                  returnKeyType="next"
+                  submitBehavior="submit"
+                  onSubmitEditing={() => notesRef.current?.focus()}
                 />
               </Box>
 
               <Input
+                ref={notesRef}
                 multiline
                 maxLength={500}
                 showLimit
