@@ -27,6 +27,7 @@ import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refr
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
@@ -95,6 +96,8 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     if (loading) {
       return
     }
+
+    KeyboardController.dismiss()
 
     setLoading(true)
 
