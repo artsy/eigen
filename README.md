@@ -4,7 +4,7 @@
 
 - **State:** Production
 - **[Point People][point_people]:** [Brian Beckerle][brian_github_profile], [Mounir Dhahri][mounir_github_profile], [George Kartalis][george_github_profile]
-- **CI :** [CircleCi][circle_ci]
+- **CI:** [CircleCi][circle_ci]
 
 ### Intro
 
