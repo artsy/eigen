@@ -23,7 +23,7 @@ describe("Notification", () => {
       }
     `,
   })
-  it.only("renders notification properly", () => {
+  it("renders notification properly", () => {
     renderWithRelay({
       FollowedArtistsArtworksGroup: () => notification(),
     })
