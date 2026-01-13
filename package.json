@@ -359,11 +359,5 @@
       "yarn prettier-write"
     ]
   },
-  "reanimated": {
-    "staticFeatureFlags": {
-      "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": true,
-      "DISABLE_COMMIT_PAUSING_MECHANISM": true
-    }
-  },
   "packageManager": "yarn@4.10.3"
 }
