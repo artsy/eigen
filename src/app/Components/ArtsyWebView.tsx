@@ -17,14 +17,14 @@ import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Platform } from "react-native"
-import { Edge } from "react-native-safe-area-context"
+import { KeyboardAvoidingView } from "react-native-keyboard-controller"
+import { Edge, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -80,6 +80,7 @@ export const ArtsyWebViewPage = ({
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
   const tracking = useTracking()
+  const { bottom } = useSafeAreaInsets()
 
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
@@ -150,7 +151,10 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="background">
-        <KeyboardAvoidingContainer>
+        <KeyboardAvoidingView
+          behavior="translate-with-padding"
+          style={{ flex: 1, paddingBottom: bottom }}
+        >
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -175,7 +179,7 @@ export const ArtsyWebViewPage = ({
                 : undefined
             }
           />
-        </KeyboardAvoidingContainer>
+        </KeyboardAvoidingView>
       </Flex>
     </Screen>
   )
