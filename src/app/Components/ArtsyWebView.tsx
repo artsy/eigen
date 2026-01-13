@@ -152,8 +152,9 @@ export const ArtsyWebViewPage = ({
     <Screen>
       <Flex flex={1} backgroundColor="background">
         <KeyboardAvoidingView
-          behavior="translate-with-padding"
-          style={{ flex: 1, paddingBottom: bottom }}
+          // Setting `behaviour` here breaks the avoidance on iOS, hence it's only set for Android
+          behavior={Platform.select({ android: "padding" })}
+          style={{ flex: 1, marginBottom: bottom }}
         >
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
