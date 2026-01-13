@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/co
 import { ArtistShow_show$data, ArtistShow_show$key } from "__generated__/ArtistShow_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { View, ViewStyle } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -22,7 +21,6 @@ interface Props {
 
 export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensions }) => {
   const tracking = useTracking()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const data = useFragment(query, show)
 
   if (!data) {
@@ -44,7 +42,7 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
             src={imageURL}
             width={imageDimensions.width}
             height={imageDimensions.height}
-            blurhash={showBlurhash ? image?.blurhash : undefined}
+            blurhash={image?.blurhash}
             style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
           />
         </View>

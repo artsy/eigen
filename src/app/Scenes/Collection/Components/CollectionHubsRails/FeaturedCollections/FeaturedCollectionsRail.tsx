@@ -3,8 +3,8 @@ import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -21,7 +21,6 @@ type FeaturedCollection = FeaturedCollectionsRail_collectionGroup$data["members"
 export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
   const color = useColor()
   const tracking = useTracking()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const { collection, collectionGroup } = props
   const collections = collectionGroup?.members ?? []
@@ -95,11 +94,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   width={220}
                   height={190}
                   src={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
-                  blurhash={
-                    showBlurhash
-                      ? result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.blurhash
-                      : undefined
-                  }
+                  blurhash={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.blurhash}
                 />
                 <Text variant="sm" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}

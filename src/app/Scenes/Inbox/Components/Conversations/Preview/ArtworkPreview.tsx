@@ -4,7 +4,6 @@ import {
   ArtworkPreview_artwork$data,
   ArtworkPreview_artwork$key,
 } from "__generated__/ArtworkPreview_artwork.graphql"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -46,7 +45,6 @@ export interface ArtworkPreviewProps {
 
 export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelected }) => {
   const artworkData = useFragment(ArtworkPreviewFragment, artwork)
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const { image: artworkImage } = artworkData
   const color = useColor()
@@ -74,7 +72,7 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
               src={artworkImage.url ?? ""}
               aspectRatio={artworkImage.aspectRatio}
               width={250}
-              blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+              blurhash={artworkImage.blurhash}
             />
           </ImageContainer>
         )}

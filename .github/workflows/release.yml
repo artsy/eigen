@@ -74,12 +74,20 @@ jobs:
           # Extract version from Android tag for Sentry link (remove -submission suffix)
           android_version=$(echo "${{ env.last_android_tag }}" | sed -E 's/-submission$//')
 
+          sentry_base_url="https://artsynet.sentry.io"
+          project_id="5867225"
+
           # Add monitoring links with correct Sentry URL format
-          ios_link="https://artsynet.sentry.io/explore/releases/${ios_version}/?environment=production&project=5867225"
-          android_link="https://artsynet.sentry.io/explore/releases/${android_version}/?environment=production&project=5867225"
+          ios_link="${sentry_base_url}/explore/releases/${ios_version}/?environment=production&project=${project_id}"
+          android_link="${sentry_base_url}/explore/releases/${android_version}/?environment=production&project=${project_id}"
+
+          # Add mobile vitals dashboard links
+          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${ios_version}&project=${project_id}"
+          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${android_version}&project=${project_id}"
 
           sentry_header="Check the health of this release in Sentry:"
-          sentry_footer=":apple: [iOS](${ios_link}) | :robot: [Android](${android_link})"
+          sentry_footer=":apple: [iOS Release details](${ios_link}) | :robot: [Android Release details](${android_link})"
+          sentry_mobile_vitals_details=":apple: [Mobile Vitals iOS](${mobile_vitals_ios_link}) | :robot: [Mobile Vitals Android](${mobile_vitals_android_link})"
 
 
           # Extract the version from the iOS tag for the title
@@ -90,4 +98,4 @@ jobs:
               --repo "${{ github.repository }}" \
               --title "$version" \
               --generate-notes \
-              --notes "$(printf "%s\n\n%s" "$sentry_header" "$sentry_footer")"
+              --notes "$(printf "%s\n\n%s\n\n%s" "$sentry_header" "$sentry_footer" "$sentry_mobile_vitals_details")"

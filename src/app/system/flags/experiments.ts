@@ -5,9 +5,6 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
-  "eigen-new-works-for-you-recommendations-model": {
-    description: "value controlling which model to use for new works for you recs",
-  },
   "onyx_artwork-card-save-and-follow-cta-redesign": {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],

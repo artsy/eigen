@@ -27,18 +27,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.335.0":
-  version: 4.335.0
-  resolution: "@artsy/cohesion@npm:4.335.0"
+"@artsy/cohesion@npm:4.336.0":
+  version: 4.336.0
+  resolution: "@artsy/cohesion@npm:4.336.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/8186b754719c721b0725cc45645572294dbbf3a19bf224d1035bd767c2854c01fb7cc3b44a56a28c0ea43ebf0b29d5c956bbc0a23ca94b426f2f56eec5dafa8e
+  checksum: 10c0/97db00d51d98c88625fd2925af74184da94af2ec2af07216f4da6c0e5cc9e0069cc02297e3f7702d2a334567121151a9b6e0931899f5d20f62a764f063c913a7
   languageName: node
   linkType: hard
 
-"@artsy/icons@npm:3.63.0":
-  version: 3.63.0
-  resolution: "@artsy/icons@npm:3.63.0"
+"@artsy/icons@npm:3.64.0":
+  version: 3.64.0
+  resolution: "@artsy/icons@npm:3.64.0"
   peerDependencies:
     react: ">=16.2.0"
     react-native: ">=0.70.15"
@@ -50,7 +50,7 @@ __metadata:
       optional: true
     react-native-svg:
       optional: true
-  checksum: 10c0/d37674cde2f54b39a78baf32a689755526ce9209fe6a012acfadfc5ea16d98ef8028063972e16b633dc3d2c0e4d31219b51bcf2dbc6d8882210919bda5dd72e6
+  checksum: 10c0/271df77e979f1418be402a0180273b9c0abf8954bcafb4fed4b4002bdbe8f7c85816405662b305e82666516bc9c43a0d28801b28b350d257bfeb48fbb5f4efeb
   languageName: node
   linkType: hard
 
@@ -72,9 +72,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.1.0":
-  version: 22.1.0
-  resolution: "@artsy/palette-mobile@npm:22.1.0"
+"@artsy/palette-mobile@npm:22.2.0":
+  version: 22.2.0
+  resolution: "@artsy/palette-mobile@npm:22.2.0"
   dependencies:
     "@artsy/icons": "npm:^3.49.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -101,7 +101,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/caa227676c44ab89722a7adf8cae6b48aa5d9cdae2fc2546f7ea2fbcbcb768b629dbd202d9b51d1339e417279a8782a3ea677786e47a6e94462b2518f3ea53fe
+  checksum: 10c0/bd168264c256e109b4b0f3e95afbc25c69835bc5340ffd7191483e35add9bda6541261f4c0f62b239a00baea202e88ea6d4b603206d974817d664a763842f499
   languageName: node
   linkType: hard
 
@@ -12567,9 +12567,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/cohesion": "npm:4.335.0"
-    "@artsy/icons": "npm:3.63.0"
-    "@artsy/palette-mobile": "npm:22.1.0"
+    "@artsy/cohesion": "npm:4.336.0"
+    "@artsy/icons": "npm:3.64.0"
+    "@artsy/palette-mobile": "npm:22.2.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"

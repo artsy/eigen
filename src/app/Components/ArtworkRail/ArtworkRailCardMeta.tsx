@@ -1,4 +1,3 @@
-import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
@@ -7,10 +6,8 @@ import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSi
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -222,42 +219,11 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
             testID="save-artwork-icon"
             underlayColor={backgroundColor}
           >
-            <ArtworkRailCardMetaSaveIcon isSaved={!!isSaved} primaryColor={primaryColor} />
+            <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
           </Touchable>
         </Flex>
       )}
     </Flex>
-  )
-}
-
-const ArtworkRailCardMetaSaveIcon: React.FC<{
-  isSaved: boolean
-  primaryColor: string
-}> = ({ isSaved, primaryColor }) => {
-  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
-
-  if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
-  }
-
-  if (isSaved) {
-    return (
-      <HeartFillIcon
-        testID="filled-heart-icon"
-        height={HEART_ICON_SIZE}
-        width={HEART_ICON_SIZE}
-        fill="blue100"
-      />
-    )
-  }
-
-  return (
-    <HeartStrokeIcon
-      testID="empty-heart-icon"
-      height={HEART_ICON_SIZE}
-      width={HEART_ICON_SIZE}
-      fill={primaryColor}
-    />
   )
 }
 

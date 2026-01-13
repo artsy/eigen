@@ -116,12 +116,7 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
-  ARShowBlurhashImagePlaceholder: {
-    description: "Show blurhash image placeholder (works only when using Palette Image Component)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARShowBlurhashImagePlaceholder",
-  },
+
   AREnableAlertBottomSheet: {
     description: "Enable tapping on alerts to show bottom sheet",
     readyForRelease: true,
@@ -146,53 +141,17 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableViewPortPrefetching",
   },
-  AREnableArtworkCardContextMenuIOS: {
-    description: "Enable long press menu on artwork cards for iOS",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuIOS",
-  },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
-  AREnableArtworkCardContextMenuAndroid: {
-    description: "Enable long press menu on artwork cards for Android",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
-  },
-  AREnableLongPressContextMenuOnboarding: {
-    description: "Enable long press context menu onboarding",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableLongPressContextMenuOnboarding",
-  },
-  AREnableProgressiveOnboardingPriceRangeHome: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable progressive onboarding price range home",
-    echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",
-  },
   ARShowOnboardingPriceRangeScreen: {
     readyForRelease: true,
     showInDevMenu: true,
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
-  },
-  AREnablePriceRangeToast: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable price range toast prompting users to update a price range",
-    echoFlagKey: "AREnablePriceRangeToast",
-  },
-  AREnableArtworkSaveIconAnimation: {
-    description: "Enable artwork save icon animation",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
   AREnableNewHomeViewCardRailType: {
     readyForRelease: true,

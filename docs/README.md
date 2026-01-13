@@ -54,6 +54,10 @@
 - [Certificates & Code Signing](certs.md)
 - [release candidate code freeze](release_candidate_code_freeze.md)
 
+### Measuring Performance
+
+- [Measuring Performance with Flashlight](measuring_performance_with_flashlight.md)
+
 #### Thanks to our [contributors](thanks.md) 🎉
 
 ### Can these be removed?

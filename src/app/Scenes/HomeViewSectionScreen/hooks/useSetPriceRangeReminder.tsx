@@ -8,7 +8,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { addClue, setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useEffect, useRef } from "react"
 import { InteractionManager } from "react-native"
@@ -32,18 +31,13 @@ export function useSetPriceRangeReminder({
   const toast = useToast()
   const tracking = useTracking()
   const hasShownPriceRangeToast = useRef(false)
-  const enablePriceRangeToast = useFeatureFlag("AREnablePriceRangeToast")
   const { seenVisualClues } = useVisualClue()
   const toastName = VisualCluesConstMap.PriceRangeToast
   const hasSeenToast = !!seenVisualClues.find((clue) => clue === toastName)
 
   useEffect(() => {
     // proceed only for the "We Think You'll Love" section screen
-    if (
-      sectionInternalID !== "home-view-section-recommended-artworks" ||
-      !enablePriceRangeToast ||
-      hasSeenToast
-    ) {
+    if (sectionInternalID !== "home-view-section-recommended-artworks" || hasSeenToast) {
       return
     }
 
@@ -94,7 +88,6 @@ export function useSetPriceRangeReminder({
     sectionInternalID,
     toast,
     tracking,
-    enablePriceRangeToast,
     hasSeenToast,
     toastName,
     contextScreenOwnerType,

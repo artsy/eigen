@@ -2,7 +2,6 @@ import * as Sentry from "@sentry/react-native"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useCallback, useContext } from "react"
 import {
   Animated,
@@ -195,7 +194,6 @@ const EmbeddedItem: React.FC<{
   images,
 }) => {
   const { ...styles } = measurements[index]
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (item.__typename === "Video" && item.url) {
     return (
@@ -215,7 +213,7 @@ const EmbeddedItem: React.FC<{
   return (
     <ImageWithLoadingState
       imageURL={(item as ImageCarouselImage).resized?.src || item.url}
-      blurhash={showBlurhash ? (item as ImageCarouselImage).blurhash : undefined}
+      blurhash={(item as ImageCarouselImage).blurhash}
       width={styles.width}
       height={styles.height}
       onPress={goFullScreen}
