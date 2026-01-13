@@ -363,8 +363,7 @@
     "staticFeatureFlags": {
       "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": true,
       "DISABLE_COMMIT_PAUSING_MECHANISM": true,
-      "IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS": true,
-      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": true
+      "IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS": true
     }
   },
   "packageManager": "yarn@4.10.3"
