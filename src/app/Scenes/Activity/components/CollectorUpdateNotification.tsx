@@ -109,7 +109,7 @@ const collectorProfileInfo = {
 const tracks = {
   tappedCompleteYourProfile: (): TappedCompleteYourProfile => ({
     action: ActionType.tappedCompleteYourProfile,
-    context_module: ContextModule.collectorProfileCard,
+    context_module: ContextModule.activity,
     context_screen_owner_type: OwnerType.profile,
   }),
 }

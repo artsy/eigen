@@ -112,7 +112,7 @@ describe("CollectorUpdateNotification", () => {
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCompleteYourProfile",
-      context_module: "collectorProfileCard",
+      context_module: "activity",
       context_screen_owner_type: "profile",
     })
   })
