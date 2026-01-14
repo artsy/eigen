@@ -72,7 +72,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:^22.3.0":
+"@artsy/palette-mobile@npm:22.3.0":
   version: 22.3.0
   resolution: "@artsy/palette-mobile@npm:22.3.0"
   dependencies:
@@ -12569,7 +12569,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.64.0"
-    "@artsy/palette-mobile": "npm:^22.3.0"
+    "@artsy/palette-mobile": "npm:22.3.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
