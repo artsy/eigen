@@ -142,7 +142,7 @@ const MyProfileSettingsContent: React.FC = () => {
                   accessibilityRole="button"
                   onPress={() => updateTapCount((count) => count + 1)}
                 >
-                  <Text variant="xs" color={userIsDev ? "devpurple" : "mono60"}>
+                  <Text variant="xs" color={userIsDev ? "devpurple" : "mono60"} selectable={false}>
                     Version: {appVersion}
                   </Text>
                 </Touchable>

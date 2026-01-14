@@ -16,7 +16,7 @@ export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) 
   )
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
-  if (!userIsDev || Platform.OS === "ios") {
+  if (Platform.OS === "ios") {
     return <Flex flex={1}>{children}</Flex>
   }
 
@@ -44,6 +44,10 @@ export const DevMenuWrapper: React.FC<React.PropsWithChildren> = ({ children }) 
     }
     return false
   }, [isDeepZoomModalVisible])
+
+  if (!userIsDev) {
+    return <Flex flex={1}>{children}</Flex>
+  }
 
   return (
     <Flex flex={1} onStartShouldSetResponderCapture={handleStartShouldSetResponderCapture}>
