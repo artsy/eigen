@@ -3,7 +3,7 @@ index 6cdec32..8f7cf70 100644
 --- a/node_modules/react-native/React/Modules/RCTEventEmitter.m
 +++ b/node_modules/react-native/React/Modules/RCTEventEmitter.m
 @@ -89,6 +89,10 @@
- 
+
    if (_listenerCount > 0) {
      [self stopObserving];
 +    // Reset listener count to allow proper re-initialization on bridge reload
@@ -12,17 +12,4 @@ index 6cdec32..8f7cf70 100644
 +    _listenerCount = 0;
    }
  }
- 
-diff --git a/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-index e0742c9..a5cd8cf 100644
---- a/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-+++ b/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-@@ -216,7 +216,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
-   }
- 
-   bool preventShadowTreeCommitExhaustion() override {
--    return false;
-+    return true;
-   }
- 
-   bool traceTurboModulePromiseRejectionsOnAndroid() override {
+
