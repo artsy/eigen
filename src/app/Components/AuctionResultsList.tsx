@@ -132,7 +132,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         scrollEventThrottle={16}
         viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={onViewableItemsChanged}
-        ItemSeparatorComponent={() => <Flex backgroundColor="red" mt={2} />}
+        ItemSeparatorComponent={() => <Flex mt={2} />}
         renderItem={({ item, index }) => {
           if (index === 0 && item.type === "section-header") {
             // Skip rendering the first section header since it's sticky
