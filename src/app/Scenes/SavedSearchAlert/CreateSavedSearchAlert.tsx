@@ -12,7 +12,7 @@ import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { KeyboardAvoidingView, Modal, Platform } from "react-native"
+import { Modal, Platform } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -60,52 +60,41 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 paddingTop: Platform.OS === "ios" ? topInset : 0,
               }}
             >
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: { backgroundColor: color("background") },
+                }}
               >
-                <Stack.Navigator
-                  // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                  detachInactiveScreens={false}
-                  screenOptions={{
-                    ...TransitionPresets.SlideFromRightIOS,
-                    headerShown: false,
-                    cardStyle: { backgroundColor: color("background") },
+                <Stack.Screen
+                  name="CreateSavedSearchAlert"
+                  component={CreateSavedSearchAlertContentQueryRenderer}
+                  initialParams={params}
+                />
+                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                <Stack.Screen
+                  name="AlertPriceRange"
+                  component={AlertPriceRangeScreenQueryRenderer}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
                   }}
-                >
-                  <Stack.Screen
-                    name="CreateSavedSearchAlert"
-                    component={CreateSavedSearchAlertContentQueryRenderer}
-                    initialParams={params}
-                  />
-                  <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                  <Stack.Screen
-                    name="AlertPriceRange"
-                    component={AlertPriceRangeScreenQueryRenderer}
-                    options={{
-                      // Avoid PanResponser conflicts between the slider and the slide back gesture
-                      gestureEnabled: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ConfirmationScreen"
-                    component={ConfirmationScreen}
-                    options={{
-                      gestureEnabled: false,
-                    }}
-                    initialParams={{
-                      closeModal: params.onClosePress,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="SavedSearchFilterScreen"
-                    component={SavedSearchFilterScreen}
-                    options={{
-                      gestureEnabled: false,
-                    }}
-                  />
-                </Stack.Navigator>
-              </KeyboardAvoidingView>
+                />
+                <Stack.Screen
+                  name="ConfirmationScreen"
+                  component={ConfirmationScreen}
+                  options={{ gestureEnabled: false }}
+                  initialParams={{ closeModal: params.onClosePress }}
+                />
+                <Stack.Screen
+                  name="SavedSearchFilterScreen"
+                  component={SavedSearchFilterScreen}
+                  options={{ gestureEnabled: false }}
+                />
+              </Stack.Navigator>
             </SafeAreaView>
           </Modal>
         </NavigationContainer>

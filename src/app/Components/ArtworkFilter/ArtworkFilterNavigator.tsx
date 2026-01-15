@@ -35,10 +35,12 @@ import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOpti
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { GlobalStore } from "app/store/GlobalStore"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { Keyboard, Modal, Platform, ViewProps } from "react-native"
+import { Modal, Platform, ViewProps } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
@@ -319,7 +321,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const handleCreateAlertPress = () => {
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
     requestAnimationFrame(() => {
       setIsCreateAlertModalVisible(true)
       tracking.trackEvent(tracks.tappedCreateAlert(id as string, name as string))
@@ -343,109 +345,111 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           animationType="slide"
           testID="artwork-filter-navigator"
         >
-          <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
-            <Stack.Navigator
-              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-              detachInactiveScreens={false}
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                cardStyle: {
-                  backgroundColor: color("background"),
-                  paddingTop: Platform.OS === "ios" ? insets?.top : 0,
-                },
-              }}
-            >
-              <Stack.Screen
-                name="FilterOptionsScreen"
-                component={ArtworkFilterOptionsScreen}
-                initialParams={props}
-              />
-              <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
-              <Stack.Screen
-                name="ArtistSeriesOptionsScreen"
-                component={ArtistSeriesOptionsScreen}
-              />
-              <Stack.Screen
-                name="AttributionClassOptionsScreen"
-                component={AttributionClassOptionsScreen}
-              />
-              <Stack.Screen
-                name="AuctionHouseOptionsScreen"
-                component={AuctionHouseOptionsScreen}
-              />
-              <Stack.Screen
-                name="AvailabilityOptionsScreen"
-                component={AvailabilityOptionsScreen}
-              />
-              <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
-              <Stack.Screen
-                name="EstimateRangeOptionsScreen"
-                component={EstimateRangeOptionsScreen}
-              />
-              <Stack.Screen name="FramedOptionsScreen" component={FramedOptionsScreen} />
-              <Stack.Screen
-                name="GalleriesAndInstitutionsOptionsScreen"
-                component={GalleriesAndInstitutionsOptionsScreen}
-              />
-              <Stack.Screen
-                name="AdditionalGeneIDsOptionsScreen"
-                component={AdditionalGeneIDsOptionsScreen}
-              />
-              <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
-              <Stack.Screen
-                name="PriceRangeOptionsScreen"
-                component={PriceRangeOptionsScreen}
-                options={{
-                  // Avoid PanResponser conflicts between the slider and the slide back gesture
-                  gestureEnabled: false,
+          <KeyboardAvoidingContainer>
+            <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: {
+                    backgroundColor: color("background"),
+                    paddingTop: Platform.OS === "ios" ? insets?.top : 0,
+                  },
                 }}
-              />
-              <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
-              <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-              <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
-              <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
-              <Stack.Screen
-                name="YearOptionsScreen"
-                component={YearOptionsScreen}
-                options={{
-                  // Avoid PanResponser conflicts between the slider and the slide back gesture
-                  gestureEnabled: false,
-                }}
-              />
-              <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
-              <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
-              <Stack.Screen
-                name="MaterialsTermsOptionsScreen"
-                component={MaterialsTermsOptionsScreen}
-              />
-              <Stack.Screen
-                name="ArtistNationalitiesOptionsScreen"
-                component={ArtistNationalitiesOptionsScreen}
-              />
-              <Stack.Screen
-                name="LocationCitiesOptionsScreen"
-                component={LocationCitiesOptionsScreen}
-              />
-            </Stack.Navigator>
+              >
+                <Stack.Screen
+                  name="FilterOptionsScreen"
+                  component={ArtworkFilterOptionsScreen}
+                  initialParams={props}
+                />
+                <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
+                <Stack.Screen
+                  name="ArtistSeriesOptionsScreen"
+                  component={ArtistSeriesOptionsScreen}
+                />
+                <Stack.Screen
+                  name="AttributionClassOptionsScreen"
+                  component={AttributionClassOptionsScreen}
+                />
+                <Stack.Screen
+                  name="AuctionHouseOptionsScreen"
+                  component={AuctionHouseOptionsScreen}
+                />
+                <Stack.Screen
+                  name="AvailabilityOptionsScreen"
+                  component={AvailabilityOptionsScreen}
+                />
+                <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
+                <Stack.Screen
+                  name="EstimateRangeOptionsScreen"
+                  component={EstimateRangeOptionsScreen}
+                />
+                <Stack.Screen name="FramedOptionsScreen" component={FramedOptionsScreen} />
+                <Stack.Screen
+                  name="GalleriesAndInstitutionsOptionsScreen"
+                  component={GalleriesAndInstitutionsOptionsScreen}
+                />
+                <Stack.Screen
+                  name="AdditionalGeneIDsOptionsScreen"
+                  component={AdditionalGeneIDsOptionsScreen}
+                />
+                <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
+                <Stack.Screen
+                  name="PriceRangeOptionsScreen"
+                  component={PriceRangeOptionsScreen}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
+                  }}
+                />
+                <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
+                <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
+                <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+                <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
+                <Stack.Screen
+                  name="YearOptionsScreen"
+                  component={YearOptionsScreen}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
+                  }}
+                />
+                <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
+                <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
+                <Stack.Screen
+                  name="MaterialsTermsOptionsScreen"
+                  component={MaterialsTermsOptionsScreen}
+                />
+                <Stack.Screen
+                  name="ArtistNationalitiesOptionsScreen"
+                  component={ArtistNationalitiesOptionsScreen}
+                />
+                <Stack.Screen
+                  name="LocationCitiesOptionsScreen"
+                  component={LocationCitiesOptionsScreen}
+                />
+              </Stack.Navigator>
 
-            <ArtworkFilterApplyButton
-              disabled={!isApplyButtonEnabled}
-              onPress={handleApplyPress}
-              onCreateAlertPress={handleCreateAlertPress}
-              shouldShowCreateAlertButton={shouldShowCreateAlertButton}
-              progressiveOnboardingEnabled={mode === ArtworkFilterMode.ArtistArtworks}
-            />
+              <ArtworkFilterApplyButton
+                disabled={!isApplyButtonEnabled}
+                onPress={handleApplyPress}
+                onCreateAlertPress={handleCreateAlertPress}
+                shouldShowCreateAlertButton={shouldShowCreateAlertButton}
+                progressiveOnboardingEnabled={mode === ArtworkFilterMode.ArtistArtworks}
+              />
 
-            <CreateSavedSearchModal
-              visible={isCreateAlertModalVisible}
-              entity={savedSearchEntity}
-              closeModal={() => setIsCreateAlertModalVisible(false)}
-              onComplete={exitModal}
-              attributes={attributes}
-              sizeMetric={filterState.sizeMetric}
-            />
-          </SafeAreaView>
+              <CreateSavedSearchModal
+                visible={isCreateAlertModalVisible}
+                entity={savedSearchEntity}
+                closeModal={() => setIsCreateAlertModalVisible(false)}
+                onComplete={exitModal}
+                attributes={attributes}
+                sizeMetric={filterState.sizeMetric}
+              />
+            </SafeAreaView>
+          </KeyboardAvoidingContainer>
         </Modal>
       </NavigationContainer>
     </NavigationIndependentTree>

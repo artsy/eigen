@@ -17,6 +17,7 @@ import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
+import mockKeyboardController from "react-native-keyboard-controller/jest"
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
@@ -428,6 +429,8 @@ jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
 
+jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
+
 /**
  * Mocks for our code
  */
@@ -642,10 +645,15 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
   })),
 }))
 
-jest.mock("@gorhom/bottom-sheet", () => ({
-  __esModule: true,
-  ...require("@gorhom/bottom-sheet/mock"),
-}))
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  return {
+    __esModule: true,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    ...require("@gorhom/bottom-sheet/mock"),
+  }
+})
 
 jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")

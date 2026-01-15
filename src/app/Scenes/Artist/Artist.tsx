@@ -35,6 +35,7 @@ import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -105,51 +106,54 @@ export const Artist: React.FC<ArtistProps> = ({
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <Tabs.TabsWithHeader
-          initialTabName={initialTab}
-          title={artistAboveTheFold.name ?? ""}
-          showLargeHeaderText={false}
-          BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
-          headerProps={{
-            rightElements: artistHeaderRight,
-            onBack: goBack,
-          }}
-        >
-          <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <ArtistArtworksQueryRenderer
-                artistID={artistAboveTheFold.internalID}
-                input={input}
-                searchCriteria={searchCriteria}
-                predefinedFilters={predefinedFilters}
-                scrollToArtworksGrid={scrollToArtworksGrid}
-              />
-            </Tabs.Lazy>
-          </Tabs.Tab>
-
-          <Tabs.Tab name="Insights" label="Auction Results">
-            <Tabs.Lazy>
-              {artistBelowTheFold ? (
-                <ArtistInsightsFragmentContainer
-                  artist={artistBelowTheFold}
-                  initialFilters={auctionResultsInitialFilters}
+        <KeyboardAvoidingContainer>
+          <Tabs.TabsWithHeader
+            disableKeyboardAvoidance
+            initialTabName={initialTab}
+            title={artistAboveTheFold.name ?? ""}
+            showLargeHeaderText={false}
+            BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
+            headerProps={{
+              rightElements: artistHeaderRight,
+              onBack: goBack,
+            }}
+          >
+            <Tabs.Tab name="Artworks" label="Artworks">
+              <Tabs.Lazy>
+                <ArtistArtworksQueryRenderer
+                  artistID={artistAboveTheFold.internalID}
+                  input={input}
+                  searchCriteria={searchCriteria}
+                  predefinedFilters={predefinedFilters}
+                  scrollToArtworksGrid={scrollToArtworksGrid}
                 />
-              ) : (
-                <LoadingPage />
-              )}
-            </Tabs.Lazy>
-          </Tabs.Tab>
+              </Tabs.Lazy>
+            </Tabs.Tab>
 
-          <Tabs.Tab name="Overview" label="About">
-            <Tabs.Lazy>
-              {artistBelowTheFold ? (
-                <ArtistAboutContainer artist={artistBelowTheFold} />
-              ) : (
-                <LoadingPage />
-              )}
-            </Tabs.Lazy>
-          </Tabs.Tab>
-        </Tabs.TabsWithHeader>
+            <Tabs.Tab name="Insights" label="Auction Results">
+              <Tabs.Lazy>
+                {artistBelowTheFold ? (
+                  <ArtistInsightsFragmentContainer
+                    artist={artistBelowTheFold}
+                    initialFilters={auctionResultsInitialFilters}
+                  />
+                ) : (
+                  <LoadingPage />
+                )}
+              </Tabs.Lazy>
+            </Tabs.Tab>
+
+            <Tabs.Tab name="Overview" label="About">
+              <Tabs.Lazy>
+                {artistBelowTheFold ? (
+                  <ArtistAboutContainer artist={artistBelowTheFold} />
+                ) : (
+                  <LoadingPage />
+                )}
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          </Tabs.TabsWithHeader>
+        </KeyboardAvoidingContainer>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
@@ -317,7 +321,7 @@ const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body fullwidth>
+      <Screen.Body fullwidth disableKeyboardAvoidance>
         <Skeleton>
           <SkeletonBox width={width} height={height} />
 
