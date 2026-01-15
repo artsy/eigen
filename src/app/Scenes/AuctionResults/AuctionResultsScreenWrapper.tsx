@@ -66,7 +66,10 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
       })}
     >
       <Screen.AnimatedHeader onBack={goBack} title={getTitleByState(state)} />
-      <Screen.StickySubHeader title={getTitleByState(state)} />
+      <Screen.StickySubHeader
+        title={getTitleByState(state)}
+        subTitle={getDescriptionByState(state)}
+      />
       <Screen.Body fullwidth>
         <ArtworkFiltersStoreProvider>
           <AuctionResultsList
@@ -79,7 +82,6 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
               navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
             }}
             isLoadingNext={loadingMoreData}
-            subHeaderText={getDescriptionByState(state)}
           />
         </ArtworkFiltersStoreProvider>
       </Screen.Body>
@@ -241,6 +243,3 @@ export const tracks = {
     type: "thumbnail",
   }),
 }
-// https://d7hftxdivxxvm.cloudfront.net/?quality=80&resize_to=width&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fsignup-01-1765895830875.png&width=430
-
-// https://d7hftxdivxxvm.cloudfront.net/?quality=80&resize_to=width&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fsignup-01-1765895830875.png&width=860
