@@ -10,13 +10,13 @@ import {
   Easing,
   Extrapolation,
   interpolate,
+  runOnJS,
   useAnimatedReaction,
   useSharedValue,
   withDelay,
   withSequence,
   withTiming,
 } from "react-native-reanimated"
-import { scheduleOnRN } from "react-native-worklets"
 
 type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
@@ -70,7 +70,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       () => _activeIndex.value,
       (current, previous) => {
         if (current !== previous) {
-          scheduleOnRN(setActiveIndex, current)
+          runOnJS(setActiveIndex)(current)
         }
       }
     )
@@ -129,7 +129,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
           // if this is the first time that the user has navigated to this card, record it
           if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
             seenCardKeys.value = [...seenCardKeys.value, nextCardKey]
-            scheduleOnRN(onNewCardReached, nextCardKey)
+            runOnJS(onNewCardReached)(nextCardKey)
           }
 
           activeCardX.value = withTiming(-width, { duration: 300, easing: Easing.linear }, () => {
@@ -139,7 +139,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
             return
           })
 
-          scheduleOnRN(onSwipe, swipedCardKey, nextCardKey)
+          runOnJS(onSwipe)(swipedCardKey, nextCardKey)
         }
 
         const swipeRight = () => {
@@ -158,7 +158,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                 swipedCardX.value = -width
               }
             )
-            scheduleOnRN(onRewind, lastSwipedCardKey as Key)
+            runOnJS(onRewind)(lastSwipedCardKey as Key)
             return
           }
 
@@ -183,7 +183,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // Fetching more cards on the 3rd, 8th, 13th... swipe
         if (isSwipeLeft && !isLastCard && cards.length - 1 - _activeIndex.value === triggerIndex) {
-          scheduleOnRN(onReachTriggerIndex, _activeIndex.value + 1)
+          runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
         }
 
         const swipedCardIndex = _activeIndex.value

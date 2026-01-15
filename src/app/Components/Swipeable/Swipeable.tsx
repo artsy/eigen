@@ -6,8 +6,12 @@ import ReanimatedSwipeable, {
   SwipeableProps,
 } from "react-native-gesture-handler/ReanimatedSwipeable"
 import ReactNativeHapticFeedback from "react-native-haptic-feedback"
-import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from "react-native-reanimated"
-import { scheduleOnRN } from "react-native-worklets"
+import Animated, {
+  runOnJS,
+  SharedValue,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated"
 
 const FRICTION = 1
 const SWIPE_TO_INTERACT_THRESHOLD = 80
@@ -68,7 +72,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
       const swipeDistance = width.get() + dragX.get() * FRICTION
 
       if (swipeDistance <= SWIPE_TO_INTERACT_THRESHOLD) {
-        scheduleOnRN(handleSwipeToInteract, swipeDistance)
+        runOnJS(handleSwipeToInteract)(swipeDistance)
       }
 
       return style
