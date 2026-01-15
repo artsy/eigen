@@ -4,7 +4,7 @@
 
 - **State:** Production
 - **[Point People][point_people]:** [Brian Beckerle][brian_github_profile], [Mounir Dhahri][mounir_github_profile], [George Kartalis][george_github_profile]
-- **CI:** [![CircleCI](https://dl.circleci.com/status-badge/img/gh/artsy/eigen/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/artsy/eigen/tree/main)
+- **CI:** [<img src="https://dl.circleci.com/status-badge/img/gh/artsy/eigen/tree/main.svg?style=svg" alt="CircleCI Status" height="15" />][circle_ci]
 
 ### Intro
 
