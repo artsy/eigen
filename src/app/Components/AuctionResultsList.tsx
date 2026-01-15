@@ -1,12 +1,9 @@
 import { Spacer, Flex, Text, SkeletonBox, SkeletonText, Screen } from "@artsy/palette-mobile"
-import {
-  AuctionResultListItem_auctionResult$data,
-  AuctionResultListItem_auctionResult$key,
-} from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { AuctionResultListItem_auctionResult$key } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { groupBy } from "lodash"
 import moment from "moment"
-import React, { useMemo, useState, useCallback } from "react"
+import React, { useMemo, useState, useCallback, useEffect } from "react"
 import { RefreshControl, ViewabilityConfig, ViewToken } from "react-native"
 import {
   AUCTION_RESULT_CARD_IMAGE_HEIGHT,
@@ -22,7 +19,9 @@ interface AuctionResultsListProps {
   refreshing: boolean
   handleRefresh: () => void
   onEndReached: () => void
-  onItemPress: (item: AuctionResultListItem_auctionResult$data) => void
+  onItemPress: (
+    item: AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null | undefined }
+  ) => void
   isLoadingNext: boolean
 }
 
@@ -34,7 +33,6 @@ interface SectionItem {
 interface AuctionItem {
   type: "auction-item"
   item: AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null | undefined }
-  index: number
   internalID: string
 }
 
@@ -64,13 +62,39 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
       const sectionTitle = date === "no-date" ? "No Date" : moment(date).format("MMMM, YYYY")
       flatData.push({ type: "section-header", sectionTitle })
 
-      items.forEach((item, index) => {
-        flatData.push({ type: "auction-item", item, index, internalID: (item as any).internalID })
+      items.forEach((item) => {
+        flatData.push({ type: "auction-item", item, internalID: (item as any).internalID })
       })
     })
 
     return flatData
   }, [auctionResults])
+
+  const findFirstSectionTitle = (data: FlatListItem[]) => {
+    // Used to initialize the sticky header when the list first mounts.
+    const first = data.find((i) => i.type === "section-header") as SectionItem | undefined
+    return first ? first.sectionTitle : null
+  }
+
+  const findSectionTitleBeforeIndex = (data: FlatListItem[], startIndex: number) => {
+    // Walk backwards from `startIndex` to find the nearest preceding section header.
+    for (let i = startIndex; i >= 0; i--) {
+      if (data[i].type === "section-header") {
+        return (data[i] as SectionItem).sectionTitle
+      }
+    }
+    return null
+  }
+
+  // Initialize `currentSectionTitle` from the data when the list first mounts or when `flatListData` changes
+  useEffect(() => {
+    if (currentSectionTitle == null) {
+      const firstTitle = findFirstSectionTitle(flatListData)
+      if (firstTitle) {
+        setCurrentSectionTitle(firstTitle)
+      }
+    }
+  }, [flatListData, currentSectionTitle])
 
   const viewabilityConfig: ViewabilityConfig = {
     itemVisiblePercentThreshold: 1,
@@ -93,12 +117,10 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
             item.internalID === (firstAuctionItem.item as AuctionItem).internalID
         )
 
-        // Search backwards for the section header
-        for (let i = visibleItemIndex; i >= 0; i--) {
-          if (flatListData[i].type === "section-header") {
-            setCurrentSectionTitle((flatListData[i] as SectionItem).sectionTitle)
-            return
-          }
+        const title = findSectionTitleBeforeIndex(flatListData, visibleItemIndex)
+        if (title) {
+          setCurrentSectionTitle(title)
+          return
         }
       }
     },
@@ -156,11 +178,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
                 <AuctionResultListItemFragmentContainer
                   auctionResult={auctionItem.item}
                   showArtistName
-                  onPress={() =>
-                    onItemPress(
-                      auctionItem.item as unknown as AuctionResultListItem_auctionResult$data
-                    )
-                  }
+                  onPress={() => onItemPress(auctionItem.item)}
                 />
               </>
             )
