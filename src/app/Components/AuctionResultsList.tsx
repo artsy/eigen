@@ -23,6 +23,7 @@ interface AuctionResultsListProps {
     item: AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null | undefined }
   ) => void
   isLoadingNext: boolean
+  subHeaderText?: string
 }
 
 interface SectionItem {
@@ -45,6 +46,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   onEndReached,
   onItemPress,
   isLoadingNext,
+  subHeaderText,
 }) => {
   const [currentSectionTitle, setCurrentSectionTitle] = useState<string | null>(null)
 
@@ -136,10 +138,11 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
 
   return (
     <>
-      <Text variant="xs" mx={2}>
-        See auction results for the artists you follow
-      </Text>
-
+      {!!subHeaderText && (
+        <Text variant="xs" mx={2}>
+          {subHeaderText}
+        </Text>
+      )}
       {!!currentSectionTitle && (
         <Flex mx={2} py={2} zIndex={100}>
           <Text variant="sm-display">{currentSectionTitle}</Text>
