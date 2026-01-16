@@ -23,7 +23,7 @@ interface Props {
 const PAGE_SIZE = 20
 
 const TITLE = "Auction Results for Artists You Follow"
-const SUBTITLE = "See auction results for the artists you follow."
+const SUBTITLE = "See auction results for the artists you follow"
 
 export const AuctionResultsScreenContent: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore, refetchConnection } = relay
