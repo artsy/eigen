@@ -16,7 +16,7 @@ import {
 } from "__generated__/ArtistHeader_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useLayoutEffect, useRef } from "react"
-import { FlatList, LayoutChangeEvent, View, ViewProps } from "react-native"
+import { FlatList, View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -29,7 +29,6 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
-  onLayoutChange?: ViewProps["onLayout"]
 }
 
 export const useArtistHeaderImageDimensions = () => {
@@ -47,26 +46,22 @@ export const useArtistHeaderImageDimensions = () => {
   }
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   const space = useSpace()
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
-  const { updateScrollYOffset, currentScrollYAnimated } = useScreenScrollContext()
+  const { updateScrollYOffset } = useScreenScrollContext()
   const { trackEvent } = useTracking()
-  const artistData = useFragment(artistFragment, artist)
   const headerRef = useRef<View>(null)
+  const artistData = useFragment(artistFragment, artist)
 
   useLayoutEffect(() => {
-    headerRef.current?.measureInWindow((_x, _y, measuredWidth, measuredHeight) => {
+    headerRef.current?.measureInWindow((_x, _y, _measuredWidth, measuredHeight) => {
       if (measuredHeight > 0) {
-        currentScrollYAnimated.value = measuredHeight - ARTIST_HEADER_SCROLL_MARGIN
-        // updateScrollYOffset(measuredHeight - ARTIST_HEADER_SCROLL_MARGIN)
-        onLayoutChange?.({
-          nativeEvent: { layout: { x: 0, y: 0, width: measuredWidth, height: measuredHeight } },
-        } as LayoutChangeEvent)
+        updateScrollYOffset(measuredHeight - ARTIST_HEADER_SCROLL_MARGIN)
       }
     })
-  }, [updateScrollYOffset, onLayoutChange])
+  }, [updateScrollYOffset])
 
   if (!artistData) {
     return null
