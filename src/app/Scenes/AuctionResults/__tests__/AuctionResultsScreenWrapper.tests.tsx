@@ -34,8 +34,8 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
       }),
     })
 
-    expect(screen.getByText("See auction results for the artists you follow")).toBeTruthy()
-    expect(screen.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
+    expect(screen.getAllByText("See auction results for the artists you follow")).toBeTruthy()
+    expect(screen.getByTestId("Results_Section_List")).toBeTruthy()
   })
 })
 
