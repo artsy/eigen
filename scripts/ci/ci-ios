@@ -5,6 +5,8 @@ source ./scripts/ci/ci-setup-export-vars
 
 BUILD_TYPE=${1:-debug} # default to debug
 
+./scripts/ci/build-cache-for-ios
+
 if [ "${LOCAL_BRANCH}" != "beta-ios" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
 	./scripts/ci/build-for-tests-ios ${BUILD_TYPE}
 else
