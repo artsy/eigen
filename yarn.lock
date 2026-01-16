@@ -54,29 +54,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/icons@npm:^3.49.0":
-  version: 3.50.0
-  resolution: "@artsy/icons@npm:3.50.0"
-  peerDependencies:
-    react: ">=16.2.0"
-    react-native: ">=0.70.15"
-    react-native-svg: ">=15.0.0"
-    styled-components: ">=4"
-    styled-system: ^5
-  peerDependenciesMeta:
-    react-native:
-      optional: true
-    react-native-svg:
-      optional: true
-  checksum: 10c0/c01cdc4e76aa6dfb77a8f5647b6e58d35b1464a2f19fba7a9d6251ed3f56fe6de7968ffa9bd8c46bd48a827c832be9fc90bce756b446ca4f9b12df3b0c21c1ee
-  languageName: node
-  linkType: hard
-
-"@artsy/palette-mobile@npm:22.3.0":
-  version: 22.3.0
-  resolution: "@artsy/palette-mobile@npm:22.3.0"
+"@artsy/palette-mobile@npm:22.4.0":
+  version: 22.4.0
+  resolution: "@artsy/palette-mobile@npm:22.4.0"
   dependencies:
-    "@artsy/icons": "npm:^3.49.0"
+    "@artsy/icons": "npm:3.64.0"
     "@artsy/palette-tokens": "npm:7.0.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@react-spring/native": "npm:^10.0.3"
@@ -101,7 +83,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/7f41f3f57ec71a18cd8887129e47d7ca01aaf411549058ae7747f826751aa9b5ca323e63077710eb7182f195e936a4879a42341ac5deabe1b08c13fe78cb8bd9
+  checksum: 10c0/43854626d313c1794062196ac4c7836e37ef9e59bcd536474fd8293dea927a2ccb0c9fa60fd42b5b9288ce99584b24257387a56933366eadb5494d3f02914caa
   languageName: node
   linkType: hard
 
@@ -12569,7 +12551,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.64.0"
-    "@artsy/palette-mobile": "npm:22.3.0"
+    "@artsy/palette-mobile": "npm:22.4.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
