@@ -226,29 +226,27 @@ export const AuctionResultsListItemLoadingSkeleton: React.FC = () => {
   )
 }
 
-export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactElement }> = ({
-  listHeader,
+export const LoadingSkeleton: React.FC<{ title: string; subTitle: string }> = ({
+  title,
+  subTitle,
 }) => {
-  const placeholderResults = []
-  for (let i = 0; i < 6; i++) {
-    placeholderResults.push(
-      <React.Fragment key={i}>
-        <AuctionResultsListItemLoadingSkeleton />
-      </React.Fragment>
-    )
-  }
-
   return (
     <ProvidePlaceholderContext>
-      <Spacer y={6} />
-
-      {listHeader}
-      <Flex mx={2}>
-        <Spacer y={2} />
-        <SkeletonText variant="xs">Auctions date</SkeletonText>
-        <Spacer y={2} />
-        <Flex gap={2}>{placeholderResults}</Flex>
-      </Flex>
+      <Screen.AnimatedHeader title={title} />
+      <Screen.StickySubHeader title={title} subTitle={subTitle} />
+      <Screen.Body fullwidth>
+        <Flex mx={2}>
+          <Spacer y={2} />
+          <SkeletonText variant="sm-display">Auctions date</SkeletonText>
+          <Spacer y={2} />
+          <Flex gap={2}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <AuctionResultsListItemLoadingSkeleton key={index} />
+            ))}
+          </Flex>
+          <Spacer y={2} />
+        </Flex>
+      </Screen.Body>
     </ProvidePlaceholderContext>
   )
 }
