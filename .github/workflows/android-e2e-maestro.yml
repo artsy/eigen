@@ -60,7 +60,7 @@ jobs:
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
       - name: Install Maestro
-        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
@@ -68,7 +68,7 @@ jobs:
       - name: Run tests with Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35-ext15
+          api-level: 34
           target: google_apis
           arch: x86_64
           ram-size: "8192M"
