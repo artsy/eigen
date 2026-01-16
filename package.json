@@ -215,7 +215,7 @@
     "yup": "0.31.1"
   },
   "devDependencies": {
-    "@artsy/update-repo": "0.7.1",
+    "@artsy/update-repo": "0.8.0",
     "@babel/core": "7.25.2",
     "@babel/plugin-proposal-decorators": "7.18.9",
     "@babel/plugin-transform-flow-strip-types": "7.18.9",
