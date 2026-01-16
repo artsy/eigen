@@ -60,7 +60,7 @@ jobs:
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
       - name: Install Maestro
-        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
@@ -68,8 +68,7 @@ jobs:
       - name: Run tests with Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35-ext15
-          target: google_apis
+          api-level: 34
           arch: x86_64
           ram-size: "8192M"
           heap-size: "4096M"
@@ -90,14 +89,6 @@ jobs:
 
             echo "🔓 Unlocking device..."
             adb shell input keyevent 82
-
-            echo "⚙️ Optimizing settings..."
-            adb shell settings put global window_animation_scale 0.0
-            adb shell settings put global transition_animation_scale 0.0
-            adb shell settings put global animator_duration_scale 0.0
-            adb shell settings put global hidden_api_policy_pre_p_apps 1
-            adb shell settings put global hidden_api_policy_p_apps 1
-            adb shell settings put global hidden_api_policy 1
 
             echo "📱 Installing app..."
             adb install Artsy.apk
