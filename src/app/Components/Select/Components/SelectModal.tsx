@@ -11,8 +11,8 @@ import {
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import { SelectOption } from "app/Components/Select/Select"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, Modal, TouchableOpacity } from "react-native"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { FlatList, Modal, TouchableOpacity, View } from "react-native"
 
 export const SelectModal: React.FC<{
   options: Array<SelectOption<unknown>>
@@ -83,7 +83,14 @@ export const SelectModal: React.FC<{
   }, [autocomplete, searchTerm, options])
 
   const flatListRef = useRef<FlatList>(null)
+  const flatListContainerRef = useRef<View>(null)
   const flatListHeight = useRef<number | null>(null)
+
+  useLayoutEffect(() => {
+    flatListContainerRef.current?.measureInWindow((_x, _y, _width, height) => {
+      flatListHeight.current = height
+    })
+  }, [visible])
 
   // scroll to show the selected value whenever we either clear the
   // search input, or show the modal.
@@ -155,63 +162,67 @@ export const SelectModal: React.FC<{
 
         <Separator />
 
-        <FlatList
-          ref={flatListRef}
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          data={autocompleteResults}
-          extraData={{ value: localValue }}
-          keyExtractor={(item) => String(item.value)}
-          windowSize={4}
-          contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
-          // we handle scrolling to the selected value ourselves because FlatList has weird
-          // rendering bugs when initialScrollIndex changes, at the time of writing
-          initialScrollIndex={undefined}
-          getItemLayout={(_item, index) => ({
-            index,
-            length: INPUT_HEIGHT,
-            offset: INPUT_HEIGHT * index,
-          })}
-          style={{ flex: 1 }}
-          onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
-          renderItem={({ item, index }) => {
-            const selected = localValue === item.value
+        <View ref={flatListContainerRef} style={{ flex: 1 }}>
+          <FlatList
+            ref={flatListRef}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            data={autocompleteResults}
+            extraData={{ value: localValue }}
+            keyExtractor={(item) => String(item.value)}
+            windowSize={4}
+            contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
+            // we handle scrolling to the selected value ourselves because FlatList has weird
+            // rendering bugs when initialScrollIndex changes, at the time of writing
+            initialScrollIndex={undefined}
+            getItemLayout={(_item, index) => ({
+              index,
+              length: INPUT_HEIGHT,
+              offset: INPUT_HEIGHT * index,
+            })}
+            style={{ flex: 1 }}
+            renderItem={({ item, index }) => {
+              const selected = localValue === item.value
 
-            return (
-              <Touchable
-                accessibilityRole="button"
-                onPress={() => {
-                  setValue(item.value)
-                  onDismiss()
-                  onSelectValue(item.value, index)
-                }}
-                style={{ flexGrow: 0 }}
-                testID={`select-option-${item.index}`}
-              >
-                <Flex
-                  flexDirection="row"
-                  pl={2}
-                  pr="15px"
-                  justifyContent="space-between"
-                  height={INPUT_HEIGHT}
-                  alignItems="center"
-                  flexGrow={0}
+              return (
+                <Touchable
+                  accessibilityRole="button"
+                  onPress={() => {
+                    setValue(item.value)
+                    onDismiss()
+                    onSelectValue(item.value, index)
+                  }}
+                  style={{ flexGrow: 0 }}
+                  testID={`select-option-${item.index}`}
                 >
-                  {renderItemLabel?.(item) ?? (
-                    <Text
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      color={selected ? color("blue100") : color("mono100")}
-                      style={{ flexShrink: 1, textDecorationLine: selected ? "underline" : "none" }}
-                    >
-                      {item.label}
-                    </Text>
-                  )}
-                </Flex>
-              </Touchable>
-            )
-          }}
-        />
+                  <Flex
+                    flexDirection="row"
+                    pl={2}
+                    pr="15px"
+                    justifyContent="space-between"
+                    height={INPUT_HEIGHT}
+                    alignItems="center"
+                    flexGrow={0}
+                  >
+                    {renderItemLabel?.(item) ?? (
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                        color={selected ? color("blue100") : color("mono100")}
+                        style={{
+                          flexShrink: 1,
+                          textDecorationLine: selected ? "underline" : "none",
+                        }}
+                      >
+                        {item.label}
+                      </Text>
+                    )}
+                  </Flex>
+                </Touchable>
+              )
+            }}
+          />
+        </View>
       </Screen>
     </Modal>
   )

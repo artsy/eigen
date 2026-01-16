@@ -24,8 +24,17 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
-import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { InteractionManager, ListRenderItem, Platform } from "react-native"
+import {
+  memo,
+  RefObject,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
+import { InteractionManager, ListRenderItem, Platform, View } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import Animated, {
   Easing,
@@ -77,6 +86,15 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   // TODO: remove this when this reanimated issue gets fixed
   // https://github.com/software-mansion/react-native-reanimated/issues/5728
   const [flatlistHeight, setFlatlistHeight] = useState<number | undefined>(undefined)
+  const viewRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    if (IS_ANDROID) {
+      viewRef.current?.measureInWindow((_x, _y, _width, height) => {
+        setFlatlistHeight(height)
+      })
+    }
+  }, [])
 
   const task = tasks?.[0]
 
@@ -182,13 +200,8 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               />
             </Flex>
 
-            <Flex mr={2}>
+            <Flex mr={2} ref={viewRef}>
               <Animated.FlatList
-                onLayout={(event) => {
-                  if (IS_ANDROID) {
-                    setFlatlistHeight(event.nativeEvent.layout.height)
-                  }
-                }}
                 style={IS_ANDROID ? { height: flatlistHeight } : {}}
                 contentContainerStyle={IS_ANDROID ? { flex: 1, height: flatlistHeight } : {}}
                 itemLayoutAnimation={LinearTransition}

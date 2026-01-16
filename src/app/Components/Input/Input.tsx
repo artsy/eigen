@@ -1,9 +1,16 @@
 import { CloseFillIcon, HideIcon, ShowIcon } from "@artsy/icons/native"
-import { Flex, useTheme, Text, Color, Spinner } from "@artsy/palette-mobile"
+import { Color, Flex, Spinner, Text, useTheme } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MeasuredView } from "app/utils/MeasuredView"
 import { isArray, isString } from "lodash"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -160,6 +167,13 @@ export const Input = forwardRef<InputRef, InputProps>(
 
     const [placeholderWidths, setPlaceholderWidths] = useState<number[]>([])
     const [inputWidth, setInputWidth] = useState(0)
+
+    useLayoutEffect(() => {
+      inputRef.current?.measureInWindow((_x, _y, width) => {
+        setInputWidth(width)
+      })
+    }, [])
+
     const placeholderMeasuringHack =
       Platform.OS === "android" && isArray(placeholder) ? (
         <>
@@ -260,52 +274,44 @@ export const Input = forwardRef<InputRef, InputProps>(
                 {icon}
               </Flex>
             )}
-            <Flex flex={1}>
-              {placeholderMeasuringHack}
-              <StyledInput
-                multiline={multiline}
-                // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
-                scrollEnabled={multiline ? false : undefined}
-                maxLength={maxLength}
-                editable={!disabled}
-                onLayout={(event: any) => {
-                  const newWidth = event.nativeEvent.layout.width
-                  if (newWidth > inputWidth) {
-                    requestAnimationFrame(() => setInputWidth(newWidth))
-                  } else {
-                    setInputWidth(newWidth)
-                  }
-                }}
-                ref={inputRef}
-                placeholderTextColor={color("mono60")}
-                style={{ flex: 1, fontSize, ...inputTextStyle }}
-                numberOfLines={multiline ? undefined : 1}
-                secureTextEntry={!showPassword}
-                textAlignVertical={multiline ? "top" : "center"}
-                placeholder={actualPlaceholder()}
-                value={value}
-                {...(rest as any)}
-                onChangeText={localOnChangeText}
-                onFocus={(e: any) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
-                    )
-                  }
-                  setFocused(true)
-                  rest.onFocus?.(e)
-                }}
-                onBlur={(e: any) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
-                    )
-                  }
-                  setFocused(false)
-                  rest.onBlur?.(e)
-                }}
-              />
-            </Flex>
+
+            {placeholderMeasuringHack}
+            <StyledInput
+              multiline={multiline}
+              // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
+              scrollEnabled={multiline ? false : undefined}
+              maxLength={maxLength}
+              editable={!disabled}
+              ref={inputRef}
+              placeholderTextColor={color("mono60")}
+              style={{ flex: 1, fontSize, ...inputTextStyle }}
+              numberOfLines={multiline ? undefined : 1}
+              secureTextEntry={!showPassword}
+              textAlignVertical={multiline ? "top" : "center"}
+              placeholder={actualPlaceholder()}
+              value={value}
+              {...(rest as any)}
+              onChangeText={localOnChangeText}
+              onFocus={(e: any) => {
+                if (Platform.OS === "android") {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                  )
+                }
+                setFocused(true)
+                rest.onFocus?.(e)
+              }}
+              onBlur={(e: any) => {
+                if (Platform.OS === "android") {
+                  LayoutAnimation.configureNext(
+                    LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                  )
+                }
+                setFocused(false)
+                rest.onBlur?.(e)
+              }}
+            />
+
             {!!fixedRightPlaceholder && value === "" && (
               <Flex pr={1} justifyContent="center" alignItems="center">
                 <Text variant="sm" color="mono60">

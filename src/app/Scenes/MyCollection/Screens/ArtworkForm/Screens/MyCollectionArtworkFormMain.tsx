@@ -43,8 +43,8 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, LayoutChangeEvent, TouchableOpacity } from "react-native"
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Alert, LayoutChangeEvent, TouchableOpacity, View } from "react-native"
 import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 
@@ -89,6 +89,13 @@ export const MyCollectionArtworkFormMain: React.FC<
   const provenanceRef = useRef<InputRef>(null)
   const locationRef = useRef<Input>(null)
   const notesRef = useRef<InputRef>(null)
+  const locationInputRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    locationInputRef.current?.measureInWindow((_x, y) => {
+      setLocationInputYCoordinate(y)
+    })
+  }, [])
 
   useEffect(() => {
     const isDirty = isFormDirty()
@@ -395,11 +402,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="ProvenanceInput"
               />
 
-              <Box
-                onLayout={({ nativeEvent }) => {
-                  setLocationInputYCoordinate(nativeEvent.layout.y)
-                }}
-              >
+              <Box ref={locationInputRef}>
                 <LocationAutocomplete
                   inputRef={locationRef}
                   allowCustomLocation

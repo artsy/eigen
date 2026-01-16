@@ -15,7 +15,8 @@ import {
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
+import { useLayoutEffect, useRef } from "react"
+import { FlatList, View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,7 +29,6 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
-  onLayoutChange?: ViewProps["onLayout"]
 }
 
 export const useArtistHeaderImageDimensions = () => {
@@ -46,13 +46,22 @@ export const useArtistHeaderImageDimensions = () => {
   }
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   const space = useSpace()
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const { trackEvent } = useTracking()
+  const headerRef = useRef<View>(null)
   const artistData = useFragment(artistFragment, artist)
+
+  useLayoutEffect(() => {
+    headerRef.current?.measureInWindow((_x, _y, _measuredWidth, measuredHeight) => {
+      if (measuredHeight > 0) {
+        updateScrollYOffset(measuredHeight - ARTIST_HEADER_SCROLL_MARGIN)
+      }
+    })
+  }, [updateScrollYOffset])
 
   if (!artistData) {
     return null
@@ -64,15 +73,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
-  const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
-    if (nativeEvent.layout.height > 0) {
-      updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
-      onLayoutChange?.({ nativeEvent, ...rest })
-    }
-  }
-
   return (
-    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
+    <Flex pointerEvents="box-none" ref={headerRef}>
       {!!artistData?.coverArtwork?.image?.url && (
         <Flex pointerEvents="none">
           <Image

@@ -66,9 +66,6 @@ describe("ArtistInsightsAuctionResults", () => {
                 scrollToTop={() => {
                   console.log("do nothing")
                 }}
-                onScrollEndDragChange={() => {
-                  console.log("do nothing")
-                }}
               />
             </ArtworkFiltersStoreProvider>
           )

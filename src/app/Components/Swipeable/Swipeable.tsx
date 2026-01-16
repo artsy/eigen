@@ -1,6 +1,7 @@
 import { Color, Flex, Touchable, useColor } from "@artsy/palette-mobile"
 import { debounce } from "lodash"
-import { forwardRef, RefObject } from "react"
+import { forwardRef, RefObject, useLayoutEffect, useRef } from "react"
+import { View } from "react-native"
 import ReanimatedSwipeable, {
   SwipeableMethods,
   SwipeableProps,
@@ -43,6 +44,13 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
 
   const color = useColor()
   const width = useSharedValue(0)
+  const containerRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    containerRef.current?.measureInWindow((_x, _y, measuredWidth) => {
+      width.set(measuredWidth)
+    })
+  }, [width])
 
   const hasSwiped = useSharedValue(false)
 
@@ -107,11 +115,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
   }
 
   return (
-    <Flex
-      onLayout={(event) => {
-        width.set(() => event.nativeEvent.layout.width)
-      }}
-    >
+    <Flex ref={containerRef}>
       <ReanimatedSwipeable
         testID="swipeable-component"
         ref={ref as RefObject<SwipeableMethods>}
