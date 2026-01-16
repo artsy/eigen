@@ -54,29 +54,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/icons@npm:^3.49.0":
-  version: 3.50.0
-  resolution: "@artsy/icons@npm:3.50.0"
-  peerDependencies:
-    react: ">=16.2.0"
-    react-native: ">=0.70.15"
-    react-native-svg: ">=15.0.0"
-    styled-components: ">=4"
-    styled-system: ^5
-  peerDependenciesMeta:
-    react-native:
-      optional: true
-    react-native-svg:
-      optional: true
-  checksum: 10c0/c01cdc4e76aa6dfb77a8f5647b6e58d35b1464a2f19fba7a9d6251ed3f56fe6de7968ffa9bd8c46bd48a827c832be9fc90bce756b446ca4f9b12df3b0c21c1ee
-  languageName: node
-  linkType: hard
-
-"@artsy/palette-mobile@npm:22.4.0--canary.425.5208.0":
-  version: 22.4.0--canary.425.5208.0
-  resolution: "@artsy/palette-mobile@npm:22.4.0--canary.425.5208.0"
+"@artsy/palette-mobile@npm:22.6.0--canary.425.5263.0":
+  version: 22.6.0--canary.425.5263.0
+  resolution: "@artsy/palette-mobile@npm:22.6.0--canary.425.5263.0"
   dependencies:
-    "@artsy/icons": "npm:^3.49.0"
+    "@artsy/icons": "npm:3.64.0"
     "@artsy/palette-tokens": "npm:7.0.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@react-spring/native": "npm:^10.0.3"
@@ -101,7 +83,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/63f190416d00ca8d47b75e209db620377f831c6312bd5199ae180d116aafec5154d81f92e261daf6b4fc0669f8d25c549b7c2568ecf08e17fe9899fee5539263
+  checksum: 10c0/18453ac43ec9bf58fcd3cc5c3f1eb3501e4ba118055d90d4fdcfce2c3452ac64be1ef971d69425373c61bc377627eae4cbcb3c72338dfab8dd353cf4b1a87e19
   languageName: node
   linkType: hard
 
@@ -13165,7 +13147,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.64.0"
-    "@artsy/palette-mobile": "npm:22.4.0--canary.425.5208.0"
+    "@artsy/palette-mobile": "npm:22.6.0--canary.425.5263.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
