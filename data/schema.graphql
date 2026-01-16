@@ -3457,6 +3457,10 @@ enum ArtworkImportError {
   INVALID_CERTIFICATE_OF_AUTHENTICITY
   INVALID_CLASSIFICATION
   INVALID_CURRENCY
+  INVALID_DATE_APPROXIMATE
+  INVALID_DATE_EARLIEST_YEAR
+  INVALID_DATE_LATEST_YEAR
+  INVALID_DATE_MODE
   INVALID_DEPTH
   INVALID_DIAMETER
   INVALID_DIMENSION_METRIC
@@ -3496,6 +3500,11 @@ type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
   currency: String!
+  dateApproximate: Boolean
+  dateCustom: String
+  dateEarliestYear: Int
+  dateLatestYear: Int
+  dateMode: DateMode
   dimensionMetric: String!
   errors: [ArtworkImportRowError!]!
   estimate: Money
@@ -3601,6 +3610,11 @@ type ArtworkImportTransformedData {
   confidentialNotes: String
   currency: String
   date: String
+  dateApproximate: String
+  dateCustom: String
+  dateEarliestYear: String
+  dateLatestYear: String
+  dateMode: String
   depth: String
   diameter: String
   dimensionMetric: String
@@ -11023,6 +11037,12 @@ type CurrentEvent {
 
 # Date in YYYY-MM-DD format
 scalar Date
+
+enum DateMode {
+  CUSTOM
+  YEAR
+  YEAR_RANGE
+}
 
 type DaySchedule {
   dayOfWeek: String
