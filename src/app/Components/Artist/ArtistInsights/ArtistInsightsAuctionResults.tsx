@@ -25,13 +25,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  SectionList,
-  View,
-} from "react-native"
+import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -40,8 +34,6 @@ interface Props {
   relay: RelayPaginationProp
   scrollToTop: () => void
   initialFilters?: FilterArray
-  onLayout?: (event: LayoutChangeEvent) => void
-  onScrollEndDragChange: ((event: NativeSyntheticEvent<NativeScrollEvent>) => void) | undefined
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
@@ -49,8 +41,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   relay,
   scrollToTop,
   initialFilters,
-  onLayout,
-  onScrollEndDragChange,
 }) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
@@ -218,7 +208,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
 
   if (!artist.statuses?.auctionLots) {
     return (
-      <View onLayout={onLayout}>
+      <View>
         <ArtistInsightsEmpty my={6} />
       </View>
     )
@@ -228,7 +218,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
       style={{ minHeight: screenHeight }}
-      onLayout={onLayout}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
@@ -280,7 +269,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Text>
             </Flex>
           )}
-          onScrollEndDrag={onScrollEndDragChange}
           ItemSeparatorComponent={AuctionResultListSeparator}
           style={{ width: screenWidth, left: -20 }}
           onEndReached={loadMoreAuctionResults}
@@ -291,7 +279,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Flex>
             ) : null
           }
-          contentContainerStyle={{ paddingBottom: 20 }}
+          nestedScrollEnabled
+          contentContainerStyle={{ paddingBottom: 20, flexGrow: 1 }}
         />
       ) : (
         <Box my="80px">
