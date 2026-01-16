@@ -10,7 +10,8 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { DateTime } from "luxon"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
@@ -39,6 +40,13 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const setToastBottomPadding = ArtworkListsStore.useStoreActions(
     (actions) => actions.setToastBottomPadding
   )
+  const boxRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    boxRef.current?.measureInWindow((_x, _y, _width, height) => {
+      setToastBottomPadding(height - bottomSafeAreaInset)
+    })
+  }, [bottomSafeAreaInset, setToastBottomPadding])
 
   const checkIsLotEnded = () => {
     const endAt = artworkData.saleArtwork?.extendedBiddingEndAt ?? artworkData.saleArtwork?.endAt
@@ -68,12 +76,10 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
 
   return (
     <Box
+      ref={boxRef}
       accessibilityLabel="Sticky bottom commercial section"
       bg="mono0"
       pb={`${safeAreaInsets.bottom}px`}
-      onLayout={(e) => {
-        setToastBottomPadding(e.nativeEvent.layout.height - bottomSafeAreaInset)
-      }}
     >
       <Separator />
       <Box px={2} py={1}>

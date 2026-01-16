@@ -16,11 +16,10 @@ import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import React, { useState } from "react"
+import React, { useLayoutEffect, useRef, useState } from "react"
 import {
   ActivityIndicator,
   Dimensions,
-  LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
@@ -232,6 +231,13 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const [localIsLoading, setLocalIsLoading] = useState(false)
   const [sectionDimension, setSectionDimension] = useState(getSectionDimension(width))
+  const containerRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    containerRef.current?.measureInWindow((_x, _y, measuredWidth) => {
+      setSectionDimension(getSectionDimension(measuredWidth))
+    })
+  }, [])
 
   const fetchNextPage = () => {
     if (!hasMore() || localIsLoading || isLoading?.()) {
@@ -250,10 +256,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   }
 
   const handleFetchNextPageOnScroll = isCloseToBottom(fetchNextPage)
-
-  const onLayout = (event: LayoutChangeEvent) => {
-    setSectionDimension(getSectionDimension(event.nativeEvent.layout.width))
-  }
 
   const getSectionedArtworks = () => {
     const sectionRatioSums: number[] = []
@@ -394,62 +396,63 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
       contextScreenOwnerId={contextScreenOwnerId}
       contextScreenOwnerSlug={contextScreenOwnerSlug}
     >
-      <ScrollViewWrapper
-        onScroll={(ev) => {
-          onScroll?.(ev)
-          if (autoFetch) {
-            handleFetchNextPageOnScroll(ev)
-          }
-        }}
-        refreshControl={refreshControl}
-        scrollEventThrottle={scrollEventThrottle ?? 50}
-        onLayout={onLayout}
-        scrollsToTop={false}
-        accessibilityLabel="Artworks ScrollView"
-        stickyHeaderIndices={stickyHeaderIndices}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-      >
-        {!!HeaderComponent && HeaderComponent}
-        <Box px={boxPadding}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {renderedArtworks}
-          </View>
-        </Box>
+      <View ref={containerRef} style={{ flex: 1 }}>
+        <ScrollViewWrapper
+          onScroll={(ev) => {
+            onScroll?.(ev)
+            if (autoFetch) {
+              handleFetchNextPageOnScroll(ev)
+            }
+          }}
+          refreshControl={refreshControl}
+          scrollEventThrottle={scrollEventThrottle ?? 50}
+          scrollsToTop={false}
+          accessibilityLabel="Artworks ScrollView"
+          stickyHeaderIndices={stickyHeaderIndices}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
+          {!!HeaderComponent && HeaderComponent}
+          <Box px={boxPadding}>
+            <View style={styles.container} accessibilityLabel="Artworks Content View">
+              {renderedArtworks}
+            </View>
+          </Box>
 
-        {!autoFetch && !!hasMore() && (
-          <Button
-            mt={6}
-            mb={4}
-            variant="fillGray"
-            size="large"
-            block
-            onPress={fetchNextPage}
-            loading={localIsLoading}
-          >
-            Show more
-          </Button>
-        )}
-        {!!showLoadingSpinner && !!localIsLoading && (
-          <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
-            <Spinner />
-          </Flex>
-        )}
+          {!autoFetch && !!hasMore() && (
+            <Button
+              mt={6}
+              mb={4}
+              variant="fillGray"
+              size="large"
+              block
+              onPress={fetchNextPage}
+              loading={localIsLoading}
+            >
+              Show more
+            </Button>
+          )}
+          {!!showLoadingSpinner && !!localIsLoading && (
+            <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          )}
 
-        {!!localIsLoading && hasMore() && (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            m={4}
-            mb={6}
-            style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
-          >
-            {!!autoFetch && (
-              <ActivityIndicator color={Platform.OS === "android" ? "mono100" : undefined} />
-            )}
-          </Flex>
-        )}
-      </ScrollViewWrapper>
+          {!!localIsLoading && hasMore() && (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              m={4}
+              mb={6}
+              style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
+            >
+              {!!autoFetch && (
+                <ActivityIndicator color={Platform.OS === "android" ? "mono100" : undefined} />
+              )}
+            </Flex>
+          )}
+        </ScrollViewWrapper>
+      </View>
 
       {!!FooterComponent && FooterComponent}
     </AnalyticsContextProvider>

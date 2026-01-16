@@ -1,8 +1,8 @@
 import { FilterIcon } from "@artsy/icons/native"
 import { Flex, Box, Text, Separator, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
-import React, { useEffect, useState } from "react"
-import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Animated, Dimensions, PixelRatio, View } from "react-native"
 import { isTablet } from "react-native-device-info"
 
 export interface FilterProps {
@@ -63,34 +63,29 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
   total,
 }) => {
   const screenWidth = useScreenDimensions().width
-
   const [onLayoutCalled, setOnLayoutCalled] = useState(false)
+
+  const containerRef = useRef<View>(null)
   const [filterPageY, setPageY] = useState(0)
+  const [measureKey, setMeasureKey] = useState(0)
 
   useEffect(() => {
-    // orientation changed, allow for recalculation of pageY
-    const dimensionsEventSubscription = Dimensions.addEventListener("change", orientationChanged)
+    // orientation changed, trigger re-measurement
+    const dimensionsEventSubscription = Dimensions.addEventListener("change", () => {
+      setMeasureKey((prev) => prev + 1)
+    })
     return () => dimensionsEventSubscription.remove()
   }, [])
 
-  const orientationChanged = () => {
-    setOnLayoutCalled(false)
-  }
-
-  const _onLayout = (event: LayoutChangeEvent) => {
-    // because onLayout can be called multiple times on android
+  useLayoutEffect(() => {
     if (!animationValue || onLayoutCalled) {
       return
     }
-    // @ts-ignore
-    event.target.measure(
-      // @ts-ignore
-      (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-        setPageY(pageY)
-      }
-    )
-    setOnLayoutCalled(true)
-  }
+    containerRef.current?.measureInWindow((_x, pageY) => {
+      setPageY(pageY)
+      setOnLayoutCalled(true)
+    })
+  }, [animationValue, measureKey, onLayoutCalled])
 
   const extraOffset = 1
   const topInset = useScreenDimensions().safeAreaInsets.top
@@ -109,7 +104,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
   }
 
   return (
-    <Box backgroundColor="mono0" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
+    <Box backgroundColor="mono0" ref={containerRef} testID="HeaderArtworksFilter">
       {!!animationValue && !disableYAxisAnimation && (
         <SeparatorWithSmoothOpacity {...separatorProps} />
       )}
