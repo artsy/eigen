@@ -49,7 +49,7 @@ type ColorsOptionsScreenProps = StackScreenProps<
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()
-  const { layout, handleLayout } = useLayout()
+  const { layout, ref } = useLayout()
 
   const options: FilterData[] = COLOR_OPTIONS
 
@@ -59,7 +59,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
   })
 
   return (
-    <Flex onLayout={handleLayout} flexGrow={1}>
+    <Flex ref={ref} flexGrow={1}>
       <ArtworkFilterBackHeader
         title={FilterDisplayName.colors}
         onLeftButtonPress={() => navigation.goBack()}

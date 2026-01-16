@@ -11,101 +11,86 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { track } from "app/utils/track"
-import React from "react"
-import { FlatList, RefreshControl } from "react-native"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { FlatList, RefreshControl, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface Props {
   relay: RelayPaginationProp
   me: WorksForYou_me$data
 }
 
-interface State {
-  isRefreshing: boolean
-  loadingContent: boolean
-  width: number | null
-}
+export const WorksForYou: React.FC<Props> = ({ relay, me }) => {
+  const tracking = useTracking()
+  const containerRef = useRef<View>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [loadingContent, setLoadingContent] = useState(false)
+  const [width, setWidth] = useState<number | null>(null)
 
-@track()
-export class WorksForYou extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+  useLayoutEffect(() => {
+    containerRef.current?.measureInWindow((_x, _y, measuredWidth) => {
+      setWidth(measuredWidth)
+    })
+  }, [])
 
-    this.state = {
-      isRefreshing: false,
-      loadingContent: false,
-      width: null,
-    }
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     // Update read status in gravity
     LegacyNativeModules.ARTemporaryAPIModule.markNotificationsRead((error) => {
       if (error) {
         console.warn(error)
       } else {
-        // @ts-ignore
-        this.props.tracking.trackEvent({
+        tracking.trackEvent({
           name: "Notifications read",
           source_screen: Analytics.OwnerType.worksForYou,
         })
       }
     })
-  }
+  }, [tracking])
 
-  fetchNextPage = () => {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  const fetchNextPage = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
-    this.setState({ loadingContent: true }, () => {
-      this.props.relay.loadMore(PAGE_SIZE, (error) => {
-        if (error) {
-          console.error("WorksForYou.tsx", error.message)
-        }
-
-        this.setState({ loadingContent: false })
-      })
+    setLoadingContent(true)
+    relay.loadMore(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error("WorksForYou.tsx", error.message)
+      }
+      setLoadingContent(false)
     })
   }
 
-  handleRefresh = () => {
-    this.setState({ isRefreshing: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    relay.refetchConnection(PAGE_SIZE, (error) => {
       if (error) {
         console.error("WorksForYou.tsx #handleRefresh", error.message)
       }
-      this.setState({ isRefreshing: false })
+      setIsRefreshing(false)
     })
   }
 
-  render() {
-    const notifications = extractNodes(this.props.me.followsAndSaves?.notifications)
-    /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
-       otherwise, it should not use any flex growth.
-    */
-    return (
-      <PageWithSimpleHeader title="New Works for You">
+  const notifications = extractNodes(me.followsAndSaves?.notifications)
+
+  return (
+    <PageWithSimpleHeader title="New Works for You">
+      <View ref={containerRef} style={{ flex: 1 }}>
         <FlatList
-          data={this.state.width === null ? [] : notifications}
+          data={width === null ? [] : notifications}
           keyExtractor={(item) => item.id}
-          refreshControl={
-            <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
-          }
-          onLayout={(event) => {
-            this.setState({ width: event.nativeEvent.layout.width })
-          }}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           renderItem={(data) => {
-            return <Notification width={this.state.width!} notification={data.item} />
+            return <Notification width={width ?? 0} notification={data.item} />
           }}
-          onEndReached={this.fetchNextPage}
+          onEndReached={fetchNextPage}
           ItemSeparatorComponent={() => (
             <Box px={2}>
               <Separator />
             </Box>
           )}
           ListFooterComponent={
-            this.state.loadingContent
+            loadingContent
               ? () => (
                   <Box p={2} style={{ height: 50 }}>
                     <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
@@ -116,19 +101,19 @@ export class WorksForYou extends React.Component<Props, State> {
               : null
           }
           ListEmptyComponent={
-            this.state.width === null
+            width === null
               ? null
               : () => (
                   <ZeroState
-                    title="You haven’t followed any artists yet"
+                    title="You haven't followed any artists yet"
                     subtitle="Follow artists to see new works that have been added to Artsy."
                   />
                 )
           }
         />
-      </PageWithSimpleHeader>
-    )
-  }
+      </View>
+    </PageWithSimpleHeader>
+  )
 }
 
 export const WorksForYouContainer = createPaginationContainer(

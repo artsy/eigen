@@ -1,10 +1,19 @@
-import React, { useEffect, useRef, useState } from "react"
-import { Animated, Easing } from "react-native"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Animated, Easing, View } from "react-native"
 
 export const CTAPopUp = ({ show, children }: { show: boolean; children: React.ReactNode }) => {
   const [CTAHeight, setCTAHeight] = useState<number>(0)
   const [hidden, setHidden] = useState<boolean>(!show)
   const animationProgress = useRef(new Animated.Value(show ? 0 : 1)).current
+  const viewRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    if (!hidden) {
+      viewRef.current?.measureInWindow((_x, _y, _width, height) => {
+        setCTAHeight(height)
+      })
+    }
+  }, [hidden])
 
   const showOrHide = (doShow: boolean) => {
     if (doShow) {
@@ -25,9 +34,7 @@ export const CTAPopUp = ({ show, children }: { show: boolean; children: React.Re
 
   return hidden ? null : (
     <Animated.View
-      onLayout={({ nativeEvent }) => {
-        setCTAHeight(nativeEvent.layout.height)
-      }}
+      ref={viewRef}
       style={{
         transform: [
           {

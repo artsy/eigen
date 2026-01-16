@@ -16,7 +16,8 @@ import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
-import { useEffect } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import { View } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 export const Pills: {
@@ -55,6 +56,15 @@ const FavoritesHeaderTabBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
 
   const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
+  const headerRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    if (!headerHeight) {
+      headerRef.current?.measureInWindow((_x, _y, _width, height) => {
+        setHeaderHeight(height)
+      })
+    }
+  }, [headerHeight, setHeaderHeight])
 
   const { currentScrollYAnimated } = useScreenScrollContext()
 
@@ -87,13 +97,7 @@ const FavoritesHeaderTabBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
         },
       ]}
     >
-      <Flex
-        onLayout={(event) => {
-          if (!headerHeight) {
-            setHeaderHeight(event.nativeEvent.layout.height)
-          }
-        }}
-      >
+      <Flex ref={headerRef}>
         <Flex mx={2} mt={2}>
           <Flex alignItems="flex-end">
             <FavoritesLearnMore />
