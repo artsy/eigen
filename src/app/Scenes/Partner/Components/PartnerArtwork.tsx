@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryListRenderItem } from "@shopify/flash-list"
+import { ListRenderItem } from "@shopify/flash-list"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -13,7 +13,6 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
 
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -62,38 +61,29 @@ export const PartnerArtwork: React.FC<{
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
 
-  const renderItem: MasonryListRenderItem<PartnerArtworkType> = useCallback(
-    ({ item, columnIndex }) => {
-      const imgAspectRatio = item.image?.aspectRatio ?? 1
-      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-      const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<PartnerArtworkType> = useCallback(({ item }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
 
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <ArtworkGridItem
-            contextScreenOwnerType={OwnerType.partner}
-            contextScreenOwnerId={partner.internalID}
-            contextScreenOwnerSlug={partner.slug}
-            artwork={item}
-            height={imgHeight}
-          />
-        </Flex>
-      )
-    },
-    []
-  )
+    return (
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.partner}
+        contextScreenOwnerId={partner.internalID}
+        contextScreenOwnerSlug={partner.slug}
+        artwork={item}
+        height={imgHeight}
+      />
+    )
+  }, [])
 
   return (
     <>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <TabEmptyState text={emptyText} />
@@ -110,12 +100,14 @@ export const PartnerArtwork: React.FC<{
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <ArtworksFilterHeader
-              selectedFiltersCount={appliedFiltersCount}
-              onFilterPress={() => setIsFilterArtworksModalVisible(true)}
-            />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <ArtworksFilterHeader
+                selectedFiltersCount={appliedFiltersCount}
+                onFilterPress={() => setIsFilterArtworksModalVisible(true)}
+              />
+            </Tabs.SubTabBar>
+          </Flex>
         }
       />
 

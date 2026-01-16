@@ -4,7 +4,6 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { LargeHeaderView } from "app/Navigation/utils/LargeHeaderView"
-import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevTools } from "app/system/devTools/DevMenu/Components/DevTools"
@@ -26,7 +25,7 @@ export const DevMenu: React.FC<{}> = () => {
   const fontScale = PixelRatio.getFontScale()
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
   const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
-
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const handleBackButton = () => {
     goBack()
     return true
@@ -79,7 +78,7 @@ export const DevMenu: React.FC<{}> = () => {
       {
         // The logged out stack is using a js react-navigation stack instead of a native stack
         // and it doesn't support large headers so we don't need this additional header
-        !__unsafe__onboardingNavigationRef.current ? <LargeHeaderView /> : null
+        !isLoggedIn ? <LargeHeaderView /> : null
       }
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}

@@ -1,10 +1,7 @@
 import { FilterIcon } from "@artsy/icons/native"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
-import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
-import { AnimatableHeaderFlatList } from "app/Components/AnimatableHeader/AnimatableHeaderFlatList"
-import { AnimatableHeaderProvider } from "app/Components/AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import {
   FilterDisplayName,
@@ -22,6 +19,7 @@ import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { compact } from "lodash"
 import React, { useMemo } from "react"
+import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
@@ -153,17 +151,37 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   return (
-    <AnimatableHeaderProvider>
-      <Flex flex={1}>
-        <AnimatableHeader
-          title={title}
-          rightButtonDisabled={!isClearAllButtonEnabled}
-          onLeftButtonPress={handleTappingCloseIcon}
-          onRightButtonPress={handleClearAllPress}
-          rightButtonText="Clear All"
-        />
-        <AnimatableHeaderFlatList<FilterDisplayConfig>
+    <Screen safeArea={false}>
+      <Screen.AnimatedHeader
+        title={title}
+        onBack={handleTappingCloseIcon}
+        rightElements={
+          <TouchableOpacity
+            accessibilityRole="button"
+            hitSlop={DEFAULT_HIT_SLOP}
+            onPress={handleClearAllPress}
+            disabled={!isClearAllButtonEnabled}
+          >
+            <Text
+              variant="sm"
+              style={{ textDecorationLine: "underline" }}
+              color={!isClearAllButtonEnabled ? "mono60" : "mono100"}
+            >
+              Clear All
+            </Text>
+          </TouchableOpacity>
+        }
+      />
+      <Screen.Body fullwidth>
+        <Screen.FlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
+          ListHeaderComponent={() => (
+            <Flex px={2} pb={2}>
+              <Text variant="lg-display" numberOfLines={1}>
+                {title}
+              </Text>
+            </Flex>
+          )}
           data={sortedFilterOptions}
           style={{ flexGrow: 1 }}
           renderItem={({ item }) => {
@@ -184,8 +202,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
             )
           }}
         />
-      </Flex>
-    </AnimatableHeaderProvider>
+      </Screen.Body>
+    </Screen>
   )
 }
 
