@@ -22,8 +22,9 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform } from "react-native"
-import { Edge } from "react-native-safe-area-context"
+import { Platform } from "react-native"
+import { KeyboardAvoidingView } from "react-native-keyboard-controller"
+import { Edge, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -79,6 +80,7 @@ export const ArtsyWebViewPage = ({
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
   const tracking = useTracking()
+  const { bottom } = useSafeAreaInsets()
 
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
@@ -149,7 +151,11 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="background">
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          // Setting `behaviour` here breaks the avoidance on iOS, hence it's only set for Android
+          behavior={Platform.select({ android: "padding" })}
+          style={{ flex: 1, marginBottom: bottom }}
+        >
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}

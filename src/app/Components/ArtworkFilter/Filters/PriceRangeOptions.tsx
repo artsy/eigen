@@ -16,7 +16,8 @@ import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContain
 import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
 import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { debounce } from "lodash"
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
+import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { parsePriceRangeLabel, PriceRange } from "./helpers"
 
@@ -29,6 +30,8 @@ const PARAM_NAME = FilterParamName.priceRange
 const DEBOUNCE_DELAY = 200
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
+  const screenScrollViewRef = useRef<ScrollView>(null)
+
   const tracking = useTracking()
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
@@ -58,6 +61,18 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
+  const handleMultiSliderValuesChangeStart = () => {
+    if (screenScrollViewRef.current) {
+      screenScrollViewRef.current.setNativeProps({ scrollEnabled: false })
+    }
+  }
+
+  const handleMultiSliderValuesChangeFinish = () => {
+    if (screenScrollViewRef.current) {
+      screenScrollViewRef.current.setNativeProps({ scrollEnabled: true })
+    }
+  }
+
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_RANGE
 
   const handleUpdateRange = (updatedRange: PriceRange) => {
@@ -85,13 +100,17 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         onLeftButtonPress={navigation.goBack}
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
-      <PriceRangeContainer
-        filterPriceRange={filterPriceRange}
-        histogramBars={histogramBars}
-        header={<Text variant="sm-display">Choose Your Price Range</Text>}
-        onPriceRangeUpdate={handleUpdateRange}
-        onRecentPriceRangeSelected={handleRecentPriceRangeSelected}
-      />
+      <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
+        <PriceRangeContainer
+          filterPriceRange={filterPriceRange}
+          histogramBars={histogramBars}
+          header={<Text variant="sm-display">Choose Your Price Range</Text>}
+          onPriceRangeUpdate={handleUpdateRange}
+          onRecentPriceRangeSelected={handleRecentPriceRangeSelected}
+          onMultiSliderValuesChangeStart={handleMultiSliderValuesChangeStart}
+          onMultiSliderValuesChangeFinish={handleMultiSliderValuesChangeFinish}
+        />
+      </ScrollView>
       <Spacer y={2} />
     </Flex>
   )

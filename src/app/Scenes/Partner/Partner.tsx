@@ -111,7 +111,7 @@ export const PartnerContainer = createRefetchContainer(
         slug
         partnerType
         displayFullPartnerPage
-        ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at" })
+        ...PartnerArtwork_partner @arguments(input: { sort: "-decayed_merch" })
         ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner

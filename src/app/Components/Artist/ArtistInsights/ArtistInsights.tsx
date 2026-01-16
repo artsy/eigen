@@ -110,7 +110,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         data={components}
         keyExtractor={(_, index) => `ArtistInsight-FlatList-element-${index}`}
         renderItem={({ item: { Component } }) => <Component />}
-        // scrollEventThrottle={0.000001}
+        scrollEventThrottle={0.000001}
       />
 
       <ArtworkFilterNavigator

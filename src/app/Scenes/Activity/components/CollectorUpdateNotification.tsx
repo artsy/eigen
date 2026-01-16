@@ -1,9 +1,11 @@
+import { ActionType, ContextModule, OwnerType, TappedCompleteYourProfile } from "@artsy/cohesion"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { CollectorUpdateNotification_item$key } from "__generated__/CollectorUpdateNotification_item.graphql"
 import { CollectorUpdateNotification_notification$key } from "__generated__/CollectorUpdateNotification_notification.graphql"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { CollectorProfilePrompt } from "./CollectorProfilePrompt"
 
 interface CollectorUpdateNotificationProps {
@@ -18,6 +20,7 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
   onPress,
 }) => {
   const [promptVisible, setPromptVisible] = useState(false)
+  const { trackEvent } = useTracking()
   const notification = useFragment(NOTIFICATION_FRAGMENT, _notification)
   const item = useFragment(ITEM_FRAGMENT, _item)
 
@@ -30,6 +33,9 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
   const itemInfo = hasEmptyCollection ? addArtistsToCollectiontInfo : collectorProfileInfo
 
   const handleOnPress = () => {
+    if (itemInfo.prompt === "CollectorProfile") {
+      trackEvent(tracks.tappedCompleteYourProfile())
+    }
     setPromptVisible(true)
     onPress()
   }
@@ -98,4 +104,12 @@ const collectorProfileInfo = {
   title: "Tell us a little bit more about you.",
   body: "By completing your profile, you’re more likely to receive quick responses from galleries.",
   prompt: "CollectorProfile",
+}
+
+const tracks = {
+  tappedCompleteYourProfile: (): TappedCompleteYourProfile => ({
+    action: ActionType.tappedCompleteYourProfile,
+    context_module: ContextModule.activity,
+    context_screen_owner_type: OwnerType.profile,
+  }),
 }

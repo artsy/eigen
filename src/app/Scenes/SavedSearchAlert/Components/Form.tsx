@@ -20,8 +20,11 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormikContext } from "formik"
-import { Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
+import { useCallback, useState } from "react"
+import { LayoutChangeEvent, Platform, StyleProp, ViewStyle } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
@@ -57,6 +60,9 @@ export const Form: React.FC<FormProps> = ({
   const tracking = useTracking()
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const [bottomOffset, setBottomOffset] = useState(0)
+
+  const stickyOffset = Platform.select({ android: bottom, ios: bottom - space(2) })
 
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
@@ -88,15 +94,21 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
+
   const isArtistPill = (pill: SavedSearchPill) =>
     pill.paramName === SearchCriteria.artistID || pill.paramName === SearchCriteria.artistIDs
 
   return (
     <>
-      <ScrollView
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
+      <KeyboardAwareForm
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+        bottomOffset={bottomOffset}
       >
         {!isEditMode && (
           <>
@@ -204,47 +216,49 @@ export const Form: React.FC<FormProps> = ({
         </Join>
 
         <Spacer y={2} />
-      </ScrollView>
+      </KeyboardAwareForm>
 
-      <Flex
-        p={2}
-        mb={`${bottom}px`}
-        pb={Platform.OS === "android" ? 2 : 0}
-        borderTopWidth={1}
-        borderTopColor="mono10"
-      >
-        <Button
-          testID="save-alert-button"
-          disabled={isSaveAlertButtonDisabled}
-          loading={isSubmitting || isLoading}
-          size="large"
-          block
-          onPress={onSubmitPress}
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: stickyOffset }}>
+        <Flex
+          p={2}
+          pb={`${bottom}px`}
+          borderTopWidth={1}
+          borderTopColor="mono10"
+          backgroundColor="mono0"
         >
-          {isEditMode ? "Save Alert" : "Create Alert"}
-        </Button>
+          <Button
+            testID="save-alert-button"
+            disabled={isSaveAlertButtonDisabled}
+            loading={isSubmitting || isLoading}
+            size="large"
+            block
+            onPress={onSubmitPress}
+          >
+            {isEditMode ? "Save Alert" : "Create Alert"}
+          </Button>
 
-        {!!isEditMode && (
-          <>
-            <Spacer y={2} />
-            <Button
-              testID="delete-alert-button"
-              variant="outline"
-              size="large"
-              block
-              onPress={onDeletePress}
-            >
-              Delete Alert
-            </Button>
-          </>
-        )}
+          {!!isEditMode && (
+            <>
+              <Spacer y={2} />
+              <Button
+                testID="delete-alert-button"
+                variant="outline"
+                size="large"
+                block
+                onPress={onDeletePress}
+              >
+                Delete Alert
+              </Button>
+            </>
+          )}
 
-        {!isEditMode && (
-          <Text variant="xs" color="mono60" textAlign="center" mt={2}>
-            Access all your alerts in your profile.
-          </Text>
-        )}
-      </Flex>
+          {!isEditMode && (
+            <Text variant="xs" color="mono60" textAlign="center" mt={2}>
+              Access all your alerts in your profile.
+            </Text>
+          )}
+        </Flex>
+      </KeyboardStickyView>
     </>
   )
 }

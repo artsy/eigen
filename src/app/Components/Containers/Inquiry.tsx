@@ -1,4 +1,4 @@
-import { Box, Button, Separator, Spacer } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -10,7 +10,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils/track"
 import React from "react"
-import { KeyboardAvoidingView, View } from "react-native"
+import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -97,7 +97,7 @@ export const BottomAlignedButton: React.FC<React.PropsWithChildren<BottomAligned
   disabled,
   showSeparator = true,
 }) => (
-  <KeyboardAvoidingView style={{ flex: 1 }}>
+  <Flex flex={1}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
@@ -115,7 +115,7 @@ export const BottomAlignedButton: React.FC<React.PropsWithChildren<BottomAligned
       </Button>
     </Box>
     <Spacer y={1} />
-  </KeyboardAvoidingView>
+  </Flex>
 )
 
 interface Props {
