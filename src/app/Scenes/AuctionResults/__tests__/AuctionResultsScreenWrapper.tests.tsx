@@ -1,9 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { AuctionResultsScreenWrapperTestsQuery } from "__generated__/AuctionResultsScreenWrapperTestsQuery.graphql"
-import {
-  AuctionResultsScreenWrapperContainer,
-  AuctionResultsState,
-} from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
+import { AuctionResultsScreenWrapperContainer } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -11,9 +8,7 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
   const { renderWithRelay } = setupTestWrapper<AuctionResultsScreenWrapperTestsQuery>({
     Component: (props) => {
       if (props?.me) {
-        return (
-          <AuctionResultsScreenWrapperContainer me={props.me} state={AuctionResultsState.ALL} />
-        )
+        return <AuctionResultsScreenWrapperContainer me={props.me} />
       }
       return null
     },

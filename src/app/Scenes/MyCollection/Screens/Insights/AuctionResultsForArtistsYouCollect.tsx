@@ -10,7 +10,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
 const TITLE = "Recently Sold at Auctions"
-const SUBTITLE = "Stay up-to-date on the prices your artists achieve at auctions."
+const SUBTITLE = "Stay up-to-date on the prices your artists achieve at auctions"
 
 export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
