@@ -92,6 +92,12 @@ lane :ship_beta_ios do |options|
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
 
+  sentry_upload_build(
+    org_slug: "artsynet",
+    project_slug: "eigen",
+    build_configuration: "Store"
+  )
+
   # avoid duplicate uploads to sentry
   if (deployment_target == 'testflight')
     # important! this must match the release version specified
