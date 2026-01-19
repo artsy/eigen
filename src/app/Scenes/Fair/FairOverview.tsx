@@ -87,7 +87,7 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
   ])
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       data={sections}
       renderItem={({ item }) => item.content}
       ItemSeparatorComponent={() => <Spacer y={2} />}

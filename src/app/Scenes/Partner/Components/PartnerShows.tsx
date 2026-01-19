@@ -99,15 +99,12 @@ export const PartnerShows: React.FC<{
   }
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       contentContainerStyle={{ paddingHorizontal: space(2), marginTop: space(2) }}
       data={sections}
       renderItem={({ item }) => item.content}
       // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
       onEndReachedThreshold={1}
-      // render up to the first chunk on initial mount
-      initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
-      windowSize={5}
       onEndReached={() => {
         if (isLoadingMore || !relay.hasMore()) {
           return

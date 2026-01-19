@@ -57,7 +57,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   const formattedMedianSaleOverEstimatePercentage = Math.abs(actualMedianSaleOverEstimatePercentage)
 
   return (
-    <>
+    <Flex>
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
           titleElement={
@@ -116,7 +116,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
       </Flex>
       <Separator my={2} ml={-2} width={screenWidth} />
-    </>
+    </Flex>
   )
 }
 
