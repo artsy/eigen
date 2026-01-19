@@ -50,7 +50,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   const space = useSpace()
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
-  const { updateScrollYOffset } = useScreenScrollContext()
+  const { scrollYOffsetAnimated } = useScreenScrollContext()
   const { trackEvent } = useTracking()
   const headerRef = useRef<View>(null)
   const artistData = useFragment(artistFragment, artist)
@@ -58,10 +58,10 @@ export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   useLayoutEffect(() => {
     headerRef.current?.measureInWindow((_x, _y, _measuredWidth, measuredHeight) => {
       if (measuredHeight > 0) {
-        updateScrollYOffset(measuredHeight - ARTIST_HEADER_SCROLL_MARGIN)
+        scrollYOffsetAnimated.value = measuredHeight - ARTIST_HEADER_SCROLL_MARGIN
       }
     })
-  }, [updateScrollYOffset])
+  }, [])
 
   if (!artistData) {
     return null
