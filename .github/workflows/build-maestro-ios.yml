@@ -9,7 +9,7 @@ jobs:
   build-ios-qa:
     if: github.ref == 'refs/heads/main'
     runs-on: macos-15
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
