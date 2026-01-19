@@ -346,8 +346,8 @@ const ArtistInsightsContent: React.FC<ArtistInsightsProps> = (props) => {
   )
 
   return (
-    <Flex flex={1}>
-      <Tabs.FlatList
+    <Flex flex={1} pt={2}>
+      <Tabs.FlashList
         style={{
           marginTop: space(2),
           paddingBottom: space(4),
