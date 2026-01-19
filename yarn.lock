@@ -105,14 +105,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/update-repo@npm:0.7.0":
-  version: 0.7.0
-  resolution: "@artsy/update-repo@npm:0.7.0"
+"@artsy/update-repo@npm:0.8.0":
+  version: 0.8.0
+  resolution: "@artsy/update-repo@npm:0.8.0"
   dependencies:
     "@octokit/rest": "npm:^17.2.0"
     kleur: "npm:^3.0.3"
     tmp: "npm:^0.1.0"
-  checksum: 10c0/38a47ef9a2b4d85c3d8863fcbeaec93fb48c013a4aceaa199c20a84ea9f76bc302771f077cdf5555015df5fab09c6c585a3f6a5ff8a8ff30311fa28a71f86ca2
+  checksum: 10c0/8903c569a91f42f3999e0a69f41421a8a202f7cb6ba6fbf11f9fdfc4c1b3a3635b458191af543c05e992d9727d7f94b0063c697e3ff411b9bf3483d3789108b0
   languageName: node
   linkType: hard
 
@@ -13149,7 +13149,7 @@ __metadata:
     "@artsy/icons": "npm:3.64.0"
     "@artsy/palette-mobile": "npm:22.6.0--canary.425.5263.0"
     "@artsy/to-title-case": "npm:1.2.0"
-    "@artsy/update-repo": "npm:0.7.0"
+    "@artsy/update-repo": "npm:0.8.0"
     "@babel/core": "npm:7.25.2"
     "@babel/plugin-proposal-decorators": "npm:7.18.9"
     "@babel/plugin-transform-flow-strip-types": "npm:7.18.9"
