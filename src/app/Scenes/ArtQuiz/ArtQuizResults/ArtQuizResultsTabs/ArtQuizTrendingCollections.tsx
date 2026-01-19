@@ -18,10 +18,10 @@ export const ArtQuizTrendingCollections: React.FC<ArtQuizTrendingCollectionsProp
   )
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       data={viewerData?.marketingCollections!}
-      initialNumToRender={2}
       keyExtractor={(item, index) => String(item?.internalID || index)}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
       renderItem={({ item, index }) => {
         return <ArtQuizTrendingCollection collectionData={item} key={index} />
       }}
