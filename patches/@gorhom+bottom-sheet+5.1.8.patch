@@ -1,0 +1,55 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/src/constants.ts b/node_modules/@gorhom/bottom-sheet/src/constants.ts
+index 87afaa1..dc5f76b 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/constants.ts
++++ b/node_modules/@gorhom/bottom-sheet/src/constants.ts
+@@ -1,6 +1,5 @@
+ import { Dimensions, Platform } from 'react-native';
+-import type Animated from 'react-native-reanimated';
+-import { Easing } from 'react-native-reanimated';
++import { Easing, EasingFunction } from 'react-native-reanimated';
+ 
+ const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
+ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
+@@ -68,7 +67,7 @@ enum SNAP_POINT_TYPE {
+   DYNAMIC = 1,
+ }
+ 
+-const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
++const ANIMATION_EASING: EasingFunction = Easing.out(Easing.exp);
+ const ANIMATION_DURATION = 250;
+ 
+ const ANIMATION_CONFIGS_IOS = {
+@@ -123,26 +122,12 @@ const KEYBOARD_INPUT_MODE = {
+ const KEYBOARD_DISMISS_THRESHOLD = 12.5;
+ 
+ export {
+-  GESTURE_SOURCE,
+-  SHEET_STATE,
+-  ANIMATION_STATE,
+-  ANIMATION_METHOD,
+-  ANIMATION_SOURCE,
+-  SCROLLABLE_TYPE,
+-  SCROLLABLE_STATE,
+-  KEYBOARD_STATE,
+-  SNAP_POINT_TYPE,
+-  WINDOW_HEIGHT,
+-  WINDOW_WIDTH,
+-  SCREEN_HEIGHT,
++  ANIMATION_CONFIGS, ANIMATION_DURATION, ANIMATION_EASING, ANIMATION_METHOD,
++  ANIMATION_SOURCE, ANIMATION_STATE, GESTURE_SOURCE, KEYBOARD_BEHAVIOR,
++  KEYBOARD_BLUR_BEHAVIOR, KEYBOARD_DISMISS_THRESHOLD, KEYBOARD_INPUT_MODE, KEYBOARD_STATE, MODAL_STACK_BEHAVIOR, SCREEN_HEIGHT,
+   SCREEN_WIDTH,
+-  SCROLLABLE_DECELERATION_RATE_MAPPER,
+-  MODAL_STACK_BEHAVIOR,
+-  KEYBOARD_BEHAVIOR,
+-  KEYBOARD_BLUR_BEHAVIOR,
+-  KEYBOARD_INPUT_MODE,
+-  KEYBOARD_DISMISS_THRESHOLD,
+-  ANIMATION_CONFIGS,
+-  ANIMATION_EASING,
+-  ANIMATION_DURATION,
++  SCROLLABLE_DECELERATION_RATE_MAPPER, SCROLLABLE_STATE, SCROLLABLE_TYPE, SHEET_STATE, SNAP_POINT_TYPE,
++  WINDOW_HEIGHT,
++  WINDOW_WIDTH
+ };
++

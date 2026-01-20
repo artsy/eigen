@@ -54,9 +54,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.6.0--canary.425.5275.0":
-  version: 22.6.0--canary.425.5275.0
-  resolution: "@artsy/palette-mobile@npm:22.6.0--canary.425.5275.0"
+"@artsy/palette-mobile@npm:22.6.0--canary.425.5294.0":
+  version: 22.6.0--canary.425.5294.0
+  resolution: "@artsy/palette-mobile@npm:22.6.0--canary.425.5294.0"
   dependencies:
     "@artsy/icons": "npm:3.64.0"
     "@artsy/palette-tokens": "npm:7.0.0"
@@ -83,7 +83,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/cb0c91f67c71d807ed772add8544fc5109fdfd7b5160762f372714035672669d301820b40fdb2a631d633630c168c16adb42cdbe89a2d34d2da33661da956bf1
+  checksum: 10c0/4af0c9b82d775e2480de27a941400e92d3cc83a76028c21adf81a47c9a5eb38c872b4e509b34e9ec16d78a5151a3d2a367dd12ccc099901bff27e16c4c486716
   languageName: node
   linkType: hard
 
@@ -4550,9 +4550,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:5.2.8":
-  version: 5.2.8
-  resolution: "@gorhom/bottom-sheet@npm:5.2.8"
+"@gorhom/bottom-sheet@npm:5.1.8":
+  version: 5.1.8
+  resolution: "@gorhom/bottom-sheet@npm:5.1.8"
   dependencies:
     "@gorhom/portal": "npm:1.0.14"
     invariant: "npm:^2.2.4"
@@ -4568,7 +4568,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 10c0/9bb71a375cdcaec650e8c84ab5e3e42f55b3ae19d9e08cf90688cf72706588d211f3aeef28b857a37e9e411efa8fdf038429c90a8855167c7ab3dce5c595dfca
+  checksum: 10c0/b1faa4bf495f2be814cc2477893fbe758282142b5e4a404eacabd0b76475975f17339fabce388719645a02c17ee999e86cffa26e847a40c9c38e98c5c342ee45
   languageName: node
   linkType: hard
 
@@ -13140,7 +13140,7 @@ __metadata:
   dependencies:
     "@artsy/cohesion": "npm:4.336.0"
     "@artsy/icons": "npm:3.64.0"
-    "@artsy/palette-mobile": "npm:22.6.0--canary.425.5275.0"
+    "@artsy/palette-mobile": "npm:22.6.0--canary.425.5294.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.7.0"
     "@babel/core": "npm:7.25.2"
@@ -13154,7 +13154,7 @@ __metadata:
     "@braze/react-native-sdk": "npm:16.1.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
-    "@gorhom/bottom-sheet": "npm:5.2.8"
+    "@gorhom/bottom-sheet": "npm:5.1.8"
     "@gorhom/portal": "npm:1.0.14"
     "@invertase/react-native-apple-authentication": "npm:2.1.5"
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"
