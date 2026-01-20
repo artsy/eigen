@@ -24,7 +24,7 @@ export const AvatarStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
         <Flex justifyContent="space-between" height="100%">
           <Flex px={2}>
             <Text variant="lg">Add a profile image</Text>
