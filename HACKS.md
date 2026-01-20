@@ -252,7 +252,7 @@ This patch was added to support 16KB page size on Android. It's a copy paste fro
 
 It can be removed once we upgrade to any version past 3.17
 
-## patch-pacakge for react-native-reanimatedAdd a comment on lines L230 to L236Add diff commentMarkdown input: edit mode selected.WritePreviewHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
+## patch-pacakge for react-native-reanimated Add a comment on lines L230 to L236Add diff commentMarkdown input: edit mode selected.WritePreviewHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
 
 #### When can we remove this:
 
@@ -284,19 +284,17 @@ not reset. This causes the module to never start listening again causing events 
 
 It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
 
-## react-native-reanimated package.json flags and react-native patch
+## react-native-reanimated package.json flags
 
-### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
+### IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS
 
 #### Explanation/Context:
 
-This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
-
-We also added a patch to react-native to support this flag and temporarily enabled preventShadowTreeCommitExhaustion and enableCppPropsIteratorSetter flags to fix performance issues.
+This feature flag was added to fix the SubTabBar issues while scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
 
 #### When can we remove this:
 
-When reanimated adopts this by default.
+When reanimated adopts this by default or fixes it differently
 
 ## react-native-webview passing constant for decelerationRate prop
 

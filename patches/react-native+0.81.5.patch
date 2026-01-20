@@ -13,16 +13,3 @@ index 6cdec32..8f7cf70 100644
    }
  }
  
-diff --git a/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-index e0742c9..eae3d69 100644
---- a/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-+++ b/node_modules/react-native/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-@@ -72,7 +72,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
-   }
- 
-   bool enableCppPropsIteratorSetter() override {
--    return false;
-+    return true;
-   }
- 
-   bool enableCustomFocusSearchOnClippedElementsAndroid() override {
