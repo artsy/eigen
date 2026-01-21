@@ -16,19 +16,21 @@ import type {
 
 // ==================== State Reducer ====================
 
-const initialState: Omit<LiveAuctionState, "saleName" | "causalitySaleID" | "jwt" | "credentials"> =
-  {
-    isConnected: false,
-    showDisconnectWarning: false,
-    currentLotId: null,
-    lots: new Map(),
-    isOnHold: false,
-    onHoldMessage: null,
-    operatorConnected: true,
-    pendingBids: new Map(),
-  }
+export const initialState: Omit<
+  LiveAuctionState,
+  "saleName" | "causalitySaleID" | "jwt" | "credentials"
+> = {
+  isConnected: false,
+  showDisconnectWarning: false,
+  currentLotId: null,
+  lots: new Map(),
+  isOnHold: false,
+  onHoldMessage: null,
+  operatorConnected: true,
+  pendingBids: new Map(),
+}
 
-const liveAuctionReducer = (
+export const liveAuctionReducer = (
   state: LiveAuctionState,
   action: LiveAuctionAction
 ): LiveAuctionState => {
@@ -58,22 +60,25 @@ const liveAuctionReducer = (
       }
 
     case "INITIAL_STATE_RECEIVED": {
-      const {
-        currentLotId,
-        lots: lotsData,
-        operatorConnected,
-        saleOnHold,
-        onHoldMessage,
-      } = action.payload
+      const { currentLotId, fullLotStateById, operatorConnected, saleOnHold, saleOnHoldMessage } =
+        action.payload
 
       const newLots = new Map<string, LotState>()
 
-      // Process each lot
-      for (const lotData of lotsData) {
-        const lotState = createInitialLotState(lotData.lotId)
+      console.log("INITIAL_STATE_RECEIVED:", {
+        payload: action.payload,
+        currentLotId,
+        lotCount: Object.keys(fullLotStateById).length,
+        operatorConnected,
+        saleOnHold,
+      })
 
-        // Add events and track processed IDs
-        for (const event of lotData.events) {
+      // Process each lot from the fullLotStateById object
+      for (const [lotId, fullLotState] of Object.entries(fullLotStateById)) {
+        const lotState = createInitialLotState(lotId)
+
+        // Add events from eventHistory and track processed IDs
+        for (const event of fullLotState.eventHistory) {
           if (!lotState.processedEventIds.has(event.eventId)) {
             lotState.events.set(event.eventId, event)
             lotState.eventHistory.push(event)
@@ -86,10 +91,10 @@ const liveAuctionReducer = (
           (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         )
 
-        // Calculate derived state
+        // Calculate derived state from events
         lotState.derivedState = calculateDerivedState(lotState.events)
 
-        newLots.set(lotData.lotId, lotState)
+        newLots.set(lotId, lotState)
       }
 
       return {
@@ -98,7 +103,7 @@ const liveAuctionReducer = (
         lots: newLots,
         operatorConnected: operatorConnected ?? true,
         isOnHold: saleOnHold ?? false,
-        onHoldMessage: onHoldMessage ?? null,
+        onHoldMessage: saleOnHoldMessage ?? null,
       }
     }
 

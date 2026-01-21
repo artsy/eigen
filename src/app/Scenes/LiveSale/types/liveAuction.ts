@@ -26,10 +26,26 @@ export type InboundMessage =
 export interface InitialFullSaleStateMessage {
   type: "InitialFullSaleState"
   currentLotId: string | null
-  lots: LotStateData[]
+  fullLotStateById: Record<string, FullLotStateData>
   operatorConnected?: boolean
   saleOnHold?: boolean
-  onHoldMessage?: string | null
+  saleOnHoldMessage?: string | null
+}
+
+export interface FullLotStateData {
+  derivedLotState: DerivedLotStateData
+  eventHistory: LotEvent[]
+}
+
+export interface DerivedLotStateData {
+  reserveStatus?: string
+  askingPriceCents?: number
+  biddingStatus?: string
+  soldStatus?: string
+  onlineBidCount?: number
+  winningBidEventId?: string
+  sellingToBidderId?: string
+  floorWinningBidderId?: string
 }
 
 export interface LotUpdateBroadcastMessage {

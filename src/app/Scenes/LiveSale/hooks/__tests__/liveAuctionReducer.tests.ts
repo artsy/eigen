@@ -1,67 +1,10 @@
-import { createInitialLotState, calculateDerivedState } from "app/Scenes/LiveSale/types/liveAuction"
+import { liveAuctionReducer } from "app/Scenes/LiveSale/hooks/useLiveAuctionWebSocket"
 import type {
   InitialFullSaleStateMessage,
   LiveAuctionState,
   LiveAuctionAction,
   BidderCredentials,
 } from "app/Scenes/LiveSale/types/liveAuction"
-
-// Extract the reducer logic for testing
-// This is a copy of the reducer from useLiveAuctionWebSocket.ts
-const liveAuctionReducer = (
-  state: LiveAuctionState,
-  action: LiveAuctionAction
-): LiveAuctionState => {
-  switch (action.type) {
-    case "INITIAL_STATE_RECEIVED": {
-      const {
-        currentLotId,
-        lots: lotsData,
-        operatorConnected,
-        saleOnHold,
-        onHoldMessage,
-      } = action.payload
-
-      const newLots = new Map(state.lots)
-
-      // Process each lot
-      for (const lotData of lotsData) {
-        const lotState = createInitialLotState(lotData.lotId)
-
-        // Add events and track processed IDs
-        for (const event of lotData.events) {
-          if (!lotState.processedEventIds.has(event.eventId)) {
-            lotState.events.set(event.eventId, event)
-            lotState.eventHistory.push(event)
-            lotState.processedEventIds.add(event.eventId)
-          }
-        }
-
-        // Sort event history by timestamp
-        lotState.eventHistory.sort(
-          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        )
-
-        // Calculate derived state
-        lotState.derivedState = calculateDerivedState(lotState.events)
-
-        newLots.set(lotData.lotId, lotState)
-      }
-
-      return {
-        ...state,
-        currentLotId,
-        lots: newLots,
-        operatorConnected: operatorConnected ?? true,
-        isOnHold: saleOnHold ?? false,
-        onHoldMessage: onHoldMessage ?? null,
-      }
-    }
-
-    default:
-      return state
-  }
-}
 
 describe("liveAuctionReducer - Initial State Parsing", () => {
   const createInitialState = (): LiveAuctionState => ({
@@ -88,10 +31,10 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: "lot-1",
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-1",
               type: "LotOpened",
@@ -116,7 +59,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-      ],
+      },
       operatorConnected: true,
     }
 
@@ -164,10 +107,10 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: "lot-2",
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-1",
               type: "LotSold",
@@ -180,9 +123,9 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-        {
-          lotId: "lot-2",
-          events: [
+        "lot-2": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-2",
               type: "LotOpened",
@@ -191,7 +134,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-      ],
+      },
     }
 
     const action: LiveAuctionAction = {
@@ -221,12 +164,12 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: null,
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [],
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [],
         },
-      ],
+      },
     }
 
     const action: LiveAuctionAction = {
@@ -246,7 +189,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: null,
-      lots: [],
+      fullLotStateById: {},
     }
 
     const action: LiveAuctionAction = {
@@ -265,7 +208,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: null,
-      lots: [],
+      fullLotStateById: {},
       operatorConnected: false,
     }
 
@@ -285,9 +228,9 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: null,
-      lots: [],
+      fullLotStateById: {},
       saleOnHold: true,
-      onHoldMessage: "Technical difficulties, please wait",
+      saleOnHoldMessage: "Technical difficulties, please wait",
     }
 
     const action: LiveAuctionAction = {
@@ -308,10 +251,10 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: "lot-1",
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-1",
               type: "LotOpened",
@@ -326,7 +269,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-      ],
+      },
     }
 
     const action: LiveAuctionAction = {
@@ -350,10 +293,10 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: "lot-1",
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-1",
               type: "ReserveMet",
@@ -368,7 +311,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-      ],
+      },
     }
 
     const action: LiveAuctionAction = {
@@ -389,10 +332,10 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
       currentLotId: "lot-1",
-      lots: [
-        {
-          lotId: "lot-1",
-          events: [
+      fullLotStateById: {
+        "lot-1": {
+          derivedLotState: {},
+          eventHistory: [
             {
               eventId: "event-3",
               type: "FirstPriceBidPlaced",
@@ -413,7 +356,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
             },
           ],
         },
-      ],
+      },
     }
 
     const action: LiveAuctionAction = {
