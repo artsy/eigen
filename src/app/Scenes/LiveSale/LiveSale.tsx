@@ -1,67 +1,35 @@
 import { CloseIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
-import { LiveSaleQuery } from "__generated__/LiveSaleQuery.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { LiveSaleProvider } from "./LiveSaleProvider"
+import { useLiveAuction } from "./hooks/useLiveAuction"
 
 interface LiveSaleProps {
   slug: string
 }
 
-const LiveSaleComponent: React.FC<LiveSaleProps> = ({ slug }) => {
-  const data = useLazyLoadQuery<LiveSaleQuery>(
-    liveSaleQuery,
-    { saleID: slug },
-    {
-      fetchPolicy: "network-only",
-    }
-  )
+// Inner component that uses the live auction context
+const LiveSaleContent: React.FC = () => {
+  const {
+    saleName,
+    currentLotId,
+    lots,
+    isConnected,
+    showDisconnectWarning,
+    isOnHold,
+    onHoldMessage,
+    operatorConnected,
+    pendingBids,
+    credentials,
+  } = useLiveAuction()
 
-  // This won't happen because the query would fail
-  // Adding it here to make TS happy
-  if (!data.sale) {
-    return (
-      <Screen>
-        <Screen.Header
-          leftElements={
-            <Touchable
-              accessibilityRole="button"
-              accessibilityLabel="Exit Sale"
-              hitSlop={DEFAULT_HIT_SLOP}
-              onPress={() => goBack()}
-            >
-              <CloseIcon />
-            </Touchable>
-          }
-        />
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Text>Sale not found.</Text>
-        </Flex>
-      </Screen>
-    )
-  }
-
-  const saleData = {
-    name: data.sale.name,
-    causalitySaleID: data.sale.internalID,
-    startDate: data.sale.startAt,
-  }
-
-  const credentials = {
-    jwt: data.system?.causalityJWT ?? null,
-    bidderID: data.me?.bidders?.[0]?.internalID ?? null,
-    paddleNumber: data.me?.paddleNumber ?? null,
-    userID: data.me?.internalID ?? null,
-    canBid: (data.me?.bidders?.length ?? 0) > 0,
-  }
+  const currentLot = currentLotId ? lots.get(currentLotId) : null
 
   return (
     <Screen>
       <Screen.Header
         leftElements={
-          // TODO: Is this the preferred way to have close icon? should we use NavigationHeader?
-          // update Screen.Header to more easily support close icon?
           <Touchable
             accessibilityRole="button"
             accessibilityLabel="Exit Sale"
@@ -72,48 +40,125 @@ const LiveSaleComponent: React.FC<LiveSaleProps> = ({ slug }) => {
           </Touchable>
         }
       />
-      <Flex flex={1} p={2}>
-        <Text variant="lg-display" mb={2}>
-          {saleData.name}
-        </Text>
-        <Text variant="sm" color="black60" mb={1}>
-          Causality Sale ID: {saleData.causalitySaleID}
-        </Text>
-        <Text variant="sm" color="black60" mb={1}>
-          Start Date: {saleData.startDate}
-        </Text>
-        <Text variant="sm" color="black60" mb={1}>
-          Can Bid: {credentials.canBid ? "Yes" : "No"}
-        </Text>
-        {!!credentials.paddleNumber && (
-          <Text variant="sm" color="black60">
-            Paddle: {credentials.paddleNumber}
+
+      {/* Disconnect Warning Banner */}
+      {!!showDisconnectWarning && (
+        <Flex bg="red100" p={2}>
+          <Text variant="sm" color="red100" textAlign="center">
+            Connection lost. Reconnecting...
           </Text>
+        </Flex>
+      )}
+
+      {/* Sale On Hold Overlay */}
+      {!!isOnHold && (
+        <Flex bg="orange100" p={2}>
+          <Text variant="sm" color="orange100" textAlign="center">
+            {onHoldMessage || "Sale is currently on hold"}
+          </Text>
+        </Flex>
+      )}
+
+      <Flex flex={1} p={2}>
+        {/* Sale Header */}
+        <Text variant="lg-display" mb={2}>
+          {saleName}
+        </Text>
+
+        {/* Connection Status */}
+        <Flex flexDirection="row" alignItems="center" mb={2}>
+          <Flex
+            width={8}
+            height={8}
+            borderRadius={4}
+            bg={isConnected ? "green100" : "red100"}
+            mr={1}
+          />
+          <Text variant="xs" color="black60">
+            {isConnected ? "Connected" : "Disconnected"}
+          </Text>
+        </Flex>
+
+        {/* Credentials Info */}
+        <Text variant="sm" color="black60" mb={1}>
+          Paddle Number: {credentials.paddleNumber || "Not registered"}
+        </Text>
+        <Text variant="sm" color="black60" mb={1}>
+          Bidder ID: {credentials.bidderId || "N/A"}
+        </Text>
+
+        {/* Operator Status */}
+        <Text variant="sm" color="black60" mb={2}>
+          Operator: {operatorConnected ? "Connected" : "Disconnected"}
+        </Text>
+
+        {/* Current Lot Info */}
+        {currentLot ? (
+          <Flex mt={2} p={2} bg="black5" borderRadius={4}>
+            <Text variant="md" mb={1}>
+              Current Lot: {currentLot.lotId}
+            </Text>
+            <Text variant="sm" color="black60" mb={1}>
+              Status: {currentLot.derivedState.biddingStatus} - {currentLot.derivedState.soldStatus}
+            </Text>
+            <Text variant="sm" color="black60" mb={1}>
+              Reserve: {currentLot.derivedState.reserveStatus}
+            </Text>
+            <Text variant="sm" color="black60" mb={1}>
+              Asking Price: ${(currentLot.derivedState.askingPriceCents / 100).toLocaleString()}
+            </Text>
+            <Text variant="sm" color="black60" mb={1}>
+              Online Bids: {currentLot.derivedState.onlineBidCount}
+            </Text>
+            <Text variant="sm" color="black60">
+              Total Events: {currentLot.eventHistory.length}
+            </Text>
+          </Flex>
+        ) : (
+          <Flex mt={2} p={2} bg="black5" borderRadius={4}>
+            <Text variant="sm" color="black60" textAlign="center">
+              No current lot
+            </Text>
+          </Flex>
         )}
+
+        {/* Stats */}
+        <Flex mt={2} p={2} bg="black5" borderRadius={4}>
+          <Text variant="sm" mb={1}>
+            Total Lots: {lots.size}
+          </Text>
+          <Text variant="sm">Pending Bids: {pendingBids.size}</Text>
+        </Flex>
+
+        {/* Pending Bids */}
+        {pendingBids.size > 0 ? (
+          <Flex mt={2}>
+            <Text variant="sm" mb={1}>
+              Pending Bids:
+            </Text>
+            {Array.from(pendingBids.entries()).map(([key, bid]) => (
+              <Flex key={key} p={1} bg="black5" mb={1} borderRadius={4}>
+                <Text variant="xs" color="black60">
+                  Lot {bid.lotId}: ${(bid.amountCents / 100).toLocaleString()} - {bid.status}
+                  {!!bid.error && ` (${bid.error})`}
+                </Text>
+              </Flex>
+            ))}
+          </Flex>
+        ) : null}
       </Flex>
     </Screen>
   )
 }
 
-const liveSaleQuery = graphql`
-  query LiveSaleQuery($saleID: String!) {
-    sale(id: $saleID) {
-      name
-      internalID
-      startAt
-    }
-    system {
-      causalityJWT(saleID: $saleID)
-    }
-    me {
-      internalID
-      paddleNumber
-      bidders(saleID: $saleID) {
-        internalID
-      }
-    }
-  }
-`
+// Outer component that wraps with provider
+const LiveSaleComponent: React.FC<LiveSaleProps> = ({ slug }) => {
+  return (
+    <LiveSaleProvider slug={slug}>
+      <LiveSaleContent />
+    </LiveSaleProvider>
+  )
+}
 
 export const LiveSale = withSuspense({
   Component: LiveSaleComponent,
