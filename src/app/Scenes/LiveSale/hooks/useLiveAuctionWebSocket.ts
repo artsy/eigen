@@ -65,14 +65,6 @@ export const liveAuctionReducer = (
 
       const newLots = new Map<string, LotState>()
 
-      console.log("INITIAL_STATE_RECEIVED:", {
-        payload: action.payload,
-        currentLotId,
-        lotCount: Object.keys(fullLotStateById).length,
-        operatorConnected,
-        saleOnHold,
-      })
-
       // Process each lot from the fullLotStateById object
       for (const [lotId, fullLotState] of Object.entries(fullLotStateById)) {
         const lotState = createInitialLotState(lotId)
