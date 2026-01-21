@@ -137,6 +137,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { LiveSaleContainer } from "app/Scenes/LiveSale/LiveSaleContainer"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -1832,37 +1833,23 @@ export const artsyDotNetRoutes = defineRoutes([
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([
-  Platform.OS === "ios"
-    ? {
-        path: "/*",
-        name: "LiveAuction",
-        Component: LiveAuctionView,
-        options: {
-          alwaysPresentModally: true,
-          hidesBottomTabs: true,
-          screenOptions: {
-            gestureEnabled: false,
-            headerShown: false,
-          },
-        },
-        injectParams: (params) => ({ slug: params["*"] }),
-      }
-    : {
-        path: "/*",
-        name: "LiveAuctionWebView",
-        Component: ArtsyWebViewPage,
-        options: {
-          alwaysPresentModally: true,
-          hidesBottomTabs: true,
-          screenOptions: {
-            gestureEnabled: false,
-            headerShown: false,
-          },
-        },
-        injectParams: (params) => ({
-          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
-        }),
+  {
+    path: "/*",
+    name: "LiveAuction",
+    Component: LiveSaleContainer,
+    options: {
+      alwaysPresentModally: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
       },
+    },
+    injectParams: (params) => ({
+      slug: params["*"],
+      url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+    }),
+  },
 ])
 
 export const routes = compact([...artsyDotNetRoutes, ...liveDotArtsyRoutes])
