@@ -1,14 +1,12 @@
 import { createInitialLotState, calculateDerivedState } from "app/Scenes/LiveSale/types/liveAuction"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { useEffect, useReducer, useRef, useCallback } from "react"
-import { Platform } from "react-native"
 import type {
   BidderCredentials,
   InboundMessage,
   LiveAuctionAction,
   LiveAuctionState,
   LotState,
-  LotEvent,
   PendingBid,
   AuthorizeMessage,
   PostEventMessage,
@@ -225,22 +223,7 @@ const generateUUID = (): string => {
 
 const getWebSocketURL = (causalitySaleID: string): string => {
   const env = unsafe__getEnvironment()
-  let host = env.predictionURL || "https://causality.artsy.net"
-
-  // Strip http/https and replace with ws/wss
-  if (host.startsWith("https://")) {
-    host = "wss://" + host.substring(8)
-  } else if (host.startsWith("http://")) {
-    host = "ws://" + host.substring(7)
-  } else if (!host.startsWith("ws://") && !host.startsWith("wss://")) {
-    // Default to wss if no protocol
-    host = "wss://" + host
-  }
-
-  // Remove trailing slash if present
-  if (host.endsWith("/")) {
-    host = host.slice(0, -1)
-  }
+  const host = env.causalityURL
 
   return `${host}/socket?saleId=${causalitySaleID}`
 }
@@ -269,9 +252,9 @@ export const useLiveAuctionWebSocket = ({
   })
 
   const wsRef = useRef<WebSocket | null>(null)
-  const heartbeatRef = useRef<NodeJS.Timeout | null>(null)
-  const reconnectRef = useRef<NodeJS.Timeout | null>(null)
-  const disconnectWarningRef = useRef<NodeJS.Timeout | null>(null)
+  const heartbeatRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const reconnectRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const disconnectWarningRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isConnectingRef = useRef(false)
 
   // Clear disconnect warning timer
