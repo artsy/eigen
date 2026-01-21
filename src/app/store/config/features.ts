@@ -171,6 +171,11 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
+  AREnableRNLiveSaleScreen: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable React Native Live Sale Screen",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
