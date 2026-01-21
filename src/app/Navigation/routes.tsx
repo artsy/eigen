@@ -11,7 +11,6 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
-import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
 import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
 import {
@@ -250,7 +249,6 @@ import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
-import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 
 export interface ViewOptions {
