@@ -1,4 +1,5 @@
 import { Box, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
+import { ListRenderItem } from "@shopify/flash-list"
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
 import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
@@ -8,7 +9,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback } from "react"
-import { ListRenderItem } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailQueryRenderer } from "./FairExhibitorRail"
 
@@ -48,7 +48,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const keyExtractor = (item: FairShowArtworks) => String(item?.id)
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       // reseting padding to -2 to remove the default padding from the FlatList
       contentContainerStyle={{ marginHorizontal: 0, marginTop: space(2) }}
       data={showsWithArtworks}
@@ -66,11 +66,6 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
           </Box>
         ) : null
       }
-      // We want to limit the number of loaded windows to 5 because the items are pretty heavy
-      windowSize={5}
-      // We are slowing down the scrolling intentionally because the screen is too heavy and scrolling
-      // too fast leads to dropped frames
-      decelerationRate={0.995}
     />
   )
 }

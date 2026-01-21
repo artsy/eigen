@@ -22,8 +22,8 @@ import {
 } from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useState } from "react"
-import { FlatList, LayoutChangeEvent, View } from "react-native"
+import { useLayoutEffect, useRef, useState } from "react"
+import { FlatList, View } from "react-native"
 import { useFragment, graphql } from "react-relay"
 import { CareerHighlightKind, getCareerHiglight } from "./CareerHighlightCard"
 
@@ -31,10 +31,18 @@ const CardHeader: React.FC<{
   count: number
   label: string
   icon: React.ReactElement<IconProps>
-  onLayout?: ((event: LayoutChangeEvent) => void) | undefined
-}> = ({ count, label, icon, onLayout }) => {
+  onHeightMeasured?: (height: number) => void
+}> = ({ count, label, icon, onHeightMeasured }) => {
+  const ref = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    ref.current?.measureInWindow((_x, _y, _width, height) => {
+      onHeightMeasured?.(height)
+    })
+  }, [onHeightMeasured])
+
   return (
-    <Flex onLayout={onLayout}>
+    <Flex ref={ref}>
       <Flex justifyContent="space-between" flexDirection="row" alignItems="center">
         <Text variant="xl" color="blue100">
           {count}
@@ -80,10 +88,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
         count={count}
         label={label}
         icon={<Icon fill="mono100" width={24} height={24} />}
-        onLayout={(event: LayoutChangeEvent) => {
-          const layout = event.nativeEvent.layout
-          setHeaderHeight(layout.height)
-        }}
+        onHeightMeasured={setHeaderHeight}
       />
       <FlatList
         key={type}
@@ -165,10 +170,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
         count={count}
         label={label}
         icon={<Icon fill="mono100" width={24} height={24} />}
-        onLayout={(event: LayoutChangeEvent) => {
-          const layout = event.nativeEvent.layout
-          setHeaderHeight(layout.height)
-        }}
+        onHeightMeasured={setHeaderHeight}
       />
       <FlatList
         key={type}
@@ -251,10 +253,7 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
         count={count}
         label={label}
         icon={<Icon fill="mono100" width={24} height={24} />}
-        onLayout={(event: LayoutChangeEvent) => {
-          const layout = event.nativeEvent.layout
-          setHeaderHeight(layout.height)
-        }}
+        onHeightMeasured={setHeaderHeight}
       />
       <FlatList
         key={type}
@@ -337,10 +336,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
         count={count}
         label={label}
         icon={<Icon fill="mono100" width={24} height={24} />}
-        onLayout={(event: LayoutChangeEvent) => {
-          const layout = event.nativeEvent.layout
-          setHeaderHeight(layout.height)
-        }}
+        onHeightMeasured={setHeaderHeight}
       />
       <FlatList
         key={type}
@@ -422,10 +418,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
         count={count}
         label={label}
         icon={<Icon fill="mono100" width={24} height={24} />}
-        onLayout={(event: LayoutChangeEvent) => {
-          const layout = event.nativeEvent.layout
-          setHeaderHeight(layout.height)
-        }}
+        onHeightMeasured={setHeaderHeight}
       />
       <FlatList
         key={type}

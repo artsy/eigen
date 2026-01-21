@@ -24,7 +24,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist: artistProp,
 }) => {
   const space = useSpace()
-  const { currentScrollYAnimated, scrollYOffset } = useScreenScrollContext()
+  const { currentScrollYAnimated, scrollYOffsetAnimated } = useScreenScrollContext()
   const artist = useFragment(fragment, artistProp)
   const [isFollowed, setIsFollowed] = useState(!!artist?.isFollowed)
 
@@ -45,8 +45,12 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   )
 
   const followAreaDeltaX = (followButtonWidth + space(2)) * PixelRatio.getFontScale()
+
   const displayFollowButton = useDerivedValue(() => {
-    return !scrollYOffset || currentScrollYAnimated.value < scrollYOffset + NAVBAR_HEIGHT
+    return (
+      !scrollYOffsetAnimated.value ||
+      currentScrollYAnimated.value < scrollYOffsetAnimated.value + NAVBAR_HEIGHT
+    )
   })
 
   // convert the space into primitive types to be user on the UI thread
