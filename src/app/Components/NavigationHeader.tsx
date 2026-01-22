@@ -74,8 +74,12 @@ export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeader
         <Flex position="absolute" right={0} alignItems="flex-end">
           {!!onRightButtonPress && (
             <RightButtonContainer
+              accessibilityRole="button"
+              accessibilityLabel="Save"
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
+              disabled={rightButtonDisabled}
+              aria-disabled={rightButtonDisabled}
               testID="fancy-modal-header-right-button"
             >
               {rightButtonText ? (
@@ -117,16 +121,16 @@ export const Container = styled(Flex)`
   justify-content: space-between;
   align-items: center;
   height: ${themeGet("space.6")};
-`
+` as typeof Flex
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
   padding-left: ${themeGet("space.2")};
   padding-right: ${themeGet("space.2")};
   justify-content: center;
-`
+` as typeof TouchableOpacity
 
 export const RightButtonContainer = styled(TouchableOpacity)`
   padding-left: ${themeGet("space.2")};
   padding-right: ${themeGet("space.2")};
   justify-content: center;
-`
+` as typeof TouchableOpacity
