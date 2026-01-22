@@ -248,7 +248,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       <Flex flexDirection="row" flexWrap="wrap">
         <Text color="mono60">Payload: </Text>
         <Text fontWeight="bold" selectable>
-          {unleashVariant?.payload?.value || "--"}
+          {localPayloadOverrides[flag] || unleashVariant?.payload?.value || "--"}
           <TouchableOpacity
             accessibilityRole="button"
             onPress={() => {
