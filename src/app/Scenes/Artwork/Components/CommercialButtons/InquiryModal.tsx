@@ -39,7 +39,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
 
-  const retireTemplatesExperimentEnabled = variant.enabled && variant.name === "experiment"
+  const retireTemplatesExperimentEnabled = !!variant.enabled && variant.name === "experiment"
 
   const artwork = useFragment(artworkFragment, _artwork)
 
