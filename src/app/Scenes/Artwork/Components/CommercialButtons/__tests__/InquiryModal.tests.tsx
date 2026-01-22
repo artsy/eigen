@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -16,6 +17,10 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense, useReducer } from "react"
 import { graphql } from "react-relay"
+
+jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
+  useExperimentVariant: jest.fn(),
+}))
 
 describe("inquiry modal", () => {
   let initialState: ArtworkInquiryContextState
@@ -43,6 +48,7 @@ describe("inquiry modal", () => {
 
   beforeEach(() => {
     initialState = { ...initialArtworkInquiryState, inquiryModalVisible: true }
+    ;(useExperimentVariant as jest.Mock).mockReturnValue({ variant: {} })
   })
 
   it("renders", () => {
@@ -172,6 +178,38 @@ describe("inquiry modal", () => {
       expect(
         screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
       ).toBeOnTheScreen()
+    })
+  })
+
+  describe("template messages A/B test", () => {
+    describe("on control", () => {
+      beforeEach(() => {
+        // mock experiment as "control"
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          variant: { enabled: true, name: "control" },
+        })
+      })
+
+      it("prefills the input with a templated message", () => {
+        renderWithRelay({ Artwork: () => mockArtwork })
+
+        expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+      })
+    })
+
+    describe("on experiment", () => {
+      beforeEach(() => {
+        // mock experiment as "experiment"
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          variant: { enabled: true, name: "experiment" },
+        })
+      })
+
+      it("shows the input empty", () => {
+        renderWithRelay({ Artwork: () => mockArtwork })
+
+        expect(screen.getByLabelText("Add message").props.value).toBe("")
+      })
     })
   })
 })
