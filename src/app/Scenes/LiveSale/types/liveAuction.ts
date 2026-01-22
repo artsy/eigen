@@ -174,7 +174,7 @@ export interface SecondPriceBidEvent {
 
 export interface ArtworkMetadata {
   internalID: string
-  lotLabel: string
+  lotLabel: string | null
   estimate: string | null
   lowEstimateCents: number | null
   highEstimateCents: number | null

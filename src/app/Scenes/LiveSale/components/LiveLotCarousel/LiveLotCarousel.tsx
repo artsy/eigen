@@ -12,13 +12,39 @@ export const LiveLotCarousel: React.FC = () => {
   // Convert Map to sorted array
   const lotsArray = useMemo(() => {
     const arr = Array.from(lots.values())
+
+    if (__DEV__) {
+      console.log("[LiveLotCarousel] Total lots from WebSocket:", lots.size)
+      console.log(
+        "[LiveLotCarousel] Sample WebSocket lot IDs (UUIDs):",
+        Array.from(lots.keys()).slice(0, 5)
+      )
+      console.log("[LiveLotCarousel] Total artwork metadata entries:", artworkMetadata.size)
+      console.log(
+        "[LiveLotCarousel] Artwork metadata keys (internalIDs/UUIDs):",
+        Array.from(artworkMetadata.keys()).slice(0, 5)
+      )
+
+      // Check if keys match (should be true now!)
+      const lotIds = new Set(lots.keys())
+      const metadataKeys = new Set(artworkMetadata.keys())
+      const matchingKeys = Array.from(lotIds).filter((id) => metadataKeys.has(id))
+      console.log(
+        "[LiveLotCarousel] Matching keys:",
+        matchingKeys.length,
+        "/",
+        lots.size,
+        "lots have metadata"
+      )
+    }
+
     return arr.sort((a, b) => {
       // Sort by lot ID (numeric)
       const numA = parseInt(a.lotId.replace(/\D/g, ""), 10)
       const numB = parseInt(b.lotId.replace(/\D/g, ""), 10)
       return numA - numB
     })
-  }, [lots])
+  }, [lots, artworkMetadata])
 
   const handlePageScroll = (e: PagerViewOnPageScrollEvent) => {
     // Avoid updating when position is -1 (iOS overdrag on first page)

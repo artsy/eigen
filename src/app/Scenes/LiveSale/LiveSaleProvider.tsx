@@ -49,13 +49,18 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
 
     const edges = data.sale?.saleArtworksConnection?.edges ?? []
 
+    if (__DEV__) {
+      console.log("[LiveSaleProvider] Building artwork metadata from GraphQL")
+      console.log("[LiveSaleProvider] Total edges:", edges.length)
+    }
+
     for (const edge of edges) {
       const node = edge?.node
-      if (!node?.lotLabel) continue
+      if (!node?.internalID) continue
 
       const metadata: ArtworkMetadata = {
         internalID: node.internalID,
-        lotLabel: node.lotLabel,
+        lotLabel: node.lotLabel ?? null,
         estimate: node.estimate ?? null,
         lowEstimateCents: node.lowEstimate?.cents ?? null,
         highEstimateCents: node.highEstimate?.cents ?? null,
@@ -73,7 +78,22 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
           : null,
       }
 
-      map.set(node.lotLabel, metadata)
+      if (__DEV__ && map.size < 3) {
+        console.log(
+          `[LiveSaleProvider] Sample entry - lotLabel: "${node.lotLabel}", internalID: "${node.internalID}"`
+        )
+      }
+
+      // KEY FIX: Use internalID (UUID) to match WebSocket lot IDs
+      map.set(node.internalID, metadata)
+    }
+
+    if (__DEV__) {
+      console.log("[LiveSaleProvider] Artwork metadata map size:", map.size)
+      console.log(
+        "[LiveSaleProvider] Sample keys (internalIDs/UUIDs):",
+        Array.from(map.keys()).slice(0, 5)
+      )
     }
 
     return map
