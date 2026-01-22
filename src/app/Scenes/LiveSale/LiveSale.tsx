@@ -3,6 +3,7 @@ import { DEFAULT_HIT_SLOP, Flex, Screen, Spinner, Text, Touchable } from "@artsy
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { LiveSaleProvider } from "./LiveSaleProvider"
+import { LiveLotCarousel } from "./components/LiveLotCarousel/LiveLotCarousel"
 import { useLiveAuction } from "./hooks/useLiveAuction"
 
 interface LiveSaleProps {
@@ -13,7 +14,6 @@ interface LiveSaleProps {
 const LiveSaleContent: React.FC = () => {
   const {
     saleName,
-    currentLotId,
     lots,
     isConnected,
     showDisconnectWarning,
@@ -23,8 +23,6 @@ const LiveSaleContent: React.FC = () => {
     pendingBids,
     credentials,
   } = useLiveAuction()
-
-  const currentLot = currentLotId ? lots.get(currentLotId) : null
 
   return (
     <Screen>
@@ -92,35 +90,10 @@ const LiveSaleContent: React.FC = () => {
           Operator: {operatorConnected ? "Connected" : "Disconnected"}
         </Text>
 
-        {/* Current Lot Info */}
-        {currentLot ? (
-          <Flex mt={2} p={2} bg="black5" borderRadius={4}>
-            <Text variant="md" mb={1}>
-              Current Lot: {currentLot.lotId}
-            </Text>
-            <Text variant="sm" color="black60" mb={1}>
-              Status: {currentLot.derivedState.biddingStatus} - {currentLot.derivedState.soldStatus}
-            </Text>
-            <Text variant="sm" color="black60" mb={1}>
-              Reserve: {currentLot.derivedState.reserveStatus}
-            </Text>
-            <Text variant="sm" color="black60" mb={1}>
-              Asking Price: ${(currentLot.derivedState.askingPriceCents / 100).toLocaleString()}
-            </Text>
-            <Text variant="sm" color="black60" mb={1}>
-              Online Bids: {currentLot.derivedState.onlineBidCount}
-            </Text>
-            <Text variant="sm" color="black60">
-              Total Events: {currentLot.eventHistory.length}
-            </Text>
-          </Flex>
-        ) : (
-          <Flex mt={2} p={2} bg="black5" borderRadius={4}>
-            <Text variant="sm" color="black60" textAlign="center">
-              No current lot
-            </Text>
-          </Flex>
-        )}
+        {/* Live Lot Carousel */}
+        <Flex flex={1} mt={2}>
+          <LiveLotCarousel />
+        </Flex>
 
         {/* Stats */}
         <Flex mt={2} p={2} bg="black5" borderRadius={4}>
