@@ -2,6 +2,7 @@ import { createInitialLotState, calculateDerivedState } from "app/Scenes/LiveSal
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { useEffect, useReducer, useRef, useCallback } from "react"
 import type {
+  ArtworkMetadata,
   BidderCredentials,
   InboundMessage,
   LiveAuctionAction,
@@ -18,7 +19,7 @@ import type {
 
 export const initialState: Omit<
   LiveAuctionState,
-  "saleName" | "causalitySaleID" | "jwt" | "credentials"
+  "saleName" | "causalitySaleID" | "jwt" | "credentials" | "artworkMetadata"
 > = {
   isConnected: false,
   showDisconnectWarning: false,
@@ -232,6 +233,7 @@ interface UseLiveAuctionWebSocketParams {
   saleID: string
   saleName: string
   credentials: BidderCredentials
+  artworkMetadata: Map<string, ArtworkMetadata>
 }
 
 export const useLiveAuctionWebSocket = ({
@@ -239,6 +241,7 @@ export const useLiveAuctionWebSocket = ({
   saleID,
   saleName,
   credentials,
+  artworkMetadata,
 }: UseLiveAuctionWebSocketParams) => {
   const [state, dispatch] = useReducer(liveAuctionReducer, {
     ...initialState,
@@ -246,6 +249,7 @@ export const useLiveAuctionWebSocket = ({
     causalitySaleID: saleID,
     jwt,
     credentials,
+    artworkMetadata,
   })
 
   const wsRef = useRef<WebSocket | null>(null)

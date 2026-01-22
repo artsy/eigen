@@ -1,11 +1,11 @@
 import { LiveSaleProviderQuery } from "__generated__/LiveSaleProviderQuery.graphql"
-import React, { createContext } from "react"
+import React, { createContext, useMemo } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import {
   useLiveAuctionWebSocket,
   type LiveAuctionWebSocketReturn,
 } from "./hooks/useLiveAuctionWebSocket"
-import type { BidderCredentials } from "./types/liveAuction"
+import type { ArtworkMetadata, BidderCredentials } from "./types/liveAuction"
 
 // ==================== Context ====================
 
@@ -43,12 +43,49 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     paddleNumber: data.me?.paddleNumber ?? "",
   }
 
+  // Build artwork metadata map from GraphQL data
+  const artworkMetadata = useMemo(() => {
+    const map = new Map<string, ArtworkMetadata>()
+
+    const edges = data.sale?.saleArtworksConnection?.edges ?? []
+
+    for (const edge of edges) {
+      const node = edge?.node
+      if (!node?.lotLabel) continue
+
+      const metadata: ArtworkMetadata = {
+        internalID: node.internalID,
+        lotLabel: node.lotLabel,
+        estimate: node.estimate ?? null,
+        lowEstimateCents: node.lowEstimate?.cents ?? null,
+        highEstimateCents: node.highEstimate?.cents ?? null,
+        artwork: node.artwork
+          ? {
+              title: node.artwork.title ?? null,
+              artistNames: node.artwork.artistNames ?? null,
+              image: node.artwork.image
+                ? {
+                    aspectRatio: node.artwork.image.aspectRatio,
+                    url: node.artwork.image.url ?? "",
+                  }
+                : null,
+            }
+          : null,
+      }
+
+      map.set(node.lotLabel, metadata)
+    }
+
+    return map
+  }, [data.sale?.saleArtworksConnection?.edges])
+
   // Initialize WebSocket connection
   const wsState = useLiveAuctionWebSocket({
     jwt: data.system.causalityJWT,
     saleID: data.sale.internalID,
     saleName: data.sale.name ?? "Live Auction",
     credentials,
+    artworkMetadata,
   })
 
   return <LiveAuctionContext.Provider value={wsState}>{children}</LiveAuctionContext.Provider>
@@ -62,6 +99,29 @@ const liveSaleProviderQuery = graphql`
       name
       internalID
       startAt
+      saleArtworksConnection(all: true) {
+        edges {
+          node {
+            internalID
+            lotLabel
+            estimate
+            lowEstimate {
+              cents
+            }
+            highEstimate {
+              cents
+            }
+            artwork {
+              title
+              artistNames
+              image {
+                aspectRatio
+                url(version: "large")
+              }
+            }
+          }
+        }
+      }
     }
     system {
       causalityJWT(saleID: $saleID, role: PARTICIPANT)

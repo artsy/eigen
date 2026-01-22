@@ -28,6 +28,7 @@ describe("LiveLotCarousel", () => {
     mockUseLiveAuction.mockReturnValue({
       lots: new Map(),
       placeBid: mockPlaceBid,
+      artworkMetadata: new Map(),
     })
 
     renderWithWrappers(<LiveLotCarousel />)
@@ -74,13 +75,14 @@ describe("LiveLotCarousel", () => {
     mockUseLiveAuction.mockReturnValue({
       lots: mockLots,
       placeBid: mockPlaceBid,
+      artworkMetadata: new Map(),
     })
 
     renderWithWrappers(<LiveLotCarousel />)
 
     // Lots should be rendered (they're in the DOM even if not visible due to carousel)
-    expect(screen.getByText("Lot lot-1")).toBeOnTheScreen()
-    expect(screen.getByText("Lot lot-2")).toBeOnTheScreen()
+    expect(screen.getAllByText("Lot lot-1").length).toBeGreaterThan(0)
+    expect(screen.getAllByText("Lot lot-2").length).toBeGreaterThan(0)
   })
 
   it("sorts lots by numeric ID", () => {
@@ -122,12 +124,13 @@ describe("LiveLotCarousel", () => {
     mockUseLiveAuction.mockReturnValue({
       lots: mockLots,
       placeBid: mockPlaceBid,
+      artworkMetadata: new Map(),
     })
 
     renderWithWrappers(<LiveLotCarousel />)
 
     // Both lots should be rendered
-    expect(screen.getByText("Lot lot-2")).toBeOnTheScreen()
-    expect(screen.getByText("Lot lot-10")).toBeOnTheScreen()
+    expect(screen.getAllByText("Lot lot-2").length).toBeGreaterThan(0)
+    expect(screen.getAllByText("Lot lot-10").length).toBeGreaterThan(0)
   })
 })

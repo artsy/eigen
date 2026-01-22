@@ -40,8 +40,9 @@ describe("LiveLotCarouselCard", () => {
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    expect(screen.getByText("Lot lot-1")).toBeOnTheScreen()
-    expect(screen.getByText("Image placeholder")).toBeOnTheScreen()
+    // "Lot lot-1" appears in both the placeholder and the lot info section
+    expect(screen.getAllByText("Lot lot-1").length).toBeGreaterThan(0)
+    expect(screen.getByText("No image available")).toBeOnTheScreen()
   })
 
   it("renders lot info when focused", () => {

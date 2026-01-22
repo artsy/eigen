@@ -23,6 +23,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should parse initial state with single lot and events", () => {
@@ -392,6 +393,7 @@ describe("liveAuctionReducer - Connection State", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should set isConnected to true on CONNECTION_OPENED", () => {
@@ -477,6 +479,7 @@ describe("liveAuctionReducer - Lot Updates", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should add new events to existing lot on LOT_UPDATE_RECEIVED", () => {
@@ -594,6 +597,7 @@ describe("liveAuctionReducer - Current Lot Changes", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should update current lot ID on CURRENT_LOT_CHANGED", () => {
@@ -640,6 +644,7 @@ describe("liveAuctionReducer - Bidding", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should add pending bid on BID_PLACED", () => {
@@ -752,6 +757,7 @@ describe("liveAuctionReducer - Sale State", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
+    artworkMetadata: new Map(),
   })
 
   it("should set sale on hold with message on SALE_ON_HOLD_CHANGED", () => {

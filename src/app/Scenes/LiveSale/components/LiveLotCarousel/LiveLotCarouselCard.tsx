@@ -1,10 +1,11 @@
-import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
 import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
 import { Animated } from "react-native"
-import type { LotState } from "app/Scenes/LiveSale/types/liveAuction"
+import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
 
 interface LiveLotCarouselCardProps {
   lot: LotState
+  artworkMetadata?: ArtworkMetadata
   isFocused: boolean
   onBidPress: (lotId: string) => void
 }
@@ -22,6 +23,7 @@ const formatPrice = (cents: number): string => {
 
 export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
   lot,
+  artworkMetadata,
   isFocused,
   onBidPress,
 }) => {
@@ -40,7 +42,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
       collapsable={false}
     >
       <Flex flex={1} bg="white100" borderRadius={8} overflow="hidden" mx={1}>
-        {/* Placeholder for artwork image */}
+        {/* Artwork image */}
         <Flex
           height={300}
           bg="black5"
@@ -49,18 +51,55 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
           borderBottomWidth={1}
           borderBottomColor="black10"
         >
-          <Text variant="lg-display" color="black60">
-            Lot {lot.lotId}
-          </Text>
-          <Text variant="xs" color="black60" mt={1}>
-            {/* TODO: Add artwork image when GraphQL data available */}
-            Image placeholder
-          </Text>
+          {artworkMetadata?.artwork?.image?.url ? (
+            <Image
+              src={artworkMetadata.artwork.image.url}
+              height={300}
+              aspectRatio={artworkMetadata.artwork.image.aspectRatio}
+              style={{ width: "100%" }}
+            />
+          ) : (
+            <>
+              <Text variant="lg-display" color="black60">
+                Lot {lot.lotId}
+              </Text>
+              <Text variant="xs" color="black60" mt={1}>
+                No image available
+              </Text>
+            </>
+          )}
         </Flex>
 
         {/* Lot info - only show when focused */}
         {!!isFocused && (
           <Flex p={2} gap={2}>
+            {/* Lot number and artist */}
+            <Flex>
+              <Text variant="xs" color="black60">
+                Lot {lot.lotId}
+              </Text>
+              {!!artworkMetadata?.artwork?.artistNames && (
+                <Text variant="lg" weight="medium" numberOfLines={1}>
+                  {artworkMetadata.artwork.artistNames}
+                </Text>
+              )}
+              {!!artworkMetadata?.artwork?.title && (
+                <Text variant="sm" color="black60" numberOfLines={2}>
+                  {artworkMetadata.artwork.title}
+                </Text>
+              )}
+            </Flex>
+
+            {/* Estimate range */}
+            {!!artworkMetadata?.estimate && (
+              <Flex>
+                <Text variant="xs" color="black60">
+                  Estimate
+                </Text>
+                <Text variant="sm">{artworkMetadata.estimate}</Text>
+              </Flex>
+            )}
+
             {/* Asking price */}
             <Flex>
               <Text variant="xs" color="black60">
@@ -110,12 +149,6 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
             <Button onPress={() => onBidPress(lot.lotId)} disabled={isBidDisabled} block haptic>
               {getBidButtonText(lot)}
             </Button>
-
-            {/* TODO placeholders for missing data */}
-            <Text variant="xs" color="black30" mt={1}>
-              Artist name, lot title, and estimate range will be added when GraphQL data is
-              available
-            </Text>
           </Flex>
         )}
       </Flex>

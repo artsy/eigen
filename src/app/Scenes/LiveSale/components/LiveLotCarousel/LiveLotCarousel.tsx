@@ -5,7 +5,7 @@ import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { LiveLotCarouselCard } from "./LiveLotCarouselCard"
 
 export const LiveLotCarousel: React.FC = () => {
-  const { lots, placeBid } = useLiveAuction()
+  const { lots, placeBid, artworkMetadata } = useLiveAuction()
   const [selectedLotIndex, setSelectedLotIndex] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
 
@@ -62,6 +62,7 @@ export const LiveLotCarousel: React.FC = () => {
           <Flex key={lot.lotId} collapsable={false}>
             <LiveLotCarouselCard
               lot={lot}
+              artworkMetadata={artworkMetadata.get(lot.lotId)}
               isFocused={index === selectedLotIndex}
               onBidPress={handleBidPress}
             />

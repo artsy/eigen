@@ -170,6 +170,24 @@ export interface SecondPriceBidEvent {
   }
 }
 
+// ==================== Artwork Metadata ====================
+
+export interface ArtworkMetadata {
+  internalID: string
+  lotLabel: string
+  estimate: string | null
+  lowEstimateCents: number | null
+  highEstimateCents: number | null
+  artwork: {
+    title: string | null
+    artistNames: string | null
+    image: {
+      aspectRatio: number
+      url: string
+    } | null
+  } | null
+}
+
 // ==================== Lot State ====================
 
 export interface LotStateData {
@@ -229,6 +247,7 @@ export interface LiveAuctionState {
   causalitySaleID: string
   jwt: string
   credentials: BidderCredentials
+  artworkMetadata: Map<string, ArtworkMetadata>
 }
 
 // ==================== State Actions ====================
