@@ -208,7 +208,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               >
                 <Input
                   multiline
-                  placeholder="Ask about anything you’d like to know — shipping options, pricing, or details about the work or artist"
+                  placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."
                   title="Add message"
                   accessibilityLabel="Add message"
                   value={message}
