@@ -282,6 +282,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
     description:
       "Disable navigation state rehydration. This change only affects DEV builds. In release builds, navigation state is never rehydrated.",
   },
+  DTShowLiveSaleDebugButton: {
+    description: "Show debug button in Live Sale screen",
+  },
 }
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

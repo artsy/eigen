@@ -1,9 +1,12 @@
-import { CloseIcon } from "@artsy/icons/native"
+import { CloseIcon, MoreIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { useState } from "react"
 import { LiveSaleProvider } from "./LiveSaleProvider"
 import { LiveLotCarousel } from "./components/LiveLotCarousel/LiveLotCarousel"
+import { LiveSaleDebugView } from "./components/LiveSaleDebugView"
 import { useLiveAuction } from "./hooks/useLiveAuction"
 
 interface LiveSaleProps {
@@ -12,17 +15,9 @@ interface LiveSaleProps {
 
 // Inner component that uses the live auction context
 const LiveSaleContent: React.FC = () => {
-  const {
-    saleName,
-    lots,
-    isConnected,
-    showDisconnectWarning,
-    isOnHold,
-    onHoldMessage,
-    operatorConnected,
-    pendingBids,
-    credentials,
-  } = useLiveAuction()
+  const { saleName, showDisconnectWarning, isOnHold, onHoldMessage } = useLiveAuction()
+  const [showDebugView, setShowDebugView] = useState(false)
+  const showDebugButton = useDevToggle("DTShowLiveSaleDebugButton")
 
   return (
     <Screen>
@@ -36,6 +31,18 @@ const LiveSaleContent: React.FC = () => {
           >
             <CloseIcon />
           </Touchable>
+        }
+        rightElements={
+          __DEV__ || !!showDebugButton ? (
+            <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Debug Info"
+              hitSlop={DEFAULT_HIT_SLOP}
+              onPress={() => setShowDebugView(true)}
+            >
+              <MoreIcon />
+            </Touchable>
+          ) : undefined
         }
       />
 
@@ -63,63 +70,16 @@ const LiveSaleContent: React.FC = () => {
           {saleName}
         </Text>
 
-        {/* Connection Status */}
-        <Flex flexDirection="row" alignItems="center" mb={2}>
-          <Flex
-            width={8}
-            height={8}
-            borderRadius={4}
-            bg={isConnected ? "green100" : "red100"}
-            mr={1}
-          />
-          <Text variant="xs" color="black60">
-            {isConnected ? "Connected" : "Disconnected"}
-          </Text>
-        </Flex>
-
-        {/* Credentials Info */}
-        <Text variant="sm" color="black60" mb={1}>
-          Paddle Number: {credentials.paddleNumber || "Not registered"}
-        </Text>
-        <Text variant="sm" color="black60" mb={1}>
-          Bidder ID: {credentials.bidderId || "N/A"}
-        </Text>
-
-        {/* Operator Status */}
-        <Text variant="sm" color="black60" mb={2}>
-          Operator: {operatorConnected ? "Connected" : "Disconnected"}
-        </Text>
-
         {/* Live Lot Carousel */}
-        <Flex flex={1} mt={2}>
+        <Flex flex={1}>
           <LiveLotCarousel />
         </Flex>
-
-        {/* Stats */}
-        <Flex mt={2} p={2} bg="black5" borderRadius={4}>
-          <Text variant="sm" mb={1}>
-            Total Lots: {lots.size}
-          </Text>
-          <Text variant="sm">Pending Bids: {pendingBids.size}</Text>
-        </Flex>
-
-        {/* Pending Bids */}
-        {pendingBids.size > 0 ? (
-          <Flex mt={2}>
-            <Text variant="sm" mb={1}>
-              Pending Bids:
-            </Text>
-            {Array.from(pendingBids.entries()).map(([key, bid]) => (
-              <Flex key={key} p={1} bg="black5" mb={1} borderRadius={4}>
-                <Text variant="xs" color="black60">
-                  Lot {bid.lotId}: ${(bid.amountCents / 100).toLocaleString()} - {bid.status}
-                  {!!bid.error && ` (${bid.error})`}
-                </Text>
-              </Flex>
-            ))}
-          </Flex>
-        ) : null}
       </Flex>
+
+      {/* Debug View Modal */}
+      {!!(__DEV__ || !!showDebugButton) && (
+        <LiveSaleDebugView visible={showDebugView} onDismiss={() => setShowDebugView(false)} />
+      )}
     </Screen>
   )
 }
