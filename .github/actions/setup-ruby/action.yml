@@ -1,0 +1,14 @@
+name: Setup Ruby
+description: "Set up Ruby with bundler cache and install dependencies"
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.1.7"
+        bundler-cache: true
+
+    - name: Install Ruby dependencies
+      run: bundle install
+      shell: bash
