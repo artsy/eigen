@@ -127,16 +127,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
     })
   }
 
-  // Disable the send button if one of the following is true:
-  // - There is no question selected OR if only "Shipping" is selected and no location is provided
-  // - The message is empty
-  const disableSendButton =
-    (state.inquiryQuestions.length === 0 ||
-      (state.inquiryQuestions.length === 1 &&
-        state.inquiryQuestions[0].questionID === InquiryQuestionIDs.Shipping &&
-        !state.shippingLocation)) &&
-    message.trim() === ""
-
   return (
     <>
       <Modal
@@ -151,7 +141,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
             leftButtonText="Cancel"
             onLeftButtonPress={handleDismiss}
             rightButtonText="Send"
-            rightButtonDisabled={disableSendButton}
+            rightButtonDisabled={state.inquiryQuestions.length === 0 && message.trim() === ""}
             onRightButtonPress={() => sendInquiry(message)}
           >
             Contact Gallery
