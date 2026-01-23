@@ -3,12 +3,15 @@
 // @ts-check
 "use strict"
 
+import { execSync } from "child_process"
 import { resolve } from "path"
 import Octokit, { PullsGetResponse } from "@octokit/rest"
 import chalk from "chalk"
 import { config } from "dotenv"
 import { hideBin } from "yargs/helpers"
 import yargs from "yargs/yargs"
+
+const promptSync = require("prompt-sync")({ sigint: true })
 
 config({ path: resolve(__dirname, "../../.env.releases") })
 
@@ -20,6 +23,75 @@ const SECTIONS = [
   "Android user-facing changes",
   "Dev changes",
 ]
+
+type Platform = "ios" | "android"
+
+function getGitTags(): string[] {
+  const output = execSync("git tag --list --sort=-creatordate", { encoding: "utf-8" })
+  return output.trim().split("\n").filter(Boolean)
+}
+
+function getSubmissionTags(platform: Platform): string[] {
+  const allTags = getGitTags()
+  return allTags.filter((tag) => tag.startsWith(`${platform}-`) && tag.endsWith("-submission"))
+}
+
+function getBetaTags(platform: Platform): string[] {
+  const allTags = getGitTags()
+  return allTags.filter(
+    (tag) =>
+      tag.startsWith(`${platform}-`) &&
+      !tag.endsWith("-submission") &&
+      !tag.includes("-expo-") &&
+      !tag.includes("test")
+  )
+}
+
+function promptForSelection(options: string[], prompt: string, defaultIndex = 0): string {
+  console.log(chalk.bold.cyan(`\n${prompt}`))
+
+  const displayCount = Math.min(options.length, 10)
+  for (let i = 0; i < displayCount; i++) {
+    const marker = i === defaultIndex ? chalk.green("→") : " "
+    console.log(`${marker} ${i + 1}. ${options[i]}`)
+  }
+
+  if (options.length > 10) {
+    console.log(chalk.gray(`   ... and ${options.length - 10} more tags`))
+  }
+
+  const input = promptSync(
+    chalk.yellow(`Enter number (1-${displayCount}) or tag name [default: ${defaultIndex + 1}]: `)
+  )
+
+  if (!input || input.trim() === "") {
+    return options[defaultIndex]
+  }
+
+  const num = parseInt(input.trim(), 10)
+  if (!isNaN(num) && num >= 1 && num <= displayCount) {
+    return options[num - 1]
+  }
+
+  // User entered a tag name directly
+  return input.trim()
+}
+
+function promptForPlatform(): Platform {
+  console.log(chalk.bold.cyan("\nSelect platform:"))
+  console.log(chalk.green("→") + " 1. iOS")
+  console.log("  2. Android")
+
+  const input = promptSync(chalk.yellow("Enter number (1-2) [default: 1]: "))
+
+  if (!input || input.trim() === "" || input.trim() === "1") {
+    return "ios"
+  }
+  if (input.trim() === "2") {
+    return "android"
+  }
+  return "ios"
+}
 
 async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetResponse[]> {
   const compare = await octokit.repos.compareCommits({
@@ -122,29 +194,89 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
 
 async function main() {
   const argv = yargs(hideBin(process.argv)).argv as any
-  const tag1 = argv._[0]
-  const tag2 = argv._[1]
+  let tag1 = argv._[0] as string | undefined
+  let tag2 = argv._[1] as string | undefined
 
+  // Interactive mode if no tags provided
   if (!tag1 || !tag2) {
-    console.error(chalk.bold.red("Usage: yarn generateChangelog <tag1> <tag2>"))
+    console.log(chalk.bold.magenta("\n🚀 Changelog Generator - Interactive Mode\n"))
+    console.log(
+      chalk.gray(
+        "This tool generates a changelog between two git tags.\n" +
+          "Typically you compare the last submission tag to a recent beta tag.\n"
+      )
+    )
+
+    const platform = promptForPlatform()
+
+    const submissionTags = getSubmissionTags(platform)
+    const betaTags = getBetaTags(platform)
+
+    if (submissionTags.length === 0) {
+      console.error(chalk.red(`No submission tags found for ${platform}`))
+      return
+    }
+
+    if (betaTags.length === 0) {
+      console.error(chalk.red(`No beta tags found for ${platform}`))
+      return
+    }
+
+    console.log(chalk.gray("\nTip: The base tag is usually the last submission (app store release)"))
+    tag1 = promptForSelection(
+      submissionTags,
+      "Select BASE tag (older - last submission):",
+      0
+    )
+
+    console.log(chalk.gray("\nTip: The head tag is usually today's or recent beta build"))
+    tag2 = promptForSelection(betaTags, "Select HEAD tag (newer - current beta):", 0)
+  }
+
+  console.log(chalk.bold.blue(`\n📋 Generating changelog: ${tag1} → ${tag2}\n`))
+
+  const prs = await getPrsBetweenTags(tag1, tag2)
+
+  if (prs.length === 0) {
+    console.log(chalk.yellow("No PRs found between these tags."))
     return
   }
 
-  const prs = await getPrsBetweenTags(tag1, tag2)
   const { changelog, prsWithoutChangelog, prsWithNoChangelog } = await getChangelogFromPrs(prs)
 
-  console.log(chalk.bold.greenBright("\nPRs with changelog entries:"))
-  console.log(chalk.greenBright(changelog))
-
-  console.log(chalk.bold.green("\nPRs with #nochangelog:"))
-  for (const pr of prsWithNoChangelog) {
-    console.log(chalk.green(`PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
+  console.log(chalk.bold.greenBright("\n✅ PRs with changelog entries:"))
+  if (changelog) {
+    console.log(chalk.greenBright(changelog))
+  } else {
+    console.log(chalk.gray("  (none)"))
   }
 
-  console.log(chalk.bold.yellow("\nPRs without changelog entries:"))
-  for (const pr of prsWithoutChangelog) {
-    console.log(chalk.yellow(`PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
+  console.log(chalk.bold.green("\n🏷️  PRs with #nochangelog:"))
+  if (prsWithNoChangelog.length > 0) {
+    for (const pr of prsWithNoChangelog) {
+      console.log(chalk.green(`  PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
+    }
+  } else {
+    console.log(chalk.gray("  (none)"))
   }
+
+  console.log(chalk.bold.yellow("\n⚠️  PRs without changelog entries:"))
+  if (prsWithoutChangelog.length > 0) {
+    for (const pr of prsWithoutChangelog) {
+      console.log(chalk.yellow(`  PR #${pr.number}: ${pr.title} - ${pr.user.login}`))
+    }
+  } else {
+    console.log(chalk.gray("  (none)"))
+  }
+
+  console.log(chalk.bold.blue(`\n📊 Summary: ${prs.length} total PRs`))
+  console.log(
+    chalk.gray(
+      `   - With changelog: ${prs.length - prsWithoutChangelog.length - prsWithNoChangelog.length}`
+    )
+  )
+  console.log(chalk.gray(`   - With #nochangelog: ${prsWithNoChangelog.length}`))
+  console.log(chalk.gray(`   - Missing changelog: ${prsWithoutChangelog.length}`))
 }
 
 main().catch((err) => console.error(err))
