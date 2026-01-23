@@ -20689,6 +20689,9 @@ type Query {
   # A connection of artworks for a user.
   artworksForUser(
     after: String
+
+    # The ID of the marketing collection to be used for backfill
+    backfillMarketingCollectionID: String
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
@@ -27181,6 +27184,9 @@ type Viewer {
   # A connection of artworks for a user.
   artworksForUser(
     after: String
+
+    # The ID of the marketing collection to be used for backfill
+    backfillMarketingCollectionID: String
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
