@@ -8,10 +8,9 @@ import { resolve } from "path"
 import Octokit, { PullsGetResponse } from "@octokit/rest"
 import chalk from "chalk"
 import { config } from "dotenv"
+import prompts from "prompts"
 import { hideBin } from "yargs/helpers"
 import yargs from "yargs/yargs"
-
-const promptSync = require("prompt-sync")({ sigint: true })
 
 config({ path: resolve(__dirname, "../../.env.releases") })
 
@@ -47,50 +46,59 @@ function getBetaTags(platform: Platform): string[] {
   )
 }
 
-function promptForSelection(options: string[], prompt: string, defaultIndex = 0): string {
-  console.log(chalk.bold.cyan(`\n${prompt}`))
+async function promptForSelection(
+  options: string[],
+  message: string,
+  hint?: string
+): Promise<string> {
+  const displayCount = Math.min(options.length, 15)
+  const choices = options.slice(0, displayCount).map((tag) => ({
+    title: tag,
+    value: tag,
+  }))
 
-  const displayCount = Math.min(options.length, 10)
-  for (let i = 0; i < displayCount; i++) {
-    const marker = i === defaultIndex ? chalk.green("→") : " "
-    console.log(`${marker} ${i + 1}. ${options[i]}`)
-  }
-
-  if (options.length > 10) {
-    console.log(chalk.gray(`   ... and ${options.length - 10} more tags`))
-  }
-
-  const input = promptSync(
-    chalk.yellow(`Enter number (1-${displayCount}) or tag name [default: ${defaultIndex + 1}]: `)
+  const response = await prompts(
+    {
+      type: "select",
+      name: "value",
+      message,
+      hint: hint || "Use arrow keys to navigate, Enter to select",
+      choices,
+      initial: 0,
+    },
+    {
+      onCancel: () => {
+        console.log(chalk.red("\nCancelled"))
+        process.exit(0)
+      },
+    }
   )
 
-  if (!input || input.trim() === "") {
-    return options[defaultIndex]
-  }
-
-  const num = parseInt(input.trim(), 10)
-  if (!isNaN(num) && num >= 1 && num <= displayCount) {
-    return options[num - 1]
-  }
-
-  // User entered a tag name directly
-  return input.trim()
+  return response.value
 }
 
-function promptForPlatform(): Platform {
-  console.log(chalk.bold.cyan("\nSelect platform:"))
-  console.log(chalk.green("→") + " 1. iOS")
-  console.log("  2. Android")
+async function promptForPlatform(): Promise<Platform> {
+  const response = await prompts(
+    {
+      type: "select",
+      name: "value",
+      message: "Select platform",
+      hint: "Use arrow keys to navigate, Enter to select",
+      choices: [
+        { title: "iOS", value: "ios" },
+        { title: "Android", value: "android" },
+      ],
+      initial: 0,
+    },
+    {
+      onCancel: () => {
+        console.log(chalk.red("\nCancelled"))
+        process.exit(0)
+      },
+    }
+  )
 
-  const input = promptSync(chalk.yellow("Enter number (1-2) [default: 1]: "))
-
-  if (!input || input.trim() === "" || input.trim() === "1") {
-    return "ios"
-  }
-  if (input.trim() === "2") {
-    return "android"
-  }
-  return "ios"
+  return response.value
 }
 
 async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetResponse[]> {
@@ -207,7 +215,7 @@ async function main() {
       )
     )
 
-    const platform = promptForPlatform()
+    const platform = await promptForPlatform()
 
     const submissionTags = getSubmissionTags(platform)
     const betaTags = getBetaTags(platform)
@@ -222,15 +230,17 @@ async function main() {
       return
     }
 
-    console.log(chalk.gray("\nTip: The base tag is usually the last submission (app store release)"))
-    tag1 = promptForSelection(
+    tag1 = await promptForSelection(
       submissionTags,
-      "Select BASE tag (older - last submission):",
-      0
+      "Select BASE tag (last submission)",
+      "This is the last app store release"
     )
 
-    console.log(chalk.gray("\nTip: The head tag is usually today's or recent beta build"))
-    tag2 = promptForSelection(betaTags, "Select HEAD tag (newer - current beta):", 0)
+    tag2 = await promptForSelection(
+      betaTags,
+      "Select HEAD tag (current beta)",
+      "This is usually today's or recent beta build"
+    )
   }
 
   console.log(chalk.bold.blue(`\n📋 Generating changelog: ${tag1} → ${tag2}\n`))
