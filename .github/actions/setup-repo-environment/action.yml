@@ -1,5 +1,5 @@
 name: Setup repository environment
-description: "Setup repository with checkout, AWS credentials, and environment files"
+description: "Setup repository with, AWS credentials, and environment files"
 inputs:
   aws-access-key-id:
     description: "AWS access key ID"
