@@ -15,71 +15,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.7"
-          bundler-cache: true
-
-      - name: Install Ruby dependencies
-        run: bundle install
-
-      - name: Setup node.js
-        uses: ./.github/actions/setup-node
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
 
-      - name: Set up environment for CI
-        run: |
-          touch .env.shared && touch keys.shared.json
-          scripts/setup/setup-env-for-ci
-          echo "Environment setup completed"
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
 
-      - name: Install homebrew deps
-        run: brew bundle
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
 
-      - name: Cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: .yarn/cache
-          key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn-v4-${{ runner.os }}-
-
-      - name: Install Node.js dependencies
-        run: yarn install --immutable
-
-      - name: Cache cocoapods
-        id: cache-pods
-        uses: actions/cache@v4
-        with:
-          path: |
-            ios/Pods
-            ~/Library/Caches/CocoaPods
-          key: pods-v2-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            pods-v2-${{ runner.os }}-
-
-      - name: Download fonts from s3
-        run: ./scripts/setup/download-fonts
-
-      - name: Download ios assets
-        run: ./scripts/setup/download-assets-ios
-
-      - name: Install CocoaPods
-        run: yarn pod-install
-
-      - name: Run relay compiler
-        run: yarn relay
-
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
 
       - name: Build iOS app and upload to S3 for Maestro
         run: bundle exec fastlane build_maestro_ios

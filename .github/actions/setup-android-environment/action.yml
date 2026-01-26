@@ -1,0 +1,36 @@
+name: Setup Android environment
+description: "Set up Android-specific dependencies, Java, Gradle, and assets"
+runs:
+  using: "composite"
+  steps:
+    - name: Free Disk Space
+      uses: ./.github/actions/free-disk-space-android
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: "zulu"
+        java-version: "17"
+
+    - name: Install ninja
+      run: sudo apt-get update && sudo apt-get install ninja-build
+      shell: bash
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          android/.gradle
+        key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-v2-${{ runner.os }}-
+
+    - name: Download fonts from s3
+      run: ./scripts/setup/download-fonts
+      shell: bash
+
+    - name: Download android assets
+      run: ./scripts/setup/download-assets-android
+      shell: bash

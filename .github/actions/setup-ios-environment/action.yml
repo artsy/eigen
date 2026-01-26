@@ -1,0 +1,35 @@
+name: Setup iOS environment
+description: "Set up iOS-specific dependencies, CocoaPods, Xcode, and assets"
+runs:
+  using: "composite"
+  steps:
+    - name: Install homebrew deps
+      run: brew bundle
+      shell: bash
+
+    - name: Cache cocoapods
+      id: cache-pods
+      uses: actions/cache@v4
+      with:
+        path: |
+          ios/Pods
+          ~/Library/Caches/CocoaPods
+        key: pods-v2-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+        restore-keys: |
+          pods-v2-${{ runner.os }}-
+
+    - name: Download fonts from s3
+      run: ./scripts/setup/download-fonts
+      shell: bash
+
+    - name: Download ios assets
+      run: ./scripts/setup/download-assets-ios
+      shell: bash
+
+    - name: Install CocoaPods
+      run: yarn pod-install
+      shell: bash
+
+    - name: Select Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_16.4.app
+      shell: bash
