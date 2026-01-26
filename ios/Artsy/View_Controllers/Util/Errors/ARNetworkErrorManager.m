@@ -3,7 +3,7 @@
 #import "ARTNativeScreenPresenterModule.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Sentry/Sentry.h>
+@import Sentry;
 
 @interface ARNetworkErrorManager ()
 @property (nonatomic, strong) UILabel *activeModalView;

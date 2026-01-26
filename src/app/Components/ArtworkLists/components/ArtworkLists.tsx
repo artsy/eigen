@@ -132,8 +132,8 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   return (
     <BottomSheetFlatList
       data={artworkLists}
-      keyExtractor={(item) => item.internalID}
-      renderItem={({ item }) => {
+      keyExtractor={(item: ArtworkList) => item.internalID}
+      renderItem={({ item }: { item: ArtworkList }) => {
         return (
           <ArtworkListItem
             item={item}

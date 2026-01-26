@@ -1,4 +1,4 @@
-import { Tabs, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtworksFragment_artwork$key } from "__generated__/ArtQuizExploreArtworksFragment_artwork.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
@@ -17,28 +17,26 @@ export const ArtQuizExploreArtworks = ({
     recommendedArtworks
   )
 
-  const dimensions = useScreenDimensions()
-
   return (
     <Tabs.ScrollView
       contentContainerStyle={{
         marginVertical: space(2),
         paddingBottom: space(4),
-        paddingHorizontal: space(1),
       }}
     >
       {artworks.length ? (
         <GenericGrid
           artworks={artworks}
-          width={dimensions.width}
           hidePartner
           artistNamesTextStyle={{ weight: "regular" }}
           saleInfoTextStyle={{ weight: "medium", color: "mono100" }}
         />
       ) : (
-        <Text variant="xs" color="mono60" textAlign="center">
-          We don't have any recommendations for you at this time.
-        </Text>
+        <Flex px={2}>
+          <Text variant="xs" color="mono60" textAlign="center">
+            We don't have any recommendations for you at this time.
+          </Text>
+        </Flex>
       )}
     </Tabs.ScrollView>
   )

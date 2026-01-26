@@ -66,7 +66,7 @@ const fragment = graphql`
     slug
     profile {
       icon {
-        imageUrl: url(version: "untouched-png")
+        imageUrl: url(version: "small")
       }
     }
     image {

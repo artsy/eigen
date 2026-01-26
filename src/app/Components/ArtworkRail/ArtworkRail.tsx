@@ -9,7 +9,6 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { memo, ReactElement, useCallback, useMemo } from "react"
@@ -47,7 +46,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     onPress,
     onEndReached,
     onEndReachedThreshold,
-    ListHeaderComponent = <Spacer x={2} />,
+    ListHeaderComponent = <Spacer x={1} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
     listRef,
@@ -108,9 +107,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       <FlatList
         data={artworks}
         horizontal
-        // This is required to avoid broken virtualization on nested flatlists
-        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
-        disableVirtualization={!isNewArchitectureEnabled}
         keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={listFooterComponent}
         ListHeaderComponent={ListHeaderComponent}

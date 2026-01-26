@@ -1,5 +1,5 @@
 #import "AppDelegate+DeeplinkTimeout.h"
-#import <Sentry/Sentry.h>
+@import Sentry;
 
 @implementation ARAppDelegateHelper (DeeplinkTimeout)
 

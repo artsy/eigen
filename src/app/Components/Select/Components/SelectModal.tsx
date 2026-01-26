@@ -125,6 +125,7 @@ export const SelectModal: React.FC<{
       statusBarTranslucent
       testID={testID}
       animationType="slide"
+      presentationStyle="overFullScreen"
     >
       <Screen>
         <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>

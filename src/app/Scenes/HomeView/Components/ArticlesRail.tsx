@@ -10,7 +10,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo, useCallback } from "react"
 import { FlatList, ListRenderItem } from "react-native"
@@ -69,7 +68,6 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
             initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
             windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             data={articles}
-            disableVirtualization={!isNewArchitectureEnabled}
             keyExtractor={(item) => `${item.internalID}`}
             renderItem={renderItem}
           />
