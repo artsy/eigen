@@ -3479,6 +3479,7 @@ enum ArtworkImportError {
   INVALID_POSITION
   INVALID_PRICE
   INVALID_RESERVE
+  INVALID_RESERVE_UNKNOWN
   INVALID_SIGNATURE
   INVALID_TITLE
   INVALID_WEIGHT
@@ -3642,6 +3643,7 @@ type ArtworkImportTransformedData {
   provenance: String
   publisher: String
   reserve: String
+  reserveUnknown: String
   saleSlug: String
   series: String
   signature: [String]
@@ -11138,6 +11140,32 @@ type DeleteArtworkImagePayload {
   clientMutationId: String
 }
 
+type DeleteArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteArtworkImportInput {
+  artworkImportID: String!
+  clientMutationId: String
+}
+
+type DeleteArtworkImportPayload {
+  artworkImportOrError: DeleteArtworkImportResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtworkImportResponseOrError = DeleteArtworkImportFailure | DeleteArtworkImportSuccess
+
+type DeleteArtworkImportSuccess {
+  deletedArtworkIds: [String]
+  deletedArtworksCount: Int
+  deletedSaleArtworkIds: [Int]
+  deletedSaleArtworksCount: Int
+  errors: [String]
+  importCanceled: Boolean
+  success: Boolean
+}
+
 input DeleteArtworkMutationInput {
   clientMutationId: String
 
@@ -17013,6 +17041,9 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+
+  # Delete an artwork import and all associated artworks and sale artworks
+  deleteArtworkImport(input: DeleteArtworkImportInput!): DeleteArtworkImportPayload
 
   # Delete an artwork template.
   deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
