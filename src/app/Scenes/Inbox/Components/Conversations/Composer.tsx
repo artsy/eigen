@@ -4,7 +4,7 @@ import { Composer_conversation$data } from "__generated__/Composer_conversation.
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { TextInput, TouchableWithoutFeedback } from "react-native"
+import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -19,14 +19,14 @@ interface ContainerProps {
 const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   border-top-width: 1px;
   border-top-color: ${themeGet("colors.mono10")};
   border-bottom-color: ${themeGet("colors.mono10")};
   border-bottom-width: 1px;
   padding: 10px;
   background-color: ${(p: ContainerProps) => (p.active ? "mono0" : themeGet("colors.mono5"))};
-`
+` as React.FC<ViewProps & ContainerProps>
 
 interface Props {
   disabled?: boolean
