@@ -326,7 +326,8 @@ lane :ship_beta_android do |options|
   sentry_upload_build(
     org_slug: "artsynet",
     project_slug: "eigen",
-    build_configuration: "Store"
+    build_configuration: "Store",
+    aab_path: "../android/app/build/outputs/bundle/release/app-release.aab"
   )
 
   if (deployment_target == 'play_store')
