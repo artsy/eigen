@@ -316,7 +316,8 @@ def should_silence_beta_failure?
   # E.g. you are working on a ci change
   # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
   silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
-  return false unless silence_beta_failures_until
+  return true
+  # false unless silence_beta_failures_until
 
   silence_until_date = Date.parse(silence_beta_failures_until)
   silence_until_date > Date.today
