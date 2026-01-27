@@ -191,7 +191,7 @@ GEM
     fastlane-plugin-firebase_app_distribution (0.10.1)
       google-apis-firebaseappdistribution_v1 (~> 0.3.0)
       google-apis-firebaseappdistribution_v1alpha (~> 0.2.0)
-    fastlane-plugin-sentry (1.34.0)
+    fastlane-plugin-sentry (2.0.0.pre.rc.3)
       os (~> 1.1, >= 1.1.4)
     fastlane-sirp (1.0.0)
       sysrandom (~> 1.0)
@@ -339,7 +339,7 @@ DEPENDENCIES
   fastlane-plugin-badge
   fastlane-plugin-bundletool
   fastlane-plugin-firebase_app_distribution
-  fastlane-plugin-sentry
+  fastlane-plugin-sentry (= 2.0.0.pre.rc.3)
   json
   logger
   lowdown

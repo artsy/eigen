@@ -92,6 +92,13 @@ lane :ship_beta_ios do |options|
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
 
+  sentry_upload_build(
+    org_slug: "artsynet",
+    project_slug: "eigen",
+    build_configuration: "Store"
+  )
+
+
   # avoid duplicate uploads to sentry
   if (deployment_target == 'testflight')
     # important! this must match the release version specified
@@ -315,6 +322,12 @@ lane :ship_beta_android do |options|
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+
+  sentry_upload_build(
+    org_slug: "artsynet",
+    project_slug: "eigen",
+    build_configuration: "Store"
+  )
 
   if (deployment_target == 'play_store')
     # important! this must match the release version specified

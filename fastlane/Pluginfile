@@ -1,4 +1,4 @@
-gem 'fastlane-plugin-sentry'
+gem 'fastlane-plugin-sentry', "2.0.0-rc.3"
 gem 'fastlane-plugin-firebase_app_distribution'
 gem 'fastlane-plugin-bundletool'
 gem 'fastlane-plugin-badge'
