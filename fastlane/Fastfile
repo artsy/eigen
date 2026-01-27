@@ -323,13 +323,6 @@ lane :ship_beta_android do |options|
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
-  sentry_upload_build(
-    org_slug: "artsynet",
-    project_slug: "eigen",
-    build_configuration: "Store",
-    aab_path: "./android/app/build/outputs/bundle/release/app-release.aab"
-  )
-
   if (deployment_target == 'play_store')
     # important! this must match the release version specified
     # in Eigen in order for sourcemaps to work correctly
@@ -364,11 +357,25 @@ lane :deploy_android_beta do |options|
       skip_upload_screenshots: true,
       aab: './android/app/build/outputs/bundle/release/app-release.aab'
     )
+
+    sentry_upload_build(
+      org_slug: "artsynet",
+      project_slug: "eigen",
+      build_configuration: "Release",
+      aab_path: "./android/app/build/outputs/bundle/release/app-release.aab"
+    )
   elsif deployment_target == 'firebase'
     firebase_app_distribution(
       app: ENV['FIREBASE_ANDROID_APP_ID'],
       groups: 'artsy-people',
       android_artifact_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
+    )
+
+    sentry_upload_build(
+      org_slug: "artsynet",
+      project_slug: "eigen",
+      build_configuration: "Release",
+      aab_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
     )
   else
     UI.error("Unknown deployment target: #{deployment_target}")
