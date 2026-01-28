@@ -2277,7 +2277,7 @@ PODS:
     - React
   - react-native-netinfo (11.4.1):
     - React-Core
-  - react-native-pager-view (6.7.1):
+  - react-native-pager-view (8.0.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2304,6 +2304,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - SocketRocket
+    - SwiftUIIntrospect (~> 1.0)
     - Yoga
   - react-native-performance (5.1.4):
     - React-Core
@@ -3391,6 +3392,7 @@ PODS:
     - StripeUICore (= 24.19.0)
   - StripeUICore (24.19.0):
     - StripeCore (= 24.19.0)
+  - SwiftUIIntrospect (1.3.0)
   - SwiftyJSON (5.0.2)
   - Then (2.3.0)
   - TOCropViewController (2.7.4)
@@ -3657,6 +3659,7 @@ SPEC REPOS:
     - StripePaymentSheet
     - StripePaymentsUI
     - StripeUICore
+    - SwiftUIIntrospect
     - Then
     - TOCropViewController
     - Turf
@@ -4101,7 +4104,7 @@ SPEC CHECKSUMS:
   react-native-keys: c61a7d6e52300fccb68a60b849940ad5cd904b98
   react-native-launch-arguments: 165260aba9544f00c66fae3e136b11484d0cb49b
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
-  react-native-pager-view: 972919b76c6dbe92566554b2fb500d37ceca4f35
+  react-native-pager-view: 579987c3609c562e27e4c9b0ef038cdcb367c7d0
   react-native-performance: 49e245623a3ecee9dc6b228ad7870a98dbedf9ea
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: 2243039f43d10cb1ea30ec5ac57fc6d1448413f4
@@ -4181,6 +4184,7 @@ SPEC CHECKSUMS:
   StripePaymentSheet: b126816213ae4f56ff4525ad25f94bb985a43e27
   StripePaymentsUI: 05d4be35b34f821d5ddc8617dee04219f3646253
   StripeUICore: d07bd63a4b53dee8cab4d6f81ce5a7ab3e28511e
+  SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
   SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654

@@ -12707,7 +12707,7 @@ __metadata:
     react-native-launch-arguments: "npm:4.1.0"
     react-native-linear-gradient: "npm:2.8.3"
     react-native-localize: "npm:3.5.2"
-    react-native-pager-view: "npm:6.7.1"
+    react-native-pager-view: "npm:8.0.0"
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:3.8.4"
     react-native-reanimated: "npm:3.19.4"
@@ -21628,13 +21628,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:6.7.1":
-  version: 6.7.1
-  resolution: "react-native-pager-view@npm:6.7.1"
+"react-native-pager-view@npm:8.0.0":
+  version: 8.0.0
+  resolution: "react-native-pager-view@npm:8.0.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/1459f3c487d50b1ecba41a4b24c51ab9ad17026b30e66c109dd1df32afe7cc6726d8fcae8a3495f93a240e5781bbae7653c7d56d53e724e929312b30234616e9
+  checksum: 10c0/2513ab5e55c7c8e290c514f1dd5388e198975853ffb8e8546bbacc605a853f76a9cb31048bfac22a95a1d0d6e61ae954d690b4522530e97c54e2eabd3447af9d
   languageName: node
   linkType: hard
 
