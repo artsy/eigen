@@ -18731,6 +18731,7 @@ type Partner implements Node {
     last: Int
     showID: String
   ): PartnerDocumentConnection
+  email: String
 
   # Suggested filters for associated artworks
   featuredKeywords: [String!]!
