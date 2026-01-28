@@ -18081,6 +18081,9 @@ type Order {
   # List of alpha-2 country codes to which the order can be shipped
   availableShippingCountries: [String!]!
 
+  # List of available Stripe payment method types for the order
+  availableStripePaymentMethodTypes: [OrderStripePaymentMethodTypeEnum!]!
+
   # Check if the bank account has sufficient balance for this order
   bankAccountBalanceCheck: BankAccountBalanceCheck
 
@@ -18335,6 +18338,12 @@ enum OrderSourceEnum {
   INQUIRY
   PARTNER_OFFER
   PRIVATE_SALE
+}
+
+enum OrderStripePaymentMethodTypeEnum {
+  card
+  sepa_debit
+  us_bank_account
 }
 
 type OrderedSet {
