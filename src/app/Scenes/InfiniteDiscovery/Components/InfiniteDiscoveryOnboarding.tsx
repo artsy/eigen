@@ -149,7 +149,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
               >
                 <MotiView
                   animate={{ opacity: showSwiper ? 1 : 0, scale: showSwiper ? 1 : 0.8 }}
-                  style={{ flex: 1 }}
+                  style={{ flex: 4 }}
                   transition={{
                     type: "timing",
                     duration: 500,
@@ -177,7 +177,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                   </Flex>
                 </MotiView>
 
-                <Flex justifyContent="flex-end" px={2}>
+                <Flex flex={1} px={2}>
                   <Text>Welcome to Discover Daily</Text>
 
                   <Spacer y={1} />
