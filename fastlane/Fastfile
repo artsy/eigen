@@ -371,12 +371,6 @@ lane :deploy_android_beta do |options|
       android_artifact_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
     )
 
-    sentry_upload_build(
-      org_slug: "artsynet",
-      project_slug: "eigen",
-      build_configuration: "Release",
-      aab_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
-    )
   else
     UI.error("Unknown deployment target: #{deployment_target}")
   end
