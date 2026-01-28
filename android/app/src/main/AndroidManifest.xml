@@ -56,6 +56,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="https" android:host="www.artsy.net"/>
         <data android:scheme="https" android:host="artsy.net"/>
+        <data android:scheme="https" android:host="staging.artsy.net"/>
         <data android:scheme="http"/>
         <data android:pathPrefix="/about"/>
         <data android:pathPrefix="/activity"/>
@@ -111,6 +112,7 @@
         <data android:pathPrefix="/settings"/>
         <data android:pathPrefix="/show"/>
         <data android:pathPrefix="/tag"/>
+        <data android:pathPrefix="/terms"/>
         <data android:pathPrefix="/user/conversations"/>
         <data android:pathPrefix="/user/purchases"/>
         <data android:pathPrefix="/upcoming-auction-results"/>
