@@ -165,7 +165,7 @@
     "react-fps": "1.0.6",
     "react-native": "0.81.5",
     "react-native-blob-util": "0.19.11",
-    "react-native-blurhash": "2.1.1",
+    "react-native-blurhash": "2.1.2",
     "react-native-bootsplash": "6.3.10",
     "react-native-collapsible-tab-view": "8.0.1",
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
