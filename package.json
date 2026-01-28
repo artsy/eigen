@@ -114,7 +114,7 @@
     "@braze/react-native-sdk": "16.1.0",
     "@d11/react-native-fast-image": "8.12.0",
     "@expo/react-native-action-sheet": "4.1.1",
-    "@gorhom/bottom-sheet": "5.1.2",
+    "@gorhom/bottom-sheet": "5.1.8",
     "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.4",
