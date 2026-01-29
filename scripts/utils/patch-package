@@ -21,6 +21,3 @@ cp -a "${root}/node_modules/${package_name}/." "./node_modules/${package_name}/"
 npx patch-package "${package_name}"
 cp -a ./patches/. "${root}/patches/"
 rm -rf "${root}/tmp"
-
-
-cd build-cache-provider && npx tsc && cd ..
