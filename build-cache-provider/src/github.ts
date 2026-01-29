@@ -41,14 +41,30 @@ export async function createReleaseAndUploadAsset({
       },
     })
 
-    const release = await octokit.rest.repos.createRelease({
-      owner,
-      repo,
-      tag_name: tagName,
-      name: tagName,
-      draft: false,
-      prerelease: true,
-    })
+    let release
+    try {
+      // Try to create a new release
+      release = await octokit.rest.repos.createRelease({
+        owner,
+        repo,
+        tag_name: tagName,
+        name: tagName,
+        draft: false,
+        prerelease: true,
+      })
+    } catch (error: any) {
+      if (error.status === 422 && error.message.includes("already_exists")) {
+        // Release already exists, get the existing release
+        console.log("Release already exists, adding asset to existing release")
+        release = await octokit.rest.repos.getReleaseByTag({
+          owner,
+          repo,
+          tag: tagName,
+        })
+      } else {
+        throw error
+      }
+    }
 
     await uploadReleaseAsset(octokit, {
       owner,
@@ -137,8 +153,8 @@ async function uploadReleaseAsset(
   let filePath = params.binaryPath
   let name = path.basename(filePath)
   if ((await fs.stat(filePath)).isDirectory()) {
-    await fs.mkdirp(getTmpDirectory())
-    const tarPath = path.join(getTmpDirectory(), `${uuidv4()}.tar.gz`)
+    await fs.mkdirp(await getTmpDirectory())
+    const tarPath = path.join(await getTmpDirectory(), `${uuidv4()}.tar.gz`)
     const parentPath = path.dirname(filePath)
     await createTar({ cwd: parentPath, file: tarPath, gzip: true }, [name])
     filePath = tarPath

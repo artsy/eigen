@@ -1,5 +1,4 @@
 import path from "path"
-import { Readable } from "stream"
 import { pipeline } from "stream/promises"
 import spawnAsync from "@expo/spawn-async"
 import glob from "fast-glob"
@@ -10,14 +9,40 @@ import { getTmpDirectory } from "./helpers"
 
 async function downloadFileAsync(url: string, outputPath: string): Promise<void> {
   try {
-    const response = await fetch(url)
-
-    if (!response.ok || !response.body) {
-      throw new Error(`Failed to download file from ${url}`)
+    const fetch = (await import("node-fetch")).default
+    const headers: Record<string, string> = {
+      "User-Agent": "expo-cli",
     }
 
-    await pipeline(Readable.fromWeb(response.body as any), fs.createWriteStream(outputPath))
+    // Add GitHub token if available for private repos
+    if (process.env.GH_TOKEN) {
+      headers["Authorization"] = `token ${process.env.GH_TOKEN}`
+    }
+
+    // For GitHub API asset URLs, we need to specify we want the raw content
+    if (url.includes("api.github.com/repos") && url.includes("/releases/assets/")) {
+      headers["Accept"] = "application/octet-stream"
+    }
+
+    const response = await fetch(url, {
+      headers,
+      redirect: "follow",
+    })
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to download file from ${url}: ${response.status} ${response.statusText}`
+      )
+    }
+
+    if (!response.body) {
+      throw new Error(`No response body from ${url}`)
+    }
+
+    await pipeline(response.body, fs.createWriteStream(outputPath))
+    console.log(`Successfully downloaded file to ${outputPath}`)
   } catch (error: any) {
+    console.error(`Download error for ${url}:`, error.message)
     if (await fs.pathExists(outputPath)) {
       await fs.remove(outputPath)
     }
@@ -37,18 +62,27 @@ async function maybeCacheAppAsync(appPath: string, cachedAppPath?: string): Prom
 export async function downloadAndMaybeExtractAppAsync(
   url: string,
   platform: "ios" | "android",
-  cachedAppPath?: string
+  cachedAppPath?: string,
+  assetName?: string
 ): Promise<string> {
-  const outputDir = path.join(getTmpDirectory(), uuidv4())
+  const outputDir = path.join(await getTmpDirectory(), uuidv4())
   await fs.promises.mkdir(outputDir, { recursive: true })
 
-  if (url.endsWith("apk")) {
+  // For Android APK files, download directly without extraction
+  const isApkFile =
+    platform === "android" &&
+    (url.endsWith("apk") ||
+      url.includes("app-debug.apk") ||
+      (assetName && assetName.endsWith(".apk")))
+
+  if (isApkFile) {
     const apkFilePath = path.join(outputDir, `${uuidv4()}.apk`)
     await downloadFileAsync(url, apkFilePath)
     console.log("Successfully downloaded app")
     return await maybeCacheAppAsync(apkFilePath, cachedAppPath)
   } else {
-    const tmpArchivePathDir = path.join(getTmpDirectory(), uuidv4())
+    // For iOS or archived builds
+    const tmpArchivePathDir = path.join(await getTmpDirectory(), uuidv4())
     await fs.mkdir(tmpArchivePathDir, { recursive: true })
 
     const tmpArchivePath = path.join(tmpArchivePathDir, `${uuidv4()}.tar.gz`)
@@ -67,7 +101,7 @@ export async function extractAppFromLocalArchiveAsync(
   appArchivePath: string,
   platform: "ios" | "android"
 ): Promise<string> {
-  const outputDir = path.join(getTmpDirectory(), uuidv4())
+  const outputDir = path.join(await getTmpDirectory(), uuidv4())
   await fs.promises.mkdir(outputDir, { recursive: true })
 
   await tarExtractAsync(appArchivePath, outputDir)
