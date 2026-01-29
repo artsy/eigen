@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import {
@@ -41,7 +41,7 @@ import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
 import { Modal, Platform, ViewProps } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
   FilterModalMode as ArtworkFilterMode,
@@ -344,9 +344,10 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           onDismiss={handleClosingModal}
           animationType="slide"
           testID="artwork-filter-navigator"
+          presentationStyle="overFullScreen"
         >
           <KeyboardAvoidingContainer>
-            <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
+            <Flex flex={1}>
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
@@ -448,7 +449,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                 attributes={attributes}
                 sizeMetric={filterState.sizeMetric}
               />
-            </SafeAreaView>
+            </Flex>
           </KeyboardAvoidingContainer>
         </Modal>
       </NavigationContainer>
