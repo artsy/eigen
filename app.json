@@ -4,7 +4,6 @@
   "slug": "eigen",
   "expo": {
     "remoteBuildCache": {
-      "provider": "./buildCacheProviderPlugin.js",
       "plugin": "./provider.plugin.js",
       "options": {
         "owner": "artsy",

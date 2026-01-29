@@ -1,4 +1,5 @@
 import path from "path"
+import { Readable } from "stream"
 import { pipeline } from "stream/promises"
 import spawnAsync from "@expo/spawn-async"
 import glob from "fast-glob"
@@ -15,7 +16,7 @@ async function downloadFileAsync(url: string, outputPath: string): Promise<void>
       throw new Error(`Failed to download file from ${url}`)
     }
 
-    await pipeline(response.body, fs.createWriteStream(outputPath))
+    await pipeline(Readable.fromWeb(response.body as any), fs.createWriteStream(outputPath))
   } catch (error: any) {
     if (await fs.pathExists(outputPath)) {
       await fs.remove(outputPath)
