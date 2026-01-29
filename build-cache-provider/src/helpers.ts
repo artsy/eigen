@@ -1,8 +1,15 @@
 import path from "path"
 import { getPackageJson, RunOptions } from "@expo/config"
-import envPaths from "env-paths"
 
-const { temp: TEMP_PATH } = envPaths("github-build-cache-provider")
+let TEMP_PATH: string
+
+async function getTempPath(): Promise<string> {
+  if (!TEMP_PATH) {
+    const envPaths = (await import("env-paths")).default
+    TEMP_PATH = envPaths("github-build-cache-provider").temp
+  }
+  return TEMP_PATH
+}
 
 export function isDevClientBuild({
   runOptions,
@@ -30,6 +37,6 @@ export function hasDirectDevClientDependency(projectRoot: string): boolean {
   return !!dependencies["expo-dev-client"] || !!devDependencies["expo-dev-client"]
 }
 
-export const getTmpDirectory = (): string => TEMP_PATH
-export const getBuildRunCacheDirectoryPath = (): string =>
-  path.join(getTmpDirectory(), "build-run-cache")
+export const getTmpDirectory = async (): Promise<string> => await getTempPath()
+export const getBuildRunCacheDirectoryPath = async (): Promise<string> =>
+  path.join(await getTmpDirectory(), "build-run-cache")

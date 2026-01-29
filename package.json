@@ -314,6 +314,7 @@
     "jest-watch-typeahead": "2.2.2",
     "json5": "2.2.3",
     "lint-staged": "13.2.3",
+    "node-fetch": "^3.3.2",
     "octokit": "^5.0.5",
     "ora": "5.4.0",
     "patch-package": "8.0.1",
