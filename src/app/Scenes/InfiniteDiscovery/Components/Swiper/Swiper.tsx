@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
@@ -19,12 +20,13 @@ import {
 
 type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
+  cardStyle?: ViewStyle
+  containerStyle?: ViewStyle
+  HeaderComponent?: () => React.ReactNode
+  isArtworkSaved?: (index: number) => boolean
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
-  containerStyle?: ViewStyle
-  cardStyle?: ViewStyle
-  isArtworkSaved?: (index: number) => boolean
 } & (
   | { onReachTriggerIndex?: never; triggerIndex?: never }
   | { onReachTriggerIndex: (activeIndex: number) => void; triggerIndex: number }
@@ -38,14 +40,15 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
       cards: _cards,
+      cardStyle,
+      containerStyle,
+      HeaderComponent,
+      isArtworkSaved,
       onNewCardReached,
+      onReachTriggerIndex,
       onRewind,
       onSwipe,
-      onReachTriggerIndex,
       triggerIndex,
-      containerStyle,
-      cardStyle,
-      isArtworkSaved,
     },
     ref
   ) => {
@@ -202,32 +205,35 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     return (
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
-          {cards.map((c, i) => {
-            if (i < initialSliceIndex) {
-              return null
-            }
+          {!!HeaderComponent && <HeaderComponent />}
+          <Flex>
+            {cards.map((c, i) => {
+              if (i < initialSliceIndex) {
+                return null
+              }
 
-            return (
-              <AnimatedView
-                index={i}
-                activeCardX={activeCardX}
-                activeIndex={_activeIndex}
-                swipedKeys={swipedKeys}
-                swipedCardX={swipedCardX}
-                key={c.internalID}
-                internalID={c.internalID}
-              >
-                <InfiniteDiscoveryArtworkCard
-                  artwork={c}
-                  key={c.internalID}
-                  containerStyle={cardStyle}
-                  isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
+              return (
+                <AnimatedView
                   index={i}
-                  isTopCard={activeIndex === i}
-                />
-              </AnimatedView>
-            )
-          })}
+                  activeCardX={activeCardX}
+                  activeIndex={_activeIndex}
+                  swipedKeys={swipedKeys}
+                  swipedCardX={swipedCardX}
+                  key={c.internalID}
+                  internalID={c.internalID}
+                >
+                  <InfiniteDiscoveryArtworkCard
+                    artwork={c}
+                    key={c.internalID}
+                    containerStyle={cardStyle}
+                    isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
+                    index={i}
+                    isTopCard={activeIndex === i}
+                  />
+                </AnimatedView>
+              )
+            })}
+          </Flex>
         </View>
       </GestureDetector>
     )

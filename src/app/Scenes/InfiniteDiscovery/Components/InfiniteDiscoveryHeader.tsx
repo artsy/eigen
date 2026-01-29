@@ -63,7 +63,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   return (
-    <Flex zIndex={-100}>
+    <Flex mb={1}>
       <Screen.Header
         title="Discover Daily"
         leftElements={
