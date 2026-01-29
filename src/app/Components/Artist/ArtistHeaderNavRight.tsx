@@ -121,8 +121,6 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
             longestText="Following 999.9k"
             followCount={artist?.counts.follows}
             onPress={() => setIsFollowed(!isFollowed)}
-            // Using maxWidth and minWidth to prevent the button from changing width when the text changes
-            maxWidth={followButtonWidth}
             minWidth={followButtonWidth}
           />
         </MotiView>
