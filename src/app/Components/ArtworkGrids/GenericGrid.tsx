@@ -1,235 +1,83 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, TextProps, useScreenDimensions } from "@artsy/palette-mobile"
-import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
+import { Flex, TextProps, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { GenericGrid_artworks$key } from "__generated__/GenericGrid_artworks.graphql"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
+import { MasonryArtworkItem } from "app/utils/masonryHelpers"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { createFragmentContainer, graphql } from "react-relay"
-import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
+import { graphql, useFragment } from "react-relay"
+import { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
   artistNamesTextStyle?: TextProps
-  saleInfoTextStyle?: TextProps
-  artworks: GenericGrid_artworks$data
-  sectionMargin?: number
-  hidePartner?: boolean
-  itemMargin?: number
-  isLoading?: boolean
-  trackingFlow?: string
+  artworks: GenericGrid_artworks$key
   contextModule?: ContextModule
+  hidePartner?: boolean
+  isLoading?: boolean
+  itemMargin?: number
+  onPress?: (artworkID: string) => void
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
-  // Give explicit width to avoid resizing after mount
-  width?: number
-}
-
-interface State {
-  sectionDimension: number
-  sectionCount: number
+  trackingFlow?: string
+  saleInfoTextStyle?: TextProps
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
-type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer GenericArtwork>
-  ? GenericArtwork
-  : never
+export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
+  artworks: artworksProp,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreenOwnerType,
+  hidePartner = false,
+  isLoading,
+  onPress,
+  trackTap,
+  saleInfoTextStyle,
+  trackingFlow,
+}) => {
+  const space = useSpace()
+  const artworks = useFragment(genericGridFragment, artworksProp)
 
-export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
-  state = this.props.width
-    ? this.layoutState(this.props.width)
-    : {
-        sectionDimension: 0,
-        sectionCount: 0,
-      }
-
-  width = 0
-
-  layoutState(width: number): State {
-    const sectionCount = isTablet() ? 3 : 2
-    const sectionMargin = this.props.sectionMargin ?? 20
-    const sectionMargins = sectionMargin * (sectionCount - 1)
-    const artworkPadding = 20
-    const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
-
-    return {
-      sectionCount,
-      sectionDimension,
-    }
-  }
-
-  onLayout = (event: LayoutChangeEvent) => {
-    if (this.props.width) {
-      // noop because we were given an explicit width
-      return
-    }
-    const layout = event.nativeEvent.layout
-    if (layout.width !== this.width) {
-      // this means we've rotated or are on our initial load
-      this.width = layout.width
-
-      this.setState(this.layoutState(layout.width))
-    }
-  }
-
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    // if there's a change in columns, we'll need to re-render
-    if (
-      this.props.artworks === nextProps.artworks &&
-      this.state.sectionCount === nextState.sectionCount &&
-      this.props.isLoading === nextProps.isLoading
-    ) {
-      return false
-    }
-    return true
-  }
-
-  sectionedArtworks() {
-    const sectionedArtworks: GenericArtworkType[][] = []
-    const sectionRatioSums: number[] = []
-    for (let i = 0; i < this.state.sectionCount; i++) {
-      sectionedArtworks.push([])
-      sectionRatioSums.push(0)
-    }
-
-    this.props.artworks.forEach((artwork) => {
-      if (artwork.image) {
-        let lowestRatioSum = Number.MAX_VALUE
-        let sectionIndex: number | null = null
-
-        for (let j = 0; j < sectionRatioSums.length; j++) {
-          const ratioSum = sectionRatioSums[j]
-          if (ratioSum < lowestRatioSum) {
-            sectionIndex = j
-            lowestRatioSum = ratioSum
-          }
-        }
-
-        if (sectionIndex != null) {
-          const section = sectionedArtworks[sectionIndex]
-          section.push(artwork)
-
-          // total section aspect ratio
-          const aspectRatio = artwork.image.aspectRatio || 1
-          sectionRatioSums[sectionIndex] += 1 / aspectRatio
-        }
-      }
-    })
-
-    return sectionedArtworks
-  }
-
-  renderSections() {
-    const itemMargin = this.props.itemMargin ?? 20
-    const spacerStyle = {
-      height: itemMargin,
-    }
-    const sectionedArtworks = this.sectionedArtworks()
-    const sections = []
-    const { contextModule, trackingFlow, trackTap } = this.props
-
-    for (let column = 0; column < this.state.sectionCount; column++) {
-      const artworkComponents = []
-      const artworks = sectionedArtworks[column]
-      for (let row = 0; row < artworks.length; row++) {
-        const artwork = artworks[row]
-        const itemIndex = row * this.state.sectionCount + column
-
-        const aspectRatio = artwork.image?.aspectRatio ?? 1
-        const imgWidth = this.state.sectionDimension
-        const imgHeight = imgWidth / aspectRatio
-
-        artworkComponents.push(
-          <Artwork
-            artwork={artwork}
-            key={artwork.id + column + row}
-            height={imgHeight}
-            width={imgWidth}
-            trackingFlow={trackingFlow}
-            contextModule={contextModule}
-            itemIndex={itemIndex}
+  return (
+    <AnalyticsContextProvider
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+      contextScreenOwnerType={contextScreenOwnerType}
+    >
+      <Flex>
+        <Flex accessibilityLabel="Artworks Content View" mx={-2}>
+          <MasonryInfiniteScrollArtworkGrid
+            artworks={artworks as unknown as MasonryArtworkItem[]}
+            scrollEnabled={false}
+            hidePartner={hidePartner}
             trackTap={trackTap}
-            {...this.props}
+            onPress={onPress}
+            saleInfoTextStyle={saleInfoTextStyle}
+            trackingFlow={trackingFlow}
           />
-        )
-        if (row < artworks.length - 1) {
-          artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + row} accessibilityLabel="Spacer View" />
-          )
-        }
-      }
-
-      const sectionMargin = this.props.sectionMargin ?? 20
-      const sectionSpecificStyle = {
-        width: this.state.sectionDimension,
-        marginRight: column === this.state.sectionCount - 1 ? 0 : sectionMargin,
-      }
-      sections.push(
-        <View
-          style={[styles.section, sectionSpecificStyle]}
-          key={column}
-          accessibilityLabel={"Section " + column}
-        >
-          {artworkComponents}
-        </View>
-      )
-    }
-    return sections
-  }
-
-  render() {
-    const artworks = this.state.sectionDimension ? this.renderSections() : null
-
-    return (
-      <AnalyticsContextProvider
-        contextScreenOwnerId={this.props.contextScreenOwnerId}
-        contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
-        contextScreenOwnerType={this.props.contextScreenOwnerType}
-      >
-        <View onLayout={this.onLayout}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {artworks}
-          </View>
-          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
-        </View>
-      </AnalyticsContextProvider>
-    )
-  }
+        </Flex>
+        {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}
+      </Flex>
+    </AnalyticsContextProvider>
+  )
 }
 
-interface Styles {
-  container: ViewStyle
-  section: ViewStyle
-  spinner: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flexDirection: "row",
-  },
-  section: {
-    flexDirection: "column",
-  },
-  spinner: {
-    marginTop: 20,
-  },
-})
-
-const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
-  artworks: graphql`
-    fragment GenericGrid_artworks on Artwork @relay(plural: true) {
-      id
-      slug
-      image(includeAll: false) {
-        aspectRatio
-      }
-      ...ArtworkGridItem_artwork
+const genericGridFragment = graphql`
+  fragment GenericGrid_artworks on Artwork @relay(plural: true) {
+    id
+    slug
+    image(includeAll: false) {
+      aspectRatio
+      blurhash
     }
-  `,
-})
+    ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+  }
+`
 
 export default GenericGrid
 

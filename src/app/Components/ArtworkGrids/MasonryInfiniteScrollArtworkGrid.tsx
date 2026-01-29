@@ -1,5 +1,5 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { useSpace } from "@artsy/palette-mobile"
+import { TextProps, useSpace } from "@artsy/palette-mobile"
 import { FlashListProps, MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
@@ -36,6 +36,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hideCuratorsPick?: boolean
   hideIncreasedInterest?: boolean
   hideViewFollowsLink?: boolean
+  hidePartner?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
   isLoading?: boolean
@@ -44,6 +45,9 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   pageSize?: number
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
+  trackTap?: (artworkSlug: string, itemIndex?: number) => void
+  saleInfoTextStyle?: TextProps
+  trackingFlow?: string
 }
 
 /**
@@ -67,6 +71,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   hideCreateAlertOnArtworkPreview,
   hideCuratorsPick,
   hideIncreasedInterest,
+  hidePartner,
   hideSaleInfo,
   hideSaveIcon,
   isLoading,
@@ -81,6 +86,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListFooterComponent,
   onViewableItemsChanged,
   viewabilityConfig,
+  trackTap,
+  saleInfoTextStyle,
+  trackingFlow,
   ...rest
 }) => {
   const space = useSpace()
@@ -105,6 +113,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         numColumns={rest.numColumns}
+        hidePartner={hidePartner}
         artworkMetaStyle={{
           // Since the grid is full width,
           // we need to add padding to the artwork meta to make sure its readable
@@ -122,6 +131,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideIncreasedInterestSignal={hideIncreasedInterest}
         hideCuratorsPickSignal={hideCuratorsPick}
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+        saleInfoTextStyle={saleInfoTextStyle}
+        trackTap={trackTap}
+        trackingFlow={trackingFlow}
       />
     ),
     [
@@ -136,6 +148,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       partnerOffer,
       priceOfferMessage,
       onPress,
+      hidePartner,
       hideSaleInfo,
       hideSaveIcon,
       disableArtworksListPrompt,
@@ -143,6 +156,9 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       hideIncreasedInterest,
       hideCuratorsPick,
       hideCreateAlertOnArtworkPreview,
+      saleInfoTextStyle,
+      trackTap,
+      trackingFlow,
     ]
   )
 
