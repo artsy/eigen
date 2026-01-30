@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Screen, Spacer } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
 import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
@@ -180,11 +180,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           - https://github.com/facebook/react-native/issues/47140
       */}
       <Screen.Body fullwidth style={{ marginTop: insets.top }} disableKeyboardAvoidance>
-        <InfiniteDiscoveryHeader topArtwork={topArtwork} />
-
-        <Spacer y={1} />
-
         <Swiper
+          HeaderComponent={() => <InfiniteDiscoveryHeader topArtwork={topArtwork} />}
           cards={artworks}
           onReachTriggerIndex={handleFetchMore}
           triggerIndex={2}

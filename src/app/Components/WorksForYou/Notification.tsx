@@ -66,7 +66,7 @@ export class Notification extends React.Component<Props> {
               </View>
             </TouchableWithoutFeedback>
             <View style={styles.gridContainer}>
-              <GenericGrid width={this.props.width - HORIZONTAL_PADDING * 2} artworks={artworks} />
+              <GenericGrid artworks={artworks} />
             </View>
           </View>
         )}

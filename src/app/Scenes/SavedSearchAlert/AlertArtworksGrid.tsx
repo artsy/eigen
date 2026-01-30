@@ -27,9 +27,6 @@ interface AlertArtworksGridProps {
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKey }) => {
-  const screenDimensions = useScreenDimensions()
-  const { space } = useTheme()
-
   const data = useLazyLoadQuery<AlertArtworksGridQuery>(
     alertArtworksGridQuery,
     {
@@ -76,11 +73,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKe
               {numWorks} currently on Artsy match your criteria. See our top picks for you:
             </Text>
             <Spacer y={1} />
-            <GenericGrid
-              width={screenDimensions.width - space(2)}
-              artworks={artworks}
-              hideSaveIcon
-            />
+            <GenericGrid artworks={artworks} hideSaveIcon />
           </Flex>
         )}
         {artworksCount === 0 && (

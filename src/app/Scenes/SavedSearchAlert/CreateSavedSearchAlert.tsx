@@ -1,4 +1,4 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
@@ -12,8 +12,8 @@ import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { Modal, Platform } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { Modal } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -49,15 +49,15 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         <NavigationContainer theme={theme}>
           <Modal
             visible={visible}
-            presentationStyle="fullScreen"
+            presentationStyle="overFullScreen"
             statusBarTranslucent
             animationType="slide"
           >
-            <SafeAreaView
+            <Flex
+              flex={1}
               style={{
-                flex: 1,
                 backgroundColor: color("background"),
-                paddingTop: Platform.OS === "ios" ? topInset : 0,
+                paddingTop: topInset,
               }}
             >
               <Stack.Navigator
@@ -95,7 +95,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   options={{ gestureEnabled: false }}
                 />
               </Stack.Navigator>
-            </SafeAreaView>
+            </Flex>
           </Modal>
         </NavigationContainer>
       </NavigationIndependentTree>

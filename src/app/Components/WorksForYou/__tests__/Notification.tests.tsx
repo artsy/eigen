@@ -1,30 +1,50 @@
-import { renderWithLayout } from "app/utils/tests/renderWithLayout"
+import { screen } from "@testing-library/react-native"
+import { NotificationTestsQuery } from "__generated__/NotificationTestsQuery.graphql"
+import NotificationFragmentContainer from "app/Components/WorksForYou/Notification"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import "react-native"
-import { Notification } from "app/Components/WorksForYou/Notification"
+import { graphql } from "relay-runtime"
 
-it("renders without throwing an error for unread notification", () => {
-  const props = notification()
-  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
-})
+describe("Notification", () => {
+  const { renderWithRelay } = setupTestWrapper<NotificationTestsQuery>({
+    Component: (props) => (
+      <NotificationFragmentContainer
+        width={768}
+        notification={props.followedArtistsArtworksGroup!}
+      />
+    ),
+    query: graphql`
+      query NotificationTestsQuery @relay_test_operation {
+        followedArtistsArtworksGroup: node(id: "test-id") {
+          ... on FollowedArtistsArtworksGroup {
+            ...Notification_notification
+          }
+        }
+      }
+    `,
+  })
+  it("renders notification properly", () => {
+    renderWithRelay({
+      FollowedArtistsArtworksGroup: () => notification(),
+    })
 
-it("renders without throwing an error for read notification", () => {
-  const props = notification()
-  props.status = "READ"
-  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
-})
+    expect(screen.getByText("Jean-Michel Basquiat")).toBeTruthy()
+  })
 
-it("renders without throwing an error if no avatar image exists", () => {
-  const props = notification()
-  const convertedProps = {
-    ...props,
-    image: {
-      resized: {
-        url: null,
+  it("renders without throwing an error if no avatar image exists", () => {
+    const props = notification()
+    const convertedProps = {
+      ...props,
+      image: {
+        resized: {
+          url: null,
+        },
       },
-    },
-  }
-  renderWithLayout(<Notification width={300} notification={convertedProps as any} />, {
-    width: 300,
+    }
+
+    renderWithRelay({
+      FollowedArtistsArtworksGroup: () => convertedProps,
+    })
   })
 })
 
