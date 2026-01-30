@@ -3,11 +3,13 @@
   "version": "8.93.0",
   "slug": "eigen",
   "expo": {
-    "remoteBuildCache": {
-      "plugin": "./provider.plugin.js",
-      "options": {
-        "owner": "artsy",
-        "repo": "eigen"
+    "experiments": {
+      "remoteBuildCache": {
+        "plugin": "./provider.plugin.js",
+        "options": {
+          "owner": "artsy",
+          "repo": "eigen"
+        }
       }
     },
     "platforms": ["ios", "android"],
