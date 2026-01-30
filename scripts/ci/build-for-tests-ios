@@ -18,7 +18,7 @@ cd build-cache-provider && npx tsc && cd ..
 
 # if [ "$BUILD_TYPE" == "qa" ]; then
 # 	echo "Uploading iOS App for QA"
-./scripts/ci/upload-sim-app
+# ./scripts/ci/upload-sim-app
 # fi
 
 
