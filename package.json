@@ -153,7 +153,7 @@
     "jwt-decode": "4.0.0",
     "limiter": "2.1.0",
     "lodash": "4.17.21",
-    "luxon": "2.5.2",
+    "luxon": "^3.7.2",
     "moment": "2.29.4",
     "moment-timezone": "0.5.40",
     "moti": "0.30.0",
