@@ -9,7 +9,7 @@ export const LiveLotCarousel: React.FC = () => {
   const [selectedLotIndex, setSelectedLotIndex] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
 
-  // Convert Map to sorted array
+  // Convert Map to array (preserves order from WebSocket)
   const lotsArray = useMemo(() => {
     const arr = Array.from(lots.values())
 
@@ -38,12 +38,7 @@ export const LiveLotCarousel: React.FC = () => {
       )
     }
 
-    return arr.sort((a, b) => {
-      // Sort by lot ID (numeric)
-      const numA = parseInt(a.lotId.replace(/\D/g, ""), 10)
-      const numB = parseInt(b.lotId.replace(/\D/g, ""), 10)
-      return numA - numB
-    })
+    return arr
   }, [lots, artworkMetadata])
 
   const handlePageScroll = (e: PagerViewOnPageScrollEvent) => {

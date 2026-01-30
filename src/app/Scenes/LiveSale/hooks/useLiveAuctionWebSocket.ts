@@ -66,8 +66,16 @@ export const liveAuctionReducer = (
 
       const newLots = new Map<string, LotState>()
 
-      // Process each lot from the fullLotStateById object
-      for (const [lotId, fullLotState] of Object.entries(fullLotStateById)) {
+      // Process lots in the order they appear in artworkMetadata (from GraphQL)
+      // This matches the Swift implementation which iterates through saleArtworks
+      for (const lotId of state.artworkMetadata.keys()) {
+        const fullLotState = fullLotStateById[lotId]
+        if (!fullLotState) {
+          console.log("No WebSocket data for lot:", lotId)
+          continue
+        }
+
+        console.log("Processing lot:", lotId)
         const lotState = createInitialLotState(lotId)
 
         // Add events from eventHistory and track processed IDs
