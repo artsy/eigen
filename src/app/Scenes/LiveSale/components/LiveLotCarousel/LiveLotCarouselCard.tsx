@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
 import { Animated } from "react-native"
 import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
@@ -29,6 +29,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
 }) => {
   const scale = useSpringValue(isFocused ? 1.0 : 0.85)
   const opacity = useSpringValue(isFocused ? 1.0 : 0.6)
+  const color = useColor()
 
   const isBidDisabled = lot.derivedState.biddingStatus !== "Open"
 
@@ -41,15 +42,15 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
       }}
       collapsable={false}
     >
-      <Flex flex={1} bg="white100" borderRadius={8} overflow="hidden" mx={1}>
+      <Flex flex={1} bg={color("mono0")} borderRadius={8} overflow="hidden" mx={1}>
         {/* Artwork image */}
         <Flex
           height={300}
-          bg="black5"
+          bg={color("mono5")}
           alignItems="center"
           justifyContent="center"
           borderBottomWidth={1}
-          borderBottomColor="black10"
+          borderBottomColor={color("mono10")}
         >
           {artworkMetadata?.artwork?.image?.url ? (
             <Image
@@ -60,10 +61,10 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
             />
           ) : (
             <>
-              <Text variant="lg-display" color="black60">
+              <Text variant="lg-display" color={color("mono60")}>
                 Lot {lot.lotId}
               </Text>
-              <Text variant="xs" color="black60" mt={1}>
+              <Text variant="xs" color={color("mono60")} mt={1}>
                 No image available
               </Text>
             </>
@@ -75,7 +76,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
           <Flex p={2} gap={2}>
             {/* Lot number and artist */}
             <Flex>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color={color("mono60")}>
                 Lot {lot.lotId}
               </Text>
               {!!artworkMetadata?.artwork?.artistNames && (
@@ -84,7 +85,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
                 </Text>
               )}
               {!!artworkMetadata?.artwork?.title && (
-                <Text variant="sm" color="black60" numberOfLines={2}>
+                <Text variant="sm" color={color("mono60")} numberOfLines={2}>
                   {artworkMetadata.artwork.title}
                 </Text>
               )}
@@ -93,7 +94,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
             {/* Estimate range */}
             {!!artworkMetadata?.estimate && (
               <Flex>
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color={color("mono60")}>
                   Estimate
                 </Text>
                 <Text variant="sm">{artworkMetadata.estimate}</Text>
@@ -102,7 +103,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
 
             {/* Asking price */}
             <Flex>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color={color("mono60")}>
                 Current Ask
               </Text>
               <Text variant="lg-display">{formatPrice(lot.derivedState.askingPriceCents)}</Text>
@@ -110,8 +111,8 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
 
             {/* Status info */}
             <Flex flexDirection="row" gap={2} flexWrap="wrap">
-              <Flex px={1} py={0.5} bg="black5" borderRadius={4}>
-                <Text variant="xs" color="black60">
+              <Flex px={1} py={0.5} bg={color("mono10")} borderRadius={4}>
+                <Text variant="xs" color={color("mono60")}>
                   {lot.derivedState.biddingStatus}
                 </Text>
               </Flex>
@@ -120,27 +121,31 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
                 <Flex
                   px={1}
                   py={0.5}
-                  bg={lot.derivedState.soldStatus === "Sold" ? "green10" : "orange10"}
+                  bg={lot.derivedState.soldStatus === "Sold" ? color("green10") : color("orange10")}
                   borderRadius={4}
                 >
                   <Text
                     variant="xs"
-                    color={lot.derivedState.soldStatus === "Sold" ? "green100" : "orange100"}
+                    color={
+                      lot.derivedState.soldStatus === "Sold"
+                        ? color("green100")
+                        : color("orange100")
+                    }
                   >
                     {lot.derivedState.soldStatus}
                   </Text>
                 </Flex>
               )}
 
-              <Flex px={1} py={0.5} bg="black5" borderRadius={4}>
-                <Text variant="xs" color="black60">
+              <Flex px={1} py={0.5} bg={color("mono10")} borderRadius={4}>
+                <Text variant="xs" color={color("mono60")}>
                   Reserve: {lot.derivedState.reserveStatus}
                 </Text>
               </Flex>
             </Flex>
 
             {/* Online bid count */}
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color={color("mono60")}>
               {lot.derivedState.onlineBidCount} online{" "}
               {lot.derivedState.onlineBidCount === 1 ? "bid" : "bids"}
             </Text>
