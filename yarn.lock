@@ -12736,7 +12736,6 @@ __metadata:
     relay-test-utils: "npm:18.2.0"
     remove-markdown: "npm:0.5.0"
     rimraf: "npm:3.0.2"
-    rxjs: "npm:7.5.6"
     semver: "npm:7.5.2"
     sift-react-native: "npm:0.1.15"
     simple-markdown: "npm:0.7.3"
@@ -22834,15 +22833,6 @@ __metadata:
   dependencies:
     queue-microtask: "npm:^1.2.2"
   checksum: 10c0/200b5ab25b5b8b7113f9901bfe3afc347e19bb7475b267d55ad0eb86a62a46d77510cb0f232507c9e5d497ebda569a08a9867d0d14f57a82ad5564d991588b39
-  languageName: node
-  linkType: hard
-
-"rxjs@npm:7.5.6":
-  version: 7.5.6
-  resolution: "rxjs@npm:7.5.6"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/d8077fb4a06c05f52fcc974ab9884d163924b8085c661c92030a522920510bf0c75583caee70409ab11992320c31f562f5402afe8b81255370c09773209fec5c
   languageName: node
   linkType: hard
 
