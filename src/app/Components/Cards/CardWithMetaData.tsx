@@ -159,7 +159,7 @@ export const CardsWithMetaDataListPlaceholder: React.FC<CardsWithMetaDataListPla
   )
 }
 
-export const ListHeader = ({ title = "" }) => (
+const ListHeader = ({ title = "" }) => (
   <Text mx={2} variant="lg-display" mb={2}>
     {title}
   </Text>
