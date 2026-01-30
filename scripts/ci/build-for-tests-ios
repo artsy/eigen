@@ -24,6 +24,19 @@ cd build-cache-provider && npx tsc && cd ..
 # Ensure xcode-select is pointing to the correct Xcode
 sudo xcode-select -s /Applications/Xcode.app
 
+# Export DEVELOPER_DIR to ensure Expo can find Xcode
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+
+# Verify xcode-select is set correctly
+echo "Xcode path: $(xcode-select -p)"
+
+# Verify Simulator.app exists
+if [ -d "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app" ]; then
+	echo "Simulator.app found"
+else
+	echo "WARNING: Simulator.app not found at expected location"
+fi
+
 # Wait for simulator to be ready (it's pre-booted in CI)
 echo "Waiting for simulator to be ready..."
 xcrun simctl list devices | grep -q "Booted" && echo "Simulator is booted" || echo "No booted simulator found"
