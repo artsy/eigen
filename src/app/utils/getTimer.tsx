@@ -24,10 +24,14 @@ const extractTime = (time: number) => {
 export const getTimer = (endDate: string, startAt = ""): Timer => {
   const currentTime = DateTime.now().toISO() || DateTime.now().toUTC().toString()
 
-  const timeBeforeEnd = Duration.fromISO(
-    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO() || "PT0S"
-  )
-  const hasEnded = Math.floor(timeBeforeEnd.seconds) <= 0
+  // Handle empty endDate - treat as no end date (ongoing event)
+  const timeBeforeEnd =
+    endDate === ""
+      ? Duration.fromMillis(Number.MAX_SAFE_INTEGER)
+      : Duration.fromISO(
+          DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO() || "PT0S"
+        )
+  const hasEnded = endDate !== "" && Math.floor(timeBeforeEnd.seconds) <= 0
 
   const timeBeforeStart = Duration.fromISO(
     DateTime.fromISO(startAt).diff(DateTime.fromISO(currentTime)).toISO() || "PT0S"
