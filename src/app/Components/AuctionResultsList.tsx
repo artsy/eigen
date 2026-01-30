@@ -2,7 +2,7 @@ import { Spacer, Flex, Text, SkeletonBox, SkeletonText, Screen } from "@artsy/pa
 import { AuctionResultListItem_auctionResult$key } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { groupBy } from "lodash"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React, { useMemo, useState, useCallback, useEffect } from "react"
 import { RefreshControl, ViewabilityConfig, ViewToken } from "react-native"
 import {
@@ -52,14 +52,15 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
     // Group auction results by sale date (formatted as YYYY-MM)
     // Items without a saleDate are grouped under "no-date" key
     const groupedAuctionResults = groupBy(auctionResults, (item) => {
-      if (!item?.saleDate) return "no-date"
-      return moment(item.saleDate).format("YYYY-MM")
+      if (!item?.saleDate) return "unknown"
+      return DateTime.fromISO(item.saleDate).toFormat("yyyy-MM")
     })
 
     const flatData: FlatListItem[] = []
     Object.entries(groupedAuctionResults).forEach(([date, items]) => {
       // Format section title: either "MMMM, YYYY" for dated items or "No Date" for items without dates
-      const sectionTitle = date === "no-date" ? "No Date" : moment(date).format("MMMM, YYYY")
+      const sectionTitle =
+        date === "no-date" ? "No Date" : DateTime.fromISO(date).toFormat("MMMM, yyyy")
       flatData.push({ type: "section-header", sectionTitle })
 
       items.forEach((item) => {
