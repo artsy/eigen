@@ -5,10 +5,12 @@
   "expo": {
     "experiments": {
       "remoteBuildCache": {
-        "plugin": "./provider.plugin.js",
-        "options": {
-          "owner": "artsy",
-          "repo": "eigen"
+        "provider": {
+          "plugin": "./provider.plugin.js",
+          "options": {
+            "owner": "artsy",
+            "repo": "eigen"
+          }
         }
       }
     },
