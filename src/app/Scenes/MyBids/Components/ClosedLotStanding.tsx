@@ -5,7 +5,7 @@ import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStand
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,10 +20,10 @@ const saleClosedMessage: (sale: {
 }) => string | undefined = (sale) => {
   const timelySale = TimelySale.create(sale)
   if (timelySale.isClosed) {
-    const tz = moment.tz.guess(true)
-    const endedAtMoment = moment(sale.endAt || "").tz(tz)
+    const tz = DateTime.local().zoneName
+    const endedAtMoment = DateTime.fromISO(sale.endAt || "").setZone(tz)
 
-    return `Closed ${endedAtMoment.format("MMM D")}`
+    return `Closed ${endedAtMoment.toFormat("MMM d")}`
   }
 }
 

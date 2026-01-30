@@ -1,7 +1,7 @@
 import { Flex, Text, TextProps } from "@artsy/palette-mobile"
 import { Time } from "app/utils/getTimer"
 import { getTimerInfo } from "app/utils/saleTime"
-import { Duration } from "moment"
+import { Duration } from "luxon"
 import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 
@@ -15,19 +15,19 @@ const padWithZero = (number: number) => number.toString().padStart(2, "0")
 
 export const durationSections = (duration: Duration, labels: [string, string, string, string]) => [
   {
-    time: padWithZero(Math.floor(duration.asDays())),
+    time: padWithZero(Math.floor(duration.as("days"))),
     label: labels[0],
   },
   {
-    time: padWithZero(duration.hours()),
+    time: padWithZero(Math.floor(duration.as("hours") % 24)),
     label: labels[1],
   },
   {
-    time: padWithZero(duration.minutes()),
+    time: padWithZero(Math.floor(duration.as("minutes") % 60)),
     label: labels[2],
   },
   {
-    time: padWithZero(duration.seconds()),
+    time: padWithZero(Math.floor(duration.as("seconds") % 60)),
     label: labels[3],
   },
 ]
@@ -58,7 +58,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection {...section} textProps={textProps!} />
+          <LabeledTimeSection {...section} textProps={textProps || {}} />
           {!!(idx < sections.length - 1 && renderSeparator) && renderSeparator()}
         </React.Fragment>
       ))}
@@ -100,10 +100,10 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({
     return null
   }
   const time: Time = {
-    days: duration.asDays().toString(),
-    hours: duration.hours().toString(),
-    minutes: duration.minutes().toString(),
-    seconds: duration.seconds().toString(),
+    days: Math.floor(duration.as("days")).toString(),
+    hours: Math.floor(duration.as("hours") % 24).toString(),
+    minutes: Math.floor(duration.as("minutes") % 60).toString(),
+    seconds: Math.floor(duration.as("seconds") % 60).toString(),
   }
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
