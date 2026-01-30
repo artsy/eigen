@@ -31,18 +31,18 @@ interface Props {
   lotEndAt?: string | null
 }
 function formatDate(date: string) {
-  // Use Settings.defaultZone which mockTimezone sets in tests
-  // DateTime.local().zoneName respects Settings.defaultZone
-  const userZone = DateTime.local().zoneName
+  // DateTime.now().zoneName respects Settings.defaultZone
+  const userZone = DateTime.now().zoneName
   const dateTime = DateTime.fromISO(date).setZone(userZone)
 
   if (!dateTime.isValid) {
     return "Invalid DateTime"
   }
-  // Use uppercase A for AM/PM to match existing format expectations
-  const format = dateTime.minute === 0 ? "MMM d, h A ZZZZ" : "MMM d, h:mm A ZZZZ"
+  // Use lowercase 'a' for am/pm (Luxon doesn't have uppercase 'A' token)
+  // Then convert to uppercase to match existing format expectations
+  const format = dateTime.minute === 0 ? "MMM d, h a ZZZZ" : "MMM d, h:mm a ZZZZ"
 
-  return dateTime.toFormat(format)
+  return dateTime.toFormat(format).replace("am", "AM").replace("pm", "PM")
 }
 
 export function relevantStateData(
