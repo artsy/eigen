@@ -1,4 +1,4 @@
-import moment from "moment"
+import { DateTime } from "luxon"
 export interface ConversationItem {
   __typename: string
   createdAt?: string | null
@@ -15,16 +15,19 @@ export const groupConversationItems = <T extends ConversationItem>(items: T[]): 
   }
   // Make a copy of messages
   const remainingItems = [...items]
-  const groups = [[remainingItems.pop()!]]
+  const firstItem = remainingItems.pop()
+  if (!firstItem) return []
+  const groups = [[firstItem]]
   while (remainingItems.length > 0) {
     const lastGroup = groups[groups.length - 1]
     const lastItem = lastGroup[lastGroup.length - 1]
-    const currentItem = remainingItems.pop()!
+    const currentItem = remainingItems.pop()
+    if (!currentItem) break
 
-    const lastCreatedAt = moment(lastItem?.createdAt as string)
-    const currentCreatedAt = moment(currentItem?.createdAt as string)
-    const sameDay = lastCreatedAt.isSame(currentCreatedAt, "day")
-    const today = currentCreatedAt.isSame(moment(), "day")
+    const lastCreatedAt = DateTime.fromISO(lastItem?.createdAt as string)
+    const currentCreatedAt = DateTime.fromISO(currentItem?.createdAt as string)
+    const sameDay = lastCreatedAt.hasSame(currentCreatedAt, "day")
+    const today = currentCreatedAt.hasSame(DateTime.now(), "day")
 
     const isMessage = (message: ConversationItem) => message.__typename === "Message"
 

@@ -23,6 +23,7 @@ import {
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -31,7 +32,7 @@ import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { capitalize } from "lodash"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React, { Suspense, useEffect, useLayoutEffect, useState } from "react"
 import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -121,9 +122,13 @@ export const AuctionResult: React.FC<Props> = (props) => {
   }
   if (auctionResult.saleDate) {
     details.push(
-      makeRow("Sale date", moment(auctionResult.saleDate).utc().format("MMM D, YYYY"), {
-        testID: "saleDate",
-      })
+      makeRow(
+        "Sale date",
+        DateTime.fromISO(auctionResult.saleDate).toUTC().toFormat("MMM d, yyyy"),
+        {
+          testID: "saleDate",
+        }
+      )
     )
   }
   if (auctionResult.organization) {
@@ -254,9 +259,13 @@ export const AuctionResult: React.FC<Props> = (props) => {
             <Text variant="sm-display">{auctionResult.title}</Text>
             <Text variant="xs" color="mono60" my={0.5}>
               {[
-                moment(auctionResult.saleDate).utc().format("MMM D, YYYY"),
+                auctionResult.saleDate
+                  ? DateTime.fromISO(auctionResult.saleDate).toUTC().toFormat("MMM d, yyyy")
+                  : "",
                 auctionResult.organization,
-              ].join(" • ")}
+              ]
+                .filter(Boolean)
+                .join(" • ")}
             </Text>
           </Flex>
 
