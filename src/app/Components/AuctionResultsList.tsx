@@ -7,7 +7,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
 import {
@@ -44,13 +44,14 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   isLoadingNext,
   floatingHeaderTitle,
 }) => {
-  const groupedAuctionResults = groupBy(auctionResults, (item) =>
-    moment(item!.saleDate!).format("YYYY-MM")
-  )
+  const groupedAuctionResults = groupBy(auctionResults, (item) => {
+    if (!item?.saleDate) return "unknown"
+    return DateTime.fromISO(item.saleDate).toFormat("yyyy-MM")
+  })
 
   const groupedAuctionResultSections: ReadonlyArray<SectionListData<any, SectionT>> =
     Object.entries(groupedAuctionResults).map(([date, data]) => {
-      const sectionTitle = moment(date).format("MMMM, YYYY")
+      const sectionTitle = DateTime.fromISO(date).toFormat("MMMM, yyyy")
 
       return { sectionTitle, data }
     })

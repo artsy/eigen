@@ -1,5 +1,6 @@
 import { IANATimezone } from "app/utils/IANATimezone"
 import { saleTime } from "app/utils/saleTime"
+import { Settings } from "luxon"
 
 const timezones: Record<string, IANATimezone> = {
   ny: "America/New_York",
@@ -7,13 +8,8 @@ const timezones: Record<string, IANATimezone> = {
   de: "Europe/Berlin",
 }
 
-jest.mock("moment-timezone", () => {
-  const timezone = "America/New_York"
-  const momentMock = jest.requireActual("moment-timezone")
-  momentMock.tz.setDefault(timezone)
-  momentMock.tz.guess = () => timezone
-  return momentMock
-})
+// Set default timezone for Luxon
+Settings.defaultZone = "America/New_York"
 
 const times = {
   past20: "2020-08-01T15:00:00",
@@ -168,7 +164,7 @@ const pastNoStartAtSale: Sale = {
 
 beforeEach(() => {
   // @ts-ignore
-  Date.now = jest.fn(() => new Date(times.present + "Z"))
+  Date.now = jest.fn(() => new Date(times.present + "Z").getTime())
 })
 
 describe("saleTime", () => {
@@ -237,7 +233,7 @@ describe("#saleTime.relative", () => {
 
   it("handles breaks across years", () => {
     // @ts-ignore
-    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z"))
+    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z").getTime())
     expect(saleTime(liveSale2021).relative).toEqual("Starts in 2 days")
   })
 

@@ -16,10 +16,10 @@ export const LotProgressBar: React.FC<LotProgressBarProps> = (props) => {
   }
 
   const time = {
-    days: duration.asDays(),
-    hours: duration.hours(),
-    minutes: duration.minutes(),
-    seconds: duration.seconds(),
+    days: duration.as("days"),
+    hours: duration.hours,
+    minutes: duration.minutes,
+    seconds: duration.seconds,
   }
 
   const hasFinishedRunning =
