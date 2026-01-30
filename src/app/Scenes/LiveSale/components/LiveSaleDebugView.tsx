@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { BackButton, DEFAULT_HIT_SLOP, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
 import { Modal, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -23,26 +23,31 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
     artworkMetadata,
   } = useLiveAuction()
 
+  const color = useColor()
   const insets = useSafeAreaInsets()
   const currentLot = currentLotId ? lots.get(currentLotId) : null
 
   return (
-    <Modal visible={visible} animationType="slide" onRequestClose={onDismiss}>
-      <Flex flex={1} bg="white100" pt={insets.top} pb={insets.bottom}>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" mb={2}>
-          <Text variant="lg-display">Debug Info</Text>
-          <Button size="small" onPress={onDismiss}>
-            Close
-          </Button>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      onRequestClose={onDismiss}
+      backdropColor={color("mono0")}
+    >
+      <Flex pt={`${insets.top}px`} mx={2} mb={2} height={50} backgroundColor={color("mono0")}>
+        <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
+          <BackButton onPress={onDismiss} showX={true} hitSlop={DEFAULT_HIT_SLOP} />
         </Flex>
+      </Flex>
 
+      <Flex flex={1} px={2} pb={`${insets.bottom}px`} backgroundColor={color("mono0")}>
         <ScrollView>
           {/* Sale Info */}
-          <Flex mb={2}>
+          <Flex mb={2} mt={2}>
             <Text variant="sm-display" mb={1}>
               Sale Information
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Name: {saleName}
             </Text>
           </Flex>
@@ -60,22 +65,22 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
                 bg={isConnected ? "green100" : "red100"}
                 mr={1}
               />
-              <Text variant="sm" color="black60">
+              <Text variant="sm" color={color("mono60")}>
                 {isConnected ? "Connected" : "Disconnected"}
               </Text>
             </Flex>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Show Disconnect Warning: {showDisconnectWarning ? "Yes" : "No"}
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Sale On Hold: {isOnHold ? "Yes" : "No"}
             </Text>
             {!!onHoldMessage && (
-              <Text variant="sm" color="black60">
+              <Text variant="sm" color={color("mono60")}>
                 Hold Message: {onHoldMessage}
               </Text>
             )}
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Operator: {operatorConnected ? "Connected" : "Disconnected"}
             </Text>
           </Flex>
@@ -85,10 +90,10 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
             <Text variant="sm-display" mb={1}>
               Bidder Credentials
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Paddle Number: {credentials.paddleNumber || "Not registered"}
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Bidder ID: {credentials.bidderId || "N/A"}
             </Text>
           </Flex>
@@ -99,29 +104,29 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
               Current Lot (from WebSocket)
             </Text>
             {currentLot ? (
-              <Flex p={2} bg="black5" borderRadius={4}>
-                <Text variant="sm" color="black60" mb={1}>
+              <Flex p={2} bg={color("mono5")} borderRadius={4}>
+                <Text variant="sm" color={color("mono60")} mb={1}>
                   Lot ID: {currentLot.lotId}
                 </Text>
-                <Text variant="sm" color="black60" mb={1}>
+                <Text variant="sm" color={color("mono60")} mb={1}>
                   Status: {currentLot.derivedState.biddingStatus} -{" "}
                   {currentLot.derivedState.soldStatus}
                 </Text>
-                <Text variant="sm" color="black60" mb={1}>
+                <Text variant="sm" color={color("mono60")} mb={1}>
                   Reserve: {currentLot.derivedState.reserveStatus}
                 </Text>
-                <Text variant="sm" color="black60" mb={1}>
+                <Text variant="sm" color={color("mono60")} mb={1}>
                   Asking Price: ${(currentLot.derivedState.askingPriceCents / 100).toLocaleString()}
                 </Text>
-                <Text variant="sm" color="black60" mb={1}>
+                <Text variant="sm" color={color("mono60")} mb={1}>
                   Online Bids: {currentLot.derivedState.onlineBidCount}
                 </Text>
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color={color("mono60")}>
                   Total Events: {currentLot.eventHistory.length}
                 </Text>
               </Flex>
             ) : (
-              <Text variant="sm" color="black60">
+              <Text variant="sm" color={color("mono60")}>
                 No current lot
               </Text>
             )}
@@ -132,13 +137,13 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
             <Text variant="sm-display" mb={1}>
               Statistics
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Total Lots: {lots.size}
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Artwork Metadata Entries: {artworkMetadata.size}
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color={color("mono60")}>
               Pending Bids: {pendingBids.size}
             </Text>
           </Flex>
@@ -150,8 +155,8 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
                 Pending Bids
               </Text>
               {Array.from(pendingBids.entries()).map(([key, bid]) => (
-                <Flex key={key} p={1} bg="black5" mb={1} borderRadius={4}>
-                  <Text variant="xs" color="black60">
+                <Flex key={key} p={1} bg={color("mono5")} mb={1} borderRadius={4}>
+                  <Text variant="xs" color={color("mono60")}>
                     Lot {bid.lotId}: ${(bid.amountCents / 100).toLocaleString()} - {bid.status}
                     {!!bid.error && ` (${bid.error})`}
                   </Text>
@@ -168,7 +173,7 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
             {Array.from(lots.keys())
               .slice(0, 5)
               .map((lotId) => (
-                <Text key={lotId} variant="xs" color="black60" fontFamily="monospace">
+                <Text key={lotId} variant="xs" color={color("mono60")}>
                   {lotId}
                 </Text>
               ))}
@@ -182,7 +187,7 @@ export const LiveSaleDebugView: React.FC<LiveSaleDebugViewProps> = ({ visible, o
             {Array.from(artworkMetadata.keys())
               .slice(0, 5)
               .map((key) => (
-                <Text key={key} variant="xs" color="black60" fontFamily="monospace">
+                <Text key={key} variant="xs" color={color("mono60")}>
                   {key}
                 </Text>
               ))}
