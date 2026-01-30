@@ -9,12 +9,18 @@ source 'https://cdn.cocoapods.org/'
 require 'dotenv'
 Dotenv.load('../.env.shared')
 
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+# for react-native-permissions
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
 
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
@@ -30,6 +36,9 @@ inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
 
+setup_permissions([
+  'Notifications'
+])
 
 plugin 'cocoapods-patch'
 
