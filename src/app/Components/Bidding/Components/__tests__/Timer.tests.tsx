@@ -2,7 +2,7 @@ import { act, screen } from "@testing-library/react-native"
 import { Countdown, Timer } from "app/Components/Bidding/Components/Timer"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
+import { DateTime, Duration } from "luxon"
 
 describe("Timer", () => {
   const SECONDS = 1000
@@ -20,8 +20,8 @@ describe("Timer", () => {
     // Thursday, May 10, 2018 8:22:32.000 PM UTC
     Date.now = jest.fn(() => DATE_NOW)
 
-    futureTime = moment(DATE_NOW).add(1, "second").toISOString()
-    pastTime = moment(DATE_NOW).subtract(1, "second").toISOString()
+    futureTime = DateTime.fromMillis(DATE_NOW).plus({ seconds: 1 }).toISO()!
+    pastTime = DateTime.fromMillis(DATE_NOW).minus({ seconds: 1 }).toISO()!
   })
 
   afterEach(() => {
@@ -118,7 +118,7 @@ describe("Timer", () => {
     expect(screen.getByText("Closes May 14, 1 PM PDT")).toBeTruthy()
   })
 
-  describe("displays the minutes when the sale does not end on the hour", () => {
+  it("displays the minutes when the sale does not end on the hour", () => {
     mockTimezone("America/New_York")
     renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
 
@@ -181,7 +181,7 @@ describe("Timer", () => {
 
 describe("Countdown", () => {
   // 10h 3m
-  const duration = moment.duration(36180000)
+  const duration = Duration.fromMillis(36180000)
 
   afterEach(() => {
     jest.clearAllMocks()

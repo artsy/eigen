@@ -3,14 +3,14 @@ import { Echo } from "app/store/config/EchoModel"
 import * as loads from "app/utils/jsonFiles"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import fetchMock from "jest-fetch-mock"
-import moment from "moment"
+import { DateTime } from "luxon"
 
 const appJsonSpy = jest.spyOn(loads, "appJson")
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
-const originalDate = moment("2021-03-20T14:41:42.845Z")
-const earlierDate = originalDate.clone().subtract(2, "days")
-const laterDate = originalDate.clone().add(2, "days")
+const originalDate = DateTime.fromISO("2021-03-20T14:41:42.845Z")
+const earlierDate = originalDate.minus({ days: 2 })
+const laterDate = originalDate.plus({ days: 2 })
 
 const appVersion = (version: string) => ({
   version,
@@ -22,7 +22,7 @@ const appVersion = (version: string) => ({
 const _echoLaunchJsonActual = loads.echoLaunchJson()
 const echo = (overrides: Partial<Echo>): Echo => ({
   ..._echoLaunchJsonActual,
-  updated_at: originalDate.toISOString(),
+  updated_at: originalDate.toISO() || "",
   ...overrides,
 })
 echoLaunchJsonSpy.mockReturnValue(echo({}))
@@ -41,15 +41,15 @@ const forceUpdateMessage = () => {
 
 describe("Echo", () => {
   it("uses the bundled version when the app loads", () => {
-    expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).toEqual(originalDate.toISO())
   })
 
   it("fetches the latest version after the app loads", async () => {
     // rehydration doesn't happen at test time by default, but always happens in actual usage
     // so if we want to test things triggered by rehydration we need to explicitly call it here
-    expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).toEqual(originalDate.toISO())
     const updatedEcho = echo({
-      updated_at: laterDate.toISOString(),
+      updated_at: laterDate.toISO()!,
     })
     fetchMock.mockResponseOnce(JSON.stringify(updatedEcho))
 
@@ -57,26 +57,26 @@ describe("Echo", () => {
     await flushPromiseQueue()
     expect(fetchMock).toHaveBeenCalledWith("https://echo.artsy.net/Echo.json")
 
-    expect(getEchoState()?.updated_at).not.toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).not.toEqual(originalDate.toISO())
     expect(getEchoState()?.updated_at).toEqual(updatedEcho.updated_at)
   })
 
   it("is rehydrated if the stored version is newer than the bundled version", () => {
-    expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).toEqual(originalDate.toISO())
     const newEcho = echo({
-      updated_at: laterDate.toISOString(),
+      updated_at: laterDate.toISO()!,
     })
     GlobalStore.actions.rehydrate({ artsyPrefs: { echo: { state: newEcho } } })
     expect(getEchoState()?.updated_at).toEqual(newEcho.updated_at)
   })
 
   it("is not rehydrated if the stored version is older than the bundled version", () => {
-    expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).toEqual(originalDate.toISO())
     const oldEcho = echo({
-      updated_at: earlierDate.toISOString(),
+      updated_at: earlierDate.toISO()!,
     })
     GlobalStore.actions.rehydrate({ artsyPrefs: { echo: { state: oldEcho } } })
-    expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
+    expect(getEchoState()?.updated_at).toEqual(originalDate.toISO())
     expect(getEchoState()?.updated_at).not.toEqual(oldEcho.updated_at)
   })
 
