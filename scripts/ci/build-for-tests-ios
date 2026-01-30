@@ -21,5 +21,19 @@ cd build-cache-provider && npx tsc && cd ..
 # ./scripts/ci/upload-sim-app
 # fi
 
+# Ensure xcode-select is pointing to the correct Xcode
+sudo xcode-select -s /Applications/Xcode.app
 
-bundle exec npx expo run:ios
+# Wait for simulator to be ready (it's pre-booted in CI)
+echo "Waiting for simulator to be ready..."
+xcrun simctl list devices | grep -q "Booted" && echo "Simulator is booted" || echo "No booted simulator found"
+
+# Get the booted simulator UDID
+SIMULATOR_UDID=$(xcrun simctl list devices | grep "Booted" | grep -E -o -i "([0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12})" | head -1)
+if [ -n "$SIMULATOR_UDID" ]; then
+	echo "Using simulator: $SIMULATOR_UDID"
+	bundle exec npx expo run:ios --device "$SIMULATOR_UDID"
+else
+	echo "No booted simulator found, running without device specification"
+	bundle exec npx expo run:ios
+fi
