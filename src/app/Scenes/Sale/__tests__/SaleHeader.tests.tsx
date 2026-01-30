@@ -4,7 +4,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { SaleHeaderContainer } from "app/Scenes/Sale/Components/SaleHeader"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import moment from "moment"
+import { DateTime } from "luxon"
 import { Animated } from "react-native"
 import { graphql } from "react-relay"
 
@@ -51,7 +51,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when cascading end time is enabled", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: moment().subtract(1, "day").toISOString(),
+        endAt: DateTime.now().minus({ days: 1 }).toISO(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {
@@ -70,7 +70,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when an auction is still active", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: moment().add(1, "day").toISOString(),
+        endAt: DateTime.now().plus({ days: 1 }).toISO(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {

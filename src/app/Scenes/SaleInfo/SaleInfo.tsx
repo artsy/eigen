@@ -13,7 +13,7 @@ import { defaultRules } from "app/utils/renderMarkdown"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { sendEmail } from "app/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 import { useEffect, useRef } from "react"
 import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -66,11 +66,20 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
   }, [])
 
   const renderLiveBiddingOpening = () => {
-    if (!sale.liveStartAt || !moment().isSameOrBefore(moment(sale.liveStartAt)) || !sale.timeZone) {
+    if (
+      !sale.liveStartAt ||
+      !(DateTime.now() <= DateTime.fromISO(sale.liveStartAt)) ||
+      !sale.timeZone
+    ) {
       return null
     }
 
-    const tz = moment.tz.guess(true)
+    const tz = DateTime.local().zoneName
+    const liveStartTime = DateTime.fromISO(sale.liveStartAt).setZone(tz)
+    const formattedTime = liveStartTime
+      .toFormat("h:mma ZZZZ")
+      .replace("AM", "am")
+      .replace("PM", "pm")
 
     return (
       <Flex mb={1}>
@@ -78,9 +87,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           Live bidding opens on
         </Text>
         <Text variant="sm" color="mono100" fontSize={15}>
-          {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt)
-            .tz(tz)
-            .format("h:mma z")}`}
+          {`${liveStartTime.toFormat("EEEE, MMMM, d, yyyy")} at ${formattedTime}`}
         </Text>
       </Flex>
     )
