@@ -12705,7 +12705,7 @@ __metadata:
     limiter: "npm:2.1.0"
     lint-staged: "npm:13.2.3"
     lodash: "npm:4.17.21"
-    luxon: "npm:2.5.2"
+    luxon: "npm:^3.7.2"
     moment: "npm:2.29.4"
     moment-timezone: "npm:0.5.40"
     moti: "npm:0.30.0"
@@ -18369,10 +18369,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"luxon@npm:2.5.2":
-  version: 2.5.2
-  resolution: "luxon@npm:2.5.2"
-  checksum: 10c0/c93b71c4ae74c440982f39832159b9311eca6db1e55d032d30a3f9354e6ceb16d576158c5dc9f847eb15c481557063bd61defdb96ee0953f8df2c57cd91e0b13
+"luxon@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "luxon@npm:3.7.2"
+  checksum: 10c0/ed8f0f637826c08c343a29dd478b00628be93bba6f068417b1d8896b61cb61c6deacbe1df1e057dbd9298334044afa150f9aaabbeb3181418ac8520acfdc2ae2
   languageName: node
   linkType: hard
 
