@@ -1,7 +1,9 @@
-import { Button, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text, useColor, useTheme } from "@artsy/palette-mobile"
 import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
-import { Animated } from "react-native"
+import { Animated, useWindowDimensions } from "react-native"
 import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
+
+const IMAGE_CONTAINER_HEIGHT = 300
 
 interface LiveLotCarouselCardProps {
   lot: LotState
@@ -30,8 +32,17 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
   const scale = useSpringValue(isFocused ? 1.0 : 0.85)
   const opacity = useSpringValue(isFocused ? 1.0 : 0.6)
   const color = useColor()
+  const { width: screenWidth } = useWindowDimensions()
+  const { space } = useTheme()
 
   const isBidDisabled = lot.derivedState.biddingStatus !== "Open"
+
+  // Calculate image dimensions to fit within container while maintaining aspect ratio
+  const imageAspectRatio = artworkMetadata?.artwork?.image?.aspectRatio ?? 1
+  // Account for card margins and padding (mx={1} on card = 8px each side)
+
+  const availableWidth = screenWidth - space(2) * 2
+  const imageWidth = Math.min(availableWidth, IMAGE_CONTAINER_HEIGHT * imageAspectRatio)
 
   return (
     <Animated.View
@@ -45,19 +56,21 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
       <Flex flex={1} bg={color("mono0")} borderRadius={8} overflow="hidden" mx={1}>
         {/* Artwork image */}
         <Flex
-          height={300}
-          bg={color("mono5")}
+          height={IMAGE_CONTAINER_HEIGHT}
+          bg={color("mono0")}
           alignItems="center"
           justifyContent="center"
           borderBottomWidth={1}
           borderBottomColor={color("mono10")}
+          width="100%"
         >
           {artworkMetadata?.artwork?.image?.url ? (
             <Image
               src={artworkMetadata.artwork.image.url}
-              height={300}
-              aspectRatio={artworkMetadata.artwork.image.aspectRatio}
-              style={{ width: "100%" }}
+              width={imageWidth}
+              height={IMAGE_CONTAINER_HEIGHT}
+              aspectRatio={imageAspectRatio}
+              resizeMode="contain"
             />
           ) : (
             <>
