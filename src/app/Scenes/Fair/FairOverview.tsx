@@ -1,5 +1,5 @@
 import { ChevronSmallRightIcon } from "@artsy/icons/native"
-import { Flex, Separator, Spacer, Spinner, Tabs, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { FairOverviewQuery } from "__generated__/FairOverviewQuery.graphql"
 import { FairOverview_fair$key } from "__generated__/FairOverview_fair.graphql"
 import { ReadMore } from "app/Components/ReadMore"
@@ -12,6 +12,7 @@ import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { compact } from "lodash"
 import { FC } from "react"
 import { Platform } from "react-native"
 import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
@@ -22,7 +23,6 @@ interface FairOverviewProps {
 }
 
 export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
-  const space = useSpace()
   const data = useFragment(fragment, fair)
 
   if (!data) {
@@ -44,40 +44,56 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
     !!data.links ||
     !!data.contact ||
     !!data.tickets
-  const isEmpty = !previewText && !hasArticles && !hasCollections && !hasFollowedArtistArtworks
+
+  const sections = compact([
+    !!previewText && {
+      key: "summary",
+      content: (
+        <Flex pt={2} px={2}>
+          <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
+        </Flex>
+      ),
+    },
+    !!canShowMoreInfoLink && {
+      key: "showMoreInfoLink",
+      content: (
+        <RouterLink to={`/fair/${data.slug}/info`}>
+          <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center" px={2}>
+            <Text variant="sm">More info</Text>
+            <ChevronSmallRightIcon mr="-5px" mt="4px" />
+          </Flex>
+        </RouterLink>
+      ),
+    },
+    !!hasArticles && {
+      key: "editorial",
+      content: <FairEditorialFragmentContainer fair={data} />,
+    },
+    !!hasCollections && {
+      key: "collections",
+      content: <FairCollectionsFragmentContainer fair={data} />,
+    },
+    !!hasFollowedArtistArtworks && {
+      key: "followedArtistArtworks",
+      content: <FairFollowedArtistsRailFragmentContainer fair={data} />,
+    },
+  ])
 
   return (
-    <Tabs.ScrollView style={{ paddingTop: space(2) }}>
-      {!isEmpty ? (
-        <Flex gap={2}>
-          {!!previewText && (
-            <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
-          )}
-          {!!canShowMoreInfoLink && (
-            <RouterLink to={`/fair/${data.slug}/info`}>
-              <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
-                <Text variant="sm">More info</Text>
-                <ChevronSmallRightIcon mr="-5px" mt="4px" />
-              </Flex>
-            </RouterLink>
-          )}
-
-          <Separator />
-
-          <Flex mx={-2} gap={4}>
-            {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}
-            {!!hasCollections && <FairCollectionsFragmentContainer fair={data} />}
-            {!!hasFollowedArtistArtworks && (
-              <FairFollowedArtistsRailFragmentContainer fair={data} />
-            )}
+    <Tabs.FlashList
+      data={sections}
+      renderItem={({ item }) => item.content}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
+      ListEmptyComponent={() => {
+        return (
+          <Flex pt={2}>
+            <FairEmptyStateFragmentContainer fair={data} />
           </Flex>
-
-          <Spacer y={4} />
-        </Flex>
-      ) : (
-        <FairEmptyStateFragmentContainer fair={data} />
-      )}
-    </Tabs.ScrollView>
+        )
+      }}
+      keyExtractor={(item) => item.key}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
+    />
   )
 }
 
