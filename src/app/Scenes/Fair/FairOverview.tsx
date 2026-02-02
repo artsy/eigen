@@ -21,7 +21,6 @@ interface FairOverviewProps {
 }
 
 export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
-  const space = useSpace()
   const data = useFragment(fragment, fair)
 
   if (!data) {
@@ -43,15 +42,7 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
     !!data.links ||
     !!data.contact ||
     !!data.tickets
-  const isEmpty = !previewText && !hasArticles && !hasCollections && !hasFollowedArtistArtworks
 
-  if (isEmpty) {
-    return (
-      <Tabs.ScrollView style={{ paddingTop: space(2) }}>
-        <FairEmptyStateFragmentContainer fair={data} />
-      </Tabs.ScrollView>
-    )
-  }
   const sections = compact([
     !!previewText && {
       key: "summary",
@@ -87,12 +78,19 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
   ])
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       data={sections}
       renderItem={({ item }) => item.content}
       ItemSeparatorComponent={() => <Spacer y={2} />}
+      ListEmptyComponent={() => {
+        return (
+          <Flex pt={2}>
+            <FairEmptyStateFragmentContainer fair={data} />
+          </Flex>
+        )
+      }}
       keyExtractor={(item) => item.key}
-      contentContainerStyle={{ marginHorizontal: 0 }}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
     />
   )
 }
