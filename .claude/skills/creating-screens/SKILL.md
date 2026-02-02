@@ -48,6 +48,14 @@ Use this checklist to track your work:
 }
 ```
 
+Note: **[Android only]**: If you want to enable deep linking for your new screen, add the route to `src/main/AndroidManifest.xml`.
+
+```xml
+...
+<data android:pathPrefix="/my-screen" />
+...
+```
+
 ## Critical Rules
 
 - **Location**: `/src/app/Scenes/FeatureName/ScreenName.tsx`
