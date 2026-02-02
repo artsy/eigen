@@ -89,30 +89,23 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
           <Flex p={2} gap={2}>
             {/* Lot number and artist */}
             <Flex>
-              <Text variant="xs" color={color("mono60")}>
-                Lot {lot.lotId}
-              </Text>
               {!!artworkMetadata?.artwork?.artistNames && (
-                <Text variant="lg" weight="medium" numberOfLines={1}>
+                <Text variant="md" weight="medium" numberOfLines={1}>
                   {artworkMetadata.artwork.artistNames}
                 </Text>
               )}
               {!!artworkMetadata?.artwork?.title && (
-                <Text variant="sm" color={color("mono60")} numberOfLines={2}>
+                <Text variant="sm" numberOfLines={2}>
                   {artworkMetadata.artwork.title}
                 </Text>
               )}
+              {/* Estimate range */}
+              {!!artworkMetadata?.estimate && (
+                <Flex>
+                  <Text variant="sm">Estimate: {artworkMetadata.estimate}</Text>
+                </Flex>
+              )}
             </Flex>
-
-            {/* Estimate range */}
-            {!!artworkMetadata?.estimate && (
-              <Flex>
-                <Text variant="xs" color={color("mono60")}>
-                  Estimate
-                </Text>
-                <Text variant="sm">{artworkMetadata.estimate}</Text>
-              </Flex>
-            )}
 
             {/* Asking price */}
             <Flex>

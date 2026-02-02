@@ -65,18 +65,11 @@ const LiveSaleContent: React.FC = () => {
       )}
 
       <Flex flex={1} p={2}>
-        {/* Sale Header */}
-        <Text variant="lg-display" mb={2}>
-          {saleName}
-        </Text>
-
-        {/* Live Lot Carousel */}
         <Flex flex={1}>
           <LiveLotCarousel />
         </Flex>
       </Flex>
 
-      {/* Debug View Modal */}
       {!!(__DEV__ || !!showDebugButton) && (
         <LiveSaleDebugView visible={showDebugView} onDismiss={() => setShowDebugView(false)} />
       )}
