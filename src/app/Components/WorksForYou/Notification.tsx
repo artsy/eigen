@@ -58,7 +58,7 @@ export class Notification extends React.Component<Props> {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <Flex mx={-2} my={2}>
+            <Flex my={2}>
               <GenericGrid artworks={artworks} />
             </Flex>
           </View>

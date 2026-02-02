@@ -43,7 +43,7 @@ export const LocationStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
         <KeyboardAvoidingContainer style={{ justifyContent: "space-between" }}>
           <Flex px={2} onLayout={() => ref.current?.focus()}>
             <Text variant="lg-display">Add your primary location</Text>
@@ -69,9 +69,9 @@ export const LocationStep: FC = () => {
               inputRef={ref}
             />
           </Flex>
-
-          <Footer isFormDirty={!!location} onGoNext={goNext} />
         </KeyboardAvoidingContainer>
+
+        <Footer isFormDirty={!!location} onGoNext={goNext} />
       </Screen.Body>
     </Screen>
   )

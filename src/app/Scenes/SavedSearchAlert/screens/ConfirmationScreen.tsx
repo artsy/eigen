@@ -216,7 +216,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 
       <Spacer y={2} />
 
-      <Flex mx={-2}>
+      <Flex>
         <GenericGrid
           artworks={artworks}
           hideSaveIcon

@@ -17,92 +17,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Free Disk Space
-        uses: ./.github/actions/free-disk-space-android
-
-      - uses: webfactory/ssh-agent@v0.9.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Set up Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.7"
-          bundler-cache: true
-
-      - name: Install Ruby dependencies
-        run: bundle install
-
-      - name: Install ninja
-        run: sudo apt-get update && sudo apt-get install ninja-build
-
-      - name: Setup node.js
-        uses: ./.github/actions/setup-node
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
 
-      - name: Set up environment for CI
-        run: |
-          touch .env.shared && touch keys.shared.json
-          scripts/setup/setup-env-for-ci
-          echo "Environment setup completed"
-
-      - name: Cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup SSH agent
+        uses: ./.github/actions/setup-ssh
         with:
-          path: .yarn/cache
-          key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn-v4-${{ runner.os }}-
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install Node.js dependencies
-        run: yarn install --immutable
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
 
-      - name: Cache Gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            android/.gradle
-          key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-v2-${{ runner.os }}-
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
 
-      - name: Download fonts from s3
-        run: ./scripts/setup/download-fonts
-
-      - name: Download android assets
-        run: ./scripts/setup/download-assets-android
-
-      - name: Run relay compiler
-        run: yarn relay
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
 
       - name: Update echo
-        run: ./scripts/setup/update-echo
-
-      - name: Cache bin Yarn cache
-        uses: actions/cache@v4
-        with:
-          path: bin/.yarn/cache
-          key: yarn-bin-${{ runner.os }}-${{ hashFiles('bin/yarn.lock') }}
-          restore-keys: |
-            yarn-bin-${{ runner.os }}-
+        uses: ./.github/actions/setup-update-echo
 
       - name: Install bin modules
-        run: ./scripts/setup/install-bin
+        uses: ./.github/actions/setup-bin-modules
 
       - name: Get next Android version code and set environment variable
         run: |

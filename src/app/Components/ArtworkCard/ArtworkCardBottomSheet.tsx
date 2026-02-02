@@ -1,14 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { SkeletonText, Tabs, useColor } from "@artsy/palette-mobile"
+import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { ArtworkCardBottomSheetBackdrop } from "app/Components/ArtworkCard/ArtworkCardBottomSheetBackdrop"
 import { ArtworkCardBottomSheetFooterQueryRenderer } from "app/Components/ArtworkCard/ArtworkCardBottomSheetFooter"
 import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/ArtworkCardBottomSheetHandle"
 import {
   ArtworkCardBottomSheetTabs,
-  TABS,
+  ArtworkCardBottomSheetTabsSkeleton,
 } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
-import { InfiniteDiscoveryAboutTheWorkTabSkeleton } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -84,14 +83,7 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
             key={`artwork_card_bottom_sheet_tabs_${artworkID}`}
           />
         ) : (
-          <Tabs>
-            <Tabs.Tab name={TABS[0].name} label={TABS[0].name}>
-              <InfiniteDiscoveryAboutTheWorkTabSkeleton />
-            </Tabs.Tab>
-            <Tabs.Tab name={TABS[1].name} label={TABS[1].name}>
-              <SkeletonText variant="xs">{TABS[1].name}</SkeletonText>
-            </Tabs.Tab>
-          </Tabs>
+          <ArtworkCardBottomSheetTabsSkeleton />
         )}
       </BottomSheet>
     </>

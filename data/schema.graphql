@@ -474,6 +474,7 @@ type Alert {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -1860,6 +1861,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -1934,6 +1936,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     slugs: [String!]
   ): [MarketingCollection!]!
   meta(page: ArtistPage = ABOUT): ArtistMeta!
+    @deprecated(reason: "Use `name` and `biographyBlurb` fields to build meta tags client-side")
   middle: String
   name: String
   nationality: String
@@ -2301,6 +2304,7 @@ type ArtistPartnerEdge {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -2463,6 +2467,7 @@ type ArtistSeries implements Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -3367,6 +3372,7 @@ type ArtworkFilterNode {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -3457,6 +3463,10 @@ enum ArtworkImportError {
   INVALID_CERTIFICATE_OF_AUTHENTICITY
   INVALID_CLASSIFICATION
   INVALID_CURRENCY
+  INVALID_DATE_APPROXIMATE
+  INVALID_DATE_EARLIEST_YEAR
+  INVALID_DATE_LATEST_YEAR
+  INVALID_DATE_MODE
   INVALID_DEPTH
   INVALID_DIAMETER
   INVALID_DIMENSION_METRIC
@@ -3475,6 +3485,7 @@ enum ArtworkImportError {
   INVALID_POSITION
   INVALID_PRICE
   INVALID_RESERVE
+  INVALID_RESERVE_UNKNOWN
   INVALID_SIGNATURE
   INVALID_TITLE
   INVALID_WEIGHT
@@ -3496,6 +3507,11 @@ type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
   currency: String!
+  dateApproximate: Boolean
+  dateCustom: String
+  dateEarliestYear: Int
+  dateLatestYear: Int
+  dateMode: DateMode
   dimensionMetric: String!
   errors: [ArtworkImportRowError!]!
   estimate: Money
@@ -3601,6 +3617,11 @@ type ArtworkImportTransformedData {
   confidentialNotes: String
   currency: String
   date: String
+  dateApproximate: String
+  dateCustom: String
+  dateEarliestYear: String
+  dateLatestYear: String
+  dateMode: String
   depth: String
   diameter: String
   dimensionMetric: String
@@ -3628,6 +3649,7 @@ type ArtworkImportTransformedData {
   provenance: String
   publisher: String
   reserve: String
+  reserveUnknown: String
   saleSlug: String
   series: String
   signature: [String]
@@ -4808,7 +4830,7 @@ type BankAccount {
   accountHolderName: String
 
   # Bank name
-  bankName: String!
+  bankName: String
 
   # A globally unique ID.
   id: ID!
@@ -11024,6 +11046,12 @@ type CurrentEvent {
 # Date in YYYY-MM-DD format
 scalar Date
 
+enum DateMode {
+  CUSTOM
+  YEAR
+  YEAR_RANGE
+}
+
 type DaySchedule {
   dayOfWeek: String
   endTime: Int
@@ -11116,6 +11144,27 @@ input DeleteArtworkImageInput {
 type DeleteArtworkImagePayload {
   artworkOrError: ArtworkMutationType
   clientMutationId: String
+}
+
+type DeleteArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteArtworkImportInput {
+  artworkImportID: String!
+  clientMutationId: String
+}
+
+type DeleteArtworkImportPayload {
+  artworkImportOrError: DeleteArtworkImportResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtworkImportResponseOrError = DeleteArtworkImportFailure | DeleteArtworkImportSuccess
+
+type DeleteArtworkImportSuccess {
+  # Whether the deletion job has been queued. Deletion happens asynchronously in the background.
+  queued: Boolean
 }
 
 input DeleteArtworkMutationInput {
@@ -12298,6 +12347,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -12594,6 +12644,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -13133,6 +13184,7 @@ input FilterArtworksInput {
   sold: Boolean
   sort: String
   tagID: String
+  viewingRoomID: ID
   visibilityLevel: String
   width: String
 }
@@ -13684,6 +13736,7 @@ type Gene implements Node & Searchable {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -15565,6 +15618,7 @@ type MarketingCollection implements Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -16994,6 +17048,9 @@ type Mutation {
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
 
+  # Queues an asynchronous job to delete an artwork import and associated unpublished artworks. Published artworks are preserved. Deletion happens in the background and results are sent via WebSocket.
+  deleteArtworkImport(input: DeleteArtworkImportInput!): DeleteArtworkImportPayload
+
   # Delete an artwork template.
   deleteArtworkTemplate(input: DeleteArtworkTemplateInput!): DeleteArtworkTemplatePayload
 
@@ -18030,6 +18087,9 @@ type Order {
   # List of alpha-2 country codes to which the order can be shipped
   availableShippingCountries: [String!]!
 
+  # List of available Stripe payment method types for the order
+  availableStripePaymentMethodTypes: [OrderStripePaymentMethodTypeEnum!]!
+
   # Check if the bank account has sufficient balance for this order
   bankAccountBalanceCheck: BankAccountBalanceCheck
 
@@ -18284,6 +18344,12 @@ enum OrderSourceEnum {
   INQUIRY
   PARTNER_OFFER
   PRIVATE_SALE
+}
+
+enum OrderStripePaymentMethodTypeEnum {
+  card
+  sepa_debit
+  us_bank_account
 }
 
 type OrderedSet {
@@ -18671,6 +18737,7 @@ type Partner implements Node {
     last: Int
     showID: String
   ): PartnerDocumentConnection
+  email: String
 
   # Suggested filters for associated artworks
   featuredKeywords: [String!]!
@@ -18760,6 +18827,7 @@ type Partner implements Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -19127,6 +19195,7 @@ type PartnerArtist {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -19322,6 +19391,7 @@ type PartnerArtistEdge {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -20662,6 +20732,7 @@ type Query {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -20669,6 +20740,9 @@ type Query {
   # A connection of artworks for a user.
   artworksForUser(
     after: String
+
+    # The ID of the marketing collection to be used for backfill
+    backfillMarketingCollectionID: String
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
@@ -21057,6 +21131,7 @@ type Query {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -23596,6 +23671,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -24160,6 +24236,7 @@ type Tag implements Node {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -27154,6 +27231,7 @@ type Viewer {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection
@@ -27161,6 +27239,9 @@ type Viewer {
   # A connection of artworks for a user.
   artworksForUser(
     after: String
+
+    # The ID of the marketing collection to be used for backfill
+    backfillMarketingCollectionID: String
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
@@ -27429,6 +27510,7 @@ type Viewer {
     sold: Boolean
     sort: String
     tagID: String
+    viewingRoomID: ID
     visibilityLevel: String
     width: String
   ): FilterArtworksConnection

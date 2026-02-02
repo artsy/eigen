@@ -9,6 +9,7 @@ import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialB
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -31,15 +32,19 @@ interface InquiryModalProps {
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
+  const { variant } = useExperimentVariant("topaz_retire-inquiry-template-messages")
   const { state, dispatch } = useArtworkInquiryContext()
   const color = useColor()
   const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
 
+  const retireTemplatesExperimentEnabled = !!variant.enabled && variant.name === "experiment"
+
   const artwork = useFragment(artworkFragment, _artwork)
 
-  const [message, setMessage] = useState<string>(() => randomAutomatedMessage())
+  const defaultMessageState = retireTemplatesExperimentEnabled ? "" : () => randomAutomatedMessage()
+  const [message, setMessage] = useState<string>(defaultMessageState)
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
 
@@ -58,11 +63,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       return
     }
 
-    setTimeout(() => setMessage(randomAutomatedMessage()), 500)
+    if (!retireTemplatesExperimentEnabled) {
+      setTimeout(() => setMessage(randomAutomatedMessage()), 500)
+    }
+
     if (state.shippingLocation || state.inquiryQuestions.length) {
       dispatch({ type: "resetForm", payload: null })
     }
-  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible])
+  }, [
+    state.inquiryQuestions.length,
+    state.shippingLocation,
+    state.inquiryModalVisible,
+    retireTemplatesExperimentEnabled,
+    dispatch,
+  ])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -127,7 +141,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
             leftButtonText="Cancel"
             onLeftButtonPress={handleDismiss}
             rightButtonText="Send"
-            rightButtonDisabled={state.inquiryQuestions.length === 0 && message === ""}
+            rightButtonDisabled={state.inquiryQuestions.length === 0 && message.trim() === ""}
             onRightButtonPress={() => sendInquiry(message)}
           >
             Contact Gallery
@@ -184,10 +198,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               >
                 <Input
                   multiline
-                  placeholder="Add a custom note..."
+                  placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."
                   title="Add message"
                   accessibilityLabel="Add message"
-                  value={message ? message : ""}
+                  value={message}
                   onChangeText={setMessage}
                   onFocus={scrollToInput}
                   style={{ justifyContent: "flex-start" }}

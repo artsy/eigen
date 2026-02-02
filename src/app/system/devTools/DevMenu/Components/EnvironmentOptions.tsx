@@ -1,7 +1,7 @@
 import { ChevronSmallRightIcon } from "@artsy/icons/native"
 import { Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, globalStoreInstance } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
@@ -140,7 +140,10 @@ function envMenuOption(
       if (env !== currentEnv) {
         GlobalStore.actions.devicePrefs.environment.setEnv(env)
         onClose()
-        GlobalStore.actions.auth.signOut()
+        // No need to sign out if the user is already logged out
+        if (!!globalStoreInstance().getState().auth.userID) {
+          GlobalStore.actions.auth.signOut()
+        }
         _globalCacheRef?.clear()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)

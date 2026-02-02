@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, TextProps, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, TextProps, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$key } from "__generated__/GenericGrid_artworks.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import Spinner from "app/Components/Spinner"
@@ -9,7 +9,6 @@ import { MasonryArtworkItem } from "app/utils/masonryHelpers"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
-import { StyleSheet, View, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
@@ -22,8 +21,9 @@ interface Props {
   isLoading?: boolean
   itemMargin?: number
   onPress?: (artworkID: string) => void
-  saleInfoTextStyle?: TextProps
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
+  trackingFlow?: string
+  saleInfoTextStyle?: TextProps
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
@@ -37,7 +37,10 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   isLoading,
   onPress,
   trackTap,
+  saleInfoTextStyle,
+  trackingFlow,
 }) => {
+  const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
 
   return (
@@ -47,38 +50,22 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <Flex>
-        <View style={styles.container} accessibilityLabel="Artworks Content View">
+        <Flex accessibilityLabel="Artworks Content View" mx={-2}>
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
             scrollEnabled={false}
             hidePartner={hidePartner}
             trackTap={trackTap}
             onPress={onPress}
+            saleInfoTextStyle={saleInfoTextStyle}
+            trackingFlow={trackingFlow}
           />
-        </View>
-        {isLoading ? <Spinner style={styles.spinner} testID="spinner" /> : null}
+        </Flex>
+        {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}
       </Flex>
     </AnalyticsContextProvider>
   )
 }
-
-interface Styles {
-  container: ViewStyle
-  section: ViewStyle
-  spinner: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flexDirection: "row",
-  },
-  section: {
-    flexDirection: "column",
-  },
-  spinner: {
-    marginTop: 20,
-  },
-})
 
 const genericGridFragment = graphql`
   fragment GenericGrid_artworks on Artwork @relay(plural: true) {

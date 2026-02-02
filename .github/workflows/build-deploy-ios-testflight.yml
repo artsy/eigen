@@ -17,89 +17,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - uses: webfactory/ssh-agent@v0.9.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.1.7"
-          bundler-cache: true
-
-      - name: Install Ruby dependencies
-        run: bundle install
-
-      - name: Setup node.js
-        uses: ./.github/actions/setup-node
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
 
-      - name: Set up environment for CI
-        run: |
-          touch .env.shared && touch keys.shared.json
-          scripts/setup/setup-env-for-ci
-          echo "Environment setup completed"
-
-      - name: Install homebrew deps
-        run: brew bundle
-
-      - name: Cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v4
+      - name: Setup SSH agent
+        uses: ./.github/actions/setup-ssh
         with:
-          path: .yarn/cache
-          key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            yarn-v4-${{ runner.os }}-
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install Node.js dependencies
-        run: yarn install --immutable
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
 
-      - name: Cache cocoapods
-        id: cache-pods
-        uses: actions/cache@v4
-        with:
-          path: |
-            ios/Pods
-            ~/Library/Caches/CocoaPods
-          key: pods-v2-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            pods-v2-${{ runner.os }}-
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
 
-      - name: Download fonts from s3
-        run: ./scripts/setup/download-fonts
-
-      - name: Download ios assets
-        run: ./scripts/setup/download-assets-ios
-
-      - name: Install CocoaPods
-        run: yarn pod-install
-
-      - name: Run relay compiler
-        run: yarn relay
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
 
       - name: Update echo
-        run: ./scripts/setup/update-echo
-
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app
-
-      - name: Cache bin Yarn cache
-        uses: actions/cache@v4
-        with:
-          path: bin/.yarn/cache
-          key: yarn-bin-${{ runner.os }}-${{ hashFiles('bin/yarn.lock') }}
-          restore-keys: |
-            yarn-bin-${{ runner.os }}-
+        uses: ./.github/actions/setup-update-echo
 
       - name: Install bin modules
-        run: ./scripts/setup/install-bin
+        uses: ./.github/actions/setup-bin-modules
 
       - name: Build and deploy iOS to TestFlight
         run: bundle exec fastlane ship_beta_ios deployment_target:testflight

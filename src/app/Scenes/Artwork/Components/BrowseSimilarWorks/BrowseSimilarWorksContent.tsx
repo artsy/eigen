@@ -111,9 +111,7 @@ const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes 
 
     return (
       <>
-        <Flex mx={-2}>
-          <GenericGrid artworks={artworks} />
-        </Flex>
+        <GenericGrid artworks={artworks} />
         <Spacer y={2} />
         <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
       </>

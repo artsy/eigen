@@ -5,7 +5,7 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Modal, TouchableWithoutFeedback } from "react-native"
+import { LayoutAnimation, Modal, Platform, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -116,6 +116,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       visible={isVisible}
       transparent
       onRequestClose={() => setIsVisible(false)}
+      presentationStyle="overFullScreen"
     >
       <TouchableWithoutFeedback
         accessibilityRole="button"
@@ -153,7 +154,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
               >
                 <MotiView
                   animate={{ opacity: showSwiper ? 1 : 0, scale: showSwiper ? 1 : 0.8 }}
-                  style={{ flex: 1 }}
+                  style={{ flex: 4, paddingTop: Platform.OS === "ios" ? space(4) : 0 }}
                   transition={{
                     type: "timing",
                     duration: 500,
@@ -181,7 +182,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                   </Flex>
                 </MotiView>
 
-                <Flex justifyContent="flex-end" px={2}>
+                <Flex flex={1} px={2}>
                   <Text>Welcome to Discover Daily</Text>
 
                   <Spacer y={1} />

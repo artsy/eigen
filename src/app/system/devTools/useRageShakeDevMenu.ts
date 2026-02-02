@@ -1,5 +1,5 @@
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigateToDevMenu } from "app/system/devTools/DevMenu/utils/navigateToDevMenu"
 import { useEffect } from "react"
 import RNShake from "react-native-shake"
 
@@ -13,7 +13,7 @@ export const useRageShakeDevMenu = () => {
         return
       }
 
-      navigateToDevMenu()
+      internal_navigationRef.current?.navigate("DevMenu")
     })
 
     return () => {

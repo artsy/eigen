@@ -41,8 +41,9 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   pageSize?: number
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
-  saleInfoTextStyle?: TextProps
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
+  saleInfoTextStyle?: TextProps
+  trackingFlow?: string
 }
 
 /**
@@ -81,10 +82,10 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   partnerOffer,
   priceOfferMessage,
   refreshControl,
-  saleInfoTextStyle,
   scrollEnabled = true,
-  trackTap,
   viewabilityConfig,
+  trackTap,
+  saleInfoTextStyle,
   ...rest
 }) => {
   const space = useSpace()
@@ -98,64 +99,61 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   }, [hasMore, isLoading, loadMore, pageSize])
 
   const renderItem: ListRenderItem<MasonryArtworkItem> = useCallback(
-    ({ item, index }) => {
-      return (
-        <MasonryArtworkGridItem
-          artistNamesTextStyle={artistNamesTextStyle}
-          artworkMetaStyle={{
-            // Since the grid is full width,
-            // we need to add padding to the artwork meta to make sure its readable
-            marginLeft: rest.numColumns !== 1 ? 0 : space(2),
-            // Extra space between items for one column artwork grids
-            paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
-          }}
-          contextModule={contextModule}
-          contextScreen={contextScreen}
-          contextScreenOwnerId={contextScreenOwnerId}
-          contextScreenOwnerSlug={contextScreenOwnerSlug}
-          contextScreenOwnerType={contextScreenOwnerType}
-          disableArtworksListPrompt={disableArtworksListPrompt}
-          disableProgressiveOnboarding={disableProgressiveOnboarding}
-          fullWidth={rest.numColumns === 1}
-          hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
-          hideCuratorsPickSignal={hideCuratorsPick}
-          hideIncreasedInterestSignal={hideIncreasedInterest}
-          hidePartner={hidePartner}
-          hideSaleInfo={hideSaleInfo}
-          hideSaveIcon={hideSaveIcon}
-          index={index}
-          item={item}
-          numColumns={rest.numColumns}
-          onPress={onPress}
-          partnerOffer={partnerOffer}
-          priceOfferMessage={priceOfferMessage}
-          saleInfoTextStyle={saleInfoTextStyle}
-          trackTap={trackTap}
-        />
-      )
-    },
+    ({ item, index }) => (
+      <MasonryArtworkGridItem
+        index={index}
+        item={item}
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
+        contextScreen={contextScreen}
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
+        numColumns={rest.numColumns}
+        hidePartner={hidePartner}
+        artistNamesTextStyle={artistNamesTextStyle}
+        artworkMetaStyle={{
+          // Since the grid is full width,
+          // we need to add padding to the artwork meta to make sure its readable
+          paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+          // Extra space between items for one column artwork grids
+          paddingBottom: rest.numColumns !== 1 ? 0 : artworks.length === 1 ? space(2) : space(4),
+        }}
+        partnerOffer={partnerOffer}
+        priceOfferMessage={priceOfferMessage}
+        onPress={onPress}
+        hideSaleInfo={hideSaleInfo}
+        hideSaveIcon={hideSaveIcon}
+        disableArtworksListPrompt={disableArtworksListPrompt}
+        disableProgressiveOnboarding={disableProgressiveOnboarding}
+        hideIncreasedInterestSignal={hideIncreasedInterest}
+        hideCuratorsPickSignal={hideCuratorsPick}
+        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+        saleInfoTextStyle={saleInfoTextStyle}
+        trackTap={trackTap}
+      />
+    ),
     [
-      artistNamesTextStyle,
-      artworks.length,
       contextModule,
+      contextScreenOwnerType,
       contextScreen,
       contextScreenOwnerId,
       contextScreenOwnerSlug,
-      contextScreenOwnerType,
-      disableArtworksListPrompt,
-      disableProgressiveOnboarding,
-      hideCreateAlertOnArtworkPreview,
-      hideCuratorsPick,
-      hideIncreasedInterest,
+      rest.numColumns,
       hidePartner,
-      hideSaleInfo,
-      hideSaveIcon,
-      onPress,
+      artistNamesTextStyle,
+      space,
+      artworks.length,
       partnerOffer,
       priceOfferMessage,
-      rest.numColumns,
+      onPress,
+      hideSaleInfo,
+      hideSaveIcon,
+      disableArtworksListPrompt,
+      disableProgressiveOnboarding,
+      hideIncreasedInterest,
+      hideCuratorsPick,
+      hideCreateAlertOnArtworkPreview,
       saleInfoTextStyle,
-      space,
       trackTap,
     ]
   )

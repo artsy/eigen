@@ -21,6 +21,7 @@ export const ArtQuizLikedArtworks = ({
       contentContainerStyle={{
         paddingBottom: space(4),
         marginVertical: space(2),
+        paddingHorizontal: space(2),
       }}
     >
       <GenericGrid

@@ -22,6 +22,7 @@ export const ArtQuizExploreArtworks = ({
       contentContainerStyle={{
         marginVertical: space(2),
         paddingBottom: space(4),
+        paddingHorizontal: space(2),
       }}
     >
       {artworks.length ? (

@@ -13,6 +13,11 @@ export const experiments = {
     description:
       "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
   },
+  "topaz_retire-inquiry-template-messages": {
+    description: "Retire the inquiry message templates in inquiry flow",
+    variantSuggestions: ["control", "experiment"],
+    payloadSuggestions: ["control", "experiment"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

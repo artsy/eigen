@@ -347,7 +347,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           presentationStyle="overFullScreen"
         >
           <KeyboardAvoidingContainer>
-            <Flex style={{ flex: 1, backgroundColor: color("background") }}>
+            <Flex flex={1}>
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}

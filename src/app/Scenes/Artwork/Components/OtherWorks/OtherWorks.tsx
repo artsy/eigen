@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Box, Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
@@ -45,12 +45,11 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
             {grid.title}
           </Text>
           <Spacer y={2} />
-          <Flex mx={-2}>
-            <GenericGrid
-              contextModule={grid.__typename as ContextModule}
-              artworks={extractNodes(grid.artworks)}
-            />
-          </Flex>
+          <GenericGrid
+            // trackingFlow={Schema.Flow.RecommendedArtworks}
+            contextModule={grid.__typename as ContextModule}
+            artworks={extractNodes(grid.artworks)}
+          />
           <Box mt={2}>
             <ContextGridCTA
               contextModule={grid.__typename}

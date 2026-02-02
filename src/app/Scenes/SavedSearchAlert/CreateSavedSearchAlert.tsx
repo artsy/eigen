@@ -54,8 +54,8 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             animationType="slide"
           >
             <Flex
+              flex={1}
               style={{
-                flex: 1,
                 backgroundColor: color("background"),
                 paddingTop: topInset,
               }}

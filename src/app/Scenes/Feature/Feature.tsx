@@ -175,7 +175,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           allSections.push({
             key: "artworks:" + set.id,
             content: (
-              <Flex mb={2}>
+              <Flex mb={2} px={2}>
                 <GenericGrid artworks={items as any} />
               </Flex>
             ),
