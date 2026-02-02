@@ -457,7 +457,7 @@ jobs:
       - macos/preboot-simulator:
           version: << pipeline.parameters.simulator_version >>
           platform: "iOS"
-          device: "iPhone 16 Pro"
+          device: "iPhone 17 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
