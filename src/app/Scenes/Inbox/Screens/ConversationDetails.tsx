@@ -45,7 +45,7 @@ export const ConversationDetails: React.FC<Props> = ({ me }) => {
 
         {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
 
-        <Support />
+        <Support conversationID={conversation?.internalID ?? ""} />
       </Flex>
     </ScrollView>
   )
@@ -56,6 +56,7 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
     fragment ConversationDetails_me on Me {
       conversation(id: $conversationID) {
         ...AttachmentList_conversation
+        internalID
         to {
           name
         }
