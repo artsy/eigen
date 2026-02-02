@@ -3,9 +3,12 @@ name: iOS E2E Tests (Maestro)
 on:
   workflow_run:
     workflows: ["Build iOS QA App for Maestro"]
-    types:
-      - completed
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  #   types:
+  #     - completed
+  # workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - feat/upgrade-ios-26
 
 jobs:
   e2e-tests:
