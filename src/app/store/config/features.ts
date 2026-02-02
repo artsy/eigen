@@ -172,7 +172,7 @@ export const features = {
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
   AREnableExpandedCityGuide: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
