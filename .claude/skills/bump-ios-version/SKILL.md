@@ -78,6 +78,15 @@ parameters:
     default: "<NEW_IOS_VERSION>" # e.g., "26.2"
 ```
 
+Also update the `macos/preboot-simulator` device in the `build-test-app-ios` job:
+
+```yaml
+- macos/preboot-simulator:
+    version: << pipeline.parameters.simulator_version >>
+    platform: "iOS"
+    device: "iPhone <MODEL> Pro" # e.g., "iPhone 17 Pro"
+```
+
 ### 2. GitHub Actions E2E Workflow
 
 **File:** `.github/workflows/ios-e2e-maestro.yml`
@@ -129,7 +138,7 @@ NSAssert(version.majorVersion == <MAJOR> && version.minorVersion == <MINOR>,
 - [ ] Verify target Xcode version is supported by CircleCI
 - [ ] Verify target Xcode version is supported by GitHub Actions
 - [ ] Verify iPhone model is available for target iOS version (check CircleCI manifest)
-- [ ] Update `.circleci/config.yml` (xcode_version, simulator_version)
+- [ ] Update `.circleci/config.yml` (xcode_version, simulator_version, preboot-simulator device)
 - [ ] Update `.github/workflows/ios-e2e-maestro.yml` (simulator device type, runtime)
 - [ ] Update `scripts/ci/ci-setup-export-vars` (DEVICE_HOST_OS, DEVICE_HOST_NAME)
 - [ ] Update `scripts/utils/doctor.js` (desiredVersions.xcode)
