@@ -505,7 +505,7 @@ parameters:
     default: "24.6.0"
   simulator_version:
     type: string
-    default: "26.1"
+    default: "26.2"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
