@@ -1,5 +1,5 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
-import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { ArtistInsights } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "app/Components/Artist/ArtistInsights/ArtistInsightsAuctionResults"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -40,7 +40,7 @@ describe("ArtistInsights", () => {
         if (!props?.artist) {
           return null
         }
-        return <ArtistInsightsFragmentContainer artist={props.artist} />
+        return <ArtistInsights artist={props.artist} />
       }}
     />
   )

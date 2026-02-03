@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
-import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
+import { ArtistAbout } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "app/Components/Artist/ArtistAbout/ArtistAboutShows"
 import { Biography } from "app/Components/Artist/Biography"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -8,7 +8,7 @@ import { graphql } from "react-relay"
 
 describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
-    Component: ({ artist }) => <ArtistAboutContainer artist={artist!} />,
+    Component: ({ artist }) => <ArtistAbout artist={artist!} />,
     query: graphql`
       query ArtistAboutTestsQuery($artistID: String!) @relay_test_operation {
         artist(id: $artistID) {

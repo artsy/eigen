@@ -12,11 +12,17 @@ import { useRoute } from "@react-navigation/native"
 import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
 import { FilterArtworksInput } from "__generated__/ArtistArtworks_artistRefetch.graphql"
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
-import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
+import {
+  artistAboutQuery,
+  ArtistAboutQueryRenderer,
+} from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRightQueryRenderer } from "app/Components/Artist/ArtistHeaderNavRight"
-import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import {
+  artistInsightsQuery,
+  ArtistInsightsQueryRenderer,
+} from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
   filterArtworksParams,
@@ -36,9 +42,9 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
+import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
-import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
@@ -52,7 +58,6 @@ interface RouteParams {
 
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
-  artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   auctionResultsInitialFilters?: FilterArray
   environment?: Environment
   fetchCriteriaError: Error | null
@@ -65,7 +70,6 @@ interface ArtistProps {
 
 export const Artist: React.FC<ArtistProps> = ({
   artistAboveTheFold,
-  artistBelowTheFold,
   auctionResultsInitialFilters,
   fetchCriteriaError,
   initialTab = INITIAL_TAB,
@@ -86,6 +90,18 @@ export const Artist: React.FC<ArtistProps> = ({
       })
     }
   }, [fetchCriteriaError])
+
+  // Prefetch the About and Insights tab queries on mount
+  useEffect(() => {
+    prefetchQuery({
+      query: artistAboutQuery,
+      variables: { artistID: artistAboveTheFold.internalID },
+    })
+    prefetchQuery({
+      query: artistInsightsQuery,
+      variables: { artistID: artistAboveTheFold.internalID },
+    })
+  }, [artistAboveTheFold.internalID])
 
   const renderBelowTheHeaderComponent = useCallback(
     () => <ArtistHeader artist={artistAboveTheFold} />,
@@ -132,24 +148,16 @@ export const Artist: React.FC<ArtistProps> = ({
 
             <Tabs.Tab name="Insights" label="Auction Results">
               <Tabs.Lazy>
-                {artistBelowTheFold ? (
-                  <ArtistInsightsFragmentContainer
-                    artist={artistBelowTheFold}
-                    initialFilters={auctionResultsInitialFilters}
-                  />
-                ) : (
-                  <LoadingPage />
-                )}
+                <ArtistInsightsQueryRenderer
+                  artistID={artistAboveTheFold.internalID}
+                  initialFilters={auctionResultsInitialFilters}
+                />
               </Tabs.Lazy>
             </Tabs.Tab>
 
             <Tabs.Tab name="Overview" label="About">
               <Tabs.Lazy>
-                {artistBelowTheFold ? (
-                  <ArtistAboutContainer artist={artistBelowTheFold} />
-                ) : (
-                  <LoadingPage />
-                )}
+                <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
               </Tabs.Lazy>
             </Tabs.Tab>
           </Tabs.TabsWithHeader>
@@ -256,8 +264,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 query: graphql`
                   query ArtistBelowTheFoldQuery($artistID: String!) @cacheable {
                     artist(id: $artistID) {
-                      ...ArtistAbout_artist
-                      ...ArtistInsights_artist
+                      # Below-the-fold tabs (Insights, About) now have their own query renderers
+                      # This query is kept minimal for backward compatibility
+                      id
                     }
                   }
                 `,
@@ -270,14 +279,13 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 renderPlaceholder: () => (
                   <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
                 ),
-                renderComponent: ({ above, below }) => {
+                renderComponent: ({ above }) => {
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }
                   return (
                     <Artist
                       artistAboveTheFold={above.artist}
-                      artistBelowTheFold={below?.artist}
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
@@ -297,20 +305,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
         },
       }}
     />
-  )
-}
-
-/**
- * Be lazy and just have a simple loading spinner for the below-the-fold tabs
- * (as opposed to nice fancy placeholder screens) since people are really
- * unlikely to tap into them quick enough to see the loading state
- * @param param0
- */
-const LoadingPage: React.FC<{}> = ({}) => {
-  return (
-    <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-      <ActivityIndicator />
-    </View>
   )
 }
 

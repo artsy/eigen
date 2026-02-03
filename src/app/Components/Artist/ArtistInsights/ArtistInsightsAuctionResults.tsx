@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, bullet, Flex, Separator, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
@@ -34,6 +34,7 @@ import {
 } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { space } from "styled-system"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
@@ -52,6 +53,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   onLayout,
   onScrollEndDragChange,
 }) => {
+  const space = useSpace()
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
@@ -281,8 +283,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
             </Flex>
           )}
           onScrollEndDrag={onScrollEndDragChange}
+          nestedScrollEnabled
           ItemSeparatorComponent={AuctionResultListSeparator}
-          style={{ width: screenWidth, left: -20 }}
+          style={{ width: screenWidth, left: -space(2), flexGrow: 1 }}
           onEndReached={loadMoreAuctionResults}
           ListFooterComponent={() =>
             loadingMoreData ? (
@@ -291,7 +294,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Flex>
             ) : null
           }
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: space(2) }}
         />
       ) : (
         <Box my="80px">
