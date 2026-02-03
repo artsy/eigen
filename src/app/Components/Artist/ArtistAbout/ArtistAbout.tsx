@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Join, Spacer, Tabs } from "@artsy/palette-mobile"
+import { Flex, Spacer, Tabs, useSpace } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
@@ -9,6 +9,7 @@ import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
+import { compact } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 import { ArtistCareerHighlights } from "./ArtistCareerHighlights"
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {
+  const space = useSpace()
+
   const articles = extractNodes(artist.articlesConnection)
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
   const relatedGenes = extractNodes(artist.related?.genes)
@@ -38,45 +41,69 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
     hasRelatedArtists ||
     hasRelatedGenes
 
-  return (
-    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
-      {isDisplayable ? (
+  const data = compact([
+    hasBiography && {
+      key: "biography",
+      content: (
         <>
-          <Spacer y={2} />
-          <Join separator={<Spacer y={4} />}>
-            {!!hasBiography && (
-              <>
-                <Spacer y={1} />
-                <Flex maxWidth={MAX_WIDTH_BIO} px={2}>
-                  <SectionTitle title="Biography" />
-                  <Biography artist={artist} />
-                </Flex>
-              </>
-            )}
-            {!!hasInsights && <ArtistCareerHighlights artist={artist} />}
-            {!!hasArtistSeries && (
-              <ArtistSeriesMoreSeriesFragmentContainer
-                px={2}
-                contextScreenOwnerId={artist.internalID}
-                contextScreenOwnerSlug={artist.slug}
-                contextScreenOwnerType={OwnerType.artist}
-                contextModule={ContextModule.artistSeriesRail}
-                artist={artist}
-                artistSeriesHeader="Top Artist Series"
-              />
-            )}
-            {!!hasArticles && <Articles articles={articles} artist={artist} />}
-            {!!hasShows && <ArtistAboutShowsFragmentContainer artist={artist} />}
-
-            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} artist={artist} />}
-            {!!hasRelatedGenes && <ArtistAboutRelatedGenes genes={relatedGenes} />}
-          </Join>
-          <Spacer y={4} />
+          <Spacer y={1} />
+          <Flex maxWidth={MAX_WIDTH_BIO} px={2}>
+            <SectionTitle title="Biography" />
+            <Biography artist={artist} />
+          </Flex>
         </>
-      ) : (
-        <ArtistAboutEmpty my={6} />
-      )}
-    </Tabs.ScrollView>
+      ),
+    },
+
+    !!hasInsights && {
+      key: "insights",
+      content: <ArtistCareerHighlights artist={artist} />,
+    },
+
+    !!hasArtistSeries && {
+      key: "artistSeries",
+      content: (
+        <ArtistSeriesMoreSeriesFragmentContainer
+          px={2}
+          contextScreenOwnerId={artist.internalID}
+          contextScreenOwnerSlug={artist.slug}
+          contextScreenOwnerType={OwnerType.artist}
+          contextModule={ContextModule.artistSeriesRail}
+          artist={artist}
+          artistSeriesHeader="Top Artist Series"
+        />
+      ),
+    },
+
+    !!hasArticles && {
+      key: "articles",
+      content: <Articles articles={articles} artist={artist} />,
+    },
+
+    !!hasShows && {
+      key: "shows",
+      content: <ArtistAboutShowsFragmentContainer artist={artist} />,
+    },
+
+    !!hasRelatedArtists && {
+      key: "relatedArtists",
+      content: <RelatedArtistsRail artists={relatedArtists} artist={artist} />,
+    },
+    !!hasRelatedGenes && {
+      key: "relatedGenes",
+      content: <ArtistAboutRelatedGenes genes={relatedGenes} />,
+    },
+  ])
+
+  return (
+    <Tabs.FlashList
+      data={isDisplayable ? data : []}
+      renderItem={({ item }) => item?.content}
+      keyExtractor={(item) => item?.key}
+      ItemSeparatorComponent={() => <Spacer y={4} />}
+      contentContainerStyle={{ paddingHorizontal: 0, paddingVertical: space(4) }}
+      ListEmptyComponent={() => <ArtistAboutEmpty my={6} />}
+    />
   )
 }
 

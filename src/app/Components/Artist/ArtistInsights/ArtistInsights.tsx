@@ -102,7 +102,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <Tabs.FlatList
+      <Tabs.FlashList
         style={{
           marginTop: space(2),
           paddingBottom: space(4),
