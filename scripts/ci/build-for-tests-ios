@@ -40,6 +40,19 @@ else
 	echo "No booted simulator found"
 fi
 
+# Debug: Check environment before running expo
+echo "=== Debugging Simulator Detection ==="
+echo "DEVELOPER_DIR: $DEVELOPER_DIR"
+echo "xcode-select path: $(xcode-select -p)"
+echo "Simulator.app exists: $([ -d "/Applications/Xcode.app/Contents/Developer/Applications/Simulator.app" ] && echo "YES" || echo "NO")"
+echo "Simulator.app bundle ID: $(defaults read /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/Contents/Info.plist CFBundleIdentifier 2>&1 || echo "FAILED TO READ")"
+echo "xcrun simctl path: $(which xcrun)"
+echo "Available simulators:"
+xcrun simctl list devices available | grep "iPhone" | head -5
+echo "Booted simulators:"
+xcrun simctl list devices | grep "Booted" || echo "None"
+echo "====================================="
+
 # Run expo without --device flag to let it auto-detect the booted simulator
 echo "Running expo run:ios..."
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios
