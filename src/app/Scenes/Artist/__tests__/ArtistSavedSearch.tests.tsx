@@ -36,8 +36,7 @@ jest.mock("@react-navigation/native", () => {
 })
 
 type ArtistQueries =
-  | "ArtistAboveTheFoldQuery"
-  | "ArtistBelowTheFoldQuery"
+  | "ArtistQuery"
   | "SearchCriteriaQuery"
   | "ArtistArtworksQuery"
   | "MarketStatsQuery"
@@ -66,7 +65,7 @@ describe("Saved search banner on artist screen", () => {
       environment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ID({ path }) {
-            // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
+            // need to make sure artist id is stable between queries to avoid cache weirdness
             if (isEqual(path, ["artist", "id"])) {
               return "artist-id"
             }
@@ -80,23 +79,16 @@ describe("Saved search banner on artist screen", () => {
 
   const getTree = (alertID?: string) =>
     renderWithHookWrappersTL(
-      <ArtistQueryRenderer
-        artistID="ignore"
-        environment={environment}
-        alertID={alertID}
-        initialTab="Artworks"
-      />
+      <ArtistQueryRenderer artistID="ignore" alertID={alertID} initialTab="Artworks" />,
+      environment
     )
 
   it("should convert the criteria attributes to the filter params format", async () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
-    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistQuery", MockArtistQuery)
     mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
-    mockMostRecentOperation("ArtistInsightsAuctionResultsQuery")
 
     await flushPromiseQueue()
 
@@ -111,7 +103,7 @@ describe("Saved search banner on artist screen", () => {
     getTree("something")
 
     rejectMostRecentRelayOperation(environment, new Error())
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistQuery", MockArtistQuery)
 
     await flushPromiseQueue()
 
@@ -123,9 +115,7 @@ describe("Saved search banner on artist screen", () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
-    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistQuery", MockArtistQuery)
     mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
 
     await flushPromiseQueue()
@@ -153,7 +143,7 @@ const MockSearchCriteriaQuery: MockResolvers = {
   },
 }
 
-const MockArtistAboveTheFoldQuery: MockResolvers = {
+const MockArtistQuery: MockResolvers = {
   Artist() {
     return {
       has_metadata: true,
@@ -161,16 +151,6 @@ const MockArtistAboveTheFoldQuery: MockResolvers = {
       auctionResultsConnection: {
         totalCount: 0,
       },
-      insights: [],
-    }
-  },
-}
-
-const MockArtistBelowTheFoldQuery: MockResolvers = {
-  Artist() {
-    return {
-      articles: [],
-      biographyBlurb: { text: "Artist biography" },
       insights: [],
     }
   },
@@ -248,16 +228,6 @@ const MockArtistArtworksQuery: MockResolvers = {
       },
       statuses: {
         artworks: true,
-      },
-    }
-  },
-}
-
-const MockMarketStatsQuery: MockResolvers = {
-  Artist() {
-    return {
-      priceInsightsConnection: {
-        edges: [],
       },
     }
   },

@@ -1,6 +1,5 @@
 import { act, screen } from "@testing-library/react-native"
 import { ArtistQueryRenderer } from "app/Scenes/Artist/Artist"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -10,11 +9,7 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 jest.unmock("react-tracking")
 
-type ArtistQueries =
-  | "SearchCriteriaQuery"
-  | "ArtistAboveTheFoldQuery"
-  | "ArtistBelowTheFoldQuery"
-  | "MarketStatsQuery"
+type ArtistQueries = "SearchCriteriaQuery" | "ArtistQuery" | "MarketStatsQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -33,7 +28,7 @@ describe("Artist", () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           ID({ path }) {
-            // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
+            // need to make sure artist id is stable between queries to avoid cache weirdness
             if (isEqual(path, ["artist", "id"])) {
               return "artist-id"
             }
@@ -46,31 +41,25 @@ describe("Artist", () => {
   }
 
   const TestWrapper = (props: Record<string, any>) => (
-    <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
+    <ArtistQueryRenderer artistID="ignored" {...props} />
   )
 
   it("should render all tabs", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
+    renderWithHookWrappersTL(<TestWrapper />, mockEnvironment, { includeNavigation: true })
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery")
-    mockMostRecentOperation("ArtistBelowTheFoldQuery", {
-      ArtistInsight() {
-        return { entities: ["test"] }
-      },
-    })
-    mockMostRecentOperation("MarketStatsQuery")
+    mockMostRecentOperation("ArtistQuery")
 
     await flushPromiseQueue()
 
     expect(screen.getByText("Artworks")).toBeTruthy()
-    expect(screen.getByText("Insights")).toBeTruthy()
-    expect(screen.getByText("Overview")).toBeTruthy()
+    expect(screen.getByText("Auction Results")).toBeTruthy()
+    expect(screen.getByText("About")).toBeTruthy()
   })
 
   it("tracks a page view", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
+    renderWithHookWrappersTL(<TestWrapper />, mockEnvironment, { includeNavigation: true })
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    mockMostRecentOperation("ArtistQuery")
 
     await flushPromiseQueue()
 
