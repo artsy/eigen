@@ -13627,6 +13627,7 @@ enum FulfillmentOptionInputEnum {
   DOMESTIC_FLAT
   INTERNATIONAL_FLAT
   PICKUP
+  SHIPPING_TBD
 }
 
 enum FulfillmentOptionTypeEnum {
