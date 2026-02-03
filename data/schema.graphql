@@ -20336,6 +20336,10 @@ type PublishNavigationDraftSuccess {
   navigationVersion: NavigationVersion!
 }
 
+type PublishViewingRoomFailure {
+  mutationError: GravityMutationError
+}
+
 input PublishViewingRoomInput {
   clientMutationId: String
   viewingRoomID: ID!
@@ -20343,6 +20347,16 @@ input PublishViewingRoomInput {
 
 type PublishViewingRoomPayload {
   clientMutationId: String
+  viewingRoom: ViewingRoom
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
+
+  # On success: the published viewing room. On error: the error that occurred.
+  viewingRoomOrError: PublishViewingRoomResponseOrError
+}
+
+union PublishViewingRoomResponseOrError = PublishViewingRoomFailure | PublishViewingRoomSuccess
+
+type PublishViewingRoomSuccess {
   viewingRoom: ViewingRoom!
 }
 
@@ -24461,6 +24475,10 @@ type UnlinkAuthenticationMutationPayload {
   me: Me!
 }
 
+type UnpublishViewingRoomFailure {
+  mutationError: GravityMutationError
+}
+
 input UnpublishViewingRoomInput {
   clientMutationId: String
   viewingRoomID: ID!
@@ -24468,6 +24486,18 @@ input UnpublishViewingRoomInput {
 
 type UnpublishViewingRoomPayload {
   clientMutationId: String
+  viewingRoom: ViewingRoom
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
+
+  # On success: the unpublished viewing room. On error: the error that occurred.
+  viewingRoomOrError: UnpublishViewingRoomResponseOrError
+}
+
+union UnpublishViewingRoomResponseOrError =
+    UnpublishViewingRoomFailure
+  | UnpublishViewingRoomSuccess
+
+type UnpublishViewingRoomSuccess {
   viewingRoom: ViewingRoom!
 }
 
