@@ -157,6 +157,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         statusBarTranslucent
         navigationBarTranslucent
         animationType="slide"
+        onShow={() => {
+          trackExperiment({
+            context_owner_type: OwnerType.artwork,
+            context_owner_screen: OwnerType.artwork,
+            context_owner_id: artwork.internalID,
+            context_owner_slug: artwork.slug,
+          })
+        }}
       >
         <Screen>
           <NavigationHeader

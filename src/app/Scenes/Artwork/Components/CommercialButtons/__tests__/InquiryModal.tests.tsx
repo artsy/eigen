@@ -48,7 +48,10 @@ describe("inquiry modal", () => {
 
   beforeEach(() => {
     initialState = { ...initialArtworkInquiryState, inquiryModalVisible: true }
-    ;(useExperimentVariant as jest.Mock).mockReturnValue({ variant: {} })
+    ;(useExperimentVariant as jest.Mock).mockReturnValue({
+      variant: {},
+      trackExperiment: jest.fn(),
+    })
   })
 
   it("renders", () => {
@@ -187,6 +190,7 @@ describe("inquiry modal", () => {
         // mock experiment as "control"
         ;(useExperimentVariant as jest.Mock).mockReturnValue({
           variant: { enabled: true, name: "control" },
+          trackExperiment: jest.fn(),
         })
       })
 
@@ -202,6 +206,7 @@ describe("inquiry modal", () => {
         // mock experiment as "experiment"
         ;(useExperimentVariant as jest.Mock).mockReturnValue({
           variant: { enabled: true, name: "experiment" },
+          trackExperiment: jest.fn(),
         })
       })
 
