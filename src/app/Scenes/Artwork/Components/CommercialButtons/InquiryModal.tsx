@@ -18,8 +18,8 @@ import { LocationWithDetails } from "app/utils/googleMaps"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Modal } from "react-native"
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Modal, View } from "react-native"
 import { KeyboardAwareScrollViewRef } from "react-native-keyboard-controller"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -47,6 +47,13 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const [message, setMessage] = useState<string>(defaultMessageState)
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+  const addMessageRef = useRef<View>(null)
+
+  useLayoutEffect(() => {
+    addMessageRef.current?.measureInWindow((_x, y) => {
+      setAddMessageYCoordinate(y)
+    })
+  }, [])
 
   const exit = () => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
@@ -190,12 +197,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                   })}
                 </Box>
               )}
-              <Box
-                mb={4}
-                onLayout={({ nativeEvent }) => {
-                  setAddMessageYCoordinate(nativeEvent.layout.y)
-                }}
-              >
+              <Box mb={4} ref={addMessageRef}>
                 <Input
                   multiline
                   placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."

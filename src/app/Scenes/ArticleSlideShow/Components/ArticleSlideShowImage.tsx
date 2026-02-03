@@ -1,8 +1,8 @@
 import { Flex, Image, Spinner } from "@artsy/palette-mobile"
 import { ArticleSlideShowImage_figure$key } from "__generated__/ArticleSlideShowImage_figure.graphql"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { useMemo, useState } from "react"
-import { LayoutChangeEvent } from "react-native"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { Dimensions, View } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
 interface ArticleSlideShowImageProps {
@@ -12,9 +12,27 @@ interface ArticleSlideShowImageProps {
 }
 
 export const ArticleSlideShowImage: React.FC<ArticleSlideShowImageProps> = ({ figure }) => {
+  const containerRef = useRef<View>(null)
   const [viewSize, setViewSize] = useState({ height: 0, width: 0 })
+  const [measureKey, setMeasureKey] = useState(0)
   const data = useFragment(fragment, figure)
   const typename = data?.__typename
+
+  useEffect(() => {
+    // orientation changed, trigger re-measurement
+    const dimensionsEventSubscription = Dimensions.addEventListener("change", () => {
+      setMeasureKey((prev) => prev + 1)
+    })
+    return () => dimensionsEventSubscription.remove()
+  }, [])
+
+  useLayoutEffect(() => {
+    containerRef.current?.measureInWindow((_x, _y, width, height) => {
+      if (height !== viewSize.height || width !== viewSize.width) {
+        setViewSize({ width, height })
+      }
+    })
+  }, [measureKey, viewSize.height, viewSize.width])
 
   const size = useMemo(() => {
     if (!data || data.__typename === "%other" || !data.image) {
@@ -40,19 +58,12 @@ export const ArticleSlideShowImage: React.FC<ArticleSlideShowImageProps> = ({ fi
     return null
   }
 
-  const handleLayout = ({ nativeEvent }: LayoutChangeEvent) => {
-    const { height, width } = nativeEvent.layout
-    if (height !== viewSize.height || width !== viewSize.width) {
-      setViewSize({ width, height })
-    }
-  }
-
   return (
     <Flex
+      ref={containerRef}
       flex={1}
       justifyContent="center"
       alignItems="center"
-      onLayout={handleLayout}
       testID="image-container"
     >
       {viewSize.height === 0 ? (

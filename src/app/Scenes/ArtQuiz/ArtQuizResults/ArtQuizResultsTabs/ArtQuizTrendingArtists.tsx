@@ -19,9 +19,8 @@ export const ArtQuizTrendingArtists = ({
   const artists = extractNodes(viewerData?.curatedTrendingArtists)
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       data={artists}
-      initialNumToRender={2}
       keyExtractor={(item, index) => String(item?.internalID || index)}
       renderItem={({ item, index }) => {
         return <ArtQuizArtist artistData={item} key={index} />
