@@ -14,6 +14,7 @@ export async function resolveGitHubRemoteBuildCache(
   { projectRoot, platform, fingerprintHash, runOptions }: ResolveBuildCacheProps,
   { owner, repo }: { owner: string; repo: string }
 ): Promise<string | null> {
+  console.log("DEBUG: resolveGitHubRemoteBuildCache")
   const cachedAppPath = await getCachedAppPath({
     fingerprintHash,
     platform,
@@ -78,6 +79,7 @@ export async function uploadGitHubRemoteBuildCache(
   { projectRoot, fingerprintHash, runOptions, buildPath }: UploadBuildCacheProps,
   { owner, repo }: { owner: string; repo: string }
 ): Promise<string | null> {
+  console.log("DEBUG: uploadGitHubRemoteBuildCache")
   console.log(`Uploading build to Github Releases`)
   try {
     const result = await createReleaseAndUploadAsset({
@@ -110,6 +112,7 @@ function getTagName({
   projectRoot: string
   runOptions: RunOptions
 }): string {
+  console.log("DEBUG: getTagName")
   const isDevClient = isDevClientBuild({ projectRoot, runOptions })
 
   return `fingerprint.${fingerprintHash}${
@@ -129,6 +132,7 @@ async function getCachedAppPath({
   runOptions: RunOptions
   platform: "ios" | "android"
 }): Promise<string> {
+  console.log("DEBUG: getCachedAppPath")
   return path.join(
     await getBuildRunCacheDirectoryPath(),
     `${getTagName({

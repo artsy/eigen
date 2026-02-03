@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid"
 import { getTmpDirectory } from "./helpers"
 
 async function downloadFileAsync(url: string, outputPath: string): Promise<void> {
+  console.log("DEBUG: downloadFileAsync")
   try {
     const fetch = (await import("node-fetch")).default
     const headers: Record<string, string> = {
@@ -51,6 +52,7 @@ async function downloadFileAsync(url: string, outputPath: string): Promise<void>
 }
 
 async function maybeCacheAppAsync(appPath: string, cachedAppPath?: string): Promise<string> {
+  console.log("DEBUG: maybeCacheAppAsync")
   if (cachedAppPath) {
     await fs.ensureDir(path.dirname(cachedAppPath))
     await fs.move(appPath, cachedAppPath)
@@ -65,6 +67,7 @@ export async function downloadAndMaybeExtractAppAsync(
   cachedAppPath?: string,
   assetName?: string
 ): Promise<string> {
+  console.log("DEBUG: downloadAndMaybeExtractAppAsync")
   const outputDir = path.join(await getTmpDirectory(), uuidv4())
   await fs.promises.mkdir(outputDir, { recursive: true })
 
@@ -101,6 +104,7 @@ export async function extractAppFromLocalArchiveAsync(
   appArchivePath: string,
   platform: "ios" | "android"
 ): Promise<string> {
+  console.log("DEBUG: extractAppFromLocalArchiveAsync")
   const outputDir = path.join(await getTmpDirectory(), uuidv4())
   await fs.promises.mkdir(outputDir, { recursive: true })
 
@@ -110,6 +114,7 @@ export async function extractAppFromLocalArchiveAsync(
 }
 
 async function getAppPathAsync(outputDir: string, applicationExtension: string): Promise<string> {
+  console.log("DEBUG: getAppPathAsync")
   const appFilePaths = await glob(`./**/*.${applicationExtension}`, {
     cwd: outputDir,
     onlyFiles: false,
@@ -123,6 +128,7 @@ async function getAppPathAsync(outputDir: string, applicationExtension: string):
 }
 
 async function tarExtractAsync(input: string, output: string): Promise<void> {
+  console.log("DEBUG: tarExtractAsync")
   try {
     if (process.platform !== "win32") {
       await spawnAsync("tar", ["-xf", input, "-C", output], {

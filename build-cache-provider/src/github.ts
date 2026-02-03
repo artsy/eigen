@@ -22,6 +22,7 @@ export async function createReleaseAndUploadAsset({
   tagName,
   binaryPath,
 }: GithubProviderOptions) {
+  console.log("DEBUG: createReleaseAndUploadAsset")
   const octokit = new Octokit({ auth: token })
 
   try {
@@ -86,6 +87,7 @@ async function getBranchShaWithFallback(
   owner: string,
   repo: string
 ): Promise<string> {
+  console.log("DEBUG: getBranchShaWithFallback")
   const branchesToTry = ["main", "master"]
 
   for (const branchName of branchesToTry) {
@@ -110,6 +112,7 @@ async function ensureAnnotatedTag(
   octokit: Octokit,
   params: RestEndpointMethodTypes["git"]["createTag"]["parameters"]
 ): Promise<string> {
+  console.log("DEBUG: ensureAnnotatedTag")
   const { owner, repo, tag } = params
   const refName = `refs/tags/${tag}`
 
@@ -150,6 +153,7 @@ async function uploadReleaseAsset(
     binaryPath: string
   }
 ) {
+  console.log("DEBUG: uploadReleaseAsset")
   let filePath = params.binaryPath
   let name = path.basename(filePath)
   if ((await fs.stat(filePath)).isDirectory()) {
@@ -187,6 +191,7 @@ export async function getReleaseAssetsByTag({
   repo: string
   tag: string
 }) {
+  console.log("DEBUG: getReleaseAssetsByTag")
   const octokit = new Octokit({ auth: token })
   const release = await octokit.rest.repos.getReleaseByTag({
     owner,
