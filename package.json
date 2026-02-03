@@ -107,7 +107,7 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.340.0",
+    "@artsy/cohesion": "4.341.0",
     "@artsy/icons": "3.64.0",
     "@artsy/palette-mobile": "22.6.0--canary.425.5263.0",
     "@artsy/to-title-case": "1.2.0",
@@ -185,7 +185,7 @@
     "react-native-linear-gradient": "2.8.3",
     "react-native-localize": "3.5.2",
     "react-native-pager-view": "7.0.1",
-    "react-native-permissions": "3.8.4",
+    "react-native-permissions": "5.4.4",
     "react-native-reanimated": "3.19.5",
     "react-native-reanimated-zoom": "0.3.3",
     "react-native-render-html": "6.3.4",

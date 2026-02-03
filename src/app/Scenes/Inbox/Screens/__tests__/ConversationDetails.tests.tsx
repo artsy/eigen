@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ConversationDetailsFragmentContainer } from "app/Scenes/Inbox/Screens/ConversationDetails"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -18,18 +19,18 @@ describe("ConversationDetailsFragmentContainer", () => {
   })
 
   it("render all elements", () => {
-    const { getByText } = renderWithRelay()
+    renderWithRelay()
 
-    expect(getByText(/Order No/)).toBeDefined()
-    expect(getByText("Ship to")).toBeDefined()
-    expect(getByText("Payment Method")).toBeDefined()
-    expect(getByText("Attachments")).toBeDefined()
-    expect(getByText("Support")).toBeDefined()
-    expect(getByText("Inquiries FAQ")).toBeDefined()
+    expect(screen.getByText(/Order No/)).toBeDefined()
+    expect(screen.getByText("Ship to")).toBeDefined()
+    expect(screen.getByText("Payment Method")).toBeDefined()
+    expect(screen.getByText("Attachments")).toBeDefined()
+    expect(screen.getByText("Support")).toBeDefined()
+    expect(screen.getByText("Inquiries FAQ")).toBeDefined()
   })
 
   it("does not render order information given no order/offer present", () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Conversation: () => ({
         orderConnection: {
           edges: [{ node: null }],
@@ -37,8 +38,8 @@ describe("ConversationDetailsFragmentContainer", () => {
       }),
     })
 
-    expect(queryByText(/Order No/)).toBeNull()
-    expect(queryByText("Ship to")).toBeNull()
-    expect(queryByText("Payment Method")).toBeNull()
+    expect(screen.queryByText(/Order No/)).toBeNull()
+    expect(screen.queryByText("Ship to")).toBeNull()
+    expect(screen.queryByText("Payment Method")).toBeNull()
   })
 })
