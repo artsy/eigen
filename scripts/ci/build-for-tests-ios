@@ -36,8 +36,10 @@ xcrun simctl list devices | grep -q "Booted" && echo "Simulator is booted" || ec
 SIMULATOR_UDID=$(xcrun simctl list devices | grep "Booted" | grep -E -o -i "([0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12})" | head -1)
 if [ -n "$SIMULATOR_UDID" ]; then
 	echo "Using simulator: $SIMULATOR_UDID"
-	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios --device "$SIMULATOR_UDID"
 else
-	echo "No booted simulator found, running without device specification"
-	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios
+	echo "No booted simulator found"
 fi
+
+# Run expo without --device flag to let it auto-detect the booted simulator
+echo "Running expo run:ios..."
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios
