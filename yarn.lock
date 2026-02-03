@@ -12721,7 +12721,7 @@ __metadata:
     react-native-localize: "npm:3.5.2"
     react-native-pager-view: "npm:6.7.1"
     react-native-performance: "npm:5.1.4"
-    react-native-permissions: "npm:3.8.4"
+    react-native-permissions: "npm:5.4.4"
     react-native-reanimated: "npm:3.19.4"
     react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
@@ -20751,15 +20751,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-dir@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "pkg-dir@npm:5.0.0"
-  dependencies:
-    find-up: "npm:^5.0.0"
-  checksum: 10c0/793a496d685dc55bbbdbbb22d884535c3b29241e48e3e8d37e448113a71b9e42f5481a61fdc672d7322de12fbb2c584dd3a68bf89b18fffce5c48a390f911bc5
-  languageName: node
-  linkType: hard
-
 "pkg-up@npm:^3.1.0":
   version: 3.1.0
   resolution: "pkg-up@npm:3.1.0"
@@ -21658,20 +21649,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-permissions@npm:3.8.4":
-  version: 3.8.4
-  resolution: "react-native-permissions@npm:3.8.4"
-  dependencies:
-    picocolors: "npm:^1.0.0"
-    pkg-dir: "npm:^5.0.0"
+"react-native-permissions@npm:5.4.4":
+  version: 5.4.4
+  resolution: "react-native-permissions@npm:5.4.4"
   peerDependencies:
-    react: ">=16.13.1"
-    react-native: ">=0.63.3"
-    react-native-windows: ">=0.62.0"
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: 10c0/c8138f49418c36605217882d106c199c7634c02afe07f264676b5ae16405e080216341173770475879fff9738d142b4d38ad5196ee1d8f6bbcc8a65c58b6cea9
+  checksum: 10c0/9a4fa223053db242a66c18303a525e7552e849876e927427485b0e799f46131ccbbd1ad85e6dfac146d12af942a77a95caa8649b9f4ebcfbb7f2ff6dd8fece04
   languageName: node
   linkType: hard
 

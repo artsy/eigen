@@ -3091,7 +3091,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 9.1.8)
   - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
-  - RNPermissions (3.8.4):
+  - RNPermissions (5.4.4):
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
@@ -4154,7 +4154,7 @@ SPEC CHECKSUMS:
   RNLocalize: 3c4d0abd777a546fa77bdb6caef85a87fb9ea349
   rnmapbox-maps: e066ffa5925108bce9b965936d956fce32c1258b
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
-  RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
+  RNPermissions: 51e7cdc5926c997fd287160ee0f2d6bc3d999233
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: 9282065c1fb748d2d1945ba46d6592c2cf4e5cc8
   RNScreens: 35525ebfe219c8709da0d26aebbc9a5e02e1077b
@@ -4190,6 +4190,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: f3790c93d54682971a16b91465ae379544733d26
+PODFILE CHECKSUM: c79b1c455e28ea16a3418a8f20a84ddcbea49750
 
 COCOAPODS: 1.16.2
