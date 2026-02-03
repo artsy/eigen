@@ -457,7 +457,7 @@ jobs:
       - macos/preboot-simulator:
           version: << pipeline.parameters.simulator_version >>
           platform: "iOS"
-          device: "iPhone 16 Pro"
+          device: "iPhone 17 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
@@ -499,13 +499,13 @@ jobs:
 parameters:
   xcode_version:
     type: string
-    default: "16.4"
+    default: "26.2"
   node_version:
     type: string
     default: "24.6.0"
   simulator_version:
     type: string
-    default: "18.5"
+    default: "26.2"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
