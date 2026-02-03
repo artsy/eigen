@@ -54,5 +54,5 @@ xcrun simctl list devices | grep "Booted" || echo "None"
 echo "====================================="
 
 # Run expo without --device flag to let it auto-detect the booted simulator
-echo "Running expo run:ios..."
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios
+echo "Running expo run:ios with debug logging..."
+EXPO_DEBUG=1 DEBUG="*" DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer bundle exec npx expo run:ios --verbose
