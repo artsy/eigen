@@ -449,6 +449,10 @@ jobs:
       resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /home/circleci/project/*
       - attach_workspace:
           at: ../workspace
       - restore_cache:
