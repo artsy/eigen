@@ -49,7 +49,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const defaultMessageState = retireTemplatesExperimentEnabled ? "" : () => randomAutomatedMessage()
   const [message, setMessage] = useState<string>(defaultMessageState)
-  const [trackedExperiment, setTrackedExperiment] = useState(false)
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
 
@@ -62,20 +61,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
     artwork,
     me,
   })
-
-  useEffect(() => {
-    if (!artwork || !state.inquiryModalVisible || trackedExperiment) {
-      return
-    }
-
-    trackExperiment({
-      context_owner_type: OwnerType.artwork,
-      context_owner_screen: OwnerType.artwork,
-      context_owner_id: artwork.internalID,
-      context_owner_slug: artwork.slug,
-    })
-    setTrackedExperiment(true)
-  }, [trackExperiment, trackedExperiment, artwork, state.inquiryModalVisible])
 
   useEffect(() => {
     if (state.inquiryModalVisible) {
@@ -116,9 +101,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const handleDismiss = () => {
     tracking.trackEvent(tracks.dismissedTheModal(artwork.internalID, artwork.slug))
-    // We intentionally reset the tracked experiment state here so that the experiment
-    // is tracked again when the modal is opened again
-    setTrackedExperiment(false)
     exit()
   }
 
