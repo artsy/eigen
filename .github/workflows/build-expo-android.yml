@@ -68,6 +68,7 @@ jobs:
       - name: Build Android with Expo CLI
         run: npx expo run:android --variant ${{ matrix.variant }}
         env:
+          GITHUB_TOKEN: ${{ secrets.EXPO_GITHUB_TOKEN }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
