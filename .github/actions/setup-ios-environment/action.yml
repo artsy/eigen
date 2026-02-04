@@ -1,5 +1,10 @@
 name: Setup iOS environment
 description: "Set up iOS-specific dependencies, CocoaPods, Xcode, and assets"
+inputs:
+  skip-pod-install:
+    description: "Skip CocoaPods installation (default: false)"
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -27,6 +32,7 @@ runs:
       shell: bash
 
     - name: Install CocoaPods
+      if: inputs.skip-pod-install != 'true'
       run: yarn pod-install
       shell: bash
 

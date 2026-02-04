@@ -46,6 +46,8 @@ jobs:
 
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
+        with:
+          skip-pod-install: true
 
       - name: Update echo
         uses: ./.github/actions/setup-update-echo
