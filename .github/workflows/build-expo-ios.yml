@@ -64,6 +64,7 @@ jobs:
       - name: Build iOS with Expo CLI
         run: bundle exec npx expo run:ios --configuration ${{ matrix.configuration }}
         env:
+          GITHUB_TOKEN: ${{ secrets.EXPO_GITHUB_TOKEN }}
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120
 
