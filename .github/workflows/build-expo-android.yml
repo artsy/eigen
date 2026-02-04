@@ -1,0 +1,100 @@
+name: Build Android with Expo CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        description: 'Build variant'
+        required: true
+        type: choice
+        options:
+          - beta
+          - release
+  push:
+    branches:
+      - gkartalis/gh-build-cache
+
+jobs:
+  build-expo-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.variant)) || fromJSON('["beta", "release"]') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup SSH agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
+
+      - name: Update echo
+        uses: ./.github/actions/setup-update-echo
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Get next Android version code and set environment variable
+        run: |
+          bundle exec fastlane get_next_android_build_version
+          VERSION_CODE=$(cat fastlane/next_version_code.txt)
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
+      - name: Set Android build version
+        run: bundle exec fastlane set_build_version_android version_code:$VERSION_CODE
+
+      - name: Set Android git properties
+        run: bundle exec fastlane set_git_properties_android
+
+      - name: Build Android with Expo CLI
+        run: npx expo run:android --variant ${{ matrix.variant }}
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Extract Expo version
+        if: always()
+        id: extract-version
+        run: ./.github/scripts/extract-expo-version-android.sh
+
+      - name: Upload Android artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-${{ matrix.variant }}-${{ github.sha }}
+          path: |
+            android/app/build/outputs/apk/**/*.apk
+            android/app/build/outputs/bundle/**/*.aab
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Find and comment on PR
+        if: always() && steps.extract-version.outputs.version
+        uses: actions/github-script@v7
+        env:
+          BETA_VERSION: ${{ steps.extract-version.outputs.version }}
+          PLATFORM: android
+          DEPLOYMENT_TARGET: expo_android
+        with:
+          script: |
+            const script = require('./.github/scripts/comment-pr-beta.js');
+            await script({ github, context, core });
