@@ -82,7 +82,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Find and comment on PR
-        if: always() && steps.extract-version.outputs.version
+        if: success() && steps.extract-version.outputs.version
         uses: actions/github-script@v7
         env:
           BETA_VERSION: ${{ steps.extract-version.outputs.version }}
