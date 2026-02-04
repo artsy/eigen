@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
 import { Box, Flex, Input, Screen, Text, useColor } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
@@ -32,7 +33,10 @@ interface InquiryModalProps {
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
-  const { variant } = useExperimentVariant("topaz_retire-inquiry-template-messages")
+  const { variant, trackExperiment } = useExperimentVariant(
+    "topaz_retire-inquiry-template-messages"
+  )
+
   const { state, dispatch } = useArtworkInquiryContext()
   const color = useColor()
   const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
@@ -135,6 +139,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         statusBarTranslucent
         navigationBarTranslucent
         animationType="slide"
+        onShow={() => {
+          trackExperiment({
+            context_owner_type: OwnerType.artwork,
+            context_owner_screen: OwnerType.artwork,
+            context_owner_id: artwork.internalID,
+            context_owner_slug: artwork.slug,
+          })
+        }}
       >
         <Screen>
           <NavigationHeader
