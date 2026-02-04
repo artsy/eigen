@@ -9,8 +9,9 @@ import {
   Tabs,
 } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
+import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
 import { FilterArtworksInput } from "__generated__/ArtistArtworks_artistRefetch.graphql"
-import { ArtistQuery } from "__generated__/ArtistQuery.graphql"
+import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import {
   artistAboutQuery,
   ArtistAboutQueryRenderer,
@@ -38,12 +39,13 @@ import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageH
 import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
-import { withSuspense } from "app/utils/hooks/withSuspense"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
 
@@ -55,8 +57,9 @@ interface RouteParams {
 }
 
 interface ArtistProps {
-  artist: NonNullable<ArtistQuery["response"]["artist"]>
+  artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   auctionResultsInitialFilters?: FilterArray
+  environment?: Environment
   fetchCriteriaError: Error | null
   initialTab?: string
   predefinedFilters?: FilterArray
@@ -66,7 +69,7 @@ interface ArtistProps {
 }
 
 export const Artist: React.FC<ArtistProps> = ({
-  artist,
+  artistAboveTheFold,
   auctionResultsInitialFilters,
   fetchCriteriaError,
   initialTab = INITIAL_TAB,
@@ -92,30 +95,30 @@ export const Artist: React.FC<ArtistProps> = ({
   useEffect(() => {
     prefetchQuery({
       query: artistAboutQuery,
-      variables: { artistID: artist.internalID },
+      variables: { artistID: artistAboveTheFold.internalID },
     })
     prefetchQuery({
       query: artistInsightsQuery,
-      variables: { artistID: artist.internalID },
+      variables: { artistID: artistAboveTheFold.internalID },
     })
-  }, [artist.internalID])
+  }, [artistAboveTheFold.internalID])
 
   const renderBelowTheHeaderComponent = useCallback(
-    () => <ArtistHeader artist={artist} />,
-    [artist]
+    () => <ArtistHeader artist={artistAboveTheFold} />,
+    [artistAboveTheFold]
   )
 
   const artistHeaderRight = useMemo(() => {
-    return <ArtistHeaderNavRightQueryRenderer artistID={artist.internalID} />
-  }, [artist])
+    return <ArtistHeaderNavRightQueryRenderer artistID={artistAboveTheFold.internalID} />
+  }, [artistAboveTheFold])
 
   return (
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.ArtistPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: artist.slug,
-        context_screen_owner_id: artist.internalID,
+        context_screen_owner_slug: artistAboveTheFold.slug,
+        context_screen_owner_id: artistAboveTheFold.internalID,
       }}
     >
       <ArtworkFiltersStoreProvider>
@@ -123,7 +126,7 @@ export const Artist: React.FC<ArtistProps> = ({
           <Tabs.TabsWithHeader
             disableKeyboardAvoidance
             initialTabName={initialTab}
-            title={artist.name ?? ""}
+            title={artistAboveTheFold.name ?? ""}
             allowHeaderOverscroll
             showLargeHeaderText={false}
             BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
@@ -135,7 +138,7 @@ export const Artist: React.FC<ArtistProps> = ({
             <Tabs.Tab name="Artworks" label="Artworks">
               <Tabs.Lazy>
                 <ArtistArtworksQueryRenderer
-                  artistID={artist.internalID}
+                  artistID={artistAboveTheFold.internalID}
                   input={input}
                   searchCriteria={searchCriteria}
                   predefinedFilters={predefinedFilters}
@@ -147,7 +150,7 @@ export const Artist: React.FC<ArtistProps> = ({
             <Tabs.Tab name="Insights" label="Auction Results">
               <Tabs.Lazy>
                 <ArtistInsightsQueryRenderer
-                  artistID={artist.internalID}
+                  artistID={artistAboveTheFold.internalID}
                   initialFilters={auctionResultsInitialFilters}
                 />
               </Tabs.Lazy>
@@ -155,7 +158,7 @@ export const Artist: React.FC<ArtistProps> = ({
 
             <Tabs.Tab name="Overview" label="About">
               <Tabs.Lazy>
-                <ArtistAboutQueryRenderer artistID={artist.internalID} />
+                <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
               </Tabs.Lazy>
             </Tabs.Tab>
           </Tabs.TabsWithHeader>
@@ -169,6 +172,7 @@ interface ArtistQueryRendererProps {
   alertID?: string
   artistID: string
   categories?: string[]
+  environment?: Environment
   initialTab?: string
   predefinedFilters?: FilterArray
   scrollToArtworksGrid?: boolean
@@ -179,7 +183,7 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistQuery($artistID: String!) @cacheable {
+  query ArtistAboveTheFoldQuery($artistID: String!) @cacheable {
     artist(id: $artistID) {
       ...ArtistHeader_artist
       id
@@ -196,6 +200,113 @@ export const defaultArtistVariables = {
     ...filterArtworksParams([], "artwork"),
     sort: DEFAULT_ARTWORK_SORT.paramValue,
   }),
+}
+
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
+  alertID,
+  artistID,
+  categories,
+  environment,
+  initialTab,
+  predefinedFilters,
+  scrollToArtworksGrid = false,
+  search_criteria_id,
+  sizes,
+  verifiedRepresentativesCount,
+}) => {
+  // exctact filter params from the query string. This is needed when
+  // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
+  // to make sure the filters are applied correctly
+  const route = useRoute()
+  const routeParams = (route?.params as RouteParams)?.props || {}
+  const filters: FilterArray = [
+    ...(predefinedFilters || []),
+    ...getFilterParamsFromRouteParams(routeParams),
+  ]
+
+  return (
+    <SearchCriteriaQueryRenderer
+      alertId={alertID ?? search_criteria_id}
+      environment={environment}
+      render={{
+        renderPlaceholder: () => (
+          <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+        ),
+        renderComponent: (searchCriteriaProps) => {
+          const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
+          const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
+
+          let initialArtworksInput = {
+            ...defaultArtistVariables.input,
+            ...predefinedFilterParams,
+          }
+
+          if (savedSearchCriteria) {
+            const preparedCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria)
+
+            initialArtworksInput = {
+              ...initialArtworksInput,
+              ...preparedCriteria,
+              sort: "-published_at",
+            }
+          }
+          const input = prepareFilterArtworksParamsForInput(initialArtworksInput)
+
+          return (
+            <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
+              environment={environment || getRelayEnvironment()}
+              above={{
+                query: ArtistScreenQuery,
+                variables: {
+                  artistID,
+                },
+              }}
+              below={{
+                query: graphql`
+                  query ArtistBelowTheFoldQuery($artistID: String!) @cacheable {
+                    artist(id: $artistID) {
+                      # Below-the-fold tabs (Insights, About) now have their own query renderers
+                      # This query is kept minimal for backward compatibility
+                      id
+                    }
+                  }
+                `,
+                variables: { artistID },
+              }}
+              fallback={({ error }) => (
+                <LoadFailureView showBackButton error={error} trackErrorBoundary={false} />
+              )}
+              render={{
+                renderPlaceholder: () => (
+                  <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+                ),
+                renderComponent: ({ above }) => {
+                  if (!above.artist) {
+                    throw new Error("no artist data")
+                  }
+                  return (
+                    <Artist
+                      artistAboveTheFold={above.artist}
+                      initialTab={initialTab}
+                      searchCriteria={savedSearchCriteria}
+                      fetchCriteriaError={fetchCriteriaError}
+                      predefinedFilters={filters}
+                      auctionResultsInitialFilters={getFilterArrayFromQueryParams({
+                        categories: categories ?? [],
+                        sizes: sizes ?? [],
+                      })}
+                      scrollToArtworksGrid={scrollToArtworksGrid}
+                      input={input as FilterArtworksInput}
+                    />
+                  )
+                },
+              }}
+            />
+          )
+        },
+      }}
+    />
+  )
 }
 
 const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
@@ -247,126 +358,5 @@ const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
         <Separator mt={1} mb={4} />
       </Screen.Body>
     </Screen>
-  )
-}
-
-interface ArtistScreenProps {
-  artistID: string
-  categories?: string[]
-  initialTab?: string
-  predefinedFilters?: FilterArray
-  scrollToArtworksGrid: boolean
-  sizes?: string[]
-  searchCriteria: SearchCriteriaAttributes | null
-  fetchCriteriaError: Error | null
-  filters: FilterArray
-  verifiedRepresentativesCount?: number
-}
-
-const ArtistScreen = withSuspense<ArtistScreenProps>({
-  Component: ({
-    artistID,
-    categories,
-    initialTab,
-    predefinedFilters,
-    scrollToArtworksGrid,
-    sizes,
-    searchCriteria,
-    fetchCriteriaError,
-    filters,
-  }) => {
-    const data = useLazyLoadQuery<ArtistQuery>(ArtistScreenQuery, { artistID })
-
-    if (!data.artist) {
-      return null
-    }
-
-    const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
-
-    let initialArtworksInput = {
-      ...defaultArtistVariables.input,
-      ...predefinedFilterParams,
-    }
-
-    if (searchCriteria) {
-      const preparedCriteria = getOnlyFilledSearchCriteriaValues(searchCriteria)
-
-      initialArtworksInput = {
-        ...initialArtworksInput,
-        ...preparedCriteria,
-        sort: "-published_at",
-      }
-    }
-
-    const input = prepareFilterArtworksParamsForInput(initialArtworksInput)
-
-    return (
-      <Artist
-        artist={data.artist}
-        initialTab={initialTab}
-        searchCriteria={searchCriteria}
-        fetchCriteriaError={fetchCriteriaError}
-        predefinedFilters={predefinedFilters}
-        auctionResultsInitialFilters={getFilterArrayFromQueryParams({
-          categories: categories ?? [],
-          sizes: sizes ?? [],
-        })}
-        scrollToArtworksGrid={scrollToArtworksGrid}
-        input={input as FilterArtworksInput}
-      />
-    )
-  },
-  LoadingFallback: ArtistSkeleton,
-  ErrorFallback: ({ error }) => (
-    <LoadFailureView showBackButton error={error} trackErrorBoundary={false} />
-  ),
-})
-
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
-  alertID,
-  artistID,
-  categories,
-  initialTab,
-  predefinedFilters,
-  scrollToArtworksGrid = false,
-  search_criteria_id,
-  sizes,
-  verifiedRepresentativesCount,
-}) => {
-  // extract filter params from the query string. This is needed when
-  // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
-  // to make sure the filters are applied correctly
-  const route = useRoute()
-  const routeParams = (route?.params as RouteParams)?.props || {}
-  const filters: FilterArray = [
-    ...(predefinedFilters || []),
-    ...getFilterParamsFromRouteParams(routeParams),
-  ]
-
-  return (
-    <SearchCriteriaQueryRenderer
-      alertId={alertID ?? search_criteria_id}
-      render={{
-        renderPlaceholder: () => (
-          <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
-        ),
-        renderComponent: ({ savedSearchCriteria, fetchCriteriaError }) => {
-          return (
-            <ArtistScreen
-              artistID={artistID}
-              categories={categories}
-              initialTab={initialTab}
-              predefinedFilters={predefinedFilters}
-              scrollToArtworksGrid={scrollToArtworksGrid}
-              sizes={sizes}
-              searchCriteria={savedSearchCriteria}
-              fetchCriteriaError={fetchCriteriaError}
-              filters={filters}
-              verifiedRepresentativesCount={verifiedRepresentativesCount}
-            />
-          )
-        },
-      }}
-    />
   )
 }
