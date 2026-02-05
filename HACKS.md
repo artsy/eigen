@@ -286,17 +286,15 @@ It can be removed once if we stop using the singleton pattern or get rid of ARNo
 
 ## react-native-reanimated package.json flags and react-native patch
 
-### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
+### ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS
 
 #### Explanation/Context:
 
-This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
-
-We also added a patch to react-native to support this flag and temporarily enabled preventShadowTreeCommitExhaustion and enableCppPropsIteratorSetter flags to fix performance issues.
+This feature flag was added to fix slow scrolling and switching between tabs issues on Android. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
 
 #### When can we remove this:
 
-When reanimated adopts this by default.
+When reanimated adopts this by default or ships a better way to fix it
 
 ## react-native-webview passing constant for decelerationRate prop
 
