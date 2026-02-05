@@ -34,7 +34,6 @@ import {
 } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { space } from "styled-system"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data

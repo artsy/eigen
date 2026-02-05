@@ -20,6 +20,7 @@ type ArtistQueries =
   | "ArtistAboveTheFoldQuery"
   | "ArtistBelowTheFoldQuery"
   | "MarketStatsQuery"
+  | "ArtistAboutQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -63,7 +64,7 @@ describe("Artist", () => {
         return { entities: ["test"] }
       },
     })
-    mockMostRecentOperation("MarketStatsQuery")
+    mockMostRecentOperation("ArtistAboutQuery")
 
     await flushPromiseQueue()
 
