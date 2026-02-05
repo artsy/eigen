@@ -114,8 +114,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIDesignRequiresCompatibility</key>
-	<true />
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MGLGlyphsRasterizationMode</key>
@@ -179,6 +177,8 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
 	<key>UIStatusBarHidden</key>
