@@ -55,12 +55,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
   }
 
   const scrollToTop = useCallback(() => {
-    let auctionResultYOffset = auctionResultsYCoordinate.current
-
-    // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
-    if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
-      auctionResultYOffset += ARTIST_HEADER_HEIGHT
-    }
+    // let auctionResultYOffset = auctionResultsYCoordinate.current
+    // // if we scroll up less than SCROLL_UP_TO_SHOW_THRESHOLD the header won't expand and we need another offset
+    // if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
+    //   auctionResultYOffset += ARTIST_HEADER_HEIGHT
+    // }
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
   const onScrollEndDragChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
