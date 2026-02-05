@@ -1,0 +1,134 @@
+diff --git a/node_modules/react-native-collapsible-tab-view/src/Container.tsx b/node_modules/react-native-collapsible-tab-view/src/Container.tsx
+index 9ec4cfe..148d8d9 100644
+--- a/node_modules/react-native-collapsible-tab-view/src/Container.tsx
++++ b/node_modules/react-native-collapsible-tab-view/src/Container.tsx
+@@ -9,8 +9,9 @@ import Animated, {
+   withDelay,
+   withTiming,
+   useFrameCallback,
++  runOnJS,
++  executeOnUIRuntimeSync
+ } from 'react-native-reanimated'
+-import { runOnUISync, scheduleOnRN } from 'react-native-worklets'
+ 
+ import { Context, TabNameContext } from './Context'
+ import { Lazy } from './Lazy'
+@@ -229,7 +230,7 @@ export const Container = React.memo(
+       const syncScrollFrame = useFrameCallback(({ timeSinceFirstFrame }) => {
+         syncCurrentTabScrollPosition()
+         if (timeSinceFirstFrame > 1500) {
+-          scheduleOnRN(toggleSyncScrollFrame, false)
++          runOnJS(toggleSyncScrollFrame, false)
+         }
+       }, false)
+ 
+@@ -243,7 +244,7 @@ export const Container = React.memo(
+               scrollY.value[tabNames.value[index.value]] -
+               scrollY.value[tabNames.value[i]] +
+               offset.value
+-            scheduleOnRN(propagateTabChange, {
++            runOnJS(propagateTabChange, {
+               prevIndex: index.value,
+               index: i,
+               prevTabName: tabNames.value[index.value],
+@@ -256,7 +257,7 @@ export const Container = React.memo(
+               scrollYCurrent.value =
+                 scrollY.value[tabNames.value[index.value]] || 0
+             }
+-            scheduleOnRN(toggleSyncScrollFrame, true)
++            runOnJS(toggleSyncScrollFrame, true)
+           }
+         },
+         []
+@@ -294,7 +295,7 @@ export const Container = React.memo(
+ 
+           if (name === focusedTab.value) {
+             const ref = refMap[name]
+-            runOnUISync(
++            executeOnUIRuntimeSync(
+               scrollToImpl,
+               ref,
+               0,
+@@ -313,7 +314,7 @@ export const Container = React.memo(
+         () => tabNamesArray.length,
+         (tabLength) => {
+           if (index.value >= tabLength) {
+-            scheduleOnRN(onTabPress, tabNamesArray[tabLength - 1])
++            runOnJS(onTabPress, tabNamesArray[tabLength - 1])
+           }
+         }
+       )
+diff --git a/node_modules/react-native-collapsible-tab-view/src/Lazy.tsx b/node_modules/react-native-collapsible-tab-view/src/Lazy.tsx
+index e82d484..362bc24 100644
+--- a/node_modules/react-native-collapsible-tab-view/src/Lazy.tsx
++++ b/node_modules/react-native-collapsible-tab-view/src/Lazy.tsx
+@@ -5,8 +5,8 @@ import Animated, {
+   useAnimatedReaction,
+   withTiming,
+   useAnimatedStyle,
++  runOnUI
+ } from 'react-native-reanimated'
+-import { scheduleOnRN } from 'react-native-worklets'
+ 
+ import { ScrollView } from './ScrollView'
+ import { useScroller, useTabNameContext, useTabsContext } from './hooks'
+@@ -34,6 +34,14 @@ export const Lazy: React.FC<{
+   startMounted: _startMounted,
+   mountDelayMs = 50,
+ }) => {
++  return (
++      <Animated.View
++        pointerEvents="box-none"
++        style={styles.container}
++      >
++        {children}
++      </Animated.View>
++      )
+   const name = useTabNameContext()
+   const { focusedTab, refMap } = useTabsContext()
+ 
+@@ -94,9 +102,9 @@ export const Lazy: React.FC<{
+       if (focused && !wasFocused && !canMount) {
+         if (cancelLazyFadeIn) {
+           opacity.value = 1
+-          scheduleOnRN(setCanMount, true)
++          runOnUI(setCanMount, true)
+         } else {
+-          scheduleOnRN(startMountTimer, focusedTab.value)
++          runOnUI(startMountTimer, focusedTab.value)
+         }
+       }
+     },
+diff --git a/node_modules/react-native-collapsible-tab-view/src/hooks.tsx b/node_modules/react-native-collapsible-tab-view/src/hooks.tsx
+index 35ea1de..b176555 100644
+--- a/node_modules/react-native-collapsible-tab-view/src/hooks.tsx
++++ b/node_modules/react-native-collapsible-tab-view/src/hooks.tsx
+@@ -25,8 +25,9 @@ import {
+   AnimatedRef,
+   Extrapolation,
+   SharedValue,
++  runOnJS,
++  runOnUI
+ } from 'react-native-reanimated'
+-import { scheduleOnRN, scheduleOnUI } from 'react-native-worklets'
+ import { useDeepCompareMemo } from 'use-deep-compare'
+ 
+ import { Context, TabNameContext } from './Context'
+@@ -195,7 +196,7 @@ export function useUpdateScrollViewContentSize({ name }: { name: TabName }) {
+ 
+   const scrollContentSizeChange = useCallback(
+     (_: number, h: number) => {
+-      scheduleOnUI(setContentHeights, name, h)
++      runOnUI(setContentHeights, name, h)
+     },
+     [setContentHeights, name]
+   )
+@@ -585,7 +586,7 @@ export function useConvertAnimatedToValue<T>(animatedValue: SharedValue<T>) {
+     },
+     (animValue) => {
+       if (animValue !== value) {
+-        scheduleOnRN(setValue, animValue)
++        runOnJS(setValue, animValue)
+       }
+     },
+     [value]

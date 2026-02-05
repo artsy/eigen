@@ -136,30 +136,30 @@ export const Artist: React.FC<ArtistProps> = ({
             }}
           >
             <Tabs.Tab name="Artworks" label="Artworks">
-              <Tabs.Lazy>
-                <ArtistArtworksQueryRenderer
-                  artistID={artistAboveTheFold.internalID}
-                  input={input}
-                  searchCriteria={searchCriteria}
-                  predefinedFilters={predefinedFilters}
-                  scrollToArtworksGrid={scrollToArtworksGrid}
-                />
-              </Tabs.Lazy>
+              {/* <Tabs.Lazy> */}
+              <ArtistArtworksQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                input={input}
+                searchCriteria={searchCriteria}
+                predefinedFilters={predefinedFilters}
+                scrollToArtworksGrid={scrollToArtworksGrid}
+              />
+              {/* </Tabs.Lazy> */}
             </Tabs.Tab>
 
             <Tabs.Tab name="Insights" label="Auction Results">
-              <Tabs.Lazy>
-                <ArtistInsightsQueryRenderer
-                  artistID={artistAboveTheFold.internalID}
-                  initialFilters={auctionResultsInitialFilters}
-                />
-              </Tabs.Lazy>
+              {/* <Tabs.Lazy> */}
+              <ArtistInsightsQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                initialFilters={auctionResultsInitialFilters}
+              />
+              {/* </Tabs.Lazy> */}
             </Tabs.Tab>
 
             <Tabs.Tab name="Overview" label="About">
-              <Tabs.Lazy>
-                <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
-              </Tabs.Lazy>
+              {/* <Tabs.Lazy> */}
+              <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
+              {/* </Tabs.Lazy> */}
             </Tabs.Tab>
           </Tabs.TabsWithHeader>
         </KeyboardAvoidingContainer>

@@ -168,7 +168,7 @@
     "react-native-blob-util": "0.19.11",
     "react-native-blurhash": "2.1.2",
     "react-native-bootsplash": "6.3.10",
-    "react-native-collapsible-tab-view": "8.0.1",
+    "react-native-collapsible-tab-view": "9.0.0-rc.0",
     "react-native-device-info": "14.0.0",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.28.0",
@@ -359,6 +359,16 @@
     "*.@(json|md)": [
       "yarn prettier-write"
     ]
+  },
+  "reanimated": {
+    "staticFeatureFlags": {
+      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": true,
+      "TRIED_DISABLE_COMMIT_PAUSING_MECHANISM": true,
+      "TO_TRY_IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS": false,
+      "TRIED_FORCE_REACT_RENDER_FOR_SETTLED_ANIMATIONS": false,
+      "TRIED_USE_SYNCHRONIZABLE_FOR_MUTABLES": true,
+      "TRIED_USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": false
+    }
   },
   "packageManager": "yarn@4.10.3"
 }
