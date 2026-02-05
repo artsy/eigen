@@ -127,7 +127,7 @@ export const Artist: React.FC<ArtistProps> = ({
             disableKeyboardAvoidance
             initialTabName={initialTab}
             title={artistAboveTheFold.name ?? ""}
-            allowHeaderOverscroll
+            // allowHeaderOverscroll
             showLargeHeaderText={false}
             BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
             headerProps={{
