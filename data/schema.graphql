@@ -12668,6 +12668,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Are we currently in the fair's active period?
   isActive: Boolean
+
+  # When true, the fair is considered evergreen and not bound to specific dates.
+  isEvergreen: Boolean!
   isPublished: Boolean
   links(format: Format): String
   location: Location
