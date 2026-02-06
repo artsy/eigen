@@ -27,8 +27,6 @@ module.exports = async ({ github, context, core }) => {
     testflight: "TestFlight",
     firebase: "Firebase",
     play_store: "Play Store",
-    expo_ios: "Expo CLI (iOS)",
-    expo_android: "Expo CLI (Android)",
   }[deploymentTarget]
 
   if (!deploymentTargetName) {
