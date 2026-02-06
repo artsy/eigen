@@ -1,11 +1,10 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
-import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { ArtistInsights } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "app/Components/Artist/ArtistInsights/ArtistInsightsAuctionResults"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -40,7 +39,7 @@ describe("ArtistInsights", () => {
         if (!props?.artist) {
           return null
         }
-        return <ArtistInsightsFragmentContainer artist={props.artist} />
+        return <ArtistInsights artist={props.artist} />
       }}
     />
   )
@@ -48,23 +47,18 @@ describe("ArtistInsights", () => {
   it("renders list auction results", async () => {
     const view = renderWithWrappersLEGACY(<TestRenderer />)
 
-    await act(async () => {
-      mockEnvironment.mock.resolveMostRecentOperation(() => ({
-        data: {
-          artist: {
-            internalID: "artist-id",
-            slug: "artist-slug",
-            statuses: { auctionLots: true },
-          },
-        },
-      }))
-      await flushPromiseQueue()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => ({
+        internalID: "artist-id",
+        slug: "artist-slug",
+        statuses: { auctionLots: true },
+      }),
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
 
     // now safe to assert
-    const auctionResults = await view.root.findAllByType(
+    const auctionResults = view.root.findAllByType(
       ArtistInsightsAuctionResultsPaginationContainer
     )
     expect(auctionResults.length).toEqual(1)

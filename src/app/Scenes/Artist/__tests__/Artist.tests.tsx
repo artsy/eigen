@@ -10,11 +10,17 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 jest.unmock("react-tracking")
 
+jest.mock("app/utils/queryPrefetching", () => ({
+  usePrefetch: jest.fn(() => jest.fn()),
+  prefetchQuery: jest.fn(),
+}))
+
 type ArtistQueries =
   | "SearchCriteriaQuery"
   | "ArtistAboveTheFoldQuery"
   | "ArtistBelowTheFoldQuery"
   | "MarketStatsQuery"
+  | "ArtistAboutQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -58,7 +64,7 @@ describe("Artist", () => {
         return { entities: ["test"] }
       },
     })
-    mockMostRecentOperation("MarketStatsQuery")
+    mockMostRecentOperation("ArtistAboutQuery")
 
     await flushPromiseQueue()
 

@@ -1,18 +1,11 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
-import {
-  Image,
-  ImageStyle,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from "react-native"
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -65,9 +58,9 @@ export class Notification extends React.Component<Props> {
                 </View>
               </View>
             </TouchableWithoutFeedback>
-            <View style={styles.gridContainer}>
+            <Flex my={2}>
               <GenericGrid artworks={artworks} />
-            </View>
+            </Flex>
           </View>
         )}
       </ThemeAwareClassTheme>
@@ -75,15 +68,7 @@ export class Notification extends React.Component<Props> {
   }
 }
 
-interface Styles {
-  container: ViewStyle
-  header: ViewStyle
-  artistAvatar: ImageStyle
-  metadataContainer: ViewStyle
-  gridContainer: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
+const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     marginHorizontal: HORIZONTAL_PADDING,
@@ -101,10 +86,6 @@ const styles = StyleSheet.create<Styles>({
   metadataContainer: {
     alignSelf: "center",
     flex: 1,
-  },
-  gridContainer: {
-    marginTop: 20,
-    marginBottom: 20,
   },
 })
 
