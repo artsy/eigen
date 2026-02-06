@@ -7,6 +7,7 @@ import {
   SkeletonText,
   Spacer,
   Tabs,
+  Text,
 } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
@@ -19,6 +20,8 @@ import {
 import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRightQueryRenderer } from "app/Components/Artist/ArtistHeaderNavRight"
+import { ArtistHeaderSimplified } from "app/Components/Artist/ArtistHeaderSimplified"
+import { TabFlashListSimplified } from "app/Components/Artist/ArtistAbout/Tabs.FlashlistSimplified"
 import {
   artistInsightsQuery,
   ArtistInsightsQueryRenderer,
@@ -38,15 +41,16 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
+import { TabsWithHeader2 } from "app/Scenes/Artist/TabsWithHeader2"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { ScrollView } from "moti"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { Environment, graphql } from "react-relay"
-
 const INITIAL_TAB = "Artworks"
 
 // Move to a shared file if used elsewhere
@@ -104,7 +108,7 @@ export const Artist: React.FC<ArtistProps> = ({
   }, [artistAboveTheFold.internalID])
 
   const renderBelowTheHeaderComponent = useCallback(
-    () => <ArtistHeader artist={artistAboveTheFold} />,
+    () => <ArtistHeaderSimplified artist={artistAboveTheFold} />,
     [artistAboveTheFold]
   )
 
@@ -123,7 +127,7 @@ export const Artist: React.FC<ArtistProps> = ({
     >
       <ArtworkFiltersStoreProvider>
         <KeyboardAvoidingContainer>
-          <Tabs.TabsWithHeader
+          <TabsWithHeader2
             disableKeyboardAvoidance
             initialTabName={initialTab}
             title={artistAboveTheFold.name ?? ""}
@@ -137,21 +141,39 @@ export const Artist: React.FC<ArtistProps> = ({
           >
             <Tabs.Tab name="Artworks" label="Artworks">
               <Tabs.Lazy>
-                <ArtistArtworksQueryRenderer
+                {/* <ArtistArtworksQueryRenderer
                   artistID={artistAboveTheFold.internalID}
                   input={input}
                   searchCriteria={searchCriteria}
                   predefinedFilters={predefinedFilters}
                   scrollToArtworksGrid={scrollToArtworksGrid}
+                /> */}
+                <TabFlashListSimplified
+                  data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                  renderItem={() => (
+                    <Flex height={80} backgroundColor="orange" mb={1}>
+                      <Text>Artworks Item</Text>
+                    </Flex>
+                  )}
+                  estimatedItemSize={81}
                 />
               </Tabs.Lazy>
             </Tabs.Tab>
 
             <Tabs.Tab name="Insights" label="Auction Results">
               <Tabs.Lazy>
-                <ArtistInsightsQueryRenderer
+                {/* <ArtistInsightsQueryRenderer
                   artistID={artistAboveTheFold.internalID}
                   initialFilters={auctionResultsInitialFilters}
+                /> */}
+                <TabFlashListSimplified
+                  data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                  renderItem={() => (
+                    <Flex height={80} backgroundColor="blue" mb={1}>
+                      <Text>Auction Results Item</Text>
+                    </Flex>
+                  )}
+                  estimatedItemSize={81}
                 />
               </Tabs.Lazy>
             </Tabs.Tab>
@@ -161,7 +183,7 @@ export const Artist: React.FC<ArtistProps> = ({
                 <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
               </Tabs.Lazy>
             </Tabs.Tab>
-          </Tabs.TabsWithHeader>
+          </TabsWithHeader2>
         </KeyboardAvoidingContainer>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>

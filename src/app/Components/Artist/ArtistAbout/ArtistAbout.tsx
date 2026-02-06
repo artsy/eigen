@@ -5,6 +5,7 @@ import { ArtistAbout_artist$key } from "__generated__/ArtistAbout_artist.graphql
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistAboutRelatedGenes } from "app/Components/Artist/ArtistAbout/ArtistAboutRelatedGenes"
+import { TabFlashListSimplified } from "app/Components/Artist/ArtistAbout/Tabs.FlashlistSimplified"
 import { Biography, MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
 import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
@@ -100,7 +101,7 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
   ])
 
   return (
-    <Tabs.FlashList
+    <TabFlashListSimplified
       data={isDisplayable ? data : []}
       renderItem={({ item }) => item?.content}
       keyExtractor={(item) => item?.key}

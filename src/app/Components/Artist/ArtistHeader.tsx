@@ -65,6 +65,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
+    console.log("[SCRULL]: ArtistHeader onLayout", nativeEvent.layout.height)
     if (nativeEvent.layout.height > 0) {
       updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
       onLayoutChange?.({ nativeEvent, ...rest })
