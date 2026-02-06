@@ -30,6 +30,7 @@ plugins {
 allprojects {
     repositories {
         maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "$rootDir/../node_modules/@notifee/react-native/android/libs" }
         jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
