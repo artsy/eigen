@@ -1,5 +1,5 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
-import { Duration } from "moment"
+import { Duration } from "luxon"
 
 interface Props {
   startAt: string
