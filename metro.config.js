@@ -19,9 +19,6 @@ const config = {
   // this is to avoid OOM errors in CI.
   maxWorkers: process.env.CI == "true" ? 0 : 4,
 
-  // Watch yalc-linked packages for hot reload
-  watchFolders: [path.resolve(__dirname, "node_modules/.yalc")],
-
   transformer: {
     getTransformOptions: async () => ({
       transform: {
