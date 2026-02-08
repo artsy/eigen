@@ -13308,7 +13308,7 @@ __metadata:
     react-native-blob-util: "npm:0.19.11"
     react-native-blurhash: "npm:2.1.2"
     react-native-bootsplash: "npm:6.3.10"
-    react-native-collapsible-tab-view: "npm:8.0.1"
+    react-native-collapsible-tab-view: "file:.yalc/react-native-collapsible-tab-view"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.28.0"
@@ -22046,6 +22046,24 @@ __metadata:
   bin:
     react-native-bootsplash: cli.js
   checksum: 10c0/8a9ad8f14d0849293591a89802554173c1de6250263cba1385bc0b329f2096cd237217372da473c357489599451c98bcd9be1c24aa66d3ce7b65b651b74fe7a1
+  languageName: node
+  linkType: hard
+
+"react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view::locator=eigen%40workspace%3A.":
+  version: 8.0.1
+  resolution: "react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view#.yalc/react-native-collapsible-tab-view::hash=d6e8f5&locator=eigen%40workspace%3A."
+  dependencies:
+    use-deep-compare: "npm:^1.1.0"
+  peerDependencies:
+    "@shopify/flash-list": ">=1.0.0"
+    react: "*"
+    react-native: "*"
+    react-native-pager-view: "*"
+    react-native-reanimated: ">=3.8.1"
+  peerDependenciesMeta:
+    "@shopify/flash-list":
+      optional: true
+  checksum: 10c0/1f6084092021128c179962894d8df65158add8de27a61c0a157179b2d73cbe58bceb47a0dd5b7e9a59d8fb64be8cd6e52a82b671a882ac1b1f6dc7c34daa20fe
   languageName: node
   linkType: hard
 
