@@ -13327,7 +13327,7 @@ __metadata:
     react-native-pager-view: "npm:7.0.1"
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:5.4.4"
-    react-native-reanimated: "npm:3.19.5"
+    react-native-reanimated: "npm:4.1.5"
     react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
     react-native-safe-area-context: "npm:5.6.1"
@@ -13339,6 +13339,7 @@ __metadata:
     react-native-view-shot: "npm:4.0.3"
     react-native-vimeo-iframe: "npm:1.2.1"
     react-native-webview: "npm:13.15.0"
+    react-native-worklets: "npm:0.6.1"
     react-native-youtube-iframe: "npm:^2.4.1"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
@@ -22051,7 +22052,7 @@ __metadata:
 
 "react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view::locator=eigen%40workspace%3A.":
   version: 8.0.1
-  resolution: "react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view#.yalc/react-native-collapsible-tab-view::hash=d6e8f5&locator=eigen%40workspace%3A."
+  resolution: "react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view#.yalc/react-native-collapsible-tab-view::hash=eb291a&locator=eigen%40workspace%3A."
   dependencies:
     use-deep-compare: "npm:^1.1.0"
   peerDependencies:
@@ -22063,7 +22064,7 @@ __metadata:
   peerDependenciesMeta:
     "@shopify/flash-list":
       optional: true
-  checksum: 10c0/1f6084092021128c179962894d8df65158add8de27a61c0a157179b2d73cbe58bceb47a0dd5b7e9a59d8fb64be8cd6e52a82b671a882ac1b1f6dc7c34daa20fe
+  checksum: 10c0/9cf9df146aa58362902f92941e1dab02336490d980c10893cdba437bfb4a22aeb3a0ab9bc21bc7d3d2f258b3fc1a7f1f3e5f30a61035c8bf2f0c3763a957af9c
   languageName: node
   linkType: hard
 
@@ -22178,16 +22179,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/d5d7dadd0aa7bc66ab2cdf5cc39bd38e41f1f7011f34f3a6e7da25fb3e01a126848d415e0605859791ff0675e35a7aec0a3eb888389f25ab7508c72d2d9b8728
-  languageName: node
-  linkType: hard
-
-"react-native-is-edge-to-edge@npm:1.1.7":
-  version: 1.1.7
-  resolution: "react-native-is-edge-to-edge@npm:1.1.7"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 10c0/b7a37437f439b1e27a4d980de01994aa71b9091dc3ed00c21172d5505fb11978cd5ed3a43f97c89d502a3a08cf26e5cea6435b8d6e93d3557a92dd43563f7021
   languageName: node
   linkType: hard
 
@@ -22339,27 +22330,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.19.5":
-  version: 3.19.5
-  resolution: "react-native-reanimated@npm:3.19.5"
+"react-native-reanimated@npm:4.1.5":
+  version: 4.1.5
+  resolution: "react-native-reanimated@npm:4.1.5"
   dependencies:
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
-    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
-    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
-    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
-    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
-    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
-    "@babel/preset-typescript": "npm:^7.16.7"
-    convert-source-map: "npm:^2.0.0"
-    invariant: "npm:^2.2.4"
-    react-native-is-edge-to-edge: "npm:1.1.7"
+    react-native-is-edge-to-edge: "npm:^1.2.1"
+    semver: "npm:7.7.2"
   peerDependencies:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/5da1e142b5c2fefc118a2c6b2bba224deffb98048399b350c22e3496d36ff348ca0d72f7a0b8478db069b1d10e56f42c070c03807fa7e384cf12d9f35c8fc6cf
+    react-native-worklets: ">=0.5.0"
+  checksum: 10c0/af4aeb17b23089819c8d1dbf7f06ac4e7116cf86c1350a44ee6b6b1d262ce4d93ee28b1e3ffc7ec12f2fd261a8d6436ecf4b771e47127ebdb2e5b509f177a2b5
   languageName: node
   linkType: hard
 
@@ -22495,6 +22477,29 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/29b8ad4c1c8623c62e868893e829d20ef1ab51b38f44d0f422e0c19df9d8747ae25d1fcceec4e6d78106f263dce66b7984eeb12c0e5046c7c898b81673b0b6d6
+  languageName: node
+  linkType: hard
+
+"react-native-worklets@npm:0.6.1":
+  version: 0.6.1
+  resolution: "react-native-worklets@npm:0.6.1"
+  dependencies:
+    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
+    "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-classes": "npm:^7.0.0-0"
+    "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.0.0-0"
+    "@babel/plugin-transform-optional-chaining": "npm:^7.0.0-0"
+    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0-0"
+    "@babel/plugin-transform-template-literals": "npm:^7.0.0-0"
+    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0-0"
+    "@babel/preset-typescript": "npm:^7.16.7"
+    convert-source-map: "npm:^2.0.0"
+    semver: "npm:7.7.2"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/bc3dcca00e287939aeb7ee7be501f15a0ac59c9351c60efafa89447d70e549e7f126705c154d92dd6e0cab924bf25f3c6ec1234a55a4daa9d3b3f26aa7871777
   languageName: node
   linkType: hard
 
@@ -23691,6 +23696,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:7.7.2, semver@npm:^7.7.2":
+  version: 7.7.2
+  resolution: "semver@npm:7.7.2"
+  bin:
+    semver: bin/semver.js
+  checksum: 10c0/aca305edfbf2383c22571cb7714f48cadc7ac95371b4b52362fb8eeffdfbc0de0669368b82b2b15978f8848f01d7114da65697e56cd8c37b0dab8c58e543f9ea
+  languageName: node
+  linkType: hard
+
 "semver@npm:^5.5.0":
   version: 5.7.2
   resolution: "semver@npm:5.7.2"
@@ -23726,15 +23740,6 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10c0/fbfe717094ace0aa8d6332d7ef5ce727259815bd8d8815700853f4faf23aacbd7192522f0dc5af6df52ef4fa85a355ebd2f5d39f554bd028200d6cf481ab9b53
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.7.2":
-  version: 7.7.2
-  resolution: "semver@npm:7.7.2"
-  bin:
-    semver: bin/semver.js
-  checksum: 10c0/aca305edfbf2383c22571cb7714f48cadc7ac95371b4b52362fb8eeffdfbc0de0669368b82b2b15978f8848f01d7114da65697e56cd8c37b0dab8c58e543f9ea
   languageName: node
   linkType: hard
 
