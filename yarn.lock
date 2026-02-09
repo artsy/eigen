@@ -12702,7 +12702,7 @@ __metadata:
     react-fps: "npm:1.0.6"
     react-native: "npm:0.81.5"
     react-native-blob-util: "npm:0.19.11"
-    react-native-blurhash: "npm:2.1.2"
+    react-native-blurhash: "npm:2.1.1"
     react-native-bootsplash: "npm:6.3.10"
     react-native-collapsible-tab-view: "npm:8.0.1"
     react-native-context-menu-view: "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy"
@@ -21399,13 +21399,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-blurhash@npm:2.1.2":
-  version: 2.1.2
-  resolution: "react-native-blurhash@npm:2.1.2"
+"react-native-blurhash@npm:2.1.1":
+  version: 2.1.1
+  resolution: "react-native-blurhash@npm:2.1.1"
   peerDependencies:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
-  checksum: 10c0/ebce5c07fdbedbe0704272057d0db9d7aa6fa0775d273ba9d080025ab4b60d49367a52c8839d07456bdc54765aaab37c5888c728db2db2bb1a4cce8eee736ed3
+  checksum: 10c0/9ffefa93bb7f8578020b274112e9d5e40b152c94a7828c45e8f7ef71a20794e021accc6dd175857e334ae4727e5bc4d5cf7cf069c9b01e454478e8e31d912336
   languageName: node
   linkType: hard
 
