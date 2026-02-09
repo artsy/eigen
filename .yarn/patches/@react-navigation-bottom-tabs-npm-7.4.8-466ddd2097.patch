@@ -1,7 +1,7 @@
-diff --git a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
-index cb4e310..ecacb80 100644
---- a/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
-+++ b/node_modules/@react-navigation/bottom-tabs/lib/module/views/BottomTabBar.js
+diff --git a/lib/module/views/BottomTabBar.js b/lib/module/views/BottomTabBar.js
+index cb4e310644f3bb2ec2a6a4358930dbfe620a9ce1..ecacb80eb56b474e62a7d66b19a952691803b55c 100644
+--- a/lib/module/views/BottomTabBar.js
++++ b/lib/module/views/BottomTabBar.js
 @@ -123,6 +123,7 @@ export function BottomTabBar({
      tabBarShowLabel,
      tabBarLabelPosition,
@@ -33,10 +33,10 @@ index cb4e310..ecacb80 100644
        // Absolutely position the tab bar so that the content is below it
        // This is needed to avoid gap at bottom when the tab bar is hidden
        position: isTabBarHidden ? 'absolute' : undefined
-diff --git a/node_modules/@react-navigation/bottom-tabs/src/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
-index 2438b03..eaa6d4b 100644
---- a/node_modules/@react-navigation/bottom-tabs/src/types.tsx
-+++ b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+diff --git a/src/types.tsx b/src/types.tsx
+index 2438b03e744a2845fa6f7035586f64d4cc8e91c1..eaa6d4bcbf574075317d131c7a0b0b21b89d542c 100644
+--- a/src/types.tsx
++++ b/src/types.tsx
 @@ -239,6 +239,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
     */
    tabBarVariant?: Variant;
@@ -49,10 +49,10 @@ index 2438b03..eaa6d4b 100644
    /**
     * Style object for the tab bar container.
     */
-diff --git a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
-index 55b9c8f..816b028 100644
---- a/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
-+++ b/node_modules/@react-navigation/bottom-tabs/src/views/BottomTabBar.tsx
+diff --git a/src/views/BottomTabBar.tsx b/src/views/BottomTabBar.tsx
+index 55b9c8f3065ca5e887930af4ea9779838bb136cb..816b02840afb5a1007d79cfa4b740d063db348f8 100644
+--- a/src/views/BottomTabBar.tsx
++++ b/src/views/BottomTabBar.tsx
 @@ -175,6 +175,7 @@ export function BottomTabBar({
      tabBarVariant = 'uikit',
      tabBarStyle,
