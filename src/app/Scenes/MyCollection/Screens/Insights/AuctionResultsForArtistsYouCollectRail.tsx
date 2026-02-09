@@ -6,6 +6,7 @@ import {
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -40,7 +41,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")
         }}
-        mb={1}
+        mb={2}
       />
       <FlatList
         data={auctionResultsData}
