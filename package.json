@@ -168,7 +168,7 @@
     "react-native-blob-util": "0.19.11",
     "react-native-blurhash": "2.1.2",
     "react-native-bootsplash": "6.3.10",
-    "react-native-collapsible-tab-view": "file:.yalc/react-native-collapsible-tab-view",
+    "react-native-collapsible-tab-view": "brainbicycle/react-native-collapsible-tab-view#brian/tab-header-scroll",
     "react-native-device-info": "14.0.0",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.28.0",

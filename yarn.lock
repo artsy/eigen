@@ -13308,7 +13308,7 @@ __metadata:
     react-native-blob-util: "npm:0.19.11"
     react-native-blurhash: "npm:2.1.2"
     react-native-bootsplash: "npm:6.3.10"
-    react-native-collapsible-tab-view: "file:.yalc/react-native-collapsible-tab-view"
+    react-native-collapsible-tab-view: "brainbicycle/react-native-collapsible-tab-view#brian/tab-header-scroll"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
     react-native-gesture-handler: "npm:2.28.0"
@@ -22050,9 +22050,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view::locator=eigen%40workspace%3A.":
+"react-native-collapsible-tab-view@brainbicycle/react-native-collapsible-tab-view#brian/tab-header-scroll":
   version: 8.0.1
-  resolution: "react-native-collapsible-tab-view@file:.yalc/react-native-collapsible-tab-view#.yalc/react-native-collapsible-tab-view::hash=eb291a&locator=eigen%40workspace%3A."
+  resolution: "react-native-collapsible-tab-view@https://github.com/brainbicycle/react-native-collapsible-tab-view.git#commit=9a12fcc509ea0ec7f19152624fca8213a142b944"
   dependencies:
     use-deep-compare: "npm:^1.1.0"
   peerDependencies:
@@ -22060,11 +22060,11 @@ __metadata:
     react: "*"
     react-native: "*"
     react-native-pager-view: "*"
-    react-native-reanimated: ">=3.8.1"
+    react-native-reanimated: ">=3.8.1 || ^4.0.0"
   peerDependenciesMeta:
     "@shopify/flash-list":
       optional: true
-  checksum: 10c0/9cf9df146aa58362902f92941e1dab02336490d980c10893cdba437bfb4a22aeb3a0ab9bc21bc7d3d2f258b3fc1a7f1f3e5f30a61035c8bf2f0c3763a957af9c
+  checksum: 10c0/0337313765dc5be8be99f13897e4ed5254beb7cb73ee4b488712dc4ab4d19a40d592def4132154e9c8febd1df7a98a8040cd3d7eef66cd291f773945097ed1c2
   languageName: node
   linkType: hard
 
