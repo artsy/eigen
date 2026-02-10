@@ -7,7 +7,7 @@ const config = {
     // "**/.gradle/**/*", // ❌
     // "**/.cxx/**/*", // ❌
     "**/android/local.properties",
-    // "**/*.iml", // ❌
+    "**/*.iml",
 
     // Gradle plugin build outputs inside node_modules
     // "**/*gradle-plugin/build/**/*", // ❌
@@ -29,7 +29,7 @@ const config = {
 
     // General system/IDE files ❌
     // "**/.DS_Store",
-    // "**/*.log",
+    "**/*.log",
     // "**/.claude/**/*",
 
     // Node modules
