@@ -21839,6 +21839,9 @@ type Query {
 
     # Search variant for A/B testing (e.g. 'experiment').
     variant: String
+
+    # Filter by visible_to_public. Only available for authenticated users. Defaults to true if not provided.
+    visibleToPublic: Boolean
   ): SearchableConnection
 
   # A ShippingPreset
@@ -25568,6 +25571,9 @@ input UpdatePartnerFlagsMutationInput {
   artworksDefaultWeightMetric: String
   clientMutationId: String
 
+  # Whether the partner has accepted the GDPR DPA. The server will record the acceptance timestamp.
+  gdprDpaAccepted: Boolean
+
   # The id of the partner to update.
   id: String!
 
@@ -28181,6 +28187,9 @@ type Viewer {
 
     # Search variant for A/B testing (e.g. 'experiment').
     variant: String
+
+    # Filter by visible_to_public. Only available for authenticated users. Defaults to true if not provided.
+    visibleToPublic: Boolean
   ): SearchableConnection
 
   # A ShippingPreset
