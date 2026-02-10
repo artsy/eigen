@@ -5,7 +5,7 @@
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import "UIFont+ArtsyFonts.h"
 #import <ORStackView/ORStackView.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import "UIView+BooleanAnimations.h"
 
 @implementation InformationalViewState
 - (instancetype)init;
@@ -88,7 +88,7 @@
     }
 
     InformationalViewState *state = self.states[self.index];
-    
+
     // Disable animations if the state specifically demands that.
     animated = animated && state.animate;
 

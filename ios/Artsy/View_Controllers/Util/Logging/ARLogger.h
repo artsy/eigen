@@ -1,4 +1,4 @@
-#import <CocoaLumberjack/DDLogMacros.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
 
 #ifdef DEBUG
