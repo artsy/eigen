@@ -2109,7 +2109,7 @@ PODS:
     - SocketRocket
   - react-native-blob-util (0.19.11):
     - React-Core
-  - react-native-blurhash (2.1.2):
+  - react-native-blurhash (2.1.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -4089,7 +4089,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 94f4264de2cb156960cd82b338a403f4653f2fd9
   React-microtasksnativemodule: 6c4ee39a36958c39c97b074d28f360246a335e84
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
-  react-native-blurhash: 398739eba446091312260be5601e4bfa571a02ba
+  react-native-blurhash: b9ce90b66b73b8483cb4f510ece10b25d901ea33
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: a5b16a4479790738a9536013121331d9108d25c0
