@@ -51,7 +51,7 @@ const config = {
     "**/.DS_Store", // macOS system files// ❌ TESTING
     "**/.ruby-lsp/**/*", // Ruby language server cache// ❌ TESTING
     "**/*.log",
-    // "**/.claude/**/*",
+    "**/.claude/**/*",
 
     // Environment files (test/dev-specific)
     ".env.maestro", // Maestro test config// ❌ TESTING
