@@ -31,12 +31,9 @@ interface LoginEmailFormValues {
 }
 
 export const LoginWelcomeStep: React.FC = () => {
-  const currentScreen = AuthContext.useStoreState((state) => state.currentScreen)
-  const isCurrentScreen = currentScreen?.name === "LoginWelcomeStep"
-
   const navigation = useAuthNavigation()
 
-  const { Recaptcha, token, isTokenValid, refreshToken } = useRecaptcha({
+  const { token, isTokenValid, refreshToken } = useRecaptcha({
     source: "authentication",
     action: "verify_email",
   })
@@ -75,8 +72,6 @@ export const LoginWelcomeStep: React.FC = () => {
 
   return (
     <>
-      <Recaptcha active={isCurrentScreen} />
-
       <Formik<LoginEmailFormValues>
         initialValues={{ email: "" }}
         validationSchema={Yup.object().shape({

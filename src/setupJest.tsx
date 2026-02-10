@@ -99,6 +99,19 @@ jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
 }))
 
+jest.mock("@google-cloud/recaptcha-enterprise-react-native", () => ({
+  Recaptcha: {
+    fetchClient: jest.fn().mockResolvedValue({
+      execute: jest.fn().mockResolvedValue("mock-recaptcha-token-03A"),
+    }),
+  },
+  RecaptchaAction: {
+    LOGIN: jest.fn().mockReturnValue({ action: "LOGIN" }),
+    SIGNUP: jest.fn().mockReturnValue({ action: "SIGNUP" }),
+    custom: jest.fn((action: string) => ({ action })),
+  },
+}))
+
 jest.mock("react-native-blurhash", () => {
   const ReactNative = require("react-native")
   return {

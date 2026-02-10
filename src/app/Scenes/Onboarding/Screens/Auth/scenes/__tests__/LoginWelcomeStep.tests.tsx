@@ -14,8 +14,8 @@ jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus")
 jest.mock("app/utils/platformUtil")
 jest.mock("app/Components/Recaptcha/Recaptcha", () => ({
   useRecaptcha: jest.fn().mockReturnValue({
-    Recaptcha: () => {},
     token: "recaptcha-token",
+    state: "idle",
     isTokenValid: jest.fn(() => true),
     refreshToken: jest.fn(),
   }),
