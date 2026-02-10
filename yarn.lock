@@ -4460,6 +4460,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@google-cloud/recaptcha-enterprise-react-native@npm:^18.9.0-beta01":
+  version: 18.9.0-beta01
+  resolution: "@google-cloud/recaptcha-enterprise-react-native@npm:18.9.0-beta01"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/926134b22ffe8949997e1b41e9e87851e39edd99aed6dd7a817f65f33647afb9c492ce033279723ae00a319efe90fa86892d8f6f2fd27501ea51a591dd116518
+  languageName: node
+  linkType: hard
+
 "@gorhom/bottom-sheet@npm:5.1.8":
   version: 5.1.8
   resolution: "@gorhom/bottom-sheet@npm:5.1.8"
@@ -12557,6 +12567,7 @@ __metadata:
     "@braze/react-native-sdk": "npm:16.1.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
+    "@google-cloud/recaptcha-enterprise-react-native": "npm:^18.9.0-beta01"
     "@gorhom/bottom-sheet": "npm:5.1.8"
     "@gorhom/portal": "npm:1.0.14"
     "@invertase/react-native-apple-authentication": "npm:2.1.5"

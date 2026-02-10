@@ -42,11 +42,8 @@ setup_permissions([
 
 plugin 'cocoapods-patch'
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+use_frameworks! :linkage => :static
+$RNFirebaseAsStaticFramework = true
 
 def check_for_existing_netrc_file
   mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
