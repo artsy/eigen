@@ -8,7 +8,8 @@ const config = {
     // "**/.cxx/**/*", // ❌
     "**/android/local.properties",
     "**/*.iml",
-
+    "**/assets/**/*",
+    "**/google-services*.json",
     // Gradle plugin build outputs inside node_modules
     // "**/*gradle-plugin/build/**/*", // ❌
     // "**/*gradle-plugin/bin/**/*", // ❌
@@ -26,6 +27,7 @@ const config = {
     "ios/*.xcodeproj/project.xcworkspace/**/*",
     // "ios/DerivedData/**/*", // ❌
     "ios/tmp.xcconfig",
+    "**/GoogleService-Info*.plist",
 
     // General system/IDE files ❌
     // "**/.DS_Store",
