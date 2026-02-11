@@ -24,6 +24,7 @@ import {
   ArtistArtworks_artist$key,
 } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworks_artistAggregation$key } from "__generated__/ArtistArtworks_artistAggregation.graphql"
+import { TabFlashListSimplified } from "app/Components/Artist/ArtistAbout/Tabs.FlashlistSimplified"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -263,7 +264,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
   return (
     <Flex backgroundColor={color("mono0")} flex={1}>
-      <Tabs.Masonry
+      <TabFlashListSimplified
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"

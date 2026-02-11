@@ -17,11 +17,11 @@ import {
   artistAboutQuery,
   ArtistAboutQueryRenderer,
 } from "app/Components/Artist/ArtistAbout/ArtistAbout"
+import { TabFlashListSimplified } from "app/Components/Artist/ArtistAbout/Tabs.FlashlistSimplified"
 import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRightQueryRenderer } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistHeaderSimplified } from "app/Components/Artist/ArtistHeaderSimplified"
-import { TabFlashListSimplified } from "app/Components/Artist/ArtistAbout/Tabs.FlashlistSimplified"
 import {
   artistInsightsQuery,
   ArtistInsightsQueryRenderer,
@@ -108,7 +108,7 @@ export const Artist: React.FC<ArtistProps> = ({
   }, [artistAboveTheFold.internalID])
 
   const renderBelowTheHeaderComponent = useCallback(
-    () => <ArtistHeaderSimplified artist={artistAboveTheFold} />,
+    () => <ArtistHeader artist={artistAboveTheFold} />,
     [artistAboveTheFold]
   )
 
@@ -131,7 +131,10 @@ export const Artist: React.FC<ArtistProps> = ({
             disableKeyboardAvoidance
             initialTabName={initialTab}
             title={artistAboveTheFold.name ?? ""}
-            // allowHeaderOverscroll
+            // on Fabric we need to enable this to fix scrolling within the header
+            // that is because contentInset is being used when disabled an fabric doesn't forward the touches correctly
+            // this breaks rubberbanding so if this is fixed we should disable this again
+            allowHeaderOverscroll
             showLargeHeaderText={false}
             BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
             headerProps={{
@@ -141,14 +144,14 @@ export const Artist: React.FC<ArtistProps> = ({
           >
             <Tabs.Tab name="Artworks" label="Artworks">
               <Tabs.Lazy>
-                {/* <ArtistArtworksQueryRenderer
+                <ArtistArtworksQueryRenderer
                   artistID={artistAboveTheFold.internalID}
                   input={input}
                   searchCriteria={searchCriteria}
                   predefinedFilters={predefinedFilters}
                   scrollToArtworksGrid={scrollToArtworksGrid}
-                /> */}
-                <TabFlashListSimplified
+                />
+                {/* <TabFlashListSimplified
                   data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                   renderItem={() => (
                     <Flex height={80} backgroundColor="orange" mb={1}>
@@ -156,7 +159,7 @@ export const Artist: React.FC<ArtistProps> = ({
                     </Flex>
                   )}
                   estimatedItemSize={81}
-                />
+                /> */}
               </Tabs.Lazy>
             </Tabs.Tab>
 

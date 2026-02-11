@@ -1,12 +1,13 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
-import { FlashListProps } from "@shopify/flash-list"
+import { useEffect } from "react"
 import { FlatListProps } from "react-native"
 import { Tabs, useCurrentTabScrollY } from "react-native-collapsible-tab-view"
+import { useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 
-export function TabFlashListSimplified<T>(props: FlashListProps<T>) {
+export function TabFlashListSimplified<T>(props: FlatListProps<T>) {
   // DISABLED: This hook was causing scroll conflicts between tabs
-  // useListenForTabContentScroll()
+  //useListenForTabContentScroll()
 
   const space = useSpace()
 
@@ -25,9 +26,6 @@ export function TabFlashListSimplified<T>(props: FlashListProps<T>) {
     />
   )
 }
-
-import { useAnimatedReaction, useSharedValue } from "react-native-reanimated"
-import { useEffect } from "react"
 
 export const useListenForTabContentScroll = () => {
   const { currentScrollYAnimated } = useScreenScrollContext()
