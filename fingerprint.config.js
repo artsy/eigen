@@ -13,6 +13,8 @@ const config = {
     "**/google-services*.json",
     "**/*.apk", // Android build artifacts // ❌ TESTING
     "android/.kotlin/", // Kotlin compiler cache// ❌ TESTING
+    "**/*.keystore",
+    "**/android-secret.json",
     // Gradle plugin build outputs inside node_modules
     // "**/*gradle-plugin/build/**/*", // ❌
     // "**/*gradle-plugin/bin/**/*", // ❌
