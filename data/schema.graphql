@@ -18854,6 +18854,12 @@ type Partner implements Node {
     inquiryId: String!
   ): PartnerInquiryRequest
 
+  # The partner's inquiry response rate percentage (0-100) over the last 90 days
+  inquiryResponseRate: Float
+
+  # The partner's average inquiry response time in minutes over the last 90 days
+  inquiryResponseTime: Int
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isDefaultProfilePublic: Boolean
