@@ -147,7 +147,7 @@
     "autosuggest-highlight": "3.3.4",
     "easy-peasy": "6.1.0",
     "events": "3.3.0",
-    "expo": "~54.0.20",
+    "expo": "54.0.20",
     "expo-build-properties": "~1.0.10",
     "expo-updates": "29.0.11",
     "formik": "2.2.9",
