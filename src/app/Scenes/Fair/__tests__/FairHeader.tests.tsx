@@ -52,10 +52,10 @@ describe("FairHeader", () => {
     expect(screen.getByText("Closed")).toBeOnTheScreen()
   })
 
-  it("does not render the timing info for the Artsy Edition Shop instance", () => {
+  it("does not render the timing info for evergreen fairs", () => {
     renderWithRelay({
       Fair: () => ({
-        slug: "the-artsy-edition-shop",
+        isEvergreen: true,
         endAt: "2020-09-19T08:00:00+00:00",
       }),
     })
@@ -66,8 +66,8 @@ describe("FairHeader", () => {
   it("displays a custom subheader", () => {
     renderWithRelay({
       Fair: () => ({
-        slug: "the-artsy-edition-shop",
-        endAt: "2020-09-19T08:00:00+00:00",
+        isEvergreen: true,
+        tagline: "Your Chance to Own an Icon",
       }),
     })
 
