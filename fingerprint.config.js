@@ -29,12 +29,7 @@ const config = {
     "ios/tmp.xcconfig",
     "**/GoogleService-Info*.plist",
     "**/AppCenter-Config.plist", // AppCenter configuration
-    "ios/Pods/**/*.plist", // Generated Pod plists
-    "ios/Pods/**/*.modulemap", // Generated module maps
-    "ios/Pods/**/*-umbrella.h", // Generated umbrella headers
-    "ios/Pods/.last_build_configuration", // Pod build state
-    "ios/Pods/*-artifacts/**/*", // Pod artifacts
-    "ios/Pods/Headers/**/*", // Pod headers (generated)
+    "ios/Pods/**/*",
 
     // Build directories and artifacts
     "build/", // Root-level build directory
