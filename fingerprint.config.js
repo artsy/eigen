@@ -3,64 +3,58 @@ const config = {
   sourceSkips: ["ExpoConfigRuntimeVersionIfString", "ExpoConfigVersions"],
   ignorePaths: [
     // Android build artifacts (everywhere including inside node_modules)
-    "**/android/build/**/*", // ❌ TESTING
-    "**/.gradle/**/*", // ❌ TESTING
-    "**/.cxx/**/*", // ❌ TESTING
-    "**/.idea/**/*", // IntelliJ/Android Studio // ❌ TESTING
+    "**/android/build/**/*",
+    "**/.gradle/**/*",
+    "**/.cxx/**/*",
+    "**/.idea/**/*", // IntelliJ/Android Studio
     "**/android/local.properties",
     "**/*.iml",
     "**/assets/**/*",
     "**/google-services*.json",
-    "**/*.apk", // Android build artifacts // ❌ TESTING
-    "android/.kotlin/", // Kotlin compiler cache// ❌ TESTING
+    "**/*.apk", // Android build artifacts
+    "android/.kotlin/", // Kotlin compiler cache
     "**/*.keystore",
     "**/android-secret.json",
-    // Gradle plugin build outputs inside node_modules
-    // "**/*gradle-plugin/build/**/*", // ❌
-    // "**/*gradle-plugin/bin/**/*", // ❌
 
     // Eclipse/IntelliJ build outputs and IDE files (anywhere in node_modules)
-    // "**/android/bin/**/*", // ❌
     "**/.classpath",
     "**/.project",
     "**/.settings/**/*",
 
     // iOS build artifacts and user-specific data
-    // "ios/Pods/**/*", // ❌
     "**/xcuserdata/**/*",
     "ios/*.xcworkspace/**/*",
     "ios/*.xcodeproj/project.xcworkspace/**/*",
-    // "ios/DerivedData/**/*", // ❌
-    "derived_data/", // Xcode derived data (root level)// ❌ TESTING
+    "derived_data/", // Xcode derived data (root level)
     "ios/tmp.xcconfig",
     "**/GoogleService-Info*.plist",
-    "**/AppCenter-Config.plist", // AppCenter configuration// ❌ TESTING
-    "ios/Pods/**/*.plist", // Generated Pod plists// ❌ TESTING
-    "ios/Pods/**/*.modulemap", // Generated module maps// ❌ TESTING
-    "ios/Pods/**/*-umbrella.h", // Generated umbrella headers// ❌ TESTING
-    "ios/Pods/.last_build_configuration", // Pod build state// ❌ TESTING
-    "ios/Pods/*-artifacts/**/*", // Pod artifacts// ❌ TESTING
-    "ios/Pods/Headers/**/*", // Pod headers (generated)// ❌ TESTING
+    "**/AppCenter-Config.plist", // AppCenter configuration
+    "ios/Pods/**/*.plist", // Generated Pod plists
+    "ios/Pods/**/*.modulemap", // Generated module maps
+    "ios/Pods/**/*-umbrella.h", // Generated umbrella headers
+    "ios/Pods/.last_build_configuration", // Pod build state
+    "ios/Pods/*-artifacts/**/*", // Pod artifacts
+    "ios/Pods/Headers/**/*", // Pod headers (generated)
 
     // Build directories and artifacts
-    "build/", // Root-level build directory// ❌ TESTING
-    "build-cache-provider/", // Custom build cache provider// ❌ TESTING
-    "archives/", // Archive directory// ❌ TESTING
-    "**/*.jsbundle.map", // JavaScript bundle source maps// ❌ TESTING
-    "**/tsconfig.tsbuildinfo", // TypeScript build info// ❌ TESTING
+    "build/", // Root-level build directory
+    "build-cache-provider/", // Custom build cache provider
+    "archives/", // Archive directory
+    "**/*.jsbundle.map", // JavaScript bundle source maps
+    "**/tsconfig.tsbuildinfo", // TypeScript build info
 
-    // General system/IDE files ❌
-    "**/.DS_Store", // macOS system files// ❌ TESTING
-    "**/.ruby-lsp/**/*", // Ruby language server cache// ❌ TESTING
+    // General system/IDE files
+    "**/.DS_Store", // macOS system files
+    "**/.ruby-lsp/**/*", // Ruby language server cache
     "**/*.log",
     "**/.claude/**/*",
 
     // Environment files (test/dev-specific)
-    ".env.maestro", // Maestro test config// ❌ TESTING
-    ".env.maestro.android", // Android Maestro config// ❌ TESTING
-    ".env.maestro.ios", // iOS Maestro config// ❌ TESTING
-    "Brewfile.lock.json", // Homebrew dependencies// ❌ TESTING
-    "**/.i-had-a-netrc-file", // netrc file// ❌ TESTING
+    ".env.maestro", // Maestro test config
+    ".env.maestro.android", // Android Maestro config
+    ".env.maestro.ios", // iOS Maestro config
+    "Brewfile.lock.json", // Homebrew dependencies
+    "**/.i-had-a-netrc-file", // netrc file
     // Node modules
     "node_modules/react-native-keys/**/*",
     "**/node_modules/react-native-keys/**/*",
