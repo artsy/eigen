@@ -90,7 +90,7 @@ PODS:
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
-  - Expo (54.0.33):
+  - Expo (54.0.20):
     - boost
     - DoubleConversion
     - ExpoModulesCore
@@ -137,7 +137,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (15.0.8):
     - ExpoModulesCore
-  - ExpoModulesCore (3.0.29):
+  - ExpoModulesCore (3.0.22):
     - boost
     - DoubleConversion
     - fast_float
@@ -4622,14 +4622,14 @@ SPEC CHECKSUMS:
   EXManifests: 224345a575fca389073c416297b6348163f28d1a
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
-  Expo: ffcd2fb31776b663b84501a2568cab7dd7c0f9cb
+  Expo: 038e807e43fecf6e306f04df6542d22f2da92d5e
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
   ExpoAsset: f867e55ceb428aab99e1e8c082b5aee7c159ea18
   ExpoFileSystem: 858a44267a3e6e9057e0888ad7c7cfbf55d52063
   ExpoFont: f543ce20a228dd702813668b1a07b46f51878d47
   ExpoKeepAwake: 55f75eca6499bb9e4231ebad6f3e9cb8f99c0296
-  ExpoModulesCore: d86dab8a6c8f1184f9b0b0503ace93919882aa15
+  ExpoModulesCore: c38e2b16c117698c4ac907d1b929d111601d5db8
   EXStructuredHeaders: c951e77f2d936f88637421e9588c976da5827368
   EXUpdates: 1751b113e229ba77c6dbb9c076a44a7d90917447
   EXUpdatesInterface: 5adf50cb41e079c861da6d9b4b954c3db9a50734
