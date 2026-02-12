@@ -3,6 +3,13 @@
   "version": "8.94.0",
   "slug": "eigen",
   "expo": {
+    "buildCacheProvider": {
+      "plugin": "@eggl-js/expo-github-cache",
+      "options": {
+        "owner": "artsy",
+        "repo": "eigen"
+      }
+    },
     "platforms": ["ios", "android"],
     "runtimeVersion": "257035bdc63217c4adf6e7c7f0bfeea9ca986f22",
     "owner": "artsy_org",
