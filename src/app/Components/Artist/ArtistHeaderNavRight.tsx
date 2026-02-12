@@ -117,7 +117,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           <FollowButton
             haptic
             isFollowed={isFollowed}
-            longestText="Following 999.9k"
+            longestText="Following 999.9K"
             followCount={artist?.counts.follows}
             onPress={() => setIsFollowed(!isFollowed)}
             minWidth={followButtonWidth}
