@@ -1,6 +1,5 @@
 import { ShareIcon } from "@artsy/icons/native"
 import { Flex, FollowButton, Screen, useSpace } from "@artsy/palette-mobile"
-import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeaderNavRightQuery } from "__generated__/ArtistHeaderNavRightQuery.graphql"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
@@ -24,7 +23,6 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist: artistProp,
 }) => {
   const space = useSpace()
-  const { currentScrollYAnimated, scrollYOffsetAnimated } = useScreenScrollContext()
   const artist = useFragment(fragment, artistProp)
   const [isFollowed, setIsFollowed] = useState(!!artist?.isFollowed)
 
