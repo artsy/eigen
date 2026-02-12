@@ -129,6 +129,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>ReactNativeReleaseLevel</key>
+	<string>experimental</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>

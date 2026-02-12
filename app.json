@@ -24,6 +24,17 @@
           "project": "eigen",
           "organization": "artsynet"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "reactNativeReleaseLevel": "experimental"
+          },
+          "ios": {
+            "reactNativeReleaseLevel": "experimental"
+          }
+        }
       ]
     ]
   },

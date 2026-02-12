@@ -1,0 +1,12 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/src/constants.ts b/node_modules/@gorhom/bottom-sheet/src/constants.ts
+index 87afaa1..b7f71e7 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/constants.ts
++++ b/node_modules/@gorhom/bottom-sheet/src/constants.ts
+@@ -68,6 +68,7 @@ enum SNAP_POINT_TYPE {
+   DYNAMIC = 1,
+ }
+ 
++// @ts-expect-error
+ const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
+ const ANIMATION_DURATION = 250;
+ 
