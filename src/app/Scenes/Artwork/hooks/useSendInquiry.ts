@@ -117,7 +117,7 @@ export const useSendInquiry = ({
     })
   }
 
-  return { sendInquiry, error }
+  return { sendInquiry, error, sendingInquiry: isLoading }
 }
 
 const FRAGMENT_ARTWORK = graphql`
