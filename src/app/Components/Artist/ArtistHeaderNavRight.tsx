@@ -1,5 +1,5 @@
 import { ShareIcon } from "@artsy/icons/native"
-import { Flex, FollowButton, NAVBAR_HEIGHT, useSpace } from "@artsy/palette-mobile"
+import { Flex, FollowButton, Screen, useSpace } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeaderNavRightQuery } from "__generated__/ArtistHeaderNavRightQuery.graphql"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
@@ -10,7 +10,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
 import { PixelRatio, TouchableOpacity } from "react-native"
-import { Easing, useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated"
+import { useAnimatedStyle } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -31,6 +31,8 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const { showShareSheet } = useShareSheet()
   const { handleFollowToggle } = useFollowArtist(artist)
 
+  const { opacity } = Screen.useTitleStyles()
+
   // The container width minus the share icon width minus the padding on the left and right
   const followButtonWidth = CONTAINER_WIDTH - ACCESSIBLE_DEFAULT_ICON_SIZE - space(2)
 
@@ -44,42 +46,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
     [isFollowed]
   )
 
-  const followAreaDeltaX = (followButtonWidth + space(2)) * PixelRatio.getFontScale()
-  const displayFollowButton = useDerivedValue(() => {
-    return (
-      !scrollYOffsetAnimated.value ||
-      currentScrollYAnimated.value < scrollYOffsetAnimated.value + NAVBAR_HEIGHT
-    )
-  })
-
-  // convert the space into primitive types to be user on the UI thread
-  const space2 = space(2)
-
-  const followButtonTranslateX = useDerivedValue(() =>
-    displayFollowButton.value ? 0 : followAreaDeltaX
-  )
-
-  const followButtonOpacity = useDerivedValue(() => (displayFollowButton.value ? 1 : 0))
-
-  const viewStyle = useAnimatedStyle(
-    () => ({
-      transform: [
-        {
-          translateX: withTiming(
-            followButtonTranslateX.value - (displayFollowButton.value ? 0 : space2),
-            {
-              duration: 200,
-              easing: Easing.sin,
-            }
-          ),
-        },
-      ],
-    }),
-    [followAreaDeltaX]
-  )
-
   const followButtonStyle = useAnimatedStyle(() => ({
-    opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
+    // If the title is hidden, the follow button should be visible
+    opacity: opacity.value ? 0 : 1,
   }))
 
   const handleSharePress = useCallback(() => {
@@ -97,34 +66,32 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   }, [artist, showShareSheet])
 
   return (
-    <MotiView style={viewStyle}>
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        width={CONTAINER_WIDTH}
-        py={1}
-      >
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Share"
-          onPress={handleSharePress}
-        >
-          <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
-        </TouchableOpacity>
+    <Flex
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="flex-end"
+      width={CONTAINER_WIDTH}
+      py={1}
+    >
+      <MotiView style={followButtonStyle}>
+        <FollowButton
+          haptic
+          isFollowed={isFollowed}
+          longestText="Following 999.9K"
+          followCount={artist?.counts.follows}
+          onPress={() => setIsFollowed(!isFollowed)}
+          minWidth={followButtonWidth}
+        />
+      </MotiView>
 
-        <MotiView style={followButtonStyle}>
-          <FollowButton
-            haptic
-            isFollowed={isFollowed}
-            longestText="Following 999.9K"
-            followCount={artist?.counts.follows}
-            onPress={() => setIsFollowed(!isFollowed)}
-            minWidth={followButtonWidth}
-          />
-        </MotiView>
-      </Flex>
-    </MotiView>
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Share"
+        onPress={handleSharePress}
+      >
+        <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
+      </TouchableOpacity>
+    </Flex>
   )
 }
 
