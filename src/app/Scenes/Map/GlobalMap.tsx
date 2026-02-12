@@ -7,6 +7,7 @@ import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -102,6 +103,28 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   useEffect(() => {
+    const onPressCitySwitcherButton = () => {
+      if (!showCityPicker) {
+        // Show the city picker
+        setShowCityPicker(true)
+        setActiveShows([])
+        setActivePin(null)
+      } else {
+        // Hide the city picker
+        setShowCityPicker(false)
+      }
+    }
+
+    const onPressUserPositionButton = () => {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      const { lat, lng } = userLocation
+      cameraRef.current?.setCamera({
+        centerCoordinate: [lng, lat],
+        zoomLevel: DefaultZoomLevel,
+        animationDuration: 500,
+      })
+    }
+
     navigation.setOptions({
       headerRight: () => {
         return (
@@ -137,7 +160,16 @@ export const GlobalMap: React.FC<Props> = (props) => {
       },
       headerShadowVisible: false,
     })
-  }, [navigation, viewer, userLocation, showCityPicker, activePin])
+  }, [
+    navigation,
+    viewer,
+    userLocation,
+    showCityPicker,
+    activePin,
+    hideButtons,
+    safeAreaInsets.top,
+    currentLocation,
+  ])
 
   useEffect(() => {
     updateShowIdMap()
@@ -338,27 +370,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }
 
-  const onPressCitySwitcherButton = () => {
-    if (!showCityPicker) {
-      // Show the city picker
-      setShowCityPicker(true)
-      setActiveShows([])
-      setActivePin(null)
-    } else {
-      // Hide the city picker
-      setShowCityPicker(false)
-    }
-  }
-
-  const onPressUserPositionButton = () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { lat, lng } = userLocation
-    cameraRef.current?.setCamera({
-      centerCoordinate: [lng, lat],
-      zoomLevel: DefaultZoomLevel,
-      animationDuration: 500,
-    })
-  }
+  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
   const currentFeatureCollection = (): FilterData => {
     const filterID = cityTabs[activeIndex].id
@@ -479,6 +491,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
+    console.warn("setPreviouslySelectedCitySlug", newCity.slug)
+    setPreviouslySelectedCitySlug(newCity.slug)
     refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
   }
 
@@ -527,7 +541,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         >
           <MapboxGL.Camera
             ref={cameraRef}
-            animationMode="flyTo"
+            animationMode="moveTo"
             zoomLevel={DefaultZoomLevel}
             minZoomLevel={MinZoomLevel}
             maxZoomLevel={MaxZoomLevel}

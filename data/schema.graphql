@@ -12668,6 +12668,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Are we currently in the fair's active period?
   isActive: Boolean
+
+  # When true, the fair is considered evergreen and not bound to specific dates.
+  isEvergreen: Boolean!
   isPublished: Boolean
   links(format: Format): String
   location: Location
@@ -13627,6 +13630,7 @@ enum FulfillmentOptionInputEnum {
   DOMESTIC_FLAT
   INTERNATIONAL_FLAT
   PICKUP
+  SHIPPING_TBD
 }
 
 enum FulfillmentOptionTypeEnum {
@@ -18850,6 +18854,12 @@ type Partner implements Node {
     inquiryId: String!
   ): PartnerInquiryRequest
 
+  # The partner's inquiry response rate percentage (0-100) over the last 90 days
+  inquiryResponseRate: Float
+
+  # The partner's average inquiry response time in minutes over the last 90 days
+  inquiryResponseTime: Int
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isDefaultProfilePublic: Boolean
@@ -20335,6 +20345,10 @@ type PublishNavigationDraftSuccess {
   navigationVersion: NavigationVersion!
 }
 
+type PublishViewingRoomFailure {
+  mutationError: GravityMutationError
+}
+
 input PublishViewingRoomInput {
   clientMutationId: String
   viewingRoomID: ID!
@@ -20342,6 +20356,16 @@ input PublishViewingRoomInput {
 
 type PublishViewingRoomPayload {
   clientMutationId: String
+  viewingRoom: ViewingRoom
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
+
+  # On success: the published viewing room. On error: the error that occurred.
+  viewingRoomOrError: PublishViewingRoomResponseOrError
+}
+
+union PublishViewingRoomResponseOrError = PublishViewingRoomFailure | PublishViewingRoomSuccess
+
+type PublishViewingRoomSuccess {
   viewingRoom: ViewingRoom!
 }
 
@@ -21821,6 +21845,9 @@ type Query {
 
     # Search variant for A/B testing (e.g. 'experiment').
     variant: String
+
+    # Filter by visible_to_public. Only available for authenticated users. Defaults to true if not provided.
+    visibleToPublic: Boolean
   ): SearchableConnection
 
   # A ShippingPreset
@@ -24460,6 +24487,10 @@ type UnlinkAuthenticationMutationPayload {
   me: Me!
 }
 
+type UnpublishViewingRoomFailure {
+  mutationError: GravityMutationError
+}
+
 input UnpublishViewingRoomInput {
   clientMutationId: String
   viewingRoomID: ID!
@@ -24467,6 +24498,18 @@ input UnpublishViewingRoomInput {
 
 type UnpublishViewingRoomPayload {
   clientMutationId: String
+  viewingRoom: ViewingRoom
+    @deprecated(reason: "Use viewingRoomOrError instead for proper error handling")
+
+  # On success: the unpublished viewing room. On error: the error that occurred.
+  viewingRoomOrError: UnpublishViewingRoomResponseOrError
+}
+
+union UnpublishViewingRoomResponseOrError =
+    UnpublishViewingRoomFailure
+  | UnpublishViewingRoomSuccess
+
+type UnpublishViewingRoomSuccess {
   viewingRoom: ViewingRoom!
 }
 
@@ -25533,6 +25576,9 @@ input UpdatePartnerFlagsMutationInput {
   # The default weight metric system to use for artworks. If null, the flag will be unset.
   artworksDefaultWeightMetric: String
   clientMutationId: String
+
+  # Whether the partner has accepted the GDPR DPA. The server will record the acceptance timestamp.
+  gdprDpaAccepted: Boolean
 
   # The id of the partner to update.
   id: String!
@@ -28147,6 +28193,9 @@ type Viewer {
 
     # Search variant for A/B testing (e.g. 'experiment').
     variant: String
+
+    # Filter by visible_to_public. Only available for authenticated users. Defaults to true if not provided.
+    visibleToPublic: Boolean
   ): SearchableConnection
 
   # A ShippingPreset

@@ -171,6 +171,12 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
+  AREnableExpandedCityGuide: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

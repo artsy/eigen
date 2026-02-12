@@ -54,7 +54,7 @@
     "open-url": "npx uri-scheme open",
     "open-xcode": "open ios/Artsy.xcworkspace",
     "pod-install": "cd ios; bundle exec npx pod-install; cd ..; ./scripts/setup/post-pod-install.rb",
-    "postinstall": "patch-package; react-native setup-ios-permissions; yarn init-metaflags; prettier --write package.json; ./scripts/setup/update-echo",
+    "postinstall": "patch-package; yarn init-metaflags; prettier --write package.json; ./scripts/setup/update-echo",
     "prepare": "patch-package && husky install",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
@@ -70,7 +70,6 @@
     "setup:releases:update!": "scripts/setup/update-env-for-releases",
     "start": "WITH_ROZENITE=true concurrently --raw 'react-native start' 'yarn relay:watch'",
     "start:reset-cache": "yarn start --reset-cache",
-    "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema ../eigen/data/schema.graphql && cd -; yarn prettier --write --parser graphql data/schema.graphql",
     "test": "jest",
@@ -107,8 +106,8 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.341.0",
-    "@artsy/icons": "3.64.0",
+    "@artsy/cohesion": "4.345.0",
+    "@artsy/icons": "3.65.0",
     "@artsy/palette-mobile": "22.6.0--canary.425.5263.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
@@ -166,7 +165,7 @@
     "react-fps": "1.0.6",
     "react-native": "0.81.5",
     "react-native-blob-util": "0.19.11",
-    "react-native-blurhash": "2.1.2",
+    "react-native-blurhash": "2.1.1",
     "react-native-bootsplash": "6.3.10",
     "react-native-collapsible-tab-view": "8.0.1",
     "react-native-device-info": "14.0.0",
@@ -217,7 +216,7 @@
     "zeego": "^3.0.6"
   },
   "devDependencies": {
-    "@artsy/update-repo": "0.8.0",
+    "@artsy/update-repo": "0.8.1",
     "@babel/core": "7.25.2",
     "@babel/plugin-proposal-decorators": "7.18.9",
     "@babel/plugin-transform-flow-strip-types": "7.18.9",

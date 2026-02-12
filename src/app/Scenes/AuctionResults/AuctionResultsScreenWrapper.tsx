@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { BackButton, Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
+import { BackButton, Screen, useSpace } from "@artsy/palette-mobile"
 import { AuctionResultsScreenWrapperContainerQuery } from "__generated__/AuctionResultsScreenWrapperContainerQuery.graphql"
 import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResultsScreenWrapper_me.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -18,16 +18,14 @@ import { useTracking } from "react-tracking"
 interface Props {
   me: AuctionResultsScreenWrapper_me$data
   relay: RelayPaginationProp
-  state?: AuctionResultsState
 }
 
 const PAGE_SIZE = 20
 
-export const AuctionResultsScreenContent: React.FC<Props> = ({
-  me,
-  relay,
-  state = AuctionResultsState.ALL,
-}) => {
+const TITLE = "Auction Results for Artists You Follow"
+const SUBTITLE = "See auction results for the artists you follow"
+
+export const AuctionResultsScreenContent: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore, refetchConnection } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
@@ -65,8 +63,10 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
         context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
       })}
     >
-      <ArtworkFiltersStoreProvider>
-        <Flex flex={1}>
+      <Screen.AnimatedHeader onBack={goBack} title={TITLE} />
+      <Screen.StickySubHeader title={TITLE} subTitle={SUBTITLE} />
+      <Screen.Body fullwidth>
+        <ArtworkFiltersStoreProvider>
           <AuctionResultsList
             auctionResults={auctionResults}
             refreshing={refreshing}
@@ -76,24 +76,11 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
               trackEvent(tracks.tapAuctionGroup(item.internalID))
               navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
             }}
-            ListHeaderComponent={() => <ListHeader state={state} />}
             isLoadingNext={loadingMoreData}
-            floatingHeaderTitle={getTitleByState(state)}
           />
-        </Flex>
-      </ArtworkFiltersStoreProvider>
+        </ArtworkFiltersStoreProvider>
+      </Screen.Body>
     </ProvideScreenTrackingWithCohesionSchema>
-  )
-}
-
-export const ListHeader: React.FC<{ state: AuctionResultsState }> = ({ state }) => {
-  return (
-    <Flex mx={2}>
-      <Text variant="lg-display" mb={0.5}>
-        {getTitleByState(state)}
-      </Text>
-      <Text variant="xs">{getDescriptionByState(state)}</Text>
-    </Flex>
   )
 }
 
@@ -171,24 +158,6 @@ export enum AuctionResultsSorts {
   DATE_DESC = "DATE_DESC",
 }
 
-const getTitleByState = (state: AuctionResultsState) => {
-  switch (state) {
-    case AuctionResultsState.PAST:
-      return "Auction Results for Artists You Follow"
-    case AuctionResultsState.ALL:
-      return "Auction Results for Artists You Follow"
-  }
-}
-
-const getDescriptionByState = (state: AuctionResultsState) => {
-  switch (state) {
-    case AuctionResultsState.PAST:
-      return "See auction results for the artists you follow"
-    case AuctionResultsState.ALL:
-      return "See auction results for the artists you follow"
-  }
-}
-
 export const AuctionResultsScreenWrapper: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
@@ -206,12 +175,7 @@ export const AuctionResultsScreenWrapper: React.FC<{
         render={renderWithPlaceholder({
           Container: AuctionResultsScreenWrapperContainer,
           renderPlaceholder: () => {
-            return (
-              <LoadingSkeleton
-                title={getTitleByState(state)}
-                listHeader={<ListHeader state={state} />}
-              />
-            )
+            return <LoadingSkeleton title={TITLE} subTitle={SUBTITLE} />
           },
           initialProps: {
             state,
