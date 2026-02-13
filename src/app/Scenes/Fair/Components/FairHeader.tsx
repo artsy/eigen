@@ -15,7 +15,6 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
     return null
   }
 
-  const isArtsyEditionShop = data.slug === "the-artsy-edition-shop"
   const profileImageUrl = data.profile?.icon?.imageUrl
 
   return (
@@ -45,12 +44,12 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
         </Flex>
       ) : null}
       <Flex px={2} pointerEvents="none">
-        <Text variant="lg-display" pt={2} pb={isArtsyEditionShop ? 0 : 2}>
+        <Text variant="lg-display" pt={2} pb={data.isEvergreen ? 0 : 2}>
           {data.name}
         </Text>
-        {isArtsyEditionShop ? (
+        {data.isEvergreen ? (
           <Text variant="sm" pb={2} color="mono60">
-            Your Chance to Own an Icon
+            {data.tagline}
           </Text>
         ) : (
           <FairTiming fair={data} />
@@ -73,6 +72,8 @@ const fragment = graphql`
       imageUrl: url(version: "large_rectangle")
       aspectRatio
     }
+    isEvergreen
+    tagline
     ...FairTiming_fair
   }
 `
