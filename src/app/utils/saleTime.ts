@@ -119,7 +119,7 @@ export const saleTime = (sale: {
   const now = DateTime.now()
 
   return {
-    absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, saleType),
+    absolute: absolute(now, startDateMoment, endDateMoment, saleType),
     relative: relative(
       now.toUTC(),
       startDateMoment?.toUTC() ?? null,
@@ -132,12 +132,11 @@ const absolute = (
   now: DateTime,
   startDateMoment: DateTime | null,
   endDateMoment: DateTime | null,
-  userTimeZone: string,
   saleType: "live" | "timed"
 ): string | null => {
   // definitely not open yet
   if (startDateMoment !== null && now < startDateMoment) {
-    return begins(startDateMoment, userTimeZone, saleType)
+    return begins(startDateMoment, saleType)
   }
 
   // definitely already closed
@@ -152,7 +151,7 @@ const absolute = (
     endDateMoment !== null &&
     now < endDateMoment
   ) {
-    return closes(endDateMoment, userTimeZone, saleType)
+    return closes(endDateMoment, saleType)
   }
 
   // otherwise don't display anything
@@ -163,17 +162,17 @@ const absolute = (
 const formatTime = (date: DateTime): string =>
   date.toFormat("h:mma").replace("AM", "am").replace("PM", "pm")
 
-const begins = (startDate: DateTime, userTimeZone: string, saleType: "live" | "timed"): string =>
+const begins = (startDate: DateTime, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
   `begins ${startDate.toFormat("MMM d")} ` +
   `at ${formatTime(startDate)} ` +
-  DateTime.now().setZone(userTimeZone).toFormat("ZZZZ")
+  startDate.offsetNameShort
 
-const closes = (endDate: DateTime, userTimeZone: string, saleType: "live" | "timed"): string =>
+const closes = (endDate: DateTime, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
   `closes ${endDate.toFormat("MMM d")} ` +
   `at ${formatTime(endDate)} ` +
-  DateTime.now().setZone(userTimeZone).toFormat("ZZZZ")
+  endDate.offsetNameShort
 
 const closed = (endDate: DateTime): string => `Closed on ${endDate.toFormat("MMM d")}`
 
@@ -250,17 +249,17 @@ export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null | un
   const thisMoment = DateTime.now().setZone(DateTime.now().zoneName)
 
   if (startDateMoment && thisMoment < startDateMoment) {
-    return `${startDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(
-      startDateMoment
-    )} ${startDateMoment.toFormat("ZZZZ")}`
+    return `${startDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(startDateMoment)} ${
+      startDateMoment.offsetNameShort
+    }`
   } else if (endedDateMoment && thisMoment > endedDateMoment) {
-    return `Closed ${endedDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(
-      endedDateMoment
-    )} ${endedDateMoment.toFormat("ZZZZ")}`
+    return `Closed ${endedDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(endedDateMoment)} ${
+      endedDateMoment.offsetNameShort
+    }`
   } else if (endDateMoment) {
-    return `${endDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(
-      endDateMoment
-    )} ${endDateMoment.toFormat("ZZZZ")}`
+    return `${endDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(endDateMoment)} ${
+      endDateMoment.offsetNameShort
+    }`
   } else {
     return null
   }
