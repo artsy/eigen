@@ -425,6 +425,13 @@ jest.mock("react-native-keychain", () => ({
 
 jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
 
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
+
 /**
  * Mocks for our code
  */
