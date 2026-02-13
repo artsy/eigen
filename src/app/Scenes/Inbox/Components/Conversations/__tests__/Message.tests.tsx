@@ -1,15 +1,14 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
-import "react-native"
-
 import Message from "app/Scenes/Inbox/Components/Conversations/Message"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { DateTime } from "luxon"
+import "react-native"
 
 it("renders without throwing an error", () => {
   const messageBody =
     "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?"
   const props = {
     key: 0,
-    createdAt: moment().subtract(1, "year").toISOString(),
+    createdAt: DateTime.now().minus({ years: 1 }).toISO(),
     body: messageBody,
     isFromUser: true,
     attachments: [],
