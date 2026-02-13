@@ -175,6 +175,7 @@ web-build/
 
 # yarn 4
 .yarn/*
+!.yarn/patches
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks

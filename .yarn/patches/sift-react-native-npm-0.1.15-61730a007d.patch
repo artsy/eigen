@@ -1,0 +1,25 @@
+diff --git a/lib/typescript/index.d.ts b/lib/typescript/index.d.ts
+index e6bcb83d65ab713b544e1c48b574a6241ebfe14c..c6f84710a0870de85f6098af4c4cae2e01bd86dc 100644
+--- a/lib/typescript/index.d.ts
++++ b/lib/typescript/index.d.ts
+@@ -1,6 +1,7 @@
+ declare type SiftReactNativeType = {
+     setSiftConfig(accountId: string, beaconKey: string, disallowCollectingLocationData: boolean, serverUrlFormat: string): void;
+     setUserId(userId: string): void;
++    setPageName(pageName: string): void;
+     unsetUserId(): void;
+     upload(): void;
+ };
+diff --git a/package.json b/package.json
+index 71d664d8bbe0e246e5dce1c159512d1a50d05841..a0141321e36d22db51122c5d74fe71b7f37f60b5 100644
+--- a/package.json
++++ b/package.json
+@@ -4,7 +4,7 @@
+   "description": "A React Native wrapper for Sift iOS and Android SDKs",
+   "main": "lib/commonjs/index",
+   "module": "lib/module/index",
+-  "types": "lib/typescript/src/index.d.ts",
++  "types": "lib/typescript/index.d.ts",
+   "react-native": "src/index",
+   "source": "src/index",
+   "files": [

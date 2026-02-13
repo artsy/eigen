@@ -1,0 +1,11 @@
+diff --git a/jest/mock.tsx b/jest/mock.tsx
+index 81688c021ec3eefa67cbf6ee10f897c905b905cc..61a7b991e44e343238b48c61beb661e207dcd3bc 100644
+--- a/jest/mock.tsx
++++ b/jest/mock.tsx
+@@ -1,5 +1,5 @@
+ import { jest } from '@jest/globals';
+-import React, { useContext } from 'react';
++import { useContext } from 'react';
+ import type { Metrics } from '../src/SafeArea.types';
+ import type {
+   SafeAreaProviderProps,

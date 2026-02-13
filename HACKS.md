@@ -141,7 +141,7 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
 
-## Patch-package for sift-react-native
+## Patch for sift-react-native
 
 #### When can we remove this:
 
@@ -154,7 +154,7 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
-## Patch-package for @react-navigation/native
+## Patch for @react-navigation/native
 
 #### When we can remove this:
 
@@ -215,7 +215,7 @@ We want to be able to promote past android builds to prod because we are creatin
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
 promotion. We added custom logic to work around this.
 
-## patch-package for react-native-keys
+## Patch for react-native-keys
 
 #### When can we remove this:
 
@@ -226,7 +226,7 @@ https://github.com/numandev1/react-native-keys/pull/117
 
 Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
 
-## patch-package for react-navigation/bottom-tabs
+## Patch for @react-navigation/bottom-tabs
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
@@ -252,7 +252,7 @@ This patch was added to support 16KB page size on Android. It's a copy paste fro
 
 It can be removed once we upgrade to any version past 3.17
 
-## patch-pacakge for react-native-reanimatedAdd a comment on lines L230 to L236Add diff commentMarkdown input: edit mode selected.WritePreviewHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
+## Patch for react-native-reanimated (CellRendererComponent)
 
 #### When can we remove this:
 

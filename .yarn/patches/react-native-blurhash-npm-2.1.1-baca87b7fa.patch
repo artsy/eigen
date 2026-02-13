@@ -1,0 +1,13 @@
+diff --git a/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt b/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+index 9224e9a76906a6ddf19d9deb23e78a5fe6b8c444..4609772ce20e4c61aa2bc80ac8cc6cf13e5624e1 100644
+--- a/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
++++ b/android/src/main/java/com/mrousavy/blurhash/BlurhashViewManager.kt
+@@ -113,7 +113,7 @@ class BlurhashViewManager :
+         .put(LoadErrorEvent.EVENT_NAME, MapBuilder.of("registrationName", "onLoadError"))
+         .put(LoadStartEvent.EVENT_NAME, MapBuilder.of("registrationName", "onLoadStart"))
+         .put(LoadEndEvent.EVENT_NAME, MapBuilder.of("registrationName", "onLoadEnd"))
+-        .build()
++        .build()?.toMutableMap()
+   }
+ 
+   override fun getName() = REACT_CLASS
