@@ -9653,41 +9653,6 @@ type CreateArtworkImportFailure {
   mutationError: GravityMutationError
 }
 
-type CreateArtworkImportImageMatchFailure {
-  mutationError: GravityMutationError
-}
-
-input CreateArtworkImportImageMatchInput {
-  artworkImportID: String!
-  clientMutationId: String
-
-  # The image filename
-  fileName: String!
-
-  # ID of the row to associate the image with
-  rowID: String!
-
-  # S3 bucket of the uploaded image asset
-  s3Bucket: String!
-
-  # S3 key of the uploaded image asset
-  s3Key: String!
-}
-
-type CreateArtworkImportImageMatchPayload {
-  clientMutationId: String
-  createArtworkImportImageMatchOrError: CreateArtworkImportImageMatchResponseOrError
-}
-
-union CreateArtworkImportImageMatchResponseOrError =
-    CreateArtworkImportImageMatchFailure
-  | CreateArtworkImportImageMatchSuccess
-
-type CreateArtworkImportImageMatchSuccess {
-  artworkImport: ArtworkImport
-  success: Boolean!
-}
-
 input CreateArtworkImportInput {
   async: Boolean
   clientMutationId: String
@@ -16867,9 +16832,6 @@ type Mutation {
   createArtworkImportCellFlag(
     input: CreateArtworkImportCellFlagInput!
   ): CreateArtworkImportCellFlagPayload
-  createArtworkImportImageMatch(
-    input: CreateArtworkImportImageMatchInput!
-  ): CreateArtworkImportImageMatchPayload
   createArtworkTemplate(input: CreateArtworkTemplateInput!): CreateArtworkTemplatePayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
