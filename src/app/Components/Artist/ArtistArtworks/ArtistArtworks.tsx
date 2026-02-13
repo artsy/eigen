@@ -499,21 +499,14 @@ export const ArtistArtworksQueryRenderer = withSuspense<ArtistArtworksQueryRende
 })
 
 const ArtistArtworksPlaceholder = () => {
-  const space = useSpace()
-
-  const { height } = useHeaderMeasurements()
-  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const paddingTop = Platform.OS === "android" ? height + HEADER_HEIGHT + space(1) : space(1)
-
   return (
     <Tabs.ScrollView
       contentContainerStyle={{
         paddingHorizontal: 0,
-        paddingTop: paddingTop,
       }}
       scrollEnabled={false}
     >
-      <Flex px={2} testID="ArtistArtworksPlaceholder" gap={1}>
+      <Flex px={2} testID="ArtistArtworksPlaceholder" gap={1} mt={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <SkeletonText variant="sm">Create Alert</SkeletonText>
           <SkeletonText variant="sm">Sort & Filter</SkeletonText>

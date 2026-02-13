@@ -44,7 +44,7 @@ describe("LoginWelcomeStep", () => {
 
     expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
     expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
-    expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveAnimatedStyle({ opacity: 1 })
+    expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveStyle({ opacity: 1 })
 
     fireEvent(screen.getByA11yHint("Enter your email address"), "focus")
 
@@ -64,7 +64,7 @@ describe("LoginWelcomeStep", () => {
 
       expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
       expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
-      expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveAnimatedStyle({
+      expect(screen.getByTestId("social-signin-and-disclaimers")).toHaveStyle({
         opacity: 1,
       })
     })

@@ -11,6 +11,9 @@ jest.mock("@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext", () =
     currentScrollYAnimated: {
       value: 0,
     },
+    scrollYOffsetAnimated: {
+      value: 0,
+    },
     scrollYOffset: 0,
   }),
 }))
