@@ -53,6 +53,7 @@
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
     "open-xcode": "open ios/Artsy.xcworkspace",
+    "patch-package": "./scripts/utils/patch-package",
     "pod-install": "cd ios; bundle exec npx pod-install; cd ..; ./scripts/setup/post-pod-install.rb",
     "postinstall": "yarn init-metaflags; prettier --write package.json; ./scripts/setup/update-echo",
     "prepare": "husky install",
