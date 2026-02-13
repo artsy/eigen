@@ -21,7 +21,7 @@ if [ -z "$package_name" ]; then
   echo "Example: $0 react-native-keys"
   echo ""
   echo "This will extract the package to a temp directory."
-  echo "Make your changes there, then run the 'yarn patch-commit' command shown."
+  echo "Make your changes there, then run the 'yarn patch-commit' command."
   exit 1
 fi
 
