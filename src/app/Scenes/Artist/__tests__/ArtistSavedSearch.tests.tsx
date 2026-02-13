@@ -9,6 +9,11 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 jest.unmock("react-tracking")
 
+jest.mock("app/utils/queryPrefetching", () => ({
+  usePrefetch: jest.fn(() => jest.fn()),
+  prefetchQuery: jest.fn(),
+}))
+
 const mockUseIsFocusedMock = jest.fn()
 
 const mockAddListener = jest.fn((event, callback) => {
@@ -40,6 +45,8 @@ type ArtistQueries =
   | "ArtistBelowTheFoldQuery"
   | "SearchCriteriaQuery"
   | "ArtistArtworksQuery"
+  | "ArtistAboutQuery"
+  | "ArtistInsightsQuery"
   | "MarketStatsQuery"
   | "ArtistInsightsAuctionResultsQuery"
 
@@ -94,8 +101,10 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
     mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
-    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistAboutQuery")
+    mockMostRecentOperation("ArtistInsightsQuery")
     mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
+    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
     mockMostRecentOperation("ArtistInsightsAuctionResultsQuery")
 
     await flushPromiseQueue()
@@ -125,8 +134,10 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
     mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
-    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistAboutQuery")
+    mockMostRecentOperation("ArtistInsightsQuery")
     mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
+    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
 
     await flushPromiseQueue()
 

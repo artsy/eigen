@@ -67,16 +67,12 @@ export const Gene: React.FC<GeneProps> = (props) => {
         headerProps={{ onBack: goBack }}
       >
         <Tabs.Tab name="Works" label="Works">
-          <Tabs.Lazy>
-            <ArtworkFiltersStoreProvider>
-              <GeneArtworksPaginationContainer gene={gene} />
-            </ArtworkFiltersStoreProvider>
-          </Tabs.Lazy>
+          <ArtworkFiltersStoreProvider>
+            <GeneArtworksPaginationContainer gene={gene} />
+          </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
         <Tabs.Tab name="About" label="About">
-          <Tabs.Lazy>
-            <About gene={gene} />
-          </Tabs.Lazy>
+          <About gene={gene} />
         </Tabs.Tab>
       </Tabs.TabsWithHeader>
     </ProvideScreenTracking>

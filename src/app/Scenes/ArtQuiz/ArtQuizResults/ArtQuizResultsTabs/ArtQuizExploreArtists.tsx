@@ -16,10 +16,9 @@ export const ArtQuizExploreArtists = ({
   )
 
   return (
-    <Tabs.FlatList
+    <Tabs.FlashList
       key="ArtQuizExplorArtists"
       data={artworks}
-      initialNumToRender={2}
       renderItem={({ item }) => {
         return <ArtQuizArtist artistData={item.artist} />
       }}

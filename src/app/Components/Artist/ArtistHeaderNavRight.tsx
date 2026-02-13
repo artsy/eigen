@@ -50,33 +50,31 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   })
 
   // convert the space into primitive types to be user on the UI thread
-  const space1 = space(1)
   const space2 = space(2)
-  const spacerWidth = useDerivedValue(
-    () => (displayFollowButton.value ? space1 : space2),
-    [space1, space2]
-  )
+
   const followButtonTranslateX = useDerivedValue(() =>
     displayFollowButton.value ? 0 : followAreaDeltaX
   )
+
   const followButtonOpacity = useDerivedValue(() => (displayFollowButton.value ? 1 : 0))
 
   const viewStyle = useAnimatedStyle(
     () => ({
       transform: [
         {
-          translateX: withTiming(followButtonTranslateX.value, {
-            duration: 200,
-            easing: Easing.sin,
-          }),
+          translateX: withTiming(
+            followButtonTranslateX.value - (displayFollowButton.value ? 0 : space2),
+            {
+              duration: 200,
+              easing: Easing.sin,
+            }
+          ),
         },
       ],
     }),
     [followAreaDeltaX]
   )
-  const spacerStyle = useAnimatedStyle(() => ({
-    width: withTiming(spacerWidth.value, { duration: 200 }),
-  }))
+
   const followButtonStyle = useAnimatedStyle(() => ({
     opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
   }))
@@ -111,8 +109,6 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
         >
           <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
         </TouchableOpacity>
-
-        <MotiView style={spacerStyle} />
 
         <MotiView style={followButtonStyle}>
           <FollowButton

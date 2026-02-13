@@ -58,7 +58,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   return (
     <>
-      <Flex flexDirection="row" alignItems="center">
+      <Flex flexDirection="row" alignItems="center" mt={2}>
         <InfoButton
           titleElement={
             <Text variant="sm-display" mr={0.5}>

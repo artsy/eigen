@@ -53,8 +53,14 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
 
   const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
 
+  const space = useSpace()
+
   return (
-    <Flex backgroundColor={backgroundColor} m={1}>
+    <Flex
+      backgroundColor={backgroundColor}
+      m={1}
+      style={{ borderRadius: space(1), padding: space(2) }}
+    >
       <ContextMenuArtworkPreviewCardImage containerWidth={containerWidth} artwork={artwork} />
       <Flex
         my={1}
