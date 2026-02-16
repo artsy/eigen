@@ -1,6 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
-import { Box, Flex, Input, Screen, Text, useColor } from "@artsy/palette-mobile"
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  InputRef,
+  Screen,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
@@ -20,8 +30,8 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Modal } from "react-native"
-import { KeyboardAwareScrollViewRef } from "react-native-keyboard-controller"
+import { InteractionManager, LayoutChangeEvent, Modal } from "react-native"
+import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -39,6 +49,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const { state, dispatch } = useArtworkInquiryContext()
   const color = useColor()
+  const space = useSpace()
   const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
@@ -51,12 +62,21 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const [message, setMessage] = useState<string>(defaultMessageState)
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+  const [bottomOffset, setBottomOffset] = useState(0)
+  const inputRef = useRef<InputRef>(null)
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height)
+    },
+    [setBottomOffset]
+  )
 
   const exit = () => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
-  const { sendInquiry, error } = useSendInquiry({
+  const { sendInquiry, error, sendingInquiry } = useSendInquiry({
     onCompleted: exit,
     artwork,
     me,
@@ -81,6 +101,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
     retireTemplatesExperimentEnabled,
     dispatch,
   ])
+
+  useEffect(() => {
+    if (state.inquiryModalVisible && inputRef.current) {
+      // TODO: `InteractionManager` is deprecated
+      // we need to update it to `requestIdleCallback` when we upgrade to RN 0.82+
+      InteractionManager.runAfterInteractions(() => {
+        inputRef.current?.focus()
+      })
+    }
+  }, [state.inquiryModalVisible])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -149,15 +179,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         }}
       >
         <Screen>
-          <NavigationHeader
-            leftButtonText="Cancel"
-            onLeftButtonPress={handleDismiss}
-            rightButtonText="Send"
-            rightButtonDisabled={state.inquiryQuestions.length === 0 && message.trim() === ""}
-            onRightButtonPress={() => sendInquiry(message)}
-          >
+          <NavigationHeader rightCloseButton onRightButtonPress={handleDismiss}>
             Contact Gallery
           </NavigationHeader>
+
           {!!error && (
             <Flex
               bg="red100"
@@ -178,8 +203,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
             style={{ flex: 1, backgroundColor: color("mono0") }}
             contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
             contentInsetAdjustmentBehavior="automatic"
+            bottomOffset={bottomOffset}
           >
             <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+
             <Box px={2}>
               {!!availableInquiryQuestions && availableInquiryQuestions.length > 0 && (
                 <Box my={2}>
@@ -209,10 +236,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                 }}
               >
                 <Input
+                  ref={inputRef}
                   multiline
                   placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."
-                  title="Add message"
-                  accessibilityLabel="Add message"
+                  title="Your message"
+                  accessibilityLabel="Your message"
                   value={message}
                   onChangeText={setMessage}
                   onFocus={scrollToInput}
@@ -234,6 +262,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               </Box>
             </Box>
           </KeyboardAwareForm>
+
+          <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: space(2) }}>
+            <Box p={2} pb={4} backgroundColor="mono0">
+              <Button
+                block
+                disabled={state.inquiryQuestions.length === 0 && message.trim() === ""}
+                loading={sendingInquiry}
+                onPress={() => sendInquiry(message)}
+              >
+                Send
+              </Button>
+            </Box>
+          </KeyboardStickyView>
+
           <ShippingModal
             toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
             modalIsVisible={shippingModalVisibility}
