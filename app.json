@@ -6,7 +6,12 @@
     "buildCacheProvider": {
       "plugin": "expo-build-disk-cache",
       "options": {
-        "cacheDir": "node_modules/.expo-build-disk-cache"
+        "cacheDir": "node_modules/.expo-build-disk-cache",
+        "remotePlugin": "./expo/plugins/build-cache-s3",
+        "remoteOptions": {
+          "bucket": "artsy-citadel",
+          "prefix": "eigen/cached-builds"
+        }
       }
     },
     "platforms": ["ios", "android"],
