@@ -1,10 +1,10 @@
-diff --git a/node_modules/react-native-keys/android/build.gradle b/node_modules/react-native-keys/android/build.gradle
-index 6e40322..da7f0f8 100644
---- a/node_modules/react-native-keys/android/build.gradle
-+++ b/node_modules/react-native-keys/android/build.gradle
+diff --git a/android/build.gradle b/android/build.gradle
+index 6e403223a08c3ff5149fe38ca143e1b3e056582c..da7f0f81683b2f969741be39885a1e0774a32a00 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
 @@ -33,7 +33,20 @@ def getExtOrDefault(name) {
  }
-
+ 
  def getExtOrIntegerDefault(name) {
 -  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["Keys_" + name]).toInteger()
 +  if (rootProject.ext.has(name)) {
@@ -22,12 +22,12 @@ index 6e40322..da7f0f8 100644
 +    default: return 35
 +  }
  }
-
+ 
  def reactNativeArchitectures() {
 @@ -47,18 +60,24 @@ def resolveReactNativeDirectory() {
      return file(reactNativeLocation)
    }
-
+ 
 -  // monorepo workaround
 -  // react-native can be hoisted or in project's own node_modules
 +  // Try to find react-native in the project's node_modules
@@ -35,13 +35,13 @@ index 6e40322..da7f0f8 100644
    if (reactNativeFromProjectNodeModules.exists()) {
      return reactNativeFromProjectNodeModules
    }
-
+ 
 +  // Try alternative paths for monorepo setups
    def reactNativeFromNodeModulesWithReanimated = file("${projectDir}/../../react-native")
    if (reactNativeFromNodeModulesWithReanimated.exists()) {
      return reactNativeFromNodeModulesWithReanimated
    }
-
+ 
 +  // Try from the current project directory
 +  def reactNativeFromCurrent = file("${projectDir}/../../../react-native")
 +  if (reactNativeFromCurrent.exists()) {
@@ -63,10 +63,10 @@ index 6e40322..da7f0f8 100644
        break;
 @@ -136,7 +158,7 @@ android {
    }
-
+ 
    ndkVersion getExtOrDefault("ndkVersion")
 -  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 +  compileSdk getExtOrIntegerDefault("compileSdkVersion")
-
+ 
    defaultConfig {
      minSdkVersion getExtOrIntegerDefault("minSdkVersion")
