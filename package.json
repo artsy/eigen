@@ -23,6 +23,7 @@
     "clean:builds": "yarn clean-ios; yarn clean-android",
     "clean-android": "cd android; ./gradlew clean; cd -",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
+    "clear-local-build-cache": "rm -rf node_modules/.expo-build-disk-cache",
     "danger": "danger",
     "dead-code": "./scripts/utils/check-dead-code.sh",
     "deploy-beta": "./scripts/deploys/deploy-beta-both",
