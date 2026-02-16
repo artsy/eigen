@@ -301,7 +301,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-react-native-a11y": "3.5.1",
     "eslint-plugin-testing-library": "6.5.0",
-    "expo-build-disk-cache": "^0.7.2",
+    "expo-build-disk-cache": "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch",
     "graphql": "16.8.1",
     "graphql-request": "5.1.0",
     "husky": "7.0.4",
