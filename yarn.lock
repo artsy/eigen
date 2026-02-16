@@ -13315,7 +13315,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:6.5.0"
     events: "npm:3.3.0"
     expo: "npm:54.0.20"
-    expo-build-disk-cache: "npm:^0.7.2"
+    expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:~1.0.10"
     expo-updates: "npm:29.0.11"
     formik: "npm:2.2.9"
@@ -14644,7 +14644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-build-disk-cache@npm:^0.7.2":
+"expo-build-disk-cache@npm:0.7.2":
   version: 0.7.2
   resolution: "expo-build-disk-cache@npm:0.7.2"
   dependencies:
@@ -14655,6 +14655,20 @@ __metadata:
     "@expo/cli": "*"
     "@expo/config": "*"
   checksum: 10c0/666e66506f1760549d69c613db670ff1d3ff15703d893195dfb4150e87b70155a7d42911fffe4d54d69986a3f08e82b7f0f6939e1376c6cafa51048d466c4457
+  languageName: node
+  linkType: hard
+
+"expo-build-disk-cache@patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch":
+  version: 0.7.2
+  resolution: "expo-build-disk-cache@patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch::version=0.7.2&hash=4df32b"
+  dependencies:
+    cosmiconfig: "npm:^9.0.0"
+    env-paths: "npm:^2.2.1"
+    zod: "npm:^4.0.0"
+  peerDependencies:
+    "@expo/cli": "*"
+    "@expo/config": "*"
+  checksum: 10c0/3c6abe6664151d5d4738c0e9d6b551abe23f60946f3a24e1b6b12eccdd1ee80f01c897bd83c112b451e412ca418bb2d6bfe7d63176b52fe8907b35b6bcf3a4f1
   languageName: node
   linkType: hard
 
