@@ -35,8 +35,13 @@ jobs:
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
 
-      - name: Setup Android environment
-        uses: ./.github/actions/setup-android-environment
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
+        shell: bash
+
+      - name: Download android assets
+        run: ./scripts/setup/download-assets-android
+        shell: bash
 
       - name: Generate current Expo fingerprint
         id: generate-fingerprint
