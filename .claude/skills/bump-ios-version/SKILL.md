@@ -140,6 +140,7 @@ NSAssert(version.majorVersion == <MAJOR> && version.minorVersion == <MINOR>,
 - [ ] Verify iPhone model is available for target iOS version (check CircleCI manifest)
 - [ ] Update `.circleci/config.yml` (xcode_version, simulator_version, preboot-simulator device)
 - [ ] Update `.github/workflows/ios-e2e-maestro.yml` (simulator device type, runtime)
+- [ ] Update `fastlane/Fastfile` (xcode_select Xcode version)
 - [ ] Update `scripts/ci/ci-setup-export-vars` (DEVICE_HOST_OS, DEVICE_HOST_NAME)
 - [ ] Update `scripts/utils/doctor.js` (desiredVersions.xcode)
 - [ ] Update `ios/ArtsyTests/Supporting_Files/ARTestHelper.m` (version assertion)
