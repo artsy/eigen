@@ -112,7 +112,7 @@ jobs:
           echo "🔍 Checking S3 for existing builds with fingerprint: $FINGERPRINT"
 
           # Check if Android APK exists
-          if aws s3 ls "s3://artsy-citadel/eigen/cached-builds/${FINGERPRINT}.android.apk" > /dev/null 2>&1; then
+          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.android.apk" 2>/dev/null; then
             echo "✅ Found Android build in S3"
             ANDROID_EXISTS=true
           else
@@ -121,7 +121,7 @@ jobs:
           fi
 
           # Check if iOS tar.gz exists
-          if aws s3 ls "s3://artsy-citadel/eigen/cached-builds/${FINGERPRINT}.ios.tar.gz" > /dev/null 2>&1; then
+          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.ios.tar.gz" 2>/dev/null; then
             echo "✅ Found iOS build in S3"
             IOS_EXISTS=true
           else
