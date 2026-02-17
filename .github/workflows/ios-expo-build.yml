@@ -1,13 +1,15 @@
 name: iOS Expo Build
 
 on:
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
   workflow_run:
     workflows: ["Expo Fingerprint Check"]
     types:
       - completed
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+
 jobs:
   expo-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 60
 

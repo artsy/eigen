@@ -1,14 +1,15 @@
 name: Android Expo Build
 
 on:
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
   workflow_run:
     workflows: ["Expo Fingerprint Check"]
     types:
       - completed
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
   expo-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 60
 
