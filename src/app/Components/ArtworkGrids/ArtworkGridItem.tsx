@@ -79,6 +79,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  hideArtworMetaData?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -113,6 +114,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     trackTap,
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
+    hideArtworMetaData = false,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
@@ -323,6 +325,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                 justifyContent="space-between"
                 mt={1}
                 style={artworkMetaStyle}
+                display={hideArtworMetaData ? "none" : "flex"}
               >
                 <Flex flex={1}>
                   {/* This is useful for debugging purposes */}

@@ -31,6 +31,7 @@ export interface SectionSharedProps extends FlexProps {
   index: number
   sectionID: string
   refetchKey?: number
+  shouldShowInGrid?: boolean
 }
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
@@ -50,11 +51,20 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
   }
 
+  const shouldShowInGrid = section.internalID === "home-view-section-new-works-for-you"
+
   switch (section.__typename) {
     case "HomeViewSectionActivity":
       return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtworks":
-      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <HomeViewSectionArtworksQueryRenderer
+          sectionID={section.internalID}
+          shouldShowInGrid={shouldShowInGrid}
+          {...rest}
+        />
+      )
+
     case "HomeViewSectionCard":
       return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards": {

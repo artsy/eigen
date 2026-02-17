@@ -48,6 +48,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   saleInfoTextStyle?: TextProps
   trackingFlow?: string
+  hideArtworMetaData?: boolean
 }
 
 /**
@@ -89,6 +90,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   trackTap,
   saleInfoTextStyle,
   trackingFlow,
+  hideArtworMetaData = false,
   ...rest
 }) => {
   const space = useSpace()
@@ -134,6 +136,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         saleInfoTextStyle={saleInfoTextStyle}
         trackTap={trackTap}
         trackingFlow={trackingFlow}
+        hideArtworMetaData={hideArtworMetaData}
       />
     ),
     [
@@ -159,6 +162,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       saleInfoTextStyle,
       trackTap,
       trackingFlow,
+      hideArtworMetaData,
     ]
   )
 

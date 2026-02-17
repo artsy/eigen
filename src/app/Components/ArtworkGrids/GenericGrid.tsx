@@ -24,6 +24,7 @@ interface Props {
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   trackingFlow?: string
   saleInfoTextStyle?: TextProps
+  hideArtworMetaData?: boolean
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
@@ -39,6 +40,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   trackTap,
   saleInfoTextStyle,
   trackingFlow,
+  hideArtworMetaData = false,
 }) => {
   const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
@@ -59,6 +61,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
             onPress={onPress}
             saleInfoTextStyle={saleInfoTextStyle}
             trackingFlow={trackingFlow}
+            hideArtworMetaData={hideArtworMetaData}
           />
         </Flex>
         {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}
