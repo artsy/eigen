@@ -9,7 +9,7 @@ on:
 jobs:
   check-fingerprint:
     # if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: macos-15
     timeout-minutes: 10
     outputs:
       fingerprint_changed: ${{ steps.compare.outputs.changed }}
