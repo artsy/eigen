@@ -1,4 +1,4 @@
-name: Expo Fingerprint Check & Native Builds
+name: Expo Fingerprint Check
 
 on:
   push:
@@ -145,3 +145,13 @@ jobs:
           echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > latest.txt
           aws s3 cp latest.txt s3://artsy-citadel/eigen/expo-fingerprint/latest.txt
           echo "✅ Fingerprint saved"
+
+      - name: Save needs_build output to artifact
+        run: |
+          echo "${{ steps.check-s3-cache.outputs.needs_build }}" > needs_build.txt
+
+      - name: Upload needs_build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: needs_build
+          path: needs_build.txt
