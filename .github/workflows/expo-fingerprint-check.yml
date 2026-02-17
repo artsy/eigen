@@ -1,0 +1,78 @@
+name: Expo Fingerprint Check & Native Builds
+
+on:
+  push:
+    branches:
+      - gkartalis/build-cache-s3
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  check-fingerprint:
+    # if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      fingerprint_changed: ${{ steps.compare.outputs.changed }}
+      current_fingerprint: ${{ steps.generate-fingerprint.outputs.fingerprint }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate current Expo fingerprint
+        id: generate-fingerprint
+        run: |
+          echo "📋 Generating Expo fingerprint..."
+          FINGERPRINT=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
+          echo "Current fingerprint: $FINGERPRINT"
+          echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
+
+      - name: Download previous fingerprint from S3
+        id: download-fingerprint
+        continue-on-error: true
+        run: |
+          echo "📥 Downloading previous fingerprint from S3..."
+          aws s3 cp s3://artsy-citadel/eigen/expo-fingerprint/latest.txt ./previous-fingerprint.txt || echo "No previous fingerprint found"
+          if [ -f previous-fingerprint.txt ]; then
+            PREVIOUS=$(cat previous-fingerprint.txt)
+            echo "Previous fingerprint: $PREVIOUS"
+            echo "previous=$PREVIOUS" >> $GITHUB_OUTPUT
+          else
+            echo "previous=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Compare fingerprints
+        id: compare
+        run: |
+          CURRENT="${{ steps.generate-fingerprint.outputs.fingerprint }}"
+          PREVIOUS="${{ steps.download-fingerprint.outputs.previous }}"
+
+          echo "🔍 Comparing fingerprints..."
+          echo "Current:  $CURRENT"
+          echo "Previous: $PREVIOUS"
+
+          if [ "$CURRENT" = "$PREVIOUS" ]; then
+            echo "✅ Fingerprints match - no native build needed"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "🔄 Fingerprints differ - native builds required"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload new fingerprint to S3
+        if: steps.compare.outputs.changed == 'true'
+        run: |
+          echo "📤 Uploading new fingerprint to S3..."
+          echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > latest.txt
+          aws s3 cp latest.txt s3://artsy-citadel/eigen/expo-fingerprint/latest.txt
+          echo "✅ Fingerprint saved"
