@@ -37,6 +37,14 @@ jobs:
           echo "Current fingerprint: $FINGERPRINT"
           echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
+      - name: Generate debug fingerprint and upload to S3
+        run: |
+          echo "🔍 Generating debug fingerprint output..."
+          npx @expo/fingerprint fingerprint:generate --debug > latest-debug.txt
+          echo "📤 Uploading debug fingerprint to S3..."
+          aws s3 cp latest-debug.txt s3://artsy-citadel/eigen/expo-fingerprint/latest-debug.txt
+          echo "✅ Debug fingerprint saved"
+
       - name: Download previous fingerprint from S3
         id: download-fingerprint
         continue-on-error: true
