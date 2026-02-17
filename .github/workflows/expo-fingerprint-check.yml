@@ -51,6 +51,9 @@ jobs:
           echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
       - name: Generate debug fingerprint and upload to S3
+        # Only run this step if the EXPO_FINGERPRINT_DEBUG secret is set to 'true'
+        # you can find and change this in Eigen's GH repo under variables
+        # https://github.com/artsy/eigen/settings/secrets/actions
         env:
           EXPO_FINGERPRINT_DEBUG: ${{ secrets.EXPO_FINGERPRINT_DEBUG }}
         if: env.EXPO_FINGERPRINT_DEBUG == 'true'
