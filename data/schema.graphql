@@ -3422,6 +3422,7 @@ type ArtworkImport implements Node {
     last: Int
   ): ArtworkImportRowConnection
   state: ArtworkImportState
+  statistics: ArtworkImportStatistics
   summary: ArtworkImportSummary
   unmatchedArtistNames: [String!]!
   weightMetric: String!
@@ -3596,6 +3597,32 @@ enum ArtworkImportState {
   POSITION_VALIDATION_COMPLETE
   SALE_ARTWORKS_CREATION_COMPLETE
   SALE_SLUG_MATCHING_COMPLETE
+}
+
+type ArtworkImportStatistics {
+  # Lightweight error IDs for UI cycling functionality. Returns arrays of error IDs without loading full row data for better performance.
+  errorIdentifiers: ErrorIdentifiers!
+
+  # Breakdown of error types and their counts
+  errorTypeCounts: [ErrorTypeCount!]!
+
+  # Total number of rows that successfully created artworks
+  rowsWithArtworksCreated: Int!
+
+  # Total number of rows that failed to create artworks
+  rowsWithArtworksFailed: Int!
+
+  # Total number of rows with fatal errors (ARTWORK_CREATION_FAILED, excluding UNMATCHED_IMAGE)
+  rowsWithFatalErrors: Int!
+
+  # Total number of blocking errors across all rows
+  totalBlockingErrors: Int!
+
+  # Total number of non-blocking errors across all rows
+  totalNonBlockingErrors: Int!
+
+  # Total number of unique rows with errors (for "X artworks require attention")
+  uniqueRowsWithErrors: Int!
 }
 
 type ArtworkImportSummary {
@@ -12335,6 +12362,36 @@ type Error {
 
   # Which input value this error came from
   path: [String!]
+}
+
+type ErrorIdentifier {
+  # The type of error (e.g. MISSING_ARTIST, INVALID_PRICE)
+  errorType: ArtworkImportError!
+
+  # The line number (position) of the row in the original CSV
+  lineNumber: Int!
+
+  # The ID of the row with this error
+  rowId: String!
+}
+
+type ErrorIdentifiers {
+  # Array of blocking errors with errorType and rowId. Frontend constructs error IDs for UI cycling.
+  blocking: [ErrorIdentifier!]!
+
+  # Array of non-blocking errors with errorType and rowId. Frontend constructs error IDs for UI cycling.
+  nonBlocking: [ErrorIdentifier!]!
+}
+
+type ErrorTypeCount {
+  # Whether this error stops artwork creation
+  blocking: Boolean!
+
+  # The number of times that this error appears
+  count: Int!
+
+  # The type of error (e.g. MISSING_ARTIST, INVALID_PRICE)
+  errorType: ArtworkImportError!
 }
 
 # A user-readable list of errors
