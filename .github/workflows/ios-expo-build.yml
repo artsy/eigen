@@ -3,11 +3,7 @@ name: iOS Expo Build
 on:
   workflow_run:
     workflows: ["Expo Fingerprint Check"]
-    types:
-      - completed
-    branches:
-      - main
-      - gkartalis/build-cache-s3
+    types: [completed]
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
