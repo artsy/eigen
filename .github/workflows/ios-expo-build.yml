@@ -1,0 +1,112 @@
+name: iOS Expo Build
+
+on:
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  workflow_run:
+    workflows: ["Expo Fingerprint Check"]
+    types:
+      - completed
+jobs:
+  expo-build:
+    runs-on: macos-15 # iOS simulators require macOS runners
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download needs_build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: needs_build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check if build is needed
+        id: check-build
+        run: |
+          NEEDS_BUILD=$(cat needs_build.txt)
+          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+          echo "Build needed: $NEEDS_BUILD"
+          if [ "$NEEDS_BUILD" = "false" ]; then
+            echo "✅ Build not needed, exiting early"
+            exit 0
+          fi
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.7"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "zulu"
+
+      - name: Install Facebook IDB
+        run: |
+          brew tap facebook/fb
+          brew install idb-companion
+
+      - name: Create and boot iPhone 17 Pro iOS 26.2 simulator
+        run: |
+          echo "📱 Creating iPhone 17 Pro simulator with iOS 26.2..."
+          # Create the simulator
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 17 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro com.apple.CoreSimulator.SimRuntime.iOS-26-2)
+          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+
+          # Boot the simulator
+          echo "🚀 Booting simulator..."
+          xcrun simctl boot "$SIMULATOR_UDID"
+
+          # Wait for the simulator to be ready
+          echo "⏳ Waiting for simulator to be ready..."
+          WAIT_COUNT=0
+          MAX_WAIT=60  # 60 iterations * 2 seconds = 120 seconds max wait
+          while [[ $WAIT_COUNT -lt $MAX_WAIT ]]; do
+            if xcrun simctl list devices | grep "$SIMULATOR_UDID" | grep -q "Booted"; then
+              echo "✅ Simulator is booted and ready!"
+              break
+            fi
+            echo "Still waiting... (attempt $((WAIT_COUNT + 1))/$MAX_WAIT)"
+            sleep 2
+            WAIT_COUNT=$((WAIT_COUNT + 1))
+          done
+
+          if [[ $WAIT_COUNT -eq $MAX_WAIT ]]; then
+            echo "❌ Timeout: Simulator failed to boot within 120 seconds"
+            exit 1
+          fi
+
+          echo "🚀 Bring simulator to foreground..."
+          open -a simulator
+
+      - name: Run Expo build for iOS
+        run: |
+          echo "🔨 Building and running iOS app with Expo..."
+          bundle exec npx expo run:ios
