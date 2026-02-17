@@ -22,6 +22,15 @@ jobs:
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
 
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
+
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
