@@ -11,7 +11,7 @@ on:
 
 jobs:
   expo-build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 60
 
