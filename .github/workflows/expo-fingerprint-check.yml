@@ -3,12 +3,11 @@ name: Expo Fingerprint Check & Native Builds
 on:
   push:
     branches:
-      - gkartalis/build-cache-s3
+      - main
   workflow_dispatch: # Allows manual trigger
 
 jobs:
   check-fingerprint:
-    # if: github.ref == 'refs/heads/main'
     runs-on: macos-15
     timeout-minutes: 10
     outputs:
@@ -52,6 +51,9 @@ jobs:
           echo "fingerprint=$FINGERPRINT" >> $GITHUB_OUTPUT
 
       - name: Generate debug fingerprint and upload to S3
+        env:
+          EXPO_FINGERPRINT_DEBUG: ${{ secrets.EXPO_FINGERPRINT_DEBUG }}
+        if: env.EXPO_FINGERPRINT_DEBUG == 'true'
         run: |
           echo "🔍 Generating debug fingerprint output..."
           npx @expo/fingerprint fingerprint:generate --debug > latest-debug.txt
