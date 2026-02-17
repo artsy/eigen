@@ -3,7 +3,7 @@ name: Expo Fingerprint Check & Native Builds
 on:
   push:
     branches:
-      - main
+      - gkartalis/build-cache-s3
   workflow_dispatch: # Allows manual trigger
 
 jobs:
