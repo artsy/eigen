@@ -14,6 +14,8 @@ jobs:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 60
+    env:
+      EXPO_BUILD_CACHE_UPLOAD: 1
 
     steps:
       - name: Checkout repository
