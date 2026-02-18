@@ -18,6 +18,7 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { memo } from "react"
 
@@ -34,7 +35,13 @@ export interface SectionSharedProps extends FlexProps {
   shouldShowInGrid?: boolean
 }
 
+const NWFY_GRID_EXPERIMENT = "onyx_NWFY-grid-ABC-test"
+const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
+
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
+  const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
+  const shouldShowInGrid = section.internalID === NWFY_SECTION_ID && variant?.enabled
+
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -50,8 +57,6 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
     case "ArticlesCard":
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
   }
-
-  const shouldShowInGrid = section.internalID === "home-view-section-new-works-for-you"
 
   switch (section.__typename) {
     case "HomeViewSectionActivity":

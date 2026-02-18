@@ -30,6 +30,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -47,7 +48,25 @@ interface HomeViewSectionArtworksProps extends FlexProps {
 }
 
 const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD = 3
-const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_GRID = 6
+const DEFAULT_ARTWORKS_FIRST = 10
+const ARTWORKS_GRID_SIX_WORKS = 6
+const ARTWORKS_GRID_FOUR_WORKS = 4
+const NWFY_GRID_EXPERIMENT = "onyx_NWFY-grid-ABC-test"
+const NWFY_GRID_VARIANT_COUNTS: Record<string, number> = {
+  "grid-six-works": ARTWORKS_GRID_SIX_WORKS,
+  "grid-four-works": ARTWORKS_GRID_FOUR_WORKS,
+  "grid-no-metadata": ARTWORKS_GRID_SIX_WORKS,
+}
+
+const getNwfyGridArtworksCount = (variantName?: string) => {
+  if (!variantName) {
+    return DEFAULT_ARTWORKS_FIRST
+  }
+
+  return NWFY_GRID_VARIANT_COUNTS[variantName] ?? DEFAULT_ARTWORKS_FIRST
+}
+
+const isNwfyGridNoMetadata = (variantName?: string) => variantName === "grid-no-metadata"
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
@@ -57,6 +76,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 }) => {
   const tracking = useHomeViewTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
+  const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
+  const hideArtworMetaData = isNwfyGridNoMetadata(variant?.name)
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
@@ -101,6 +122,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   const showHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
+  const isGridEnabled = shouldShowInGrid
+  const isGridNoMetadata = isGridEnabled && hideArtworMetaData
+  const isGridWithMetadata = isGridEnabled && !hideArtworMetaData
+  const showDefaultHeader = !isGridNoMetadata
 
   const moreHref = getHomeViewSectionHref(viewAll?.href, section, showHomeViewCardRail)
 
@@ -131,23 +156,20 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           .join(", ")
       : undefined
 
-  const hideArtworMetaData = true
-
   return (
-    <Flex
-      {...flexProps}
-      backgroundColor={shouldShowInGrid && hideArtworMetaData ? "mono100" : "mono0"}
-    >
-      {!(shouldShowInGrid && hideArtworMetaData) && (
+    <Flex {...flexProps} backgroundColor={isGridNoMetadata ? "mono100" : "mono0"}>
+      {!!showDefaultHeader && (
         <SectionTitle
           href={moreHref}
           mx={2}
           title={section.component?.title}
           subtitle={subTitle}
           onPress={moreHref ? onSectionViewAll : undefined}
+          mb={isGridWithMetadata ? 0 : undefined}
         />
       )}
-      {!!shouldShowInGrid && !!hideArtworMetaData && (
+
+      {!!isGridNoMetadata && (
         <RouterLink to={moreHref} onPress={moreHref ? onSectionViewAll : undefined}>
           <Flex m={2} flexDirection="row" alignItems="flex-start">
             <Flex flex={1}>
@@ -161,8 +183,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           </Flex>
         </RouterLink>
       )}
+
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
-      {shouldShowInGrid && !hideArtworMetaData ? (
+
+      {isGridWithMetadata ? (
         <Flex mx={2} gap={2}>
           <GenericGrid artworks={artworks} />
 
@@ -172,7 +196,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
             </Button>
           </RouterLink>
         </Flex>
-      ) : shouldShowInGrid && hideArtworMetaData ? (
+      ) : isGridNoMetadata ? (
         <Flex gap={2} mb={2}>
           <GenericGrid artworks={artworks} hideArtworMetaData />
           <RouterLink
@@ -329,9 +353,12 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
 
       const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
+      const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
+      const artworksToRender = getNwfyGridArtworksCount(variant?.name)
+
       const includeArtistNames = enableNewHomeViewCardRailType
       const includeGenericGrid = !!shouldShowInGrid
-      const artworksFirst = includeGenericGrid ? NUMBER_OF_ARTWORKS_FOR_ARTWORKS_GRID : 10
+      const artworksFirst = includeGenericGrid ? artworksToRender : DEFAULT_ARTWORKS_FIRST
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,

@@ -18,6 +18,10 @@ export const experiments = {
     variantSuggestions: ["control", "experiment"],
     payloadSuggestions: ["control", "experiment"],
   },
+  "onyx_NWFY-grid-ABC-test": {
+    description: "Test new designs for the New Works For You section on the home screen",
+    variantSuggestions: ["grid-six-works", "grid-four-works", "grid-no-metadata"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
