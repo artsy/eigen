@@ -39,7 +39,8 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo } from "react"
+import { memo, useState, useEffect, useRef } from "react"
+import { Animated } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -79,9 +80,33 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
   const { height: screenHeight } = useScreenDimensions()
-  const floatingGridMaxHeight = screenHeight * 0.9
+  const [isGridExpanded, setIsGridExpanded] = useState(false)
+  const [animationComplete, setAnimationComplete] = useState(false)
+  const [fadeAnim] = useState(new Animated.Value(1))
+  const [scrollAnim] = useState(new Animated.Value(0))
+  const gridContainerRef = useRef<any>(null)
+  const floatingGridMaxHeight = isGridExpanded ? undefined : screenHeight * 0.6
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
+
+  useEffect(() => {
+    if (isGridExpanded) {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start(() => {
+        setAnimationComplete(true)
+        // Subtle scroll animation to show expanded content
+        Animated.spring(scrollAnim, {
+          toValue: 1,
+          friction: 8,
+          tension: 40,
+          useNativeDriver: true,
+        }).start()
+      })
+    }
+  }, [isGridExpanded, fadeAnim, scrollAnim])
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
@@ -216,33 +241,67 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           </RouterLink>
         </Flex>
       ) : isGridFloatingCTA ? (
-        <Flex position="relative" mx={2}>
-          <GenericGrid artworks={artworks} gridHeight={floatingGridMaxHeight} />
+        <Animated.View
+          style={{
+            transform: [
+              {
+                translateY: animationComplete
+                  ? 0
+                  : scrollAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, -200],
+                    }),
+              },
+            ],
+          }}
+        >
+          <Flex position="relative" mx={2} ref={gridContainerRef}>
+            <GenericGrid artworks={artworks} gridHeight={floatingGridMaxHeight} />
 
-          {/* Gradient fade effect */}
-          <LinearGradient
-            colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              width: "100%",
-              height: floatingGridMaxHeight / 2,
-              pointerEvents: "none",
-            }}
-          />
-          {/* View More Button */}
-          <Flex position="absolute" bottom={0}>
-            <RouterLink to={moreHref} hasChildTouchable>
-              <Button block variant="outline">
-                View More
-              </Button>
-            </RouterLink>
+            {!animationComplete ? (
+              <Animated.View
+                style={{
+                  opacity: fadeAnim,
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  width: "100%",
+                }}
+              >
+                {/* Gradient fade effect */}
+                <LinearGradient
+                  colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  style={{
+                    width: "100%",
+                    height: floatingGridMaxHeight ? floatingGridMaxHeight / 2 : 0,
+                    pointerEvents: "none",
+                  }}
+                />
+                <Flex position="absolute" bottom={0}>
+                  <Button
+                    block
+                    variant="outline"
+                    onPress={(e) => {
+                      e.preventDefault()
+                      setIsGridExpanded(true)
+                    }}
+                  >
+                    View More
+                  </Button>
+                </Flex>
+              </Animated.View>
+            ) : (
+              <RouterLink to={moreHref} hasChildTouchable>
+                <Button block variant="outline" mt={1}>
+                  {buttonText}
+                </Button>
+              </RouterLink>
+            )}
           </Flex>
-        </Flex>
+        </Animated.View>
       ) : showHomeViewCardRail ? (
         <ArtworksCard
           href={moreHref}
