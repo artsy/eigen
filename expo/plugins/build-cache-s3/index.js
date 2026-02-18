@@ -10,13 +10,14 @@ const fs = require("fs")
 const os = require("os")
 const path = require("path")
 
-const DEBUG = process.env.EXPO_BUILD_CACHE_DEBUG === "1"
+const DEBUG = true
 
 function log(...args) {
   console.log("[s3-cache]", ...args)
 }
 
 function debug(...args) {
+  console.log("process.env.EXPO_BUILD_CACHE_DEBUG:", process.env.EXPO_BUILD_CACHE_DEBUG)
   if (DEBUG) console.log("[s3-cache:debug]", ...args)
 }
 
