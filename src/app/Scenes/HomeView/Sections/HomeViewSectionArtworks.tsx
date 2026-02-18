@@ -8,15 +8,12 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
-  Button,
   Text,
-  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
@@ -27,6 +24,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -39,9 +37,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo, useState, useEffect, useRef } from "react"
-import { Animated } from "react-native"
-import LinearGradient from "react-native-linear-gradient"
+import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -79,34 +75,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const tracking = useHomeViewTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
-  const { height: screenHeight } = useScreenDimensions()
-  const [isGridExpanded, setIsGridExpanded] = useState(false)
-  const [animationComplete, setAnimationComplete] = useState(false)
-  const [fadeAnim] = useState(new Animated.Value(1))
-  const [scrollAnim] = useState(new Animated.Value(0))
-  const gridContainerRef = useRef<any>(null)
-  const floatingGridMaxHeight = isGridExpanded ? undefined : screenHeight * 0.6
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
-
-  useEffect(() => {
-    if (isGridExpanded) {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 1000,
-        useNativeDriver: true,
-      }).start(() => {
-        setAnimationComplete(true)
-        // Subtle scroll animation to show expanded content
-        Animated.spring(scrollAnim, {
-          toValue: 1,
-          friction: 8,
-          tension: 40,
-          useNativeDriver: true,
-        }).start()
-      })
-    }
-  }, [isGridExpanded, fadeAnim, scrollAnim])
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
@@ -214,94 +184,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
-      {isGridWithMetadata ? (
-        <Flex mx={2} gap={2}>
-          <GenericGrid artworks={artworks} />
-
-          <RouterLink to={moreHref} hasChildTouchable>
-            <Button block variant="outline">
-              View More
-            </Button>
-          </RouterLink>
-        </Flex>
-      ) : isGridNoMetadata ? (
-        <Flex gap={2} mb={2}>
-          <GenericGrid artworks={artworks} hideArtworMetaData />
-
-          <RouterLink
-            to={moreHref}
-            hasChildTouchable
-            style={{
-              paddingHorizontal: 20,
-            }}
-          >
-            <Button block variant="outlineLight">
-              {buttonText}
-            </Button>
-          </RouterLink>
-        </Flex>
-      ) : isGridFloatingCTA ? (
-        <Animated.View
-          style={{
-            transform: [
-              {
-                translateY: animationComplete
-                  ? 0
-                  : scrollAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -200],
-                    }),
-              },
-            ],
-          }}
-        >
-          <Flex position="relative" mx={2} ref={gridContainerRef}>
-            <GenericGrid artworks={artworks} gridHeight={floatingGridMaxHeight} />
-
-            {!animationComplete ? (
-              <Animated.View
-                style={{
-                  opacity: fadeAnim,
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  width: "100%",
-                }}
-              >
-                {/* Gradient fade effect */}
-                <LinearGradient
-                  colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1 }}
-                  style={{
-                    width: "100%",
-                    height: floatingGridMaxHeight ? floatingGridMaxHeight / 2 : 0,
-                    pointerEvents: "none",
-                  }}
-                />
-                <Flex position="absolute" bottom={0}>
-                  <Button
-                    block
-                    variant="outline"
-                    onPress={(e) => {
-                      e.preventDefault()
-                      setIsGridExpanded(true)
-                    }}
-                  >
-                    View More
-                  </Button>
-                </Flex>
-              </Animated.View>
-            ) : (
-              <RouterLink to={moreHref} hasChildTouchable>
-                <Button block variant="outline" mt={1}>
-                  {buttonText}
-                </Button>
-              </RouterLink>
-            )}
-          </Flex>
-        </Animated.View>
+      {isGridEnabled ? (
+        <HomeViewSectionArtworksGrid
+          section={section}
+          variantName={variant?.name}
+          moreHref={moreHref}
+          onSectionViewAll={onSectionViewAll}
+          buttonText={buttonText}
+        />
       ) : showHomeViewCardRail ? (
         <ArtworksCard
           href={moreHref}
