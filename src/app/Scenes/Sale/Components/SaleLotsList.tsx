@@ -184,7 +184,7 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
           hasMore={() => hasNext}
           loadMore={(pageSize: number) => {
             if (!isLoadingNext && hasNext) {
-              loadNext(pageSize || PAGE_SIZE)
+              return loadNext(pageSize || PAGE_SIZE)
             }
           }}
           isLoading={() => isLoadingNext}
@@ -204,7 +204,7 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
             hasMore={hasNext}
             loadMore={() => {
               if (!isLoadingNext && hasNext) {
-                loadNext(PAGE_SIZE)
+                return loadNext(PAGE_SIZE)
               }
             }}
             isLoading={isLoadingNext}
@@ -319,7 +319,7 @@ const SaleLotsListNew: React.FC<NewProps> = ({
           hasMore={() => hasNext}
           loadMore={(pageSize: number) => {
             if (!isLoadingNext && hasNext) {
-              loadNext(pageSize || PAGE_SIZE)
+              return loadNext(pageSize || PAGE_SIZE)
             }
           }}
           isLoading={() => isLoadingNext}
