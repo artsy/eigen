@@ -19612,6 +19612,11 @@ type PartnerCounts {
     format: String
     label: String
   ): FormattedNumber
+  contacts(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
   currentDisplayableShows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -19623,6 +19628,11 @@ type PartnerCounts {
     label: String
   ): FormattedNumber
   eligibleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  locations(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
