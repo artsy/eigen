@@ -23,13 +23,7 @@ if (__DEV__) {
 }
 
 import "react-native-url-polyfill/auto"
-const { Platform } = require("react-native")
 
 require("react-native-gesture-handler")
 const { App } = require("./src/app/App")
-
-if (Platform.OS === "android") {
-  require("./src/app/utils/PushNotification").configure()
-}
-
 export default registerRootComponent(App)

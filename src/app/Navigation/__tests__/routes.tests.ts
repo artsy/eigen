@@ -760,7 +760,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to DarkModeSettings", () => {
-    expect(matchRoute("/settings/dark-mode")).toMatchInlineSnapshot(`
+    expect(matchRoute("/my-account/dark-mode")).toMatchInlineSnapshot(`
       {
         "module": "DarkModeSettings",
         "params": {},
@@ -899,7 +899,21 @@ describe("artsy.net routes", () => {
         "module": "Partner",
         "params": {
           "artistID": ":artistID",
+          "artistSlug": ":artistID",
+          "initialTab": "Overview",
           "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/escat-gallery/artists/celia-lees")).toMatchInlineSnapshot(`
+      {
+        "module": "Partner",
+        "params": {
+          "artistID": "celia-lees",
+          "artistSlug": "celia-lees",
+          "initialTab": "Overview",
+          "partnerID": "escat-gallery",
         },
         "type": "match",
       }

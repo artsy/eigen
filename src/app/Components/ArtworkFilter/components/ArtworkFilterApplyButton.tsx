@@ -1,5 +1,5 @@
+import { BellStrokeIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
   Box,
   Button,
   Flex,
@@ -11,7 +11,8 @@ import {
 } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingAlertFinish } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFinish"
 import { useState } from "react"
-import { Pressable, SafeAreaView } from "react-native"
+import { Pressable } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { ResponsiveValue } from "styled-system"
 
 export interface ArtworkFilterApplyButtonProps {
@@ -105,7 +106,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                   <ProgressiveOnboardingAlertFinish>
                     <InnerButton
                       label="Create Alert"
-                      icon={<BellIcon fill="mono0" width="15px" height="15px" mr={1} />}
+                      icon={<BellStrokeIcon fill="mono0" width="15px" height="15px" mr={1} />}
                       onPress={onCreateAlertPress}
                     />
                   </ProgressiveOnboardingAlertFinish>
@@ -118,7 +119,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
               <>
                 <InnerButton
                   label="Create Alert"
-                  icon={<BellIcon fill="mono0" width="15px" height="15px" mr={1} />}
+                  icon={<BellStrokeIcon fill="mono0" width="15px" height="15px" mr={1} />}
                   onPress={onCreateAlertPress}
                 />
                 <Box width="1" height={20} backgroundColor="mono0" mx={1} />

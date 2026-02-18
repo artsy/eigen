@@ -19,7 +19,7 @@ function createGlobalStore() {
 
     if (__DEV__) {
       if (logAction) {
-        middleware.push(logger)
+        middleware.push(logger as Middleware)
       }
     }
   }
@@ -29,9 +29,9 @@ function createGlobalStore() {
   if (__TEST__ && __globalStoreTestUtils__) {
     __globalStoreTestUtils__.dispatchedActions = []
 
-    middleware.push((_api) => (next) => async (action) => {
-      if (action.type) {
-        __globalStoreTestUtils__.dispatchedActions.push(action)
+    middleware.push((_api) => (next) => async (action: unknown) => {
+      if (typeof action === "object" && action !== null && "type" in action) {
+        __globalStoreTestUtils__.dispatchedActions.push(action as Action)
       }
 
       const result = next(action)
@@ -92,12 +92,12 @@ export const GlobalStore = {
   },
 }
 
-export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
+export const GlobalStoreProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
-const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+export const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
   if (_globalStoreInstance === undefined) {
     _globalStoreInstance = createGlobalStore()
   }

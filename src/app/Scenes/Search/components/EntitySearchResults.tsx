@@ -1,5 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -12,8 +12,8 @@ import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResultsProps {
@@ -23,7 +23,6 @@ interface SearchResultsProps {
 
 const PAGE_SIZE = isTablet() ? 40 : 20
 const ESTIMATED_ITEM_SIZE = 56
-const SEARCH_RESULTS_BOTTOM_PADDING = 140
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
@@ -55,7 +54,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
 
   const handleOnScrollBeginDrag = () => {
     inputRef.current?.blur()
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
   }
 
   useEffect(() => {
@@ -64,8 +63,21 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     }
   }, [query])
 
-  const renderItem = useCallback(({ item, index }) => {
-    return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
+  // Store query and selectedPill in refs so renderItem always has access to the latest values
+  const queryRef = useRef(query)
+  queryRef.current = query
+  const selectedPillRef = useRef(selectedPill)
+  selectedPillRef.current = selectedPill
+
+  const renderItem: ListRenderItem<SearchResultInterface> = useCallback(({ item, index }) => {
+    return (
+      <SearchResult
+        result={item}
+        selectedPill={selectedPillRef.current}
+        query={queryRef.current}
+        position={index}
+      />
+    )
   }, [])
 
   return (
@@ -74,11 +86,12 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       accessibilityLabel={`${selectedPill.displayName} search results list`}
       ref={flashListRef}
       contentContainerStyle={{
-        paddingVertical: space(1),
+        paddingTop: space(1),
         paddingHorizontal: space(2),
-        paddingBottom: SEARCH_RESULTS_BOTTOM_PADDING,
+        paddingBottom: space(6),
       }}
       data={hits}
+      extraData={{ query, selectedPill }}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={renderItem}
       estimatedItemSize={ESTIMATED_ITEM_SIZE}
@@ -89,11 +102,11 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       ListEmptyComponent={() => (
         <SingleIndexEmptyResultsMessage query={query} selectedPill={selectedPill} />
       )}
-      ListFooterComponent={
-        <Flex alignItems="center" my={2}>
+      ListFooterComponent={() => (
+        <Flex alignItems="center" my={4}>
           {isLoadingNext ? <Spinner testID="spinner" /> : null}
         </Flex>
-      }
+      )}
       onScrollBeginDrag={handleOnScrollBeginDrag}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}

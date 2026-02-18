@@ -47,7 +47,6 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
   const color = useColor()
   const tracking = useTracking()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const artwork = saleArtwork?.artwork
 
@@ -93,7 +92,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
         src={artwork.image.imageURL}
         width={imageWidth}
         height={IMAGE_CONTAINER_WIDTH}
-        blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+        blurhash={artwork.image.blurhash}
       />
     </Flex>
   ) : (
@@ -127,7 +126,6 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       sale: saleArtwork.sale,
       saleArtwork,
       saleMessage: saleArtwork.artwork?.saleMessage || null,
-      realizedPrice: saleArtwork.artwork?.realizedPrice || null,
     },
     isSmallTile: !enableNewSaleArtworkTileRailCard,
   })
@@ -207,7 +205,6 @@ export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtw
         slug
         saleMessage
         title
-        realizedPrice
       }
       counts {
         bidderPositions

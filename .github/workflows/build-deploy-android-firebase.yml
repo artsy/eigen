@@ -1,0 +1,73 @@
+name: Build and Deploy Android to Firebase
+
+on:
+  push:
+    branches:
+      - beta-android
+  schedule:
+    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build-deploy-android-firebase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup SSH agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
+
+      - name: Update echo
+        uses: ./.github/actions/setup-update-echo
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Get next Android version code and set environment variable
+        run: |
+          bundle exec fastlane get_next_android_build_version
+          VERSION_CODE=$(cat fastlane/next_version_code.txt)
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
+      - name: Build and deploy Android to Firebase
+        run: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Extract beta version
+        if: always()
+        id: extract-version
+        run: ./.github/scripts/extract-beta-version.sh fastlane/android_beta_version.txt
+
+      - name: Find and comment on PR
+        if: always() && steps.extract-version.outputs.beta_version
+        uses: actions/github-script@v7
+        env:
+          BETA_VERSION: ${{ steps.extract-version.outputs.beta_version }}
+          PLATFORM: android
+          DEPLOYMENT_TARGET: firebase
+        with:
+          script: |
+            const script = require('./.github/scripts/comment-pr-beta.js');
+            await script({ github, context, core });

@@ -1,14 +1,5 @@
-import {
-  Box,
-  Checkbox,
-  ChevronIcon,
-  Flex,
-  Join,
-  Separator,
-  Spacer,
-  Text,
-  useTheme,
-} from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Box, Checkbox, Flex, Join, Separator, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import React, { useLayoutEffect } from "react"
@@ -101,7 +92,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
                         Add your location
                       </Text>
                       <Box>
-                        <ChevronIcon color="mono60" />
+                        <ChevronSmallRightIcon color="mono60" />
                       </Box>
                     </>
                   ) : (

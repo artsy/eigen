@@ -1,9 +1,7 @@
+import { CheckmarkIcon, CloseIcon, TriangleDownIcon } from "@artsy/icons/native"
 import {
   Autocomplete,
   Spacer,
-  CloseIcon,
-  CheckIcon,
-  TriangleDown,
   Flex,
   useColor,
   Text,
@@ -36,8 +34,8 @@ export interface SelectProps<ValueType> {
   required?: boolean
   testID?: string
   onSelectValue(value: ValueType, index: number): void
-  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
-  renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): React.JSX.Element
+  renderItemLabel?(value: SelectOption<ValueType>): React.JSX.Element
   onModalFinishedClosing?(): void
 }
 interface State {
@@ -148,7 +146,7 @@ const SelectButton: React.FC<{
               {placeholder ?? "Pick an option"}
             </Text>
           )}
-          <TriangleDown />
+          <TriangleDownIcon />
         </Flex>
       </TouchableOpacity>
     </Flex>
@@ -164,7 +162,7 @@ const SelectModal: React.FC<{
   maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown, index: number): any
-  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  renderItemLabel?(value: SelectOption<unknown>): React.JSX.Element
   onModalFinishedClosing?(): void
 }> = (props) => {
   const color = useColor()
@@ -248,7 +246,12 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <Modal visible={props.visible} onDismiss={props.onDismiss} onRequestClose={props.onDismiss}>
+    <Modal
+      visible={props.visible}
+      onDismiss={props.onDismiss}
+      onRequestClose={props.onDismiss}
+      presentationStyle="overFullScreen"
+    >
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
@@ -327,7 +330,7 @@ const SelectModal: React.FC<{
               )}
               {localValue === item.value ? (
                 <PopIn>
-                  <CheckIcon width={25} height={25} />
+                  <CheckmarkIcon width={25} height={25} />
                 </PopIn>
               ) : null}
             </Flex>

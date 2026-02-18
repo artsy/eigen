@@ -93,8 +93,6 @@ export const CityView: React.FC<CityViewProps> = () => {
       <Container
         style={{
           flex: 1,
-          // Allow for extra padding to make it easier to tell that there is no more content
-          paddingBottom: 50,
         }}
       >
         <TabsContainer

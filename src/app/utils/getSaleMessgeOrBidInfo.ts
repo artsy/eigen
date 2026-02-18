@@ -11,7 +11,7 @@ type ArtworkSaleArtwork =
   | null
   | undefined
 
-type Artwork = Pick<ArtworkGridItem_artwork$data, "saleMessage" | "realizedPrice"> & {
+type Artwork = Pick<ArtworkGridItem_artwork$data, "saleMessage"> & {
   sale: ArtworkSale
   saleArtwork: ArtworkSaleArtwork
 }
@@ -38,12 +38,7 @@ export const saleMessageOrBidInfo = ({
   collectorSignals?: collectorSignals
   auctionSignals?: AuctionSignals
 }): string | null | undefined => {
-  const { sale, saleArtwork, realizedPrice } = artwork
-
-  // Price which an artwork was sold for.
-  if (realizedPrice) {
-    return `Sold for ${realizedPrice}`
-  }
+  const { sale, saleArtwork } = artwork
 
   // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
   // The auction is open

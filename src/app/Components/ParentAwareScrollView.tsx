@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react"
 import {
   NativeScrollEvent,
@@ -20,6 +21,9 @@ interface State {
 }
 
 /**
+ * @deprecated
+ * Please do not use this component. It is only kept around for backwards compatibility.
+ *
  * A ScrollView that pretends to be a VirtualizedList.
  * It registers itself as a nested child of a parent VirtualizedList (or FlatList basically).
  * Registering as a nested child causes the parent VirtualizedList to call functions on our

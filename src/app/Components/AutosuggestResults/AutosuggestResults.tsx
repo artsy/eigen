@@ -1,13 +1,7 @@
-import {
-  Button,
-  Flex,
-  ReloadIcon,
-  Spacer,
-  Text,
-  quoteLeft,
-  quoteRight,
-} from "@artsy/palette-mobile"
+import { ReloadIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
+import { ListRenderItem } from "@shopify/flash-list"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
@@ -22,8 +16,9 @@ import {
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, Keyboard } from "react-native"
+import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
@@ -83,7 +78,7 @@ const AutosuggestResultsFlatList: React.FC<{
     // blurs the input
     inputRef.current?.blur()
     // dismisses the keyboard
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
 
     if (!userHasStartedScrolling.current) {
       userHasStartedScrolling.current = true
@@ -142,6 +137,7 @@ const AutosuggestResultsFlatList: React.FC<{
     const excludedIDs = prependResults.map((result) => result.internalID)
 
     const edges =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
       []
     const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
@@ -153,7 +149,10 @@ const AutosuggestResultsFlatList: React.FC<{
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
   const hasMoreResults =
-    results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
+    results.current &&
+    !!results.current.results?.edges?.length &&
+    results.current.results?.edges?.length > 0 &&
+    relay.hasMore()
 
   const noResults = results.current && allNodes.length === 0
 
@@ -161,9 +160,9 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const ListFooterComponentWithLoadingIndicator = useMemo(() => {
     return () => (
-      <Flex pb={6} height={250}>
+      <Flex pb={6}>
         {hasMoreResults ? (
-          <Flex justifyContent="center" pb={6}>
+          <Flex justifyContent="center" mt={1}>
             <Spinner />
           </Flex>
         ) : (
@@ -173,15 +172,19 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults, noResults, ListFooterComponent])
 
-  const renderItem = useCallback(({ item, index }) => {
+  // Store query in a ref so renderItem always has access to the latest value
+  const queryRef = useRef(query)
+  queryRef.current = query
+
+  const renderItem: ListRenderItem<AutosuggestResult> = useCallback(({ item, index }) => {
     if (CustomListItemComponent) {
-      return <CustomListItemComponent item={item} highlight={query} />
+      return <CustomListItemComponent item={item} highlight={queryRef.current} />
     }
 
     return (
       <Flex mb={2}>
         <AutosuggestSearchResult
-          highlight={query}
+          highlight={queryRef.current}
           result={item}
           showResultType={showResultType}
           onResultPress={onResultPress}
@@ -208,13 +211,14 @@ const AutosuggestResultsFlatList: React.FC<{
   }
 
   return (
-    <Flex style={{ width: "100%", height: "100%" }}>
+    <Flex style={{ width: "100%", height: "100%" }} pb={2}>
       {!!showHeaderComponent && <HeaderComponent />}
       <InfiniteScrollFlashList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
         initialNumToRender={isTablet() ? 24 : 12}
         data={allNodes}
+        extraData={query}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={ListFooterComponentWithLoadingIndicator}
         keyboardDismissMode="on-drag"

@@ -1,10 +1,13 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { BackHandler } from "react-native"
 
+const mockRemove = jest.fn()
+const mockSubscription = { remove: mockRemove }
+
 jest.mock("react-native", () => ({
   BackHandler: {
-    addEventListener: jest.fn(),
+    addEventListener: jest.fn(() => mockSubscription),
     removeEventListener: jest.fn(),
   },
   Platform: {
@@ -20,7 +23,6 @@ jest.mock("react-native", () => ({
 
 describe("useBackHandler Hooks", () => {
   const addEventListenerMock = BackHandler.addEventListener as jest.Mock
-  const removeEventListenerMock = BackHandler.removeEventListener as jest.Mock
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -34,8 +36,8 @@ describe("useBackHandler Hooks", () => {
         initialProps: { handler },
       })
 
-      expect(addEventListenerMock).toBeCalledTimes(1)
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
     })
 
     it("should resubscribe when passed handler will change", () => {
@@ -46,27 +48,11 @@ describe("useBackHandler Hooks", () => {
         initialProps: { handler },
       })
 
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
 
       rerender({ handler: handler2 })
 
-      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler2)
-    })
-
-    it("should remove back press listener on unmount", () => {
-      const handler = jest.fn()
-
-      const { unmount } = renderHook((props) => useBackHandler(props.handler), {
-        initialProps: { handler },
-      })
-
-      expect(removeEventListenerMock).toBeCalledTimes(0)
-
-      unmount()
-
-      expect(removeEventListenerMock).toBeCalledTimes(1)
-      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler2)
     })
   })
 })

@@ -1,0 +1,37 @@
+name: Build iOS QA App for Maestro
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build-ios-qa:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
+
+      - name: Build iOS app and upload to S3 for Maestro
+        run: bundle exec fastlane build_maestro_ios
+        env:
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
+          FASTLANE_XCODE_LIST_TIMEOUT: 120

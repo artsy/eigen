@@ -1,5 +1,4 @@
 import { Box, Flex, useColor, useSpace } from "@artsy/palette-mobile"
-import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
@@ -8,6 +7,7 @@ import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -18,12 +18,12 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Dimensions, Platform } from "react-native"
+import { Animated, Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { usePrevious } from "react-use"
+import usePrevious from "react-use/lib/usePrevious"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
@@ -55,6 +55,8 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
+
+const SHOW_CARD_HEIGHT = 150
 
 export enum DrawerPosition {
   open = "open",
@@ -101,6 +103,28 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   useEffect(() => {
+    const onPressCitySwitcherButton = () => {
+      if (!showCityPicker) {
+        // Show the city picker
+        setShowCityPicker(true)
+        setActiveShows([])
+        setActivePin(null)
+      } else {
+        // Hide the city picker
+        setShowCityPicker(false)
+      }
+    }
+
+    const onPressUserPositionButton = () => {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      const { lat, lng } = userLocation
+      cameraRef.current?.setCamera({
+        centerCoordinate: [lng, lat],
+        zoomLevel: DefaultZoomLevel,
+        animationDuration: 500,
+      })
+    }
+
     navigation.setOptions({
       headerRight: () => {
         return (
@@ -134,8 +158,18 @@ export const GlobalMap: React.FC<Props> = (props) => {
           </Animated.View>
         )
       },
+      headerShadowVisible: false,
     })
-  }, [navigation, viewer, userLocation, showCityPicker, activePin])
+  }, [
+    navigation,
+    viewer,
+    userLocation,
+    showCityPicker,
+    activePin,
+    hideButtons,
+    safeAreaInsets.top,
+    currentLocation,
+  ])
 
   useEffect(() => {
     updateShowIdMap()
@@ -268,11 +302,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const renderShowCard = () => {
     const hasShows = activeShows.length > 0
 
-    // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = safeAreaInsets.top > 20
-
-    const platformBottom = Platform.OS === "ios" ? (iPhoneHasEars ? 80 : 45) : 0
-
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
@@ -286,11 +315,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
     return (
       <Flex
         style={{
-          bottom: hasShows ? platformBottom : -150,
           left: 0,
           right: 0,
           position: "absolute",
-          height: 150,
+          height: SHOW_CARD_HEIGHT,
         }}
       >
         {!!hasShows && (
@@ -342,27 +370,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }
 
-  const onPressCitySwitcherButton = () => {
-    if (!showCityPicker) {
-      // Show the city picker
-      setShowCityPicker(true)
-      setActiveShows([])
-      setActivePin(null)
-    } else {
-      // Hide the city picker
-      setShowCityPicker(false)
-    }
-  }
-
-  const onPressUserPositionButton = () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { lat, lng } = userLocation
-    cameraRef.current?.setCamera({
-      centerCoordinate: [lng, lat],
-      zoomLevel: DefaultZoomLevel,
-      animationDuration: 500,
-    })
-  }
+  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
   const currentFeatureCollection = (): FilterData => {
     const filterID = cityTabs[activeIndex].id
@@ -483,6 +491,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
+    console.warn("setPreviouslySelectedCitySlug", newCity.slug)
+    setPreviouslySelectedCitySlug(newCity.slug)
     refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
   }
 
@@ -504,21 +514,34 @@ export const GlobalMap: React.FC<Props> = (props) => {
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <MapboxGL.MapView
           ref={mapRef}
-          style={{ width: "100%", height: Dimensions.get("window").height }}
+          style={{ width: "100%", height: "100%" }}
           {...mapProps}
           onCameraChanged={onRegionIsChanging}
           onDidFinishLoadingMap={onDidFinishRenderingMapFully}
           attributionEnabled
           logoEnabled
+          attributionPosition={{
+            bottom: space(2),
+            right: space(2),
+          }}
           logoPosition={{
-            bottom: Platform.OS === "ios" ? BOTTOM_TABS_HEIGHT + space(2) : space(4),
+            bottom: space(2),
             left: space(2),
           }}
           onPress={onPressMap}
+          scaleBarPosition={
+            Platform.OS === "android"
+              ? {
+                  top: safeAreaInsets.top + space(6),
+                  left: space(2),
+                }
+              : // The default position is fine on iOS // no need to override it
+                undefined
+          }
         >
           <MapboxGL.Camera
             ref={cameraRef}
-            animationMode="flyTo"
+            animationMode="moveTo"
             zoomLevel={DefaultZoomLevel}
             minZoomLevel={MinZoomLevel}
             maxZoomLevel={MaxZoomLevel}
@@ -544,13 +567,20 @@ export const GlobalMap: React.FC<Props> = (props) => {
             </>
           )}
         </MapboxGL.MapView>
-        {!!city && (
-          <Flex position="absolute" bottom={0} left={0} right={0} height={200}>
+        {!!city && activeShows.length > 0 && (
+          <Flex
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            height={SHOW_CARD_HEIGHT}
+            justifyContent="flex-end"
+          >
             {renderShowCard()}
           </Flex>
         )}
+        <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
       </Flex>
-      <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
     </ProvideScreenTracking>
   )
 }

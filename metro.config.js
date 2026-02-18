@@ -2,12 +2,14 @@
  * Metro configuration
  * https://reactnative.dev/docs/metro
  *
- * @type {import('metro-config').MetroConfig}
+ * @type {import('@react-native/metro-config').MetroConfig}
  */
 
 const path = require("path")
 const { mergeConfig } = require("@react-native/metro-config")
-const { getDefaultConfig } = require("expo/metro-config")
+const { withRozeniteExpoAtlasPlugin } = require("@rozenite/expo-atlas-plugin")
+const { withRozenite } = require("@rozenite/metro")
+const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
 const config = {
@@ -25,13 +27,17 @@ const config = {
       },
     }),
   },
-
   resolver: {
-    resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
+    resolverMainFields: ["react-native", "browser", "main"],
     extraNodeModules: {
       images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
     },
   },
 }
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config)
+const mergedConfig = mergeConfig(getSentryExpoConfig(__dirname), config)
+
+module.exports = withRozenite(mergedConfig, {
+  enhanceMetroConfig: (config) => withRozeniteExpoAtlasPlugin(config),
+  enabled: process.env.WITH_ROZENITE === "true", // enable only in dev environment
+})

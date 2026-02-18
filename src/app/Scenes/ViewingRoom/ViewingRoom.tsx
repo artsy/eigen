@@ -1,8 +1,10 @@
-import { Button, Flex, ShareIcon, Spacer, Text } from "@artsy/palette-mobile"
+import { ShareIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -24,7 +26,7 @@ interface ViewingRoomProps {
 
 interface ViewingRoomSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 // Same as Gravity model viewing_room_status
@@ -147,17 +149,20 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <View style={{ flex: 1, position: "relative" }}>
         <FlatList<ViewingRoomSection>
-          onViewableItemsChanged={useCallback(({ viewableItems }) => {
-            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
-              trackBodyImpression()
-              LayoutAnimation.configureNext({
-                ...LayoutAnimation.Presets.easeInEaseOut,
-                duration: 150,
-              })
-              setDisplayViewWorksButton(true)
-            }
-          }, [])}
-          contentContainerStyle={{ paddingBottom: 80 }}
+          onViewableItemsChanged={useCallback(
+            ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+              if (viewableItems.find((viewableItem) => viewableItem.item.key === "body")) {
+                trackBodyImpression()
+                LayoutAnimation.configureNext({
+                  ...LayoutAnimation.Presets.easeInEaseOut,
+                  duration: 150,
+                })
+                setDisplayViewWorksButton(true)
+              }
+            },
+            []
+          )}
+          contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
           data={sections}
           ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}

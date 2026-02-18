@@ -12,7 +12,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import moment from "moment"
 import React from "react"
 import { Linking } from "react-native"
@@ -42,8 +41,6 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
 }
 
 const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
-  const AREnableNewOrderDetails = useFeatureFlag("AREnableNewOrderDetails")
-
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
@@ -86,11 +83,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "PROCESSING_APPROVAL":
     case "IN_TRANSIT":
       return (
-        <RouterLink
-          hasChildTouchable
-          testID="view-order-button"
-          to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
-        >
+        <RouterLink hasChildTouchable testID="view-order-button" to={`/orders/${orderId}/details`}>
           <Button block variant="fillGray">
             {mode == "OFFER" ? "View Offer" : "View Order"}
           </Button>
@@ -105,7 +98,6 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const { displayState, buyerAction } = order
   const [lineItem] = extractNodes(order.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
 
   let buyerDisplayState: BuyerDisplayStateEnum = displayState
@@ -131,7 +123,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             {!!artworkImageUrl ? (
               <Image
                 src={artworkImageUrl}
-                blurhash={showBlurhash ? artworkVersion.image.blurhash : undefined}
+                blurhash={artworkVersion.image.blurhash}
                 performResize={false}
                 height={50}
                 width={50}

@@ -1,7 +1,7 @@
 #import "AppDelegate+DeeplinkTimeout.h"
-#import <Sentry/Sentry.h>
+@import Sentry;
 
-@implementation ARAppDelegate (DeeplinkTimeout)
+@implementation ARAppDelegateHelper (DeeplinkTimeout)
 
 NSString *deeplinkRoute;
 

@@ -12,6 +12,7 @@ import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider
 import { postEventToProviders } from "app/utils/track/providers"
 import { Suspense, useMemo } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { KeyboardProvider } from "react-native-keyboard-controller"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -47,15 +48,18 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
       ArtworkListsProvider,
       ShareSheetProvider, // uses BottomSheetProvider
+      KeyboardControllerProvider,
     ],
     children
   )
 
-export const TestProviders: React.FC<{
-  skipRelay?: boolean
-  includeNavigation?: boolean
-  includeArtworkLists?: boolean
-}> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
+export const TestProviders: React.FC<
+  React.PropsWithChildren<{
+    skipRelay?: boolean
+    includeNavigation?: boolean
+    includeArtworkLists?: boolean
+  }>
+> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
   return combineProviders(
     [
       includeNavigation && NavigationTestsProvider,
@@ -82,7 +86,7 @@ export const TestProviders: React.FC<{
 
 // Providers with preset props
 
-const TestFlagProvider: React.FC = ({ children }) => {
+const TestFlagProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <FlagProvider startClient={false}>{children}</FlagProvider>
 }
 
@@ -90,20 +94,26 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
 )
 
-const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getRelayEnvironment()}>
+const KeyboardControllerProvider = (props: { children?: React.ReactNode }) => (
+  <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
     {props.children}
-  </RelayEnvironmentProvider>
+  </KeyboardProvider>
 )
+
+const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {
+  const Provider = RelayEnvironmentProvider as React.ComponentType<any>
+  return <Provider environment={getRelayEnvironment()}>{props.children}</Provider>
+}
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (
   <Suspense fallback={<Spinner />} {...props} />
 )
 
-const TrackingProvider: React.FC = ({ children }) => {
+const TrackingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
+  const TrackComponent = Track as React.ComponentType<any>
 
-  return <Track>{children}</Track>
+  return <TrackComponent>{children}</TrackComponent>
 }
 
 // theme with dark mode support

@@ -144,14 +144,14 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
           )}
           onEndReached={onLoadMore}
           ItemSeparatorComponent={() => <Spacer y={1} />}
-          ListFooterComponent={
+          ListFooterComponent={() => (
             <Flex py={2}>
               <RouterLink hasChildTouchable to="/my-profile/payment/new-card">
                 <Button block>Add new card</Button>
               </RouterLink>
               {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
             </Flex>
-          }
+          )}
         />
       </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -228,7 +228,8 @@ const MyProfilePaymentSuspense: React.FC = () => {
     { fetchPolicy: "store-and-network" }
   )
 
-  return <MyProfilePaymentContainer me={data.me} />
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return <MyProfilePaymentContainer me={data.me!} />
 }
 
 export const MyProfilePaymentQueryRenderer: React.FC = () => {

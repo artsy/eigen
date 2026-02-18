@@ -4,13 +4,17 @@ appId: ${MAESTRO_APP_ID}
     clearState: false
     arguments:
       shouldSignOut: "true"
+      useMaestroInit: "true"
 - runScript:
     file: signup.js
-- assertVisible: "Sign up or log in"
+- extendedWaitUntil:
+    visible: "Sign up or log in"
+    timeout: 30000
 - tapOn: "Email Input"
 - inputText: ${output.signup.email}
 - tapOn: "Continue.*"
-- assertVisible: "Welcome to Artsy"
+- assertVisible:
+    id: "password"
 - inputText: ${output.signup.password}
 - tapOn: "Continue.*"
 - inputText: "Test McTest"
@@ -18,3 +22,7 @@ appId: ${MAESTRO_APP_ID}
     commands:
       - tapOn: Accept terms and privacy policy checkbox
 - tapOn: "Continue.*"
+- assertVisible: "Ready to find art you love?"
+- tapOn: "Skip.*"
+- assertVisible:
+    id: "search-button"

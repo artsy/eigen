@@ -1,7 +1,7 @@
+import { InfoIcon } from "@artsy/icons/native"
 import {
   Button,
   Flex,
-  InfoCircleIcon,
   Spacer,
   Text,
   Touchable,
@@ -11,17 +11,18 @@ import {
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react"
-import { Modal, Platform, ScrollView, SafeAreaView } from "react-native"
+import { Modal, Platform, ScrollView } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
   isPresentedModally?: boolean
-  modalContent: JSX.Element
+  modalContent: React.JSX.Element
   modalTitle?: string
   onPress?: () => void
   subTitle?: string
   title?: string
-  titleElement?: JSX.Element
+  titleElement?: React.JSX.Element
   trackEvent?: () => void
 }
 
@@ -71,7 +72,7 @@ export const InfoButton = forwardRef<
               </Text>
             )}
 
-            <InfoCircleIcon fill="mono60" />
+            <InfoIcon fill="mono60" />
           </Flex>
         </Touchable>
 
@@ -96,7 +97,7 @@ export const InfoButton = forwardRef<
 
 export const AutoHeightInfoModal: React.FC<{
   isPresentedModally?: boolean
-  modalContent: JSX.Element
+  modalContent: React.JSX.Element
   modalTitle?: string
   onDismiss: () => void
   title?: string
@@ -108,13 +109,13 @@ export const AutoHeightInfoModal: React.FC<{
 
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <FullWindowOverlay>{children}</FullWindowOverlay>
       )
     }
 
     if (Platform.OS === "android" && isPresentedModally) {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <Modal visible={visible} transparent statusBarTranslucent>
           {children}
         </Modal>
@@ -143,9 +144,8 @@ export const AutoHeightInfoModal: React.FC<{
       }
     >
       <SafeAreaView
-        style={{
-          paddingBottom: space(2),
-        }}
+        edges={["bottom", "top"]}
+        style={Platform.OS === "ios" ? { paddingBottom: space(2) } : {}}
       >
         <Flex maxHeight={MAX_CONTENT_HEIGHT}>
           <Text mx={2} variant="lg-display">

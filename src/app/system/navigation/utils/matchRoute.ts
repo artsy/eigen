@@ -25,7 +25,7 @@ export function matchRoute(
   }
 
   for (const route of routes) {
-    const result = route.match(pathParts)
+    const result = route.match(pathParts, queryParams)
     if (result) {
       return { type: "match", module: route.module, params: { ...queryParams, ...result } }
     }
@@ -84,8 +84,10 @@ function getParsedURLParts(parsed: ReturnType<typeof parseURL>) {
     ? parseQueryString(parsed.query, { arrayFormat: "index" })
     : {}
 
+  const hashFragment = parsed.hash?.replace(/^#/, "") || undefined
+
   return {
     pathParts,
-    queryParams,
+    queryParams: hashFragment ? { ...queryParams, hashFragment } : queryParams,
   }
 }

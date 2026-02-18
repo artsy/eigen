@@ -36,6 +36,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       textProps={{ textAlign: "center", variant: "md" }}
     />
   )
+
   return isTablet() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor={color("mono100")}>
       <Flex flex={1} alignItems="center" justifyContent="center">

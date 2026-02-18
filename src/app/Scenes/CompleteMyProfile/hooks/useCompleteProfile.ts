@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { UpdateMyProfileInput } from "__generated__/useUpdateMyProfileMutation.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -14,6 +15,7 @@ import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyPr
 import { popToRoot, goBack as systemGoBack } from "app/system/navigation/navigate"
 import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 import { useMemo } from "react"
+import { useTracking } from "react-tracking"
 
 // Hook responsible for navigating between the steps of the profile completion process
 // and saving the user's progress
@@ -29,6 +31,7 @@ export const useCompleteProfile = () => {
   const { name } = useRoute<RouteProp<CompleteMyProfileNavigationRoutes, Routes>>()
   const [updateProfile] = useUpdateMyProfile()
   const { show } = useToast()
+  const { trackEvent } = useTracking()
 
   const nextRoute = getNextRoute(name, steps)
 
@@ -86,6 +89,7 @@ export const useCompleteProfile = () => {
           return
         }
 
+        trackEvent(tracks.editedUserProfile())
         popToRoot()
       },
       updater: (store) => {
@@ -135,4 +139,13 @@ const filterMutationInputFields = (progressState: ProgressState): StateNormalize
 
     return acc
   }, {})
+}
+
+const tracks = {
+  editedUserProfile: (): EditedUserProfile => ({
+    action: ActionType.editedUserProfile,
+    context_screen: ContextModule.completeMyProfileFlow,
+    context_screen_owner_type: OwnerType.editProfile,
+    platform: "mobile",
+  }),
 }

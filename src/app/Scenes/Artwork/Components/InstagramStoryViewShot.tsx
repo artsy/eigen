@@ -1,8 +1,10 @@
-import { ArtsyLogoBlackIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
-import React, { RefObject } from "react"
+import React, { Ref } from "react"
 import ViewShot from "react-native-view-shot"
 
 /**
@@ -18,10 +20,11 @@ const InstagramStoryBackgroundDimensions = {
 const BottomLabelHeight = 350 // in pixels, before we scale it
 
 export interface InstagramStoryViewShotProps {
-  shotRef?: RefObject<ViewShot>
+  shotRef?: Ref<ViewShot>
   href: string
   artist: string
   title?: string
+  onImageLoad?: () => void
 }
 
 export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
@@ -29,6 +32,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
   href,
   artist,
   title,
+  onImageLoad,
 }) => {
   const color = useColor()
   const debugInstagramShot = useDevToggle("DTShowInstagramShot")
@@ -47,7 +51,12 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
         options={{ format: "png", result: "base64" }}
         style={{ backgroundColor: color("mono0") }}
       >
-        <Image src={href} style={{ width, height }} resizeMode="contain" />
+        <FastImage
+          source={{ uri: href }}
+          style={{ width, height }}
+          resizeMode="contain"
+          onLoadEnd={onImageLoad}
+        />
 
         <Flex
           mt={`${40 * scale}px`}
@@ -73,7 +82,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
               </Text>
             ) : null}
           </Flex>
-          <ArtsyLogoBlackIcon scale={0.8} />
+          <ArtsyLogoIcon height={25} width={75} />
         </Flex>
       </ViewShot>
     </Flex>

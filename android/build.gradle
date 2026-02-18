@@ -1,15 +1,14 @@
 buildscript {
     ext {
         googlePlayServicesVersion = "17.0.0"
-        firebaseMessagingVersion = "21.1.0" // matching firebaseIidVersion to avoid duplicate class error
-        buildToolsVersion = "35.0.0"
+        buildToolsVersion = "36.0.0"
         minSdkVersion = 24
-        compileSdkVersion = 35
-        targetSdkVersion = 34
+        compileSdkVersion = 36
+        targetSdkVersion = 36
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
         googlePlayServicesAuthVersion = "16.0.1"
-        ndkVersion = "26.2.11394342"
-        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.25'
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "2.1.20"
     }
     repositories {
         google()
@@ -31,6 +30,7 @@ plugins {
 allprojects {
     repositories {
         maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "$rootDir/../node_modules/@notifee/react-native/android/libs" }
         jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'

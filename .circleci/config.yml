@@ -1,27 +1,38 @@
 version: 2.1
 
+defaults: &beta_branches_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+        - beta-android
+
+defaults_ignore_beta: &ignore_beta_branches
+  filters:
+    branches:
+      ignore:
+        - beta-ios
+        - beta-android
+
+defaults_main: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+defaults_ignore_main: &ignore_main_branches
+  filters:
+    branches:
+      ignore:
+        - main
+
 orbs:
-  node: circleci/node@5.3.0
-  queue: eddiewebb/queue@2.2.1
+  node: circleci/node@7.2.1
   horizon: artsy/release@0.0.1
-  macos: circleci/macos@2.5.3
-  android: circleci/android@2.5.0
+  macos: circleci/macos@2.5.4
+  android: circleci/android@3.2.0
 
 commands:
-  await-previous-builds:
-    parameters:
-      branch:
-        description: The branch to wait on
-        type: string
-    steps:
-      - queue/until_front_of_line:
-          time: "30" # how long a queue will wait until the job exits
-          only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
-  install-node:
-    steps:
-      - node/install:
-          install-yarn: true
-          node-version: "20.9.0"
   generate-checksums:
     steps:
       - run:
@@ -34,6 +45,7 @@ commands:
             scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
             scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/app_build '^\.manifests/native_code' '^dist/'
   setup-env-file:
     steps:
       - run:
@@ -47,8 +59,8 @@ commands:
   install-node-modules:
     steps:
       - node/install-packages:
-          pkg-manager: yarn
-          cache-version: v14
+          pkg-manager: yarn-berry
+          cache-version: << pipeline.parameters.node_modules_cache_key >>
   run-relay-compiler:
     steps:
       - run:
@@ -97,32 +109,60 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
-  install-bin-modules:
+  prep-ios-env:
     steps:
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch.
       - run:
-          name: Install bin modules
-          command: ./scripts/setup/install-bin
-  build-app-ios:
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_ios_cache_key >>
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
+      - checkout
+      - generate-checksums
+      - attach_workspace:
+          at: .
+      - setup-awscli
+      - setup-env-file
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
       - run:
           name: Download ios assets
           command: ./scripts/setup/download-assets-ios
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+  build-app-ios:
+    parameters:
+      build_type:
+        type: string
+        default: "debug"
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.app_build_ios_cache_key >>
       - run:
           name: Build App
-          command: ./scripts/ci/ci-ios
+          command: ./scripts/ci/ci-ios << parameters.build_type >>
       - save_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
           paths:
             - derived_data
   prep-android-env:
     steps:
-      - android/change-java-version:
-          java-version: 17
+      - android/change_java_version:
+          java_version: 17
       - run:
           name: Quit early if possible
           command: |
@@ -131,35 +171,35 @@ commands:
               circleci step halt
             fi
       - run:
-          name: Clear project dir
-          command: |
-            rm -rf /home/circleci/project/*
-      - run:
           name: Install ninja
           command: sudo apt-get install ninja-build
       - checkout
-      - install-node
+      - generate-checksums
       - setup-awscli
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
       - update-echo
       - install-gems
-  build-app-android:
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
-      - generate-query-map
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
       - run:
           name: Download android assets
           command: ./scripts/setup/download-assets-android
+  build-app-android:
+    parameters:
+      build_type:
+        type: string
+        default: "release"
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.app_build_android_cache_key >>
+      - generate-query-map
       - run:
           name: Build App
           no_output_timeout: 30m
-          command: ./scripts/ci/ci-android
+          command: ./scripts/ci/ci-android << parameters.build_type >>
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -180,8 +220,8 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
-      resource_class: macos.m1.medium.gen1
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -196,59 +236,27 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
-  run-e2e-tests:
-    parallelism: 4
-
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: 16.2
-      resource_class: m2pro.medium
-
+  run-native-tests-android:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - macos/preboot-simulator:
-          version: "18.2"
-          platform: "iOS"
-          device: "iPhone 16 Pro"
+      - prep-android-env
       - run:
-          name: Install maestro
-          command: curl -Ls "https://get.maestro.mobile.dev" | bash
-      - run:
-          name: Install idb
-          command: brew tap facebook/fb && brew install idb-companion
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
-      - checkout
-      - setup-awscli
-      - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
-      - run:
-          name: Download app zip
-          command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
-      - run:
-          name: Unzip the app
-          command: unzip Artsy.zip
-      - run:
-          name: Install app in booted sims
-          command: ./scripts/utils/install_app_in_booted_sims.sh
-      - run:
-          name: Run Maestro Tests
-          no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard.sh
+          name: Run Android unit tests
+          command: yarn android:test:ci
+      - store_test_results:
+          path: android/app/build/test-results
+      - store_artifacts:
+          path: android/app/build/reports/tests
 
-  deploy-nightly-beta:
+  nightly-create-next-version:
     environment:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
-      resource_class: macos.m1.medium.gen1
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
@@ -259,21 +267,18 @@ jobs:
       - run:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
-      - run:
-          name: Deploy betas
-          command: ./scripts/deploys/deploy-beta-both
 
   check-and-deploy:
     environment:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
-      resource_class: macos.m1.medium.gen1
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
-      - install-node
+      - generate-checksums
       - install-gems
       - setup-awscli
       - install-node-modules
@@ -290,7 +295,7 @@ jobs:
               ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
-      - run-relay-compiler
+      # - run-relay-compiler
       # - run:
       #     name: Handle Deployment for expo updates
       #     command: |
@@ -301,12 +306,22 @@ jobs:
     parallelism: 16
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: large
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - when:
+          condition: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-staging-echo
+      - when:
+          condition:
+            not: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
+          steps:
+            - update-echo
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
@@ -321,7 +336,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -336,12 +351,14 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "20.9.0"
-    resource_class: small
+      tag: << pipeline.parameters.node_version >>
+    resource_class: large
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run-relay-compiler
+      - update-echo
       - run:
           command: yarn type-check
       - run:
@@ -360,13 +377,13 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
-      resource_class: macos.m1.medium.gen1
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - checkout
       - generate-checksums
-      - install-node
+      - install-node-modules
       - install-gems
       - run:
           name: Check flags
@@ -375,8 +392,8 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
-    resource_class: medium
+      tag: << pipeline.parameters.node_version >>
+    resource_class: large
     steps:
       - checkout
       - generate-checksums
@@ -384,7 +401,6 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      - update-echo
       - generate-query-map
       - run:
           name: Check generated folder
@@ -394,9 +410,6 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - run:
-          name: Generate app_build manifest
-          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -408,7 +421,7 @@ jobs:
   build-echo-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -417,8 +430,6 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      # would it be possible to deferenciate this with a flag in order to not duplicate code?
-      - update-staging-echo
       - generate-query-map
       - run:
           name: Check generated folder
@@ -434,49 +445,19 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
-      resource_class: macos.m1.medium.gen1
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - update-echo
-      - install-gems
-      - install-cocoapods
+      - prep-ios-env
       - macos/preboot-simulator:
-          version: "18.2"
+          version: << pipeline.parameters.simulator_version >>
           platform: "iOS"
-          device: "iPhone 16 Pro"
+          device: "iPhone 17 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
@@ -488,19 +469,9 @@ jobs:
 
       - store_artifacts:
           path: xcode_build_raw.log
-          prefix: build
 
       - store_artifacts:
           path: xcode_test_raw.log
-          prefix: tests
-
-      - await-previous-builds:
-          branch: beta-ios
-      - install-bin-modules
-      - run:
-          name: Deploy if beta testflight and firebase
-          no_output_timeout: 20m
-          command: ./scripts/deploys/deploy-if-beta-branch-ios BOTH
 
   build-test-app-android:
     docker:
@@ -512,8 +483,6 @@ jobs:
       - restore_cache:
           key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
-      - await-previous-builds:
-          branch: beta-android
       - build-app-android
       - run:
           name: Save success file
@@ -521,18 +490,25 @@ jobs:
 
       - store_artifacts:
           path: android/app/build/reports
-          prefix: android-build
 
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
           paths:
             - build-success.log
-      - install-bin-modules
-      - run:
-          name: Deploy if beta - play store and firebase
-          command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
 parameters:
+  xcode_version:
+    type: string
+    default: "26.2"
+  node_version:
+    type: string
+    default: "24.6.0"
+  simulator_version:
+    type: string
+    default: "26.2"
+  default_mac_runner:
+    type: string
+    default: "m4pro.medium"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
@@ -540,28 +516,30 @@ parameters:
     type: boolean
     default: true
   # Update Manually these versions below in order to hard overwrite the caches
+  node_modules_cache_key:
+    type: string
+    default: v29-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
     default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
   cocoapods_cache_key:
     type: string
-    default: v30-pods-{{ checksum ".manifests/cocoapods" }}
+    default: v31-pods-{{ checksum ".manifests/cocoapods" }}
   app_build_ios_cache_key:
     type: string
-    default: v25-app_build_ios-{{ checksum ".manifests/app_build" }}
+    default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v16-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
-    default: v18-test-success
+    default: v19-test-success
   android_native_cache_key:
     type: string
-    default: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v19-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
-  version: 2
   nightly:
     triggers:
       - schedule:
@@ -571,12 +549,9 @@ workflows:
               only:
                 - main
     jobs:
-      - build-test-app-ios
-      - deploy-nightly-beta
+      - nightly-create-next-version
       - run-nightly-tasks
-      # - run-e2e-tests:
-      #     requires:
-      #       - build-test-app-ios
+      - run-native-tests-android
 
   flag-check:
     triggers:
@@ -599,69 +574,38 @@ workflows:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+          <<: *ignore_main_branches
 
       - check-code:
           context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
-
-      - test-js
-
-      - build-test-js
-
       - horizon/block:
+          <<: *beta_branches_only
           context: horizon
           project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+
+      - check-and-deploy:
+          <<: *main_only
+
+      - test-js:
+          <<: *ignore_beta_branches
+
+      - build-test-js:
+          <<: *ignore_beta_branches
 
       - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
-            - horizon/block
 
       - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
-            - horizon/block
 
       - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
-
-      # - run-e2e-tests:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #     requires:
-      #       - build-test-app-ios
+          <<: *beta_branches_only

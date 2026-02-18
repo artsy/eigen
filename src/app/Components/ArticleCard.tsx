@@ -2,6 +2,7 @@ import { ArticleCard_article$data } from "__generated__/ArticleCard_article.grap
 import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
 import { compact } from "lodash"
 import { DateTime } from "luxon"
+import { memo } from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -14,7 +15,7 @@ interface ArticleCardProps extends ViewProps {
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
+export const ArticleCard: React.FC<ArticleCardProps> = memo(({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
 
   const formattedPublishedAt =
@@ -34,7 +35,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
       onPress={onPress}
     />
   )
-}
+})
 
 export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
   article: graphql`

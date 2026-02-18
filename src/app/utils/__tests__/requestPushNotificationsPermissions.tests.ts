@@ -1,8 +1,8 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
-  PushAuthorizationStatus,
   getNotificationPermissionsStatus,
-} from "app/utils/PushNotification"
+  PushAuthorizationStatus,
+} from "app/system/notifications/getNotificationsPermissions"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { Alert } from "react-native"
 
@@ -23,13 +23,13 @@ jest.mock("react-native", () => {
   }
 })
 
-jest.mock("react-native-push-notification", () => ({
-  requestPermissions: jest.fn(),
-}))
-
-jest.mock("app/utils/PushNotification", () => ({
-  ...jest.requireActual("app/utils/PushNotification"),
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
   getNotificationPermissionsStatus: jest.fn(),
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized", 
+    Denied: "denied",
+  },
 }))
 
 describe("requestPushNotificationsPermission", () => {

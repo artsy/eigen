@@ -22,6 +22,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
   const { trackEvent } = useTracking()
 
   const data = useFragment(latestAuctionResultsRailFragment, me)
+
   const auctionResultsByFollowedArtists = extractNodes(data?.auctionResultsByFollowedArtists)
 
   if (!auctionResultsByFollowedArtists?.length) {
@@ -34,7 +35,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
     <Flex>
       <SectionTitle
         href={href}
-        title="Latest Auction Results"
+        title="Auction Results for Artists You Follow"
         mx={2}
         onPress={() => trackEvent(tracks.tappedHeader())}
       />
@@ -58,7 +59,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
             />
           )
         }}
-        ListFooterComponent={
+        ListFooterComponent={() => (
           <BrowseMoreRailCard
             href={href}
             onPress={() => {
@@ -66,7 +67,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
             }}
             text="Browse All Results"
           />
-        }
+        )}
       />
     </Flex>
   )

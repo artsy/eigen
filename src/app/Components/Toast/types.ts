@@ -1,8 +1,9 @@
-import { IconProps, Color } from "@artsy/palette-mobile"
+import { IconProps } from "@artsy/icons/native"
+import { Color } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
 import React from "react"
 
-export type ToastDuration = "long" | "short"
+export type ToastDuration = "long" | "short" | "superLong"
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 
@@ -23,6 +24,7 @@ export interface ToastDetails {
   cta?: string
 
   onPress?: (helpers: ToastOnPressHelpers) => void
+  hideOnPress?: boolean
   Icon?: React.FC<IconProps>
   imageURL?: string
   backgroundColor?: Color
@@ -34,6 +36,7 @@ export type ToastOptions = Pick<
   ToastDetails,
   | "description"
   | "onPress"
+  | "hideOnPress"
   | "Icon"
   | "backgroundColor"
   | "duration"

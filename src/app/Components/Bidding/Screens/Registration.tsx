@@ -18,6 +18,7 @@ import { Modal } from "app/Components/Modal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
+// eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
@@ -57,7 +58,7 @@ interface RegistrationState {
   errorModalDetailText: string
 }
 
-const Hint: React.FC = ({ children }) => (
+const Hint: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Text variant="sm-display" mb={4} color="mono60">
     {children}
   </Text>
@@ -373,7 +374,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ errorModalVisible: false })
   }
 
-  renderRequiredInfoForm(): JSX.Element | undefined {
+  renderRequiredInfoForm(): React.JSX.Element | undefined {
     const { missingInformation, isLoading } = this.state
 
     if (missingInformation === "payment") {
@@ -401,7 +402,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
-  renderRequiredInfoHint(): JSX.Element | undefined {
+  renderRequiredInfoHint(): React.JSX.Element | undefined {
     const { missingInformation } = this.state
     if (missingInformation === "payment") {
       return <Hint>A valid credit card is required.</Hint>
@@ -561,6 +562,7 @@ export const RegistrationQueryRenderer: React.FC<
         cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
         variables={{ saleID }}
         render={renderWithLoadProgress((props) => (
+          // @ts-expect-error REACT_18_UPGRADE
           <RegistrationContainer {...props} {...screenProps} />
         ))}
       />

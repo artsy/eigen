@@ -6,7 +6,10 @@ interface ScreenMarginProps extends SpaceProps<SpacingUnitsTheme> {
   ref?: React.Ref<View>
 }
 
-export const ScreenMargin: React.FC<ScreenMarginProps> = ({ children, ...rest }) => {
+export const ScreenMargin: React.FC<React.PropsWithChildren<ScreenMarginProps>> = ({
+  children,
+  ...rest
+}) => {
   return (
     <Box px={2} {...rest}>
       {children}

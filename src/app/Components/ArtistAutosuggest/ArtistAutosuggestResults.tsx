@@ -108,7 +108,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   )
 }
 
-const AutoSuggestBoxContainer: React.FC = ({ children }) => {
+const AutoSuggestBoxContainer: React.FC<React.PropsWithChildren> = ({ children }) => {
   const space = useSpace()
   return (
     <Flex

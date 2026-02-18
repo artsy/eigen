@@ -5,7 +5,6 @@ lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
-  sentry_cli_path="./bin/node_modules/@sentry/cli/bin/sentry-cli"
 
   project_slug = 'eigen'
   org_slug = 'artsynet'
@@ -25,7 +24,6 @@ lane :upload_sentry_artifacts do |options|
 
   begin
     sentry_create_release(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -42,7 +40,6 @@ lane :upload_sentry_artifacts do |options|
       upload_dsyms_to_sentry(
         org_slug: org_slug,
         project_slug: project_slug,
-        sentry_cli_path: sentry_cli_path
       )
     rescue StandardError => e
       message = 'Uploading dsyms to sentry failed.'
@@ -51,7 +48,6 @@ lane :upload_sentry_artifacts do |options|
   end
 
   upload_sentry_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
     org_slug: org_slug,
     project_slug: project_slug,
     sentry_release_name: sentry_release_name,
@@ -62,7 +58,6 @@ lane :upload_sentry_artifacts do |options|
 end
 
 lane :upload_sentry_sourcemaps do |options|
-  sentry_cli_path = options[:sentry_cli_path]
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
   sentry_release_name = options[:sentry_release_name]
@@ -74,7 +69,6 @@ lane :upload_sentry_sourcemaps do |options|
   begin
     sentry_upload_sourcemap(
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -91,61 +85,18 @@ lane :upload_sentry_sourcemaps do |options|
   end
 end
 
-lane :upload_expo_sourcemaps do |options|
-  sentry_cli_path = options[:sentry_cli_path]
+lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
-  sentry_release_name = options[:sentry_release_name]
-  dist = options[:dist]
-  build_folder = options[:build_folder]
-  platform = options[:platform]
 
-  sourcemap_dir = "#{build_folder}/_expo/static/js"
-  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index*.hbc").first
-
-  unless file_base
-    raise "JS bundle not found for platform: #{platform}"
-  end
-
-  bundle_path = file_base
-  sourcemap_path = "#{file_base}.map"
-
-  upload_sentry_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
-    org_slug: org_slug,
-    project_slug: project_slug,
-    sentry_release_name: sentry_release_name,
-    dist: dist,
-    bundle_path: bundle_path,
-    sourcemap_path: sourcemap_path,
-    silence_failures: true # we ship expo releases every commit to main, failures are noisy
-  )
-end
-
-private_lane :upload_dsyms_to_sentry do |options|
-  org_slug = options[:org_slug]
-  project_slug = options[:project_slug]
-  sentry_cli_path = options[:sentry_cli_path]
-
-  # make individual dSYM archives available to the sentry-cli tool.
-  root = File.expand_path('..', __dir__)
-  dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
-  dsyms_path = File.join(root, 'dSYMs')
-  sh "unzip -d #{dsyms_path} #{dsym_archive}"
-
-  Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-    # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-    sentry_debug_files_upload(
+   sentry_debug_files_upload(
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
-      path: dsym_path
+      include_sources: true
     )
 
-    puts "Uploaded dsym for #{project_slug}"
-  end
-  sh "rm -rf #{dsyms_path}"
+  puts "Uploaded dsyms for #{project_slug}"
 end
 
 def platform_settings(platform)

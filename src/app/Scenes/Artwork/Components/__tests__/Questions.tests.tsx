@@ -1,49 +1,32 @@
 import { screen } from "@testing-library/react-native"
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
 import { Questions } from "app/Scenes/Artwork/Components/Questions"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Suspense } from "react"
-import { Text } from "react-native"
-import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("Questions", () => {
-  const TestRenderer = () => {
-    const data = useLazyLoadQuery<Questions_Test_Query>(
-      graphql`
-        query Questions_Test_Query @raw_response_type {
-          artwork(id: "test-id") {
-            ...Questions_artwork
-          }
-          me {
-            ...useSendInquiry_me
-            ...MyProfileEditModal_me
-          }
+  const { renderWithRelay } = setupTestWrapper<Questions_Test_Query>({
+    Component: (props) => {
+      if (!props.artwork || !props.me) {
+        return null
+      }
+      return <Questions artwork={props.artwork} me={props.me} />
+    },
+    query: graphql`
+      query Questions_Test_Query @relay_test_operation {
+        artwork(id: "test-id") {
+          ...Questions_artwork
         }
-      `,
-      {}
-    )
-    return <Questions artwork={data.artwork!} me={data.me!} />
-  }
-
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+        me {
+          ...useSendInquiry_me
+          ...MyProfileEditModal_me
+        }
+      }
+    `,
+  })
 
   it("renders", async () => {
-    renderWithWrappers(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <Suspense fallback={<Text>SusLoading</Text>}>
-          <TestRenderer />
-        </Suspense>
-      </RelayEnvironmentProvider>
-    )
-    resolveMostRecentRelayOperation(mockEnvironment, { Artwork: () => ({}) })
-    expect(screen.getByText("SusLoading")).toBeDefined()
-
-    await flushPromiseQueue()
-
+    renderWithRelay({ Artwork: () => ({}), Me: () => ({}) })
     expect(screen.getByText("Questions about this piece?")).toBeDefined()
     expect(screen.getByText("Contact Gallery")).toBeDefined()
   })

@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { AppleIcon } from "@artsy/icons/native"
 import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$key } from "__generated__/MyAccount_me.graphql"
@@ -124,7 +125,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
 
         {!!showLinkedAccounts && (
           <Flex mt={4}>
-            <SectionTitle title="Linked Accounts" titleVariant="xs" titleColor="mono60" mx={2} />
+            <SectionTitle title="Linked Accounts" variant="small" titleColor="mono60" mx={2} />
 
             <MenuItemSocialItem
               title="Facebook"
@@ -133,7 +134,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
               isLoading={fbLoading}
               icon={
                 <Image
-                  source={require(`images/facebook.webp`)}
+                  source={require("images/facebook.webp")}
                   resizeMode="contain"
                   style={{ marginRight: 10 }}
                 />
@@ -148,7 +149,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
               disabled={loading || onlyExistingAuthFor("GOOGLE")}
               icon={
                 <Image
-                  source={require(`images/google.webp`)}
+                  source={require("images/google.webp")}
                   resizeMode="contain"
                   style={{ marginRight: 10 }}
                 />
@@ -169,13 +170,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
                 onPress={() => {
                   linkOrUnlink("apple")
                 }}
-                icon={
-                  <Image
-                    source={require(`images/apple.webp`)}
-                    resizeMode="contain"
-                    style={{ marginRight: 10, tintColor: "black" }}
-                  />
-                }
+                icon={<AppleIcon mr={1} fill="mono100" />}
               />
             )}
           </Flex>
@@ -206,7 +201,7 @@ const MyAccountPlaceholder: React.FC = () => {
       <MenuItem title="Phone" ellipsizeMode="middle" href="my-account/edit-email" />
 
       <Flex mt={4}>
-        <SectionTitle title="Linked Accounts" titleVariant="xs" titleColor="mono60" mx={2} />
+        <SectionTitle title="Linked Accounts" variant="small" titleColor="mono60" mx={2} />
 
         <MenuItemSocialItem
           title="Facebook"
@@ -215,7 +210,7 @@ const MyAccountPlaceholder: React.FC = () => {
           isLoading
           icon={
             <Image
-              source={require(`images/facebook.webp`)}
+              source={require("images/facebook.webp")}
               resizeMode="contain"
               style={{ marginRight: 10 }}
             />
@@ -228,7 +223,7 @@ const MyAccountPlaceholder: React.FC = () => {
           disabled
           icon={
             <Image
-              source={require(`images/google.webp`)}
+              source={require("images/google.webp")}
               resizeMode="contain"
               style={{ marginRight: 10 }}
             />
@@ -245,13 +240,7 @@ const MyAccountPlaceholder: React.FC = () => {
             isLinked={false}
             isLoading
             onPress={() => {}}
-            icon={
-              <Image
-                source={require(`images/apple.webp`)}
-                resizeMode="contain"
-                style={{ marginRight: 10, tintColor: "black" }}
-              />
-            }
+            icon={<AppleIcon mr={1} fill="mono100" />}
           />
         )}
       </Flex>

@@ -8,7 +8,7 @@ import {
 import { Box, Image, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesHeader_artistSeries$data } from "__generated__/ArtistSeriesHeader_artistSeries.graphql"
 import { useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
-import { ArtistListItemNew } from "app/Scenes/Onboarding/OnboardingQuiz/Components/ArtistListItem"
+import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

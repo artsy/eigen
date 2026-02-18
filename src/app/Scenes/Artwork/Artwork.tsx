@@ -1,5 +1,6 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Box, Screen, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Box, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
+import { useNavigation } from "@react-navigation/native"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -13,14 +14,14 @@ import { ArtworkDetailsCollectorSignal } from "app/Scenes/Artwork/Components/Art
 import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkScreenNavHeader } from "app/Scenes/Artwork/Components/ArtworkScreenNavHeader"
 import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
-import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { navigationEvents } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { QAInfoPanel } from "app/utils/QAInfo"
@@ -31,9 +32,11 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { promptForReview } from "app/utils/promptForReview"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, InteractionManager, RefreshControl } from "react-native"
 import {
   Environment,
   RelayRefetchProp,
@@ -70,7 +73,6 @@ interface ArtworkProps {
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
   me: Artwork_me$data
   isVisible: boolean
-  onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
   tracking?: TrackingProp
   artworkOfferUnavailable?: boolean
@@ -85,7 +87,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     artworkBelowTheFold,
     isVisible,
     me,
-    onLoad,
     relay,
     artworkOfferUnavailable,
     artworkOfferExpired,
@@ -93,6 +94,8 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
+  const navigation = useNavigation()
+
   const isDeepZoomModalVisible = GlobalStore.useAppState(
     (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
   )
@@ -100,6 +103,18 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
   const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
   const auctionTimerState = ArtworkStore.useStoreState((state) => state.auctionState)
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (artworkAboveTheFold) {
+          return <ArtworkScreenNavHeader artwork={artworkAboveTheFold} />
+        }
+
+        return null
+      },
+    })
+  }, [artworkAboveTheFold, navigation])
 
   const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
 
@@ -173,11 +188,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     }
   }, [])
 
-  // TODO: Remove feature flag once we're ready to launch.
-  useEffect(() => {
-    onLoad(props)
-  }, [artworkAboveTheFold?.slug])
-
   // This is a hack to make useEffect behave exactly like didComponentUpdate.
   const firstUpdate = useRef(true)
   const previousIsVisible = usePrevious(isVisible)
@@ -194,6 +204,30 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
     markArtworkAsRecentlyViewed()
   })
+
+  // navigate the user to the native order details screen on order submission
+  useSetWebViewCallback<{ orderId: string; isPurchase: boolean }>(
+    "orderSubmitted",
+    ({ orderId, isPurchase }) => {
+      if (orderId) {
+        goBack()
+        InteractionManager.runAfterInteractions(() => {
+          navigate(`/orders/${orderId}/details`)
+        })
+      }
+
+      if (isPurchase) {
+        setTimeout(() => {
+          promptForReview({
+            contextModule: ContextModule.ordersSubmitted,
+            contextOwnerType: OwnerType.artwork,
+            contextOwnerSlug: slug,
+            contextOwnerId: internalID,
+          })
+        }, 5000)
+      }
+    }
+  )
 
   const onRefresh = (cb?: () => any) => {
     if (refreshing) {
@@ -558,14 +592,13 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       )}
 
       <QAInfo />
-      <OfferSubmittedModal />
     </>
   )
 }
 
 interface ArtworkPageSection {
   key: string
-  element: JSX.Element
+  element: React.JSX.Element
   excludePadding?: boolean
   excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section
@@ -639,7 +672,7 @@ export const ArtworkContainer = createRefetchContainer(
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
         ...ArtworkAuctionCreateAlertHeader_artwork
-        ...ArtworkScreenHeader_artwork
+        ...ArtworkScreenNavHeader_artwork
         ...ArtworkHeader_artwork
         ...ArtworkLotDetails_artwork
         ...ArtworkStickyBottomContent_artwork
@@ -648,7 +681,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkPartnerOfferNote_artwork
         ...ArtworkPrice_artwork
         ...ArtworkDimensionsClassificationAndAuthenticity_artwork
-        ...ArtworkDetailsCollectorSignal_artwork
+        ...useCollectorSignal_artwork
         slug
         internalID
         isAcquireable
@@ -785,7 +818,14 @@ export const ArtworkScreenQuery = graphql`
   }
 `
 
-export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
+interface ArtworkScreenProps {
+  artworkID: string
+  isVisible: boolean
+  environment?: Environment | RelayMockEnvironment
+  tracking?: TrackingProp
+}
+
+export const ArtworkScreen: React.FC<ArtworkScreenProps> = ({
   artworkID,
   environment,
   ...others
@@ -831,27 +871,5 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
       }}
       fetchPolicy="store-and-network"
     />
-  )
-}
-
-interface ArtworkScreenProps {
-  artworkID: string
-  isVisible: boolean
-  environment?: Environment | RelayMockEnvironment
-  tracking?: TrackingProp
-  onLoad: ArtworkProps["onLoad"]
-}
-
-export const ArtworkScreen: React.FC<ArtworkScreenProps> = (props) => {
-  const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
-
-  return (
-    <Screen>
-      {!!artworkProps?.artworkAboveTheFold && (
-        <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
-      )}
-
-      <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
-    </Screen>
   )
 }

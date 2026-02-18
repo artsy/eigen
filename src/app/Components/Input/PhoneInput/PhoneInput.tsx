@@ -1,12 +1,5 @@
-import {
-  Flex,
-  InputComponentProps,
-  Spacer,
-  Text,
-  Touchable,
-  TriangleDown,
-  useColor,
-} from "@artsy/palette-mobile"
+import { TriangleDownIcon } from "@artsy/icons/native"
+import { Flex, InputComponentProps, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -145,7 +138,7 @@ export const PhoneInput = forwardRef<
                       {countryIndex[selectedValue ?? countryCode].flag}
                     </Text>
                     <Spacer x={0.5} />
-                    <TriangleDown width="8" />
+                    <TriangleDownIcon width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl={1}>
                     <Text variant="sm" color="mono60">

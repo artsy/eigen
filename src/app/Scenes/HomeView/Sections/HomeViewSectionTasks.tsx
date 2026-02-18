@@ -1,7 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
+import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   Flex,
   FlexProps,
   Skeleton,
@@ -36,7 +35,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
-import { usePrevious } from "react-use"
+import usePrevious from "react-use/lib/usePrevious"
 
 const MAX_NUMBER_OF_TASKS = 10
 
@@ -73,7 +72,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const [showAll, setShowAll] = useState(false)
 
   const displayTaskStack = tasks.length > 1 && !showAll
-  const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
+  const HeaderIconComponent = showAll ? ChevronUpIcon : ChevronDownIcon
 
   // TODO: remove this when this reanimated issue gets fixed
   // https://github.com/software-mansion/react-native-reanimated/issues/5728
@@ -240,7 +239,7 @@ const tasksFragment = graphql`
 
 interface TaskItemProps {
   task: Task
-  taskRefs: Map<string, RefObject<SwipeableMethods>>
+  taskRefs: Map<string, RefObject<SwipeableMethods | null>>
   showAll: boolean
   index: number
   displayTaskStack: boolean

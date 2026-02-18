@@ -1,5 +1,5 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
+  "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "jsx": "react-jsx", // This is for vscode not to suggest importing React, after react17.
     "incremental": true, // improved build speeds.

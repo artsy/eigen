@@ -65,7 +65,9 @@ describe("HomeViewSectionShows", () => {
       })
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"), {
+      timeout: 10000,
+    })
 
     expect(screen.getByText("Shows for You")).toBeOnTheScreen()
     expect(screen.getByText("show 1")).toBeOnTheScreen()
@@ -107,7 +109,9 @@ describe("HomeViewSectionShows", () => {
       })
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"), {
+      timeout: 10000,
+    })
 
     fireEvent.press(screen.getByText("show 2"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

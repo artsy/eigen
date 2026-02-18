@@ -1,11 +1,15 @@
-import { ChevronIcon, Collapse, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { ChevronSmallDownIcon } from "@artsy/icons/native"
+import { Collapse, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { MotiView } from "moti"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 
 const ICON_SIZE = 18
 
-export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title }) => {
+export const CollapseWithTitle: React.FC<React.PropsWithChildren<{ title: string }>> = ({
+  children,
+  title,
+}) => {
   const [expanded, setExpanded] = useState(false)
   return (
     <Flex px={2}>
@@ -30,7 +34,7 @@ export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title
               marginTop: 2,
             }}
           >
-            <ChevronIcon direction="down" height={ICON_SIZE} width={ICON_SIZE} fill="mono100" />
+            <ChevronSmallDownIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono100" />
           </MotiView>
         </Flex>
       </Touchable>

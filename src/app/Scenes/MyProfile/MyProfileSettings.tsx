@@ -5,23 +5,33 @@ import {
   TappedEditedProfile,
   TappedMyCollection,
 } from "@artsy/cohesion"
-import { BagIcon, CreditCardIcon, FilterIcon, LockIcon, MobileIcon } from "@artsy/icons/native"
+import { BagIcon, CreditCardIcon, LockIcon, MobileIcon, MoneyBackIcon } from "@artsy/icons/native"
 import { Flex, Join, LinkText, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
+import { DarkModeIcon } from "app/Components/Icons/DarkModeIcon"
 import { MenuItem } from "app/Components/MenuItem"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { getAppVersion } from "app/utils/appVersion"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import { Alert, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
-  const appVersion = DeviceInfo.getVersion()
+  return (
+    <AnalyticsContextProvider contextScreenOwnerType={OwnerType.profile}>
+      <MyProfileSettingsContent />
+    </AnalyticsContextProvider>
+  )
+}
+
+const MyProfileSettingsContent: React.FC = () => {
+  const appVersion = getAppVersion()
   const { updateTapCount } = useSetDevMode()
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
   const tracking = useTracking()
@@ -59,6 +69,19 @@ export const MyProfileSettings: React.FC = () => {
               </>
 
               <>
+                <Text variant="xs" color="mono60" px={2} mt={2}>
+                  Preferences
+                </Text>
+
+                <MenuItem
+                  title="Artwork Budget"
+                  href="/my-account/edit-price-range"
+                  icon={<MoneyBackIcon />}
+                />
+                <MenuItem title="Dark Mode" href="/my-account/dark-mode" icon={<DarkModeIcon />} />
+              </>
+
+              <>
                 <Text variant="xs" color="mono60" px={2}>
                   Account
                 </Text>
@@ -69,12 +92,6 @@ export const MyProfileSettings: React.FC = () => {
                   title="Notifications"
                   href="my-profile/push-notifications"
                   icon={<MobileIcon />}
-                />
-                <MenuItem
-                  title="Preferences"
-                  // Jira ticket: ONYX-1642
-                  href="my-profile/preferences"
-                  icon={<FilterIcon />}
                 />
               </>
 

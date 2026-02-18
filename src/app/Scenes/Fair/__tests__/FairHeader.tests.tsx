@@ -51,4 +51,26 @@ describe("FairHeader", () => {
 
     expect(screen.getByText("Closed")).toBeOnTheScreen()
   })
+
+  it("does not render the timing info for evergreen fairs", () => {
+    renderWithRelay({
+      Fair: () => ({
+        isEvergreen: true,
+        endAt: "2020-09-19T08:00:00+00:00",
+      }),
+    })
+
+    expect(screen.queryByText("Closed")).not.toBeOnTheScreen()
+  })
+
+  it("displays a custom subheader", () => {
+    renderWithRelay({
+      Fair: () => ({
+        isEvergreen: true,
+        tagline: "Your Chance to Own an Icon",
+      }),
+    })
+
+    expect(screen.getByText("Your Chance to Own an Icon")).toBeOnTheScreen()
+  })
 })

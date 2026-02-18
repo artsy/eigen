@@ -7,9 +7,11 @@ import {
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
+import { CustomH2Renderer } from "app/Scenes/Article/CustomH2Renderer"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { merge } from "lodash"
-import RenderHtml, { MixedStyleRecord } from "react-native-render-html"
+import { merge, omit } from "lodash"
+import RenderHtml, { CustomBlockRenderer, MixedStyleRecord } from "react-native-render-html"
 
 interface HTMLProps extends FlexProps {
   html: string
@@ -46,6 +48,9 @@ export const HTML: React.FC<HTMLProps> = ({
         contentWidth={contentWidth}
         source={{ html }}
         systemFonts={[FONTS.regular, FONTS.italic, FONTS.medium, FONTS.mediumItalic]}
+        renderers={{
+          h2: CustomH2Renderer as CustomBlockRenderer,
+        }}
         renderersProps={{
           a: {
             onPress: (event, href) => {
@@ -73,19 +78,43 @@ export const HTML: React.FC<HTMLProps> = ({
             p: {
               fontFamily: FONTS.regular,
               color: color("mono100"),
+              marginBottom: "1em",
               ...variantStyles,
+            },
+            li: {
+              fontFamily: FONTS.regular,
+              color: color("mono100"),
+              marginBottom: "1em",
+              ...omit(variantStyles, "lineHeight"), // to prevent mis-aligned markers
             },
             em: {
               fontFamily: FONTS.italic,
               color: color("mono100"),
             },
+            h1: {
+              fontFamily: FONTS.medium,
+              fontSize: theme.textTreatments["xl"].fontSize,
+              lineHeight: theme.textTreatments["xl"].lineHeight,
+              letterSpacing: theme.textTreatments["xl"].letterSpacing,
+              marginBottom: "1em",
+              fontWeight: "normal",
+              color: color("mono100"),
+            },
             h2: {
               fontFamily: FONTS.medium,
+              fontSize: theme.textTreatments["lg-display"].fontSize,
+              lineHeight: theme.textTreatments["lg-display"].lineHeight,
+              letterSpacing: theme.textTreatments["lg-display"].letterSpacing,
+              marginBottom: "1em",
               fontWeight: "normal",
               color: color("mono100"),
             },
             h3: {
               fontFamily: FONTS.regular,
+              fontSize: theme.textTreatments["md"].fontSize,
+              lineHeight: theme.textTreatments["md"].lineHeight,
+              letterSpacing: theme.textTreatments["md"].letterSpacing,
+              marginBottom: "1em",
               fontWeight: "normal",
               color: color("mono100"),
             },

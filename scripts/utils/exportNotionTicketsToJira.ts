@@ -14,7 +14,7 @@ config({ path: resolve(__dirname, "../../.env.releases") })
 /**
  *
  * Convenience script for fetching notion cards from our mobile QA and creating Jira issues for them.
- * Usage: yarn export-notion-to-jira <databaseId>
+ * Usage: yarn export-notion-to-jira <databaseId> --app <eigen|energy>
  * To get the database id, go to the latest Mobile QA page, scroll to the bugs section,
  * click on the dots next to "Board View" and select "Copy Link".
  * The link should be of format: https://www.notion.so/artsy/<databaseId>?v=<version>&pvs=<pvs>
@@ -36,11 +36,20 @@ if (!JIRA_BASE_URL || !JIRA_EMAIL || !JIRA_API_TOKEN) {
   process.exit(1)
 }
 
-const argv = yargs(hideBin(process.argv)).argv as any
+const argv = yargs(hideBin(process.argv)).option("app", {
+  describe: "App name to prepend to ticket titles",
+  choices: ["eigen", "energy"],
+  demandOption: true,
+  type: "string",
+}).argv as any
+
 const databaseId = argv._[0]
+const appName = argv.app
 
 if (!databaseId) {
-  console.error(chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId>"))
+  console.error(
+    chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId> --app <eigen|energy>")
+  )
   process.exit(1)
 }
 
@@ -72,7 +81,7 @@ async function createJiraIssue(
   issueSummary: string,
   issueLink: string,
   bugSeverity: string,
-  component: string
+  appName: string
 ) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
@@ -87,7 +96,7 @@ async function createJiraIssue(
           project: {
             key: "PBRW",
           },
-          summary: issueSummary,
+          summary: `[${appName}] ${issueSummary}`,
           description: {
             type: "doc",
             version: 1,
@@ -118,11 +127,6 @@ async function createJiraIssue(
           customfield_10130: {
             value: bugSeverity, // Bug Severity
           },
-          components: [
-            {
-              name: component,
-            },
-          ],
           issuetype: {
             name: "Bug",
           },
@@ -138,8 +142,40 @@ async function createJiraIssue(
     const data = await response.json()
     console.log(chalk.bold.green("Successfully created Jira issue:"))
     console.log(JSON.stringify(data, null, 2))
+
+    return data.key
   } catch (error) {
     console.error(chalk.bold.red("Error creating Jira issue:"))
+    console.error(error)
+  }
+}
+
+async function updateJiraLabels(issueKey: string, labels: string[]) {
+  try {
+    const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
+    const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue/${issueKey}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        update: {
+          labels: labels.map((label) => ({ add: label })),
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      console.error(await response.text())
+      throw new Error(
+        `Failed to update labels for ${issueKey}: ${response.status} ${response.statusText}`
+      )
+    }
+
+    console.log(chalk.bold.green(`Successfully updated labels for ${issueKey}`))
+  } catch (error) {
+    console.error(chalk.bold.red("Error updating Jira labels:"))
     console.error(error)
   }
 }
@@ -147,7 +183,7 @@ async function createJiraIssue(
 interface ValidIssue {
   summary: string
   severity: string
-  component: string
+  team: string
   notionUrl: string
 }
 
@@ -168,10 +204,17 @@ async function main() {
       const notionPageUrl = page.url
 
       const severity = page.properties["Bug Severity"]?.select?.name || null
-      const component = page.properties.Components?.select?.name || null
+      const team = page.properties.Team?.select?.name || null
+      const status = page.properties.Status?.select?.name || null
 
-      if (!severity || !component) {
-        console.error(chalk.bold.red("Missing Bug Severity or Component for page:"))
+      // 👇 Skip bugs that are marked as Fixed/Handled
+      if (status === "Fixed/Handled") {
+        console.log(chalk.yellow(`Skipping bug marked as Fixed/Handled: ${issueSummary}`))
+        continue
+      }
+
+      if (!severity || !team) {
+        console.error(chalk.bold.red("Missing Bug Severity or Team for page:"))
         console.error(chalk.bold.red(notionPageUrl))
         console.error(chalk.bold.red("Please fill in the missing fields and try again."))
         return
@@ -181,13 +224,21 @@ async function main() {
       validIssues.push({
         summary: issueSummary,
         severity: fullSeverity,
-        component,
+        team,
         notionUrl: notionPageUrl,
       })
     }
 
     for (const issue of validIssues) {
-      await createJiraIssue(issue.summary, issue.notionUrl, issue.severity, issue.component)
+      const issueKey = await createJiraIssue(
+        issue.summary,
+        issue.notionUrl,
+        issue.severity,
+        appName
+      )
+      if (issueKey) {
+        await updateJiraLabels(issueKey, [issue.team, "mobile"])
+      }
     }
   }
 }

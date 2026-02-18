@@ -1,16 +1,5 @@
-import {
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  XCircleIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  EyeOpenedIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  EyeClosedIcon,
-  Flex,
-  useTheme,
-  Text,
-  Color,
-  Spinner,
-} from "@artsy/palette-mobile"
+import { CloseFillIcon, HideIcon, ShowIcon } from "@artsy/icons/native"
+import { Flex, useTheme, Text, Color, Spinner } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MeasuredView } from "app/utils/MeasuredView"
 import { isArray, isString } from "lodash"
@@ -37,7 +26,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   description?: string
   descriptionColor?: Color
   error?: string
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   loading?: boolean
   disabled?: boolean
   optional?: boolean
@@ -74,7 +63,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   onClear?(): void
-  renderLeftHandSection?(): JSX.Element
+  renderLeftHandSection?(): React.JSX.Element
 }
 
 // wrapping some of the RNTextInput functionality, so we can call our own funcs too.
@@ -117,7 +106,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const inputRef = useRef<TextInput>()
+    const inputRef = useRef<TextInput>(null)
 
     const localClear = () => {
       inputRef.current?.clear()
@@ -158,7 +147,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <EyeOpenedIcon fill="mono60" />}
+            {!showPassword ? <HideIcon fill="mono30" /> : <ShowIcon fill="mono60" />}
           </TouchableOpacity>
         </Flex>
       )
@@ -342,7 +331,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                     hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
                     accessibilityLabel="Clear input button"
                   >
-                    <XCircleIcon fill="mono30" />
+                    <CloseFillIcon fill="mono30" />
                   </TouchableOpacity>
                 </Flex>
               )

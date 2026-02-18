@@ -2,7 +2,9 @@ import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { PlatformPressable } from "@react-navigation/elements"
+import { EventArg } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
@@ -15,13 +17,13 @@ import { modules } from "app/Navigation/utils/modules"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
-import { bottomTabsConfig, useSearchTabName } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
+import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { OnboardingQuiz } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { InteractionManager, PixelRatio, Platform } from "react-native"
+import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -46,19 +48,19 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
+export const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
+export const TAB_BAR_ANIMATION_DURATION = 300
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
-  const searchTabName = useSearchTabName()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const handleTabPress = useCallback(
-    (e) => {
+    (e: EventArg<"tabPress", true, undefined>) => {
       // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
       const tabName = Object.keys(bottomTabsConfig).find(
         (tab) => e.target?.startsWith(tab)
@@ -72,9 +74,9 @@ const AppTabs: React.FC = () => {
             contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
           })
         )
-        // we are handling the tracking of the favorites tab withing the screen
+        // we are handling the tracking of the favorites tab withing the screen, as well as home
         // https://artsy.slack.com/archives/C05EQL4R5N0/p1744919145046069
-        if (tabName !== "favorites") {
+        if (tabName !== "favorites" && tabName !== "home") {
           postEventToProviders(tabsTracks.tabScreenView(tabName))
         }
       }
@@ -91,6 +93,10 @@ const AppTabs: React.FC = () => {
     <Tab.Navigator
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
+
+        const hidesBottomTabs =
+          currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
+
         return {
           animation: "fade",
           headerShown: false,
@@ -98,19 +104,49 @@ const AppTabs: React.FC = () => {
             animate: true,
             position: "absolute",
             height: BOTTOM_TABS_HEIGHT + insets.bottom,
-            display:
-              currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
-                ? "none"
-                : "flex",
+
             ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
+          tabBarVisible: hidesBottomTabs,
+          tabBarVisibilityAnimationConfig: {
+            show: {
+              animation: "timing",
+              config: {
+                duration: TAB_BAR_ANIMATION_DURATION,
+                easing: Easing.inOut(Easing.ease),
+              },
+            },
+            hide: {
+              animation: "timing",
+              config: {
+                duration: TAB_BAR_ANIMATION_DURATION,
+                easing: Easing.inOut(Easing.ease),
+              },
+            },
+          },
           tabBarIcon: ({ focused }) => {
-            return (
-              <Flex pt={1}>
-                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
-              </Flex>
-            )
+            const Icon = () => {
+              return (
+                <Flex pt={1}>
+                  <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+                </Flex>
+              )
+            }
+
+            const WrappedIcon = () => {
+              return (
+                <ProgressiveOnboardingPriceRangeHome>
+                  <Icon />
+                </ProgressiveOnboardingPriceRangeHome>
+              )
+            }
+
+            if (route.name === "profile") {
+              return <WrappedIcon />
+            }
+
+            return <Icon />
           },
           tabBarButton: (props) => (
             <PlatformPressable
@@ -120,9 +156,6 @@ const AppTabs: React.FC = () => {
           ),
           tabBarLabelPosition: "below-icon",
           tabBarLabel: () => {
-            const tabName =
-              route.name === "search" ? searchTabName : bottomTabsConfig[route.name].name
-
             return (
               <Flex
                 flex={1}
@@ -139,7 +172,7 @@ const AppTabs: React.FC = () => {
                   color="mono100"
                   numberOfLines={1}
                 >
-                  {tabName}
+                  {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
             )

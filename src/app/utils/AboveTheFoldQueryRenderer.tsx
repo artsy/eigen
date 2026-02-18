@@ -20,14 +20,14 @@ interface AboveTheFoldQueryRendererProps<
   render:
     | ((
         args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>
-      ) => React.ReactChild)
+      ) => React.ReactNode)
     // convenience option for using `renderWithPlaceholder` logic without too much boilerplate
     | {
         renderComponent: (args: {
           above: AboveQuery["response"]
           below: BelowQuery["response"] | null
-        }) => React.ReactChild
-        renderPlaceholder: () => React.ReactChild
+        }) => React.ReactNode
+        renderPlaceholder: () => React.ReactNode
       }
   fallback?: FallbackRenderer
   cacheConfig?: CacheConfig | null
@@ -65,9 +65,9 @@ export function AboveTheFoldQueryRenderer<
     }
   }, [])
 
-  // we should call render if we have all the data already
+  // we should call render if we have all above the data already
   // we should also call render if we are no longer waiting for a debounce
-  const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || hasFinishedDebouncing
+  const shouldCallRender = aboveArgs?.props || hasFinishedDebouncing
 
   const render = useMemo(
     () =>
@@ -96,9 +96,9 @@ export function AboveTheFoldQueryRenderer<
       return
     }
 
-    const immediate = setImmediate(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
+    const immediate = setTimeout(() => setRenderBelowTheFold(true), props.belowTheFoldTimeout)
 
-    return () => clearImmediate(immediate)
+    return () => clearTimeout(immediate)
   }, [])
 
   return (

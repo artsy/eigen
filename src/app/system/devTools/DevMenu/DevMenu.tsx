@@ -4,7 +4,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { LargeHeaderView } from "app/Navigation/utils/LargeHeaderView"
-import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
+import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevTools } from "app/system/devTools/DevMenu/Components/DevTools"
@@ -14,11 +14,12 @@ import { ExpoUpdatesOptions } from "app/system/devTools/DevMenu/Components/ExpoU
 import { FeatureFlags } from "app/system/devTools/DevMenu/Components/FeatureFlags"
 import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
+import { PushNotificationOptions } from "app/system/devTools/DevMenu/Components/PushNotificationOptions"
 import { goBack } from "app/system/navigation/navigate"
+import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React, { useEffect } from "react"
 import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
 
 export const DevMenu: React.FC<{}> = () => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -83,8 +84,7 @@ export const DevMenu: React.FC<{}> = () => {
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">
-          v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
-          {ArtsyNativeModule.gitCommitShortHash})
+          v{getAppVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
       </Text>
       <Text variant="xs" color="grey" mx={2}>
@@ -99,6 +99,7 @@ export const DevMenu: React.FC<{}> = () => {
         <NavigateTo />
         <EnvironmentOptions onClose={goBack} />
         <ExpoUpdatesOptions />
+        <PushNotificationOptions />
         <FeatureFlags />
         <Experiments />
         <DevTools />

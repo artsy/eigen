@@ -1,10 +1,10 @@
 import { act, renderHook, waitFor } from "@testing-library/react-native"
 import { useSendInquiryTestQuery } from "__generated__/useSendInquiryTestQuery.graphql"
-import * as inquiryRequest from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { initialArtworkInquiryState } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import * as artworkInquiryStore from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import * as inquiryRequest from "app/utils/mutations/useSubmitInquiryRequest"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -221,6 +221,46 @@ describe("useSendInquiry", () => {
     act(() => result.current.sendInquiry("message"))
 
     await waitFor(() => expect(mockShowPopover).toHaveBeenCalled())
+  })
+
+  it("includes selected inquiry questions in the tracking event", async () => {
+    jest.spyOn(artworkInquiryStore, "useArtworkInquiryContext").mockReturnValue({
+      dispatch,
+      state: {
+        ...initialArtworkInquiryState,
+        inquiryQuestions: [{ questionID: "question_1" }, { questionID: "question_2" }],
+      },
+    })
+
+    const loader = await loaderHook()
+    const { result } = renderHook(
+      () =>
+        useSendInquiry({
+          artwork: loader.current!.artwork,
+          me: loader.current!.me,
+          onCompleted: jest.fn(),
+        }),
+      { wrapper }
+    )
+
+    act(() => result.current.sendInquiry("message"))
+
+    expect(result.current.error).toBe(false)
+    expect(mockTrackEvent).toHaveBeenNthCalledWith(1, {
+      action_type: "tap",
+      action_name: "inquirySend",
+      owner_type: "Artwork",
+      owner_id: '<mock-value-for-field-"internalID">',
+      owner_slug: '<mock-value-for-field-"slug">',
+    })
+    expect(mockTrackEvent).toHaveBeenNthCalledWith(2, {
+      action_type: "success",
+      action_name: "inquirySend",
+      owner_type: "Artwork",
+      owner_id: '<mock-value-for-field-"internalID">',
+      owner_slug: '<mock-value-for-field-"slug">',
+      inquiry_checkboxes: ["question_1", "question_2"],
+    })
   })
 })
 

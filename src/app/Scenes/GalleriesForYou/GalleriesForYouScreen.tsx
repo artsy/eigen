@@ -15,7 +15,7 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -47,21 +47,6 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
   const RefreshControl = useRefreshControl(refetch)
 
   const partners = extractNodes(data.partnersConnection)
-
-  // Refetch in case the user doesn't follow artists and there are no results
-  // This will show results even in case the user doesn't follow any artists
-  const [hasRefetched, setHasRefetched] = useState(false)
-
-  useEffect(() => {
-    if (partners.length || hasRefetched) return
-
-    refetch({
-      ...queryParams,
-      includePartnersWithFollowedArtists: false,
-    })
-
-    setHasRefetched(true)
-  }, [partners])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkPublishedNotification_Test_Query } from "__generated__/ArtworkPublishedNotification_Test_Query.graphql"
 import { ArtworkPublishedNotification } from "app/Scenes/Activity/components/ArtworkPublishedNotification"
 import { navigate } from "app/system/navigation/navigate"
@@ -44,7 +44,9 @@ describe("ArtworkPublishedNotification", () => {
       }),
     })
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(screen.getByText("Follows")).toBeTruthy()
     expect(screen.getByText("1 New Work by Tracey Emin")).toBeTruthy()
@@ -60,13 +62,17 @@ describe("ArtworkPublishedNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       const viewAllWorksByLink = screen.getByText("View all works by Tracey Emin")
 
       fireEvent.press(viewAllWorksByLink)
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       expect(navigate).toHaveBeenCalledWith("/artist/tracey-emin/works-for-sale")
     })

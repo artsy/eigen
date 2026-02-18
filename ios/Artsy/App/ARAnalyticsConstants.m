@@ -3,7 +3,6 @@
 NSString *const ARAnalyticsAppUsageCountProperty = @"app launched count";
 
 NSString *const ARAnalyticsNotificationReceived = @"notification received";
-NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 
 NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
 NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";

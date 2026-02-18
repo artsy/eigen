@@ -1,14 +1,23 @@
-import { Flex, Text, Input } from "@artsy/palette-mobile"
+import { Flex, Text, Input, InputRef } from "@artsy/palette-mobile"
 import { INPUT_HEIGHT } from "app/Components/Input"
-import { Select } from "app/Components/Select"
+import { Select, SelectRef } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import React, { useState } from "react"
+import React, { Ref, useRef, useState } from "react"
+import { InteractionManager } from "react-native"
 import { AttributionClassType, RarityInfoModal } from "./RarityLegacy"
 
-export const Rarity: React.FC = () => {
+interface RarityProps {
+  selectRef?: Ref<SelectRef>
+  onSubmitEditing?: () => void
+}
+
+export const Rarity: React.FC<RarityProps> = ({ selectRef, onSubmitEditing }) => {
   const { formik } = useArtworkForm()
   const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
+
+  const editionRef = useRef<InputRef>(null)
+  const editionSizeRef = useRef<InputRef>(null)
 
   const handleValueChange = (value: AttributionClassType) => {
     formik.handleChange("attributionClass")(value)
@@ -17,11 +26,21 @@ export const Rarity: React.FC = () => {
       formik.setFieldValue("editionNumber", undefined)
       formik.setFieldValue("editionSize", undefined)
     }
+    // TODO: `InteractionManager` is deprecated
+    // we need to update it to `requestIdleCallback` when we upgrade to RN 0.82+
+    InteractionManager.runAfterInteractions(() => {
+      if (value === "LIMITED_EDITION") {
+        editionRef.current?.focus()
+      } else {
+        onSubmitEditing?.()
+      }
+    })
   }
 
   return (
     <>
       <Select
+        ref={selectRef}
         onSelectValue={handleValueChange}
         value={formik.values.attributionClass}
         enableSearch={false}
@@ -37,11 +56,15 @@ export const Rarity: React.FC = () => {
           <Flex flex={1}>
             <Flex>
               <Input
+                ref={editionRef}
                 accessibilityLabel="Edition number input"
                 title="Edition number"
                 onChangeText={formik.handleChange("editionNumber")}
                 onBlur={formik.handleBlur("editionNumber")}
                 value={formik.values.editionNumber}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={() => editionSizeRef.current?.focus()}
               />
             </Flex>
           </Flex>
@@ -51,10 +74,14 @@ export const Rarity: React.FC = () => {
           <Flex flex={1}>
             <Flex>
               <Input
+                ref={editionSizeRef}
                 title="Edition size"
                 onChangeText={formik.handleChange("editionSize")}
                 onBlur={formik.handleBlur("editionSize")}
                 value={formik.values.editionSize}
+                returnKeyType="next"
+                submitBehavior="submit"
+                onSubmitEditing={onSubmitEditing}
               />
             </Flex>
           </Flex>

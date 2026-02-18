@@ -15,7 +15,6 @@ import {
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -49,7 +48,6 @@ export const useArtistHeaderImageDimensions = () => {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const space = useSpace()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
@@ -60,26 +58,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
     return null
   }
 
-  const getBirthdayString = () => {
-    const birthday = artistData.birthday
-    if (!birthday) {
-      return ""
-    }
+  const descriptiveString = artistData.formattedNationalityAndBirthday || ""
 
-    const leadingSubstring = artistData.nationality ? ", b." : ""
-
-    if (birthday.includes("born")) {
-      return birthday.replace("born", leadingSubstring)
-    } else if (birthday.includes("Est.") || birthday.includes("Founded")) {
-      return " " + birthday
-    }
-
-    return leadingSubstring + " " + birthday
-  }
-
-  const descriptiveString = (artistData.nationality || "") + getBirthdayString()
-
-  const bylineRequired = artistData.nationality || artistData.birthday
+  const bylineRequired = !!artistData.formattedNationalityAndBirthday
 
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
@@ -101,7 +82,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             width={width}
             height={height}
             style={{ alignSelf: "center" }}
-            blurhash={showBlurhash ? artistData.coverArtwork.image.blurhash : undefined}
+            blurhash={artistData.coverArtwork.image.blurhash}
           />
           <Spacer y={2} />
         </Flex>
@@ -130,6 +111,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             horizontal
             data={artistData.verifiedRepresentatives}
             keyExtractor={({ partner }) => `representative-${partner.internalID}`}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <RouterLink
                 onPress={() => {
@@ -159,7 +141,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 const artistFragment = graphql`
   fragment ArtistHeader_artist on Artist {
     slug
-    birthday
+    formattedNationalityAndBirthday
     coverArtwork {
       title
       image {
@@ -169,7 +151,6 @@ const artistFragment = graphql`
     }
     internalID
     name
-    nationality
     verifiedRepresentatives {
       partner {
         internalID

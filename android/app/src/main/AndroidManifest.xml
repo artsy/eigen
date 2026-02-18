@@ -18,14 +18,11 @@
       <data android:mimeType="*/*"/>
     </intent>
   </queries>
-  <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" android:supportsRtl="true">
+  <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" android:supportsRtl="true" android:usesCleartextTraffic="${usesCleartextTraffic}">
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
     <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
     <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="false"/>
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="${expoUpdatesEnabled}" />
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="${expoUpdatesCheckOnLaunch}" />
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0" />
@@ -59,6 +56,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="https" android:host="www.artsy.net"/>
         <data android:scheme="https" android:host="artsy.net"/>
+        <data android:scheme="https" android:host="staging.artsy.net"/>
         <data android:scheme="http"/>
         <data android:pathPrefix="/about"/>
         <data android:pathPrefix="/activity"/>
@@ -81,6 +79,7 @@
         <data android:pathPrefix="/auctions"/>
         <data android:pathPrefix="/buy-now-feature-faq"/>
         <data android:pathPrefix="/buyer-guarantee"/>
+        <data android:pathPrefix="/categories"/>
         <data android:pathPrefix="/collect"/>
         <data android:pathPrefix="/collection"/>
         <data android:pathPrefix="/collections"/>
@@ -100,20 +99,25 @@
         <data android:pathPrefix="/inbox"/>
         <data android:pathPrefix="/inquiry"/>
         <data android:pathPrefix="/make-offer"/>
-        <data android:pathPrefix="/purchase"/>
+        <data android:pathPrefix="/meet-the-specialists"/>
         <data android:pathPrefix="/my-account"/>
         <data android:pathPrefix="/my-collection"/>
         <data android:pathPrefix="/my-profile"/>
         <data android:pathPrefix="/new-for-you"/>
+        <data android:pathPrefix="/new-works-from-galleries-you-follow"/>
+        <data android:pathPrefix="/news"/>
+        <data android:pathPrefix="/notifications"/>
         <data android:pathPrefix="/orders"/>
         <data android:pathPrefix="/partner"/>
         <data android:pathPrefix="/partner-offer"/>
         <data android:pathPrefix="/price-database"/>
         <data android:pathPrefix="/privacy-request"/>
+        <data android:pathPrefix="/purchase"/>
         <data android:pathPrefix="/search"/>
         <data android:pathPrefix="/settings"/>
         <data android:pathPrefix="/show"/>
         <data android:pathPrefix="/tag"/>
+        <data android:pathPrefix="/terms"/>
         <data android:pathPrefix="/user/conversations"/>
         <data android:pathPrefix="/user/purchases"/>
         <data android:pathPrefix="/upcoming-auction-results"/>
@@ -121,20 +125,37 @@
         <data android:pathPrefix="/viewing-rooms"/>
         <data android:pathPrefix="/works-for-you"/>
       </intent-filter>
-    </activity>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="false">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="click.artsy.net" android:pathPrefix="/"/>
       </intent-filter>
-    </receiver>
+
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="email-link.artsy.net" android:pathPrefix="/"/>
+      </intent-filter>
+    </activity>
+
     <service android:name=".BrazePushListenerService" android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service>
+
+    <!-- Widget Providers -->
+    <receiver android:name=".widgets.FullBleedWidgetProvider" android:exported="true">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+        android:resource="@xml/fullbleed_widget_info" />
+    </receiver>
+
+
   </application>
 </manifest>

@@ -1,5 +1,5 @@
 #import "ARNotificationsManager.h"
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AppDelegate+DeeplinkTimeout.h"
 
 // This class is being used as a generic bridge between obj-c and TS for state and events.
@@ -120,6 +120,7 @@ RCT_EXPORT_MODULE();
     return @[ @"event" ];
 }
 
+
 - (void)dispatch:(NSString *)eventName data:(NSDictionary *)data
 {
     __weak ARNotificationsManager *wself = self;
@@ -174,6 +175,11 @@ RCT_EXPORT_MODULE();
     [self dispatchAfterBootstrap:notificationReceived data:@{}];
 }
 
+- (void)notificationReceivedWithPayload:(NSDictionary *)payload
+{
+    [self dispatchAfterBootstrap:notificationReceived data:payload ? payload : @{}];
+}
+
 - (void)modalDismissed
 {
     [self dispatchAfterBootstrap:modalDismissed data:@{}];
@@ -187,7 +193,7 @@ RCT_EXPORT_MODULE();
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
 {
     if (!route) return;
-    [[ARAppDelegate sharedInstance] startDeeplinkTimeoutWithRoute:route];
+    [[ARAppDelegateHelper sharedInstance] startDeeplinkTimeoutWithRoute:route];
     [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
 }
 
@@ -206,6 +212,18 @@ RCT_EXPORT_MODULE();
 - (void)stopObserving
 {
     self.isBeingObserved = false;
+    // Reset bridge lifecycle state to allow proper re-initialization on bridge reload
+    // (e.g., dev reload, Expo Updates, etc.)
+    self.didBootStrap = false;
+    [self.bootstrapQueue removeAllObjects];
+}
+
+// Override invalidate to ensure proper cleanup for singleton pattern
+// Note: We patch RCTEventEmitter to reset _listenerCount in invalidate
+// See patches/react-native+0.81.5.patch for details
+- (void)invalidate
+{
+    [super invalidate];
 }
 
 - (void)afterBootstrap:(void (^)(void))completion

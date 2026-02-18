@@ -1,28 +1,44 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 # frozen_string_literal: true
 
-source 'https://cdn.cocoapods.org/'
+# Important: Artsy must come first, see here: https://github.com/artsy/eigen/issues/12584
 source 'https://github.com/artsy/Specs.git'
+source 'https://cdn.cocoapods.org/'
+
 
 require 'dotenv'
 Dotenv.load('../.env.shared')
 
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+# for react-native-permissions
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
 
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
 project 'Artsy.xcodeproj'
+
+# TODO: Look into these further because they can make our build times faster
+# ENV['RCT_USE_RN_DEP'] = '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
+# ENV['RCT_USE_PREBUILT_RNCORE'] = '1' if podfile_properties['ios.buildReactNativeFromSource'] != 'true' && podfile_properties['newArchEnabled'] != 'false'
+
 platform :ios, '16.6'
 inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
 
+setup_permissions([
+  'Notifications'
+])
 
 plugin 'cocoapods-patch'
 
@@ -101,7 +117,7 @@ target 'Artsy' do
   pod 'INTUAnimationEngine'
 
   # Core
-  pod 'CocoaLumberjack', '3.7.2'
+  pod 'CocoaLumberjack', '3.9.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
@@ -118,17 +134,6 @@ target 'Artsy' do
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-
-  # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
-
-  # Facebook
-  pod 'FBSDKCoreKit', '~> 17'
-  pod 'FBSDKLoginKit', '~> 17'
-  pod 'FBSDKShareKit', '~> 17'
-
-  # Google & Firebase
-  pod 'Firebase/Auth', '10.23.0'
 
   # Workaround for firebase flipper issues
   # See https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1952403075
@@ -151,9 +156,9 @@ target 'Artsy' do
 
 
   # Need static libs to fix expo compilation in app delegate
-  pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec'
-  pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec'
-  pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec'
+  pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec'
+  pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec'
+  pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec'
 
   target 'ArtsyTests' do
     inherit! :search_paths

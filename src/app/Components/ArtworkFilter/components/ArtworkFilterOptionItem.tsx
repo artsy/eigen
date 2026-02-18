@@ -1,4 +1,5 @@
-import { bullet, ArrowRightIcon, Flex, Text } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { bullet, Flex, Text } from "@artsy/palette-mobile"
 import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { TouchableRow } from "app/Components/TouchableRow"
 
@@ -6,7 +7,7 @@ export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig
   count?: number
   onPress: () => void
-  RightAccessoryItem?: JSX.Element
+  RightAccessoryItem?: React.JSX.Element
 }
 
 export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (props) => {
@@ -23,7 +24,7 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">
           {RightAccessoryItem || (
-            <ArrowRightIcon fill="mono100" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
+            <ChevronRightIcon fill="mono100" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
           )}
         </Flex>
       </Flex>

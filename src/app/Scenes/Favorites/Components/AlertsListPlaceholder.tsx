@@ -1,6 +1,8 @@
-import { Flex, Box, SkeletonBox, SkeletonText, Text, SortIcon } from "@artsy/palette-mobile"
+import { SortIcon } from "@artsy/icons/native"
+import { Flex, Box, SkeletonBox, SkeletonText, Text } from "@artsy/palette-mobile"
 import { times } from "lodash"
 
+// TODO: remove since it's not used anywhere
 export const AlertsListPlaceholder: React.FC = () => {
   return (
     <>

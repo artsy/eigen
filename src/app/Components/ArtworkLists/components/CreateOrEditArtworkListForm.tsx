@@ -1,19 +1,12 @@
-import {
-  ChevronIcon,
-  Collapse,
-  Touchable,
-  Flex,
-  Spacer,
-  Switch,
-  Text,
-  Button,
-} from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Button, Collapse, Flex, Spacer, Switch, Text, Touchable } from "@artsy/palette-mobile"
 import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Formik, FormikHelpers } from "formik"
 import { MotiView } from "moti"
 import { FC, useState } from "react"
-import { Keyboard, Platform } from "react-native"
+import { Platform } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import * as Yup from "yup"
 
 export interface CreateOrEditArtworkListFormValues {
@@ -114,7 +107,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                         animate={{ transform: [{ rotate: !!isExpanded ? "-90deg" : "90deg" }] }}
                         transition={{ type: "timing" }}
                       >
-                        <ChevronIcon fill="mono100" />
+                        <ChevronSmallRightIcon fill="mono100" />
                       </MotiView>
                     </Flex>
                   </Touchable>
@@ -138,7 +131,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                   disabled={!formik.isValid || !formik.dirty}
                   loading={formik.isSubmitting}
                   onPress={() => {
-                    Keyboard.dismiss()
+                    KeyboardController.dismiss()
                     formik.handleSubmit()
                   }}
                 >

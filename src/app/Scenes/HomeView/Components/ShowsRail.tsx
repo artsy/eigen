@@ -15,9 +15,10 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
-import { Suspense, memo } from "react"
+import { Suspense, memo, useCallback } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -49,6 +50,31 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
 
     const hasShows = shows?.length
 
+    const renderItem = useCallback(
+      ({
+        item,
+        index,
+      }: {
+        item: ExtractNodeType<ShowsRail_showsConnection$data>
+        index: number
+      }) => (
+        <ShowCardContainer
+          isFluid={false}
+          show={item}
+          onPress={() => {
+            if (onTrack) {
+              return onTrack(item, index)
+            }
+
+            tracking.trackEvent(
+              tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
+            )
+          }}
+        />
+      ),
+      [contextModule, onTrack, tracking]
+    )
+
     if (!hasShows) {
       return null
     }
@@ -64,7 +90,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
           }}
         />
 
-        <FlatList
+        <FlatList<ExtractNodeType<ShowsRail_showsConnection$data>>
           horizontal
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
@@ -72,22 +98,10 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
+          disableVirtualization={isNewArchitectureEnabled}
           data={shows.slice(0, NUMBER_OF_SHOWS)}
           keyExtractor={(item) => `${item.internalID}`}
-          renderItem={({ item, index }) => (
-            <ShowCardContainer
-              show={item}
-              onPress={() => {
-                if (onTrack) {
-                  return onTrack(item, index)
-                }
-
-                tracking.trackEvent(
-                  tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
-                )
-              }}
-            />
-          )}
+          renderItem={renderItem}
         />
       </Flex>
     )

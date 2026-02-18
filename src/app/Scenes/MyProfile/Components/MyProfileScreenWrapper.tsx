@@ -1,6 +1,12 @@
 import { Button, Flex, Screen, useSpace } from "@artsy/palette-mobile"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { goBack } from "app/system/navigation/navigate"
-import { RefreshControlProps, ViewStyle } from "react-native"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
+import { useCallback, useState } from "react"
+import { LayoutChangeEvent, RefreshControlProps, ViewStyle } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export interface MyProfileScreenWrapperProps {
   title: string
@@ -11,7 +17,9 @@ export interface MyProfileScreenWrapperProps {
   contentContainerStyle?: ViewStyle
   RefreshControl?: React.ReactElement<RefreshControlProps>
 }
-export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
+export const MyProfileScreenWrapper: React.FC<
+  React.PropsWithChildren<MyProfileScreenWrapperProps>
+> = ({
   children,
   title,
   onPress,
@@ -21,11 +29,64 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   contentContainerStyle,
   RefreshControl,
 }) => {
+  const [bottomOffset, setBottomOffset] = useState<number>()
   const space = useSpace()
+  const { bottom } = useSafeAreaInsets()
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   return (
     <Screen>
       <Screen.AnimatedHeader title={title} hideLeftElements={hideLeftElements} onBack={goBack} />
+      <Screen.StickySubHeader title={title} />
+      <Screen.Body fullwidth disableKeyboardAvoidance>
+        <KeyboardAwareForm
+          contentContainerStyle={{ padding: space(2), ...contentContainerStyle }}
+          refreshControl={RefreshControl}
+          bottomOffset={bottomOffset}
+        >
+          {children}
+        </KeyboardAwareForm>
+
+        {!!onPress && (
+          <KeyboardStickyView
+            onLayout={handleOnLayout}
+            offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
+          >
+            <Flex p={2} backgroundColor="mono0">
+              <Button block onPress={onPress} disabled={!isValid} loading={loading}>
+                Save
+              </Button>
+            </Flex>
+          </KeyboardStickyView>
+        )}
+      </Screen.Body>
+    </Screen>
+  )
+}
+
+/* IMPORTANT: use a non animated header inside placeholders due to a bug that never
+lets suspense resolve when used with an animated header and resulting on a blank screen. */
+export const MyProfileScreenWrapperPlaceholder: React.FC<
+  React.PropsWithChildren<MyProfileScreenWrapperProps>
+> = ({
+  children,
+  title,
+  onPress,
+  hideLeftElements = false,
+  contentContainerStyle,
+  RefreshControl,
+}) => {
+  const space = useSpace()
+
+  return (
+    <Screen>
+      <Screen.Header title="" hideLeftElements={hideLeftElements} onBack={goBack} />
       <Screen.StickySubHeader title={title} />
       <Screen.Body fullwidth>
         <Screen.ScrollView
@@ -34,6 +95,9 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
           contentContainerStyle={{
             paddingTop: space(2),
             paddingHorizontal: space(2),
+            // This is required to make room for the save button on top of the bottom tabs
+            // Screen.ScrollView doesn't consider the save button in its height calculation
+            paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
             ...contentContainerStyle,
           }}
           refreshControl={RefreshControl}
@@ -41,7 +105,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
           {children}
           {!!onPress && (
             <Flex my={2}>
-              <Button block onPress={onPress} disabled={!isValid} loading={loading}>
+              <Button block onPress={onPress} disabled loading>
                 Save
               </Button>
             </Flex>

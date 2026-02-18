@@ -1,6 +1,6 @@
 {
   "appName": "eigen",
-  "version": "8.76.0",
+  "version": "8.95.0",
   "slug": "eigen",
   "expo": {
     "platforms": [
@@ -18,7 +18,17 @@
       "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"
     },
     "android": {},
-    "ios": {}
+    "ios": {},
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "eigen",
+          "organization": "artsynet"
+        }
+      ]
+    ]
   },
   "expoReleaseNameBase": "none",
   "expoDist": "none"

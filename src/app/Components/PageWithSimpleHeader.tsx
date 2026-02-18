@@ -1,13 +1,15 @@
 import { Flex, Box, Text, Separator, TextProps, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { View } from "react-native"
 
-export const PageWithSimpleHeader: React.FC<{
-  title: string
-  titleWeight?: TextProps["weight"]
-  left?: React.ReactNode
-  right?: React.ReactNode
-  noSeparator?: boolean
-}> = ({ title, titleWeight, left, right, children, noSeparator }) => {
+export const PageWithSimpleHeader: React.FC<
+  React.PropsWithChildren<{
+    title: string
+    titleWeight?: TextProps["weight"]
+    left?: React.ReactNode
+    right?: React.ReactNode
+    noSeparator?: boolean
+  }>
+> = ({ title, titleWeight, left, right, children, noSeparator }) => {
   return (
     <Box style={{ flex: 1 }}>
       <Flex px={2} flexDirection="row" alignItems="center" height={54}>

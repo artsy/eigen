@@ -5,22 +5,13 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { Platform } from "react-native"
 
 // We don't want to show the onboarding popover on the first launch
 const MIN_LAUNCH_COUNT = 2
 
-export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }) => {
-  const enableLongPressContextMenuOnboarding = useFeatureFlag(
-    "AREnableLongPressContextMenuOnboarding"
-  )
-  const enableLongPressContextMenu = useFeatureFlag(
-    Platform.OS === "ios"
-      ? "AREnableArtworkCardContextMenuIOS"
-      : "AREnableArtworkCardContextMenuAndroid"
-  )
-
+export const ProgressiveOnboardingLongPressContextMenu: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const launchCount = getCurrentEmissionState().launchCount
   const {
     isDismissed,
@@ -53,11 +44,7 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
     dismiss("long-press-artwork-context-menu")
   }
 
-  const isVisible =
-    !!enableLongPressContextMenu &&
-    !!enableLongPressContextMenuOnboarding &&
-    !!isDisplayable &&
-    isActive
+  const isVisible = !!isDisplayable && isActive
 
   const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
 

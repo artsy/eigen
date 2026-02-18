@@ -9,7 +9,7 @@ import {
   TextProps,
 } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { PixelRatio } from "react-native"
+import { PixelRatio, Text as RNText } from "react-native"
 import { ResponsiveValue } from "styled-system"
 
 export const MenuItem: React.FC<{
@@ -87,15 +87,20 @@ export const MenuItem: React.FC<{
           >
             {!!value && (
               <Flex width={showInline ? 200 : undefined}>
-                <Text
-                  variant="sm-display"
-                  color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
+                <RNText
                   numberOfLines={1}
                   ellipsizeMode={ellipsizeMode}
-                  textAlign="right"
+                  style={{ textAlign: "right" }}
                 >
-                  {value}
-                </Text>
+                  <Text
+                    variant="sm-display"
+                    color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
+                    numberOfLines={1}
+                    ellipsizeMode={ellipsizeMode}
+                  >
+                    {value}
+                  </Text>
+                </RNText>
               </Flex>
             )}
 

@@ -1,8 +1,7 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { AttachmentPreview_attachment$data } from "__generated__/AttachmentPreview_attachment.graphql"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
-import React from "react"
-import { findNodeHandle } from "react-native"
+import React, { useRef } from "react"
+import { View, findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -22,23 +21,27 @@ interface Props extends AttachmentProps {
   attachment: AttachmentPreview_attachment$data
 }
 
-export class AttachmentPreview extends React.Component<Props> {
-  render() {
-    const { attachment, children, onSelected } = this.props
-    return (
-      <ThemeAwareClassTheme>
-        {({ color }) => (
-          <Touchable
-            accessibilityRole="button"
-            underlayColor={color("mono5")}
-            onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
-          >
-            <Container>{children}</Container>
-          </Touchable>
-        )}
-      </ThemeAwareClassTheme>
-    )
+export const AttachmentPreview: React.FC<React.PropsWithChildren<Props>> = ({
+  attachment,
+  children,
+  onSelected,
+}) => {
+  const containerRef = useRef(null)
+
+  const handlePress = () => {
+    const nodeHandle = findNodeHandle(containerRef.current)
+    if (nodeHandle) {
+      onSelected?.(nodeHandle, attachment.internalID)
+    }
   }
+
+  return (
+    <View ref={containerRef}>
+      <Touchable accessibilityRole="button" underlayColor="mono5" onPress={handlePress}>
+        <Container>{children}</Container>
+      </Touchable>
+    </View>
+  )
 }
 
 export default createFragmentContainer(AttachmentPreview, {

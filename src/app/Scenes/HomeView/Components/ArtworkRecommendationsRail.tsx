@@ -3,8 +3,8 @@ import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommendationsRail_me.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { useItemsImpressionsTracking } from "app/Scenes/HomeView/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { CollectorSignals } from "app/utils/getArtworkSignalTrackingFields"
 import {
@@ -36,7 +36,7 @@ export const ArtworkRecommendationsRail: React.FC<
   const listRef = useRef<FlatList<any>>(null)
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-    isRailVisible,
+    isInViewport: isRailVisible,
     contextModule: ContextModule.artworkRecommendationsRail,
   })
 

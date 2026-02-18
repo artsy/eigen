@@ -42,7 +42,8 @@ export const UserProfileQueryRenderer: React.FC = () => (
       if (error) {
         return null
       } else if (props) {
-        return <UserProfileFragmentContainer {...props} />
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return <UserProfileFragmentContainer me={props.me!} />
       } else {
         return (
           <Box mb={1}>

@@ -1,13 +1,14 @@
 import { Input, InputProps } from "@artsy/palette-mobile"
 import { useBottomSheetInternal } from "@gorhom/bottom-sheet"
-import { memo, useCallback, forwardRef } from "react"
+import { forwardRef, memo, useCallback } from "react"
+import { BlurEvent, FocusEvent } from "react-native"
 
 const BottomSheetInputComponent = forwardRef<Input, InputProps>(
   ({ onFocus, onBlur, ...rest }, ref) => {
     const { shouldHandleKeyboardEvents } = useBottomSheetInternal()
 
     const handleOnFocus = useCallback(
-      (args) => {
+      (args: FocusEvent) => {
         shouldHandleKeyboardEvents.value = true
         onFocus?.(args)
       },
@@ -15,7 +16,7 @@ const BottomSheetInputComponent = forwardRef<Input, InputProps>(
     )
 
     const handleOnBlur = useCallback(
-      (args) => {
+      (args: BlurEvent) => {
         shouldHandleKeyboardEvents.value = false
         onBlur?.(args)
       },

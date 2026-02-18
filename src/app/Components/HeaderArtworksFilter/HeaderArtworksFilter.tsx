@@ -1,11 +1,5 @@
-import {
-  FilterIcon,
-  Flex,
-  Box,
-  Text,
-  Separator,
-  TouchableHighlightColor,
-} from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { Flex, Box, Text, Separator, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
@@ -158,7 +152,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
                     ],
                   }}
                 >
-                  <Text variant="sm-display" color="mono60">
+                  <Text variant="xs" color="mono60">
                     Showing {total} works
                   </Text>
                 </Animated.View>
@@ -170,7 +164,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
                 render={({ color }) => (
                   <Flex flexDirection="row" alignItems="center">
                     <FilterIcon fill={color} width="20px" height="20px" />
-                    <Text variant="sm-display" color={color}>
+                    <Text variant="xs" color={color}>
                       Sort & Filter
                     </Text>
                   </Flex>

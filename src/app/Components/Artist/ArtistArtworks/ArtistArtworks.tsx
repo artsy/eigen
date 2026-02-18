@@ -1,10 +1,11 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { BellStrokeIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
   Box,
   Button,
   Flex,
   Message,
+  SkeletonText,
   Spacer,
   Tabs,
   Text,
@@ -12,8 +13,17 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
-import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
+import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
+import {
+  ArtistArtworksQuery,
+  ArtistArtworksQuery$data,
+  FilterArtworksInput,
+} from "__generated__/ArtistArtworksQuery.graphql"
+import {
+  ArtistArtworks_artist$data,
+  ArtistArtworks_artist$key,
+} from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistArtworks_artistAggregation$key } from "__generated__/ArtistArtworks_artistAggregation.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -25,8 +35,10 @@ import { convertSavedSearchCriteriaToFilterParams } from "app/Components/Artwork
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { HEADER_HEIGHT } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
 import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
 import {
   CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
@@ -36,6 +48,7 @@ import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedS
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
@@ -43,31 +56,46 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Platform } from "react-native"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
+import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtworksGridProps extends InfiniteScrollGridProps {
-  artist: ArtistArtworks_artist$data
-  searchCriteria: SearchCriteriaAttributes | null
-  relay: RelayPaginationProp
-  predefinedFilters?: FilterArray
-  scrollToArtworksGrid: boolean
+type ArtworkType = ExtractNodeType<ArtistArtworks_artist$data["artworks"]>
+
+interface ArtworksGridProps extends InfiniteScrollGridProps, ArtistArtworksQueryRendererProps {
+  artist: NonNullable<ArtistArtworksQuery$data["artist"]>
 }
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({
-  artist,
-  relay,
+  artist: artistProp,
   predefinedFilters,
   scrollToArtworksGrid,
   searchCriteria,
   ...props
 }) => {
   const color = useColor()
+  const {
+    data: artist,
+    loadNext,
+    hasNext,
+    isLoadingNext,
+    refetch,
+  } = usePaginationFragment<ArtistArtworksQuery, ArtistArtworks_artist$key>(
+    artistArtworksFragment,
+    artistProp
+  )
+
+  const artistArtworksAggregations = useFragment<ArtistArtworks_artistAggregation$key>(
+    artistAggregation,
+    artistProp
+  )
 
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
     artist,
   })
@@ -76,6 +104,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const { width } = useScreenDimensions()
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
+
   const artworksCount = artist.artworks?.counts?.total ?? 0
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
@@ -84,8 +113,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const { dismissAllCreateAlertReminder } = useDismissAlertReminder()
 
   useArtworkFilters({
-    relay,
-    aggregations: artist.aggregations?.aggregations,
+    refetch,
+    aggregations: artistArtworksAggregations.aggregations?.aggregations,
     componentPath: "ArtistArtworks/ArtistArtworks",
     pageSize: MASONRY_LIST_PAGE_SIZE,
   })
@@ -101,10 +130,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       filters = predefinedFilters
     }
 
-    if (searchCriteria && artist.aggregations?.aggregations) {
+    if (searchCriteria && artistArtworksAggregations.aggregations?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(
         searchCriteria,
-        artist.aggregations.aggregations as Aggregations
+        artistArtworksAggregations.aggregations.aggregations as Aggregations
       )
       const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
         (sortEntity) => sortEntity.paramValue === "-published_at"
@@ -146,68 +175,51 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     // TODO: Get the new count of the artist alerts
   }
 
-  const shouldDisplaySpinner =
-    !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
-
-  const loadMore = useCallback(() => {
-    if (relay.hasMore() && !relay.isLoading()) {
-      // IMPORTANT: this is a workaround to show the spinner concistently between refetches of pages
-      // and it is not needed for grids that use relay hooks since isLoadingNext works better than the
-      // legacy container API. See FairArtworks.tsx for an example of how to use with relay hooks.
-      setIsLoading(true)
-      relay.loadMore(MASONRY_LIST_PAGE_SIZE, () => {
-        setIsLoading(false)
-      })
+  const loadMore = () => {
+    if (hasNext && !isLoadingNext) {
+      loadNext(MASONRY_LIST_PAGE_SIZE)
     }
-  }, [relay.hasMore(), relay.isLoading()])
-
-  const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
-    const { trackCreateAlertTap } = useCreateAlertTracking({
-      contextScreenOwnerType: OwnerType.artist,
-      contextScreenOwnerId: artist.internalID,
-      contextScreenOwnerSlug: artist.slug,
-      contextModule: contextModule,
-    })
-
-    return (
-      <Button
-        variant="outline"
-        mx="auto"
-        icon={<BellIcon />}
-        size="small"
-        onPress={() => {
-          trackCreateAlertTap()
-          setIsCreateAlertModalVisible(true)
-        }}
-      >
-        Create Alert
-      </Button>
-    )
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<ArtworkType> = useCallback(
+    ({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          {...props}
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId={artist.internalID}
-          contextScreenOwnerSlug={artist.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            {...props}
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.artist}
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
+
+  const listFooterComponent = useMemo(
+    () => (
+      <ListFooterComponent
+        showCreateAlertAtEndOfList={showCreateAlertAtEndOfList}
+        shouldDisplaySpinner={!!isLoadingNext && hasNext}
+        artist={artist}
+        setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+        hasNext={hasNext}
+      />
+    ),
+    [showCreateAlertAtEndOfList, isLoadingNext, hasNext, artist, setIsCreateAlertModalVisible]
+  )
 
   if (!artist.statuses?.artworks) {
     return (
@@ -225,7 +237,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <CreateAlertButton contextModule={ContextModule.artworkGridEmptyState} />
+        <CreateAlertButton
+          contextModule={ContextModule.artworkGridEmptyState}
+          artist={artist}
+          setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+        />
 
         <Spacer y={6} />
 
@@ -250,24 +266,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           sizeMetric={sizeMetric}
         />
       </Tabs.ScrollView>
-    )
-  }
-
-  const ListFooterComponenet = () => {
-    return (
-      <>
-        {!!showCreateAlertAtEndOfList && !relay.hasMore() && (
-          <Message
-            title="Get notified when new works are added."
-            containerStyle={{ my: 2 }}
-            IconComponent={() => {
-              return <CreateAlertButton contextModule={ContextModule.artistArtworksGridEnd} />
-            }}
-            iconPosition="right"
-          />
-        )}
-        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-      </>
     )
   }
 
@@ -324,7 +322,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             </Flex>
           </>
         }
-        ListFooterComponent={<ListFooterComponenet />}
+        ListFooterComponent={listFooterComponent}
       />
 
       <ArtworkFilterNavigator
@@ -350,92 +348,226 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   )
 }
 
-export default createPaginationContainer(
-  ArtworksGrid,
-  {
-    artist: graphql`
-      fragment ArtistArtworks_artist on Artist
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
-        cursor: { type: "String" }
-        input: { type: "FilterArtworksInput" }
-      ) {
-        ...ArtistArtworksFilterHeader_artist
-        id
-        slug
-        name
-        internalID
+const ListFooterComponent: React.FC<{
+  showCreateAlertAtEndOfList: boolean
+  shouldDisplaySpinner: boolean
+  artist: ArtistArtworks_artist$data
+  setIsCreateAlertModalVisible: (isCreateAlertModalVisible: boolean) => void
+  hasNext: boolean
+}> = ({
+  showCreateAlertAtEndOfList,
+  shouldDisplaySpinner,
+  artist,
+  setIsCreateAlertModalVisible,
+  hasNext,
+}) => {
+  return (
+    <>
+      {!!showCreateAlertAtEndOfList && !hasNext && (
+        <Message
+          title="Get notified when new works are added."
+          containerStyle={{ my: 2 }}
+          IconComponent={() => {
+            return (
+              <CreateAlertButton
+                contextModule={ContextModule.artistArtworksGridEnd}
+                artist={artist}
+                setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+              />
+            )
+          }}
+          iconPosition="right"
+        />
+      )}
+      <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
+    </>
+  )
+}
+
+const CreateAlertButton: React.FC<{
+  contextModule: ContextModule
+  artist: ArtistArtworks_artist$data
+  setIsCreateAlertModalVisible: (isCreateAlertModalVisible: boolean) => void
+}> = ({ contextModule, artist, setIsCreateAlertModalVisible }) => {
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artist,
+    contextScreenOwnerId: artist.internalID,
+    contextScreenOwnerSlug: artist.slug,
+    contextModule: contextModule,
+  })
+
+  return (
+    <Button
+      variant="outline"
+      mx="auto"
+      icon={<BellStrokeIcon />}
+      size="small"
+      onPress={() => {
+        trackCreateAlertTap()
+        setIsCreateAlertModalVisible(true)
+      }}
+    >
+      Create Alert
+    </Button>
+  )
+}
+
+const artistAggregation = graphql`
+  fragment ArtistArtworks_artistAggregation on Artist {
+    aggregations: filterArtworksConnection(
+      first: 0
+      aggregations: [
+        ARTIST_SERIES
+        LOCATION_CITY
+        MAJOR_PERIOD
+        MATERIALS_TERMS
+        MEDIUM
+        PARTNER
+        SIMPLE_PRICE_HISTOGRAM
+      ]
+    ) {
+      aggregations {
+        slice
         counts {
-          artworks
-        }
-        aggregations: filterArtworksConnection(
-          first: 0
-          aggregations: [
-            ARTIST_SERIES
-            LOCATION_CITY
-            MAJOR_PERIOD
-            MATERIALS_TERMS
-            MEDIUM
-            PARTNER
-            SIMPLE_PRICE_HISTOGRAM
-          ]
-        ) {
-          aggregations {
-            slice
-            counts {
-              count
-              name
-              value
-            }
-          }
-        }
-        artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input)
-          @connection(key: "ArtistArtworksGrid_artworks") {
-          counts {
-            total
-          }
-          edges {
-            node {
-              id
-              slug
-              image(includeAll: false) {
-                aspectRatio
-              }
-              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
-            }
-          }
-        }
-        statuses {
-          artworks
+          count
+          name
+          value
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props.artist && props.artist.artworks
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        id: props.artist.id,
-        input: fragmentVariables.input,
-        count,
-        cursor,
-      }
-    },
-    query: graphql`
-      query ArtistArtworksQuery(
-        $id: ID!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
-        node(id: $id) {
-          ... on Artist {
-            ...ArtistArtworks_artist @arguments(count: $count, cursor: $cursor, input: $input)
-          }
-        }
-      }
-    `,
+    }
   }
-)
+`
+const artistArtworksFragment = graphql`
+  fragment ArtistArtworks_artist on Artist
+  @refetchable(queryName: "ArtistArtworks_artistRefetch")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 10 }
+    cursor: { type: "String" }
+    input: { type: "FilterArtworksInput" }
+  ) {
+    ...ArtistArtworksFilterHeader_artist
+    id
+    slug
+    name
+    internalID
+    counts {
+      artworks
+    }
+    artworks: filterArtworksConnection(first: $count, after: $cursor, input: $input)
+      @connection(key: "ArtistArtworksGrid_artworks") {
+      counts {
+        total
+      }
+      edges {
+        node {
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+        }
+      }
+    }
+    statuses {
+      artworks
+    }
+  }
+`
+
+interface ArtistArtworksQueryRendererProps {
+  artistID: string
+  input: FilterArtworksInput
+  searchCriteria: SearchCriteriaAttributes | null
+  predefinedFilters?: FilterArray
+  scrollToArtworksGrid: boolean
+}
+
+export const ArtistArtworksQueryRenderer = withSuspense<ArtistArtworksQueryRendererProps>({
+  Component: (props) => {
+    const data = useLazyLoadQuery<ArtistArtworksQuery>(
+      artistArtworksQuery,
+      {
+        artistID: props.artistID,
+        input: props.input,
+      },
+      {
+        fetchPolicy: "store-or-network",
+      }
+    )
+
+    if (!data?.artist) {
+      return null
+    }
+
+    return <ArtworksGrid artist={data.artist} {...props} />
+  },
+  LoadingFallback: () => <ArtistArtworksPlaceholder />,
+  ErrorFallback: (fallbackProps) => {
+    return <ArtistArtworksError {...fallbackProps} />
+  },
+})
+
+const ArtistArtworksPlaceholder = () => {
+  const space = useSpace()
+
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const paddingTop = Platform.OS === "android" ? height + HEADER_HEIGHT + space(1) : space(1)
+
+  return (
+    <Tabs.ScrollView
+      contentContainerStyle={{
+        paddingHorizontal: 0,
+        paddingTop: paddingTop,
+      }}
+      scrollEnabled={false}
+    >
+      <Flex px={2} testID="ArtistArtworksPlaceholder" gap={1}>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <SkeletonText variant="sm">Create Alert</SkeletonText>
+          <SkeletonText variant="sm">Sort & Filter</SkeletonText>
+        </Flex>
+
+        <Flex borderBottomWidth={1} borderBottomColor="mono30" mx={-2} />
+
+        <SkeletonText variant="sm">XX Artworks</SkeletonText>
+
+        <PlaceholderGrid mx={0} />
+      </Flex>
+    </Tabs.ScrollView>
+  )
+}
+
+const ArtistArtworksError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
+  const space = useSpace()
+
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const paddingTop = Platform.OS === "android" ? height + HEADER_HEIGHT + space(2) : space(2)
+
+  return (
+    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop: paddingTop }}>
+      <LoadFailureView
+        onRetry={fallbackProps.onRetry}
+        useSafeArea={false}
+        // This is needed to override the default flex={1}
+        flex={undefined}
+        error={fallbackProps.error}
+        showBackButton={false}
+        trackErrorBoundary={false}
+      />
+    </Tabs.ScrollView>
+  )
+}
+
+export const artistArtworksQuery = graphql`
+  query ArtistArtworksQuery($artistID: String!, $input: FilterArtworksInput) {
+    artist(id: $artistID) {
+      internalID
+      slug
+      ...ArtistArtworks_artist @arguments(input: $input)
+      ...ArtistArtworks_artistAggregation
+    }
+  }
+`

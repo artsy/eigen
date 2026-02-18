@@ -1,12 +1,13 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Box, Text, TrendingIcon } from "@artsy/palette-mobile"
+import { TrendingIcon } from "@artsy/icons/native"
+import { Box, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -20,7 +21,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const localImage = useLocalImage(displayImage)
 
@@ -36,16 +36,18 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
+  const queryVariables = {
+    artistInternalID: artist?.internalID || "",
+    medium: getVortexMedium(medium ?? null, mediumType?.name ?? null) || "",
+  }
+
   return (
     <RouterLink
       accessibilityLabel="Go to artwork details"
       accessibilityRole="link"
       to={"/my-collection/artwork/" + slug}
-      navigationProps={{
-        medium,
-        category: mediumType?.name,
-        artistInternalID: artist?.internalID,
-      }}
+      prefetchVariables={queryVariables}
+      navigationProps={queryVariables}
       onPress={() => {
         if (!!artist) {
           trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
@@ -61,7 +63,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
           useRawURL={!!localImage}
-          blurhash={showBlurhash ? image?.blurhash : undefined}
+          blurhash={image?.blurhash}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>

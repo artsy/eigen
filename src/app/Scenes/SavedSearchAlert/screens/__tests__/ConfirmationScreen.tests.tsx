@@ -57,7 +57,7 @@ jest.mock("app/utils/Sentinel", () => ({
   Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
-const TestWrapper: React.FC = ({ children }) => (
+const TestWrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
   <SavedSearchStoreProvider
     runtimeModel={{
       ...savedSearchModel,

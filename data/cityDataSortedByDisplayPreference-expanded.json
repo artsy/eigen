@@ -1,0 +1,176 @@
+[
+  {
+    "slug": "new-york-ny-usa",
+    "name": "New York",
+    "coordinates": { "lat": 40.71, "lng": -74.01 },
+    "maxBounds": {
+      "sw": { "lat": 40.144, "lng": -74.754 },
+      "ne": { "lat": 41.272, "lng": -73.266 }
+    }
+  },
+  {
+    "slug": "london-united-kingdom",
+    "name": "London",
+    "coordinates": { "lat": 51.51, "lng": -0.13 },
+    "maxBounds": { "sw": { "lat": 50.895, "lng": -1.118 }, "ne": { "lat": 52.127, "lng": 0.862 } }
+  },
+  {
+    "slug": "los-angeles-ca-usa",
+    "name": "Los Angeles",
+    "coordinates": { "lat": 34.05, "lng": -118.24 },
+    "maxBounds": {
+      "sw": { "lat": 33.453, "lng": -118.959 },
+      "ne": { "lat": 34.644, "lng": -117.521 }
+    }
+  },
+  {
+    "slug": "paris-france",
+    "name": "Paris",
+    "coordinates": { "lat": 48.86, "lng": 2.35 },
+    "maxBounds": { "sw": { "lat": 48.339, "lng": 1.561 }, "ne": { "lat": 49.377, "lng": 3.139 } }
+  },
+  {
+    "slug": "berlin-germany",
+    "name": "Berlin",
+    "coordinates": { "lat": 52.52, "lng": 13.4 },
+    "maxBounds": { "sw": { "lat": 51.882, "lng": 12.352 }, "ne": { "lat": 53.159, "lng": 14.452 } }
+  },
+  {
+    "slug": "miami-fl-usa",
+    "name": "Miami",
+    "coordinates": { "lat": 25.76, "lng": -80.19 },
+    "maxBounds": {
+      "sw": { "lat": 25.131, "lng": -80.887 },
+      "ne": { "lat": 26.386, "lng": -79.493 }
+    }
+  },
+  {
+    "slug": "san-francisco-ca-usa",
+    "name": "San Francisco",
+    "coordinates": { "lat": 37.77, "lng": -122.42 },
+    "maxBounds": {
+      "sw": { "lat": 37.19, "lng": -123.152 },
+      "ne": { "lat": 38.347, "lng": -121.688 }
+    }
+  },
+  {
+    "slug": "hong-kong-hong-kong",
+    "name": "Hong Kong",
+    "coordinates": { "lat": 22.28, "lng": 114.16 },
+    "maxBounds": { "sw": { "lat": 21.64, "lng": 113.47 }, "ne": { "lat": 22.918, "lng": 114.85 } }
+  },
+  {
+    "slug": "milan-italy",
+    "name": "Milan",
+    "coordinates": { "lat": 45.47, "lng": 9.18 },
+    "maxBounds": { "sw": { "lat": 44.929, "lng": 8.412 }, "ne": { "lat": 46.006, "lng": 9.948 } }
+  },
+  {
+    "slug": "sao-paulo-brazil",
+    "name": "São Paulo",
+    "coordinates": { "lat": -23.56, "lng": -46.64 },
+    "maxBounds": {
+      "sw": { "lat": -24.194, "lng": -47.333 },
+      "ne": { "lat": -22.924, "lng": -45.947 }
+    }
+  },
+  {
+    "slug": "tokyo-japan",
+    "name": "Tokyo",
+    "coordinates": { "lat": 35.69, "lng": 139.69 },
+    "maxBounds": { "sw": { "lat": 35.1, "lng": 138.966 }, "ne": { "lat": 36.276, "lng": 140.414 } }
+  },
+  {
+    "slug": "toronto-canada",
+    "name": "Toronto",
+    "coordinates": { "lat": 43.65, "lng": -79.38 },
+    "maxBounds": {
+      "sw": { "lat": 43.099, "lng": -80.138 },
+      "ne": { "lat": 44.196, "lng": -78.622 }
+    }
+  },
+  {
+    "slug": "mexico-city-mexico",
+    "name": "Mexico City",
+    "coordinates": { "lat": 19.43, "lng": -99.13 },
+    "maxBounds": {
+      "sw": { "lat": 18.782, "lng": -99.816 },
+      "ne": { "lat": 20.076, "lng": -98.444 }
+    }
+  },
+  {
+    "slug": "brussels-belgium",
+    "name": "Brussels",
+    "coordinates": { "lat": 50.85, "lng": 4.36 },
+    "maxBounds": { "sw": { "lat": 50.228, "lng": 3.374 }, "ne": { "lat": 51.474, "lng": 5.35 } }
+  },
+  {
+    "slug": "singapore-singapore",
+    "name": "Singapore",
+    "coordinates": { "lat": 1.28, "lng": 103.85 },
+    "maxBounds": { "sw": { "lat": 0.608, "lng": 103.178 }, "ne": { "lat": 1.952, "lng": 104.522 } }
+  },
+  {
+    "slug": "barcelona-spain",
+    "name": "Barcelona",
+    "coordinates": { "lat": 41.39, "lng": 2.17 },
+    "maxBounds": { "sw": { "lat": 40.827, "lng": 1.423 }, "ne": { "lat": 41.948, "lng": 2.917 } }
+  },
+  {
+    "slug": "cape-town-south-africa",
+    "name": "Cape Town",
+    "coordinates": { "lat": -33.92, "lng": 18.42 },
+    "maxBounds": {
+      "sw": { "lat": -34.514, "lng": 17.702 },
+      "ne": { "lat": -33.322, "lng": 19.138 }
+    }
+  },
+  {
+    "slug": "sydney-australia",
+    "name": "Sydney",
+    "coordinates": { "lat": -33.87, "lng": 151.21 },
+    "maxBounds": {
+      "sw": { "lat": -34.465, "lng": 150.492 },
+      "ne": { "lat": -33.272, "lng": 151.928 }
+    }
+  },
+  {
+    "slug": "istanbul-turkiye",
+    "name": "Istanbul",
+    "coordinates": { "lat": 41.01, "lng": 28.98 },
+    "maxBounds": { "sw": { "lat": 40.446, "lng": 28.234 }, "ne": { "lat": 41.57, "lng": 29.726 } }
+  },
+  {
+    "slug": "dubai-united-arab-emirates",
+    "name": "Dubai",
+    "coordinates": { "lat": 25.2, "lng": 55.27 },
+    "maxBounds": { "sw": { "lat": 24.569, "lng": 54.574 }, "ne": { "lat": 25.828, "lng": 55.966 } }
+  },
+  {
+    "slug": "seoul-south-korea",
+    "name": "Seoul",
+    "coordinates": { "lat": 37.57, "lng": 126.98 },
+    "maxBounds": {
+      "sw": { "lat": 36.989, "lng": 126.249 },
+      "ne": { "lat": 38.148, "lng": 127.711 }
+    }
+  },
+  {
+    "slug": "buenos-aires-argentina",
+    "name": "Buenos Aires",
+    "coordinates": { "lat": -34.6, "lng": -58.38 },
+    "maxBounds": {
+      "sw": { "lat": -35.191, "lng": -59.101 },
+      "ne": { "lat": -34.005, "lng": -57.659 }
+    }
+  },
+  {
+    "slug": "montreal-canada",
+    "name": "Montreal",
+    "coordinates": { "lat": 45.5, "lng": -73.57 },
+    "maxBounds": {
+      "sw": { "lat": 44.959, "lng": -74.338 },
+      "ne": { "lat": 46.036, "lng": -72.802 }
+    }
+  }
+]

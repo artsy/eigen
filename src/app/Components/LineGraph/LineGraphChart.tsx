@@ -1,9 +1,9 @@
-import { StarCircleIcon, Flex, useColor, Text, Color } from "@artsy/palette-mobile"
+import { StarCircleIcon } from "@artsy/icons/native"
+import { Flex, useColor, Text, Color } from "@artsy/palette-mobile"
 import { compact, noop } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"
-import { Subject } from "rxjs"
 import { AnimatePropTypeInterface, InterpolationPropType } from "victory-core"
 import {
   VictoryArea,
@@ -15,13 +15,14 @@ import {
   VictoryTheme,
 } from "victory-native"
 import { HighlightIconContainer, ScatterDataPointContainer } from "./ScatterPointsContainers"
+import { SimpleObservable } from "./SimpleObservable"
 import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
 import { LineChartData } from "./types"
 
 export type ChartGestureEventType = { x: number; y: number } | null
 
-// using Subject because this observable should multicast to many datapoints
-export const ChartGestureObservable = new Subject<ChartGestureEventType>()
+// using SimpleObservable because this observable should multicast to many datapoints
+export const ChartGestureObservable = new SimpleObservable<ChartGestureEventType>()
 
 interface LineGraphChartProps extends LineChartData {
   chartHeight?: number
@@ -293,8 +294,10 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               axis: { stroke: color("mono15"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
-                stroke: ({ tick }: { tick: number }) =>
-                  Number(tick * maxima) === minMaxDomainY.max ? color("mono15") : "transparent",
+                stroke: ({ tick }: { tick?: number }) =>
+                  tick && Number(tick * maxima) === minMaxDomainY.max
+                    ? color("mono15")
+                    : "transparent",
                 strokeDasharray: 3,
               },
             }}
@@ -319,7 +322,8 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               axis: { stroke: color("mono30"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
-                stroke: ({ tick }: { tick: number }) => {
+                stroke: ({ tick }: { tick?: number }) => {
+                  if (!tick) return "transparent"
                   if (tick === lastPressedDatum?.x) {
                     return color("mono100")
                   }
@@ -352,8 +356,12 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             style={{
               data: {
                 stroke: tintColor,
-                fill: ({ datum }: { datum: any }) =>
-                  datum.x === lastPressedDatum?.x || data.length === 1 ? tintColor : "transparent",
+                fill: (args) => {
+                  const { datum } = args
+                  return datum && (datum.x === lastPressedDatum?.x || data.length === 1)
+                    ? tintColor
+                    : "transparent"
+                },
               },
             }}
             data={data}

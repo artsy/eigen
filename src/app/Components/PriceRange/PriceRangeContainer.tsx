@@ -9,8 +9,7 @@ import {
   getInputValue,
   parseSliderRange,
 } from "app/Components/PriceRange/utils"
-import React, { useEffect, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import React, { useEffect, useState } from "react"
 
 const NUMBERS_REGEX = /^(|\d)+$/
 
@@ -25,6 +24,8 @@ interface PriceRangeContainerProps {
   header?: React.ReactNode
   onPriceRangeUpdate: (range: PriceRange) => void
   onRecentPriceRangeSelected?: (isCollectorProfileSources: boolean) => void
+  onMultiSliderValuesChangeStart?: () => void
+  onMultiSliderValuesChangeFinish?: () => void
 }
 
 export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
@@ -33,8 +34,9 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   header,
   onPriceRangeUpdate,
   onRecentPriceRangeSelected,
+  onMultiSliderValuesChangeStart,
+  onMultiSliderValuesChangeFinish,
 }) => {
-  const screenScrollViewRef = useRef<ScrollView>(null)
   const [range, setRange] = useState(parsePriceRange(filterPriceRange))
 
   useEffect(() => {
@@ -80,18 +82,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
     updateRange(convertedRange)
   }
 
-  const handleMultiSliderValuesChangeStart = () => {
-    if (screenScrollViewRef.current) {
-      screenScrollViewRef.current.setNativeProps({ scrollEnabled: false })
-    }
-  }
-
-  const handleMultiSliderValuesChangeFinish = () => {
-    if (screenScrollViewRef.current) {
-      screenScrollViewRef.current.setNativeProps({ scrollEnabled: true })
-    }
-  }
-
   const handleRecentPriceRangeSelected = (priceRange: RecentPriceRangeEntity) => {
     const { value, isCollectorProfileSources } = priceRange
     const selectedRange = parsePriceRange(value)
@@ -101,7 +91,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   }
 
   return (
-    <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
+    <Flex>
       {!!header && <Flex m={2}>{header}</Flex>}
 
       <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
@@ -114,8 +104,12 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
         <PriceRangeSlider
           sliderRange={sliderRange}
           onSliderValueChange={handleSliderValueChange}
-          onMultiSliderValuesChangeStart={handleMultiSliderValuesChangeStart}
-          onMultiSliderValuesChangeFinish={handleMultiSliderValuesChangeFinish}
+          onMultiSliderValuesChangeStart={() => {
+            onMultiSliderValuesChangeStart?.()
+          }}
+          onMultiSliderValuesChangeFinish={() => {
+            onMultiSliderValuesChangeFinish?.()
+          }}
         />
       </Flex>
 
@@ -150,6 +144,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
       <Spacer y={2} />
 
       <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
-    </ScrollView>
+    </Flex>
   )
 }

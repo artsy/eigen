@@ -1,10 +1,13 @@
-import { Button, CheckIcon, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Button, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -28,7 +31,7 @@ export const IdentityVerificationStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
         <Flex flex={1} justifyContent="space-between">
           <Flex flex={1} justifyContent="space-between" px={2}>
             <Flex flexDirection="row" flexWrap="wrap">
@@ -45,7 +48,7 @@ export const IdentityVerificationStep: FC = () => {
                 {!isIdentityVerified ? (
                   <Button onPress={handleSendVerification}>Send verification Email</Button>
                 ) : (
-                  <Button icon={<CheckIcon fill="mono0" />} variant="fillSuccess">
+                  <Button icon={<CheckmarkIcon fill="mono0" />} variant="fillSuccess">
                     Email sent
                   </Button>
                 )}
@@ -53,7 +56,16 @@ export const IdentityVerificationStep: FC = () => {
                 <Flex flexDirection="row" flexWrap="wrap">
                   <Text color="mono60">
                     Identify Verification is required for some transactions. For more details, see
-                    our <LinkText color="mono60">FAQs</LinkText>.
+                    our{" "}
+                    <LinkText
+                      color="mono60"
+                      onPress={() => {
+                        navigate("https://www.artsy.net/identity-verification-faq")
+                      }}
+                    >
+                      FAQs
+                    </LinkText>
+                    .
                   </Text>
                 </Flex>
               </Flex>

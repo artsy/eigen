@@ -1,5 +1,5 @@
-import { NoImageIcon, Flex, useColor, Image } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { NoArtIcon } from "@artsy/icons/native"
+import { Flex, useColor, Image } from "@artsy/palette-mobile"
 import React from "react"
 
 export interface MyCollectionImageViewProps {
@@ -23,7 +23,6 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   blurhash,
 }) => {
   const color = useColor()
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (!imageURL) {
     return (
@@ -34,7 +33,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         height={120}
         justifyContent="center"
       >
-        <NoImageIcon fill="mono60" mx="auto" />
+        <NoArtIcon fill="mono60" mx="auto" />
       </Flex>
     )
   }
@@ -48,7 +47,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         width={imageWidth}
         aspectRatio={aspectRatio}
         performResize={!useRawURL}
-        blurhash={showBlurhash ? blurhash : undefined}
+        blurhash={blurhash}
       />
     </Flex>
   )

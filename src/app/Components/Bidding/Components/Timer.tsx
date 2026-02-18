@@ -1,10 +1,10 @@
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { useTimeOffset } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
-import PropTypes from "prop-types"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
 
@@ -195,19 +195,15 @@ interface TimeOffsetProviderProps {
   children: React.ReactElement<any>
 }
 
-export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
-  static contextTypes = {
-    timeOffsetInMilliSeconds: PropTypes.number,
-  }
+const TimeOffsetProviderWrapper: React.FC<TimeOffsetProviderProps> = ({ children }) => {
+  const timeOffsetInMilliSeconds = useTimeOffset()
 
-  render() {
-    return React.cloneElement(this.props.children, this.context || {})
-  }
+  return React.cloneElement(children, { timeOffsetInMilliSeconds })
 }
 
 export const Timer: React.FC<Props> = (props) => {
   return (
-    <TimeOffsetProvider>
+    <TimeOffsetProviderWrapper>
       <CountdownStateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => {
@@ -221,6 +217,6 @@ export const Timer: React.FC<Props> = (props) => {
           return { state: nextState, label, date } as any // STRICTNESS_MIGRATION
         }}
       />
-    </TimeOffsetProvider>
+    </TimeOffsetProviderWrapper>
   )
 }

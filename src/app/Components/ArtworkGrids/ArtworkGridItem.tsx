@@ -2,8 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@ar
 import {
   Box,
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   Image,
   Skeleton,
   SkeletonBox,
@@ -19,14 +17,14 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
-import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
-import { HEART_ICON_SIZE } from "app/Components/constants"
+// import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -34,14 +32,14 @@ import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBiddi
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
-import React, { useRef, useState } from "react"
+import React, { memo, useRef, useState } from "react"
 import { Platform, Text as RNText, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -54,6 +52,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
   artworkMetaStyle?: ViewProps["style"]
   disableArtworksListPrompt?: boolean
+  disableProgressiveOnboarding?: boolean
   /** Hide sale info */
   height?: number
   hideCuratorsPickSignal?: boolean
@@ -82,387 +81,402 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
-export const Artwork: React.FC<ArtworkProps> = ({
-  artistNamesTextStyle,
-  artwork,
-  artworkMetaStyle,
-  contextModule,
-  contextScreen,
-  contextScreenOwnerId,
-  contextScreenOwnerSlug,
-  contextScreenOwnerType,
-  contextScreenQuery,
-  disableArtworksListPrompt = false,
-  height,
-  hideCuratorsPickSignal = false,
-  hideIncreasedInterestSignal = false,
-  hidePartner = false,
-  hideRegisterBySignal = false,
-  hideSaleInfo = false,
-  hideSaveIcon = false,
-  itemIndex,
-  lotLabelTextStyle,
-  onPress,
-  partnerNameTextStyle,
-  partnerOffer,
-  priceOfferMessage,
-  saleInfoTextStyle,
-  showLotLabel = false,
-  titleTextStyle,
-  trackTap,
-  updateRecentSearchesOnTap = false,
-  hideCreateAlertOnArtworkPreview = false,
-}) => {
-  const itemRef = useRef<any>()
-  const disappearableRef = useRef<Disappearable>(null)
+export const Artwork: React.FC<ArtworkProps> = memo(
+  ({
+    artistNamesTextStyle,
+    artwork,
+    artworkMetaStyle,
+    contextModule,
+    contextScreen,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
+    contextScreenOwnerType,
+    contextScreenQuery,
+    disableArtworksListPrompt = false,
+    height,
+    // disableProgressiveOnboarding = false,
+    hideCuratorsPickSignal = false,
+    hideIncreasedInterestSignal = false,
+    hidePartner = false,
+    hideRegisterBySignal = false,
+    hideSaleInfo = false,
+    hideSaveIcon = false,
+    itemIndex,
+    lotLabelTextStyle,
+    onPress,
+    partnerNameTextStyle,
+    partnerOffer,
+    priceOfferMessage,
+    saleInfoTextStyle,
+    showLotLabel = false,
+    titleTextStyle,
+    trackTap,
+    updateRecentSearchesOnTap = false,
+    hideCreateAlertOnArtworkPreview = false,
+  }) => {
+    const itemRef = useRef<any>(null)
+    const disappearableRef = useRef<Disappearable>(null)
+    const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
 
-  const color = useColor()
-  const tracking = useTracking()
-  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
-  const isIOS = Platform.OS === "ios"
+    const color = useColor()
+    const tracking = useTracking()
+    const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+    const isIOS = Platform.OS === "ios"
 
-  let filterParams: any = undefined
+    let filterParams: any = undefined
 
-  // This is needed to make sure the filter context is defined
-  if (ArtworksFiltersStore.useStore()) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-    filterParams = filterArtworksParams(appliedFilters)
-  }
-
-  const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
-  const lotEndAt = artwork.saleArtwork?.endAt
-  const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
-  const lotID = artwork.saleArtwork?.lotID
-  const collectorSignals = artwork.collectorSignals
-  const isAuction = artwork.sale?.isAuction
-
-  const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
-    lotID,
-    lotEndAt,
-    biddingEndAt,
-  })
-
-  const addArtworkToRecentSearches = () => {
-    if (updateRecentSearchesOnTap) {
-      GlobalStore.actions.search.addRecentSearch({
-        type: "AUTOSUGGEST_RESULT_TAPPED",
-        props: {
-          imageUrl: artwork?.image?.url ?? null,
-          href: artwork.href,
-          slug: artwork.slug,
-          displayLabel: `${artwork.artistNames}, ${artwork.title} (${artwork.date})`,
-          __typename: "Artwork",
-          displayType: "Artwork",
-        },
-      })
-    }
-  }
-
-  const onArtworkSavedOrUnSaved = (saved: boolean) => {
-    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
-    const params = {
-      acquireable: isAcquireable,
-      availability,
-      biddable: isBiddable,
-      context_module: contextModule,
-      context_screen: contextScreen,
-      context_screen_owner_id: contextScreenOwnerId,
-      context_screen_owner_slug: contextScreenOwnerSlug,
-      context_screen_owner_type: contextScreenOwnerType,
-      inquireable: isInquireable,
-      offerable: isOfferable,
-    }
-    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
-  }
-
-  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-    artworkFragmentRef: artwork,
-    onCompleted: onArtworkSavedOrUnSaved,
-  })
-
-  const handleArtworkSave = useSaveArtwork({
-    id: artwork.id,
-    internalID: artwork.internalID,
-    isSaved: !!artwork.isSaved,
-    onCompleted: onArtworkSavedOrUnSaved,
-  })
-
-  const { hasEnded } = getTimer(partnerOffer?.endAt || "")
-
-  const handleTap = () => {
-    if (onPress) {
-      return onPress(artwork.slug, artwork)
+    // This is needed to make sure the filter context is defined
+    if (ArtworksFiltersStore.useStore()) {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+      filterParams = filterArtworksParams(appliedFilters)
     }
 
-    addArtworkToRecentSearches()
-    trackArtworkTap()
-  }
+    const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
+    const lotEndAt = artwork.saleArtwork?.endAt
+    const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
+    const lotID = artwork.saleArtwork?.lotID
+    const collectorSignals = artwork.collectorSignals
+    const isAuction = artwork.sale?.isAuction
 
-  const navigationProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
+    const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+      lotID,
+      lotEndAt,
+      biddingEndAt,
+    })
 
-  const trackArtworkTap = () => {
-    // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
-    // taps from the grid.
-    if (trackTap) {
-      trackTap(artwork.slug, itemIndex)
-    } else if (contextScreenOwnerType) {
-      const genericTapEvent: TappedMainArtworkGrid = {
-        action: ActionType.tappedMainArtworkGrid,
-        context_module: contextModule || ContextModule.artworkGrid,
+    const addArtworkToRecentSearches = () => {
+      if (updateRecentSearchesOnTap) {
+        GlobalStore.actions.search.addRecentSearch({
+          type: "AUTOSUGGEST_RESULT_TAPPED",
+          props: {
+            imageUrl: artwork?.image?.url ?? null,
+            href: artwork.href,
+            slug: artwork.slug,
+            displayLabel: `${artwork.artistNames}, ${artwork.title} (${artwork.date})`,
+            __typename: "Artwork",
+            displayType: "Artwork",
+          },
+        })
+      }
+    }
+
+    const onArtworkSavedOrUnSaved = (saved: boolean) => {
+      const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+      const params = {
+        acquireable: isAcquireable,
+        availability,
+        biddable: isBiddable,
+        context_module: contextModule,
         context_screen: contextScreen,
-        context_screen_owner_type: contextScreenOwnerType,
         context_screen_owner_id: contextScreenOwnerId,
         context_screen_owner_slug: contextScreenOwnerSlug,
-        destination_screen_owner_type: OwnerType.artwork,
-        destination_screen_owner_id: artwork.internalID,
-        destination_screen_owner_slug: artwork.slug,
-        position: itemIndex,
-        query: contextScreenQuery,
-        sort: filterParams?.sort,
-        type: "thumbnail",
-        ...getArtworkSignalTrackingFields(artwork.collectorSignals),
+        context_screen_owner_type: contextScreenOwnerType,
+        inquireable: isInquireable,
+        offerable: isOfferable,
+      }
+      tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+    }
+
+    const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+      artworkFragmentRef: artwork,
+      onCompleted: onArtworkSavedOrUnSaved,
+    })
+
+    const handleArtworkSave = useSaveArtwork({
+      id: artwork.id,
+      internalID: artwork.internalID,
+      isSaved: !!artwork.isSaved,
+      onCompleted: onArtworkSavedOrUnSaved,
+    })
+
+    const { hasEnded } = getTimer(partnerOffer?.endAt || "")
+
+    const handleTap = () => {
+      if (onPress) {
+        return onPress(artwork.slug, artwork)
       }
 
-      tracking.trackEvent(genericTapEvent)
+      addArtworkToRecentSearches()
+      trackArtworkTap()
     }
-  }
 
-  const saleInfo = saleMessageOrBidInfo({
-    artwork,
-    collectorSignals: collectorSignals,
-    auctionSignals: collectorSignals?.auction,
-  })
+    const navigationProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
 
-  const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
-    ? currentBiddingEndAt
-    : artwork.saleArtwork?.endAt || artwork.sale?.endAt
+    const trackArtworkTap = () => {
+      // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
+      // taps from the grid.
+      if (trackTap) {
+        trackTap(artwork.slug, itemIndex)
+      } else if (contextScreenOwnerType) {
+        const genericTapEvent: TappedMainArtworkGrid = {
+          action: ActionType.tappedMainArtworkGrid,
+          context_module: contextModule || ContextModule.artworkGrid,
+          context_screen: contextScreen,
+          context_screen_owner_type: contextScreenOwnerType,
+          context_screen_owner_id: contextScreenOwnerId,
+          context_screen_owner_slug: contextScreenOwnerSlug,
+          destination_screen_owner_type: OwnerType.artwork,
+          destination_screen_owner_id: artwork.internalID,
+          destination_screen_owner_slug: artwork.slug,
+          position: itemIndex,
+          query: contextScreenQuery,
+          sort: filterParams?.sort,
+          type: "thumbnail",
+          ...getArtworkSignalTrackingFields(artwork.collectorSignals),
+        }
 
-  const canShowAuctionProgressBar =
-    !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
+        tracking.trackEvent(genericTapEvent)
+      }
+    }
 
-  const displayPriceOfferMessage =
-    !!priceOfferMessage &&
-    !!priceOfferMessage.priceListedMessage &&
-    !!priceOfferMessage.priceWithDiscountMessage
+    const saleInfo = saleMessageOrBidInfo({
+      artwork,
+      collectorSignals: collectorSignals,
+      auctionSignals: collectorSignals?.auction,
+    })
 
-  const displayLimitedTimeOfferSignal =
-    collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
+    const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
+      ? currentBiddingEndAt
+      : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
-  const handleSupress = () => {
-    disappearableRef.current?.disappear()
-  }
+    const canShowAuctionProgressBar =
+      !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
-  const displayArtworkSocialSignal =
-    !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
+    const displayPriceOfferMessage =
+      !!priceOfferMessage &&
+      !!priceOfferMessage.priceListedMessage &&
+      !!priceOfferMessage.priceWithDiscountMessage
 
-  return (
-    <Disappearable ref={disappearableRef}>
-      <ContextMenuArtwork
-        onSupressArtwork={handleSupress}
-        contextModule={contextModule ?? ContextModule.artworkGrid}
-        contextScreenOwnerType={contextScreenOwnerType}
-        onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-        artwork={artwork}
-        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
-      >
-        <RouterLink
-          haptic
-          underlayColor={color("mono0")}
-          onPress={handleTap}
-          // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-          onLongPress={() => {
-            // Adroid long press is tracked inside of the ContextMenuArtwork component
-            if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
-              tracking.trackEvent(
-                trackLongPress.longPressedArtwork(
-                  ContextModule.artworkGrid,
-                  contextScreenOwnerType,
-                  artwork.slug
-                )
-              )
-            }
-          }}
-          delayLongPress={400}
-          navigationProps={navigationProps}
-          to={artwork.href}
-          testID={`artworkGridItem-${artwork.title}`}
+    const displayLimitedTimeOfferSignal =
+      collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
+
+    const handleSupress = () => {
+      disappearableRef.current?.disappear()
+    }
+
+    const displayArtworkSocialSignal =
+      !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
+
+    return (
+      <Disappearable ref={disappearableRef}>
+        <ContextMenuArtwork
+          onSupressArtwork={handleSupress}
+          contextModule={contextModule ?? ContextModule.artworkGrid}
+          contextScreenOwnerType={contextScreenOwnerType}
+          onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+          artwork={artwork}
+          hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         >
-          <View ref={itemRef}>
-            {!!artwork.image?.url && (
-              <View>
-                <Image
-                  src={artwork.image.url}
-                  aspectRatio={artwork.image.aspectRatio ?? 1}
-                  height={height}
-                  width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                  blurhash={showBlurhash ? artwork.image.blurhash : undefined}
-                  resizeMode="contain"
-                />
-              </View>
-            )}
-            {!!canShowAuctionProgressBar && (
-              <Box mt={1}>
-                <DurationProvider startAt={endsAt ?? undefined}>
-                  <LotProgressBar
-                    duration={null}
-                    startAt={artwork.sale?.startAt}
-                    extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
-                    extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                    biddingEndAt={endsAt}
-                    hasBeenExtended={lotSaleExtended}
+          <RouterLink
+            haptic
+            underlayColor={color("mono0")}
+            onPress={handleTap}
+            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+            onLongPress={() => {
+              // Adroid long press is tracked inside of the ContextMenuArtwork component
+              if (contextScreenOwnerType && isIOS) {
+                tracking.trackEvent(
+                  trackLongPress.longPressedArtwork(
+                    ContextModule.artworkGrid,
+                    contextScreenOwnerType,
+                    artwork.slug
+                  )
+                )
+              }
+            }}
+            delayLongPress={400}
+            navigationProps={navigationProps}
+            to={artwork.href}
+            testID={`artworkGridItem-${artwork.title}`}
+          >
+            <View ref={itemRef}>
+              {!!artwork.image?.url && (
+                <View>
+                  <Image
+                    src={artwork.image.url}
+                    aspectRatio={artwork.image.aspectRatio ?? 1}
+                    height={height}
+                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                    blurhash={artwork.image.blurhash}
+                    resizeMode="contain"
                   />
-                </DurationProvider>
-              </Box>
-            )}
+                </View>
+              )}
+              {!!canShowAuctionProgressBar && (
+                <Box mt={1}>
+                  <DurationProvider startAt={endsAt ?? undefined}>
+                    <LotProgressBar
+                      duration={null}
+                      startAt={artwork.sale?.startAt}
+                      extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                      extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                      biddingEndAt={endsAt}
+                      hasBeenExtended={lotSaleExtended}
+                    />
+                  </DurationProvider>
+                </Box>
+              )}
 
-            <Flex
-              flexDirection="row"
-              justifyContent="space-between"
-              mt={1}
-              style={artworkMetaStyle}
-            >
-              <Flex flex={1}>
-                {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-                  <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                    Lot {artwork.saleArtwork.lotLabel}
-                  </Text>
-                )}
-                {!!artwork.artistNames && (
-                  <Text
-                    lineHeight="18px"
-                    weight="regular"
-                    variant="xs"
-                    numberOfLines={1}
-                    {...artistNamesTextStyle}
-                  >
-                    {artwork.artistNames}
-                  </Text>
-                )}
-                {!!artwork.title && (
-                  <RNText numberOfLines={1}>
-                    <Text
-                      lineHeight="18px"
-                      variant="xs"
-                      weight="regular"
-                      color="mono60"
-                      {...titleTextStyle}
-                    >
-                      <Text lineHeight="18px" variant="xs" weight="regular">
-                        {artwork.title}
+              <Flex
+                flexDirection="row"
+                justifyContent="space-between"
+                mt={1}
+                style={artworkMetaStyle}
+              >
+                <Flex flex={1}>
+                  {/* This is useful for debugging purposes */}
+                  {!!showArtworkInternalID && (
+                    // We are double wrapping the text in a RNText to fix the ellipsizeMode issue on android
+                    <RNText numberOfLines={1} ellipsizeMode="middle">
+                      <Text color="blue100" variant="xs" fontWeight="bold">
+                        {artwork.internalID}
                       </Text>
-                      {artwork.date ? `, ${artwork.date}` : ""}
-                    </Text>
-                  </RNText>
-                )}
-                {!hidePartner && !!artwork.partner?.name && (
-                  <Text
-                    variant="xs"
-                    lineHeight="18px"
-                    color="mono60"
-                    numberOfLines={1}
-                    {...partnerNameTextStyle}
-                  >
-                    {artwork.partner.name}
-                  </Text>
-                )}
-                {!!displayPriceOfferMessage && (
-                  <Flex flexDirection="row">
-                    <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
-                      {priceOfferMessage.priceWithDiscountMessage}
-                    </Text>
-                    <Text color="mono60" variant="xs">
-                      {" "}
-                      (List price: {priceOfferMessage.priceListedMessage})
-                    </Text>
-                  </Flex>
-                )}
-                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
-                  <ArtworkSaleMessage
-                    artwork={artwork}
-                    saleMessage={saleInfo}
-                    displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
-                    saleInfoTextStyle={saleInfoTextStyle}
-                  />
-                )}
+                    </RNText>
+                  )}
 
-                {!!artwork.isUnlisted && (
-                  <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
-                    Exclusive Access
-                  </Text>
-                )}
-
-                {!!isAuction && !!collectorSignals && (
-                  <ArtworkAuctionTimer
-                    collectorSignals={collectorSignals}
-                    hideRegisterBySignal={hideRegisterBySignal}
-                  />
-                )}
-
-                {!!displayArtworkSocialSignal && (
-                  <ArtworkSocialSignal
-                    collectorSignals={collectorSignals}
-                    hideCuratorsPick={hideCuratorsPickSignal}
-                    hideIncreasedInterest={hideIncreasedInterestSignal}
-                  />
-                )}
-              </Flex>
-
-              {!hideSaveIcon && (
-                <Flex flexDirection="row" alignItems="flex-start">
-                  {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
-                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
-                      {collectorSignals.auction.lotWatcherCount}
+                  {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+                    <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                      Lot {artwork.saleArtwork.lotLabel}
                     </Text>
                   )}
-                  <Touchable
-                    accessibilityRole="button"
-                    accessibilityLabel={
-                      isSaved ? "Remove from saved artworks" : "Save artwork to lists"
-                    }
-                    haptic
-                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
-                    testID="save-artwork-icon"
-                  >
-                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
-                  </Touchable>
+                  {!!artwork.artistNames && (
+                    <RNText numberOfLines={1}>
+                      <Text
+                        lineHeight="18px"
+                        weight="regular"
+                        variant="xs"
+                        {...artistNamesTextStyle}
+                      >
+                        {artwork.artistNames}
+                      </Text>
+                    </RNText>
+                  )}
+                  {!!artwork.title && (
+                    <RNText numberOfLines={1}>
+                      <Text
+                        lineHeight="18px"
+                        variant="xs"
+                        weight="regular"
+                        color="mono60"
+                        {...titleTextStyle}
+                      >
+                        <Text lineHeight="18px" variant="xs" weight="regular">
+                          {artwork.title}
+                        </Text>
+                        {artwork.date ? `, ${artwork.date}` : ""}
+                      </Text>
+                    </RNText>
+                  )}
+                  {!hidePartner && !!artwork.partner?.name && (
+                    <Text
+                      variant="xs"
+                      lineHeight="18px"
+                      color="mono60"
+                      numberOfLines={1}
+                      {...partnerNameTextStyle}
+                    >
+                      {artwork.partner.name}
+                    </Text>
+                  )}
+                  {!!displayPriceOfferMessage && (
+                    <Flex flexDirection="row">
+                      <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
+                        {priceOfferMessage.priceWithDiscountMessage}
+                      </Text>
+                      <Text color="mono60" variant="xs">
+                        {" "}
+                        (List price: {priceOfferMessage.priceListedMessage})
+                      </Text>
+                    </Flex>
+                  )}
+                  {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
+                    <ArtworkSaleMessage
+                      artwork={artwork}
+                      saleMessage={saleInfo}
+                      displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
+                      saleInfoTextStyle={saleInfoTextStyle}
+                    />
+                  )}
+
+                  {!!artwork.isUnlisted && (
+                    <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
+                      Exclusive Access
+                    </Text>
+                  )}
+
+                  {!!isAuction && !!collectorSignals && (
+                    <ArtworkAuctionTimer
+                      collectorSignals={collectorSignals}
+                      hideRegisterBySignal={hideRegisterBySignal}
+                    />
+                  )}
+
+                  {!!displayArtworkSocialSignal && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                    />
+                  )}
                 </Flex>
-              )}
-            </Flex>
-          </View>
-        </RouterLink>
-      </ContextMenuArtwork>
 
-      <CreateArtworkAlertModal
-        artwork={artwork}
-        onClose={() => setShowCreateArtworkAlertModal(false)}
-        visible={showCreateArtworkAlertModal}
-      />
-    </Disappearable>
-  )
-}
+                {!hideSaveIcon && (
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
+                      <Text lineHeight="18px" variant="xs" numberOfLines={1}>
+                        {collectorSignals.auction.lotWatcherCount}
+                      </Text>
+                    )}
+                    <Touchable
+                      accessibilityRole="button"
+                      accessibilityLabel={
+                        isSaved ? "Remove from saved artworks" : "Save artwork to lists"
+                      }
+                      haptic
+                      onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                      testID="save-artwork-icon"
+                    >
+                      <ArtworkSaveIconWrapper isSaved={!!isSaved} />
+                    </Touchable>
+                  </Flex>
+                )}
+              </Flex>
+            </View>
+          </RouterLink>
+        </ContextMenuArtwork>
 
-const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
-  isSaved,
-  index,
-}) => {
-  const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
-
-  if (isSaved) {
-    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
+        <CreateArtworkAlertModal
+          artwork={artwork}
+          onClose={() => setShowCreateArtworkAlertModal(false)}
+          visible={showCreateArtworkAlertModal}
+        />
+      </Disappearable>
+    )
   }
-  if (index === 0) {
+)
+
+/*
+TODO: replace <ArtworkSaveIconWrapper isSaved={!!isSaved} /> with ArtworkHeartIcon when there
+is a solution for the failing tests after adding ProgressiveOnboardingSaveArtwork
+*/
+
+/* const ArtworkHeartIcon: React.FC<{
+  isSaved: boolean | null
+  index?: number
+  disableProgressiveOnboarding?: boolean
+}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
+  if (index === 0 && !disableProgressiveOnboarding) {
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>
-        <HeartIcon {...iconProps} />
+        <ArtworkSaveIconWrapper isSaved={!!isSaved} />
       </ProgressiveOnboardingSaveArtwork>
     )
   }
-  return <HeartIcon {...iconProps} />
-}
+
+  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
+} */
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
@@ -524,6 +538,8 @@ export default createFragmentContainer(Artwork, {
         blurhash
         url(version: ["larger", "large", "medium", "small", "square"])
         aspectRatio
+        width # required for guessing the image placeholder dimensions
+        height # required for guessing the image placeholder dimensions
         resized(width: $width) {
           src
           srcSet
@@ -531,7 +547,6 @@ export default createFragmentContainer(Artwork, {
           height
         }
       }
-      realizedPrice
       collectorSignals {
         partnerOffer {
           isAvailable

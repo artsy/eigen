@@ -67,14 +67,14 @@ const prefetchRoute = async <TQuery extends OperationType>(
   })
 }
 
-export const prefetchQuery = async ({
+export const prefetchQuery = async <T extends Variables>({
   query,
   variables,
   route,
   onComplete,
 }: {
   query: GraphQLTaggedNode
-  variables?: Variables
+  variables?: T
   route?: string
   onComplete?: () => void
 }) => {
@@ -82,6 +82,9 @@ export const prefetchQuery = async ({
 
   return fetchQuery(environment, query, variables ?? {}, {
     fetchPolicy: "store-or-network",
+    networkCacheConfig: {
+      force: false,
+    },
   }).subscribe({
     complete: () => {
       if (logPrefetching) {

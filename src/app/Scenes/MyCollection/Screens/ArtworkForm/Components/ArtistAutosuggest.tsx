@@ -1,4 +1,5 @@
-import { AddIcon, Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { AddIcon } from "@artsy/icons/native"
+import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import {
   ArtistAutosuggestQuery,
   ArtistAutosuggestQuery$data,
@@ -124,7 +125,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {trimmedQuery === "" && isValidElement(Hint) && Hint}
         {showResults ? (
-          <Box height="100%" pb={6}>
+          <Box pb={6}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}
@@ -135,11 +136,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               HeaderComponent={!disableCustomArtists ? HeaderComponent : undefined}
               ListHeaderComponent={() =>
                 onlyShowCollectedArtists ? (
-                  <Text mb={2} mt={2}>
-                    {onlyP1Artists ? "Eligible" : ""} Artists in My Collection
-                  </Text>
+                  <Text mb={2}>{onlyP1Artists ? "Eligible" : ""} Artists in My Collection</Text>
                 ) : (
-                  <Spacer y={2} />
+                  <Spacer y={1} />
                 )
               }
               ListEmptyComponent={() => (

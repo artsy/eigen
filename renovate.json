@@ -3,10 +3,17 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["cimg/android"],
+      "matchPackageNames": ["cimg/android", "cimg/ruby"],
+      "matchFileNames": [".circleci/config.yml"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["packageManager"],
       "enabled": false
     }
   ],
+
   "assignees": ["gkartalis", "brainbicycle"],
-  "reviewers": ["gkartalis", "brianbicycle"]
+  "reviewers": ["gkartalis", "brainbicycle"]
 }

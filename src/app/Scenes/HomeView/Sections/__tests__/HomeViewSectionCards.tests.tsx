@@ -7,85 +7,247 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("app/utils/hooks/withSuspense")
+
 describe("HomeViewSectionCards", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardsTestsQuery>({
-    Component: (props) => (
-      <HomeViewStoreProvider>
-        <HomeViewSectionCards index={4} section={props.homeView.section} />
-      </HomeViewStoreProvider>
-    ),
+    Component: (props) => {
+      if (!props.homeView.section) {
+        return null
+      }
+
+      return (
+        <HomeViewStoreProvider>
+          <HomeViewSectionCards section={props.homeView.section} index={0} />
+        </HomeViewStoreProvider>
+      )
+    },
     query: graphql`
       query HomeViewSectionCardsTestsQuery @relay_test_operation {
-        homeView @required(action: NONE) {
-          section(id: "home-view-section-explore-by-category") @required(action: NONE) {
-            ...HomeViewSectionCards_section
+        homeView {
+          section(id: "home-view-section-auctions-hub") {
+            ... on HomeViewSectionCards {
+              ...HomeViewSectionCards_section
+            }
           }
         }
       }
     `,
   })
 
-  it("does not render if no cards are available", () => {
+  it("renders the section properly", async () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
-        component: { title: "Explore by category" },
-        cardsConnection: null,
+        internalID: "home-view-section-auctions-hub",
+        ...cardsConnection,
+        ...component,
       }),
     })
 
-    expect(screen.queryByText("Explore by category")).not.toBeOnTheScreen()
+    expect(screen.getByText("Section Title")).toBeOnTheScreen()
+
+    expect(screen.getByText("Card Title 0")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 1")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 2")).toBeOnTheScreen()
   })
 
-  it("renders a list of cards", () => {
+  it("handles View All press", async () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
-        component: { title: "Explore by category" },
-        cardsConnection: {
-          edges: [{ node: { title: "Card 1" } }, { node: { title: "Card 2" } }],
-        },
+        internalID: "home-view-section-auctions-hub",
+        contextModule: "auctionsHubRail",
+        ...component,
+        ...cardsConnection,
       }),
     })
 
-    expect(screen.getByText("Explore by category")).toBeOnTheScreen()
-    expect(screen.getByText(/Card 1/)).toBeOnTheScreen()
-    expect(screen.getByText(/Card 2/)).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Section Title"))
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "auctionsHubRail",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "auctions",
+      type: "viewAll",
+    })
+
+    expect(navigate).toHaveBeenCalledWith("/view-all-route")
   })
 
-  it("navigates and tracks card clicks", () => {
+  it("handles navigation when tapping on a card", async () => {
     renderWithRelay({
       HomeViewSectionCards: () => ({
-        component: { title: "Explore by category" },
-        contextModule: "some-cards",
-        cardsConnection: {
-          edges: [
+        internalID: "home-view-section-auctions-hub",
+        ...component,
+        ...cardsConnection,
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Card Title 0"))
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "lotsForYouCard",
+      context_screen_owner_type: "home",
+      destination_path: "/0-route",
+      destination_screen_owner_id: "card-0-id",
+      destination_screen_owner_type: "lotsForYou",
+      horizontal_slide_position: 0,
+      type: "thumbnail",
+    })
+    expect(navigate).toHaveBeenCalledWith("/0-route")
+
+    fireEvent.press(screen.getByText("Card Title 1"))
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "auctionResultsForArtistsYouFollowCard",
+      context_screen_owner_type: "home",
+      destination_path: "/1-route",
+      destination_screen_owner_id: "card-1-id",
+      destination_screen_owner_type: "auctionResultsForArtistsYouFollow",
+      horizontal_slide_position: 1,
+      type: "thumbnail",
+    })
+    expect(navigate).toHaveBeenCalledWith("/1-route")
+
+    fireEvent.press(screen.getByText("Card Title 2"))
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCardGroup",
+      context_module: "auctionsCard",
+      context_screen_owner_type: "home",
+      destination_path: "/2-route",
+      destination_screen_owner_id: "card-2-id",
+      destination_screen_owner_type: "auctions",
+      horizontal_slide_position: 2,
+      type: "thumbnail",
+    })
+    expect(navigate).toHaveBeenCalledWith("/2-route")
+  })
+
+  it("renders empty state images when empty state image is present", async () => {
+    renderWithRelay({
+      HomeViewSectionCards: () => ({
+        internalID: "home-view-section-auctions-hub",
+        ...component,
+        ...emptyStateCardsConnection,
+      }),
+    })
+
+    expect(screen.getByText("Card Title 0")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 1")).toBeOnTheScreen()
+    expect(screen.getByText("Card Title 2")).toBeOnTheScreen()
+
+    // renders oneImageLayout from MultipleImageLayout for all cards since they have 0 images in the images array
+    expect(screen.queryAllByTestId("image-1")).toHaveLength(3)
+    expect(screen.queryAllByTestId("image-2")).toHaveLength(0)
+    expect(screen.queryAllByTestId("image-3")).toHaveLength(0)
+  })
+})
+
+const component = {
+  component: {
+    title: "Section Title",
+    behaviors: {
+      viewAll: {
+        href: "/view-all-route",
+        ownerType: "auctions",
+      },
+    },
+  },
+}
+
+const cardsConnection = {
+  cardsConnection: {
+    edges: [
+      {
+        node: {
+          title: "Card Title 0",
+          href: "/0-route",
+          entityID: "card-0-id",
+          entityType: "lotsForYou",
+          contextModule: "lotsForYouCard",
+          images: [
             {
-              node: {
-                title: "Card 1",
-                href: "/card-1",
-                entityID: "Collect by Price",
-                entityType: "collectionsCategory",
-              },
+              imageURL: "https://url.com/image.jpg",
+            },
+            {
+              imageURL: "https://url.com/image2.jpg",
+            },
+            {
+              imageURL: "https://url.com/image3.jpg",
             },
           ],
         },
-      }),
-    })
+      },
+      {
+        node: {
+          title: "Card Title 1",
+          href: "/1-route",
+          entityID: "card-1-id",
+          entityType: "auctionResultsForArtistsYouFollow",
+          contextModule: "auctionResultsForArtistsYouFollowCard",
+          images: [
+            {
+              imageURL: "https://url.com/image.jpg",
+            },
+            {
+              imageURL: "https://url.com/image2.jpg",
+            },
+          ],
+        },
+      },
+      {
+        node: {
+          title: "Card Title 2",
+          href: "/2-route",
+          entityID: "card-2-id",
+          entityType: "auctions",
+          contextModule: "auctionsCard",
+          images: [
+            {
+              imageURL: "https://url.com/image.jpg",
+            },
+          ],
+        },
+      },
+    ],
+  },
+}
 
-    fireEvent.press(screen.getByText(/Card 1/))
-
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      expect.objectContaining({
-        action: "tappedCardGroup",
-        context_module: "some-cards",
-        context_screen_owner_type: "home",
-        destination_screen_owner_id: "Collect by Price",
-        destination_screen_owner_type: "collectionsCategory",
-      })
-    )
-
-    expect(navigate).toHaveBeenCalledWith(
-      expect.stringMatching("/collections-by-category/Collect by Price"),
-      expect.any(Object)
-    )
-  })
-})
+const emptyStateCardsConnection = {
+  cardsConnection: {
+    edges: [
+      {
+        node: {
+          title: "Card Title 0",
+          href: "/0-route",
+          entityID: "card-0-id",
+          entityType: "lotsForYou",
+          contextModule: "lotsForYouCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
+        },
+      },
+      {
+        node: {
+          title: "Card Title 1",
+          href: "/1-route",
+          entityID: "card-1-id",
+          entityType: "auctionResultsForArtistsYouFollow",
+          contextModule: "auctionResultsForArtistsYouFollowCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
+        },
+      },
+      {
+        node: {
+          title: "Card Title 2",
+          href: "/2-route",
+          entityID: "card-2-id",
+          entityType: "auctions",
+          contextModule: "auctionsCard",
+          image: { imageURL: "some-image-url" },
+          images: [],
+        },
+      },
+    ],
+  },
+}

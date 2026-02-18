@@ -1,4 +1,4 @@
-import { DecreaseIcon, IncreaseIcon } from "@artsy/palette-mobile"
+import { ArrowDownIcon, ArrowUpIcon } from "@artsy/icons/native"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import {
   MarketStatsFragmentContainer,
@@ -9,6 +9,7 @@ import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { act } from "react"
 import { Environment } from "react-relay"
 import { ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -38,26 +39,28 @@ describe("MarketStats", () => {
     beforeEach(() => {
       // eslint-disable-next-line testing-library/no-render-in-lifecycle
       tree = renderWithWrappersLEGACY(<TestWrapper />).root
+
       const priceInsights = {
         edges: [
           { node: { medium: "crayon", annualLotsSold: 123 } },
           { node: { medium: "fingerpaint", annualLotsSold: 456 } },
         ],
       }
-
       resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
     })
 
-    it("shows data for first medium", () => {
+    it("shows data for first medium", async () => {
       // eslint-disable-next-line testing-library/await-async-queries
       expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("123")
     })
 
-    it("shows data for other mediums when selected", () => {
-      // eslint-disable-next-line testing-library/await-async-queries
-      tree.findByProps({ testID: "select-medium" }).props.onSelectValue("fingerpaint")
+    it("shows data for other mediums when selected", async () => {
+      await act(async () => {
+        // eslint-disable-next-line testing-library/await-async-queries
+        tree.findByProps({ testID: "select-medium" }).props.onSelectValue("fingerpaint")
+      })
 
       // eslint-disable-next-line testing-library/await-async-queries
       expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("456")
@@ -95,7 +98,7 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(DecreaseIcon)).toBeDefined()
+      expect(tree.findByType(ArrowDownIcon)).toBeDefined()
     })
 
     it("displays no arrow when percentage is 0", () => {
@@ -105,9 +108,9 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(DecreaseIcon).length).toEqual(0)
+      expect(tree.findAllByType(ArrowDownIcon).length).toEqual(0)
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(IncreaseIcon).length).toEqual(0)
+      expect(tree.findAllByType(ArrowUpIcon).length).toEqual(0)
     })
 
     it("displays up arrow when percentage is positive", () => {
@@ -117,7 +120,7 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(IncreaseIcon)).toBeDefined()
+      expect(tree.findByType(ArrowUpIcon)).toBeDefined()
     })
   })
 

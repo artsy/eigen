@@ -5,23 +5,18 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
-  "diamond_discover-tab": {
-    description: "Experiment replacing Search tab with Discover tab",
-    variantSuggestions: ["control", "variant-a"],
-  },
-  "eigen-new-works-for-you-recommendations-model": {
-    description: "value controlling which model to use for new works for you recs",
-  },
   "onyx_artwork-card-save-and-follow-cta-redesign": {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
-  "onyx_internal-testing-experiment": {
-    description: "Non-visible experiment to test variant assignment from a multi-variant setup.",
-    variantSuggestions: ["control", "experiment-a", "experiment-b"],
+  onyx_auctions_hub: {
+    description:
+      "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
   },
-  "onyx_quick-links-experiment": {
-    description: "Add quick links section to home view",
+  "topaz_retire-inquiry-template-messages": {
+    description: "Retire the inquiry message templates in inquiry flow",
+    variantSuggestions: ["control", "experiment"],
+    payloadSuggestions: ["control", "experiment"],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

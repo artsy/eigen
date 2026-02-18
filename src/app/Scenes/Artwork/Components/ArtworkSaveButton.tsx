@@ -1,14 +1,6 @@
-import {
-  Box,
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  Spacer,
-  Text,
-  useSpace,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { Schema } from "app/utils/track"
@@ -23,22 +15,17 @@ interface ArtworkSaveButtonProps {
 
 interface IconProps {
   isSaved: boolean
+  isLot: boolean
 }
 
-const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
+const SaveButtonIcon: React.FC<IconProps> = ({ isSaved, isLot = false }) => {
+  let accessibilityLabel = isLot ? "watch lot icon" : "Save icon"
+
   if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
+    accessibilityLabel = isLot ? "unwatch lot icon" : "Saved icon"
   }
 
-  return <HeartIcon accessibilityLabel="watch lot icon" />
-}
-
-const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
-  if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
-  }
-
-  return <HeartIcon accessibilityLabel="Save icon" />
+  return <ArtworkSaveIconWrapper isSaved={!!isSaved} accessibilityLabel={accessibilityLabel} />
 }
 
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {
@@ -101,11 +88,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
       onPress={saveArtworkToLists}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        {openOrUpcomingSale ? (
-          <WatchLotIcon isSaved={!!isSaved} />
-        ) : (
-          <SaveButtonIcon isSaved={!!isSaved} />
-        )}
+        <SaveButtonIcon isSaved={!!isSaved} isLot={!!openOrUpcomingSale} />
+
         <Spacer x={0.5} />
 
         <Box position="relative">
@@ -118,7 +102,9 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
             </Text>
           )}
           <Box {...StyleSheet.absoluteFillObject}>
-            <Text variant="sm">{buttonCopy}</Text>
+            <Text variant="sm" selectable={false}>
+              {buttonCopy}
+            </Text>
           </Box>
         </Box>
       </Flex>

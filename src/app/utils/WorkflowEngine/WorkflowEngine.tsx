@@ -63,20 +63,29 @@ export class WorkflowEngine {
     return this.index === 0
   }
 
-  // TODO: implement case for 0 index && current === "object" (Branch)
   back(): string | undefined {
-    let current: string | undefined
+    if (this.index === 0 && this.workflow !== this.__workflow__) {
+      // We're at the beginning of a processed conditional branch
+      // Restore the original workflow and go back to the screen before the conditional
+      this.workflow = this.__workflow__
 
-    if (this.index === 0) {
-      current = this.workflow[0] as string
+      // Find the last string item before the first conditional branch
+      let targetIndex = 0
+      for (let i = 0; i < this.__workflow__.length; i++) {
+        if (typeof this.__workflow__[i] === "string") {
+          targetIndex = i
+        } else {
+          // Hit a conditional, stop here
+          break
+        }
+      }
+      this.index = targetIndex
+    } else if (this.index > 0) {
+      this.index = this.index - 1
     }
 
-    this.index = this.index - 1
     this.moves = this.moves - 1
-
-    current = this.current()
-
-    return current
+    return this.current()
   }
 
   total() {

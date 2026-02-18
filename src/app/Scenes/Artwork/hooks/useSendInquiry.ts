@@ -3,12 +3,12 @@ import { useSendInquiry_collectorProfile$key } from "__generated__/useSendInquir
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { useInquirySuccessPopover } from "app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover"
-import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   userShouldBePromptedToAddArtistsToCollection,
   userShouldBePromptedToCompleteProfile,
 } from "app/utils/collectorPromptHelpers"
+import { useSubmitInquiryRequest } from "app/utils/mutations/useSubmitInquiryRequest"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -87,7 +87,13 @@ export const useSendInquiry = ({
       onCompleted: () => {
         setIsLoading(false)
         onCompleted?.()
-        tracking.trackEvent(tracks.successfullySentTheInquiry(artwork.internalID, artwork.slug))
+
+        // include selected checkboxes in the tracking event
+        const inquiryCheckboxes = state.inquiryQuestions.map((q) => q.questionID)
+
+        tracking.trackEvent(
+          tracks.successfullySentTheInquiry(artwork.internalID, artwork.slug, inquiryCheckboxes)
+        )
 
         const lastUpdatePromptAt = collectorProfile.lastUpdatePromptAt
         const locationDisplay = me.location?.display
@@ -117,7 +123,7 @@ export const useSendInquiry = ({
     })
   }
 
-  return { sendInquiry, error }
+  return { sendInquiry, error, sendingInquiry: isLoading }
 }
 
 const FRAGMENT_ARTWORK = graphql`
@@ -159,12 +165,17 @@ const tracks = {
     owner_id: artworkId,
     owner_slug: artworkSlug,
   }),
-  successfullySentTheInquiry: (artworkId: string, artworkSlug: string) => ({
+  successfullySentTheInquiry: (
+    artworkId: string,
+    artworkSlug: string,
+    inquiryCheckboxes: string[]
+  ) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: artworkId,
     owner_slug: artworkSlug,
+    inquiry_checkboxes: !!inquiryCheckboxes.length ? inquiryCheckboxes : undefined,
   }),
   failedToSendTheInquiry: (artworkId: string, artworkSlug: string) => ({
     action_type: Schema.ActionTypes.Fail,

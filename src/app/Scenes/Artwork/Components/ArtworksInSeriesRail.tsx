@@ -35,7 +35,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
     <Flex>
       <SectionTitle
         title="More from this series"
-        titleVariant="md"
+        variant="large"
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
         }}

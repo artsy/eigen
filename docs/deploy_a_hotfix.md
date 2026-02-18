@@ -49,7 +49,7 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
 You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
 
-Run the script `./scripts/deploys/expo-updates/apply-fix.sh <commit-hash>`
+Run the script `./scripts/deploys/expo-updates/apply-fix <commit-hash>`
 Passing the commit hash of the fix, if there are multiple you can run multiple times.
 
 If you see output like: `Warning: native code changed you cannot use expo updates for this hotfix, please follow the native beta deployment steps.`
@@ -86,19 +86,19 @@ You will need to be logged in to the `artsy_mobile` account, credentials in 1pas
 
 `./bin/node_modules/.bin/eas login`
 
-> [!IMPORTANT]
-> If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
+> ⚠️ **IMPORTANT:** If the install results in changes to Podfile.lock you must do a Native Release Hotfix. Please refer to that section of the docs.
 
 ## Deploy your change to expo updates canary channel
 
 Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
 
 Run the script to deploy the hotfix to the canary channel:
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'staging' 'hotfix description'`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description'`
 
-## Test your update in the production app
+## Test your update in the firebase equivalent of the production app
 
-Download the latest app from the app store or play store
+Find and download the equivalent build in firebase app tester to the production app, it should have the same build number as the latest submissions found in step 1.
+
 Enable the dev menu and download the expo updates bundle from the staging deployment.
 Test that the fix is working as intended and do some basic QA to make sure the app is functioning correctly.
 
@@ -107,7 +107,9 @@ Test that the fix is working as intended and do some basic QA to make sure the a
 If QA goes well run the script to promote the bundle to production.
 Make sure to monitor the app as it rolls out to users.
 
-`./scripts/deploys/expo-updates/deploy-to-prod <rollout_percentage>`
+> ⚠️ **IMPORTANT:** This will deploy the code from your local branch to production. Make sure you are on the branch with the changes you want to deploy and _only_ the changes you want to deploy!
+
+`./scripts/deploys/expo-updates/deploy-to-production <rollout_percentage>`
 
 For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
@@ -116,7 +118,9 @@ you can pass `100` otherwise it is suggested you pass `50` and monitor before up
 
 If all looks good with the fix you can update the rollout to all users:
 
-`./scripts/deploys/expo-updates/update-rollout 100`
+`./scripts/deploys/expo-updates/update-rollout`
+
+This will start an interactive dialog where you can choose the release you want to update the rollout for. Remember to update for both iOS and Android!
 
 </details>
 

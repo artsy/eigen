@@ -9,6 +9,7 @@
 !default.xcworkspace
 .build
 .clang-format
+.claude/settings.local.json
 .idea/
 .pt
 .recordingSnapshots
@@ -115,9 +116,11 @@ build/
 local.properties
 
 # android
+*.apk
 *.keystore
 !debug.keystore
 android-secret.json
+.kotlin/
 
 # Fonts
 android/app/src/main/assets/fonts/*
@@ -165,3 +168,22 @@ main.jsbundle.map
 .expo
 dist/
 web-build/
+
+# Cursor MCP server
+.cursor/mcp.json
+
+
+# yarn 4
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+bin/.yarn/*
+!bin/.yarn/patches
+!bin/.yarn/plugins
+!bin/.yarn/releases
+!bin/.yarn/sdks
+!bin/.yarn/versions

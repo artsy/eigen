@@ -1,4 +1,3 @@
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { LaunchArguments } from "react-native-launch-arguments"
@@ -7,14 +6,17 @@ interface MaestroLaunchArguments {
   email?: string
   password?: string
   shouldSignOut?: boolean
+  useMaestroInit?: boolean
 }
 
 export const useMaestroInitialization = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
+    GlobalStore.actions.artsyPrefs.pushPromptLogic
 
   useEffect(() => {
-    if (!ArtsyNativeModule.isBetaOrDev || !isHydrated) {
+    if (!isHydrated) {
       return
     }
 
@@ -22,6 +24,21 @@ export const useMaestroInitialization = () => {
     const email = args.email
     const password = args.password
     const shouldSignOut = args.shouldSignOut
+    const useMaestroInit = args.useMaestroInit
+
+    if (!useMaestroInit) {
+      return
+    }
+
+    // Hides the push permission prompt for Maestro tests
+    setPushPermissionsRequestedThisSession(true)
+    setPushNotificationSettingsPromptSeen(true)
+
+    // Dismiss all progressive onboarding popovers for Maestro tests
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
+      key: "DTHideAllOnboardingPopovers",
+      value: true,
+    })
 
     if (email && password) {
       GlobalStore.actions.auth.signIn({

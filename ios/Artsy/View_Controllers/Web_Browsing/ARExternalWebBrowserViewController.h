@@ -7,6 +7,7 @@
 @property (readonly, nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, readonly, strong) NSURL *initialURL;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) CGPoint lastTapPoint;
 
 - (instancetype)initWithURL:(NSURL *)url;
 

@@ -16,10 +16,32 @@ export interface UserProfileFormikSchema {
   location: Partial<EditableLocationProps> | null | undefined
   profession: string
   otherRelevantPositions: string
+  instagram: string
+  linkedIn: string
 }
 
 export const userProfileYupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  instagram: Yup.string()
+    .nullable()
+    .test(
+      "instagram-format",
+      "Instagram handle can only contain letters, numbers, underscores, and periods",
+      (value) => {
+        if (value === null || value === undefined || value === "") return true
+        return /^@?[a-zA-Z0-9_.]+$/.test(value)
+      }
+    ),
+  linkedIn: Yup.string()
+    .nullable()
+    .test(
+      "linkedin-format",
+      "LinkedIn handle can only contain letters, numbers, and hyphens",
+      (value) => {
+        if (value === null || value === undefined || value === "") return true
+        return /^[a-zA-Z0-9\-]+$/.test(value)
+      }
+    ),
 })
 
 interface UserProfileFieldsProps {
@@ -34,6 +56,8 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
   const locationInputRef = useRef<Input>(null)
   const professionInputRef = useRef<Input>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
+  const instagramInputRef = useRef<Input>(null)
+  const linkedInInputRef = useRef<Input>(null)
 
   const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 
@@ -42,6 +66,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={nameInputRef}
         title="Full name"
+        accessibilityLabel="Full name"
         onChangeText={handleChange("name")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -58,6 +83,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
           enableClearButton
           inputRef={locationInputRef}
           title="Primary location"
+          accessibilityLabel="Primary location"
           placeholder="City name"
           returnKeyType="next"
           blurOnSubmit={false}
@@ -90,6 +116,7 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       <InputComponent
         ref={professionInputRef}
         title="Profession"
+        accessibilityLabel="Profession"
         onChangeText={handleChange("profession")}
         onBlur={() => validateForm()}
         blurOnSubmit={false}
@@ -103,13 +130,48 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
       />
       <InputComponent
         ref={relevantPositionsInputRef}
-        title="Other Relevant Positions"
+        title="Other relevant positions"
+        accessibilityLabel="Other relevant positions"
         onChangeText={handleChange("otherRelevantPositions")}
         onBlur={() => validateForm()}
+        blurOnSubmit={false}
         error={errors.otherRelevantPositions}
         value={values.otherRelevantPositions}
         placeholder="Memberships, institutions, positions"
+        returnKeyType="next"
+        onSubmitEditing={() => {
+          instagramInputRef.current?.focus()
+        }}
+      />
+      <InputComponent
+        ref={instagramInputRef}
+        title="Instagram"
+        accessibilityLabel="Instagram handle"
+        onChangeText={handleChange("instagram")}
+        onBlur={() => validateForm()}
+        blurOnSubmit={false}
+        error={errors.instagram}
+        value={values.instagram}
+        placeholder="Instagram handle"
+        returnKeyType="next"
+        maxLength={256}
+        autoCapitalize="none"
+        onSubmitEditing={() => {
+          linkedInInputRef.current?.focus()
+        }}
+      />
+      <InputComponent
+        ref={linkedInInputRef}
+        title="LinkedIn"
+        accessibilityLabel="LinkedIn handle"
+        onChangeText={handleChange("linkedIn")}
+        onBlur={() => validateForm()}
+        error={errors.linkedIn}
+        value={values.linkedIn}
+        placeholder="LinkedIn handle"
         returnKeyType="done"
+        maxLength={256}
+        autoCapitalize="none"
       />
     </Flex>
   )

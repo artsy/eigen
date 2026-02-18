@@ -1,6 +1,6 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
+import { TextProps, useSpace } from "@artsy/palette-mobile"
+import { FlashListProps, MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -9,11 +9,10 @@ import {
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import React, { FC, useCallback } from "react"
+import React, { FC, useCallback, useMemo } from "react"
 import Animated from "react-native-reanimated"
 
 type MasonryFlashListOmittedProps = Omit<
@@ -29,7 +28,15 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
+  /** Do not show add to artworks list prompt */
+  disableArtworksListPrompt?: boolean
+  disableProgressiveOnboarding?: boolean
   hasMore?: boolean
+  hideCreateAlertOnArtworkPreview?: boolean
+  hideCuratorsPick?: boolean
+  hideIncreasedInterest?: boolean
+  hideViewFollowsLink?: boolean
+  hidePartner?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
   isLoading?: boolean
@@ -38,6 +45,9 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   pageSize?: number
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
+  trackTap?: (artworkSlug: string, itemIndex?: number) => void
+  saleInfoTextStyle?: TextProps
+  trackingFlow?: string
 }
 
 /**
@@ -55,7 +65,13 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
+  disableArtworksListPrompt,
+  disableProgressiveOnboarding,
   hasMore,
+  hideCreateAlertOnArtworkPreview,
+  hideCuratorsPick,
+  hideIncreasedInterest,
+  hidePartner,
   hideSaleInfo,
   hideSaveIcon,
   isLoading,
@@ -68,18 +84,23 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   priceOfferMessage,
   refreshControl,
   ListFooterComponent,
+  onViewableItemsChanged,
+  viewabilityConfig,
+  trackTap,
+  saleInfoTextStyle,
+  trackingFlow,
   ...rest
 }) => {
   const space = useSpace()
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
-  const onEndReached = () => {
+  const onEndReached = useCallback(() => {
     console.log("cb::onEndReached", { hasMore, isLoading, currentSize: artworks.length })
     if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
-  }
+  }, [hasMore, isLoading, loadMore, pageSize])
 
   const renderItem = useCallback(
     ({ item, index, columnIndex }: masonryRenderItemProps) => (
@@ -93,6 +114,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         numColumns={rest.numColumns}
+        hidePartner={hidePartner}
         artworkMetaStyle={{
           // Since the grid is full width,
           // we need to add padding to the artwork meta to make sure its readable
@@ -105,49 +127,94 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
+        disableArtworksListPrompt={disableArtworksListPrompt}
+        disableProgressiveOnboarding={disableProgressiveOnboarding}
+        hideIncreasedInterestSignal={hideIncreasedInterest}
+        hideCuratorsPickSignal={hideCuratorsPick}
+        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+        saleInfoTextStyle={saleInfoTextStyle}
+        trackTap={trackTap}
+        trackingFlow={trackingFlow}
       />
     ),
-    [rest.numColumns]
+    [
+      contextModule,
+      contextScreenOwnerType,
+      contextScreen,
+      contextScreenOwnerId,
+      contextScreenOwnerSlug,
+      rest.numColumns,
+      space,
+      artworks.length,
+      partnerOffer,
+      priceOfferMessage,
+      onPress,
+      hidePartner,
+      hideSaleInfo,
+      hideSaveIcon,
+      disableArtworksListPrompt,
+      disableProgressiveOnboarding,
+      hideIncreasedInterest,
+      hideCuratorsPick,
+      hideCreateAlertOnArtworkPreview,
+      saleInfoTextStyle,
+      trackTap,
+      trackingFlow,
+    ]
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
 
-  const hasArtworks = artworks.length > 0
+  const getAdjustedNumColumns = useCallback(() => {
+    return rest.numColumns ?? NUM_COLUMNS_MASONRY
+  }, [rest.numColumns])
 
-  const getAdjustedNumColumns = () => {
-    if (hasArtworks) {
-      return rest.numColumns ?? NUM_COLUMNS_MASONRY
-    }
-    // WARNING: if the masonry is empty we need to have numColumns=1 to avoid a crash
-    // that happens only when we dynamically change the number of columns see more here:
-    // https://github.com/artsy/eigen/pull/10319
-    return 1
+  const flashlistComponentProps = useMemo(() => {
+    return {
+      keyboardShouldPersistTaps: "handled",
+      ListHeaderComponent: shouldDisplayHeader ? ListHeaderComponent : null,
+      ListEmptyComponent: ListEmptyComponent,
+      refreshControl: refreshControl,
+      onScroll: rest.onScroll,
+      testID: "masonry-artwork-grid",
+    } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
+  }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
+
+  if (artworks.length === 0) {
+    return (
+      <FlashlistComponent
+        data={[]}
+        renderItem={() => null}
+        {...flashlistComponentProps}
+        numColumns={NUM_COLUMNS_MASONRY}
+        contentContainerStyle={{
+          // No paddings are needed for single column grids
+          paddingHorizontal: space(2),
+        }}
+      />
+    )
   }
 
   return (
     <FlashlistComponent
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
-        // No paddings are needed for single column grids
-        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
-      }}
-      data={artworks}
+      {...flashlistComponentProps}
+      data={artworks as unknown as readonly MasonryArtworkItem[]}
       keyExtractor={(item) => item.id}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
       numColumns={getAdjustedNumColumns()}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
-      ListHeaderComponent={shouldDisplayHeader ? ListHeaderComponent : null}
-      ListEmptyComponent={ListEmptyComponent}
-      refreshControl={refreshControl}
       renderItem={renderItem}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         hasMore ? (
           <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
         ) : null
       }
-      onScroll={rest.onScroll}
-      testID="masonry-artwork-grid"
+      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+      onEndReached={onEndReached}
+      contentContainerStyle={{
+        // No paddings are needed for single column grids
+        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
+      }}
+      onViewableItemsChanged={onViewableItemsChanged}
+      viewabilityConfig={viewabilityConfig}
     />
   )
 }

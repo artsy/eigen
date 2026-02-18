@@ -1,4 +1,5 @@
-import { CloseIcon, useColor } from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { useColor } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useScreenDimensions } from "app/utils/hooks"
 import { MotiView } from "moti"

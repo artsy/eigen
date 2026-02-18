@@ -8,6 +8,16 @@ import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
+// Mock memo to return the same instance of the component
+// issue: https://github.com/facebook/react/issues/17301
+jest.mock("react", () => {
+  const actualReact = jest.requireActual("react")
+  return {
+    ...actualReact,
+    memo: (component: React.ComponentType<any>) => component,
+  }
+})
+
 describe("FairFollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>
@@ -180,9 +190,10 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const viewAllButton = await wrapper.root.findAllByType(RouterLink)
+    const routerLinkButtons = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(5)
+    // 4 artworks + view all button + browse all button
+    expect(routerLinkButtons.length).toBe(6)
   })
 
   it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
@@ -201,7 +212,7 @@ describe("FairFollowedArtistsRail", () => {
 
     const viewAllButton = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(2)
+    expect(viewAllButton.length).toBe(3)
   })
 
   it("tracks taps on the rails header", () => {

@@ -4,6 +4,6 @@ set -euxo pipefail
 source ./scripts/ci/ci-setup-export-vars
 
 ./scripts/deploys/check_version_synced
-./scripts/deploys/check_build_status ios
+./scripts/deploys/check_build_status_gh ios
 
 git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify

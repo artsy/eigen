@@ -128,7 +128,7 @@ const ArtworkListsContent: React.FC<ArtworkListsContentProps & ArtworkListsProps
         numColumns={artworkListsColCount}
         keyExtractor={(item) => item.key}
         onEndReached={handleLoadMore}
-        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
+        ListFooterComponent={() => (!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />)}
         ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
         refreshControl={
           <RefreshControl
@@ -149,7 +149,7 @@ const ArtworkListsContent: React.FC<ArtworkListsContentProps & ArtworkListsProps
       numColumns={artworkListsColCount}
       keyExtractor={(item) => item.key}
       onEndReached={handleLoadMore}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

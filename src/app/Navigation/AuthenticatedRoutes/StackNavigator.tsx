@@ -1,19 +1,12 @@
-import {
-  ArrowLeftIcon,
-  CloseIcon,
-  DEFAULT_HIT_SLOP,
-  Flex,
-  THEMES,
-  Touchable,
-} from "@artsy/palette-mobile"
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
+import { ChevronLeftIcon, CloseIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, THEMES, Touchable } from "@artsy/palette-mobile"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
+import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
-import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
 
@@ -24,7 +17,7 @@ type StackNavigatorScreenProps = {
   module: ModuleDescriptor
 } & Omit<React.ComponentProps<typeof StackNavigator.Screen>, "component" | "getComponent">
 
-export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, module, ...props }) => {
+export const registerScreen = ({ name, module, ...props }: StackNavigatorScreenProps) => {
   return (
     <StackNavigator.Screen
       {...props}
@@ -33,6 +26,8 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
+        animation: !isModalScreen(module) ? "slide_from_right" : undefined,
+        animationDuration: DEFAULT_SCREEN_ANIMATION_DURATION,
         headerShown: module.options?.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
@@ -57,7 +52,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
               {isModalScreen(module) ? (
                 <CloseIcon fill="mono100" />
               ) : (
-                <ArrowLeftIcon fill="mono100" />
+                <ChevronLeftIcon fill="mono100" />
               )}
             </Touchable>
           )
@@ -88,28 +83,3 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
     />
   )
 }
-
-export interface ScreenWrapperProps {
-  readonly hidesBottomTabs?: boolean
-}
-
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
-  ({ hidesBottomTabs = false, children }) => {
-    // We don't have the bottom tabs context on modal screens
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
-
-    return (
-      <RetryErrorBoundary>
-        <Flex
-          flex={1}
-          style={{
-            paddingBottom: hidesBottomTabs ? 0 : tabBarHeight,
-          }}
-        >
-          {children}
-        </Flex>
-      </RetryErrorBoundary>
-    )
-  }
-)

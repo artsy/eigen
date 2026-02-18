@@ -59,6 +59,7 @@ export const features = {
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
     readyForRelease: true,
+    showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
   AREnableNewAuctionsRailCard: {
@@ -80,6 +81,12 @@ export const features = {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
+  },
+  AREnabledDiscoverDailyNegativeSignals: {
+    description: "Enable negative signals in Discover Daily",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnabledDiscoverDailyNegativeSignals",
   },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
@@ -109,12 +116,7 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
-  ARShowBlurhashImagePlaceholder: {
-    description: "Show blurhash image placeholder (works only when using Palette Image Component)",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARShowBlurhashImagePlaceholder",
-  },
+
   AREnableAlertBottomSheet: {
     description: "Enable tapping on alerts to show bottom sheet",
     readyForRelease: true,
@@ -126,12 +128,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
-  },
-  AREnableSignupLoginFusion: {
-    description: "Enable the fused signup and login flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableSignupLoginFusion",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
@@ -145,53 +141,41 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableViewPortPrefetching",
   },
-  AREnableArtworkCardContextMenuIOS: {
-    description: "Enable long press menu on artwork cards for iOS",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuIOS",
-  },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
-  AREnableArtworkCardContextMenuAndroid: {
-    description: "Enable long press menu on artwork cards for Android",
+  ARShowOnboardingPriceRangeScreen: {
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
+    description: "Show onboarding price range screen",
+    echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
-  AREnableLongPressContextMenuOnboarding: {
-    description: "Enable long press context menu onboarding",
+  AREnableNewHomeViewCardRailType: {
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableLongPressContextMenuOnboarding",
+    description: "Enable new rail type on home",
+    echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
-  AREnableHomeViewQuickLinks: {
-    description: "Enable Home View Quick Links",
+  AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "AREnableHomeViewQuickLinks",
+    description: "Enable Redirecting feature pages with video to webviews",
+    echoFlagKey: "AREnableRedirectForVideoFeatureType",
   },
-  ARDarkModeOnboarding: {
+  AREnableFeatureVideoPhase2Type: {
     readyForRelease: true,
     showInDevMenu: true,
-    description: "Enable Dark mode onboarding task",
-    echoFlagKey: "ARDarkModeOnboarding",
+    description: "Enable feature videos phase 2, falls back to webview if disabled",
+    echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
-  AREnableQuickLinksAnimation2: {
+  AREnableExpandedCityGuide: {
     readyForRelease: true,
     showInDevMenu: true,
-    description: "Enable quick links animation",
-    echoFlagKey: "AREnableQuickLinksAnimation2",
-  },
-  AREnableNewOrderDetails: {
-    readyForRelease: false,
-    showInDevMenu: true,
-    description: "Enable new order details screen",
-    echoFlagKey: "AREnableNewOrderDetails",
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -236,17 +220,26 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTLocationDetectionVisialiser: {
     description: "Location detection visualiser",
   },
+  DTCacheHitsVisialiser: {
+    description: "Cache hits visualiser",
+  },
   DTShowNavigationVisualiser: {
     description: "Navigation visualiser",
   },
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
   },
+  DTShowArtworkInternalIDOnRails: {
+    description: "Show artwork internal ID on artwork rails",
+  },
   DTMyCollectionDeleteAllArtworks: {
     description: "MyCollection delete all artworks",
   },
   DTShowWebviewIndicator: {
     description: "Webview indicator",
+  },
+  DTHideAllOnboardingPopovers: {
+    description: "Hide all onboarding popovers",
   },
   DTShowInstagramShot: {
     description: "Instagram viewshot debug",

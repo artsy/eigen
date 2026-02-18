@@ -1,4 +1,5 @@
-import { EyeClosedIcon, Flex, Join, Spacer, Switch, Text } from "@artsy/palette-mobile"
+import { HideIcon } from "@artsy/icons/native"
+import { Flex, Join, Spacer, Switch, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkListItemSelectedIcon } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/ArtworkListItemSelectedIcon"
@@ -80,7 +81,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
               </Flex>
 
               {!props.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-                <EyeClosedIcon accessibilityLabel="EyeClosedIcon" ml={0.5} fill="mono100" />
+                <HideIcon accessibilityLabel="HideIcon" ml={0.5} fill="mono100" />
               )}
             </Flex>
             <Text variant="xs" color="mono60">

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+# When to use this script:
+#
+# Use this script when you want to completely fix your development environment.
+# This is the most common "repair" workflow that handles the majority of issues.
+#
+# This script will:
+# 1. Clean all dependencies, caches, and build artifacts (yarn clean)
+# 2. Setup Artsy environment variables and resources (yarn setup:artsy)
+# 3. Reinstall all dependencies (yarn install:all)
+#
+# Use this when:
+# - You're experiencing build failures or runtime issues
+# - After pulling changes with major dependency updates
+# - Your environment is in an unknown or corrupted state
+# - You want to start fresh without worrying about the details
+#
+# For even more aggressive cleanup (global caches, relay, etc), use:
+# yarn flip_table_extreme
+
+
+echo '🔧 Starting full environment repair...'
+echo ''
+
+echo '📦 Step 1/3: Cleaning all dependencies, caches, and build artifacts'
+yarn clean
+
+echo '🎨 Step 2/4: Yarn install' # needed for yarn 4
+yarn
+
+echo '🎨 Step 3/4: Setting up Artsy environment'
+yarn setup:artsy
+
+echo ''
+echo '📥 Step 4/4: Installing all dependencies'
+yarn install:all
+
+echo ''
+echo '✅ Repair complete! Your environment is ready.'

@@ -1,4 +1,5 @@
 type AllowedProvider =
+  | React.FC<React.PropsWithChildren>
   | React.FC
   | React.ComponentClass<{ children: React.ReactNode }>
   | React.ComponentType

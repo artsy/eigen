@@ -74,7 +74,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
       keyboardShouldPersistTaps="handled"
       onEndReached={loadMore}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         shouldDisplaySpinner ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

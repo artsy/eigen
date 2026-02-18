@@ -5,35 +5,45 @@ import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
-import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
+import {
+  HomeViewSectionsConnection_viewer$key,
+  HomeViewSectionsConnection_viewer$data,
+} from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
-import { useDarkModeOnboarding } from "app/Scenes/HomeView/hooks/useDarkModeOnboarding"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
+import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
+import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
+import {
+  FlatList,
+  Linking,
+  RefreshControl,
+  StatusBar,
+  ViewToken,
+  ListRenderItem,
+} from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -42,10 +52,34 @@ export const homeViewScreenQueryVariables = () => ({
   count: NUMBER_OF_SECTIONS_TO_LOAD,
 })
 
+// Type for home view section items
+type HomeViewSectionType = ExtractNodeType<
+  HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
+>
+
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
 
+  const setViewableSections = HomeViewStore.useStoreActions(
+    (actions) => actions.setViewableSections
+  )
+
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      const newViewableRails = new Set<string>()
+
+      // Track currently viewable rails // needed to enable tracking artwork views
+      viewableItems.forEach(({ item }: { item: HomeViewSectionArtworks_section$data }) => {
+        newViewableRails.add(item.internalID)
+      })
+
+      setViewableSections(Array.from(newViewableRails))
+    }
+  ).current
+
+  const viewabilityConfig = useViewabilityConfig()
 
   const { fetchKey } = useRetryErrorBoundaryContext()
 
@@ -59,25 +93,6 @@ export const HomeView: React.FC = memo(() => {
       fetchKey,
     }
   )
-
-  const { trackExperiment: trackInternalTestingExperiment } = useExperimentVariant(
-    "onyx_internal-testing-experiment"
-  )
-  const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
-    "onyx_quick-links-experiment"
-  )
-  const { trackExperiment: trackDiscoverTabExperiment } =
-    useExperimentVariant("diamond_discover-tab")
-  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
-
-  useEffect(() => {
-    trackDiscoverTabExperiment()
-    trackInternalTestingExperiment()
-
-    if (enableNavigationPills) {
-      trackQuickLinksExperiment()
-    }
-  }, [])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
@@ -166,7 +181,12 @@ export const HomeView: React.FC = memo(() => {
     })
   }
 
-  useDarkModeOnboarding()
+  const renderItem: ListRenderItem<HomeViewSectionType> = useCallback(
+    ({ item, index }) => {
+      return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
+    },
+    [refetchKey]
+  )
 
   return (
     <Screen safeArea={true}>
@@ -179,12 +199,10 @@ export const HomeView: React.FC = memo(() => {
           ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
-          renderItem={({ item, index }) => {
-            return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
-          }}
+          renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
-          ListFooterComponent={
+          ListFooterComponent={() =>
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
                 <Spinner />
@@ -193,8 +211,11 @@ export const HomeView: React.FC = memo(() => {
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
+          maxToRenderPerBatch={6}
           stickyHeaderIndices={[0]}
           windowSize={15}
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={onViewableItemsChanged}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>

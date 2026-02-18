@@ -71,7 +71,7 @@ const ArtistShows: React.FC<Props> = ({ artist, relay }) => {
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
-        ListFooterComponent={
+        ListFooterComponent={() =>
           isFetchingMoreData ? (
             <Flex my={2} alignItems="center" justifyContent="center">
               <Spinner />

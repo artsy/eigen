@@ -1,11 +1,13 @@
 import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useMemo, useState } from "react"
 import { Animated } from "react-native"
+import { FullWindowOverlay } from "react-native-screens"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { ToastDetails, ToastDuration } from "./types"
 
@@ -16,11 +18,12 @@ const EDGE_TOAST_HEIGHT = 60
 const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
-const TABBAR_HEIGHT = 50
+const TOAST_ANIMATION_DURATION = 450
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
   long: 5000,
+  superLong: 10000,
 }
 
 export const ToastComponent = ({
@@ -30,6 +33,7 @@ export const ToastComponent = ({
   message,
   description,
   onPress,
+  hideOnPress,
   Icon,
   backgroundColor = "mono100",
   duration = "short",
@@ -57,14 +61,14 @@ export const ToastComponent = ({
     Animated.timing(opacityAnim, {
       toValue: 0,
       useNativeDriver: true,
-      duration: 450,
+      duration: TOAST_ANIMATION_DURATION,
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
 
   const toastBottomPadding = useMemo(() => {
     // This is needed to avoid importing modules during tests
     if (__TEST__) {
-      return TABBAR_HEIGHT
+      return BOTTOM_TABS_HEIGHT
     }
 
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
@@ -78,7 +82,7 @@ export const ToastComponent = ({
       return bottomPadding || 0
     }
 
-    return TABBAR_HEIGHT
+    return BOTTOM_TABS_HEIGHT
   }, [])
 
   if (placement === "middle") {
@@ -92,31 +96,33 @@ export const ToastComponent = ({
     )
 
     return (
-      <AnimatedFlex
-        width={MIDDLE_TOAST_SIZE}
-        height={MIDDLE_TOAST_SIZE}
-        position="absolute"
-        top={(height - MIDDLE_TOAST_SIZE) / 2}
-        left={(width - MIDDLE_TOAST_SIZE) / 2}
-        backgroundColor={color(backgroundColor)}
-        opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
-        borderRadius={6}
-        overflow="hidden"
-        zIndex={999}
-      >
-        {onPress !== undefined ? (
-          <Touchable
-            accessibilityRole="button"
-            style={{ flex: 1 }}
-            onPress={() => onPress({ id, showActionSheetWithOptions })}
-            underlayColor={color("mono60")}
-          >
-            {innerMiddle}
-          </Touchable>
-        ) : (
-          innerMiddle
-        )}
-      </AnimatedFlex>
+      <FullWindowOverlay>
+        <AnimatedFlex
+          width={MIDDLE_TOAST_SIZE}
+          height={MIDDLE_TOAST_SIZE}
+          position="absolute"
+          top={(height - MIDDLE_TOAST_SIZE) / 2}
+          left={(width - MIDDLE_TOAST_SIZE) / 2}
+          backgroundColor={color(backgroundColor)}
+          opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
+          borderRadius={6}
+          overflow="hidden"
+          zIndex={9999999}
+        >
+          {onPress !== undefined ? (
+            <Touchable
+              accessibilityRole="button"
+              style={{ flex: 1 }}
+              onPress={() => onPress({ id, showActionSheetWithOptions })}
+              underlayColor={color("mono60")}
+            >
+              {innerMiddle}
+            </Touchable>
+          ) : (
+            innerMiddle
+          )}
+        </AnimatedFlex>
+      </FullWindowOverlay>
     )
   }
 
@@ -185,7 +191,17 @@ export const ToastComponent = ({
         <Touchable
           accessibilityRole="button"
           style={{ flex: 1 }}
-          onPress={() => onPress({ id, showActionSheetWithOptions })}
+          onPress={() => {
+            onPress?.({ id, showActionSheetWithOptions })
+
+            if (hideOnPress) {
+              Animated.timing(opacityAnim, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: TOAST_ANIMATION_DURATION,
+              }).start(() => GlobalStore.actions.toast.remove(id))
+            }
+          }}
         >
           {innerTopBottom}
         </Touchable>

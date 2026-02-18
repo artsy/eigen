@@ -10,9 +10,10 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { extractNodes } from "app/utils/extractNodes"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { memo } from "react"
-import { FlatList } from "react-native"
+import { memo, useCallback } from "react"
+import { FlatList, ListRenderItem } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArticlesRailProps {
@@ -24,11 +25,25 @@ interface ArticlesRailProps {
   titleHref?: string | null
 }
 
+type Articles = ExtractNodeType<ArticlesRail_articlesConnection$data>
+
 export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
   ({ onTitlePress, onPress, title, subtitle, titleHref, ...restProps }) => {
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
     const articles = extractNodes(articlesConnection)
+
+    const renderItem: ListRenderItem<Articles> = useCallback(
+      ({ item, index }) => (
+        <ArticleCardContainer
+          onPress={() => {
+            onPress?.(item, index)
+          }}
+          article={item}
+        />
+      ),
+      [onPress]
+    )
 
     if (!articles.length) {
       return null
@@ -54,15 +69,9 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
             initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
             windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             data={articles}
+            disableVirtualization={!isNewArchitectureEnabled}
             keyExtractor={(item) => `${item.internalID}`}
-            renderItem={({ item, index }) => (
-              <ArticleCardContainer
-                onPress={() => {
-                  onPress?.(item, index)
-                }}
-                article={item}
-              />
-            )}
+            renderItem={renderItem}
           />
         </Flex>
       </Flex>

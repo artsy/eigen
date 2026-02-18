@@ -52,9 +52,9 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   }, [visible])
 
   useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", androidBackHandler)
+    const subscription = BackHandler.addEventListener("hardwareBackPress", androidBackHandler)
 
-    return () => BackHandler.removeEventListener("hardwareBackPress", androidBackHandler)
+    return () => subscription.remove()
   }, [androidBackHandler])
 
   const renderBackdrop = useCallback(

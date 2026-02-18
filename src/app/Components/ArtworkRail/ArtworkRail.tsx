@@ -1,5 +1,4 @@
 import { Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
@@ -10,10 +9,11 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
+import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import React, { memo, ReactElement, useCallback } from "react"
-import { FlatList, ListRenderItem, Platform, ViewabilityConfig } from "react-native"
+import { memo, ReactElement, useCallback, useMemo } from "react"
+import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -31,7 +31,7 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   showPartnerName?: boolean
   ListFooterComponent?: ReactElement | null
   ListHeaderComponent?: ReactElement | null
-  listRef?: React.RefObject<FlatList<any>>
+  listRef?: React.Ref<FlatList<any>>
   itemHref?(artwork: Artwork): string
   onEndReached?: () => void
   onEndReachedThreshold?: number
@@ -44,19 +44,19 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
   ({
-    listRef,
     onPress,
     onEndReached,
     onEndReachedThreshold,
     ListHeaderComponent = <Spacer x={2} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
+    listRef,
     itemHref,
     showPartnerName = true,
     dark = false,
     showSaveIcon = false,
-    viewabilityConfig,
     onViewableItemsChanged,
+    viewabilityConfig,
     moreHref,
     onMorePress,
     hideIncreasedInterestSignal,
@@ -88,38 +88,42 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       [hideArtistName, onPress, showPartnerName]
     )
 
-    // On android we are using a flatlist to fix some image issues
-    // Context https://github.com/artsy/eigen/pull/11207
-    const ListComponent =
-      Platform.OS === "ios"
-        ? (props: any) => <FlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
-        : FlatList
+    const listFooterComponent = useMemo(() => {
+      return (
+        <>
+          {!!(onMorePress || moreHref) && (
+            <BrowseMoreRailCard
+              dark={dark}
+              href={moreHref}
+              onPress={onMorePress}
+              text="Browse All Artworks"
+            />
+          )}
+          {ListFooterComponent}
+        </>
+      )
+    }, [onMorePress, moreHref, dark, ListFooterComponent])
 
     return (
-      <ListComponent
+      <FlatList
         data={artworks}
         horizontal
+        // This is required to avoid broken virtualization on nested flatlists
+        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
+        disableVirtualization={!isNewArchitectureEnabled}
         keyExtractor={(item: Artwork) => item.internalID}
-        ListFooterComponent={
-          <>
-            {!!(onMorePress || moreHref) && (
-              <BrowseMoreRailCard
-                dark={dark}
-                href={moreHref}
-                onPress={onMorePress}
-                text="Browse All Artworks"
-              />
-            )}
-            {ListFooterComponent}
-          </>
-        }
+        ListFooterComponent={listFooterComponent}
         ListHeaderComponent={ListHeaderComponent}
-        listRef={listRef}
+        ref={listRef}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
+        // Because this is a horizontal rail, we don't want to load more than 3 screens before and after
+        // The default 21 (10 before and 10 after) is too much
+        windowSize={isTablet() ? 10 : 5}
       />
     )
   }

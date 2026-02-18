@@ -4,6 +4,7 @@ import { ArtworkRail_artworks$key } from "__generated__/ArtworkRail_artworks.gra
 import { SaleListActiveBids_me$key } from "__generated__/SaleListActiveBids_me.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 

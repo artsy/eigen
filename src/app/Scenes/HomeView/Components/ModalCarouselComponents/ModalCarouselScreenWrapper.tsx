@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 interface ModalCarouselScreenWrapperProps {
   title: string
   imgSrc?: ImageSourcePropType
-  description: string | JSX.Element
+  description: string | React.JSX.Element
 }
 
 export const ModalCarouselScreenWrapper: React.FC<ModalCarouselScreenWrapperProps> = ({

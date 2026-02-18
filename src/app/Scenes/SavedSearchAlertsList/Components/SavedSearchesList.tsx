@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { BellStrokeIcon, FilterIcon, TrendingIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
-  FilterIcon,
   Flex,
   Join,
   LinkText,
@@ -10,7 +9,6 @@ import {
   Spacer,
   Spinner,
   Text,
-  TrendingIcon,
   useTheme,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
@@ -22,6 +20,7 @@ import {
   AlertBottomSheet,
   BottomSheetAlert,
 } from "app/Scenes/SavedSearchAlertsList/Components/AlertBottomSheet"
+// eslint-disable-next-line no-restricted-imports
 import { GoBackProps, goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -141,7 +140,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
         )
       }}
       onEndReached={onLoadMore}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         fetchingMore ? (
           <Flex alignItems="center" mt={2} mb={4}>
             <Spinner />
@@ -289,7 +288,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
             modalContent={
               <Join separator={<Spacer y={2} />}>
                 <Flex flexDirection="row" alignItems="flex-start">
-                  <BellIcon mr={0.5} />
+                  <BellStrokeIcon mr={0.5} />
                   <Flex flex={1}>
                     <Text variant="sm-display">
                       If you’re on the hunt for a particular artwork, create an Alert and we’ll

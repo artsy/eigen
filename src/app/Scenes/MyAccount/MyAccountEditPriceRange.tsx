@@ -1,10 +1,13 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Text, Touchable } from "@artsy/palette-mobile"
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { SavedPriceRange } from "@artsy/cohesion/dist/Schema/Events/SavedPriceRange"
+import { SkeletonText, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { Select, SelectOption } from "app/Components/Select"
+import { PRICE_BUCKETS } from "app/Components/PriceRange/constants"
+import { Select } from "app/Components/Select"
+import { useToast } from "app/Components/Toast/toastHook"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -13,19 +16,25 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { updateMyUserProfile } from "./updateMyUserProfile"
+
+// TODO: Replace with the latest description provided by design
+const DESCRIPTION = `Letting us know your maximum budget for an artwork helps us provide more relevant recommendations.`
 
 export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
 }> = (props) => {
   const me = useFragment(meFragment, props.me)
-  const [isLoading, setIsLoading] = useState(false)
+  const { trackEvent } = useTracking()
+  const toast = useToast()
+  const navigation = useNavigation()
 
+  const [isLoading, setIsLoading] = useState(false)
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
   const [priceRangeMin, setPriceRangeMin] = useState<number | null | undefined>(me.priceRangeMin)
-  const navigation = useNavigation()
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -51,6 +60,13 @@ export const MyAccountEditPriceRange: React.FC<{
     try {
       setIsLoading(true)
       await updateMyUserProfile({ priceRangeMin, priceRangeMax })
+      trackEvent(tracks.savePriceRange(priceRange))
+      toast.show("Artwork budget set", "bottom", {
+        description:
+          "We will tailor your experience to better match your preferences going forward",
+        duration: "long",
+        backgroundColor: "green100",
+      })
       goBack()
     } catch (e: any) {
       setReceivedError(e)
@@ -68,13 +84,21 @@ export const MyAccountEditPriceRange: React.FC<{
       })}
     >
       <MyProfileScreenWrapper
-        title="Price Range"
+        title="Artwork Budget"
         onPress={handleSave}
         isValid={isValid}
         loading={isLoading}
+        contentContainerStyle={{
+          // Override the default paddingTop
+          paddingTop: 0,
+        }}
       >
+        <Text variant="sm-display">{DESCRIPTION}</Text>
+
+        <Spacer y={4} />
+
         <Select
-          title="Price Range"
+          title="Artwork Budget"
           options={PRICE_BUCKETS}
           enableSearch={false}
           value={priceRange}
@@ -95,7 +119,11 @@ export const MyAccountEditPriceRange: React.FC<{
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = () => {
   return (
-    <MyProfileScreenWrapper title="Price Range">
+    <MyProfileScreenWrapper title="Artwork Budget">
+      <SkeletonText variant="sm-display">{DESCRIPTION}</SkeletonText>
+
+      <Spacer y={4} />
+
       <PlaceholderBox height={40} />
     </MyProfileScreenWrapper>
   )
@@ -140,14 +168,12 @@ export const MyAccountEditPriceRangeQueryRenderer: React.FC<{}> = withSuspense({
   },
 })
 
-export const PRICE_BUCKETS: Array<SelectOption<string>> = [
-  { label: "Select a price range", value: "" },
-  { label: "Under $500", value: "-1:500" },
-  { label: "Under $2,500", value: "-1:2500" },
-  { label: "Under $5,000", value: "-1:5000" },
-  { label: "Under $10,000", value: "-1:10000" },
-  { label: "Under $25,000", value: "-1:25000" },
-  { label: "Under $50,000", value: "-1:50000" },
-  { label: "Under $100,000", value: "-1:100000" },
-  { label: "No budget in mind", value: "-1:1000000000000" },
-]
+const tracks = {
+  savePriceRange: (priceRange: string): SavedPriceRange => {
+    return {
+      action: ActionType.savedPriceRange,
+      context_screen_owner_type: OwnerType.accountPriceRange,
+      value: priceRange,
+    }
+  },
+}

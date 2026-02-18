@@ -1,9 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { Artwork, ArtworkScreen } from "app/Scenes/Artwork/Artwork"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "app/Scenes/Artwork/Components/ArtworksInSeriesRail"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -21,11 +20,11 @@ import {
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { navigationEvents } from "app/system/navigation/navigate"
+import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import { ActivityIndicator } from "react-native"
@@ -51,16 +50,28 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   return { TimeOffsetProvider }
 })
 
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
+}))
+
+let callback: ([...args]: any) => void
+jest.mock("app/utils/useWebViewEvent", () => ({
+  useSetWebViewCallback: (_: string, cb: ([...args]: any) => void) => {
+    callback = cb
+    return jest.fn()
+  },
+}))
+
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
+  const TestRenderer = ({ isVisible = true }) => (
     <ArtworkScreen
       isVisible={isVisible}
       artworkID="ignored"
       environment={environment}
       tracking={{ trackEvent: jest.fn() } as any}
-      onLoad={onLoad}
     />
   )
 
@@ -80,7 +91,6 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
 
     await flushPromiseQueue()
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
@@ -115,7 +125,6 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
@@ -302,7 +311,7 @@ describe("Artwork", () => {
 
   it("updates the above-the-fold content on re-appear", async () => {
     // eslint-disable-next-line testing-library/render-result-naming-convention
-    const tree = renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment, {
@@ -964,7 +973,6 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
 
       // Displayed in unlisted private artworks
-      expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeTruthy()
@@ -1013,6 +1021,22 @@ describe("Artwork", () => {
         type: "Link",
         flow: "Exclusive access",
       })
+    })
+  })
+
+  describe("Order webview callbacks", () => {
+    it("triggers navigating to the order details on Order Submission event", async () => {
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+
+      resolveMostRecentRelayOperation(environment)
+
+      act(() => callback?.({ orderId: "order-id", isPurchase: false }))
+
+      await flushPromiseQueue()
+
+      expect(goBack).toHaveBeenCalled()
+
+      await waitFor(() => expect(navigate).toHaveBeenCalledWith("/orders/order-id/details"))
     })
   })
 })

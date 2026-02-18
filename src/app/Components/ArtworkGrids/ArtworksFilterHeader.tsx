@@ -1,11 +1,5 @@
-import {
-  bullet,
-  FilterIcon,
-  Flex,
-  Text,
-  Separator,
-  TouchableHighlightColor,
-} from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { bullet, Flex, Text, Separator, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingAlertFilters } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFilters"
 
 interface FilterHeaderProps {
@@ -17,7 +11,7 @@ interface FilterHeaderProps {
   showSeparator?: boolean
 }
 
-const HEADER_HEIGHT = 50
+export const HEADER_HEIGHT = 50
 
 export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   children,

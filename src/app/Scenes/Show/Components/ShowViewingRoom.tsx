@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedViewingRoomCard } from "@artsy/cohesion"
 import { Box, BoxProps } from "@artsy/palette-mobile"
 import { ShowViewingRoom_show$data } from "__generated__/ShowViewingRoom_show.graphql"
-import { MediumCard } from "app/Components/Cards"
+import { MEDIUM_CARD_ASPECT_RATIO, MediumCard } from "app/Components/Cards"
 import { tagForStatus } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -52,7 +52,8 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
             viewingRoom.distanceToOpen,
             viewingRoom.distanceToClose
           )}
-          style={{ aspectRatio: 3 / 4 }}
+          style={{ aspectRatio: MEDIUM_CARD_ASPECT_RATIO }}
+          fullWidthCard
         />
       </RouterLink>
     </Box>

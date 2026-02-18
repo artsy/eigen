@@ -1,4 +1,4 @@
-import { range, CheckIcon, Flex, Box, useColor, Text, Separator } from "@artsy/palette-mobile"
+import { Check, Flex, range, Separator, Text, useColor } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -169,11 +169,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
         pr={2}
       >
         <Text variant="xs">{text}</Text>
-        {!!selected && (
-          <Box>
-            <CheckIcon fill="mono100" />
-          </Box>
-        )}
+        <Check selected={selected} />
       </Flex>
     </Flex>
   </TouchableRow>

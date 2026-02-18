@@ -44,10 +44,16 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
         </Flex>
       ) : null}
       <Flex px={2} pointerEvents="none">
-        <Text variant="lg-display" py={2}>
+        <Text variant="lg-display" pt={2} pb={data.isEvergreen ? 0 : 2}>
           {data.name}
         </Text>
-        <FairTiming fair={data} />
+        {data.isEvergreen ? (
+          <Text variant="sm" pb={2} color="mono60">
+            {data.tagline}
+          </Text>
+        ) : (
+          <FairTiming fair={data} />
+        )}
       </Flex>
     </Flex>
   )
@@ -56,6 +62,7 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
 const fragment = graphql`
   fragment FairHeader_fair on Fair {
     name
+    slug
     profile {
       icon {
         imageUrl: url(version: "untouched-png")
@@ -65,6 +72,8 @@ const fragment = graphql`
       imageUrl: url(version: "large_rectangle")
       aspectRatio
     }
+    isEvergreen
+    tagline
     ...FairTiming_fair
   }
 `

@@ -9,7 +9,7 @@ import { isTablet } from "react-native-device-info"
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]
   isLoadingNext: boolean
-  ListHeaderComponent?: JSX.Element
+  ListHeaderComponent?: React.JSX.Element
   onItemPress: (artistID: string) => void
   onEndReached: () => void
 }
@@ -32,7 +32,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
       renderItem={({ item, index }) => (
         <ArtistItem isFirst={index === 0} artist={item} onPress={onItemPress} />
       )}
-      ListFooterComponent={
+      ListFooterComponent={() =>
         isLoadingNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />

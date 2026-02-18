@@ -18,7 +18,7 @@ import { NoMessages } from "./NoMessages"
 interface Props {
   me?: Conversations_me$data
   relay: RelayPaginationProp
-  headerView?: JSX.Element
+  headerView?: React.JSX.Element
   onRefresh?: () => any
   isActiveTab: boolean
 }

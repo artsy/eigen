@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FlexProps,
+  Image,
   Skeleton,
   SkeletonBox,
   Text,
@@ -20,8 +21,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
-import { isTablet } from "react-native-device-info"
-import FastImage from "react-native-fast-image"
+import { isTablet as isTabletDeviceInfo } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -29,6 +29,8 @@ interface HomeViewSectionCardProps {
   section: HomeViewSectionCard_section$key
   index: number
 }
+
+const isTablet = isTabletDeviceInfo()
 
 export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   section: sectionProp,
@@ -51,7 +53,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
   const imageHeight = height * 0.5
 
-  const hasImage = !!image?.imageURL
+  const hasImage = !!image?.url
   const textColor = hasImage && theme !== "dark" ? "mono0" : "mono100"
   const buttonText = btnText ?? "More"
   const route = getRoute(section.card)
@@ -62,12 +64,12 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
   return (
     <Flex {...flexProps}>
-      {isTablet() ? (
+      {isTablet ? (
         <HeroUnit
           item={{
             title: title,
             body: subtitle,
-            imageSrc: image?.imageURL ?? "",
+            imageSrc: image?.url ?? "",
             url: route,
             buttonText: buttonText,
           }}
@@ -77,9 +79,11 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
         <RouterLink onPress={onPress} to={route} haptic="impactLight">
           {!!hasImage && (
             <Flex position="absolute">
-              <FastImage
-                source={{ uri: image.imageURL }}
-                style={{ width: width, height: imageHeight }}
+              <Image
+                src={image.url}
+                height={imageHeight}
+                width={width}
+                aspectRatio={image.aspectRatio}
                 resizeMode="cover"
               />
               <LinearGradient
@@ -160,7 +164,9 @@ const HomeViewSectionCardFragment = graphql`
       badgeText
       buttonText
       image {
-        imageURL
+        url(version: "large")
+        blurhash
+        aspectRatio
       }
       entityID
       entityType

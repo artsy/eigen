@@ -8,11 +8,14 @@ import {
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import {
+  MyProfileScreenWrapper,
+  MyProfileScreenWrapperPlaceholder,
+} from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "app/utils/PushNotification"
+} from "app/system/notifications/getNotificationsPermissions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
@@ -69,9 +72,9 @@ export const NOTIFICATION_SETTINGS: Record<
     key: "receiveLotOpeningSoonNotification",
   },
   receiveSaleOpeningClosingNotification: {
-    title: "Lot Opening Soon",
-    description: "Your lots that are opening for live bidding soon",
-    key: "receiveLotOpeningSoonNotification",
+    title: "Auctions Starting and Closing",
+    description: "Your registered auctions that are starting or closing soon",
+    key: "receiveSaleOpeningClosingNotification",
   },
   receiveNewWorksNotification: {
     title: "New Works for You",
@@ -157,7 +160,10 @@ const NotificationPermissionsBox = ({
 
 const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
   return (
-    <MyProfileScreenWrapper title="Notifications" contentContainerStyle={{ paddingHorizontal: 0 }}>
+    <MyProfileScreenWrapperPlaceholder
+      title="Notifications"
+      contentContainerStyle={{ paddingHorizontal: 0 }}
+    >
       <Flex>
         <Content
           userNotificationSettings={
@@ -179,7 +185,7 @@ const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
           notificationAuthorizationStatus={PushAuthorizationStatus.NotDetermined}
         />
       </Flex>
-    </MyProfileScreenWrapper>
+    </MyProfileScreenWrapperPlaceholder>
   )
 }
 

@@ -2,6 +2,7 @@ import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { useLogger } from "@react-navigation/devtools"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -10,7 +11,7 @@ import {
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
-import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
@@ -34,6 +35,8 @@ export const Navigation = () => {
     MODAL_NAVIGATION_STACK_STATE_KEY
   )
 
+  useReactNavigationDevTools({ ref: internal_navigationRef })
+
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
@@ -50,7 +53,7 @@ export const Navigation = () => {
   if (__DEV__) {
     // It's safe to break the rul of hooks here because we are only using it in dev
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useLogger(internal_navigationRef)
+    useLogger(internal_navigationRef as React.RefObject<NavigationContainerRef<any>>)
   }
 
   if (!isReady) {

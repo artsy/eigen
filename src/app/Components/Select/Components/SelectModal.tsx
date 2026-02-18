@@ -1,6 +1,6 @@
+import { CloseIcon } from "@artsy/icons/native"
 import {
   Autocomplete,
-  CloseIcon,
   Flex,
   Screen,
   Separator,
@@ -23,7 +23,7 @@ export const SelectModal: React.FC<{
   maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown, index: number): any
-  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  renderItemLabel?(value: SelectOption<unknown>): React.JSX.Element
   onModalFinishedClosing?(): void
   testID?: string
 }> = ({
@@ -125,6 +125,7 @@ export const SelectModal: React.FC<{
       statusBarTranslucent
       testID={testID}
       animationType="slide"
+      presentationStyle="overFullScreen"
     >
       <Screen>
         <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>

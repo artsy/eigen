@@ -1,5 +1,6 @@
+import { waitFor } from "@testing-library/react-native"
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
-import { FairExhibitorRailFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitorRail"
+import { FairExhibitorRailQueryRenderer } from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -10,7 +11,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`
@@ -40,11 +41,11 @@ describe("FairExhibitors", () => {
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
 
-    return tree
+    return { view, env }
   }
 
-  it("renders the rails from exhibitors that have artworks", () => {
-    const wrapper = getWrapper({
+  it("renders the rails from exhibitors that have artworks", async () => {
+    const { view } = getWrapper({
       Fair: () => ({
         exhibitors: {
           edges: [
@@ -69,11 +70,15 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(FairExhibitorRailFragmentContainer)).toHaveLength(2)
+
+    await waitFor(async () => {
+      const fairRails = await view.root.findAllByType(FairExhibitorRailQueryRenderer)
+      expect(fairRails).toHaveLength(2)
+    })
   })
 
   it("skips over any partners with no artworks", () => {
-    const wrapper = getWrapper()
-    expect(extractText(wrapper.root)).not.toContain("Partner Without Artworks")
+    const { view } = getWrapper()
+    expect(extractText(view.root)).not.toContain("Partner Without Artworks")
   })
 })

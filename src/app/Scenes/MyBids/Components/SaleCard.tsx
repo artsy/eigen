@@ -1,18 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArrowRightIcon,
-  ClockFill,
-  ExclamationMarkCircleFill,
-  Flex,
-  Image,
-  Separator,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { AlertFillIcon, ChevronRightIcon, ClockFillIcon } from "@artsy/icons/native"
+import { Flex, Image, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -20,7 +13,9 @@ import { useTracking } from "react-tracking"
 
 export const COVER_IMAGE_HEIGHT = 100
 
-export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
+export const RegistrationCTAWrapper: React.FC<React.PropsWithChildren<{ navLink?: string }>> = (
+  props
+) => (
   <Touchable
     accessibilityRole="button"
     style={{ marginTop: 15 }}
@@ -30,11 +25,11 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
     <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="mono5" mt={1}>
       {!props.children && (
         <>
-          <ExclamationMarkCircleFill fill="mono100" />
+          <AlertFillIcon fill="mono100" />
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
-          <ArrowRightIcon />
+          <ChevronRightIcon />
         </>
       )}
       {props.children}
@@ -49,7 +44,7 @@ interface SaleCardProps {
   hideChildren?: boolean
 }
 
-export const SaleCard: React.FC<SaleCardProps> = ({
+export const SaleCard: React.FC<React.PropsWithChildren<SaleCardProps>> = ({
   sale,
   me,
   smallScreen,
@@ -79,7 +74,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
     } else {
       RegistrationCTA = () => (
         <RegistrationCTAWrapper>
-          <ClockFill fill="mono60" />
+          <ClockFillIcon fill="mono60" />
           <Text ml={0.5} color="mono60" variant="sm">
             Registration pending
           </Text>

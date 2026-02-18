@@ -12,4 +12,4 @@ protocol WebSocketType : AnyObject {
     func write(string: String, completion: (() -> ())?)
 }
 
-extension WebSocket: WebSocketType {}
+extension Starscream.WebSocket: WebSocketType {}

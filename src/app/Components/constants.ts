@@ -2,7 +2,7 @@ import { PixelRatio } from "react-native"
 
 export const PAGE_SIZE = 10
 export const FAIR2_ARTWORKS_PAGE_SIZE = 30
-export const FAIR2_EXHIBITORS_PAGE_SIZE = 10
+export const FAIR2_EXHIBITORS_PAGE_SIZE = 5
 export const SHOW2_ARTWORKS_PAGE_SIZE = 30
 export const SAVED_SERCHES_PAGE_SIZE = 20
 export const ALERTS_PAGE_SIZE = 10
@@ -19,3 +19,8 @@ export const ICON_HIT_SLOP = {
   left: 5,
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
+export const SCROLLVIEW_PADDING_BOTTOM_OFFSET = 80
+export const SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET = 120
+
+// This is the default value of iOS transition duration
+export const DEFAULT_SCREEN_ANIMATION_DURATION = 350

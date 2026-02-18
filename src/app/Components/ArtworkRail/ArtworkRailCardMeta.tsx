@@ -1,16 +1,18 @@
-import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
+import React, { isValidElement } from "react"
 import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,7 +23,6 @@ export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
   lotLabel?: string | null
-  containerHeight?: number
   showSaveIcon?: boolean
   showPartnerName?: boolean
   /**
@@ -57,6 +58,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
+  const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -123,6 +125,16 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           </Text>
         )}
 
+        {/* This is useful for debugging purposes */}
+        {!!showArtworkInternalID && (
+          // We are double wrapping the text in a RNText to fix the ellipsizeMode issue on android
+          <RNText numberOfLines={1} ellipsizeMode="middle">
+            <Text color="blue100" variant="xs" fontWeight="bold">
+              {artwork.internalID}
+            </Text>
+          </RNText>
+        )}
+
         {!hideArtistName && !!artistNames && (
           <RNText numberOfLines={1} ellipsizeMode="tail">
             <Text color={primaryColor} lineHeight="20px" variant="xs">
@@ -153,7 +165,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           </RNText>
         )}
 
-        {SalePriceComponent
+        {isValidElement(SalePriceComponent)
           ? SalePriceComponent
           : !!saleMessage && (
               <ArtworkSaleMessage
@@ -207,21 +219,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
             testID="save-artwork-icon"
             underlayColor={backgroundColor}
           >
-            {isSaved ? (
-              <HeartFillIcon
-                testID="filled-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill="blue100"
-              />
-            ) : (
-              <HeartIcon
-                testID="empty-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill={primaryColor}
-              />
-            )}
+            <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
           </Touchable>
         </Flex>
       )}
@@ -241,7 +239,6 @@ const artworkMetaFragment = graphql`
     artistNames
     date
     isUnlisted
-    realizedPrice
     sale {
       isAuction
       isClosed

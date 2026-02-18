@@ -7,7 +7,6 @@ import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { Action, action, Computed, computed, createContextStore } from "easy-peasy"
-import { FC } from "react"
 import { ArtworkListState } from "./types"
 
 export type ModifiedListType =
@@ -185,7 +184,7 @@ export const ArtworkListsStore = createContextStore((initialData) => ({
   ...initialData,
 }))
 
-export const ArtworkListsProvider: FC = ({ children }) => {
+export const ArtworkListsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <ArtworkListsStore.Provider runtimeModel={{ state: { ...getArtworkListsStoreInitialState() } }}>
       <ListElements>{children}</ListElements>
@@ -193,7 +192,7 @@ export const ArtworkListsProvider: FC = ({ children }) => {
   )
 }
 
-const ListElements: FC = ({ children }) => {
+const ListElements: React.FC<React.PropsWithChildren> = ({ children }) => {
   const {
     artwork,
     artworkListOfferSettingsViewVisible,

@@ -1,115 +1,77 @@
+import { screen } from "@testing-library/react-native"
 import { SaleArtworkTileRailCardTestsQuery } from "__generated__/SaleArtworkTileRailCardTestsQuery.graphql"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-import { CONTAINER_HEIGHT, SaleArtworkTileRailCardContainer } from ".."
-
-interface TestRendererProps {
-  useCustomSaleMessage?: boolean
-  useSquareAspectRatio?: boolean
-}
+import {
+  CONTAINER_HEIGHT,
+  SaleArtworkTileRailCardContainer,
+} from "app/Components/SaleArtworkTileRailCard"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("SaleArtworkTileRailCard", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = ({
-    useCustomSaleMessage = false,
-    useSquareAspectRatio = false,
-  }: TestRendererProps) => (
-    <QueryRenderer<SaleArtworkTileRailCardTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query SaleArtworkTileRailCardTestsQuery @relay_test_operation {
-          saleArtwork(id: "the-sale") {
-            ...SaleArtworkTileRailCard_saleArtwork
-          }
+  const { renderWithRelay } = setupTestWrapper<SaleArtworkTileRailCardTestsQuery>({
+    Component: (props: any) => <SaleArtworkTileRailCardContainer {...props} />,
+    query: graphql`
+      query SaleArtworkTileRailCardTestsQuery @relay_test_operation {
+        saleArtwork(id: "the-sale") {
+          ...SaleArtworkTileRailCard_saleArtwork
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.saleArtwork) {
-          return (
-            <SaleArtworkTileRailCardContainer
-              saleArtwork={props.saleArtwork}
-              onPress={() => {
-                console.log("do something")
-              }}
-              useSquareAspectRatio={useSquareAspectRatio}
-              useCustomSaleMessage={useCustomSaleMessage}
-            />
-          )
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   it("renders sale artwork without throwing an error", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    renderWithRelay({ SaleArtwork: () => mockSaleArtwork })
 
     // Render the sale artwork fields
-    expect(extractText(tree.root)).toContain("Banksy")
-    expect(extractText(tree.root)).toContain("Lot 66002")
-    expect(extractText(tree.root)).toContain("Captain America")
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
+    expect(screen.getByText("Lot 66002")).toBeOnTheScreen()
+    expect(screen.getByText(/Captain America/)).toBeOnTheScreen()
 
     // Render the sale artwork image while mainting the correct aspect ratio
-    const image = tree.root.findByProps({ testID: "sale-artwork-image" })
-    expect(image.props.height).toBe(CONTAINER_HEIGHT)
-    expect(image.props.width).toBe(CONTAINER_HEIGHT * 0.75) // The mock image aspect ratio is 0.75
+    const image = screen.getByTestId("sale-artwork-image")
+    expect(image.props.style[1].height).toBe(CONTAINER_HEIGHT)
+    expect(image.props.style[1].width).toBe(CONTAINER_HEIGHT * 0.75) // The mock image aspect ratio is 0.75
   })
 
   it("renders custom sale artwork message when useCustomSaleMessage is set to true", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer useCustomSaleMessage />)
+    renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useCustomSaleMessage: true })
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
-    expect(extractText(tree.root)).toContain("(14 bids)")
+    expect(screen.getByText(/(14 bids)/)).toBeOnTheScreen()
   })
 
-  it("renders square image when useSquareAspectRatio is set to true ", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer useSquareAspectRatio />)
+  it("renders square image when useSquareAspectRatio is set to true", () => {
+    renderWithRelay({ SaleArtwork: () => mockSaleArtwork }, { useSquareAspectRatio: true })
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
-
-    const image = tree.root.findByProps({ testID: "sale-artwork-image" })
-    expect(image.props.height).toBe(CONTAINER_HEIGHT)
-    expect(image.props.width).toBe(CONTAINER_HEIGHT)
+    const image = screen.getByTestId("sale-artwork-image")
+    expect(image.props.style[1].height).toBe(CONTAINER_HEIGHT)
+    expect(image.props.style[1].width).toBe(CONTAINER_HEIGHT)
   })
 })
 
-const mockProps = {
-  SaleArtwork: () => ({
-    artwork: {
-      artistNames: "Banksy",
-      date: "2018",
-      href: "/artwork/href",
-      image: {
-        imageURL: "imageURL",
-        aspectRatio: 0.75,
-      },
-      internalID: "internalID",
-      slug: "artwork slug",
-      saleMessage: null,
-      title: "Captain America",
-      realizedPrice: null,
+const mockSaleArtwork = {
+  artwork: {
+    artistNames: "Banksy",
+    date: "2018",
+    href: "/artwork/href",
+    image: {
+      imageURL: "imageURL",
+      aspectRatio: 0.75,
     },
-    counts: {
-      bidderPositions: 14,
-    },
-    currentBid: {
-      display: "$1,100",
-    },
-    lotLabel: "66002",
-    sale: {
-      isAuction: true,
-      isClosed: false,
-      displayTimelyAt: null,
-    },
-  }),
+    internalID: "internalID",
+    slug: "artwork slug",
+    saleMessage: null,
+    title: "Captain America",
+  },
+  counts: {
+    bidderPositions: 14,
+  },
+  currentBid: {
+    display: "$1,100",
+  },
+  lotLabel: "66002",
+  sale: {
+    isAuction: true,
+    isClosed: false,
+    displayTimelyAt: null,
+  },
 }

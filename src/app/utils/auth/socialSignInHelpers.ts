@@ -1,8 +1,11 @@
 import { statusCodes } from "@react-native-google-signin/google-signin"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
-import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
-import { AppleToken, GoogleOrFacebookToken } from "app/Scenes/Onboarding/OnboardingSocialLink"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Screens/Onboarding"
+import {
+  AppleToken,
+  GoogleOrFacebookToken,
+} from "app/Scenes/Onboarding/Screens/OnboardingSocialLink"
 import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"

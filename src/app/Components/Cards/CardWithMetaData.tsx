@@ -121,7 +121,9 @@ export const CardsWithMetaDataListPlaceholder: React.FC<CardsWithMetaDataListPla
 
   return (
     <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title={title} />
+      {/* IMPORTANT: use a non animated header inside placeholders due to a bug that never
+      lets suspense resolve when used with an animated header and resulting on a blank screen. */}
+      <Screen.Header onBack={goBack} title="" />
       <Screen.Body fullwidth>
         <ProvidePlaceholderContext>
           <Flex testID={testID} flexDirection="column" justifyContent="space-between" height="100%">
@@ -157,7 +159,7 @@ export const CardsWithMetaDataListPlaceholder: React.FC<CardsWithMetaDataListPla
   )
 }
 
-export const ListHeader = ({ title = "" }) => (
+const ListHeader = ({ title = "" }) => (
   <Text mx={2} variant="lg-display" mb={2}>
     {title}
   </Text>
@@ -167,10 +169,9 @@ interface CardWithMetaDataListItemProps {
   index: number
 }
 
-export const CardWithMetaDataListItem: React.FC<CardWithMetaDataListItemProps> = ({
-  children,
-  index,
-}) => {
+export const CardWithMetaDataListItem: React.FC<
+  React.PropsWithChildren<CardWithMetaDataListItemProps>
+> = ({ children, index }) => {
   const numColumns = useNumColumns()
 
   if (numColumns === 1) {

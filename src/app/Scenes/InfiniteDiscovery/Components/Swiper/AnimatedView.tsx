@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { FC, Key } from "react"
+import { Key } from "react"
 import { Platform, ViewStyle } from "react-native"
 import Animated, {
   Extrapolation,
@@ -20,7 +20,7 @@ interface AnimatedViewProps {
   internalID: string
 }
 
-export const AnimatedView: FC<AnimatedViewProps> = ({
+export const AnimatedView: React.FC<React.PropsWithChildren<AnimatedViewProps>> = ({
   children,
   activeCardX,
   swipedCardX,

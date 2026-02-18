@@ -1,8 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ArtworkIcon, CertificateIcon, EnvelopeIcon } from "@artsy/icons/native"
 import {
-  ArtworkIcon,
-  CertificateIcon,
-  EnvelopeIcon,
   Flex,
   FlexProps,
   LinkText,
@@ -14,7 +12,6 @@ import {
   Tabs,
   Text,
   TextProps,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
@@ -26,10 +23,12 @@ import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
+import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
+import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -43,8 +42,8 @@ interface AboutTheWorkTabProps {
 export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const data = useFragment(fragment, artwork)
   const { collapse } = useBottomSheet()
-  const space = useSpace()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
+  const { signalTitle } = useCollectorSignal({ artwork: data })
 
   if (!data) {
     return null
@@ -52,6 +51,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 
   const attributionClass = data.attributionClass?.shortArrayDescription
   const hasCertificateOfAuthenticity = data.hasCertificateOfAuthenticity && !data.isBiddable
+  const hasCollectorSignal = !!signalTitle
 
   const handleOnVisible = (visible: boolean) => {
     if (visible) {
@@ -71,31 +71,37 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}
       >
-        <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
-          <Flex gap={1}>
+        <Flex flex={1} px={2} gap={2}>
+          <Spacer y={4} />
+          <Flex gap={1} pt={1}>
+            <InfiniteDiscoveryCollectorSignal artwork={data} />
+
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
-                <Flex flexDirection="row" gap={0.5} alignItems="center">
+                <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
                   <ArtworkIcon height={18} width={18} fill="mono60" />
-                  <Text variant="xs">
-                    {attributionClass[0]}{" "}
-                    <RouterLink
-                      to="/artwork-classifications"
-                      hasChildTouchable
-                      onPress={handleCollapse}
-                    >
-                      <LinkText variant="xs">{attributionClass[1]}</LinkText>
-                    </RouterLink>
-                  </Text>
+                  {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
+                  <RouterLink
+                    to="/artwork-classifications"
+                    hasChildTouchable
+                    onPress={handleCollapse}
+                  >
+                    <LinkText variant="xs">{attributionClass[1]}</LinkText>
+                  </RouterLink>
                 </Flex>
               </Sentinel>
             )}
 
             {!!hasCertificateOfAuthenticity && (
-              <Flex flexDirection="row" gap={0.5} alignItems="center">
+              <Flex
+                flexDirection="row"
+                gap={0.5}
+                alignItems="center"
+                testID="authenticity-certificate"
+              >
                 <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
-                <Text variant="xs">
-                  Includes a{" "}
+                <Flex flexDirection="row">
+                  <Text variant="xs">Includes a </Text>
                   <RouterLink
                     to="/artwork-certificate-of-authenticity"
                     hasChildTouchable
@@ -103,12 +109,14 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   >
                     <LinkText variant="xs">Certificate of Authenticity</LinkText>
                   </RouterLink>
-                </Text>
+                </Flex>
               </Flex>
             )}
           </Flex>
 
-          {!!attributionClass?.length && !!hasCertificateOfAuthenticity && <Divider />}
+          {(!!attributionClass?.length ||
+            !!hasCertificateOfAuthenticity ||
+            !!hasCollectorSignal) && <Divider />}
 
           <Flex gap={1}>
             <Flex flexDirection="row">
@@ -211,13 +219,16 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               <Text variant="xs" color="mono60">
                 Questions about this piece?
               </Text>
-              <ContactGalleryButton
-                artwork={data}
-                me={me}
-                variant="outlineGray"
-                size="small"
-                icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
-              />
+
+              <Flex>
+                <ContactGalleryButton
+                  artwork={data}
+                  me={me}
+                  variant="outlineGray"
+                  size="small"
+                  icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
+                />
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
@@ -232,6 +243,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 const fragment = graphql`
   fragment InfiniteDiscoveryAboutTheWorkTab_artwork on Artwork {
     ...ContactGalleryButton_artwork
+    ...useCollectorSignal_artwork
 
     internalID @required(action: NONE)
     slug
@@ -290,7 +302,7 @@ const infiniteDiscoveryAboutTheWorkQuery = graphql`
       ...useSendInquiry_me
       ...MyProfileEditModal_me
       ...BidButton_me
-      ...InfiniteDiscoveryBottomSheetFooter_me
+      ...ArtworkCardBottomSheetFooter_me
     }
   }
 `
@@ -327,13 +339,12 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
   })
 
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
-  const space = useSpace()
-
   return (
     <BottomSheetScrollView scrollEnabled={false}>
       <Skeleton>
-        <Flex gap={2} px={2} flex={1} style={{ paddingTop: 50 + space(2) }}>
-          <Flex gap={1}>
+        <Flex gap={2} px={2} flex={1}>
+          <Spacer y={4} />
+          <Flex gap={1} pt={1}>
             <Flex flexDirection="row" gap={0.5} alignItems="center">
               <SkeletonBox size={18} />
               <SkeletonText variant="xs">Classification</SkeletonText>

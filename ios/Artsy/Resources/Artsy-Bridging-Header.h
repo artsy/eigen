@@ -1,8 +1,15 @@
 //
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
-#import "ARWhitespaceGobbler.h"
+
 #import <Expo/Expo.h>
+
+// AppDelegate
+#import "ARAppDelegateHelper.h"
+#import "AppDelegate+Notifications.h"
+#import "AppDelegate+ShortcutItems.h"
+#import "AppDelegate+ActivityContinuation.h"
+
 #import "UIView+HitTestExpansion.h"
 #import "ARSeparatorViews.h"
 
@@ -76,8 +83,8 @@
 
 #import "ARTNativeScreenPresenterModule.h"
 
-// CityGuide
-#import "ARMapContainerViewController.h"
+
+
 
 // Sentry Swift Access
 #import "ARSentryReporter.h"

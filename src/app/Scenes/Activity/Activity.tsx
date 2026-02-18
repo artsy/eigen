@@ -1,15 +1,18 @@
-import { DEFAULT_HIT_SLOP, MoreIcon, Screen, Touchable } from "@artsy/palette-mobile"
+import { MoreIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, Screen, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ActivityContent, ActivityContentPlaceholder } from "app/Scenes/Activity/ActivityContent"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 import { ActivityHeader } from "app/Scenes/Activity/components/ActivityHeader"
 import { useMarkAllNotificationsAsRead } from "app/Scenes/Activity/hooks/useMarkAllNotificationsAsRead"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { Suspense } from "react"
 
 export const Activity: React.FC = () => {
   const type = ActivityScreenStore.useStoreState((state) => state.type)
   const { showActionSheetWithOptions } = useActionSheet()
+  const androidCustomSheetStyles = useAndroidActionSheetStyles()
   const { markAllNotificationsAsRead } = useMarkAllNotificationsAsRead()
 
   return (
@@ -27,6 +30,7 @@ export const Activity: React.FC = () => {
                   options: ["Mark all as read", "Edit Alerts", "Edit Follows", "Cancel"],
                   cancelButtonIndex: 3,
                   useModal: true,
+                  ...androidCustomSheetStyles,
                 },
                 (buttonIndex) => {
                   switch (buttonIndex) {

@@ -12,6 +12,8 @@
 #import "ARDispatchManager.h"
 #import "ARMediaPreviewController.h"
 
+@import React;
+
 @interface ARTNativeScreenPresenterModule ()
 @end
 
@@ -134,7 +136,7 @@ RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag rou
 
 + (UIViewController *)currentlyPresentedVC
 {
-    UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
+    UIViewController *vc = [AppDelegate.shared window].rootViewController;
 
     while ([vc presentedViewController]) {
         vc = [vc presentedViewController];

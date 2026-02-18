@@ -7,8 +7,6 @@ import { selectArtworkListsForArtworkQuery } from "app/Components/ArtworkLists/v
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"))
-
 describe("ArtworkListsProvider", () => {
   const initialStateSpy = jest.spyOn(utils, "getArtworkListsStoreInitialState")
 
@@ -357,7 +355,7 @@ describe("ArtworkListsProvider", () => {
       expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
       expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
 
-      expect(screen.getByLabelText("EyeClosedIcon")).toBeOnTheScreen()
+      expect(screen.getByLabelText("HideIcon")).toBeOnTheScreen()
     })
 
     describe("Share/unshare artwork lists", () => {
@@ -368,7 +366,7 @@ describe("ArtworkListsProvider", () => {
 
         await screen.findByText("Saved Artworks")
 
-        expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(1)
+        expect(screen.getAllByLabelText("HideIcon").length).toEqual(1)
 
         // SavedArtworks and Custom Artwork List 1 are shared
         // Custom Artwork List 2 is not shared
@@ -378,14 +376,14 @@ describe("ArtworkListsProvider", () => {
         fireEvent(savedArtworks, "valueChange", true)
         fireEvent(custom1, "valueChange", true)
 
-        expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(3)
+        expect(screen.getAllByLabelText("HideIcon").length).toEqual(3)
 
         // Share again
         fireEvent(savedArtworks, "valueChange", false)
         fireEvent(custom1, "valueChange", false)
         fireEvent(custom2, "valueChange", true)
 
-        expect(screen.queryAllByLabelText("EyeClosedIcon").length).toEqual(0)
+        expect(screen.queryAllByLabelText("HideIcon").length).toEqual(0)
       })
     })
   })

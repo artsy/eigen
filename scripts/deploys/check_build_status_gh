@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# check_build_status_gh.sh
+# Usage: ./check_build_status_gh.sh <platform>
+# Example: ./check_build_status_gh.sh ios
+
+source .env.releases
+
+PLATFORM=$1
+
+if [ -z "$PLATFORM" ]; then
+  echo "Platform argument is required (e.g., ios or android)."
+  exit 1
+fi
+
+if [ "$PLATFORM" = "ios" ]; then
+  WORKFLOW_NAMES=("Build and Deploy iOS to TestFligh" "Build and Deploy iOS to Firebase")
+elif [ "$PLATFORM" = "android" ]; then
+  WORKFLOW_NAMES=("Build and Deploy Android to Play Store" "Build and Deploy Android to Firebase")
+else
+  echo "Unsupported platform: $PLATFORM. Supported platforms are ios and android."
+  exit 1
+fi
+
+# Check if GITHUB_TOKEN is set
+if [ -z "${GITHUB_TOKEN:-}" ]; then
+  echo "Error: GITHUB_TOKEN could not be found."
+  echo "Please run 'yarn setup:releases' to set up the environment variables."
+  exit 1
+fi
+
+echo "Checking if there is a $PLATFORM build in progress..."
+
+total_running_runs=0
+
+# Check each workflow for the platform
+for WORKFLOW_NAME in "${WORKFLOW_NAMES[@]}"; do
+  echo "Checking workflow: $WORKFLOW_NAME"
+
+  # Get the workflow ID first
+  workflow_id=$(curl -s \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/artsy/eigen/actions/workflows" \
+    | jq -r --arg name "$WORKFLOW_NAME" '.workflows[] | select(.name == $name) | .id')
+
+  if [ -z "$workflow_id" ] || [ "$workflow_id" = "null" ]; then
+    echo "Warning: Could not find workflow '$WORKFLOW_NAME'"
+    continue
+  fi
+
+  # Check for running workflow runs
+  running_runs=$(curl -s \
+    -H "Authorization: Bearer $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/artsy/eigen/actions/workflows/$workflow_id/runs?status=in_progress&per_page=1" \
+    | jq -r '.total_count')
+
+  if [ "$running_runs" -gt 0 ]; then
+    echo "Found $running_runs running build(s) for '$WORKFLOW_NAME'"
+    total_running_runs=$((total_running_runs + running_runs))
+  fi
+done
+
+if [ "$total_running_runs" -gt 0 ]; then
+    echo "Another $PLATFORM build is running ($total_running_runs total)."
+    read -p "There is a build currently running. Are you sure you want to overwrite it? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Proceeding with creating the $PLATFORM beta..."
+    else
+        echo "Aborting..."
+        exit 1
+    fi
+else
+    echo "No other $PLATFORM build running. Proceeding with creating the beta..."
+fi

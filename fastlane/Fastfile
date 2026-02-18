@@ -9,6 +9,7 @@ require 'dotenv'
 require_relative 'monkey_patches/supply_reader_extension'
 require_relative 'monkey_patches/supply_custom_promote_config'
 require_relative 'monkey_patches/supply_custom_promote'
+require_relative 'monkey_patches/badge_colorspace_fix'
 
 Dotenv.load('../.env.releases')
 
@@ -18,8 +19,9 @@ skip_docs
 $APP_JSON_PATH = '../app.json'
 $APP_JSON = JSON.parse(File.read($APP_JSON_PATH))
 APP_PLIST = '../ios/Artsy/App_Resources/Info.plist'
+FIREBASE_BADGE_TEXT_COLOR = '8A2BE2' # devpurple
+FIREBASE_BADGE_IMAGE_PATH = 'fastlane/images/beta_badge.png'
 BUILD_GRADLE = '../android/app/build.gradle'
-
 BUNDLE_ID = 'net.artsy.artsy'
 
 IOS_TARGETS = {
@@ -38,7 +40,7 @@ IOS_BETA_TARGETS = {
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
-BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android].freeze
+BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android build_maestro_android build_maestro_ios deploy_android_beta deploy_ios_beta].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
 GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
@@ -73,18 +75,22 @@ lane :ship_beta_ios do |options|
   sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
+  # Add badge if firebase deployment
+  if deployment_target == 'firebase'
+    puts "Adding badge for firebase deployment..."
+    # The spaces at the beginning and end are important to avoid the badge being cut off
+    add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
+    UI.success("✅ Badge added for firebase deployment")
+  end
+
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-  export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
-  scheme = deployment_target == 'testflight' ? 'Artsy' : 'Artsy (QA)'
-  build_ios_app(
-    build_path: "archives",
-    workspace: 'ios/Artsy.xcworkspace',
-    scheme: scheme,
-    export_method: export_method,
-    codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
-    silent: true
-  )
+
+  # Select Xcode version
+  xcode_select("/Applications/Xcode_26.2.app")
+
+  build_params = ios_build_params(deployment_target)
+  build_ios_app(**build_params)
 
   # avoid duplicate uploads to sentry
   if (deployment_target == 'testflight')
@@ -102,12 +108,25 @@ lane :ship_beta_ios do |options|
       dist_version: bundle_version,
       platform: 'ios'
     )
+  elsif (deployment_target == 'firebase')
+    upload_dsyms_to_sentry(
+      project_slug: 'eigen',
+      org_slug: 'artsynet'
+    )
   end
 
   deploy_ios_beta(deployment_target: deployment_target)
+
+  # Save the generated version for CI/CD to use
+  version_info = "#{latest_version} (#{bundle_version})"
+  version_file = File.join(__dir__, 'ios_beta_version.txt')
+  File.write(version_file, version_info)
+  UI.success("✅ iOS beta version saved: #{version_info}")
 end
 
-def deploy_ios_beta(deployment_target:)
+desc 'Deploy iOS beta to TestFlight or Firebase'
+lane :deploy_ios_beta do |options|
+  deployment_target = options[:deployment_target]
   if deployment_target == 'testflight'
     api_key = generate_app_store_connect_api_key
 
@@ -129,6 +148,7 @@ def deploy_ios_beta(deployment_target:)
       changelog: beta_readme,
       itc_provider: 'ArtsyInc',
       distribute_external: true,
+      wait_processing_timeout_duration: 900, # 15 minutes
       groups: ['Artsy People', 'Applause People']
     )
   else
@@ -281,10 +301,15 @@ end
 desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
-
+  version_code = options[:version_code]
   sh('yarn relay')
 
-  vname, vcode = set_build_version_android
+  if version_code.nil? || version_code.empty?
+    vname, vcode = set_build_version_android
+  else
+    vname, vcode = set_build_version_android(version_code: version_code)
+  end
+
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
@@ -304,9 +329,17 @@ lane :ship_beta_android do |options|
   end
 
   deploy_android_beta(deployment_target: deployment_target)
+
+  # Save the generated version for CI/CD to use
+  version_info = "#{vname} (#{vcode})"
+  version_file = File.join(__dir__, 'android_beta_version.txt')
+  File.write(version_file, version_info)
+  UI.success("✅ Android beta version saved: #{version_info}")
 end
 
-def deploy_android_beta(deployment_target:)
+desc 'Deploy Android beta to Play Store or Firebase'
+lane :deploy_android_beta do |options|
+  deployment_target = options[:deployment_target]
   if deployment_target == 'play_store'
     supply(
       track: 'alpha',
@@ -319,7 +352,7 @@ def deploy_android_beta(deployment_target:)
     )
   elsif deployment_target == 'firebase'
     firebase_app_distribution(
-      app: ENV['FIREBASE_APP_ID'],
+      app: ENV['FIREBASE_ANDROID_APP_ID'],
       groups: 'artsy-people',
       android_artifact_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
     )
@@ -338,10 +371,10 @@ lane :promote_beta_android do
     version_code: selected_version_code,
     track_promote_to: 'production',
     rollout: '0.1',
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
     skip_upload_images: true,
-    skip_upload_screenshots: true
+    skip_upload_screenshots: true,
+    skip_upload_aab: true,
+    skip_upload_apk: true
   )
 
   vname, vcode = set_build_version_android(version_code: selected_version_code)
@@ -418,6 +451,32 @@ lane :set_build_version_android do |options|
   [next_version_name, next_version_code]
 end
 
+
+desc 'Get next android build version code'
+lane :get_next_android_build_version do
+  # Generate date-based build number in format YYYYMMDDHH (e.g., 2025111310)
+  # This matches iOS format but without dots since Google Play Console doesn't accept them
+  now = Time.now.utc
+  next_version_code = now.strftime('%Y%m%d%H')
+
+  # Check if this version code already exists in the alpha track
+  current_version_code = google_play_track_version_codes(
+    track: 'alpha'
+  ).first
+
+  # If the generated version code matches the current version code (same hour),
+  # append minutes to create a unique version (YYYYMMDDHHMI format)
+  if current_version_code && next_version_code.to_i == current_version_code.to_i
+    next_version_code = now.strftime('%Y%m%d%H%M')
+    puts "Version code conflict detected. Using extended format with minutes: #{next_version_code}"
+  end
+
+  file_dir = "#{Dir.pwd}/next_version_code.txt"
+  puts "Writing next version code to: #{file_dir}"
+  puts "Generated date-based version code: #{next_version_code}"
+  File.write(file_dir, next_version_code)
+end
+
 desc 'Set some git properties on android for reading in builds'
 lane :set_git_properties_android do
   contents = File.read(BUILD_GRADLE)
@@ -483,26 +542,20 @@ lane :deploy_to_expo_updates do |options|
   expo_command = "./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
-    expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
+    expo_command += " --rollout-percentage=#{rollout_percentage}"
   end
 
   sh("pushd ../ > /dev/null && \
+      set -o pipefail && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
-  build_folder = File.expand_path("../dist/")
 
-  sentry_cli_path = 'bin/node_modules/@sentry/cli/bin/sentry-cli'
+  # Export environment variables for Sentry sourcemap upload
+  ENV['SENTRY_RELEASE'] = "#{platform}-#{release_name_base}"
 
-  upload_expo_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
-    org_slug: 'artsynet',
-    project_slug: 'eigen',
-    platform: platform,
-    sentry_release_name: "#{platform}-#{release_name_base}",
-    dist: dist_version,
-    build_folder: build_folder,
-    silence_failures: true # we ship expo releases every commit to main, failures are noisy
-  )
+  puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}"
+  sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
+
   tag_and_push(tag: "#{platform}-#{release_name_base}")
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
@@ -532,4 +585,51 @@ error do |lane, exception|
   else
     UI.error("Beta failed to deploy! #{exception.message}")
   end
+end
+
+desc 'Build iOS app and upload to S3 for Maestro testing'
+lane :build_maestro_ios do
+  bundle_version = set_build_version_ios
+  set_git_properties_ios
+
+  # Select Xcode version
+  xcode_select("/Applications/Xcode_26.2.app")
+
+  # Build iOS app with QA scheme for simulator (no codesigning needed)
+  build_params = ios_build_params('maestro')
+  build_ios_app(**build_params)
+
+  upload_ios_maestro_to_s3
+end
+
+desc 'Build Android app and upload to S3 for Maestro testing'
+lane :build_maestro_android do |options|
+  version_code = options[:version_code]
+  sh('yarn relay')
+
+  if version_code.nil? || version_code.empty?
+    vname, vcode = set_build_version_android
+  else
+    vname, vcode = set_build_version_android(version_code: version_code)
+  end
+
+  set_git_properties_android
+
+  # Build Android AAB in beta mode for Maestro testing
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+
+  # Convert AAB to APK using existing bundletool logic
+  aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
+  apk_output_path = "#{vcode}.apk"
+  bundletool(
+    aab_path: aab_path,
+    apk_output_path: apk_output_path,
+    verbose: true
+  )
+
+  # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
+  full_apk_path = File.expand_path("../#{apk_output_path}")
+
+  # Upload to S3 for Maestro testing
+  upload_android_maestro_to_s3(full_apk_path)
 end

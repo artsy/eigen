@@ -12,8 +12,6 @@ interface ArtworkAuctionTimerProps {
   inRailCard?: boolean
 }
 
-const INTERVAL = 1000
-
 export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
   collectorSignals,
   hideRegisterBySignal,
@@ -24,38 +22,74 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
   const { lotClosesAt, onlineBiddingExtended, registrationEndsAt } = data.auction ?? {}
 
   const lotEndAt = DateTime.fromISO(lotClosesAt ?? "")
-  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
-  const [time, setTime] = useState(getTimer(lotClosesAt ?? "")["time"])
-
-  useEffect(() => {
-    intervalId.current = setInterval(() => {
-      const { time: timerTime } = getTimer(lotClosesAt ?? "")
-
-      setTime(timerTime)
-    }, INTERVAL)
-
-    return () => {
-      if (intervalId.current) clearInterval(intervalId.current)
-    }
-  }, [])
 
   if (
     registrationEndsAt &&
     DateTime.fromISO(registrationEndsAt).diffNow().as("seconds") > 0 &&
     !hideRegisterBySignal
   ) {
-    const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
-
     return (
-      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="mono100">
-        Register by {formattedRegistrationEndsAt}
-      </Text>
+      <AuctionTimerRegisterBy lineHeight={lineHeight} registrationEndsAt={registrationEndsAt} />
     )
   }
 
   if (!lotClosesAt || lotEndAt.diffNow().as("days") > 5 || lotEndAt.diffNow().as("seconds") <= 0) {
     return null
   }
+
+  return (
+    <AuctionTimerBid
+      lineHeight={lineHeight}
+      onlineBiddingExtended={onlineBiddingExtended}
+      lotEndAt={lotEndAt}
+      lotClosesAt={lotClosesAt}
+      inRailCard={inRailCard}
+    />
+  )
+}
+
+const AuctionTimerRegisterBy: React.FC<{
+  lineHeight: "20px" | "18px"
+  registrationEndsAt: string
+}> = ({ lineHeight, registrationEndsAt }) => {
+  const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
+
+  return (
+    <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="mono100">
+      Register by {formattedRegistrationEndsAt}
+    </Text>
+  )
+}
+
+const AuctionTimerBid: React.FC<{
+  lineHeight: "20px" | "18px"
+  onlineBiddingExtended?: boolean
+  inRailCard?: boolean
+  lotEndAt: DateTime
+  lotClosesAt: string
+}> = ({ lineHeight, onlineBiddingExtended, inRailCard, lotEndAt, lotClosesAt }) => {
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [time, setTime] = useState(getTimer(lotClosesAt ?? "")["time"])
+
+  useEffect(() => {
+    // Do not update the timer if the lot is closing in longer than an hour
+    if (lotEndAt.diffNow().as("hours") > 1 && !onlineBiddingExtended) {
+      return
+    }
+
+    // Update the timer every second if the lot is closing in less than 5 minute, otherwise update every minute
+    const interval = lotEndAt.diffNow().as("minutes") < 5 ? 1000 : 60000
+
+    intervalId.current = setInterval(() => {
+      const { time: timerTime } = getTimer(lotClosesAt ?? "")
+
+      setTime(timerTime)
+    }, interval)
+
+    return () => {
+      if (intervalId.current) clearInterval(intervalId.current)
+    }
+  }, [lotClosesAt])
 
   const timerColor = lotEndAt.diffNow().as("hours") <= 1 ? "red100" : "blue100"
   const { timerCopy } = formattedTimeLeft(time)

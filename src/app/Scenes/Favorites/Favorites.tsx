@@ -1,15 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
-import {
-  BellIcon,
-  Flex,
-  HeartIcon,
-  MultiplePersonsIcon,
-  Pill,
-  Screen,
-  Spacer,
-  Text,
-  useColor,
-} from "@artsy/palette-mobile"
+import { HeartStrokeIcon, IconProps, BellStrokeIcon, GroupIcon } from "@artsy/icons/native"
+import { Flex, Pill, Screen, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import {
   createMaterialTopTabNavigator,
@@ -29,32 +20,32 @@ import { useEffect } from "react"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 export const Pills: {
-  Icon: React.FC<{ fill: string }>
+  Icon: React.FC<IconProps>
   title: string
   key: FavoritesTab
   contextModule: ContextModule
 }[] = [
   {
-    Icon: HeartIcon,
+    Icon: HeartStrokeIcon,
     title: "Saves",
     key: "saves",
     contextModule: ContextModule.favoritesSaves,
   },
   {
-    Icon: MultiplePersonsIcon,
+    Icon: GroupIcon,
     title: "Follows",
     key: "follows",
     contextModule: ContextModule.favoritesFollows,
   },
   {
-    Icon: BellIcon,
+    Icon: BellStrokeIcon,
     title: "Alerts",
     key: "alerts",
     contextModule: ContextModule.favoritesAlerts,
   },
 ]
 
-const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+const FavoritesHeaderTabBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
   const color = useColor()
 
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
@@ -81,6 +72,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
       ],
     }
   })
+
   const activeRoute = state.routes[state.index].name
 
   return (
@@ -102,8 +94,8 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
           }
         }}
       >
-        <Flex mx={2}>
-          <Flex alignItems="flex-end" mb={2}>
+        <Flex mx={2} mt={2}>
+          <Flex alignItems="flex-end">
             <FavoritesLearnMore />
           </Flex>
 
@@ -173,7 +165,8 @@ export const Favorites = () => {
       <Screen>
         <Screen.Body fullwidth>
           <FavoriteTopNavigator.Navigator
-            tabBar={FavoritesHeaderTapBar}
+            backBehavior="none"
+            tabBar={(props) => <FavoritesHeaderTabBar {...props} />}
             screenOptions={{
               swipeEnabled: false,
             }}

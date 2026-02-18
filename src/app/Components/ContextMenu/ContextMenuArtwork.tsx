@@ -9,15 +9,15 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
-import { InteractionManager, Platform, SafeAreaView } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -41,7 +41,7 @@ interface ContextMenuArtworkProps {
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
-export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
+export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArtworkProps>> = ({
   children,
   haptic = true,
   artworkDisplayProps,
@@ -56,8 +56,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
-  const enableContextMenuAndroid = useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
   const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -78,12 +76,14 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   })
 
   const openViewInRoom = () => {
-    if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
+    if (!((artwork.widthCm && artwork.heightCm) || artwork.diameterCm) || image?.url == null) {
       return
     }
 
-    const heightIn = cm2in(artwork.heightCm)
-    const widthIn = cm2in(artwork.widthCm)
+    const artworkWidth = (artwork.widthCm || artwork.diameterCm) as number
+    const artworkHeight = (artwork.heightCm || artwork.diameterCm) as number
+    const heightIn = cm2in(artworkHeight)
+    const widthIn = cm2in(artworkWidth)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -108,6 +108,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         onPress: () => {
           if (title && href) {
             InteractionManager.runAfterInteractions(() => {
+              const imageUrl = artwork.contextMenuImage?.url || artwork.image?.url
               showShareSheet({
                 type: "artwork",
                 artists: artists,
@@ -115,7 +116,14 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
                 internalID: internalID,
                 title: title,
                 href: href,
-                images: [],
+                images: imageUrl
+                  ? [
+                      {
+                        __typename: "Image" as const,
+                        imageURL: imageUrl,
+                      },
+                    ]
+                  : [],
               })
             })
           }
@@ -189,7 +197,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const [androidVisible, setAndroidVisible] = useState(false)
 
   // TODO: Enable in test enrivonment and fix broken tests
-  if (isIOS && enableContextMenuIOS && !__TEST__) {
+  if (isIOS && !__TEST__) {
     return (
       <ContextMenu
         actions={contextActions}
@@ -213,7 +221,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   // Fall back to a bottom sheet on Android
-  if (!isIOS && enableContextMenuAndroid) {
+  if (!isIOS) {
     return (
       <>
         <TouchableHighlight
@@ -292,6 +300,7 @@ const artworkFragment = graphql`
     }
     heightCm
     widthCm
+    diameterCm
   }
 `
 

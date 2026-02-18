@@ -20,7 +20,6 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
 import { FlatList, Platform } from "react-native"
@@ -54,8 +53,6 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   const space = useSpace()
 
   const section = useFragment(sectionFragment, sectionProp)
-
-  const enableQuickLinksAnimation = useFeatureFlag("AREnableQuickLinksAnimation2")
 
   const tracking = useHomeViewTracking()
 
@@ -103,7 +100,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         data={navigationPills}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={enableQuickLinksAnimation ? animatedStyles : undefined}
+        style={animatedStyles}
         contentContainerStyle={[
           {
             paddingHorizontal: space(2),

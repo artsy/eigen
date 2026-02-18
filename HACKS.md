@@ -28,18 +28,6 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
-## react-native-image-crop-picker getRootVC patch
-
-#### When can we remove this:
-
-Remove when we stop swizzling UIWindow via ARWindow or react-native-image-crop-picker provides a more robust way of finding the viewController to present on.
-
-#### Explanation/Context:
-
-https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
-
-We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
-
 ## Delay modal display after LoadingModal is dismissed
 
 #### When can we remove this:
@@ -61,31 +49,6 @@ Once https://github.com/facebook/react-native/pull/29664 is merged or https://gi
 As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
-
-## `react-native-screens` fragment crash on open from background on Android
-
-#### When can we remove this:
-
-Once https://github.com/software-mansion/react-native-screens/issues/17 is solved or we use another library for screen management.
-
-#### Explanation/Context:
-
-There is a known issue in react-native-screens that causes the app to crash on restoring from background. The react-native-screens team recommends the following workaround to be
-added to the MainActivity class on Android https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067.
-
-This has the UX downside of not allowing state restore from background but this is an unsolved problem for RN apps.
-
-## typings/styled-components.native.d.ts
-
-#### When can we remove this:
-
-When we upgrade styled-components to a version with types that don't complain when we run `yarn type-check`.
-
-#### Explanation/Context:
-
-I wasn't the one to add this file, so I don't have all the context, but I do know that styled-component types are missing and/or causing problems when we don't have that file.
-
-The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
 
 ## `react-native-push-notification` Requiring unknown module on ios
 
@@ -178,7 +141,7 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
 
-## Patch-package for sift-react-native
+## Patch for sift-react-native
 
 #### When can we remove this:
 
@@ -191,7 +154,7 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
-## Patch-package for @react-navigation/native
+## Patch for @react-navigation/native
 
 #### When we can remove this:
 
@@ -213,30 +176,6 @@ https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
 
 Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
 privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
-
-## Patch-package for react-native-fast-image
-
-#### When we can remove this:
-
-When the library uses the latest SDWebImage that includes privacy manifests, a version >= 5.19
-https://github.com/DylanVann/react-native-fast-image/issues/1031
-
-#### Explanation/Context
-
-Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis. SDWebImage is one of those,
-SDWebImage has been updated to include a privacy manifest but the wrapper we use, react-native-fast-image, has not.
-https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
-
-## Patch-package for react-native-fast-image second part
-
-#### When we can remove this:
-
-When the library releases this commit https://github.com/muntius/react-native-fast-image/commit/fc2b8acd97f07989e312f5cbd61d2e541fda3611#diff-24ce0837ec34bb03c94a76bc62258a10d1c729e2e6b2f3ac706eab55f76dc0ecR87
-and when this issue is closed https://github.com/DylanVann/react-native-fast-image/issues/1002
-
-#### Explanation/Context
-
-https://artsynet.sentry.io/issues/4479226101/events/d98fd95bd4c74271a184596c901fac26/ started having some sentry crashes for this reason in iOS 17 and this patch fixes the issue (taken from the main branch of the fast-image repo but not released yet).
 
 ## Modular headers for firebase deps in Podfile
 
@@ -276,17 +215,44 @@ We want to be able to promote past android builds to prod because we are creatin
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
 promotion. We added custom logic to work around this.
 
-## react-native-collapsible-tab-view patch
+## Patch for react-native-keys
 
-#### When we can remove this:
+#### When can we remove this:
 
-After updates to both/either react native react-native-collapsible-tab-view. Remove the patch, reinstall deps and run the app on Android and check if affected components like My Collection render correctly. If they do you can remove the patch.
+When react-native-keys merges this PR
+https://github.com/numandev1/react-native-keys/pull/117
 
 #### Explanation/Context:
 
-After upgrading to react native 0.75 screens like my collection using this library stopped rendering on Android. This was fixed with a patch that added some style changes to the components from the package.
+Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
 
-## patch-pacakge for react-native-reanimated
+## Patch for @react-navigation/bottom-tabs
+
+This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
+
+See https://github.com/artsy/eigen/pull/12249 for more details.
+
+## Resolutions @react-native/dev-middleware
+
+#### When can we remove this:
+
+When Rozenite stable release is published and no longer requires this resolution
+
+#### Explanation/Context:
+
+This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
+
+## patch for react-native-reanimated
+
+#### Explanation/Context:
+
+This patch was added to support 16KB page size on Android. It's a copy paste from here https://github.com/software-mansion/react-native-reanimated/pull/7037
+
+#### When can we remove it
+
+It can be removed once we upgrade to any version past 3.17
+
+## Patch for react-native-reanimated (CellRendererComponent)
 
 #### When can we remove this:
 
@@ -297,22 +263,23 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
 
-## patch-package for react-native-keys
+## patch for react-native-blurhash
+
+#### Explanation/Context:
+
+This patch was added to fix the build on RN81.
 
 #### When can we remove this:
 
-When react-native-keys fixes and releases the this issue:
-https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
+It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
+
+## patch for react-native RCTEventEmitter
 
 #### Explanation/Context:
 
-Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
+We use a singleton pattern for our ARNotificationsManagerModule, which is also an RCTEventEmitter for things like push notification handling, there is a bug in react native where stopObserving is called when bridge is invalidated but listenerCount is
+not reset. This causes the module to never start listening again causing events not to be sent over the bridge.
 
-## patch-package for expo-updates
+#### When can we remove this:
 
-When expo-updates merges and releases this change:
-https://github.com/expo/expo/pull/36893
-
-#### Explanation/Context:
-
-Expo updates was not returning the reason an update failed to be available on iOS making debugging difficult.
+It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.

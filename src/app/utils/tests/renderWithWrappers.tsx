@@ -12,7 +12,7 @@ export interface WrappersProps {
   includeArtworkLists?: boolean
 }
 
-const Wrappers: React.FC<WrappersProps> = ({
+const Wrappers: React.FC<React.PropsWithChildren<WrappersProps>> = ({
   skipRelay,
   includeNavigation,
   includeArtworkLists,
@@ -46,12 +46,23 @@ const componentWithWrappers = (component: ReactElement) => {
 export const renderWithWrappersLEGACY = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
-    const renderedComponent = ReactTestRenderer.create(wrappedComponent)
+    let renderedComponent: ReactTestRenderer.ReactTestRenderer | undefined
+
+    // React 19 requires ReactTestRenderer.create to be wrapped in act
+    ReactTestRenderer.act(() => {
+      renderedComponent = ReactTestRenderer.create(wrappedComponent)
+    })
+
+    if (!renderedComponent) {
+      throw new Error("Failed to create test renderer")
+    }
 
     // monkey patch update method to wrap components
     const originalUpdate = renderedComponent.update
     renderedComponent.update = (nextElement: ReactElement) => {
-      originalUpdate(componentWithWrappers(nextElement))
+      ReactTestRenderer.act(() => {
+        originalUpdate(componentWithWrappers(nextElement))
+      })
     }
 
     return renderedComponent

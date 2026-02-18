@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -14,8 +15,12 @@ import {
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Reducer, Suspense, useReducer } from "react"
+import { Suspense, useReducer } from "react"
 import { graphql } from "react-relay"
+
+jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
+  useExperimentVariant: jest.fn(),
+}))
 
 describe("inquiry modal", () => {
   let initialState: ArtworkInquiryContextState
@@ -43,6 +48,10 @@ describe("inquiry modal", () => {
 
   beforeEach(() => {
     initialState = { ...initialArtworkInquiryState, inquiryModalVisible: true }
+    ;(useExperimentVariant as jest.Mock).mockReturnValue({
+      variant: {},
+      trackExperiment: jest.fn(),
+    })
   })
 
   it("renders", () => {
@@ -52,7 +61,7 @@ describe("inquiry modal", () => {
     expect(screen.getByText("Title, Date")).toBeVisible()
     expect(screen.getByLabelText("Image of Title")).toBeVisible()
     expect(screen.getByText("Question")).toBeVisible()
-    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Your message").props.value)
   })
 
   it("opens the shipping modal when the 'add your location' field is pressed", async () => {
@@ -83,7 +92,7 @@ describe("inquiry modal", () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
     // clearing the input field
-    fireEvent.changeText(screen.getByLabelText("Add message"), "")
+    fireEvent.changeText(screen.getByLabelText("Your message"), "")
 
     expect(screen.getByText("Send")).toBeDisabled()
 
@@ -96,15 +105,27 @@ describe("inquiry modal", () => {
     renderWithRelay()
     expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
+  })
+
+  it("does not show 'What information are you looking for?' when there are no inquiry questions", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+        inquiryQuestions: [],
+      }),
+    })
+
+    expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
+    expect(screen.getByLabelText("Your message")).toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -162,6 +183,40 @@ describe("inquiry modal", () => {
       ).toBeOnTheScreen()
     })
   })
+
+  describe("template messages A/B test", () => {
+    describe("on control", () => {
+      beforeEach(() => {
+        // mock experiment as "control"
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          variant: { enabled: true, name: "control" },
+          trackExperiment: jest.fn(),
+        })
+      })
+
+      it("prefills the input with a templated message", () => {
+        renderWithRelay({ Artwork: () => mockArtwork })
+
+        expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Your message").props.value)
+      })
+    })
+
+    describe("on experiment", () => {
+      beforeEach(() => {
+        // mock experiment as "experiment"
+        ;(useExperimentVariant as jest.Mock).mockReturnValue({
+          variant: { enabled: true, name: "experiment" },
+          trackExperiment: jest.fn(),
+        })
+      })
+
+      it("shows the input empty", () => {
+        renderWithRelay({ Artwork: () => mockArtwork })
+
+        expect(screen.getByLabelText("Your message").props.value).toBe("")
+      })
+    })
+  })
 })
 
 const mockArtwork = {
@@ -185,7 +240,7 @@ const mockArtwork = {
 }
 
 const useReducerWithInquiryModalVisible = (initialState: ArtworkInquiryContextState) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
+  const [state, dispatch] = useReducer<ArtworkInquiryContextState, [ArtworkInquiryActions]>(
     artworkInquiryStateReducer,
     initialState
   )

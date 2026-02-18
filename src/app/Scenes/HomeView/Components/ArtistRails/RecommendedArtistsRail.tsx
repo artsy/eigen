@@ -39,7 +39,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
 }) => {
   const { trackEvent } = useTracking()
 
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
@@ -101,7 +101,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
           )
         }}
         ItemSeparatorComponent={() => <Spacer x="15px" />}
-        ListFooterComponent={
+        ListFooterComponent={() =>
           loadingMoreData ? (
             <Flex justifyContent="center" ml={4} mr={6} height="200">
               <Spinner />

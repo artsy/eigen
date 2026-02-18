@@ -1,4 +1,5 @@
-import { EyeClosedIcon, Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
+import { HideIcon } from "@artsy/icons/native"
+import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useState } from "react"
 
@@ -44,12 +45,7 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
                 }}
                 haptic
               >
-                <EyeClosedIcon
-                  accessibilityLabel="EyeClosedIcon"
-                  mt={0.5}
-                  ml={0.5}
-                  fill="mono100"
-                />
+                <HideIcon accessibilityLabel="HideIcon" mt={0.5} ml={0.5} fill="mono100" />
               </Touchable>
             </Flex>
           </Popover>

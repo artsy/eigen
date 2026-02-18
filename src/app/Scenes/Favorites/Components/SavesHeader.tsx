@@ -1,4 +1,5 @@
-import { Flex, AddIcon, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
+import { AddIcon, TagIcon } from "@artsy/icons/native"
+import { Flex, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
@@ -52,7 +53,10 @@ interface TouchableElementProps {
   onPress: () => void
 }
 
-const TouchableElement: React.FC<TouchableElementProps> = ({ onPress, children }) => {
+const TouchableElement: React.FC<React.PropsWithChildren<TouchableElementProps>> = ({
+  onPress,
+  children,
+}) => {
   return (
     <Touchable accessibilityRole="button" onPress={onPress}>
       <Flex flexDirection="row" alignItems="center">

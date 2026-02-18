@@ -10,12 +10,14 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
+import mockKeyboardController from "react-native-keyboard-controller/jest"
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
@@ -97,6 +99,13 @@ jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
 }))
 
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
+
 require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
@@ -114,6 +123,7 @@ jest.mock("sift-react-native", () => ({
   unsetUserId: jest.fn(),
   setUserId: jest.fn(),
   upload: jest.fn(),
+  setPageName: jest.fn(),
 }))
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
@@ -158,12 +168,21 @@ jest.mock("react-native-webview", () => {
   const React = require("react")
   const { View } = require("react-native")
 
+  const MockWebView = React.forwardRef((props: any, ref: any) => {
+    return <View ref={ref} {...props} />
+  })
+
   return {
     __esModule: true,
-    default: React.forwardRef((props: any, ref: any) => {
-      return <View ref={ref} {...props} />
-    }),
+    default: MockWebView,
+    WebView: MockWebView,
   }
+})
+
+jest.mock("react-native-linear-gradient", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+  return React.forwardRef((props: any, ref: any) => <View {...props} ref={ref} />)
 })
 
 jest.mock("react-native-share", () => ({
@@ -255,7 +274,7 @@ jest.mock("@sentry/react-native", () => ({
   wrap: jest.fn().mockImplementation((component) => component),
   withProfiler: jest.fn().mockImplementation((component) => component),
   TimeToFullDisplay: () => null,
-  TimeToInitialDisplay: ({ children }: { children: React.ReactChildren }) => <>{children}</>,
+  TimeToInitialDisplay: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   reactNavigationIntegration: jest.fn().mockImplementation(() => ({
     registerNavigationContainer: jest.fn(),
   })),
@@ -376,20 +395,41 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
-jest.mock("react-native-push-notification", () => ({
-  configure: jest.fn(),
-  onRegister: jest.fn(),
-  onNotification: jest.fn(),
-  addEventListener: jest.fn(),
-  requestPermissions: jest.fn(),
-  checkPermissions: jest.fn(),
+jest.mock("@notifee/react-native", () => ({
+  displayNotification: jest.fn(),
+  getNotificationSettings: jest.fn(),
+  onForegroundEvent: jest.fn(() => jest.fn()),
+  onBackgroundEvent: jest.fn(),
+  getInitialNotification: jest.fn(),
   createChannel: jest.fn(),
-  localNotification: jest.fn(),
+  AuthorizationStatus: {
+    AUTHORIZED: 1,
+    DENIED: 0,
+  },
+  EventType: {
+    PRESS: 1,
+    DELIVERED: 2,
+  },
+}))
+
+jest.mock("@react-native-firebase/messaging", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    registerDeviceForRemoteMessages: jest.fn(),
+    getToken: jest.fn(),
+    onMessage: jest.fn(() => jest.fn()),
+    setBackgroundMessageHandler: jest.fn(),
+    onTokenRefresh: jest.fn(() => jest.fn()),
+    getInitialNotification: jest.fn(() => jest.fn()),
+    onNotificationOpenedApp: jest.fn(() => jest.fn()),
+  })),
 }))
 
 jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
+
+jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
 
 /**
  * Mocks for our code
@@ -450,6 +490,7 @@ function getNativeModules(): OurNativeModules {
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
       clearUserData: jest.fn(),
       clearCache: jest.fn(),
     },
@@ -506,6 +547,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
       getPushToken: jest.fn(),
+      getRecentPushPayloads: jest.fn(),
     },
   },
 }))
@@ -603,10 +645,15 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
   })),
 }))
 
-jest.mock("@gorhom/bottom-sheet", () => ({
-  __esModule: true,
-  ...require("@gorhom/bottom-sheet/mock"),
-}))
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  return {
+    __esModule: true,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    ...require("@gorhom/bottom-sheet/mock"),
+  }
+})
 
 jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")
@@ -638,7 +685,7 @@ jest.mock("@react-native-community/geolocation", () => ({
   stopObserving: jest.fn(),
 }))
 
-jest.mock("react-native-document-picker", () => ({
+jest.mock("@react-native-documents/picker", () => ({
   default: jest.fn(),
   pick: jest.fn(),
 }))
@@ -655,3 +702,18 @@ jest.mock("app/utils/Sentinel", () => {
     Sentinel: View,
   }
 })
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
+
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
+  getNotificationPermissionsStatus: mockFetchNotificationPermissions,
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized",
+    Denied: "denied",
+  },
+}))

@@ -1,16 +1,5 @@
-import { LinkIcon } from "@artsy/icons/native"
-import {
-  Button,
-  CloseIcon,
-  EditIcon,
-  Flex,
-  Join,
-  Pill,
-  Spacer,
-  Text,
-  useColor,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { CloseIcon, EditIcon, LinkIcon } from "@artsy/icons/native"
+import { Button, Flex, Join, Pill, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { IVariant, useFlags } from "@unleash/proxy-client-react"
 import { FONTS } from "app/Components/HTML"
@@ -133,7 +122,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("control")
                           }}
                         >
-                          control {unleashVariant.name === "control" && "(default)"}
+                          control {unleashVariant?.name === "control" && "(default)"}
                         </Pill>
                         <Pill
                           variant="badge"
@@ -141,7 +130,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("experiment")
                           }}
                         >
-                          experiment {unleashVariant.name === "experiment" && "(default)"}
+                          experiment {unleashVariant?.name === "experiment" && "(default)"}
                         </Pill>
                       </Flex>
                     )}
@@ -169,7 +158,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                               }}
                             >
                               {payloadSuggestion}{" "}
-                              {unleashVariant.payload?.value === payloadSuggestion && "(default)"}
+                              {unleashVariant?.payload?.value === payloadSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
@@ -234,7 +223,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       </Text>
       <Text>
         <Text color="mono60">Status:</Text>{" "}
-        {unleashVariant.enabled ? (
+        {unleashVariant?.enabled ? (
           <Text fontWeight="bold" color="blue100">
             enabled
           </Text>
@@ -246,7 +235,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       </Text>
       <Text>
         <Text color="mono60">Variant:</Text>{" "}
-        <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant.name}</Text>
+        <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant?.name}</Text>
         <TouchableOpacity
           accessibilityRole="button"
           onPress={() => {
@@ -259,7 +248,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       <Flex flexDirection="row" flexWrap="wrap">
         <Text color="mono60">Payload: </Text>
         <Text fontWeight="bold" selectable>
-          {unleashVariant.payload?.value || "--"}
+          {localPayloadOverrides[flag] || unleashVariant?.payload?.value || "--"}
           <TouchableOpacity
             accessibilityRole="button"
             onPress={() => {

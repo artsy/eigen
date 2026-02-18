@@ -1,37 +1,51 @@
-import {
-  ArrowRightIcon,
-  Flex,
-  FlexProps,
-  SpacingUnit,
-  Text,
-  TextProps,
-} from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
+type SectionTitleVariants = "small" | "default" | "large"
+
+const STATES: Record<
+  SectionTitleVariants,
+  { titleVariant: TextProps["variant"]; iconSize: number }
+> = {
+  small: {
+    titleVariant: "xs",
+    iconSize: 12,
+  },
+  default: {
+    titleVariant: "sm-display",
+    iconSize: 12,
+  },
+  large: {
+    titleVariant: "md",
+    iconSize: 24,
+  },
+}
+
 export const SectionTitle: React.FC<
   {
+    capitalized?: boolean
     href?: string | null
-    title: React.ReactNode
-    titleVariant?: TextProps["variant"]
-    titleColor?: TextProps["color"]
-    subtitle?: React.ReactNode
+    mb?: SpacingUnit
     navigationProps?: object
     onPress?: () => any | null
     RightButtonContent?: React.FC
-    mb?: SpacingUnit
-    capitalized?: boolean
+    subtitle?: React.ReactNode
+    title: React.ReactNode
+    titleColor?: TextProps["color"]
+    variant?: SectionTitleVariants
   } & FlexProps
 > = ({
+  capitalized = true,
   href,
   navigationProps,
-  title,
-  titleVariant = "sm-display",
-  titleColor = "mono100",
-  subtitle,
   onPress,
-  RightButtonContent = RightButton,
-  capitalized = true,
+  subtitle,
+  title,
+  titleColor = "mono100",
+  variant = "default",
+  RightButtonContent = () => <RightButton variant={variant} />,
   ...flexProps
 }) => {
   let titleText
@@ -45,7 +59,7 @@ export const SectionTitle: React.FC<
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
           <Text
-            variant={titleVariant}
+            variant={STATES[variant].titleVariant as TextProps["variant"]}
             ellipsizeMode="tail"
             numberOfLines={1}
             testID="title"
@@ -71,12 +85,13 @@ export const SectionTitle: React.FC<
   )
 }
 
-const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProps?: object }> = ({
-  children,
-  href,
-  navigationProps,
-  onPress,
-}) => {
+const Wrapper: React.FC<
+  React.PropsWithChildren<{
+    onPress?(): void
+    href?: string | null
+    navigationProps?: object
+  }>
+> = ({ children, href, navigationProps, onPress }) => {
   if (onPress) {
     return (
       <RouterLink
@@ -94,10 +109,10 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
   }
 }
 
-const RightButton = () => (
+const RightButton = ({ variant }: { variant: SectionTitleVariants }) => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
+      <ChevronRightIcon width={STATES[variant].iconSize} fill="mono60" ml={0.5} />
     </Flex>
   </Flex>
 )

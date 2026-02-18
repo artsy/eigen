@@ -3,12 +3,12 @@ import { Flex, Screen, Text, useColor } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
-import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import {
   dismissModal,
   goBack,
   GoBackProps,
+  // eslint-disable-next-line no-restricted-imports
   navigate,
   navigationEvents,
 } from "app/system/navigation/navigate"
@@ -21,10 +21,12 @@ import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform } from "react-native"
-import { Edge } from "react-native-safe-area-context"
+import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Platform } from "react-native"
+import { KeyboardAvoidingView } from "react-native-keyboard-controller"
+import { Edge, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
+import { URL } from "react-native-url-polyfill"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 
@@ -78,6 +80,7 @@ export const ArtsyWebViewPage = ({
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
   const tracking = useTracking()
+  const { bottom } = useSafeAreaInsets()
 
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
@@ -148,7 +151,11 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="background">
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          // Setting `behaviour` here breaks the avoidance on iOS, hence it's only set for Android
+          behavior={Platform.select({ android: "padding" })}
+          style={{ flex: 1, marginBottom: bottom }}
+        >
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -207,6 +214,17 @@ export const ArtsyWebView = forwardRef<
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
+    // Track the initial path of this webview to avoid intercepting its own initial load
+    const getInitialPath = () => {
+      try {
+        return new URL(uri).pathname
+      } catch {
+        return ""
+      }
+    }
+    const initialPath = useRef<string>(getInitialPath())
+    // Track if the webview has finished its initial load (including redirects)
+    const hasFinishedInitialLoad = useRef(false)
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
     const stopLoading = debounce((needToGoBack = true) => {
@@ -218,7 +236,18 @@ export const ArtsyWebView = forwardRef<
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
-      onNavigationStateChangeProp?.(evt)
+      // Helper to notify parent of navigation state changes when we allow navigation to complete
+      const notifyParentOfNavigation = () => {
+        onNavigationStateChangeProp?.(evt)
+      }
+
+      // Save the current state before we potentially update it
+      const isStillInitialLoad = !hasFinishedInitialLoad.current
+
+      // Mark initial load as complete when any page finishes loading
+      if (isStillInitialLoad && !evt.loading) {
+        hasFinishedInitialLoad.current = true
+      }
 
       const targetURL = expandGoogleAdLink(evt.url)
 
@@ -229,6 +258,11 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        notifyParentOfNavigation()
+        return
+      }
+      if (result.type === "match" && result.module === "Feature") {
+        notifyParentOfNavigation()
         return
       }
 
@@ -236,6 +270,7 @@ export const ArtsyWebView = forwardRef<
       // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
       // when in eigen purchase flow.
       if (result.type === "match" && result.module === "Home") {
+        // Don't notify parent - we're canceling this navigation
         stopLoading(true)
         return
       }
@@ -244,17 +279,35 @@ export const ArtsyWebView = forwardRef<
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
+
       if (
         result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
-          result.module
-        )
+        ["ReactWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(result.module)
       ) {
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
         }
+        notifyParentOfNavigation()
+        return
+      } else if (result.type === "match" && result.module === "ModalWebView") {
+        // For ModalWebView routes we want a separate modal to be presented to avoid
+        // navigation issues with the original webview.
+        const targetPath = new URL(targetURL).pathname
+
+        // Don't intercept if this is the initial load or we're still in the initial load/redirect chain
+        if (targetPath === initialPath.current || isStillInitialLoad) {
+          notifyParentOfNavigation()
+          return
+        }
+
+        // We're intercepting this navigation - don't notify parent
+        // Stop loading and open a new modal webview
+        innerRef.current?.stopLoading()
+
+        navigate(targetURL)
         return
       } else {
+        // Don't notify parent - we're canceling this navigation
         const needToGoBack =
           result.type !== "external_url" ||
           (result.type === "external_url" && Platform.OS === "android")
@@ -263,13 +316,10 @@ export const ArtsyWebView = forwardRef<
 
       // In case of a webview presented modally, if the targetURL is a tab View,
       // we need to dismiss the modal first to avoid having a tab rendered within the modal
-      const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
+      const modulePathName = new URL(targetURL).href?.split(/\/+/).filter(Boolean) ?? []
 
       const shouldDismissModal =
-        isPresentedModally &&
-        result.type === "match" &&
-        modulePathName.length > 0 &&
-        BottomTabRoutes.includes("/" + modulePathName[0])
+        isPresentedModally && result.type === "match" && modulePathName.length > 0
 
       // if it's an external url, or a route with a native view, use `navigate`
       if (!__TEST__) {
@@ -290,7 +340,7 @@ export const ArtsyWebView = forwardRef<
       <Flex flex={1}>
         <WebView
           enableApplePay
-          ref={innerRef}
+          ref={innerRef as LegacyRef<WebView>}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
           sharedCookiesEnabled
@@ -401,10 +451,18 @@ class CookieRequestAttempt {
   }
 }
 
+function getAfterFirstQuestionMark(str: string) {
+  const index = str.indexOf("?")
+  if (index === -1) return "" // no question mark found
+  return str.slice(index + 1)
+}
+
 function expandGoogleAdLink(url: string) {
-  const parsed = new URL(url)
-  if (parsed.host === "googleads.g.doubleclick.net") {
-    const adurl = parseQueryString(parsed.search ?? "").adurl as string | undefined
+  const expandGoogleAdLinkUrl = new URL(url)
+  if (expandGoogleAdLinkUrl.href.includes("googleads.g.doubleclick.net")) {
+    const queryString = getAfterFirstQuestionMark(expandGoogleAdLinkUrl.href)
+
+    const adurl = parseQueryString(queryString ?? "").adurl as string | undefined
     if (adurl && new URL(adurl)) {
       return adurl
     }

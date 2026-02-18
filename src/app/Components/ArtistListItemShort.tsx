@@ -6,7 +6,7 @@ import { ReadMore } from "app/Components/ReadMore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { FC } from "react"
+import { FC, memo, useMemo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistListItemShortProps {
@@ -14,8 +14,13 @@ interface ArtistListItemShortProps {
   onPress?: () => void
 }
 
-export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPress }) => {
+export const ArtistListItemShort: FC<ArtistListItemShortProps> = memo(({ artist, onPress }) => {
   const data = useFragment(fragment, artist)
+
+  const followButton = useMemo(
+    () => <ArtistFollowButtonQueryRenderer artistID={data?.internalID ?? ""} />,
+    [data?.internalID]
+  )
 
   if (!data) {
     return null
@@ -34,7 +39,7 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPr
             initials={data.initials}
             imageUrl={image}
             meta={data.formattedNationalityAndBirthday ?? undefined}
-            RightButton={<ArtistFollowButtonQueryRenderer artistID={data.internalID} />}
+            RightButton={followButton}
           />
         </RouterLink>
       </Flex>
@@ -44,7 +49,7 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPr
       )}
     </>
   )
-}
+})
 
 const fragment = graphql`
   fragment ArtistListItemShort_artist on Artist {

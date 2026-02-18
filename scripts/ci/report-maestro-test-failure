@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+# Get platform parameter (android, ios, etc.)
+PLATFORM=${1:-"unknown"}
+echo "Platform: $PLATFORM"
+
+# Capitalize platform for display
+PLATFORM_DISPLAY=$(echo "$PLATFORM")
+
+# Get latest Maestro test directory
+# Parse out the flow file and error message
+# Upload screenshots to S3 and report failure via Fastlane
+pushd ~/.maestro/tests
+LATEST=$(ls -1d 20* | LC_ALL=C sort | tail -n 1)
+echo "Latest Maestro test directory: $LATEST"
+SCREENSHOTS_DIR="$HOME/.maestro/tests/$LATEST"
+FLOW_FILE=$(find "$LATEST" -name 'commands-(*).json' | head -n 1)
+echo "Flow file: $FLOW_FILE"
+FLOW_NAME=$(basename "$FLOW_FILE" | sed -E 's/commands-\((.*)\.yml\)\.json/\1/')
+echo "Flow name: $FLOW_NAME"
+ERROR_MESSAGE=$(jq -r '.[] | select(.metadata.status == "FAILED") | .metadata.error.message' "$FLOW_FILE")
+echo "Error message: $ERROR_MESSAGE"
+popd
+
+for screenshot in "$SCREENSHOTS_DIR"/*.png; do
+  BASENAME=$(basename "$screenshot")
+  S3_PATH="s3://artsy-citadel/eigen/screenshots/$LATEST/$BASENAME"
+
+  aws s3 cp "$screenshot" "$S3_PATH"
+  # 7 days minus 1 hour (max allowed is exactly 604800 seconds)
+  EXPIRES_IN=$((7 * 24 * 60 * 60 - 3600))  # → 600400 seconds (7 days - 1 hour)
+
+  URL=$(aws s3 presign "$S3_PATH" --expires-in "$EXPIRES_IN")
+
+  bundle exec fastlane report_maestro_failure s3_url:$URL error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME" platform:"$PLATFORM_DISPLAY"
+done

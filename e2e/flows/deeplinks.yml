@@ -1,23 +1,82 @@
 appId: ${MAESTRO_APP_ID}
 ---
+- killApp
 - launchApp:
     clearState: false
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-- assertVisible: "New Works for You"
+      useMaestroInit: "true"
+
+- assertVisible:
+    id: "search-button"
 - killApp
-- openLink:
-    link: https://www.artsy.net/artist/kaws
-    autoVerify: false
-- assertVisible: "Kaws"
+
+# --- First deeplink (Artist) ---
+- repeat:
+    while:
+      notVisible: "KAWS"
+    times: 3
+    commands:
+      - openLink:
+          link: https://artsy.net/artist/kaws
+          autoVerify: true
+      # If Safari steals it, bail out and retry
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- extendedWaitUntil:
+    visible: "KAWS"
+    timeout: 20000
+
 - killApp
-- openLink:
-    link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
-    autoVerify: false
-- assertVisible: "Highlights at Auction This Week"
+
+# --- Second deeplink (Auction Highlights) ---
+- repeat:
+    while:
+      notVisible: "Highlights at Auction This Week"
+    times: 3
+    commands:
+      - openLink:
+          link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- extendedWaitUntil:
+    visible: "Highlights at Auction This Week"
+    timeout: 20000
+
 - killApp
-- openLink:
-    link: "https://email-link.artsy.net/ls/click?upn=u001.XPbk8dXjc6dwd18Yq2uPM3eTWB4YbDUmeJTAXXTF513sTSKEFRIPxrFgGj8gd2LN9AcRIza5p2-2Fi0huqjv6GWgdnpwA-2FRyTEIYA-2BT1-2F0josxHnYTzJpKeJEmkfzDQlMEY9y6FknqDddY-2BKmm5qtTrTIF2hxySbdUboaYf5ofK-2Bj-2FgSolzBiLvvzai-2FmvjWbSpNpJHWATexQixwLakesmmZUBoRoLkCnxs59pBxJPbB3JZyP13cv77lbfn1WzJ86fiW-2B5MQcd2qss7wLGBI-2BZuy-2FxDkbFuDzpfYPDlaUs1-2BuyO9rqleUCwXPEuyWXZ3aGJrh-_dWIRBTTKlL2IhQqV5a1Cy38Sd4xylePmkTfQkXpdWOLZbG0vcWuzG-2BSSjZ7xaSUgPR0lxFBD0Zz4mpyMqiSRd7GblcbPN8eH0NYfUK6pmADWc2UoFXyJdeq-2F-2BOyOeWlS7O-2FOrHgB9-2BOGtV1nkIFPq97vJTNmWtBMDOt77SsursARR1LHG7CnzBEedV5yll40aEh9LTjA47-2BfpvonTwdxvYfd6ZWsZN2uRczvCs34ipSKUClLSzq0xCn8IjAixssMm2IreBk6LmNzHPC1YLqmZ77pv0qTxX095mxh8mk7f9rJJ8Tg1fyfRFriXGsQqgHlY-2BqTf2aAU6LS9NVXirqdp20-2BHXhzUZbaCnkQNASABts91iKoZaDeV4xnYuuo3L-2F8"
-    autoVerify: false
-- assertVisible: "The artwork you were looking for isn't available."
+
+# --- Third deeplink (Email link) ---
+- repeat:
+    while:
+      notVisible: "Maestro Test Artwork, 2025"
+    times: 3
+    commands:
+      - openLink:
+          link: https://email-link.artsy.net/ls/click?upn=u001.dBTKf7Wpt9bpOMXsd3eaCr45lKQ0xlDJiMs6lLXLYmt178QxQIXDi5-2BHxXY5n-2FLMqC7dYvx3HgyrryRV9UzsHbUpjsYJWB-2Fj-2B-2BEZDJyVfqaNW9q6coA2qcmjdD59pnSUKAVLOn8un52b5D01AgtNpdPrHzkbbQy4gCbuYOk1iuPqyg70B6gkCMXGBZuCPr2m9gIBxwpLkX9-2B2zmUfDbbwsMD-2BCAPDBiKt5Ls-2FJWHjfU-3DedPI_yB8pNXz8iKogugC36vxXF9cFFK1QR-2FMY-2Bnkbr-2BVhIrrC1LcTACICLavYsLU418aDSJi-2BXuv2wM5qkMKcUtxbXoxfVcX-2F2p2Nzx7WcoGsOKCkNK2nMNcNLTf6jSh2dXh7TBjgyw8pzU9eF3TibX4i1ldfPYH29-2Bad7EtsSLoTmBEb1pUKhxXiLSxyBsbmQh3ZZjSByQPcRm5ZH0b8mO-2BCPCUqRxS9N8-2F-2BNvu8MJvCYCnJbM61aWCBBPvE3xtGCMkor7cowLOhr-2FbZrziwWGzezDguiTSGc1XbJ0YNDiMtp6IaiqS7ss082YcgDkQORNqWtSz1UpMSULK88k-2B1OHpvD2xLX5y-2FXoQF3cfjBKHiaxfW4Pun3DA-2BwS1eGAXYF3iT
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
+    element: "Maestro Test Artwork, 2025"
+    timeout: 90000
+    speed: 60

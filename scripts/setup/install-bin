@@ -5,7 +5,7 @@ set -euo pipefail
 # Install vendored CLI tool dependencies
 echo "Installing bin toolchain dependencies..."
 cd bin
-yarn install --frozen-lockfile
+yarn --cwd bin install --immutable
 cd ..
 
 echo "✅ Bin dependencies installed successfully."

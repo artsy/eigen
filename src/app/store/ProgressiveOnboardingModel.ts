@@ -1,3 +1,4 @@
+import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { Action, Computed, action, computed } from "easy-peasy"
 import { uniqBy } from "lodash"
 
@@ -46,6 +47,12 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
+      // Check dev toggle first - if enabled, treat all popovers as dismissed
+      const hideAllPopovers = unsafe_getDevToggle("DTHideAllOnboardingPopovers")
+      if (hideAllPopovers) {
+        return { status: true, timestamp: Date.now() }
+      }
+
       const dismissedKey = dismissed.find((d) => d.key === key)
 
       return dismissedKey
@@ -104,6 +111,8 @@ export const PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1 =
 export const PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2 =
   "infinite-discovery-save-reminder-2"
 
+export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME = "price-range-popover-home"
+
 export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
@@ -118,6 +127,7 @@ export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2,
   PROGRESSIVE_ONBOARDING_DARK_MODE,
+  PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
 ] as const
 
 export type ProgressiveOnboardingKey = (typeof PROGRESSIVE_ONBOARDING_KEYS)[number]

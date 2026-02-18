@@ -1,4 +1,4 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
@@ -12,8 +12,8 @@ import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import { KeyboardAvoidingView, Modal, Platform } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { Modal } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -49,64 +49,53 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         <NavigationContainer theme={theme}>
           <Modal
             visible={visible}
-            presentationStyle="fullScreen"
+            presentationStyle="overFullScreen"
             statusBarTranslucent
             animationType="slide"
           >
-            <SafeAreaView
+            <Flex
+              flex={1}
               style={{
-                flex: 1,
                 backgroundColor: color("background"),
-                paddingTop: Platform.OS === "ios" ? topInset : 0,
+                paddingTop: topInset,
               }}
             >
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: { backgroundColor: color("background") },
+                }}
               >
-                <Stack.Navigator
-                  // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                  detachInactiveScreens={false}
-                  screenOptions={{
-                    ...TransitionPresets.SlideFromRightIOS,
-                    headerShown: false,
-                    cardStyle: { backgroundColor: color("background") },
+                <Stack.Screen
+                  name="CreateSavedSearchAlert"
+                  component={CreateSavedSearchAlertContentQueryRenderer}
+                  initialParams={params}
+                />
+                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                <Stack.Screen
+                  name="AlertPriceRange"
+                  component={AlertPriceRangeScreenQueryRenderer}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
                   }}
-                >
-                  <Stack.Screen
-                    name="CreateSavedSearchAlert"
-                    component={CreateSavedSearchAlertContentQueryRenderer}
-                    initialParams={params}
-                  />
-                  <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                  <Stack.Screen
-                    name="AlertPriceRange"
-                    component={AlertPriceRangeScreenQueryRenderer}
-                    options={{
-                      // Avoid PanResponser conflicts between the slider and the slide back gesture
-                      gestureEnabled: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="ConfirmationScreen"
-                    component={ConfirmationScreen}
-                    options={{
-                      gestureEnabled: false,
-                    }}
-                    initialParams={{
-                      closeModal: params.onClosePress,
-                    }}
-                  />
-                  <Stack.Screen
-                    name="SavedSearchFilterScreen"
-                    component={SavedSearchFilterScreen}
-                    options={{
-                      gestureEnabled: false,
-                    }}
-                  />
-                </Stack.Navigator>
-              </KeyboardAvoidingView>
-            </SafeAreaView>
+                />
+                <Stack.Screen
+                  name="ConfirmationScreen"
+                  component={ConfirmationScreen}
+                  options={{ gestureEnabled: false }}
+                  initialParams={{ closeModal: params.onClosePress }}
+                />
+                <Stack.Screen
+                  name="SavedSearchFilterScreen"
+                  component={SavedSearchFilterScreen}
+                  options={{ gestureEnabled: false }}
+                />
+              </Stack.Navigator>
+            </Flex>
           </Modal>
         </NavigationContainer>
       </NavigationIndependentTree>

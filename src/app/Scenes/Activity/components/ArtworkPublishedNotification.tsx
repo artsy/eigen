@@ -1,4 +1,5 @@
-import { ArrowRightIcon, Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
 import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
@@ -75,7 +76,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
-                <ArrowRightIcon fill="mono30" ml={0.5} pl={0.3} />
+                <ChevronRightIcon fill="mono30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
           </RouterLink>

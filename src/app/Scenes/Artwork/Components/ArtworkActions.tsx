@@ -1,13 +1,5 @@
-import {
-  EyeOpenedIcon,
-  ShareIcon,
-  Flex,
-  Text,
-  useSpace,
-  Join,
-  Spacer,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ShareIcon, ShowIcon } from "@artsy/icons/native"
+import { Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -48,19 +40,21 @@ export const shareContent = (
 }
 
 export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
-  const { image, id, slug, heightCm, widthCm, isHangable, sale } = artwork
+  const { image, id, slug, heightCm, widthCm, diameterCm, isHangable, sale } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
 
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
-    if (image?.url == null || heightCm == null || widthCm == null) {
+    if (image?.url == null || !((widthCm && heightCm) || diameterCm)) {
       return
     }
 
-    const heightIn = cm2in(heightCm)
-    const widthIn = cm2in(widthCm)
+    const artworkWidth = (widthCm || diameterCm) as number
+    const artworkHeight = (heightCm || diameterCm) as number
+    const heightIn = cm2in(artworkHeight)
+    const widthIn = cm2in(artworkWidth)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -92,7 +86,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
             onPress={() => openViewInRoom()}
           >
             <UtilButton>
-              <EyeOpenedIcon mr={0.5} />
+              <ShowIcon mr={0.5} />
               <Text variant="sm">View in Room</Text>
             </UtilButton>
           </Touchable>
@@ -135,6 +129,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       }
       widthCm
       heightCm
+      diameterCm
       sale {
         isAuction
         isClosed

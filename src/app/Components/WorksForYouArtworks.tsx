@@ -3,6 +3,7 @@ import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { WorksForYouArtworksQuery } from "__generated__/WorksForYouArtworksQuery.graphql"
 import { WorksForYouArtworks_viewer$key } from "__generated__/WorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -12,7 +13,7 @@ import { pluralize } from "app/utils/pluralize"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-export const PAGE_SIZE = 20
+const PAGE_SIZE = 20
 
 interface NewWorksForYouProps {
   viewer: WorksForYouArtworks_viewer$key
@@ -28,7 +29,7 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
 
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
   const artworks = extractNodes(data.artworks)
   const numColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
@@ -52,12 +53,12 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
         }
         ListHeaderComponent={() => (
           <Text variant="xs" pt={2} px={numColumns === 1 ? 2 : 0}>
-            {artworks.length} {pluralize("Artwork", data.artworks?.totalCount ?? 0)}
+            {artworks.length} {pluralize("Artwork", artworks.length ?? 0)}
           </Text>
         )}
         onScroll={scrollHandler}
         refreshControl={RefreshControl}
-        style={{ paddingBottom: 120 }}
+        style={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
       />
     </Flex>
   )

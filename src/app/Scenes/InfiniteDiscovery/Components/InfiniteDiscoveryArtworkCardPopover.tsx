@@ -8,7 +8,7 @@ import {
 interface InfiniteDiscoveryArtworkCardPopoverProps {
   isTopCard: boolean
   index: number
-  children: JSX.Element
+  children: React.JSX.Element
 }
 
 export const InfiniteDiscoveryArtworkCardPopover: React.FC<

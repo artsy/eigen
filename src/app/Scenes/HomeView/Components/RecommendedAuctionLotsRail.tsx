@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -7,7 +8,7 @@ import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
-import React, { memo, useRef } from "react"
+import { memo, useRef } from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,14 +34,16 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
       return null
     }
 
-    const handleOnArtworkPress = (artwork: any, position: any) => {
-      tracks.tappedArtwork(
-        contextScreenOwnerType,
-        ContextModule.lotsForYouRail,
-        artwork.slug,
-        artwork.internalID,
-        position,
-        "single"
+    const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[0], position: number) => {
+      trackEvent(
+        tracks.tappedArtwork(
+          contextScreenOwnerType,
+          ContextModule.lotsForYouRail,
+          artwork.slug,
+          artwork.internalID,
+          position,
+          "single"
+        )
       )
     }
 
@@ -70,8 +73,9 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
 )
 
 const artworksFragment = graphql`
-  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer {
-    artworksForUser(includeBackfill: true, first: 10, onlyAtAuction: true) {
+  fragment RecommendedAuctionLotsRail_artworkConnection on Viewer
+  @argumentDefinitions(includeBackfill: { type: "Boolean!", defaultValue: true }) {
+    artworksForUser(includeBackfill: $includeBackfill, first: 10, onlyAtAuction: true) {
       edges {
         node {
           title
@@ -109,11 +113,12 @@ const tracks = {
     index?: number,
     moduleHeight?: "single" | "double"
   ) => ({
+    action: ActionType.tappedArtworkGroup,
     contextScreenOwnerType: contextScreenOwnerType,
     destinationScreenOwnerType: OwnerType.artwork,
     destinationScreenOwnerSlug: slug,
     destinationScreenOwnerId: id,
-    contextModule,
+    contextModule: contextModule,
     horizontalSlidePosition: index,
     moduleHeight: moduleHeight ?? "double",
     type: "thumbnail",

@@ -1,11 +1,5 @@
-import {
-  FacebookIcon,
-  EnvelopeIcon,
-  TwitterIcon,
-  Box,
-  BoxProps,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { EnvelopeIcon, FacebookIcon, XIcon } from "@artsy/icons/native"
+import { Box, BoxProps, Touchable } from "@artsy/palette-mobile"
 import { Linking } from "react-native"
 
 interface FairEditorialShareProps extends BoxProps {
@@ -48,7 +42,7 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({
         )
       }}
     >
-      <TwitterIcon title="Share this article on Twitter" />
+      <XIcon title="Share this article on X" />
     </Touchable>
   </Box>
 )

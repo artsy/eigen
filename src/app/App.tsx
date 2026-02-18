@@ -1,4 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin"
+import { usePerformanceMonitorDevTools } from "@rozenite/performance-monitor-plugin"
 import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
@@ -6,6 +8,7 @@ import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
+import { usePushNotifications } from "app/system/notifications/usePushNotifications"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -19,6 +22,7 @@ import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
+import { useTrackAppState } from "app/utils/useTrackAppState"
 import { useEffect } from "react"
 import { NativeModules, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
@@ -28,11 +32,9 @@ import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
-import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
-import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndFontScaleTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
@@ -65,6 +67,11 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main = () => {
+  // Rozenite plugins
+  useNetworkActivityDevTools()
+  usePerformanceMonitorDevTools()
+  // Rozenite plugins end
+
   useRageShakeDevMenu()
   useMaestroInitialization()
 
@@ -83,7 +90,6 @@ const Main = () => {
     (state) => state.auth.sessionState.isUserIdentified
   )
 
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const forceUpdateMessage = GlobalStore.useAppState(
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
@@ -92,14 +98,10 @@ const Main = () => {
   useSiftConfig()
   useWebViewCookies()
   useDeepLinks()
-  useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
-
-  useEffect(() => {
-    createAllChannels()
-  }, [])
+  usePushNotifications()
   usePreferredThemeTracking()
   useScreenReaderAndFontScaleTracking()
   useFreshInstallTracking()
@@ -107,12 +109,7 @@ const Main = () => {
   useHideSplashScreen()
   useAndroidAppStyling()
   useListenToThemeChange()
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      savePendingToken()
-    }
-  }, [isLoggedIn])
+  useTrackAppState()
 
   if (!isHydrated || !isUserIdentified) {
     return <View />

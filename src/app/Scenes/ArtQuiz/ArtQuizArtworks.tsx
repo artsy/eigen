@@ -10,7 +10,8 @@ import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isEmpty } from "lodash"
 import { Suspense, useEffect, useMemo, useState } from "react"
@@ -106,9 +107,7 @@ const ArtQuizArtworksScreen = () => {
 
   const handleOnBack = () => {
     popoverMessage.hide()
-    if (activeCardIndex === 0) {
-      goBack()
-    } else {
+    if (activeCardIndex !== 0) {
       const previousArtwork = artworks[activeCardIndex - 1]
 
       setActiveCardIndex(activeCardIndex - 1)
@@ -169,6 +168,7 @@ const ArtQuizArtworksScreen = () => {
     <Screen>
       <Screen.Header
         onBack={handleOnBack}
+        hideLeftElements={activeCardIndex === 0}
         title={`${activeCardIndex + 1}/${artworks.length}`}
         rightElements={
           <Touchable accessibilityRole="button" haptic="impactLight" onPress={handleOnSkip}>

@@ -12,8 +12,8 @@ interface Meta {
   description?: string
   text?: string
   tintColor?: string
-  xHighlightIcon?: JSX.Element
-  yHighlightIcon?: JSX.Element
+  xHighlightIcon?: React.JSX.Element
+  yHighlightIcon?: React.JSX.Element
 }
 
 export interface LineChartData {

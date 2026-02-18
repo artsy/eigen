@@ -13,7 +13,7 @@
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
-		<string>staging</string>
+		<string>canary</string>
 	</dict>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>replaced-at-build-time</string>

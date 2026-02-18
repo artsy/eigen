@@ -39,7 +39,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
         //  this is here to reset the margin that lives in the RequestConditionReport component
         //  https://github.com/artsy/eigen/blob/32c80bf3883cc1a1ce6016dce193b1e24822a57f/src/app/Scenes/Artwork/Components/RequestConditionReport.tsx#L122
         //  this is because the component is being used in many places we didn't remove the margin from there.
-        <Flex mt={-1}>
+        <Flex mt={-1} testID="request-condition-report">
           <RequestConditionReportQueryRenderer artworkID={artworkData.slug} />
         </Flex>
       ) : (

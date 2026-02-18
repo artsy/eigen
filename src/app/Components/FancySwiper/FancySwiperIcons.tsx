@@ -1,4 +1,5 @@
-import { CloseIcon, Flex, HeartFillIcon, HeartIcon, Touchable } from "@artsy/palette-mobile"
+import { CloseIcon, HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { SWIPE_MAGNITUDE } from "app/Components/FancySwiper/FancySwiper"
 import { Animated } from "react-native"
 
@@ -60,7 +61,7 @@ export const FancySwiperIcons = ({ onDislike, onLike, swiper }: FancySwiperIcons
       <Flex flex={1} alignItems="center">
         <Animated.View style={[likeIconAnimatedStyle, { position: "absolute" }]}>
           <Touchable onPress={() => onLike()} accessibilityLabel="Like" accessibilityRole="button">
-            <HeartIcon height={40} width={50} />
+            <HeartStrokeIcon height={40} width={50} />
           </Touchable>
         </Animated.View>
         <Animated.View style={[likeFilledIconAnimatedStyle, { position: "absolute" }]}>

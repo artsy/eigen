@@ -37,6 +37,42 @@ RCT_EXPORT_METHOD(getPushToken:(RCTPromiseResolveBlock)completion reject:(RCTPro
     completion(pushToken);
 }
 
+RCT_EXPORT_METHOD(getRecentPushPayloads:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+    if (![ARAppStatus isBetaOrDev]) {
+        resolve(@[]);
+        return;
+    }
+
+    NSArray *stored = [[NSUserDefaults standardUserDefaults] arrayForKey:ARAPNSRecentPushPayloadsKey];
+    if (!stored) stored = @[];
+
+    NSMutableArray *converted = [NSMutableArray arrayWithCapacity:stored.count];
+
+    for (NSDictionary *record in stored) {
+        NSDictionary *item = [self convertRecordForJS:record];
+        if (item) {
+            [converted addObject:item];
+        }
+    }
+
+    resolve([converted copy]);
+}
+
+- (NSDictionary *)convertRecordForJS:(NSDictionary *)record {
+    NSData *jsonData = record[@"rawJSON"];
+    if (![jsonData isKindOfClass:[NSData class]]) { return nil; }
+    NSString *jsonString =
+        [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    return @{
+        @"json": jsonString ?: @"{}",
+        @"receivedAt": record[@"_receivedAt"] ?: @"",
+        @"source": record[@"_source"] ?: @"",
+    };
+}
+
 + (BOOL)requiresMainQueueSetup
 {
     return YES;

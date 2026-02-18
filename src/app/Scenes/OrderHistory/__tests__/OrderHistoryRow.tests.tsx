@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { OrderHistoryRowContainer } from "app/Scenes/OrderHistory/OrderHistoryRow"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -36,7 +37,7 @@ const mockOrder = {
 describe("OrderHistoryRow", () => {
   const { renderWithRelay } = setupTestWrapper<OrderHistoryRowTestsQuery>({
     Component: (props) => {
-      return <OrderHistoryRowContainer order={props.commerceOrder} />
+      return <OrderHistoryRowContainer order={props.commerceOrder!} />
     },
     query: graphql`
       query OrderHistoryRowTestsQuery @relay_test_operation {
@@ -323,7 +324,7 @@ describe("OrderHistoryRow", () => {
       })
     })
 
-    it("navigates to the purchase summary when the order has a processing offer", () => {
+    it("navigates to the correct order details", () => {
       renderWithRelay({
         CommerceOrder: () => ({
           ...mockOrder,
@@ -333,9 +334,9 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      const button = screen.getByTestId("view-order-button")
-      fireEvent.press(button)
-      expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
+      fireEvent.press(screen.getByTestId("view-order-button"))
+
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id/details")
     })
   })
 })

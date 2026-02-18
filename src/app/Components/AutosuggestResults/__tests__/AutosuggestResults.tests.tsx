@@ -7,7 +7,6 @@ import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { CatchErrors } from "app/utils/CatchErrors"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
@@ -103,9 +102,7 @@ const TestWrapper: typeof AutosuggestResults = (props) => (
   <SearchContext.Provider
     value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
   >
-    <CatchErrors>
-      <AutosuggestResults {...props} />
-    </CatchErrors>
+    <AutosuggestResults {...props} />
   </SearchContext.Provider>
 )
 

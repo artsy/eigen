@@ -1,3 +1,4 @@
+import { act, waitFor } from "@testing-library/react-native"
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { FeaturedRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListFeatured"
@@ -29,35 +30,42 @@ describe(FeaturedRail, () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("shows some cards", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          featured: {
-            edges: [
-              {
-                node: {
-                  title: "ok",
-                  href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
-                  slug: "alessandro-pessoli-ardente-primavera-number-1",
-                  internalID: "one",
-                },
-              },
-              {
-                node: {
-                  title: "oak",
-                  href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
-                  slug: "alessand-pessoli-ardente-primavera-number-1",
-                  internalID: "two",
-                },
-              },
-            ],
-          },
-        }),
-      })
-    )
+  it("shows some cards", async () => {
+    const view = renderWithWrappersLEGACY(<TestRenderer />)
 
-    expect(tree.root.findAllByType(MediumCard)).toHaveLength(2)
+    await act(async () => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Query: () => ({
+            featured: {
+              edges: [
+                {
+                  node: {
+                    title: "ok",
+                    href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
+                    slug: "alessandro-pessoli-ardente-primavera-number-1",
+                    internalID: "one",
+                  },
+                },
+                {
+                  node: {
+                    title: "oak",
+                    href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
+                    slug: "alessand-pessoli-ardente-primavera-number-1",
+                    internalID: "two",
+                  },
+                },
+              ],
+            },
+          }),
+        })
+      )
+    })
+
+    // Wait for the elements to appear after Relay mock resolution
+    await waitFor(async () => {
+      const cards = await view.root.findAllByType(MediumCard)
+      expect(cards).toHaveLength(2)
+    })
   })
 })

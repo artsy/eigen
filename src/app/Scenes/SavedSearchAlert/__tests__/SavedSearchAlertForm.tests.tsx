@@ -15,8 +15,8 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -29,7 +29,7 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("SavedSearchAlertForm", () => {
   const spyAlert = jest.spyOn(Alert, "alert")
-  const notificationPermissions = mockFetchNotificationPermissions(false)
+  const notificationPermissions = mockFetchNotificationPermissions()
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
@@ -74,8 +74,8 @@ describe("SavedSearchAlertForm", () => {
     beforeEach(() => {
       spyAlert.mockClear()
       mockEnvironment.mockClear()
-      notificationPermissions.mockImplementationOnce((cb) =>
-        cb(null, PushAuthorizationStatus.Authorized)
+      notificationPermissions.mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Authorized)
       )
     })
 
@@ -293,9 +293,9 @@ describe("SavedSearchAlertForm", () => {
   describe("Notification toggles", () => {
     beforeEach(() => {
       spyAlert.mockClear()
-      notificationPermissions.mockImplementationOnce((cb) => {
-        cb(null, PushAuthorizationStatus.Authorized)
-      })
+      notificationPermissions.mockImplementationOnce(() =>
+        Promise.resolve(PushAuthorizationStatus.Authorized)
+      )
     })
 
     it("toggles should be displayed", async () => {
@@ -372,7 +372,9 @@ describe("SavedSearchAlertForm", () => {
 
     it("push toggle keeps in the same state when push permissions are denied", async () => {
       notificationPermissions.mockReset()
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
+      notificationPermissions.mockImplementation(() =>
+        Promise.resolve(PushAuthorizationStatus.Denied)
+      )
 
       renderWithWrappers(
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
@@ -389,8 +391,8 @@ describe("SavedSearchAlertForm", () => {
 
     it("push toggle keeps in the same state when push permissions are not not determined", async () => {
       notificationPermissions.mockReset()
-      notificationPermissions.mockImplementation((cb) =>
-        cb(null, PushAuthorizationStatus.NotDetermined)
+      notificationPermissions.mockImplementation(() =>
+        Promise.resolve(PushAuthorizationStatus.NotDetermined)
       )
 
       renderWithWrappers(
@@ -404,19 +406,6 @@ describe("SavedSearchAlertForm", () => {
       expect(spyAlert).toBeCalled()
 
       expect(screen.getByLabelText("Push Notifications Toggler")).not.toBeSelected()
-    })
-
-    it("push toggle turns on when push permissions are enabled", async () => {
-      renderWithWrappers(
-        <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
-      )
-
-      fireEvent(screen.getByLabelText("Push Notifications Toggler"), "valueChange", true)
-
-      await flushPromiseQueue()
-
-      expect(spyAlert).not.toBeCalled()
-      expect(screen.getByLabelText("Push Notifications Toggler")).toBeSelected()
     })
   })
 

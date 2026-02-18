@@ -8,8 +8,8 @@ import {
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
-import { appJson } from "app/utils/jsonFiles"
+import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { getAppVersion } from "app/utils/appVersion"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
@@ -99,12 +99,13 @@ describe("ArtsyWebViewPage", () => {
     expect(screen.UNSAFE_getByType(NavigationHeader).props.onLeftButtonPress).not.toBeUndefined()
   })
 
-  it("renders a back button when presented modally and internal navigation is has happened", () => {
+  it("renders a back button when presented modally and internal navigation has happened", () => {
     const view = render({ isPresentedModally: true })
 
     act(() => {
       webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
+        url: "https://staging.artsy.net/meet-the-specialists",
         canGoBack: true,
       })
     })
@@ -115,24 +116,34 @@ describe("ArtsyWebViewPage", () => {
   it("shares the correct URL", () => {
     const view = render({
       showShareButton: true,
-      url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-1",
+      url: "https://staging.artsy.net/meet-the-specialists",
     })
 
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
     expect(Share.open).toHaveBeenLastCalledWith({
-      url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-1",
+      url: "https://staging.artsy.net/meet-the-specialists",
     })
 
+    // Complete the initial load
     act(() => {
       webViewProps(view).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
+        url: "https://staging.artsy.net/meet-the-specialists",
+        loading: false,
+      })
+    })
+
+    // Navigate to a vanity URL route (shareTitleUrl gets updated for these)
+    act(() => {
+      webViewProps(view).onNavigationStateChange?.({
+        ...mockOnNavigationStateChange,
+        url: "https://staging.artsy.net/some-vanity-url",
       })
     })
 
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
     expect(Share.open).toHaveBeenLastCalledWith({
-      url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
+      url: "https://staging.artsy.net/some-vanity-url",
     })
   })
 
@@ -174,9 +185,7 @@ describe("ArtsyWebViewPage", () => {
       const source = webViewProps(view).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
-        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
+        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${getAppVersion()} Eigen/some-build-number/${getAppVersion()}`
       )
     })
   })
@@ -239,9 +248,21 @@ describe("ArtsyWebViewPage", () => {
       ;(goBack as any).mockReset()
       mockSystemBackAction.mockReset()
 
+      // Complete initial load
       act(() => {
         webViewProps(view).onNavigationStateChange?.({
           ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/hello",
+          loading: false,
+          canGoBack: false,
+        })
+      })
+
+      // Navigate to a ReactWebView route
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/meet-the-specialists",
           canGoBack: true,
         })
       })
@@ -304,6 +325,17 @@ describe("ArtsyWebViewPage", () => {
       expect(navigate).toHaveBeenCalledWith("https://google.com")
     })
 
+    it("dismisses the modal before navigating to an internal url when the webview is presented modally", () => {
+      const view = render({ isPresentedModally: true })
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/orders/order-id/details",
+        })
+      })
+      expect(dismissModal).toHaveBeenCalled()
+    })
+
     describe("the inner WebView's goBack method", () => {
       it("is called when the URL matches a route that is not loaded in a web view", () => {
         const view = render()
@@ -329,15 +361,17 @@ describe("ArtsyWebViewPage", () => {
         expect(mockGoBack).not.toHaveBeenCalled()
       })
 
-      it("is not called when the URL matches a ModalWebView route", () => {
-        const view = render()
+      it("is not called when the URL matches a ModalWebView route on initial load", () => {
+        const view = render({ url: "https://staging.artsy.net/orders/foo" })
         act(() => {
           webViewProps(view).onNavigationStateChange?.({
             ...mockOnNavigationStateChange,
             url: "https://staging.artsy.net/orders/foo",
+            loading: false,
           })
         })
 
+        // goBack should NOT be called for initial load
         expect(mockGoBack).not.toHaveBeenCalled()
       })
 
@@ -445,5 +479,11 @@ describe("expandGoogleAdLink", () => {
     expect(
       expandGoogleAdLink("https://google.com/search?q=artsy+good+website")
     ).toMatchInlineSnapshot(`"https://google.com/search?q=artsy+good+website"`)
+  })
+
+  it("splits links correctly when multiple question marks are present", () => {
+    const url =
+      "https://googleads.g.doubleclick.net/pcs/click?param1=value1?param2=value2&adurl=https://example.com?foo=bar"
+    expect(expandGoogleAdLink(url)).toMatchInlineSnapshot(`"https://example.com?foo=bar"`)
   })
 })

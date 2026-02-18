@@ -1,9 +1,14 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import PushNotification from "react-native-push-notification"
+import { getNotificationPermissionsStatus } from "app/system/notifications/getNotificationsPermissions"
 
-export const mockFetchNotificationPermissions = (isAndroid: boolean) => {
-  const module = isAndroid
-    ? (PushNotification.checkPermissions as jest.Mock<any>)
-    : (LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions as jest.Mock<any>)
-  return module
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
+  getNotificationPermissionsStatus: jest.fn(),
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized",
+    Denied: "denied",
+  },
+}))
+
+export const mockFetchNotificationPermissions = () => {
+  return getNotificationPermissionsStatus as jest.Mock<any>
 }

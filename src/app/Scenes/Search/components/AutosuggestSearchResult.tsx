@@ -1,14 +1,5 @@
-import {
-  ArrowRightIcon,
-  ArtworkIcon,
-  AuctionIcon,
-  CloseIcon,
-  Flex,
-  Pill,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { CloseIcon, ChevronRightIcon, ArtworkIcon, GavelIcon } from "@artsy/icons/native"
+import { Flex, Pill, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -17,7 +8,7 @@ import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
-import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
+import { SearchResultImage } from "./SearchResultImage"
 
 export type OnResultPress = (result: AutosuggestResult) => void
 export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void
@@ -120,11 +111,7 @@ export const AutosuggestSearchResult: React.FC<{
       >
         <Flex flex={1} flexDirection="row" alignItems="center">
           <Flex flex={1}>
-            <Flex
-              height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
-              flexDirection="row"
-              alignItems="center"
-            >
+            <Flex flexDirection="row" alignItems="center">
               <SearchResultImage
                 imageURL={result.coverArtwork?.imageUrl || result.imageUrl}
                 initials={initials}
@@ -167,7 +154,7 @@ export const AutosuggestSearchResult: React.FC<{
           </Flex>
           {!onDelete && (
             <Flex pl={1}>
-              <ArrowRightIcon height={18} width={18} />
+              <ChevronRightIcon height={18} width={18} />
             </Flex>
           )}
         </Flex>
@@ -186,7 +173,8 @@ export const AutosuggestSearchResult: React.FC<{
               navigationProps={{ initialTab: "Artworks" }}
               onPress={onPress}
             >
-              <Pill Icon={ArtworkIcon}>Artworks</Pill>
+              {/* TODO: MOPRAT-863: remove `any` after removing icons and icons types from Palette Mobile */}
+              <Pill Icon={ArtworkIcon as any}>Artworks</Pill>
             </RouterLink>
 
             <Spacer x={1} />
@@ -197,7 +185,8 @@ export const AutosuggestSearchResult: React.FC<{
               navigationProps={{ initialTab: "Insights" }}
               onPress={onPress}
             >
-              <Pill Icon={AuctionIcon}>Auction Results</Pill>
+              {/* TODO: MOPRAT-863: remove `any` after removing icons and icons types from Palette Mobile */}
+              <Pill Icon={GavelIcon as any}>Auction Results</Pill>
             </RouterLink>
           </Flex>
         </>

@@ -39,19 +39,67 @@ lane :notify_if_new_license_agreement do
   end
 end
 
+desc "Notifies in slack if a maestro test failed"
+lane :report_maestro_failure do |options|
+  s3_url = options[:s3_url]
+  error_message = options[:error_message]
+  flow_name = options[:flow_name]
+  platform = options[:platform] || "unknown"
+  puts platform
+  # Set platform-specific icon
+  platform_icon = case platform.downcase
+                  when "ios"
+                    "🍏"
+                  when "android"
+                    "🤖"
+                  else
+                    "📱"
+                  end
+
+  message = <<~MSG
+              :x: :tophat:
+              Maestro test failed for #{platform_icon} #{platform}!
+              Flow: #{flow_name}
+              Error: `#{error_message}`
+              Screenshot at time of failure:
+              #{s3_url}
+              See github action run for more details.
+            MSG
+
+  # Construct GitHub Actions run URL
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+  slack(
+    channel: '#mobile-alerts',
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url
+    },
+    default_payloads: []
+  )
+end
+
 desc "Notifies in slack if a beta failed to deploy"
 lane :notify_beta_failed do |options|
   exception = options[:exception]
   message = <<~MSG
               :x: :iphone:
-              Looks like the latest beta failed to deploy!
-              See circle job for more details.
+              Looks like the latest eigen beta failed to deploy!
+              See GitHub action run for more details.
             MSG
+
+  # Construct GitHub Actions run URL
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
   slack(
     message: message,
     success: false,
     payload: {
-      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'GitHub Actions' => github_url,
       'Exception' => exception.message
     },
     default_payloads: []
@@ -157,7 +205,7 @@ lane :prepare_version_update_pr do |options|
   sh "git push origin HEAD:refs/heads/#{version_change_branch}"
 
   pr_url = create_pull_request(
-    api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+    api_token: ENV["GITHUB_TOKEN"],
     repo: "artsy/eigen",
     title: commit_message,
     head: version_change_branch,
@@ -200,24 +248,29 @@ lane :check_flags do
   flags = JSON.parse(flag_file)
   hidden_flags = flags['hiddenFlags']
 
-  hidden_flags_message = ''
-  hidden_flags.each do |flag_name|
-    hidden_flags_message += "\n :alert-orange: #{flag_name}"
+  if hidden_flags.nil? || hidden_flags.empty?
+    puts '[INFO] No hidden flags found!'
+  else
+
+    hidden_flags_message = ''
+    hidden_flags.each do |flag_name|
+      hidden_flags_message += "\n :alert-orange: #{flag_name}"
+    end
+
+    message = <<~MSG
+      :alert-orange: :checkered_flag: :steam_locomotive: :alert-orange:
+      We are getting ready for an app release!
+
+      *Did you forget to set readyForRelease to true :interrobang:*
+      *Features HIDDEN in the upcoming release*:
+      #{hidden_flags_message}
+
+      If a feature here should be going out this release please follow the docs here:
+      https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
+      @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
+    MSG
+    slack(message: message, default_payloads: [], link_names: true)
   end
-
-  message = <<~MSG
-    :alert-orange: :checkered_flag: :steam_locomotive: :alert-orange:
-    We are getting ready for an app release!
-
-    *Did you forget to set readyForRelease to true :interrobang:*
-    *Features HIDDEN in the upcoming release*:
-    #{hidden_flags_message}
-
-    If a feature here should be going out this release please follow the docs here:
-    https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
-    @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
-  MSG
-  slack(message: message, default_payloads: [], link_names: true)
 end
 
 def generate_app_store_connect_api_key
@@ -275,4 +328,99 @@ def write_contents_to_file(path, contents)
   end
 rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
+end
+
+def upload_ios_maestro_to_s3
+  app_name = "Artsy"
+  derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
+  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
+  configuration = "QA"
+
+  # Find the .app bundle
+  project_root = File.expand_path('..')
+  full_derived_data_path = File.expand_path(derived_data_path, project_root)
+  app_search_pattern = "#{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/#{app_name}.app"
+  app_path = Dir.glob(app_search_pattern).first
+
+  if app_path.nil? || !File.exist?(app_path)
+    UI.error("❌ .app not found at: #{app_search_pattern}")
+    UI.error("Searched in: #{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/")
+    raise "iOS Maestro app build not found"
+  end
+
+  UI.success("✅ Found app at: #{app_path}")
+
+  # Zip the .app bundle
+  zip_name = "#{app_name}-latest.zip"
+  app_dir = File.dirname(app_path)
+  app_basename = File.basename(app_path)
+
+  Dir.chdir(app_dir) do
+    sh("zip -r #{zip_name} #{app_basename}")
+  end
+
+  # Upload to S3
+  zip_path = File.join(app_dir, zip_name)
+  sh("aws s3 cp #{zip_path} #{s3_dest}")
+  UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
+end
+
+def upload_android_maestro_to_s3(apk_path)
+  app_name = "Artsy"
+  s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
+
+  if apk_path.nil? || !File.exist?(apk_path)
+    UI.error("❌ Maestro APK not found at: #{apk_path}")
+    raise "Android Maestro app build not found"
+  end
+
+  UI.success("✅ Found apk at: #{apk_path}")
+
+  # Copy and rename the APK for consistent S3 naming
+  apk_name = "#{app_name}-latest.apk"
+  sh("cp #{apk_path} #{apk_name}")
+
+  # Upload to S3
+  sh("aws s3 cp #{apk_name} #{s3_dest}")
+  UI.success("✅ Uploaded #{apk_name} to #{s3_dest}")
+end
+
+def ios_build_params(deployment_target)
+  case deployment_target
+  when 'testflight'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy',
+      export_method: 'app-store',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'firebase'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: 'ad-hoc',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'maestro'
+    {
+      derived_data_path: "derived_data",
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: "development",
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      skip_archive: true,
+      configuration: 'QA',
+      destination: 'generic/platform=iOS Simulator',
+      silent: true,
+      sdk: 'iphonesimulator',
+      xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
+    }
+  else
+    raise "Unknown deployment target: #{deployment_target}"
+  end
 end
