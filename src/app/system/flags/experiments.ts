@@ -20,7 +20,12 @@ export const experiments = {
   },
   "onyx_NWFY-grid-ABC-test": {
     description: "Test new designs for the New Works For You section on the home screen",
-    variantSuggestions: ["grid-six-works", "grid-four-works", "grid-no-metadata"],
+    variantSuggestions: [
+      "grid-six-works",
+      "grid-four-works",
+      "grid-no-metadata",
+      "grid-floating-CTA",
+    ],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

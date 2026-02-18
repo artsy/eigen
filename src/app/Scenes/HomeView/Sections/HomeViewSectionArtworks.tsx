@@ -10,6 +10,7 @@ import {
   Spacer,
   Button,
   Text,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
@@ -39,6 +40,7 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
+import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -53,9 +55,10 @@ const ARTWORKS_GRID_SIX_WORKS = 6
 const ARTWORKS_GRID_FOUR_WORKS = 4
 const NWFY_GRID_EXPERIMENT = "onyx_NWFY-grid-ABC-test"
 const NWFY_GRID_VARIANT_COUNTS: Record<string, number> = {
-  "grid-six-works": ARTWORKS_GRID_SIX_WORKS,
   "grid-four-works": ARTWORKS_GRID_FOUR_WORKS,
+  "grid-six-works": ARTWORKS_GRID_SIX_WORKS,
   "grid-no-metadata": ARTWORKS_GRID_SIX_WORKS,
+  "grid-floating-CTA": ARTWORKS_GRID_SIX_WORKS,
 }
 
 const getNwfyGridArtworksCount = (variantName?: string) => {
@@ -66,8 +69,6 @@ const getNwfyGridArtworksCount = (variantName?: string) => {
   return NWFY_GRID_VARIANT_COUNTS[variantName] ?? DEFAULT_ARTWORKS_FIRST
 }
 
-const isNwfyGridNoMetadata = (variantName?: string) => variantName === "grid-no-metadata"
-
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
   index,
@@ -77,8 +78,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const tracking = useHomeViewTracking()
   const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
   const { variant } = useExperimentVariant(NWFY_GRID_EXPERIMENT)
-  const hideArtworMetaData = isNwfyGridNoMetadata(variant?.name)
-
+  const { height: screenHeight } = useScreenDimensions()
+  const floatingGridMaxHeight = screenHeight * 0.9
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
@@ -123,8 +124,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const showHomeViewCardRail = enableNewHomeViewCardRailType && section.showArtworksCardView
   const isGridEnabled = shouldShowInGrid
-  const isGridNoMetadata = isGridEnabled && hideArtworMetaData
-  const isGridWithMetadata = isGridEnabled && !hideArtworMetaData
+  const isGridWithMetadata =
+    isGridEnabled && (variant?.name === "grid-six-works" || variant?.name === "grid-four-works")
+  const isGridNoMetadata = isGridEnabled && variant?.name === "grid-no-metadata"
+  const isGridFloatingCTA = isGridEnabled && variant?.name === "grid-floating-CTA"
   const showDefaultHeader = !isGridNoMetadata
 
   const moreHref = getHomeViewSectionHref(viewAll?.href, section, showHomeViewCardRail)
@@ -165,7 +168,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           title={section.component?.title}
           subtitle={subTitle}
           onPress={moreHref ? onSectionViewAll : undefined}
-          mb={isGridWithMetadata ? 0 : undefined}
+          mb={isGridWithMetadata || isGridFloatingCTA ? 0 : undefined}
         />
       )}
 
@@ -199,6 +202,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       ) : isGridNoMetadata ? (
         <Flex gap={2} mb={2}>
           <GenericGrid artworks={artworks} hideArtworMetaData />
+
           <RouterLink
             to={moreHref}
             hasChildTouchable
@@ -210,6 +214,34 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
               {buttonText}
             </Button>
           </RouterLink>
+        </Flex>
+      ) : isGridFloatingCTA ? (
+        <Flex position="relative" mx={2}>
+          <GenericGrid artworks={artworks} gridHeight={floatingGridMaxHeight} />
+
+          {/* Gradient fade effect */}
+          <LinearGradient
+            colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: "100%",
+              height: floatingGridMaxHeight / 2,
+              pointerEvents: "none",
+            }}
+          />
+          {/* View More Button */}
+          <Flex position="absolute" bottom={0}>
+            <RouterLink to={moreHref} hasChildTouchable>
+              <Button block variant="outline">
+                View More
+              </Button>
+            </RouterLink>
+          </Flex>
         </Flex>
       ) : showHomeViewCardRail ? (
         <ArtworksCard

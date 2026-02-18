@@ -25,6 +25,7 @@ interface Props {
   trackingFlow?: string
   saleInfoTextStyle?: TextProps
   hideArtworMetaData?: boolean
+  gridHeight?: number
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
@@ -41,6 +42,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   saleInfoTextStyle,
   trackingFlow,
   hideArtworMetaData = false,
+  gridHeight,
 }) => {
   const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
@@ -52,7 +54,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <Flex>
-        <Flex accessibilityLabel="Artworks Content View" mx={-2}>
+        <Flex accessibilityLabel="Artworks Content View" mx={-2} height={gridHeight}>
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
             scrollEnabled={false}

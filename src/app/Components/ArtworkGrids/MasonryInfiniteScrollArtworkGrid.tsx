@@ -179,9 +179,17 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       ListEmptyComponent: ListEmptyComponent,
       refreshControl: refreshControl,
       onScroll: rest.onScroll,
+      scrollEnabled: rest.scrollEnabled,
       testID: "masonry-artwork-grid",
     } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
-  }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
+  }, [
+    shouldDisplayHeader,
+    ListHeaderComponent,
+    ListEmptyComponent,
+    refreshControl,
+    rest.onScroll,
+    rest.scrollEnabled,
+  ])
 
   if (artworks.length === 0) {
     return (

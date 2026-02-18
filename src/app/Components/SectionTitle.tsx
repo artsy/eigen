@@ -46,6 +46,7 @@ export const SectionTitle: React.FC<
   titleColor = "mono100",
   variant = "default",
   RightButtonContent = () => <RightButton variant={variant} />,
+  mb = 2,
   ...flexProps
 }) => {
   let titleText
@@ -56,7 +57,7 @@ export const SectionTitle: React.FC<
 
   return (
     <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
-      <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
+      <Flex mb={mb} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
           <Text
             variant={STATES[variant].titleVariant as TextProps["variant"]}
