@@ -160,7 +160,7 @@ jobs:
     needs: check-fingerprint
     if: needs.check-fingerprint.outputs.needs_build == 'true'
     runs-on: macos-15
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
@@ -236,13 +236,13 @@ jobs:
       - name: Run Expo build for iOS
         run: |
           echo "🔨 Building and running iOS app with Expo..."
-          bundle exec npx expo run:ios
+          bundle exec npx expo run:ios --no-bundler
 
   android-expo-build:
     needs: check-fingerprint
     if: needs.check-fingerprint.outputs.needs_build == 'true'
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
-    timeout-minutes: 60
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
@@ -323,4 +323,4 @@ jobs:
       - name: Run Expo build for Android
         run: |
           echo "🔨 Building and running Android app with Expo..."
-          bundle exec npx expo run:android
+          bundle exec npx expo run:android --no-bundler
