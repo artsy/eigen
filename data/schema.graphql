@@ -5451,6 +5451,9 @@ type City {
     # Whether to include local discovery stubs
     includeStubShows: Boolean
     last: Int
+
+    # Caps number of shows per partner (may result in uneven page sizes)
+    maxPerPartner: Int
     page: Int
 
     # Filter shows by partner type
