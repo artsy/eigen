@@ -166,13 +166,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
 
@@ -237,90 +235,3 @@ jobs:
         run: |
           echo "🔨 Building and running iOS app with Expo..."
           bundle exec npx expo run:ios --no-bundler
-
-  android-expo-build:
-    needs: check-fingerprint
-    if: needs.check-fingerprint.outputs.needs_build == 'true'
-    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
-    timeout-minutes: 75
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Setup JavaScript environment
-        uses: ./.github/actions/setup-javascript-environment
-
-      - name: Setup Ruby
-        uses: ./.github/actions/setup-ruby
-
-      - name: Install Ruby dependencies
-        run: bundle install
-
-      - name: Setup Android environment
-        uses: ./.github/actions/setup-android-environment
-
-      - name: Set up env for ci
-        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "zulu"
-
-      - name: Create and boot Android emulator
-        run: |
-          echo "📱 Creating Android emulator..."
-          # Accept licenses first
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-          # Install system image if not present
-          echo "📥 Installing system image..."
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-34;google_apis;arm64-v8a"
-
-          # Create AVD
-          echo "🔨 Creating AVD..."
-          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd \
-            -n test_emulator \
-            -k "system-images;android-34;google_apis;arm64-v8a" \
-            --force
-
-          # Boot emulator
-          echo "🚀 Booting emulator..."
-          $ANDROID_HOME/emulator/emulator -avd test_emulator -no-window -no-audio -no-boot-anim &
-
-          # Wait for emulator to be ready
-          echo "⏳ Waiting for emulator to be ready..."
-          $ANDROID_HOME/platform-tools/adb wait-for-device
-
-          # Wait for boot to complete
-          WAIT_COUNT=0
-          MAX_WAIT=60
-          while [[ $WAIT_COUNT -lt $MAX_WAIT ]]; do
-            BOOT_COMPLETED=$($ANDROID_HOME/platform-tools/adb shell getprop sys.boot_completed 2>&1 | tr -d '\r')
-            if [[ "$BOOT_COMPLETED" == "1" ]]; then
-              echo "✅ Emulator is booted and ready!"
-              break
-            fi
-            echo "Still waiting... (attempt $((WAIT_COUNT + 1))/$MAX_WAIT)"
-            sleep 2
-            WAIT_COUNT=$((WAIT_COUNT + 1))
-          done
-
-          if [[ $WAIT_COUNT -eq $MAX_WAIT ]]; then
-            echo "❌ Timeout: Emulator failed to boot within 120 seconds"
-            exit 1
-          fi
-
-      - name: Run Expo build for Android
-        run: |
-          echo "🔨 Building and running Android app with Expo..."
-          bundle exec npx expo run:android --no-bundler
