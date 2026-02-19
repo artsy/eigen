@@ -187,6 +187,7 @@
 		CB43296727EA27AD00B29DD6 /* Artwork_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43277027E8FEE400B29DD6 /* Artwork_v1.data */; };
 		CB43296827EA27C400B29DD6 /* Artwork_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276F27E8FEE400B29DD6 /* Artwork_v0.data */; };
 		CB43296927EA27FA00B29DD6 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE324F727E275A100395A93 /* live_auctions_static.json */; };
+		A1B2C3D4E5F600AABB000002 /* ios-config.json in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600AABB000001 /* ios-config.json */; };
 		CB43296A27EA285800B29DD6 /* User_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276D27E8FEE400B29DD6 /* User_v1.data */; };
 		CB43296B27EA285800B29DD6 /* User_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276E27E8FEE400B29DD6 /* User_v0.data */; };
 		CB43296C27EA28DE00B29DD6 /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBE324DA27E275A100395A93 /* LiveAuctionsAssets.xcassets */; };
@@ -1047,6 +1048,7 @@
 		CBE324F527E275A100395A93 /* LiveAuctionPlaceMaxBidViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionPlaceMaxBidViewController.swift; sourceTree = "<group>"; };
 		CBE324F627E275A100395A93 /* SerifModalWebNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerifModalWebNavigationController.swift; sourceTree = "<group>"; };
 		CBE324F727E275A100395A93 /* live_auctions_static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions_static.json; sourceTree = "<group>"; };
+		A1B2C3D4E5F600AABB000001 /* ios-config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "ios-config.json"; path = "../ios-config.json"; sourceTree = SOURCE_ROOT; };
 		CBE324F927E275A100395A93 /* AuctionBiddersNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionBiddersNetworkModel.swift; sourceTree = "<group>"; };
 		CBE324FA27E275A100395A93 /* AuctionInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionInformationViewController.swift; sourceTree = "<group>"; };
 		CBE324FD27E275A100395A93 /* AuctionSaleNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionSaleNetworkModel.swift; sourceTree = "<group>"; };
@@ -3629,6 +3631,7 @@
 				CB43296727EA27AD00B29DD6 /* Artwork_v1.data in Resources */,
 				CB43296627EA275700B29DD6 /* greyscaleImage.jpg in Resources */,
 				CB43296427E91DFE00B29DD6 /* stub.jpg in Resources */,
+				A1B2C3D4E5F600AABB000002 /* ios-config.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

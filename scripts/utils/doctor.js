@@ -10,10 +10,15 @@
 
 const { spawnSync } = require("child_process")
 const fs = require("fs")
+const path = require("path")
 const chalk = require("chalk")
 
+const iosConfig = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "../../ios-config.json"), "utf8")
+)
+
 const desiredVersions = {
-  xcode: "26.2",
+  xcode: iosConfig.xcode_version,
   androidStudio: "2022.3",
   ruby: "3.1.7",
   bundler: "2.4.3",
