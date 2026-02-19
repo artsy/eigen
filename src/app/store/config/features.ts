@@ -56,11 +56,6 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  ARShowCreateAlertInArtistArtworksListFooter: {
-    description: "Show create alert in artist artworks list footer",
-    readyForRelease: true,
-    echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
-  },
   AREnabledDiscoverDailyNegativeSignals: {
     description: "Enable negative signals in Discover Daily",
     readyForRelease: true,

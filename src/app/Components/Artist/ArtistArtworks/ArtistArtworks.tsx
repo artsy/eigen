@@ -47,7 +47,6 @@ import {
 import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
@@ -102,7 +101,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
-  const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
 
   const artworksCount = artist.artworks?.counts?.total ?? 0
@@ -211,14 +209,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const listFooterComponent = useMemo(
     () => (
       <ListFooterComponent
-        showCreateAlertAtEndOfList={showCreateAlertAtEndOfList}
         shouldDisplaySpinner={!!isLoadingNext && hasNext}
         artist={artist}
         setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
         hasNext={hasNext}
       />
     ),
-    [showCreateAlertAtEndOfList, isLoadingNext, hasNext, artist, setIsCreateAlertModalVisible]
+    [isLoadingNext, hasNext, artist, setIsCreateAlertModalVisible]
   )
 
   if (!artist.statuses?.artworks) {
@@ -349,21 +346,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 }
 
 const ListFooterComponent: React.FC<{
-  showCreateAlertAtEndOfList: boolean
   shouldDisplaySpinner: boolean
   artist: ArtistArtworks_artist$data
   setIsCreateAlertModalVisible: (isCreateAlertModalVisible: boolean) => void
   hasNext: boolean
-}> = ({
-  showCreateAlertAtEndOfList,
-  shouldDisplaySpinner,
-  artist,
-  setIsCreateAlertModalVisible,
-  hasNext,
-}) => {
+}> = ({ shouldDisplaySpinner, artist, setIsCreateAlertModalVisible, hasNext }) => {
   return (
     <>
-      {!!showCreateAlertAtEndOfList && !hasNext && (
+      {!hasNext && (
         <Message
           title="Get notified when new works are added."
           containerStyle={{ my: 2 }}
