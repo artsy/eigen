@@ -61,7 +61,7 @@ describe("inquiry modal", () => {
     expect(screen.getByText("Title, Date")).toBeVisible()
     expect(screen.getByLabelText("Image of Title")).toBeVisible()
     expect(screen.getByText("Question")).toBeVisible()
-    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Your message").props.value)
   })
 
   it("opens the shipping modal when the 'add your location' field is pressed", async () => {
@@ -92,7 +92,7 @@ describe("inquiry modal", () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
     // clearing the input field
-    fireEvent.changeText(screen.getByLabelText("Add message"), "")
+    fireEvent.changeText(screen.getByLabelText("Your message"), "")
 
     expect(screen.getByText("Send")).toBeDisabled()
 
@@ -105,7 +105,7 @@ describe("inquiry modal", () => {
     renderWithRelay()
     expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
@@ -119,13 +119,13 @@ describe("inquiry modal", () => {
     })
 
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
-    expect(screen.getByLabelText("Add message")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Your message")).toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -197,7 +197,7 @@ describe("inquiry modal", () => {
       it("prefills the input with a templated message", () => {
         renderWithRelay({ Artwork: () => mockArtwork })
 
-        expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+        expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Your message").props.value)
       })
     })
 
@@ -213,7 +213,7 @@ describe("inquiry modal", () => {
       it("shows the input empty", () => {
         renderWithRelay({ Artwork: () => mockArtwork })
 
-        expect(screen.getByLabelText("Add message").props.value).toBe("")
+        expect(screen.getByLabelText("Your message").props.value).toBe("")
       })
     })
   })

@@ -16,8 +16,15 @@
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-    NSAssert(version.majorVersion == 26 && version.minorVersion == 2,
-             @"The tests should be run on iOS 26.2, not %ld.%ld", version.majorVersion, version.minorVersion);
+    NSString *configPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ios-config" ofType:@"json"];
+    NSData *configData = [NSData dataWithContentsOfFile:configPath];
+    NSDictionary *config = [NSJSONSerialization JSONObjectWithData:configData options:0 error:nil];
+    NSArray *versionParts = [config[@"ios_version"] componentsSeparatedByString:@"."];
+    NSInteger expectedMajor = [versionParts[0] integerValue];
+    NSInteger expectedMinor = [versionParts[1] integerValue];
+
+    NSAssert(version.majorVersion == expectedMajor && version.minorVersion == expectedMinor,
+             @"The tests should be run on iOS %@, not %ld.%ld", config[@"ios_version"], version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1206, 2622)),
