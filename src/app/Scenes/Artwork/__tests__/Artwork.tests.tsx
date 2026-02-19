@@ -77,7 +77,6 @@ describe("Artwork", () => {
 
   beforeEach(() => {
     environment = getMockRelayEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionHeaderAlertCTA: false })
   })
 
   afterEach(() => {

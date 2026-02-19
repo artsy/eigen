@@ -192,7 +192,7 @@ Found **18 feature flags** that have been stable for over 6 months and are candi
 - [x] ARImpressionsTrackingHomeItemViews - **COMPLETED 2026-02-19**
 - [x] AREnableNewAuctionsRailCard - **COMPLETED 2026-02-19**
 - [x] AREnableAdditionalSiftAndroidTracking - **COMPLETED 2026-02-19**
-- [ ] AREnableAuctionHeaderAlertCTA
+- [x] AREnableAuctionHeaderAlertCTA - **COMPLETED 2026-02-19**
 - [ ] ARShowCreateAlertInArtistArtworksListFooter
 - [ ] AREnablePartnerOffer
 - [ ] AREnablePartnerOffersNotificationSwitch

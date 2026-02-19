@@ -6,7 +6,6 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -27,10 +26,9 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
 
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
-  const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
 
-  const displayCreateAlertHeader =
-    isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
+  // Hide the small header button for closed auctions (large header is shown instead)
+  const displayCreateAlertHeader = isInAuction && isLotClosedOrBiddingEnded
 
   const { trackCreateAlertTap } = useCreateAlertTracking({
     contextScreenOwnerType: OwnerType.artwork,

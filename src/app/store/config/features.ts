@@ -56,11 +56,6 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableAuctionHeaderAlertCTA: {
-    description: "Enable Auction Header Alert CTA",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAuctionHeaderAlertCTA",
-  },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,

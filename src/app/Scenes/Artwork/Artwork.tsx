@@ -119,7 +119,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const partnerOffer = extractNodes(me?.partnerOffersConnection)[0]
 
   const allowExpiredPartnerOffers = useFeatureFlag("AREnableExpiredPartnerOffers")
-  const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
 
   const expectedPartnerOfferId = !!props.partner_offer_id
 
@@ -280,7 +279,8 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     const sections: ArtworkPageSection[] = []
 
     if (artworkAboveTheFold) {
-      if (enableAuctionHeaderAlertCTA) {
+      // Only add auction alert header for auction artworks
+      if (artworkAboveTheFold.isInAuction) {
         sections.push({
           key: "auctionHeaderAlertCTA",
           element: <ArtworkAuctionCreateAlertHeader artwork={artworkAboveTheFold} />,
