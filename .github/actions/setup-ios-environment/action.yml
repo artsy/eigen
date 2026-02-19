@@ -31,5 +31,5 @@ runs:
       shell: bash
 
     - name: Select Xcode version
-      run: sudo xcode-select -s /Applications/Xcode_16.4.app
+      run: sudo xcode-select -s /Applications/Xcode_26.2.app
       shell: bash
