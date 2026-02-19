@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { SaleLotsListViewer_viewer$key } from "__generated__/SaleLotsListViewer_viewer.graphql"
 import { SaleLotsList_saleArtworksConnection$key } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
@@ -17,9 +17,8 @@ import {
 } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
-import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import React, { MutableRefObject, useCallback, useEffect, useRef } from "react"
@@ -168,8 +167,6 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
     )
   }
 
-  const artworks = extractNodes(connectionData)
-
   return (
     <Flex flex={0} my={4}>
       <SaleLotsListSortMode
@@ -193,27 +190,21 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
           contextScreenOwnerSlug={saleSlug}
         />
       ) : (
-        <>
-          <MasonryInfiniteScrollArtworkGrid
-            animated
-            artworks={artworks}
-            contextModule={ContextModule.auctionHome}
+        <Flex px={2}>
+          <InfiniteScrollArtworksGridContainer
+            connection={connectionData}
+            loadMore={(pageSize, callback) => {
+              const onComplete = typeof callback === "function" ? callback : undefined
+              return loadNext(pageSize, { onComplete })
+            }}
+            hasMore={() => hasNext}
+            isLoading={() => isLoadingNext}
             contextScreenOwnerType={OwnerType.sale}
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
-            hasMore={hasNext}
-            loadMore={() => {
-              if (!isLoadingNext && hasNext) {
-                return loadNext(PAGE_SIZE)
-              }
-            }}
-            isLoading={isLoadingNext}
-            hideSaleInfo={false}
-            hideSaveIcon={true}
             pageSize={PAGE_SIZE}
-            contentContainerStyle={{ paddingBottom: 120 }}
           />
-        </>
+        </Flex>
       )}
     </Flex>
   )
@@ -303,13 +294,11 @@ const SaleLotsListNew: React.FC<NewProps> = ({
     )
   }
 
-  const artworks = extractNodes(connectionData)
-
   return (
     <Flex flex={0} my={4}>
       <SaleLotsListSortMode
         filterParams={filterParams}
-        filteredTotal={artworks?.length}
+        filteredTotal={counts?.total}
         totalCount={unfilteredTotal.current}
       />
 
@@ -328,23 +317,21 @@ const SaleLotsListNew: React.FC<NewProps> = ({
           contextScreenOwnerSlug={saleSlug}
         />
       ) : (
-        <>
-          <MasonryInfiniteScrollArtworkGrid
-            animated
-            artworks={artworks}
-            contextModule={ContextModule.auctionHome}
+        <Flex px={2}>
+          <InfiniteScrollArtworksGridContainer
+            connection={connectionData}
+            loadMore={(pageSize, callback) => {
+              const onComplete = typeof callback === "function" ? callback : undefined
+              return loadNext(pageSize, { onComplete })
+            }}
+            hasMore={() => hasNext}
+            isLoading={() => isLoadingNext}
             contextScreenOwnerType={OwnerType.sale}
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
-            hasMore={hasNext}
-            loadMore={loadNext}
-            isLoading={isLoadingNext}
-            hideSaleInfo={false}
-            hideSaveIcon={true}
             pageSize={PAGE_SIZE}
-            contentContainerStyle={{ paddingBottom: 120 }}
           />
-        </>
+        </Flex>
       )}
     </Flex>
   )
@@ -398,6 +385,7 @@ const legacyFragment = graphql`
         }
       }
       ...SaleArtworkList_connection
+      ...InfiniteScrollArtworksGrid_connection
     }
   }
 `
@@ -450,6 +438,7 @@ const newFragment = graphql`
         }
       }
       ...SaleArtworkList_connection
+      ...InfiniteScrollArtworksGrid_connection
     }
   }
 `
