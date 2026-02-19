@@ -213,7 +213,7 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
 // New Implementation using viewer.artworksConnection
 const SaleLotsListNew: React.FC<NewProps> = ({
   viewer,
-  unfilteredSaleArtworksConnection: _unfilteredSaleArtworksConnection,
+  unfilteredSaleArtworksConnection,
   saleID,
   saleSlug,
   artworksRefetchRef,
@@ -278,7 +278,7 @@ const SaleLotsListNew: React.FC<NewProps> = ({
     })
   }
 
-  const totalCountForCheck = data?.artworksConnection?.counts?.total ?? 0
+  const totalCountForCheck = unfilteredSaleArtworksConnection?.counts?.total
 
   if (totalCountForCheck === 0) {
     return null
