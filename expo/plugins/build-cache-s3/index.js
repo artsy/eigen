@@ -36,7 +36,7 @@ function getS3Path(options, key) {
 }
 
 function getCacheKey(fingerprintHash, platform, isDevClient) {
-  const ext = platform === "ios" ? "tar.gz" : "apk"
+  const ext = "tar.gz"
   const suffix = isDevClient ? ".dev-client" : ""
   return `${fingerprintHash}${suffix}.${platform}.${ext}`
 }
@@ -131,15 +131,17 @@ async function resolveBuildCache(props, options) {
     return null
   }
 
+  const extractDir = path.join(tempDir, "extracted")
+  fs.mkdirSync(extractDir, { recursive: true })
+  execSync(`tar -xzf "${downloadPath}" -C "${extractDir}"`, { encoding: "utf-8" })
+
   if (platform === "ios") {
-    const appDir = path.join(tempDir, "app")
-    fs.mkdirSync(appDir, { recursive: true })
-    execSync(`tar -xzf "${downloadPath}" -C "${appDir}"`, { encoding: "utf-8" })
-    const appBundle = fs.readdirSync(appDir).find((f) => f.endsWith(".app"))
-    return appBundle ? path.join(appDir, appBundle) : null
+    const appBundle = fs.readdirSync(extractDir).find((f) => f.endsWith(".app"))
+    return appBundle ? path.join(extractDir, appBundle) : null
   }
 
-  return downloadPath
+  const apk = fs.readdirSync(extractDir).find((f) => f.endsWith(".apk"))
+  return apk ? path.join(extractDir, apk) : null
 }
 
 async function uploadBuildCache(props, options) {
@@ -167,6 +169,14 @@ async function uploadBuildCache(props, options) {
     const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "expo-build-cache-"))
     uploadPath = path.join(tempDir, key)
     log(`📦 Compressing iOS app bundle...`)
+    execSync(
+      `tar -czf "${uploadPath}" -C "${path.dirname(buildPath)}" "${path.basename(buildPath)}"`,
+      { encoding: "utf-8" }
+    )
+  } else if (platform === "android") {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "expo-build-cache-"))
+    uploadPath = path.join(tempDir, key)
+    log(`📦 Compressing Android APK...`)
     execSync(
       `tar -czf "${uploadPath}" -C "${path.dirname(buildPath)}" "${path.basename(buildPath)}"`,
       { encoding: "utf-8" }
