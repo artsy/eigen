@@ -258,16 +258,16 @@ jobs:
       #     github-token: ${{ secrets.GITHUB_TOKEN }}
       #     run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Check if build is needed
-        id: check-build
-        run: |
-          NEEDS_BUILD=$(cat needs_build.txt)
-          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-          echo "Build needed: $NEEDS_BUILD"
-          if [ "$NEEDS_BUILD" = "false" ]; then
-            echo "✅ Build not needed, exiting early"
-            exit 0
-          fi
+      # - name: Check if build is needed
+      #   id: check-build
+      #   run: |
+      #     NEEDS_BUILD=$(cat needs_build.txt)
+      #     echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+      #     echo "Build needed: $NEEDS_BUILD"
+      #     if [ "$NEEDS_BUILD" = "false" ]; then
+      #       echo "✅ Build not needed, exiting early"
+      #       exit 0
+      #     fi
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
