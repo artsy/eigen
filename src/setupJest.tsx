@@ -300,7 +300,8 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-require("react-native-reanimated").setUpTests()
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
@@ -423,6 +424,13 @@ jest.mock("react-native-keychain", () => ({
 }))
 
 jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
+
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
 
 /**
  * Mocks for our code
