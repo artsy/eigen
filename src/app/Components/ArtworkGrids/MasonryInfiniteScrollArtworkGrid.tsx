@@ -96,7 +96,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
   const onEndReached = useCallback(() => {
-    console.log("cb::onEndReached", { hasMore, isLoading, currentSize: artworks.length })
     if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
