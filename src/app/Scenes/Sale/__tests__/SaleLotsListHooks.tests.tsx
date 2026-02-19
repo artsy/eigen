@@ -71,7 +71,7 @@ describe("SaleLotsListContainer with Hooks Migration", () => {
       `,
     })
 
-    it("renders masonry grid and handles pagination correctly", () => {
+    it("renders grid and handles pagination correctly", () => {
       renderWithRelay({
         Query: () => ({
           saleArtworksConnection: {
@@ -96,9 +96,8 @@ describe("SaleLotsListContainer with Hooks Migration", () => {
         }),
       })
 
-      // Verify masonry grid is rendered with initial data
-      expect(screen.getByTestId("masonry-artwork-grid")).toBeTruthy()
-      // Note: The count shows total from mock, which is expected behavior
+      // Verify grid is rendered
+      expect(screen.getByTestId("sale-artworks-grid")).toBeTruthy()
     })
 
     it("renders list view correctly", () => {
@@ -188,7 +187,7 @@ describe("SaleLotsListContainer with Hooks Migration", () => {
       `,
     })
 
-    it("renders masonry grid with new artwork connection and handles pagination", () => {
+    it("renders grid with new artwork connection and handles pagination", () => {
       renderWithRelay({
         Viewer: () => ({
           artworksConnection: {
@@ -213,9 +212,8 @@ describe("SaleLotsListContainer with Hooks Migration", () => {
         }),
       })
 
-      // Verify masonry grid is rendered with new connection
-      expect(screen.getByTestId("masonry-artwork-grid")).toBeTruthy()
-      // Note: The count shows total from mock, which is expected behavior
+      // Verify grid is rendered with new connection
+      expect(screen.getByTestId("sale-artworks-grid")).toBeTruthy()
     })
   })
 
@@ -289,7 +287,7 @@ describe("SaleLotsListContainer with Hooks Migration", () => {
       })
 
       // Should still render the grid with available items
-      expect(screen.getByTestId("masonry-artwork-grid")).toBeTruthy()
+      expect(screen.getByTestId("sale-artworks-grid")).toBeTruthy()
     })
   })
 

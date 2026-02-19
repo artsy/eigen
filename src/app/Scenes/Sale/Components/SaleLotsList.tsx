@@ -190,7 +190,7 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
           contextScreenOwnerSlug={saleSlug}
         />
       ) : (
-        <Flex px={2}>
+        <Flex px={2} testID="sale-artworks-grid">
           <InfiniteScrollArtworksGridContainer
             connection={connectionData}
             loadMore={(pageSize, callback) => {
@@ -317,7 +317,7 @@ const SaleLotsListNew: React.FC<NewProps> = ({
           contextScreenOwnerSlug={saleSlug}
         />
       ) : (
-        <Flex px={2}>
+        <Flex px={2} testID="sale-artworks-grid">
           <InfiniteScrollArtworksGridContainer
             connection={connectionData}
             loadMore={(pageSize, callback) => {
