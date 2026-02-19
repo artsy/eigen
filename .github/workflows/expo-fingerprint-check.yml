@@ -269,11 +269,8 @@ jobs:
       #       exit 0
       #     fi
 
-      - name: Set up Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: "zulu"
-          java-version: "17"
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
