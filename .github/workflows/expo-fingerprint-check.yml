@@ -329,4 +329,4 @@ jobs:
             adb shell input keyevent 82
 
             echo "🔨 Building and running Android app with Expo..."
-            npx expo run:android
+            npx expo run:android --no-bundler
