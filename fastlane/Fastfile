@@ -18,6 +18,8 @@ skip_docs
 # Constants and Path Configurations
 $APP_JSON_PATH = '../app.json'
 $APP_JSON = JSON.parse(File.read($APP_JSON_PATH))
+$IOS_CONFIG_PATH = '../ios-config.json'
+$IOS_CONFIG = JSON.parse(File.read($IOS_CONFIG_PATH))
 APP_PLIST = '../ios/Artsy/App_Resources/Info.plist'
 FIREBASE_BADGE_TEXT_COLOR = '8A2BE2' # devpurple
 FIREBASE_BADGE_IMAGE_PATH = 'fastlane/images/beta_badge.png'
@@ -87,7 +89,7 @@ lane :ship_beta_ios do |options|
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
   # Select Xcode version
-  xcode_select("/Applications/Xcode_26.2.app")
+  xcode_select("/Applications/Xcode_#{$IOS_CONFIG['xcode_version']}.app")
 
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
@@ -593,7 +595,7 @@ lane :build_maestro_ios do
   set_git_properties_ios
 
   # Select Xcode version
-  xcode_select("/Applications/Xcode_26.2.app")
+  xcode_select("/Applications/Xcode_#{$IOS_CONFIG['xcode_version']}.app")
 
   # Build iOS app with QA scheme for simulator (no codesigning needed)
   build_params = ios_build_params('maestro')

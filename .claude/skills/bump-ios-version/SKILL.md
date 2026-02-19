@@ -13,6 +13,7 @@ This skill guides you through bumping the iOS and Xcode version in Eigen.
 
 - Ask which iOS version they want to bump to (e.g., "26.2")
 - Ask which Xcode version they want to use (e.g., "26.2")
+- Ask which iPhone model to use for simulators (e.g., "iPhone 17 Pro")
 
 **Verify version support before making changes:**
 
@@ -56,94 +57,63 @@ Different iOS versions require specific iPhone simulator models. **You must veri
 
 **Important:** iOS 26 simulators require iPhone 17 series devices. Using iPhone 16 Pro with iOS 26 will fail because it's not available in the manifest.
 
-The iPhone model for CI is set in `scripts/ci/ci-setup-export-vars` via the `DEVICE_HOST_NAME` variable.
+## Steps
 
-## Files to Update
+### 1. Update `ios-config.json` (single source of truth)
 
-When bumping iOS/Xcode version, update the following files:
+Update ALL fields in `ios-config.json` at the project root:
 
-### 1. CircleCI Configuration
+```json
+{
+  "xcode_version": "<NEW_XCODE_VERSION>",
+  "ios_version": "<NEW_IOS_VERSION>",
+  "iphone_model": "<NEW_IPHONE_MODEL>",
+  "simulator_device_type": "com.apple.CoreSimulator.SimDeviceType.<DEVICE-TYPE-ID>",
+  "simulator_runtime": "com.apple.CoreSimulator.SimRuntime.iOS-<MAJOR>-<MINOR>"
+}
+```
 
-**File:** `.circleci/config.yml`
+### 2. Update `.circleci/config.yml` (cannot read from JSON at runtime)
 
-Update the parameters section:
+CircleCI pipeline parameter defaults must be static YAML values. Update these three values in the `parameters` section:
 
 ```yaml
 parameters:
   xcode_version:
     type: string
-    default: "<NEW_XCODE_VERSION>" # e.g., "26.2"
+    default: "<NEW_XCODE_VERSION>"
   simulator_version:
     type: string
-    default: "<NEW_IOS_VERSION>" # e.g., "26.2"
+    default: "<NEW_IOS_VERSION>"
 ```
 
-Also update the `macos/preboot-simulator` device in the `build-test-app-ios` job:
+Also update the `device` in the `macos/preboot-simulator` step of the `build-test-app-ios` job:
 
 ```yaml
 - macos/preboot-simulator:
     version: << pipeline.parameters.simulator_version >>
     platform: "iOS"
-    device: "iPhone <MODEL> Pro" # e.g., "iPhone 17 Pro"
+    device: "<NEW_IPHONE_MODEL>"
 ```
 
-### 2. GitHub Actions E2E Workflow
+### 3. That's It!
 
-**File:** `.github/workflows/ios-e2e-maestro.yml`
+The following files read directly from `ios-config.json` and need NO manual updates:
 
-Update the simulator creation step:
-
-- Update the step name: `Create and boot iPhone <MODEL> Pro iOS <VERSION> simulator`
-- Update the echo message with the new iOS version
-- Update the simulator device type: `com.apple.CoreSimulator.SimDeviceType.iPhone-<MODEL>-Pro` (e.g., `iPhone-17-Pro`)
-- Update the simulator runtime: `com.apple.CoreSimulator.SimRuntime.iOS-<MAJOR>-<MINOR>` (e.g., `iOS-26-2`)
-
-### 3. CI Export Variables Script
-
-**File:** `scripts/ci/ci-setup-export-vars`
-
-Update:
-
-```bash
-export DEVICE_HOST_OS="<NEW_IOS_VERSION>"     # e.g., "26.2"
-export DEVICE_HOST_NAME="iPhone <MODEL> Pro"  # Update if device model changes
-```
-
-### 4. Doctor Script (Developer Environment Check)
-
-**File:** `scripts/utils/doctor.js`
-
-Update the desired Xcode version:
-
-```javascript
-const desiredVersions = {
-  xcode: "<NEW_XCODE_VERSION>",  # e.g., "26.2"
-  // ... other versions
-}
-```
-
-### 5. iOS Test Helper (Snapshot Tests)
-
-**File:** `ios/ArtsyTests/Supporting_Files/ARTestHelper.m`
-
-Update the iOS version assertion:
-
-```objc
-NSAssert(version.majorVersion == <MAJOR> && version.minorVersion == <MINOR>,
-         @"The tests should be run on iOS <VERSION>, not %ld.%ld", ...);
-```
+- `scripts/ci/ci-setup-export-vars` (reads via `jq`)
+- `scripts/utils/doctor.js` (reads via `fs.readFileSync` + `JSON.parse`)
+- `fastlane/Fastfile` (reads via `File.read` + `JSON.parse`)
+- `.github/actions/setup-ios-environment/action.yml` (reads via `jq`)
+- `.github/workflows/ios-e2e-maestro.yml` (reads via `jq`)
+- `ios/ArtsyTests/Supporting_Files/ARTestHelper.m` (reads via `NSJSONSerialization` from test bundle)
 
 ## Summary Checklist
 
 - [ ] Verify target Xcode version is supported by CircleCI
 - [ ] Verify target Xcode version is supported by GitHub Actions
 - [ ] Verify iPhone model is available for target iOS version (check CircleCI manifest)
+- [ ] Update `ios-config.json`
 - [ ] Update `.circleci/config.yml` (xcode_version, simulator_version, preboot-simulator device)
-- [ ] Update `.github/workflows/ios-e2e-maestro.yml` (simulator device type, runtime)
-- [ ] Update `fastlane/Fastfile` (xcode_select Xcode version)
-- [ ] Update `scripts/ci/ci-setup-export-vars` (DEVICE_HOST_OS, DEVICE_HOST_NAME)
-- [ ] Update `scripts/utils/doctor.js` (desiredVersions.xcode)
-- [ ] Update `ios/ArtsyTests/Supporting_Files/ARTestHelper.m` (version assertion)
 
 ## Testing (done by user)
 
