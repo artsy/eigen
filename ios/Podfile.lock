@@ -162,7 +162,7 @@ PODS:
     - SocketRocket
     - Yoga
   - EXStructuredHeaders (5.0.0)
-  - EXUpdates (29.0.16):
+  - EXUpdates (29.0.15):
     - boost
     - DoubleConversion
     - EASClient
@@ -4001,7 +4001,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 55f75eca6499bb9e4231ebad6f3e9cb8f99c0296
   ExpoModulesCore: 39c0aca5ee449ec315f1ded494cbdcc7ebe66aae
   EXStructuredHeaders: c951e77f2d936f88637421e9588c976da5827368
-  EXUpdates: 4f16ea10e7f8de1af5040dbece0d8bc85be2131f
+  EXUpdates: b720690a0f1962bbebc7ee4f54aa67ca9f28134d
   EXUpdatesInterface: 5adf50cb41e079c861da6d9b4b954c3db9a50734
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
   FBAEMKit: b2ed182002dbcb65d5a60059c9693d322186cd00

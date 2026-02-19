@@ -3473,6 +3473,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/code-signing-certificates@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@expo/code-signing-certificates@npm:0.0.5"
+  dependencies:
+    node-forge: "npm:^1.2.1"
+    nullthrows: "npm:^1.1.1"
+  checksum: 10c0/98c908c54f92d6782ae01fef47dd858140dc6013e5376ee3faf9b243327f2b16279441fec171cbde45d0e3ebd0bf72db57b4d4c2a0c4f952285b0b377b2b356b
+  languageName: node
+  linkType: hard
+
 "@expo/code-signing-certificates@npm:^0.0.6":
   version: 0.0.6
   resolution: "@expo/code-signing-certificates@npm:0.0.6"
@@ -12675,7 +12685,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:6.5.0"
     events: "npm:3.3.0"
     expo: "npm:54.0.33"
-    expo-updates: "npm:29.0.16"
+    expo-updates: "npm:29.0.15"
     formik: "npm:2.2.9"
     graphql: "npm:16.8.1"
     graphql-request: "npm:5.1.0"
@@ -14121,11 +14131,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-updates@npm:29.0.16":
-  version: 29.0.16
-  resolution: "expo-updates@npm:29.0.16"
+"expo-updates@npm:29.0.15":
+  version: 29.0.15
+  resolution: "expo-updates@npm:29.0.15"
   dependencies:
-    "@expo/code-signing-certificates": "npm:^0.0.6"
+    "@expo/code-signing-certificates": "npm:0.0.5"
     "@expo/plist": "npm:^0.4.8"
     "@expo/spawn-async": "npm:^1.7.2"
     arg: "npm:4.1.0"
@@ -14145,7 +14155,7 @@ __metadata:
     react-native: "*"
   bin:
     expo-updates: bin/cli.js
-  checksum: 10c0/2dfadc04df7a6e37c1162a4d1eca76f6249e2c3fb8f8e6ac0ccd6f55cce34acf6867c2dfbd75c2d0a37c0578386d19d1a2fbc97a2b5efba0b5217f2a83e3a85d
+  checksum: 10c0/3a2752027b75e569444180c41925bf6683288d0b651f745635062de194dda3cd78b21f93369b995a0f57a7e4eda1bb38dcc230bbfa8eb790616d70221b32c989
   languageName: node
   linkType: hard
 
@@ -19585,7 +19595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:^1.3.3":
+"node-forge@npm:^1.2.1, node-forge@npm:^1.3.3":
   version: 1.3.3
   resolution: "node-forge@npm:1.3.3"
   checksum: 10c0/9c6f53b0ebb34865872cf62a35b0aef8fb337e2efc766626c2e3a0040f4c02933bf29a62ba999eb44a2aca73bd512c4eda22705a47b94654b9fb8ed53db9a1db
