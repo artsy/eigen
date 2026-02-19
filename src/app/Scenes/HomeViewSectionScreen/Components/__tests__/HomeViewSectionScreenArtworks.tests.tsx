@@ -130,7 +130,6 @@ describe("HomeViewSectionArtworks", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableHidingDislikedArtworks: true,
-        ARImpressionsTrackingHomeItemViews: true,
         AREnableNewHomeViewCardRailType: false,
       })
     })

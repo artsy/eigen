@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { ViewToken } from "react-native"
@@ -29,14 +28,12 @@ export const useItemsImpressionsTracking = ({
 
   const tracking = useTracking()
 
-  const enableItemsViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
-
   const viewabilityConfig = useViewabilityConfig()
 
   const trackItems = useCallback(
     (items: Array<TrackableItem>) => {
       // We would like to trigger the tracking only when the rail is visible and only once per item
-      if (enableItemsViewsTracking && isInViewport && items.length > 0) {
+      if (isInViewport && items.length > 0) {
         items.forEach(({ id, index }) => {
           if (!trackedItems.has(id) && index !== null) {
             tracking.trackEvent(
@@ -53,33 +50,23 @@ export const useItemsImpressionsTracking = ({
         })
       }
     },
-    [
-      enableItemsViewsTracking,
-      isInViewport,
-      trackedItems,
-      tracking,
-      itemType,
-      contextModule,
-      contextScreenOwnerType,
-    ]
+    [isInViewport, trackedItems, tracking, itemType, contextModule, contextScreenOwnerType]
   )
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
-      if (enableItemsViewsTracking) {
-        const newRenderedItems: Array<TrackableItem> = []
+      const newRenderedItems: Array<TrackableItem> = []
 
-        viewableItems.forEach(({ item, index }) => {
-          newRenderedItems.push({ id: item.internalID ?? item.entityID, index })
-        })
+      viewableItems.forEach(({ item, index }) => {
+        newRenderedItems.push({ id: item.internalID ?? item.entityID, index })
+      })
 
-        if (__TEST__) {
-          // Use regular state for tests
-          setTestRenderedItems(newRenderedItems)
-        } else {
-          // Use shared value for production
-          renderedItems.value = newRenderedItems
-        }
+      if (__TEST__) {
+        // Use regular state for tests
+        setTestRenderedItems(newRenderedItems)
+      } else {
+        // Use shared value for production
+        renderedItems.value = newRenderedItems
       }
     }
   ).current
@@ -89,14 +76,7 @@ export const useItemsImpressionsTracking = ({
     if (__TEST__) {
       trackItems(testRenderedItems)
     }
-  }, [
-    testRenderedItems,
-    enableItemsViewsTracking,
-    isInViewport,
-    contextScreenOwnerType,
-    contextModule,
-    trackItems,
-  ])
+  }, [testRenderedItems, isInViewport, contextScreenOwnerType, contextModule, trackItems])
 
   // Production environment - use Reanimated
   useAnimatedReaction(
@@ -106,7 +86,7 @@ export const useItemsImpressionsTracking = ({
         runOnJS(trackItems)(currentItems)
       }
     },
-    [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
+    [isInViewport, contextScreenOwnerType, contextModule]
   )
 
   return {

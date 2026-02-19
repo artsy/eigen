@@ -56,12 +56,6 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  ARImpressionsTrackingHomeItemViews: {
-    description: "Enable Tracking Items views on Home Screen",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARImpressionsTrackingHomeItemViews",
-  },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
     readyForRelease: true,
