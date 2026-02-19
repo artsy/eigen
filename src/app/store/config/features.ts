@@ -56,11 +56,6 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableNewAuctionsRailCard: {
-    description: "Enable New Auctions Home Rail Card",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewAuctionsRailCard",
-  },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,

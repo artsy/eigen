@@ -12,7 +12,6 @@ import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -43,8 +42,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   cardSize = "small",
   refreshRail,
 }) => {
-  const enableNewSaleArtworkTileRailCard =
-    useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
+  const enableNewSaleArtworkTileRailCard = cardSize === "large"
   const color = useColor()
   const tracking = useTracking()
 
