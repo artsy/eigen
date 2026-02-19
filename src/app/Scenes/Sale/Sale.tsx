@@ -280,7 +280,11 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
             visible={isFilterArtworksModalVisible}
             id={sale.internalID}
             slug={sale.slug}
-            mode={FilterModalMode.SaleArtworks}
+            mode={
+              enableArtworksConnection
+                ? FilterModalMode.SaleArtworks
+                : FilterModalMode.LegacySaleArtworks
+            }
             exitModal={closeFilterArtworksModal}
             closeModal={closeFilterArtworksModal}
           />
