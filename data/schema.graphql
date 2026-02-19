@@ -3410,17 +3410,7 @@ type ArtworkImport implements Node {
   internalID: ID!
   locationID: String
   rawDataMapping: JSON!
-  rowsConnection(
-    after: String
-    before: String
-    blockersOnly: Boolean
-    createdOnly: Boolean
-    errorTypes: [ArtworkImportError]
-    excludeErrorTypes: [ArtworkImportError]
-    first: Int
-    hasErrors: Boolean
-    last: Int
-  ): ArtworkImportRowConnection
+  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
   state: ArtworkImportState
   statistics: ArtworkImportStatistics
   summary: ArtworkImportSummary
