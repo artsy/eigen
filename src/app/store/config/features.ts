@@ -56,11 +56,6 @@ export const features = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableAdditionalSiftAndroidTracking: {
-    description: "Send additional events to Sift on Android",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
-  },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
     readyForRelease: true,

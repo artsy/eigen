@@ -16,7 +16,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
 import { Fragment } from "react"
 import { Platform } from "react-native"
@@ -44,12 +43,6 @@ export const Navigation = () => {
 
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
-  // Code for Sift tracking; needs to be manually fired on Android
-  // See https://github.com/SiftScience/sift-react-native/pull/23#issuecomment-1630984250
-  const enableAdditionalSiftAndroidTracking = useFeatureFlag(
-    "AREnableAdditionalSiftAndroidTracking"
-  )
-
   if (__DEV__) {
     // It's safe to break the rul of hooks here because we are only using it in dev
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -60,7 +53,9 @@ export const Navigation = () => {
     return <NavigationLoadingIndicator />
   }
 
-  const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
+  // Code for Sift tracking; needs to be manually fired on Android
+  // See https://github.com/SiftScience/sift-react-native/pull/23#issuecomment-1630984250
+  const trackSiftAndroid = Platform.OS === "android"
 
   return (
     <Fragment>
