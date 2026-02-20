@@ -36,6 +36,7 @@ export enum FilterModalMode {
   Fair = "Fair",
   Partner = "Partner",
   SaleArtworks = "SaleArtworks",
+  LegacySaleArtworks = "LegacySaleArtworks",
   Show = "Show",
   Gene = "Gene",
   Tag = "Tag",
@@ -222,6 +223,13 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.viewAs,
       ]
 
+    case FilterModalMode.LegacySaleArtworks:
+      return [
+        filterOptionToDisplayConfigMap.estimateRange,
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.viewAs,
+      ]
+
     case FilterModalMode.AuctionResults:
       return [
         filterOptionToDisplayConfigMap.categories,
@@ -279,6 +287,9 @@ export const getFilterScreenSortByMode =
         sortOrder = FairFiltersSorted
         break
       case FilterModalMode.SaleArtworks:
+        sortOrder = SaleArtworksFiltersSorted
+        break
+      case FilterModalMode.LegacySaleArtworks:
         sortOrder = SaleArtworksFiltersSorted
         break
       case FilterModalMode.AuctionResults:

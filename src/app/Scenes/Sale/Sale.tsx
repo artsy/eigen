@@ -2,7 +2,6 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
-import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
 import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import { Sale_me$data } from "__generated__/Sale_me.graphql"
 import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
@@ -17,6 +16,8 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -34,7 +35,6 @@ import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
-import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -79,7 +79,7 @@ const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
 
   const flatListRef = useRef<FlatList<any>>(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -167,29 +167,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   const renderSaleLotsList = () => {
     if (below) {
-      if (enableArtworksConnection) {
-        return (
-          <NewSaleLotsListContainer
-            unfilteredArtworks={
-              (below as unknown as SaleBelowTheFoldNewQuery$data).viewer?.unfilteredArtworks
-            }
-            viewer={(below as unknown as SaleBelowTheFoldNewQuery$data).viewer}
-            saleID={sale.internalID}
-            saleSlug={sale.slug}
-            scrollToTop={scrollToTop}
-            artworksRefetchRef={artworksRefetchRef}
-          />
-        )
-      }
-
       return (
         <SaleLotsListContainer
-          saleArtworksConnection={below}
-          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
+          saleArtworksConnection={below as any}
+          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection as any}
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
           artworksRefetchRef={artworksRefetchRef}
+          viewer={below.viewer as any}
         />
       )
     }
@@ -294,7 +280,11 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
             visible={isFilterArtworksModalVisible}
             id={sale.internalID}
             slug={sale.slug}
-            mode={FilterModalMode.SaleArtworks}
+            mode={
+              enableArtworksConnection
+                ? FilterModalMode.SaleArtworks
+                : FilterModalMode.LegacySaleArtworks
+            }
             exitModal={closeFilterArtworksModal}
             closeModal={closeFilterArtworksModal}
           />
@@ -427,31 +417,41 @@ export const SaleScreenQuery = graphql`
 `
 
 const SaleScreenBelowQuery = graphql`
-  query SaleBelowTheFoldQuery($saleID: ID) {
+  query SaleBelowTheFoldQuery(
+    $saleID: ID
+    $enableArtworksConnection: Boolean = false
+    $input: FilterArtworksInput
+  ) {
     ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
     unfilteredSaleArtworksConnection: saleArtworksConnection(
       saleID: $saleID
       aggregations: [TOTAL]
-    ) {
+    ) @skip(if: $enableArtworksConnection) {
       ...SaleLotsList_unfilteredSaleArtworksConnection
       counts {
         total
       }
     }
-  }
-`
-
-const SaleScreenBelowNewQuery = graphql`
-  query SaleBelowTheFoldNewQuery($saleID: ID, $input: FilterArtworksInput) {
-    viewer {
+    viewer @include(if: $enableArtworksConnection) {
       unfilteredArtworks: artworksConnection(
         saleID: $saleID
         aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
         first: 0
       ) {
-        ...NewSaleLotsList_unfilteredArtworks
+        counts {
+          followedArtists
+          total
+        }
+        aggregations {
+          slice
+          counts {
+            count
+            name
+            value
+          }
+        }
       }
-      ...NewSaleLotsList_viewer @arguments(saleID: $saleID, input: $input)
+      ...SaleLotsListViewer_viewer @arguments(saleID: $saleID, input: $input)
     }
   }
 `
@@ -461,7 +461,7 @@ export const SaleQueryRenderer: React.FC<{
   environment?: Environment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
 
   useEffect(() => {
     trackEvent(tracks.pageView(saleID))
@@ -478,24 +478,19 @@ export const SaleQueryRenderer: React.FC<{
             query: SaleScreenQuery,
             variables: { saleID, saleSlug: saleID },
           }}
-          below={
-            enableArtworksConnection
-              ? {
-                  query: SaleScreenBelowNewQuery,
-                  variables: {
-                    saleID,
-                    // @ts-ignore
-                    input: {
-                      sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-                      priceRange: "",
-                    },
-                  },
-                }
-              : {
-                  query: SaleScreenBelowQuery,
-                  variables: { saleID },
-                }
-          }
+          below={{
+            query: SaleScreenBelowQuery,
+            variables: {
+              saleID,
+              enableArtworksConnection,
+              input: enableArtworksConnection
+                ? {
+                    sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                    priceRange: "",
+                  }
+                : undefined,
+            },
+          }}
           render={({ props, error }) => {
             if (error) {
               if (__DEV__) {

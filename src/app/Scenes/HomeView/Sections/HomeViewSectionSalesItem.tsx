@@ -25,7 +25,7 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
   sale: saleProp,
   onPress,
 }) => {
-  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction2")
   const sale = useFragment(fragment, saleProp)
 
   let imageURLs
