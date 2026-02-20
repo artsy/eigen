@@ -1,5 +1,5 @@
 diff --git a/React/Modules/RCTEventEmitter.m b/React/Modules/RCTEventEmitter.m
-index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..6096df9f7113a049b835983e12ca9943f9cad9f7 100644
+index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..8f7cf706cdd1b633c2154cd0f1861bf6f359da99 100644
 --- a/React/Modules/RCTEventEmitter.m
 +++ b/React/Modules/RCTEventEmitter.m
 @@ -89,6 +89,10 @@
@@ -14,15 +14,15 @@ index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..6096df9f7113a049b835983e12ca9943
  }
 
 diff --git a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-index e0742c9c5c97bba076d63d5ab79fcb5356cf0174..eae3d698e6139cb6bc58099a5b6c0458595d6695 100644
+index e0742c9c5c97bba076d63d5ab79fcb5356cf0174..a5cd8cfbf10fce0ee43a260134f248401cc0e058 100644
 --- a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
 +++ b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
-@@ -72,7 +72,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
+@@ -216,7 +216,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
    }
 
-   bool enableCppPropsIteratorSetter() override {
+   bool preventShadowTreeCommitExhaustion() override {
 -    return false;
 +    return true;
    }
 
-   bool enableCustomFocusSearchOnClippedElementsAndroid() override {
+   bool traceTurboModulePromiseRejectionsOnAndroid() override {
