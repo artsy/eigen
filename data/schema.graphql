@@ -3410,18 +3410,9 @@ type ArtworkImport implements Node {
   internalID: ID!
   locationID: String
   rawDataMapping: JSON!
-  rowsConnection(
-    after: String
-    before: String
-    blockersOnly: Boolean
-    createdOnly: Boolean
-    errorTypes: [ArtworkImportError]
-    excludeErrorTypes: [ArtworkImportError]
-    first: Int
-    hasErrors: Boolean
-    last: Int
-  ): ArtworkImportRowConnection
+  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
   state: ArtworkImportState
+  statistics: ArtworkImportStatistics
   summary: ArtworkImportSummary
   unmatchedArtistNames: [String!]!
   weightMetric: String!
@@ -3596,6 +3587,32 @@ enum ArtworkImportState {
   POSITION_VALIDATION_COMPLETE
   SALE_ARTWORKS_CREATION_COMPLETE
   SALE_SLUG_MATCHING_COMPLETE
+}
+
+type ArtworkImportStatistics {
+  # Lightweight error IDs for UI cycling functionality. Returns arrays of error IDs without loading full row data for better performance.
+  errorIdentifiers: ErrorIdentifiers!
+
+  # Breakdown of error types and their counts
+  errorTypeCounts: [ErrorTypeCount!]!
+
+  # Total number of rows that successfully created artworks
+  rowsWithArtworksCreated: Int!
+
+  # Total number of rows that failed to create artworks
+  rowsWithArtworksFailed: Int!
+
+  # Total number of rows with fatal errors (ARTWORK_CREATION_FAILED, excluding UNMATCHED_IMAGE)
+  rowsWithFatalErrors: Int!
+
+  # Total number of blocking errors across all rows
+  totalBlockingErrors: Int!
+
+  # Total number of non-blocking errors across all rows
+  totalNonBlockingErrors: Int!
+
+  # Total number of unique rows with errors (for "X artworks require attention")
+  uniqueRowsWithErrors: Int!
 }
 
 type ArtworkImportSummary {
@@ -5424,6 +5441,9 @@ type City {
     # Whether to include local discovery stubs
     includeStubShows: Boolean
     last: Int
+
+    # Caps number of shows per partner (may result in uneven page sizes)
+    maxPerPartner: Int
     page: Int
 
     # Filter shows by partner type
@@ -10976,6 +10996,7 @@ type CreditCardPayload {
 }
 
 type CroppedImageUrl {
+  cachePolicy: String
   height: Int!
   src: String!
   srcSet: String!
@@ -11854,6 +11875,30 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+type DiscardNavigationDraftFailure {
+  mutationError: GravityMutationError!
+}
+
+input DiscardNavigationDraftInput {
+  clientMutationId: String
+
+  # The ID of the navigation version to discard
+  versionID: String!
+}
+
+type DiscardNavigationDraftPayload {
+  clientMutationId: String
+  discardNavigationDraftResponseOrError: DiscardNavigationDraftResponseOrError!
+}
+
+union DiscardNavigationDraftResponseOrError =
+    DiscardNavigationDraftFailure
+  | DiscardNavigationDraftSuccess
+
+type DiscardNavigationDraftSuccess {
+  success: Boolean!
+}
+
 # A discovery category that contains artwork filters
 type DiscoveryArtworksWithFiltersCollection implements Node {
   # The ID of the category
@@ -12334,6 +12379,36 @@ type Error {
 
   # Which input value this error came from
   path: [String!]
+}
+
+type ErrorIdentifier {
+  # The type of error (e.g. MISSING_ARTIST, INVALID_PRICE)
+  errorType: ArtworkImportError!
+
+  # The line number (position) of the row in the original CSV
+  lineNumber: Int!
+
+  # The ID of the row with this error
+  rowId: String!
+}
+
+type ErrorIdentifiers {
+  # Array of blocking errors with errorType and rowId. Frontend constructs error IDs for UI cycling.
+  blocking: [ErrorIdentifier!]!
+
+  # Array of non-blocking errors with errorType and rowId. Frontend constructs error IDs for UI cycling.
+  nonBlocking: [ErrorIdentifier!]!
+}
+
+type ErrorTypeCount {
+  # Whether this error stops artwork creation
+  blocking: Boolean!
+
+  # The number of times that this error appears
+  count: Int!
+
+  # The type of error (e.g. MISSING_ARTIST, INVALID_PRICE)
+  errorType: ArtworkImportError!
 }
 
 # A user-readable list of errors
@@ -14773,6 +14848,8 @@ type Image {
   blurhash: String
   caption: String
   cropped(
+    # Whether to use a short cache policy for the image
+    cachePolicy: String
     height: Int!
 
     # Value from 0-100; [1x, 2x]
@@ -14811,6 +14888,8 @@ type Image {
   # Indicates whether image processing has failed.
   processingFailed: Boolean!
   resized(
+    # Whether to use a short cache policy for the image
+    cachePolicy: String
     height: Int
 
     # Value from 0-100; [1x, 2x]
@@ -17138,6 +17217,9 @@ type Mutation {
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
 
+  # Discard a draft navigation version. Versions that have been published cannot be discarded.
+  discardNavigationDraft(input: DiscardNavigationDraftInput!): DiscardNavigationDraftPayload
+
   # Add (or remove) an artwork to (from) a users dislikes.
   dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
 
@@ -17196,6 +17278,8 @@ type Mutation {
   myCollectionUpdateArtwork(
     input: MyCollectionUpdateArtworkInput!
   ): MyCollectionUpdateArtworkPayload
+
+  # Publish a draft navigation version. Accepts either a groupID (for backward compatibility) or versionID (preferred for admin workflows).
   publishNavigationDraft(input: PublishNavigationDraftInput!): PublishNavigationDraftPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(
@@ -19518,6 +19602,11 @@ type PartnerCounts {
     format: String
     label: String
   ): FormattedNumber
+  contacts(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
   currentDisplayableShows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -19529,6 +19618,11 @@ type PartnerCounts {
     label: String
   ): FormattedNumber
   eligibleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  locations(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
@@ -20290,8 +20384,11 @@ type PublishNavigationDraftFailure {
 input PublishNavigationDraftInput {
   clientMutationId: String
 
-  # The ID of the navigation group
-  groupID: String!
+  # The ID of the navigation group. Supported for backward compatibility, but versionID is preferred for admin UI workflows.
+  groupID: String
+
+  # The ID of the specific navigation version to publish. Preferred approach for admin UIs.
+  versionID: String
 }
 
 type PublishNavigationDraftPayload {
@@ -21420,8 +21517,17 @@ type Query {
   ): NavigationGroup!
   navigationGroups: [NavigationGroup!]!
 
-  # A snapshot of the server-driven navigation structure (e.g., What’s New -> By Price -> Art under $500, etc.)
-  navigationVersion(groupID: String!, state: NavigationVersionState = LIVE): NavigationVersion
+  # A snapshot of the server-driven navigation structure (e.g., What's New -> By Price -> Art under $500, etc.). Fetch by groupID + state for public/cached access, or by id for admin-specific lookups.
+  navigationVersion(
+    # The ID of the navigation group (e.g., 'whats-new'). Used with state for public UI lookups with heavy caching (LIVE) or admin preview (DRAFT).
+    groupID: String
+
+    # The internal ID of a specific navigation version. For admin UI use only, always uses authenticated loader.
+    id: String
+
+    # The state of the version (LIVE or DRAFT). LIVE uses unauthenticated/cached loader, DRAFT uses authenticated/uncached loader for admin preview.
+    state: NavigationVersionState = LIVE
+  ): NavigationVersion
 
   # Fetches an object given its globally unique ID.
   node(
@@ -22431,6 +22537,7 @@ type RequestPriceEstimatedMutationSuccess {
 }
 
 type ResizedImageUrl {
+  cachePolicy: String
   factor: Float!
   height: Int
   src: String!
@@ -27818,8 +27925,17 @@ type Viewer {
   ): NavigationGroup!
   navigationGroups: [NavigationGroup!]!
 
-  # A snapshot of the server-driven navigation structure (e.g., What’s New -> By Price -> Art under $500, etc.)
-  navigationVersion(groupID: String!, state: NavigationVersionState = LIVE): NavigationVersion
+  # A snapshot of the server-driven navigation structure (e.g., What's New -> By Price -> Art under $500, etc.). Fetch by groupID + state for public/cached access, or by id for admin-specific lookups.
+  navigationVersion(
+    # The ID of the navigation group (e.g., 'whats-new'). Used with state for public UI lookups with heavy caching (LIVE) or admin preview (DRAFT).
+    groupID: String
+
+    # The internal ID of a specific navigation version. For admin UI use only, always uses authenticated loader.
+    id: String
+
+    # The state of the version (LIVE or DRAFT). LIVE uses unauthenticated/cached loader, DRAFT uses authenticated/uncached loader for admin preview.
+    state: NavigationVersionState = LIVE
+  ): NavigationVersion
 
   # Fetches an object given its globally unique ID.
   node(

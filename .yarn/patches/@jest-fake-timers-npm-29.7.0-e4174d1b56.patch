@@ -1,7 +1,7 @@
-diff --git a/node_modules/@jest/fake-timers/build/legacyFakeTimers.js b/node_modules/@jest/fake-timers/build/legacyFakeTimers.js
-index 3bbf36c..64c3425 100644
---- a/node_modules/@jest/fake-timers/build/legacyFakeTimers.js
-+++ b/node_modules/@jest/fake-timers/build/legacyFakeTimers.js
+diff --git a/build/legacyFakeTimers.js b/build/legacyFakeTimers.js
+index 3bbf36c91fcb89b0b161defff51d1a96c0a863aa..64c34250203b5197721c03fcb2667272edfe15e6 100644
+--- a/build/legacyFakeTimers.js
++++ b/build/legacyFakeTimers.js
 @@ -462,7 +462,7 @@ class FakeTimers {
        callback: () => callback.apply(null, args),
        uuid

@@ -1,0 +1,28 @@
+diff --git a/React/Modules/RCTEventEmitter.m b/React/Modules/RCTEventEmitter.m
+index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..6096df9f7113a049b835983e12ca9943f9cad9f7 100644
+--- a/React/Modules/RCTEventEmitter.m
++++ b/React/Modules/RCTEventEmitter.m
+@@ -89,6 +89,10 @@
+
+   if (_listenerCount > 0) {
+     [self stopObserving];
++    // Reset listener count to allow proper re-initialization on bridge reload
++    // This is necessary for modules that persist across bridge reloads (singletons, dev reload, Expo Updates)
++    // Without this reset, startObserving will never be called again because _listenerCount > 1
++    _listenerCount = 0;
+   }
+ }
+
+diff --git a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+index e0742c9c5c97bba076d63d5ab79fcb5356cf0174..eae3d698e6139cb6bc58099a5b6c0458595d6695 100644
+--- a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
++++ b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+@@ -72,7 +72,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
+   }
+
+   bool enableCppPropsIteratorSetter() override {
+-    return false;
++    return true;
+   }
+
+   bool enableCustomFocusSearchOnClippedElementsAndroid() override {
