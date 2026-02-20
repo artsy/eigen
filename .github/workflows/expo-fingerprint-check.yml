@@ -14,7 +14,8 @@ jobs:
     outputs:
       fingerprint_changed: ${{ steps.compare.outputs.changed }}
       current_fingerprint: ${{ steps.generate-fingerprint.outputs.fingerprint }}
-      needs_build: ${{ steps.check-s3-cache.outputs.needs_build }}
+      needs_ios_build: ${{ steps.check-s3-cache.outputs.needs_ios_build }}
+      needs_android_build: ${{ steps.check-s3-cache.outputs.needs_android_build }}
 
     steps:
       - name: Checkout repository
@@ -114,10 +115,11 @@ jobs:
       - name: Check S3 for existing cached builds
         id: check-s3-cache
         run: |
-          # If fingerprints match, no build is needed
+          # If fingerprints match, no build is needed for either platform
           if [ "${{ steps.compare.outputs.changed }}" != "true" ]; then
             echo "✅ Fingerprints match - no build needed"
-            echo "needs_build=false" >> $GITHUB_OUTPUT
+            echo "needs_ios_build=false" >> $GITHUB_OUTPUT
+            echo "needs_android_build=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -125,47 +127,48 @@ jobs:
 
           echo "🔍 Checking S3 for existing builds with fingerprint: $FINGERPRINT"
 
-          # Check if Android APK exists
+          # Check if Android tar.gz exists
           if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.android.tar.gz" 2>/dev/null; then
             echo "✅ Found Android build in S3"
-            ANDROID_EXISTS=true
+            echo "needs_android_build=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ Android build not found in S3"
-            ANDROID_EXISTS=false
+            echo "❌ Android build not found in S3 - build required"
+            echo "needs_android_build=true" >> $GITHUB_OUTPUT
           fi
 
           # Check if iOS tar.gz exists
           if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.ios.tar.gz" 2>/dev/null; then
             echo "✅ Found iOS build in S3"
-            IOS_EXISTS=true
+            echo "needs_ios_build=false" >> $GITHUB_OUTPUT
           else
-            echo "❌ iOS build not found in S3"
-            IOS_EXISTS=false
-          fi
-
-          # Determine if we need to build
-          if [ "$ANDROID_EXISTS" = "true" ] && [ "$IOS_EXISTS" = "true" ]; then
-            echo "✅ Both builds exist in S3 - no build needed"
-            echo "needs_build=false" >> $GITHUB_OUTPUT
-          else
-            echo "🔨 Builds missing in S3 - build required"
-            echo "needs_build=true" >> $GITHUB_OUTPUT
+            echo "❌ iOS build not found in S3 - build required"
+            echo "needs_ios_build=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload new fingerprint to S3
-        if: steps.compare.outputs.changed == 'true' && steps.check-s3-cache.outputs.needs_build == 'true'
+        if: steps.compare.outputs.changed == 'true' && (steps.check-s3-cache.outputs.needs_ios_build == 'true' || steps.check-s3-cache.outputs.needs_android_build == 'true')
         run: |
           echo "📤 Uploading new fingerprint to S3..."
           echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > latest.txt
           aws s3 cp latest.txt s3://artsy-citadel/eigen/expo-fingerprint/latest.txt
           echo "✅ Fingerprint saved"
 
-      - name: Save needs_build output to artifact
+      - name: Save needs_ios_build output to artifact
         run: |
-          echo "${{ steps.check-s3-cache.outputs.needs_build }}" > needs_build.txt
+          echo "${{ steps.check-s3-cache.outputs.needs_ios_build }}" > needs_ios_build.txt
 
-      - name: Upload needs_build artifact
+      - name: Upload needs_ios_build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: needs_build
-          path: needs_build.txt
+          name: needs_ios_build
+          path: needs_ios_build.txt
+
+      - name: Save needs_android_build output to artifact
+        run: |
+          echo "${{ steps.check-s3-cache.outputs.needs_android_build }}" > needs_android_build.txt
+
+      - name: Upload needs_android_build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: needs_android_build
+          path: needs_android_build.txt

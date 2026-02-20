@@ -26,21 +26,21 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Download needs_build artifact
+      - name: Download needs_android_build artifact
         uses: actions/download-artifact@v4
         with:
-          name: needs_build
+          name: needs_android_build
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
 
       - name: Check if build is needed
         id: check-build
         run: |
-          NEEDS_BUILD=$(cat needs_build.txt)
+          NEEDS_BUILD=$(cat needs_android_build.txt)
           echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-          echo "Build needed: $NEEDS_BUILD"
+          echo "Android build needed: $NEEDS_BUILD"
           if [ "$NEEDS_BUILD" = "false" ]; then
-            echo "✅ Build not needed, exiting early"
+            echo "✅ Android build not needed, exiting early"
             exit 0
           fi
 
