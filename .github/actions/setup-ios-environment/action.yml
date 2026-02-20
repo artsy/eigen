@@ -14,9 +14,9 @@ runs:
         path: |
           ios/Pods
           ~/Library/Caches/CocoaPods
-        key: pods-v2-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+        key: pods-v3-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
         restore-keys: |
-          pods-v2-${{ runner.os }}-
+          pods-v3-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts

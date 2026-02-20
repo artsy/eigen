@@ -518,26 +518,26 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   node_modules_cache_key:
     type: string
-    default: v29-node_modules-{{ checksum ".manifests/node_modules" }}
+    default: v30-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
-    default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+    default: v14-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
   cocoapods_cache_key:
     type: string
-    default: v31-pods-{{ checksum ".manifests/cocoapods" }}
+    default: v32-pods-{{ checksum ".manifests/cocoapods" }}
   app_build_ios_cache_key:
     type: string
-    default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
+    default: v31-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v16-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v17-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
     default: v19-test-success
   android_native_cache_key:
     type: string
-    default: v19-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v20-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
   nightly:
