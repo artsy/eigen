@@ -31,9 +31,6 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
 
   const { opacity } = Screen.useTitleStyles()
 
-  // The container width minus the share icon width minus the padding on the left and right
-  const followButtonWidth = CONTAINER_WIDTH - ACCESSIBLE_DEFAULT_ICON_SIZE - space(2)
-
   useDebounce(
     () => {
       if (isFollowed !== artist?.isFollowed) {
@@ -71,14 +68,12 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       width={CONTAINER_WIDTH}
       py={1}
     >
-      <MotiView style={followButtonStyle}>
+      <MotiView style={[followButtonStyle, { marginRight: space(0.5) }]}>
         <FollowButton
           haptic
           isFollowed={isFollowed}
-          longestText="Following 999.9K"
           followCount={artist?.counts.follows}
           onPress={() => setIsFollowed(!isFollowed)}
-          minWidth={followButtonWidth}
         />
       </MotiView>
 
