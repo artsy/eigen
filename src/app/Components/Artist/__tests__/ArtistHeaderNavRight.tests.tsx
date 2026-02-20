@@ -76,7 +76,7 @@ describe("ArtistHeaderNavRight", () => {
       }),
     })
 
-    expect(screen.getByText("Follow")).toBeOnTheScreen()
+    expect(screen.getByText("Follow 100")).toBeOnTheScreen()
   })
 
   it("renders the follow button when artist is followed", () => {
@@ -87,7 +87,7 @@ describe("ArtistHeaderNavRight", () => {
       }),
     })
 
-    expect(screen.getByText("Following")).toBeOnTheScreen()
+    expect(screen.getByText("Following 100")).toBeOnTheScreen()
   })
 
   it("displays the follow count when available", () => {
@@ -101,9 +101,7 @@ describe("ArtistHeaderNavRight", () => {
       }),
     })
 
-    expect(screen.getByText("Follow")).toBeOnTheScreen()
-    expect(screen.getByText("1.2K")).toBeOnTheScreen()
-    // The follow count should be displayed in the FollowButton component
+    expect(screen.getByText("Follow 1.2K")).toBeOnTheScreen()
   })
 
   it("handles follow/follow button press", () => {
@@ -114,12 +112,12 @@ describe("ArtistHeaderNavRight", () => {
       }),
     })
 
-    const followButton = screen.getByText("Follow")
+    const followButton = screen.getByText("Follow 100")
     fireEvent.press(followButton)
 
-    expect(screen.getByText("Following")).toBeOnTheScreen()
+    expect(screen.getByText("Following 100")).toBeOnTheScreen()
 
-    const followButton2 = screen.getByText("Following")
+    const followButton2 = screen.getByText("Following 100")
     fireEvent.press(followButton2)
   })
 })
