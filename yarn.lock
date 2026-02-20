@@ -4560,6 +4560,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch":
+  version: 5.1.8
+  resolution: "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch::version=5.1.8&hash=ea2b4e"
+  dependencies:
+    "@gorhom/portal": "npm:1.0.14"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-native": "*"
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: ">=2.16.1"
+    react-native-reanimated: "*"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-native":
+      optional: true
+  checksum: 10c0/39aff6d4f3842fdd6bdb667a9938baba3157bbd74c9db917260844113b073ba4d2f46153cf0356c7323e8bfa77d058d364b1bff635949286cb4e8348fe21bac3
+  languageName: node
+  linkType: hard
+
 "@gorhom/portal@npm:1.0.14":
   version: 1.0.14
   resolution: "@gorhom/portal@npm:1.0.14"
@@ -13185,7 +13207,7 @@ __metadata:
     "@braze/react-native-sdk": "npm:16.1.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
-    "@gorhom/bottom-sheet": "npm:5.1.8"
+    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch"
     "@gorhom/portal": "npm:1.0.14"
     "@invertase/react-native-apple-authentication": "npm:2.1.5"
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"

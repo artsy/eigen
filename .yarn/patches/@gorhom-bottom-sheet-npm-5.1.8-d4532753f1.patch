@@ -1,0 +1,20 @@
+diff --git a/Untitled b/Untitled
+new file mode 100644
+index 0000000000000000000000000000000000000000..3e161602a17734d9fae56373f940d35722172b60
+--- /dev/null
++++ b/Untitled
+@@ -0,0 +1 @@
++SNAP_POINT_TYPE
+\ No newline at end of file
+diff --git a/src/constants.ts b/src/constants.ts
+index 87afaa18d9ab5c5670e6ffd22bb8450883fd835d..b7f71e7309418f3060ee43bb06e123a7bb91f12c 100644
+--- a/src/constants.ts
++++ b/src/constants.ts
+@@ -68,6 +68,7 @@ enum SNAP_POINT_TYPE {
+   DYNAMIC = 1,
+ }
+ 
++// @ts-expect-error
+ const ANIMATION_EASING: Animated.EasingFunction = Easing.out(Easing.exp);
+ const ANIMATION_DURATION = 250;
+ 
