@@ -61,7 +61,7 @@ yarn install:all
 
 echo 'Explicit installation of react native reanimated and worklets to avoid any type of weirdness'
 
-yarn add react-native-reanimated@4.1.5 react-native-worklets@0.6.1
+yarn add react-native-reanimated@4.2.1 react-native-worklets@0.7.2
 
 
 echo "💫🫧 Everything is squishy clean 💫🫧"
