@@ -23,9 +23,9 @@ runs:
           ~/.gradle/caches
           ~/.gradle/wrapper
           android/.gradle
-        key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: gradle-v3-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
-          gradle-v2-${{ runner.os }}-
+          gradle-v3-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts

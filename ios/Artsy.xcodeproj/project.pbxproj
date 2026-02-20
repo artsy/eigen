@@ -31,6 +31,7 @@
 		41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */; };
 		5E14D748482D1C91EDFD78D5 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */; };
 		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
+		A1B2C3D4E5F600AABB000002 /* ios-config.json in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600AABB000001 /* ios-config.json */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB0F3C762E58E91E0029A028 /* ARRouter+RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0F3C752E58E9150029A028 /* ARRouter+RestAPI.m */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
@@ -187,7 +188,6 @@
 		CB43296727EA27AD00B29DD6 /* Artwork_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43277027E8FEE400B29DD6 /* Artwork_v1.data */; };
 		CB43296827EA27C400B29DD6 /* Artwork_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276F27E8FEE400B29DD6 /* Artwork_v0.data */; };
 		CB43296927EA27FA00B29DD6 /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE324F727E275A100395A93 /* live_auctions_static.json */; };
-		A1B2C3D4E5F600AABB000002 /* ios-config.json in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600AABB000001 /* ios-config.json */; };
 		CB43296A27EA285800B29DD6 /* User_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276D27E8FEE400B29DD6 /* User_v1.data */; };
 		CB43296B27EA285800B29DD6 /* User_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276E27E8FEE400B29DD6 /* User_v0.data */; };
 		CB43296C27EA28DE00B29DD6 /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBE324DA27E275A100395A93 /* LiveAuctionsAssets.xcassets */; };
@@ -584,6 +584,7 @@
 		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8329A607F98AD2DF9F290C93 /* Pods-Artsy.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.qa.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.qa.xcconfig"; sourceTree = "<group>"; };
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
+		A1B2C3D4E5F600AABB000001 /* ios-config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "ios-config.json"; path = "../ios-config.json"; sourceTree = SOURCE_ROOT; };
 		A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -1048,7 +1049,6 @@
 		CBE324F527E275A100395A93 /* LiveAuctionPlaceMaxBidViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionPlaceMaxBidViewController.swift; sourceTree = "<group>"; };
 		CBE324F627E275A100395A93 /* SerifModalWebNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerifModalWebNavigationController.swift; sourceTree = "<group>"; };
 		CBE324F727E275A100395A93 /* live_auctions_static.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions_static.json; sourceTree = "<group>"; };
-		A1B2C3D4E5F600AABB000001 /* ios-config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "ios-config.json"; path = "../ios-config.json"; sourceTree = SOURCE_ROOT; };
 		CBE324F927E275A100395A93 /* AuctionBiddersNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionBiddersNetworkModel.swift; sourceTree = "<group>"; };
 		CBE324FA27E275A100395A93 /* AuctionInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionInformationViewController.swift; sourceTree = "<group>"; };
 		CBE324FD27E275A100395A93 /* AuctionSaleNetworkModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionSaleNetworkModel.swift; sourceTree = "<group>"; };
