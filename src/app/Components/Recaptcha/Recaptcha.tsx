@@ -1,4 +1,5 @@
 import { Box } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
 import { RecaptchaWebView } from "app/Components/Recaptcha/RecaptchaWebView"
 import { useCallback, useState } from "react"
 
@@ -11,10 +12,20 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
   const [state, setState] = useState<State>()
   const [refreshKey, setRefreshKey] = useState(0)
 
-  const handleOnToken = useCallback((token: string) => {
-    setToken(token)
-    setTokenTimestamp(Date.now())
-  }, [])
+  const handleOnToken = useCallback(
+    (token: string, isFallback?: boolean, fallbackReason?: string) => {
+      setToken(token)
+      setTokenTimestamp(Date.now())
+
+      // Track fallback usage in Sentry with detailed context
+      if (isFallback) {
+        captureMessage("reCAPTCHA fallback token used - grecaptcha unavailable", {
+          extra: { fallbackReason },
+        })
+      }
+    },
+    []
+  )
 
   const handleOnError = useCallback(
     (error: string) => {
