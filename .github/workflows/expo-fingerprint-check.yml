@@ -35,13 +35,8 @@ jobs:
       - name: Setup iOS environment
         uses: ./.github/actions/setup-ios-environment
 
-      - name: Download fonts from s3
-        run: ./scripts/setup/download-fonts
-        shell: bash
-
-      - name: Download android assets
-        run: ./scripts/setup/download-assets-android
-        shell: bash
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
 
       - name: Generate current Expo fingerprint
         id: generate-fingerprint
@@ -112,7 +107,7 @@ jobs:
           echo "🔍 Checking S3 for existing builds with fingerprint: $FINGERPRINT"
 
           # Check if Android APK exists
-          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.android.apk" 2>/dev/null; then
+          if aws s3api head-object --bucket artsy-citadel --key "eigen/cached-builds/${FINGERPRINT}.android.tar.gz" 2>/dev/null; then
             echo "✅ Found Android build in S3"
             ANDROID_EXISTS=true
           else
