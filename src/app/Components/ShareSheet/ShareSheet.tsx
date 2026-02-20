@@ -189,7 +189,7 @@ export const ShareSheet = () => {
     <AutomountedBottomSheetModal
       visible={isVisible}
       onDismiss={hideShareSheet}
-      enableDynamicSizing
+      enableDynamicSizing={false}
       snapPoints={SNAP_POINTS}
     >
       <BottomSheetView style={{ flex: 1 }}>

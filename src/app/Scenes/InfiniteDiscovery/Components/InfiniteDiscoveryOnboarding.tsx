@@ -7,7 +7,7 @@ import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
 import { LayoutAnimation, Modal, Platform, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface InfiniteDiscoveryOnboardingProps {
   artworks: InfiniteDiscoveryArtwork[]
@@ -26,6 +26,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
   const [showSwiper, setShowSwiper] = useState(false)
+  const safeAreaInsets = useSafeAreaInsets()
 
   const swiperRef = useRef<SwiperRefProps>(null)
 
@@ -145,8 +146,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                   height: "100%",
                 }}
               />
-              <SafeAreaView
-                style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
+              <Flex
+                flex={1}
+                justifyContent="flex-end"
+                backgroundColor="transparent"
+                style={{ paddingBottom: safeAreaInsets.bottom, paddingTop: safeAreaInsets.top }}
               >
                 <MotiView
                   animate={{ opacity: showSwiper ? 1 : 0, scale: showSwiper ? 1 : 0.8 }}
@@ -209,7 +213,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                     </Flex>
                   </MotiView>
                 </Flex>
-              </SafeAreaView>
+              </Flex>
             </Flex>
           </Flex>
         </MotiView>

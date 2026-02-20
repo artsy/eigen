@@ -99,13 +99,6 @@ jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
 }))
 
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
-  }
-})
-
 require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
@@ -307,7 +300,8 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-require("react-native-reanimated").setUpTests()
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
@@ -430,6 +424,13 @@ jest.mock("react-native-keychain", () => ({
 }))
 
 jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
+
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
 
 /**
  * Mocks for our code
@@ -659,7 +660,6 @@ jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")
   return {
     ...jest.requireActual("@shopify/flash-list"),
-    MasonryFlashList: FlatList,
     FlashList: FlatList,
   }
 })
@@ -700,12 +700,6 @@ jest.mock("app/utils/Sentinel", () => {
   return {
     __esModule: true,
     Sentinel: View,
-  }
-})
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
   }
 })
 

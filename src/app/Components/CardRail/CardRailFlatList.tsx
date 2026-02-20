@@ -8,15 +8,12 @@ import {
   Spacer,
   useSpace,
 } from "@artsy/palette-mobile"
-import {
-  AboveTheFoldFlatList,
-  AboveTheFoldFlatListProps,
-} from "app/Components/AboveTheFoldFlatList"
+import { AboveTheFoldFlatListProps } from "app/Components/AboveTheFoldFlatList"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/MultipleImageLayout"
 import Spinner from "app/Components/Spinner"
 import { Ref } from "react"
-import { FlatListProps, View } from "react-native"
+import { FlatList, FlatListProps, View } from "react-native"
 
 type CardRailFlatList<ItemType> = AboveTheFoldFlatListProps<ItemType>
 
@@ -27,7 +24,7 @@ export function CardRailFlatList<ItemType>(
   const space = useSpace()
 
   return (
-    <AboveTheFoldFlatList<ItemType>
+    <FlatList<ItemType>
       ListHeaderComponent={() => <Spacer x={2} />}
       ListFooterComponent={() => <Spacer x={2} />}
       ItemSeparatorComponent={() => <View style={{ width: space(2) }} />}

@@ -16,8 +16,8 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
 
   const [activeTab, setActiveTab] = useState<TabName>("worksYouLiked")
 
-  const savedArtworks = queryResult?.savedArtworks!
-  const recommendedArtworks = queryResult?.recommendedArtworks!
+  const savedArtworks = queryResult?.savedArtworks ?? []
+  const recommendedArtworks = queryResult?.recommendedArtworks ?? []
   const title =
     activeTab === "worksYouLiked" ? "Explore Your Quiz Results" : "Explore Art We Think You'll Love"
 

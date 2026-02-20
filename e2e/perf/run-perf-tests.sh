@@ -16,8 +16,9 @@ timestamp=$(date +"%Y-%m-%d_%H:%M:%S")
 # Note that this is only supported on android devices or emulators at the moment.
 flashlight test --bundleId net.artsy.app \
   --testCommand "maestro test e2e/perf/perf-test-home.yml" \
+  --beforeEachCommand "adb shell am force-stop net.artsy.app" \
   --duration 10000 \
-  --iterationCount 1 \
+  --iterationCount 3 \
   --skipRestart \
   --record \
   --resultsFilePath "flashlight_results_$timestamp.json" \

@@ -491,6 +491,9 @@ jobs:
       - store_artifacts:
           path: android/app/build/reports
 
+      - store_artifacts:
+          path: .gradle/daemon/
+
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
           paths:

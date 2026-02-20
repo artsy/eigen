@@ -29,7 +29,9 @@ export const SwitchMenu = ({
       </Flex>
 
       <Flex style={{ width: "20%" }} alignItems="flex-end">
-        <Switch testID={testID} onValueChange={onChange} value={value} disabled={disabled} />
+        <Flex>
+          <Switch testID={testID} onValueChange={onChange} value={value} disabled={disabled} />
+        </Flex>
       </Flex>
     </Flex>
   )

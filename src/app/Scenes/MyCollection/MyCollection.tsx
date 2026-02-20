@@ -143,9 +143,7 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
 
             <Tabs.Tab name={Tab.artists} label={Tab.artists}>
-              <Tabs.ScrollView>
-                <MyCollectionCollectedArtistsQueryRenderer />
-              </Tabs.ScrollView>
+              <MyCollectionCollectedArtistsQueryRenderer />
             </Tabs.Tab>
 
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>

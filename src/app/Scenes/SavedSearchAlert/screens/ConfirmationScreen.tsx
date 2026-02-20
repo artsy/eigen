@@ -216,14 +216,16 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 
       <Spacer y={2} />
 
-      <GenericGrid
-        artworks={artworks}
-        hideSaveIcon
-        onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
-          closeModal?.()
-          trackEvent(tracks.tappedArtworkGroup(slug, artwork?.collectorSignals))
-        }}
-      />
+      <Flex>
+        <GenericGrid
+          artworks={artworks}
+          hideSaveIcon
+          onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
+            closeModal?.()
+            trackEvent(tracks.tappedArtworkGroup(slug, artwork?.collectorSignals))
+          }}
+        />
+      </Flex>
 
       <Spacer y={4} />
 

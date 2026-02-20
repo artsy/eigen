@@ -4,7 +4,6 @@ import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkB
 import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { extractNodes } from "app/utils/extractNodes"
-import { Schema } from "app/utils/track"
 import { filter } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -47,7 +46,7 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
           </Text>
           <Spacer y={2} />
           <GenericGrid
-            trackingFlow={Schema.Flow.RecommendedArtworks}
+            // trackingFlow={Schema.Flow.RecommendedArtworks}
             contextModule={grid.__typename as ContextModule}
             artworks={extractNodes(grid.artworks)}
           />
