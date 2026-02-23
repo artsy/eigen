@@ -60,6 +60,7 @@ export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentC
               artworksCountMessage
               image {
                 url
+                blurhash
               }
             }
           }
