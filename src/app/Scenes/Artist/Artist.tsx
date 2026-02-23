@@ -139,6 +139,8 @@ export const Artist: React.FC<ArtistProps> = ({
               // On android, switching between tabs leads to performance drops when scrolling
               scrollEnabled: Platform.OS === "ios",
             }}
+            lazy={Platform.OS === "ios"}
+            cancelLazyFadeIn
           >
             <Tabs.Tab name="Artworks" label="Artworks">
               <ArtistArtworksQueryRenderer

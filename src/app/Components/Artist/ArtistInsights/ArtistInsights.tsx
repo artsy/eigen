@@ -3,11 +3,7 @@ import { Flex, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
 import { ArtistInsightsQuery } from "__generated__/ArtistInsightsQuery.graphql"
 import { ArtistInsights_artist$key } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
-import {
-  AnimatedArtworkFilterButton,
-  ArtworkFilterNavigator,
-  FilterModalMode,
-} from "app/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
@@ -16,9 +12,7 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useCurrentTabScrollY, useFocusedTab } from "react-native-collapsible-tab-view"
-import { useAnimatedReaction } from "react-native-reanimated"
-import { scheduleOnRN } from "react-native-worklets"
+import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
@@ -29,7 +23,7 @@ interface ArtistInsightsProps {
   initialFilters?: FilterArray
 }
 
-const SCROLL_UP_TO_SHOW_THRESHOLD = 200
+const SCROLL_UP_TO_SHOW_THRESHOLD = 500
 
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
   artist: artistProp,
@@ -39,24 +33,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
   const space = useSpace()
   const tracking = useTracking()
 
-  const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
-
-  const currentTabScrollY = useCurrentTabScrollY()
 
   const auctionResultsYCoordinate = useRef<number>(0)
   const contentYScrollOffset = useRef<number>(0)
 
-  useAnimatedReaction(
-    () => currentTabScrollY.value,
-    (currentTabScrollY) => {
-      if (currentTabScrollY > SCROLL_UP_TO_SHOW_THRESHOLD) {
-        scheduleOnRN(setIsFilterButtonVisible, true)
-      } else {
-        scheduleOnRN(setIsFilterButtonVisible, false)
-      }
-    }
-  )
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
     setIsFilterModalVisible(true)
@@ -92,6 +73,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
             artist={artist}
             scrollToTop={scrollToTop}
             initialFilters={initialFilters}
+            openFilterModal={openFilterModal}
           />
         ),
       },
@@ -117,6 +99,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
         data={components}
         keyExtractor={(_, index) => `ArtistInsight-FlatList-element-${index}`}
         renderItem={({ item: { Component } }) => <Component />}
+        scrollEventThrottle={16}
       />
 
       <ArtworkFilterNavigator
@@ -127,11 +110,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
         exitModal={closeFilterModal}
         closeModal={closeFilterModal}
         title="Filter auction results"
-      />
-      <AnimatedArtworkFilterButton
-        isVisible={isFilterButtonVisible}
-        onPress={openFilterModal}
-        text="Filter auction results"
       />
     </ArtworkFiltersStoreProvider>
   )

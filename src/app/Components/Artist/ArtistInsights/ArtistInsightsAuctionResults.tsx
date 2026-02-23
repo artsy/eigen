@@ -10,7 +10,11 @@ import {
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEBOUNCE_DELAY, KeywordFilter } from "app/Components/ArtworkFilter/Filters/KeywordFilter"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
-import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "app/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import {
@@ -34,6 +38,7 @@ interface Props {
   relay: RelayPaginationProp
   scrollToTop: () => void
   initialFilters?: FilterArray
+  openFilterModal: () => void
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
@@ -41,6 +46,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   relay,
   scrollToTop,
   initialFilters,
+  openFilterModal,
 }) => {
   const space = useSpace()
   const tracking = useTracking()
@@ -51,6 +57,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
   )
+
+  const appliedFiltersCount = useSelectedFiltersCount()
+
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.applyFiltersAction
   )
@@ -249,6 +258,18 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           onFocus={scrollToTop}
           onTypingStart={() => setKeywordFilterRefetching(true)}
         />
+        <Flex flexDirection="row" mx={-2} justifyContent="space-between">
+          <Flex />
+          <ArtworksFilterHeader
+            selectedFiltersCount={appliedFiltersCount}
+            showSeparator={false}
+            onFilterPress={openFilterModal}
+          />
+        </Flex>
+
+        <Flex mx={-2}>
+          <Separator />
+        </Flex>
       </Flex>
       {auctionResults.length ? (
         <SectionList
@@ -274,6 +295,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           ItemSeparatorComponent={AuctionResultListSeparator}
           style={{ width: screenWidth, left: -space(2), flexGrow: 1 }}
           onEndReached={loadMoreAuctionResults}
+          scrollEventThrottle={16}
+          scrollEnabled={false}
           ListFooterComponent={() =>
             loadingMoreData ? (
               <Flex my={4}>
