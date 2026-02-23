@@ -296,6 +296,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           style={{ width: screenWidth, left: -space(2), flexGrow: 1 }}
           onEndReached={loadMoreAuctionResults}
           scrollEventThrottle={16}
+          initialNumToRender={3}
+          windowSize={11}
           scrollEnabled={false}
           ListFooterComponent={() =>
             loadingMoreData ? (
