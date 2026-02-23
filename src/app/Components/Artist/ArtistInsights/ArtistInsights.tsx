@@ -16,8 +16,9 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { useFocusedTab } from "react-native-collapsible-tab-view"
+import { useCurrentTabScrollY, useFocusedTab } from "react-native-collapsible-tab-view"
+import { useAnimatedReaction } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
@@ -28,8 +29,7 @@ interface ArtistInsightsProps {
   initialFilters?: FilterArray
 }
 
-const SCROLL_UP_TO_SHOW_THRESHOLD = 150
-const FILTER_BUTTON_OFFSET = 50
+const SCROLL_UP_TO_SHOW_THRESHOLD = 200
 
 export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
   artist: artistProp,
@@ -41,9 +41,22 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
+
+  const currentTabScrollY = useCurrentTabScrollY()
+
   const auctionResultsYCoordinate = useRef<number>(0)
   const contentYScrollOffset = useRef<number>(0)
 
+  useAnimatedReaction(
+    () => currentTabScrollY.value,
+    (currentTabScrollY) => {
+      if (currentTabScrollY > SCROLL_UP_TO_SHOW_THRESHOLD) {
+        scheduleOnRN(setIsFilterButtonVisible, true)
+      } else {
+        scheduleOnRN(setIsFilterButtonVisible, false)
+      }
+    }
+  )
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
     setIsFilterModalVisible(true)
@@ -63,14 +76,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
     }
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
-  const onScrollEndDragChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
-      setIsFilterButtonVisible(true)
-    } else {
-      setIsFilterButtonVisible(false)
-    }
-  }
-
   const components = useMemo(
     () => [
       {
@@ -87,10 +92,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
             artist={artist}
             scrollToTop={scrollToTop}
             initialFilters={initialFilters}
-            onLayout={({ nativeEvent }: LayoutChangeEvent) => {
-              auctionResultsYCoordinate.current = nativeEvent.layout.y
-            }}
-            onScrollEndDragChange={onScrollEndDragChange}
           />
         ),
       },
@@ -116,7 +117,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
         data={components}
         keyExtractor={(_, index) => `ArtistInsight-FlatList-element-${index}`}
         renderItem={({ item: { Component } }) => <Component />}
-        scrollEventThrottle={0.000001}
       />
 
       <ArtworkFilterNavigator

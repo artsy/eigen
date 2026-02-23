@@ -45,6 +45,7 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
+import { Platform } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
@@ -134,32 +135,30 @@ export const Artist: React.FC<ArtistProps> = ({
               rightElements: artistHeaderRight,
               onBack: goBack,
             }}
+            pagerProps={{
+              // On android, switching between tabs leads to performance drops when scrolling
+              scrollEnabled: Platform.OS === "ios",
+            }}
           >
             <Tabs.Tab name="Artworks" label="Artworks">
-              <Tabs.Lazy>
-                <ArtistArtworksQueryRenderer
-                  artistID={artistAboveTheFold.internalID}
-                  input={input}
-                  searchCriteria={searchCriteria}
-                  predefinedFilters={predefinedFilters}
-                  scrollToArtworksGrid={scrollToArtworksGrid}
-                />
-              </Tabs.Lazy>
+              <ArtistArtworksQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                input={input}
+                searchCriteria={searchCriteria}
+                predefinedFilters={predefinedFilters}
+                scrollToArtworksGrid={scrollToArtworksGrid}
+              />
             </Tabs.Tab>
 
             <Tabs.Tab name="Insights" label="Auction Results">
-              <Tabs.Lazy>
-                <ArtistInsightsQueryRenderer
-                  artistID={artistAboveTheFold.internalID}
-                  initialFilters={auctionResultsInitialFilters}
-                />
-              </Tabs.Lazy>
+              <ArtistInsightsQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                initialFilters={auctionResultsInitialFilters}
+              />
             </Tabs.Tab>
 
             <Tabs.Tab name="Overview" label="About">
-              <Tabs.Lazy>
-                <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
-              </Tabs.Lazy>
+              <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
             </Tabs.Tab>
           </Tabs.TabsWithHeader>
         </KeyboardAvoidingContainer>

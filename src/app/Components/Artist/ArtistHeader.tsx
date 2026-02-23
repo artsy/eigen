@@ -9,13 +9,12 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import {
   ArtistHeader_artist$data,
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
+import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -24,11 +23,9 @@ export const ARTIST_HEADER_HEIGHT = 156
 export const ARTIST_IMAGE_PHONE_HEIGHT = 320
 export const ARTIST_IMAGE_PHONE_ASPECT_RATIO = 1.17
 export const ARTIST_IMAGE_TABLET_HEIGHT = 375
-const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
-  onLayoutChange?: ViewProps["onLayout"]
 }
 
 export const useArtistHeaderImageDimensions = () => {
@@ -46,11 +43,10 @@ export const useArtistHeaderImageDimensions = () => {
   }
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   const space = useSpace()
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
-  const { scrollYOffsetAnimated } = useScreenScrollContext()
   const { trackEvent } = useTracking()
   const artistData = useFragment(artistFragment, artist)
 
@@ -64,15 +60,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
-  const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
-    if (nativeEvent.layout.height > 0) {
-      scrollYOffsetAnimated.value = nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN
-      onLayoutChange?.({ nativeEvent, ...rest })
-    }
-  }
-
   return (
-    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
+    <Flex pointerEvents="box-none">
       {!!artistData?.coverArtwork?.image?.url && (
         <Flex pointerEvents="none">
           <Image
