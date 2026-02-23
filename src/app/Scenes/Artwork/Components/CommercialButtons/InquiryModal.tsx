@@ -56,6 +56,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const handleOnLayout = useCallback(
     (event: LayoutChangeEvent) => {
+      // `+ 60` is to adjust the offset for the multiline input
       setBottomOffset(event.nativeEvent.layout.height + 60)
     },
     [setBottomOffset]
