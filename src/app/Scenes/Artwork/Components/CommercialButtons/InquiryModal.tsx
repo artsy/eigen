@@ -1,16 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  InputRef,
-  Screen,
-  Text,
-  useColor,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Screen, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
@@ -30,7 +20,7 @@ import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { InteractionManager, LayoutChangeEvent, Modal } from "react-native"
+import { LayoutChangeEvent, Modal } from "react-native"
 import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -63,7 +53,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [bottomOffset, setBottomOffset] = useState(0)
-  const inputRef = useRef<InputRef>(null)
 
   const handleOnLayout = useCallback(
     (event: LayoutChangeEvent) => {
@@ -101,16 +90,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
     retireTemplatesExperimentEnabled,
     dispatch,
   ])
-
-  useEffect(() => {
-    if (state.inquiryModalVisible && inputRef.current) {
-      // TODO: `InteractionManager` is deprecated
-      // we need to update it to `requestIdleCallback` when we upgrade to RN 0.82+
-      InteractionManager.runAfterInteractions(() => {
-        inputRef.current?.focus()
-      })
-    }
-  }, [state.inquiryModalVisible])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -236,7 +215,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                 }}
               >
                 <Input
-                  ref={inputRef}
                   multiline
                   placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."
                   title="Your message"
