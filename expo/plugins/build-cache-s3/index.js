@@ -29,9 +29,8 @@ function formatBytes(bytes) {
 }
 
 function getS3Path(options, key) {
-  const bucket = options?.bucket || "artsy-citadel"
-  const prefix = options?.prefix || "eigen/cached-builds"
-  return `s3://${bucket}/${prefix}/${key}`
+  const bucket = options?.bucket || "eigen-ci-cache"
+  return `s3://${bucket}/${key}`
 }
 
 function getCacheKey(fingerprintHash, platform, isDevClient) {

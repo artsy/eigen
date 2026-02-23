@@ -9,8 +9,7 @@
         "cacheDir": "node_modules/.expo-build-disk-cache",
         "remotePlugin": "./expo/plugins/build-cache-s3",
         "remoteOptions": {
-          "bucket": "artsy-citadel",
-          "prefix": "eigen/cached-builds"
+          "bucket": "eigen-ci-cache"
         }
       }
     },
