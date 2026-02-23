@@ -56,7 +56,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const handleOnLayout = useCallback(
     (event: LayoutChangeEvent) => {
-      setBottomOffset(event.nativeEvent.layout.height)
+      setBottomOffset(event.nativeEvent.layout.height + 60)
     },
     [setBottomOffset]
   )
