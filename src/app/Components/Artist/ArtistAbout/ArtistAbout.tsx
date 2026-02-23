@@ -105,7 +105,7 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
       renderItem={({ item }) => item?.content}
       keyExtractor={(item) => item?.key}
       ItemSeparatorComponent={() => <Spacer y={4} />}
-      contentContainerStyle={{ paddingHorizontal: 0, paddingVertical: space(4) }}
+      contentContainerStyle={{ paddingHorizontal: 0, marginTop: space(1) }}
       ListEmptyComponent={() => <ArtistAboutEmpty my={6} />}
     />
   )
