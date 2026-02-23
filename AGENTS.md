@@ -1,6 +1,6 @@
 # Agent Guidelines
 
-Eigen is Artsy's mobile app — a React Native (Expo) application for iOS and Android that powers the [Artsy](https://www.artsy.net) marketplace for discovering and collecting art.
+Eigen is Artsy's mobile app — a bare React Native application that uses the Expo sdk, available on both iOS and Android, that powers the [Artsy](https://www.artsy.net) marketplace for discovering and collecting art.
 
 Detailed docs live in `docs/` — reference them instead of duplicating here.
 
