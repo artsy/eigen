@@ -81,127 +81,38 @@ const html = (recaptchaKey: string, action: string) => `
 `
 
 const loadRecaptcha = (recaptchaKey: string, action: string) => `
+function postFallback(fallbackReason) {
+  window.ReactNativeWebView?.postMessage(
+    JSON.stringify({ payload: "artsy-recaptcha-fallback", type: "token", fallback: true, fallbackReason })
+  );
+}
+
 function checkAndExecuteRecaptcha() {
-  // Check if grecaptcha is not defined at all
-  if (typeof grecaptcha === "undefined") {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        payload: "artsy-recaptcha-fallback",
-        type: "token",
-        fallback: true,
-        fallbackReason: "grecaptcha_undefined",
-      }),
-    );
-    return;
-  }
+  if (typeof grecaptcha === "undefined") return postFallback("grecaptcha_undefined");
+  if (!grecaptcha.ready) return postFallback("grecaptcha_ready_missing");
+  if (typeof grecaptcha.execute !== "function") return postFallback("grecaptcha_execute_not_function");
 
-  // Check if grecaptcha.ready is not available
-  if (!grecaptcha.ready) {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        payload: "artsy-recaptcha-fallback",
-        type: "token",
-        fallback: true,
-        fallbackReason: "grecaptcha_ready_missing",
-      }),
-    );
-    return;
-  }
-
-  // Check if grecaptcha.execute is not a function
-  if (typeof grecaptcha.execute !== "function") {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        payload: "artsy-recaptcha-fallback",
-        type: "token",
-        fallback: true,
-        fallbackReason: "grecaptcha_execute_not_function",
-      }),
-    );
-    return;
-  }
-
-  // grecaptcha is available, proceed normally with error handling
   try {
     grecaptcha.ready(function () {
       try {
-        var executePromise = grecaptcha.execute("${recaptchaKey}", {
-          action: "${action}",
-        });
+        var executePromise = grecaptcha.execute("${recaptchaKey}", { action: "${action}" });
 
-        // Check if execute() returned null (iOS 17 issue)
-        if (executePromise === null || executePromise === undefined) {
-          window.ReactNativeWebView?.postMessage(
-            JSON.stringify({
-              payload: "artsy-recaptcha-fallback",
-              type: "token",
-              fallback: true,
-              fallbackReason: "grecaptcha_execute_returned_null_or_undefined",
-            }),
-          );
-          return;
-        }
+        if (executePromise == null || executePromise === undefined) return postFallback("grecaptcha_execute_returned_null_or_undefined");
+        if (typeof executePromise.then !== "function") return postFallback("grecaptcha_execute_returned_non_promise");
 
-        // Check if execute() returned something that's not a promise
-        if (typeof executePromise.then !== "function") {
-          window.ReactNativeWebView?.postMessage(
-            JSON.stringify({
-              payload: "artsy-recaptcha-fallback",
-              type: "token",
-              fallback: true,
-              fallbackReason: "grecaptcha_execute_returned_non_promise",
-            }),
-          );
-          return;
-        }
-
-        // Execute promise looks valid, proceed with normal flow
         executePromise
           .then(function (token) {
-            window.ReactNativeWebView?.postMessage(
-              JSON.stringify({ payload: token, type: "token" }),
-            );
+            window.ReactNativeWebView?.postMessage(JSON.stringify({ payload: token, type: "token" }));
           })
           .catch(function (error) {
-            // On promise rejection, use fallback with error details
-            window.ReactNativeWebView?.postMessage(
-              JSON.stringify({
-                payload: "artsy-recaptcha-fallback",
-                type: "token",
-                fallback: true,
-                fallbackReason:
-                  "grecaptcha_execute_promise_rejected - " + error
-                    ? String(error.message || error)
-                    : "unknown error",
-              }),
-            );
+            postFallback("grecaptcha_execute_promise_rejected - " + (error ? String(error?.message || error) : "unknown error"));
           });
       } catch (innerError) {
-        window.ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            payload: "artsy-recaptcha-fallback",
-            type: "token",
-            fallback: true,
-            fallbackReason:
-              "grecaptcha_ready_callback_exception - " + innerError
-                ? String(innerError.message || innerError)
-                : "unknown error",
-          }),
-        );
+        postFallback("grecaptcha_ready_callback_exception - " + (error ? String(innerError?.message || innerError) : "unknown error"));
       }
     });
   } catch (outerError) {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        payload: "artsy-recaptcha-fallback",
-        type: "token",
-        fallback: true,
-        fallbackReason:
-          "grecaptcha_ready_call_exception - " + outerError
-            ? String(outerError.message || outerError)
-            : "unknown error",
-      }),
-    );
+    postFallback("grecaptcha_ready_call_exception - " + (error ? String(outerError?.message || outerError) : "unknown error"));
   }
 }
 
