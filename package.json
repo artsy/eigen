@@ -13,6 +13,7 @@
   "main": "index.js",
   "scripts": {
     "android": "react-native run-android --active-arch-only",
+    "android:cached": "WITH_ROZENITE=true npx expo run:android",
     "android:test": "cd android && ./gradlew testDebugUnitTest --parallel && cd ..",
     "android:test:ci": "cd android && ./gradlew testDebugUnitTest --parallel --no-daemon --max-workers=2 && cd ..",
     "check-flags": "./scripts/check-flags/check-flags.js",
@@ -42,6 +43,7 @@
     "init-metaflags": "jq -Rn '{ }' | sponge metaflags.json",
     "install:all": "./scripts/setup/install",
     "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
+    "ios:cached": "WITH_ROZENITE=true bundle exec npx expo run:ios",
     "local-palette-dev": "./scripts/palette/yalc-link-local-palette",
     "local-palette-dev:stop": "./scripts/palette/yalc-unlink-local-palette",
     "lint": "eslint --cache --cache-location '.cache/eslint/' --ext .ts,.tsx --fix",
