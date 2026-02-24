@@ -8,7 +8,7 @@ import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
-import { PixelRatio, Platform, TouchableOpacity } from "react-native"
+import { PixelRatio, TouchableOpacity } from "react-native"
 import { useAnimatedStyle } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
@@ -68,16 +68,14 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       width={CONTAINER_WIDTH}
       py={1}
     >
-      <FollowButtonWrapper
-        style={[Platform.OS === "ios" ? followButtonStyle : {}, { marginRight: space(0.5) }]}
-      >
+      <MotiView style={[followButtonStyle, { marginRight: space(0.5) }]}>
         <FollowButton
           haptic
           isFollowed={isFollowed}
           followCount={artist?.counts.follows}
           onPress={() => setIsFollowed(!isFollowed)}
         />
-      </FollowButtonWrapper>
+      </MotiView>
 
       <TouchableOpacity
         accessibilityRole="button"
@@ -88,17 +86,6 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       </TouchableOpacity>
     </Flex>
   )
-}
-
-const FollowButtonWrapper: React.FC<{ style: {}; children: React.ReactNode }> = ({
-  children,
-  style,
-}) => {
-  if (Platform.OS === "android") {
-    return <Flex style={style}>{children}</Flex>
-  }
-
-  return <MotiView style={style}>{children}</MotiView>
 }
 
 const fragment = graphql`

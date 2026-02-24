@@ -134,14 +134,11 @@ export const Artist: React.FC<ArtistProps> = ({
             headerProps={{
               rightElements: artistHeaderRight,
               onBack: goBack,
-              animated: Platform.OS === "ios",
-              hideTitle: Platform.OS === "android",
             }}
             pagerProps={{
               // On android, switching between tabs leads to performance drops when scrolling
               scrollEnabled: Platform.OS === "ios",
             }}
-            lazy={Platform.OS === "ios"}
             cancelLazyFadeIn
           >
             <Tabs.Tab name="Artworks" label="Artworks">
