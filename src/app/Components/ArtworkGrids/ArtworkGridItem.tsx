@@ -25,6 +25,7 @@ import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/C
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
 // import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -437,6 +438,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       haptic
                       onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                       testID="save-artwork-icon"
+                      hitSlop={ICON_HIT_SLOP}
                     >
                       <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                     </Touchable>
@@ -456,28 +458,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     )
   }
 )
-
-/*
-TODO: replace <ArtworkSaveIconWrapper isSaved={!!isSaved} /> with ArtworkHeartIcon when there
-is a solution for the failing tests after adding ProgressiveOnboardingSaveArtwork
-*/
-
-/* const ArtworkHeartIcon: React.FC<{
-  isSaved: boolean | null
-  index?: number
-  disableProgressiveOnboarding?: boolean
-}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
-  if (index === 0 && !disableProgressiveOnboarding) {
-    // We only try to show the save onboard Popover in the 1st element
-    return (
-      <ProgressiveOnboardingSaveArtwork>
-        <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-      </ProgressiveOnboardingSaveArtwork>
-    )
-  }
-
-  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-} */
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
