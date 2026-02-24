@@ -8,7 +8,7 @@ type RecaptchaWebViewProps = {
   action: string
   onError?: (error: string) => void
   onLoad?: () => void
-  onToken: (token: string) => void
+  onToken: (token: string, isFallback?: boolean, fallbackReason?: string) => void
 }
 
 export const RecaptchaWebView: FC<RecaptchaWebViewProps> = ({
@@ -28,7 +28,7 @@ export const RecaptchaWebView: FC<RecaptchaWebViewProps> = ({
   const handleOnMessage = (e: WebViewMessageEvent) => {
     const message = getMessage(e)
     if (message?.type === "token") {
-      onToken(message.payload)
+      onToken(message.payload, message.fallback, message.fallbackReason)
       return
     }
     if (message?.type === "error") {
@@ -81,18 +81,50 @@ const html = (recaptchaKey: string, action: string) => `
 `
 
 const loadRecaptcha = (recaptchaKey: string, action: string) => `
-  grecaptcha.ready(function () {
-    grecaptcha.execute("${recaptchaKey}", { action: "${action}" })
-      .then(function(token) {
-        window.ReactNativeWebView?.postMessage(JSON.stringify({ payload: token, type: "token" }))
-      })
-      .catch(function (error) {
-        window.ReactNativeWebView?.postMessage(JSON.stringify({ payload: error?.message, type: "error" }))
-      })
-  })
+function postFallback(fallbackReason) {
+  window.ReactNativeWebView?.postMessage(
+    JSON.stringify({ payload: "artsy-recaptcha-fallback", type: "token", fallback: true, fallbackReason })
+  );
+}
+
+function checkAndExecuteRecaptcha() {
+  if (typeof grecaptcha === "undefined") return postFallback("grecaptcha_undefined");
+  if (!grecaptcha.ready) return postFallback("grecaptcha_ready_missing");
+  if (typeof grecaptcha.execute !== "function") return postFallback("grecaptcha_execute_not_function");
+
+  try {
+    grecaptcha.ready(function () {
+      try {
+        var executePromise = grecaptcha.execute("${recaptchaKey}", { action: "${action}" });
+
+        if (executePromise == null || executePromise === undefined) return postFallback("grecaptcha_execute_returned_null_or_undefined");
+        if (typeof executePromise.then !== "function") return postFallback("grecaptcha_execute_returned_non_promise");
+
+        executePromise
+          .then(function (token) {
+            window.ReactNativeWebView?.postMessage(JSON.stringify({ payload: token, type: "token" }));
+          })
+          .catch(function (error) {
+            postFallback("grecaptcha_execute_promise_rejected - " + (error ? String(error?.message || error) : "unknown error"));
+          });
+      } catch (innerError) {
+        postFallback("grecaptcha_ready_callback_exception - " + (error ? String(innerError?.message || innerError) : "unknown error"));
+      }
+    });
+  } catch (outerError) {
+    postFallback("grecaptcha_ready_call_exception - " + (error ? String(outerError?.message || outerError) : "unknown error"));
+  }
+}
+
+checkAndExecuteRecaptcha();
 `
 
-type Message = { payload: string; type: "token" | "error" }
+type Message = {
+  payload: string
+  type: "token" | "error"
+  fallback?: boolean
+  fallbackReason?: string
+}
 const getMessage = (event: WebViewMessageEvent): null | Message => {
   try {
     const json = JSON.parse(event.nativeEvent.data)
