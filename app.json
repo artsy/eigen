@@ -10,7 +10,7 @@
         "remotePlugin": "./expo/plugins/build-cache-s3",
         "remoteOptions": {
           "bucket": "eigen-ci-cache",
-          "prefix": "expo-cached-builds"
+          "prefix": "eigen/cached-builds"
         }
       }
     },
