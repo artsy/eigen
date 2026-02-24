@@ -25856,9 +25856,6 @@ input UpdatePartnerMutationInput {
   # Partner could list artworks for purchasing from inquiry conversations.
   inquiryOrderEnabled: Boolean
 
-  # Whether the partner is managed by ERP for subscriptions.
-  managedByErp: Boolean
-
   # Admin that signed up this partner.
   outreachAdminId: String
 
