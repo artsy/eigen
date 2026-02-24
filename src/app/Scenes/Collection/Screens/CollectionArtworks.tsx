@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
+import { FlashListRef, ListRenderItem } from "@shopify/flash-list"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,7 +11,6 @@ import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtw
 import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -46,7 +45,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     () => extractNodes(collection.collectionArtworks),
     [collection.collectionArtworks]
   )
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
 
   const scrollToTop = () => {
     gridRef?.current?.scrollToOffset({ offset: 0, animated: true })
@@ -106,42 +105,32 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }
 
-  const renderItem: MasonryListRenderItem<Artworks> = useCallback(
-    ({ item, index, columnIndex }) => {
-      const imgAspectRatio = item.image?.aspectRatio ?? 1
-      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-      const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
 
-      const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
+    const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
 
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <ArtworkGridItem
-            itemIndex={index}
-            contextScreenOwnerType={OwnerType.collection}
-            contextScreenOwnerId={collection.id}
-            contextScreenOwnerSlug={collection.slug}
-            artwork={item}
-            height={imgHeight}
-            hideCuratorsPickSignal={hideSignals}
-            hideIncreasedInterestSignal={hideSignals}
-          />
-        </Flex>
-      )
-    },
-    []
-  )
+    return (
+      <ArtworkGridItem
+        itemIndex={index}
+        contextScreenOwnerType={OwnerType.collection}
+        contextScreenOwnerId={collection.id}
+        contextScreenOwnerSlug={collection.slug}
+        artwork={item}
+        height={imgHeight}
+        hideCuratorsPickSignal={hideSignals}
+        hideIncreasedInterestSignal={hideSignals}
+      />
+    )
+  }, [])
 
   return (
     <>
       <Tabs.Masonry
         data={artworksList}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={
@@ -160,10 +149,13 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
+            </Tabs.SubTabBar>
+          </Flex>
         }
         ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />

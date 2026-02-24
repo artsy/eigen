@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, Tabs } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
 import { FilteredArtworkGridZeroState as FilteredArtistsZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
@@ -9,7 +9,6 @@ import { extractEdges } from "app/utils/extractEdges"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
 import { useEffect } from "react"
-import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface MyCollectionCollectedArtistsViewProps {
@@ -64,7 +63,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <Spacer y={1} />
 
       {filteredUserInterests.length > 0 ? (
-        <FlatList
+        <Tabs.FlatList
           data={filteredUserInterests}
           key="list"
           keyExtractor={(item) => "list" + item?.internalID}

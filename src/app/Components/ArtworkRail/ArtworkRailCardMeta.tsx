@@ -6,6 +6,7 @@ import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSi
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import {
@@ -214,7 +215,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
             accessibilityRole="button"
             accessibilityLabel={isSaved ? "Remove from saved artworks" : "Save artwork"}
             haptic
-            hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+            hitSlop={ICON_HIT_SLOP}
             onPress={saveArtworkToLists}
             testID="save-artwork-icon"
             underlayColor={backgroundColor}

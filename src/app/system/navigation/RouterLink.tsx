@@ -4,7 +4,6 @@ import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { isNewArchitectureEnabled } from "app/utils/isNewArchitectureEnabled"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import React, { useState } from "react"
 import { GestureResponderEvent } from "react-native"
@@ -41,8 +40,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
   const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
 
-  const isPrefetchingEnabled =
-    !disablePrefetch && enableViewPortPrefetching && to && !isNewArchitectureEnabled
+  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)

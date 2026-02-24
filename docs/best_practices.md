@@ -225,7 +225,6 @@ const App = () => {
   return (
    <FlashList
     renderItem={renderItem}
-    estimatedItemSize={ESTIMATED_ITEM_SIZE}
     keyExtractor={keyExtractor}
   >
   )

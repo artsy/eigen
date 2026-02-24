@@ -1,40 +1,40 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs, useSpace } from "@artsy/palette-mobile"
-import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
+import { Flex, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
+import { ArtistInsightsQuery } from "__generated__/ArtistInsightsQuery.graphql"
+import { ArtistInsights_artist$key } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
-import {
-  AnimatedArtworkFilterButton,
-  ArtworkFilterNavigator,
-  FilterModalMode,
-} from "app/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { RelayProp, createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
-  artist: ArtistInsights_artist$data
-  relay: RelayProp
+  artist: ArtistInsights_artist$key
   initialFilters?: FilterArray
 }
 
-const SCROLL_UP_TO_SHOW_THRESHOLD = 150
-const FILTER_BUTTON_OFFSET = 50
+const SCROLL_UP_TO_SHOW_THRESHOLD = 500
 
-export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay, initialFilters } = props
+export const ArtistInsights: React.FC<ArtistInsightsProps> = ({
+  artist: artistProp,
+  initialFilters,
+}) => {
+  const artist = useFragment(artistInsightsFragment, artistProp)
   const space = useSpace()
   const tracking = useTracking()
 
-  const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
+
   const auctionResultsYCoordinate = useRef<number>(0)
   const contentYScrollOffset = useRef<number>(0)
 
@@ -57,21 +57,13 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     }
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
-  const onScrollEndDragChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
-      setIsFilterButtonVisible(true)
-    } else {
-      setIsFilterButtonVisible(false)
-    }
-  }
-
   const components = useMemo(
     () => [
       {
         Component: () => (
           <MarketStatsQueryRenderer
             artistInternalID={artist.internalID}
-            environment={relay.environment}
+            environment={getRelayEnvironment()}
           />
         ),
       },
@@ -81,15 +73,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             artist={artist}
             scrollToTop={scrollToTop}
             initialFilters={initialFilters}
-            onLayout={({ nativeEvent }: LayoutChangeEvent) => {
-              auctionResultsYCoordinate.current = nativeEvent.layout.y
-            }}
-            onScrollEndDragChange={onScrollEndDragChange}
+            openFilterModal={openFilterModal}
           />
         ),
       },
     ],
-    [artist, relay.environment, scrollToTop, initialFilters, auctionResultsYCoordinate.current]
+    [artist, scrollToTop, initialFilters, auctionResultsYCoordinate.current]
   )
 
   const focusedTab = useFocusedTab()
@@ -110,6 +99,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         data={components}
         keyExtractor={(_, index) => `ArtistInsight-FlatList-element-${index}`}
         renderItem={({ item: { Component } }) => <Component />}
+        scrollEventThrottle={16}
       />
 
       <ArtworkFilterNavigator
@@ -121,29 +111,81 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         closeModal={closeFilterModal}
         title="Filter auction results"
       />
-      <AnimatedArtworkFilterButton
-        isVisible={isFilterButtonVisible}
-        onPress={openFilterModal}
-        text="Filter auction results"
-      />
     </ArtworkFiltersStoreProvider>
   )
 }
 
-export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
-  artist: graphql`
-    fragment ArtistInsights_artist on Artist {
-      ...ArtistInsightsAuctionResults_artist
-      name
-      id
-      internalID
-      slug
-      statuses {
-        auctionLots
-      }
+const artistInsightsFragment = graphql`
+  fragment ArtistInsights_artist on Artist {
+    ...ArtistInsightsAuctionResults_artist
+    name
+    id
+    internalID
+    slug
+    statuses {
+      auctionLots
     }
-  `,
+  }
+`
+
+export const artistInsightsQuery = graphql`
+  query ArtistInsightsQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistInsights_artist
+    }
+  }
+`
+
+interface ArtistInsightsQueryRendererProps {
+  artistID: string
+  initialFilters?: FilterArray
+}
+
+export const ArtistInsightsQueryRenderer = withSuspense<ArtistInsightsQueryRendererProps>({
+  Component: ({ artistID, initialFilters }) => {
+    const data = useLazyLoadQuery<ArtistInsightsQuery>(artistInsightsQuery, { artistID })
+
+    if (!data.artist) {
+      return null
+    }
+
+    return <ArtistInsights artist={data.artist} initialFilters={initialFilters} />
+  },
+  LoadingFallback: () => <ArtistInsightsPlaceholder />,
+  ErrorFallback: (fallbackProps) => <ArtistInsightsError {...fallbackProps} />,
 })
+
+const ArtistInsightsPlaceholder: React.FC = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView
+      contentContainerStyle={{ marginHorizontal: space(2), marginTop: space(2) }}
+      scrollEnabled={false}
+    >
+      <Flex alignItems="center">
+        <Spinner />
+      </Flex>
+    </Tabs.ScrollView>
+  )
+}
+
+const ArtistInsightsError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(2) }}>
+      <LoadFailureView
+        onRetry={fallbackProps.onRetry}
+        useSafeArea={false}
+        flex={undefined}
+        error={fallbackProps.error}
+        showBackButton={false}
+        trackErrorBoundary={false}
+      />
+    </Tabs.ScrollView>
+  )
+}
 
 export const tracks = {
   openFilter: (id: string, slug: string) => {

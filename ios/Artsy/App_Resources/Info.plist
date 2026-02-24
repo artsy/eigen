@@ -114,6 +114,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIDesignRequiresCompatibility</key>
+	<true />
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MGLGlyphsRasterizationMode</key>
@@ -127,6 +129,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>ReactNativeReleaseLevel</key>
+	<string>experimental</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
@@ -144,7 +148,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
 	<key>RCTNewArchEnabled</key>
-	<false/>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Unica77LL-Italic.otf</string>

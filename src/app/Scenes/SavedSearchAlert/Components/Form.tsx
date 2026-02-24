@@ -22,7 +22,6 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormikContext } from "formik"
-import { MotiView } from "moti"
 import { useCallback, useState } from "react"
 import { LayoutChangeEvent, Platform, StyleProp, ViewStyle } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
@@ -220,47 +219,45 @@ export const Form: React.FC<FormProps> = ({
       </KeyboardAwareForm>
 
       <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: stickyOffset }}>
-        <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} delay={200}>
-          <Flex
-            p={2}
-            pb={`${bottom}px`}
-            borderTopWidth={1}
-            borderTopColor="mono10"
-            backgroundColor="mono0"
+        <Flex
+          p={2}
+          pb={`${bottom}px`}
+          borderTopWidth={1}
+          borderTopColor="mono10"
+          backgroundColor="mono0"
+        >
+          <Button
+            testID="save-alert-button"
+            disabled={isSaveAlertButtonDisabled}
+            loading={isSubmitting || isLoading}
+            size="large"
+            block
+            onPress={onSubmitPress}
           >
-            <Button
-              testID="save-alert-button"
-              disabled={isSaveAlertButtonDisabled}
-              loading={isSubmitting || isLoading}
-              size="large"
-              block
-              onPress={onSubmitPress}
-            >
-              {isEditMode ? "Save Alert" : "Create Alert"}
-            </Button>
+            {isEditMode ? "Save Alert" : "Create Alert"}
+          </Button>
 
-            {!!isEditMode && (
-              <>
-                <Spacer y={2} />
-                <Button
-                  testID="delete-alert-button"
-                  variant="outline"
-                  size="large"
-                  block
-                  onPress={onDeletePress}
-                >
-                  Delete Alert
-                </Button>
-              </>
-            )}
+          {!!isEditMode && (
+            <>
+              <Spacer y={2} />
+              <Button
+                testID="delete-alert-button"
+                variant="outline"
+                size="large"
+                block
+                onPress={onDeletePress}
+              >
+                Delete Alert
+              </Button>
+            </>
+          )}
 
-            {!isEditMode && (
-              <Text variant="xs" color="mono60" textAlign="center" mt={2}>
-                Access all your alerts in your profile.
-              </Text>
-            )}
-          </Flex>
-        </MotiView>
+          {!isEditMode && (
+            <Text variant="xs" color="mono60" textAlign="center" mt={2}>
+              Access all your alerts in your profile.
+            </Text>
+          )}
+        </Flex>
       </KeyboardStickyView>
     </>
   )

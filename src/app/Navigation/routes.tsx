@@ -827,7 +827,6 @@ export const artsyDotNetRoutes = defineRoutes([
       alwaysPresentModally: true,
       screenOptions: {
         headerTitle: "Dev Settings",
-        headerLargeTitle: true,
         headerLeft: () => {
           return <Flex />
         },

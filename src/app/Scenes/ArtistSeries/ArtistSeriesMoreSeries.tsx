@@ -108,7 +108,8 @@ export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(
               featured
               artworksCountMessage
               image {
-                url
+                url(version: "square140")
+                blurhash
               }
             }
           }

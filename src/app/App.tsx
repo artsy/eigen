@@ -24,7 +24,7 @@ import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useTrackAppState } from "app/utils/useTrackAppState"
 import { useEffect } from "react"
-import { NativeModules, UIManager, View } from "react-native"
+import { NativeModules, Platform, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
@@ -62,8 +62,10 @@ setupSentry({
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
-if (UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true)
+  }
 }
 
 const Main = () => {

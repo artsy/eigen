@@ -109,12 +109,12 @@
   "dependencies": {
     "@artsy/cohesion": "4.346.0",
     "@artsy/icons": "3.65.0",
-    "@artsy/palette-mobile": "22.10.0",
+    "@artsy/palette-mobile": "22.11.0--canary.425.5674.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
     "@d11/react-native-fast-image": "8.12.0",
     "@expo/react-native-action-sheet": "4.1.1",
-    "@gorhom/bottom-sheet": "5.1.8",
+    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch",
     "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.4",
@@ -129,6 +129,7 @@
     "@react-native-firebase/app": "23.1.0",
     "@react-native-firebase/messaging": "23.1.0",
     "@react-native-google-signin/google-signin": "11.0.1",
+    "@react-native-menu/menu": "1.2.2",
     "@react-navigation/bottom-tabs": "patch:@react-navigation/bottom-tabs@npm%3A7.4.8#~/.yarn/patches/@react-navigation-bottom-tabs-npm-7.4.8-466ddd2097.patch",
     "@react-navigation/elements": "2.6.5",
     "@react-navigation/material-top-tabs": "7.3.8",
@@ -140,7 +141,7 @@
     "@segment/analytics-react-native-plugin-braze": "0.9.0",
     "@segment/sovran-react-native": "1.1.3",
     "@sentry/react-native": "7.9.0",
-    "@shopify/flash-list": "1.8.3",
+    "@shopify/flash-list": "2.2.2",
     "@stripe/stripe-react-native": "0.50.3",
     "@styled-system/theme-get": "5.1.2",
     "@unleash/proxy-client-react": "4.5.2",
@@ -148,6 +149,7 @@
     "easy-peasy": "6.1.0",
     "events": "3.3.0",
     "expo": "54.0.20",
+    "expo-build-properties": "~1.0.10",
     "expo-updates": "29.0.11",
     "formik": "2.2.9",
     "html-entities": "2.3.3",
@@ -167,8 +169,7 @@
     "react-native-blob-util": "0.19.11",
     "react-native-blurhash": "patch:react-native-blurhash@npm%3A2.1.1#~/.yarn/patches/react-native-blurhash-npm-2.1.1-baca87b7fa.patch",
     "react-native-bootsplash": "6.3.10",
-    "react-native-collapsible-tab-view": "8.0.1",
-    "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
+    "react-native-collapsible-tab-view": "patch:react-native-collapsible-tab-view@npm%3A9.0.0-rc.0#~/.yarn/patches/react-native-collapsible-tab-view-npm-9.0.0-rc.0-5363b327de.patch",
     "react-native-device-info": "14.0.0",
     "react-native-fbsdk-next": "13.4.1",
     "react-native-gesture-handler": "2.28.0",
@@ -176,15 +177,17 @@
     "react-native-haptic-feedback": "1.13.0",
     "react-native-image-crop-picker": "0.51.0",
     "react-native-in-app-review": "4.3.3",
+    "react-native-ios-context-menu": "3.2.0",
+    "react-native-ios-utilities": "5.2.0",
     "react-native-keyboard-controller": "^1.20.2",
     "react-native-keychain": "10.0.0",
     "react-native-keys": "patch:react-native-keys@npm%3A0.7.13#~/.yarn/patches/react-native-keys-npm-0.7.13-00e9deb63c.patch",
-    "react-native-launch-arguments": "4.1.0",
+    "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-2",
     "react-native-linear-gradient": "2.8.3",
     "react-native-localize": "3.5.2",
-    "react-native-pager-view": "6.7.1",
+    "react-native-pager-view": "7.0.1",
     "react-native-permissions": "5.4.4",
-    "react-native-reanimated": "3.19.4",
+    "react-native-reanimated": "4.2.1",
     "react-native-reanimated-zoom": "0.3.3",
     "react-native-render-html": "6.3.4",
     "react-native-safe-area-context": "patch:react-native-safe-area-context@npm%3A5.6.1#~/.yarn/patches/react-native-safe-area-context-npm-5.6.1-8af8830f4e.patch",
@@ -196,6 +199,7 @@
     "react-native-view-shot": "4.0.3",
     "react-native-vimeo-iframe": "1.2.1",
     "react-native-webview": "13.15.0",
+    "react-native-worklets": "0.7.2",
     "react-native-youtube-iframe": "^2.4.1",
     "react-relay": "18.2.0",
     "react-tracking": "9.3.2",
@@ -211,7 +215,8 @@
     "url": "0.11.3",
     "uuid": "10.0.0",
     "victory-native": "37.3.4",
-    "yup": "0.31.1"
+    "yup": "0.31.1",
+    "zeego": "^3.0.6"
   },
   "devDependencies": {
     "@artsy/update-repo": "0.8.1",
@@ -356,6 +361,14 @@
     "*.@(json|md)": [
       "yarn prettier-write"
     ]
+  },
+  "reanimated": {
+    "staticFeatureFlags": {
+      "USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS": true,
+      "DISABLE_COMMIT_PAUSING_MECHANISM": true,
+      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": true,
+      "IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS": true
+    }
   },
   "packageManager": "yarn@4.10.3"
 }
