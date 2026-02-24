@@ -16625,6 +16625,12 @@ type ModelChange {
 
   # The type of the changed record.
   trackableType: String!
+
+  # The user who made the change.
+  user: User
+
+  # The ID of the user who made the change.
+  userID: String
 }
 
 # A connection to a list of items.
