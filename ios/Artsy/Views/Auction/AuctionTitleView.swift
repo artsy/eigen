@@ -92,6 +92,7 @@ private extension AuctionTitleView {
         let regularSize = traitCollection.horizontalSizeClass == .regular
 
         let titleLabel = ARSerifLabel().then {
+            $0.textColor = .black
             $0.text = self.viewModel.displayName
             $0.font = UIFont.serifFont(withSize: regularSize ? 30 : 20)
             $0.textAlignment = titleTextAlignment
