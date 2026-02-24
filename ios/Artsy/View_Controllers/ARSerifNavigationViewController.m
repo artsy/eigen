@@ -156,6 +156,7 @@ static CGFloat exitButtonDimension = 40;
             UILabel *label = [ARSerifLabel new];
             label.font = [UIFont serifFontWithSize:20];
             label.text = nav.title;
+            label.textColor = UIColor.blackColor;
             label.numberOfLines = 1;
             // Only make it as wide as necessary, otherwise it might cover the right bar button item.
             [label sizeToFit];
@@ -169,6 +170,7 @@ static CGFloat exitButtonDimension = 40;
             UILabel *label = [ARSerifLabel new];
             label.font = [UIFont serifFontWithSize:20];
             label.text = nav.title;
+            label.textColor = UIColor.blackColor;
             label.numberOfLines = 1;
             // Only make it as wide as necessary, otherwise it might cover the right bar button item.
             [label sizeToFit];

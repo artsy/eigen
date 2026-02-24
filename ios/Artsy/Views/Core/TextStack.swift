@@ -5,6 +5,7 @@ class TextStack: ORStackView {
     func addArtistName(_ string: String) -> UILabel {
         let artistNameLabel = UILabel()
         artistNameLabel.text = string
+        artistNameLabel.textColor = .black
         artistNameLabel.font = UIFont.serifSemiBoldFont(withSize: 16)
         addSubview(artistNameLabel, withTopMargin: "0", sideMargin: "0")
         return artistNameLabel
@@ -14,6 +15,7 @@ class TextStack: ORStackView {
     func addArtworkName(_ string: String, date: String?) -> ARArtworkTitleLabel {
         let title = ARArtworkTitleLabel()
         title.setTitle(string, date: date)
+        title.textColor = .black
         addSubview(title, withTopMargin: "4", sideMargin: "0")
         return title
     }
@@ -23,6 +25,7 @@ class TextStack: ORStackView {
         let heading = ARSansSerifLabel()
         heading.font = .sansSerifFont(withSize: 12)
         heading.text = string
+        heading.textColor = .black
         addSubview(heading, withTopMargin: "10", sideMargin: sideMargin)
         return heading
     }
@@ -32,6 +35,7 @@ class TextStack: ORStackView {
         let heading = ARSerifLabel()
         heading.font = .serifFont(withSize: 26)
         heading.text = string
+        heading.textColor = .black
         addSubview(heading, withTopMargin: "20", sideMargin:sideMargin)
         return heading
     }
@@ -60,6 +64,7 @@ class TextStack: ORStackView {
         serif.font = .serifFont(withSize: 16)
         serif.numberOfLines = 0
         serif.text = string
+        serif.textColor = .black
         addSubview(serif, withTopMargin: topMargin, sideMargin: sideMargin)
         return serif
     }
@@ -68,6 +73,7 @@ class TextStack: ORStackView {
     func addBodyMarkdown(_ string: MarkdownString, topMargin: String = "20", sideMargin: String = "0") -> ARTextView {
         let text = ARTextView()
         text.plainLinks = true
+        text.textColor = .black
         text.setMarkdownString(string)
         addSubview(text, withTopMargin: topMargin, sideMargin: sideMargin)
         return text
@@ -77,6 +83,7 @@ class TextStack: ORStackView {
     func addLinkedBodyMarkdown(_ string: MarkdownString, topMargin: String = "20", sideMargin: String = "0") -> ARTextView {
         let text = ARTextView()
         text.setMarkdownString(string)
+        text.textColor = .black
         addSubview(text, withTopMargin: topMargin, sideMargin: sideMargin)
         return text
     }
