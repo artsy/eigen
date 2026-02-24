@@ -346,7 +346,8 @@
     "braces": "3.0.3",
     "metro-config": "0.81.5",
     "babel-preset-expo": "14.0.0",
-    "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch"
+    "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
+    "fast-xml-parser": "5.3.7"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
