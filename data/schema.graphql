@@ -16596,6 +16596,61 @@ type MetaphysicsService {
   stitchingGravity: Boolean!
 }
 
+# A recorded change to a trackable model.
+type ModelChange {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # The event type (create, update, delete).
+  event: String!
+
+  # A map of changed field names to [previous_value, next_value] pairs.
+  fieldChanges: JSON!
+
+  # List of field names that were changed.
+  fieldsChanged: [String!]!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The ID of the changed record.
+  trackableId: String!
+
+  # The type of the changed record.
+  trackableType: String!
+}
+
+# A connection to a list of items.
+type ModelChangeConnection {
+  # A list of edges.
+  edges: [ModelChangeEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ModelChangeEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ModelChange
+}
+
+enum ModelChangeTrackableType {
+  ARTWORK
+}
+
 type Money {
   # A pre-formatted price.
   amount: String
@@ -21511,6 +21566,20 @@ type Query {
     query: String!
   ): [Partner]
   me: Me
+
+  # A paginated list of changes recorded for a trackable model.
+  modelChangesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # The ID of the trackable record.
+    trackableId: String!
+
+    # The type of the trackable record.
+    trackableType: ModelChangeTrackableType!
+  ): ModelChangeConnection
   navigationGroup(
     # The ID of the navigation group
     id: String!
@@ -27919,6 +27988,20 @@ type Viewer {
     query: String!
   ): [Partner]
   me: Me
+
+  # A paginated list of changes recorded for a trackable model.
+  modelChangesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # The ID of the trackable record.
+    trackableId: String!
+
+    # The type of the trackable record.
+    trackableType: ModelChangeTrackableType!
+  ): ModelChangeConnection
   navigationGroup(
     # The ID of the navigation group
     id: String!
