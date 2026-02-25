@@ -110,9 +110,9 @@
     "form-data": "fixed to specific versions to resolve security vulnerabilities - remove resolutions when we are away from 3.0.x and 4.0.x"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.346.0",
+    "@artsy/cohesion": "4.347.0",
     "@artsy/icons": "3.65.0",
-    "@artsy/palette-mobile": "22.11.0--canary.425.5674.0",
+    "@artsy/palette-mobile": "23.0.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
     "@d11/react-native-fast-image": "8.12.0",
@@ -350,7 +350,8 @@
     "braces": "3.0.3",
     "metro-config": "0.81.5",
     "babel-preset-expo": "14.0.0",
-    "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch"
+    "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
+    "fast-xml-parser": "5.3.7"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",

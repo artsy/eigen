@@ -27,12 +27,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:4.346.0":
-  version: 4.346.0
-  resolution: "@artsy/cohesion@npm:4.346.0"
+"@artsy/cohesion@npm:4.347.0":
+  version: 4.347.0
+  resolution: "@artsy/cohesion@npm:4.347.0"
   dependencies:
     core-js: "npm:3"
-  checksum: 10c0/f5c5939c0086ab27f3c22b4e826f57eff6a2b48e060ea9c4c9656ce09bece632159419db3e4031ea9dcde0db262c51c2ea54c48808072aecc26adb49df22bef8
+  checksum: 10c0/5a7095772c43fec6d2ea1b04a9ab7a50ca8db55de565b6ba17d13ccbdbedd3aaf1c90460ced145b15a9b57a7c0df61f6ae2968871a3ef0e00623caca099a38aa
   languageName: node
   linkType: hard
 
@@ -54,9 +54,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:22.11.0--canary.425.5674.0":
-  version: 22.11.0--canary.425.5674.0
-  resolution: "@artsy/palette-mobile@npm:22.11.0--canary.425.5674.0"
+"@artsy/palette-mobile@npm:23.0.0":
+  version: 23.0.0
+  resolution: "@artsy/palette-mobile@npm:23.0.0"
   dependencies:
     "@artsy/palette-tokens": "npm:7.0.0"
     "@react-spring/native": "npm:10.0.3"
@@ -76,7 +76,7 @@ __metadata:
     react-native-reanimated: "*"
     react-native-svg: "*"
     styled-components: ">= 5"
-  checksum: 10c0/7a748ec0f254b87be33de0c4a70a0ad0ec81f3c674f52c39c89388275d664aecbe294713b37b32935ed90888389d5fae9e50ff0bc14ede1bc4e80007dacbabcc
+  checksum: 10c0/750dcf4ca10cc630f5f87bb32177745e75c4278e5937defc13aaf8dab98f4c370915a928eb9d0e7453f6a0ac2db879b8336f4eca2a7cf8bad9e346fa569e2d3b
   languageName: node
   linkType: hard
 
@@ -13191,9 +13191,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/cohesion": "npm:4.346.0"
+    "@artsy/cohesion": "npm:4.347.0"
     "@artsy/icons": "npm:3.65.0"
-    "@artsy/palette-mobile": "npm:22.11.0--canary.425.5674.0"
+    "@artsy/palette-mobile": "npm:23.0.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.8.1"
     "@babel/core": "npm:7.25.2"
@@ -15106,14 +15106,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-xml-parser@npm:^4.4.1":
-  version: 4.5.0
-  resolution: "fast-xml-parser@npm:4.5.0"
+"fast-xml-parser@npm:5.3.7":
+  version: 5.3.7
+  resolution: "fast-xml-parser@npm:5.3.7"
   dependencies:
-    strnum: "npm:^1.0.5"
+    strnum: "npm:^2.1.2"
   bin:
     fxparser: src/cli/cli.js
-  checksum: 10c0/71d206c9e137f5c26af88d27dde0108068a5d074401901d643c500c36e95dfd828333a98bda020846c41f5b9b364e2b0e9be5b19b0bdcab5cf31559c07b80a95
+  checksum: 10c0/2452b8d4557f6958507ccb9694dad094fb56342385774ee900e0ae1e193027a6590dd5c4ce9e5485af64fb18c2299b64d5423c82dba5f5a698950d36d02a864d
   languageName: node
   linkType: hard
 
@@ -24959,10 +24959,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strnum@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "strnum@npm:1.0.5"
-  checksum: 10c0/64fb8cc2effbd585a6821faa73ad97d4b553c8927e49086a162ffd2cc818787643390b89d567460a8e74300148d11ac052e21c921ef2049f2987f4b1b89a7ff1
+"strnum@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "strnum@npm:2.1.2"
+  checksum: 10c0/4e04753b793540d79cd13b2c3e59e298440477bae2b853ab78d548138385193b37d766d95b63b7046475d68d44fb1fca692f0a3f72b03f4168af076c7b246df9
   languageName: node
   linkType: hard
 

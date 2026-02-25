@@ -1,6 +1,6 @@
 {
   "appName": "eigen",
-  "version": "8.95.0",
+  "version": "9.0.0",
   "slug": "eigen",
   "expo": {
     "buildCacheProvider": {
