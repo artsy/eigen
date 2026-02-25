@@ -17392,6 +17392,11 @@ type Mutation {
     input: RepositionPartnerLocationsMutationInput!
   ): RepositionPartnerLocationsMutationPayload
 
+  # Reposition artworks in a viewing room, determining their display order.
+  repositionViewingRoomArtworks(
+    input: RepositionViewingRoomArtworksMutationInput!
+  ): RepositionViewingRoomArtworksMutationPayload
+
   # Requests Gravity to reprocess the original asset for an artwork image.
   reprocessArtworkImage(input: ReprocessArtworkImageInput!): ReprocessArtworkImagePayload
   requestConditionReport(input: RequestConditionReportInput!): RequestConditionReportPayload
@@ -22519,6 +22524,34 @@ type RepositionPartnerLocationsSuccess {
 union RepositionPartnerLocationsSuccessOrError =
     RepositionPartnerLocationsFailure
   | RepositionPartnerLocationsSuccess
+
+type RepositionViewingRoomArtworksFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionViewingRoomArtworksMutationInput {
+  # An ordered array of artwork IDs representing the new display order.
+  artworkIDs: [String!]!
+  clientMutationId: String
+
+  # The ID of the viewing room.
+  viewingRoomID: String!
+}
+
+type RepositionViewingRoomArtworksMutationPayload {
+  clientMutationId: String
+
+  # On success: the reordered artwork IDs. On error: the error that occurred.
+  viewingRoomArtworksOrError: RepositionViewingRoomArtworksResponseOrError
+}
+
+union RepositionViewingRoomArtworksResponseOrError =
+    RepositionViewingRoomArtworksFailure
+  | RepositionViewingRoomArtworksSuccess
+
+type RepositionViewingRoomArtworksSuccess {
+  artworkIDs: [String!]!
+}
 
 type ReprocessArtworkImageFailure {
   mutationError: GravityMutationError
