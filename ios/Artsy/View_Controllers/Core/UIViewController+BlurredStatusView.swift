@@ -47,9 +47,13 @@ extension UIViewController {
             closeButton.addTarget(target, action: selector, for: .touchUpInside)
 
             container.addSubview(closeButton)
-            closeButton.alignTrailingEdge(withView: container, predicate: "-20")
-            closeButton.alignTopEdge(withView: container, predicate: "20")
-            closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                closeButton.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+                closeButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                closeButton.widthAnchor.constraint(equalToConstant: CGFloat(dimension)),
+                closeButton.heightAnchor.constraint(equalToConstant: CGFloat(dimension))
+            ])
         }
 
         let textStack = ORStackView()
