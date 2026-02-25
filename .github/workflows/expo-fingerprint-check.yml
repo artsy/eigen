@@ -77,7 +77,7 @@ jobs:
           echo "🔍 Generating debug fingerprint output..."
           npx @expo/fingerprint fingerprint:generate --debug > latest-debug.txt
           echo "📤 Uploading debug fingerprint to S3..."
-          aws s3 cp latest-debug.txt s3://eigen-ci-cache/eigen-expo-fingerprint/latest-debug.txt
+          aws s3 cp latest-debug.txt s3://mobile-cached-builds/eigen-expo-fingerprint/latest-debug.txt
           echo "✅ Debug fingerprint saved"
 
       - name: Download previous fingerprint from S3
@@ -85,7 +85,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "📥 Downloading previous fingerprint from S3..."
-          aws s3 cp s3://eigen-ci-cache/eigen-expo-fingerprint/latest.txt ./previous-fingerprint.txt || echo "No previous fingerprint found"
+          aws s3 cp s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt ./previous-fingerprint.txt || echo "No previous fingerprint found"
           if [ -f previous-fingerprint.txt ]; then
             PREVIOUS=$(cat previous-fingerprint.txt)
             echo "Previous fingerprint: $PREVIOUS"
@@ -150,7 +150,7 @@ jobs:
         run: |
           echo "📤 Uploading new fingerprint to S3..."
           echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > latest.txt
-          aws s3 cp latest.txt s3://eigen-ci-cache/eigen-expo-fingerprint/latest.txt
+          aws s3 cp latest.txt s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt
           echo "✅ Fingerprint saved"
 
       - name: Save needs_ios_build output to artifact

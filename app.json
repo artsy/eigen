@@ -9,7 +9,7 @@
         "cacheDir": "node_modules/.expo-build-disk-cache",
         "remotePlugin": "./expo/plugins/build-cache-s3",
         "remoteOptions": {
-          "bucket": "eigen-ci-cache",
+          "bucket": "mobile-cached-builds",
           "prefix": "eigen/cached-builds"
         }
       }

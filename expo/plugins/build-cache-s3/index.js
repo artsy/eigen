@@ -29,7 +29,7 @@ function formatBytes(bytes) {
 }
 
 function getS3Path(options, key) {
-  const bucket = options?.bucket || "eigen-ci-cache"
+  const bucket = options?.bucket || "mobile-cached-builds"
   const prefix = options?.prefix || "eigen/cached-builds"
   return `s3://${bucket}/${prefix}/${key}`
 }
