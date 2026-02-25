@@ -28,6 +28,7 @@ class LiveAuctionView: UIView {
     }
 
     let vc = LiveAuctionViewController(saleSlugOrID: slug)
+    vc.overrideUserInterfaceStyle = .light
     parentVC.addChild(vc)
     addSubview(vc.view)
     vc.view.frame = bounds
