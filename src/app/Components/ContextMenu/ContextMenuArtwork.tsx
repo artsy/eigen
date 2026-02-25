@@ -50,6 +50,8 @@ interface ContextMenuArtworkProps {
   contextModule?: ContextModule
   contextScreenOwnerType?: ScreenOwnerType
   hideCreateAlertOnArtworkPreview?: boolean
+  width?: number
+  height?: number
 }
 
 export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArtworkProps>> = ({
@@ -61,6 +63,8 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   contextModule,
   contextScreenOwnerType,
   hideCreateAlertOnArtworkPreview,
+  width,
+  height,
   ...restProps
 }) => {
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -198,7 +202,12 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
     artworkDisplayProps: ArtworkDisplayProps | undefined
   ) => {
     return (
-      <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
+      <ContextMenuArtworkPreviewCard
+        artwork={artwork}
+        artworkDisplayProps={artworkDisplayProps}
+        width={width}
+        height={height}
+      />
     )
   }
 
