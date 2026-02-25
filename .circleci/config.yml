@@ -598,17 +598,9 @@ workflows:
 
       - build-test-app-ios:
           <<: *ignore_beta_branches
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
 
       - build-test-app-android:
           <<: *ignore_beta_branches
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
 
       - update-metaphysics:
           <<: *beta_branches_only
