@@ -104,6 +104,9 @@ native-hash.txt
 # Ignore env files
 **/.env*
 !.env.example
+# We want to ignore all .env files, except for .env.development.local,
+# which is used for local development and should not be ignored.
+!.env.development.local
 
 # Ignore key env files
 **/keys.shared.json
