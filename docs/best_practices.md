@@ -40,6 +40,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Common Patterns](#common-patterns)
   - [Miscellaneous](#miscellaneous)
     - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
+  - [Build Caching](#build-caching)
 
 ## Examples & Hacks
 
@@ -441,3 +442,7 @@ The following parts of the iOS app are handled in native code:
 - Analytics for Native UI.
 - View In Room (Augmented Reality)
 - City Guide Drawer Handling
+
+## Build Caching
+
+➡️ Read more about our two-tier build caching system [here](build_caching.md)

@@ -1,0 +1,97 @@
+name: Android Expo Build
+
+on:
+  workflow_run:
+    workflows: ["Expo Fingerprint Check"]
+    types: [completed]
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+
+jobs:
+  expo-build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
+    timeout-minutes: 60
+
+    env:
+      EXPO_BUILD_CACHE_UPLOAD: 1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Download needs_android_build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: needs_android_build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check if build is needed
+        id: check-build
+        run: |
+          NEEDS_BUILD=$(cat needs_android_build.txt)
+          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+          echo "Android build needed: $NEEDS_BUILD"
+          if [ "$NEEDS_BUILD" = "false" ]; then
+            echo "✅ Android build not needed, exiting early"
+            exit 0
+          fi
+
+      - name: Setup Android environment
+        uses: ./.github/actions/setup-android-environment
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.7"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Run build with Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          ram-size: "8192M"
+          heap-size: "4096M"
+          disk-size: "10G"
+          cores: 4
+          disable-animations: false
+          disable-spellchecker: true
+          disable-linux-hw-accel: false
+          enable-hw-keyboard: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            echo "🔍 Emulator started, verifying..."
+            adb devices -l
+
+            echo "📋 System info:"
+            adb shell getprop ro.build.version.release
+            adb shell getprop ro.build.version.sdk
+
+            echo "🔓 Unlocking device..."
+            adb shell input keyevent 82
+
+            echo "🔨 Building and running Android app with Expo..."
+            npx expo run:android --no-bundler

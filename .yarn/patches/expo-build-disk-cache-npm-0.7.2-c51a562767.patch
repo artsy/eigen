@@ -1,0 +1,34 @@
+diff --git a/dist/index.js b/dist/index.js
+index e01883e05efcd18ea87e6314d51a36031718d068..9200988a54ed8ee8fb664e2890ee11343c6fcde1 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -487,7 +487,7 @@ async function readFromDisk(args, config2) {
+       if (config2.debug) await fileCache.printStats();
+       return fileCache.getPath();
+     }
+-    logger.log(texts.read.miss);
++    // Try remote plugin before logging miss
+     if (config2.remotePlugin) {
+       try {
+         const remotePluginProvider = await getRemotePlugin(args, {
+@@ -498,14 +498,16 @@ async function readFromDisk(args, config2) {
+           args,
+           config2.remoteOptions
+         )]);
+-        if (!downloadPath) return null;
+-        const { error } = await tryCatch(fileCache.write(downloadPath));
+-        if (error) return null;
+-        return fileCache.getPath();
++       if (downloadPath) {
++          const { error } = await tryCatch(fileCache.write(downloadPath));
++          if (!error) return fileCache.getPath();
++        }
+       } catch (e) {
+         logger.log(texts.read.downloadError(e));
+       }
+     }
++    // Only log miss if both disk and remote failed
++    logger.log(texts.read.miss);
+     return null;
+   } catch (e) {
+     logger.log(texts.read.error(e));

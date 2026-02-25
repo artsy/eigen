@@ -308,3 +308,21 @@ This is a bug on the new architecture on Android with this prop and react-native
 
 When this is merged and we update react-native-webview to a version that contains it:
 https://github.com/react-native-webview/react-native-webview/pull/3885
+
+## patch for expo-build-disk-cache
+
+#### Explanation/Context:
+
+The original code had a logging issue where it would log a "cache miss" message immediately after checking the local disk cache, even before checking the remote cache plugin (S3 in our case). This resulted in false-negative messages showing cache misses when the cache was actually available remotely.
+
+The patch:
+
+- Moves the `logger.log(texts.read.miss)` call to after the remote plugin check
+- Fixes the control flow so that the cache miss is only logged if both disk AND remote caches fail
+- Improves the conditional logic around remote plugin downloading to properly return the cache path on success
+
+This ensures accurate logging when using remote cache plugins like our S3 build cache implementation.
+
+#### When we can remove this:
+
+When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.

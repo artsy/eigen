@@ -18,6 +18,8 @@ set -euxo pipefail
 # For a complete fix workflow, use `yarn repair` instead, which runs:
 # yarn clean && yarn setup:artsy && yarn install:all
 
+yarn clear-local-build-cache
+
 echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
 if [ -d android ]; then
 	cd android

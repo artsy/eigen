@@ -13315,6 +13315,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:6.5.0"
     events: "npm:3.3.0"
     expo: "npm:54.0.20"
+    expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:~1.0.10"
     expo-updates: "npm:29.0.11"
     formik: "npm:2.2.9"
@@ -14640,6 +14641,34 @@ __metadata:
   bin:
     expo-atlas: build/src/cli/bin.js
   checksum: 10c0/7a24e228030705490f15f10a7f4b64e1b1dd65d11fe43c9c9c6b704f11848ee20a85603287bb32f93e557e0bf9848c90730976d4cff56f6f8ab33f2f69d73a11
+  languageName: node
+  linkType: hard
+
+"expo-build-disk-cache@npm:0.7.2":
+  version: 0.7.2
+  resolution: "expo-build-disk-cache@npm:0.7.2"
+  dependencies:
+    cosmiconfig: "npm:^9.0.0"
+    env-paths: "npm:^2.2.1"
+    zod: "npm:^4.0.0"
+  peerDependencies:
+    "@expo/cli": "*"
+    "@expo/config": "*"
+  checksum: 10c0/666e66506f1760549d69c613db670ff1d3ff15703d893195dfb4150e87b70155a7d42911fffe4d54d69986a3f08e82b7f0f6939e1376c6cafa51048d466c4457
+  languageName: node
+  linkType: hard
+
+"expo-build-disk-cache@patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch":
+  version: 0.7.2
+  resolution: "expo-build-disk-cache@patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch::version=0.7.2&hash=4df32b"
+  dependencies:
+    cosmiconfig: "npm:^9.0.0"
+    env-paths: "npm:^2.2.1"
+    zod: "npm:^4.0.0"
+  peerDependencies:
+    "@expo/cli": "*"
+    "@expo/config": "*"
+  checksum: 10c0/3c6abe6664151d5d4738c0e9d6b551abe23f60946f3a24e1b6b12eccdd1ee80f01c897bd83c112b451e412ca418bb2d6bfe7d63176b52fe8907b35b6bcf3a4f1
   languageName: node
   linkType: hard
 
@@ -27476,5 +27505,12 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.0.0":
+  version: 4.3.6
+  resolution: "zod@npm:4.3.6"
+  checksum: 10c0/860d25a81ab41d33aa25f8d0d07b091a04acb426e605f396227a796e9e800c44723ed96d0f53a512b57be3d1520f45bf69c0cb3b378a232a00787a2609625307
   languageName: node
   linkType: hard
