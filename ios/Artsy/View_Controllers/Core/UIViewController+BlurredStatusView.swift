@@ -25,69 +25,46 @@ extension UIViewController {
 
         if blurredStatusOverlayView != nil { return }
 
-        // This is processing heavy, move the blurring / setup to a background queue
-
-        ar_dispatch_async {
-
-            UIGraphicsBeginImageContext(self.view.bounds.size)
-            self.view.drawHierarchy(in: self.view.bounds, afterScreenUpdates: false)
-            let viewImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-
-            let blurredImage: UIImage? = viewImage?.blurredImage(withRadius: 12, iterations: 2, tintColor: UIColor.black)
-
-            ar_dispatch_main_queue {
-                // Create an imageview of the blurred view, for the view's background
-
-                let imageView = UIImageView(frame: self.view.bounds)
-                self.blurredStatusOverlayView = imageView
-
-                imageView.image = blurredImage
-                self.view.addSubview(imageView)
-                if let view = self.view {
-                    imageView.align(toView: view)
-                }
-
-                // We want it tinted black, but applying a black tint doesn't really
-                // do too much in the blur image, so apply a transparent black overlay
-                let darkOverlay = UIView(frame: imageView.bounds)
-                darkOverlay.backgroundColor = UIColor(white: 0, alpha: 0.75)
-                imageView.addSubview(darkOverlay)
-                darkOverlay.align(toView: imageView)
-
-                // Optional X button in the top trailing edge
-                if case .show(let target, let selector) = buttonState {
-                    let dimension = 40
-                    let closeButton = ARMenuButton()
-                    closeButton.setBorderColor(.white, for: UIControl.State(), animated: false)
-                    closeButton.setBackgroundColor(.clear, for: UIControl.State(), animated: false)
-                    let cross = UIImage(named:"serif_modal_close")?.withRenderingMode(.alwaysTemplate)
-                    closeButton.setImage(cross, for: UIControl.State())
-                    closeButton.alpha = 0.5
-                    closeButton.tintColor = .white
-                    closeButton.addTarget(target, action: selector, for: .touchUpInside)
-
-                    imageView.addSubview(closeButton)
-                    closeButton.alignTrailingEdge(withView: imageView, predicate: "-20")
-                    closeButton.alignTopEdge(withView: imageView, predicate: "20")
-                    closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
-                }
-
-                let textStack = ORStackView()
-                textStack.addSerifPageTitle(title, subtitle: subtitle)
-                textStack.subviews
-                    .compactMap { $0 as? UILabel }
-                    .forEach { label in
-                        label.textColor = .white
-                        label.backgroundColor = .clear
-                    }
-
-                // Vertically center the text stack
-                imageView.addSubview(textStack)
-                textStack.constrainWidth(toView: imageView, predicate: "-40")
-                textStack.alignCenter(withView: imageView)
-            }
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        self.blurredStatusOverlayView = blurView
+        self.view.addSubview(blurView)
+        if let view = self.view {
+            blurView.align(toView: view)
         }
+
+        let container = blurView.contentView
+
+        // Optional X button in the top trailing edge
+        if case .show(let target, let selector) = buttonState {
+            let dimension = 40
+            let closeButton = ARMenuButton()
+            closeButton.setBorderColor(.white, for: UIControl.State(), animated: false)
+            closeButton.setBackgroundColor(.clear, for: UIControl.State(), animated: false)
+            let cross = UIImage(named: "serif_modal_close")?.withRenderingMode(.alwaysTemplate)
+            closeButton.setImage(cross, for: UIControl.State())
+            closeButton.alpha = 0.5
+            closeButton.tintColor = .white
+            closeButton.addTarget(target, action: selector, for: .touchUpInside)
+
+            container.addSubview(closeButton)
+            closeButton.alignTrailingEdge(withView: container, predicate: "-20")
+            closeButton.alignTopEdge(withView: container, predicate: "20")
+            closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
+        }
+
+        let textStack = ORStackView()
+        textStack.addSerifPageTitle(title, subtitle: subtitle)
+        textStack.subviews
+            .compactMap { $0 as? UILabel }
+            .forEach { label in
+                label.textColor = .white
+                label.backgroundColor = .clear
+            }
+
+        // Vertically center the text stack
+        container.addSubview(textStack)
+        textStack.constrainWidth(toView: container, predicate: "-40")
+        textStack.alignCenter(withView: container)
     }
 
     func ar_removeBlurredOverlayWithTitle() {

@@ -73,7 +73,6 @@
 #import "UIImage+ImageFromColor.h"
 #import "ARSpinner.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import <FXBlurView/FXBlurView.h>
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
@@ -82,8 +81,6 @@
 #import "ARNotificationView.h"
 
 #import "ARTNativeScreenPresenterModule.h"
-
-
 
 
 // Sentry Swift Access
