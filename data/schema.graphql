@@ -18240,6 +18240,7 @@ type Order {
 
   # Currency code
   currencyCode: String!
+  currencySymbol(disambiguate: Boolean = true): String!
 
   # Details about the shipment of an order
   deliveryInfo: DeliveryInfo
