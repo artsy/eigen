@@ -2,10 +2,8 @@
 
 #ifdef DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
-static const int httpLogLevel = AFLoggerLevelInfo;
 #else
 static const int ddLogLevel = DDLogLevelWarning;
-static const int httpLogLevel = AFLoggerLevelError;
 #endif
 
 // If you update this enum, update `contextMap` in the implementation too please
