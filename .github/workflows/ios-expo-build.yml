@@ -1,4 +1,4 @@
-name: iOS Expo Build
+name: iOS Expo Cache Build
 
 on:
   workflow_run:
@@ -7,8 +7,30 @@ on:
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
-  ios-expo-build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  check-build-needed:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    outputs:
+      needs_build: ${{ steps.check-build.outputs.needs_build }}
+
+    steps:
+      - name: Download needs_ios_build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: needs_ios_build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check if build is needed
+        id: check-build
+        run: |
+          NEEDS_BUILD=$(cat needs_ios_build.txt)
+          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+          echo "iOS build needed: $NEEDS_BUILD"
+
+  ios-expo-cache-build:
+    needs: check-build-needed
+    if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
     runs-on: macos-15
     timeout-minutes: 90
     env:
@@ -23,24 +45,6 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Download needs_ios_build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: needs_ios_build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-
-      - name: Check if build is needed
-        id: check-build
-        run: |
-          NEEDS_BUILD=$(cat needs_ios_build.txt)
-          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-          echo "iOS build needed: $NEEDS_BUILD"
-          if [ "$NEEDS_BUILD" = "false" ]; then
-            echo "✅ iOS build not needed, exiting early"
-            exit 0
-          fi
 
       - name: Setup JavaScript environment
         uses: ./.github/actions/setup-javascript-environment
