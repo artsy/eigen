@@ -537,10 +537,10 @@ parameters:
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
-    default: v19-test-success
+    default: v20-test-success
   android_native_cache_key:
     type: string
-    default: v19-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v20-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
   nightly:
