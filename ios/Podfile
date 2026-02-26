@@ -127,7 +127,6 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
-  pod 'UIView+BooleanAnimations'
   pod 'Aerodramus', '2.0.0'
 
   # Language Enhancements
