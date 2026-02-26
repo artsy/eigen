@@ -14,7 +14,7 @@ CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1
 pushd android
 
 echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"
-./gradlew assemble${CAPITALIZED_BUILD_TYPE} --no-daemon --max-workers=2
+./gradlew assemble${CAPITALIZED_BUILD_TYPE} --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a
 
 popd
 
