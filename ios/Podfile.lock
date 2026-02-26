@@ -252,7 +252,6 @@ PODS:
   - Forgeries/Mocks (1.0.0):
     - Forgeries/Core
     - OCMock
-  - FXBlurView (1.6.4)
   - glog (0.3.5)
   - GoogleDataTransport (10.1.0):
     - nanopb (~> 3.30910.0)
@@ -4057,7 +4056,6 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - Forgeries/Mocks
-  - FXBlurView (= 1.6.4)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleDataTransport
   - GoogleUtilities
@@ -4233,7 +4231,6 @@ SPEC REPOS:
     - FirebaseInstallations
     - FirebaseMessaging
     - Forgeries
-    - FXBlurView
     - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
@@ -4650,7 +4647,6 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
-  FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
@@ -4822,6 +4818,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: e79b62e95d139349ea9cc01566aeb6937415de47
+PODFILE CHECKSUM: 801d9dc4203ed754f445ff30e22521da0f485fe7
 
 COCOAPODS: 1.16.2
