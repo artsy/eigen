@@ -266,6 +266,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
           onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
           artwork={artwork}
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+          width={Number(height ?? 0) * (artwork.image?.aspectRatio ?? 1)}
+          height={height}
         >
           <RouterLink
             haptic
