@@ -267,7 +267,7 @@ lane :check_flags do
 
       If a feature here should be going out this release please follow the docs here:
       https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
-      @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
+      @onyx-devs @phires @topaz-devs @diamond-devs @emerald-devs
     MSG
     slack(message: message, default_payloads: [], link_names: true)
   end
