@@ -1,5 +1,6 @@
-//  UIView+BooleanAnimations.m
-//  Credit to AshFurrow: https://github.com/ashfurrow/UIView-BooleanAnimations/blob/master/README.md
+// UIView+BooleanAnimations.m
+// Credit to AshFurrow:
+// https://github.com/ashfurrow/UIView-BooleanAnimations/blob/master/README.md
 
 #import <UIKit/UIKit.h>
 
