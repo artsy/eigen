@@ -1,4 +1,4 @@
-name: Android Expo Build
+name: Android Expo Cache Build
 
 on:
   workflow_run:
@@ -7,8 +7,30 @@ on:
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
-  expo-build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  check-build-needed:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    outputs:
+      needs_build: ${{ steps.check-build.outputs.needs_build }}
+
+    steps:
+      - name: Download needs_android_build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: needs_android_build
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Check if build is needed
+        id: check-build
+        run: |
+          NEEDS_BUILD=$(cat needs_android_build.txt)
+          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+          echo "Android build needed: $NEEDS_BUILD"
+
+  android-expo-cache-build:
+    needs: check-build-needed
+    if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 60
 
@@ -25,24 +47,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-      - name: Download needs_android_build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: needs_android_build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-
-      - name: Check if build is needed
-        id: check-build
-        run: |
-          NEEDS_BUILD=$(cat needs_android_build.txt)
-          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-          echo "Android build needed: $NEEDS_BUILD"
-          if [ "$NEEDS_BUILD" = "false" ]; then
-            echo "✅ Android build not needed, exiting early"
-            exit 0
-          fi
 
       - name: Setup Android environment
         uses: ./.github/actions/setup-android-environment
