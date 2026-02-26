@@ -193,6 +193,7 @@ commands:
         type: string
         default: "release"
     steps:
+      - android/restore_gradle_cache
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
@@ -200,6 +201,7 @@ commands:
           name: Build App
           no_output_timeout: 30m
           command: ./scripts/ci/ci-android << parameters.build_type >>
+      - android/save_gradle_cache
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -242,9 +244,11 @@ jobs:
     resource_class: xlarge
     steps:
       - prep-android-env
+      - android/restore_gradle_cache
       - run:
           name: Run Android unit tests
           command: yarn android:test:ci
+      - android/save_gradle_cache
       - store_test_results:
           path: android/app/build/test-results
       - store_artifacts:

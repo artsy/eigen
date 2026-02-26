@@ -11,21 +11,19 @@ runs:
       with:
         distribution: "zulu"
         java-version: "17"
+        cache: "gradle"
 
     - name: Install ninja
       run: sudo apt-get update && sudo apt-get install ninja-build
       shell: bash
 
-    - name: Cache Gradle dependencies
+    - name: Cache project Gradle directory
       uses: actions/cache@v4
       with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-          android/.gradle
-        key: gradle-v2-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        path: android/.gradle
+        key: gradle-project-v1-${{ runner.os }}-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/build.gradle', 'android/app/build.gradle') }}
         restore-keys: |
-          gradle-v2-${{ runner.os }}-
+          gradle-project-v1-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts
