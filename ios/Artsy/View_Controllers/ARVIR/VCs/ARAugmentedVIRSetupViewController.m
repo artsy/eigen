@@ -5,7 +5,7 @@
 #import "Artsy+UILabels.h"
 #import "UIFont+ArtsyFonts.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import "UIView+BooleanAnimations.h"
 #import "AREmission.h"
 
 #import "ARAppConstants.h"

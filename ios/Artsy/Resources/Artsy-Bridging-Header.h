@@ -23,6 +23,7 @@
 #import "ARDispatchManager.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIViewController+Popovers.h"
+#import "UIView+BooleanAnimations.h"
 
 // Models.
 #import "Sale.h"
