@@ -2,6 +2,7 @@ import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MAX_WIDTH,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
@@ -108,6 +109,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
                   lotLabel,
                   SalePriceComponent,
                 }}
+                width={ARTWORK_RAIL_CARD_MAX_WIDTH}
+                height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}
               >
                 <Flex
                   minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}

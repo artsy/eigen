@@ -9,22 +9,34 @@ import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
-const ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT = 70
+const ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT = isTablet() ? 90 : 70
+const TABLET_CONTEXT_MENU_MAX_HEIGHT = 360
 
-const useFullWidth = () => {
+const useFullWidth = (width?: number, height?: number) => {
   const space = useSpace()
-  const { width } = useScreenDimensions()
-  const extraLargeWidth = isTablet() ? 400 : width - space(4)
-  return extraLargeWidth
+  const { width: _width } = useScreenDimensions()
+
+  if (isTablet() && width && height) {
+    return {
+      containerWidth: width - space(4),
+      containerHeight: Math.min(height, TABLET_CONTEXT_MENU_MAX_HEIGHT),
+    }
+  }
+
+  return { containerWidth: _width - space(4) }
 }
 
 export interface ContextMenuArtworkPreviewCardProps {
   artwork: ContextMenuArtworkPreviewCard_artwork$key
   artworkDisplayProps?: ArtworkDisplayProps
+  width?: number
+  height?: number
 }
 
 export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCardProps> = ({
   artworkDisplayProps,
+  width,
+  height,
   ...restProps
 }) => {
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -37,7 +49,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
     lotLabel,
   } = artworkDisplayProps ?? {}
 
-  const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
+  const { containerWidth, containerHeight } = useFullWidth(width, height)
 
   const fontScale = PixelRatio.getFontScale()
 
@@ -51,8 +63,6 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
     return ARTWORK_PREVIEW_TEXT_CONTAINER_HEIGHT
   }
 
-  const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
-
   const space = useSpace()
 
   return (
@@ -61,15 +71,17 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
       m={1}
       style={{ borderRadius: space(1), padding: space(2) }}
     >
-      <ContextMenuArtworkPreviewCardImage containerWidth={containerWidth} artwork={artwork} />
+      <ContextMenuArtworkPreviewCardImage
+        containerWidth={containerWidth}
+        containerHeight={containerHeight}
+        artwork={artwork}
+      />
       <Flex
         my={1}
         width={containerWidth}
         // Recently sold artworks require more space for the text container
         // to accommodate the estimate and realized price
-        style={{
-          height: fontScale * getTextHeight(),
-        }}
+        style={{ height: fontScale * getTextHeight() }}
         backgroundColor={backgroundColor}
         flexDirection="row"
         justifyContent="space-between"
