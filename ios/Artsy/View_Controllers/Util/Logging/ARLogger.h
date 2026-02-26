@@ -1,5 +1,4 @@
 #import <CocoaLumberjack/DDLogMacros.h>
-#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
 
 #ifdef DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
@@ -15,7 +14,6 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
     ARLogContextInfo = 1,
     ARLogContextAction,
     ARLogContextError,
-    ARLogContextRequestOperation
 };
 
 
@@ -23,7 +21,6 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
 /// Call this ASAP to get logging up and running
 - (void)startLogging;
 - (void)stopLogging;
-+ (BOOL)shouldLogNetworkRequests;
 + (instancetype)sharedLogger;
 @end
 
