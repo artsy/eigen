@@ -17,7 +17,7 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
-    <style name="BootTheme" parent="Theme.BootSplash.TransparentStatus">
+    <style name="BootTheme" parent="Theme.BootSplash">
         <item name="bootSplashBackground">@color/bootsplash_background</item>
         <item name="bootSplashLogo">@drawable/bootsplash_logo</item>
         <item name="postBootSplashTheme">@style/AppTheme</item>

@@ -3192,7 +3192,7 @@ PODS:
     - SocketRocket
   - RNAppleAuthentication (2.1.5):
     - React-Core
-  - RNBootSplash (6.3.10):
+  - RNBootSplash (7.1.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -4767,7 +4767,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 6c26f8c25d0b5ae66f86a1cce1777076ac8bcbd8
   ReactCommon: 5f0e5c09a64a2717215dd84380e1a747810406f2
   RNAppleAuthentication: 98f367520bd647ea4c094dc3e133106ac523798a
-  RNBootSplash: a3179e35cb328629176b7891e1ef1fb9ef364fc3
+  RNBootSplash: 51262ea318e6f45b7b75941c9aa2ce0df3782908
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNCClipboard: adba6334687b7fb2c37760e26dedd550b4846a72
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
