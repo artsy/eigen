@@ -385,6 +385,10 @@ jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
 }))
 
+jest.mock("expo-navigation-bar", () => ({
+  setBackgroundColorAsync: jest.fn(),
+}))
+
 jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
