@@ -15,7 +15,6 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
-import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
@@ -109,7 +108,6 @@ const Main = () => {
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
-  useAndroidAppStyling()
   useListenToThemeChange()
   useTrackAppState()
 

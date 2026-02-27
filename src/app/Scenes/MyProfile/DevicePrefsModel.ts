@@ -5,7 +5,8 @@ import {
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
 import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-peasy"
-import { Appearance, Platform, StatusBar } from "react-native"
+import * as StatusBar from "expo-status-bar"
+import { Appearance, Platform } from "react-native"
 
 export type DarkModeOption = "on" | "off" | "system"
 
@@ -65,18 +66,16 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
     const [state] = change.current
 
     if (state.colorScheme === "dark") {
-      StatusBar.setBarStyle("light-content")
+      StatusBar.setStatusBarStyle("light", true)
 
       if (Platform.OS === "android") {
         ArtsyNativeModule.setNavigationBarColor("#000000")
-        ArtsyNativeModule.setAppLightContrast(true)
       }
     } else {
-      StatusBar.setBarStyle("dark-content")
+      StatusBar.setStatusBarStyle("dark", true)
 
       if (Platform.OS === "android") {
         ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-        ArtsyNativeModule.setAppLightContrast(false)
       }
     }
   }),
