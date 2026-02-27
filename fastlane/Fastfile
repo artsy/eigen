@@ -193,11 +193,41 @@ lane :promote_beta_ios do
   next_app_store_version = app.get_edit_app_store_version.version_string
 
   # app.builds are listed most recent first, limit to 20
-  builds = app.get_builds.first(20).map { |build| build.version }
+  `git fetch --tags 2>/dev/null`
+
+  raw_builds = app.get_builds(includes: "preReleaseVersion").first(20)
+
+  # Collect metadata first so we can compute column widths for alignment
+  build_data = raw_builds.map do |build|
+    raw_version = build.version
+    padded      = format_build_number(raw_version)
+    app_version = build.pre_release_version&.version || "?"
+    commit_msg  = git_tag_commit_message("ios-#{app_version}-#{padded}")
+    date        = begin
+      Time.parse(build.uploaded_date.to_s).strftime('%Y-%m-%d %H:%M')
+    rescue
+      build.uploaded_date.to_s
+    end
+    { raw_version: raw_version, app_version: app_version, padded: padded, date: date, commit_msg: commit_msg }
+  end
+
+  require 'terminal-table'
+
+  rows = build_data.each_with_index.map do |d, i|
+    [i + 1, d[:app_version], d[:padded], d[:date], d[:commit_msg]]
+  end
+
+  table = Terminal::Table.new(
+    headings: ['#', 'Version', 'Build', 'Upload Date', 'Last Commit'],
+    rows: rows
+  )
 
   UI.header 'Last 20 iOS builds'
+  UI.message("\n#{table}")
 
-  build_number = UI.select('Which build would you like to release?: ', builds)
+  choice = UI.input("Enter build number (1-#{build_data.length}): ").to_i
+  UI.user_error!("Invalid choice") unless choice.between?(1, build_data.length)
+  build_number = build_data[choice - 1][:raw_version]
 
   if UI.confirm("Are you sure you would like to release '#{build_number}'?")
     UI.success 'Continuing the release!'
