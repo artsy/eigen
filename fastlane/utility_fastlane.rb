@@ -311,6 +311,12 @@ def format_build_number(build_number)
   detruncated_components.join('.')
 end
 
+def git_tag_commit_message(tag)
+  # Returns the subject line of the commit the tag points to, or nil if the tag doesn't exist.
+  msg = `git log -1 --format='%s' "#{tag}^{}" 2>/dev/null`.chomp
+  msg.empty? ? nil : msg
+end
+
 def should_silence_beta_failure?
   # Set this var in circleci if you want to silence beta failure alerts for a while
   # E.g. you are working on a ci change
