@@ -11,7 +11,7 @@
 #import "ARDefaults.h"
 #import "ARButtonSubclasses.h"
 #import "AREmission.h"
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import "UIView+BooleanAnimations.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import "ARSpinner.h"
 #import "UIView+ARSpinner.h"

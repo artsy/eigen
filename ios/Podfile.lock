@@ -4013,7 +4013,6 @@ PODS:
   - TOCropViewController (2.7.4)
   - Turf (2.8.0)
   - UICKeyChainStore (2.2.1)
-  - "UIView+BooleanAnimations (1.0.2)"
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (0.0.0)
@@ -4196,7 +4195,6 @@ DEPENDENCIES:
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
   - UICKeyChainStore
-  - "UIView+BooleanAnimations"
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -4281,7 +4279,6 @@ SPEC REPOS:
     - TOCropViewController
     - Turf
     - UICKeyChainStore
-    - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
@@ -4814,10 +4811,9 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 801d9dc4203ed754f445ff30e22521da0f485fe7
+PODFILE CHECKSUM: 4b27c048c47e79890c3572ee82a2a7b7aaedab3c
 
 COCOAPODS: 1.16.2
