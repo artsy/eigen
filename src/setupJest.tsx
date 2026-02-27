@@ -483,7 +483,6 @@ function getNativeModules(): OurNativeModules {
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
-      setNavigationBarColor: jest.fn(),
       setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
@@ -539,7 +538,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
-      setNavigationBarColor: jest.fn(),
       setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
