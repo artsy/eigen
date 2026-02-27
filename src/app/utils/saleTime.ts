@@ -1,4 +1,4 @@
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 import { useState } from "react"
 import useInterval from "react-use/lib/useInterval"
 import { Time, getTimer } from "./getTimer"
@@ -109,87 +109,90 @@ export const saleTime = (sale: {
   const endDate = sale.endAt
 
   const saleType = sale.liveStartAt != null ? "live" : "timed"
-  const userTimeZone = moment.tz.guess()
+  const userTimeZone = DateTime.now().zoneName
   const startDateMoment = startDate
-    ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+    ? DateTime.fromISO(startDate, { zone: sale.timeZone }).setZone(userTimeZone)
     : null
   const endDateMoment = endDate
-    ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+    ? DateTime.fromISO(endDate, { zone: sale.timeZone }).setZone(userTimeZone)
     : null
-  const now = moment()
+  const now = DateTime.now()
 
   return {
-    absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, saleType),
-    relative: relative(now.utc(), startDateMoment?.utc() ?? null, endDateMoment?.utc() ?? null),
+    absolute: absolute(now, startDateMoment, endDateMoment, saleType),
+    relative: relative(
+      now.toUTC(),
+      startDateMoment?.toUTC() ?? null,
+      endDateMoment?.toUTC() ?? null
+    ),
   }
 }
 
 const absolute = (
-  now: moment.Moment,
-  startDateMoment: moment.Moment | null,
-  endDateMoment: moment.Moment | null,
-  userTimeZone: string,
+  now: DateTime,
+  startDateMoment: DateTime | null,
+  endDateMoment: DateTime | null,
   saleType: "live" | "timed"
 ): string | null => {
   // definitely not open yet
-  if (startDateMoment !== null && now.isBefore(startDateMoment)) {
-    return begins(startDateMoment, userTimeZone, saleType)
+  if (startDateMoment !== null && now < startDateMoment) {
+    return begins(startDateMoment, saleType)
   }
 
   // definitely already closed
-  if (endDateMoment !== null && now.isAfter(endDateMoment)) {
+  if (endDateMoment !== null && now > endDateMoment) {
     return closed(endDateMoment)
   }
 
   // if we have both start and end and we're in between them
   if (
     startDateMoment !== null &&
-    now.isAfter(startDateMoment) &&
+    now > startDateMoment &&
     endDateMoment !== null &&
-    now.isBefore(endDateMoment)
+    now < endDateMoment
   ) {
-    return closes(endDateMoment, userTimeZone, saleType)
+    return closes(endDateMoment, saleType)
   }
 
   // otherwise don't display anything
   return null
 }
 
-const begins = (
-  startDate: moment.Moment,
-  userTimeZone: string,
-  saleType: "live" | "timed"
-): string =>
-  `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
-  `begins ${startDate.format("MMM D")} ` +
-  `at ${startDate.format("h:mma")} ` +
-  moment.tz(userTimeZone).format("z")
+// Helper to format time with lowercase am/pm (Luxon outputs uppercase by default)
+const formatTime = (date: DateTime): string =>
+  date.toFormat("h:mma").replace("AM", "am").replace("PM", "pm")
 
-const closes = (endDate: moment.Moment, userTimeZone: string, saleType: "live" | "timed"): string =>
+const begins = (startDate: DateTime, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
-  `closes ${endDate.format("MMM D")} ` +
-  `at ${endDate.format("h:mma")} ` +
-  moment.tz(userTimeZone).format("z")
+  `begins ${startDate.toFormat("MMM d")} ` +
+  `at ${formatTime(startDate)} ` +
+  startDate.offsetNameShort
 
-const closed = (endDate: moment.Moment): string => `Closed on ${endDate.format("MMM D")}`
+const closes = (endDate: DateTime, saleType: "live" | "timed"): string =>
+  `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
+  `closes ${endDate.toFormat("MMM d")} ` +
+  `at ${formatTime(endDate)} ` +
+  endDate.offsetNameShort
+
+const closed = (endDate: DateTime): string => `Closed on ${endDate.toFormat("MMM d")}`
 
 // UTC FROM HERE AND DOWN
 const relative = (
-  now: moment.Moment,
-  startDateMoment: moment.Moment | null,
-  endDateMoment: moment.Moment | null
+  now: DateTime,
+  startDateMoment: DateTime | null,
+  endDateMoment: DateTime | null
 ): string | null => {
   // definitely not open yet
-  if (startDateMoment !== null && now.isBefore(startDateMoment)) {
+  if (startDateMoment !== null && now < startDateMoment) {
     return starts(now, startDateMoment)
   }
 
   // we are currently open
   if (
     startDateMoment !== null &&
-    now.isAfter(startDateMoment) &&
+    now > startDateMoment &&
     endDateMoment !== null &&
-    now.isBefore(endDateMoment)
+    now < endDateMoment
   ) {
     return ends(now, endDateMoment)
   }
@@ -204,10 +207,10 @@ const maybeAddMinutes = (minutesUntilSale: number) =>
     ? ""
     : ` ${minutesUntilSale % 60} ${maybePluralise("minute", minutesUntilSale)}`
 
-const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
-  const hours = startDate.diff(now, "hours")
-  const minutes = startDate.diff(now, "minutes")
-  const days = startDate.startOf("day").diff(now.startOf("day"), "days")
+const starts = (now: DateTime, startDate: DateTime): string | null => {
+  const hours = Math.floor(startDate.diff(now, "hours").hours)
+  const minutes = Math.floor(startDate.diff(now, "minutes").minutes)
+  const days = Math.floor(startDate.startOf("day").diff(now.startOf("day"), "days").days)
   if (minutes < 60) {
     return `Starts in ${minutes} ${maybePluralise("minute", minutes)}`
   } else if (hours < 24) {
@@ -219,9 +222,9 @@ const starts = (now: moment.Moment, startDate: moment.Moment): string | null => 
   }
 }
 
-const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
-  const hours = endDate.diff(now, "hours")
-  const days = endDate.startOf("day").diff(now.startOf("day"), "days")
+const ends = (now: DateTime, endDate: DateTime): string | null => {
+  const hours = Math.floor(endDate.diff(now, "hours").hours)
+  const days = Math.floor(endDate.startOf("day").diff(now.startOf("day"), "days").days)
   if (days < 1) {
     return `Ends in ${hours} ${maybePluralise("hour", hours)}`
   } else if (days < 7) {
@@ -231,9 +234,9 @@ const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
   }
 }
 
-const getMomentForDate = (date: string, timeZone: string): moment.Moment => {
-  const userTimeZone = moment.tz.guess()
-  return moment.tz(date, moment.ISO_8601, timeZone).tz(userTimeZone)
+const getMomentForDate = (date: string, timeZone: string): DateTime => {
+  const userTimeZone = DateTime.now().zoneName
+  return DateTime.fromISO(date, { zone: timeZone }).setZone(userTimeZone)
 }
 
 export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null | undefined => {
@@ -243,14 +246,20 @@ export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null | un
   const startDateMoment = sale.startAt ? getMomentForDate(sale.startAt, sale.timeZone) : null
   const endDateMoment = sale.endAt ? getMomentForDate(sale.endAt, sale.timeZone) : null
   const endedDateMoment = sale.endedAt ? getMomentForDate(sale.endedAt, sale.timeZone) : null
-  const thisMoment = moment.tz(moment(), moment.tz.guess())
+  const thisMoment = DateTime.now().setZone(DateTime.now().zoneName)
 
-  if (startDateMoment && thisMoment.isBefore(startDateMoment)) {
-    return `${startDateMoment.format("MMM D, YYYY")} • ${startDateMoment.format("h:mma z")}`
-  } else if (endedDateMoment && thisMoment.isAfter(endedDateMoment)) {
-    return `Closed ${endedDateMoment.format("MMM D, YYYY")} • ${endedDateMoment.format("h:mma z")}`
+  if (startDateMoment && thisMoment < startDateMoment) {
+    return `${startDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(startDateMoment)} ${
+      startDateMoment.offsetNameShort
+    }`
+  } else if (endedDateMoment && thisMoment > endedDateMoment) {
+    return `Closed ${endedDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(endedDateMoment)} ${
+      endedDateMoment.offsetNameShort
+    }`
   } else if (endDateMoment) {
-    return `${endDateMoment.format("MMM D, YYYY")} • ${endDateMoment.format("h:mma z")}`
+    return `${endDateMoment.toFormat("MMM d, yyyy")} • ${formatTime(endDateMoment)} ${
+      endDateMoment.offsetNameShort
+    }`
   } else {
     return null
   }
