@@ -1,9 +1,6 @@
 PODS:
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
-  - AFNetworkActivityLogger (2.0.4):
-    - AFNetworking/NSURLConnection (~> 2.0)
-    - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking/NSURLConnection (2.7.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -4020,7 +4017,6 @@ PODS:
 
 DEPENDENCIES:
   - Aerodramus (= 2.0.0)
-  - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -4204,7 +4200,6 @@ SPEC REPOS:
   https://github.com/artsy/Specs.git:
     - Aerodramus
   trunk:
-    - AFNetworkActivityLogger
     - AFNetworking
     - AppAuth
     - CocoaLumberjack
@@ -4594,7 +4589,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
-  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
@@ -4818,6 +4812,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 801d9dc4203ed754f445ff30e22521da0f485fe7
+PODFILE CHECKSUM: 2be61218869f77ac38e11e0b10d8fc1063548b89
 
 COCOAPODS: 1.16.2
