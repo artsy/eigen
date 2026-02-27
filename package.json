@@ -153,6 +153,7 @@
     "events": "3.3.0",
     "expo": "54.0.20",
     "expo-build-properties": "~1.0.10",
+    "expo-status-bar": "~3.0.9",
     "expo-updates": "29.0.11",
     "formik": "2.2.9",
     "html-entities": "2.3.3",
