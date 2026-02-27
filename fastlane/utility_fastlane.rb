@@ -312,10 +312,9 @@ def format_build_number(build_number)
 end
 
 def git_tag_commit_message(tag)
-  # Returns the subject line of the commit the tag points to,
-  # or a fallback string if the tag doesn't exist locally.
+  # Returns the subject line of the commit the tag points to, or nil if the tag doesn't exist.
   msg = `git log -1 --format='%s' "#{tag}^{}" 2>/dev/null`.chomp
-  msg.empty? ? "(no tag found)" : msg
+  msg.empty? ? nil : msg
 end
 
 def should_silence_beta_failure?
