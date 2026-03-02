@@ -238,7 +238,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       )}
 
       <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
+        contextModule={contextModule}
         sectionType={section.__typename}
         index={index}
       />
@@ -347,7 +347,7 @@ const HomeViewSectionArtworksGridPlaceholder: React.FC<FlexProps> = (flexProps) 
   return (
     <Skeleton>
       <Flex {...flexProps}>
-        <Flex mx={2}>
+        <Flex mx={2} mt={2}>
           <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
           <Spacer y={2} />
         </Flex>
