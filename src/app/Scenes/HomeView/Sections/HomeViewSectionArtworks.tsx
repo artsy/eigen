@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
-  Button,
   Flex,
   FlexProps,
   Join,
@@ -14,7 +13,6 @@ import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.gr
 import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
@@ -25,16 +23,17 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
@@ -205,15 +204,12 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       {shouldShowInGrid ? (
-        <Flex mx={2} gap={2}>
-          <GenericGrid artworks={artworks} onPress={handleOnGridArtworkPress} fitToFrame />
-
-          <RouterLink to={moreHref} hasChildTouchable onPress={onMorePress}>
-            <Button block variant="outline">
-              View More
-            </Button>
-          </RouterLink>
-        </Flex>
+        <HomeViewSectionArtworksGrid
+          artworks={artworks}
+          moreHref={moreHref}
+          onMorePress={onMorePress}
+          onArtworkPress={handleOnGridArtworkPress}
+        />
       ) : showHomeViewCardRail ? (
         <ArtworksCard
           href={moreHref}
@@ -347,6 +343,20 @@ export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProp
   )
 }
 
+const HomeViewSectionArtworksGridPlaceholder: React.FC<FlexProps> = (flexProps) => {
+  return (
+    <Skeleton>
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
+          <Spacer y={2} />
+        </Flex>
+        <PlaceholderGrid />
+      </Flex>
+    </Skeleton>
+  )
+}
+
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, refetchKey, shouldShowInGrid, ...flexProps }) => {
@@ -393,7 +403,18 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
         />
       )
     },
-    LoadingFallback: HomeViewSectionArtworksPlaceholder,
+    LoadingFallback: () => {
+      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
+      const { shouldShowInGrid } = getNWFYExperimentDetails({
+        enabled: !!variant?.enabled,
+        variantName: variant?.name,
+      })
+
+      if (shouldShowInGrid) {
+        return <HomeViewSectionArtworksGridPlaceholder />
+      }
+      return <HomeViewSectionArtworksPlaceholder />
+    },
     ErrorFallback: NoFallback,
   })
 )
