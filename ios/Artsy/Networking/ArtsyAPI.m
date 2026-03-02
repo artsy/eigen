@@ -12,7 +12,6 @@
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
 
-#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -119,39 +118,6 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
     [[NSOperationQueue mainQueue] addOperations:newOps waitUntilFinished:NO];
 }
 
-#pragma mark -
-#pragma mark Xapp tokens
-
-+ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback
-{
-    [self getXappTokenWithCompletion:callback failure:nil];
-}
-
-+ (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure
-{
-    [self.sharedAPI getXappTokenWithCompletion:callback failure:failure];
-}
-
-/**
- *  Reset XAPP token on an access denied.
- *
- *  @param error AFNetworking error.
- */
-+ (void)handleXappTokenError:(NSError *)error
-{
-    NSHTTPURLResponse *response = (NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
-    if (response.statusCode == 401) {
-        NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-        NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-
-        if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
-            ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
-            [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
-            [ARRouter setXappToken:nil];
-        }
-    }
-}
-
 + (ArtsyAPI *)sharedAPI
 {
     static ArtsyAPI *_sharedController = nil;
@@ -193,65 +159,6 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
     [performOperation start];
     return performOperation;
-}
-
-- (void)getXappTokenWithCompletion:(void (^)(NSString *xappToken, NSDate *expirationDate))callback failure:(void (^)(NSError *error))failure;
-{
-    // Check if we already have a token for xapp or oauth and run the block
-
-    NSDate *xappDate = [[NSUserDefaults standardUserDefaults] objectForKey:ARXAppTokenExpiryDateDefault];
-    NSDate *oauthDate = [[NSUserDefaults standardUserDefaults] objectForKey:AROAuthTokenExpiryDateDefault];
-
-
-    NSString *xappToken = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
-    NSString *oauthToken = [UICKeyChainStore stringForKey:AROAuthTokenDefault];
-
-    if ((xappDate && xappToken) || (oauthToken && oauthDate)) {
-        if (callback) {
-            callback(xappToken ?: oauthToken, xappDate ?: oauthDate);
-        }
-        return;
-    }
-
-    NSURLRequest *tokenRequest = [ARRouter newXAppTokenRequest];
-    AFHTTPRequestOperation *op = [self requestOperation:tokenRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-
-        NSString *token = JSON[ARXAppToken];
-        NSString *date = JSON[AROExpiryDateKey];
-
-        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-        NSDate *expiryDate = [dateFormatter dateFromString:date];
-
-        NSString *oldxToken = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
-        if (oldxToken) {
-            if (callback) {
-                callback(token, expiryDate);
-            }
-            return ;
-        }
-
-        [ARRouter setXappToken:token];
-        [UICKeyChainStore setString:token forKey:ARXAppTokenKeychainKey];
-        [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:ARXAppTokenExpiryDateDefault];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        if (callback) {
-            callback(token, expiryDate);
-        }
-
-    }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-
-        //TODO: handle this less stupid
-        ARErrorLog(@"Couldn't get an Xapp token.");
-
-        NSError *cleanError = [NSError errorWithDomain:@"Auth" code:404 userInfo:@{ NSLocalizedDescriptionKey: @"Can’t reach Artsy." }];
-        [ARNetworkErrorManager presentActiveError:cleanError];
-
-        if (failure) { failure(error); }
-        }];
-
-    [op start];
 }
 
 - (AFHTTPRequestOperation *)getRequest:(NSURLRequest *)request parseIntoAClass:(Class)klass withKey:(NSString *)key success:(void (^)(id))success failure:(void (^)(NSError *error))failure;

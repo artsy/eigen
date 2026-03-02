@@ -29,7 +29,6 @@
     #import "ArtsyAPI+Profiles.h"
     #import "ArtsyAPI+RelatedModels.h"
     #import "ArtsyAPI+Sales.h"
-    #import "ArtsyAPI+SystemTime.h"
     #import "ArtsyAPI+ErrorHandlers.h"
 
     #import "ARRouter.h"
