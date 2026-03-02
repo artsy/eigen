@@ -135,7 +135,6 @@
 		CB43289C27E8FEE500B29DD6 /* PartnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276927E8FEE400B29DD6 /* PartnerTests.m */; };
 		CB43289D27E8FEE500B29DD6 /* FairTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276A27E8FEE400B29DD6 /* FairTests.m */; };
 		CB43289E27E8FEE500B29DD6 /* ARImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276B27E8FEE400B29DD6 /* ARImageTests.m */; };
-		CB4328A327E8FEE500B29DD6 /* SystemTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */; };
 		CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43277227E8FEE400B29DD6 /* UserTests.m */; };
 		CB4328A527E8FEE500B29DD6 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43277427E8FEE400B29DD6 /* ScheduleTests.swift */; };
 		CB4328A627E8FEE500B29DD6 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43277527E8FEE400B29DD6 /* ArtworkTests.swift */; };
@@ -701,7 +700,6 @@
 		CB43276E27E8FEE400B29DD6 /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v0.data; sourceTree = "<group>"; };
 		CB43276F27E8FEE400B29DD6 /* Artwork_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v0.data; sourceTree = "<group>"; };
 		CB43277027E8FEE400B29DD6 /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
-		CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemTimeTests.m; sourceTree = "<group>"; };
 		CB43277227E8FEE400B29DD6 /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
 		CB43277427E8FEE400B29DD6 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		CB43277527E8FEE400B29DD6 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
@@ -1842,7 +1840,6 @@
 				CB43276A27E8FEE400B29DD6 /* FairTests.m */,
 				CB43276B27E8FEE400B29DD6 /* ARImageTests.m */,
 				CB43276C27E8FEE400B29DD6 /* Data */,
-				CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */,
 				CB43277227E8FEE400B29DD6 /* UserTests.m */,
 			);
 			path = Model_Tests;
@@ -4152,7 +4149,6 @@
 				CB4328B327E8FEE500B29DD6 /* ARTestContext.m in Sources */,
 				CB4328A727E8FEE500B29DD6 /* ARTestImageCachingFunctions.swift in Sources */,
 				CB43296227E90FF300B29DD6 /* WidgetUrl.swift in Sources */,
-				CB4328A327E8FEE500B29DD6 /* SystemTimeTests.m in Sources */,
 				CB43295E27E90F7500B29DD6 /* Artist.swift in Sources */,
 				CB43286A27E8FEE500B29DD6 /* AuctionBiddersNetworkModel.swift in Sources */,
 				CB4328B927E8FEE500B29DD6 /* ArtsyAPI+ErrorHandlers.m in Sources */,
