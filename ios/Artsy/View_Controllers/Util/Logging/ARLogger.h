@@ -1,12 +1,9 @@
 #import <CocoaLumberjack/DDLogMacros.h>
-#import <AFNetworkActivityLogger/AFNetworkActivityLogger.h>
 
 #ifdef DEBUG
 static const int ddLogLevel = DDLogLevelVerbose;
-static const int httpLogLevel = AFLoggerLevelInfo;
 #else
 static const int ddLogLevel = DDLogLevelWarning;
-static const int httpLogLevel = AFLoggerLevelError;
 #endif
 
 // If you update this enum, update `contextMap` in the implementation too please
@@ -15,7 +12,6 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
     ARLogContextInfo = 1,
     ARLogContextAction,
     ARLogContextError,
-    ARLogContextRequestOperation
 };
 
 
@@ -23,7 +19,6 @@ typedef NS_ENUM(NSInteger, ARLogContext) {
 /// Call this ASAP to get logging up and running
 - (void)startLogging;
 - (void)stopLogging;
-+ (BOOL)shouldLogNetworkRequests;
 + (instancetype)sharedLogger;
 @end
 

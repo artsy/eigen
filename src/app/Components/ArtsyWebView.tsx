@@ -340,6 +340,8 @@ export const ArtsyWebView = forwardRef<
       <Flex flex={1}>
         <WebView
           enableApplePay
+          // this is needed to prevent font scaling on Android for the webviews
+          textZoom={100}
           ref={innerRef as LegacyRef<WebView>}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it

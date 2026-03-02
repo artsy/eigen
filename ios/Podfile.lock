@@ -1,9 +1,6 @@
 PODS:
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
-  - AFNetworkActivityLogger (2.0.4):
-    - AFNetworking/NSURLConnection (~> 2.0)
-    - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking/NSURLConnection (2.7.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -3192,7 +3189,7 @@ PODS:
     - SocketRocket
   - RNAppleAuthentication (2.1.5):
     - React-Core
-  - RNBootSplash (6.3.10):
+  - RNBootSplash (7.1.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -4019,7 +4016,6 @@ PODS:
 
 DEPENDENCIES:
   - Aerodramus (= 2.0.0)
-  - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -4202,7 +4198,6 @@ SPEC REPOS:
   https://github.com/artsy/Specs.git:
     - Aerodramus
   trunk:
-    - AFNetworkActivityLogger
     - AFNetworking
     - AppAuth
     - CocoaLumberjack
@@ -4591,7 +4586,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
-  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
@@ -4764,7 +4758,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 6c26f8c25d0b5ae66f86a1cce1777076ac8bcbd8
   ReactCommon: 5f0e5c09a64a2717215dd84380e1a747810406f2
   RNAppleAuthentication: 98f367520bd647ea4c094dc3e133106ac523798a
-  RNBootSplash: a3179e35cb328629176b7891e1ef1fb9ef364fc3
+  RNBootSplash: 51262ea318e6f45b7b75941c9aa2ce0df3782908
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNCClipboard: adba6334687b7fb2c37760e26dedd550b4846a72
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
@@ -4814,6 +4808,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 4b27c048c47e79890c3572ee82a2a7b7aaedab3c
+PODFILE CHECKSUM: 0da0271eebd40e264e3dc407a45eb85fbe988408
 
 COCOAPODS: 1.16.2
