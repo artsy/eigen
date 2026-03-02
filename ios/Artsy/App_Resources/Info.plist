@@ -97,6 +97,8 @@
 	<string>c77772ee1</string>
 	<key>GITRemoteOriginURL</key>
 	<string>https://github.com/artsy/eigen.git</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
