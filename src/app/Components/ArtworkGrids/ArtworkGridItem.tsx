@@ -46,6 +46,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
 
+const MAX_IMAGE_HEIGHT = 280
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
@@ -79,6 +80,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  fitToFrame?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -113,6 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     trackTap,
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
+    fitToFrame = false,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
@@ -258,6 +261,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const displayArtworkSocialSignal =
       !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
+    const framedImageHeight = height && height > MAX_IMAGE_HEIGHT ? MAX_IMAGE_HEIGHT : height
+
     return (
       <Disappearable ref={disappearableRef}>
         <ContextMenuArtwork
@@ -293,18 +298,38 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
-              {!!artwork.image?.url && (
-                <View>
-                  <Image
-                    src={artwork.image.url}
-                    aspectRatio={artwork.image.aspectRatio ?? 1}
-                    height={height}
-                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    blurhash={artwork.image.blurhash}
-                    resizeMode="contain"
-                  />
-                </View>
-              )}
+              {!!fitToFrame
+                ? !!artwork.image?.url && (
+                    <View
+                      style={{
+                        backgroundColor: color("mono5"),
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Image
+                        src={artwork.image.url}
+                        aspectRatio={artwork.image.aspectRatio ?? 1}
+                        height={framedImageHeight}
+                        width={Number(framedImageHeight) * (artwork.image.aspectRatio ?? 1)}
+                        blurhash={artwork.image.blurhash}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  )
+                : !!artwork.image?.url && (
+                    <View>
+                      <Image
+                        src={artwork.image.url}
+                        aspectRatio={artwork.image.aspectRatio ?? 1}
+                        height={height}
+                        width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                        blurhash={artwork.image.blurhash}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  )}
               {!!canShowAuctionProgressBar && (
                 <Box mt={1}>
                   <DurationProvider startAt={endsAt ?? undefined}>

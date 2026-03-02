@@ -44,6 +44,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   saleInfoTextStyle?: TextProps
   trackingFlow?: string
+  fitToFrame?: boolean
 }
 
 /**
@@ -86,6 +87,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   viewabilityConfig,
   trackTap,
   saleInfoTextStyle,
+  fitToFrame,
   ...rest
 }) => {
   const space = useSpace()
@@ -130,6 +132,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         saleInfoTextStyle={saleInfoTextStyle}
         trackTap={trackTap}
+        fitToFrame={fitToFrame}
       />
     ),
     [
@@ -155,6 +158,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       hideCreateAlertOnArtworkPreview,
       saleInfoTextStyle,
       trackTap,
+      fitToFrame,
     ]
   )
 

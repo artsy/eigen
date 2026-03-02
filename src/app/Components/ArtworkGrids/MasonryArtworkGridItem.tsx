@@ -38,6 +38,7 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
   hideSaleInfo?: boolean
+  fitToFrame?: boolean
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({

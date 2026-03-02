@@ -206,7 +206,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {shouldShowInGrid ? (
         <Flex mx={2} gap={2}>
-          <GenericGrid artworks={artworks} onPress={handleOnGridArtworkPress} />
+          <GenericGrid artworks={artworks} onPress={handleOnGridArtworkPress} fitToFrame />
 
           <RouterLink to={moreHref} hasChildTouchable onPress={onMorePress}>
             <Button block variant="outline">
