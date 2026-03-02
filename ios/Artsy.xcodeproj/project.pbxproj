@@ -326,7 +326,6 @@
 		CBE326E427E275A300395A93 /* ARNetworkErrorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3251E27E275A100395A93 /* ARNetworkErrorManager.m */; };
 		CBE326E527E275A300395A93 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3251F27E275A100395A93 /* ARFeedImageLoader.m */; };
 		CBE326E627E275A300395A93 /* UIApplicationStateEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252327E275A100395A93 /* UIApplicationStateEnum.m */; };
-		CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252727E275A100395A93 /* ARHTTPRequestOperationLogger.m */; };
 		CBE326E827E275A300395A93 /* ARLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252827E275A100395A93 /* ARLogger.m */; };
 		CBE326E927E275A300395A93 /* ARLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252927E275A100395A93 /* ARLogFormatter.m */; };
 		CBE326EA27E275A300395A93 /* ARTwoWayDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */; };
@@ -1087,10 +1086,8 @@
 		CBE3252327E275A100395A93 /* UIApplicationStateEnum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplicationStateEnum.m; sourceTree = "<group>"; };
 		CBE3252527E275A100395A93 /* ARLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogFormatter.h; sourceTree = "<group>"; };
 		CBE3252627E275A100395A93 /* ARLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogger.h; sourceTree = "<group>"; };
-		CBE3252727E275A100395A93 /* ARHTTPRequestOperationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHTTPRequestOperationLogger.m; sourceTree = "<group>"; };
 		CBE3252827E275A100395A93 /* ARLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogger.m; sourceTree = "<group>"; };
 		CBE3252927E275A100395A93 /* ARLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogFormatter.m; sourceTree = "<group>"; };
-		CBE3252A27E275A100395A93 /* ARHTTPRequestOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHTTPRequestOperationLogger.h; sourceTree = "<group>"; };
 		CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTwoWayDictionaryTransformer.m; sourceTree = "<group>"; };
 		CBE3253027E275A100395A93 /* ARSerifNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSerifNavigationViewController.h; sourceTree = "<group>"; };
 		CBE3253327E275A100395A93 /* ARSCNWallNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSCNWallNode.m; sourceTree = "<group>"; };
@@ -2360,6 +2357,7 @@
 			isa = PBXGroup;
 			children = (
 				4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */,
+				A1B2C3D4E5F600AABB000001 /* ios-config.json */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2789,10 +2787,8 @@
 			children = (
 				CBE3252527E275A100395A93 /* ARLogFormatter.h */,
 				CBE3252627E275A100395A93 /* ARLogger.h */,
-				CBE3252727E275A100395A93 /* ARHTTPRequestOperationLogger.m */,
 				CBE3252827E275A100395A93 /* ARLogger.m */,
 				CBE3252927E275A100395A93 /* ARLogFormatter.m */,
-				CBE3252A27E275A100395A93 /* ARHTTPRequestOperationLogger.h */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -3862,7 +3858,6 @@
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
-				CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */,
 				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
 				CBE3278D27E275A400395A93 /* Article.m in Sources */,
 				CBE3277827E275A400395A93 /* ArtsyAPI+Profiles.m in Sources */,

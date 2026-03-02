@@ -4,20 +4,10 @@
 #import <CocoaLumberjack/DDFileLogger.h>
 
 #import "ARFonts.h"
-#import "ARHTTPRequestOperationLogger.h"
 #import "ARLogFormatter.h"
 #import "UIColor+ArtsyColors.h"
 
 @implementation ARLogger
-
-+ (BOOL)shouldLogNetworkRequests;
-{
-#ifdef DEBUG
-    return YES;
-#else
-    return NO;
-#endif
-}
 
 + (instancetype)sharedLogger
 {
@@ -35,8 +25,6 @@
     [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyGrayRegular] backgroundColor:nil forFlag:DDLogFlagDebug];
     [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyYellowRegular] backgroundColor:nil forFlag:DDLogFlagInfo];
     [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRedRegular] backgroundColor:nil forFlag:DDLogFlagError];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor ar_colorWithHex:0x66cc4c] backgroundColor:nil forFlag:DDLogFlagInfo context:ARLogContextRequestOperation];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor ar_colorWithHex:0xe56633] backgroundColor:nil forFlag:DDLogFlagError context:ARLogContextRequestOperation];
 
     //Console.app + Xcode log window// We could reuse the formatter, but then our date formatter would
     // need to be thread-safe
@@ -47,20 +35,11 @@
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [self addDDFileLogger];
-
-    if ([self.class shouldLogNetworkRequests]) {
-        [[ARHTTPRequestOperationLogger sharedLogger] startLogging];
-    }
 }
 
 - (void)dealloc
 {
     [self stopLogging];
-}
-
-- (void)stopLogging
-{
-    [[ARHTTPRequestOperationLogger sharedLogger] stopLogging];
 }
 
 // At the moment, everything gets logged to one log. We can change this to sort based on context and to only log Errors.
