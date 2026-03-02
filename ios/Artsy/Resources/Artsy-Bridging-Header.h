@@ -23,6 +23,7 @@
 #import "ARDispatchManager.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIViewController+Popovers.h"
+#import "UIView+BooleanAnimations.h"
 
 // Models.
 #import "Sale.h"
@@ -76,7 +77,6 @@
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "AREmission.h"
 #import "ARNotificationView.h"
 
