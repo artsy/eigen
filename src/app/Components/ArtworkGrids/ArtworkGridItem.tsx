@@ -11,6 +11,7 @@ import {
   TextProps,
   Touchable,
   useColor,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -42,6 +43,7 @@ import {
 } from "app/utils/track/ArtworkActions"
 import React, { memo, useRef, useState } from "react"
 import { Platform, Text as RNText, View, ViewProps } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -121,6 +123,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
     const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
+    const isIPad = isTablet()
+    const { height: screenHeight } = useScreenDimensions()
 
     const color = useColor()
     const tracking = useTracking()
@@ -262,7 +266,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const displayArtworkSocialSignal =
       !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
-    const framedImageHeight = height && height > MAX_IMAGE_HEIGHT ? MAX_IMAGE_HEIGHT : height
+    const maxFramedImageHeight = isIPad ? screenHeight / 2.5 : MAX_IMAGE_HEIGHT
+    const framedImageHeight = height === undefined ? height : Math.min(height, maxFramedImageHeight)
 
     return (
       <Disappearable ref={disappearableRef}>

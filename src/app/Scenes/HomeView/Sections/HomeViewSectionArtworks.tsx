@@ -254,7 +254,7 @@ const fragment = graphql`
     enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
     includeArtistNames: { type: "Boolean", defaultValue: false }
     includeGenericGrid: { type: "Boolean", defaultValue: false }
-    artworksToLoad: { type: "Int", defaultValue: 10 }
+    artworksLimit: { type: "Int", defaultValue: 10 }
   ) {
     __typename
     internalID
@@ -271,7 +271,7 @@ const fragment = graphql`
     ownerType
     trackItemImpressions
     showArtworksCardView
-    artworksConnection(first: $artworksToLoad) {
+    artworksConnection(first: $artworksLimit) {
       edges {
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
@@ -292,7 +292,7 @@ const homeViewSectionArtworksQuery = graphql`
     $enableHidingDislikedArtworks: Boolean!
     $includeArtistNames: Boolean!
     $includeGenericGrid: Boolean!
-    $artworksToLoad: Int!
+    $artworksLimit: Int!
   ) {
     homeView {
       section(id: $id) {
@@ -301,7 +301,7 @@ const homeViewSectionArtworksQuery = graphql`
             enableHidingDislikedArtworks: $enableHidingDislikedArtworks
             includeArtistNames: $includeArtistNames
             includeGenericGrid: $includeGenericGrid
-            artworksToLoad: $artworksToLoad
+            artworksLimit: $artworksLimit
           )
       }
     }
@@ -374,9 +374,9 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       })
 
       const includeArtistNames = enableNewHomeViewCardRailType
-      const includeGenericGrid = !!shouldShowInGrid && !!shouldShowInGrid
+      const includeGenericGrid = !!shouldShowInGrid
 
-      const artworksToLoad = includeGenericGrid ? artworksCount : DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD
+      const artworksLimit = includeGenericGrid ? artworksCount : DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
@@ -385,7 +385,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           enableHidingDislikedArtworks,
           includeArtistNames,
           includeGenericGrid,
-          artworksToLoad,
+          artworksLimit,
         },
         {
           fetchKey: refetchKey,
