@@ -144,20 +144,19 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const handleOnGridArtworkPress = (
     _artworkSlug: string,
-    artwork?: ArtworkGridItem_artwork$data
+    artwork?: ArtworkGridItem_artwork$data,
+    itemIndex?: number
   ) => {
     if (!artwork) {
       return
     }
-
-    const position = artworks.findIndex((item) => item.internalID === artwork.internalID)
 
     tracking.tappedArtworkGroup(
       artwork.internalID,
       artwork.slug,
       artwork.collectorSignals,
       contextModule,
-      position >= 0 ? position : 0
+      itemIndex ?? 0
     )
   }
 

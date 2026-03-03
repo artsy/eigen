@@ -1,6 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { TextProps, useSpace } from "@artsy/palette-mobile"
 import { FlashList, FlashListProps, ListRenderItem } from "@shopify/flash-list"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -37,7 +38,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hideViewFollowsLink?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   pageSize?: number
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage

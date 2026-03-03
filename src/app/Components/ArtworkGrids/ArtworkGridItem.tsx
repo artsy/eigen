@@ -68,7 +68,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
@@ -80,6 +80,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  /** fit the artwork to the frame with limited height */
   fitToFrame?: boolean
 }
 
@@ -197,7 +198,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
 
     const handleTap = () => {
       if (onPress) {
-        return onPress(artwork.slug, artwork)
+        return onPress(artwork.slug, artwork, itemIndex)
       }
 
       addArtworkToRecentSearches()
