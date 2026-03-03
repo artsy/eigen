@@ -298,38 +298,37 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
-              {!!fitToFrame
-                ? !!artwork.image?.url && (
-                    <View
-                      style={{
-                        backgroundColor: color("mono5"),
-                        width: "100%",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Image
-                        src={artwork.image.url}
-                        aspectRatio={artwork.image.aspectRatio ?? 1}
-                        height={framedImageHeight}
-                        width={Number(framedImageHeight) * (artwork.image.aspectRatio ?? 1)}
-                        blurhash={artwork.image.blurhash}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  )
-                : !!artwork.image?.url && (
-                    <View>
-                      <Image
-                        src={artwork.image.url}
-                        aspectRatio={artwork.image.aspectRatio ?? 1}
-                        height={height}
-                        width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                        blurhash={artwork.image.blurhash}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  )}
+              {!!artwork.image?.url &&
+                (fitToFrame ? (
+                  <View
+                    style={{
+                      backgroundColor: color("mono5"),
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={framedImageHeight}
+                      width={Number(framedImageHeight) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={height}
+                      width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ))}
               {!!canShowAuctionProgressBar && (
                 <Box mt={1}>
                   <DurationProvider startAt={endsAt ?? undefined}>
