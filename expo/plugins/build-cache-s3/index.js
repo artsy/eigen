@@ -53,7 +53,11 @@ function s3ObjectExists(s3Path) {
       stdio: ["pipe", "pipe", "pipe"],
     })
     return true
-  } catch {
+  } catch (e) {
+    const stderr = e.stderr?.toString().trim()
+    if (stderr) {
+      throw new Error(stderr)
+    }
     return false
   }
 }
@@ -109,7 +113,15 @@ async function resolveBuildCache(props, options) {
 
   log(`🔍 Looking for fingerprint ${fingerprintHash.slice(0, 12)}... in S3`)
 
-  if (!s3ObjectExists(s3Path)) {
+  let exists
+  try {
+    exists = s3ObjectExists(s3Path)
+  } catch (err) {
+    log(`❌ S3 error: ${err.message}`)
+    return null
+  }
+
+  if (!exists) {
     log(`❌ No fingerprint ${fingerprintHash.slice(0, 12)}... found in S3`)
     return null
   }
