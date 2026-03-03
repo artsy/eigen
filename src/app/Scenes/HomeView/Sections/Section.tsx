@@ -38,7 +38,7 @@ export interface SectionSharedProps extends FlexProps {
   shouldShowInGrid?: boolean
 }
 
-const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
+export const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
   const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
