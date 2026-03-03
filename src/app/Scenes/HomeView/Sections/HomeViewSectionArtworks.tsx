@@ -24,7 +24,7 @@ import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
-import { NWFY_SECTION_ID, SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
@@ -45,6 +45,7 @@ interface HomeViewSectionArtworksProps extends FlexProps {
   index: number
 }
 
+const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
 const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD = 3
 const DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD = 10
 const SIX_ARTWORKS_TO_LOAD = 6
@@ -58,11 +59,13 @@ type NWFYExperimentDetails = {
 export const getNWFYExperimentDetails = ({
   enabled,
   variantName,
+  sectionID,
 }: {
   enabled?: boolean
   variantName?: string
+  sectionID: string
 }): NWFYExperimentDetails => {
-  if (!enabled) {
+  if (!enabled || sectionID !== NWFY_SECTION_ID) {
     return {
       artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
       shouldShowInGrid: false,
@@ -367,6 +370,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       const { artworksCount } = getNWFYExperimentDetails({
         enabled: !!variant?.enabled,
         variantName: variant?.name,
+        sectionID,
       })
 
       const includeArtistNames = enableNewHomeViewCardRailType
@@ -407,9 +411,10 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       const { shouldShowInGrid } = getNWFYExperimentDetails({
         enabled: !!variant?.enabled,
         variantName: variant?.name,
+        sectionID,
       })
 
-      if (shouldShowInGrid && sectionID === NWFY_SECTION_ID) {
+      if (shouldShowInGrid) {
         return <HomeViewSectionArtworksGridPlaceholder />
       }
       return <HomeViewSectionArtworksPlaceholder />

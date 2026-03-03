@@ -38,13 +38,12 @@ export interface SectionSharedProps extends FlexProps {
   shouldShowInGrid?: boolean
 }
 
-export const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
-
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
   const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
   const { shouldShowInGrid } = getNWFYExperimentDetails({
     enabled: !!variant?.enabled,
     variantName: variant?.name,
+    sectionID: section.internalID,
   })
 
   if (!section.internalID) {
@@ -70,7 +69,7 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
       return (
         <HomeViewSectionArtworksQueryRenderer
           sectionID={section.internalID}
-          shouldShowInGrid={!!shouldShowInGrid && section.internalID === NWFY_SECTION_ID}
+          shouldShowInGrid={!!shouldShowInGrid}
           {...rest}
         />
       )
