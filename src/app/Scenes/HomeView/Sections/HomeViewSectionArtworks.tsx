@@ -402,7 +402,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
         />
       )
     },
-    LoadingFallback: (sectionID) => {
+    LoadingFallback: ({ sectionID }) => {
       const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
       const { shouldShowInGrid } = getNWFYExperimentDetails({
         enabled: !!variant?.enabled,
