@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, TextProps, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { GenericGrid_artworks$key } from "__generated__/GenericGrid_artworks.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import Spinner from "app/Components/Spinner"
@@ -20,10 +21,11 @@ interface Props {
   hidePartner?: boolean
   isLoading?: boolean
   itemMargin?: number
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   trackingFlow?: string
   saleInfoTextStyle?: TextProps
+  fitToFrame?: boolean
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
@@ -39,6 +41,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   trackTap,
   saleInfoTextStyle,
   trackingFlow,
+  fitToFrame = false,
 }) => {
   const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
@@ -59,6 +62,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
             onPress={onPress}
             saleInfoTextStyle={saleInfoTextStyle}
             trackingFlow={trackingFlow}
+            fitToFrame={fitToFrame}
           />
         </Flex>
         {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}

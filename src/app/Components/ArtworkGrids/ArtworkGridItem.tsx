@@ -11,6 +11,7 @@ import {
   TextProps,
   Touchable,
   useColor,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -42,10 +43,12 @@ import {
 } from "app/utils/track/ArtworkActions"
 import React, { memo, useRef, useState } from "react"
 import { Platform, Text as RNText, View, ViewProps } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
 
+const MAX_IMAGE_HEIGHT = 280
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
@@ -67,7 +70,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
@@ -79,6 +82,8 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  /** fit the artwork to the frame with limited height */
+  fitToFrame?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -113,10 +118,13 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     trackTap,
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
+    fitToFrame = false,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
     const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
+    const isIPad = isTablet()
+    const { height: screenHeight } = useScreenDimensions()
 
     const color = useColor()
     const tracking = useTracking()
@@ -194,7 +202,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
 
     const handleTap = () => {
       if (onPress) {
-        return onPress(artwork.slug, artwork)
+        return onPress(artwork.slug, artwork, itemIndex)
       }
 
       addArtworkToRecentSearches()
@@ -258,6 +266,9 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const displayArtworkSocialSignal =
       !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
+    const maxFramedImageHeight = isIPad ? screenHeight / 2.5 : MAX_IMAGE_HEIGHT
+    const framedImageHeight = height === undefined ? height : Math.min(height, maxFramedImageHeight)
+
     return (
       <Disappearable ref={disappearableRef}>
         <ContextMenuArtwork
@@ -293,18 +304,37 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
-              {!!artwork.image?.url && (
-                <View>
-                  <Image
-                    src={artwork.image.url}
-                    aspectRatio={artwork.image.aspectRatio ?? 1}
-                    height={height}
-                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    blurhash={artwork.image.blurhash}
-                    resizeMode="contain"
-                  />
-                </View>
-              )}
+              {!!artwork.image?.url &&
+                (fitToFrame ? (
+                  <View
+                    style={{
+                      backgroundColor: color("mono5"),
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={framedImageHeight}
+                      width={Number(framedImageHeight) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={height}
+                      width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ))}
               {!!canShowAuctionProgressBar && (
                 <Box mt={1}>
                   <DurationProvider startAt={endsAt ?? undefined}>

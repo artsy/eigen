@@ -22,6 +22,7 @@ import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHome
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -63,6 +64,9 @@ export const HomeView: React.FC = memo(() => {
   const setViewableSections = HomeViewStore.useStoreActions(
     (actions) => actions.setViewableSections
   )
+
+  const { trackExperiment: trackHomeViewNWFYGridView } =
+    useExperimentVariant("onyx_NWFY-grid-ABC-test")
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -112,6 +116,10 @@ export const HomeView: React.FC = memo(() => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
+
+  useEffect(() => {
+    trackHomeViewNWFYGridView()
+  }, [])
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {

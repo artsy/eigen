@@ -8,6 +8,7 @@ import {
   SkeletonText,
   Spacer,
 } from "@artsy/palette-mobile"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworksCard_artworks$data } from "__generated__/ArtworksCard_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
@@ -22,14 +23,17 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
@@ -37,14 +41,65 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
+  shouldShowInGrid?: boolean
   index: number
 }
 
+const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
 const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD = 3
+const DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD = 10
+const SIX_ARTWORKS_TO_LOAD = 6
+const FOUR_ARTWORKS_TO_LOAD = 4
+
+type NWFYExperimentDetails = {
+  artworksCount: number
+  shouldShowInGrid: boolean
+}
+
+export const getNWFYExperimentDetails = ({
+  enabled,
+  variantName,
+  sectionID,
+}: {
+  enabled?: boolean
+  variantName?: string
+  sectionID: string
+}): NWFYExperimentDetails => {
+  if (!enabled || sectionID !== NWFY_SECTION_ID) {
+    return {
+      artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
+      shouldShowInGrid: false,
+    }
+  }
+
+  switch (variantName) {
+    case "grid-six-works":
+      return {
+        artworksCount: SIX_ARTWORKS_TO_LOAD,
+        shouldShowInGrid: true,
+      }
+    case "grid-four-works":
+      return {
+        artworksCount: FOUR_ARTWORKS_TO_LOAD,
+        shouldShowInGrid: true,
+      }
+    case "control":
+      return {
+        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
+        shouldShowInGrid: false,
+      }
+    default:
+      return {
+        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
+        shouldShowInGrid: false,
+      }
+  }
+}
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
   index,
+  shouldShowInGrid = false,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -73,6 +128,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     return null
   }
 
+  const contextModule = shouldShowInGrid
+    ? ("newWorksForYouGrid" as ContextModule)
+    : (section.contextModule as ContextModule)
+
   const handleOnArtworkPress = (
     artwork: ArtworkRail_artworks$data[number] | ArtworksCard_artworks$data[number],
     position: number
@@ -81,8 +140,26 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       artwork.internalID,
       artwork.slug,
       artwork[" $fragmentType"] !== "ArtworksCard_artworks" ? artwork?.collectorSignals : null,
-      section.contextModule as ContextModule,
+      contextModule,
       position
+    )
+  }
+
+  const handleOnGridArtworkPress = (
+    _artworkSlug: string,
+    artwork?: ArtworkGridItem_artwork$data,
+    itemIndex?: number
+  ) => {
+    if (!artwork) {
+      return
+    }
+
+    tracking.tappedArtworkGroup(
+      artwork.internalID,
+      artwork.slug,
+      artwork.collectorSignals,
+      contextModule,
+      itemIndex ?? 0
     )
   }
 
@@ -92,14 +169,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const onSectionViewAll = () => {
     tracking.tappedArtworkGroupViewAll(
-      section.contextModule as ContextModule,
+      contextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
 
   const onMorePress = () => {
     tracking.tappedArtworkGroupViewAll(
-      section.contextModule as ContextModule,
+      contextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
@@ -128,7 +205,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       />
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
-      {showHomeViewCardRail ? (
+      {shouldShowInGrid ? (
+        <HomeViewSectionArtworksGrid
+          artworks={artworks}
+          moreHref={moreHref}
+          onMorePress={onMorePress}
+          onArtworkPress={handleOnGridArtworkPress}
+        />
+      ) : showHomeViewCardRail ? (
         <ArtworksCard
           href={moreHref}
           onPress={handleOnArtworkPress}
@@ -156,7 +240,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       )}
 
       <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
+        contextModule={contextModule}
         sectionType={section.__typename}
         index={index}
       />
@@ -169,6 +253,8 @@ const fragment = graphql`
   @argumentDefinitions(
     enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
     includeArtistNames: { type: "Boolean", defaultValue: false }
+    includeGenericGrid: { type: "Boolean", defaultValue: false }
+    artworksLimit: { type: "Int", defaultValue: 10 }
   ) {
     __typename
     internalID
@@ -185,7 +271,7 @@ const fragment = graphql`
     ownerType
     trackItemImpressions
     showArtworksCardView
-    artworksConnection(first: 10) {
+    artworksConnection(first: $artworksLimit) {
       edges {
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
@@ -193,6 +279,7 @@ const fragment = graphql`
           internalID
           ...ArtworkRail_artworks
           ...ArtworksCard_artworks
+          ...GenericGrid_artworks @include(if: $includeGenericGrid)
         }
       }
     }
@@ -204,6 +291,8 @@ const homeViewSectionArtworksQuery = graphql`
     $id: String!
     $enableHidingDislikedArtworks: Boolean!
     $includeArtistNames: Boolean!
+    $includeGenericGrid: Boolean!
+    $artworksLimit: Int!
   ) {
     homeView {
       section(id: $id) {
@@ -211,6 +300,8 @@ const homeViewSectionArtworksQuery = graphql`
           @arguments(
             enableHidingDislikedArtworks: $enableHidingDislikedArtworks
             includeArtistNames: $includeArtistNames
+            includeGenericGrid: $includeGenericGrid
+            artworksLimit: $artworksLimit
           )
       }
     }
@@ -254,14 +345,38 @@ export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProp
   )
 }
 
+const HomeViewSectionArtworksGridPlaceholder: React.FC<FlexProps> = (flexProps) => {
+  return (
+    <Skeleton>
+      <Flex {...flexProps}>
+        <Flex mx={2} mt={2}>
+          <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
+          <Spacer y={2} />
+        </Flex>
+        <PlaceholderGrid />
+      </Flex>
+    </Skeleton>
+  )
+}
+
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+    Component: ({ sectionID, index, refetchKey, shouldShowInGrid, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
 
       const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
+      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
+      const { artworksCount } = getNWFYExperimentDetails({
+        enabled: !!variant?.enabled,
+        variantName: variant?.name,
+        sectionID,
+      })
+
       const includeArtistNames = enableNewHomeViewCardRailType
+      const includeGenericGrid = !!shouldShowInGrid
+
+      const artworksLimit = includeGenericGrid ? artworksCount : DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
@@ -269,6 +384,8 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           id: sectionID,
           enableHidingDislikedArtworks,
           includeArtistNames,
+          includeGenericGrid,
+          artworksLimit,
         },
         {
           fetchKey: refetchKey,
@@ -281,10 +398,27 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       }
 
       return (
-        <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
+        <HomeViewSectionArtworks
+          section={data.homeView.section}
+          index={index}
+          shouldShowInGrid={shouldShowInGrid}
+          {...flexProps}
+        />
       )
     },
-    LoadingFallback: HomeViewSectionArtworksPlaceholder,
+    LoadingFallback: ({ sectionID }) => {
+      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
+      const { shouldShowInGrid } = getNWFYExperimentDetails({
+        enabled: !!variant?.enabled,
+        variantName: variant?.name,
+        sectionID,
+      })
+
+      if (shouldShowInGrid) {
+        return <HomeViewSectionArtworksGridPlaceholder />
+      }
+      return <HomeViewSectionArtworksPlaceholder />
+    },
     ErrorFallback: NoFallback,
   })
 )
