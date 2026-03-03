@@ -118,6 +118,26 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
     [[NSOperationQueue mainQueue] addOperations:newOps waitUntilFinished:NO];
 }
 
+/**
+ *  Reset XAPP token on an access denied.
+ *
+ *  @param error AFNetworking error.
+ */
++ (void)handleXappTokenError:(NSError *)error
+{
+    NSHTTPURLResponse *response = (NSHTTPURLResponse *)error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
+    if (response.statusCode == 401) {
+        NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+        if ([recoverySuggestion[@"error"] isEqualToString:@"Unauthorized"] && [recoverySuggestion[@"text"] isEqualToString:@"The XAPP token is invalid or has expired."]) {
+            ARActionLog(@"Resetting XAPP token after error: %@", error.localizedDescription);
+            [UICKeyChainStore removeItemForKey:ARXAppTokenKeychainKey];
+            [ARRouter setXappToken:nil];
+        }
+    }
+}
+
 + (ArtsyAPI *)sharedAPI
 {
     static ArtsyAPI *_sharedController = nil;
