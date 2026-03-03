@@ -182,7 +182,7 @@ export const Conversation: React.FC<Props> = ({
           {!isConnected && <ConnectivityBanner />}
           <Messages
             componentRef={(messages) => (messagesRef.current = messages)}
-            conversation={conversation as any}
+            conversation={conversation}
             onRefresh={() => {
               relay.refetch(
                 { conversationID: conversation?.internalID },

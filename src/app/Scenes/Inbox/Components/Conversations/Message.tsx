@@ -1,5 +1,6 @@
 import { Spacer, Flex, BoxProps, Text, useColor } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
+import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -20,18 +21,26 @@ const AttachmentContainer = styled(View)`
   padding: 10px;
 `
 
-interface Props extends Omit<BoxProps, "color"> {
+interface MessageProps extends Omit<BoxProps, "color"> {
   message: Message_message$data
-  showTimeSince?: boolean
   conversationId: string
+  showTimeSince?: boolean
+  formattedFirstMessage?: NonNullable<
+    Messages_conversation$data["inquiryRequest"]
+  >["formattedFirstMessage"]
 }
 
-export const Message: React.FC<Props> = ({ message, showTimeSince, conversationId }) => {
+export const Message: React.FC<MessageProps> = ({
+  message,
+  showTimeSince,
+  conversationId,
+  formattedFirstMessage,
+}) => {
   const tracking = useTracking()
   const color = useColor()
 
   const renderAttachmentPreviews = (
-    attachments: Props["message"]["attachments"],
+    attachments: MessageProps["message"]["attachments"],
     backgroundColor: string
   ) => {
     // reactNodeHandle is passed to the native side to decide which UIView to show the
@@ -96,36 +105,61 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
     return navigate(url)
   }
 
-  const { isFromUser, body } = message
+  const { isFromUser, body, isFirstMessage } = message
   const textColor = isFromUser ? "mono0" : "mono100"
   const alignSelf = isFromUser ? "flex-end" : undefined
   const alignAttachments = isFromUser ? "flex-end" : "flex-start"
-
   const backgroundColor = color(isFromUser ? "mono100" : "mono10")
-  return (
-    <>
-      <Flex
-        maxWidth="66.67%"
-        alignItems={alignAttachments}
-        flexDirection="column"
-        style={{ alignSelf }}
-      >
-        <AttachmentContainer
-          style={{
-            backgroundColor,
-          }}
-          onPress={onLinkPress}
+
+  if (isFirstMessage && !!formattedFirstMessage) {
+    return (
+      <>
+        <Flex
+          maxWidth="66.67%"
+          alignItems={alignAttachments}
+          flexDirection="column"
+          style={{ alignSelf }}
         >
-          <Text variant="sm" color={textColor}>
-            {body}
-          </Text>
-        </AttachmentContainer>
-        {!!message.attachments?.length && <Spacer y={0.5} />}
-        {renderAttachmentPreviews(message.attachments, backgroundColor)}
-      </Flex>
-      {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
-    </>
-  )
+          <AttachmentContainer style={{ backgroundColor }} onPress={onLinkPress}>
+            <Text variant="sm" color={textColor}>
+              {formattedFirstMessage}
+            </Text>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer y={0.5} />}
+        </Flex>
+        {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+      </>
+    )
+  }
+
+  if (!!body) {
+    return (
+      <>
+        <Flex
+          maxWidth="66.67%"
+          alignItems={alignAttachments}
+          flexDirection="column"
+          style={{ alignSelf }}
+        >
+          <AttachmentContainer
+            style={{
+              backgroundColor,
+            }}
+            onPress={onLinkPress}
+          >
+            <Text variant="sm" color={textColor}>
+              {body}
+            </Text>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer y={0.5} />}
+          {renderAttachmentPreviews(message.attachments, backgroundColor)}
+        </Flex>
+        {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+      </>
+    )
+  }
+
+  return null
 }
 
 export default createFragmentContainer(Message, {
