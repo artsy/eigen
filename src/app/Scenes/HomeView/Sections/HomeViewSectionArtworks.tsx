@@ -211,6 +211,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           moreHref={moreHref}
           onMorePress={onMorePress}
           onArtworkPress={handleOnGridArtworkPress}
+          trackItemImpressions={section.trackItemImpressions}
+          contextModule={contextModule}
         />
       ) : showHomeViewCardRail ? (
         <ArtworksCard
