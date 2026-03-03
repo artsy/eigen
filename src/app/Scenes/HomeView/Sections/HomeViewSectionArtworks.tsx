@@ -24,7 +24,7 @@ import { ArtworksCard } from "app/Scenes/HomeView/Components/ArtworksCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
-import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { NWFY_SECTION_ID, SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
@@ -402,14 +402,14 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
         />
       )
     },
-    LoadingFallback: () => {
+    LoadingFallback: (sectionID) => {
       const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
       const { shouldShowInGrid } = getNWFYExperimentDetails({
         enabled: !!variant?.enabled,
         variantName: variant?.name,
       })
 
-      if (shouldShowInGrid) {
+      if (shouldShowInGrid && sectionID === NWFY_SECTION_ID) {
         return <HomeViewSectionArtworksGridPlaceholder />
       }
       return <HomeViewSectionArtworksPlaceholder />
