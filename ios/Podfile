@@ -112,7 +112,6 @@ target 'Artsy' do
 
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
-  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.19.1'
   pod 'INTUAnimationEngine'
 
@@ -127,7 +126,6 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
-  pod 'UIView+BooleanAnimations'
   pod 'Aerodramus', '2.0.0'
 
   # Language Enhancements

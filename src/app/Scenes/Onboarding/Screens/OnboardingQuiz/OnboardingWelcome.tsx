@@ -5,10 +5,11 @@ import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.gra
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Suspense, useEffect } from "react"
-import { Image } from "react-native"
+import { Image, ViewStyle } from "react-native"
 import Animated, {
   Easing,
   FadeInRight,
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -24,15 +25,40 @@ const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 const FIRST_WELCOME_SCREEN_DELAY = 1500
 const IMG_DISPLAY_DURATION = 500
 const LAST_IMG_DISPLAY_DURATION = 600
+const TOTAL_STEPS = 6 // 5 images + 1 final screen
 
 const BUTTONS_ENTERING_DURATION = 500
 
 const BUTTONS_ENTERING_DELAY = 300
 const BUTTONS_ENTERING_DELAY_TOTAL =
   FIRST_WELCOME_SCREEN_DELAY +
-  IMG_DISPLAY_DURATION * 5 +
+  IMG_DISPLAY_DURATION * (TOTAL_STEPS - 1) +
   LAST_IMG_DISPLAY_DURATION +
   BUTTONS_ENTERING_DELAY
+
+const FadeLayer = ({
+  index,
+  progress,
+  style,
+  children,
+  ...props
+}: {
+  index: number
+  progress: SharedValue<number>
+  style?: ViewStyle
+  children: React.ReactNode
+} & Omit<React.ComponentProps<typeof Flex>, "style" | "children">) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    "worklet"
+    return { opacity: progress.get() - (index + 1) }
+  })
+
+  return (
+    <AnimatedFlex position="absolute" {...props} style={[style, animatedStyle]}>
+      {children}
+    </AnimatedFlex>
+  )
+}
 
 const OnboardingWelcome = () => {
   const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(
@@ -59,47 +85,15 @@ const OnboardingWelcome = () => {
   const { width: screenWidth } = useScreenDimensions()
   const screenHeight = "100%"
 
-  const fadeOutAnimationsArr = [
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 1 }
-    }),
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 2 }
-    }),
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 3 }
-    }),
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 4 }
-    }),
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 5 }
-    }),
-    useAnimatedStyle(() => {
-      "worklet"
-      return { opacity: opacity.get() - 6 }
-    }),
-  ]
-
   useEffect(() => {
-    opacity.set(() =>
-      withDelay(
-        FIRST_WELCOME_SCREEN_DELAY,
-        withSequence(
-          withTiming(2, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-          withTiming(3, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-          withTiming(4, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-          withTiming(5, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-          withTiming(6, { duration: IMG_DISPLAY_DURATION, easing: Easing.linear }),
-          withTiming(7, { duration: LAST_IMG_DISPLAY_DURATION, easing: Easing.linear })
-        )
-      )
+    const timings = Array.from({ length: TOTAL_STEPS }, (_, i) =>
+      withTiming(i + 2, {
+        duration: i < TOTAL_STEPS - 1 ? IMG_DISPLAY_DURATION : LAST_IMG_DISPLAY_DURATION,
+        easing: Easing.linear,
+      })
     )
+
+    opacity.set(() => withDelay(FIRST_WELCOME_SCREEN_DELAY, withSequence(...timings)))
   }, [])
 
   return (
@@ -123,28 +117,29 @@ const OnboardingWelcome = () => {
       </AnimatedFlex>
       {/* Onboarding Images */}
       {onboardingImages.map((image, index) => (
-        <AnimatedFlex
+        <FadeLayer
           key={`img-${index}`}
-          position="absolute"
-          style={[{ height: screenHeight }, fadeOutAnimationsArr[index]]}
+          index={index}
+          progress={opacity}
+          style={{ height: screenHeight } as ViewStyle}
         >
           <Image
             source={image}
             resizeMode="cover"
             style={{ height: screenHeight, width: screenWidth }}
           />
-        </AnimatedFlex>
+        </FadeLayer>
       ))}
       {/* Start Onboarding Screen */}
-      <AnimatedFlex
-        position="absolute"
+      <FadeLayer
+        index={onboardingImages.length}
+        progress={opacity}
         flex={1}
         backgroundColor="mono100"
         justifyContent="center"
         px={2}
         height={screenHeight}
         width={screenWidth}
-        style={{ ...fadeOutAnimationsArr[5] }}
       >
         <ArtsyLogoAbsoluteHeader />
         <Flex flex={1} justifyContent="center">
@@ -188,7 +183,7 @@ const OnboardingWelcome = () => {
             </Button>
           </AnimatedFlex>
         </Flex>
-      </AnimatedFlex>
+      </FadeLayer>
     </Flex>
   )
 }

@@ -10,7 +10,6 @@ static const NSDictionary *contextMap;
 + (void)initialize
 {
     contextMap = @{
-        @(ARLogContextRequestOperation) : @"Network",
         @(ARLogContextAction) : @"Action",
         @(ARLogContextError) : @"Error",
         @(ARLogContextInfo) : @"Info"
