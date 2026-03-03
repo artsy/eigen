@@ -6,6 +6,12 @@ get_version() {
     jq -r '.version' "$1"
 }
 
+# Check that app.json has no uncommitted changes
+if ! git diff --quiet HEAD -- app.json; then
+    echo "app.json has uncommitted changes. Please commit your app.json changes before deploying."
+    exit 1
+fi
+
 # Check version in local branch
 LOCAL_VERSION=$(get_version "./app.json")
 echo "Local app.json version: $LOCAL_VERSION"
