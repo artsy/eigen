@@ -51,7 +51,7 @@ export const features = {
     echoFlagKey: "ARDarkModeSupport",
   },
   AREnableArtworksConnectionForAuction2: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Use artworksConnection for Auction screen v2",
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction2",
