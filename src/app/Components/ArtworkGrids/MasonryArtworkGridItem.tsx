@@ -6,6 +6,7 @@ import ArtworkGridItem, {
   PriceOfferMessage,
 } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
+import { Sentinel } from "app/utils/Sentinel"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { ViewProps } from "react-native"
 import { FragmentRefs } from "relay-runtime"
@@ -39,6 +40,11 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
   hideSaveIcon?: boolean
   hideSaleInfo?: boolean
   fitToFrame?: boolean
+  /**
+   * Called when this artwork enters/leaves the viewport.
+   * Use for impression tracking in nested, non-scroll grids.
+   */
+  onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -55,6 +61,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   onPress,
   partnerOffer,
   priceOfferMessage,
+  onItemVisibilityChange,
   ...rest
 }) => {
   const space = useSpace()
@@ -65,7 +72,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   const imgWidth = numColumns === 1 ? width : width / numColumns - space(2) - space(1)
   const imgHeight = imgWidth / imgAspectRatio
 
-  return (
+  const content = (
     <Flex
       left={
         fullWidth
@@ -91,5 +98,19 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         priceOfferMessage={priceOfferMessage}
       />
     </Flex>
+  )
+
+  if (!onItemVisibilityChange) {
+    return content
+  }
+
+  return (
+    <>
+      {content}
+      <Sentinel
+        threshold={0.5}
+        onChange={(visible) => onItemVisibilityChange(item.id, index, visible)}
+      />
+    </>
   )
 }
