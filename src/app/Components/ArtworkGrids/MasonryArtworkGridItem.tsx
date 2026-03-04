@@ -100,17 +100,15 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
     </Flex>
   )
 
-  if (!onItemVisibilityChange) {
-    return content
-  }
-
   return (
     <>
       {content}
-      <Sentinel
-        threshold={0.5}
-        onChange={(visible) => onItemVisibilityChange(item.id, index, visible)}
-      />
+      {!!onItemVisibilityChange && (
+        <Sentinel
+          threshold={0.5}
+          onChange={(visible) => onItemVisibilityChange(item.slug, index, visible)}
+        />
+      )}
     </>
   )
 }

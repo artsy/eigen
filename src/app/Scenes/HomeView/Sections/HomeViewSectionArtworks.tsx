@@ -42,6 +42,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
   shouldShowInGrid?: boolean
+  gridArtworksCount?: number
   index: number
 }
 
@@ -100,6 +101,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   section: sectionProp,
   index,
   shouldShowInGrid = false,
+  gridArtworksCount,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -131,6 +133,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const contextModule = shouldShowInGrid
     ? ("newWorksForYouGrid" as ContextModule)
     : (section.contextModule as ContextModule)
+
+  const artworksForGrid = shouldShowInGrid
+    ? artworks.slice(0, gridArtworksCount ?? artworks.length)
+    : artworks
 
   const handleOnArtworkPress = (
     artwork: ArtworkRail_artworks$data[number] | ArtworksCard_artworks$data[number],
@@ -207,7 +213,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {shouldShowInGrid ? (
         <HomeViewSectionArtworksGrid
-          artworks={artworks}
+          artworks={artworksForGrid}
           moreHref={moreHref}
           onMorePress={onMorePress}
           onArtworkPress={handleOnGridArtworkPress}
@@ -378,7 +384,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       const includeArtistNames = enableNewHomeViewCardRailType
       const includeGenericGrid = !!shouldShowInGrid
 
-      const artworksLimit = includeGenericGrid ? artworksCount : DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD
+      const artworksLimit = Math.max(DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD, artworksCount)
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
@@ -404,6 +410,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           section={data.homeView.section}
           index={index}
           shouldShowInGrid={shouldShowInGrid}
+          gridArtworksCount={artworksCount}
           {...flexProps}
         />
       )
