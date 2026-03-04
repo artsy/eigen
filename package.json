@@ -131,7 +131,7 @@
     "@react-native-documents/picker": "10.1.5",
     "@react-native-firebase/app": "23.1.0",
     "@react-native-firebase/messaging": "23.1.0",
-    "@react-native-google-signin/google-signin": "11.0.1",
+    "@react-native-google-signin/google-signin": "16.1.2",
     "@react-native-menu/menu": "1.2.2",
     "@react-navigation/bottom-tabs": "patch:@react-navigation/bottom-tabs@npm%3A7.4.8#~/.yarn/patches/@react-navigation-bottom-tabs-npm-7.4.8-466ddd2097.patch",
     "@react-navigation/elements": "2.6.5",
