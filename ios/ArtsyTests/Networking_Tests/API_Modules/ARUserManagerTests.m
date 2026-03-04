@@ -46,7 +46,7 @@ describe(@"login", ^{
         });
 
         it(@"remembers access token expiry date", ^{
-            ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+            NSISO8601DateFormatter *dateFormatter = [[NSISO8601DateFormatter alloc] init];
             NSDate *expiryDate = [dateFormatter dateFromString:[ARUserManager stubAccessTokenExpiresIn]];
             expect([expiryDate isEqualToDate:[[NSUserDefaults standardUserDefaults] objectForKey:AROAuthTokenExpiryDateDefault]]).to.beTruthy();
         });
