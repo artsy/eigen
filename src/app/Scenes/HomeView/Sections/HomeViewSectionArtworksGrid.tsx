@@ -53,15 +53,13 @@ export const HomeViewSectionArtworksGrid: React.FC<HomeViewSectionArtworksGridPr
     itemIndex: number,
     visible: boolean
   ) => {
-    if (!visible) {
-      return
-    }
+    const shouldTrack =
+      visible &&
+      enableItemsViewsTracking &&
+      !!trackItemImpressions &&
+      !trackedGridItems.has(artworkID)
 
-    if (!enableItemsViewsTracking || !trackItemImpressions) {
-      return
-    }
-
-    if (trackedGridItems.has(artworkID)) {
+    if (!shouldTrack) {
       return
     }
 
