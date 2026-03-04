@@ -165,7 +165,7 @@ describe("SaleLotsListContainer", () => {
         />
       )
 
-      expect(extractText(tree.root.findAllByType(Text)[0])).toBe("Sorted by least bids")
+      expect(extractText(tree.root.findAllByType(Text)[0])).toBe("Sorted by Least Bids")
       expect(extractText(tree.root.findAllByType(Text)[1])).toBe("Showing 20 of 100")
     })
   })
