@@ -15,7 +15,7 @@ export interface masonryRenderItemProps {
 
 export interface MasonryArtworkItem {
   readonly id: string
-  readonly internalID: string
+  readonly internalID?: string | null
   readonly image:
     | {
         readonly aspectRatio: number
