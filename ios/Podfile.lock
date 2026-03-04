@@ -57,9 +57,6 @@ PODS:
     - BrazeKit (= 13.2.1)
   - BVLinearGradient (2.8.3):
     - React-Core
-  - CocoaLumberjack (3.9.0):
-    - CocoaLumberjack/Core (= 3.9.0)
-  - CocoaLumberjack/Core (3.9.0)
   - ComputableLayout (0.7.0):
     - DGSwiftUtilities (~> 0.11)
   - ContextMenuAuxiliaryPreview (0.5.2):
@@ -4024,7 +4021,6 @@ DEPENDENCIES:
   - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec`)
   - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
-  - CocoaLumberjack (= 3.9.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -4199,7 +4195,6 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - AppAuth
-    - CocoaLumberjack
     - ComputableLayout
     - ContextMenuAuxiliaryPreview
     - CwlCatchException
@@ -4589,7 +4584,6 @@ SPEC CHECKSUMS:
   BrazeLocation: 7c828b42008203ae512e0ed846c4e0e294c27052
   BrazeUI: df3abdd46d2fe158cac147e9a8651d56be67a337
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
-  CocoaLumberjack: 5644158777912b7de7469fa881f8a3f259c2512a
   ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
   ContextMenuAuxiliaryPreview: 20be0be795b783b68f8792732eed4bed9f202c1c
   CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
@@ -4803,6 +4797,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: a377dbcf09e23d9cf6fc46201deb43538d8b246a
+PODFILE CHECKSUM: 6d1e43afab62c74823745fdb6474c64190d5ca18
 
 COCOAPODS: 1.16.2

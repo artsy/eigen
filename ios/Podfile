@@ -116,7 +116,6 @@ target 'Artsy' do
   pod 'INTUAnimationEngine'
 
   # Core
-  pod 'CocoaLumberjack', '3.9.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'

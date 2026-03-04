@@ -3,7 +3,6 @@
 #import "AppDelegate+Emission.h"
 #import "AppDelegate+Notifications.h"
 #import "ARFonts.h"
-#import "ARLogger.h"
 #import "ARWebViewCacheHost.h"
 #import "ARAnalyticsConstants.h"
 #import "User.h"
@@ -60,8 +59,6 @@ static Braze *_braze = nil;
     [self forceCacheCustomFonts];
 
     [self countNumberOfRuns];
-
-    [[ARLogger sharedLogger] startLogging];
 
     [self setupAnalytics:launchOptions];
 

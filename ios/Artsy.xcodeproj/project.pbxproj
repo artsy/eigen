@@ -325,8 +325,6 @@
 		CBE326E427E275A300395A93 /* ARNetworkErrorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3251E27E275A100395A93 /* ARNetworkErrorManager.m */; };
 		CBE326E527E275A300395A93 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3251F27E275A100395A93 /* ARFeedImageLoader.m */; };
 		CBE326E627E275A300395A93 /* UIApplicationStateEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252327E275A100395A93 /* UIApplicationStateEnum.m */; };
-		CBE326E827E275A300395A93 /* ARLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252827E275A100395A93 /* ARLogger.m */; };
-		CBE326E927E275A300395A93 /* ARLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252927E275A100395A93 /* ARLogFormatter.m */; };
 		CBE326EA27E275A300395A93 /* ARTwoWayDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */; };
 		CBE326EC27E275A300395A93 /* ARSCNWallNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253327E275A100395A93 /* ARSCNWallNode.m */; };
 		CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253427E275A100395A93 /* SCNArtworkNode.m */; };
@@ -1081,10 +1079,7 @@
 		CBE3252027E275A100395A93 /* ARBackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARBackButton.h; sourceTree = "<group>"; };
 		CBE3252227E275A100395A93 /* UIApplicationStateEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplicationStateEnum.h; sourceTree = "<group>"; };
 		CBE3252327E275A100395A93 /* UIApplicationStateEnum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplicationStateEnum.m; sourceTree = "<group>"; };
-		CBE3252527E275A100395A93 /* ARLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogFormatter.h; sourceTree = "<group>"; };
 		CBE3252627E275A100395A93 /* ARLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLogger.h; sourceTree = "<group>"; };
-		CBE3252827E275A100395A93 /* ARLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogger.m; sourceTree = "<group>"; };
-		CBE3252927E275A100395A93 /* ARLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogFormatter.m; sourceTree = "<group>"; };
 		CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTwoWayDictionaryTransformer.m; sourceTree = "<group>"; };
 		CBE3253027E275A100395A93 /* ARSerifNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSerifNavigationViewController.h; sourceTree = "<group>"; };
 		CBE3253327E275A100395A93 /* ARSCNWallNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSCNWallNode.m; sourceTree = "<group>"; };
@@ -2778,10 +2773,7 @@
 		CBE3252427E275A100395A93 /* Logging */ = {
 			isa = PBXGroup;
 			children = (
-				CBE3252527E275A100395A93 /* ARLogFormatter.h */,
 				CBE3252627E275A100395A93 /* ARLogger.h */,
-				CBE3252827E275A100395A93 /* ARLogger.m */,
-				CBE3252927E275A100395A93 /* ARLogFormatter.m */,
 			);
 			path = Logging;
 			sourceTree = "<group>";
@@ -3853,7 +3845,6 @@
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
-				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
 				CBE3278D27E275A400395A93 /* Article.m in Sources */,
 				CBE3277827E275A400395A93 /* ArtsyAPI+Profiles.m in Sources */,
 				CBE326F027E275A300395A93 /* ARVIRHorizontalPlaneInteractionController.m in Sources */,
@@ -3954,7 +3945,6 @@
 				CBE327A027E275A400395A93 /* Bidder.m in Sources */,
 				CBE3278127E275A400395A93 /* ARRouter.mm in Sources */,
 				CBE3279427E275A400395A93 /* FairOrganizer.m in Sources */,
-				CBE326E927E275A300395A93 /* ARLogFormatter.m in Sources */,
 				CBE3278A27E275A400395A93 /* Partner.m in Sources */,
 				CBE3279827E275A400395A93 /* SaleStatusType.swift in Sources */,
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
