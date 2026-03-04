@@ -135,7 +135,6 @@
 		CB43289C27E8FEE500B29DD6 /* PartnerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276927E8FEE400B29DD6 /* PartnerTests.m */; };
 		CB43289D27E8FEE500B29DD6 /* FairTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276A27E8FEE400B29DD6 /* FairTests.m */; };
 		CB43289E27E8FEE500B29DD6 /* ARImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276B27E8FEE400B29DD6 /* ARImageTests.m */; };
-		CB4328A327E8FEE500B29DD6 /* SystemTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */; };
 		CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43277227E8FEE400B29DD6 /* UserTests.m */; };
 		CB4328A527E8FEE500B29DD6 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43277427E8FEE400B29DD6 /* ScheduleTests.swift */; };
 		CB4328A627E8FEE500B29DD6 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43277527E8FEE400B29DD6 /* ArtworkTests.swift */; };
@@ -155,7 +154,6 @@
 		CB4328B927E8FEE500B29DD6 /* ArtsyAPI+ErrorHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279727E8FEE400B29DD6 /* ArtsyAPI+ErrorHandlers.m */; };
 		CB4328BA27E8FEE500B29DD6 /* ArtsyAPI+GraphQLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279827E8FEE400B29DD6 /* ArtsyAPI+GraphQLTests.m */; };
 		CB4328BB27E8FEE500B29DD6 /* ArtsyAPI+PrivateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279927E8FEE400B29DD6 /* ArtsyAPI+PrivateTests.m */; };
-		CB4328BC27E8FEE500B29DD6 /* ArtsyAPI+SystemTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279A27E8FEE400B29DD6 /* ArtsyAPI+SystemTimeTests.m */; };
 		CB4328BD27E8FEE500B29DD6 /* LiveAuctionLotViewModelSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43279B27E8FEE400B29DD6 /* LiveAuctionLotViewModelSpecs.swift */; };
 		CB4328BE27E8FEE500B29DD6 /* ARRouterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279C27E8FEE400B29DD6 /* ARRouterTests.m */; };
 		CB4328BF27E8FEE500B29DD6 /* AFHTTPRequestOperationJSONTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279D27E8FEE400B29DD6 /* AFHTTPRequestOperationJSONTests.m */; };
@@ -442,7 +440,6 @@
 		CBE3277427E275A400395A93 /* ArtsyAPI+ErrorHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260127E275A200395A93 /* ArtsyAPI+ErrorHandlers.m */; };
 		CBE3277527E275A400395A93 /* ARKeychainable.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260527E275A200395A93 /* ARKeychainable.m */; };
 		CBE3277627E275A400395A93 /* ArtsyAPI+Following.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260827E275A200395A93 /* ArtsyAPI+Following.m */; };
-		CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260927E275A200395A93 /* ArtsyAPI+SystemTime.m */; };
 		CBE3277827E275A400395A93 /* ArtsyAPI+Profiles.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260C27E275A200395A93 /* ArtsyAPI+Profiles.m */; };
 		CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260D27E275A200395A93 /* ArtsyAPI+Notifications.m */; };
 		CBE3277A27E275A400395A93 /* ArtsyAPI+Sales.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260E27E275A200395A93 /* ArtsyAPI+Sales.m */; };
@@ -483,7 +480,6 @@
 		CBE3279F27E275A400395A93 /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266127E275A300395A93 /* Bid.m */; };
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
-		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
 		E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
 		E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
 		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
@@ -703,7 +699,6 @@
 		CB43276E27E8FEE400B29DD6 /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v0.data; sourceTree = "<group>"; };
 		CB43276F27E8FEE400B29DD6 /* Artwork_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v0.data; sourceTree = "<group>"; };
 		CB43277027E8FEE400B29DD6 /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
-		CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemTimeTests.m; sourceTree = "<group>"; };
 		CB43277227E8FEE400B29DD6 /* UserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTests.m; sourceTree = "<group>"; };
 		CB43277427E8FEE400B29DD6 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		CB43277527E8FEE400B29DD6 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
@@ -735,7 +730,6 @@
 		CB43279727E8FEE400B29DD6 /* ArtsyAPI+ErrorHandlers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+ErrorHandlers.m"; sourceTree = "<group>"; };
 		CB43279827E8FEE400B29DD6 /* ArtsyAPI+GraphQLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+GraphQLTests.m"; sourceTree = "<group>"; };
 		CB43279927E8FEE400B29DD6 /* ArtsyAPI+PrivateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+PrivateTests.m"; sourceTree = "<group>"; };
-		CB43279A27E8FEE400B29DD6 /* ArtsyAPI+SystemTimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SystemTimeTests.m"; sourceTree = "<group>"; };
 		CB43279B27E8FEE400B29DD6 /* LiveAuctionLotViewModelSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionLotViewModelSpecs.swift; sourceTree = "<group>"; };
 		CB43279C27E8FEE400B29DD6 /* ARRouterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouterTests.m; sourceTree = "<group>"; };
 		CB43279D27E8FEE400B29DD6 /* AFHTTPRequestOperationJSONTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperationJSONTests.m; sourceTree = "<group>"; };
@@ -1244,7 +1238,6 @@
 		CBE3260627E275A200395A93 /* ArtsyAPI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Private.h"; sourceTree = "<group>"; };
 		CBE3260727E275A200395A93 /* ArtsyAPI+DeviceTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+DeviceTokens.h"; sourceTree = "<group>"; };
 		CBE3260827E275A200395A93 /* ArtsyAPI+Following.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Following.m"; sourceTree = "<group>"; };
-		CBE3260927E275A200395A93 /* ArtsyAPI+SystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SystemTime.m"; sourceTree = "<group>"; };
 		CBE3260A27E275A200395A93 /* ArtsyAPI+ErrorHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+ErrorHandlers.h"; sourceTree = "<group>"; };
 		CBE3260B27E275A200395A93 /* ArtsyAPI+Pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Pages.h"; sourceTree = "<group>"; };
 		CBE3260C27E275A200395A93 /* ArtsyAPI+Profiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+Profiles.m"; sourceTree = "<group>"; };
@@ -1256,7 +1249,6 @@
 		CBE3261227E275A200395A93 /* ARKeychainable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKeychainable.h; sourceTree = "<group>"; };
 		CBE3261327E275A200395A93 /* ARUserManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARUserManager.mm; sourceTree = "<group>"; };
 		CBE3261427E275A200395A93 /* ArtsyAPI+RelatedModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+RelatedModels.m"; sourceTree = "<group>"; };
-		CBE3261527E275A200395A93 /* ArtsyAPI+SystemTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+SystemTime.h"; sourceTree = "<group>"; };
 		CBE3261627E275A200395A93 /* ArtsyAPI+Following.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Following.h"; sourceTree = "<group>"; };
 		CBE3261827E275A200395A93 /* static_sale_data.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = static_sale_data.graphql; sourceTree = "<group>"; };
 		CBE3261927E275A200395A93 /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
@@ -1323,8 +1315,6 @@
 		CBE3266527E275A300395A93 /* Bidder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bidder.m; sourceTree = "<group>"; };
 		CBE3266627E275A300395A93 /* BidderPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BidderPosition.m; sourceTree = "<group>"; };
 		CBE3266727E275A300395A93 /* Bid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bid.h; sourceTree = "<group>"; };
-		CBE3266927E275A300395A93 /* SystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemTime.m; sourceTree = "<group>"; };
-		CBE3266A27E275A300395A93 /* SystemTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTime.h; sourceTree = "<group>"; };
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
@@ -1848,7 +1838,6 @@
 				CB43276A27E8FEE400B29DD6 /* FairTests.m */,
 				CB43276B27E8FEE400B29DD6 /* ARImageTests.m */,
 				CB43276C27E8FEE400B29DD6 /* Data */,
-				CB43277127E8FEE400B29DD6 /* SystemTimeTests.m */,
 				CB43277227E8FEE400B29DD6 /* UserTests.m */,
 			);
 			path = Model_Tests;
@@ -1941,7 +1930,6 @@
 				CB43279727E8FEE400B29DD6 /* ArtsyAPI+ErrorHandlers.m */,
 				CB43279827E8FEE400B29DD6 /* ArtsyAPI+GraphQLTests.m */,
 				CB43279927E8FEE400B29DD6 /* ArtsyAPI+PrivateTests.m */,
-				CB43279A27E8FEE400B29DD6 /* ArtsyAPI+SystemTimeTests.m */,
 			);
 			path = API_Modules;
 			sourceTree = "<group>";
@@ -3133,7 +3121,6 @@
 				CBE3260627E275A200395A93 /* ArtsyAPI+Private.h */,
 				CBE3260727E275A200395A93 /* ArtsyAPI+DeviceTokens.h */,
 				CBE3260827E275A200395A93 /* ArtsyAPI+Following.m */,
-				CBE3260927E275A200395A93 /* ArtsyAPI+SystemTime.m */,
 				CBE3260A27E275A200395A93 /* ArtsyAPI+ErrorHandlers.h */,
 				CBE3260B27E275A200395A93 /* ArtsyAPI+Pages.h */,
 				CBE3260C27E275A200395A93 /* ArtsyAPI+Profiles.m */,
@@ -3145,7 +3132,6 @@
 				CBE3261227E275A200395A93 /* ARKeychainable.h */,
 				CBE3261327E275A200395A93 /* ARUserManager.mm */,
 				CBE3261427E275A200395A93 /* ArtsyAPI+RelatedModels.m */,
-				CBE3261527E275A200395A93 /* ArtsyAPI+SystemTime.h */,
 				CBE3261627E275A200395A93 /* ArtsyAPI+Following.h */,
 			);
 			path = API_Modules;
@@ -3196,7 +3182,6 @@
 				CBE3264A27E275A300395A93 /* Fair */,
 				CBE3265127E275A300395A93 /* Live */,
 				CBE3265B27E275A300395A93 /* Auctions */,
-				CBE3266827E275A300395A93 /* Application */,
 				CBE3266B27E275A300395A93 /* LiveAuctionLot.h */,
 			);
 			path = API_Models;
@@ -3306,15 +3291,6 @@
 				CBE3266727E275A300395A93 /* Bid.h */,
 			);
 			path = Auctions;
-			sourceTree = "<group>";
-		};
-		CBE3266827E275A300395A93 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3266927E275A300395A93 /* SystemTime.m */,
-				CBE3266A27E275A300395A93 /* SystemTime.h */,
-			);
-			path = Application;
 			sourceTree = "<group>";
 		};
 		CBE3266C27E275A300395A93 /* Protocols */ = {
@@ -3707,9 +3683,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3724,9 +3704,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3806,9 +3790,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3824,6 +3812,8 @@
 				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
 			name = "[CP-User] [RNFB] Core Configuration";
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\n\n##########################################################################\n##########################################################################\n#\n#  NOTE THAT IF YOU CHANGE THIS FILE YOU MUST RUN pod install AFTERWARDS\n#\n#  This file is installed as an Xcode build script in the project file\n#  by cocoapods, and you will not see your changes until you pod install\n#\n##########################################################################\n##########################################################################\n\nset -e\n\n_MAX_LOOKUPS=2;\n_SEARCH_RESULT=''\n_RN_ROOT_EXISTS=''\n_CURRENT_LOOKUPS=1\n_JSON_ROOT=\"'react-native'\"\n_JSON_FILE_NAME='firebase.json'\n_JSON_OUTPUT_BASE64='e30=' # { }\n_CURRENT_SEARCH_DIR=${PROJECT_DIR}\n_PLIST_BUDDY=/usr/libexec/PlistBuddy\n_TARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n_DSYM_PLIST=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n\n# plist arrays\n_PLIST_ENTRY_KEYS=()\n_PLIST_ENTRY_TYPES=()\n_PLIST_ENTRY_VALUES=()\n\nfunction setPlistValue {\n  echo \"info:      setting plist entry '$1' of type '$2' in file '$4'\"\n  ${_PLIST_BUDDY} -c \"Add :$1 $2 '$3'\" $4 || echo \"info:      '$1' already exists\"\n}\n\nfunction getFirebaseJsonKeyValue () {\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    ruby -Ku -e \"require 'rubygems';require 'json'; output=JSON.parse('$1'); puts output[$_JSON_ROOT]['$2']\"\n  else\n    echo \"\"\n  fi;\n}\n\nfunction jsonBoolToYesNo () {\n  if [[ $1 == \"false\" ]]; then\n    echo \"NO\"\n  elif [[ $1 == \"true\" ]]; then\n    echo \"YES\"\n  else echo \"NO\"\n  fi\n}\n\necho \"info: -> RNFB build script started\"\necho \"info: 1) Locating ${_JSON_FILE_NAME} file:\"\n\nif [[ -z ${_CURRENT_SEARCH_DIR} ]]; then\n  _CURRENT_SEARCH_DIR=$(pwd)\nfi;\n\nwhile true; do\n  _CURRENT_SEARCH_DIR=$(dirname \"$_CURRENT_SEARCH_DIR\")\n  if [[ \"$_CURRENT_SEARCH_DIR\" == \"/\" ]] || [[ ${_CURRENT_LOOKUPS} -gt ${_MAX_LOOKUPS} ]]; then break; fi;\n  echo \"info:      ($_CURRENT_LOOKUPS of $_MAX_LOOKUPS) Searching in '$_CURRENT_SEARCH_DIR' for a ${_JSON_FILE_NAME} file.\"\n  _SEARCH_RESULT=$(find \"$_CURRENT_SEARCH_DIR\" -maxdepth 2 -name ${_JSON_FILE_NAME} -print | /usr/bin/head -n 1)\n  if [[ ${_SEARCH_RESULT} ]]; then\n    echo \"info:      ${_JSON_FILE_NAME} found at $_SEARCH_RESULT\"\n    break;\n  fi;\n  _CURRENT_LOOKUPS=$((_CURRENT_LOOKUPS+1))\ndone\n\nif [[ ${_SEARCH_RESULT} ]]; then\n  _JSON_OUTPUT_RAW=$(cat \"${_SEARCH_RESULT}\")\n  if ! _RN_ROOT_EXISTS=$(ruby -Ku -e \"require 'json'; output=JSON.parse('$_JSON_OUTPUT_RAW'); puts output[$_JSON_ROOT]\"); then\n    echo \"error: Failed to parse firebase.json, check for syntax errors.\"\n    exit 1\n  fi\n\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    if ! python3 --version >/dev/null 2>&1; then echo \"python3 not found, firebase.json file processing error.\" && exit 1; fi\n    _JSON_OUTPUT_BASE64=$(python3 -c 'import json,sys,base64;print(base64.b64encode(bytes(json.dumps(json.loads(open('\"'${_SEARCH_RESULT}'\"', '\"'rb'\"').read())['${_JSON_ROOT}']), '\"'utf-8'\"')).decode())' || echo \"e30=\")\n  fi\n\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n\n  # config.app_data_collection_default_enabled\n  _APP_DATA_COLLECTION_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_data_collection_default_enabled\")\n  if [[ $_APP_DATA_COLLECTION_ENABLED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseDataCollectionDefaultEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_DATA_COLLECTION_ENABLED\")\")\n  fi\n\n  # config.analytics_auto_collection_enabled\n  _ANALYTICS_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_auto_collection_enabled\")\n  if [[ $_ANALYTICS_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_COLLECTION\")\")\n  fi\n\n  # config.analytics_collection_deactivated\n  _ANALYTICS_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_collection_deactivated\")\n  if [[ $_ANALYTICS_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_DEACTIVATED\")\")\n  fi\n\n  # config.analytics_idfv_collection_enabled\n  _ANALYTICS_IDFV_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_idfv_collection_enabled\")\n  if [[ $_ANALYTICS_IDFV_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_IDFV_COLLECTION\")\")\n  fi\n\n  # config.analytics_default_allow_analytics_storage\n  _ANALYTICS_STORAGE=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_analytics_storage\")\n  if [[ $_ANALYTICS_STORAGE ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_ANALYTICS_STORAGE\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_STORAGE\")\")\n  fi\n\n  # config.analytics_default_allow_ad_storage\n  _ANALYTICS_AD_STORAGE=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_storage\")\n  if [[ $_ANALYTICS_AD_STORAGE ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_STORAGE\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AD_STORAGE\")\")\n  fi\n\n  # config.analytics_default_allow_ad_user_data\n  _ANALYTICS_AD_USER_DATA=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_user_data\")\n  if [[ $_ANALYTICS_AD_USER_DATA ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_USER_DATA\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AD_USER_DATA\")\")\n  fi\n\n  # config.analytics_default_allow_ad_personalization_signals\n  _ANALYTICS_PERSONALIZATION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_personalization_signals\")\n  if [[ $_ANALYTICS_PERSONALIZATION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_PERSONALIZATION\")\")\n  fi\n\n  # config.analytics_registration_with_ad_network_enabled\n  _ANALYTICS_REGISTRATION_WITH_AD_NETWORK=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_registration_with_ad_network_enabled\")\n  if [[ $_ANALYTICS_REGISTRATION_WITH_AD_NETWORK ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_REGISTRATION_WITH_AD_NETWORK\")\")\n  fi\n\n  # config.google_analytics_automatic_screen_reporting_enabled\n  _ANALYTICS_AUTO_SCREEN_REPORTING=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_automatic_screen_reporting_enabled\")\n  if [[ $_ANALYTICS_AUTO_SCREEN_REPORTING ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAutomaticScreenReportingEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_SCREEN_REPORTING\")\")\n  fi\n\n  # config.perf_auto_collection_enabled\n  _PERF_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_auto_collection_enabled\")\n  if [[ $_PERF_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_enabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_AUTO_COLLECTION\")\")\n  fi\n\n  # config.perf_collection_deactivated\n  _PERF_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_collection_deactivated\")\n  if [[ $_PERF_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_deactivated\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_DEACTIVATED\")\")\n  fi\n\n  # config.messaging_auto_init_enabled\n  _MESSAGING_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"messaging_auto_init_enabled\")\n  if [[ $_MESSAGING_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseMessagingAutoInitEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_MESSAGING_AUTO_INIT\")\")\n  fi\n\n  # config.in_app_messaging_auto_colllection_enabled\n  _FIAM_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"in_app_messaging_auto_collection_enabled\")\n  if [[ $_FIAM_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseInAppMessagingAutomaticDataCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_FIAM_AUTO_INIT\")\")\n  fi\n\n  # config.app_check_token_auto_refresh\n  _APP_CHECK_TOKEN_AUTO_REFRESH=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_check_token_auto_refresh\")\n  if [[ $_APP_CHECK_TOKEN_AUTO_REFRESH ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAppCheckTokenAutoRefreshEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_CHECK_TOKEN_AUTO_REFRESH\")\")\n  fi\n\n  # config.crashlytics_disable_auto_disabler - undocumented for now - mainly for debugging, document if becomes useful\n  _CRASHLYTICS_AUTO_DISABLE_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"crashlytics_disable_auto_disabler\")\n  if [[ $_CRASHLYTICS_AUTO_DISABLE_ENABLED == \"true\" ]]; then\n    echo \"Disabled Crashlytics auto disabler.\" # do nothing\n  else\n    _PLIST_ENTRY_KEYS+=(\"FirebaseCrashlyticsCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"NO\")\n  fi\nelse\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n  echo \"warning:   A firebase.json file was not found, whilst this file is optional it is recommended to include it to configure firebase services in React Native Firebase.\"\nfi;\n\necho \"info: 2) Injecting Info.plist entries: \"\n\n# Log out the keys we're adding\nfor i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n  echo \"    ->  $i) ${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\"\ndone\n\nfor plist in \"${_TARGET_PLIST}\" \"${_DSYM_PLIST}\" ; do\n  if [[ -f \"${plist}\" ]]; then\n\n    # paths with spaces break the call to setPlistValue. temporarily modify\n    # the shell internal field separator variable (IFS), which normally\n    # includes spaces, to consist only of line breaks\n    oldifs=$IFS\n    IFS=\"\n\"\n\n    for i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n      setPlistValue \"${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\" \"${plist}\"\n    done\n\n    # restore the original internal field separator value\n    IFS=$oldifs\n  else\n    echo \"warning:   A Info.plist build output file was not found (${plist})\"\n  fi\ndone\n\necho \"info: <- RNFB build script finished\"\n";
@@ -3974,7 +3964,6 @@
 				CBE3279D27E275A400395A93 /* BuyersPremium.m in Sources */,
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
 				CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */,
-				CBE327A227E275A400395A93 /* SystemTime.m in Sources */,
 				CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */,
 				CB18284629DF3DED006A0805 /* FocusSquareSegment.swift in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
@@ -4010,7 +3999,6 @@
 				CBE326BC27E275A300395A93 /* LotListCollectionViewCell+Private.swift in Sources */,
 				CBE3271A27E275A300395A93 /* ARNavigationButton.m in Sources */,
 				CB3A3DD52E7B4C0700161BF7 /* WebviewTapTracker.swift in Sources */,
-				CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */,
 				CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */,
 				CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */,
 				1A4E511E283F91BA0008EF35 /* UILabel+Typography.m in Sources */,
@@ -4147,7 +4135,6 @@
 				CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */,
 				CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */,
 				CB43295027E8FEE600B29DD6 /* UIApplicationStateEnumTests.m in Sources */,
-				CB4328BC27E8FEE500B29DD6 /* ArtsyAPI+SystemTimeTests.m in Sources */,
 				CB43287727E8FEE500B29DD6 /* ARAugmentedRealityConfigSpec.m in Sources */,
 				CB43287A27E8FEE500B29DD6 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift in Sources */,
 				CB43296027E90FD900B29DD6 /* Fixtures.swift in Sources */,
@@ -4158,7 +4145,6 @@
 				CB4328B327E8FEE500B29DD6 /* ARTestContext.m in Sources */,
 				CB4328A727E8FEE500B29DD6 /* ARTestImageCachingFunctions.swift in Sources */,
 				CB43296227E90FF300B29DD6 /* WidgetUrl.swift in Sources */,
-				CB4328A327E8FEE500B29DD6 /* SystemTimeTests.m in Sources */,
 				CB43295E27E90F7500B29DD6 /* Artist.swift in Sources */,
 				CB43286A27E8FEE500B29DD6 /* AuctionBiddersNetworkModel.swift in Sources */,
 				CB4328B927E8FEE500B29DD6 /* ArtsyAPI+ErrorHandlers.m in Sources */,

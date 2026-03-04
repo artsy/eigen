@@ -313,7 +313,7 @@ PODS:
   - iOSSnapshotTestCase/Core (8.0.0)
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
-  - ISO8601DateFormatter (0.7.1)
+  - ISO8601DateFormatter (0.8)
   - JWTDecode (2.0.0)
   - libavif/core (0.11.1)
   - libavif/libdav1d (0.11.1):
@@ -4057,7 +4057,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - INTUAnimationEngine
-  - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JWTDecode (= 2.0.0)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
@@ -4231,6 +4230,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - INTUAnimationEngine
     - iOSSnapshotTestCase
+    - ISO8601DateFormatter
     - JWTDecode
     - libavif
     - libdav1d
@@ -4338,8 +4338,6 @@ EXTERNAL SOURCES:
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :git: https://github.com/artsy/iso-8601-date-formatter
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -4577,9 +4575,6 @@ CHECKOUT OPTIONS:
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :commit: 1a48b819c85903ded669e74e476aceffebf311fc
-    :git: https://github.com/artsy/iso-8601-date-formatter
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
@@ -4648,7 +4643,7 @@ SPEC CHECKSUMS:
   Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
-  ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
@@ -4808,6 +4803,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 0da0271eebd40e264e3dc407a45eb85fbe988408
+PODFILE CHECKSUM: a377dbcf09e23d9cf6fc46201deb43538d8b246a
 
 COCOAPODS: 1.16.2
