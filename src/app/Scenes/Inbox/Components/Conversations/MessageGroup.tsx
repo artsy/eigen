@@ -3,6 +3,7 @@ import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import moment from "moment"
 import { Component } from "react"
@@ -20,11 +21,15 @@ const SubjectContainer = styled(Flex)`
 type Item = NonNullable<NonNullable<Messages_conversation$data["items"]>[0]>["item"]
 
 export type DisplayableMessage = OrderUpdate_event$data | Message_message$data
+
 interface MessageGroupProps {
   group: DisplayableMessage[]
   conversationId: string
   subjectItem: Item
   isLastMessage: boolean
+  formattedFirstMessage: NonNullable<
+    Messages_conversation$data["inquiryRequest"]
+  >["formattedFirstMessage"]
 }
 
 const isMessageArray = (items: DisplayableMessage[]): items is Message_message$data[] => {
@@ -37,24 +42,35 @@ const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate
   return firstItem?.__typename !== "Message" && relevantEvents.includes(firstItem.__typename)
 }
 
-const IndividualMessage: React.FC<{
+interface IndividualMessageProps {
   isLastMessage: boolean
   conversationId: string
   message: Message_message$data
   nextMessage?: Message_message$data
   isSameDay: boolean
-}> = ({ message, nextMessage, conversationId, isLastMessage, isSameDay }) => {
+  formattedFirstMessage: NonNullable<
+    Messages_conversation$data["inquiryRequest"]
+  >["formattedFirstMessage"]
+}
+
+const IndividualMessage: React.FC<IndividualMessageProps> = ({
+  message,
+  nextMessage,
+  conversationId,
+  isLastMessage,
+  isSameDay,
+  formattedFirstMessage,
+}) => {
   const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
   const spaceAfter = senderChanges || isLastMessage ? 2 : 0.5
   return (
     <>
-      {!!message.body && (
-        <Message
-          message={message}
-          showTimeSince={!!(message.createdAt && isSameDay && isLastMessage)}
-          conversationId={conversationId}
-        />
-      )}
+      <Message
+        message={message}
+        showTimeSince={!!(message.createdAt && isSameDay && isLastMessage)}
+        conversationId={conversationId}
+        formattedFirstMessage={formattedFirstMessage}
+      />
       <Spacer y={spaceAfter} />
     </>
   )
@@ -81,7 +97,7 @@ const InitialMessage: React.FC<{
 
 export class MessageGroup extends Component<MessageGroupProps> {
   render() {
-    const { group, conversationId, isLastMessage, subjectItem } = this.props
+    const { group, conversationId, isLastMessage, subjectItem, formattedFirstMessage } = this.props
     if (group[0].__typename === "%other") {
       return null
     }
@@ -114,6 +130,7 @@ export class MessageGroup extends Component<MessageGroupProps> {
                   isLastMessage={messageIndex === group.length - 1}
                   key={messageKey}
                   message={message}
+                  formattedFirstMessage={formattedFirstMessage}
                   nextMessage={group[messageIndex + 1]}
                   isSameDay={moment(firstItem.createdAt).isSame(moment(), "day")}
                 />
