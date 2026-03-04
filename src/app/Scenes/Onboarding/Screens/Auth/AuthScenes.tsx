@@ -25,11 +25,7 @@ export const AuthScenes: React.FC = () => {
 
   return (
     <>
-      <ScrollView
-        keyboardShouldPersistTaps="always"
-        scrollEnabled={false}
-        contentContainerStyle={{ minHeight: 200 }}
-      >
+      <ScrollView keyboardShouldPersistTaps="always" scrollEnabled={false}>
         <AuthScreen name="LoginWelcomeStep">
           <LoginWelcomeStep />
         </AuthScreen>
