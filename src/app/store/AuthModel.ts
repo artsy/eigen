@@ -740,13 +740,15 @@ export const getAuthModel = (): AuthModel => ({
           reject(new AuthError("Play services are not available."))
           return
         }
+
         const userInfo = await GoogleSignin.signIn()
-        const accessToken = (await GoogleSignin.getTokens()).accessToken
 
         if (userInfo.type === "cancelled") {
-          reject(new AuthError("Cancelled Google Auth"))
+          reject(new AuthError(statusCodes.SIGN_IN_CANCELLED))
           return
         }
+
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
 
         const resultGravitySignUp = userInfo.data.user.name
           ? await actions.signUp({
