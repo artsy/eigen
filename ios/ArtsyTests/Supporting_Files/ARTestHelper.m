@@ -1,6 +1,5 @@
 #import "ARTestHelper.h"
 
-#import "ARLogger.h"
 #import "ARRouter.h"
 #import "ARUserManager.h"
 
@@ -36,9 +35,6 @@
     // Shared Web Credentials involve async processes that trigger OS alerts and are generally hard to deal with.
     // The related ARUserManager methods can still be invoked, they will just silently do nothing.
     [[ARUserManager sharedManager] disableSharedWebCredentials];
-
-    /// Not really sure what this is for
-    [[ARLogger sharedLogger] startLogging];
 
     // Occasionally we get font issues in snapshots, this _potentially_
     // could be a fix for this.
