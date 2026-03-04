@@ -13,6 +13,7 @@ import { FragmentRefs } from "relay-runtime"
 
 interface Artwork {
   readonly id: string
+  readonly internalID?: string | null
   readonly image:
     | {
         readonly aspectRatio: number
@@ -44,7 +45,7 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
    * Called when this artwork enters/leaves the viewport.
    * Use for impression tracking in nested, non-scroll grids.
    */
-  onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
+  onItemVisibilityChange?: (artworkInternalID: string, index: number, visible: boolean) => void
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -106,7 +107,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
       {!!onItemVisibilityChange && (
         <Sentinel
           threshold={0.5}
-          onChange={(visible) => onItemVisibilityChange(item.slug, index, visible)}
+          onChange={(visible) => onItemVisibilityChange(item.internalID || item.id, index, visible)}
         />
       )}
     </>

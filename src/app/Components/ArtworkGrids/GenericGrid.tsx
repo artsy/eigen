@@ -77,6 +77,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
 const genericGridFragment = graphql`
   fragment GenericGrid_artworks on Artwork @relay(plural: true) {
     id
+    internalID
     slug
     image(includeAll: false) {
       aspectRatio
