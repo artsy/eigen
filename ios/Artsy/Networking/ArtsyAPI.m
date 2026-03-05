@@ -257,7 +257,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
         for (NSDictionary *dictionary in jsonDictionaries) {
             id object = nil;
             if (![dictionary isKindOfClass:[NSDictionary class]]) {
-                DDLogDebug(@"skipping %@", dictionary);
+                ARActionLog(@"skipping %@", dictionary);
                 continue;
             }
 
