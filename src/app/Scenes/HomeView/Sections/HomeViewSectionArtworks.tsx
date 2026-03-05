@@ -42,7 +42,6 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
   shouldShowInGrid?: boolean
-  gridArtworksCount?: number
   index: number
 }
 
@@ -101,7 +100,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   section: sectionProp,
   index,
   shouldShowInGrid = false,
-  gridArtworksCount,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -109,6 +107,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
+
+  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
+  const { artworksCount } = getNWFYExperimentDetails({
+    enabled: !!variant?.enabled,
+    variantName: variant?.name,
+    sectionID: section.internalID,
+  })
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
@@ -135,7 +140,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     : (section.contextModule as ContextModule)
 
   const artworksForGrid = shouldShowInGrid
-    ? artworks.slice(0, gridArtworksCount ?? artworks.length)
+    ? artworks.slice(0, artworksCount ?? artworks.length)
     : artworks
 
   const handleOnArtworkPress = (
@@ -262,7 +267,7 @@ const fragment = graphql`
     enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
     includeArtistNames: { type: "Boolean", defaultValue: false }
     includeGenericGrid: { type: "Boolean", defaultValue: false }
-    artworksLimit: { type: "Int", defaultValue: 10 }
+    first: { type: "Int", defaultValue: 10 }
   ) {
     __typename
     internalID
@@ -279,7 +284,7 @@ const fragment = graphql`
     ownerType
     trackItemImpressions
     showArtworksCardView
-    artworksConnection(first: $artworksLimit) {
+    artworksConnection(first: $first) {
       edges {
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
@@ -300,7 +305,6 @@ const homeViewSectionArtworksQuery = graphql`
     $enableHidingDislikedArtworks: Boolean!
     $includeArtistNames: Boolean!
     $includeGenericGrid: Boolean!
-    $artworksLimit: Int!
   ) {
     homeView {
       section(id: $id) {
@@ -309,7 +313,6 @@ const homeViewSectionArtworksQuery = graphql`
             enableHidingDislikedArtworks: $enableHidingDislikedArtworks
             includeArtistNames: $includeArtistNames
             includeGenericGrid: $includeGenericGrid
-            artworksLimit: $artworksLimit
           )
       }
     }
@@ -374,17 +377,8 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
 
       const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
-      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-      const { artworksCount } = getNWFYExperimentDetails({
-        enabled: !!variant?.enabled,
-        variantName: variant?.name,
-        sectionID,
-      })
-
       const includeArtistNames = enableNewHomeViewCardRailType
       const includeGenericGrid = !!shouldShowInGrid
-
-      const artworksLimit = Math.max(DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD, artworksCount)
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
@@ -393,7 +387,6 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           enableHidingDislikedArtworks,
           includeArtistNames,
           includeGenericGrid,
-          artworksLimit,
         },
         {
           fetchKey: refetchKey,
@@ -410,7 +403,6 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           section={data.homeView.section}
           index={index}
           shouldShowInGrid={shouldShowInGrid}
-          gridArtworksCount={artworksCount}
           {...flexProps}
         />
       )
