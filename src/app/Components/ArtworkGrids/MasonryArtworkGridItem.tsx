@@ -73,37 +73,33 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   const imgWidth = numColumns === 1 ? width : width / numColumns - space(2) - space(1)
   const imgHeight = imgWidth / imgAspectRatio
 
-  const content = (
-    <Flex
-      left={
-        fullWidth
-          ? // When displayed full width, we want artworks to be displayed full width
-            // Therefore, we need to remove the padding that comes from artwork grid item
-            -space(1)
-          : 0
-      }
-    >
-      <ArtworkGridItem
-        {...rest}
-        artwork={item}
-        artworkMetaStyle={artworkMetaStyle}
-        contextModule={contextModule}
-        contextScreen={contextScreen}
-        contextScreenOwnerId={contextScreenOwnerId}
-        contextScreenOwnerSlug={contextScreenOwnerSlug}
-        contextScreenOwnerType={contextScreenOwnerType}
-        height={imgHeight}
-        itemIndex={index}
-        onPress={onPress}
-        partnerOffer={partnerOffer}
-        priceOfferMessage={priceOfferMessage}
-      />
-    </Flex>
-  )
-
   return (
     <>
-      {content}
+      <Flex
+        left={
+          fullWidth
+            ? // When displayed full width, we want artworks to be displayed full width
+              // Therefore, we need to remove the padding that comes from artwork grid item
+              -space(1)
+            : 0
+        }
+      >
+        <ArtworkGridItem
+          {...rest}
+          artwork={item}
+          artworkMetaStyle={artworkMetaStyle}
+          contextModule={contextModule}
+          contextScreen={contextScreen}
+          contextScreenOwnerId={contextScreenOwnerId}
+          contextScreenOwnerSlug={contextScreenOwnerSlug}
+          contextScreenOwnerType={contextScreenOwnerType}
+          height={imgHeight}
+          itemIndex={index}
+          onPress={onPress}
+          partnerOffer={partnerOffer}
+          priceOfferMessage={priceOfferMessage}
+        />
+      </Flex>
       {!!onItemVisibilityChange && (
         <Sentinel
           threshold={0.5}
