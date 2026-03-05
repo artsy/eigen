@@ -108,6 +108,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
+  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
+  const { artworksCount } = getNWFYExperimentDetails({
+    enabled: !!variant?.enabled,
+    variantName: variant?.name,
+    sectionID: section.internalID,
+  })
+
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
@@ -131,6 +138,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const contextModule = shouldShowInGrid
     ? ("newWorksForYouGrid" as ContextModule)
     : (section.contextModule as ContextModule)
+
+  const artworksForGrid = shouldShowInGrid
+    ? artworks.slice(0, artworksCount ?? artworks.length)
+    : artworks
 
   const handleOnArtworkPress = (
     artwork: ArtworkRail_artworks$data[number] | ArtworksCard_artworks$data[number],
@@ -207,7 +218,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       {shouldShowInGrid ? (
         <HomeViewSectionArtworksGrid
-          artworks={artworks}
+          artworks={artworksForGrid}
           moreHref={moreHref}
           onMorePress={onMorePress}
           onArtworkPress={handleOnGridArtworkPress}
@@ -256,7 +267,7 @@ const fragment = graphql`
     enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
     includeArtistNames: { type: "Boolean", defaultValue: false }
     includeGenericGrid: { type: "Boolean", defaultValue: false }
-    artworksLimit: { type: "Int", defaultValue: 10 }
+    first: { type: "Int", defaultValue: 10 }
   ) {
     __typename
     internalID
@@ -273,7 +284,7 @@ const fragment = graphql`
     ownerType
     trackItemImpressions
     showArtworksCardView
-    artworksConnection(first: $artworksLimit) {
+    artworksConnection(first: $first) {
       edges {
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
@@ -294,7 +305,6 @@ const homeViewSectionArtworksQuery = graphql`
     $enableHidingDislikedArtworks: Boolean!
     $includeArtistNames: Boolean!
     $includeGenericGrid: Boolean!
-    $artworksLimit: Int!
   ) {
     homeView {
       section(id: $id) {
@@ -303,7 +313,6 @@ const homeViewSectionArtworksQuery = graphql`
             enableHidingDislikedArtworks: $enableHidingDislikedArtworks
             includeArtistNames: $includeArtistNames
             includeGenericGrid: $includeGenericGrid
-            artworksLimit: $artworksLimit
           )
       }
     }
@@ -368,17 +377,8 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
 
       const enableNewHomeViewCardRailType = useFeatureFlag("AREnableNewHomeViewCardRailType")
 
-      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-      const { artworksCount } = getNWFYExperimentDetails({
-        enabled: !!variant?.enabled,
-        variantName: variant?.name,
-        sectionID,
-      })
-
       const includeArtistNames = enableNewHomeViewCardRailType
       const includeGenericGrid = !!shouldShowInGrid
-
-      const artworksLimit = includeGenericGrid ? artworksCount : DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
@@ -387,7 +387,6 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           enableHidingDislikedArtworks,
           includeArtistNames,
           includeGenericGrid,
-          artworksLimit,
         },
         {
           fetchKey: refetchKey,
