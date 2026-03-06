@@ -626,11 +626,16 @@ export const getAuthModel = (): AuthModel => ({
         const userInfo = await GoogleSignin.signIn()
         const accessToken = (await GoogleSignin.getTokens()).accessToken
 
+        if (userInfo.type === "cancelled") {
+          reject(new AuthError("Cancelled Google Auth"))
+          return
+        }
+
         if (options.signInOrUp === "signUp") {
-          const resultGravitySignUp = userInfo.user.name
+          const resultGravitySignUp = userInfo.data.user.name
             ? await actions.signUp({
-                email: userInfo.user.email,
-                name: userInfo.user.name,
+                email: userInfo.data.user.email,
+                name: userInfo.data.user.name,
                 oauthMode: "accessToken",
                 accessToken,
                 oauthProvider: "google",
@@ -735,13 +740,20 @@ export const getAuthModel = (): AuthModel => ({
           reject(new AuthError("Play services are not available."))
           return
         }
+
         const userInfo = await GoogleSignin.signIn()
+
+        if (userInfo.type === "cancelled") {
+          reject(new AuthError(statusCodes.SIGN_IN_CANCELLED))
+          return
+        }
+
         const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-        const resultGravitySignUp = userInfo.user.name
+        const resultGravitySignUp = userInfo.data.user.name
           ? await actions.signUp({
-              email: userInfo.user.email,
-              name: userInfo.user.name,
+              email: userInfo.data.user.email,
+              name: userInfo.data.user.name,
               oauthMode: "accessToken",
               accessToken,
               oauthProvider: "google",
@@ -977,7 +989,7 @@ export const getAuthModel = (): AuthModel => ({
   signOut: thunk(async (actions, _) => {
     const signOutGoogle = async () => {
       try {
-        const isSignedIn = await GoogleSignin.isSignedIn()
+        const isSignedIn = GoogleSignin.hasPreviousSignIn()
         if (isSignedIn) {
           await GoogleSignin.revokeAccess()
           await GoogleSignin.signOut()
