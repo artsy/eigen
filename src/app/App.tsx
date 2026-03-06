@@ -68,6 +68,12 @@ if (Platform.OS === "android") {
   }
 }
 
+if (Keys.OSS !== "true") {
+  GoogleSignin.configure({
+    webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+  })
+}
+
 const Main = () => {
   // Rozenite plugins
   useNetworkActivityDevTools()
@@ -82,9 +88,6 @@ const Main = () => {
     if (oss === "true") {
       return
     }
-    GoogleSignin.configure({
-      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-    })
     Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
