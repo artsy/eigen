@@ -3451,6 +3451,9 @@ enum ArtworkImportError {
   ARTWORK_CREATION_FAILED
   DUPLICATE_IMAGE_FILENAMES
   INVALID_ARTIST_PROOF
+  INVALID_ARTSY_DOMESTIC_SHIPPING
+  INVALID_ARTSY_INTERNATIONAL_SHIPPING
+  INVALID_BUY_NOW
   INVALID_CERTIFICATE_OF_AUTHENTICITY
   INVALID_CLASSIFICATION
   INVALID_CURRENCY
@@ -3461,6 +3464,8 @@ enum ArtworkImportError {
   INVALID_DEPTH
   INVALID_DIAMETER
   INVALID_DIMENSION_METRIC
+  INVALID_DISPLAY_PRICE_RANGE
+  INVALID_DOMESTIC_SHIPPING
   INVALID_ESTIMATE
   INVALID_EXCLUDE_FROM_MARKETING
   INVALID_FRAMED_DEPTH
@@ -3469,12 +3474,19 @@ enum ArtworkImportError {
   INVALID_FRAMED_WIDTH
   INVALID_HEIGHT
   INVALID_HIGH_ESTIMATE
+  INVALID_INTERNATIONAL_SHIPPING
+  INVALID_INVENTORY_QUANTITY
+  INVALID_LOCATION
   INVALID_LOT_NUMBER
   INVALID_LOW_ESTIMATE
+  INVALID_MAKE_OFFER
   INVALID_MEDIUM
   INVALID_OPENING_BID
+  INVALID_PICKUP_AVAILABLE
   INVALID_POSITION
   INVALID_PRICE
+  INVALID_PRICE_MAX
+  INVALID_PRICE_MIN
   INVALID_RESERVE
   INVALID_RESERVE_UNKNOWN
   INVALID_SIGNATURE
@@ -3504,6 +3516,7 @@ type ArtworkImportRow {
   dateLatestYear: Int
   dateMode: DateMode
   dimensionMetric: String!
+  domesticShipping: Money
   errors: [ArtworkImportRowError!]!
   estimate: Money
   excludedFromImport: Boolean!
@@ -3515,9 +3528,12 @@ type ArtworkImportRow {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  internationalShipping: Money
   lowEstimate: Money
   openingBid: Money
   priceListed: Money
+  priceMax: Money
+  priceMin: Money
   rawData: JSON!
   reserve: Money
   transformedData: ArtworkImportTransformedData!
@@ -3624,11 +3640,14 @@ type ArtworkImportSummary {
 type ArtworkImportTransformedData {
   artistNames: String
   artistProofs: String
+  artsyDomesticShipping: String
+  artsyInternationalShipping: String
   artworkCondition: String
   artworkDescription: String
   artworkTitle: String
   availableEditions: [String]
   bibliography: String
+  buyNow: String
   certificateOfAuthenticity: String
   classification: String
   confidentialNotes: String
@@ -3642,6 +3661,8 @@ type ArtworkImportTransformedData {
   depth: String
   diameter: String
   dimensionMetric: String
+  displayPriceRange: String
+  domesticShipping: String
   editionSize: String
   estimate: String
   excludeFromMarketing: String
@@ -3655,14 +3676,21 @@ type ArtworkImportTransformedData {
   imageFileNames: String
   imageRights: String
   importSource: String
+  internationalShipping: String
   inventoryId: String
+  inventoryQuantity: String
+  location: String
   lotNumber: String
   lowEstimate: String
+  makeOffer: String
   materials: String
   medium: String
   openingBid: String
+  pickupAvailable: String
   position: String
   price: String
+  priceMax: String
+  priceMin: String
   provenance: String
   publisher: String
   reserve: String
@@ -4804,6 +4832,66 @@ type AuthorSocialsInstagram {
 type AuthorSocialsX {
   handle: String!
   url: String!
+}
+
+type AuthorizeInstagramAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input AuthorizeInstagramAccountInput {
+  clientMutationId: String
+
+  # The partner ID to associate the account with
+  partnerId: String!
+
+  # The OAuth redirect URI
+  redirectUri: String!
+}
+
+type AuthorizeInstagramAccountPayload {
+  clientMutationId: String
+
+  # On success: the Instagram OAuth authorization URL
+  instagramAccountOrError: AuthorizeInstagramAccountResponseOrError
+}
+
+union AuthorizeInstagramAccountResponseOrError =
+    AuthorizeInstagramAccountFailure
+  | AuthorizeInstagramAccountSuccess
+
+type AuthorizeInstagramAccountSuccess {
+  # The Instagram OAuth authorization URL to redirect the user to
+  authorizationUrl: String!
+}
+
+type AuthorizeMailchimpAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input AuthorizeMailchimpAccountInput {
+  clientMutationId: String
+
+  # The partner ID to associate the account with
+  partnerId: String!
+
+  # The OAuth redirect URI
+  redirectUri: String!
+}
+
+type AuthorizeMailchimpAccountPayload {
+  clientMutationId: String
+
+  # On success: the Mailchimp OAuth authorization URL
+  mailchimpAccountOrError: AuthorizeMailchimpAccountResponseOrError
+}
+
+union AuthorizeMailchimpAccountResponseOrError =
+    AuthorizeMailchimpAccountFailure
+  | AuthorizeMailchimpAccountSuccess
+
+type AuthorizeMailchimpAccountSuccess {
+  # The Mailchimp OAuth authorization URL to redirect the user to
+  authorizationUrl: String!
 }
 
 enum Availability {
@@ -7924,6 +8012,70 @@ type CommerceUser {
   id: String!
 }
 
+type CompleteInstagramOAuthFailure {
+  mutationError: GravityMutationError
+}
+
+input CompleteInstagramOAuthInput {
+  clientMutationId: String
+
+  # The OAuth authorization code returned by Instagram
+  code: String!
+
+  # The OAuth redirect URI (must match the one used during initiation)
+  redirectUri: String!
+
+  # The OAuth state parameter returned by Instagram
+  state: String!
+}
+
+type CompleteInstagramOAuthPayload {
+  clientMutationId: String
+
+  # On success: the connected Instagram account
+  instagramAccountOrError: CompleteInstagramOAuthResponseOrError
+}
+
+union CompleteInstagramOAuthResponseOrError =
+    CompleteInstagramOAuthFailure
+  | CompleteInstagramOAuthSuccess
+
+type CompleteInstagramOAuthSuccess {
+  instagramAccount: InstagramAccount
+}
+
+type CompleteMailchimpOAuthFailure {
+  mutationError: GravityMutationError
+}
+
+input CompleteMailchimpOAuthInput {
+  clientMutationId: String
+
+  # The OAuth authorization code returned by Mailchimp
+  code: String!
+
+  # The OAuth redirect URI (must match the one used during initiation)
+  redirectUri: String!
+
+  # The OAuth state parameter returned by Mailchimp
+  state: String!
+}
+
+type CompleteMailchimpOAuthPayload {
+  clientMutationId: String
+
+  # On success: the connected Mailchimp account
+  mailchimpAccountOrError: CompleteMailchimpOAuthResponseOrError
+}
+
+union CompleteMailchimpOAuthResponseOrError =
+    CompleteMailchimpOAuthFailure
+  | CompleteMailchimpOAuthSuccess
+
+type CompleteMailchimpOAuthSuccess {
+  mailchimpAccount: MailchimpAccount
+}
+
 type ConditionReportRequest {
   internalID: ID!
   saleArtworkID: ID
@@ -10085,6 +10237,46 @@ type CreateInvoicePaymentSuccess {
   invoicePayment: InvoicePayment
 }
 
+type CreateMailchimpCampaignFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateMailchimpCampaignInput {
+  # Artwork IDs to include in the campaign (mutually exclusive with partnerShowId)
+  artworkIds: [String!]
+  clientMutationId: String
+
+  # The Mailchimp list/audience ID to send the campaign to
+  listId: String!
+
+  # The internal ID of the Mailchimp account to use
+  mailchimpAccountId: String!
+
+  # Partner show ID to create campaign from (mutually exclusive with artworkIds)
+  partnerShowId: String
+
+  # The email preview text
+  previewText: String
+
+  # The email subject line
+  subjectLine: String!
+}
+
+type CreateMailchimpCampaignPayload {
+  clientMutationId: String
+
+  # On success: the created Mailchimp campaign
+  mailchimpCampaignOrError: CreateMailchimpCampaignResponseOrError
+}
+
+union CreateMailchimpCampaignResponseOrError =
+    CreateMailchimpCampaignFailure
+  | CreateMailchimpCampaignSuccess
+
+type CreateMailchimpCampaignSuccess {
+  mailchimpCampaign: MailchimpCampaign
+}
+
 type CreateNavigationDraftFailure {
   mutationError: GravityMutationError!
 }
@@ -11341,6 +11533,58 @@ union DeleteFeaturedLinkResponseOrError = DeleteFeaturedLinkFailure | DeleteFeat
 
 type DeleteFeaturedLinkSuccess {
   featuredLink: FeaturedLink
+}
+
+type DeleteInstagramAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteInstagramAccountInput {
+  clientMutationId: String
+
+  # The internal ID of the Instagram account to delete
+  id: String!
+}
+
+type DeleteInstagramAccountPayload {
+  clientMutationId: String
+
+  # On success: a boolean indicating the account was deleted
+  instagramAccountOrError: DeleteInstagramAccountResponseOrError
+}
+
+union DeleteInstagramAccountResponseOrError =
+    DeleteInstagramAccountFailure
+  | DeleteInstagramAccountSuccess
+
+type DeleteInstagramAccountSuccess {
+  success: Boolean
+}
+
+type DeleteMailchimpAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteMailchimpAccountInput {
+  clientMutationId: String
+
+  # The internal ID of the Mailchimp account to delete
+  id: String!
+}
+
+type DeleteMailchimpAccountPayload {
+  clientMutationId: String
+
+  # On success: a boolean indicating the account was deleted
+  mailchimpAccountOrError: DeleteMailchimpAccountResponseOrError
+}
+
+union DeleteMailchimpAccountResponseOrError =
+    DeleteMailchimpAccountFailure
+  | DeleteMailchimpAccountSuccess
+
+type DeleteMailchimpAccountSuccess {
+  success: Boolean
 }
 
 type DeleteNavigationItemFailure {
@@ -15099,6 +15343,58 @@ type InquiryRequest {
   shippingLocation: Location
 }
 
+type InstagramAccount {
+  accountName: String
+  connectedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  lastSyncedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  partnerId: String!
+  providerAccountId: String
+  status: InstagramAccountStatus
+  tokenExpiresAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  userId: String!
+  username: String
+}
+
+enum InstagramAccountStatus {
+  ACTIVE
+  DISCONNECTED
+  ERROR
+  EXPIRED
+}
+
 enum IntendedState {
   ACCEPTED
   REJECTED
@@ -15437,6 +15733,149 @@ type LotStanding {
   mostRecentBid: BidderPosition
   sale: Sale
   saleArtwork: SaleArtwork
+}
+
+type MailchimpAccount {
+  accountName: String
+  apiEndpoint: String
+  connectedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  email: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  lastSyncedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Mailchimp audience lists for this account
+  lists: [MailchimpList!]
+  partnerId: String!
+  providerAccountId: String
+  serverPrefix: String
+  status: MailchimpAccountStatus
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  userId: String!
+}
+
+enum MailchimpAccountStatus {
+  ACTIVE
+  DISCONNECTED
+  ERROR
+  EXPIRED
+}
+
+type MailchimpCampaign {
+  # IDs of artworks included in this campaign
+  artworkIds: [String!]
+
+  # The Mailchimp campaign ID
+  campaignId: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  createdInMailchimpAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The Mailchimp list/audience ID used for this campaign
+  listId: String
+
+  # The URL to view the campaign in Mailchimp
+  mailchimpUrl: String
+  partnerId: String
+
+  # The partner show associated with this campaign, if any
+  partnerShowId: String
+
+  # The email preview text
+  previewText: String
+  sentAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  status: MailchimpCampaignStatus
+
+  # The email subject line
+  subjectLine: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # The Mailchimp web ID for linking to the campaign
+  webId: String
+}
+
+# A connection to a list of items.
+type MailchimpCampaignConnection {
+  # A list of edges.
+  edges: [MailchimpCampaignEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MailchimpCampaignEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: MailchimpCampaign
+}
+
+enum MailchimpCampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+}
+
+type MailchimpList {
+  # The Mailchimp list/audience ID
+  listId: String!
+
+  # The name of the Mailchimp list/audience
+  name: String!
 }
 
 type MarkAllNotificationsAsReadFailure {
@@ -16032,6 +16471,12 @@ type Me implements Node {
   initials(length: Int = 3): String
   inquiryIntroduction: String
 
+  # A list of Instagram accounts connected by the current user
+  instagramAccounts(
+    # The partner ID to filter accounts by
+    partnerId: String!
+  ): [InstagramAccount!]
+
   # A type-specific ID.
   internalID: ID!
   isCollector: Boolean!
@@ -16095,6 +16540,12 @@ type Me implements Node {
     sort: String
     userId: String
   ): SaleArtworksConnection
+
+  # A list of Mailchimp accounts connected by the current user
+  mailchimpAccounts(
+    # The partner ID to filter accounts by
+    partnerId: String!
+  ): [MailchimpAccount!]
   myBids: MyBids
 
   # A list of auction results from artists in My Collection
@@ -16743,6 +17194,16 @@ type Mutation {
   assignArtistToPartner(
     input: AssignArtistToPartnerMutationInput!
   ): AssignArtistToPartnerMutationPayload
+
+  # Initiate the Instagram OAuth flow and return the authorization URL
+  authorizeInstagramAccount(
+    input: AuthorizeInstagramAccountInput!
+  ): AuthorizeInstagramAccountPayload
+
+  # Initiate the Mailchimp OAuth flow and return the authorization URL
+  authorizeMailchimpAccount(
+    input: AuthorizeMailchimpAccountInput!
+  ): AuthorizeMailchimpAccountPayload
   batchArtworkImportImages(input: BatchArtworkImportImagesInput!): BatchArtworkImportImagesPayload
 
   # Bulk add artworks to a show
@@ -16929,6 +17390,12 @@ type Mutation {
     # Parameters for UpdateImpulseConversationId
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
+
+  # Complete the Instagram OAuth flow by exchanging the authorization code for an account
+  completeInstagramOAuth(input: CompleteInstagramOAuthInput!): CompleteInstagramOAuthPayload
+
+  # Complete the Mailchimp OAuth flow by exchanging the authorization code for an account
+  completeMailchimpOAuth(input: CompleteMailchimpOAuthInput!): CompleteMailchimpOAuthPayload
   confirmPassword(
     # Parameters for ConfirmPassword
     input: ConfirmPasswordInput!
@@ -17058,6 +17525,9 @@ type Mutation {
     input: CommerceCreateInquiryOrderWithArtworkInput!
   ): CommerceCreateInquiryOrderWithArtworkPayload
   createInvoicePayment(input: CreateInvoicePaymentInput!): CreateInvoicePaymentPayload
+
+  # Create a Mailchimp campaign draft for a partner
+  createMailchimpCampaign(input: CreateMailchimpCampaignInput!): CreateMailchimpCampaignPayload
   createNavigationDraft(input: CreateNavigationDraftInput!): CreateNavigationDraftPayload
   createNavigationItem(input: CreateNavigationItemInput!): CreateNavigationItemPayload
 
@@ -17189,6 +17659,12 @@ type Mutation {
 
   # deletes a hero unit.
   deleteHeroUnit(input: deleteHeroUnitMutationInput!): deleteHeroUnitMutationPayload
+
+  # Disconnect an Instagram account from a partner
+  deleteInstagramAccount(input: DeleteInstagramAccountInput!): DeleteInstagramAccountPayload
+
+  # Disconnect a Mailchimp account from a partner
+  deleteMailchimpAccount(input: DeleteMailchimpAccountInput!): DeleteMailchimpAccountPayload
 
   # Delete User Artsy Account
   deleteMyAccountMutation(input: DeleteAccountInput!): DeleteAccountPayload
@@ -17344,10 +17820,12 @@ type Mutation {
   # Publish a draft navigation version. Accepts either a groupID (for backward compatibility) or versionID (preferred for admin workflows).
   publishNavigationDraft(input: PublishNavigationDraftInput!): PublishNavigationDraftPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
-  recordArtworkView(
-    # Parameters for RecordArtworkView
-    input: RecordArtworkViewInput!
-  ): RecordArtworkViewPayload
+
+  # Records a user viewing an artwork
+  recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
+
+  # Refresh the access token for a connected Instagram account
+  refreshInstagramAccount(input: RefreshInstagramAccountInput!): RefreshInstagramAccountPayload
 
   # Removes an artwork from a partner show.
   removeArtworkFromPartnerShow(
@@ -21495,6 +21973,26 @@ type Query {
   invoice(token: String!): Invoice
   job(id: ID!): Job!
   jobs: [Job!]!
+
+  # A Mailchimp campaign by ID
+  mailchimpCampaign(
+    # The internal ID of the campaign
+    id: String!
+  ): MailchimpCampaign
+
+  # A connection of Mailchimp campaigns for a partner
+  mailchimpCampaignsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # The partner ID to filter campaigns by
+    partnerId: String!
+
+    # Filter campaigns by status
+    status: MailchimpCampaignStatus
+  ): MailchimpCampaignConnection
   markdown(content: String!): MarkdownContent
 
   # Get price insights for a market.
@@ -22247,24 +22745,41 @@ type RecentlySoldArtworkTypeEdge {
   node: RecentlySoldArtworkType
 }
 
-# Autogenerated input type of RecordArtworkView
 input RecordArtworkViewInput {
   artwork_id: String!
-
-  # A unique identifier for the client performing the mutation.
   clientMutationId: String
 }
 
-# Autogenerated return type of RecordArtworkView
 type RecordArtworkViewPayload {
-  # Id of viewed artwork
   artworkId: String!
-
-  # Id of viewed artwork
   artwork_id: String! @deprecated(reason: "Use artworkId")
-
-  # A unique identifier for the client performing the mutation.
   clientMutationId: String
+}
+
+type RefreshInstagramAccountFailure {
+  mutationError: GravityMutationError
+}
+
+input RefreshInstagramAccountInput {
+  clientMutationId: String
+
+  # The internal ID of the Instagram account to refresh
+  id: String!
+}
+
+type RefreshInstagramAccountPayload {
+  clientMutationId: String
+
+  # On success: the refreshed Instagram account
+  instagramAccountOrError: RefreshInstagramAccountResponseOrError
+}
+
+union RefreshInstagramAccountResponseOrError =
+    RefreshInstagramAccountFailure
+  | RefreshInstagramAccountSuccess
+
+type RefreshInstagramAccountSuccess {
+  instagramAccount: InstagramAccount
 }
 
 enum RelatedArtistsKind {
@@ -27945,6 +28460,26 @@ type Viewer {
   invoice(token: String!): Invoice
   job(id: ID!): Job!
   jobs: [Job!]!
+
+  # A Mailchimp campaign by ID
+  mailchimpCampaign(
+    # The internal ID of the campaign
+    id: String!
+  ): MailchimpCampaign
+
+  # A connection of Mailchimp campaigns for a partner
+  mailchimpCampaignsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # The partner ID to filter campaigns by
+    partnerId: String!
+
+    # Filter campaigns by status
+    status: MailchimpCampaignStatus
+  ): MailchimpCampaignConnection
   markdown(content: String!): MarkdownContent
 
   # Marketing Categories
