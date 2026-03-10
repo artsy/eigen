@@ -2792,6 +2792,7 @@ type Artwork implements Node & Searchable & Sellable {
   framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
   framedDiameter: String
+  framedDimensions: dimensions
   framedHeight: String
 
   # The unit of measurement for the framed dimensions
