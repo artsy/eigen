@@ -9,9 +9,12 @@ import {
   getInputValue,
   parseSliderRange,
 } from "app/Components/PriceRange/utils"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
+import useThrottle from "react-use/lib/useThrottle"
 
 const NUMBERS_REGEX = /^(|\d)+$/
+
+const THROTTLE_DELAY = 60
 
 interface RecentPriceRangeEntity {
   value: string
@@ -38,20 +41,33 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   onMultiSliderValuesChangeFinish,
 }) => {
   const [range, setRange] = useState(parsePriceRange(filterPriceRange))
+  const [sliderValue, setSliderValue] = useState<number[]>([])
+
+  const sliderValueThrottled = useThrottle(sliderValue, THROTTLE_DELAY)
 
   useEffect(() => {
     setRange(parsePriceRange(filterPriceRange))
   }, [filterPriceRange])
 
+  const updateRange = useCallback(
+    (updatedRange: PriceRange) => {
+      setRange(updatedRange)
+      onPriceRangeUpdate(updatedRange)
+    },
+    [onPriceRangeUpdate]
+  )
+
+  useEffect(() => {
+    if (sliderValueThrottled.length) {
+      const convertedRange = convertToFilterFormatRange(sliderValueThrottled)
+      updateRange(convertedRange)
+    }
+  }, [sliderValueThrottled, updateRange])
+
   const sliderRange = parseSliderRange(range)
   const [minValue, maxValue] = range
 
   const shouldDisplayHistogram = histogramBars.length > 0
-
-  const updateRange = (updatedRange: PriceRange) => {
-    setRange(updatedRange)
-    onPriceRangeUpdate(updatedRange)
-  }
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
     // Early exit the input update if the value is not a number
@@ -77,9 +93,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   }
 
   const handleSliderValueChange = (value: number[]) => {
-    const convertedRange = convertToFilterFormatRange(value)
-
-    updateRange(convertedRange)
+    setSliderValue(value)
   }
 
   const handleRecentPriceRangeSelected = (priceRange: RecentPriceRangeEntity) => {
