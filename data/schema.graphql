@@ -12427,6 +12427,7 @@ type EditionSet implements Sellable {
   editionSize: String
   framedDepth: String
   framedDiameter: String
+  framedDimensions: dimensions
   framedHeight: String
   framedMetric: String
   framedWidth: String
