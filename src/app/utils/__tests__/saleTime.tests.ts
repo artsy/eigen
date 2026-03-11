@@ -186,33 +186,41 @@ describe("saleTime", () => {
   })
 })
 
+// offsetNameShort relies on the Intl API. In Node.js environments with full ICU data
+// (e.g. CI), it returns "EDT". In environments with small ICU (e.g. macOS default Node.js),
+// it falls back to "GMT-4". The actual UI correctly displays "EDT" because React Native has
+// full timezone data. Tests use a regex to accept both formats.
 describe("#saleTime.absolute", () => {
-  // Note: Tests show "GMT-4" instead of "EDT" due to limited IANA timezone data
-  // in Node.js test environments. Luxon's offsetNameShort relies on the Intl API,
-  // which falls back to offset-based names (GMT-4) when full ICU data isn't available.
-  // The actual UI correctly displays "EDT" because React Native has full timezone data.
   it("shows the time in the correct timezone", () => {
-    expect(saleTime(liveSaleNY).absolute).toEqual("Live bidding begins Oct 1 at 3:00pm GMT-4")
-    expect(saleTime(liveSaleDE).absolute).toEqual("Live bidding begins Oct 1 at 9:00am GMT-4")
+    expect(saleTime(liveSaleNY).absolute).toMatch(
+      /^Live bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/
+    )
+    expect(saleTime(liveSaleDE).absolute).toMatch(
+      /^Live bidding begins Oct 1 at 9:00am (GMT-4|EDT)$/
+    )
   })
   it("recognises whether an auction is live or not", () => {
-    expect(saleTime(liveSaleNY).absolute).toEqual("Live bidding begins Oct 1 at 3:00pm GMT-4")
-    expect(saleTime(timedSaleNY).absolute).toEqual("Bidding begins Oct 1 at 3:00pm GMT-4")
+    expect(saleTime(liveSaleNY).absolute).toMatch(
+      /^Live bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/
+    )
+    expect(saleTime(timedSaleNY).absolute).toMatch(/^Bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/)
   })
   it("recognises whether an auction is over or not", () => {
     expect(saleTime(finishedSaleNY).absolute).toEqual("Closed on Sep 1")
-    expect(saleTime(completeNotYetOpenSaleNY).absolute).toEqual(
-      "Live bidding begins Sep 5 at 3:00pm GMT-4"
+    expect(saleTime(completeNotYetOpenSaleNY).absolute).toMatch(
+      /^Live bidding begins Sep 5 at 3:00pm (GMT-4|EDT)$/
     )
     expect(saleTime(completeFinishedSaleNY).absolute).toEqual("Closed on Sep 1")
   })
   it("works for currently open sales", () => {
-    expect(saleTime(completeOpenSaleNY).absolute).toEqual(
-      "Live bidding closes Sep 5 at 3:00pm GMT-4"
+    expect(saleTime(completeOpenSaleNY).absolute).toMatch(
+      /^Live bidding closes Sep 5 at 3:00pm (GMT-4|EDT)$/
     )
   })
   it("works for null endAt", () => {
-    expect(saleTime(futureNoEndAtSale).absolute).toEqual("Bidding begins Sep 5 at 3:00pm GMT-4")
+    expect(saleTime(futureNoEndAtSale).absolute).toMatch(
+      /^Bidding begins Sep 5 at 3:00pm (GMT-4|EDT)$/
+    )
     expect(saleTime(pastNoEndAtSale).absolute).toEqual(null)
   })
   it("works for null startAt and liveStartAt", () => {
