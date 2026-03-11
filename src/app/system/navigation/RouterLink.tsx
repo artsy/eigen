@@ -1,11 +1,12 @@
 import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
+import { useIsFocused } from "@react-navigation/native"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { GestureResponderEvent } from "react-native"
 import { Variables } from "relay-runtime"
 
@@ -39,8 +40,22 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
   const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
+  const isFocused = useIsFocused()
+  const subscriptionsRef = useRef<Array<{ unsubscribe: () => void; route: string }>>([])
 
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
+
+  useEffect(() => {
+    const unsubscribeFromAll = () => {
+      subscriptionsRef.current.forEach((sub) => sub.unsubscribe())
+      subscriptionsRef.current = []
+    }
+    if (!isFocused && subscriptionsRef.current.length > 0) {
+      unsubscribeFromAll()
+    }
+
+    return unsubscribeFromAll
+  }, [isFocused])
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
@@ -54,13 +69,18 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
     }
   }
 
-  const handleVisible = (isVisible: boolean) => {
+  const handleVisible = async (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible) {
       if (enablePrefetchingIndicator) setPrefetchState("started")
 
-      prefetchUrl(to, prefetchVariables, () => {
+      const result = await prefetchUrl(to, prefetchVariables, () => {
         if (enablePrefetchingIndicator) setPrefetchState("complete")
       })
+
+      if (result) {
+        const subs = result.filter(Boolean).map((sub) => ({ ...sub, route: to }))
+        subscriptionsRef.current.push(...subs)
+      }
     }
   }
 
