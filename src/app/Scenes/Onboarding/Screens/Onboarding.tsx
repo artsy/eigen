@@ -62,6 +62,7 @@ export const OnboardingWelcomeScreens = () => {
       initialRouteName="OnboardingHome"
       screenOptions={{
         headerShown: false,
+        statusBarStyle: "light",
       }}
     >
       <StackNavigator.Group

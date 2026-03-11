@@ -182,6 +182,8 @@ jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
 
+jest.mock("expo-status-bar", () => {})
+
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "some-build-number",
   getSystemName: () => "some-system-name",
@@ -482,9 +484,7 @@ function getNativeModules(): OurNativeModules {
     },
     ArtsyNativeModule: {
       launchCount: 3,
-      setAppStyling: jest.fn(),
       setNavigationBarColor: jest.fn(),
-      setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
@@ -538,9 +538,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ArtsyNativeModule: {
       launchCount: 3,
-      setAppStyling: jest.fn(),
       setNavigationBarColor: jest.fn(),
-      setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
