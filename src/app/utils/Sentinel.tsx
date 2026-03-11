@@ -9,6 +9,7 @@
  */
 
 import { Flex } from "@artsy/palette-mobile"
+import { useIsFocused } from "@react-navigation/native"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
@@ -38,20 +39,31 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
   const myView: any = useRef(null)
 
   const [isVisible, setIsVisible] = useState<boolean>(false)
+  const isFocused = useIsFocused()
 
-  let interval: any = null
+  const interval = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  useEffect(() => {
-    startWatching()
-    return stopWatching
-  }, [])
+  const isInViewPort = (dimensions: IDimensionData) => {
+    const window = Dimensions.get("window")
+
+    const newIsVisible =
+      dimensions.rectBottom != 0 &&
+      dimensions.rectTop >= 0 &&
+      dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
+      dimensions.rectWidth > 0 &&
+      dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
+
+    if (newIsVisible !== isVisible) {
+      setIsVisible(newIsVisible)
+    }
+  }
 
   const startWatching = () => {
-    if (interval) {
+    if (interval.current) {
       return
     }
 
-    interval = setInterval(() => {
+    interval.current = setInterval(() => {
       if (!myView || !myView.current) {
         return
       }
@@ -79,23 +91,22 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
   }
 
   const stopWatching = () => {
-    interval = clearInterval(interval)
-  }
-
-  const isInViewPort = (dimensions: IDimensionData) => {
-    const window = Dimensions.get("window")
-
-    const newIsVisible =
-      dimensions.rectBottom != 0 &&
-      dimensions.rectTop >= 0 &&
-      dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
-      dimensions.rectWidth > 0 &&
-      dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
-
-    if (newIsVisible !== isVisible) {
-      setIsVisible(newIsVisible)
+    if (interval.current) {
+      clearInterval(interval.current)
+      interval.current = null
     }
   }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (isFocused) {
+      startWatching()
+    } else {
+      stopWatching()
+    }
+
+    return stopWatching
+  }, [isFocused])
 
   useEffect(() => {
     onChange(isVisible)
