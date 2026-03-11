@@ -57,7 +57,6 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
       return super.application(app, open: url, options: options) ||
-             GIDSignIn.sharedInstance.handle(url) ||
              RCTLinkingManager.application(app, open: url, options: options)
     }
 
