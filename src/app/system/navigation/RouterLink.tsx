@@ -46,10 +46,15 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
   useEffect(() => {
-    if (!isFocused && subscriptionsRef.current.length > 0) {
+    const unsubscribeFromAll = () => {
       subscriptionsRef.current.forEach((sub) => sub.unsubscribe())
       subscriptionsRef.current = []
     }
+    if (!isFocused && subscriptionsRef.current.length > 0) {
+      unsubscribeFromAll()
+    }
+
+    return unsubscribeFromAll
   }, [isFocused])
 
   const handlePress = (event: GestureResponderEvent) => {
