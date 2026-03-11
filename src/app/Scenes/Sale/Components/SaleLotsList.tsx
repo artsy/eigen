@@ -31,6 +31,7 @@ interface SharedProps {
   saleSlug: string
   scrollToTop: () => void
   artworksRefetchRef?: MutableRefObject<() => void>
+  artworksLoadMoreRef?: MutableRefObject<() => void>
 }
 
 interface LegacyProps extends SharedProps {
@@ -90,6 +91,7 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
   saleID,
   saleSlug,
   artworksRefetchRef,
+  artworksLoadMoreRef,
   scrollToTop,
 }) => {
   const tracking = useTracking()
@@ -97,6 +99,16 @@ const SaleLotsListLegacy: React.FC<LegacyProps> = ({
     legacyFragment,
     saleArtworksConnection
   )
+
+  useEffect(() => {
+    if (artworksLoadMoreRef) {
+      artworksLoadMoreRef.current = () => {
+        if (!isLoadingNext && hasNext) {
+          loadNext(PAGE_SIZE)
+        }
+      }
+    }
+  }, [artworksLoadMoreRef, isLoadingNext, hasNext, loadNext])
 
   const artworksTotal = data?.saleArtworksConnection?.counts?.total ?? 0
   const unfilteredTotal = useRef<number>(artworksTotal)
@@ -217,6 +229,7 @@ const SaleLotsListNew: React.FC<NewProps> = ({
   saleID,
   saleSlug,
   artworksRefetchRef,
+  artworksLoadMoreRef,
   scrollToTop,
 }) => {
   const tracking = useTracking()
@@ -224,6 +237,16 @@ const SaleLotsListNew: React.FC<NewProps> = ({
     newFragment,
     viewer
   )
+
+  useEffect(() => {
+    if (artworksLoadMoreRef) {
+      artworksLoadMoreRef.current = () => {
+        if (!isLoadingNext && hasNext) {
+          loadNext(PAGE_SIZE)
+        }
+      }
+    }
+  }, [artworksLoadMoreRef, isLoadingNext, hasNext, loadNext])
 
   const artworksTotal = data?.artworksConnection?.counts?.total ?? 0
   const unfilteredTotal = useRef<number>(artworksTotal)
@@ -454,6 +477,7 @@ export const SaleLotsListContainer: React.FC<{
   saleSlug: string
   scrollToTop: () => void
   artworksRefetchRef?: MutableRefObject<() => void>
+  artworksLoadMoreRef?: MutableRefObject<() => void>
   viewer?: SaleLotsListViewer_viewer$key
 }> = (props) => {
   const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
@@ -467,6 +491,7 @@ export const SaleLotsListContainer: React.FC<{
         saleSlug={props.saleSlug}
         scrollToTop={props.scrollToTop}
         artworksRefetchRef={props.artworksRefetchRef}
+        artworksLoadMoreRef={props.artworksLoadMoreRef}
       />
     )
   }
@@ -479,6 +504,7 @@ export const SaleLotsListContainer: React.FC<{
       saleSlug={props.saleSlug}
       scrollToTop={props.scrollToTop}
       artworksRefetchRef={props.artworksRefetchRef}
+      artworksLoadMoreRef={props.artworksLoadMoreRef}
     />
   )
 }

@@ -430,19 +430,19 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             Show more
           </Button>
         )}
-        {!!showLoadingSpinner && !!localIsLoading && (
+        {!!showLoadingSpinner && !!(localIsLoading || isLoading?.()) && (
           <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
         )}
 
-        {!!localIsLoading && hasMore() && (
+        {!!(localIsLoading || isLoading?.()) && hasMore() && (
           <Flex
             alignItems="center"
             justifyContent="center"
             m={4}
             mb={6}
-            style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
+            style={{ opacity: (localIsLoading || isLoading?.()) && hasMore() ? 1 : 0 }}
           >
             {!!autoFetch && (
               <ActivityIndicator color={Platform.OS === "android" ? "mono100" : undefined} />
