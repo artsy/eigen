@@ -94,7 +94,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const histogramBars = getBarsFromAggregations(aggregations)
 
   return (
-    <Flex flex={1}>
+    <Flex flex={1} backgroundColor="mono0">
       <ArtworkFilterBackHeader
         title={filterHeaderText}
         onLeftButtonPress={navigation.goBack}
