@@ -6682,9 +6682,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-google-signin/google-signin@npm:16.1.2":
-  version: 16.1.2
-  resolution: "@react-native-google-signin/google-signin@npm:16.1.2"
+"@react-native-google-signin/google-signin@npm:15.0.0":
+  version: 15.0.0
+  resolution: "@react-native-google-signin/google-signin@npm:15.0.0"
   peerDependencies:
     expo: ">=52.0.40"
     react: "*"
@@ -6692,7 +6692,7 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10c0/91f8f8c4ed5311e7cd7c2977696624d857abb18b7bedfec0a126d8cca38cd56d48d8e0976ba01cf75db385bdd0a054e51148b5a3c64476305ccfdd79370f57af
+  checksum: 10c0/e0a2100bab0a59d795e352986cbc7bd3ba5fea85346ac628c8c5c7583af66ed3faed9873e2a53c422b86d44c8e21e2c8a1e3c96e85dc1ea559c28fbb3c35ee42
   languageName: node
   linkType: hard
 
@@ -13350,7 +13350,7 @@ __metadata:
     "@react-native-documents/picker": "npm:10.1.5"
     "@react-native-firebase/app": "npm:23.1.0"
     "@react-native-firebase/messaging": "npm:23.1.0"
-    "@react-native-google-signin/google-signin": "npm:16.1.2"
+    "@react-native-google-signin/google-signin": "npm:15.0.0"
     "@react-native-menu/menu": "npm:1.2.2"
     "@react-native/babel-preset": "npm:0.81.5"
     "@react-native/eslint-config": "npm:0.81.5"
