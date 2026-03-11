@@ -7,8 +7,8 @@ import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import {
-  HomeViewSectionsConnection_viewer$key,
   HomeViewSectionsConnection_viewer$data,
+  HomeViewSectionsConnection_viewer$key,
 } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -40,10 +40,10 @@ import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } f
 import {
   FlatList,
   Linking,
+  ListRenderItem,
   RefreshControl,
   StatusBar,
   ViewToken,
-  ListRenderItem,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -199,6 +199,7 @@ export const HomeView: React.FC = memo(() => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
+        <HomeHeader />
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
@@ -209,7 +210,6 @@ export const HomeView: React.FC = memo(() => {
           keyExtractor={(item) => item.internalID}
           renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
-          ListHeaderComponent={HomeHeader}
           ListFooterComponent={() =>
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
@@ -220,7 +220,6 @@ export const HomeView: React.FC = memo(() => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
           maxToRenderPerBatch={6}
-          stickyHeaderIndices={[0]}
           windowSize={15}
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
