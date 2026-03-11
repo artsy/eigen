@@ -20,6 +20,15 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath('com.google.gms:google-services:4.4.0')
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+
+        // RNRepo
+        def rnrepoDir = new File(
+        providers.exec {
+            workingDir(rootDir)
+            commandLine("node", "--print", "require.resolve('@rnrepo/build-tools/package.json')")
+        }.standardOutput.asText.get().trim()
+        ).getParentFile().absolutePath
+        classpath fileTree(dir: "${rnrepoDir}/gradle-plugin/build/libs", include: ["prebuilds-plugin-*.jar"])
     }
 }
 
@@ -42,6 +51,7 @@ allprojects {
                 password = env.MAPBOX_DOWNLOAD_TOKEN.value
             }
         }
+        maven { url "https://packages.rnrepo.org/releases" }
     }
 }
 

@@ -7304,6 +7304,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnrepo/build-tools@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@rnrepo/build-tools@npm:0.1.0"
+  checksum: 10c0/19414a3d6638486e078e1c151c01232c86256ff7aa73f3769a892c95e961320f88a6695b4048539aa72382bbc88ca68a7cc0d9b3fa5f6954223e7e24769b577c
+  languageName: node
+  linkType: hard
+
 "@rnx-kit/align-deps@npm:^3.3.0":
   version: 3.3.0
   resolution: "@rnx-kit/align-deps@npm:3.3.0"
@@ -13364,6 +13371,7 @@ __metadata:
     "@react-navigation/native-stack": "npm:7.3.27"
     "@react-navigation/stack": "npm:7.4.9"
     "@rnmapbox/maps": "npm:10.1.44"
+    "@rnrepo/build-tools": "npm:^0.1.0"
     "@rnx-kit/align-deps": "npm:^3.3.0"
     "@rozenite/expo-atlas-plugin": "npm:1.1.0"
     "@rozenite/metro": "npm:1.1.0"

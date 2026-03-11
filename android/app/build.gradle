@@ -3,6 +3,7 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "org.rnrepo.tools.prebuilds-plugin"
 
 project.ext.keyFiles = [
   debug: "keys.shared.json",

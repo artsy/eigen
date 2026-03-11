@@ -1,0 +1,6 @@
+{
+  "denyList": {
+    "android": ["react-native-blurhash", "react-native-keys", "react-native"],
+    "ios": []
+  }
+}
