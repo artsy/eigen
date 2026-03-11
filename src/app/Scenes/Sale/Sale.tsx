@@ -90,6 +90,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   const scrollAnim = useRef(new Animated.Value(0)).current
   const artworksRefetchRef = useRef(NOOP)
+  const artworksLoadMoreRef = useRef(NOOP)
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -175,6 +176,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
           artworksRefetchRef={artworksRefetchRef}
+          artworksLoadMoreRef={artworksLoadMoreRef}
           viewer={below.viewer as any}
         />
       )
@@ -273,6 +275,8 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
                 useNativeDriver: true,
               }
             )}
+            onEndReached={() => artworksLoadMoreRef.current()}
+            onEndReachedThreshold={0.2}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
             scrollEventThrottle={16}
           />
