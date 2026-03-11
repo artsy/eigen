@@ -92,7 +92,3 @@
 #import "ARInformationView.h"
 #import "ARSCNWallNode.h"
 #import "SCNArtworkNode.h"
-
-// Google SignIn see: https://react-native-google-signin.github.io/docs/setting-up/ios
-#import <GoogleSignIn/GoogleSignIn.h>
-
