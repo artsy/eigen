@@ -10,6 +10,7 @@ import { graphql } from "react-relay"
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
+  useIsFocused: () => true,
   useRoute: () => ({
     params: {
       artworkIndex: "0",

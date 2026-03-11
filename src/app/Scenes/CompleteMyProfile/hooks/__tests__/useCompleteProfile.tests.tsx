@@ -8,6 +8,7 @@ import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 import { useTracking } from "react-tracking"
 
 jest.mock("@react-navigation/native", () => ({
+  useIsFocused: () => true,
   useNavigation: jest.fn(),
   useRoute: jest.fn(),
 }))

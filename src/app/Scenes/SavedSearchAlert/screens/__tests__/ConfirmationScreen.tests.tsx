@@ -25,6 +25,7 @@ jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
     ...actualNav,
+    useIsFocused: () => true,
     useNavigation: () => {
       return {
         navigate: jest.fn(),
@@ -310,7 +311,9 @@ const entity: SavedSearchEntity = {
 }
 
 const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => onChange(true), [])
+  useEffect(() => {
+    onChange(true)
+  }, [])
 
   return <View>{children}</View>
 }
