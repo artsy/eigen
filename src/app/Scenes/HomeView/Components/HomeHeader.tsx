@@ -14,7 +14,7 @@ export const HomeHeader: React.FC = memo(() => {
   )
 
   return (
-    <Flex backgroundColor="background">
+    <Flex backgroundColor="background" zIndex={1000}>
       {!!showPaymentFailureBanner && <PaymentFailureBanner />}
       <Flex pb={1} pt={2}>
         <Flex flexDirection="row" px={2} gap={1} justifyContent="space-around" alignItems="center">
