@@ -17,6 +17,7 @@ jest.mock("@react-navigation/native", () => {
   return {
     ...actualNav,
     useFocusEffect: useEffect,
+    useIsFocused: () => true,
     useNavigation: () => ({
       getId: () => "onboarding-marketing-collection-id",
       navigate: mockedNavigate,
@@ -58,7 +59,9 @@ describe("OnboardingMarketingCollection", () => {
 })
 
 const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => onChange(true), [])
+  useEffect(() => {
+    onChange(true)
+  }, [])
 
   return <View>{children}</View>
 }
