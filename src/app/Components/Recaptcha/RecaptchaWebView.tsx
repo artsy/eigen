@@ -90,11 +90,12 @@ function postFallback(fallbackReason) {
 function checkAndExecuteRecaptcha() {
   if (typeof grecaptcha === "undefined") return postFallback("grecaptcha_undefined");
   if (!grecaptcha.ready) return postFallback("grecaptcha_ready_missing");
-  if (typeof grecaptcha.execute !== "function") return postFallback("grecaptcha_execute_not_function");
 
   try {
     grecaptcha.ready(function () {
       try {
+        if (typeof grecaptcha.execute !== "function") return postFallback("grecaptcha_execute_not_function");
+
         var executePromise = grecaptcha.execute("${recaptchaKey}", { action: "${action}" });
 
         if (executePromise == null || executePromise === undefined) return postFallback("grecaptcha_execute_returned_null_or_undefined");
