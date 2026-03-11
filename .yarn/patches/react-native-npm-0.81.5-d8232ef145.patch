@@ -3,7 +3,7 @@ index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..8f7cf706cdd1b633c2154cd0f1861bf6
 --- a/React/Modules/RCTEventEmitter.m
 +++ b/React/Modules/RCTEventEmitter.m
 @@ -89,6 +89,10 @@
-
+ 
    if (_listenerCount > 0) {
      [self stopObserving];
 +    // Reset listener count to allow proper re-initialization on bridge reload
@@ -12,17 +12,78 @@ index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..8f7cf706cdd1b633c2154cd0f1861bf6
 +    _listenerCount = 0;
    }
  }
-
+ 
 diff --git a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
 index e0742c9c5c97bba076d63d5ab79fcb5356cf0174..a5cd8cfbf10fce0ee43a260134f248401cc0e058 100644
 --- a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
 +++ b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
 @@ -216,7 +216,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
    }
-
+ 
    bool preventShadowTreeCommitExhaustion() override {
 -    return false;
 +    return true;
    }
-
+ 
    bool traceTurboModulePromiseRejectionsOnAndroid() override {
+diff --git a/ReactCommon/react/renderer/core/ShadowNode.cpp b/ReactCommon/react/renderer/core/ShadowNode.cpp
+index a3af28d8ed7b9735f3ef68dd3772908edb571abe..1001005e780bf8a13537cbdf22c9fe174e17bf91 100644
+--- a/ReactCommon/react/renderer/core/ShadowNode.cpp
++++ b/ReactCommon/react/renderer/core/ShadowNode.cpp
+@@ -139,6 +139,7 @@ ShadowNode::ShadowNode(
+ std::shared_ptr<ShadowNode> ShadowNode::clone(
+     const ShadowNodeFragment& fragment) const {
+   const auto& family = *family_;
++  std::lock_guard<std::recursive_mutex> npGuard(family.nativePropsMutex);
+   const auto& componentDescriptor = family.componentDescriptor_;
+   if (family.nativeProps_DEPRECATED != nullptr) {
+     auto propsParserContext = PropsParserContext{family_->getSurfaceId(), {}};
+diff --git a/ReactCommon/react/renderer/core/ShadowNodeFamily.h b/ReactCommon/react/renderer/core/ShadowNodeFamily.h
+index 838560895287555db717f615e39f156d0eca41c7..c2c1132bf9e4cd6cfbba2b50b4eab9630a625ecd 100644
+--- a/ReactCommon/react/renderer/core/ShadowNodeFamily.h
++++ b/ReactCommon/react/renderer/core/ShadowNodeFamily.h
+@@ -9,6 +9,7 @@
+ 
+ #include <memory>
+ #include <shared_mutex>
++#include <mutex>
+ 
+ #include <react/renderer/core/EventEmitter.h>
+ #include <react/renderer/core/InstanceHandle.h>
+@@ -116,6 +117,7 @@ class ShadowNodeFamily final : public jsi::NativeState {
+    * architecture and will be removed in the future.
+    */
+   mutable std::unique_ptr<folly::dynamic> nativeProps_DEPRECATED;
++  mutable std::recursive_mutex nativePropsMutex;
+ 
+   /**
+    * @return tag for the ShadowNodeFamily.
+diff --git a/ReactCommon/react/renderer/uimanager/UIManager.cpp b/ReactCommon/react/renderer/uimanager/UIManager.cpp
+index edee8ac36bca4038f90deaa4cd3dd8c3b634202b..9a775e3214d5611ee2e84b032173c406e8766281 100644
+--- a/ReactCommon/react/renderer/uimanager/UIManager.cpp
++++ b/ReactCommon/react/renderer/uimanager/UIManager.cpp
+@@ -118,6 +118,7 @@ std::shared_ptr<ShadowNode> UIManager::cloneNode(
+   auto props = ShadowNodeFragment::propsPlaceholder();
+ 
+   if (!rawProps.isEmpty()) {
++    std::lock_guard<std::recursive_mutex> npGuard(family.nativePropsMutex);
+     if (family.nativeProps_DEPRECATED != nullptr) {
+       // 1. update the nativeProps_DEPRECATED props.
+       //
+@@ -426,6 +427,7 @@ void UIManager::setNativeProps_DEPRECATED(
+     const std::shared_ptr<const ShadowNode>& shadowNode,
+     RawProps rawProps) const {
+   auto& family = shadowNode->getFamily();
++  family.nativePropsMutex.lock();
+   if (family.nativeProps_DEPRECATED) {
+     // Values in `rawProps` patch (take precedence over)
+     // `nativeProps_DEPRECATED`. For example, if both `nativeProps_DEPRECATED`
+@@ -441,6 +443,8 @@ void UIManager::setNativeProps_DEPRECATED(
+         std::make_unique<folly::dynamic>((folly::dynamic)rawProps);
+   }
+ 
++  family.nativePropsMutex.unlock();
++
+   shadowTreeRegistry_.visit(
+       family.getSurfaceId(), [&](const ShadowTree& shadowTree) {
+         // The lambda passed to `commit` may be executed multiple times.
