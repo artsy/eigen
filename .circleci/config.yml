@@ -173,6 +173,22 @@ commands:
       - run:
           name: Install ninja
           command: sudo apt-get install ninja-build
+      - restore_cache:
+          keys:
+            - v1-android-sdk-ndk-27.1.12297006-bt-36.0.0-p-36
+      - run:
+          name: Accept Android SDK licenses
+          command: yes | sdkmanager --licenses || true
+      - run:
+          name: Install NDK and SDK components
+          command: sdkmanager "ndk;27.1.12297006" "build-tools;36.0.0" "platforms;android-36"
+      - save_cache:
+          key: v1-android-sdk-ndk-27.1.12297006-bt-36.0.0-p-36
+          paths:
+            - /home/circleci/android-sdk/ndk/27.1.12297006
+            - /home/circleci/android-sdk/build-tools/36.0.0
+            - /home/circleci/android-sdk/platforms/android-36
+            - /home/circleci/android-sdk/licenses
       - checkout
       - generate-checksums
       - setup-awscli
