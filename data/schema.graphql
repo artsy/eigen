@@ -26628,11 +26628,17 @@ input UpdatePartnerShowMutationInput {
   # Is the show featured?
   featured: Boolean
 
+  # Is the show a group show?
+  group: Boolean
+
   # The location id of the show.
   locationId: String
 
   # The name of the show.
   name: String
+
+  # The city of the partner for reference shows.
+  partnerCity: String
 
   # The id of the partner to update.
   partnerId: String!
