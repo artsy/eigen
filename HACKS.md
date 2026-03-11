@@ -326,3 +326,13 @@ This ensures accurate logging when using remote cache plugins like our S3 build 
 #### When we can remove this:
 
 When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.
+
+## patch for react-native
+
+#### Explanation/Context:
+
+Probably related with this sentry issue https://artsynet.sentry.io/issues/7043718518/events/0e89b1ce77cd4dfe95c45feefea1ed22/ EXC_BAD_ACCESS crash on iOS. This patch is attempting to fix the crash and was found in this reanimated issue (but is a react-native patch): https://github.com/software-mansion/react-native-reanimated/issues/7666#issuecomment-3053014969
+
+#### When can we remove this:
+
+When they address this issue on react native main repo
