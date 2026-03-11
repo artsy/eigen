@@ -16,11 +16,9 @@ export const useSocialLogin = () => {
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
 
   const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
-    GlobalStore.actions.auth.setSessionState({ isLoading: true })
     InteractionManager.runAfterInteractions(() => {
       callback().catch((error: AuthPromiseRejectType) => {
         InteractionManager.runAfterInteractions(() => {
-          GlobalStore.actions.auth.setSessionState({ isLoading: false })
           InteractionManager.runAfterInteractions(() => {
             handleError(error)
           })

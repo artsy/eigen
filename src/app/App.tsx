@@ -68,12 +68,6 @@ if (Platform.OS === "android") {
   }
 }
 
-if (Keys.OSS !== "true") {
-  GoogleSignin.configure({
-    webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-  })
-}
-
 const Main = () => {
   // Rozenite plugins
   useNetworkActivityDevTools()
@@ -87,6 +81,12 @@ const Main = () => {
     const oss = Keys.OSS
     if (oss === "true") {
       return
+    }
+    if (Keys.OSS !== "true") {
+      GoogleSignin.configure({
+        webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+        iosClientId: "673710093763-mjnb33vmcd74p4io0kbc2d8mkpj9jnh7.apps.googleusercontent.com",
+      })
     }
     Settings.initializeSDK()
   }, [])
