@@ -56,7 +56,7 @@ const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()
 setupSentry({
   environment: environment.env,
-  debug: true,
+  debug: debugSentry,
 })
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
