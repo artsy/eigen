@@ -77,8 +77,8 @@ jobs:
           android_link="${sentry_base_url}/explore/releases/${android_version}/?environment=production&project=${project_id}"
 
           # Add mobile vitals dashboard links
-          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${ios_version}&project=${project_id}"
-          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${android_version}&project=${project_id}"
+          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=iOS&primaryRelease=${ios_version}&project=${project_id}"
+          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=Android&primaryRelease=${android_version}&project=${project_id}"
 
           sentry_header="Check the health of this release in Sentry:"
           sentry_footer=":apple: [iOS Release details](${ios_link}) | :robot: [Android Release details](${android_link})"
