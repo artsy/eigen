@@ -21,9 +21,8 @@ jobs:
 
       - name: Fetch submission tags
         run: |
-          # Fetch only iOS and Android submission tags with more specific refspecs
+          # Fetch only iOS submission tags with more specific refspecs
           git fetch origin '+refs/tags/ios-*-submission:refs/tags/ios-*-submission' --depth=300 --jobs=8
-          git fetch origin '+refs/tags/android-*-submission:refs/tags/android-*-submission' --depth=300 --jobs=8
           echo "fetched submission tags!"
 
       - name: Determine iOS and Android tags
@@ -36,21 +35,17 @@ jobs:
           last_ios_tag=$(echo "$ios_tags" | head -n1)
           second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
-          # Get all Android release tags and sort them
-          android_tags=$(git tag --sort=-creatordate | grep "^android.*submission$" | head -n 10)
+          # Derive Android tag from iOS tag (same version/build, different date format)
+          # iOS:     ios-9.1.1-2026.03.11.18-submission
+          # Android: android-9.1.1-2026031118-submission  (dots removed from build number)
+          inner=$(echo "$last_ios_tag" | sed -E 's/^ios-(.+)-submission$/\1/')
+          version_part=$(echo "$inner" | cut -d'-' -f1)
+          build_part=$(echo "$inner" | cut -d'-' -f2 | tr -d '.')
+          last_android_tag="android-${version_part}-${build_part}-submission"
 
-          # Get the last and second-to-last Android tags (first and second in the sorted list)
-          last_android_tag=$(echo "$android_tags" | head -n1)
-
-
-          # Ensure tags are found
+          # Ensure iOS tags are found
           if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ]; then
             echo "Error: Could not determine all required iOS tags."
-            exit 1
-          fi
-
-          if [ -z "$last_android_tag" ]; then
-            echo "Error: Could not determine all required Android tags."
             exit 1
           fi
 
@@ -82,8 +77,8 @@ jobs:
           android_link="${sentry_base_url}/explore/releases/${android_version}/?environment=production&project=${project_id}"
 
           # Add mobile vitals dashboard links
-          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${ios_version}&project=${project_id}"
-          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${android_version}&project=${project_id}"
+          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=iOS&primaryRelease=${ios_version}&project=${project_id}"
+          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=Android&primaryRelease=${android_version}&project=${project_id}"
 
           sentry_header="Check the health of this release in Sentry:"
           sentry_footer=":apple: [iOS Release details](${ios_link}) | :robot: [Android Release details](${android_link})"
