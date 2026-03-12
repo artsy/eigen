@@ -1,0 +1,47 @@
+diff --git a/android/src/main/java/expo/modules/updates/errorrecovery/ErrorRecovery.kt b/android/src/main/java/expo/modules/updates/errorrecovery/ErrorRecovery.kt
+index d87a9ffa40fc3d1e6e31c05badced146fb968295..dc9635734bf4dcf202c15f7a118ae6c0e34bb249 100644
+--- a/android/src/main/java/expo/modules/updates/errorrecovery/ErrorRecovery.kt
++++ b/android/src/main/java/expo/modules/updates/errorrecovery/ErrorRecovery.kt
+@@ -36,6 +36,7 @@ class ErrorRecovery(
+   private var weakDevSupportManager: WeakReference<DevSupportManager>? = null
+   private var previousExceptionHandler: DefaultJSExceptionHandler? = null
+   private var shouldHandleReactInstanceException = false
++  private var previousBridgelessExceptionHandler: ((Exception) -> Unit)? = null
+ 
+   fun initialize(delegate: ErrorRecoveryDelegate) {
+     if (!::handler.isInitialized) {
+@@ -56,6 +57,13 @@ class ErrorRecovery(
+   internal fun onReactInstanceException(exception: Exception) {
+     if (shouldHandleReactInstanceException) {
+       handleException(exception)
++    } else if (previousBridgelessExceptionHandler != null) {
++      // PATCHED: Instead of silently ignoring, pass to fallback handler
++      try {
++        previousBridgelessExceptionHandler?.invoke(exception)
++      } catch (e: Exception) {
++        logger.error("Error in bridgeless exception fallback handler", e, UpdatesErrorCode.Unknown)
++      }
+     }
+   }
+ 
+@@ -107,6 +115,10 @@ class ErrorRecovery(
+ 
+   private fun registerErrorHandlerImplBridgeless() {
+     shouldHandleReactInstanceException = true
++    // PATCHED: Store the current default uncaught exception handler as fallback
++    previousBridgelessExceptionHandler = { exception ->
++      Thread.getDefaultUncaughtExceptionHandler()?.uncaughtException(Thread.currentThread(), exception)
++    }
+   }
+ 
+   private fun registerErrorHandlerImplBridge(devSupportManager: DevSupportManager) {
+@@ -137,6 +149,9 @@ class ErrorRecovery(
+ 
+   private fun unregisterErrorHandlerImplBridgeless() {
+     shouldHandleReactInstanceException = false
++    // PATCHED: Do NOT clear previousBridgelessExceptionHandler
++    // Keep it active so crashes after 10s are still passed to the fallback handler
++    // instead of being silently ignored. This is the core fix for the Bridgeless crash issue.
+   }
+ 
+   private fun unregisterErrorHandlerImplBridge() {
