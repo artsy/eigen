@@ -336,3 +336,13 @@ Probably related with this sentry issue https://artsynet.sentry.io/issues/704371
 #### When can we remove this:
 
 When they address this issue on react native main repo
+
+## patch for react-native-pager-view
+
+#### Explanation/Context:
+
+Probably related with this sentry issue https://artsynet.sentry.io/issues/7043718518/events/0e89b1ce77cd4dfe95c45feefea1ed22/ EXC_BAD_ACCESS crash on iOS. This patch is attempting to fix the crash and was found in this issue https://github.com/OneKeyHQ/app-monorepo/pull/9748
+
+#### When can we remove this:
+
+When they address this issue on react native pager view main repo
