@@ -13485,7 +13485,7 @@ __metadata:
     react-native-launch-arguments: "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-2"
     react-native-linear-gradient: "npm:2.8.3"
     react-native-localize: "npm:3.5.2"
-    react-native-pager-view: "npm:7.0.1"
+    react-native-pager-view: "npm:7.0.2"
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:5.4.4"
     react-native-reanimated: "npm:4.2.1"
@@ -22312,13 +22312,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:7.0.1":
-  version: 7.0.1
-  resolution: "react-native-pager-view@npm:7.0.1"
+"react-native-pager-view@npm:7.0.2":
+  version: 7.0.2
+  resolution: "react-native-pager-view@npm:7.0.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/94da200433156b33db6c3fe0b5f1e9c689155177298affd2aea4eef720343eb7d5a1897e211bdb438293e33917317e48a375e607ad9baa14a6d789bb03eccbc4
+  checksum: 10c0/f90e2e765b6cde96c3c625df51eeab92e873dc96200aeff347b0c67decc5161ba580135c857b5961c1c37dcd4afd67e3edfcd625b64bf1aa94dfe91bfdc18f14
   languageName: node
   linkType: hard
 
