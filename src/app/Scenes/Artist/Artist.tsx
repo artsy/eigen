@@ -134,6 +134,7 @@ export const Artist: React.FC<ArtistProps> = ({
             headerProps={{
               rightElements: artistHeaderRight,
               onBack: goBack,
+              hideTitle: true,
             }}
             pagerProps={{
               // On android, switching between tabs leads to performance drops when scrolling
