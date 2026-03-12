@@ -58,24 +58,6 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         return constants;
     }
 
-
-    @ReactMethod
-    public void setNavigationBarColor(final String color) {
-        final Activity activity = getCurrentActivity();
-        final int colorInt = Color.parseColor(color);
-        if(activity == null)
-            return;
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    activity.getWindow().setNavigationBarColor(colorInt);
-                }
-            }
-        });
-    }
-
     @ReactMethod
     public void setAppStyling(Promise promise) {
         try {

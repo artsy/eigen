@@ -4,4 +4,11 @@
   <string name="facebook_client_token">5407e54f59d45eab502144b2e6943c6e</string>
   <string name="fb_login_protocol_scheme">fb308278682573501</string>
   <string name="fullbleed_widget_description">A curated selection of newly uploaded works from galleries, fairs, and auctions.</string>
+  <!-- For `expo_navigation_bar_border_color`, convert the color string to a 32-bit integer. -->
+  <string name="expo_navigation_bar_border_color"
+  translatable="false">-14735049</string>
+  <string name="expo_navigation_bar_visibility" translatable="false">visible</string>
+  <string name="expo_navigation_bar_position" translatable="false">relative</string>
+  <string name="expo_navigation_bar_behavior" translatable="false">inset-swipe</string>
+  <string name="expo_navigation_bar_legacy_visible" translatable="false">immersive</string>
   </resources>

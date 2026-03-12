@@ -2,6 +2,7 @@ import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 
 export const DEFAULT_NAVIGATION_BAR_COLOR = "#FFFFFF"
+export const DEFAULT_NAVIGATION_BAR_DARK_COLOR = "#000000"
 
 /**
  * Cross-platform native module facade.
@@ -20,12 +21,6 @@ export const ArtsyNativeModule = {
           console.error("setAppStyling is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.setAppStyling,
-  setNavigationBarColor:
-    Platform.OS === "ios"
-      ? () => {
-          console.error("setNavigationBarColor is unsupported on iOS")
-        }
-      : NativeModules.ArtsyNativeModule.setNavigationBarColor,
   setAppLightContrast:
     Platform.OS === "ios"
       ? () => {
