@@ -1,4 +1,5 @@
-import { DateTime, Duration } from "luxon"
+import { DateTime } from "luxon"
+import moment from "moment"
 import React from "react"
 import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
 
@@ -96,7 +97,7 @@ export class DurationProvider extends React.Component<Props, State> {
     const { timeLeftInMilliseconds } = this.state
     const { timeOffsetInMilliseconds, children } = this.props
     return React.cloneElement(children, {
-      duration: Duration.fromMillis(timeLeftInMilliseconds + (timeOffsetInMilliseconds || 0) || 0),
+      duration: moment.duration(timeLeftInMilliseconds + (timeOffsetInMilliseconds || 0) || 0),
       timeLeftInMilliseconds,
     })
   }

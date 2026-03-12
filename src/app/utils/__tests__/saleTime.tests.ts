@@ -1,6 +1,5 @@
 import { IANATimezone } from "app/utils/IANATimezone"
 import { saleTime } from "app/utils/saleTime"
-import { DateTime, Settings } from "luxon"
 
 const timezones: Record<string, IANATimezone> = {
   ny: "America/New_York",
@@ -8,12 +7,13 @@ const timezones: Record<string, IANATimezone> = {
   de: "Europe/Berlin",
 }
 
-// Set default timezone for Luxon (equivalent to moment.tz.setDefault)
-Settings.defaultZone = "America/New_York"
-
-// Mock DateTime.now() to always return America/New_York timezone
-const originalNow = DateTime.now
-DateTime.now = () => originalNow().setZone("America/New_York") as DateTime<true>
+jest.mock("moment-timezone", () => {
+  const timezone = "America/New_York"
+  const momentMock = jest.requireActual("moment-timezone")
+  momentMock.tz.setDefault(timezone)
+  momentMock.tz.guess = () => timezone
+  return momentMock
+})
 
 const times = {
   past20: "2020-08-01T15:00:00",
@@ -167,7 +167,8 @@ const pastNoStartAtSale: Sale = {
 }
 
 beforeEach(() => {
-  Date.now = jest.fn(() => new Date(times.present + "Z").getTime())
+  // @ts-ignore
+  Date.now = jest.fn(() => new Date(times.present + "Z"))
 })
 
 describe("saleTime", () => {
@@ -186,41 +187,27 @@ describe("saleTime", () => {
   })
 })
 
-// offsetNameShort relies on the Intl API. In Node.js environments with full ICU data
-// (e.g. CI), it returns "EDT". In environments with small ICU (e.g. macOS default Node.js),
-// it falls back to "GMT-4". The actual UI correctly displays "EDT" because React Native has
-// full timezone data. Tests use a regex to accept both formats.
 describe("#saleTime.absolute", () => {
   it("shows the time in the correct timezone", () => {
-    expect(saleTime(liveSaleNY).absolute).toMatch(
-      /^Live bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/
-    )
-    expect(saleTime(liveSaleDE).absolute).toMatch(
-      /^Live bidding begins Oct 1 at 9:00am (GMT-4|EDT)$/
-    )
+    expect(saleTime(liveSaleNY).absolute).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
+    expect(saleTime(liveSaleDE).absolute).toEqual("Live bidding begins Oct 1 at 9:00am EDT")
   })
   it("recognises whether an auction is live or not", () => {
-    expect(saleTime(liveSaleNY).absolute).toMatch(
-      /^Live bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/
-    )
-    expect(saleTime(timedSaleNY).absolute).toMatch(/^Bidding begins Oct 1 at 3:00pm (GMT-4|EDT)$/)
+    expect(saleTime(liveSaleNY).absolute).toEqual("Live bidding begins Oct 1 at 3:00pm EDT")
+    expect(saleTime(timedSaleNY).absolute).toEqual("Bidding begins Oct 1 at 3:00pm EDT")
   })
   it("recognises whether an auction is over or not", () => {
     expect(saleTime(finishedSaleNY).absolute).toEqual("Closed on Sep 1")
-    expect(saleTime(completeNotYetOpenSaleNY).absolute).toMatch(
-      /^Live bidding begins Sep 5 at 3:00pm (GMT-4|EDT)$/
+    expect(saleTime(completeNotYetOpenSaleNY).absolute).toEqual(
+      "Live bidding begins Sep 5 at 3:00pm EDT"
     )
     expect(saleTime(completeFinishedSaleNY).absolute).toEqual("Closed on Sep 1")
   })
   it("works for currently open sales", () => {
-    expect(saleTime(completeOpenSaleNY).absolute).toMatch(
-      /^Live bidding closes Sep 5 at 3:00pm (GMT-4|EDT)$/
-    )
+    expect(saleTime(completeOpenSaleNY).absolute).toEqual("Live bidding closes Sep 5 at 3:00pm EDT")
   })
   it("works for null endAt", () => {
-    expect(saleTime(futureNoEndAtSale).absolute).toMatch(
-      /^Bidding begins Sep 5 at 3:00pm (GMT-4|EDT)$/
-    )
+    expect(saleTime(futureNoEndAtSale).absolute).toEqual("Bidding begins Sep 5 at 3:00pm EDT")
     expect(saleTime(pastNoEndAtSale).absolute).toEqual(null)
   })
   it("works for null startAt and liveStartAt", () => {
@@ -250,7 +237,7 @@ describe("#saleTime.relative", () => {
 
   it("handles breaks across years", () => {
     // @ts-ignore
-    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z").getTime())
+    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z"))
     expect(saleTime(liveSale2021).relative).toEqual("Starts in 2 days")
   })
 

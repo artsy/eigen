@@ -12,7 +12,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
-import { DateTime } from "luxon"
+import moment from "moment"
 import React from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -147,7 +147,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               {artwork?.partner?.name}
             </Text>
             <Text variant="xs" color="mono60" testID="date">
-              {DateTime.fromISO(order.createdAt).toLocaleString(DateTime.DATE_SHORT)}
+              {moment(order.createdAt).format("l")}
             </Text>
           </Flex>
           <Flex>

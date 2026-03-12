@@ -1,4 +1,4 @@
-import { DateTime } from "luxon"
+import moment from "moment"
 
 export type SaleStatus = "notYetOpen" | "active" | "closed"
 
@@ -7,8 +7,8 @@ export const saleStatus = (
   endAt: string | null | undefined,
   registrationEndsAt: string | null | undefined
 ): SaleStatus => {
-  const now = DateTime.now()
-  if (registrationEndsAt && DateTime.fromISO(registrationEndsAt) < now) {
+  const now = moment()
+  if (registrationEndsAt && moment(registrationEndsAt).isBefore(now)) {
     return "closed"
   }
 
@@ -16,11 +16,11 @@ export const saleStatus = (
     return "notYetOpen"
   }
 
-  if (DateTime.fromISO(startAt) > now) {
+  if (moment(startAt).isAfter(now)) {
     return "notYetOpen"
   }
 
-  if (DateTime.fromISO(startAt) < now && now < DateTime.fromISO(endAt)) {
+  if (moment(startAt).isBefore(now) && now.isBefore(moment(endAt))) {
     return "active"
   }
 
