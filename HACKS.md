@@ -336,3 +336,13 @@ Probably related with this sentry issue https://artsynet.sentry.io/issues/704371
 #### When can we remove this:
 
 When they address this issue on react native main repo
+
+## patch for expo-updates
+
+#### Explanation/Context:
+
+Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+
+#### When can we remove this:
+
+When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543

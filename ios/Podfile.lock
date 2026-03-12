@@ -3710,7 +3710,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (7.9.0):
+  - RNSentry (7.10.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -4798,7 +4798,7 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: c164765b15cfa0ac1a2716eda5676e9cd6784e9c
   RNScreens: 0bbf16c074ae6bb1058a7bf2d1ae017f4306797c
-  RNSentry: 8dade4197bddd74024f1e8160669c0ee44dade5a
+  RNSentry: a4c81a5c5bcd58d765126726432348e60cd7183d
   RNShare: 1dba46787d6e5543e05655efaefa0e4bb98380d9
   RNSVG: c5807de8e337c7a643f9bad2ecf48a15aefcc23c
   RNWorklets: 5dd32e6d649594b9a938cdd75673dffb2266e119
