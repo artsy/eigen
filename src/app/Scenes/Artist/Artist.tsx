@@ -45,7 +45,6 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
-import { Platform } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
@@ -136,8 +135,7 @@ export const Artist: React.FC<ArtistProps> = ({
               onBack: goBack,
             }}
             pagerProps={{
-              // On android, switching between tabs leads to performance drops when scrolling
-              scrollEnabled: Platform.OS === "ios",
+              scrollEnabled: false,
             }}
             cancelLazyFadeIn
           >
