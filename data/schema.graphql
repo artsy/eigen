@@ -4009,6 +4009,15 @@ type ArtworkTemplateEdge {
   node: ArtworkTemplate
 }
 
+enum ArtworkTemplatesSort {
+  ARTIST_NAME_ASC
+  ARTIST_NAME_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  TITLE_ASC
+  TITLE_DESC
+}
+
 type ArtworkVersion implements Node {
   # The names for the artists related to this Artwork Version
   artistNames: String
@@ -19208,6 +19217,7 @@ type Partner implements Node {
     first: Int
     last: Int
     page: Int
+    sort: ArtworkTemplatesSort
   ): ArtworkTemplateConnection
 
   # A connection of artworks from a Partner.
