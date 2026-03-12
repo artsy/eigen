@@ -1,3 +1,40 @@
+diff --git a/React/Fabric/Mounting/RCTMountingManager.mm b/React/Fabric/Mounting/RCTMountingManager.mm
+--- a/React/Fabric/Mounting/RCTMountingManager.mm
++++ b/React/Fabric/Mounting/RCTMountingManager.mm
+@@ -77,6 +77,10 @@
+
+         UIView<RCTComponentViewProtocol> *newChildComponentView = newChildViewDescriptor.view;
+
++        if (!newChildComponentView || !parentViewDescriptor.view) {
++          break;
++        }
++
+         RCTAssert(newChildShadowView.props, @"`newChildShadowView.props` must not be null.");
+
+         [newChildComponentView updateProps:newChildShadowView.props oldProps:nullptr];
+@@ -94,6 +98,11 @@
+         auto &oldChildShadowView = mutation.oldChildShadowView;
+         auto &oldChildViewDescriptor = [registry componentViewDescriptorWithTag:oldChildShadowView.tag];
+         auto &parentViewDescriptor = [registry componentViewDescriptorWithTag:mutation.parentTag];
++
++        if (!oldChildViewDescriptor.view || !parentViewDescriptor.view) {
++          break;
++        }
++
+         [parentViewDescriptor.view unmountChildComponentView:oldChildViewDescriptor.view index:mutation.index];
+         break;
+       }
+@@ -104,6 +113,10 @@
+         auto &newChildViewDescriptor = [registry componentViewDescriptorWithTag:newChildShadowView.tag];
+         UIView<RCTComponentViewProtocol> *newChildComponentView = newChildViewDescriptor.view;
+
++        if (!newChildComponentView) {
++          break;
++        }
++
+         auto mask = RNComponentViewUpdateMask{};
+
+         RCTAssert(newChildShadowView.props, @"`newChildShadowView.props` must not be null.");
 diff --git a/React/Modules/RCTEventEmitter.m b/React/Modules/RCTEventEmitter.m
 index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..8f7cf706cdd1b633c2154cd0f1861bf6f359da99 100644
 --- a/React/Modules/RCTEventEmitter.m
