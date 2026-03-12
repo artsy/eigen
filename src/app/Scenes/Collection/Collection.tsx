@@ -89,6 +89,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
           headerProps={{
             onBack: goBack,
+            hideTitle: true,
             rightElements: (
               <TouchableOpacity
                 accessibilityRole="button"
