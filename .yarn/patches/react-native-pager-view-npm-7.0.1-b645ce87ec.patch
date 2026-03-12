@@ -1,0 +1,227 @@
+diff --git a/ios/RNCPagerViewComponentView.mm b/ios/RNCPagerViewComponentView.mm
+index d52f53262b86381ef32c154cb10ebf4d0a65d193..b6ac72457d5e79941d9ddec98172db4d8163a71c 100644
+--- a/ios/RNCPagerViewComponentView.mm
++++ b/ios/RNCPagerViewComponentView.mm
+@@ -29,6 +29,7 @@ using namespace facebook::react;
+     BOOL _overdrag;
+     NSString *_layoutDirection;
+     BOOL _scrollEnabled;
++    BOOL _isBeingRecycled;
+ }
+ 
+ // Needed because of this: https://github.com/facebook/react-native/pull/37274
+@@ -80,6 +81,7 @@ using namespace facebook::react;
+         _layoutDirection = @"ltr";
+         _overdrag = NO;
+         _scrollEnabled = YES;
++        _isBeingRecycled = NO;
+     }
+     
+     return self;
+@@ -96,6 +98,9 @@ using namespace facebook::react;
+ #pragma mark - React API
+ 
+ - (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
++    if (_isBeingRecycled) {
++        return;
++    }
+     UIViewController *vc = [UIViewController new];
+     [vc.view addSubview:childComponentView];
+     [_nativeChildrenViewControllers insertObject:vc atIndex:index];
+@@ -103,13 +108,22 @@ using namespace facebook::react;
+ }
+ 
+ - (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index {
++    if (_isBeingRecycled) {
++        return;
++    }
++
++    if (index >= _nativeChildrenViewControllers.count) {
++        return;
++    }
+     [childComponentView removeFromSuperview];
+     [_nativeChildrenViewControllers removeObjectAtIndex:index];
+  
+     NSInteger maxPage = _nativeChildrenViewControllers.count - 1;
+     
+     if (_currentIndex >= maxPage) {
+-        [self goTo:maxPage animated:NO];
++        if (maxPage >= 0) {
++            [self goTo:maxPage animated:NO];
++        }
+     }
+ }
+ 
+@@ -127,10 +141,21 @@ using namespace facebook::react;
+ 
+ 
+ -(void)prepareForRecycle {
++    _isBeingRecycled = YES;
++
++    // Cancel any ongoing transitions
++    if (_nativePageViewController != nil && transitioning) {
++        transitioning = NO;
++    }
++
++    // Clear view controllers before recycling
++    [_nativeChildrenViewControllers removeAllObjects];
++ 
+     [super prepareForRecycle];
+     _nativePageViewController = nil;
+     _currentIndex = -1;
+     _scrollEnabled = YES;
++    _isBeingRecycled = NO;
+ }
+ 
+ - (void)shouldDismissKeyboard:(RNCViewPagerKeyboardDismissMode)dismissKeyboard {
+@@ -201,6 +226,10 @@ using namespace facebook::react;
+     NSInteger numberOfPages = _nativeChildrenViewControllers.count;
+     
+     [self disableSwipe];
++
++    if (_isBeingRecycled) {
++        return;
++    }
+     
+     _destinationIndex = index;
+     
+@@ -223,7 +252,28 @@ using namespace facebook::react;
+ - (void)setPagerViewControllers:(NSInteger)index
+                       direction:(UIPageViewControllerNavigationDirection)direction
+                        animated:(BOOL)animated{
+-    if (_nativePageViewController == nil) {
++        if (_nativePageViewController == nil || _isBeingRecycled) {
++        [self enableSwipe];
++        return;
++    }
++
++    // Validate index bounds
++    if (index < 0 || index >= _nativeChildrenViewControllers.count) {
++        [self enableSwipe];
++        return;
++    }
++
++    // Validate view controller and its view
++    UIViewController *targetVC = [_nativeChildrenViewControllers objectAtIndex:index];
++    if (targetVC == nil || targetVC.view == nil) {
++        [self enableSwipe];
++        return;
++    }
++
++    // Check if view is still in valid state (not flushed)
++    // When views are flushed by Fabric, they may have no superview and no window
++    if (targetVC.view.superview == nil && targetVC.view.window == nil && _nativePageViewController.viewControllers.count > 0) {
++        // View might be flushed, skip this update
+         [self enableSwipe];
+         return;
+     }
+@@ -231,17 +281,28 @@ using namespace facebook::react;
+     transitioning = YES;
+ 
+     __weak RNCPagerViewComponentView *weakSelf = self;
+-    [_nativePageViewController setViewControllers:@[[_nativeChildrenViewControllers objectAtIndex:index]]
++    [_nativePageViewController setViewControllers:@[targetVC]
+                                         direction:direction
+                                          animated:animated
+                                        completion:^(BOOL finished) {
+-        self->transitioning = NO;
+         __strong RNCPagerViewComponentView *strongSelf = weakSelf;
++        if (strongSelf == nil) {
++            return;
++        }
++
++        strongSelf->transitioning = NO;
++
++        if (strongSelf->_isBeingRecycled) {
++            return;
++        }
++
+         [strongSelf enableSwipe];
+         if (strongSelf->_eventEmitter != nullptr ) {
+             const auto eventEmitter = [strongSelf pagerEventEmitter];
+-            int position = (int) index;
+-            eventEmitter->onPageSelected(RNCViewPagerEventEmitter::OnPageSelected{.position =  static_cast<double>(position)});
++            if (eventEmitter) {
++                int position = (int) index;
++                eventEmitter->onPageSelected(RNCViewPagerEventEmitter::OnPageSelected{.position =  static_cast<double>(position)});
++            }
+             strongSelf->_currentIndex = index;
+         }
+         [strongSelf updateLayoutMetrics:strongSelf->_layoutMetrics oldLayoutMetrics:strongSelf->_oldLayoutMetrics];
+@@ -252,6 +313,11 @@ using namespace facebook::react;
+ - (UIViewController *)nextControllerForController:(UIViewController *)controller
+                                       inDirection:(UIPageViewControllerNavigationDirection)direction {
+     NSUInteger numberOfPages = _nativeChildrenViewControllers.count;
++
++    if (_isBeingRecycled || numberOfPages == 0) {
++        return nil;
++    }
++
+     NSInteger index = [_nativeChildrenViewControllers indexOfObject:controller];
+     
+     if (index == NSNotFound) {
+@@ -274,13 +340,22 @@ using namespace facebook::react;
+ #pragma mark - UIScrollViewDelegate
+ 
+ - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
++    if (_isBeingRecycled) {
++        return;
++    }
+     const auto eventEmitter = [self pagerEventEmitter];
++    if (!eventEmitter) {
++        return;
++    }
+     eventEmitter->onPageScrollStateChanged(RNCViewPagerEventEmitter::OnPageScrollStateChanged{.pageScrollState =  RNCViewPagerEventEmitter::OnPageScrollStateChangedPageScrollState::Dragging });
+ }
+ 
+ - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+     
+     const auto eventEmitter = [self pagerEventEmitter];
++    if (!eventEmitter) {
++        return;
++    }
+     eventEmitter->onPageScrollStateChanged(RNCViewPagerEventEmitter::OnPageScrollStateChanged{.pageScrollState =  RNCViewPagerEventEmitter::OnPageScrollStateChangedPageScrollState::Settling });
+     
+     if (!_overdrag) {
+@@ -300,12 +375,21 @@ using namespace facebook::react;
+ }
+ 
+ - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
++    if (_isBeingRecycled) {
++        return;
++    }
+     const auto eventEmitter = [self pagerEventEmitter];
++    if (!eventEmitter) {
++        return;
++    }
+     eventEmitter->onPageScrollStateChanged(RNCViewPagerEventEmitter::OnPageScrollStateChanged{.pageScrollState =  RNCViewPagerEventEmitter::OnPageScrollStateChangedPageScrollState::Idle });
+ }
+ 
+ 
+ - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
++    if (_isBeingRecycled) {
++        return;
++    }
+     BOOL isHorizontal = [self isHorizontal];
+     CGFloat contentOffset = isHorizontal ? scrollView.contentOffset.x : scrollView.contentOffset.y;
+     CGFloat frameSize = isHorizontal ? scrollView.frame.size.width : scrollView.frame.size.height;
+@@ -357,13 +441,18 @@ using namespace facebook::react;
+         didFinishAnimating:(BOOL)finished
+    previousViewControllers:(nonnull NSArray<UIViewController *> *)previousViewControllers
+        transitionCompleted:(BOOL)completed {
++       if (_isBeingRecycled) {
++            return;
++       }
+     if (completed) {
+         UIViewController* currentVC = [self currentlyDisplayed];
+         NSUInteger currentIndex = [_nativeChildrenViewControllers indexOfObject:currentVC];
+         _currentIndex = currentIndex;
+         int position = (int) currentIndex;
+         const auto eventEmitter = [self pagerEventEmitter];
+-        eventEmitter->onPageSelected(RNCViewPagerEventEmitter::OnPageSelected{.position =  static_cast<double>(position)});
++        if (eventEmitter) {
++            eventEmitter->onPageSelected(RNCViewPagerEventEmitter::OnPageSelected{.position =  static_cast<double>(position)});
++        }
+     }
+ }
+ 

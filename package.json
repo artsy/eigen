@@ -186,7 +186,7 @@
     "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-2",
     "react-native-linear-gradient": "2.8.3",
     "react-native-localize": "3.5.2",
-    "react-native-pager-view": "7.0.1",
+    "react-native-pager-view": "patch:react-native-pager-view@npm%3A7.0.1#~/.yarn/patches/react-native-pager-view-npm-7.0.1-b645ce87ec.patch",
     "react-native-permissions": "5.4.4",
     "react-native-reanimated": "4.2.1",
     "react-native-reanimated-zoom": "0.3.3",
