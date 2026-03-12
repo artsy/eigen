@@ -4,6 +4,7 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { DateTime } from "luxon"
+import moment from "moment-timezone"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
 
@@ -31,18 +32,10 @@ interface Props {
   lotEndAt?: string | null
 }
 function formatDate(date: string) {
-  // DateTime.now().zoneName respects Settings.defaultZone
-  const userZone = DateTime.now().zoneName
-  const dateTime = DateTime.fromISO(date).setZone(userZone)
+  const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
+  const format = dateInMoment.minutes() === 0 ? "MMM D, h A z" : "MMM D, h:mm A z"
 
-  if (!dateTime.isValid) {
-    return "Invalid DateTime"
-  }
-  // Use lowercase 'a' for am/pm (Luxon doesn't have uppercase 'A' token)
-  // Then convert to uppercase to match existing format expectations
-  const format = dateTime.minute === 0 ? "MMM d, h a ZZZZ" : "MMM d, h:mm a ZZZZ"
-
-  return dateTime.toFormat(format).replace("am", "AM").replace("pm", "PM")
+  return dateInMoment.format(format)
 }
 
 export function relevantStateData(
@@ -135,7 +128,7 @@ export function currentTimerState({
   } else if (isClosed) {
     return AuctionTimerState.CLOSED
   } else if (liveStartsAt) {
-    const isLiveOpen = DateTime.now() > DateTime.fromISO(liveStartsAt)
+    const isLiveOpen = moment().isAfter(liveStartsAt)
     if (isLiveOpen) {
       return AuctionTimerState.LIVE_INTEGRATION_ONGOING
     } else {

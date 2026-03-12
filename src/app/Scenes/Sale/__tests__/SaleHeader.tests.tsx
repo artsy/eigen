@@ -2,8 +2,9 @@ import { act, screen } from "@testing-library/react-native"
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { SaleHeaderContainer } from "app/Scenes/Sale/Components/SaleHeader"
+import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { DateTime, Settings } from "luxon"
+import moment from "moment"
 import { Animated } from "react-native"
 import { graphql } from "react-relay"
 
@@ -25,12 +26,7 @@ describe("SaleHeader", () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    Settings.defaultZone = "America/New_York"
-  })
-
-  afterEach(() => {
-    Settings.now = () => Date.now()
-    Settings.defaultZone = "system"
+    mockTimezone("America/New_York")
   })
 
   it("renders without throwing an error", () => {
@@ -55,7 +51,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when cascading end time is enabled", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: DateTime.now().minus({ days: 1 }).toISO(),
+        endAt: moment().subtract(1, "day").toISOString(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {
@@ -74,7 +70,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when an auction is still active", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: DateTime.now().plus({ days: 1 }).toISO(),
+        endAt: moment().add(1, "day").toISOString(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {
@@ -101,9 +97,7 @@ describe("SaleHeader", () => {
     }
 
     beforeEach(() => {
-      const DATE_NOW = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
-      Date.now = () => DATE_NOW
-      Settings.now = () => DATE_NOW
+      Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
     })
 
     describe("when the cascade end time flag is turned on", () => {
@@ -129,7 +123,7 @@ describe("SaleHeader", () => {
       })
 
       describe("absolute date label", () => {
-        it("shows the start date if the sale has not started", async () => {
+        it("shows the start date if the sale has not started", () => {
           renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",

@@ -1,11 +1,11 @@
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { sortBy, uniq } from "lodash"
-import { DateTime } from "luxon"
+import moment from "moment"
 
 export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
   // The saved shows needs to be sorted by end_date_asc
-  const now = DateTime.now()
-  const oneWeekFromNow = DateTime.now().plus({ days: 7 })
+  const now = moment()
+  const oneWeekFromNow = moment(new Date()).add(7, "days")
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const savedShows = viewer.city.shows.edges.filter((e) => e.node.is_followed === true)
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -46,7 +46,7 @@ export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       if (e.node.end_at) {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        const showClosingTime = DateTime.fromISO(e.node.end_at)
+        const showClosingTime = moment(e.node.end_at)
         return showClosingTime <= oneWeekFromNow && showClosingTime >= now
       }
     })
@@ -54,7 +54,7 @@ export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
     .map((n) => n.node)
   const closing = sortBy(closingFiltered, (event) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return DateTime.fromISO(event.end_at).toMillis()
+    return moment(event.end_at)
   })
 
   return {
