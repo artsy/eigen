@@ -50,6 +50,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           )}
           headerProps={{
             onBack: goBack,
+            hideTitle: true,
           }}
         >
           <Tabs.Tab name="Artworks" label="Artworks">

@@ -57,7 +57,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
           title={partner.name ?? ""}
           initialTabName={initialTab}
           BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} />}
-          headerProps={{ onBack: goBack }}
+          headerProps={{ onBack: goBack, hideTitle: true }}
         >
           <Tabs.Tab name="Overview" label="Overview">
             <Tabs.ScrollView>
@@ -82,7 +82,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
         title={partner.name ?? ""}
         initialTabName={initialTab}
         BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} showOnlyFollowButton />}
-        headerProps={{ onBack: goBack }}
+        headerProps={{ onBack: goBack, hideTitle: true }}
       >
         <Tabs.Tab name="Overview" label="Overview">
           <PartnerOverview partner={partner} />
