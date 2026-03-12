@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { Message } from "app/Scenes/Inbox/Components/Conversations/Message"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { DateTime } from "luxon"
+import moment from "moment"
 
 describe("Message", () => {
   it("renders body text for a regular message", () => {
@@ -61,7 +61,7 @@ describe("Message", () => {
 const mockMessage: any = {
   key: 0,
   internalID: "message-1",
-  createdAt: DateTime.now().minus({ years: 1 }).toISO(),
+  createdAt: moment().subtract(1, "year").toISOString(),
   body: "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?",
   isFromUser: true,
   attachments: [],
