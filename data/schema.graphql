@@ -11802,8 +11802,8 @@ type DeletePartnerShowFailure {
 input DeletePartnerShowMutationInput {
   clientMutationId: String
 
-  # The id of the partner.
-  partnerId: String!
+  # The id of the partner. Required for partner-scoped shows, omit for partner-less reference shows.
+  partnerId: String
 
   # The id of the show to delete.
   showId: String!
@@ -26632,8 +26632,8 @@ input UpdatePartnerShowMutationInput {
   # The city of the partner for reference shows.
   partnerCity: String
 
-  # The id of the partner to update.
-  partnerId: String!
+  # The id of the partner. Required for partner-scoped shows, omit for partner-less reference shows.
+  partnerId: String
 
   # The press release of the show.
   pressRelease: String
