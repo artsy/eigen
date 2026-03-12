@@ -44,9 +44,91 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo } from "react"
-import { Platform } from "react-native"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Button as RNButton, View } from "react-native" // DEBUG — remove with stress test
 import { Environment, graphql } from "react-relay"
+
+// #region DEBUG: Crash reproduction helper — remove before merging
+const ENABLE_CRASH_REPRO = __DEV__
+
+const HEAVY_VIEW_COUNT = 200
+
+/**
+ * Stress-tests RCTPerformMountInstructions to reproduce EIGEN-AYX8 / EIGEN-AZA0.
+ *
+ * 1. Allocates ~512 MB of ArrayBuffers to simulate the low-memory conditions
+ *    observed in Sentry (free_memory ~150 MB).
+ * 2. Rapidly toggles a tree of 200 nested Views every 50ms, flooding the Fabric
+ *    mounting pipeline with Create/Insert/Remove/Delete/Update mutations while
+ *    the tab header's Reanimated scroll handler is committing synchronously.
+ *
+ * Render this as a sibling to Tabs.TabsWithHeader so it overlays the screen.
+ */
+const CrashReproOverlay: React.FC = () => {
+  const [running, setRunning] = useState(false)
+  const [tick, setTick] = useState(0)
+  const memoryBallast = useRef<ArrayBuffer[]>([])
+
+  useEffect(() => {
+    if (!running) return
+
+    // Eat ~512 MB
+    const chunkSize = 1024 * 1024
+    for (let i = 0; i < 512; i++) {
+      try {
+        memoryBallast.current.push(new ArrayBuffer(chunkSize))
+      } catch {
+        break
+      }
+    }
+
+    // Rapid tick — each tick mounts/unmounts HEAVY_VIEW_COUNT views
+    const interval = setInterval(() => setTick((t) => t + 1), 50)
+
+    return () => {
+      clearInterval(interval)
+      memoryBallast.current = []
+    }
+  }, [running])
+
+  return (
+    <>
+      {/* Floating button */}
+      <View
+        style={{
+          position: "absolute",
+          bottom: 120,
+          right: 16,
+          zIndex: 9999,
+          backgroundColor: running ? "rgba(255,0,0,0.85)" : "rgba(0,0,0,0.7)",
+          borderRadius: 8,
+          padding: 4,
+        }}
+      >
+        <RNButton
+          title={running ? "Stop stress test" : "Stress test mount"}
+          color="white"
+          onPress={() => setRunning((r) => !r)}
+        />
+      </View>
+
+      {/* Heavy view tree that toggles on every tick to generate mount mutations */}
+      {!!running &&
+        tick % 2 === 0 &&
+        Array.from({ length: HEAVY_VIEW_COUNT }).map((_, i) => (
+          <View
+            key={`stress-${i}-${tick}`} // new key each tick → full unmount + remount
+            style={{ position: "absolute", width: 1, height: 1, opacity: 0 }}
+          >
+            <View>
+              <View />
+            </View>
+          </View>
+        ))}
+    </>
+  )
+}
+// #endregion
 
 const INITIAL_TAB = "Artworks"
 
@@ -136,8 +218,7 @@ export const Artist: React.FC<ArtistProps> = ({
               onBack: goBack,
             }}
             pagerProps={{
-              // On android, switching between tabs leads to performance drops when scrolling
-              scrollEnabled: Platform.OS === "ios",
+              scrollEnabled: true,
             }}
             cancelLazyFadeIn
           >
@@ -162,6 +243,8 @@ export const Artist: React.FC<ArtistProps> = ({
               <ArtistAboutQueryRenderer artistID={artistAboveTheFold.internalID} />
             </Tabs.Tab>
           </Tabs.TabsWithHeader>
+
+          {!!ENABLE_CRASH_REPRO && <CrashReproOverlay />}
         </KeyboardAvoidingContainer>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
