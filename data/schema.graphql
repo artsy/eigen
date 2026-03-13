@@ -10459,6 +10459,33 @@ type CreatePartnerArtistDocumentSuccess {
   partner: Partner
 }
 
+type CreatePartnerArtworksExportFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerArtworksExportMutationInput {
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type CreatePartnerArtworksExportMutationPayload {
+  clientMutationId: String
+
+  # On success: the export job ID. On error: the error that occurred.
+  partnerArtworksExportOrError: CreatePartnerArtworksExportResponseOrError
+}
+
+union CreatePartnerArtworksExportResponseOrError =
+    CreatePartnerArtworksExportFailure
+  | CreatePartnerArtworksExportSuccess
+
+type CreatePartnerArtworksExportSuccess {
+  # The ID of the enqueued export job.
+  exportId: String!
+}
+
 type CreatePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -17527,6 +17554,11 @@ type Mutation {
   createPartnerArtistDocument(
     input: CreatePartnerArtistDocumentMutationInput!
   ): CreatePartnerArtistDocumentMutationPayload
+
+  # Enqueue a CSV export of all artworks for a partner.
+  createPartnerArtworksExport(
+    input: CreatePartnerArtworksExportMutationInput!
+  ): CreatePartnerArtworksExportMutationPayload
 
   # Creates a new contact for a partner
   createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
