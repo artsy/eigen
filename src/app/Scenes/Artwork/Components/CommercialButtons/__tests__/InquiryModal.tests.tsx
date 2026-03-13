@@ -170,7 +170,7 @@ describe("inquiry modal", () => {
       renderWithRelay({ Artwork: () => mockArtwork })
 
       expect(
-        screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+        screen.getByText("Stand out and save time by sharing details with the gallery.")
       ).toBeOnTheScreen()
     })
 
@@ -179,7 +179,10 @@ describe("inquiry modal", () => {
       renderWithRelay({ Artwork: () => mockArtwork })
 
       expect(
-        screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
+        screen.getByText("Already own works by this artist or similar artists?")
+      ).toBeOnTheScreen()
+      expect(
+        screen.getByText("Showcase your collection and stand out with galleries.")
       ).toBeOnTheScreen()
     })
   })
