@@ -22327,14 +22327,14 @@ __metadata:
 
 "react-native-ios-context-menu@patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch":
   version: 3.2.0
-  resolution: "react-native-ios-context-menu@patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch::version=3.2.0&hash=77603f"
+  resolution: "react-native-ios-context-menu@patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch::version=3.2.0&hash=e1bdb1"
   dependencies:
     "@dominicstop/ts-event-emitter": "npm:^1.1.0"
   peerDependencies:
     react: "*"
     react-native: "*"
     react-native-ios-utilities: "*"
-  checksum: 10c0/7dcfd54274948a9e6ed0e1557575852c53f01979ab02e9a040290fd809209f6e952b21b1907cd8833c12118b7045f6b7834d82a62fc3ec724a872d4fa33ef522
+  checksum: 10c0/7ff18269d05002770bfad13b36688337f8c858764ee398ce386f002542b8ae01b5fa06953b4db2d2947eb335e9404aa51088ee5441df3578d6f1a51cb19ace1e
   languageName: node
   linkType: hard
 
