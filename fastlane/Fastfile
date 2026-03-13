@@ -673,7 +673,7 @@ lane :build_maestro_android do |options|
   set_git_properties_android
 
   # Build Android AAB in beta mode for Maestro testing
-  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2' --active-arch-only")
 
   # Convert AAB to APK using existing bundletool logic
   aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
