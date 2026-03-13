@@ -271,7 +271,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       />
       <MyCollectionBottomSheetModalArtistsPrompt
         visible={state.collectionPromptVisible}
-        title="Inquiry sent! Tell us about the artists in your collection."
+        title="Already own works by this artist or similar artists?"
+        subtitle="Showcase your collection and stand out with galleries."
         onDismiss={handleCollectionPromptDismiss}
       />
     </>
