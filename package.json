@@ -246,7 +246,7 @@
     "@rozenite/network-activity-plugin": "1.1.0",
     "@rozenite/performance-monitor-plugin": "1.1.0",
     "@rozenite/react-navigation-plugin": "1.1.0",
-    "@testing-library/react-native": "13.2.0",
+    "@testing-library/react-native": "13.3.3",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.2.3",
     "@types/chalk": "2.2.0",

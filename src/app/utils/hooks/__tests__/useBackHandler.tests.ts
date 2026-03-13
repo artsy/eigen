@@ -32,7 +32,7 @@ describe("useBackHandler Hooks", () => {
     it("should add back press listener on mount", () => {
       const handler = jest.fn()
 
-      renderHook((props) => useBackHandler(props.handler), {
+      renderHook((props: { handler: () => boolean }) => useBackHandler(props.handler), {
         initialProps: { handler },
       })
 
@@ -44,9 +44,12 @@ describe("useBackHandler Hooks", () => {
       const handler = jest.fn()
       const handler2 = jest.fn()
 
-      const { rerender } = renderHook((props) => useBackHandler(props.handler), {
-        initialProps: { handler },
-      })
+      const { rerender } = renderHook(
+        (props: { handler: () => boolean }) => useBackHandler(props.handler),
+        {
+          initialProps: { handler },
+        }
+      )
 
       expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
 
