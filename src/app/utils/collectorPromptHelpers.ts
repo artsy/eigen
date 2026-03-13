@@ -18,7 +18,8 @@ export const userShouldBePromptedToCompleteProfile = ({
   const userHasAnIncompleteProfile = !profession || !locationDisplay
 
   return (
-    userHasAnIncompleteProfile && userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt)
+    userHasAnIncompleteProfile &&
+    userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt, DAYS_IN_PROFILE_COOLDOWN_PERIOD)
   )
 }
 
@@ -34,11 +35,18 @@ export const userShouldBePromptedToAddArtistsToCollection = ({
   artistsCount,
 }: userShouldBePromptedToAddArtistsToCollectionParams) => {
   const userHasAnEmptyCollection = artworksCount === 0 && artistsCount === 0
-  return userHasAnEmptyCollection && userHasNotBeenPromptedWithinCooldownPeriod(lastUpdatePromptAt)
+  return (
+    userHasAnEmptyCollection &&
+    userHasNotBeenPromptedWithinCooldownPeriod(
+      lastUpdatePromptAt,
+      DAYS_IN_COLLECTION_COOLDOWN_PERIOD
+    )
+  )
 }
 
 const userHasNotBeenPromptedWithinCooldownPeriod = (
-  lastPromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"]
+  lastPromptAt: InquiryModalCollectorProfile["lastUpdatePromptAt"],
+  cooldownDays: number
 ) => {
   if (!lastPromptAt) {
     return true
@@ -46,9 +54,10 @@ const userHasNotBeenPromptedWithinCooldownPeriod = (
 
   const millisecondsSinceLastTimeUserWasPrompted =
     new Date().getTime() - new Date(lastPromptAt).getTime()
-  const millisecondsInCooldownPeriod = DAYS_IN_COOLDOWN_PERIOD * 24 * 60 * 60 * 1000
+  const millisecondsInCooldownPeriod = cooldownDays * 24 * 60 * 60 * 1000
 
   return millisecondsSinceLastTimeUserWasPrompted > millisecondsInCooldownPeriod
 }
 
-export const DAYS_IN_COOLDOWN_PERIOD = 30
+export const DAYS_IN_PROFILE_COOLDOWN_PERIOD = 30
+export const DAYS_IN_COLLECTION_COOLDOWN_PERIOD = 7

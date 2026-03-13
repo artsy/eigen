@@ -70,7 +70,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 0,
       artistsCount: 0,
-      lastUpdatePromptAt: daysAgo(15),
+      lastUpdatePromptAt: daysAgo(5),
     })
 
     expect(result).toBe(false)
