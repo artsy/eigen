@@ -27,7 +27,7 @@ runs:
       shell: bash
 
     - name: Install CocoaPods
-      run: yarn pod-install
+      run: cd ios && RCT_USE_RN_DEP=1 RCT_USE_PREBUILT_RNCORE=1 bundle exec pod install && cd ..
       shell: bash
 
     - name: Select Xcode version

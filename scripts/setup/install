@@ -5,4 +5,5 @@ bundle check || bundle install
 brew bundle
 yarn install
 yarn postinstall
-yarn pod-install
+# yarn pod-install
+RCT_USE_RN_DEP=1 RCT_USE_PREBUILT_RNCORE=1 bundle exec pod install
