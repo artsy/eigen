@@ -6,4 +6,6 @@ brew bundle
 yarn install
 yarn postinstall
 # yarn pod-install
+cd ios
 RCT_USE_RN_DEP=1 RCT_USE_PREBUILT_RNCORE=1 bundle exec pod install
+cd ..
