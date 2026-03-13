@@ -265,7 +265,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       </Modal>
 
       <CompleteProfilePrompt
-        artwork={artwork}
         me={me}
         visible={state.profilePromptVisible}
         onDismiss={handleProfilePromptDismiss}
@@ -282,7 +281,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
-    ...CompleteProfilePrompt_artwork
     ...useSendInquiry_artwork
 
     internalID @required(action: NONE)
