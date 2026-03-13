@@ -13481,7 +13481,7 @@ __metadata:
     react-native-haptic-feedback: "npm:1.13.0"
     react-native-image-crop-picker: "npm:0.51.0"
     react-native-in-app-review: "npm:4.3.3"
-    react-native-ios-context-menu: "npm:3.2.0"
+    react-native-ios-context-menu: "patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch"
     react-native-ios-utilities: "npm:5.2.0"
     react-native-keyboard-controller: "npm:^1.20.2"
     react-native-keychain: "npm:10.0.0"
@@ -22322,6 +22322,19 @@ __metadata:
     react-native: "*"
     react-native-ios-utilities: "*"
   checksum: 10c0/1745b5b9722914a7c70cb1abf3111be89f9c67573a545a57c6d621d7ddb6e79e3371e7a1bf0dc1e9005e1013dd70f11f5e1d0ba980ae906af267e5a5755feae0
+  languageName: node
+  linkType: hard
+
+"react-native-ios-context-menu@patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch":
+  version: 3.2.0
+  resolution: "react-native-ios-context-menu@patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch::version=3.2.0&hash=77603f"
+  dependencies:
+    "@dominicstop/ts-event-emitter": "npm:^1.1.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-ios-utilities: "*"
+  checksum: 10c0/7dcfd54274948a9e6ed0e1557575852c53f01979ab02e9a040290fd809209f6e952b21b1907cd8833c12118b7045f6b7834d82a62fc3ec724a872d4fa33ef522
   languageName: node
   linkType: hard
 
