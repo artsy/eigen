@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+source ./scripts/deploys/utils/colors.sh
+
 # Function to extract version from app.json
 get_version() {
     jq -r '.version' "$1"
@@ -8,7 +10,7 @@ get_version() {
 
 # Check that app.json has no uncommitted changes
 if ! git diff --quiet HEAD -- app.json; then
-    echo "app.json has uncommitted changes. Please commit your app.json changes before deploying."
+    error "app.json has uncommitted changes. Please commit your app.json changes before deploying."
     exit 1
 fi
 
@@ -25,9 +27,9 @@ echo "Main branch app.json version: $MAIN_VERSION"
 
 # Compare versions and exit if they do not match
 if [ "$LOCAL_VERSION" != "$MAIN_VERSION" ]; then
-    echo "Version mismatch detected! Local version: $LOCAL_VERSION, Main version: $MAIN_VERSION."
-    echo "Please update your local app.json version to match the main branch before deploying."
+    error "Version mismatch detected! Local version: $LOCAL_VERSION, Main version: $MAIN_VERSION."
+    error "Please update your local app.json version to match the main branch before deploying."
     exit 1
 fi
 
-echo "Versions match. Proceeding with deployment."
+success "Versions match. Proceeding with deployment."
