@@ -4498,9 +4498,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@npm:5.1.8":
-  version: 5.1.8
-  resolution: "@gorhom/bottom-sheet@npm:5.1.8"
+"@gorhom/bottom-sheet@npm:5.2.8":
+  version: 5.2.8
+  resolution: "@gorhom/bottom-sheet@npm:5.2.8"
   dependencies:
     "@gorhom/portal": "npm:1.0.14"
     invariant: "npm:^2.2.4"
@@ -4516,13 +4516,13 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 10c0/b1faa4bf495f2be814cc2477893fbe758282142b5e4a404eacabd0b76475975f17339fabce388719645a02c17ee999e86cffa26e847a40c9c38e98c5c342ee45
+  checksum: 10c0/9bb71a375cdcaec650e8c84ab5e3e42f55b3ae19d9e08cf90688cf72706588d211f3aeef28b857a37e9e411efa8fdf038429c90a8855167c7ab3dce5c595dfca
   languageName: node
   linkType: hard
 
-"@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch":
-  version: 5.1.8
-  resolution: "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch::version=5.1.8&hash=ea2b4e"
+"@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.2.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.8-1ad4b8f529.patch":
+  version: 5.2.8
+  resolution: "@gorhom/bottom-sheet@patch:@gorhom/bottom-sheet@npm%3A5.2.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.8-1ad4b8f529.patch::version=5.2.8&hash=c147cc"
   dependencies:
     "@gorhom/portal": "npm:1.0.14"
     invariant: "npm:^2.2.4"
@@ -4538,7 +4538,7 @@ __metadata:
       optional: true
     "@types/react-native":
       optional: true
-  checksum: 10c0/39aff6d4f3842fdd6bdb667a9938baba3157bbd74c9db917260844113b073ba4d2f46153cf0356c7323e8bfa77d058d364b1bff635949286cb4e8348fe21bac3
+  checksum: 10c0/ab00c5a4d8e13b6bbf3c5e8652db734dbb9bdaff485e07aa749c907d4cac484da1ba1531d565c9314e003db8dbd2086ea0168afa9e2609dbb48f2e79e4e9ddc2
   languageName: node
   linkType: hard
 
@@ -13324,7 +13324,7 @@ __metadata:
     "@braze/react-native-sdk": "npm:16.1.0"
     "@d11/react-native-fast-image": "npm:8.12.0"
     "@expo/react-native-action-sheet": "npm:4.1.1"
-    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.1.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.1.8-d4532753f1.patch"
+    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.8-1ad4b8f529.patch"
     "@gorhom/portal": "npm:1.0.14"
     "@invertase/react-native-apple-authentication": "npm:2.1.5"
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"
