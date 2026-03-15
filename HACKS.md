@@ -346,3 +346,19 @@ Started seeing blank screens on android when app was crashing instead of regular
 #### When can we remove this:
 
 When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+
+## Patch for @gorhom/bottom-sheet (scrollTo infinite loop on Fabric)
+
+#### When can we remove this:
+
+When @gorhom/bottom-sheet ships a fix for the infinite `scrollTo` loop on Fabric (New Architecture). Track these upstream issues:
+https://github.com/gorhom/react-native-bottom-sheet/issues/2546
+https://github.com/gorhom/react-native-bottom-sheet/issues/2547
+
+#### Explanation/Context:
+
+On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native commit cycle that re-triggers `onScroll` even when the scroll offset hasn't changed. In `useScrollEventsHandlersDefault`, when the scrollable state is `LOCKED`, `handleOnScroll` calls `scrollTo` to enforce the lock position, which fires another `onScroll`, which calls `scrollTo` again — creating an infinite recursion that crashes with "Maximum call stack size exceeded (native stack depth)".
+
+The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+
+Sentry issue: https://artsynet.sentry.io/issues/7304441200/
