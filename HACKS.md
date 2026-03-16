@@ -337,6 +337,18 @@ Probably related with this sentry issue https://artsynet.sentry.io/issues/704371
 
 When they address this issue on react native main repo
 
+## Patch for react-native-ios-context-menu
+
+#### When can we remove this:
+
+When https://github.com/dominicstop/react-native-ios-context-menu/pull/140 is merged and we upgrade to a version that includes it.
+
+#### Explanation/Context:
+
+Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPreview` during context menu dismissal but Fabric has already detached the underlying view from the window. The fix guards `menuTargetedPreview` to return `nil` when `window` is `nil`, letting iOS fall back to a fade-out dismissal instead of crashing.
+
+See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
+
 ## patch for expo-updates
 
 #### Explanation/Context:
