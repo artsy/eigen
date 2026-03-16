@@ -13,7 +13,7 @@ import {
   ShareIcon,
   WhatsAppAppIcon,
 } from "@artsy/icons/native"
-import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
+import { BottomSheetView } from "@gorhom/bottom-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { captureException, captureMessage } from "@sentry/react-native"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
@@ -27,6 +27,7 @@ import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBott
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef, useState } from "react"
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import Keys from "react-native-keys"
 import Share, { Social } from "react-native-share"
 import ViewShot from "react-native-view-shot"
@@ -196,7 +197,7 @@ export const ShareSheet = () => {
         <NavigationHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
           Share
         </NavigationHeader>
-        <BottomSheetScrollView>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
           {data.type !== "sale" && data.type !== "default" && (
             <InstagramStoryViewShot
               shotRef={shotRef}
@@ -225,7 +226,7 @@ export const ShareSheet = () => {
 
           <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
           <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
-        </BottomSheetScrollView>
+        </KeyboardAwareScrollView>
       </BottomSheetView>
     </AutomountedBottomSheetModal>
   )
