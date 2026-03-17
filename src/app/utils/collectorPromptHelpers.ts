@@ -51,4 +51,4 @@ const userHasNotBeenPromptedWithinCooldownPeriod = (
   return millisecondsSinceLastTimeUserWasPrompted > millisecondsInCooldownPeriod
 }
 
-const DAYS_IN_COOLDOWN_PERIOD = 7
+export const DAYS_IN_COOLDOWN_PERIOD = 7

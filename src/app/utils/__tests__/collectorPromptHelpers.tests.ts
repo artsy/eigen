@@ -1,6 +1,7 @@
 import {
   userShouldBePromptedToCompleteProfile,
   userShouldBePromptedToAddArtistsToCollection,
+  DAYS_IN_COOLDOWN_PERIOD,
 } from "app/utils/collectorPromptHelpers"
 
 describe("userShouldBePromptedToCompleteProfile", () => {
@@ -8,7 +9,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "",
       profession: undefined,
-      lastUpdatePromptAt: daysAgo(60),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(true)
@@ -18,7 +19,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: daysAgo(15),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD - 1),
     })
 
     expect(result).toBe(false)
@@ -28,7 +29,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "New York",
       profession: "Artist",
-      lastUpdatePromptAt: daysAgo(45),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(false)
@@ -38,7 +39,7 @@ describe("userShouldBePromptedToCompleteProfile", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: "New York",
       profession: undefined,
-      lastUpdatePromptAt: daysAgo(45),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(true)
@@ -60,7 +61,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 0,
       artistsCount: 0,
-      lastUpdatePromptAt: daysAgo(45),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(true)
@@ -70,7 +71,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 0,
       artistsCount: 0,
-      lastUpdatePromptAt: daysAgo(5),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD - 1),
     })
 
     expect(result).toBe(false)
@@ -80,7 +81,7 @@ describe("userShouldBePromptedToAddArtistsToCollection", () => {
     const result = userShouldBePromptedToAddArtistsToCollection({
       artworksCount: 1,
       artistsCount: 1,
-      lastUpdatePromptAt: daysAgo(45),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(false)
@@ -112,7 +113,7 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: daysAgo(45),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD + 1),
     })
 
     expect(result).toBe(true)
@@ -122,7 +123,7 @@ describe("userHasNotBeenPromptedWithinCooldownPeriod", () => {
     const result = userShouldBePromptedToCompleteProfile({
       locationDisplay: undefined,
       profession: undefined,
-      lastUpdatePromptAt: daysAgo(15),
+      lastUpdatePromptAt: daysAgo(DAYS_IN_COOLDOWN_PERIOD - 1),
     })
 
     expect(result).toBe(false)
