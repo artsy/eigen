@@ -43,6 +43,11 @@ export function useDeepLinks() {
   }, [isHydrated, isLoggedIn, isNavigationReady])
 
   const handleDeepLink = async (url: string) => {
+    // In the New Architecture, Linking.getInitialURL() can return the Metro bundler URL during development
+    if (url.startsWith("http://localhost")) {
+      return
+    }
+
     let targetURL
 
     // If the url is a marketing or email-link url, we need to fetch the redirect
