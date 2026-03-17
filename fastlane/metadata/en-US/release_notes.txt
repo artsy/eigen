@@ -1,3 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
+- fixes various crashes and bugs in latest versions, sorry for the trouble!
+
 Have feedback? Email us at support@artsy.net
