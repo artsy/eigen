@@ -31,8 +31,8 @@ export const ShareSheetProvider: React.FC<ShareSheetProviderProps> = ({ children
   const [item, setItem] = useState<ShareSheetItem | null>(null)
 
   const showShareSheet = (shareSheetItem: ShareSheetItem) => {
+    if (isVisible) return
     setItem(shareSheetItem)
-
     setIsVisible(true)
   }
 
@@ -51,7 +51,7 @@ export const ShareSheetProvider: React.FC<ShareSheetProviderProps> = ({ children
   return (
     <ShareSheetContext.Provider value={contextValue}>
       {children}
-      {!!isVisible && <ShareSheet />}
+      <ShareSheet />
     </ShareSheetContext.Provider>
   )
 }
