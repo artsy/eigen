@@ -116,7 +116,7 @@ jobs:
           fi
 
       - name: Open PR to update runtimeVersion in app.json
-        if: steps.compare.outputs.changed == 'true'
+        if: steps.compare.outputs.changed == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
