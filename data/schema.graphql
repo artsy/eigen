@@ -1876,7 +1876,16 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   gender: String
 
   # A list of genes associated with an artist
-  genes: [Gene]
+  genes(
+    # Filter by gene family ID or slug.
+    geneFamilyID: String
+
+    # Minimum gene value (inclusive).
+    minValue: Int
+
+    # Number of genes to return
+    size: Int
+  ): [Gene!]!
   groupIndicator: ArtistGroupIndicator
   hasMetadata: Boolean
   highlights: ArtistHighlights
