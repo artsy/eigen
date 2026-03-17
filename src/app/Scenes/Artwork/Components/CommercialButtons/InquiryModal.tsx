@@ -265,14 +265,14 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       </Modal>
 
       <CompleteProfilePrompt
-        artwork={artwork}
         me={me}
         visible={state.profilePromptVisible}
         onDismiss={handleProfilePromptDismiss}
       />
       <MyCollectionBottomSheetModalArtistsPrompt
         visible={state.collectionPromptVisible}
-        title="Inquiry sent! Tell us about the artists in your collection."
+        title="Already own works by this artist or similar artists?"
+        subtitle="Showcase your collection and stand out with galleries."
         onDismiss={handleCollectionPromptDismiss}
       />
     </>
@@ -282,7 +282,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
-    ...CompleteProfilePrompt_artwork
     ...useSendInquiry_artwork
 
     internalID @required(action: NONE)

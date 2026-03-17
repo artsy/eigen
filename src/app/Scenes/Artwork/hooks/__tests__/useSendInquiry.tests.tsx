@@ -9,8 +9,8 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-jest.mock("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover", () => ({
-  useInquirySuccessPopover: jest.fn(),
+jest.mock("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessToast", () => ({
+  useInquirySuccessToast: jest.fn(),
 }))
 
 const env = createMockEnvironment()
@@ -31,9 +31,9 @@ describe("useSendInquiry", () => {
     ])
 
     const {
-      useInquirySuccessPopover,
-    } = require("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover")
-    useInquirySuccessPopover.mockReturnValue(mockShowPopover)
+      useInquirySuccessToast,
+    } = require("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessToast")
+    useInquirySuccessToast.mockReturnValue(mockShowPopover)
   })
 
   afterEach(() => {
