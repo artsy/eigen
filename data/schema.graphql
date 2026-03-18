@@ -12666,7 +12666,6 @@ interface EntityWithFilterArtworksConnectionInterface {
   id: ID!
 }
 
-# A user-readable error
 type Error {
   # Error code
   code: String!
@@ -12711,9 +12710,7 @@ type ErrorTypeCount {
   errorType: ArtworkImportError!
 }
 
-# A user-readable list of errors
 type Errors {
-  # List of Errors.
   errors: [Error!]!
 }
 
