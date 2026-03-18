@@ -25242,12 +25242,6 @@ type TotalLine {
 input TransferMyCollectionInput {
   clientMutationId: String
 
-  # Email of the source user.
-  emailFrom: String
-
-  # Email of the destination user.
-  emailTo: String
-
   # ID of the source user.
   idFrom: String
 
