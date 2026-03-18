@@ -25567,11 +25567,17 @@ type UpdateArtworkImportSuccess {
 input UpdateArtworkMutationInput {
   # Additional information about the artwork
   additionalInformation: String
+
+  # List of artist IDs for the artwork
+  artistIds: [String!]
   artistProofs: String
 
   # The availability of the artwork
   availability: String
   clientMutationId: String
+
+  # The date or year of the artwork
+  date: String
 
   # The ID of the image to set as the default for this artwork
   defaultImageID: String
@@ -25608,6 +25614,12 @@ input UpdateArtworkMutationInput {
   # A list of S3 locations (bucket and key pairs) for artwork images to be added.
   imageS3Locations: [S3LocationInput!]
 
+  # The inventory ID of the artwork
+  inventoryId: String
+
+  # The medium type (category) of the artwork
+  mediumType: String
+
   # The unit of measurement for artwork dimensions
   metric: String
 
@@ -25624,6 +25636,9 @@ input UpdateArtworkMutationInput {
   priceListed: String
   priceMax: Int
   priceMin: Int
+
+  # The provenance of the artwork
+  provenance: String
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
