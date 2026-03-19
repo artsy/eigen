@@ -2,6 +2,7 @@ import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDimensionsClassificationAndAuthenticity_artwork$data } from "__generated__/ArtworkDimensionsClassificationAndAuthenticity_artwork.graphql"
 import { ArtworkAuthenticityCertificateFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkAuthenticityCertificate"
 import { ArtworkClassificationFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkClassification"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkDimensionsClassificationAndAuthenticityProps {
@@ -11,7 +12,28 @@ interface ArtworkDimensionsClassificationAndAuthenticityProps {
 const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
   ArtworkDimensionsClassificationAndAuthenticityProps
 > = ({ artwork }) => {
-  const { medium, dimensions, framed, editionOf, editionSets, isUnlisted } = artwork
+  const { medium, dimensions, framedDimensions, framed, editionOf, editionSets, isUnlisted } =
+    artwork
+  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
+
+  const getDimensionText = () => {
+    if (enableFramedSize && dimensionsPresent(framedDimensions)) {
+      return `${framedDimensions?.in} | ${framedDimensions?.cm} with frame included`
+    }
+
+    if (
+      (enableFramedSize &&
+        !dimensionsPresent(framedDimensions) &&
+        !dimensionsPresent(dimensions)) ||
+      !dimensionsPresent(dimensions)
+    ) {
+      return null
+    }
+
+    return `${dimensions?.in} | ${dimensions?.cm}`
+  }
+
+  const dimensionText = getDimensionText()
 
   return (
     <Box>
@@ -19,10 +41,12 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
       <Text color="mono60" variant="sm">
         {medium}
       </Text>
-      {!!dimensionsPresent(dimensions) && (editionSets?.length ?? 0) < 2 && (
-        <Text color="mono60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
+      {!!dimensionText && (editionSets?.length ?? 0) < 2 && (
+        <Text color="mono60" variant="sm">
+          {dimensionText}
+        </Text>
       )}
-      {!!getFrameString(framed?.details, isUnlisted) && (
+      {!enableFramedSize && !!getFrameString(framed?.details, isUnlisted) && (
         <Text color="mono60" variant="sm">
           {getFrameString(framed?.details, isUnlisted)}
         </Text>
@@ -49,6 +73,10 @@ export const ArtworkDimensionsClassificationAndAuthenticityFragmentContainer =
       fragment ArtworkDimensionsClassificationAndAuthenticity_artwork on Artwork {
         medium
         dimensions {
+          in
+          cm
+        }
+        framedDimensions {
           in
           cm
         }

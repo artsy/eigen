@@ -2,6 +2,7 @@ import { Collapse, Spacer, Flex, Box, Text, Separator, Join, Image } from "@arts
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 
@@ -12,7 +13,15 @@ export interface CollapsibleArtworkDetailsProps {
   hasSeparator?: boolean
 }
 
-const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => {
+const artworkDetailItems = (
+  artwork: CollapsibleArtworkDetails_artwork$data,
+  enableFramedSize: boolean
+) => {
+  const hasDimensions = [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).length > 0
+  const hasFramedDimensions =
+    enableFramedSize &&
+    [artwork.framedDimensions?.in, artwork.framedDimensions?.cm].filter((d) => d).length > 0
+
   const items = [
     { title: "Price", value: artwork.saleMessage },
     { title: "Medium", value: artwork.mediumType?.name },
@@ -22,8 +31,22 @@ const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => 
     { title: "Classification", value: artwork.attributionClass?.name },
     {
       title: "Dimensions",
-      value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n"),
+      value: hasDimensions
+        ? [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n")
+        : null,
     },
+    ...(enableFramedSize
+      ? [
+          {
+            title: "Framed Dimensions",
+            value: hasFramedDimensions
+              ? [artwork.framedDimensions?.in, artwork.framedDimensions?.cm]
+                  .filter((d) => d)
+                  .join("\n")
+              : null,
+          },
+        ]
+      : []),
     { title: "Signature", value: artwork.signatureInfo?.details },
     { title: "Frame", value: artwork.isFramed ? "Included" : "Not included" },
     { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
@@ -38,6 +61,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
   hasSeparator = true,
 }) => {
   const [isExpanded, setExpanded] = useState(false)
+  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
       ...LayoutAnimation.Presets.linear,
@@ -45,7 +69,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
     })
     setExpanded(!isExpanded)
   }
-  const detailItems = artworkDetailItems(artwork)
+  const detailItems = artworkDetailItems(artwork, enableFramedSize)
 
   return artwork ? (
     <>
@@ -123,6 +147,10 @@ export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContaine
         }
         isFramed
         dimensions {
+          in
+          cm
+        }
+        framedDimensions {
           in
           cm
         }

@@ -177,6 +177,12 @@ export const features = {
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
   },
+  AREnableArtworksFramedSize: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable adding framed size field to Artworks",
+    echoFlagKey: "AREnableArtworksFramedSize",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

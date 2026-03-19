@@ -29,6 +29,7 @@ import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
 import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -44,6 +45,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const { collapse } = useBottomSheet()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
   const { signalTitle } = useCollectorSignal({ artwork: data })
+  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
 
   if (!data) {
     return null
@@ -128,6 +130,15 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               <Flex flexDirection="row">
                 <Text {...labelStyle}>Dimensions</Text>
                 <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
+              </Flex>
+            )}
+
+            {!!enableFramedSize && dimensionsPresent(data.framedDimensions) && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Framed Dimensions</Text>
+                <Text
+                  {...valueStyle}
+                >{`${data.framedDimensions?.in} | ${data.framedDimensions?.cm}`}</Text>
               </Flex>
             )}
 
@@ -259,6 +270,10 @@ const fragment = graphql`
       in
       cm
     }
+    framedDimensions {
+      in
+      cm
+    }
     attributionClass {
       name
     }
@@ -278,7 +293,6 @@ const fragment = graphql`
     }
     publisher
     isFramed
-
     artists(shallow: true) @required(action: NONE) {
       ...ArtistListItem_artist
     }

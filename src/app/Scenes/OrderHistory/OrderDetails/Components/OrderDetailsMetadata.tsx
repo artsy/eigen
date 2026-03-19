@@ -1,7 +1,9 @@
 import { Box, Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { OrderDetailsMetadata_order$key } from "__generated__/OrderDetailsMetadata_order.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
+import { useMemo } from "react"
 import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -15,6 +17,7 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
   const { width: screenWidth } = useScreenDimensions()
   const imageContainer = { height: IMAGE_MAX_HEIGHT, width: screenWidth - 40 }
   const orderData = useFragment(fragment, order)
+  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
 
   const artwork = orderData.lineItems?.[0]?.artwork
   const artworkVersion = orderData.lineItems?.[0]?.artworkVersion
@@ -26,12 +29,24 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
     (artworkOrEditionSet.__typename === "Artwork" ||
       artworkOrEditionSet?.__typename === "EditionSet")
   const dimensions = isArtworkOrEditionSet ? artworkOrEditionSet.dimensions : null
+  const framedDimensions = isArtworkOrEditionSet ? artworkOrEditionSet.framedDimensions : null
   const price = isArtworkOrEditionSet ? artworkOrEditionSet.price : null
 
-  const formattedDimensions =
-    dimensions?.in && dimensions?.cm
-      ? `${dimensions.in} | ${dimensions.cm}`
-      : dimensions?.in ?? dimensions?.cm
+  const formattedDimensions = useMemo(() => {
+    if (enableFramedSize) {
+      if (framedDimensions?.in && framedDimensions?.cm) {
+        return `${framedDimensions.in} | ${framedDimensions.cm}`
+      }
+      if (framedDimensions?.in || framedDimensions?.cm) {
+        return framedDimensions.in ?? framedDimensions.cm
+      }
+    }
+
+    if (dimensions?.in && dimensions?.cm) {
+      return `${dimensions.in} | ${dimensions.cm}`
+    }
+    return dimensions?.in ?? dimensions?.cm
+  }, [dimensions, framedDimensions, enableFramedSize])
 
   const { height, width } = sizeToFit(
     {
@@ -159,10 +174,18 @@ const fragment = graphql`
             in
             cm
           }
+          framedDimensions {
+            in
+            cm
+          }
         }
         ... on EditionSet {
           price
           dimensions {
+            in
+            cm
+          }
+          framedDimensions {
             in
             cm
           }
