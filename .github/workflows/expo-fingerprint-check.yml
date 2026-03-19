@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch: # Allows manual trigger
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   check-fingerprint:
     runs-on: macos-15
@@ -110,6 +114,39 @@ jobs:
             echo "🔄 Fingerprints differ - native builds required"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Open PR to update runtimeVersion in app.json
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FINGERPRINT="${{ steps.generate-fingerprint.outputs.fingerprint }}"
+          BRANCH="ci/update-expo-runtime-version-${FINGERPRINT:0:8}"
+
+          # Skip if branch already exists (e.g. workflow re-run for same fingerprint)
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null 2>&1; then
+            echo "Branch $BRANCH already exists, skipping PR creation"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          jq --arg version "$FINGERPRINT" '.expo.runtimeVersion = $version' app.json > app.json.tmp && mv app.json.tmp app.json
+
+          git checkout -b "$BRANCH"
+          git add app.json
+          git commit -m "chore: update expo runtimeVersion to ${FINGERPRINT:0:8}"
+          git push origin "$BRANCH"
+
+          PR_URL=$(gh pr create \
+            --title "chore: update expo runtimeVersion to ${FINGERPRINT:0:8}" \
+            --body "Automated PR: updates \`runtimeVersion\` in \`app.json\` to match the new native fingerprint \`$FINGERPRINT\`." \
+            --base main \
+            --head "$BRANCH")
+
+          gh pr merge "$PR_URL" --auto --squash
+          echo "✅ PR created with auto-merge enabled: $PR_URL"
 
       - name: Check S3 for existing cached builds
         id: check-s3-cache
