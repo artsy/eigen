@@ -21,7 +21,6 @@ import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
-import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
@@ -29,7 +28,7 @@ import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
 import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -45,7 +44,12 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const { collapse } = useBottomSheet()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
   const { signalTitle } = useCollectorSignal({ artwork: data })
-  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
+
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
+    useArtworkDimensions({
+      dimensions: data?.dimensions,
+      framedDimensions: data?.framedDimensions,
+    })
 
   if (!data) {
     return null
@@ -126,19 +130,17 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               <Text {...valueStyle}>{data.medium}</Text>
             </Flex>
 
-            {dimensionsPresent(data.dimensions) && (
+            {!!regularDimensionText && (
               <Flex flexDirection="row">
                 <Text {...labelStyle}>Dimensions</Text>
-                <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
+                <Text {...valueStyle}>{regularDimensionText}</Text>
               </Flex>
             )}
 
-            {!!enableFramedSize && dimensionsPresent(data.framedDimensions) && (
+            {!!isFramedSizeEnabled && !!hasFramedDimensions && !!framedDimensionText && (
               <Flex flexDirection="row">
                 <Text {...labelStyle}>Framed Dimensions</Text>
-                <Text
-                  {...valueStyle}
-                >{`${data.framedDimensions?.in} | ${data.framedDimensions?.cm}`}</Text>
+                <Text {...valueStyle}>{framedDimensionText}</Text>
               </Flex>
             )}
 

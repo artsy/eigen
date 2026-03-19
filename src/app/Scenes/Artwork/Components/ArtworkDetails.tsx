@@ -1,8 +1,7 @@
 import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
-import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { Schema } from "app/utils/track"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -23,10 +22,14 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
   showReadMore = false,
 }) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
-  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
-  const hasFramedDimensions = dimensionsPresent(artworkData?.framedDimensions)
 
-  const shouldShowDimensions = enableFramedSize && hasFramedDimensions
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
+    useArtworkDimensions({
+      dimensions: artworkData?.dimensions,
+      framedDimensions: artworkData?.framedDimensions,
+    })
+
+  const shouldShowDimensions = isFramedSizeEnabled && hasFramedDimensions
 
   const listItems = [
     ...(shouldShowDimensions
@@ -35,7 +38,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
             title: "Size",
             value: (
               <Text variant="xs" color="mono100">
-                {`${artworkData?.dimensions?.in} | ${artworkData?.dimensions?.cm}`}
+                {regularDimensionText}
               </Text>
             ),
           },
@@ -43,7 +46,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
             title: "Framed Size",
             value: (
               <Text variant="xs" color="mono100">
-                {`${artworkData?.framedDimensions?.in} | ${artworkData?.framedDimensions?.cm}`}
+                {framedDimensionText}
               </Text>
             ),
           },

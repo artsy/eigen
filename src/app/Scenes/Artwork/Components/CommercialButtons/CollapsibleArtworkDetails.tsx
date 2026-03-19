@@ -2,7 +2,7 @@ import { Collapse, Spacer, Flex, Box, Text, Separator, Join, Image } from "@arts
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 
@@ -15,13 +15,10 @@ export interface CollapsibleArtworkDetailsProps {
 
 const artworkDetailItems = (
   artwork: CollapsibleArtworkDetails_artwork$data,
-  enableFramedSize: boolean
+  regularDimensionText: string | null,
+  framedDimensionText: string | null,
+  isFramedSizeEnabled: boolean
 ) => {
-  const hasDimensions = [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).length > 0
-  const hasFramedDimensions =
-    enableFramedSize &&
-    [artwork.framedDimensions?.in, artwork.framedDimensions?.cm].filter((d) => d).length > 0
-
   const items = [
     { title: "Price", value: artwork.saleMessage },
     { title: "Medium", value: artwork.mediumType?.name },
@@ -31,19 +28,13 @@ const artworkDetailItems = (
     { title: "Classification", value: artwork.attributionClass?.name },
     {
       title: "Dimensions",
-      value: hasDimensions
-        ? [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n")
-        : null,
+      value: regularDimensionText ? regularDimensionText.replace(" | ", "\n") : null,
     },
-    ...(enableFramedSize
+    ...(isFramedSizeEnabled
       ? [
           {
             title: "Framed Dimensions",
-            value: hasFramedDimensions
-              ? [artwork.framedDimensions?.in, artwork.framedDimensions?.cm]
-                  .filter((d) => d)
-                  .join("\n")
-              : null,
+            value: framedDimensionText ? framedDimensionText.replace(" | ", "\n") : null,
           },
         ]
       : []),
@@ -61,7 +52,12 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
   hasSeparator = true,
 }) => {
   const [isExpanded, setExpanded] = useState(false)
-  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
+
+  const { regularDimensionText, framedDimensionText, isFramedSizeEnabled } = useArtworkDimensions({
+    dimensions: artwork.dimensions,
+    framedDimensions: artwork.framedDimensions,
+  })
+
   const toggleExpanded = () => {
     LayoutAnimation.configureNext({
       ...LayoutAnimation.Presets.linear,
@@ -69,7 +65,12 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
     })
     setExpanded(!isExpanded)
   }
-  const detailItems = artworkDetailItems(artwork, enableFramedSize)
+  const detailItems = artworkDetailItems(
+    artwork,
+    regularDimensionText,
+    framedDimensionText,
+    isFramedSizeEnabled
+  )
 
   return artwork ? (
     <>
