@@ -1,0 +1,10 @@
+name: Link PR to Notion
+on:
+  pull_request:
+    types: [opened, edited]
+jobs:
+  link:
+    uses: artsy/duchamp/.github/workflows/link-pr-to-notion.yml@main
+    secrets:
+      notion-token: ${{ secrets.NOTION_TOKEN }}
+      root-page-id: ${{ secrets.NOTION_ROOT_PAGE_ID }}
