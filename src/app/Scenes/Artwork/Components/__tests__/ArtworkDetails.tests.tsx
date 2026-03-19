@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkDetails_artwork_TestQuery } from "__generated__/ArtworkDetails_artwork_TestQuery.graphql"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -15,6 +16,10 @@ describe("ArtworkDetails", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   it("renders all data correctly", async () => {
@@ -77,5 +82,50 @@ describe("ArtworkDetails", () => {
     })
 
     expect(screen.queryByTestId("request-condition-report")).not.toBeOnTheScreen()
+  })
+
+  describe("with AREnableArtworksFramedSize feature flag enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
+    })
+
+    it("shows both Size and Framed Size when framed dimensions exist", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
+          framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
+        }),
+      })
+
+      expect(screen.getByText("Size")).toBeOnTheScreen()
+      expect(screen.getByText("20 × 30 in | 50 × 76 cm")).toBeOnTheScreen()
+      expect(screen.getByText("Framed Size")).toBeOnTheScreen()
+      expect(screen.getByText("24 × 34 in | 61 × 86 cm")).toBeOnTheScreen()
+    })
+
+    it("hides both Size and Framed Size when framed dimensions do not exist", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
+          framedDimensions: null,
+        }),
+      })
+
+      expect(screen.queryByText("Size")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Framed Size")).not.toBeOnTheScreen()
+      expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
+    })
+
+    it("hides both Size and Framed Size when dimensions are empty", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: null,
+          framedDimensions: null,
+        }),
+      })
+
+      expect(screen.queryByText("Size")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Framed Size")).not.toBeOnTheScreen()
+    })
   })
 })

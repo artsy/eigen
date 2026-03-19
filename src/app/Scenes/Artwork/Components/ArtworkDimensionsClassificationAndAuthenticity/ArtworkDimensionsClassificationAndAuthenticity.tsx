@@ -2,6 +2,7 @@ import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDimensionsClassificationAndAuthenticity_artwork$data } from "__generated__/ArtworkDimensionsClassificationAndAuthenticity_artwork.graphql"
 import { ArtworkAuthenticityCertificateFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkAuthenticityCertificate"
 import { ArtworkClassificationFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkClassification"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkDimensionsClassificationAndAuthenticityProps {
@@ -11,7 +12,14 @@ interface ArtworkDimensionsClassificationAndAuthenticityProps {
 const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
   ArtworkDimensionsClassificationAndAuthenticityProps
 > = ({ artwork }) => {
-  const { medium, dimensions, framed, editionOf, editionSets, isUnlisted } = artwork
+  const { medium, dimensions, framedDimensions, framed, editionOf, editionSets, isUnlisted } =
+    artwork
+
+  const { dimensionText, isFramedSizeEnabled } = useArtworkDimensions({
+    dimensions,
+    framedDimensions,
+    includeFrameText: true,
+  })
 
   return (
     <Box>
@@ -19,10 +27,12 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
       <Text color="mono60" variant="sm">
         {medium}
       </Text>
-      {!!dimensionsPresent(dimensions) && (editionSets?.length ?? 0) < 2 && (
-        <Text color="mono60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
+      {!!dimensionText && (editionSets?.length ?? 0) < 2 && (
+        <Text color="mono60" variant="sm">
+          {dimensionText}
+        </Text>
       )}
-      {!!getFrameString(framed?.details, isUnlisted) && (
+      {!isFramedSizeEnabled && !!getFrameString(framed?.details, isUnlisted) && (
         <Text color="mono60" variant="sm">
           {getFrameString(framed?.details, isUnlisted)}
         </Text>
@@ -52,6 +62,10 @@ export const ArtworkDimensionsClassificationAndAuthenticityFragmentContainer =
           in
           cm
         }
+        framedDimensions {
+          in
+          cm
+        }
         framed {
           details
         }
@@ -78,6 +92,3 @@ export const getFrameString = (frameDetails?: string | null, isUnlisted?: boolea
 
   return `Frame ${frameDetails.toLowerCase()}`
 }
-
-export const dimensionsPresent = (dimensions: any) =>
-  /\d/.test(dimensions?.in) || /\d/.test(dimensions?.cm)

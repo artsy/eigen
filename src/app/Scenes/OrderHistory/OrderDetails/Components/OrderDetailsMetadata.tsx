@@ -1,6 +1,7 @@
 import { Box, Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { OrderDetailsMetadata_order$key } from "__generated__/OrderDetailsMetadata_order.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -26,12 +27,13 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
     (artworkOrEditionSet.__typename === "Artwork" ||
       artworkOrEditionSet?.__typename === "EditionSet")
   const dimensions = isArtworkOrEditionSet ? artworkOrEditionSet.dimensions : null
+  const framedDimensions = isArtworkOrEditionSet ? artworkOrEditionSet.framedDimensions : null
   const price = isArtworkOrEditionSet ? artworkOrEditionSet.price : null
 
-  const formattedDimensions =
-    dimensions?.in && dimensions?.cm
-      ? `${dimensions.in} | ${dimensions.cm}`
-      : dimensions?.in ?? dimensions?.cm
+  const { dimensionText: formattedDimensions } = useArtworkDimensions({
+    dimensions,
+    framedDimensions,
+  })
 
   const { height, width } = sizeToFit(
     {
@@ -159,10 +161,18 @@ const fragment = graphql`
             in
             cm
           }
+          framedDimensions {
+            in
+            cm
+          }
         }
         ... on EditionSet {
           price
           dimensions {
+            in
+            cm
+          }
+          framedDimensions {
             in
             cm
           }

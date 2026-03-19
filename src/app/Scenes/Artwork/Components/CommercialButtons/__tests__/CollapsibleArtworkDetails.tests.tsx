@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import { CollapsibleArtworkDetailsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -14,6 +15,10 @@ describe("CollapsibleArtworkDetails", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   it("displays basic artwork details when collapsed", () => {
@@ -47,8 +52,8 @@ describe("CollapsibleArtworkDetails", () => {
           name: "Artwork Attribution Class Name",
         },
         dimensions: {
-          in: "Artwork Dimensions Inches",
-          cm: "Artwork Dimensions Centimeters",
+          in: "1 Artwork Dimensions Inches",
+          cm: "1 Artwork Dimensions Centimeters",
         },
         signatureInfo: {
           details: "Artwork Signature Info Details",
@@ -79,7 +84,7 @@ describe("CollapsibleArtworkDetails", () => {
     expect(screen.getByText("Artwork Medium")).toBeVisible()
     expect(screen.getByText("Artwork Attribution Class Name")).toBeVisible()
     expect(
-      screen.getByText("Artwork Dimensions Inches\nArtwork Dimensions Centimeters")
+      screen.getByText("1 Artwork Dimensions Inches\n1 Artwork Dimensions Centimeters")
     ).toBeVisible()
     expect(screen.getByText("Artwork Signature Info Details")).toBeVisible()
     expect(screen.getByText("Included")).toBeVisible()
@@ -124,5 +129,72 @@ describe("CollapsibleArtworkDetails", () => {
 
     expect(screen.getByText("Frame")).toBeVisible()
     expect(screen.getByText("Not included")).toBeVisible()
+  })
+
+  describe("framed dimensions", () => {
+    it("shows framed dimensions when feature flag is enabled and data is available", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
+
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
+          framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" },
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+      })
+
+      expect(screen.getByText("Dimensions")).toBeVisible()
+      expect(screen.getByText("20 × 24 in\n50.8 × 61 cm")).toBeVisible()
+      expect(screen.getByText("Framed Dimensions")).toBeVisible()
+      expect(screen.getByText("24 × 28 in\n61 × 71.1 cm")).toBeVisible()
+    })
+
+    it("does not show framed dimensions when feature flag is disabled", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
+
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
+          framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" },
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+      })
+
+      expect(screen.getByText("Dimensions")).toBeVisible()
+      expect(screen.getByText("20 × 24 in\n50.8 × 61 cm")).toBeVisible()
+      expect(screen.queryByText("Framed Dimensions")).toBeNull()
+      expect(screen.queryByText("24 × 28 in\n61 × 71.1 cm")).toBeNull()
+    })
+
+    it("does not show framed dimensions when data is missing", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
+
+      renderWithRelay({
+        Artwork: () => ({
+          dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
+          framedDimensions: null,
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Show artwork details"))
+
+      await waitFor(() => {
+        expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
+      })
+
+      expect(screen.getByText("Dimensions")).toBeVisible()
+      expect(screen.getByText("20 × 24 in\n50.8 × 61 cm")).toBeVisible()
+      expect(screen.queryByText("Framed Dimensions")).toBeNull()
+    })
   })
 })

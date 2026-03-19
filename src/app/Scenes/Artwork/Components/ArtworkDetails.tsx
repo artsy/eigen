@@ -1,6 +1,7 @@
 import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { Schema } from "app/utils/track"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -22,7 +23,35 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
 }) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
 
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
+    useArtworkDimensions({
+      dimensions: artworkData?.dimensions,
+      framedDimensions: artworkData?.framedDimensions,
+    })
+
+  const shouldShowDimensions = isFramedSizeEnabled && hasFramedDimensions
+
   const listItems = [
+    ...(shouldShowDimensions
+      ? [
+          {
+            title: "Size",
+            value: (
+              <Text variant="xs" color="mono100">
+                {regularDimensionText}
+              </Text>
+            ),
+          },
+          {
+            title: "Framed Size",
+            value: (
+              <Text variant="xs" color="mono100">
+                {framedDimensionText}
+              </Text>
+            ),
+          },
+        ]
+      : []),
     {
       title: "Medium",
       value: artworkData?.mediumType?.name && (
@@ -130,6 +159,10 @@ const artworkDetailsFragment = graphql`
     dimensions {
       cm
       in
+    }
+    framedDimensions {
+      in
+      cm
     }
     attributionClass {
       name
