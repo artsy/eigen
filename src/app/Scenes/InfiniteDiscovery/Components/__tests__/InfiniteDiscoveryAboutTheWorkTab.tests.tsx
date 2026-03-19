@@ -1,6 +1,7 @@
 import { screen, within } from "@testing-library/react-native"
 import { InfiniteDiscoveryAboutTheWorkTabTestQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabTestQuery.graphql"
 import { AboutTheWorkTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
 import { Text } from "react-native"
@@ -84,6 +85,47 @@ describe("AboutTheWorkTab", () => {
     mockResolveLastOperation({ Artwork: () => ({ ...artwork, isFramed: false }) })
 
     expect(screen.getByText("Frame not included")).toBeOnTheScreen()
+  })
+
+  describe("framed dimensions", () => {
+    it("shows framed dimensions when feature flag is enabled and data is available", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
+
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" } }),
+      })
+
+      expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
+      expect(screen.getByText("24 × 28 in | 61 × 71.1 cm")).toBeOnTheScreen()
+    })
+
+    it("does not show framed dimensions when feature flag is disabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
+
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" } }),
+      })
+
+      expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
+      expect(screen.queryByText("24 × 28 in | 61 × 71.1 cm")).not.toBeOnTheScreen()
+    })
+
+    it("does not show framed dimensions section when framed dimensions data is missing", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
+
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, framedDimensions: null }),
+      })
+
+      expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
+      expect(screen.queryByText("Framed Dimensions")).not.toBeOnTheScreen()
+    })
   })
 
   describe("classification and authenticity section", () => {
