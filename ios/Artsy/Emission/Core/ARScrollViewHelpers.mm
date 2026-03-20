@@ -23,13 +23,6 @@ RCT_EXPORT_MODULE()
   return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
-{
-  // No-op on New Architecture: the notification-based scroll event propagation
-  // between nested scroll views was an Old Architecture mechanism. Fabric handles
-  // scroll events differently and does not use this system.
-}
-
 RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 {
   RCTScrollViewComponentView *view = (id)[self.bridge.uiManager viewForReactTag:tag];
