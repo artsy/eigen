@@ -433,6 +433,9 @@ type Alert {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -1820,6 +1823,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -2272,6 +2278,9 @@ type ArtistPartnerEdge {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -2435,6 +2444,9 @@ type ArtistSeries implements Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -2657,6 +2669,9 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
+
+  # Whether the artwork is listed on Artsy
+  artsyListing: Boolean
   artsyShippingDomestic: Boolean
   artsyShippingInternational: Boolean
 
@@ -3341,6 +3356,9 @@ type ArtworkFilterNode {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -5261,6 +5279,9 @@ input BulkArtworkFilterInput {
 input BulkUpdateArtworksMetadataInput {
   # The artist IDs to be assigned
   artistIds: [String]
+
+  # Whether the artworks are listed on Artsy
+  artsyListing: Boolean
 
   # Whether Artsy Shipping is enabled for domestic shipments
   artsyShippingDomestic: Boolean
@@ -12619,6 +12640,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     inquireableOnly: Boolean
     keyword: String
@@ -12942,6 +12966,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -13486,6 +13513,9 @@ input FilterArtworksInput {
   includeAllJSON: Boolean
   includeArtworksByFollowedArtists: Boolean
   includeMediumFilterInAggregation: Boolean
+
+  # Include artworks not listed on Artsy (artsy_listing: false).
+  includeNonArtsyListed: Boolean
   includeUnpublished: Boolean
   inquireableOnly: Boolean
   keyword: String
@@ -14038,6 +14068,9 @@ type Gene implements Node & Searchable {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -16180,6 +16213,9 @@ type MarketingCollection implements Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -19368,6 +19404,9 @@ type Partner implements Node {
     first: Int
     forSale: Boolean
 
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
+
     # If true return both published and unpublished artworks, requires auth
     includeUnpublished: Boolean
     last: Int
@@ -19503,6 +19542,9 @@ type Partner implements Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -19877,6 +19919,9 @@ type PartnerArtist {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -20073,6 +20118,9 @@ type PartnerArtistEdge {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -21441,6 +21489,9 @@ type Query {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -21840,6 +21891,9 @@ type Query {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -24489,6 +24543,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -25054,6 +25111,9 @@ type Tag implements Node {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -25412,6 +25472,9 @@ input UpdateArtworkEditionSetInput {
   additionalInformation: String
   artistProofs: String
 
+  # Whether the artwork is listed on Artsy
+  artsyListing: Boolean
+
   # The availability of the artwork
   availability: String
 
@@ -25573,6 +25636,9 @@ input UpdateArtworkMutationInput {
   # List of artist IDs for the artwork
   artistIds: [String!]
   artistProofs: String
+
+  # Whether the artwork is listed on Artsy
+  artsyListing: Boolean
 
   # The availability of the artwork
   availability: String
@@ -28089,6 +28155,9 @@ type Viewer {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
@@ -28368,6 +28437,9 @@ type Viewer {
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+
+    # Include artworks not listed on Artsy (artsy_listing: false).
+    includeNonArtsyListed: Boolean
     includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
