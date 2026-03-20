@@ -1,5 +1,6 @@
 import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { Schema } from "app/utils/track"
@@ -22,12 +23,33 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
   showReadMore = false,
 }) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
+  const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
+  const editionSets = artworkData.editionSets ?? []
+  let dimensionsToUse = null
+  let framedDimensionsToUse = null
+
+  const getEditionSetDimensions = () => {
+    const selectedEdition = editionSets.find((editionSet) => {
+      return editionSet?.internalID === selectedEditionId
+    })
+
+    return {
+      dimensions: selectedEdition?.dimensions,
+      framedDimensions: selectedEdition?.framedDimensions,
+    }
+  }
+
+  if (editionSets.length > 1) {
+    const { dimensions, framedDimensions } = getEditionSetDimensions()
+    dimensionsToUse = dimensions
+    framedDimensionsToUse = framedDimensions
+  } else {
+    dimensionsToUse = artworkData?.dimensions
+    framedDimensionsToUse = artworkData?.framedDimensions
+  }
 
   const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
-    useArtworkDimensions({
-      dimensions: artworkData?.dimensions,
-      framedDimensions: artworkData?.framedDimensions,
-    })
+    useArtworkDimensions({ dimensions: dimensionsToUse, framedDimensions: framedDimensionsToUse })
 
   const shouldShowDimensions = isFramedSizeEnabled && hasFramedDimensions
 
@@ -191,6 +213,14 @@ const artworkDetailsFragment = graphql`
     editionOf
     editionSets {
       internalID
+      dimensions {
+        cm
+        in
+      }
+      framedDimensions {
+        in
+        cm
+      }
     }
   }
 `
