@@ -1,12 +1,20 @@
 #import "ARScrollViewHelpers.h"
 #import <UIKit/UIKit.h>
-#import "AREmission.h"
 #import <React/RCTUIManager.h>
-#import "INTUAnimationEngine.h"
+#import <React/RCTScrollViewComponentView.h>
 
-#import "RCTScrollView+Artsy.h"
+// This is a workaround to make plain C functions not get mangled by C++ compiler, and fix compilation
+#ifdef __cplusplus
+extern "C" {
+#endif
+#import "INTUAnimationEngine.h"
+#ifdef __cplusplus
+}
+#endif
 
 @implementation ARScrollViewHelpers
+
+@synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE()
 
@@ -15,21 +23,12 @@ RCT_EXPORT_MODULE()
   return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(optOutOfParentScrollEvents:(nonnull NSNumber *)tag)
-{
-  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
-
-  if ([view isKindOfClass:RCTScrollView.class]) {
-    [view optOutOfParentScrollEvents];
-  }
-}
-
 RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 {
-  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  RCTScrollViewComponentView *view = (id)[self.bridge.uiManager viewForReactTag:tag];
 
-  if ([view isKindOfClass:RCTScrollView.class]) {
-    [view scrollViewDidScroll:view.scrollView];
+  if ([view isKindOfClass:RCTScrollViewComponentView.class]) {
+    [view.scrollView.delegate scrollViewDidScroll:view.scrollView];
   }
 }
 
@@ -43,9 +42,9 @@ RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
 // x, y, w, and h, are relative to the un-zoomed content
 RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(nonnull NSNumber *)y w:(nonnull NSNumber *)w h:(nonnull NSNumber *)h)
 {
-  RCTScrollView *view = (id)[[AREmission sharedInstance].bridge.uiManager viewForReactTag:tag];
+  RCTScrollViewComponentView *view = (id)[self.bridge.uiManager viewForReactTag:tag];
 
-  if ([view isKindOfClass:RCTScrollView.class]) {
+  if ([view isKindOfClass:RCTScrollViewComponentView.class]) {
     // first disable scrolling so the user can't interrupt the animation
     // TODO: (this doesn't seem to actually work, needs more investigation)
     view.scrollView.scrollEnabled = NO;
@@ -113,11 +112,11 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
     CGRect targetViewPort = CGRectMake([x floatValue], [y floatValue], [w floatValue], [h floatValue]);
 
-    __weak RCTScrollView *weakScrollView = view;
+    __weak RCTScrollViewComponentView *weakScrollView = view;
 
     [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
       progress = INTUEaseInOutSine(progress);
-      __strong RCTScrollView *strongScrollView = weakScrollView;
+      __strong RCTScrollViewComponentView *strongScrollView = weakScrollView;
       if (!strongScrollView) return;
 
       CGRect nextViewPort = INTUInterpolateCGRect(startViewPort, targetViewPort, progress);
@@ -126,17 +125,14 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
 
       CGFloat scale = frameSize.width / nextViewPort.size.width;
 
-      // disable scroll events while we apply the changes, to avoid jank
-      [strongScrollView optOutOfAllScrollEvents];
       strongScrollView.scrollView.zoomScale = scale;
       strongScrollView.scrollView.contentOffset = CGPointMake(nextViewPort.origin.x * scale, nextViewPort.origin.y * scale);
       strongScrollView.scrollView.bounds = CGRectMake(nextViewPort.origin.x * scale, nextViewPort.origin.y * scale, strongScrollView.scrollView.bounds.size.width, strongScrollView.scrollView.bounds.size.height);
-      [strongScrollView optInToAllScrollEvents];
-      // then dispatch a single scroll event after the changes were applied
-      [strongScrollView scrollViewDidScroll:strongScrollView.scrollView];
+      // dispatch a scroll event after the changes were applied so the DeepZoomOverlay can update
+      [strongScrollView.scrollView.delegate scrollViewDidScroll:strongScrollView.scrollView];
 
     } completion:^(BOOL finished) {
-      __strong RCTScrollView *strongScrollView = weakScrollView;
+      __strong RCTScrollViewComponentView *strongScrollView = weakScrollView;
       if (!strongScrollView) return;
       strongScrollView.scrollView.scrollEnabled = YES;
     }];

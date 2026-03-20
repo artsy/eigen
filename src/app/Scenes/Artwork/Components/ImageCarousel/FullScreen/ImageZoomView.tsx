@@ -271,12 +271,6 @@ export const ImageZoomView =
         x: -imageFittedWithinScreen.marginHorizontal,
         y: -imageFittedWithinScreen.marginVertical,
       }
-
-      // opt out of parent scroll events to prevent double transforms while doing vertical dismiss
-      if (fullScreenState.current === "entered" && scrollViewRef.current) {
-        const tag = findNodeHandle(scrollViewRef.current)
-        ARScrollViewHelpers.optOutOfParentScrollEvents(tag)
-      }
     }, [fullScreenState.current])
 
     const viewPortChanges = useNewEventStream<Rect>()

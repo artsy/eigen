@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
-		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */; };
-		1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */; };
+		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.mm */; };
 		1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9798283CDD5900878EAE /* AREmission.m */; };
 		1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */; };
 		1A4B97C3283CDD5A00878EAE /* ARMediaPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */; };
@@ -536,9 +535,7 @@
 		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
-		1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTScrollView+Artsy.h"; sourceTree = "<group>"; };
-		1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollViewHelpers.m; sourceTree = "<group>"; };
-		1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTScrollView+Artsy.m"; sourceTree = "<group>"; };
+		1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARScrollViewHelpers.mm; sourceTree = "<group>"; };
 		1A4B9798283CDD5900878EAE /* AREmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmission.m; sourceTree = "<group>"; };
 		1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCocoaConstantsModule.h; sourceTree = "<group>"; };
 		1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollViewHelpers.h; sourceTree = "<group>"; };
@@ -1382,9 +1379,7 @@
 				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
 				1A4B9792283CDD5900878EAE /* AREmission.h */,
 				1A4B9798283CDD5900878EAE /* AREmission.m */,
-				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
-				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
-				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
+				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.mm */,
 				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
 				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
 			);
@@ -3935,7 +3930,6 @@
 				CBE3279827E275A400395A93 /* SaleStatusType.swift in Sources */,
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
 				CBE326BF27E275A300395A93 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
-				1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */,
 				CBE326A127E275A300395A93 /* ARDefaultNavigationTransition.m in Sources */,
 				CBE3279D27E275A400395A93 /* BuyersPremium.m in Sources */,
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
@@ -4026,7 +4020,7 @@
 				CBE326A827E275A300395A93 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				CBE3270A27E275A300395A93 /* ARDispatchManager.m in Sources */,
 				CBE326AA27E275A300395A93 /* LiveAuctionEventViewModel.swift in Sources */,
-				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
+				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.mm in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
