@@ -10502,6 +10502,8 @@ type CreatePartnerArtworksExportFailure {
 }
 
 input CreatePartnerArtworksExportMutationInput {
+  # Optional list of artwork IDs to export. Exports all artworks if omitted.
+  artworkIds: [String!]
   clientMutationId: String
 
   # The ID of the partner.
