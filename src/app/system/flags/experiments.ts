@@ -13,11 +13,6 @@ export const experiments = {
     description:
       "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
   },
-  "topaz_retire-inquiry-template-messages": {
-    description: "Retire the inquiry message templates in inquiry flow",
-    variantSuggestions: ["control", "experiment"],
-    payloadSuggestions: ["control", "experiment"],
-  },
   "onyx_NWFY-grid-ABC-test": {
     description: "Test new designs for the New Works For You section on the home screen",
     variantSuggestions: ["control", "grid-four-works", "grid-six-works"],

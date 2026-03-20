@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
 import { Box, Button, Flex, Input, Screen, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
@@ -7,10 +6,8 @@ import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
-import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
@@ -33,10 +30,6 @@ interface InquiryModalProps {
 }
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
-  const { variant, trackExperiment } = useExperimentVariant(
-    "topaz_retire-inquiry-template-messages"
-  )
-
   const { state, dispatch } = useArtworkInquiryContext()
   const color = useColor()
   const space = useSpace()
@@ -44,12 +37,9 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
 
-  const retireTemplatesExperimentEnabled = !!variant.enabled && variant.name === "experiment"
-
   const artwork = useFragment(artworkFragment, _artwork)
 
-  const defaultMessageState = retireTemplatesExperimentEnabled ? "" : () => randomAutomatedMessage()
-  const [message, setMessage] = useState<string>(defaultMessageState)
+  const [message, setMessage] = useState("")
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [bottomOffset, setBottomOffset] = useState(0)
@@ -77,20 +67,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       return
     }
 
-    if (!retireTemplatesExperimentEnabled) {
-      setTimeout(() => setMessage(randomAutomatedMessage()), 500)
-    }
-
     if (state.shippingLocation || state.inquiryQuestions.length) {
       dispatch({ type: "resetForm", payload: null })
     }
-  }, [
-    state.inquiryQuestions.length,
-    state.shippingLocation,
-    state.inquiryModalVisible,
-    retireTemplatesExperimentEnabled,
-    dispatch,
-  ])
+  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible, dispatch])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -149,14 +129,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         statusBarTranslucent
         navigationBarTranslucent
         animationType="slide"
-        onShow={() => {
-          trackExperiment({
-            context_owner_type: OwnerType.artwork,
-            context_owner_screen: OwnerType.artwork,
-            context_owner_id: artwork.internalID,
-            context_owner_slug: artwork.slug,
-          })
-        }}
       >
         <Screen>
           <NavigationHeader rightCloseButton onRightButtonPress={handleDismiss}>
