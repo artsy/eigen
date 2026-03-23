@@ -35,6 +35,7 @@ import { useNewEventStream } from "./useEventStream"
 const { ARScrollViewHelpers } = NativeModules
 export interface ImageZoomView {
   resetZoom(): void
+  syncResetZoom(): void
 }
 export interface ImageZoomViewProps {
   image: ImageDescriptor
@@ -202,6 +203,16 @@ export const ImageZoomView =
       }
     }, [])
 
+    const syncResetZoom = useCallback(() => {
+      if (scrollViewRef.current) {
+        ARScrollViewHelpers.syncResetZoom(
+          findNodeHandle(scrollViewRef.current),
+          -imageFittedWithinScreen.marginHorizontal,
+          -imageFittedWithinScreen.marginVertical
+        )
+      }
+    }, [])
+
     const maxZoomScale = image.deepZoom
       ? calculateMaxZoomViewScale(
           {
@@ -213,7 +224,7 @@ export const ImageZoomView =
       : 2
 
     // expose resetZoom so that when the user swipes, the off-screen zoom levels can be reset
-    useImperativeHandle(ref, () => ({ resetZoom }), [resetZoom])
+    useImperativeHandle(ref, () => ({ resetZoom, syncResetZoom }), [resetZoom, syncResetZoom])
 
     const handleDoubleTapToZoom = useDoublePressCallback(
       useCallback(
