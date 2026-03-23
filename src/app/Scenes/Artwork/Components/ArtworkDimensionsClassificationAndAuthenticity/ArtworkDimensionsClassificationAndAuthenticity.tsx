@@ -14,10 +14,21 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
 > = ({ artwork }) => {
   const { medium, dimensions, framedDimensions, framed, editionOf, editionSets, isUnlisted } =
     artwork
+  let dimensionsToUse = null
+  let framedDimensionsToUse = null
+
+  if (editionSets && editionSets.length === 1) {
+    const singleEditionSet = editionSets[0]
+    dimensionsToUse = singleEditionSet?.dimensions
+    framedDimensionsToUse = singleEditionSet?.framedDimensions
+  } else {
+    dimensionsToUse = dimensions
+    framedDimensionsToUse = framedDimensions
+  }
 
   const { dimensionText, isFramedSizeEnabled } = useArtworkDimensions({
-    dimensions,
-    framedDimensions,
+    dimensions: dimensionsToUse,
+    framedDimensions: framedDimensionsToUse,
     includeFrameText: true,
   })
 
@@ -74,6 +85,14 @@ export const ArtworkDimensionsClassificationAndAuthenticityFragmentContainer =
         isUnlisted
         editionSets {
           internalID
+          dimensions {
+            in
+            cm
+          }
+          framedDimensions {
+            in
+            cm
+          }
         }
         ...ArtworkClassification_artwork
         ...ArtworkAuthenticityCertificate_artwork

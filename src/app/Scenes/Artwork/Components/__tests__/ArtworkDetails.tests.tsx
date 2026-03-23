@@ -108,6 +108,7 @@ describe("ArtworkDetails", () => {
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
+          editionSets: null,
         }),
       })
 
@@ -122,6 +123,7 @@ describe("ArtworkDetails", () => {
         Artwork: () => ({
           dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
           framedDimensions: null,
+          editionSets: null,
         }),
       })
 
@@ -135,6 +137,7 @@ describe("ArtworkDetails", () => {
         Artwork: () => ({
           dimensions: null,
           framedDimensions: null,
+          editionSets: null,
         }),
       })
 
@@ -143,7 +146,7 @@ describe("ArtworkDetails", () => {
     })
 
     describe("with edition sets", () => {
-      it("shows artwork dimensions when there is only one edition set", () => {
+      it("shows edition set dimensions when there is only one edition set", () => {
         renderWithRelay({
           Artwork: () => ({
             dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
@@ -159,9 +162,28 @@ describe("ArtworkDetails", () => {
         })
 
         expect(screen.getByText("Size")).toBeOnTheScreen()
-        expect(screen.getByText("20 × 30 in | 50 × 76 cm")).toBeOnTheScreen()
+        expect(screen.getByText("18 × 28 in | 46 × 71 cm")).toBeOnTheScreen()
         expect(screen.getByText("Framed Size")).toBeOnTheScreen()
-        expect(screen.getByText("24 × 34 in | 61 × 86 cm")).toBeOnTheScreen()
+        expect(screen.getByText("22 × 32 in | 56 × 81 cm")).toBeOnTheScreen()
+      })
+
+      it("hides dimensions when the single edition set has no framed dimensions", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
+            framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
+            editionSets: [
+              {
+                internalID: "edition-1",
+                dimensions: { in: "18 × 28 in", cm: "46 × 71 cm" },
+                framedDimensions: null,
+              },
+            ],
+          }),
+        })
+
+        expect(screen.queryByText("Size")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Framed Size")).not.toBeOnTheScreen()
       })
 
       it("shows selected edition dimensions when there are multiple edition sets", () => {
