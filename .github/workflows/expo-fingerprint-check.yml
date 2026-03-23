@@ -141,7 +141,7 @@ jobs:
 
           PR_URL=$(gh pr create \
             --title "chore: update expo runtimeVersion to ${FINGERPRINT:0:8}" \
-            --body "Automated PR: updates \`runtimeVersion\` in \`app.json\` to match the new native fingerprint \`$FINGERPRINT\`." \
+            --body "Automated PR: updates \`runtimeVersion\` in \`app.json\` to match the new native fingerprint \`$FINGERPRINT\`. #nochangelog" \
             --base main \
             --head "$BRANCH")
 
