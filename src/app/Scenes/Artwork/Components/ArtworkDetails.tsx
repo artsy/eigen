@@ -33,13 +33,22 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       return editionSet?.internalID === selectedEditionId
     })
 
+    if (editionSets && editionSets.length === 1) {
+      const singleEditionSet = editionSets[0]
+
+      return {
+        dimensions: singleEditionSet?.dimensions,
+        framedDimensions: singleEditionSet?.framedDimensions,
+      }
+    }
+
     return {
       dimensions: selectedEdition?.dimensions,
       framedDimensions: selectedEdition?.framedDimensions,
     }
   }
 
-  if (editionSets.length > 1) {
+  if (editionSets.length) {
     const { dimensions, framedDimensions } = getEditionSetDimensions()
     dimensionsToUse = dimensions
     framedDimensionsToUse = framedDimensions
