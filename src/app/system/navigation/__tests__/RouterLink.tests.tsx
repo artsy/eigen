@@ -159,9 +159,7 @@ describe("RouterLink", () => {
 
 const mockPrefetch = jest.fn()
 const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => {
-    onChange(true)
-  }, [])
+  useEffect(() => onChange(true), [])
 
   return <View>{children}</View>
 }

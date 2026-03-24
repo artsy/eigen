@@ -114,9 +114,7 @@ const mockProps = {
 }
 
 const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => {
-    onChange(true)
-  }, [onChange])
+  useEffect(() => onChange(true), [onChange])
 
   return <View>{children}</View>
 }

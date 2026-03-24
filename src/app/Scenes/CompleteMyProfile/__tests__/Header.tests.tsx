@@ -5,7 +5,6 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
-  useIsFocused: () => true,
   useNavigation: jest.fn(),
   useRoute: () => ({ name: "LocationStep" }),
 }))
