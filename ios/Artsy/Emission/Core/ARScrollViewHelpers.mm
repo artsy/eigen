@@ -139,4 +139,20 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
   }
 }
 
+/**
+ * syncResetZoom immediately resets the scroll view to zoomScale=1 with the given contentOffset,
+ * without animation. This ensures the native view is in a clean state before being returned
+ * to Fabric's view pool, preventing stale zoom state from leaking into the next fullscreen session.
+ */
+RCT_EXPORT_METHOD(syncResetZoom:(nonnull NSNumber *)tag contentOffsetX:(nonnull NSNumber *)x contentOffsetY:(nonnull NSNumber *)y)
+{
+  RCTScrollViewComponentView *view = (id)[self.bridge.uiManager viewForReactTag:tag];
+
+  if ([view isKindOfClass:RCTScrollViewComponentView.class]) {
+    view.scrollView.zoomScale = 1.0;
+    view.scrollView.contentOffset = CGPointMake([x floatValue], [y floatValue]);
+    [view.scrollView.delegate scrollViewDidScroll:view.scrollView];
+  }
+}
+
 @end
