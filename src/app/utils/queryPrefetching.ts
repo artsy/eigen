@@ -67,7 +67,7 @@ const prefetchRoute = async <TQuery extends OperationType>(
   })
 }
 
-export const prefetchQuery = <T extends Variables>({
+export const prefetchQuery = async <T extends Variables>({
   query,
   variables,
   route,

@@ -122,9 +122,7 @@ const MockedPopover: React.FC<any> = ({ children, onDismiss }) => {
 }
 
 const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => {
-    onChange(true)
-  }, [])
+  useEffect(() => onChange(true), [])
 
   return <View>{children}</View>
 }
