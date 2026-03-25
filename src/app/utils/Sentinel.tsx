@@ -9,7 +9,6 @@
  */
 
 import { Flex } from "@artsy/palette-mobile"
-import { useIsFocused } from "@react-navigation/native"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
@@ -39,31 +38,20 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
   const myView: any = useRef(null)
 
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const isFocused = useIsFocused()
 
-  const interval = useRef<ReturnType<typeof setInterval> | null>(null)
+  let interval: any = null
 
-  const isInViewPort = (dimensions: IDimensionData) => {
-    const window = Dimensions.get("window")
-
-    const newIsVisible =
-      dimensions.rectBottom != 0 &&
-      dimensions.rectTop >= 0 &&
-      dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
-      dimensions.rectWidth > 0 &&
-      dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
-
-    if (newIsVisible !== isVisible) {
-      setIsVisible(newIsVisible)
-    }
-  }
+  useEffect(() => {
+    startWatching()
+    return stopWatching
+  }, [])
 
   const startWatching = () => {
-    if (interval.current) {
+    if (interval) {
       return
     }
 
-    interval.current = setInterval(() => {
+    interval = setInterval(() => {
       if (!myView || !myView.current) {
         return
       }
@@ -91,22 +79,23 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
   }
 
   const stopWatching = () => {
-    if (interval.current) {
-      clearInterval(interval.current)
-      interval.current = null
-    }
+    interval = clearInterval(interval)
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (isFocused) {
-      startWatching()
-    } else {
-      stopWatching()
-    }
+  const isInViewPort = (dimensions: IDimensionData) => {
+    const window = Dimensions.get("window")
 
-    return stopWatching
-  }, [isFocused])
+    const newIsVisible =
+      dimensions.rectBottom != 0 &&
+      dimensions.rectTop >= 0 &&
+      dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
+      dimensions.rectWidth > 0 &&
+      dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
+
+    if (newIsVisible !== isVisible) {
+      setIsVisible(newIsVisible)
+    }
+  }
 
   useEffect(() => {
     onChange(isVisible)

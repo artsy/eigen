@@ -6,7 +6,6 @@ jest.mock("react-tracking")
 
 jest.mock("@react-navigation/native", () => {
   return {
-    useIsFocused: () => true,
     useNavigation: () => {
       return {
         getId: jest.fn(),
