@@ -3743,7 +3743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/package-manager@npm:^1.9.8":
+"@expo/package-manager@npm:1.10.3":
   version: 1.10.3
   resolution: "@expo/package-manager@npm:1.10.3"
   dependencies:
@@ -3754,6 +3754,20 @@ __metadata:
     ora: "npm:^3.4.0"
     resolve-workspace-root: "npm:^2.0.0"
   checksum: 10c0/b9e6071b9f29f20ef4aae06390c207f22b17eced1fa2d77903100ab7efefe0951a8735dee997ac434550938d939d132a5b1f3f35344bfe9e40344c090d0ebedc
+  languageName: node
+  linkType: hard
+
+"@expo/package-manager@patch:@expo/package-manager@npm%3A1.10.3#~/.yarn/patches/@expo-package-manager-npm-1.10.3-1b5a5a15b2.patch":
+  version: 1.10.3
+  resolution: "@expo/package-manager@patch:@expo/package-manager@npm%3A1.10.3#~/.yarn/patches/@expo-package-manager-npm-1.10.3-1b5a5a15b2.patch::version=1.10.3&hash=453d81"
+  dependencies:
+    "@expo/json-file": "npm:^10.0.12"
+    "@expo/spawn-async": "npm:^1.7.2"
+    chalk: "npm:^4.0.0"
+    npm-package-arg: "npm:^11.0.0"
+    ora: "npm:^3.4.0"
+    resolve-workspace-root: "npm:^2.0.0"
+  checksum: 10c0/488540b6b3e7d5f1d1fdaa4ee632525d34356259744494ab57e847b1eb8601a0a8181ea4b7fc99a9fdac0b9a77532a0f7b2085ab7a8b6ebb2c1a6aeba987d512
   languageName: node
   linkType: hard
 

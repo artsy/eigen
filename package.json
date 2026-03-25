@@ -351,7 +351,8 @@
     "metro-config": "0.81.5",
     "babel-preset-expo": "14.0.0",
     "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
-    "fast-xml-parser": "5.3.7"
+    "fast-xml-parser": "5.3.7",
+    "@expo/package-manager@npm:^1.9.8": "patch:@expo/package-manager@npm%3A1.10.3#~/.yarn/patches/@expo-package-manager-npm-1.10.3-1b5a5a15b2.patch"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
