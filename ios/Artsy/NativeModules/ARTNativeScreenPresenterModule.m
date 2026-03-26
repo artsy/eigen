@@ -2,9 +2,7 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
-#import "ArtsyEcho.h"
 #import "AROptions.h"
-#import "AppDelegate+Echo.h"
 #import "ARAuctionWebViewController.h"
 #import "ARRouter.h"
 #import <SDWebImage/SDWebImageManager.h>
@@ -64,9 +62,6 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                     [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
                 }
             } else {
-                ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-                [echo setup];
-
                 NSURL *movieURL = videoURL.length ? [NSURL URLWithString:videoURL] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
