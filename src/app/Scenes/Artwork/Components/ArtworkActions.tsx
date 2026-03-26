@@ -44,7 +44,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const { image, id, slug, heightCm, widthCm, diameterCm, isHangable, sale } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
-  const virVideoURL = useEchoMessage("ARVIRVideoURL") ?? ""
+  const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
 
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
@@ -68,9 +68,9 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
       image?.url,
       widthIn,
       heightIn,
-      virVideoURL,
       slug,
-      id
+      id,
+      virVideoURL
     )
   }
 

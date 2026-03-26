@@ -84,7 +84,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
   const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
 
-  const virVideoURL = useEchoMessage("ARVIRVideoURL") ?? ""
+  const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
 
   const { trackCreateAlertTap } = useCreateAlertTracking({
     contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),

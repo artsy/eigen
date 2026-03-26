@@ -40,7 +40,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const { height: screenHeight } = useScreenDimensions()
-  const virVideoURL = useEchoMessage("ARVIRVideoURL") ?? ""
+  const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
 
   const { trackEvent } = useTracking()
 
@@ -59,9 +59,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         selectedArtwork.image.url,
         widthIn,
         heightIn,
-        virVideoURL,
         selectedArtwork.slug,
-        selectedArtwork.id
+        selectedArtwork.id,
+        virVideoURL
       )
     }
   }

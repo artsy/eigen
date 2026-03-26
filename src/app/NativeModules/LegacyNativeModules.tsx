@@ -67,9 +67,9 @@ interface LegacyNativeModules {
       imgUrl: string,
       widthInches: number,
       heightInches: number,
-      videoURL: string,
       artworkSlug: string,
-      artworkId: string
+      artworkId: string,
+      videoURL: string
     ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void
