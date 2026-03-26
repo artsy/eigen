@@ -263,16 +263,6 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
 
-## patch for react-native-blurhash
-
-#### Explanation/Context:
-
-This patch was added to fix the build on RN81.
-
-#### When can we remove this:
-
-It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
-
 ## patch for react-native RCTEventEmitter
 
 #### Explanation/Context:
