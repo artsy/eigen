@@ -113,8 +113,6 @@ target 'Artsy' do
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
   pod 'SDWebImage', '5.19.1'
-  pod 'INTUAnimationEngine'
-
   # Core
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'Mantle', '1.5.6'

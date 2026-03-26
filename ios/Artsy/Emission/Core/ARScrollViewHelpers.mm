@@ -2,15 +2,115 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTScrollViewComponentView.h>
+#import <QuartzCore/QuartzCore.h>
+#import <math.h>
 
-// This is a workaround to make plain C functions not get mangled by C++ compiler, and fix compilation
-#ifdef __cplusplus
-extern "C" {
-#endif
-#import "INTUAnimationEngine.h"
-#ifdef __cplusplus
+// Ease-in-out sine: equivalent to INTUEaseInOutSine
+static CGFloat ARSmoothZoomEaseInOutSine(CGFloat t) {
+  return -(cos(M_PI * t) - 1.0) / 2.0;
 }
-#endif
+
+// Linear interpolation of CGRect components: equivalent to INTUInterpolateCGRect
+static CGRect ARSmoothZoomInterpolateCGRect(CGRect a, CGRect b, CGFloat t) {
+  return CGRectMake(
+    a.origin.x + (b.origin.x - a.origin.x) * t,
+    a.origin.y + (b.origin.y - a.origin.y) * t,
+    a.size.width  + (b.size.width  - a.size.width)  * t,
+    a.size.height + (b.size.height - a.size.height) * t
+  );
+}
+
+// Private helper class that drives the smooth-zoom animation via CADisplayLink.
+// Holds its own strong reference so it stays alive for the duration of the animation.
+@interface ARSmoothZoomAnimator : NSObject
+- (instancetype)initWithScrollView:(RCTScrollViewComponentView *)view
+                     startViewPort:(CGRect)start
+                    targetViewPort:(CGRect)target
+                          duration:(CFTimeInterval)duration
+                         frameSize:(CGSize)frameSize;
+- (void)start;
+@end
+
+@implementation ARSmoothZoomAnimator {
+  CADisplayLink *_displayLink;
+  __weak RCTScrollViewComponentView *_scrollView;
+  CGRect _startViewPort;
+  CGRect _targetViewPort;
+  CFTimeInterval _duration;
+  CFTimeInterval _startTime;
+  CGSize _frameSize;
+  // Keep a strong self-reference so the animator isn't deallocated mid-animation.
+  ARSmoothZoomAnimator *_selfRetain;
+}
+
+- (instancetype)initWithScrollView:(RCTScrollViewComponentView *)view
+                     startViewPort:(CGRect)start
+                    targetViewPort:(CGRect)target
+                          duration:(CFTimeInterval)duration
+                         frameSize:(CGSize)frameSize
+{
+  if (!(self = [super init])) return nil;
+  _scrollView    = view;
+  _startViewPort = start;
+  _targetViewPort = target;
+  _duration      = duration;
+  _frameSize     = frameSize;
+  return self;
+}
+
+- (void)start
+{
+  _selfRetain  = self; // prevent deallocation until done
+  _startTime   = CACurrentMediaTime();
+  _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tick:)];
+  [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+- (void)tick:(CADisplayLink *)link
+{
+  __strong RCTScrollViewComponentView *scrollView = _scrollView;
+  if (!scrollView) {
+    [self finish];
+    return;
+  }
+
+  CFTimeInterval elapsed     = CACurrentMediaTime() - _startTime;
+  CGFloat        rawProgress = (CGFloat)MIN(elapsed / _duration, 1.0);
+  CGFloat        progress    = ARSmoothZoomEaseInOutSine(rawProgress);
+
+  CGRect  nextViewPort = ARSmoothZoomInterpolateCGRect(_startViewPort, _targetViewPort, progress);
+  CGFloat scale        = _frameSize.width / nextViewPort.size.width;
+
+  scrollView.scrollView.zoomScale      = scale;
+  scrollView.scrollView.contentOffset  = CGPointMake(nextViewPort.origin.x * scale, nextViewPort.origin.y * scale);
+  scrollView.scrollView.bounds         = CGRectMake(
+    nextViewPort.origin.x * scale,
+    nextViewPort.origin.y * scale,
+    scrollView.scrollView.bounds.size.width,
+    scrollView.scrollView.bounds.size.height
+  );
+  [scrollView.scrollView.delegate scrollViewDidScroll:scrollView.scrollView];
+
+  if (rawProgress >= 1.0) {
+    [self finish];
+  }
+}
+
+- (void)finish
+{
+  [_displayLink invalidate];
+  _displayLink = nil;
+
+  __strong RCTScrollViewComponentView *scrollView = _scrollView;
+  if (scrollView) {
+    scrollView.scrollView.scrollEnabled = YES;
+  }
+
+  _selfRetain = nil; // allow deallocation
+}
+
+@end
+
 
 @implementation ARScrollViewHelpers
 
@@ -36,7 +136,7 @@ RCT_EXPORT_METHOD(triggerScrollEvent:(nonnull NSNumber *)tag)
  * smoothZoom is needed because the native zoomToRect method on UIScrollView does not trigger scroll events
  * Meanwhile, we use scroll events to update the position of elements in the DeepZoomOverlay. So if we
  * use zoomToRect only one scroll event is dispatched for the end state and the components jump suddenly.
- * hence smoothZoom which uses a 3rd-party animation engine to update the scroll view's properties manually
+ * hence smoothZoom which uses CADisplayLink to update the scroll view's properties manually
  * triggering a single scroll event for each step in the animation.
  */
 // x, y, w, and h, are relative to the un-zoomed content
@@ -49,93 +149,25 @@ RCT_EXPORT_METHOD(smoothZoom:(nonnull NSNumber *)tag x:(nonnull NSNumber *)x y:(
     // TODO: (this doesn't seem to actually work, needs more investigation)
     view.scrollView.scrollEnabled = NO;
 
-    // then figure out start and end view ports.
+    CGFloat  currentZoomScale   = view.scrollView.zoomScale;
+    CGSize   frameSize          = view.scrollView.frame.size;
+    CGPoint  startContentOffset = view.scrollView.contentOffset;
 
-    // So the x, y, w, and h variables that are passed in to this method represent the target viewport relative to the
-    // un-zoomed base image.
-    // e.g.
-
-    // +-------------------------------------------------------+
-    // |                                                       |
-    // |                                                       |
-    // |                                                       |
-    // |                                                       |
-    // |      +---------------------------+                    |
-    // |      |                           |                    |
-    // |      |   current viewport        |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // +-------------------------------------------------------+
-    // |      |                           |                    |
-    // |      |          target viewport  |                    |
-    // |      |                           |                    |
-    // |      |                 +-----+   |                    |
-    // |      |                 |     |   |                    |
-    // |      |                 |     |   |                    |
-    // |      |                 |     |   |                    |
-    // |      |                 |     |   |                    |
-    // |      |                 |     |   |                    |
-    // |      |                 +-----+   |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |   base image       |
-    // +-------------------------------------------------------+
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      |                           |                    |
-    // |      +---------------------------+                    |
-    // |                                                       |
-    // |                                                       |
-    // |                               zoomable scroll view    |
-    // |                                                       |
-    // +-------------------------------------------------------+
-
-    // in this situation the current viewport would have a y value of something like -30 while the target view
-    // port would have a y value of about +25 because they are relative to the base image and it's original dimensions
-    // even if the scroll view if zoomed in or panned around.
-
-    // so to do this zoom we'll calculate the current view port in these terms and then animate it towards the target
-    // view port passed in to this method.
-
-    CGFloat currentZoomScale = view.scrollView.zoomScale;
-
-    // frame size is the un-zoomed size of the scroll view
-    CGSize frameSize = view.scrollView.frame.size;
-
-    CGPoint startContentOffset = view.scrollView.contentOffset;
-
-    CGRect startViewPort = CGRectMake(startContentOffset.x / currentZoomScale, startContentOffset.y /currentZoomScale, frameSize.width / currentZoomScale, frameSize.height / currentZoomScale);
-
+    CGRect startViewPort = CGRectMake(
+      startContentOffset.x / currentZoomScale,
+      startContentOffset.y / currentZoomScale,
+      frameSize.width  / currentZoomScale,
+      frameSize.height / currentZoomScale
+    );
     CGRect targetViewPort = CGRectMake([x floatValue], [y floatValue], [w floatValue], [h floatValue]);
 
-    __weak RCTScrollViewComponentView *weakScrollView = view;
-
-    [INTUAnimationEngine animateWithDuration:0.34 delay:0 animations:^(CGFloat progress) {
-      progress = INTUEaseInOutSine(progress);
-      __strong RCTScrollViewComponentView *strongScrollView = weakScrollView;
-      if (!strongScrollView) return;
-
-      CGRect nextViewPort = INTUInterpolateCGRect(startViewPort, targetViewPort, progress);
-
-      // now that we have our interpolated view port we need to scale it up
-
-      CGFloat scale = frameSize.width / nextViewPort.size.width;
-
-      strongScrollView.scrollView.zoomScale = scale;
-      strongScrollView.scrollView.contentOffset = CGPointMake(nextViewPort.origin.x * scale, nextViewPort.origin.y * scale);
-      strongScrollView.scrollView.bounds = CGRectMake(nextViewPort.origin.x * scale, nextViewPort.origin.y * scale, strongScrollView.scrollView.bounds.size.width, strongScrollView.scrollView.bounds.size.height);
-      // dispatch a scroll event after the changes were applied so the DeepZoomOverlay can update
-      [strongScrollView.scrollView.delegate scrollViewDidScroll:strongScrollView.scrollView];
-
-    } completion:^(BOOL finished) {
-      __strong RCTScrollViewComponentView *strongScrollView = weakScrollView;
-      if (!strongScrollView) return;
-      strongScrollView.scrollView.scrollEnabled = YES;
-    }];
+    ARSmoothZoomAnimator *animator = [[ARSmoothZoomAnimator alloc]
+      initWithScrollView:view
+           startViewPort:startViewPort
+          targetViewPort:targetViewPort
+                duration:0.34
+               frameSize:frameSize];
+    [animator start];
   }
 }
 
