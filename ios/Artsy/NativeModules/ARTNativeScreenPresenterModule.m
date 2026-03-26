@@ -28,7 +28,7 @@ RCT_EXPORT_MODULE()
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
+RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn videoURLString:(NSString *)videoURLString artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
     BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
@@ -67,9 +67,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                 [echo setup];
 
-                Message *setupURL = echo.messages[@"ARVIRVideo"];
-
-                NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
+                NSURL *movieURL = videoURLString.length ? [NSURL URLWithString:videoURLString] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 setupVC.modalPresentationStyle = UIModalPresentationFullScreen;

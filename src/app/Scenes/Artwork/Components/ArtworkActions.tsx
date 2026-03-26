@@ -7,6 +7,7 @@ import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButt
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
+import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -43,6 +44,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const { image, id, slug, heightCm, widthCm, diameterCm, isHangable, sale } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
+  const virVideoURL = useEchoMessage("ARVIRVideoURL") ?? ""
 
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
@@ -66,6 +68,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
       image?.url,
       widthIn,
       heightIn,
+      virVideoURL,
       slug,
       id
     )

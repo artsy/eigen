@@ -67,6 +67,7 @@ interface LegacyNativeModules {
       imgUrl: string,
       widthInches: number,
       heightInches: number,
+      videoURL: string,
       artworkSlug: string,
       artworkId: string
     ): void
