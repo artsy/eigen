@@ -13458,7 +13458,7 @@ __metadata:
     moti: "npm:0.30.0"
     ora: "npm:5.4.0"
     ordinal: "npm:1.0.3"
-    pod-install: "npm:0.3.10"
+    pod-install: "npm:1.0.14"
     postinstall-prepare: "npm:1.0.1"
     prettier: "npm:3.1.1"
     prompt-sync: "npm:4.2.0"
@@ -21546,12 +21546,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pod-install@npm:0.3.10":
-  version: 0.3.10
-  resolution: "pod-install@npm:0.3.10"
+"pod-install@npm:1.0.14":
+  version: 1.0.14
+  resolution: "pod-install@npm:1.0.14"
   bin:
     pod-install: build/index.js
-  checksum: 10c0/0af16ec98658c0132dbc2cd62aee7cba9f77b7653e71d0dc47f740cb0796635ad82ff5ca4bb32ab58c4f633f3fd6e2c9cd84e25735292b79d3e3b1eef5af1294
+  checksum: 10c0/44d1b4619d2072832887776a71d0202b854324bf3d4bc6eb343e63fc977b2930343316258b36e9bac1b9d869f5344584a8d4656b470f634a6abed18379aa3fe3
   languageName: node
   linkType: hard
 

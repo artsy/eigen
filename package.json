@@ -318,7 +318,7 @@
     "json5": "2.2.3",
     "lint-staged": "13.2.3",
     "ora": "5.4.0",
-    "pod-install": "0.3.10",
+    "pod-install": "1.0.14",
     "postinstall-prepare": "1.0.1",
     "prettier": "3.1.1",
     "prompt-sync": "4.2.0",
