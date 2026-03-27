@@ -18,6 +18,7 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
+import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
@@ -83,6 +84,8 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
   const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
 
+  const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
+
   const { trackCreateAlertTap } = useCreateAlertTracking({
     contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
     contextScreenOwnerId: artwork.internalID,
@@ -110,6 +113,7 @@ export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArt
       image.url,
       widthIn,
       heightIn,
+      virVideoURL,
       slug,
       id
     )

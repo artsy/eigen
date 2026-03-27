@@ -248,10 +248,8 @@
 		CBE3269227E275A300395A93 /* AppDelegate+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
-		CBE3269627E275A300395A93 /* ArtsyEcho.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.mm */; };
 		CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */; };
 		CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A327E275A100395A93 /* SwiftExtensions.swift */; };
-		CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */; };
 		CBE3269C27E275A300395A93 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */; };
 		CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* AppDelegate+Emission.m */; };
 		CBE3269E27E275A300395A93 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B227E275A100395A93 /* AROptions.m */; };
@@ -963,9 +961,7 @@
 		CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
-		CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
-		CBE3249F27E275A100395A93 /* ArtsyEcho.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ArtsyEcho.mm; sourceTree = "<group>"; };
 		CBE324A027E275A100395A93 /* AppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Emission.h"; sourceTree = "<group>"; };
 		CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ShortcutItems.m"; sourceTree = "<group>"; };
 		CBE324A327E275A100395A93 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
@@ -974,12 +970,10 @@
 		CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Notifications.h"; sourceTree = "<group>"; };
 		CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ActivityContinuation.h"; sourceTree = "<group>"; };
 		CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
-		CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBE324AD27E275A100395A93 /* ARAppStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppStatus.h; sourceTree = "<group>"; };
 		CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
 		CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ShortcutItems.h"; sourceTree = "<group>"; };
 		CBE324B027E275A100395A93 /* AppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Emission.m"; sourceTree = "<group>"; };
-		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
@@ -2354,8 +2348,6 @@
 				CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */,
 				CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */,
 				CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */,
-				CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */,
-				CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */,
 				CBE324A027E275A100395A93 /* AppDelegate+Emission.h */,
 				CBE324B027E275A100395A93 /* AppDelegate+Emission.m */,
 			);
@@ -2541,8 +2533,6 @@
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324A427E275A100395A93 /* ARMacros.h */,
-				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
-				CBE3249F27E275A100395A93 /* ArtsyEcho.mm */,
 				CBE324B527E275A100395A93 /* EchoNew.json */,
 				CBE324A327E275A100395A93 /* SwiftExtensions.swift */,
 			);
@@ -3934,7 +3924,6 @@
 				CBE3279D27E275A400395A93 /* BuyersPremium.m in Sources */,
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
 				CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */,
-				CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */,
 				CB18284629DF3DED006A0805 /* FocusSquareSegment.swift in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
 				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
@@ -4034,7 +4023,6 @@
 				CBE3277A27E275A400395A93 /* ArtsyAPI+Sales.m in Sources */,
 				CBE3267A27E275A300395A93 /* UILabel+Styling.swift in Sources */,
 				CBE3271127E275A300395A93 /* TextStack.swift in Sources */,
-				CBE3269627E275A300395A93 /* ArtsyEcho.mm in Sources */,
 				CBE326BB27E275A300395A93 /* LiveActionStateReconciler.swift in Sources */,
 				23C39D44BA79846C3803A74E /* ExpoModulesProvider.swift in Sources */,
 			);
