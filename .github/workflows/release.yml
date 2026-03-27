@@ -8,9 +8,19 @@ on:
 permissions:
   contents: write
 
+env:
+  SENTRY_ALERT_CRITICAL_THRESHOLD: 99.2
+  SENTRY_ALERT_WARNING_THRESHOLD: 99.5
+  SENTRY_ALERT_RESOLVE_THRESHOLD: 99.7
+  SENTRY_SLACK_CHANNEL_ID: ${{ secrets.SENTRY_SLACK_CHANNEL_ID }}
+  SENTRY_SLACK_INTEGRATION_ID: ${{ secrets.SENTRY_SLACK_INTEGRATION_ID }}
+  SENTRY_OWNER_TEAM: ${{ secrets.SENTRY_OWNER_TEAM }}
+
 jobs:
   generate-release:
     runs-on: ubuntu-latest
+    outputs:
+      sentry_release_versions: ${{ steps.determine_tags.outputs.sentry_release_versions }}
 
     steps:
       - name: Check out repository
@@ -59,6 +69,11 @@ jobs:
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
           echo "last_android_tag=$last_android_tag" >> $GITHUB_ENV
 
+          # Build JSON array of release versions for Sentry alert matrix job
+          ios_version=$(echo "$last_ios_tag" | sed -E 's/-submission$//')
+          android_version=$(echo "$last_android_tag" | sed -E 's/-submission$//')
+          echo "sentry_release_versions=[\"${ios_version}\", \"${android_version}\"]" >> $GITHUB_OUTPUT
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,3 +109,60 @@ jobs:
               --title "$version" \
               --generate-notes \
               --notes "$(printf "%s\n\n%s\n\n%s" "$sentry_header" "$sentry_footer" "$sentry_mobile_vitals_details")"
+
+  create-sentry-alerts:
+    needs: generate-release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release_version: ${{ fromJson(needs.generate-release.outputs.sentry_release_versions) }}
+
+    steps:
+      - name: Create Sentry crash rate alert
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
+        run: |
+          curl --fail-with-body -X POST https://sentry.io/api/0/organizations/artsynet/alert-rules/ \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"name\": \"Release Crashes Threshold - ${{ matrix.release_version }}\",
+              \"queryType\": 2,
+              \"dataset\": \"metrics\",
+              \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
+              \"query\": \"release:${{ matrix.release_version }}\",
+              \"timeWindow\": 120,
+              \"thresholdType\": 1,
+              \"resolveThreshold\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }},
+              \"environment\": \"production\",
+              \"projects\": [\"eigen\"],
+              \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
+              \"triggers\": [
+                {
+                  \"label\": \"critical\",
+                  \"alertThreshold\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }},
+                  \"actions\": [
+                    {
+                      \"type\": \"slack\",
+                      \"targetType\": \"specific\",
+                      \"targetIdentifier\": \"#mobile-alerts\",
+                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
+                    }
+                  ]
+                },
+                {
+                  \"label\": \"warning\",
+                  \"alertThreshold\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }},
+                  \"actions\": [
+                    {
+                      \"type\": \"slack\",
+                      \"targetType\": \"specific\",
+                      \"targetIdentifier\": \"#mobile-alerts\",
+                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
+                    }
+                  ]
+                }
+              ]
+            }"
