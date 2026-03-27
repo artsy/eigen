@@ -44,7 +44,7 @@ export function useDeepLinks() {
 
   const handleDeepLink = async (url: string) => {
     // In the New Architecture, Linking.getInitialURL() can return the Metro bundler URL during development
-    if (url.startsWith("http://localhost")) {
+    if (url.startsWith("http://localhost") || url.includes("://expo-development-client")) {
       return
     }
 
