@@ -92,6 +92,9 @@ export const DevMenu: React.FC<{}> = () => {
       <Text variant="xs" color="grey" mx={2}>
         Font scale: <Text variant="xs">{fontScale}</Text>
       </Text>
+      <Text variant="xs" color="grey" mx={2}>
+        Disable Scroll
+      </Text>
       <DevMenuButtonItem title="Open RN Dev Menu" onPress={() => NativeModules?.DevMenu?.show()} />
       <DevMenuButtonItem title="Dark Mode 🌙" onPress={handleDarkModePress} />
       <Join separator={<Spacer y={1} />}>
