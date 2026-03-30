@@ -1,6 +1,4 @@
 PODS:
-  - Aerodramus (2.0.0):
-    - ISO8601DateFormatter
   - AFNetworking/NSURLConnection (2.7.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -312,7 +310,6 @@ PODS:
   - iOSSnapshotTestCase/Core (8.0.0)
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
-  - ISO8601DateFormatter (0.8)
   - JWTDecode (2.0.0)
   - libavif/core (0.11.1)
   - libavif/libdav1d (0.11.1):
@@ -4040,7 +4037,6 @@ PODS:
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - Aerodramus (= 2.0.0)
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -4217,8 +4213,6 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
   trunk:
     - AFNetworking
     - AppAuth
@@ -4252,7 +4246,6 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - iOSSnapshotTestCase
-    - ISO8601DateFormatter
     - JWTDecode
     - libavif
     - libdav1d
@@ -4602,7 +4595,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
 
 SPEC CHECKSUMS:
-  Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
@@ -4664,7 +4656,6 @@ SPEC CHECKSUMS:
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
   Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
-  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
@@ -4824,6 +4815,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: a731e119d2db33f7032724863d6029651f368b3d
+PODFILE CHECKSUM: 0fe2facf094f438d19f2bac203d166cb5b7c3a5d
 
 COCOAPODS: 1.16.2

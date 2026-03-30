@@ -1,5 +1,4 @@
 #import "ARAppDelegateHelper.h"
-#import "AppDelegate+Echo.h"
 #import "AppDelegate+Emission.h"
 #import "AppDelegate+Notifications.h"
 #import "ARFonts.h"
@@ -52,9 +51,6 @@ static Braze *_braze = nil;
 - (void)setupWithLaunchOptions:(NSDictionary *)launchOptions {
     self.initialLaunchOptions = launchOptions;
     _landingURLRepresentation = _landingURLRepresentation ?: @"https://artsy.net";
-    
-    // Setup Echo - will be initialized via categories later
-    self.echo = [[ArtsyEcho alloc] init];
 
     [self forceCacheCustomFonts];
 
