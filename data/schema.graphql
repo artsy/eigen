@@ -9886,6 +9886,9 @@ type CreateArtworkImportSuccess {
 input CreateArtworkMutationInput {
   # The IDs of the artists associated with the artwork.
   artistIds: [String!]!
+
+  # Whether the artwork is listed on Artsy. If absent, it defaults to true
+  artsyListing: Boolean
   clientMutationId: String
 
   # The S3 bucket where the artwork image is stored.
