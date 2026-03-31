@@ -29,13 +29,14 @@ export const useInputAutofocus = ({
 
     let timeout: ReturnType<typeof setTimeout>
 
-    requestAnimationFrame(() => {
+    const rafId = requestAnimationFrame(() => {
       timeout = setTimeout(() => {
         inputRef.current?.focus()
       }, delay)
     })
 
     return () => {
+      cancelAnimationFrame(rafId)
       clearTimeout(timeout)
     }
   }, [currentScreen])
