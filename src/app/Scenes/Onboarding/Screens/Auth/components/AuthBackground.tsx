@@ -1,7 +1,6 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
-import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { MotiView } from "moti"
 import React from "react"
 import { Image } from "react-native"
@@ -13,7 +12,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 export const AuthBackground: React.FC = () => {
   const { isMounted, isModalExpanded } = AuthContext.useStoreState((state) => state)
   const safeArea = useSafeAreaInsets()
-  const isStaging = useIsStaging()
 
   return (
     // Setting the background to black in dark and light mode.
@@ -21,12 +19,7 @@ export const AuthBackground: React.FC = () => {
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
-        <ArtsyLogoIcon
-          height={25}
-          width={75}
-          mt={safeArea.top}
-          fill={isStaging ? "devpurple" : "white"}
-        />
+        <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill="white" />
       </Flex>
 
       <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
