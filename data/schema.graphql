@@ -3561,6 +3561,7 @@ type ArtworkImportRow {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   internationalShipping: Money
+  location: Location
   lowEstimate: Money
   openingBid: Money
   priceListed: Money
