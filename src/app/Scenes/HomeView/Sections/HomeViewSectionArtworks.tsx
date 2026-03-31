@@ -44,7 +44,6 @@ interface HomeViewSectionArtworksProps extends FlexProps {
 }
 
 const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
-const NUMBER_OF_ARTWORKS_FOR_ARTWORKS_CARD = 3
 const DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD = 10
 const SIX_ARTWORKS_TO_LOAD = 6
 const FOUR_ARTWORKS_TO_LOAD = 4
