@@ -1,5 +1,5 @@
-import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigateToDevMenu } from "app/system/devTools/DevMenu/utils/navigateToDevMenu"
 import { useRef } from "react"
 
 const MAX_DURATION_BETWEEN_TAPS = 300
@@ -33,7 +33,7 @@ export const useCaptureTaps = () => {
     if (state.numTaps >= 5 && !isDeepZoomModalVisible) {
       state.numTaps = 0
 
-      internal_navigationRef.current?.navigate("DevMenu")
+      navigateToDevMenu()
     }
     return false
   }
