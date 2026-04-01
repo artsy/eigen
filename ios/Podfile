@@ -1,3 +1,9 @@
+require Pod::Executable.execute_command('node', ['-p',
+ 'require.resolve(
+ "@rnrepo/build-tools/cocoapods-plugin/lib/plugin.rb",
+ {paths: [process.argv[1]]},
+)', __dir__]).strip
+
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 # frozen_string_literal: true
 
@@ -8,12 +14,6 @@ source 'https://cdn.cocoapods.org/'
 
 require 'dotenv'
 Dotenv.load('../.env.shared')
-
-require Pod::Executable.execute_command('node', ['-p',
- 'require.resolve(
- "@rnrepo/build-tools/cocoapods-plugin/lib/plugin.rb",
- {paths: [process.argv[1]]},
-)', __dir__]).strip
 
 # for react-native-permissions
 def node_require(script)
@@ -177,8 +177,6 @@ target 'Artsy' do
   end
 
   post_install do |installer|
-    rnrepo_post_install(installer)
-
     react_native_post_install(
       installer,
       config[:reactNativePath],
@@ -196,5 +194,6 @@ target 'Artsy' do
             config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "16.6"
         end
     end
+    rnrepo_post_install(installer)
   end
 end
