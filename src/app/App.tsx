@@ -22,7 +22,6 @@ import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
-import { useTrackAppState } from "app/utils/useTrackAppState"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
@@ -114,7 +113,6 @@ const Main = () => {
   useHideSplashScreen()
   useAndroidAppStyling()
   useListenToThemeChange()
-  useTrackAppState()
 
   if (!isHydrated || !isUserIdentified) {
     return <View />
