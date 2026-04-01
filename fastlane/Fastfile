@@ -346,7 +346,13 @@ lane :ship_beta_android do |options|
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+  if deployment_target == 'firebase'
+    # Firebase is internal QA on real devices — all modern Android phones are arm64-v8a.
+    # Building only arm64-v8a instead of all 4 ABIs significantly reduces native compilation time.
+    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=arm64-v8a'")
+  else
+    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+  end
 
   if (deployment_target == 'play_store')
     # important! this must match the release version specified
