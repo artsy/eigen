@@ -12435,6 +12435,7 @@ enum DisplayTextsMessageTypeEnum {
   CANCELED
   COMPLETED_PICKUP
   COMPLETED_SHIP
+  COUNTEROFFER_SENT
   DECLINED_BY_BUYER
   DECLINED_BY_SELLER
   OFFER_RECEIVED
@@ -18997,6 +18998,9 @@ enum OrderBuyerStateEnum {
 
   # Order is completed
   COMPLETED
+
+  # Order is an offer in negotiation awaiting response from the seller
+  COUNTEROFFER_SENT
 
   # Order was declined by the buyer
   DECLINED_BY_BUYER
