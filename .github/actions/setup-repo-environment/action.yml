@@ -21,6 +21,18 @@ runs:
         aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
         aws-region: ${{ inputs.aws-region }}
 
+    - name: Install AWS CLI
+      if: ${{ !hashFiles('/usr/local/bin/aws') }}
+      run: |
+        if ! command -v aws &> /dev/null; then
+          sudo apt-get update -qq && sudo apt-get install -y -qq unzip > /dev/null
+          curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+          unzip -q /tmp/awscliv2.zip -d /tmp
+          sudo /tmp/aws/install
+          rm -rf /tmp/awscliv2.zip /tmp/aws
+        fi
+      shell: bash
+
     - name: Set up environment for CI
       run: |
         touch .env.shared && touch keys.shared.json
