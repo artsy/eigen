@@ -111,15 +111,6 @@ commands:
             - ios/Podfile.lock
   prep-ios-env:
     steps:
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch.
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
       - run:
           name: Quit early if Draft PR
           command: |
@@ -129,6 +120,17 @@ commands:
             fi
       - checkout
       - generate-checksums
+      - restore_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch.
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
       - attach_workspace:
           at: .
       - setup-awscli
@@ -164,17 +166,19 @@ commands:
       - android/change_java_version:
           java_version: 17
       - run:
+          name: Install ninja
+          command: sudo apt-get install ninja-build
+      - checkout
+      - generate-checksums
+      - restore_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+      - run:
           name: Quit early if possible
           command: |
             if test $CIRCLE_BRANCH != beta-android && ls build-success.log
             then
               circleci step halt
             fi
-      - run:
-          name: Install ninja
-          command: sudo apt-get install ninja-build
-      - checkout
-      - generate-checksums
       - setup-awscli
       - setup-env-file
       - install-node-modules
@@ -453,10 +457,6 @@ jobs:
       resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       - prep-ios-env
       - macos/preboot-simulator:
           version: << pipeline.parameters.simulator_version >>
@@ -482,10 +482,6 @@ jobs:
       - image: cimg/android:2025.03.1-node
     resource_class: xlarge
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
       - build-app-android
       - run:
@@ -537,14 +533,13 @@ parameters:
     default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v16-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v16-app_build_android-{{ checksum ".manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
-    # this one is not including the checksum due to path differences in the checksum
     default: v20-test-success
   android_native_cache_key:
     type: string
-    default: v20-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v20-test-success-{{ checksum ".manifests/android_native" }}
 
 workflows:
   nightly:
