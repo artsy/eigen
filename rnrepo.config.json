@@ -1,0 +1,16 @@
+{
+  "denyList": {
+    "android": [
+      "react-native",
+      "react-native-keys",
+      "react-native-ios-context-menu",
+      "react-native-collapsible-tab-view",
+      "react-native-safe-area-context",
+      "expo-build-disk-cache",
+      "react-native-reanimated",
+      "react-native-worklets",
+      "expo-updates",
+      "@gorhom/bottom-sheet"
+    ]
+  }
+}
