@@ -1955,6 +1955,12 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   middle: String
   name: String
   nationality: String
+
+  # A list of notable artworks by the artist, with the cover artwork first.
+  notableArtworks(
+    # The number of notable artworks to return.
+    size: Int = 3
+  ): [Artwork!]!
   partnerArtists(
     # The number of PartnerArtists to return
     size: Int
