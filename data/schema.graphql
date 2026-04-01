@@ -18931,9 +18931,6 @@ type Order {
   lineItems: [LineItem]!
   mode: OrderModeEnum!
 
-  # List of submitted offers for this order
-  offers: [Offer!]! @deprecated(reason: "Use `submittedOffers` field instead")
-
   # Payment method used for the order
   paymentMethod: OrderPaymentMethodEnum
 
