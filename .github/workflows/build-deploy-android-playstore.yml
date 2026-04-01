@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-android-playstore:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-android
     timeout-minutes: 90
 
     steps:
