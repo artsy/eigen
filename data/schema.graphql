@@ -25637,6 +25637,8 @@ type UpdateArtworkImportRowImagesSuccess {
 }
 
 input UpdateArtworkImportRowInput {
+  # Artist IDs to assign directly, skipping name matching. Use when the frontend has already resolved artist identities.
+  artistIDs: [String!]
   artworkImportID: String!
   clientMutationId: String
 
