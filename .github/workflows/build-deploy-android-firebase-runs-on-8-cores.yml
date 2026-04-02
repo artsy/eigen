@@ -1,4 +1,4 @@
-name: Build and Deploy Android to Firebase Free Github
+name: Build and Deploy Android to Firebase Runs-on Paid 2 cores
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-android-firebase:
-    runs-on: ubuntu-latest
+    runs-on: runs-on=${{ github.run_id }}/runner=8cpu-linux-x64
     timeout-minutes: 90
 
     steps:

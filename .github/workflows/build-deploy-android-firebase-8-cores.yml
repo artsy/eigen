@@ -1,4 +1,4 @@
-name: Build and Deploy Android to Firebase Free Github
+name: Build and Deploy Android to Firebase
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-android-firebase:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-android-8-cores
     timeout-minutes: 90
 
     steps:
