@@ -1,0 +1,22 @@
+{
+  "denyList": {
+    "android": [
+      "react-native",
+      "react-native-keys",
+      "react-native-ios-context-menu",
+      "react-native-collapsible-tab-view",
+      "react-native-reanimated",
+      "react-native-worklets",
+      "expo-updates"
+    ],
+    "ios": [
+      "react-native",
+      "react-native-keys",
+      "react-native-ios-context-menu",
+      "react-native-collapsible-tab-view",
+      "react-native-reanimated",
+      "react-native-worklets",
+      "expo-updates"
+    ]
+  }
+}
