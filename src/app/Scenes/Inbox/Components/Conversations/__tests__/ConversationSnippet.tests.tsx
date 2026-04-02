@@ -1,8 +1,7 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
-import "react-native"
-
 import ConversationSnippet from "app/Scenes/Inbox/Components/Conversations/ConversationSnippet"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { DateTime } from "luxon"
+import "react-native"
 
 it("renders with an artwork without throwing an error", () => {
   renderWithWrappersLEGACY(
@@ -56,7 +55,7 @@ const artworkConversation = {
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
   lastMessage: "Karl and Anna... Fab!",
-  lastMessageAt: moment().subtract(1, "year").toISOString(),
+  lastMessageAt: DateTime.now().minus({ years: 1 }).toISO(),
   unread: true,
   createdAt: "2017-06-01T14:14:35.538Z",
   items: [
@@ -73,7 +72,7 @@ const showConversation = {
   from: { name: "Jean-Luc Collecteur", email: "luc+messaging@artsymail.com" },
   to: { name: "ACA Galleries" },
   lastMessage: "Karl and Anna... Fab!",
-  lastMessageAt: moment().subtract(1, "year").toISOString(),
+  lastMessageAt: DateTime.now().minus({ years: 1 }).toISO(),
   unread: true,
   createdAt: "2017-06-01T14:14:35.538Z",
   items: [
