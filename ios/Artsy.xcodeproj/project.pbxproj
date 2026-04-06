@@ -48,8 +48,6 @@
 		CB2033342E56593C00A06281 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033332E56593700A06281 /* main.swift */; };
 		CB3A3DD52E7B4C0700161BF7 /* WebviewTapTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3A3DD42E7B4C0300161BF7 /* WebviewTapTracker.swift */; };
 		CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */; };
-		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
-		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
 		CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43268427E8FA6900B29DD6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43268327E8FA6900B29DD6 /* WidgetKit.framework */; };
@@ -481,13 +479,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CB43266227E8F39900B29DD6;
-			remoteInfo = "Artsy Stickers";
-		};
 		CB43267827E8F6F900B29DD6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -518,7 +509,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */,
 				CB43269227E8FA6B00B29DD6 /* ArtsyWidgetExtension.appex in Embed App Extensions */,
 				CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */,
 			);
@@ -596,9 +586,6 @@
 		CB3A3DD42E7B4C0300161BF7 /* WebviewTapTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebviewTapTracker.swift; sourceTree = "<group>"; };
 		CB3EFE562E69C8420004F49F /* ARAppDelegateHelper+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegateHelper+Testing.h"; sourceTree = "<group>"; };
 		CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegateHelper+Testing.m"; sourceTree = "<group>"; };
-		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
-		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43267527E8F6F900B29DD6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		CB43267727E8F6F900B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1502,7 +1489,6 @@
 			children = (
 				CBE3210527D9615000395A93 /* Artsy */,
 				CB43271D27E8FE5400B29DD6 /* ArtsyTests */,
-				CB43266427E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268727E8FA6900B29DD6 /* ArtsyWidget */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -1520,7 +1506,6 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Artsy.app */,
-				CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */,
 				CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */,
 				CB43268227E8FA6900B29DD6 /* ArtsyWidgetExtension.appex */,
 				CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */,
@@ -1557,15 +1542,6 @@
 				CB18284329DEFA6D006A0805 /* LICENSE.txt */,
 			);
 			path = LICENSE;
-			sourceTree = "<group>";
-		};
-		CB43266427E8F39900B29DD6 /* ArtsyStickers */ = {
-			isa = PBXGroup;
-			children = (
-				CB43266527E8F39B00B29DD6 /* Stickers.xcassets */,
-				CB43266727E8F39B00B29DD6 /* Info.plist */,
-			);
-			path = ArtsyStickers;
 			sourceTree = "<group>";
 		};
 		CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
@@ -3318,7 +3294,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				CB43266927E8F39B00B29DD6 /* PBXTargetDependency */,
 				CB43267927E8F6F900B29DD6 /* PBXTargetDependency */,
 				CB43269127E8FA6B00B29DD6 /* PBXTargetDependency */,
 			);
@@ -3326,22 +3301,6 @@
 			productName = eigen;
 			productReference = 13B07F961A680F5B00A75B9A /* Artsy.app */;
 			productType = "com.apple.product-type.application";
-		};
-		CB43266227E8F39900B29DD6 /* ArtsyStickers */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */;
-			buildPhases = (
-				CB43266127E8F39900B29DD6 /* Resources */,
-				7AEEFCEF011ACA98F124D663 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ArtsyStickers;
-			productName = "Artsy Stickers";
-			productReference = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */;
-			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 		CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
 			isa = PBXNativeTarget;
@@ -3410,9 +3369,6 @@
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
 					};
-					CB43266227E8F39900B29DD6 = {
-						CreatedOnToolsVersion = 13.2.1;
-					};
 					CB43267227E8F6F900B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -3438,7 +3394,6 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Artsy */,
-				CB43266227E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268127E8FA6900B29DD6 /* ArtsyWidgetExtension */,
 				CB43271B27E8FE5400B29DD6 /* ArtsyTests */,
@@ -3544,14 +3499,6 @@
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
 				CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CB43266127E8F39900B29DD6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4028,13 +3975,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7AEEFCEF011ACA98F124D663 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CB43266F27E8F6F900B29DD6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4186,11 +4126,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CB43266927E8F39B00B29DD6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CB43266227E8F39900B29DD6 /* ArtsyStickers */;
-			targetProxy = CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */;
-		};
 		CB43267927E8F6F900B29DD6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */;
@@ -4558,84 +4493,6 @@
 				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Store;
-		};
-		CB43266C27E8F39B00B29DD6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2019.05.24.09;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				EXCLUDED_ARCHS = "";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyStickers/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
-				MARKETING_VERSION = 6.7.7;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		CB43266D27E8F39B00B29DD6 /* Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2019.05.24.09;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				EXCLUDED_ARCHS = "";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyStickers/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
-				MARKETING_VERSION = 6.7.7;
-				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.Artsy-Stickers";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Store;
 		};
@@ -5100,45 +4957,6 @@
 			};
 			name = QA;
 		};
-		CB5275112DBA64AC001AC28E /* QA */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2019.05.24.09;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				EXCLUDED_ARCHS = "";
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyStickers/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
-				MARKETING_VERSION = 6.7.7;
-				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.qa.Artsy-Stickers";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = QA;
-		};
 		CB5275122DBA64AC001AC28E /* QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5300,16 +5118,6 @@
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Store */,
 				CB52750F2DBA64AC001AC28E /* QA */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CB43266C27E8F39B00B29DD6 /* Debug */,
-				CB43266D27E8F39B00B29DD6 /* Store */,
-				CB5275112DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
