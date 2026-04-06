@@ -28,7 +28,6 @@ BUNDLE_ID = 'net.artsy.artsy'
 
 IOS_TARGETS = {
   'net.artsy.artsy' => { name: 'Artsy', plist_path: APP_PLIST },
-  'net.artsy.artsy.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
   'net.artsy.artsy.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
   'net.artsy.artsy.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
@@ -36,7 +35,6 @@ IOS_TARGETS = {
 
 IOS_BETA_TARGETS = {
   'net.artsy.qa' => { name: 'Artsy', plist_path: APP_PLIST },
-  'net.artsy.qa.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
   'net.artsy.qa.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
   'net.artsy.qa.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
