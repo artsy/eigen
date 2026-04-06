@@ -33,6 +33,11 @@ describe("OrderDetailsMessage", () => {
         "Thank you! Your offer has been submitted",
         "The gallery will respond to your offer by",
       ],
+      [
+        "COUNTEROFFER_SENT",
+        "Your counteroffer has been submitted to the gallery.",
+        "The gallery will confirm by",
+      ],
       ["PAYMENT_FAILED", "To complete your purchase", "update your payment details"],
       [
         "PROCESSING_PAYMENT_PICKUP",
