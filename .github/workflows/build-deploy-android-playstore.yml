@@ -1,4 +1,4 @@
-name: Build and Deploy Android to Firebase Blacksmith Paid 8 cores
+name: Build and Deploy Android to Play Store
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  build-deploy-android-firebase:
-    runs-on: blacksmith-8vcpu-ubuntu-2404
+  build-deploy-android-playstore:
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 90
 
     steps:
@@ -49,8 +49,8 @@ jobs:
           VERSION_CODE=$(cat fastlane/next_version_code.txt)
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
-      - name: Build and deploy Android to Firebase
-        run: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
+      - name: Build and deploy Android to Play Store
+        run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -66,7 +66,7 @@ jobs:
         env:
           BETA_VERSION: ${{ steps.extract-version.outputs.beta_version }}
           PLATFORM: android
-          DEPLOYMENT_TARGET: firebase
+          DEPLOYMENT_TARGET: play_store
         with:
           script: |
             const script = require('./.github/scripts/comment-pr-beta.js');
