@@ -1,4 +1,4 @@
-name: Build and Deploy Android to Firebase Github Paid 2 cores
+name: Build and Deploy Android to Firebase Blacksmith Paid 4 cores
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-android-firebase:
-    runs-on: ubuntu-android
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 90
 
     steps:
