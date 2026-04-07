@@ -679,6 +679,8 @@ lane :build_maestro_android do |options|
   set_git_properties_android
 
   # Build Android AAB in beta mode for Maestro testing
+  # IMPORTANT: Here we use PreactNativeArchitectures=x86_64 to build only for the emulator
+  # that we are using on the build-maestro-android gh action.
   sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=x86_64' --active-arch-only")
 
 
