@@ -153,6 +153,12 @@ export const features = {
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
+  AREnableNewHomeViewCardRailType: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable new rail type on home",
+    echoFlagKey: "AREnableNewHomeViewCardRailType",
+  },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     showInDevMenu: true,
