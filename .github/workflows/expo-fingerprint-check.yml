@@ -118,7 +118,7 @@ jobs:
       - name: Open PR to update runtimeVersion in app.json
         if: steps.compare.outputs.changed == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.EIGEN_GITHUB_PAT }}
         run: |
           FINGERPRINT="${{ steps.generate-fingerprint.outputs.fingerprint }}"
           BRANCH="ci/update-expo-runtime-version-${FINGERPRINT:0:8}"
