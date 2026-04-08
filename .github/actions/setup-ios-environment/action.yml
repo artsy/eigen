@@ -7,6 +7,26 @@ runs:
       run: brew bundle
       shell: bash
 
+    - name: Install ccache
+      run: brew install ccache
+      shell: bash
+
+    - name: Cache ccache
+      uses: actions/cache@v4
+      with:
+        path: ~/.ccache
+        key: ccache-v1-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}-${{ github.sha }}
+        restore-keys: |
+          ccache-v1-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}-
+          ccache-v1-${{ runner.os }}-
+
+    - name: Configure ccache
+      run: |
+        ccache --set-config=max_size=2G
+        ccache --set-config=cache_dir=$HOME/.ccache
+        ccache -z
+      shell: bash
+
     - name: Cache cocoapods
       id: cache-pods
       uses: actions/cache@v4
@@ -27,11 +47,24 @@ runs:
       shell: bash
 
     - name: Install CocoaPods
-      run: yarn pod-install
+      run: |
+        cd ios
+        if bundle exec pod check --ignore-dev-pods 2>/dev/null; then
+          echo "✅ Pods are up to date, skipping install"
+        else
+          echo "📦 Pods need updating, running pod install..."
+          bundle exec npx pod-install
+        fi
+        cd ..
+        ./scripts/setup/post-pod-install.rb
       shell: bash
 
     - name: Select Xcode version
       run: |
         XCODE_VERSION=$(jq -r '.xcode_version' ios-config.json)
         sudo xcode-select -s "/Applications/Xcode_${XCODE_VERSION}.app"
+      shell: bash
+
+    - name: Print ccache stats (pre-build)
+      run: ccache -s
       shell: bash

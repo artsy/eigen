@@ -43,14 +43,47 @@ jobs:
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
 
+      - name: Cache Homebrew badge dependencies
+        id: cache-brew-badge
+        uses: actions/cache@v4
+        with:
+          path: |
+            /opt/homebrew/Cellar/imagemagick
+            /opt/homebrew/Cellar/librsvg
+            /opt/homebrew/opt/imagemagick
+            /opt/homebrew/opt/librsvg
+          key: brew-badge-v1-${{ runner.os }}
+
       - name: Install imagemagick & librsvg for badge
+        if: steps.cache-brew-badge.outputs.cache-hit != 'true'
         run: brew install imagemagick librsvg
+
+      - name: Relink cached Homebrew badge dependencies
+        if: steps.cache-brew-badge.outputs.cache-hit == 'true'
+        run: |
+          brew link --overwrite imagemagick 2>/dev/null || true
+          brew link --overwrite librsvg 2>/dev/null || true
+
+      - name: Cache Xcode DerivedData
+        uses: actions/cache@v4
+        with:
+          path: derived_data
+          key: derived-data-v1-${{ runner.os }}-firebase-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            derived-data-v1-${{ runner.os }}-firebase-
+
+      - name: Clean DerivedData module cache
+        run: rm -rf derived_data/ModuleCache.noindex
 
       - name: Build and deploy iOS to Firebase
         run: bundle exec fastlane ship_beta_ios deployment_target:firebase
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120
+
+      - name: Print ccache stats (post-build)
+        if: always()
+        run: ccache -s
 
       - name: Extract beta version
         if: always()

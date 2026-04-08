@@ -43,11 +43,26 @@ jobs:
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
 
+      - name: Cache Xcode DerivedData
+        uses: actions/cache@v4
+        with:
+          path: derived_data
+          key: derived-data-v1-${{ runner.os }}-testflight-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            derived-data-v1-${{ runner.os }}-testflight-
+
+      - name: Clean DerivedData module cache
+        run: rm -rf derived_data/ModuleCache.noindex
+
       - name: Build and deploy iOS to TestFlight
         run: bundle exec fastlane ship_beta_ios deployment_target:testflight
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120
+
+      - name: Print ccache stats (post-build)
+        if: always()
+        run: ccache -s
 
       - name: Extract beta version
         if: always()

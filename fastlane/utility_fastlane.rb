@@ -395,6 +395,7 @@ def ios_build_params(deployment_target)
   case deployment_target
   when 'testflight'
     {
+      derived_data_path: "derived_data",
       build_path: "archives",
       workspace: 'ios/Artsy.xcworkspace',
       scheme: 'Artsy',
@@ -404,12 +405,14 @@ def ios_build_params(deployment_target)
     }
   when 'firebase'
     {
+      derived_data_path: "derived_data",
       build_path: "archives",
       workspace: 'ios/Artsy.xcworkspace',
       scheme: 'Artsy (QA)',
       export_method: 'ad-hoc',
       codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
-      silent: true
+      silent: true,
+      xcargs: "ONLY_ACTIVE_ARCH=NO -arch arm64"
     }
   when 'maestro'
     {
