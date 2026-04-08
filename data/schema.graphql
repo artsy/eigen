@@ -2695,6 +2695,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # This field is intended for use exclusively on the individual Artwork page for alt tags
   caption: String
+  catalogArtwork: CatalogArtwork
 
   # Represents the "**medium type**", such as _Painting_. (This field is also commonly referred to as just "medium", but should not be confused with the artwork attribute called `medium`.)
   category: String @deprecated(reason: "Prefer to use `mediumType`.")
@@ -5503,6 +5504,33 @@ type CareerHighlight implements Node {
   partner: Partner!
   solo: Boolean!
   venue: String!
+}
+
+type CatalogArtwork {
+  artworkId: String
+  availability: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  medium: String
+  priceCurrency: String
+  priceListed: Money
+  privateNotes: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 }
 
 type CausalityLotState {
@@ -10251,9 +10279,6 @@ type CreateInstagramPostFailure {
 }
 
 input CreateInstagramPostInput {
-  # The ID of the artwork to post
-  artworkId: String!
-
   # Post caption (auto-generated from artwork data if omitted)
   caption: String
   clientMutationId: String
@@ -10263,6 +10288,9 @@ input CreateInstagramPostInput {
 
   # The internal ID of the Instagram account to post from
   instagramAccountId: String!
+
+  # Slides for the Instagram post. Each slide references an artwork and a custom image. The order determines the carousel position.
+  slides: [InstagramPostSlideInput!]!
 }
 
 type CreateInstagramPostPayload {
@@ -15509,7 +15537,7 @@ enum InstagramAccountStatus {
 }
 
 type InstagramPost {
-  artworkId: String!
+  artworkIds: [String!]!
   caption: String
   createdAt(
     format: String
@@ -15560,6 +15588,15 @@ type InstagramPostEdge {
 
   # The item at the end of the edge
   node: InstagramPost
+}
+
+# A slide in an Instagram carousel post. The order of slides in the array determines their position in the carousel.
+input InstagramPostSlideInput {
+  # The ID of the artwork for this slide
+  artworkId: String!
+
+  # Custom image URL to use instead of the artwork's default image
+  imageUrl: String!
 }
 
 enum InstagramPostStatus {
@@ -17695,7 +17732,7 @@ type Mutation {
     input: CommerceCreateInquiryOrderWithArtworkInput!
   ): CommerceCreateInquiryOrderWithArtworkPayload
 
-  # Create and publish an Instagram post from an artwork
+  # Create and publish an Instagram post from one or more artworks or images.
   createInstagramPost(input: CreateInstagramPostInput!): CreateInstagramPostPayload
   createInvoicePayment(input: CreateInvoicePaymentInput!): CreateInvoicePaymentPayload
 
