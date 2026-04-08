@@ -103,6 +103,10 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     }
   }, [hasMore, isLoading, loadMore, pageSize])
 
+  const adjustedNumColumns = useMemo(() => {
+    return rest.numColumns ?? NUM_COLUMNS_MASONRY
+  }, [rest.numColumns])
+
   const renderItem: ListRenderItem<MasonryArtworkItem> = useCallback(
     ({ item, index }) => (
       <MasonryArtworkGridItem
@@ -137,9 +141,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         trackTap={trackTap}
         fitToFrame={fitToFrame}
         onItemVisibilityChange={onItemVisibilityChange}
+        fullWidth={adjustedNumColumns === 1}
       />
     ),
     [
+      adjustedNumColumns,
       contextModule,
       contextScreenOwnerType,
       contextScreen,
@@ -168,10 +174,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : FlashList
-
-  const getAdjustedNumColumns = useCallback(() => {
-    return rest.numColumns ?? NUM_COLUMNS_MASONRY
-  }, [rest.numColumns])
 
   const flashlistComponentProps = useMemo(() => {
     return {
@@ -213,7 +215,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       {...flashlistComponentProps}
       data={artworks}
       keyExtractor={(item) => item.id}
-      numColumns={getAdjustedNumColumns()}
+      numColumns={adjustedNumColumns}
       renderItem={renderItem}
       ListFooterComponent={() =>
         hasMore ? (
@@ -223,7 +225,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onEndReached={onEndReached}
       contentContainerStyle={{
         // No paddings are needed for single column grids
-        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(1),
+        paddingHorizontal: adjustedNumColumns === 1 ? 0 : space(1),
       }}
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={viewabilityConfig}
