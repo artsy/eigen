@@ -51,7 +51,9 @@ describe("Order history container", () => {
         errors: [],
         data: {
           me: {
-            orders: [],
+            ordersConnection: {
+              edges: [],
+            },
           },
         },
       })
@@ -65,7 +67,7 @@ describe("Order history container", () => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
-            orders: {
+            ordersConnection: {
               edges: [
                 {
                   node: {
