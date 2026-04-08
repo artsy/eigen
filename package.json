@@ -158,7 +158,7 @@
     "html-entities": "2.3.3",
     "jwt-decode": "4.0.0",
     "limiter": "2.1.0",
-    "lodash": "4.17.21",
+    "lodash": "4.18.1",
     "luxon": "2.5.2",
     "moment": "2.29.4",
     "moment-timezone": "0.5.40",
