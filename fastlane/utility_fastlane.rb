@@ -411,8 +411,7 @@ def ios_build_params(deployment_target)
       scheme: 'Artsy (QA)',
       export_method: 'ad-hoc',
       codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
-      silent: true,
-      xcargs: "ONLY_ACTIVE_ARCH=NO -arch arm64"
+      silent: true
     }
   when 'maestro'
     {

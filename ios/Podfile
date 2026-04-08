@@ -178,6 +178,21 @@ target 'Artsy' do
       :ccache_enabled => true
     )
 
+    # Remove ccache compiler settings from the user project (Artsy.xcodeproj).
+    # react_native_post_install applies ccache to ALL projects including the user project,
+    # but extension targets (BrazePushServiceExtension, ArtsyWidget) don't have PODS_ROOT
+    # set, which breaks the ccache-clang.sh path resolution.
+    # ccache remains active on the Pods project where the bulk of compilation happens.
+    installer.aggregate_targets.each do |aggregate_target|
+      aggregate_target.user_project.build_configurations.each do |bc|
+        bc.build_settings.delete('CC')
+        bc.build_settings.delete('LD')
+        bc.build_settings.delete('CXX')
+        bc.build_settings.delete('LDPLUSPLUS')
+      end
+      aggregate_target.user_project.save()
+    end
+
     $RNMapboxMaps.post_install(installer)
 
     installer.pods_project.targets.each do |target|
