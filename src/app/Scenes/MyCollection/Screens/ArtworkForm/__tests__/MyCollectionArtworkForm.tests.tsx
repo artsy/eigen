@@ -595,6 +595,7 @@ const mockArtistSearchResult: AutosuggestResultsQuery["rawResponse"] = {
   },
 }
 
+// @ts-expect-error
 const mockArtworkResult = {
   artwork: {
     artist: {
