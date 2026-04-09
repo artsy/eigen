@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 # check_build_status_gh.sh
 # Usage: ./check_build_status_gh.sh <platform>

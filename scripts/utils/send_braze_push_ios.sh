@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -euxo pipefail
 
 # Send a braze push notification to the mobileqa2 user
 # Must be in a testflight or production build
