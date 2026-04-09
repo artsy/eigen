@@ -125,88 +125,88 @@ describe("MyCollectionArtworkForm", () => {
         )
         fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
-        // act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
+        act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
 
-        // await flushPromiseQueue()
+        await flushPromiseQueue()
 
         // Edit Details Screen
 
-        // expect(screen.getByText("Add Details")).toBeTruthy()
+        expect(screen.getByText("Add Details")).toBeTruthy()
 
-        //   expect(screen.getByTestId("TitleInput").props.value).toBe("Morons")
-        //   expect(screen.getByTestId("DateInput").props.value).toBe("2007")
-        //   expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
-        //   expect(screen.getByTestId("WidthInput").props.value).toBe(30)
-        //   expect(screen.getByTestId("HeightInput").props.value).toBe(20)
-        //   expect(screen.getByTestId("DepthInput").props.value).toBe(40)
-        //   expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
-        //   expect(screen.getByText("1 photo added")).toBeTruthy()
+        expect(screen.getByTestId("TitleInput").props.value).toBe("Morons")
+        expect(screen.getByTestId("DateInput").props.value).toBe("2007")
+        expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
+        expect(screen.getByTestId("WidthInput").props.value).toBe(30)
+        expect(screen.getByTestId("HeightInput").props.value).toBe(20)
+        expect(screen.getByTestId("DepthInput").props.value).toBe(40)
+        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
+        expect(screen.getByText("1 photo added")).toBeTruthy()
 
-        //   // Complete Form
+        // Complete Form
 
-        //   fireEvent.press(screen.getByTestId("CompleteButton"))
+        fireEvent.press(screen.getByTestId("CompleteButton"))
 
-        //   await flushPromiseQueue()
+        await flushPromiseQueue()
 
-        //   const mockOperations = env.mock.getAllOperations()
+        const mockOperations = env.mock.getAllOperations()
 
-        //   // debugger
+        // debugger
 
-        //   const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
-        //   expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
-        //     .toMatchInlineSnapshot(`
-        //     {
-        //       "artistID": "internal-id",
-        //     }
-        //   `)
+        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
+        expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
+          .toMatchInlineSnapshot(`
+            {
+              "artistID": "internal-id",
+            }
+          `)
 
-        //   const updatePreferencesOperation = mockOperations[1]
-        //   expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
-        //     {
-        //       "input": {
-        //         "currencyPreference": "USD",
-        //         "lengthUnitPreference": "IN",
-        //       },
-        //     }
-        //   `)
+        const updatePreferencesOperation = mockOperations[1]
+        expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
+            {
+              "input": {
+                "currencyPreference": "USD",
+                "lengthUnitPreference": "IN",
+              },
+            }
+          `)
 
-        //   const createArtworkOperation = mockOperations[2]
-        //   expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
-        //     {
-        //       "input": {
-        //         "artistIds": [
-        //           "internal-id",
-        //         ],
-        //         "artists": undefined,
-        //         "attributionClass": undefined,
-        //         "category": "Print",
-        //         "collectorLocation": {
-        //           "city": null,
-        //           "country": null,
-        //           "countryCode": null,
-        //           "state": null,
-        //         },
-        //         "confidentialNotes": undefined,
-        //         "date": "2007",
-        //         "depth": 40,
-        //         "editionNumber": "",
-        //         "editionSize": "",
-        //         "externalImageUrls": [
-        //           "https://some-bucket.s3.amazonaws.com/undefined",
-        //         ],
-        //         "height": 20,
-        //         "importSource": "MY_COLLECTION",
-        //         "isEdition": true,
-        //         "medium": "Screen print",
-        //         "metric": "in",
-        //         "pricePaidCents": undefined,
-        //         "pricePaidCurrency": "USD",
-        //         "provenance": undefined,
-        //         "title": "Morons",
-        //         "width": 30,
-        //       },
-        //     }
-        //   `)
+        const createArtworkOperation = mockOperations[2]
+        expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
+            {
+              "input": {
+                "artistIds": [
+                  "internal-id",
+                ],
+                "artists": undefined,
+                "attributionClass": undefined,
+                "category": "Print",
+                "collectorLocation": {
+                  "city": null,
+                  "country": null,
+                  "countryCode": null,
+                  "state": null,
+                },
+                "confidentialNotes": undefined,
+                "date": "2007",
+                "depth": 40,
+                "editionNumber": "",
+                "editionSize": "",
+                "externalImageUrls": [
+                  "https://some-bucket.s3.amazonaws.com/undefined",
+                ],
+                "height": 20,
+                "importSource": "MY_COLLECTION",
+                "isEdition": true,
+                "medium": "Screen print",
+                "metric": "in",
+                "pricePaidCents": undefined,
+                "pricePaidCurrency": "USD",
+                "provenance": undefined,
+                "title": "Morons",
+                "width": 30,
+              },
+            }
+          `)
       })
     })
 
@@ -520,16 +520,16 @@ describe("MyCollectionArtworkForm", () => {
         )
         fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
-        // act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
+        act(() => env.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
 
-        // await flushPromiseQueue()
+        await flushPromiseQueue()
 
-        // // Complete Form
-        // fireEvent.press(screen.getByTestId("CompleteButton"))
+        // Complete Form
+        fireEvent.press(screen.getByTestId("CompleteButton"))
 
-        // await flushPromiseQueue()
+        await flushPromiseQueue()
 
-        // expect(screen.getByTestId("saving-artwork-modal")).toBeDefined()
+        expect(screen.getByTestId("saving-artwork-modal")).toBeDefined()
       })
     })
   })
@@ -595,7 +595,6 @@ const mockArtistSearchResult: AutosuggestResultsQuery["rawResponse"] = {
   },
 }
 
-// @ts-expect-error
 const mockArtworkResult = {
   artwork: {
     artist: {
