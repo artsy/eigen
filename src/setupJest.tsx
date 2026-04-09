@@ -460,7 +460,6 @@ function getNativeModules(): OurNativeModules {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -518,7 +517,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),

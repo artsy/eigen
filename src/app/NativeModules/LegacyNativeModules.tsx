@@ -73,12 +73,6 @@ interface LegacyNativeModules {
     ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void
-    presentMediaPreviewController(
-      reactTag: number,
-      route: string,
-      mimeType: string,
-      cacheKey: string
-    ): void
   }
   ARTDeeplinkTimeoutModule: {
     invalidateDeeplinkTimeout(): void
@@ -95,9 +89,6 @@ const LegacyNativeModulesAndroid = {
     },
     presentEmailComposerWithSubject: () => {
       noop("presentEmailComposer not yet supported on android")
-    },
-    presentMediaPreviewController: () => {
-      noop("presentMediaPreviewController not yet supported on android")
     },
   },
 
