@@ -213,8 +213,8 @@ jest.mock("react-native-blob-util", () => ({
   }),
 }))
 
-jest.mock("react-native-file-viewer-turbo", () => ({
-  open: jest.fn().mockResolvedValue(undefined),
+jest.mock("@react-native-documents/viewer", () => ({
+  viewDocument: jest.fn().mockResolvedValue(null),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))

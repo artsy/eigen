@@ -1,6 +1,6 @@
+import { viewDocument } from "@react-native-documents/viewer"
 import { useCallback, useEffect, useRef, useState } from "react"
 import ReactNativeBlobUtil from "react-native-blob-util"
-import { open } from "react-native-file-viewer-turbo"
 import type { StatefulPromise, FetchBlobResponse } from "react-native-blob-util"
 
 const CACHE_DIR = `${ReactNativeBlobUtil.fs.dirs.CacheDir}/MessageAttachments`
@@ -31,7 +31,7 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
 
     const exists = await ReactNativeBlobUtil.fs.exists(filePath)
     if (exists) {
-      await open(filePath)
+      await viewDocument({ uri: filePath, mimeType })
       return
     }
 
@@ -52,7 +52,7 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
       })
 
       await task
-      await open(filePath)
+      await viewDocument({ uri: filePath, mimeType })
     } finally {
       setIsDownloading(false)
       setProgress(0)
