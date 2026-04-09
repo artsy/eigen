@@ -2,16 +2,11 @@ import { ActionType, ContextModule, OwnerType, TappedChangePaymentMethod } from 
 import { Flex, Box, Text, Button, Image } from "@artsy/palette-mobile"
 import {
   OrderHistoryRow_order$data,
-  CommerceOrderDisplayStateEnum,
-  CommerceBuyerOfferActionEnum,
-  CommerceOrderModeEnum,
+  OrderBuyerStateEnum,
 } from "__generated__/OrderHistoryRow_order.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus } from "app/utils/getOrderStatus"
-import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
 import React from "react"
 import { Linking } from "react-native"
@@ -20,18 +15,23 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface OrderHistoryRowProps {
   order: OrderHistoryRow_order$data
 }
-
-type BuyerDisplayStateEnum = CommerceBuyerOfferActionEnum | CommerceOrderDisplayStateEnum
 interface OrderActionButtonProps {
-  displayState: BuyerDisplayStateEnum
+  buyerState: OrderBuyerStateEnum | null | undefined
   orderId: string
-  mode: CommerceOrderModeEnum | null | undefined
+  actionPrompt: string | null | undefined
+  isOffer: boolean
 }
 
-const getStateColor = (displayState: BuyerDisplayStateEnum) => {
-  switch (displayState) {
+const getStateColor = (buyerState: OrderBuyerStateEnum | null | undefined) => {
+  if (!buyerState) {
+    return "mono60"
+  }
+
+  switch (buyerState) {
     case "CANCELED":
     case "PAYMENT_FAILED":
+    case "DECLINED_BY_SELLER":
+    case "DECLINED_BY_BUYER":
       return "red100"
     case "OFFER_RECEIVED":
       return "blue100"
@@ -40,78 +40,80 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
   }
 }
 
-const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
-  switch (displayState) {
-    case "PAYMENT_FAILED":
-      return (
-        <Button
-          block
-          variant="fillDark"
-          onPress={() => {
-            tracks.tappedChangePaymentMethod({ id: orderId })
-            navigate(`/orders/${orderId}/payment/new`, {
-              modal: true,
-              passProps: { orderID: orderId, title: "Update Payment Details" },
-            })
-          }}
-          testID="update-payment-button"
-        >
-          Update Payment Method
-        </Button>
-      )
+const TERMINAL_STATES: OrderBuyerStateEnum[] = [
+  "DECLINED_BY_SELLER",
+  "DECLINED_BY_BUYER",
+  "CANCELED",
+  "REFUNDED",
+]
 
-    case "OFFER_RECEIVED":
-      return (
-        <Button
-          block
-          variant="fillDark"
-          onPress={() =>
-            navigate(`/orders/${orderId}`, {
-              modal: true,
-              passProps: { orderID: orderId, title: "Review Offer" },
-            })
-          }
-          testID="counteroffer-button"
-        >
-          Respond to Counteroffer
-        </Button>
-      )
-    case "SUBMITTED":
-    case "APPROVED":
-    case "FULFILLED":
-    case "PROCESSING":
-    case "PROCESSING_APPROVAL":
-    case "IN_TRANSIT":
-      return (
-        <RouterLink hasChildTouchable testID="view-order-button" to={`/orders/${orderId}/details`}>
-          <Button block variant="fillGray">
-            {mode == "OFFER" ? "View Offer" : "View Order"}
-          </Button>
-        </RouterLink>
-      )
-    default:
-      return null
+const OrderActionButton: React.FC<OrderActionButtonProps> = ({
+  buyerState,
+  orderId,
+  actionPrompt,
+  isOffer,
+}) => {
+  // Don't show action button for terminal states
+  if (buyerState && TERMINAL_STATES.includes(buyerState)) {
+    return null
   }
+
+  if (buyerState === "PAYMENT_FAILED") {
+    return (
+      <Button
+        block
+        variant="fillDark"
+        onPress={() => {
+          tracks.tappedChangePaymentMethod({ id: orderId })
+          navigate(`/orders/${orderId}/payment/new`, {
+            modal: true,
+            passProps: { orderID: orderId, title: "Update Payment Details" },
+          })
+        }}
+        testID="update-payment-button"
+      >
+        {actionPrompt}
+      </Button>
+    )
+  }
+
+  if (buyerState === "OFFER_RECEIVED") {
+    return (
+      <Button
+        block
+        variant="fillDark"
+        onPress={() =>
+          navigate(`/orders/${orderId}/respond`, {
+            modal: true,
+            passProps: { orderID: orderId, title: "Respond" },
+          })
+        }
+        testID="counteroffer-button"
+      >
+        {actionPrompt}
+      </Button>
+    )
+  }
+
+  // Default view order action for all other states (App is overwriting actionPrompt for now)
+  const defaultLabel = isOffer ? "View Offer" : "View Order"
+  return (
+    <RouterLink hasChildTouchable testID="view-order-button" to={`/orders/${orderId}/details`}>
+      <Button block variant="outline">
+        {actionPrompt || defaultLabel}
+      </Button>
+    </RouterLink>
+  )
 }
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
-  const { displayState, buyerAction } = order
-  const [lineItem] = extractNodes(order.lineItems)
+  const { buyerState, displayTexts } = order
+  const [lineItem] = order.lineItems || []
   const { artwork, artworkVersion } = lineItem || {}
-  const trackingUrl = getTrackingUrl(lineItem)
+  const trackingUrl = order.deliveryInfo?.trackingURL
 
-  let buyerDisplayState: BuyerDisplayStateEnum = displayState
-  if (
-    buyerDisplayState == "SUBMITTED" &&
-    !!buyerAction &&
-    ["OFFER_RECEIVED", "OFFER_RECEIVED_CONFIRM_NEEDED", "OFFER_ACCEPTED_CONFIRM_NEEDED"].includes(
-      buyerAction
-    )
-  ) {
-    buyerDisplayState = "OFFER_RECEIVED"
-  }
-  const orderStatusText = getOrderStatus(buyerDisplayState)
-  const orderStatusColor = getStateColor(buyerDisplayState)
+  const orderStatusText = displayTexts?.stateName
+  const orderStatusColor = getStateColor(buyerState)
 
   const artworkImageUrl = artworkVersion?.image?.resized?.url
 
@@ -152,7 +154,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Flex>
           <Flex>
             <Text textAlign="right" variant="sm" testID="price">
-              {order.buyerTotal}
+              {order.buyerTotal?.display}
             </Text>
             {!!orderStatusText && (
               <Text
@@ -182,9 +184,10 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
         )}
 
         <OrderActionButton
-          displayState={buyerDisplayState}
+          buyerState={buyerState}
           orderId={order.internalID}
-          mode={order.mode}
+          actionPrompt={displayTexts?.actionPrompt}
+          isOffer={order.mode === "OFFER"}
         />
       </Box>
     </Flex>
@@ -193,47 +196,42 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
 
 export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow, {
   order: graphql`
-    fragment OrderHistoryRow_order on CommerceOrder {
+    fragment OrderHistoryRow_order on Order {
+      __typename
       internalID
-      displayState
+      buyerState
       mode
-      buyerTotal(precision: 2)
+      buyerTotal {
+        display
+      }
       createdAt
-      itemsTotal
-      lineItems(first: 1) {
-        edges {
-          node {
-            shipment {
-              trackingUrl
-              trackingNumber
+      itemsTotal {
+        display
+      }
+      displayTexts {
+        stateName
+        actionPrompt
+      }
+      deliveryInfo {
+        trackingURL
+        trackingNumber
+      }
+      lineItems {
+        artworkVersion {
+          image {
+            resized(width: 55) {
+              url
             }
-            artworkVersion {
-              image {
-                resized(width: 55) {
-                  url
-                }
-                blurhash
-              }
-            }
-            artwork {
-              partner {
-                name
-              }
-              title
-              artistNames
-            }
-            fulfillments(first: 1) {
-              edges {
-                node {
-                  trackingId
-                }
-              }
-            }
+            blurhash
           }
         }
-      }
-      ... on CommerceOfferOrder {
-        buyerAction
+        artwork {
+          partner {
+            name
+          }
+          title
+          artistNames
+        }
       }
     }
   `,

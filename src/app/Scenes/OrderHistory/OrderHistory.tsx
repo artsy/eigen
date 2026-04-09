@@ -29,7 +29,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
     relay.refetchConnection(NUM_ORDERS_TO_FETCH, () => {
       setIsRefreshing(false)
     })
-  }, [])
+  }, [relay])
   const onLoadMore = useCallback(() => {
     if (!relay.hasMore() || relay.isLoading() || isLoadingMore) {
       return
@@ -40,7 +40,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
     })
   }, [isLoadingMore, relay])
 
-  const orders = extractNodes(me.orders)
+  const orders = extractNodes(me.ordersConnection)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -52,11 +52,11 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
         style={{ flex: 1 }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         data={orders}
-        keyExtractor={(order) => order.code}
+        keyExtractor={(order) => order.internalID}
         contentContainerStyle={{ flexGrow: 1, paddingTop: space(2) }}
         renderItem={({ item }) => (
           <Flex flexDirection="row" justifyContent="space-between" px="15px">
-            <OrderHistoryRowContainer order={item} key={item.code} />
+            <OrderHistoryRowContainer order={item} key={item.internalID} />
           </Flex>
         )}
         ListEmptyComponent={
@@ -123,16 +123,30 @@ export const OrderHistoryContainer = createPaginationContainer(
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        states: {
-          type: "[CommerceOrderStateEnum!]"
-          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED, PROCESSING_APPROVAL]
+        buyerState: {
+          type: "[OrderBuyerStateEnum]"
+          defaultValue: [
+            SUBMITTED
+            OFFER_RECEIVED
+            COUNTEROFFER_SENT
+            PAYMENT_FAILED
+            PROCESSING_PAYMENT
+            PROCESSING_OFFLINE_PAYMENT
+            APPROVED
+            SHIPPED
+            COMPLETED
+            CANCELED
+            REFUNDED
+            DECLINED_BY_SELLER
+            DECLINED_BY_BUYER
+          ]
         }
       ) {
-        orders(first: $count, after: $cursor, states: $states)
-          @connection(key: "OrderHistory_orders") {
+        ordersConnection(first: $count, after: $cursor, buyerState: $buyerState)
+          @connection(key: "OrderHistory_ordersConnection") {
           edges {
             node {
-              code
+              internalID
               ...OrderHistoryRow_order
             }
           }
@@ -142,7 +156,7 @@ export const OrderHistoryContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props.me.orders
+      return props.me.ordersConnection
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
@@ -155,10 +169,10 @@ export const OrderHistoryContainer = createPaginationContainer(
       query OrderHistoryPaginationQuery(
         $count: Int!
         $cursor: String
-        $states: [CommerceOrderStateEnum!]
+        $buyerState: [OrderBuyerStateEnum]
       ) {
         me {
-          ...OrderHistory_me @arguments(count: $count, cursor: $cursor, states: $states)
+          ...OrderHistory_me @arguments(count: $count, cursor: $cursor, buyerState: $buyerState)
         }
       }
     `,

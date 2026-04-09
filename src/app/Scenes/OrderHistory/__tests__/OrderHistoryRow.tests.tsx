@@ -8,103 +8,104 @@ import { graphql } from "react-relay"
 
 const mockOrder = {
   internalID: "d1105415-4a55-4c3b-b71d-bfae06ec92df",
-  displayState: "SUBMITTED",
-  buyerTotal: "11,200",
+  buyerState: "SUBMITTED",
+  buyerTotal: { display: "11,200" },
   createdAt: "2021-05-18T14:45:20+03:00",
-  itemsTotal: "€11,000",
-  lineItems: {
-    edges: [
-      {
-        node: {
-          shipment: null,
-          artwork: {
-            image: {
-              resized: {
-                url: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=55&height=44&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Ft06Xa3hKNRbLcO2t6MWOyQ%2Flarge.jpg",
-              },
-            },
-            partner: { name: "Andrea Festa Fine Art" },
-            title: "NUDIST NO. 5",
-            artistNames: "Torbjørn Rødland",
+  itemsTotal: { display: "€11,000" },
+  displayTexts: {
+    stateName: "pending",
+    actionPrompt: "View Order",
+  },
+  deliveryInfo: null,
+  lineItems: [
+    {
+      artworkVersion: {
+        image: {
+          resized: {
+            url: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=55&height=44&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Ft06Xa3hKNRbLcO2t6MWOyQ%2Flarge.jpg",
           },
-          fulfillments: { edges: [{ node: { trackingId: "123456789" } }] },
+          blurhash: "test-blurhash",
         },
       },
-    ],
-  },
+      artwork: {
+        partner: { name: "Andrea Festa Fine Art" },
+        title: "NUDIST NO. 5",
+        artistNames: "Torbjørn Rødland",
+      },
+    },
+  ],
 }
 
 describe("OrderHistoryRow", () => {
   const { renderWithRelay } = setupTestWrapper<OrderHistoryRowTestsQuery>({
     Component: (props) => {
-      return <OrderHistoryRowContainer order={props.commerceOrder!} />
+      const order = props.me?.ordersConnection?.edges?.[0]?.node
+      return order ? <OrderHistoryRowContainer order={order} /> : null
     },
     query: graphql`
       query OrderHistoryRowTestsQuery @relay_test_operation {
-        commerceOrder(id: "some-id") {
-          ...OrderHistoryRow_order
+        me {
+          ordersConnection(first: 1) {
+            edges {
+              node {
+                ...OrderHistoryRow_order
+              }
+            }
+          }
         }
       }
     `,
   })
 
   it("displays the artist name", () => {
-    renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("Torbjørn Rødland")).toBeOnTheScreen()
   })
 
   it("displays the partner name", () => {
-    renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("Andrea Festa Fine Art")).toBeOnTheScreen()
   })
 
   it("displays the order creation date", () => {
-    renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("5/18/2021")).toBeOnTheScreen()
   })
 
   it("displays the price", () => {
-    renderWithRelay({ CommerceOrder: () => mockOrder })
+    renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("11,200")).toBeOnTheScreen()
   })
 
-  it("displays the display state", () => {
-    renderWithRelay({ CommerceOrder: () => mockOrder })
+  it("displays the buyer state", () => {
+    renderWithRelay({ Order: () => mockOrder })
 
     expect(screen.getByText("pending")).toBeOnTheScreen()
   })
 
   describe("artwork image", () => {
     it("displays the image", () => {
-      renderWithRelay({ CommerceOrder: () => mockOrder })
+      renderWithRelay({ Order: () => mockOrder })
 
       expect(screen.getByTestId("image")).toBeOnTheScreen()
     })
 
     it("displays a gray box unless there is an image", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  artwork: {
-                    ...mockOrder.lineItems.edges[0].node.artwork,
-                    image: null,
-                  },
-                  artworkVersion: {
-                    image: null,
-                  },
-                },
+          lineItems: [
+            {
+              ...mockOrder.lineItems[0],
+              artworkVersion: {
+                image: null,
               },
-            ],
-          },
+            },
+          ],
         }),
       })
 
@@ -113,63 +114,11 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("track package button", () => {
-    it("is visible when a tracking URL is provided", () => {
+    it("is visible when a tracking URL is provided in deliveryInfo", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { trackingUrl: "https://tracking.com", trackingNumber: null },
-                  fulfillments: { edges: [{ node: { trackingId: null } }] },
-                },
-              },
-            ],
-          },
-        }),
-      })
-
-      expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
-    })
-
-    it("is visible when a tracking number is provided", () => {
-      renderWithRelay({
-        CommerceOrder: () => ({
-          ...mockOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { trackingUrl: null, trackingNumber: "12345" },
-                  fulfillments: { edges: [{ node: { trackingId: null } }] },
-                },
-              },
-            ],
-          },
-        }),
-      })
-
-      expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
-    })
-
-    it("is visible when a tracking ID is provided", () => {
-      renderWithRelay({
-        CommerceOrder: () => ({
-          ...mockOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { trackingUrl: null, trackingNumber: null },
-                  fulfillments: { edges: [{ node: { trackingId: "tracking-id" } }] },
-                },
-              },
-            ],
-          },
+          deliveryInfo: { trackingURL: "https://tracking.com", trackingNumber: null },
         }),
       })
 
@@ -178,19 +127,9 @@ describe("OrderHistoryRow", () => {
 
     it("is not visible unless tracking information is provided", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { trackingUrl: null, trackingNumber: null },
-                  fulfillments: { edges: [{ node: { trackingId: null } }] },
-                },
-              },
-            ],
-          },
+          deliveryInfo: null,
         }),
       })
 
@@ -199,12 +138,16 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("update payment method button", () => {
-    it("includes a message and button go fix payment when the displayState is PAYMENT_FAILED", () => {
+    it("includes a message and button go fix payment when the buyerState is PAYMENT_FAILED", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
-          displayState: "PAYMENT_FAILED",
+          buyerState: "PAYMENT_FAILED",
+          displayTexts: {
+            stateName: "payment failed",
+            actionPrompt: "Update Payment Method",
+          },
         }),
       })
 
@@ -220,12 +163,12 @@ describe("OrderHistoryRow", () => {
         passProps: { orderID: "internal-id", title: "Update Payment Details" },
       })
     })
-    it("is not visible when the displayState is not PAYMENT_FAILED", () => {
+    it("is not visible when the buyerState is not PAYMENT_FAILED", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
-          displayState: "SUBMITTED",
+          buyerState: "SUBMITTED",
         }),
       })
 
@@ -235,102 +178,161 @@ describe("OrderHistoryRow", () => {
   })
 
   describe("view order button", () => {
-    it("is visible when the order is submitted", () => {
+    it("is visible when the order is submitted and has an actionPrompt", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          displayState: "SUBMITTED",
+          buyerState: "SUBMITTED",
+          displayTexts: {
+            stateName: "pending",
+            actionPrompt: "View Order",
+          },
         }),
       })
 
       expect(screen.getByTestId("view-order-button")).toBeOnTheScreen()
     })
 
-    it("is not visible when the order is canceled", () => {
+    it("is not visible when the order is canceled (terminal state)", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          displayState: "CANCELED",
+          buyerState: "CANCELED",
+          displayTexts: {
+            stateName: "canceled",
+            actionPrompt: null,
+          },
         }),
       })
 
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("is not visible when the order is refunded", () => {
+    it("is not visible when the order is refunded (terminal state)", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          displayState: "REFUNDED",
+          buyerState: "REFUNDED",
+          displayTexts: {
+            stateName: "refunded",
+            actionPrompt: null,
+          },
         }),
       })
 
       expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
-    it("shows 'view order' when the order is submitted", () => {
+    it("is not visible for DECLINED_BY_SELLER state", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          displayState: "SUBMITTED",
+          buyerState: "DECLINED_BY_SELLER",
+          displayTexts: {
+            stateName: "declined by seller",
+            actionPrompt: null,
+          },
+        }),
+      })
+
+      expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
+    })
+
+    it("is not visible for DECLINED_BY_BUYER state", () => {
+      renderWithRelay({
+        Order: () => ({
+          ...mockOrder,
+          buyerState: "DECLINED_BY_BUYER",
+          displayTexts: {
+            stateName: "declined by buyer",
+            actionPrompt: null,
+          },
+        }),
+      })
+
+      expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
+    })
+
+    it("shows the actionPrompt text for a submitted order", () => {
+      renderWithRelay({
+        Order: () => ({
+          ...mockOrder,
+          buyerState: "SUBMITTED",
           mode: "BUY",
+          displayTexts: {
+            stateName: "pending",
+            actionPrompt: "View Order",
+          },
         }),
       })
 
       expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Order")
     })
 
-    it("shows 'view offer' when the order has a submitted offer", () => {
+    it("shows 'View Order' as default when actionPrompt is null for BUY mode", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
-          displayState: "SUBMITTED",
+          buyerState: "SUBMITTED",
+          mode: "BUY",
+          displayTexts: {
+            stateName: "pending",
+            actionPrompt: null,
+          },
+        }),
+      })
+
+      expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Order")
+    })
+
+    it("shows 'View Offer' as default when actionPrompt is null for OFFER mode", () => {
+      renderWithRelay({
+        Order: () => ({
+          ...mockOrder,
+          buyerState: "SUBMITTED",
           mode: "OFFER",
+          displayTexts: {
+            stateName: "pending",
+            actionPrompt: null,
+          },
         }),
       })
 
       expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Offer")
     })
 
-    it("shows 'view offer' when the order has an approved offer", () => {
+    it("navigates to the counteroffer when the order has OFFER_RECEIVED state", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
-          ...mockOrder,
-          displayState: "APPROVED",
-          mode: "OFFER",
-        }),
-      })
-
-      expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Offer")
-    })
-
-    it("navigates to the counteroffer when the order has a submitted offer", () => {
-      renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
-          displayState: "SUBMITTED",
-          mode: "OFFER",
-          buyerAction: "OFFER_RECEIVED",
+          buyerState: "OFFER_RECEIVED",
+          displayTexts: {
+            stateName: "counteroffer received",
+            actionPrompt: "Respond",
+          },
         }),
       })
       const button = screen.getByTestId("counteroffer-button")
 
       fireEvent.press(button)
 
-      expect(navigate).toHaveBeenCalledWith("/orders/internal-id", {
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id/respond", {
         modal: true,
-        passProps: { orderID: "internal-id", title: "Review Offer" },
+        passProps: { orderID: "internal-id", title: "Respond" },
       })
     })
 
     it("navigates to the correct order details", () => {
       renderWithRelay({
-        CommerceOrder: () => ({
+        Order: () => ({
           ...mockOrder,
           internalID: "internal-id",
-          displayState: "PROCESSING",
-          mode: "OFFER",
+          buyerState: "PROCESSING_PAYMENT",
+          displayTexts: {
+            stateName: "processing payment",
+            actionPrompt: "View Order",
+          },
         }),
       })
 
