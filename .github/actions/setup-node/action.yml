@@ -6,7 +6,7 @@ runs:
     - name: Setup node.js
       uses: actions/setup-node@v4
       with:
-        node-version: "22.14.0"
+        node-version: "24.6.0"
     - name: Enable Corepack
       run: corepack enable
       shell: bash
