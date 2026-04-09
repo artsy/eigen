@@ -12478,19 +12478,6 @@ enum DisplayTextsMessageTypeEnum {
   UNKNOWN
 }
 
-type DoNotUseThisPartner {
-  displayName: String
-  display_name: String @deprecated(reason: "Use displayName")
-  givenName: String
-  given_name: String @deprecated(reason: "Use givenName")
-  id: ID!
-  relativeSize: Int
-  relative_size: Int @deprecated(reason: "Use relativeSize")
-  slug: String
-  subscriptionState: String
-  subscription_state: String @deprecated(reason: "Use subscriptionState")
-}
-
 # The type of domestic shipping option
 enum DomesticType {
   # Artsy handles domestic shipping
@@ -17258,7 +17245,6 @@ type MetaphysicsService {
   stitching: Boolean!
   stitchingConvection: Boolean!
   stitchingExchange: Boolean!
-  stitchingGravity: Boolean!
 }
 
 # A recorded change to a trackable model.
@@ -21287,28 +21273,6 @@ type Query {
     last: Int
     userId: ID!
   ): AuctionsLotStandingConnection!
-
-  # Autocomplete resolvers.
-  _unused_gravity_matchPartners(
-    matchType: String
-    page: Int = 1
-    size: Int = 5
-    term: String!
-  ): [DoNotUseThisPartner!]
-
-  # Autocomplete resolvers.
-  _unused_gravity_match_partners(
-    match_type: String
-    page: Int = 1
-    size: Int = 5
-    term: String!
-  ): [DoNotUseThisPartner!] @deprecated(reason: "Use matchPartners")
-
-  # Find a partner by ID
-  _unused_gravity_partner(id: ID!): DoNotUseThisPartner
-
-  # Find partners by IDs
-  _unused_gravity_partners(ids: [ID!]!): [DoNotUseThisPartner!]
   admin: Admin
 
   # Find an agreement by ID
@@ -23617,16 +23581,6 @@ type Sale implements Node {
 
   # True if the current user needs to undergo identity verification for this sale, false otherwise
   userNeedsIdentityVerification: Boolean
-}
-
-type SaleAdministrationFields {
-  collectorVetting: String
-  id: ID!
-  marketingTier: String
-  marketingTierConfirmed: Boolean!
-  partnerTier: String
-  region: String
-  status: String
 }
 
 type SaleAgreement {
