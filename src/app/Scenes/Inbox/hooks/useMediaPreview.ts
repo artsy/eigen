@@ -1,4 +1,6 @@
 import { viewDocument } from "@react-native-documents/viewer"
+import { captureException } from "@sentry/react-native"
+import { useToast } from "app/Components/Toast/toastHook"
 import { useCallback, useEffect, useRef, useState } from "react"
 import ReactNativeBlobUtil from "react-native-blob-util"
 import type { StatefulPromise, FetchBlobResponse } from "react-native-blob-util"
@@ -17,6 +19,7 @@ const MIME_TO_EXT: Record<string, string> = {
 }
 
 export const useMediaPreview = (url: string, mimeType: string, cacheKey: string) => {
+  const { show: showToast } = useToast()
   const [progress, setProgress] = useState(0)
   const [isDownloading, setIsDownloading] = useState(false)
   const taskRef = useRef<StatefulPromise<FetchBlobResponse> | null>(null)
@@ -33,7 +36,12 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
 
     const exists = await ReactNativeBlobUtil.fs.exists(filePath)
     if (exists) {
-      await viewDocument({ uri: toFileURI(filePath), mimeType })
+      try {
+        await viewDocument({ uri: toFileURI(filePath), mimeType })
+      } catch (e) {
+        captureException(e, { tags: { source: "useMediaPreview.ts: openPreview" } })
+        showToast("Something went wrong, try again", "bottom", { backgroundColor: "red100" })
+      }
       return
     }
 
@@ -55,12 +63,15 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
 
       await task
       await viewDocument({ uri: toFileURI(filePath), mimeType })
+    } catch (e) {
+      captureException(e, { tags: { source: "useMediaPreview.ts: openPreview" } })
+      showToast("Something went wrong, try again", "bottom", { backgroundColor: "red100" })
     } finally {
       setIsDownloading(false)
       setProgress(0)
       taskRef.current = null
     }
-  }, [url, mimeType, cacheKey])
+  }, [url, mimeType, cacheKey, showToast])
 
   return { progress, isDownloading, openPreview }
 }
