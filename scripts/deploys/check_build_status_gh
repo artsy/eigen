@@ -15,7 +15,7 @@ if [ -z "$PLATFORM" ]; then
 fi
 
 if [ "$PLATFORM" = "ios" ]; then
-  WORKFLOW_NAMES=("Build and Deploy iOS to TestFligh" "Build and Deploy iOS to Firebase")
+  WORKFLOW_NAMES=("Build and Deploy iOS to TestFlight" "Build and Deploy iOS to Firebase")
 elif [ "$PLATFORM" = "android" ]; then
   WORKFLOW_NAMES=("Build and Deploy Android to Play Store" "Build and Deploy Android to Firebase")
 else
