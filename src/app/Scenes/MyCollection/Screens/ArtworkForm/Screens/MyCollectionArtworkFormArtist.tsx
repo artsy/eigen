@@ -68,7 +68,11 @@ export const MyCollectionArtworkFormArtist: React.FC<
       <ScreenMargin pb={6}>
         <ErrorBoundary fallback={<SimpleErrorMessage />}>
           <Suspense fallback={<Placeholder />}>
-            <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+            <ArtistAutosuggest
+              onResultPress={handleResultPress}
+              onSkipPress={handleSkipPress}
+              disableFormik
+            />
           </Suspense>
         </ErrorBoundary>
       </ScreenMargin>
