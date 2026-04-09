@@ -5,6 +5,8 @@ import type { StatefulPromise, FetchBlobResponse } from "react-native-blob-util"
 
 const CACHE_DIR = `${ReactNativeBlobUtil.fs.dirs.CacheDir}/MessageAttachments`
 
+const toFileURI = (path: string) => (path.startsWith("file://") ? path : `file://${path}`)
+
 const MIME_TO_EXT: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
@@ -31,7 +33,7 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
 
     const exists = await ReactNativeBlobUtil.fs.exists(filePath)
     if (exists) {
-      await viewDocument({ uri: filePath, mimeType })
+      await viewDocument({ uri: toFileURI(filePath), mimeType })
       return
     }
 
@@ -52,7 +54,7 @@ export const useMediaPreview = (url: string, mimeType: string, cacheKey: string)
       })
 
       await task
-      await viewDocument({ uri: filePath, mimeType })
+      await viewDocument({ uri: toFileURI(filePath), mimeType })
     } finally {
       setIsDownloading(false)
       setProgress(0)
