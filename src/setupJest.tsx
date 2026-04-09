@@ -199,8 +199,22 @@ jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
+      CacheDir: "/mock/cache",
     },
+    exists: jest.fn().mockResolvedValue(false),
+    mkdir: jest.fn().mockResolvedValue(undefined),
   },
+  config: jest.fn().mockReturnValue({
+    fetch: jest.fn().mockReturnValue({
+      progress: jest.fn().mockReturnThis(),
+      cancel: jest.fn(),
+      then: jest.fn().mockResolvedValue(undefined),
+    }),
+  }),
+}))
+
+jest.mock("react-native-file-viewer-turbo", () => ({
+  open: jest.fn().mockResolvedValue(undefined),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
