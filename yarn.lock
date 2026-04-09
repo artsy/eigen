@@ -13476,6 +13476,7 @@ __metadata:
     react-native-collapsible-tab-view: "patch:react-native-collapsible-tab-view@npm%3A9.0.0-rc.0#~/.yarn/patches/react-native-collapsible-tab-view-npm-9.0.0-rc.0-5363b327de.patch"
     react-native-device-info: "npm:14.0.0"
     react-native-fbsdk-next: "npm:13.4.1"
+    react-native-file-viewer-turbo: "npm:^0.7.5"
     react-native-gesture-handler: "npm:2.28.0"
     react-native-get-random-values: "npm:1.11.0"
     react-native-haptic-feedback: "npm:1.13.0"
@@ -22255,6 +22256,16 @@ __metadata:
     expo:
       optional: true
   checksum: 10c0/f38b8d360986e47dede9b5bcd6166e750f93c4f6d38b85013499ce6fa7d0a181b20cc009b6a05167930df0f56ed8dc79223f9cc4bee9969c8d928405fc750576
+  languageName: node
+  linkType: hard
+
+"react-native-file-viewer-turbo@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "react-native-file-viewer-turbo@npm:0.7.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/5e5d38cc1128a3729da6ecf104a63c296e3b1b9ebc788e641980b4177976771d6440aef95c8b030329971756d333d1cfa5d6ec1399edaeb8e0bbea9e70e7fc5e
   languageName: node
   linkType: hard
 
