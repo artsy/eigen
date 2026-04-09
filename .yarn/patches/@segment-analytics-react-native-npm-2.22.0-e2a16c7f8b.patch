@@ -1,0 +1,19 @@
+diff --git a/android/src/main/java/com/segmentanalyticsreactnative/AnalyticsReactNativeModule.kt b/android/src/main/java/com/segmentanalyticsreactnative/AnalyticsReactNativeModule.kt
+index 3cf9c4604c86e334d59cb683c1998b0213bbb929..c6901ee8c26508fe8b63fbac49f57d887a08b6d8 100644
+--- a/android/src/main/java/com/segmentanalyticsreactnative/AnalyticsReactNativeModule.kt
++++ b/android/src/main/java/com/segmentanalyticsreactnative/AnalyticsReactNativeModule.kt
+@@ -217,11 +217,9 @@ class AnalyticsReactNativeModule : ReactContextBaseJavaModule, ActivityEventList
+     }
+ 
+     Log.d(name, "Sending Deeplink data to store: uri=${uri}, referrer=${referrer}")
+-    val sovran = (reactApplicationContext.currentActivity?.application as ReactApplication)
+-      ?.reactNativeHost
+-      ?.reactInstanceManager
+-      ?.currentReactContext
+-      ?.getNativeModule(SovranModule::class.java)
++    // Use reactApplicationContext directly to avoid getReactNativeHost() which throws
++    // in React Native New Architecture (RN 0.83+).
++    val sovran = reactApplicationContext.getNativeModule(SovranModule::class.java)
+     sovran?.dispatch("add-deepLink-data", properties)
+ 
+ 

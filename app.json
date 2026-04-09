@@ -14,10 +14,7 @@
         }
       }
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "runtimeVersion": "55e3069303fec3d205c91675758b91228cba78d5",
     "owner": "artsy_org",
     "extra": {
@@ -48,6 +45,13 @@
           "ios": {
             "reactNativeReleaseLevel": "experimental"
           }
+        }
+      ],
+      "@sentry/react-native",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.673710093763-mjnb33vmcd74p4io0kbc2d8mkpj9jnh7"
         }
       ]
     ]

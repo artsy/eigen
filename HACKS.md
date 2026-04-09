@@ -364,3 +364,13 @@ On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native 
 The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
 
 Sentry issue: https://artsynet.sentry.io/issues/7304441200/
+
+## Patch for Segment
+
+#### When can we remove this:
+
+This gets merged: https://github.com/segmentio/analytics-react-native/pull/1146
+
+#### Explanation/Context:
+
+React Native’s New Architecture replaces ReactNativeHost with a newer system (reactHost). However, the latter is still being used inside analytics-react-native.

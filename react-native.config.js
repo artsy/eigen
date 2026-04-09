@@ -12,5 +12,11 @@ module.exports = {
         android: null,
       },
     },
+    "@invertase/react-native-apple-authentication": {
+      platforms: {
+        // Skip auto-linking here because we don't use it on android
+        android: null,
+      },
+    },
   },
 }
