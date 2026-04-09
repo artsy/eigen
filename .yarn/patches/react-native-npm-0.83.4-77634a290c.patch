@@ -1,0 +1,44 @@
+diff --git a/React/Modules/RCTEventEmitter.m b/React/Modules/RCTEventEmitter.m
+index 6cdec32f68bc0d2f3bc359ddea774078ce2934f8..8f7cf706cdd1b633c2154cd0f1861bf6f359da99 100644
+--- a/React/Modules/RCTEventEmitter.m
++++ b/React/Modules/RCTEventEmitter.m
+@@ -89,6 +89,10 @@
+ 
+   if (_listenerCount > 0) {
+     [self stopObserving];
++    // Reset listener count to allow proper re-initialization on bridge reload
++    // This is necessary for modules that persist across bridge reloads (singletons, dev reload, Expo Updates)
++    // Without this reset, startObserving will never be called again because _listenerCount > 1
++    _listenerCount = 0;
+   }
+ }
+ 
+diff --git a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+index 8e1c0080101ed1abc5cc06110a6493e77b658f11..b32a0bdd647cb49645f62c9db79ce6427a510807 100644
+--- a/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
++++ b/ReactCommon/react/featureflags/ReactNativeFeatureFlagsDefaults.h
+@@ -280,7 +280,7 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
+   }
+ 
+   bool preventShadowTreeCommitExhaustion() override {
+-    return false;
++    return true;
+   }
+ 
+   bool shouldPressibilityUseW3CPointerEventsForHover() override {
+diff --git a/third-party-podspecs/fmt.podspec b/third-party-podspecs/fmt.podspec
+index 2f38990..9b02e48 100644
+--- a/third-party-podspecs/fmt.podspec
++++ b/third-party-podspecs/fmt.podspec
+@@ -26,4 +26,11 @@ Pod::Spec.new do |spec|
+   spec.public_header_files = "include/fmt/*.h"
+   spec.header_mappings_dir = "include"
+   spec.source_files = ["include/fmt/*.h", "src/format.cc"]
++
++  # TODO: Remove after upgrading React Native past 0.83.x
++  # Fix fmt 11.0.2 consteval build error with Xcode 26 (facebook/react-native#55601)
++  # Fixed in RN 0.84+ which bumps fmt to a compatible version.
++  spec.prepare_command = <<~SCRIPT
++    perl -i -pe 's/^#  define FMT_USE_CONSTEVAL 1$/#  define FMT_USE_CONSTEVAL 0/' include/fmt/base.h
++  SCRIPT
+ end

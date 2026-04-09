@@ -9,11 +9,11 @@ buildscript {
         googlePlayServicesAuthVersion = "21.4.0"
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
+        kspVersion = "2.1.20-2.0.1" // Must match kotlinVersion for expo-updates KSP
     }
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath("com.android.tools.build:gradle")
@@ -31,7 +31,6 @@ allprojects {
     repositories {
         maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
         maven { url "$rootDir/../node_modules/@notifee/react-native/android/libs" }
-        jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
@@ -46,3 +45,13 @@ allprojects {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+apply plugin: "expo-root-project"
+
+// Force all subprojects to use the same NDK version as the root project.
+// Without this, AGP auto-downloads its default NDK for modules with native builds
+// (e.g. expo-updates) which can fail with a corrupted installation.
+subprojects {
+    pluginManager.withPlugin("com.android.library") {
+        android.ndkVersion = rootProject.ext.ndkVersion
+    }
+}
