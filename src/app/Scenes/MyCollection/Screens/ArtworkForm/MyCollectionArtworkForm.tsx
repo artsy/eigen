@@ -155,20 +155,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     validationSchema: artworkSchema,
   })
 
-  useEffect(() => {
-    formik.setValues((prev) => ({
-      ...prev,
-      artist: formValues.artist,
-      artistIds: formValues.artistIds,
-      artistSearchResult: formValues.artistSearchResult,
-      artistDisplayName: formValues.artistDisplayName,
-      customArtist: formValues.customArtist,
-      metric: formValues.metric,
-      pricePaidCurrency: formValues.pricePaidCurrency,
-    }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formValues.artistSearchResult, formValues.customArtist])
-
   const safeAreaInsets = useSafeAreaInsets()
 
   return (

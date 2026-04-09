@@ -8,9 +8,11 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { useFormikContext } from "formik"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 import { useTracking } from "react-tracking"
@@ -19,6 +21,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ navigation }) => {
   const tracking = useTracking()
+  const formik = useFormikContext<ArtworkFormValues>()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
@@ -31,6 +34,15 @@ export const MyCollectionArtworkFormArtist: React.FC<
       pricePaidCurrency: preferredCurrency,
     })
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
+
+    // Update formik synchronously before navigation to avoid Fabric crashes caused by
+    // formik state updates firing during a navigation transition.
+    formik.setValues((prev) => ({
+      ...prev,
+      artistSearchResult: result,
+      metric: preferredMetric,
+      pricePaidCurrency: preferredCurrency,
+    }))
 
     if (result.isPersonalArtist || result.counts?.artworks === 0) {
       navigation.navigate("ArtworkFormMain")
@@ -49,6 +61,13 @@ export const MyCollectionArtworkFormArtist: React.FC<
           customArtist: values,
           metric: preferredMetric,
         })
+        // Update formik synchronously before navigation to avoid Fabric crashes caused by
+        // formik state updates firing during a navigation transition.
+        formik.setValues((prev) => ({
+          ...prev,
+          customArtist: values,
+          metric: preferredMetric,
+        }))
         navigation.navigate("ArtworkFormMain")
       },
     })
