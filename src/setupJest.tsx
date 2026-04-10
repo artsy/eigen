@@ -199,8 +199,22 @@ jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
+      CacheDir: "/mock/cache",
     },
+    exists: jest.fn().mockResolvedValue(false),
+    mkdir: jest.fn().mockResolvedValue(undefined),
   },
+  config: jest.fn().mockReturnValue({
+    fetch: jest.fn().mockReturnValue({
+      progress: jest.fn().mockReturnThis(),
+      cancel: jest.fn(),
+      then: jest.fn().mockResolvedValue(undefined),
+    }),
+  }),
+}))
+
+jest.mock("@react-native-documents/viewer", () => ({
+  viewDocument: jest.fn().mockResolvedValue(null),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
@@ -446,7 +460,6 @@ function getNativeModules(): OurNativeModules {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -504,7 +517,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),

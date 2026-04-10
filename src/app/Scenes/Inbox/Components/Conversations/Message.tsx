@@ -1,13 +1,12 @@
 import { Spacer, Flex, BoxProps, Text, useColor } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import React from "react"
-import { Linking, Platform, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -43,23 +42,6 @@ export const Message: React.FC<MessageProps> = ({
     attachments: MessageProps["message"]["attachments"],
     backgroundColor: string
   ) => {
-    // reactNodeHandle is passed to the native side to decide which UIView to show the
-    // download progress bar on.
-    const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
-      const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)
-      if (!attachment) return
-
-      if (Platform.OS === "ios") {
-        return LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
-          reactNodeHandle,
-          attachment.downloadURL,
-          attachment.contentType,
-          attachment.internalID
-        )
-      }
-      return Linking.openURL(attachment.downloadURL)
-    }
-
     return compact(attachments).map((attachment, index) => {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
@@ -76,12 +58,21 @@ export const Message: React.FC<MessageProps> = ({
         >
           {!!isImage && (
             <View key={attachment.id}>
-              <ImagePreview attachment={attachment} onSelected={previewAttachment} />
+              <ImagePreview
+                attachment={attachment}
+                mimeType={attachment.contentType}
+                cacheKey={attachment.internalID}
+              />
             </View>
           )}
           {!!isPDF && (
             <View key={attachment.id}>
-              <PDFPreview attachment={attachment} onSelected={previewAttachment} />
+              <PDFPreview
+                attachment={attachment}
+                url={attachment.downloadURL}
+                mimeType={attachment.contentType}
+                cacheKey={attachment.internalID}
+              />
             </View>
           )}
           {!isImage && !isPDF && !!attachment?.id && (

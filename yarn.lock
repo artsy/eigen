@@ -6638,6 +6638,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-documents/viewer@npm:4.0.0":
+  version: 4.0.0
+  resolution: "@react-native-documents/viewer@npm:4.0.0"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.79.0"
+  checksum: 10c0/5429e2e194a04d8bb05c001657b15587c6a2e7723067fcc9bae76a87c4c9c98cf8b659fc45b19997f3eaca5d79977048bb771c22a7191db1d6539f6b710f765f
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/app@npm:23.1.0":
   version: 23.1.0
   resolution: "@react-native-firebase/app@npm:23.1.0"
@@ -13340,6 +13350,7 @@ __metadata:
     "@react-native-community/netinfo": "npm:11.4.1"
     "@react-native-cookies/cookies": "npm:6.0.11"
     "@react-native-documents/picker": "npm:10.1.5"
+    "@react-native-documents/viewer": "npm:4.0.0"
     "@react-native-firebase/app": "npm:23.1.0"
     "@react-native-firebase/messaging": "npm:23.1.0"
     "@react-native-google-signin/google-signin": "npm:15.0.0"

@@ -2190,6 +2190,34 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - react-native-document-viewer (4.0.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - react-native-fbsdk-next (13.4.1):
     - React-Core
     - react-native-fbsdk-next/Core (= 13.4.1)
@@ -4127,6 +4155,7 @@ DEPENDENCIES:
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
+  - "react-native-document-viewer (from `../node_modules/@react-native-documents/viewer`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
@@ -4427,6 +4456,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
+  react-native-document-viewer:
+    :path: "../node_modules/@react-native-documents/viewer"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
@@ -4716,6 +4747,7 @@ SPEC CHECKSUMS:
   react-native-blurhash: 93b024ff78f7912d22b1cdba262f3c91d3e2002e
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: f26f09a90cce65b5d682f21b511e8eb09a506fdc
+  react-native-document-viewer: d879028d0a0148ab69b6a138dff6d9331cbd1240
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-geolocation: 95e48fe2687e5a8280103085372fa62c2297c5d6
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba

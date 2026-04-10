@@ -1,18 +1,24 @@
 import { Image } from "@artsy/palette-mobile"
 import { ImagePreview_attachment$data } from "__generated__/ImagePreview_attachment.graphql"
+import { useMediaPreview } from "app/Scenes/Inbox/hooks/useMediaPreview"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
+import AttachmentPreview from "./AttachmentPreview"
 
-interface Props extends AttachmentProps {
+interface Props {
   attachment: ImagePreview_attachment$data
+  mimeType: string
+  cacheKey: string
 }
 
 const IMAGE_SIZE = 235
 
-export const ImagePreview: React.FC<Props> = ({ attachment, onSelected }) => {
+export const ImagePreview: React.FC<Props> = ({ attachment, mimeType, cacheKey }) => {
+  const { openPreview } = useMediaPreview(attachment.downloadURL, mimeType, cacheKey)
+
   return (
-    <AttachmentPreview attachment={attachment} onSelected={onSelected}>
+    <AttachmentPreview attachment={attachment} onSelected={openPreview}>
       <Image
         src={attachment.downloadURL}
         height={IMAGE_SIZE}
