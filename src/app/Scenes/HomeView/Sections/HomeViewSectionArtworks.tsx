@@ -26,7 +26,6 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -43,55 +42,8 @@ interface HomeViewSectionArtworksProps extends FlexProps {
   index: number
 }
 
-const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
-const DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD = 10
-const SIX_ARTWORKS_TO_LOAD = 6
+export const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
 const FOUR_ARTWORKS_TO_LOAD = 4
-
-type NWFYExperimentDetails = {
-  artworksCount: number
-  shouldShowInGrid: boolean
-}
-
-export const getNWFYExperimentDetails = ({
-  enabled,
-  variantName,
-  sectionID,
-}: {
-  enabled?: boolean
-  variantName?: string
-  sectionID: string
-}): NWFYExperimentDetails => {
-  if (!enabled || sectionID !== NWFY_SECTION_ID) {
-    return {
-      artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-      shouldShowInGrid: false,
-    }
-  }
-
-  switch (variantName) {
-    case "grid-six-works":
-      return {
-        artworksCount: SIX_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: true,
-      }
-    case "grid-four-works":
-      return {
-        artworksCount: FOUR_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: true,
-      }
-    case "control":
-      return {
-        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: false,
-      }
-    default:
-      return {
-        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: false,
-      }
-  }
-}
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
@@ -103,13 +55,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
-
-  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-  const { artworksCount } = getNWFYExperimentDetails({
-    enabled: !!variant?.enabled,
-    variantName: variant?.name,
-    sectionID: section.internalID,
-  })
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
@@ -136,7 +81,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     : (section.contextModule as ContextModule)
 
   const artworksForGrid = shouldShowInGrid
-    ? artworks.slice(0, artworksCount ?? artworks.length)
+    ? artworks.slice(0, FOUR_ARTWORKS_TO_LOAD)
     : artworks
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[number], position: number) => {
@@ -369,12 +314,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       )
     },
     LoadingFallback: ({ sectionID }) => {
-      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-      const { shouldShowInGrid } = getNWFYExperimentDetails({
-        enabled: !!variant?.enabled,
-        variantName: variant?.name,
-        sectionID,
-      })
+      const shouldShowInGrid = sectionID === NWFY_SECTION_ID
 
       if (shouldShowInGrid) {
         return <HomeViewSectionArtworksGridPlaceholder />

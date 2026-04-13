@@ -7,7 +7,6 @@ import {
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -30,17 +29,9 @@ const HomeViewStoreVisitor: React.FC = () => {
   return null
 }
 
-jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
-  useExperimentVariant: jest.fn(),
-}))
-
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
-    ;(useExperimentVariant as jest.Mock).mockReturnValue({
-      enabled: false,
-      variant: { name: "control" },
-    })
   })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({

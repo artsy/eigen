@@ -5,8 +5,8 @@ import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sectio
 import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
 import {
-  getNWFYExperimentDetails,
   HomeViewSectionArtworksQueryRenderer,
+  NWFY_SECTION_ID,
 } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionCardQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
@@ -21,7 +21,6 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { memo } from "react"
 
@@ -39,12 +38,7 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
-  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-  const { shouldShowInGrid } = getNWFYExperimentDetails({
-    enabled: !!variant?.enabled,
-    variantName: variant?.name,
-    sectionID: section.internalID,
-  })
+  const shouldShowInGrid = section.internalID === NWFY_SECTION_ID
 
   if (!section.internalID) {
     if (__DEV__) {
