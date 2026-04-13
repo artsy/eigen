@@ -15644,6 +15644,7 @@ type InstagramPost {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  errorMessage: String
 
   # A globally unique ID.
   id: ID!
