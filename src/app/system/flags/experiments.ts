@@ -9,10 +9,6 @@ export const experiments = {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
-  onyx_auctions_hub: {
-    description:
-      "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
-  },
   "onyx_NWFY-grid-ABC-test": {
     description: "Test new designs for the New Works For You section on the home screen",
     variantSuggestions: ["control", "grid-four-works", "grid-six-works"],
