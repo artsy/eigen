@@ -5,10 +5,6 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
-  onyx_auctions_hub: {
-    description:
-      "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
-  },
   "onyx_NWFY-grid-ABC-test": {
     description: "Test new designs for the New Works For You section on the home screen",
     variantSuggestions: ["control", "grid-four-works", "grid-six-works"],
