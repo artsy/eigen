@@ -52,17 +52,20 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
+  const shouldShowInGrid = section.component?.type === "ArtworksGrid"
+  const contextModule = section.contextModule as ContextModule
+
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
     // on the screen because it's within a scrollable container.
     isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
-    contextModule: section.contextModule as ContextModule,
+    contextModule,
   })
 
   let artworks = extractNodes(section.artworksConnection)
 
-  if (isDislikeArtworksEnabledFor(section.contextModule)) {
+  if (isDislikeArtworksEnabledFor(contextModule)) {
     artworks = artworks.filter((artwork) => !artwork.isDisliked)
   }
 
@@ -71,10 +74,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   if (!artworks.length) {
     return null
   }
-
-  const contextModule = section.contextModule as ContextModule
-
-  const shouldShowInGrid = section.component?.type === "ArtworksGrid"
 
   const artworksForGrid = shouldShowInGrid ? artworks.slice(0, FOUR_ARTWORKS_TO_LOAD) : artworks
 
@@ -123,7 +122,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   // This is a temporary solution to show the long press context menu only on the first artwork section
-  const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
+  const isFirstArtworkSection = contextModule === ContextModule.newWorksForYouRail
 
   return (
     <Flex {...flexProps}>
@@ -146,7 +145,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         />
       ) : (
         <ArtworkRail
-          contextModule={section.contextModule as ContextModule}
+          contextModule={contextModule}
           contextScreenOwnerType={OwnerType.home}
           artworks={artworks}
           onPress={handleOnArtworkPress}
