@@ -122,6 +122,34 @@ type AckTaskSuccess {
   task: Task!
 }
 
+type AddArtworkToPartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input AddArtworkToPartnerListMutationInput {
+  # The ID of the artwork to add.
+  artworkId: String!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+}
+
+type AddArtworkToPartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: AddArtworkToPartnerListResponseOrError
+}
+
+union AddArtworkToPartnerListResponseOrError =
+    AddArtworkToPartnerListFailure
+  | AddArtworkToPartnerListSuccess
+
+type AddArtworkToPartnerListSuccess {
+  partnerList: PartnerList
+}
+
 type AddArtworkToPartnerShowFailure {
   mutationError: GravityMutationError
 }
@@ -5243,6 +5271,34 @@ type BidderPositionSuggestedNextBid {
 # Represents non-fractional signed whole numeric values. Since the value may
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
+
+type BulkAddArtworksToPartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input BulkAddArtworksToPartnerListMutationInput {
+  # The IDs of the artworks to add.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+}
+
+type BulkAddArtworksToPartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: BulkAddArtworksToPartnerListResponseOrError
+}
+
+union BulkAddArtworksToPartnerListResponseOrError =
+    BulkAddArtworksToPartnerListFailure
+  | BulkAddArtworksToPartnerListSuccess
+
+type BulkAddArtworksToPartnerListSuccess {
+  partnerList: PartnerList
+}
 
 type BulkAddArtworksToShowMutationFailure {
   mutationError: GravityMutationError
@@ -10716,6 +10772,42 @@ type CreatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type CreatePartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerListMutationInput {
+  clientMutationId: String
+
+  # End date for the list.
+  endAt: String
+
+  # The type of list (show, fair, or other).
+  listType: PartnerListTypeEnum
+
+  # The name of the list.
+  name: String!
+
+  # The ID of the partner.
+  partnerID: String!
+
+  # Start date for the list.
+  startAt: String
+}
+
+type CreatePartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the created partner list. On error: the error that occurred.
+  partnerListOrError: CreatePartnerListResponseOrError
+}
+
+union CreatePartnerListResponseOrError = CreatePartnerListFailure | CreatePartnerListSuccess
+
+type CreatePartnerListSuccess {
+  partnerList: PartnerList
+}
+
 type CreatePartnerLocationDaySchedulesFailure {
   mutationError: GravityMutationError
 }
@@ -11950,6 +12042,30 @@ type DeletePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type DeletePartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerListMutationInput {
+  clientMutationId: String
+
+  # The ID of the partner list.
+  id: String!
+}
+
+type DeletePartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted partner list. On error: the error that occurred.
+  partnerListOrError: DeletePartnerListResponseOrError
+}
+
+union DeletePartnerListResponseOrError = DeletePartnerListFailure | DeletePartnerListSuccess
+
+type DeletePartnerListSuccess {
+  partnerList: PartnerList
+}
+
 type DeletePartnerLocationFailure {
   mutationError: GravityMutationError
 }
@@ -12588,6 +12704,32 @@ enum DisplayTextsMessageTypeEnum {
   SUBMITTED_OFFER
   SUBMITTED_ORDER
   UNKNOWN
+}
+
+type DistributePartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input DistributePartnerListMutationInput {
+  clientMutationId: String
+
+  # The ID of the partner list.
+  id: String!
+}
+
+type DistributePartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the distributed partner list. On error: the error that occurred.
+  partnerListOrError: DistributePartnerListResponseOrError
+}
+
+union DistributePartnerListResponseOrError =
+    DistributePartnerListFailure
+  | DistributePartnerListSuccess
+
+type DistributePartnerListSuccess {
+  partnerList: PartnerList
 }
 
 # The type of domestic shipping option
@@ -17454,6 +17596,11 @@ type Mutation {
   # Updates a Task on the logged in User
   ackTask(input: AckTaskMutationInput!): AckTaskMutationPayload
 
+  # Adds an artwork to a partner list.
+  addArtworkToPartnerList(
+    input: AddArtworkToPartnerListMutationInput!
+  ): AddArtworkToPartnerListMutationPayload
+
   # Adds an artwork to a partner show.
   addArtworkToPartnerShow(
     input: AddArtworkToPartnerShowMutationInput!
@@ -17517,6 +17664,11 @@ type Mutation {
     input: AuthorizeMailchimpAccountInput!
   ): AuthorizeMailchimpAccountPayload
   batchArtworkImportImages(input: BatchArtworkImportImagesInput!): BatchArtworkImportImagesPayload
+
+  # Bulk adds artworks to a partner list.
+  bulkAddArtworksToPartnerList(
+    input: BulkAddArtworksToPartnerListMutationInput!
+  ): BulkAddArtworksToPartnerListMutationPayload
 
   # Bulk add artworks to a show
   bulkAddArtworksToShow(
@@ -17864,6 +18016,9 @@ type Mutation {
   # Creates a new contact for a partner
   createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
 
+  # Creates a new partner list.
+  createPartnerList(input: CreatePartnerListMutationInput!): CreatePartnerListMutationPayload
+
   # Creates a new location for a partner
   createPartnerLocation(input: CreatePartnerLocationInput!): CreatePartnerLocationPayload
 
@@ -18021,6 +18176,9 @@ type Mutation {
     input: DeletePartnerContactMutationInput!
   ): DeletePartnerContactMutationPayload
 
+  # Deletes a partner list.
+  deletePartnerList(input: DeletePartnerListMutationInput!): DeletePartnerListMutationPayload
+
   # Deletes a location for a partner
   deletePartnerLocation(
     input: DeletePartnerLocationMutationInput!
@@ -18087,6 +18245,11 @@ type Mutation {
 
   # Updates a Task on the logged in User
   dismissTask(input: DismissTaskMutationInput!): DismissTaskMutationPayload
+
+  # Distributes a partner list to Artsy, creating a draft show.
+  distributePartnerList(
+    input: DistributePartnerListMutationInput!
+  ): DistributePartnerListMutationPayload
   enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
 
   # Mark sale as ended.
@@ -18151,6 +18314,11 @@ type Mutation {
   # Refresh the access token for a connected Instagram account
   refreshInstagramAccount(input: RefreshInstagramAccountInput!): RefreshInstagramAccountPayload
 
+  # Removes an artwork from a partner list.
+  removeArtworkFromPartnerList(
+    input: RemoveArtworkFromPartnerListMutationInput!
+  ): RemoveArtworkFromPartnerListMutationPayload
+
   # Removes an artwork from a partner show.
   removeArtworkFromPartnerShow(
     input: RemoveArtworkFromPartnerShowMutationInput!
@@ -18188,6 +18356,11 @@ type Mutation {
   repositionPartnerArtistArtworks(
     input: RepositionPartnerArtistArtworksMutationInput!
   ): RepositionPartnerArtistArtworksMutationPayload
+
+  # Repositions all artworks in a partner list.
+  repositionPartnerListArtworks(
+    input: RepositionPartnerListArtworksMutationInput!
+  ): RepositionPartnerListArtworksMutationPayload
 
   # Reposition partners locations in various CMS surfaces, settings, Artwork Form, etc.
   repositionPartnerLocations(
@@ -18394,6 +18567,14 @@ type Mutation {
 
   # Updates multiple flags on a partner simultaneously.
   updatePartnerFlags(input: UpdatePartnerFlagsMutationInput!): UpdatePartnerFlagsMutationPayload
+
+  # Updates an existing partner list.
+  updatePartnerList(input: UpdatePartnerListMutationInput!): UpdatePartnerListMutationPayload
+
+  # Updates the position of an artwork in a partner list.
+  updatePartnerListArtworkPosition(
+    input: UpdatePartnerListArtworkPositionMutationInput!
+  ): UpdatePartnerListArtworkPositionMutationPayload
 
   # Updates a new location for a partner
   updatePartnerLocation(input: UpdatePartnerLocationInput!): UpdatePartnerLocationPayload
@@ -19862,6 +20043,23 @@ type Partner implements Node {
     page: Int
     size: Int
   ): PartnerAlertHitsConnection
+
+  # A single partner list by its ID.
+  partnerList(
+    # The ID of the partner list.
+    id: String!
+  ): PartnerList
+
+  # A connection of lists from a Partner.
+  partnerListsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Filter by list type.
+    listType: PartnerListTypeEnum
+  ): PartnerListConnection
   partnerPageEligible: Boolean
   partnerType: String
   profile: Profile
@@ -20662,6 +20860,102 @@ type PartnerInquiryRequest {
   internalID: ID!
   questions: [InquiryQuestion]
   shippingLocation: Location
+}
+
+type PartnerList {
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerListArtworkConnection
+  artworksCount: Int!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  distributedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  listType: PartnerListTypeEnum!
+  name: String!
+  partnerShowID: String
+  startAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
+
+# A connection to a list of items.
+type PartnerListArtworkConnection {
+  # A list of edges.
+  edges: [PartnerListArtworkEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerListArtworkEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Artwork
+  position: Int!
+}
+
+# A connection to a list of items.
+type PartnerListConnection {
+  # A list of edges.
+  edges: [PartnerListEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerListEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerList
+}
+
+enum PartnerListTypeEnum {
+  FAIR
+  OTHER
+  SHOW
 }
 
 type PartnerMerchantAccount {
@@ -23141,6 +23435,34 @@ type RelatedArtworkGrid implements ArtworkContextGrid {
   title: String
 }
 
+type RemoveArtworkFromPartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input RemoveArtworkFromPartnerListMutationInput {
+  # The ID of the artwork to remove.
+  artworkId: String!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+}
+
+type RemoveArtworkFromPartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: RemoveArtworkFromPartnerListResponseOrError
+}
+
+union RemoveArtworkFromPartnerListResponseOrError =
+    RemoveArtworkFromPartnerListFailure
+  | RemoveArtworkFromPartnerListSuccess
+
+type RemoveArtworkFromPartnerListSuccess {
+  partnerList: PartnerList
+}
+
 type RemoveArtworkFromPartnerShowFailure {
   mutationError: GravityMutationError
 }
@@ -23359,6 +23681,34 @@ union RepositionPartnerArtistArtworksResponseOrError =
 
 type RepositionPartnerArtistArtworksSuccess {
   partner: Partner
+}
+
+type RepositionPartnerListArtworksFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionPartnerListArtworksMutationInput {
+  # The ordered list of artwork IDs representing the new positions.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+}
+
+type RepositionPartnerListArtworksMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: RepositionPartnerListArtworksResponseOrError
+}
+
+union RepositionPartnerListArtworksResponseOrError =
+    RepositionPartnerListArtworksFailure
+  | RepositionPartnerListArtworksSuccess
+
+type RepositionPartnerListArtworksSuccess {
+  partnerList: PartnerList
 }
 
 type RepositionPartnerLocationsFailure {
@@ -26703,6 +27053,73 @@ union UpdatePartnerFlagsResponseOrError = UpdatePartnerFlagsFailure | UpdatePart
 
 type UpdatePartnerFlagsSuccess {
   partner: Partner
+}
+
+type UpdatePartnerListArtworkPositionFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerListArtworkPositionMutationInput {
+  # The ID of the artwork.
+  artworkId: String!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+
+  # The new position of the artwork.
+  position: Int!
+}
+
+type UpdatePartnerListArtworkPositionMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: UpdatePartnerListArtworkPositionResponseOrError
+}
+
+union UpdatePartnerListArtworkPositionResponseOrError =
+    UpdatePartnerListArtworkPositionFailure
+  | UpdatePartnerListArtworkPositionSuccess
+
+type UpdatePartnerListArtworkPositionSuccess {
+  partnerList: PartnerList
+}
+
+type UpdatePartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerListMutationInput {
+  clientMutationId: String
+
+  # End date for the list.
+  endAt: String
+
+  # The ID of the partner list.
+  id: String!
+
+  # The type of list (show, fair, or other).
+  listType: PartnerListTypeEnum
+
+  # The name of the list.
+  name: String
+
+  # Start date for the list.
+  startAt: String
+}
+
+type UpdatePartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: UpdatePartnerListResponseOrError
+}
+
+union UpdatePartnerListResponseOrError = UpdatePartnerListFailure | UpdatePartnerListSuccess
+
+type UpdatePartnerListSuccess {
+  partnerList: PartnerList
 }
 
 type UpdatePartnerLocationFailure {
