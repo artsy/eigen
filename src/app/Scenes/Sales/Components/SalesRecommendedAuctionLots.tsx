@@ -2,7 +2,6 @@ import { OwnerType } from "@artsy/cohesion"
 import { SalesRecommendedAuctionLotsQuery } from "__generated__/SalesRecommendedAuctionLotsQuery.graphql"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
 import { HomeViewSectionArtworksPlaceholder } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -16,12 +15,9 @@ export const SalesRecommendedAuctionLotsScreenQuery = graphql`
 
 export const SalesRecommendedAuctionLotsQueryRenderer = withSuspense({
   Component: () => {
-    const { variant } = useExperimentVariant("onyx_auctions_hub")
-    const includeBackfill = !(variant && variant.enabled && variant.name === "experiment")
-
     const data = useLazyLoadQuery<SalesRecommendedAuctionLotsQuery>(
       SalesRecommendedAuctionLotsScreenQuery,
-      { includeBackfill },
+      { includeBackfill: true },
       { fetchPolicy: "store-and-network" }
     )
 
