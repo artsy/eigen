@@ -37,11 +37,6 @@ class MainActivity : ReactActivity() {
     override fun createReactActivityDelegate(): ReactActivityDelegate =
         ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 
-    private fun isTablet(): Boolean {
-        return (this.resources.configuration.screenLayout
-                and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         RNBootSplash.init(this, R.style.BootTheme)
 
@@ -50,10 +45,12 @@ class MainActivity : ReactActivity() {
         // https://github.com/software-mansion/react-native-screens/issues/17
         super.onCreate(null)
 
-        if (!isTablet()) {
-            // prevent screen rotation on phones
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        // TODO: Decide if we want to do this here or not, this is mostly for the splash screen
+        // val isTablet = (resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+        // if (!isTablet) {
+        //     // prevent screen rotation on phones
+        //     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        // }
     }
 
     // Basic overriding this class required for braze integration:
