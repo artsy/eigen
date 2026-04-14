@@ -26,12 +26,10 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
-import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
@@ -39,64 +37,14 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
-  shouldShowInGrid?: boolean
   index: number
 }
 
-const NWFY_SECTION_ID = "home-view-section-new-works-for-you"
-const DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD = 10
-const SIX_ARTWORKS_TO_LOAD = 6
-const FOUR_ARTWORKS_TO_LOAD = 4
-
-type NWFYExperimentDetails = {
-  artworksCount: number
-  shouldShowInGrid: boolean
-}
-
-export const getNWFYExperimentDetails = ({
-  enabled,
-  variantName,
-  sectionID,
-}: {
-  enabled?: boolean
-  variantName?: string
-  sectionID: string
-}): NWFYExperimentDetails => {
-  if (!enabled || sectionID !== NWFY_SECTION_ID) {
-    return {
-      artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-      shouldShowInGrid: false,
-    }
-  }
-
-  switch (variantName) {
-    case "grid-six-works":
-      return {
-        artworksCount: SIX_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: true,
-      }
-    case "grid-four-works":
-      return {
-        artworksCount: FOUR_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: true,
-      }
-    case "control":
-      return {
-        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: false,
-      }
-    default:
-      return {
-        artworksCount: DEFAULT_NUMBER_OF_ARTWORKS_TO_LOAD,
-        shouldShowInGrid: false,
-      }
-  }
-}
+const GRID_MAX_ARTWORKS_COUNT = 4
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
   index,
-  shouldShowInGrid = false,
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
@@ -104,24 +52,20 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
-  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-  const { artworksCount } = getNWFYExperimentDetails({
-    enabled: !!variant?.enabled,
-    variantName: variant?.name,
-    sectionID: section.internalID,
-  })
+  const shouldShowInGrid = section.component?.type === "ArtworksGrid"
+  const contextModule = section.contextModule as ContextModule
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
     // on the screen because it's within a scrollable container.
     isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
-    contextModule: section.contextModule as ContextModule,
+    contextModule,
   })
 
   let artworks = extractNodes(section.artworksConnection)
 
-  if (isDislikeArtworksEnabledFor(section.contextModule)) {
+  if (isDislikeArtworksEnabledFor(contextModule)) {
     artworks = artworks.filter((artwork) => !artwork.isDisliked)
   }
 
@@ -131,13 +75,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     return null
   }
 
-  const contextModule = shouldShowInGrid
-    ? ("newWorksForYouGrid" as ContextModule)
-    : (section.contextModule as ContextModule)
-
-  const artworksForGrid = shouldShowInGrid
-    ? artworks.slice(0, artworksCount ?? artworks.length)
-    : artworks
+  const artworksForGrid = shouldShowInGrid ? artworks.slice(0, GRID_MAX_ARTWORKS_COUNT) : artworks
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[number], position: number) => {
     tracking.tappedArtworkGroup(
@@ -184,7 +122,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   }
 
   // This is a temporary solution to show the long press context menu only on the first artwork section
-  const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
+  const isFirstArtworkSection = contextModule === ContextModule.newWorksForYouRail
 
   return (
     <Flex {...flexProps}>
@@ -207,7 +145,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         />
       ) : (
         <ArtworkRail
-          contextModule={section.contextModule as ContextModule}
+          contextModule={contextModule}
           contextScreenOwnerType={OwnerType.home}
           artworks={artworks}
           onPress={handleOnArtworkPress}
@@ -236,7 +174,6 @@ const fragment = graphql`
   fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks
   @argumentDefinitions(
     enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }
-    includeGenericGrid: { type: "Boolean", defaultValue: false }
     first: { type: "Int", defaultValue: 10 }
   ) {
     __typename
@@ -244,6 +181,7 @@ const fragment = graphql`
     contextModule
     component {
       title
+      type
       behaviors {
         viewAll {
           href
@@ -259,7 +197,7 @@ const fragment = graphql`
           isDisliked @include(if: $enableHidingDislikedArtworks)
           internalID
           ...ArtworkRail_artworks
-          ...GenericGrid_artworks @include(if: $includeGenericGrid)
+          ...GenericGrid_artworks
         }
       }
     }
@@ -267,18 +205,11 @@ const fragment = graphql`
 `
 
 const homeViewSectionArtworksQuery = graphql`
-  query HomeViewSectionArtworksQuery(
-    $id: String!
-    $enableHidingDislikedArtworks: Boolean!
-    $includeGenericGrid: Boolean!
-  ) {
+  query HomeViewSectionArtworksQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionArtworks_section
-          @arguments(
-            enableHidingDislikedArtworks: $enableHidingDislikedArtworks
-            includeGenericGrid: $includeGenericGrid
-          )
+          @arguments(enableHidingDislikedArtworks: $enableHidingDislikedArtworks)
       }
     }
   }
@@ -321,33 +252,16 @@ export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProp
   )
 }
 
-const HomeViewSectionArtworksGridPlaceholder: React.FC<FlexProps> = (flexProps) => {
-  return (
-    <Skeleton>
-      <Flex {...flexProps}>
-        <Flex mx={2} mt={2}>
-          <SkeletonText variant="sm-display">Artworks Rail</SkeletonText>
-          <Spacer y={2} />
-        </Flex>
-        <PlaceholderGrid />
-      </Flex>
-    </Skeleton>
-  )
-}
-
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, refetchKey, shouldShowInGrid, ...flexProps }) => {
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
-
-      const includeGenericGrid = !!shouldShowInGrid
 
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
         {
           id: sectionID,
           enableHidingDislikedArtworks,
-          includeGenericGrid,
         },
         {
           fetchKey: refetchKey,
@@ -360,27 +274,10 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
       }
 
       return (
-        <HomeViewSectionArtworks
-          section={data.homeView.section}
-          index={index}
-          shouldShowInGrid={shouldShowInGrid}
-          {...flexProps}
-        />
+        <HomeViewSectionArtworks section={data.homeView.section} index={index} {...flexProps} />
       )
     },
-    LoadingFallback: ({ sectionID }) => {
-      const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-      const { shouldShowInGrid } = getNWFYExperimentDetails({
-        enabled: !!variant?.enabled,
-        variantName: variant?.name,
-        sectionID,
-      })
-
-      if (shouldShowInGrid) {
-        return <HomeViewSectionArtworksGridPlaceholder />
-      }
-      return <HomeViewSectionArtworksPlaceholder />
-    },
+    LoadingFallback: HomeViewSectionArtworksPlaceholder,
     ErrorFallback: NoFallback,
   })
 )

@@ -4,10 +4,7 @@ import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sectio
 import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
-import {
-  getNWFYExperimentDetails,
-  HomeViewSectionArtworksQueryRenderer,
-} from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionCardQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
 import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
@@ -21,7 +18,6 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { memo } from "react"
 
@@ -39,13 +35,6 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
-  const { variant } = useExperimentVariant("onyx_NWFY-grid-ABC-test")
-  const { shouldShowInGrid } = getNWFYExperimentDetails({
-    enabled: !!variant?.enabled,
-    variantName: variant?.name,
-    sectionID: section.internalID,
-  })
-
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -66,13 +55,7 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
     case "HomeViewSectionActivity":
       return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtworks":
-      return (
-        <HomeViewSectionArtworksQueryRenderer
-          sectionID={section.internalID}
-          shouldShowInGrid={!!shouldShowInGrid}
-          {...rest}
-        />
-      )
+      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCard":
       return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards": {

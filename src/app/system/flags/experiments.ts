@@ -5,9 +5,9 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
-  "onyx_NWFY-grid-ABC-test": {
-    description: "Test new designs for the New Works For You section on the home screen",
-    variantSuggestions: ["control", "grid-four-works", "grid-six-works"],
+  test_experiment: {
+    description: "Experiment description",
+    variantSuggestions: ["control", "experiment"],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 
