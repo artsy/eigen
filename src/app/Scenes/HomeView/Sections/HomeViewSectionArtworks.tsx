@@ -40,7 +40,7 @@ interface HomeViewSectionArtworksProps extends FlexProps {
   index: number
 }
 
-const FOUR_ARTWORKS_TO_LOAD = 4
+const GRID_MAX_ARTWORKS_COUNT = 4
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
@@ -75,7 +75,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     return null
   }
 
-  const artworksForGrid = shouldShowInGrid ? artworks.slice(0, FOUR_ARTWORKS_TO_LOAD) : artworks
+  const artworksForGrid = shouldShowInGrid ? artworks.slice(0, GRID_MAX_ARTWORKS_COUNT) : artworks
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[number], position: number) => {
     tracking.tappedArtworkGroup(
