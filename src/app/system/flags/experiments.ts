@@ -4,6 +4,11 @@ export type ExperimentDescriptor = {
   readonly variantSuggestions?: string[]
 }
 
-export const experiments = {} satisfies { [key: string]: ExperimentDescriptor }
+export const experiments = {
+  test_experiment: {
+    description: "Experiment description",
+    variantSuggestions: ["control", "experiment"],
+  },
+} satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
