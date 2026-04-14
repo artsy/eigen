@@ -20044,6 +20044,12 @@ type Partner implements Node {
     size: Int
   ): PartnerAlertHitsConnection
 
+  # A single partner list by its ID.
+  partnerList(
+    # The ID of the partner list.
+    id: String!
+  ): PartnerList
+
   # A connection of lists from a Partner.
   partnerListsConnection(
     after: String
