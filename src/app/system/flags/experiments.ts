@@ -5,10 +5,6 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
-  "onyx_artwork-card-save-and-follow-cta-redesign": {
-    description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
-    variantSuggestions: ["variant-a", "variant-b", "variant-c"],
-  },
   onyx_auctions_hub: {
     description:
       "Adds AuctionsHub Section to the home view and replaces the existing Auctions screen",
