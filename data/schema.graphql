@@ -25985,6 +25985,15 @@ input UpdateArtworkEditionSetInput {
   # The availability of the artwork
   availability: String
 
+  # Whether the artwork has a certificate of authenticity
+  certificateOfAuthenticity: Boolean
+
+  # Whether the certificate of authenticity is issued by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # Whether the certificate of authenticity is issued by the gallery
+  coaByGallery: Boolean
+
   # The ID of the image to set as the default for this artwork
   defaultImageID: String
   delete: Boolean
@@ -26151,7 +26160,16 @@ input UpdateArtworkMutationInput {
 
   # The availability of the artwork
   availability: String
+
+  # Whether the artwork has a certificate of authenticity
+  certificateOfAuthenticity: Boolean
   clientMutationId: String
+
+  # Whether the certificate of authenticity is issued by an authenticating body
+  coaByAuthenticatingBody: Boolean
+
+  # Whether the certificate of authenticity is issued by the gallery
+  coaByGallery: Boolean
 
   # The date or year of the artwork
   date: String
