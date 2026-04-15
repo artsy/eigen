@@ -5355,6 +5355,9 @@ input BulkArtworkFilterInput {
   # Filter artworks by partner artist id
   partnerArtistId: String
 
+  # Filter artworks by partner list id
+  partnerListId: String
+
   # Filter artworks by published status
   published: Boolean
 }
@@ -5507,6 +5510,7 @@ enum BulkUpdateSourceEnum {
   ADMIN
   ARTWORKS_LIST
   PARTNER_ARTIST_ARTWORKS_LIST
+  PARTNER_LIST
   SHOW_ARTWORKS_LIST
 }
 
