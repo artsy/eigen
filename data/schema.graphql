@@ -5623,6 +5623,7 @@ type CatalogArtworkDocument {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  publicURL: String!
   title: String
   updatedAt(
     format: String
@@ -5630,7 +5631,6 @@ type CatalogArtworkDocument {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  url: String!
 }
 
 type CausalityLotState {
