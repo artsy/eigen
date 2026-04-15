@@ -2,7 +2,7 @@ buildscript {
     ext {
         googlePlayServicesVersion = "17.0.0"
         buildToolsVersion = "36.0.0"
-        minSdkVersion = 24
+        minSdkVersion = 30
         compileSdkVersion = 36
         targetSdkVersion = 36
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
