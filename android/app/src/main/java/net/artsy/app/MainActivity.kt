@@ -46,11 +46,11 @@ class MainActivity : ReactActivity() {
         super.onCreate(null)
 
         // TODO: Decide if we want to do this here or not, this is mostly for the splash screen
-        // val isTablet = (resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
-        // if (!isTablet) {
-        //     // prevent screen rotation on phones
-        //     requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        // }
+        val isTablet = (resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+        if (!isTablet) {
+            // prevent screen rotation on phones
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     // Basic overriding this class required for braze integration:
