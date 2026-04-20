@@ -18,6 +18,8 @@ skip_docs
 # Constants and Path Configurations
 $APP_JSON_PATH = '../app.json'
 $APP_JSON = JSON.parse(File.read($APP_JSON_PATH))
+$IOS_CONFIG_PATH = '../ios-config.json'
+$IOS_CONFIG = JSON.parse(File.read($IOS_CONFIG_PATH))
 APP_PLIST = '../ios/Artsy/App_Resources/Info.plist'
 FIREBASE_BADGE_TEXT_COLOR = '8A2BE2' # devpurple
 FIREBASE_BADGE_IMAGE_PATH = 'fastlane/images/beta_badge.png'
@@ -26,7 +28,6 @@ BUNDLE_ID = 'net.artsy.artsy'
 
 IOS_TARGETS = {
   'net.artsy.artsy' => { name: 'Artsy', plist_path: APP_PLIST },
-  'net.artsy.artsy.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
   'net.artsy.artsy.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
   'net.artsy.artsy.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
@@ -34,7 +35,6 @@ IOS_TARGETS = {
 
 IOS_BETA_TARGETS = {
   'net.artsy.qa' => { name: 'Artsy', plist_path: APP_PLIST },
-  'net.artsy.qa.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
   'net.artsy.qa.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
   'net.artsy.qa.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
@@ -87,7 +87,7 @@ lane :ship_beta_ios do |options|
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
   # Select Xcode version
-  xcode_select("/Applications/Xcode_16.4.app")
+  xcode_select("/Applications/Xcode_#{$IOS_CONFIG['xcode_version']}.app")
 
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
@@ -191,11 +191,41 @@ lane :promote_beta_ios do
   next_app_store_version = app.get_edit_app_store_version.version_string
 
   # app.builds are listed most recent first, limit to 20
-  builds = app.get_builds.first(20).map { |build| build.version }
+  `git fetch --tags 2>/dev/null`
+
+  raw_builds = app.get_builds(includes: "preReleaseVersion").first(20)
+
+  # Collect metadata first so we can compute column widths for alignment
+  build_data = raw_builds.map do |build|
+    raw_version = build.version
+    padded      = format_build_number(raw_version)
+    app_version = build.pre_release_version&.version || "?"
+    commit_msg  = git_tag_commit_message("ios-#{app_version}-#{padded}") || "(no tag found)"
+    date        = begin
+      Time.parse(build.uploaded_date.to_s).strftime('%Y-%m-%d %H:%M')
+    rescue
+      build.uploaded_date.to_s
+    end
+    { raw_version: raw_version, app_version: app_version, padded: padded, date: date, commit_msg: commit_msg }
+  end
+
+  require 'terminal-table'
+
+  rows = build_data.each_with_index.map do |d, i|
+    [i + 1, d[:app_version], d[:padded], d[:date], d[:commit_msg]]
+  end
+
+  table = Terminal::Table.new(
+    headings: ['#', 'Version', 'Build', 'Upload Date', 'Last Commit'],
+    rows: rows
+  )
 
   UI.header 'Last 20 iOS builds'
+  UI.message("\n#{table}")
 
-  build_number = UI.select('Which build would you like to release?: ', builds)
+  choice = UI.input("Enter build number (1-#{build_data.length}): ").to_i
+  UI.user_error!("Invalid choice") unless choice.between?(1, build_data.length)
+  build_number = build_data[choice - 1][:raw_version]
 
   if UI.confirm("Are you sure you would like to release '#{build_number}'?")
     UI.success 'Continuing the release!'
@@ -314,7 +344,13 @@ lane :ship_beta_android do |options|
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+  if deployment_target == 'firebase'
+    # Firebase is internal QA on real devices — all modern Android phones are arm64-v8a.
+    # Building only arm64-v8a instead of all 4 ABIs significantly reduces native compilation time.
+    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=arm64-v8a'")
+  else
+    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+  end
 
   if (deployment_target == 'play_store')
     # important! this must match the release version specified
@@ -396,21 +432,46 @@ lane :select_android_build do |options|
   select_message = options[:select_message] || 'release'
   skip_download = options[:skip_download] || false
 
+  `git fetch --tags 2>/dev/null`
+
   s3_files_output = sh('aws s3 ls ' + S3_ANDROID_BUILDS_PATH)
 
-  aab_filename_regex = /\d+\.aab/
-  matches = s3_files_output.scan(aab_filename_regex)
+  # aws s3 ls lines look like: "2026-02-27 05:00:40      12345678 2026022705.aab"
+  aab_line_regex = /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}):\d{2}\s+\d+\s+(\d+\.aab)/
+  parsed = s3_files_output.scan(aab_line_regex)
 
-  # sort in descending order
-  sorted_matches = matches.sort_by { |s| s.scan(/\d+/).first.to_i }.reverse
+  # sort in descending order by version code, limit to 20
+  sorted_parsed = parsed.sort_by { |_date, filename| filename.scan(/\d+/).first.to_i }.reverse.first(20)
 
-  # android builds are listed most recent first, limit to 20
-  builds = sorted_matches.first(20)
+  app_version = $APP_JSON['version']
+
+  build_data = sorted_parsed.map do |date, filename|
+    vcode      = filename.scan(/\d+/).first
+    raw_msg    = git_tag_commit_message("android-#{app_version}-#{vcode}")
+    version    = raw_msg ? app_version : "unknown"
+    commit_msg = raw_msg || "(no tag found)"
+    { filename: filename, vcode: vcode, date: date, version: version, commit_msg: commit_msg }
+  end
+
+  require 'terminal-table'
+
+  rows = build_data.each_with_index.map do |d, i|
+    [i + 1, d[:version], d[:vcode], d[:date], d[:commit_msg]]
+  end
+
+  table = Terminal::Table.new(
+    headings: ['#', 'Version', 'Build', 'Upload Date', 'Last Commit'],
+    rows: rows
+  )
 
   UI.header 'Last 20 Android builds'
+  UI.message("\n#{table}")
 
-  selected_build = UI.select('Which build would you like to ' + select_message + '?: ', builds)
-  if UI.confirm("Are you sure you would like to " + select_message + " #{selected_build}?")
+  choice = UI.input("Enter build number (1-#{build_data.length}): ").to_i
+  UI.user_error!("Invalid choice") unless choice.between?(1, build_data.length)
+  selected = build_data[choice - 1]
+
+  if UI.confirm("Are you sure you would like to #{select_message} #{selected[:filename]}?")
     UI.success 'Continuing!'
   else
     UI.user_error!('Stopping the train!')
@@ -419,11 +480,11 @@ lane :select_android_build do |options|
   if !skip_download
     # download the selected build to the typical build output directory
     output_app_path = '../android/app/build/outputs/bundle/release/app-release.aab'
-    sh('aws s3 cp ' + S3_ANDROID_BUILDS_PATH + selected_build + ' ' + output_app_path)
+    sh('aws s3 cp ' + S3_ANDROID_BUILDS_PATH + selected[:filename] + ' ' + output_app_path)
   end
 
   # return the selected version num
-  selected_build.scan(/\d+/).first
+  selected[:vcode]
 end
 
 desc 'Set the build version in the android app build.gradle'
@@ -593,7 +654,7 @@ lane :build_maestro_ios do
   set_git_properties_ios
 
   # Select Xcode version
-  xcode_select("/Applications/Xcode_16.4.app")
+  xcode_select("/Applications/Xcode_#{$IOS_CONFIG['xcode_version']}.app")
 
   # Build iOS app with QA scheme for simulator (no codesigning needed)
   build_params = ios_build_params('maestro')
@@ -616,7 +677,10 @@ lane :build_maestro_android do |options|
   set_git_properties_android
 
   # Build Android AAB in beta mode for Maestro testing
-  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+  # IMPORTANT: Here we use PreactNativeArchitectures=x86_64 to build only for the emulator
+  # that we are using on the build-maestro-android gh action.
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2 -PreactNativeArchitectures=x86_64'")
+
 
   # Convert AAB to APK using existing bundletool logic
   aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'

@@ -143,10 +143,7 @@ export const AutoHeightInfoModal: React.FC<{
           : undefined
       }
     >
-      <SafeAreaView
-        edges={["bottom", "top"]}
-        style={Platform.OS === "ios" ? { paddingBottom: space(2) } : {}}
-      >
+      <SafeAreaView edges={["bottom", "top"]} style={{ paddingBottom: safeAreaInsets.bottom }}>
         <Flex maxHeight={MAX_CONTENT_HEIGHT}>
           <Text mx={2} variant="lg-display">
             {modalTitle ?? title}

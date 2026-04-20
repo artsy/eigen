@@ -29,6 +29,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
       <Image
         testID="show-cover"
         src={data.coverImage?.url ?? ""}
+        blurhash={data.coverImage?.blurhash}
         aspectRatio={1.3}
         width={DEFAULT_CELL_WIDTH}
       />
@@ -69,6 +70,7 @@ const showGraphql = graphql`
     exhibitionPeriod(format: SHORT)
     coverImage {
       url(version: "large")
+      blurhash
     }
   }
 `

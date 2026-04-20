@@ -2,7 +2,7 @@ name: ☢️ Conventional Commits Check
 
 on:
   pull_request:
-    types: [opened, edited]
+    types: [edited, opened, ready_for_review, reopened]
 
 jobs:
   run-conventional-commits-check:

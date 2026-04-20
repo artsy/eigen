@@ -14,7 +14,7 @@ async function main() {
       commitMessage: "chore: update eigen query map",
       body: "Greetings human :robot: this PR was automatically created as part of eigen's deploy process",
       assignees: ["artsyit"],
-      labels: ["Merge On Green"],
+      autoMergeMethod: "MERGE",
       update: (dir) => {
         console.log("∙ Merging complete.queryMap.json")
         // merge metaphysics into eigen map first, to preserve any manual edits made in MP

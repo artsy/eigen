@@ -1,6 +1,8 @@
 import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { Schema } from "app/utils/track"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -21,8 +23,66 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
   showReadMore = false,
 }) => {
   const artworkData = useFragment(artworkDetailsFragment, artwork)
+  const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
+  const editionSets = artworkData.editionSets ?? []
+  let dimensionsToUse = null
+  let framedDimensionsToUse = null
+
+  const getEditionSetDimensions = () => {
+    const selectedEdition = editionSets.find((editionSet) => {
+      return editionSet?.internalID === selectedEditionId
+    })
+
+    if (editionSets && editionSets.length === 1) {
+      const singleEditionSet = editionSets[0]
+
+      return {
+        dimensions: singleEditionSet?.dimensions,
+        framedDimensions: singleEditionSet?.framedDimensions,
+      }
+    }
+
+    return {
+      dimensions: selectedEdition?.dimensions,
+      framedDimensions: selectedEdition?.framedDimensions,
+    }
+  }
+
+  if (editionSets.length) {
+    const { dimensions, framedDimensions } = getEditionSetDimensions()
+    dimensionsToUse = dimensions
+    framedDimensionsToUse = framedDimensions
+  } else {
+    dimensionsToUse = artworkData?.dimensions
+    framedDimensionsToUse = artworkData?.framedDimensions
+  }
+
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
+    useArtworkDimensions({ dimensions: dimensionsToUse, framedDimensions: framedDimensionsToUse })
+
+  const shouldShowDimensions = isFramedSizeEnabled && hasFramedDimensions
 
   const listItems = [
+    ...(shouldShowDimensions
+      ? [
+          {
+            title: "Size",
+            value: (
+              <Text variant="xs" color="mono100">
+                {regularDimensionText}
+              </Text>
+            ),
+          },
+          {
+            title: "Framed Size",
+            value: (
+              <Text variant="xs" color="mono100">
+                {framedDimensionText}
+              </Text>
+            ),
+          },
+        ]
+      : []),
     {
       title: "Medium",
       value: artworkData?.mediumType?.name && (
@@ -131,6 +191,10 @@ const artworkDetailsFragment = graphql`
       cm
       in
     }
+    framedDimensions {
+      in
+      cm
+    }
     attributionClass {
       name
     }
@@ -158,6 +222,14 @@ const artworkDetailsFragment = graphql`
     editionOf
     editionSets {
       internalID
+      dimensions {
+        cm
+        in
+      }
+      framedDimensions {
+        in
+        cm
+      }
     }
   }
 `

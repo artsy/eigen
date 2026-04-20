@@ -86,7 +86,6 @@ export const ArticleSlideShow: React.FC<ArticleSlideShowProps> = ({ article, cov
           horizontal
           keyExtractor={({ id }) => `ArticleSlideShowItem-${id}`}
           snapToInterval={width}
-          estimatedItemSize={width}
           pagingEnabled
           initialScrollIndex={currentIndex}
           viewabilityConfig={{

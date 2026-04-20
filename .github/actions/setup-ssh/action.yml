@@ -1,0 +1,13 @@
+name: Setup SSH agent
+description: "Configure SSH agent for repository access"
+inputs:
+  ssh-private-key:
+    description: "SSH private key for repository access"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup SSH agent
+      uses: webfactory/ssh-agent@v0.9.1
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}

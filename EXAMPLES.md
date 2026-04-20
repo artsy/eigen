@@ -114,5 +114,3 @@ Links:
 
 - [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx)
 - [Search.tsx](src/app/Scenes/Search/Search.tsx)
-- [AnimatableHeaderLargeTitle.tsx](src/app/Components/AnimatableHeader/AnimatableHeaderLargeTitle.tsx)
-- [AnimatableHeader.tsx](src/app/Components/AnimatableHeader/AnimatableHeader.tsx)

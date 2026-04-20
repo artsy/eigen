@@ -141,7 +141,7 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
 
-## Patch-package for sift-react-native
+## Patch for sift-react-native
 
 #### When can we remove this:
 
@@ -154,7 +154,7 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
-## Patch-package for @react-navigation/native
+## Patch for @react-navigation/native
 
 #### When we can remove this:
 
@@ -215,7 +215,7 @@ We want to be able to promote past android builds to prod because we are creatin
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
 promotion. We added custom logic to work around this.
 
-## patch-package for react-native-keys
+## Patch for react-native-keys
 
 #### When can we remove this:
 
@@ -226,7 +226,7 @@ https://github.com/numandev1/react-native-keys/pull/117
 
 Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
 
-## patch-package for react-navigation/bottom-tabs
+## Patch for @react-navigation/bottom-tabs
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
@@ -252,7 +252,7 @@ This patch was added to support 16KB page size on Android. It's a copy paste fro
 
 It can be removed once we upgrade to any version past 3.17
 
-## patch-pacakge for react-native-reanimatedAdd a comment on lines L230 to L236Add diff commentMarkdown input: edit mode selected.WritePreviewHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
+## Patch for react-native-reanimated (CellRendererComponent)
 
 #### When can we remove this:
 
@@ -262,16 +262,6 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 #### Explanation/Context:
 
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
-
-## patch for react-native-blurhash
-
-#### Explanation/Context:
-
-This patch was added to fix the build on RN81.
-
-#### When can we remove this:
-
-It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
 
 ## patch for react-native RCTEventEmitter
 
@@ -283,3 +273,94 @@ not reset. This causes the module to never start listening again causing events 
 #### When can we remove this:
 
 It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
+
+## react-native-reanimated package.json flags and react-native patch
+
+### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
+
+#### Explanation/Context:
+
+This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+
+We also added a patch to react-native to support this flag and temporarily enabled preventShadowTreeCommitExhaustion and enableCppPropsIteratorSetter flags to fix performance issues.
+
+#### When can we remove this:
+
+When reanimated adopts this by default.
+
+## react-native-webview passing constant for decelerationRate prop
+
+#### Explanation/Context:
+
+This is a bug on the new architecture on Android with this prop and react-native-webview.
+
+#### When can we remove this:
+
+When this is merged and we update react-native-webview to a version that contains it:
+https://github.com/react-native-webview/react-native-webview/pull/3885
+
+## patch for expo-build-disk-cache
+
+#### Explanation/Context:
+
+The original code had a logging issue where it would log a "cache miss" message immediately after checking the local disk cache, even before checking the remote cache plugin (S3 in our case). This resulted in false-negative messages showing cache misses when the cache was actually available remotely.
+
+The patch:
+
+- Moves the `logger.log(texts.read.miss)` call to after the remote plugin check
+- Fixes the control flow so that the cache miss is only logged if both disk AND remote caches fail
+- Improves the conditional logic around remote plugin downloading to properly return the cache path on success
+
+This ensures accurate logging when using remote cache plugins like our S3 build cache implementation.
+
+#### When we can remove this:
+
+When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.
+
+## patch for react-native
+
+#### Explanation/Context:
+
+Probably related with this sentry issue https://artsynet.sentry.io/issues/7043718518/events/0e89b1ce77cd4dfe95c45feefea1ed22/ EXC_BAD_ACCESS crash on iOS. This patch is attempting to fix the crash and was found in this reanimated issue (but is a react-native patch): https://github.com/software-mansion/react-native-reanimated/issues/7666#issuecomment-3053014969
+
+#### When can we remove this:
+
+When they address this issue on react native main repo
+
+## Patch for react-native-ios-context-menu
+
+#### When can we remove this:
+
+When https://github.com/dominicstop/react-native-ios-context-menu/pull/140 is merged and we upgrade to a version that includes it.
+
+#### Explanation/Context:
+
+Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPreview` during context menu dismissal but Fabric has already detached the underlying view from the window. The fix guards `menuTargetedPreview` to return `nil` when `window` is `nil`, letting iOS fall back to a fade-out dismissal instead of crashing.
+
+See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
+
+## patch for expo-updates
+
+#### Explanation/Context:
+
+Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+
+#### When can we remove this:
+
+When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+
+## Patch for @gorhom/bottom-sheet (scrollTo infinite loop on Fabric)
+
+#### When can we remove this:
+
+When @gorhom/bottom-sheet ships a fix for the infinite `scrollTo` loop on Fabric (New Architecture). Track these upstream issues:
+https://github.com/gorhom/react-native-bottom-sheet/issues/2546
+https://github.com/gorhom/react-native-bottom-sheet/issues/2547
+
+#### Explanation/Context:
+
+On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native commit cycle that re-triggers `onScroll` even when the scroll offset hasn't changed. In `useScrollEventsHandlersDefault`, when the scrollable state is `LOCKED`, `handleOnScroll` calls `scrollTo` to enforce the lock position, which fires another `onScroll`, which calls `scrollTo` again — creating an infinite recursion that crashes with "Maximum call stack size exceeded (native stack depth)".
+
+The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+
+Sentry issue: https://artsynet.sentry.io/issues/7304441200/

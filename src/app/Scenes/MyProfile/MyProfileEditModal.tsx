@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import { Box, Button, Text } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
@@ -11,6 +10,7 @@ import {
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
 import { fetchProfileData } from "app/Scenes/MyProfile/fetchProfileData"
 import { useUpdateUserProfileFields } from "app/Scenes/MyProfile/useUpdateUserProfileFields"
+import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -75,6 +75,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             },
             profession: values.profession,
             otherRelevantPositions: values.otherRelevantPositions,
+            instagram: values.instagram,
+            linkedIn: values.linkedIn,
             promptedForUpdate: true,
           },
         },
@@ -113,7 +115,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
 
   return (
     <AutomountedBottomSheetModal visible={visible} onDismiss={handleDismiss} enableDynamicSizing>
-      <BottomSheetScrollView keyboardShouldPersistTaps="always">
+      <BottomSheetKeyboardAwareScrollView keyboardShouldPersistTaps="always">
         <Box p={2}>
           <Text>{message}</Text>
           <FormikProvider value={formikBag}>
@@ -126,11 +128,11 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
               disabled={!isValid}
               loading={loading}
             >
-              Save and Continue
+              Save Profile Details
             </Button>
           </FormikProvider>
         </Box>
-      </BottomSheetScrollView>
+      </BottomSheetKeyboardAwareScrollView>
     </AutomountedBottomSheetModal>
   )
 }

@@ -43,7 +43,6 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
         loadMore={loadNext}
         hasMore={hasNext}
         numColumns={numColumns}
-        disableAutoLayout
         pageSize={PAGE_SIZE}
         contextModule={ContextModule.newWorksForYouRail}
         contextScreenOwnerType={OwnerType.newWorksForYou}

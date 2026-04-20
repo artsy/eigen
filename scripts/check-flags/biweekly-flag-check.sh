@@ -6,7 +6,7 @@
 DATENUM=`date +\%s`
 RELEASEWEEK=`expr $DATENUM / 604800 \% 2`
 
-if [ $RELEASEWEEK -eq 0 ]
+if [ $RELEASEWEEK -eq 1 ]
 then
   echo "It's a release week!"
   echo "Running flag check"

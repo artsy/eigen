@@ -1,0 +1,14 @@
+diff --git a/src/Container.tsx b/src/Container.tsx
+index 9ec4cfe90166c00f2ccfb7aec3f5da8cc5c4bae1..80f5f2220cc7bc1a58da898a0fe557079a6c2148 100644
+--- a/src/Container.tsx
++++ b/src/Container.tsx
+@@ -228,7 +228,8 @@ export const Container = React.memo(
+         syncScrollFrame.setActive(toggle)
+       const syncScrollFrame = useFrameCallback(({ timeSinceFirstFrame }) => {
+         syncCurrentTabScrollPosition()
+-        if (timeSinceFirstFrame > 1500) {
++        const timeToSync = IS_IOS ? 1500 : 300
++        if (timeSinceFirstFrame > timeToSync) {
+           scheduleOnRN(toggleSyncScrollFrame, false)
+         }
+       }, false)

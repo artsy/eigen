@@ -66,6 +66,7 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
         src={relatedArtistData.coverArtwork?.image?.url ?? ""}
         aspectRatio={1.3}
         width={DEFAULT_CELL_WIDTH}
+        blurhash={relatedArtistData.coverArtwork?.image?.blurhash}
       />
 
       <Flex flexDirection="row" justifyContent="space-between" my={1}>
@@ -93,6 +94,7 @@ const relatedArtistQuery = graphql`
     coverArtwork {
       image {
         url(version: "large")
+        blurhash
       }
     }
   }

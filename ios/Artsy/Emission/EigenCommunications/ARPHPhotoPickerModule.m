@@ -68,38 +68,41 @@ RCT_EXPORT_METHOD(requestPhotos:(BOOL)allowMultiple
 
     if (results.count == 0) {
         _resolve(@[]);
-    } else {
-        NSMutableArray *images = [[NSMutableArray alloc] init];
-        Compression *compression = [[Compression alloc] init];
-        dispatch_group_t imageLoadGroup = dispatch_group_create();
-        for (PHPickerResult *result in results) {
-            if ([result.itemProvider canLoadObjectOfClass:UIImage.class]) {
-                dispatch_group_enter(imageLoadGroup);
-                [result.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading> _Nullable object, NSError * _Nullable error) {
-                    if ([object isKindOfClass:[UIImage class]]) {
-                        UIImage *image = (UIImage*)object;
-                        NSDictionary *compressionOption = @{ @"compressImageQuality": @1.0 };
-                        ImageResult *imageResult = [compression compressImage:[image fixOrientation] withOptions:compressionOption];
-                        NSString *filePath = [self persistFile:imageResult.data];
-                        NSDictionary *imageDict = [self dictFromImageResult:imageResult filePath:filePath];
+        return;
+    }
+
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    Compression *compression = [[Compression alloc] init];
+    dispatch_group_t imageLoadGroup = dispatch_group_create();
+    dispatch_queue_t serialQueue = dispatch_queue_create("net.artsy.ARPHPhotoPicker.imageLoad", DISPATCH_QUEUE_SERIAL);
+
+    for (PHPickerResult *result in results) {
+        if ([result.itemProvider canLoadObjectOfClass:UIImage.class]) {
+            dispatch_group_enter(imageLoadGroup);
+            [result.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading> _Nullable object, NSError * _Nullable error) {
+                if ([object isKindOfClass:[UIImage class]]) {
+                    UIImage *image = (UIImage*)object;
+                    NSDictionary *compressionOption = @{ @"compressImageQuality": @1.0 };
+                    ImageResult *imageResult = [compression compressImage:[image fixOrientation] withOptions:compressionOption];
+                    NSString *filePath = [self persistFile:imageResult.data];
+                    NSDictionary *imageDict = [self dictFromImageResult:imageResult filePath:filePath];
+                    dispatch_sync(serialQueue, ^{
                         [images addObject:imageDict];
-                    }
-                    dispatch_group_leave(imageLoadGroup);
-                }];
-            }
-        }
-
-        double delayInSeconds = 3.0;
-        dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_group_wait(imageLoadGroup, timeout);
-
-        if (results.count == 0) {
-            NSError *loadFailedError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
-            _reject(ErrorDomain, LoadFailedErrorMessage, loadFailedError);
-        } else {
-            _resolve(images);
+                    });
+                }
+                dispatch_group_leave(imageLoadGroup);
+            }];
         }
     }
+
+    dispatch_group_notify(imageLoadGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (images.count == 0) {
+            NSError *loadFailedError = [NSError errorWithDomain:ErrorDomain code:ARPHPhotoPickerErrorLoadFailed userInfo:@{ NSLocalizedDescriptionKey: LoadFailedErrorMessage }];
+            self->_reject(ErrorDomain, LoadFailedErrorMessage, loadFailedError);
+        } else {
+            self->_resolve(images);
+        }
+    });
 }
 
 /*!

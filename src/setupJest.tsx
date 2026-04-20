@@ -17,6 +17,7 @@ import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
+import mockKeyboardController from "react-native-keyboard-controller/jest"
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
@@ -97,13 +98,6 @@ jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
 }))
-
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
-  }
-})
 
 require("jest-fetch-mock").enableMocks()
 
@@ -205,8 +199,22 @@ jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
+      CacheDir: "/mock/cache",
     },
+    exists: jest.fn().mockResolvedValue(false),
+    mkdir: jest.fn().mockResolvedValue(undefined),
   },
+  config: jest.fn().mockReturnValue({
+    fetch: jest.fn().mockReturnValue({
+      progress: jest.fn().mockReturnThis(),
+      cancel: jest.fn(),
+      then: jest.fn().mockResolvedValue(undefined),
+    }),
+  }),
+}))
+
+jest.mock("@react-native-documents/viewer", () => ({
+  viewDocument: jest.fn().mockResolvedValue(null),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
@@ -239,7 +247,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
-    isSignedIn: jest.fn(),
+    hasPreviousSignIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -306,7 +314,8 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-require("react-native-reanimated").setUpTests()
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
@@ -428,6 +437,15 @@ jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
 
+jest.mock("react-native-keyboard-controller", () => mockKeyboardController)
+
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
+
 /**
  * Mocks for our code
  */
@@ -442,7 +460,6 @@ function getNativeModules(): OurNativeModules {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -500,7 +517,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -642,16 +658,20 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
   })),
 }))
 
-jest.mock("@gorhom/bottom-sheet", () => ({
-  __esModule: true,
-  ...require("@gorhom/bottom-sheet/mock"),
-}))
+jest.mock("@gorhom/bottom-sheet", () => {
+  const { View } = require("react-native")
+  return {
+    __esModule: true,
+    SCROLLABLE_TYPE: {},
+    createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
+    ...require("@gorhom/bottom-sheet/mock"),
+  }
+})
 
 jest.mock("@shopify/flash-list", () => {
   const { FlatList } = require("react-native")
   return {
     ...jest.requireActual("@shopify/flash-list"),
-    MasonryFlashList: FlatList,
     FlashList: FlatList,
   }
 })
@@ -692,12 +712,6 @@ jest.mock("app/utils/Sentinel", () => {
   return {
     __esModule: true,
     Sentinel: View,
-  }
-})
-jest.mock("react-native-blurhash", () => {
-  const ReactNative = require("react-native")
-  return {
-    Blurhash: ReactNative.View as any,
   }
 })
 

@@ -7,9 +7,11 @@ import { MyCollectionArtistsAutosuggestListHeader } from "app/Scenes/MyCollectio
 import { FOOTER_HEIGHT } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsPromptFooter"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useClientQuery } from "app/utils/useClientQuery"
 import { FC, useState } from "react"
-import { FlatList, Keyboard, KeyboardAvoidingView } from "react-native"
+import { FlatList } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql } from "react-relay"
 
 export const MyCollectionArtistsAutosuggest: FC = () => {
@@ -42,13 +44,13 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
   }
 
   const handleOnClear = () => {
-    if (!Keyboard.isVisible()) {
+    if (!KeyboardController.isVisible()) {
       collapse()
     }
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <KeyboardAvoidingContainer>
       <Flex gap={2} height="100%">
         <Flex>
           <Input
@@ -80,7 +82,7 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
           ItemSeparatorComponent={() => <Spacer y={2} />}
         />
       </Flex>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingContainer>
   )
 }
 

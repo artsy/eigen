@@ -260,7 +260,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
     var dateLotOpened: Date? {
         guard _dateLotOpened == nil else { return _dateLotOpened }
         guard let opening = fullEventList.filter({ $0.isLotOpening }).first else { return nil }
-        _dateLotOpened = opening.dateEventCreated as Date
+        _dateLotOpened = opening.dateEventCreated
         return _dateLotOpened
     }
 

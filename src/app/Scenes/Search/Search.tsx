@@ -12,9 +12,10 @@ import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategor
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -87,7 +88,7 @@ export const Search: React.FC = () => {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingContainer>
       <Flex px={2} mt={2}>
         <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
       </Flex>
@@ -128,7 +129,7 @@ export const Search: React.FC = () => {
           </ScrollView>
         )}
       </Flex>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingContainer>
   )
 }
 

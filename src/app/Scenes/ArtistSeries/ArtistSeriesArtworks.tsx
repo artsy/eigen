@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
+import { FlashListRef, ListRenderItem } from "@shopify/flash-list"
 import {
   ArtistSeriesArtworks_artistSeries$data,
   ArtistSeriesArtworks_artistSeries$key,
@@ -12,11 +12,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
@@ -49,7 +45,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     [data.artistSeriesArtworks]
   )
   const shouldDisplaySpinner = isLoadingNext && hasNext
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
@@ -96,31 +92,22 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     tracking.trackEvent(tracks.clearFilters(id, slug))
   }
 
-  const renderItem: MasonryListRenderItem<Artworks> = useCallback(
-    ({ item, index, columnIndex }) => {
-      const imgAspectRatio = item.image?.aspectRatio ?? 1
-      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-      const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
+    const imgAspectRatio = item.image?.aspectRatio ?? 1
+    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+    const imgHeight = imgWidth / imgAspectRatio
 
-      return (
-        <Flex
-          pl={columnIndex === 0 ? 0 : 1}
-          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-          mt={2}
-        >
-          <ArtworkGridItem
-            itemIndex={index}
-            contextScreenOwnerType={OwnerType.artistSeries}
-            contextScreenOwnerId={data.internalID}
-            contextScreenOwnerSlug={data.slug}
-            artwork={item}
-            height={imgHeight}
-          />
-        </Flex>
-      )
-    },
-    []
-  )
+    return (
+      <ArtworkGridItem
+        itemIndex={index}
+        contextScreenOwnerType={OwnerType.artistSeries}
+        contextScreenOwnerId={data.internalID}
+        contextScreenOwnerSlug={data.slug}
+        artwork={item}
+        height={imgHeight}
+      />
+    )
+  }, [])
 
   return (
     <>
@@ -128,7 +115,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         testID="ArtistSeriesArtworksGrid"
         data={artworksList}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={
@@ -147,10 +133,13 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
-          </Tabs.SubTabBar>
+          <Flex px={1}>
+            <Tabs.SubTabBar>
+              <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
+            </Tabs.SubTabBar>
+          </Flex>
         }
         ListFooterComponent={() => (
           <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />

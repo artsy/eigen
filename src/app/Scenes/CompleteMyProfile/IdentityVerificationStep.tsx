@@ -31,7 +31,7 @@ export const IdentityVerificationStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
         <Flex flex={1} justifyContent="space-between">
           <Flex flex={1} justifyContent="space-between" px={2}>
             <Flex flexDirection="row" flexWrap="wrap">

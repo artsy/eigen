@@ -47,7 +47,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
             height: RANGE_DOT_SIZE,
             width: RANGE_DOT_SIZE,
             borderRadius: RANGE_DOT_SIZE / 2,
-            backgroundColor: color("mono0"),
+            backgroundColor: "white",
             borderColor: color("mono10"),
             borderWidth: 1,
             shadowRadius: 2,

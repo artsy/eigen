@@ -17,6 +17,27 @@
       <action android:name="android.intent.action.SEND_MULTIPLE"/>
       <data android:mimeType="*/*"/>
     </intent>
+    <!-- File viewer intents for message attachment previews -->
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <data android:mimeType="application/pdf"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <data android:mimeType="image/jpeg"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <data android:mimeType="image/png"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <data android:mimeType="image/gif"/>
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW"/>
+      <data android:mimeType="image/webp"/>
+    </intent>
   </queries>
   <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" android:supportsRtl="true" android:usesCleartextTraffic="${usesCleartextTraffic}">
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
@@ -56,6 +77,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="https" android:host="www.artsy.net"/>
         <data android:scheme="https" android:host="artsy.net"/>
+        <data android:scheme="https" android:host="staging.artsy.net"/>
         <data android:scheme="http"/>
         <data android:pathPrefix="/about"/>
         <data android:pathPrefix="/activity"/>
@@ -78,6 +100,7 @@
         <data android:pathPrefix="/auctions"/>
         <data android:pathPrefix="/buy-now-feature-faq"/>
         <data android:pathPrefix="/buyer-guarantee"/>
+        <data android:pathPrefix="/categories"/>
         <data android:pathPrefix="/collect"/>
         <data android:pathPrefix="/collection"/>
         <data android:pathPrefix="/collections"/>
@@ -97,20 +120,25 @@
         <data android:pathPrefix="/inbox"/>
         <data android:pathPrefix="/inquiry"/>
         <data android:pathPrefix="/make-offer"/>
-        <data android:pathPrefix="/purchase"/>
+        <data android:pathPrefix="/meet-the-specialists"/>
         <data android:pathPrefix="/my-account"/>
         <data android:pathPrefix="/my-collection"/>
         <data android:pathPrefix="/my-profile"/>
         <data android:pathPrefix="/new-for-you"/>
+        <data android:pathPrefix="/new-works-from-galleries-you-follow"/>
+        <data android:pathPrefix="/news"/>
+        <data android:pathPrefix="/notifications"/>
         <data android:pathPrefix="/orders"/>
         <data android:pathPrefix="/partner"/>
         <data android:pathPrefix="/partner-offer"/>
         <data android:pathPrefix="/price-database"/>
         <data android:pathPrefix="/privacy-request"/>
+        <data android:pathPrefix="/purchase"/>
         <data android:pathPrefix="/search"/>
         <data android:pathPrefix="/settings"/>
         <data android:pathPrefix="/show"/>
         <data android:pathPrefix="/tag"/>
+        <data android:pathPrefix="/terms"/>
         <data android:pathPrefix="/user/conversations"/>
         <data android:pathPrefix="/user/purchases"/>
         <data android:pathPrefix="/upcoming-auction-results"/>

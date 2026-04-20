@@ -110,6 +110,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "40 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },
@@ -123,6 +124,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "35 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/Oymspr9llGzRC-lTZA8htA/main.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },
@@ -136,6 +138,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "25 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },
@@ -149,6 +152,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "15 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },
@@ -162,6 +166,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "10 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },
@@ -175,6 +180,7 @@ const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListT
               artworksCountMessage: "8 available",
               image: {
                 url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                blurhash: "random-blurhash",
               },
             },
           },

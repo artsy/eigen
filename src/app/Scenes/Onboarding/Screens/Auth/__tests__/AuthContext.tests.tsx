@@ -35,6 +35,7 @@ describe("AuthContext", () => {
       "isModalExpanded",
       "isMounted",
       "previousScreens",
+      "isAutomaticallySubscribed",
     ])
 
     expect(Object.keys(actions)).toEqual([
@@ -42,6 +43,7 @@ describe("AuthContext", () => {
       "setCurrentScreen",
       "setModalExpanded",
       "setParams",
+      "setIsAutomaticallySubscribed",
     ])
   })
 

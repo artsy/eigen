@@ -9,10 +9,12 @@ import {
   getInputValue,
   parseSliderRange,
 } from "app/Components/PriceRange/utils"
-import React, { useEffect, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import useThrottle from "react-use/lib/useThrottle"
 
 const NUMBERS_REGEX = /^(|\d)+$/
+
+const THROTTLE_DELAY = 60
 
 interface RecentPriceRangeEntity {
   value: string
@@ -25,6 +27,8 @@ interface PriceRangeContainerProps {
   header?: React.ReactNode
   onPriceRangeUpdate: (range: PriceRange) => void
   onRecentPriceRangeSelected?: (isCollectorProfileSources: boolean) => void
+  onMultiSliderValuesChangeStart?: () => void
+  onMultiSliderValuesChangeFinish?: () => void
 }
 
 export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
@@ -33,23 +37,37 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   header,
   onPriceRangeUpdate,
   onRecentPriceRangeSelected,
+  onMultiSliderValuesChangeStart,
+  onMultiSliderValuesChangeFinish,
 }) => {
-  const screenScrollViewRef = useRef<ScrollView>(null)
   const [range, setRange] = useState(parsePriceRange(filterPriceRange))
+  const [sliderValue, setSliderValue] = useState<number[]>([])
+
+  const sliderValueThrottled = useThrottle(sliderValue, THROTTLE_DELAY)
 
   useEffect(() => {
     setRange(parsePriceRange(filterPriceRange))
   }, [filterPriceRange])
 
+  const updateRange = useCallback(
+    (updatedRange: PriceRange) => {
+      setRange(updatedRange)
+      onPriceRangeUpdate(updatedRange)
+    },
+    [onPriceRangeUpdate]
+  )
+
+  useEffect(() => {
+    if (sliderValueThrottled.length) {
+      const convertedRange = convertToFilterFormatRange(sliderValueThrottled)
+      updateRange(convertedRange)
+    }
+  }, [sliderValueThrottled, updateRange])
+
   const sliderRange = parseSliderRange(range)
   const [minValue, maxValue] = range
 
   const shouldDisplayHistogram = histogramBars.length > 0
-
-  const updateRange = (updatedRange: PriceRange) => {
-    setRange(updatedRange)
-    onPriceRangeUpdate(updatedRange)
-  }
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
     // Early exit the input update if the value is not a number
@@ -75,21 +93,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   }
 
   const handleSliderValueChange = (value: number[]) => {
-    const convertedRange = convertToFilterFormatRange(value)
-
-    updateRange(convertedRange)
-  }
-
-  const handleMultiSliderValuesChangeStart = () => {
-    if (screenScrollViewRef.current) {
-      screenScrollViewRef.current.setNativeProps({ scrollEnabled: false })
-    }
-  }
-
-  const handleMultiSliderValuesChangeFinish = () => {
-    if (screenScrollViewRef.current) {
-      screenScrollViewRef.current.setNativeProps({ scrollEnabled: true })
-    }
+    setSliderValue(value)
   }
 
   const handleRecentPriceRangeSelected = (priceRange: RecentPriceRangeEntity) => {
@@ -101,7 +105,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   }
 
   return (
-    <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
+    <Flex>
       {!!header && <Flex m={2}>{header}</Flex>}
 
       <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
@@ -114,8 +118,12 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
         <PriceRangeSlider
           sliderRange={sliderRange}
           onSliderValueChange={handleSliderValueChange}
-          onMultiSliderValuesChangeStart={handleMultiSliderValuesChangeStart}
-          onMultiSliderValuesChangeFinish={handleMultiSliderValuesChangeFinish}
+          onMultiSliderValuesChangeStart={() => {
+            onMultiSliderValuesChangeStart?.()
+          }}
+          onMultiSliderValuesChangeFinish={() => {
+            onMultiSliderValuesChangeFinish?.()
+          }}
         />
       </Flex>
 
@@ -150,6 +158,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
       <Spacer y={2} />
 
       <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
-    </ScrollView>
+    </Flex>
   )
 }

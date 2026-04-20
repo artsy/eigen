@@ -7,8 +7,6 @@ export type InfiniteScrollFlashListProps<ItemType> = {
   initialNumToRender?: number
 } & FlashListProps<ItemType>
 
-const ESTIMATED_ITEM_SIZE = 60
-
 export function InfiniteScrollFlashList<ItemType>(props: InfiniteScrollFlashListProps<ItemType>) {
   const { listRef, onScrollBeginDrag, ...restProps } = props
 
@@ -17,7 +15,6 @@ export function InfiniteScrollFlashList<ItemType>(props: InfiniteScrollFlashList
       <FlashList<ItemType>
         {...restProps}
         ref={listRef}
-        estimatedItemSize={ESTIMATED_ITEM_SIZE}
         onScrollBeginDrag={(event) => {
           if (onScrollBeginDrag) {
             onScrollBeginDrag(event)

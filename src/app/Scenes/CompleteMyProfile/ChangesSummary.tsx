@@ -30,7 +30,7 @@ export const ChangesSummary: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2}>
+      <Screen.Body pt={2} disableKeyboardAvoidance>
         <Flex py={2} gap={2}>
           <Text variant="lg-display">
             {isCompleted ? "Thank you for completing your profile." : "You’re almost there!"}

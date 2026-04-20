@@ -50,11 +50,11 @@ export const features = {
     description: "Support dark mode",
     echoFlagKey: "ARDarkModeSupport",
   },
-  // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
-  AREnableArtworksConnectionForAuction: {
+  AREnableArtworksConnectionForAuction2: {
     readyForRelease: true,
-    description: "Use artworksConnection for Auction screen",
-    echoFlagKey: "AREnableArtworksConnectionForAuction",
+    description: "Use artworksConnection for Auction screen v2",
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworksConnectionForAuction2",
   },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
@@ -153,12 +153,6 @@ export const features = {
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
-  AREnableNewHomeViewCardRailType: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable new rail type on home",
-    echoFlagKey: "AREnableNewHomeViewCardRailType",
-  },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     showInDevMenu: true,
@@ -175,6 +169,18 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     description: "Enable React Native Live Sale Screen",
+  },
+  AREnableExpandedCityGuide: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
+  },
+  AREnableArtworksFramedSize: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable adding framed size field to Artworks",
+    echoFlagKey: "AREnableArtworksFramedSize",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

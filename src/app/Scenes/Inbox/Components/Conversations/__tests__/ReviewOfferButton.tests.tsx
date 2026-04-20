@@ -140,9 +140,9 @@ describe("ReviewOfferButton", () => {
       impulse_conversation_id: "conversation-id",
       subject: "Counteroffer Received",
     })
-    expect(navigate).toHaveBeenCalledWith("/orders/order-id", {
+    expect(navigate).toHaveBeenCalledWith("/orders/order-id/respond", {
       modal: true,
-      passProps: { orderID: "order-id", title: "Review Offer" },
+      passProps: { orderID: "order-id", title: "Respond" },
     })
   })
 

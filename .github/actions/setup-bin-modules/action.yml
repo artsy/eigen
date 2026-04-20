@@ -1,0 +1,16 @@
+name: Setup bin modules
+description: "Install bin modules with cache"
+runs:
+  using: "composite"
+  steps:
+    - name: Cache bin Yarn cache
+      uses: actions/cache@v4
+      with:
+        path: bin/.yarn/cache
+        key: yarn-bin-${{ runner.os }}-${{ hashFiles('bin/yarn.lock') }}
+        restore-keys: |
+          yarn-bin-${{ runner.os }}-
+
+    - name: Install bin modules
+      run: ./scripts/setup/install-bin
+      shell: bash

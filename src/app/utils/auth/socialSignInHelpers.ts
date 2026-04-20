@@ -17,16 +17,16 @@ export const useSocialLogin = () => {
 
   const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
     GlobalStore.actions.auth.setSessionState({ isLoading: true })
-    InteractionManager.runAfterInteractions(() => {
+    setTimeout(() => {
       callback().catch((error: AuthPromiseRejectType) => {
-        InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
           GlobalStore.actions.auth.setSessionState({ isLoading: false })
           InteractionManager.runAfterInteractions(() => {
             handleError(error)
           })
-        })
+        }, 200)
       })
-    })
+    }, 200)
   }
 
   const handleError = (error: AuthPromiseRejectType) => {

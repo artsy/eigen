@@ -11,6 +11,7 @@ import {
   TextProps,
   Touchable,
   useColor,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -25,6 +26,7 @@ import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/C
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
 // import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -41,10 +43,12 @@ import {
 } from "app/utils/track/ArtworkActions"
 import React, { memo, useRef, useState } from "react"
 import { Platform, Text as RNText, View, ViewProps } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
 
+const MAX_IMAGE_HEIGHT = 280
 export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
@@ -66,7 +70,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   itemIndex?: number
   lotLabelTextStyle?: TextProps
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   partnerNameTextStyle?: TextProps
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
@@ -75,10 +79,11 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   showLotLabel?: boolean
   titleTextStyle?: TextProps
   trackTap?: (artworkSlug: string, index?: number) => void
-  trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
+  /** fit the artwork to the frame with limited height */
+  fitToFrame?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = memo(
@@ -113,10 +118,13 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     trackTap,
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
+    fitToFrame = false,
   }) => {
     const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
     const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
+    const isIPad = isTablet()
+    const { height: screenHeight } = useScreenDimensions()
 
     const color = useColor()
     const tracking = useTracking()
@@ -194,7 +202,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
 
     const handleTap = () => {
       if (onPress) {
-        return onPress(artwork.slug, artwork)
+        return onPress(artwork.slug, artwork, itemIndex)
       }
 
       addArtworkToRecentSearches()
@@ -258,6 +266,9 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     const displayArtworkSocialSignal =
       !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
+    const maxFramedImageHeight = isIPad ? screenHeight / 2.5 : MAX_IMAGE_HEIGHT
+    const framedImageHeight = height === undefined ? height : Math.min(height, maxFramedImageHeight)
+
     return (
       <Disappearable ref={disappearableRef}>
         <ContextMenuArtwork
@@ -267,6 +278,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
           onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
           artwork={artwork}
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
+          width={Number(height ?? 0) * (artwork.image?.aspectRatio ?? 1)}
+          height={height}
         >
           <RouterLink
             haptic
@@ -291,18 +304,37 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
-              {!!artwork.image?.url && (
-                <View>
-                  <Image
-                    src={artwork.image.url}
-                    aspectRatio={artwork.image.aspectRatio ?? 1}
-                    height={height}
-                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                    blurhash={artwork.image.blurhash}
-                    resizeMode="contain"
-                  />
-                </View>
-              )}
+              {!!artwork.image?.url &&
+                (fitToFrame ? (
+                  <View
+                    style={{
+                      backgroundColor: color("mono5"),
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={framedImageHeight}
+                      width={Number(framedImageHeight) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Image
+                      src={artwork.image.url}
+                      aspectRatio={artwork.image.aspectRatio ?? 1}
+                      height={height}
+                      width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                      blurhash={artwork.image.blurhash}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ))}
               {!!canShowAuctionProgressBar && (
                 <Box mt={1}>
                   <DurationProvider startAt={endsAt ?? undefined}>
@@ -369,15 +401,17 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     </RNText>
                   )}
                   {!hidePartner && !!artwork.partner?.name && (
-                    <Text
-                      variant="xs"
-                      lineHeight="18px"
-                      color="mono60"
-                      numberOfLines={1}
-                      {...partnerNameTextStyle}
-                    >
-                      {artwork.partner.name}
-                    </Text>
+                    <RNText numberOfLines={1}>
+                      <Text
+                        variant="xs"
+                        lineHeight="18px"
+                        color="mono60"
+                        numberOfLines={1}
+                        {...partnerNameTextStyle}
+                      >
+                        {artwork.partner.name}
+                      </Text>
+                    </RNText>
                   )}
                   {!!displayPriceOfferMessage && (
                     <Flex flexDirection="row">
@@ -436,6 +470,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       haptic
                       onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                       testID="save-artwork-icon"
+                      hitSlop={ICON_HIT_SLOP}
                     >
                       <ArtworkSaveIconWrapper isSaved={!!isSaved} />
                     </Touchable>
@@ -455,28 +490,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     )
   }
 )
-
-/*
-TODO: replace <ArtworkSaveIconWrapper isSaved={!!isSaved} /> with ArtworkHeartIcon when there
-is a solution for the failing tests after adding ProgressiveOnboardingSaveArtwork
-*/
-
-/* const ArtworkHeartIcon: React.FC<{
-  isSaved: boolean | null
-  index?: number
-  disableProgressiveOnboarding?: boolean
-}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
-  if (index === 0 && !disableProgressiveOnboarding) {
-    // We only try to show the save onboard Popover in the 1st element
-    return (
-      <ProgressiveOnboardingSaveArtwork>
-        <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-      </ProgressiveOnboardingSaveArtwork>
-    )
-  }
-
-  return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
-} */
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`

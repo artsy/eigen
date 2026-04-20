@@ -267,7 +267,7 @@ lane :check_flags do
 
       If a feature here should be going out this release please follow the docs here:
       https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
-      @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
+      @onyx-devs @phires @topaz-devs @diamond-devs @emerald-devs
     MSG
     slack(message: message, default_payloads: [], link_names: true)
   end
@@ -309,6 +309,12 @@ def format_build_number(build_number)
     comp.length == 1 ? '0' + comp : comp
   end
   detruncated_components.join('.')
+end
+
+def git_tag_commit_message(tag)
+  # Returns the subject line of the commit the tag points to, or nil if the tag doesn't exist.
+  msg = `git log -1 --format='%s' "#{tag}^{}" 2>/dev/null`.chomp
+  msg.empty? ? nil : msg
 end
 
 def should_silence_beta_failure?

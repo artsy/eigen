@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
-  Text,
+  Flex,
   SimpleMessage,
   Tabs,
+  Text,
   useScreenDimensions,
-  Flex,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryListRenderItem } from "@shopify/flash-list"
+import { ListRenderItem } from "@shopify/flash-list"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
@@ -18,7 +18,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -91,25 +90,19 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem: MasonryListRenderItem<TagArtworkType> = useCallback(({ item, columnIndex }) => {
+  const renderItem: ListRenderItem<TagArtworkType> = useCallback(({ item }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.tag}
-          contextScreenOwnerId={tag?.internalID}
-          contextScreenOwnerSlug={tag?.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.tag}
+        contextScreenOwnerId={tag?.internalID}
+        contextScreenOwnerSlug={tag?.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 
@@ -118,8 +111,8 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
           initialArtworksTotal ? (
             <Box mt={1}>
@@ -144,7 +137,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <>
+          <Flex px={1}>
             <Tabs.SubTabBar>
               <TagArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
             </Tabs.SubTabBar>
@@ -153,7 +146,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
                 Showing {artworksTotal} works
               </Text>
             </Flex>
-          </>
+          </Flex>
         }
       />
       <ArtworkFilterNavigator

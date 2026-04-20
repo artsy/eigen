@@ -24,7 +24,7 @@ import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useTrackAppState } from "app/utils/useTrackAppState"
 import { useEffect } from "react"
-import { NativeModules, UIManager, View } from "react-native"
+import { NativeModules, Platform, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
@@ -62,8 +62,10 @@ setupSentry({
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
 
-if (UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true)
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true)
+  }
 }
 
 const Main = () => {
@@ -80,9 +82,12 @@ const Main = () => {
     if (oss === "true") {
       return
     }
-    GoogleSignin.configure({
-      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-    })
+    if (Keys.OSS !== "true") {
+      GoogleSignin.configure({
+        webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+        iosClientId: "673710093763-mjnb33vmcd74p4io0kbc2d8mkpj9jnh7.apps.googleusercontent.com",
+      })
+    }
     Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)

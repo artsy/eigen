@@ -135,7 +135,7 @@ const OrderDetailsSkeleton: React.FC = () => {
     <Skeleton>
       <Box px={2} pt={2}>
         <SkeletonText variant="lg-display">Great Choice!</SkeletonText>
-
+        <Spacer y={0.5} />
         <SkeletonText variant="xs">Order #1231231234</SkeletonText>
 
         <Box my={4}>

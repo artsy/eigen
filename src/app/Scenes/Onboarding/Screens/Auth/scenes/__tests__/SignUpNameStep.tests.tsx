@@ -1,4 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import {
+  AuthContext,
+  defaultState,
+} from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useCountryCode } from "app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode"
 import { SignUpNameStep } from "app/Scenes/Onboarding/Screens/Auth/scenes/SignUpNameStep"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -11,8 +15,6 @@ jest.mock("@artsy/palette-mobile", () => ({
     color: jest.fn(),
   }),
 }))
-
-const mockUseCountryCode = useCountryCode as jest.Mock
 
 jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useCountryCode", () => ({
   useCountryCode: jest.fn().mockReturnValue({
@@ -28,15 +30,25 @@ jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation", () => ({
   }),
 }))
 
+const mockUseCountryCode = useCountryCode as jest.Mock
+
 describe("SignUpNameStep", () => {
   it("renders the full name input", () => {
-    renderWithWrappers(<SignUpNameStep />)
+    renderWithWrappers(
+      <AuthContext.Provider>
+        <SignUpNameStep />
+      </AuthContext.Provider>
+    )
 
     expect(screen.getByA11yHint("Enter your full name")).toBeTruthy()
   })
 
   it("renders the terms and privacy policy checkbox", () => {
-    renderWithWrappers(<SignUpNameStep />)
+    renderWithWrappers(
+      <AuthContext.Provider>
+        <SignUpNameStep />
+      </AuthContext.Provider>
+    )
 
     expect(
       screen.getByA11yHint("Check this element to accept Artsy's terms and privacy policy")
@@ -44,7 +56,11 @@ describe("SignUpNameStep", () => {
   })
 
   it("renders the email subscription checkbox", () => {
-    renderWithWrappers(<SignUpNameStep />)
+    renderWithWrappers(
+      <AuthContext.Provider>
+        <SignUpNameStep />
+      </AuthContext.Provider>
+    )
 
     expect(screen.getByA11yHint("Check this element to receive Artsy's emails")).toBeTruthy()
   })
@@ -52,6 +68,7 @@ describe("SignUpNameStep", () => {
   describe("user is automatically subscribed", () => {
     beforeEach(() => {
       mockUseCountryCode.mockReturnValue({
+        loading: false,
         isAutomaticallySubscribed: true,
       })
     })
@@ -61,7 +78,13 @@ describe("SignUpNameStep", () => {
     })
 
     it("does not render the email opt-in checkbox if the user is automatically subscribed", () => {
-      renderWithWrappers(<SignUpNameStep />)
+      renderWithWrappers(
+        <AuthContext.Provider
+          runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}
+        >
+          <SignUpNameStep />
+        </AuthContext.Provider>
+      )
 
       expect(screen.queryByA11yHint("Check this element to receive Artsy's emails")).toBeNull()
     })
@@ -72,7 +95,13 @@ describe("SignUpNameStep", () => {
         // @ts-expect-error
         .mockImplementation(() => Promise.resolve())
 
-      renderWithWrappers(<SignUpNameStep />)
+      renderWithWrappers(
+        <AuthContext.Provider
+          runtimeModel={{ ...defaultState, isAutomaticallySubscribed: true }}
+        >
+          <SignUpNameStep />
+        </AuthContext.Provider>
+      )
 
       fireEvent.changeText(screen.getByA11yHint("Enter your full name"), "Percy Cat")
       fireEvent.press(

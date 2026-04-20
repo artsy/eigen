@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, bullet, Flex, Separator, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
@@ -10,7 +10,11 @@ import {
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEBOUNCE_DELAY, KeywordFilter } from "app/Components/ArtworkFilter/Filters/KeywordFilter"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
-import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "app/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import {
@@ -25,13 +29,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  SectionList,
-  View,
-} from "react-native"
+import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -40,8 +38,7 @@ interface Props {
   relay: RelayPaginationProp
   scrollToTop: () => void
   initialFilters?: FilterArray
-  onLayout?: (event: LayoutChangeEvent) => void
-  onScrollEndDragChange: ((event: NativeSyntheticEvent<NativeScrollEvent>) => void) | undefined
+  openFilterModal: () => void
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
@@ -49,9 +46,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   relay,
   scrollToTop,
   initialFilters,
-  onLayout,
-  onScrollEndDragChange,
+  openFilterModal,
 }) => {
+  const space = useSpace()
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
@@ -60,6 +57,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
   )
+
+  const appliedFiltersCount = useSelectedFiltersCount()
+
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.applyFiltersAction
   )
@@ -218,7 +218,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
 
   if (!artist.statuses?.auctionLots) {
     return (
-      <View onLayout={onLayout}>
+      <View>
         <ArtistInsightsEmpty my={6} />
       </View>
     )
@@ -228,7 +228,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
       style={{ minHeight: screenHeight }}
-      onLayout={onLayout}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
@@ -259,6 +258,18 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           onFocus={scrollToTop}
           onTypingStart={() => setKeywordFilterRefetching(true)}
         />
+        <Flex flexDirection="row" mx={-2} justifyContent="space-between">
+          <Flex />
+          <ArtworksFilterHeader
+            selectedFiltersCount={appliedFiltersCount}
+            showSeparator={false}
+            onFilterPress={openFilterModal}
+          />
+        </Flex>
+
+        <Flex mx={-2}>
+          <Separator />
+        </Flex>
       </Flex>
       {auctionResults.length ? (
         <SectionList
@@ -280,10 +291,14 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Text>
             </Flex>
           )}
-          onScrollEndDrag={onScrollEndDragChange}
+          nestedScrollEnabled
           ItemSeparatorComponent={AuctionResultListSeparator}
-          style={{ width: screenWidth, left: -20 }}
+          style={{ width: screenWidth, left: -space(2), flexGrow: 1 }}
           onEndReached={loadMoreAuctionResults}
+          scrollEventThrottle={16}
+          initialNumToRender={3}
+          windowSize={11}
+          scrollEnabled={false}
           ListFooterComponent={() =>
             loadingMoreData ? (
               <Flex my={4}>
@@ -291,7 +306,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Flex>
             ) : null
           }
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: space(2) }}
         />
       ) : (
         <Box my="80px">

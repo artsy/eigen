@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 # check_build_status_gh.sh
 # Usage: ./check_build_status_gh.sh <platform>
@@ -15,7 +15,7 @@ if [ -z "$PLATFORM" ]; then
 fi
 
 if [ "$PLATFORM" = "ios" ]; then
-  WORKFLOW_NAMES=("Build and Deploy iOS to TestFligh" "Build and Deploy iOS to Firebase")
+  WORKFLOW_NAMES=("Build and Deploy iOS to TestFlight" "Build and Deploy iOS to Firebase")
 elif [ "$PLATFORM" = "android" ]; then
   WORKFLOW_NAMES=("Build and Deploy Android to Play Store" "Build and Deploy Android to Firebase")
 else
@@ -43,7 +43,7 @@ for WORKFLOW_NAME in "${WORKFLOW_NAMES[@]}"; do
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/artsy/eigen/actions/workflows" \
-    | jq -r --arg name "$WORKFLOW_NAME" '.workflows[] | select(.name == $name) | .id')
+    | jq -r --arg name "$WORKFLOW_NAME" '[.workflows[] | select(.name == $name) | .id] | first')
 
   if [ -z "$workflow_id" ] || [ "$workflow_id" = "null" ]; then
     echo "Warning: Could not find workflow '$WORKFLOW_NAME'"

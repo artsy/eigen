@@ -21,12 +21,14 @@ export interface AuthContextModel {
   isModalExpanded: boolean
   isMounted: boolean
   previousScreens: Array<AuthScreen | undefined>
+  isAutomaticallySubscribed: boolean
 
   // actions
   goBack: Action<AuthContextModel>
   setCurrentScreen: Action<AuthContextModel, AuthScreen>
   setModalExpanded: Action<AuthContextModel, boolean>
   setParams: Action<AuthContextModel, Record<string, any>>
+  setIsAutomaticallySubscribed: Action<AuthContextModel, boolean>
 }
 
 export const defaultState: AuthContextModel = {
@@ -35,6 +37,7 @@ export const defaultState: AuthContextModel = {
   isModalExpanded: false,
   isMounted: false,
   previousScreens: [],
+  isAutomaticallySubscribed: false,
 
   // actions
   goBack: action((state) => {
@@ -54,6 +57,9 @@ export const defaultState: AuthContextModel = {
     if (state.currentScreen && params) {
       state.currentScreen.params = { ...(state.currentScreen.params ?? {}), ...params }
     }
+  }),
+  setIsAutomaticallySubscribed: action((state, isAutomaticallySubscribed) => {
+    state.isAutomaticallySubscribed = isAutomaticallySubscribed
   }),
 }
 

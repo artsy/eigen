@@ -102,7 +102,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const showTopButton = !!showBackButton || !!showCloseButton
 
   return (
-    <>
+    <Flex flex={1} backgroundColor="mono0">
       {!!showTopButton && (
         <Flex pt={`${topInsets}px`} mx={2} mb={2} height={HEADER_HEIGHT}>
           <Flex flexDirection="row" justifyContent="space-between" height={30} mb={1}>
@@ -176,6 +176,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
           </Flex>
         )}
       </Flex>
-    </>
+    </Flex>
   )
 }

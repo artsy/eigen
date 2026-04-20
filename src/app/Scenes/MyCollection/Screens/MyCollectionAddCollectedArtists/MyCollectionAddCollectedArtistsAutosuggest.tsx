@@ -11,6 +11,7 @@ import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Sc
 import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"

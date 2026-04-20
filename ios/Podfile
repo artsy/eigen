@@ -9,12 +9,18 @@ source 'https://cdn.cocoapods.org/'
 require 'dotenv'
 Dotenv.load('../.env.shared')
 
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+# for react-native-permissions
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
 
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
@@ -30,6 +36,9 @@ inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
 
+setup_permissions([
+  'Notifications'
+])
 
 plugin 'cocoapods-patch'
 
@@ -98,20 +107,14 @@ target 'Artsy' do
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
-    new_arch_enabled: false
+    new_arch_enabled: true
   )
 
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
-  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.19.1'
-  pod 'INTUAnimationEngine'
-
   # Core
-  pod 'CocoaLumberjack', '3.9.0'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
-  pod 'FXBlurView', '1.6.4'
-  pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
@@ -119,8 +122,6 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
-  pod 'UIView+BooleanAnimations'
-  pod 'Aerodramus', '2.0.0'
 
   # Language Enhancements
   pod 'MultiDelegate'

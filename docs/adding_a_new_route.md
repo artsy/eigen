@@ -44,6 +44,10 @@ export const artsyDotNetRoutes = defineRoutes([
 ])
 ```
 
+> [!IMPORTANT]
+> If the screen you are adding has or will have a corresponding screen on artsy.net,
+> the route should match the route on artsy.net and deeplinking should be enabled by adding the route to the AndroidManifest.xml.
+
 Note: **[Android only]**: If you want to enable deep linking for your new screen, add the route to `src/main/AndroidManifest.xml`.
 
 ```xml

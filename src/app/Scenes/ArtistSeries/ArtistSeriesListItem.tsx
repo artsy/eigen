@@ -75,6 +75,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
               <Image
                 testID="list-item-image"
                 src={listItem?.node?.image?.url ?? ""}
+                blurhash={listItem?.node?.image?.blurhash}
                 height={70}
                 width={70}
               />

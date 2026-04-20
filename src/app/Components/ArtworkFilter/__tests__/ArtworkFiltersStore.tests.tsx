@@ -1311,7 +1311,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -1434,7 +1434,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -1557,7 +1557,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -1686,7 +1686,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -1815,7 +1815,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -1949,7 +1949,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -2074,7 +2074,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -2203,7 +2203,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -2338,7 +2338,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",
@@ -2463,7 +2463,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Grid",
           paramName: "viewAs",
-          paramValue: false,
+          paramValue: "grid",
         },
         {
           displayText: "All",

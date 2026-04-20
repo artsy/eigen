@@ -5,13 +5,17 @@ import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useState } from "react"
-import { Alert, InteractionManager, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import React, { useCallback, useState } from "react"
+import { Alert, InteractionManager, LayoutChangeEvent } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { deleteUserAccount } from "./deleteUserAccount"
 
@@ -26,9 +30,18 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [bottomOffset, setBottomOffset] = useState(0)
+  const { bottom } = useSafeAreaInsets()
   const space = useSpace()
 
   const navigation = useNavigation()
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   const enableDelete = hasPassword
     ? password.length > 0 && explanation.length > 0
@@ -36,74 +49,69 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.accountDeleteMyAccount,
-      })}
+      info={screen({ context_screen_owner_type: OwnerType.accountDeleteMyAccount })}
     >
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView
-          contentContainerStyle={{ padding: space(2) }}
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-        >
-          <Flex>
-            <Text variant="lg-display">Delete My Account</Text>
-            <Spacer y={2} />
-            <Text>Are you sure you want to delete your account?</Text>
-            <Spacer y={2} />
-            <Text>If you delete your account:</Text>
-            <Spacer y={2} />
-            <Flex flexDirection="row" alignItems="center" pr={1}>
-              <Flex pb={1}>
-                <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
-              </Flex>
-              <Text variant="xs" color="mono100" px={1} pb="1px">
-                You will lose all data on Artsy including all existing offers, inquiries and mesages
-                with Galleries
-              </Text>
+      <KeyboardAwareForm contentContainerStyle={{ padding: space(2) }} bottomOffset={bottomOffset}>
+        <Flex>
+          <Text variant="lg-display">Delete My Account</Text>
+          <Spacer y={2} />
+          <Text>Are you sure you want to delete your account?</Text>
+          <Spacer y={2} />
+          <Text>If you delete your account:</Text>
+          <Spacer y={2} />
+          <Flex flexDirection="row" alignItems="center" pr={1}>
+            <Flex pb={1}>
+              <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Spacer y={2} />
-            <Flex flexDirection="row" alignItems="center" pr={1}>
-              <Flex pb={1}>
-                <GavelIcon width={ICON_SIZE} height={ICON_SIZE} />
-              </Flex>
-              <Text variant="xs" color="mono100" px={1} pb="1px">
-                You won’t have access to any exclusive Artsy benefits, such as Artsy Curated
-                Auctions, Private Sales, etc
-              </Text>
-            </Flex>
-            <Spacer y={4} />
-            <Input
-              multiline
-              placeholder="Please share with us why you are leaving"
-              onChangeText={setExplanation}
-              defaultValue={explanation}
-              error={!hasPassword ? error : undefined}
-            />
-            <Spacer y={4} />
-            <Text variant="xs" color="mono100" pb="1px">
-              After you submit your request, we will disable your account. It may take up to 7 days
-              to fully delete and remove all of your data.
+            <Text variant="xs" color="mono100" px={1} pb="1px">
+              You will lose all data on Artsy including all existing offers, inquiries and mesages
+              with Galleries
             </Text>
-            <Spacer y={2} />
-            {!!hasPassword && (
-              <>
-                <Input
-                  secureTextEntry
-                  placeholder="Enter your password to continue"
-                  onChangeText={setPassword}
-                  defaultValue={password}
-                  error={error}
-                />
-                <Spacer y={2} />
-              </>
-            )}
           </Flex>
-        </ScrollView>
-        <Flex m={1}>
+          <Spacer y={2} />
+          <Flex flexDirection="row" alignItems="center" pr={1}>
+            <Flex pb={1}>
+              <GavelIcon width={ICON_SIZE} height={ICON_SIZE} />
+            </Flex>
+            <Text variant="xs" color="mono100" px={1} pb="1px">
+              You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions,
+              Private Sales, etc
+            </Text>
+          </Flex>
+          <Spacer y={2} />
+          <Input
+            multiline
+            placeholder="Please share with us why you are leaving"
+            onChangeText={setExplanation}
+            defaultValue={explanation}
+            error={!hasPassword ? error : undefined}
+          />
+          <Spacer y={2} />
+          <Text variant="xs" color="mono100" pb="1px">
+            After you submit your request, we will disable your account. It may take up to 7 days to
+            fully delete and remove all of your data.
+          </Text>
+          <Spacer y={2} />
+          {!!hasPassword && (
+            <>
+              <Input
+                secureTextEntry
+                placeholder="Enter your password to continue"
+                onChangeText={setPassword}
+                defaultValue={password}
+                error={error}
+              />
+              <Spacer y={2} />
+            </>
+          )}
+        </Flex>
+      </KeyboardAwareForm>
+
+      <KeyboardStickyView
+        onLayout={handleOnLayout}
+        offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
+      >
+        <Flex p={1} backgroundColor="mono0">
           <Button
             block
             disabled={!enableDelete}
@@ -148,7 +156,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             Cancel
           </Button>
         </Flex>
-      </KeyboardAvoidingView>
+      </KeyboardStickyView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

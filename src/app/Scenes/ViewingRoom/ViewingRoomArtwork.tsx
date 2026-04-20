@@ -9,6 +9,7 @@ import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/Image
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { drop } from "lodash"
@@ -39,6 +40,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
   const { height: screenHeight } = useScreenDimensions()
+  const virVideoURL = useEchoMessage("ARVIRVideo") ?? ""
 
   const { trackEvent } = useTracking()
 
@@ -58,7 +60,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         widthIn,
         heightIn,
         selectedArtwork.slug,
-        selectedArtwork.id
+        selectedArtwork.id,
+        virVideoURL
       )
     }
   }

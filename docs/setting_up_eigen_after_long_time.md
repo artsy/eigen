@@ -26,12 +26,18 @@ This will update the stale pods on your local environment.
 
 ## Running on iOS
 
-You can open xcode with `yarn open-xcode`, clean the project with <kbd>⌘ cmd</kbd> + <kbd>⇧ shift</kbd> + <kbd>K</kbd>
+```sh
+yarn ios
+```
 
-and then press the play button to run the app.
+This will use a cached build if one is available. To force a full rebuild, use `yarn ios:no-cache`.
+
+Alternatively, you can open Xcode with `yarn open-xcode`, clean the project with <kbd>⌘ cmd</kbd> + <kbd>⇧ shift</kbd> + <kbd>K</kbd> and then press the play button to run the app.
 
 ## Running on Android
 
 ```sh
 yarn android
 ```
+
+This will build the app locally, if you want to use a cached build if one is available run `yarn android:cached`.

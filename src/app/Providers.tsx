@@ -12,6 +12,7 @@ import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider
 import { postEventToProviders } from "app/utils/track/providers"
 import { Suspense, useMemo } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { KeyboardProvider } from "react-native-keyboard-controller"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -47,6 +48,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
       ArtworkListsProvider,
       ShareSheetProvider, // uses BottomSheetProvider
+      KeyboardControllerProvider,
     ],
     children
   )
@@ -90,6 +92,12 @@ const TestFlagProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
+)
+
+const KeyboardControllerProvider = (props: { children?: React.ReactNode }) => (
+  <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+    {props.children}
+  </KeyboardProvider>
 )
 
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {

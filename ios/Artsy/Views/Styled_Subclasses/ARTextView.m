@@ -37,7 +37,7 @@
 - (void)setMarkdownString:(NSString *)string
 {
     if (string.length == 0) {
-        DDLogWarn(@"You shouldn't be using markdown with an empty string. Noop-ing.");
+        ARErrorLog(@"You shouldn't be using markdown with an empty string. Noop-ing.");
         return;
     }
 

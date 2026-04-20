@@ -1,0 +1,16 @@
+diff --git a/ios/RNIContextMenuView/RNIContextMenuViewContent.swift b/ios/RNIContextMenuView/RNIContextMenuViewContent.swift
+index c01e1ef8449defcc35b8513991de85c8e8acc07f..d2636fb1bcdc0195f30586f2da8ef0321fb223cd 100644
+--- a/ios/RNIContextMenuView/RNIContextMenuViewContent.swift
++++ b/ios/RNIContextMenuView/RNIContextMenuViewContent.swift
+@@ -245,8 +245,9 @@ public final class RNIContextMenuViewContent: UIView, RNIContentView {
+     self.customMenuPreviewTargetView ?? self;
+   };
+   
+-  var menuTargetedPreview: UITargetedPreview {
+-    .init(
++  var menuTargetedPreview: UITargetedPreview? {
++    guard self.menuPreviewTargetView.window != nil else { return nil };
++    return .init(
+       view: self.menuPreviewTargetView,
+       parameters: self.menuPreviewParameters
+     );

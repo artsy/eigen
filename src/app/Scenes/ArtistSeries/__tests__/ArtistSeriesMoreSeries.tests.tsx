@@ -167,6 +167,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
                 artworksCountMessage: "40 available",
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/bLKO-OQg8UOzKuKcKxXeWQ/main.jpg",
+                  blurhash: "random-blurhash",
                 },
               },
             },
@@ -180,6 +181,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
                 artworksCountMessage: "35 available",
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/Oymspr9llGzRC-lTZA8htA/main.jpg",
+                  blurhash: "random-blurhash",
                 },
               },
             },
@@ -193,6 +195,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
                 artworksCountMessage: "25 available",
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                  blurhash: "random-blurhash",
                 },
               },
             },
@@ -206,6 +209,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
                 artworksCountMessage: "4 available",
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                  blurhash: "random-blurhash",
                 },
               },
             },
@@ -219,6 +223,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawRespon
                 artworksCountMessage: "8 available",
                 image: {
                   url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                  blurhash: "random-blurhash",
                 },
               },
             },
@@ -251,6 +256,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
                   artworksCountMessage: "25 available",
                   image: {
                     url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                    blurhash: "random-blurhash",
                   },
                 },
               },
@@ -264,6 +270,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
                   artworksCountMessage: "4 available",
                   image: {
                     url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                    blurhash: "random-blurhash",
                   },
                 },
               },
@@ -277,6 +284,7 @@ const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeries
                   artworksCountMessage: "8 available",
                   image: {
                     url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                    blurhash: "random-blurhash",
                   },
                 },
               },

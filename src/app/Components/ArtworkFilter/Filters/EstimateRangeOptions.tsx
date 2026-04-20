@@ -36,7 +36,7 @@ const NewEstimateRanges = [
 export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({
   navigation,
 }) => {
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
   const paramName = FilterParamName.estimateRange
   const ranges = enableArtworksConnection ? NewEstimateRanges : EstimateRanges
 

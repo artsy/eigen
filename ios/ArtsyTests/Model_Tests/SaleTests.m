@@ -27,9 +27,9 @@ describe(@"current auction", ^{
 describe(@"live auction", ^{
     it(@"doesn't show live button before live auction", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"4000-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"4000-12-30T00:00:00Z",
+            @"end_at" : @"4001-01-01T00:00:00Z",
             @"auction_state" : @"preview"
         }];
 
@@ -38,9 +38,9 @@ describe(@"live auction", ^{
 
     it(@"shows live button while live auction is open", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"0001-12-30T00:00:00Z",
+            @"end_at" : @"4001-01-01T00:00:00Z",
             @"auction_state" : @"open"
         }];
 
@@ -49,9 +49,9 @@ describe(@"live auction", ^{
 
     it(@"doesn't show live button after live auction closes", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"2-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"0001-12-30T00:00:00Z",
+            @"end_at" : @"0002-01-01T00:00:00Z",
             @"auction_state" : @"closed"
         }];
 
@@ -62,9 +62,9 @@ describe(@"live auction", ^{
 
     it(@"uses a future liveStartAt for uiDateOfInterest", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"4000-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"4000-12-30T00:00:00Z",
+            @"end_at" : @"4001-01-01T00:00:00Z",
             @"auction_state" : @"preview"
         }];
 
@@ -73,9 +73,9 @@ describe(@"live auction", ^{
 
     it(@"uses a future endAt for uiDateOfInterest", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"4001-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"0001-12-30T00:00:00Z",
+            @"end_at" : @"4001-01-01T00:00:00Z",
             @"auction_state" : @"preview"
         }];
 
@@ -84,9 +84,9 @@ describe(@"live auction", ^{
 
     it(@"uses a future startAt for uiDateOfInterest", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"4002-12-30 00:00:00",
-            @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"2-01-01 00:00:00",
+            @"start_at" : @"4002-12-30T00:00:00Z",
+            @"live_start_at" : @"0001-12-30T00:00:00Z",
+            @"end_at" : @"0002-01-01T00:00:00Z",
             @"auction_state" : @"preview"
         }];
 
@@ -95,9 +95,9 @@ describe(@"live auction", ^{
 
     it(@"uses a nil for uiDateOfInterest for past sales", ^{
         Sale *sale = [Sale modelWithJSON:@{
-            @"start_at" : @"1-12-30 00:00:00",
-            @"live_start_at" : @"1-12-30 00:00:00",
-            @"end_at" : @"2-01-01 00:00:00",
+            @"start_at" : @"0001-12-30T00:00:00Z",
+            @"live_start_at" : @"0001-12-30T00:00:00Z",
+            @"end_at" : @"0002-01-01T00:00:00Z",
             @"auction_state" : @"preview"
         }];
 

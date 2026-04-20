@@ -1,9 +1,9 @@
-import { Text, Screen, Spacer, Input, Flex } from "@artsy/palette-mobile"
+import { Flex, Input, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { FC, useRef } from "react"
-import { KeyboardAvoidingView } from "react-native"
 
 export const ProfessionStep: FC = () => {
   const ref = useRef<Input>(null)
@@ -20,11 +20,8 @@ export const ProfessionStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={{ flex: 1, justifyContent: "space-between" }}
-        >
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
+        <KeyboardAvoidingContainer style={{ justifyContent: "space-between" }}>
           <Flex px={2} onLayout={() => ref.current?.focus()}>
             <Text variant="lg-display">Add your profession</Text>
 
@@ -47,9 +44,9 @@ export const ProfessionStep: FC = () => {
               ref={ref}
             />
           </Flex>
+        </KeyboardAvoidingContainer>
 
-          <Footer isFormDirty={!!profession} onGoNext={goNext} />
-        </KeyboardAvoidingView>
+        <Footer isFormDirty={!!profession} onGoNext={goNext} />
       </Screen.Body>
     </Screen>
   )

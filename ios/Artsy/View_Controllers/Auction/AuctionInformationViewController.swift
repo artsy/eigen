@@ -39,6 +39,7 @@ class AuctionInformationViewController: UIViewController {
         ]
 
         super.init(nibName: nil, bundle: nil)
+        self.overrideUserInterfaceStyle = .light
         self.title = "Auction Information"
     }
 

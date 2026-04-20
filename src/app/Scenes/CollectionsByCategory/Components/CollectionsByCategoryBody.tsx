@@ -113,7 +113,6 @@ export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps>
         )
       }}
       renderItem={({ item }) => item.jsx()}
-      estimatedItemSize={230} // Value from RN Debugger Inspector
       keyExtractor={(item) => item.key}
       ItemSeparatorComponent={() => <Spacer y={2} />}
     />

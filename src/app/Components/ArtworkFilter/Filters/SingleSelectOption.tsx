@@ -59,7 +59,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   }
 
   return (
-    <Flex flexGrow={1}>
+    <Flex flexGrow={1} backgroundColor="mono0">
       <ArtworkFilterBackHeader
         title={filterHeaderText}
         onLeftButtonPress={handleBackNavigation}

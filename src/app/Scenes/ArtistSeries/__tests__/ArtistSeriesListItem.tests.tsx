@@ -49,6 +49,7 @@ const ArtistSeriesListItemFixture: ArtistSeriesConnectionEdge = {
     artworksCountMessage: "25 available",
     image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+      blurhash: "random-blurhash",
     },
   },
 }

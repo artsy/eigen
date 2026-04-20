@@ -1,4 +1,4 @@
-import { BackButton, Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
+import { BackButton, Screen, useSpace } from "@artsy/palette-mobile"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
@@ -9,6 +9,8 @@ import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = 20
+const TITLE = "Recently Sold at Auctions"
+const SUBTITLE = "Stay up-to-date on the prices your artists achieve at auctions"
 
 export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
@@ -41,20 +43,22 @@ export const ListOfresults: React.FC<{}> = () => {
   }
 
   return (
-    <Flex flex={1}>
-      <AuctionResultsList
-        auctionResults={auctionResults}
-        refreshing={refreshing}
-        handleRefresh={handleRefresh}
-        onEndReached={handleLoadMore}
-        onItemPress={(item: any) => {
-          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-        }}
-        ListHeaderComponent={ListHeader}
-        isLoadingNext={isLoadingNext}
-        floatingHeaderTitle="Recently Sold at Auctions"
-      />
-    </Flex>
+    <>
+      <Screen.AnimatedHeader onBack={goBack} title={TITLE} />
+      <Screen.StickySubHeader title={TITLE} subTitle={SUBTITLE} />
+      <Screen.Body fullwidth>
+        <AuctionResultsList
+          auctionResults={auctionResults}
+          refreshing={refreshing}
+          handleRefresh={handleRefresh}
+          onEndReached={handleLoadMore}
+          onItemPress={(item: any) => {
+            navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+          }}
+          isLoadingNext={isLoadingNext}
+        />
+      </Screen.Body>
+    </>
   )
 }
 
@@ -63,9 +67,7 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 
   return (
     <Screen>
-      <Suspense
-        fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
-      >
+      <Suspense fallback={<LoadingSkeleton title={TITLE} subTitle={SUBTITLE} />}>
         <ListOfresults />
       </Suspense>
 
@@ -77,17 +79,6 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
         onPress={goBack}
       />
     </Screen>
-  )
-}
-
-export const ListHeader: React.FC = () => {
-  return (
-    <Flex mx={2}>
-      <Text variant="lg-display" mb={0.5}>
-        Recently Sold at Auction
-      </Text>
-      <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>
-    </Flex>
   )
 }
 

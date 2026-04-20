@@ -1,12 +1,12 @@
 import { Spacer, Flex, BoxProps, Text, useColor } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import React from "react"
-import { Linking, Platform, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -20,37 +20,28 @@ const AttachmentContainer = styled(View)`
   padding: 10px;
 `
 
-interface Props extends Omit<BoxProps, "color"> {
+interface MessageProps extends Omit<BoxProps, "color"> {
   message: Message_message$data
-  showTimeSince?: boolean
   conversationId: string
+  showTimeSince?: boolean
+  formattedFirstMessage?: NonNullable<
+    Messages_conversation$data["inquiryRequest"]
+  >["formattedFirstMessage"]
 }
 
-export const Message: React.FC<Props> = ({ message, showTimeSince, conversationId }) => {
+export const Message: React.FC<MessageProps> = ({
+  message,
+  showTimeSince,
+  conversationId,
+  formattedFirstMessage,
+}) => {
   const tracking = useTracking()
   const color = useColor()
 
   const renderAttachmentPreviews = (
-    attachments: Props["message"]["attachments"],
+    attachments: MessageProps["message"]["attachments"],
     backgroundColor: string
   ) => {
-    // reactNodeHandle is passed to the native side to decide which UIView to show the
-    // download progress bar on.
-    const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
-      const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)
-      if (!attachment) return
-
-      if (Platform.OS === "ios") {
-        return LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
-          reactNodeHandle,
-          attachment.downloadURL,
-          attachment.contentType,
-          attachment.internalID
-        )
-      }
-      return Linking.openURL(attachment.downloadURL)
-    }
-
     return compact(attachments).map((attachment, index) => {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
@@ -67,12 +58,21 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
         >
           {!!isImage && (
             <View key={attachment.id}>
-              <ImagePreview attachment={attachment} onSelected={previewAttachment} />
+              <ImagePreview
+                attachment={attachment}
+                mimeType={attachment.contentType}
+                cacheKey={attachment.internalID}
+              />
             </View>
           )}
           {!!isPDF && (
             <View key={attachment.id}>
-              <PDFPreview attachment={attachment} onSelected={previewAttachment} />
+              <PDFPreview
+                attachment={attachment}
+                url={attachment.downloadURL}
+                mimeType={attachment.contentType}
+                cacheKey={attachment.internalID}
+              />
             </View>
           )}
           {!isImage && !isPDF && !!attachment?.id && (
@@ -96,36 +96,61 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
     return navigate(url)
   }
 
-  const { isFromUser, body } = message
+  const { isFromUser, body, isFirstMessage } = message
   const textColor = isFromUser ? "mono0" : "mono100"
   const alignSelf = isFromUser ? "flex-end" : undefined
   const alignAttachments = isFromUser ? "flex-end" : "flex-start"
-
   const backgroundColor = color(isFromUser ? "mono100" : "mono10")
-  return (
-    <>
-      <Flex
-        maxWidth="66.67%"
-        alignItems={alignAttachments}
-        flexDirection="column"
-        style={{ alignSelf }}
-      >
-        <AttachmentContainer
-          style={{
-            backgroundColor,
-          }}
-          onPress={onLinkPress}
+
+  if (isFirstMessage && !!formattedFirstMessage) {
+    return (
+      <>
+        <Flex
+          maxWidth="66.67%"
+          alignItems={alignAttachments}
+          flexDirection="column"
+          style={{ alignSelf }}
         >
-          <Text variant="sm" color={textColor}>
-            {body}
-          </Text>
-        </AttachmentContainer>
-        {!!message.attachments?.length && <Spacer y={0.5} />}
-        {renderAttachmentPreviews(message.attachments, backgroundColor)}
-      </Flex>
-      {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
-    </>
-  )
+          <AttachmentContainer style={{ backgroundColor }} onPress={onLinkPress}>
+            <Text variant="sm" color={textColor}>
+              {formattedFirstMessage}
+            </Text>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer y={0.5} />}
+        </Flex>
+        {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+      </>
+    )
+  }
+
+  if (!!body) {
+    return (
+      <>
+        <Flex
+          maxWidth="66.67%"
+          alignItems={alignAttachments}
+          flexDirection="column"
+          style={{ alignSelf }}
+        >
+          <AttachmentContainer
+            style={{
+              backgroundColor,
+            }}
+            onPress={onLinkPress}
+          >
+            <Text variant="sm" color={textColor}>
+              {body}
+            </Text>
+          </AttachmentContainer>
+          {!!message.attachments?.length && <Spacer y={0.5} />}
+          {renderAttachmentPreviews(message.attachments, backgroundColor)}
+        </Flex>
+        {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+      </>
+    )
+  }
+
+  return null
 }
 
 export default createFragmentContainer(Message, {

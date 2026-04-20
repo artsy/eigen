@@ -1,0 +1,15 @@
+name: Free Disk Space
+description: "Clean up linux container from unused packages to free up disk space"
+runs:
+  using: "composite"
+  steps:
+    - name: Free Disk Space
+      uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
+      with:
+        tool-cache: false
+        android: false
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true

@@ -1,0 +1,22 @@
+diff --git a/build/legacyFakeTimers.js b/build/legacyFakeTimers.js
+index 3bbf36c91fcb89b0b161defff51d1a96c0a863aa..64c34250203b5197721c03fcb2667272edfe15e6 100644
+--- a/build/legacyFakeTimers.js
++++ b/build/legacyFakeTimers.js
+@@ -462,7 +462,7 @@ class FakeTimers {
+       callback: () => callback.apply(null, args),
+       uuid
+     });
+-    this._timerAPIs.setImmediate(() => {
++    this._timerAPIs.setTimeout(() => {
+       if (!this._disposed) {
+         if (this._immediates.find(x => x.uuid === uuid)) {
+           try {
+@@ -472,7 +472,7 @@ class FakeTimers {
+           }
+         }
+       }
+-    });
++    }, 0);
+     return uuid;
+   }
+   _fakeSetInterval(callback, intervalDelay, ...args) {

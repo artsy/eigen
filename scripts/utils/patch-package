@@ -1,23 +1,31 @@
 #!/usr/bin/env bash
 set -e
 
-root="${PWD}"
+# Creates a yarn patch for a package using Yarn 4's built-in patch protocol.
+#
+# Usage: ./scripts/utils/patch-package <package-name>
+#
+# This will:
+# 1. Extract a clean copy of the package to a temp directory
+# 2. Open the temp directory so you can make your changes
+# 3. After you're done, run the printed `yarn patch-commit` command
+#
+# The patch will be saved to .yarn/patches/ and the resolution
+# will be added to package.json automatically.
 
-# Package name and current version
 package_name="$1"
-version=$(yarn why "${package_name}" | grep -o "${package_name}@npm:[^\[]*" | cut -d ":" -f2)
 
-# Create temporary folder
-rm -rf "${root}/tmp"
-mkdir "${root}/tmp"
-cd "${root}/tmp"
+if [ -z "$package_name" ]; then
+  echo "Usage: $0 <package-name>"
+  echo ""
+  echo "Example: $0 react-native-keys"
+  echo ""
+  echo "This will extract the package to a temp directory."
+  echo "Make your changes there, then run the 'yarn patch-commit' command."
+  exit 1
+fi
 
-# Creates an empty npm project, install package and copy changes
-npm init -y
-npm i "${package_name}@${version}"
-cp -a "${root}/node_modules/${package_name}/." "./node_modules/${package_name}/"
+echo "Starting patch for ${package_name}..."
+echo ""
 
-# Creates the patch, moves it to main project and clean up
-npx patch-package "${package_name}"
-cp -a ./patches/. "${root}/patches/"
-rm -rf "${root}/tmp"
+yarn patch "$package_name"

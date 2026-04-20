@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MyCollectionArtistsAutosuggest } from "app/Scenes/MyCollection/Components/MyCollectionArtistsPrompt/MyCollectionArtistsAutosuggest"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
-import { Keyboard } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql } from "react-relay"
 
 jest.mock(
@@ -108,7 +108,7 @@ describe("MyCollectionArtistsAutosuggest", () => {
   })
 
   it("calls collapse on clear", async () => {
-    jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+    jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
     renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")
@@ -121,7 +121,7 @@ describe("MyCollectionArtistsAutosuggest", () => {
   })
 
   it("calls collapse on clear given the keyboard visible", async () => {
-    jest.spyOn(Keyboard, "isVisible").mockReturnValue(true)
+    jest.spyOn(KeyboardController, "isVisible").mockReturnValue(true)
     renderWithRelay()
 
     const input = await screen.findByPlaceholderText("Search for artists on Artsy")

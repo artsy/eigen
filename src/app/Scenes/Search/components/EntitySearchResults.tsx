@@ -1,5 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
-import { FlashList, ListRenderItem } from "@shopify/flash-list"
+import { FlashList, FlashListRef, ListRenderItem } from "@shopify/flash-list"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -12,8 +12,8 @@ import { PillType, SearchResultInterface } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useCallback, useContext, useEffect, useRef } from "react"
 import { ErrorBoundary } from "react-error-boundary"
-import { Keyboard } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResultsProps {
@@ -22,11 +22,10 @@ interface SearchResultsProps {
 }
 
 const PAGE_SIZE = isTablet() ? 40 : 20
-const ESTIMATED_ITEM_SIZE = 56
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
-  const flashListRef = useRef<FlashList<SearchResultInterface>>(null)
+  const flashListRef = useRef<FlashListRef<SearchResultInterface>>(null)
   const { inputRef } = useContext(SearchContext)
 
   const selectedEntity = SEARCH_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
@@ -54,7 +53,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
 
   const handleOnScrollBeginDrag = () => {
     inputRef.current?.blur()
-    Keyboard.dismiss()
+    KeyboardController.dismiss()
   }
 
   useEffect(() => {
@@ -94,7 +93,6 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       extraData={{ query, selectedPill }}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={renderItem}
-      estimatedItemSize={ESTIMATED_ITEM_SIZE}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyboardDismissMode="on-drag"

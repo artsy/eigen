@@ -16,7 +16,7 @@ interface ArtworkCardBottomSheetTabsProps {
   onTabChange: TabsContainerProps["onTabChange"]
 }
 
-const TABS = [
+export const TABS = [
   {
     name: "About the work",
     analyticsName: ContextModule.infiniteDiscoveryArtworkAboutTab,

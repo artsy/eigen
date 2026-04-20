@@ -27,6 +27,7 @@ import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refr
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
@@ -96,6 +97,8 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       return
     }
 
+    KeyboardController.dismiss()
+
     setLoading(true)
 
     try {
@@ -145,7 +148,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   }, [])
 
   const formik = useFormik<ArtworkFormValues>({
-    enableReinitialize: true,
+    enableReinitialize: false,
     initialValues: formValues,
     initialErrors: validateArtworkSchema(formValues),
     onSubmit: handleSubmit,

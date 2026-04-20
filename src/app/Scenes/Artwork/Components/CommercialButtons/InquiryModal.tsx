@@ -1,12 +1,11 @@
 import { InfoIcon } from "@artsy/icons/native"
-import { Box, Flex, Input, Screen, Text, useColor } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Screen, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
-import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 // eslint-disable-next-line no-restricted-imports
@@ -14,10 +13,12 @@ import { navigate } from "app/system/navigation/navigate"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { KeyboardAvoidingView, Modal, ScrollView } from "react-native"
+import { LayoutChangeEvent, Modal } from "react-native"
+import { KeyboardAwareScrollViewRef, KeyboardStickyView } from "react-native-keyboard-controller"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -31,21 +32,31 @@ interface InquiryModalProps {
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, me }) => {
   const { state, dispatch } = useArtworkInquiryContext()
   const color = useColor()
-  const scrollViewRef = useRef<ScrollView>(null)
+  const space = useSpace()
+  const scrollViewRef = useRef<KeyboardAwareScrollViewRef>(null)
   const tracking = useTracking()
   const [commit] = useUpdateCollectorProfile()
 
   const artwork = useFragment(artworkFragment, _artwork)
 
-  const [message, setMessage] = useState<string>(() => randomAutomatedMessage())
+  const [message, setMessage] = useState("")
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
+  const [bottomOffset, setBottomOffset] = useState(0)
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      // `+ 60` is to adjust the offset for the multiline input
+      setBottomOffset(event.nativeEvent.layout.height + 60)
+    },
+    [setBottomOffset]
+  )
 
   const exit = () => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
-  const { sendInquiry, error } = useSendInquiry({
+  const { sendInquiry, error, sendingInquiry } = useSendInquiry({
     onCompleted: exit,
     artwork,
     me,
@@ -56,11 +67,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
       return
     }
 
-    setTimeout(() => setMessage(randomAutomatedMessage()), 500)
     if (state.shippingLocation || state.inquiryQuestions.length) {
       dispatch({ type: "resetForm", payload: null })
     }
-  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible])
+  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible, dispatch])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -120,115 +130,121 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         navigationBarTranslucent
         animationType="slide"
       >
-        <KeyboardAvoidingView
-          style={{ flex: 1, backgroundColor: color("mono0") }}
-          behavior="padding"
-        >
-          <Screen>
-            <NavigationHeader
-              leftButtonText="Cancel"
-              onLeftButtonPress={handleDismiss}
-              rightButtonText="Send"
-              rightButtonDisabled={state.inquiryQuestions.length === 0 && message === ""}
-              onRightButtonPress={() => sendInquiry(message)}
+        <Screen>
+          <NavigationHeader rightCloseButton onRightButtonPress={handleDismiss}>
+            Contact Gallery
+          </NavigationHeader>
+
+          {!!error && (
+            <Flex
+              bg="red100"
+              py={1}
+              alignItems="center"
+              position="absolute"
+              top={6}
+              width={1}
+              zIndex={5}
             >
-              Contact Gallery
-            </NavigationHeader>
-            {!!error && (
-              <Flex
-                bg="red100"
-                py={1}
-                alignItems="center"
-                position="absolute"
-                top={6}
-                width={1}
-                zIndex={5}
-              >
-                <Text variant="xs" color="mono0">
-                  Sorry, we were unable to send this message. Please try again.
-                </Text>
-              </Flex>
-            )}
-            <ScrollView
-              ref={scrollViewRef}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
-              contentInsetAdjustmentBehavior="automatic"
-              keyboardShouldPersistTaps="handled"
-            >
-              <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-              <Box px={2}>
-                {!!availableInquiryQuestions && availableInquiryQuestions.length > 0 && (
-                  <Box my={2}>
-                    <Text variant="sm">What information are you looking for?</Text>
-                    {availableInquiryQuestions.map((inquiryQuestion) => {
-                      if (!inquiryQuestion) {
-                        return false
-                      }
-                      const { internalID: id, question } = inquiryQuestion
-                      return id === InquiryQuestionIDs.Shipping ? (
-                        <InquiryQuestionOption
-                          key={id}
-                          id={id}
-                          question={question}
-                          setShippingModalVisibility={setShippingModalVisibility}
-                        />
-                      ) : (
-                        <InquiryQuestionOption key={id} id={id} question={question} />
-                      )
-                    })}
-                  </Box>
-                )}
-                <Box
-                  mb={4}
-                  onLayout={({ nativeEvent }) => {
-                    setAddMessageYCoordinate(nativeEvent.layout.y)
-                  }}
-                >
-                  <Input
-                    multiline
-                    placeholder="Add a custom note..."
-                    title="Add message"
-                    accessibilityLabel="Add message"
-                    value={message ? message : ""}
-                    onChangeText={setMessage}
-                    onFocus={scrollToInput}
-                    style={{ justifyContent: "flex-start" }}
-                  />
+              <Text variant="xs" color="mono0">
+                Sorry, we were unable to send this message. Please try again.
+              </Text>
+            </Flex>
+          )}
+          <KeyboardAwareForm
+            ref={scrollViewRef}
+            style={{ flex: 1, backgroundColor: color("mono0") }}
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+            contentInsetAdjustmentBehavior="automatic"
+            bottomOffset={bottomOffset}
+          >
+            <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+
+            <Box px={2}>
+              {!!availableInquiryQuestions && availableInquiryQuestions.length > 0 && (
+                <Box my={2}>
+                  <Text variant="sm">What information are you looking for?</Text>
+                  {availableInquiryQuestions.map((inquiryQuestion) => {
+                    if (!inquiryQuestion) {
+                      return false
+                    }
+                    const { internalID: id, question } = inquiryQuestion
+                    return id === InquiryQuestionIDs.Shipping ? (
+                      <InquiryQuestionOption
+                        key={id}
+                        id={id}
+                        question={question}
+                        setShippingModalVisibility={setShippingModalVisibility}
+                      />
+                    ) : (
+                      <InquiryQuestionOption key={id} id={id} question={question} />
+                    )
+                  })}
                 </Box>
-                <Box flexDirection="row">
-                  <InfoIcon mr={0.5} style={{ marginTop: 2 }} />
-                  <Box flex={1}>
-                    <Text variant="xs" color="mono60">
-                      By clicking send, we will share your profile with {artwork.partner?.name}.
-                      Update your profile at any time in{" "}
-                      <Text variant="xs" onPress={handleSettingsPress}>
-                        Settings
-                      </Text>
-                      .
+              )}
+              <Box
+                mb={4}
+                onLayout={({ nativeEvent }) => {
+                  setAddMessageYCoordinate(nativeEvent.layout.y)
+                }}
+              >
+                <Input
+                  multiline
+                  placeholder="Have questions? Ask about shipping options, pricing, or anything else you’d like to know."
+                  title="Your message"
+                  accessibilityLabel="Your message"
+                  value={message}
+                  onChangeText={setMessage}
+                  onFocus={scrollToInput}
+                  style={{ justifyContent: "flex-start" }}
+                />
+              </Box>
+              <Box flexDirection="row">
+                <InfoIcon mr={0.5} style={{ marginTop: 2 }} />
+                <Box flex={1}>
+                  <Text variant="xs" color="mono60">
+                    By clicking send, we will share your profile with {artwork.partner?.name}.
+                    Update your profile at any time in{" "}
+                    <Text variant="xs" onPress={handleSettingsPress}>
+                      Settings
                     </Text>
-                  </Box>
+                    .
+                  </Text>
                 </Box>
               </Box>
-            </ScrollView>
-            <ShippingModal
-              toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
-              modalIsVisible={shippingModalVisibility}
-              setLocation={selectShippingLocation}
-              location={state.shippingLocation}
-            />
-          </Screen>
-        </KeyboardAvoidingView>
+            </Box>
+          </KeyboardAwareForm>
+
+          <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: space(2) }}>
+            <Box p={2} pb={4} backgroundColor="mono0">
+              <Button
+                block
+                disabled={state.inquiryQuestions.length === 0 && message.trim() === ""}
+                loading={sendingInquiry}
+                onPress={() => sendInquiry(message)}
+              >
+                Send
+              </Button>
+            </Box>
+          </KeyboardStickyView>
+
+          <ShippingModal
+            toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
+            modalIsVisible={shippingModalVisibility}
+            setLocation={selectShippingLocation}
+            location={state.shippingLocation}
+          />
+        </Screen>
       </Modal>
 
       <CompleteProfilePrompt
-        artwork={artwork}
         me={me}
         visible={state.profilePromptVisible}
         onDismiss={handleProfilePromptDismiss}
       />
       <MyCollectionBottomSheetModalArtistsPrompt
         visible={state.collectionPromptVisible}
-        title="Inquiry sent! Tell us about the artists in your collection."
+        title="Already own works by this artist or similar artists?"
+        subtitle="Showcase your collection and stand out with galleries."
         onDismiss={handleCollectionPromptDismiss}
       />
     </>
@@ -238,7 +254,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 const artworkFragment = graphql`
   fragment InquiryModal_artwork on Artwork {
     ...CollapsibleArtworkDetails_artwork
-    ...CompleteProfilePrompt_artwork
     ...useSendInquiry_artwork
 
     internalID @required(action: NONE)

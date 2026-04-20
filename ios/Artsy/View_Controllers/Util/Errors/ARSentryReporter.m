@@ -1,5 +1,5 @@
 #import "ARSentryReporter.h"
-#import <Sentry/Sentry.h>
+@import Sentry;
 
 @implementation ARSentryReporter
 

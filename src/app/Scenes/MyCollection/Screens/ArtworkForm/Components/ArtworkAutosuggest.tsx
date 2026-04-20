@@ -58,7 +58,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
       )}
 
       {!!keyword.length && (
-        <Flex height="100%" mb={2}>
+        <Flex height="100%" mb={2} mx={-2}>
           <ArtworkAutosuggestResultsQueryRenderer
             keyword={keyword}
             artistSlug={artistSlug}

@@ -1,51 +1,67 @@
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import "react-native"
+import { screen } from "@testing-library/react-native"
+import { GenericGridTestsQuery } from "__generated__/GenericGridTestsQuery.graphql"
+import { GenericGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { extractNodes } from "app/utils/extractNodes"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
-import RelayGenericArtworksGrid, {
-  GenericArtworksGrid,
-} from "app/Components/ArtworkGrids/GenericGrid"
-
-it("renders without throwing an error", () => {
-  const artworks = [artwork(), artwork(), artwork()]
-
-  renderWithHookWrappersTL(<RelayGenericArtworksGrid artworks={artworks as any} />)
-})
-
-it("handles showing an update when there are new artworks", () => {
-  const artworks = [artwork(), artwork()] as any
-  const newArtworks = [artwork(), artwork(), artwork()] as any
-
-  const grid = new GenericArtworksGrid({ artworks })
-  const shouldUpdate = grid.shouldComponentUpdate({ artworks: newArtworks }, {} as any)
-
-  expect(shouldUpdate).toBeTruthy()
-})
-
-it("handles showing an update when data loading was stopped", () => {
-  const artworks = [artwork(), artwork()] as any
-
-  const grid = new GenericArtworksGrid({
-    artworks,
-    isLoading: true,
-  })
-  const shouldUpdate = grid.shouldComponentUpdate({ artworks, isLoading: false }, {} as any)
-
-  expect(shouldUpdate).toBeTruthy()
-})
-
-const artwork = () => {
-  return {
-    id: "artwork-long-title",
-    gravityID: "long-title",
-    title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
-    date: "2012",
-    saleMessage: null,
-    isInAuction: false,
-    image: {
-      url: "artsy.net/image-url",
-      aspectRatio: 2.18,
+describe("GenericGrid", () => {
+  const { renderWithRelay } = setupTestWrapper<GenericGridTestsQuery, { isLoading?: boolean }>({
+    Component: ({ viewer, isLoading }) => {
+      const artworks = extractNodes(viewer?.artworksConnection)
+      return <GenericGrid artworks={artworks} isLoading={isLoading} />
     },
-    artistsNames: "Guerrilla Girls",
-    href: "/artwork/guerrilla-girls-do-women-still-have-to-be-naked-to-get-into-the-met-museum",
-  }
-}
+    query: graphql`
+      query GenericGridTestsQuery @relay_test_operation {
+        viewer {
+          artworksConnection(first: 3) {
+            edges {
+              node {
+                ...GenericGrid_artworks
+              }
+            }
+          }
+        }
+      }
+    `,
+  })
+
+  it("renders without throwing an error", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        id: "artwork-long-title",
+        slug: "long-title",
+        title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
+        date: "2012",
+        image: {
+          aspectRatio: 2.18,
+          blurhash: "test-blurhash",
+        },
+      }),
+    })
+
+    expect(screen.getByLabelText("Artworks Content View")).toBeOnTheScreen()
+    expect(
+      screen.getByTestId(
+        "artworkGridItem-DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM"
+      )
+    ).toBeOnTheScreen()
+  })
+
+  it("renders spinner when loading", () => {
+    renderWithRelay(
+      {
+        Artwork: () => ({
+          id: "artwork-1",
+          slug: "test-artwork",
+          image: {
+            aspectRatio: 1.5,
+          },
+        }),
+      },
+      { isLoading: true }
+    )
+
+    expect(screen.getByTestId("spinner")).toBeOnTheScreen()
+  })
+})

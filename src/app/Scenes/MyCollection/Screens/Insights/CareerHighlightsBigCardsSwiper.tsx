@@ -7,7 +7,9 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Suspense, useState } from "react"
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
+import { Animated, NativeSyntheticEvent } from "react-native"
+import PagerView from "react-native-pager-view"
+import { OnPageSelectedEventData } from "react-native-pager-view/lib/typescript/PagerViewNativeComponent"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import {
   CareerHighlightBigCardBiennial,
@@ -101,11 +103,9 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
     },
   ])
 
-  const setSliderPage = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const setSliderPage = (event: NativeSyntheticEvent<OnPageSelectedEventData>) => {
     const { currentPage } = sliderState
-    const { x } = event.nativeEvent.contentOffset
-
-    const currentSlide = Math.round(x / screenWidth)
+    const currentSlide = event.nativeEvent.position
 
     if (currentSlide !== currentPage) {
       setSliderState({
@@ -160,21 +160,15 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
           </Flex>
         </NavigationHeader>
       </Flex>
-      <ScrollView
-        horizontal
-        scrollEventThrottle={10}
-        pagingEnabled
-        snapToAlignment="center"
-        showsHorizontalScrollIndicator={false}
-        contentOffset={{ x: screenWidth * openedCardIndex, y: 0 }}
-        onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) =>
-          setSliderPage(event)
-        }
-      >
+      <PagerView style={{ flex: 1 }} initialPage={openedCardIndex} onPageSelected={setSliderPage}>
         {slides.map(({ key, content }) => {
-          return <Flex key={key}>{content}</Flex>
+          return (
+            <Flex key={key} style={{ width: screenWidth }}>
+              {content}
+            </Flex>
+          )
         })}
-      </ScrollView>
+      </PagerView>
     </>
   )
 }

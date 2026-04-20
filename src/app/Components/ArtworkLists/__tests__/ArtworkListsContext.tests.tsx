@@ -7,8 +7,6 @@ import { selectArtworkListsForArtworkQuery } from "app/Components/ArtworkLists/v
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"))
-
 describe("ArtworkListsProvider", () => {
   const initialStateSpy = jest.spyOn(utils, "getArtworkListsStoreInitialState")
 

@@ -1,0 +1,8 @@
+name: Update Echo
+description: "Run update echo script"
+runs:
+  using: "composite"
+  steps:
+    - name: Update echo
+      run: ./scripts/setup/update-echo
+      shell: bash

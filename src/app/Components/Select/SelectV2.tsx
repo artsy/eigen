@@ -246,7 +246,12 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <Modal visible={props.visible} onDismiss={props.onDismiss} onRequestClose={props.onDismiss}>
+    <Modal
+      visible={props.visible}
+      onDismiss={props.onDismiss}
+      onRequestClose={props.onDismiss}
+      presentationStyle="overFullScreen"
+    >
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">

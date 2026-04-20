@@ -3,13 +3,10 @@
 #import <BrazeKit/BrazeKit-Swift.h>
 #import "ARWindow.h"
 
-@class ArtsyEcho;
-
 @interface ARAppDelegateHelper : NSObject
 
 + (instancetype)sharedInstance;
 
-@property (strong, nonatomic) ArtsyEcho *echo;
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
 

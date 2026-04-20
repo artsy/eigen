@@ -6,7 +6,7 @@ import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescrip
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
-import { Select } from "app/Components/Select/SelectV2"
+import { SelectRef } from "app/Components/Select"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -96,7 +96,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const cityRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const stateRef = useRef<Input>(null)
-  const countryRef = useRef<Select<any>>(null)
+  const countryRef = useRef<SelectRef>(null)
 
   const navigation = useNavigation()
 
@@ -256,7 +256,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
             stateRef.current?.blur()
             scrollViewRef.current?.scrollToEnd()
             setTimeout(() => {
-              countryRef.current?.open()
+              countryRef.current?.openSelectModal()
             }, 100)
           }}
           returnKeyType="next"

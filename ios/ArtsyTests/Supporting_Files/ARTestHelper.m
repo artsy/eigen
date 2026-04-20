@@ -1,6 +1,5 @@
 #import "ARTestHelper.h"
 
-#import "ARLogger.h"
 #import "ARRouter.h"
 #import "ARUserManager.h"
 
@@ -16,8 +15,15 @@
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-    NSAssert(version.majorVersion == 18 && version.minorVersion == 5,
-             @"The tests should be run on iOS 18.5, not %ld.%ld", version.majorVersion, version.minorVersion);
+    NSString *configPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ios-config" ofType:@"json"];
+    NSData *configData = [NSData dataWithContentsOfFile:configPath];
+    NSDictionary *config = [NSJSONSerialization JSONObjectWithData:configData options:0 error:nil];
+    NSArray *versionParts = [config[@"ios_version"] componentsSeparatedByString:@"."];
+    NSInteger expectedMajor = [versionParts[0] integerValue];
+    NSInteger expectedMinor = [versionParts[1] integerValue];
+
+    NSAssert(version.majorVersion == expectedMajor && version.minorVersion == expectedMinor,
+             @"The tests should be run on iOS %@, not %ld.%ld", config[@"ios_version"], version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1206, 2622)),
@@ -29,9 +35,6 @@
     // Shared Web Credentials involve async processes that trigger OS alerts and are generally hard to deal with.
     // The related ARUserManager methods can still be invoked, they will just silently do nothing.
     [[ARUserManager sharedManager] disableSharedWebCredentials];
-
-    /// Not really sure what this is for
-    [[ARLogger sharedLogger] startLogging];
 
     // Occasionally we get font issues in snapshots, this _potentially_
     // could be a fix for this.

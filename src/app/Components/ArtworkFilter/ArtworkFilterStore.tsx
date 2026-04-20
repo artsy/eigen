@@ -12,6 +12,7 @@ import {
   FilterType,
   getSortDefaultValueByFilterType,
   getUnitedSelectedAndAppliedFilters,
+  ViewAsValues,
 } from "./ArtworkFilterHelpers"
 import { LOCALIZED_UNIT } from "./Filters/helpers"
 import { FilterDisplayConfig } from "./types"
@@ -217,7 +218,7 @@ export const DEFAULT_FILTERS: FilterArray = [
     displayText: "All Artists I Follow",
   },
   { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
+  { paramName: FilterParamName.viewAs, paramValue: ViewAsValues.Grid, displayText: "Grid" },
   { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },
 ]
 

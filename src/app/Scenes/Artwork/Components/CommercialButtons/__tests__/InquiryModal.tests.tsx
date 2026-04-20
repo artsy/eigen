@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
-import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import {
   ArtworkInquiryContext,
   initialArtworkInquiryState,
@@ -52,7 +51,7 @@ describe("inquiry modal", () => {
     expect(screen.getByText("Title, Date")).toBeVisible()
     expect(screen.getByLabelText("Image of Title")).toBeVisible()
     expect(screen.getByText("Question")).toBeVisible()
-    expect(AUTOMATED_MESSAGES).toContain(screen.getByLabelText("Add message").props.value)
+    expect(screen.getByLabelText("Your message").props.value).toBe("")
   })
 
   it("opens the shipping modal when the 'add your location' field is pressed", async () => {
@@ -83,7 +82,7 @@ describe("inquiry modal", () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
     // clearing the input field
-    fireEvent.changeText(screen.getByLabelText("Add message"), "")
+    fireEvent.changeText(screen.getByLabelText("Your message"), "")
 
     expect(screen.getByText("Send")).toBeDisabled()
 
@@ -96,7 +95,7 @@ describe("inquiry modal", () => {
     renderWithRelay()
     expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
@@ -110,13 +109,13 @@ describe("inquiry modal", () => {
     })
 
     expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
-    expect(screen.getByLabelText("Add message")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Your message")).toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {
     renderWithRelay({ Artwork: () => mockArtwork })
 
-    fireEvent.press(screen.getByText("Cancel"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
 
     await waitFor(() => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -161,7 +160,7 @@ describe("inquiry modal", () => {
       renderWithRelay({ Artwork: () => mockArtwork })
 
       expect(
-        screen.getByText("Inquiry sent! Tell Partner Name more about yourself.")
+        screen.getByText("Stand out and save time by sharing details with the gallery.")
       ).toBeOnTheScreen()
     })
 
@@ -170,7 +169,10 @@ describe("inquiry modal", () => {
       renderWithRelay({ Artwork: () => mockArtwork })
 
       expect(
-        screen.getByText("Inquiry sent! Tell us about the artists in your collection.")
+        screen.getByText("Already own works by this artist or similar artists?")
+      ).toBeOnTheScreen()
+      expect(
+        screen.getByText("Showcase your collection and stand out with galleries.")
       ).toBeOnTheScreen()
     })
   })

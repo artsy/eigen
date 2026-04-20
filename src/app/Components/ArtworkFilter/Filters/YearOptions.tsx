@@ -97,7 +97,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
   }
 
   return (
-    <Flex flexGrow={1}>
+    <Flex flexGrow={1} backgroundColor="mono0">
       <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       <Flex flexGrow={1} py={2}>
         <Text variant="xs" mb="15px" mx={2}>

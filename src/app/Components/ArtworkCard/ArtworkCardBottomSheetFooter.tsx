@@ -15,7 +15,6 @@ import {
   ArtworkCardBottomSheetFooter_artwork$key,
 } from "__generated__/ArtworkCardBottomSheetFooter_artwork.graphql"
 import { ArtworkCardBottomSheetFooter_me$key } from "__generated__/ArtworkCardBottomSheetFooter_me.graphql"
-import { useBottomSheetAnimatedStyles } from "app/Components/ArtworkCard/useBottomSheetAnimatedStyles"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { artworkModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
@@ -41,8 +40,6 @@ export const ArtworkCardBottomSheetFooter: FC<ArtworkCardBottomSheetFooterProps>
   me: _me,
   ...bottomSheetFooterProps
 }) => {
-  const { reversedOpacityStyle } = useBottomSheetAnimatedStyles()
-
   const artwork = useFragment(artworkFragment, _artwork)
   const me = useFragment(meFragment, _me)
   const space = useSpace()
@@ -63,12 +60,7 @@ export const ArtworkCardBottomSheetFooter: FC<ArtworkCardBottomSheetFooterProps>
   const websocketEnabled = !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
-    <BottomSheetFooter
-      {...bottomSheetFooterProps}
-      style={{
-        ...reversedOpacityStyle,
-      }}
-    >
+    <BottomSheetFooter {...bottomSheetFooterProps}>
       <AnalyticsContextProvider
         contextModule={ContextModule.infiniteDiscoveryDrawer}
         contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}

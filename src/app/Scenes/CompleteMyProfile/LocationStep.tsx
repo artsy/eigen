@@ -1,11 +1,11 @@
-import { Text, Screen, Spacer, Flex, Input } from "@artsy/palette-mobile"
+import { Flex, Input, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { FC, useRef } from "react"
-import { KeyboardAvoidingView } from "react-native"
 
 export const LocationStep: FC = () => {
   const ref = useRef<Input>(null)
@@ -43,11 +43,8 @@ export const LocationStep: FC = () => {
 
   return (
     <Screen safeArea={false}>
-      <Screen.Body pt={2} fullwidth>
-        <KeyboardAvoidingView
-          behavior="padding"
-          style={{ flex: 1, justifyContent: "space-between" }}
-        >
+      <Screen.Body pt={2} fullwidth disableKeyboardAvoidance>
+        <KeyboardAvoidingContainer style={{ justifyContent: "space-between" }}>
           <Flex px={2} onLayout={() => ref.current?.focus()}>
             <Text variant="lg-display">Add your primary location</Text>
 
@@ -72,9 +69,9 @@ export const LocationStep: FC = () => {
               inputRef={ref}
             />
           </Flex>
+        </KeyboardAvoidingContainer>
 
-          <Footer isFormDirty={!!location} onGoNext={goNext} />
-        </KeyboardAvoidingView>
+        <Footer isFormDirty={!!location} onGoNext={goNext} />
       </Screen.Body>
     </Screen>
   )

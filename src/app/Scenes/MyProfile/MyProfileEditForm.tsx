@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
-import { CheckmarkStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
+import { CheckmarkFillIcon, CheckmarkStrokeIcon } from "@artsy/icons/native"
 import {
   Avatar,
   Box,
@@ -21,6 +21,7 @@ import { Image } from "app/Components/Bidding/Elements/Image"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
@@ -30,13 +31,16 @@ import { fetchProfileData } from "app/Scenes/MyProfile/fetchProfileData"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { FormikProvider, useFormik } from "formik"
-import React, { Suspense, useEffect, useState } from "react"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import React, { Suspense, useCallback, useEffect, useState } from "react"
+import { LayoutChangeEvent } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
@@ -66,11 +70,20 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
 
   const color = useColor()
   const navigation = useNavigation()
+  const { bottom } = useSafeAreaInsets()
 
   const { showActionSheetWithOptions } = useActionSheet()
 
   const [refreshKey, setRefreshKey] = useState(0)
   const [localImagePath, setLocalImagePath] = useState<string>()
+  const [bottomOffset, setBottomOffset] = useState(0)
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   const {
     showVerificationBanner: showVerificationBannerForEmail,
@@ -201,7 +214,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
         />
       )}
 
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
+      <KeyboardAwareForm bottomOffset={bottomOffset}>
         <Join separator={<Spacer y={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
             <Touchable accessibilityRole="button" onPress={chooseImageHandler}>
@@ -239,13 +252,20 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               handleEmailVerification={handleEmailVerification}
               handleIDVerification={handleIDVerification}
             />
-
-            <Button flex={1} disabled={!touched || !isValid} onPress={() => handleSubmit()} mb={2}>
-              Save
-            </Button>
           </Flex>
         </Join>
-      </ScrollView>
+      </KeyboardAwareForm>
+
+      <KeyboardStickyView
+        onLayout={handleOnLayout}
+        offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
+      >
+        <Flex backgroundColor="mono0" p={2}>
+          <Button flex={1} disabled={!touched || !isValid} onPress={() => handleSubmit()}>
+            Save
+          </Button>
+        </Flex>
+      </KeyboardStickyView>
       {!!showVerificationBannerForEmail && (
         <VerificationBanner resultText={`Email sent to ${me?.email ?? ""}`} />
       )}
@@ -294,11 +314,9 @@ export const MyProfileEditFormScreenQuery = graphql`
 
 export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props) => {
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
-      <Suspense fallback={<LoadingSkeleton />}>
-        <MyProfileEditForm {...props} />
-      </Suspense>
-    </KeyboardAvoidingView>
+    <Suspense fallback={<LoadingSkeleton />}>
+      <MyProfileEditForm {...props} />
+    </Suspense>
   )
 }
 

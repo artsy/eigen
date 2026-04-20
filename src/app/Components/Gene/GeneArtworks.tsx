@@ -8,7 +8,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryListRenderItem } from "@shopify/flash-list"
+import { ListRenderItem } from "@shopify/flash-list"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -17,7 +17,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -85,25 +84,19 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem: MasonryListRenderItem<Artwork> = useCallback(({ item, columnIndex }) => {
+  const renderItem: ListRenderItem<Artwork> = useCallback(({ item }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio
 
     return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.gene}
-          contextScreenOwnerId={gene.internalID}
-          contextScreenOwnerSlug={gene.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
+      <ArtworkGridItem
+        contextScreenOwnerType={OwnerType.gene}
+        contextScreenOwnerId={gene.internalID}
+        contextScreenOwnerSlug={gene.slug}
+        artwork={item}
+        height={imgHeight}
+      />
     )
   }, [])
 
@@ -112,7 +105,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           initialArtworksTotal ? (
@@ -137,8 +129,9 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListHeaderComponent={
-          <>
+          <Flex px={1}>
             <Tabs.SubTabBar>
               <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
             </Tabs.SubTabBar>
@@ -147,7 +140,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
                 {`Showing ${artworksTotal} work${artworksTotal > 1 ? "s" : ""}`}
               </Text>
             </Flex>
-          </>
+          </Flex>
         }
       />
       <ArtworkFilterNavigator

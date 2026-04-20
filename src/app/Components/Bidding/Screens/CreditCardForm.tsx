@@ -13,10 +13,14 @@ import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { SelectRef } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { useFormik } from "formik"
-import { memo, useCallback, useRef } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { memo, useCallback, useRef, useState } from "react"
+import { LayoutChangeEvent } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type CreditCardFormProps = NativeStackScreenProps<BiddingNavigationStackParams, "CreditCardForm">
 
@@ -28,11 +32,20 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     params: { onSubmit, billingAddress },
   },
 }) => {
+  const { bottom } = useSafeAreaInsets()
   const space = useSpace()
+  const [bottomOffset, setBottomOffset] = useState(0)
   const initialValues: CreditCardFormValues = {
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
     ...billingAddress,
   }
+
+  const handleOnLayout = useCallback(
+    (event: LayoutChangeEvent) => {
+      setBottomOffset(event.nativeEvent.layout.height + bottom)
+    },
+    [setBottomOffset, bottom]
+  )
 
   const handleFormSubmit = useCallback(
     async (values: CreditCardFormValues) => {
@@ -102,20 +115,17 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const stateRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const phoneRef = useRef<Input>(null)
+  const countryPickerRef = useRef<SelectRef>(null)
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <Flex flex={1}>
       <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
         Add Credit Card
       </NavigationHeader>
 
-      <ScrollView
+      <KeyboardAwareForm
+        bottomOffset={bottomOffset}
         contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
       >
         <Flex>
           <>
@@ -218,12 +228,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             error={showError("phoneNumber")}
             onChangeText={handleChange("phoneNumber")}
             onBlur={handleBlur("phoneNumber")}
-            onSubmitEditing={() => phoneRef.current?.blur()}
+            returnKeyType="next"
+            onSubmitEditing={() => countryPickerRef.current?.openSelectModal()}
+            submitBehavior="submit"
           />
 
           <Spacer y={2} />
 
           <CountrySelect
+            ref={countryPickerRef}
             onSelectValue={(countryCode: string) =>
               setFieldValue("country", {
                 shortName: countryCode,
@@ -248,23 +261,25 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           {"\n"}A valid credit card is required in order to bid. Please enter your credit card
           information below. The name on your Artsy account must match the name on the card.
         </Text>
-      </ScrollView>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
+      </KeyboardAwareForm>
 
-      <Box p={2} mb={2}>
-        <Button
-          testID="credit-card-form-button"
-          disabled={!isValid || !dirty}
-          loading={isSubmitting}
-          block
-          width={100}
-          onPress={() => handleSubmit()}
-        >
-          Save
-        </Button>
-      </Box>
-    </KeyboardAvoidingView>
+      <KeyboardStickyView onLayout={handleOnLayout} offset={{ opened: bottom }}>
+        <Box p={2} backgroundColor="mono0">
+          <Button
+            testID="credit-card-form-button"
+            disabled={!isValid || !dirty}
+            loading={isSubmitting}
+            block
+            width={100}
+            onPress={() => handleSubmit()}
+          >
+            Save
+          </Button>
+        </Box>
+      </KeyboardStickyView>
+    </Flex>
   )
 }
 

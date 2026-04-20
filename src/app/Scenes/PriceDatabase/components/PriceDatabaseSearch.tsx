@@ -13,10 +13,12 @@ import {
   paramsToSnakeCase,
 } from "app/Scenes/PriceDatabase/utils/helpers"
 import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useFormikContext } from "formik"
 import { stringify } from "query-string"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
 type PriceDatabaseScreenProps = StackScreenProps<
@@ -54,7 +56,7 @@ export const PriceDatabaseSearch: React.FC<PriceDatabaseScreenProps> = ({ naviga
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingContainer>
       <ScrollView keyboardShouldPersistTaps="handled">
         <BackButton
           onPress={() => goBack()}
@@ -118,7 +120,7 @@ export const PriceDatabaseSearch: React.FC<PriceDatabaseScreenProps> = ({ naviga
           <PriceDatabaseBenefits />
         </Flex>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingContainer>
   )
 }
 

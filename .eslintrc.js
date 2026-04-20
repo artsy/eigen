@@ -147,6 +147,12 @@ module.exports = {
             message:
               "Please use `RouterLink` instead of `navigate` (to support prefetching). If this is not possible, you can import `navigate` by adding a '// eslint-disable-next-line no-restricted-imports' comment.",
           },
+          {
+            name: "react-native",
+            importNames: ["Keyboard"],
+            message:
+              "Please use KeyboardController from 'react-native-keyboard-controller' instead.",
+          },
         ],
       },
     ],

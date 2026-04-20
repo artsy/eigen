@@ -1,4 +1,7 @@
-import { KeyboardAvoidingView, View } from "react-native"
+import { useSpace } from "@artsy/palette-mobile"
+import { View } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export interface BottomAlignedProps {
   onPress?: () => void
@@ -7,12 +10,19 @@ export interface BottomAlignedProps {
 
 export const BottomAlignedButtonWrapper: React.FC<React.PropsWithChildren<BottomAlignedProps>> = (
   props
-) => (
-  <KeyboardAvoidingView style={{ flex: 1 }}>
-    <View key="space-eater" style={{ flexGrow: 1 }}>
-      {props.children}
-    </View>
+) => {
+  const { bottom } = useSafeAreaInsets()
+  const space = useSpace()
 
-    {props.buttonComponent}
-  </KeyboardAvoidingView>
-)
+  return (
+    <View style={{ flex: 1 }}>
+      <View key="space-eater" style={{ flexGrow: 1 }}>
+        {props.children}
+      </View>
+
+      <KeyboardStickyView offset={{ opened: bottom - space(1) }}>
+        {props.buttonComponent}
+      </KeyboardStickyView>
+    </View>
+  )
+}

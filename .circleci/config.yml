@@ -111,15 +111,6 @@ commands:
             - ios/Podfile.lock
   prep-ios-env:
     steps:
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch.
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
       - run:
           name: Quit early if Draft PR
           command: |
@@ -129,6 +120,17 @@ commands:
             fi
       - checkout
       - generate-checksums
+      - restore_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch.
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
       - attach_workspace:
           at: .
       - setup-awscli
@@ -164,17 +166,19 @@ commands:
       - android/change_java_version:
           java_version: 17
       - run:
+          name: Install ninja
+          command: sudo apt-get install ninja-build
+      - checkout
+      - generate-checksums
+      - restore_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+      - run:
           name: Quit early if possible
           command: |
             if test $CIRCLE_BRANCH != beta-android && ls build-success.log
             then
               circleci step halt
             fi
-      - run:
-          name: Install ninja
-          command: sudo apt-get install ninja-build
-      - checkout
-      - generate-checksums
       - setup-awscli
       - setup-env-file
       - install-node-modules
@@ -193,6 +197,7 @@ commands:
         type: string
         default: "release"
     steps:
+      - android/restore_gradle_cache
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
@@ -200,6 +205,7 @@ commands:
           name: Build App
           no_output_timeout: 30m
           command: ./scripts/ci/ci-android << parameters.build_type >>
+      - android/save_gradle_cache
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -242,9 +248,11 @@ jobs:
     resource_class: xlarge
     steps:
       - prep-android-env
+      - android/restore_gradle_cache
       - run:
           name: Run Android unit tests
           command: yarn android:test:ci
+      - android/save_gradle_cache
       - store_test_results:
           path: android/app/build/test-results
       - store_artifacts:
@@ -449,15 +457,11 @@ jobs:
       resource_class: << pipeline.parameters.default_mac_runner >>
 
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       - prep-ios-env
       - macos/preboot-simulator:
           version: << pipeline.parameters.simulator_version >>
           platform: "iOS"
-          device: "iPhone 16 Pro"
+          device: "iPhone 17 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
@@ -478,10 +482,6 @@ jobs:
       - image: cimg/android:2025.03.1-node
     resource_class: xlarge
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
       - build-app-android
       - run:
@@ -491,6 +491,9 @@ jobs:
       - store_artifacts:
           path: android/app/build/reports
 
+      - store_artifacts:
+          path: .gradle/daemon/
+
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
           paths:
@@ -499,13 +502,13 @@ jobs:
 parameters:
   xcode_version:
     type: string
-    default: "16.4"
+    default: "26.2"
   node_version:
     type: string
     default: "24.6.0"
   simulator_version:
     type: string
-    default: "18.5"
+    default: "26.2"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
@@ -518,7 +521,7 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   node_modules_cache_key:
     type: string
-    default: v28-node_modules-{{ checksum ".manifests/node_modules" }}
+    default: v29-node_modules-{{ checksum ".manifests/node_modules" }}
   gems_cache_key:
     type: string
     default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -530,14 +533,13 @@ parameters:
     default: v30-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v15-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v16-app_build_android-{{ checksum ".manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
-    # this one is not including the checksum due to path differences in the checksum
-    default: v19-test-success
+    default: v20-test-success
   android_native_cache_key:
     type: string
-    default: v18-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+    default: v20-test-success-{{ checksum ".manifests/android_native" }}
 
 workflows:
   nightly:
@@ -595,17 +597,9 @@ workflows:
 
       - build-test-app-ios:
           <<: *ignore_beta_branches
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
 
       - build-test-app-android:
           <<: *ignore_beta_branches
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
 
       - update-metaphysics:
           <<: *beta_branches_only

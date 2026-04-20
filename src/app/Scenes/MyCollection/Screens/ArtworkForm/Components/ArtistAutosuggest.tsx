@@ -114,7 +114,11 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         <Input
           placeholder="Search for artists on Artsy"
           icon={<SearchIcon width={18} height={18} />}
-          onChangeText={formik.handleChange("artist")}
+          onChangeText={(text) => {
+            if (text !== formik.values.artist) {
+              formik.handleChange("artist")(text)
+            }
+          }}
           onBlur={formik.handleBlur("artist")}
           value={formik.values.artist}
           enableClearButton

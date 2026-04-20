@@ -5,7 +5,8 @@ import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/Crea
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { noop } from "lodash"
-import { Keyboard, Platform } from "react-native"
+import { Platform } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { graphql } from "react-relay"
 
 describe("CreateNewArtworkListView", () => {
@@ -72,7 +73,7 @@ describe("CreateNewArtworkListView", () => {
       const errorMessage = "You already have a list with this name."
 
       const { mockResolveLastOperation } = renderWithRelay()
-      jest.spyOn(Keyboard, "isVisible").mockReturnValue(true)
+      jest.spyOn(KeyboardController, "isVisible").mockReturnValue(true)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
       fireEvent.changeText(input, helloWorldText)
@@ -139,7 +140,7 @@ describe("CreateNewArtworkListView", () => {
 
     it("when mutation returned success", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
-      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+      jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
       fireEvent.changeText(input, helloWorldText)
@@ -175,7 +176,7 @@ describe("CreateNewArtworkListView", () => {
 
     it("when mutation returned success", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
-      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+      jest.spyOn(KeyboardController, "isVisible").mockReturnValue(false)
 
       const input = screen.getByPlaceholderText(inputPlaceholder)
       fireEvent.changeText(input, helloWorldText)

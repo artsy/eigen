@@ -113,37 +113,6 @@ describe("ArtsyWebViewPage", () => {
     expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeFalsy()
   })
 
-  it("does not render a back button when intercepting ModalWebView navigation", () => {
-    const view = render({ isPresentedModally: true, url: "https://staging.artsy.net/auction-faq" })
-
-    // First, complete the initial load
-    act(() => {
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/auction-faq",
-        loading: false,
-        canGoBack: false,
-      })
-    })
-
-    // Then navigate to a ModalWebView route which should be intercepted
-    act(() => {
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/terms",
-        canGoBack: true,
-        loading: true,
-      })
-    })
-
-    // Should stay as X button because we intercepted the navigation
-    expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeTrue()
-    // Should have called navigate to open a modal
-    expect(navigate).toHaveBeenCalledWith("https://staging.artsy.net/terms")
-    // Should have called goBack to undo the navigation entry
-    expect(mockGoBack).toHaveBeenCalled()
-  })
-
   it("shares the correct URL", () => {
     const view = render({
       showShareButton: true,
@@ -390,30 +359,6 @@ describe("ArtsyWebViewPage", () => {
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
-      })
-
-      it("is called when the URL matches a ModalWebView route to undo the navigation", () => {
-        const view = render()
-
-        // Complete initial load
-        act(() => {
-          webViewProps(view).onNavigationStateChange?.({
-            ...mockOnNavigationStateChange,
-            url: "https://staging.artsy.net/hello",
-            loading: false,
-          })
-        })
-
-        // Navigate to a ModalWebView route
-        act(() => {
-          webViewProps(view).onNavigationStateChange?.({
-            ...mockOnNavigationStateChange,
-            url: "https://staging.artsy.net/orders/foo",
-          })
-        })
-
-        // goBack should be called to undo the navigation since we're opening a modal instead
-        expect(mockGoBack).toHaveBeenCalled()
       })
 
       it("is not called when the URL matches a ModalWebView route on initial load", () => {

@@ -23,6 +23,7 @@
 #import "ARDispatchManager.h"
 #import "UIImageView+AsyncImageLoading.h"
 #import "UIViewController+Popovers.h"
+#import "UIView+BooleanAnimations.h"
 
 // Models.
 #import "Sale.h"
@@ -73,17 +74,13 @@
 #import "UIImage+ImageFromColor.h"
 #import "ARSpinner.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import <FXBlurView/FXBlurView.h>
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
-#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "AREmission.h"
 #import "ARNotificationView.h"
 
 #import "ARTNativeScreenPresenterModule.h"
-
-
 
 
 // Sentry Swift Access

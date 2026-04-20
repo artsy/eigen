@@ -35,8 +35,12 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Does your component contain animations?](#does-your-component-contain-animations)
     - [More granular control on when updates happen can do magic sometimes! `requestAnimationFrame`, `queueMicroTask` and `InteractionManager.runAfterInteractions` can come to the rescue here!](#more-granular-control-on-when-updates-happen-can-do-magic-sometimes-requestanimationframe-queuemicrotask-and-interactionmanagerrunafterinteractions-can-come-to-the-rescue-here)
   - [Formik](#formik)
+  - [Keyboard Management](#keyboard-management)
+    - [Wrappers](#wrappers)
+    - [Common Patterns](#common-patterns)
   - [Miscellaneous](#miscellaneous)
     - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
+  - [Build Caching](#build-caching)
 
 ## Examples & Hacks
 
@@ -222,7 +226,6 @@ const App = () => {
   return (
    <FlashList
     renderItem={renderItem}
-    estimatedItemSize={ESTIMATED_ITEM_SIZE}
     keyExtractor={keyExtractor}
   >
   )
@@ -331,6 +334,103 @@ const Image = () => {
 
 We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/9faccb0ffd987da74f76e98e55432992f07231cf/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
 
+## Keyboard Management
+
+We use `react-native-keyboard-controller` for all keyboard interactions. An ESLint rule enforces this pattern by preventing imports of React Native's built-in `Keyboard` API.
+
+### Wrappers
+
+We are using three main wrappers for keyboard management:
+
+**1. KeyboardAvoidingContainer** - Basic `<View>` with keyboard avoidance for simple layouts
+
+```typescript
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
+
+const App = () => {
+  return (
+    <KeyboardAvoidingContainer>
+      <Input placeholder="Email" />
+    </KeyboardAvoidingContainer>
+  )
+}
+```
+
+**2. KeyboardAwareForm** - Scrollable view that auto-scroll to focused inputs
+
+```typescript
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
+
+const App = () => {
+  return (
+    <KeyboardAwareForm>
+      <Input title="Name" />
+      <Input title="Email" />
+    </KeyboardAwareForm>
+  )
+}
+```
+
+**3. KeyboardStickyView** - A `View` that stay above the keyboard
+
+```typescript
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+
+const App = () => {
+  return (
+    <KeyboardStickyView>
+      <Box p={2}>
+        <Button onPress={handleSubmit}>Submit</Button>
+      </Box>
+    </KeyboardStickyView>
+  )
+}
+```
+
+### Common Patterns
+
+**Using `KeyboardStickyView` with `KeyboardAwareForm`**
+
+This is one of the most common patterns we have for keyboard management.
+
+```typescript
+import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
+
+const App = () => {
+  const [bottomOffset, setBottomOffset] = useState(0)
+
+  const handleOnLayout = (event) => {
+    setBottomOffset(event.nativeEvent.layout.height + bottom)
+  }
+
+  return (
+    <>
+      <KeyboardAwareForm
+        // `bottomOffset` is the extra height needed to make the focused input visible above the sticky view
+        bottomOffset={bottomOffset}
+      >
+        <Input title="Name" />
+        <Input title="Email" />
+      </KeyboardAwareForm>
+
+      <KeyboardStickyView
+        // `onLayout` is used to calculate the offset when focusing on an input in the form
+        onLayout={handleOnLayout}
+        // `offset` is used to align the sticky content with the keyboard, usually it's the safe area bottom inset
+        offset={{ opened: bottom }}
+      >
+        <Box p={2}>
+          <Button onPress={handleSubmit}>Submit</Button>
+        </Box>
+      </KeyboardStickyView>
+    </>
+  )
+}
+```
+
+A good example is the [MyCollection main form component](https://github.com/artsy/eigen/blob/33b432f91f6f0e562e59ebe44f0db8b0a8f6e29f/src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tsx)
+
 ## Miscellaneous
 
 ### Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS
@@ -342,3 +442,7 @@ The following parts of the iOS app are handled in native code:
 - Analytics for Native UI.
 - View In Room (Augmented Reality)
 - City Guide Drawer Handling
+
+## Build Caching
+
+➡️ Read more about our two-tier build caching system [here](build_caching.md)

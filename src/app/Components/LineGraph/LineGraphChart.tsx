@@ -4,7 +4,6 @@ import { compact, noop } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"
-import { Subject } from "rxjs"
 import { AnimatePropTypeInterface, InterpolationPropType } from "victory-core"
 import {
   VictoryArea,
@@ -16,13 +15,14 @@ import {
   VictoryTheme,
 } from "victory-native"
 import { HighlightIconContainer, ScatterDataPointContainer } from "./ScatterPointsContainers"
+import { SimpleObservable } from "./SimpleObservable"
 import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
 import { LineChartData } from "./types"
 
 export type ChartGestureEventType = { x: number; y: number } | null
 
-// using Subject because this observable should multicast to many datapoints
-export const ChartGestureObservable = new Subject<ChartGestureEventType>()
+// using SimpleObservable because this observable should multicast to many datapoints
+export const ChartGestureObservable = new SimpleObservable<ChartGestureEventType>()
 
 interface LineGraphChartProps extends LineChartData {
   chartHeight?: number

@@ -33,6 +33,7 @@
 - [Notifications](push_notifications.md)
 - [Secret keys](adding_new_keys.md)
 - [Certificates](certs.md)
+- [Bump iOS/Xcode Version](../.claude/skills/bump-ios-version/SKILL.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
 - [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 - [Pull Request template](pull_request_template.md)

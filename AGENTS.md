@@ -1,292 +1,106 @@
-# Copilot Context for Eigen Testing
+# Agent Guidelines
 
-## Project Overview
+Eigen is Artsy's mobile app — a bare React Native application that uses the Expo sdk, available on both iOS and Android, that powers the [Artsy](https://www.artsy.net) marketplace for discovering and collecting art.
 
-Eigen is a React Native application for Artsy. This document provides context for writing and maintaining tests in this codebase.
+Detailed docs live in `docs/` — reference them instead of duplicating here.
 
-## Testing Stack
+## Tech Stack
 
-- **Component Testing**: React Native Testing Library (@testing-library/react-native)
-- **GraphQL/Relay**: Relay Test Utils (relay-test-utils)
-- **Mocking**: jest-fetch-mock, custom mocks in setupJest.tsx
+- **React Native** — Cross-platform mobile framework (preferred for all new features)
+- **TypeScript** — Language (strict mode enabled)
+- **Relay** — GraphQL data fetching (hooks preferred over HOCs)
+- **GraphQL / Metaphysics** — Artsy's GraphQL API server
+- **@artsy/palette-mobile** — Design system and reusable component toolkit
+- **react-navigation** — Screen navigation and routing
+- **Jest** — Test runner
+- **@testing-library/react-native** — Component testing
+- **Formik** — Form handling
+- **FlashList** — Performant list rendering (preferred over FlatList)
+- **react-native-reanimated / Moti** — Animations
+- **react-native-keyboard-controller** — Keyboard management (never use RN's built-in `Keyboard` API)
+- **Yarn 4** — Package manager
+- **CircleCI / GitHub Actions** — CI/CD and builds
+- **Objective-C / Swift / Kotlin / Java** — Native bridging and platform-specific features only
 
-## File Structure & Naming
+## Common Commands
 
-### Test File Location
+- `yarn type-check` — Run Relay compiler + TypeScript check
+- `yarn relay` — Compile Relay GraphQL queries
+- `yarn test <path>` — Run Jest tests for specific files
+- `yarn lint --fix <path>` — Lint and auto-fix TypeScript files
+- `yarn start` — Start Metro bundler + Relay watcher
+- `yarn ios:no-cache` — Run iOS app in simulator
+- `yarn ios` — Run iOS app in simulator with build caching
+- `yarn android:cached` — Run Android app in emulator (uses cached build)
+- `yarn android` — Run Android app in emulator (full rebuild)
 
-- Place tests in `__tests__` directories colocated with source files
-- Example structure:
-  ```
-  src/app/Components/Feature/
-  ├── Feature.tsx
-  └── __tests__/
-      └── Feature.tests.tsx
-  ```
+## Pre-Commit Verification
 
-### Naming Convention
+Before every commit, verify code quality on changed files:
 
-- Use `.tests.tsx` for React component tests
-- Use `.tests.ts` for utility/model tests
-
-### Module Aliases
-
-Use these path aliases in imports:
-
-```typescript
-import { Component } from "app/Components/Feature/Component"
-import { colors } from "palette"
-import { type } from "shared/utils"
+```sh
+yarn tsc
+yarn test --findRelatedTests <changed-files>
+yarn lint <changed-files>
 ```
 
-## Running Tests
+Never commit code that fails these checks. The repo uses `lint-staged` via a husky pre-commit hook.
 
-```bash
-yarn test              # Run all tests
-yarn test:watch       # Watch mode
-yarn test:debug       # Debug with node inspector
+## Code Style & Common Patterns
+
+@docs/best_practices.md
+
+## File Organization
+
+```
+src/
+├── app/
+│   ├── Scenes/          # Top-level screens (PascalCase: Artwork, Search, Sale, etc.)
+│   │   └── MyScreen/
+│   │       ├── MyScreen.tsx
+│   │       ├── Components/        # Screen-specific components
+│   │       ├── hooks/             # Screen-specific hooks and mutations
+│   │       ├── utils/             # Screen-specific utilities
+│   │       └── __tests__/
+│   ├── Components/      # Shared components across scenes
+│   ├── Navigation/      # Route definitions and navigation setup
+│   ├── NativeModules/   # Native bridge modules
+│   ├── store/           # Global state management
+│   ├── system/          # Framework-level code (navigation helpers, etc.)
+│   └── utils/           # Shared utilities
+├── __generated__/       # Relay-generated artifacts (do not edit)
+data/
+├── schema.graphql       # Metaphysics GraphQL schema
+└── complete.queryMap.json  # Relay persisted queries
+docs/                    # Project documentation
+ios/                     # iOS native code and Xcode workspace
+android/                 # Android native code and Gradle project
 ```
 
-## Core Testing Utilities
-
-### 1. Component Testing (Non-Relay)
-
-Use `renderWithWrappers` for components without Relay dependencies:
-
-```typescript
-import { fireEvent, screen } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-describe("ComponentName", () => {
-  it("renders correctly", () => {
-    renderWithWrappers(<Component prop="value" />)
-
-    expect(screen.getByText("Expected Text")).toBeOnTheScreen()
-  })
-
-  it("handles user interaction", () => {
-    renderWithWrappers(<Component />)
-
-    fireEvent.press(screen.getByTestId("button-id"))
-
-    expect(mockNavigate).toHaveBeenCalledWith("/path")
-  })
-})
-```
-
-**Wrapper Props:**
-
-```typescript
-renderWithWrappers(<Component />, {
-  skipRelay: true,           // Skip Relay environment provider
-  includeNavigation: true,   // Include navigation context
-  includeArtworkLists: true  // Include artwork lists context
-})
-```
-
-### 2. Relay Component Testing
-
-Use `setupTestWrapper` for components that use Relay queries:
-
-```typescript
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "react-relay"
-import { screen } from "@testing-library/react-native"
-
-describe("RelayComponent", () => {
-  const { renderWithRelay } = setupTestWrapper({
-    Component: YourComponent,
-    query: graphql`
-      query ComponentTestQuery @relay_test_operation {
-        me {
-          ...Component_me
-        }
-      }
-    `,
-  })
-
-  it("renders data from GraphQL", () => {
-    renderWithRelay({
-      Me: () => ({
-        name: "John Doe",
-        email: "john@example.com",
-      }),
-    })
-
-    expect(screen.getByText("John Doe")).toBeOnTheScreen()
-  })
-
-  it("handles error states", () => {
-    const { mockRejectLastOperation } = renderWithRelay()
-
-    mockRejectLastOperation(new Error("Network error"))
-
-    expect(screen.getByText("Error message")).toBeOnTheScreen()
-  })
-})
-```
-
-**Mock Helpers:**
-
-```typescript
-import { mockEdges } from "app/utils/tests/mockEdges"
-
-// Mock paginated data
-renderWithRelay({
-  Me: () => ({
-    artworks: {
-      edges: mockEdges(10), // Creates 10 edge nodes
-    },
-  }),
-})
-```
-
-## Testing Patterns
-
-### Navigation Testing
-
-Navigation is globally mocked. Use `mockNavigate`:
-
-```typescript
-import { navigate } from "app/system/navigation/navigate"
-
-it("navigates on button press", () => {
-  renderWithWrappers(<Component />)
-
-  fireEvent.press(screen.getByText("View Details"))
-
-  expect(navigate).toHaveBeenCalledWith("/artwork/artwork-slug")
-})
-```
-
-### Tracking/Analytics Testing
-
-To test these, the best way is something like the following:
-
-```ts
-import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-
-it("tracks analytics event when button is tapped", () => {
-  const { getByText } = renderWithWrappers(<TestScreen />)
-
-  fireEvent.press(getByText("my button"))
-
-  expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-  expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-    Array [
-      Object {
-        "action": "tappedInfoBubble",
-        "context_module": "myCollectionArtwork",
-        "context_screen_owner_id": "artwork-id",
-        "context_screen_owner_slug": "artwork-slug",
-        "context_screen_owner_type": "myCollectionArtwork",
-        "subject": "demandIndex",
-      },
-    ]
-  `)
-})
-```
-
-You can start with an empty snapshot like `expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot()` and when you run the tests, jest will fill it in. Then check if it is correct, and you are ready to commit.
-
-If at some point the track properties change, then the snapshot will need to be updated. If there is a breakage and for some reason a property is not sent, then this snapshot will alert us correctly.
-
-### Async Testing
-
-Use `findBy*` for async operations:
-
-```typescript
-it("loads data asynchronously", async () => {
-  renderWithRelay()
-
-  await screen.findByText("Loaded Data").toBeOnTheScreen()
-})
-```
-
-## Important Testing Rules
-
-### 1. Mock Tracking Auto-Clear
-
-`mockTrackEvent` and `mockPostEventToProviders` are automatically cleared in `beforeEach`. No manual clearing needed.
-
-### 2. Do not use Deprecated Utilities
-
-These utilities are deprecated - avoid in new tests:
-
-- `renderWithWrappersLEGACY` → use `renderWithWrappers`
-- `setupTestWrapper_LEGACY` → use `setupTestWrapper`
-- `resolveMostRecentRelayOperation` → use `setupTestWrapper`
-- `flushPromiseQueue` → use `findBy*`
-- `waitUntil` → use `waitFor`
-- `extractText` → use Testing Library queries
-- `renderWithLayout` → use `renderWithWrappers`
-
-### 3. TestID Naming
-
-Use descriptive, kebab-case test IDs:
-
-```typescript
-<TouchableOpacity testID="artwork-save-button">
-<View testID="artist-series-list-item">
-```
-
-## What to Test
-
-### DO Test:
-
-- Component rendering with different props
-- User interactions (press, scroll, input)
-- Navigation behavior
-- Error states and loading states
-- Conditional rendering logic
-- Analytics tracking calls
-- Accessibility features
-
-### DON'T Test:
-
-- Implementation details (internal state, private methods)
-- Third-party library functionality
-- Styling details (unless critical to functionality)
-- Exact DOM structure (use semantic queries)
-- React Native framework behavior
-
-## Test Structure
-
-Follow the Arrange-Act-Assert pattern:
-
-```typescript
-describe("Component/Feature Name", () => {
-  // Setup that applies to all tests
-  beforeEach(() => {
-    // Clear mocks, reset state
-  })
-
-  describe("specific functionality", () => {
-    it("does something specific", () => {
-      // Arrange: Set up test data and render component
-      const props = { title: "Test" }
-      renderWithWrappers(<Component {...props} />)
-
-      // Act: Perform user action or trigger behavior
-      fireEvent.press(screen.getByTestId("button"))
-
-      // Assert: Verify expected outcome
-      expect(mockNavigate).toHaveBeenCalledWith("/path")
-    })
-  })
-})
-```
-
-## Getting Help
-
-- Run tests: `yarn test`
-- Debug tests: `yarn test:debug`
-- Watch mode: `yarn test --watch`
-- Check specific file: `yarn test path/to/file.tests.tsx`
-
-## Additional Resources
-
-- [Jest Documentation](https://jestjs.io/docs/getting-started)
-- [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
-- [Relay Test Utils](https://relay.dev/docs/guides/testing-relay-components/)
-- Setup file: `src/setupJest.tsx`
-- Test utilities: `src/app/utils/tests/`
+## Workflow
+
+- Do not import components/hooks/functions directly from a different Scene — extract shared code to `src/app/Components/` or `src/app/utils/`
+- When adding a screen with a corresponding artsy.net page, match the route path and enable deep linking (add to `AndroidManifest.xml` for Android)
+- Use independent `NavigationContainer` stacks for context-specific flows (multi-step forms, modal sequences) rather than adding global routes
+- Run `yarn relay` after modifying any GraphQL queries or fragments
+- Sync the GraphQL schema with `yarn sync-schema` when Metaphysics changes
+
+## Gotchas
+
+- `yarn pod-install` may fail on first run due to a cocoapods-keys bug — re-run to fix
+- Legacy `@ts-expect-error STRICTNESS_MIGRATION` comments exist throughout the codebase — remove them when touching affected code, but only if it's a straightforward change.
+- Relay artifacts go in `src/__generated__/` (configured in `relay.config.js`) — never edit these
+- Some native screens still exist in Obj-C/Swift (Live Auctions, AR View In Room)
+
+## Further Documentation
+
+- [Getting Started](docs/getting_started.md)
+- [Best Practices](docs/best_practices.md)
+- [Testing](docs/testing.md)
+- [Fetching Data](docs/fetching_data.md)
+- [Adding a New Route](docs/adding_a_new_route.md)
+- [Adding a New Screen](docs/add_a_new_screen.md)
+- [Routing](docs/routing.md)
+- [Analytics & Tracking](docs/analytics_and_tracking.md)
+- [Keyboard Management](docs/best_practices.md#keyboard-management)
+- [Build Caching](docs/build_caching.md)

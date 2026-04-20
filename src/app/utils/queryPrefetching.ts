@@ -1,7 +1,7 @@
 import { modules } from "app/Navigation/utils/modules"
-import { GlobalStore } from "app/store/GlobalStore"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useEchoMessage } from "app/utils/hooks/useEchoMessage"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import { fetchQuery, GraphQLTaggedNode } from "react-relay"
@@ -105,20 +105,17 @@ export const prefetchQuery = async <T extends Variables>({
 
 // Initializes the rate limiter because we load parameters from Echo.
 export const useInitializeQueryPrefetching = () => {
-  const echoMessages = GlobalStore.useAppState((state) => state.artsyPrefs.echo.state.messages)
+  const echoRateLimit = useEchoMessage("EigenQueryPrefetchingRateLimit")
 
   useEffect(() => {
-    const queriesPerInterval = Number(
-      echoMessages.find((message) => message.name === "EigenQueryPrefetchingRateLimit")?.content ||
-        DEFAULT_QUERIES_PER_INTERVAL
-    )
+    const queriesPerInterval = Number(echoRateLimit || DEFAULT_QUERIES_PER_INTERVAL)
 
     limiter = new RateLimiter({
       tokensPerInterval: queriesPerInterval,
       interval: "minute",
       fireImmediately: true,
     })
-  }, [])
+  }, [echoRateLimit])
 }
 
 // Limit requests and don't execute when rate limit is reached.
