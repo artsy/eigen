@@ -15,7 +15,7 @@ interface LiveSaleProps {
 
 // Inner component that uses the live auction context
 const LiveSaleContent: React.FC = () => {
-  const { saleName, showDisconnectWarning, isOnHold, onHoldMessage } = useLiveAuction()
+  const { showDisconnectWarning, isOnHold, onHoldMessage } = useLiveAuction()
   const [showDebugView, setShowDebugView] = useState(false)
   const showDebugButton = useDevToggle("DTShowLiveSaleDebugButton")
 
