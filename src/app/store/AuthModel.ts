@@ -991,7 +991,11 @@ export const getAuthModel = (): AuthModel => ({
       try {
         const isSignedIn = GoogleSignin.hasPreviousSignIn()
         if (isSignedIn) {
-          await GoogleSignin.revokeAccess()
+          try {
+            await GoogleSignin.revokeAccess()
+          } catch {
+            // Token may already be invalid/expired — continue to signOut
+          }
           await GoogleSignin.signOut()
         }
       } catch (error) {

@@ -187,6 +187,8 @@
 	<string>BootSplash</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleDarkContent</string>
 	<key>UIStatusBarTintParameters</key>

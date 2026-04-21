@@ -23,6 +23,7 @@ import {
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -83,6 +84,8 @@ export const AuctionResult: React.FC<Props> = (props) => {
             {label}
           </Text>
           <TextInput
+            // https://github.com/facebook/react-native/issues/55059
+            key={value}
             accessibilityLabel="Text input field"
             editable={false}
             value={value}

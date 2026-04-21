@@ -1,5 +1,4 @@
 import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
-import { OnPressEvent } from "@rnmapbox/maps/lib/typescript/src/types/OnPressEvent"
 import { BucketKey } from "app/Scenes/Map/bucketCityResults"
 import { FilterData } from "app/Scenes/Map/types"
 import { memo, useEffect, useRef } from "react"
@@ -7,7 +6,7 @@ import { Animated, StyleProp } from "react-native"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
-  onPress?: (event: OnPressEvent) => void
+  onPress?: (event: any) => void
   duration?: number
   filterID: string
 }

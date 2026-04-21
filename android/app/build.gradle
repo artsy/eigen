@@ -13,12 +13,8 @@ project.ext.keyFiles = [
 apply from: project(':react-native-keys').projectDir.getPath() + "/RNKeys.gradle"
 
 def getRuntimeVersion() {
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'node', '../../scripts/deploys/expo-updates/get-runtime-version.js'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+    def appJson = new groovy.json.JsonSlurper().parse(file("../../app.json"))
+    return appJson.expo.runtimeVersion
 }
 println "✅ [Gradle] Using expo_runtime_version: ${runtimeVersion}"
 /**
