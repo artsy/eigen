@@ -45,7 +45,7 @@ class MainActivity : ReactActivity() {
         // https://github.com/software-mansion/react-native-screens/issues/17
         super.onCreate(null)
 
-        // TODO: Decide if we want to do this here or not, this is mostly for the splash screen
+        // The purpose of this is to lock the orientation for the splash screen.
         val isTablet = (resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
         if (!isTablet) {
             // prevent screen rotation on phones
