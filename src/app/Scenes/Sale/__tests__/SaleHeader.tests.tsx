@@ -129,7 +129,7 @@ describe("SaleHeader", () => {
       })
 
       describe("absolute date label", () => {
-        it("shows the start date if the sale has not started", async () => {
+        it("shows the start date if the sale has not started", () => {
           renderWithRelay({
             Sale: () => ({
               endAt: "2018-05-16T15:00:00",
