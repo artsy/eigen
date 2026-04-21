@@ -3,9 +3,10 @@ import { Flex, Text, Touchable, Image, useColor } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
-import moment from "moment"
+import { DateTime } from "luxon"
 import { Animated, Dimensions, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -63,24 +64,26 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
               width={Dimensions.get("window").width}
               height={COVER_IMAGE_HEIGHT}
             />
-            {!!sale.endAt && !!moment().isAfter(sale.endAt) && !cascadingEndTimeFeatureEnabled && (
-              <Flex
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundColor: "rgba(0,0,0,0.5)",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text variant="sm-display" fontWeight="500" color="mono0">
-                  Auction closed
-                </Text>
-              </Flex>
-            )}
+            {!!sale.endAt &&
+              DateTime.now() > DateTime.fromISO(sale.endAt) &&
+              !cascadingEndTimeFeatureEnabled && (
+                <Flex
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text variant="sm-display" fontWeight="500" color="mono0">
+                    Auction closed
+                  </Text>
+                </Flex>
+              )}
           </View>
         </Animated.View>
       )}

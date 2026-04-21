@@ -1,9 +1,9 @@
-import moment from "moment"
+import { DateTime } from "luxon"
 
 export const exhibitionDates = (dateRange: string, endDate: string) => {
-  const oneYearFromToday = moment().add(2, "years").utc()
-  const exhibitionEndDate = moment(endDate).utc()
-  const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(oneYearFromToday)
+  const oneYearFromToday = DateTime.now().plus({ years: 2 }).toUTC()
+  const exhibitionEndDate = DateTime.fromISO(endDate).toUTC()
+  const shouldDisplayOngoing = exhibitionEndDate >= oneYearFromToday
 
   if (shouldDisplayOngoing) {
     return "Ongoing"

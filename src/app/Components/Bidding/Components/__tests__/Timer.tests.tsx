@@ -1,8 +1,7 @@
 import { act, screen } from "@testing-library/react-native"
 import { Countdown, Timer } from "app/Components/Bidding/Components/Timer"
-import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
+import { DateTime, Duration, Settings } from "luxon"
 
 describe("Timer", () => {
   const SECONDS = 1000
@@ -19,13 +18,20 @@ describe("Timer", () => {
 
     // Thursday, May 10, 2018 8:22:32.000 PM UTC
     Date.now = jest.fn(() => DATE_NOW)
+    // Mock Luxon's DateTime.now() to return the mocked time
+    Settings.now = () => DATE_NOW
+    // Set default timezone to UTC
+    Settings.defaultZone = "UTC"
 
-    futureTime = moment(DATE_NOW).add(1, "second").toISOString()
-    pastTime = moment(DATE_NOW).subtract(1, "second").toISOString()
+    futureTime = DateTime.fromMillis(DATE_NOW).plus({ seconds: 1 }).toISO()!
+    pastTime = DateTime.fromMillis(DATE_NOW).minus({ seconds: 1 }).toISO()!
   })
 
   afterEach(() => {
     Intl.DateTimeFormat = orgDateTimeFormat
+    // Reset Luxon settings
+    Settings.now = () => Date.now()
+    Settings.defaultZone = "system"
   })
 
   describe("formats the remaining time", () => {
@@ -109,7 +115,7 @@ describe("Timer", () => {
   })
 
   it("shows month, date, and hour adjusted for the timezone where the user is", () => {
-    mockTimezone("America/Los_Angeles")
+    Settings.defaultZone = "America/Los_Angeles"
 
     // Thursday, May 14, 2018 8:00:00.000 PM UTC
     // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
@@ -118,15 +124,15 @@ describe("Timer", () => {
     expect(screen.getByText("Closes May 14, 1 PM PDT")).toBeTruthy()
   })
 
-  describe("displays the minutes when the sale does not end on the hour", () => {
-    mockTimezone("America/New_York")
+  it("displays the minutes when the sale does not end on the hour", () => {
+    Settings.defaultZone = "America/New_York"
     renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
 
     expect(screen.getByText("Closes May 14, 4:01 PM EDT")).toBeTruthy()
   })
 
   it("omits the minutes when the sale ends on the hour", () => {
-    mockTimezone("America/New_York")
+    Settings.defaultZone = "America/New_York"
     renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
     expect(screen.getByText("Closes May 14, 4 PM EDT")).toBeTruthy()
@@ -181,7 +187,7 @@ describe("Timer", () => {
 
 describe("Countdown", () => {
   // 10h 3m
-  const duration = moment.duration(36180000)
+  const duration = Duration.fromMillis(36180000)
 
   afterEach(() => {
     jest.clearAllMocks()

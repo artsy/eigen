@@ -4,7 +4,7 @@ import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAppVersion } from "app/utils/appVersion"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 import { Platform } from "react-native"
 import { lt as lessThan } from "semver"
 
@@ -64,9 +64,9 @@ export const getEchoModel = (): EchoModel => ({
     (actions, __, store) => {
       // If the app was just updated, then it's possible that the persisted echo config is
       // older than the version in this JS bundle. We should always use the latest version
-      const persistedEchoTimestamp = moment(store.getState().state.updated_at)
-      const launchEchoTimestamp = moment(echoLaunchJson().updated_at)
-      if (launchEchoTimestamp.isAfter(persistedEchoTimestamp)) {
+      const persistedEchoTimestamp = DateTime.fromISO(store.getState().state.updated_at)
+      const launchEchoTimestamp = DateTime.fromISO(echoLaunchJson().updated_at)
+      if (launchEchoTimestamp > persistedEchoTimestamp) {
         actions.setEchoState(echoLaunchJson())
       }
 
@@ -78,7 +78,7 @@ export const getEchoModel = (): EchoModel => ({
     (env, state) => {
       const key =
         env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
-      return state.state.messages.find((e) => e.name === key)?.content!
+      return state.state.messages.find((e) => e.name === key)?.content || ""
     }
   ),
   forceUpdateMessage: computed((state) => {

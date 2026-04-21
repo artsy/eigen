@@ -7,7 +7,7 @@ import {
 import { RouterLink } from "app/system/navigation/RouterLink"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -149,7 +149,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               {artwork?.partner?.name}
             </Text>
             <Text variant="xs" color="mono60" testID="date">
-              {moment(order.createdAt).format("l")}
+              {order?.createdAt ? DateTime.fromISO(order.createdAt).toLocaleString(DateTime.DATE_SHORT) : ""}
             </Text>
           </Flex>
           <Flex>
