@@ -107,55 +107,6 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
               )}
             </Flex>
 
-            {/* Asking price */}
-            <Flex>
-              <Text variant="xs" color={color("mono60")}>
-                Current Ask
-              </Text>
-              <Text variant="lg-display">{formatPrice(lot.derivedState.askingPriceCents)}</Text>
-            </Flex>
-
-            {/* Status info */}
-            <Flex flexDirection="row" gap={2} flexWrap="wrap">
-              <Flex px={1} py={0.5} bg={color("mono10")} borderRadius={4}>
-                <Text variant="xs" color={color("mono60")}>
-                  {lot.derivedState.biddingStatus}
-                </Text>
-              </Flex>
-
-              {lot.derivedState.soldStatus !== "ForSale" && (
-                <Flex
-                  px={1}
-                  py={0.5}
-                  bg={lot.derivedState.soldStatus === "Sold" ? color("green10") : color("orange10")}
-                  borderRadius={4}
-                >
-                  <Text
-                    variant="xs"
-                    color={
-                      lot.derivedState.soldStatus === "Sold"
-                        ? color("green100")
-                        : color("orange100")
-                    }
-                  >
-                    {lot.derivedState.soldStatus}
-                  </Text>
-                </Flex>
-              )}
-
-              <Flex px={1} py={0.5} bg={color("mono10")} borderRadius={4}>
-                <Text variant="xs" color={color("mono60")}>
-                  Reserve: {lot.derivedState.reserveStatus}
-                </Text>
-              </Flex>
-            </Flex>
-
-            {/* Online bid count */}
-            <Text variant="xs" color={color("mono60")}>
-              {lot.derivedState.onlineBidCount} online{" "}
-              {lot.derivedState.onlineBidCount === 1 ? "bid" : "bids"}
-            </Text>
-
             {/* Bid button */}
             <Button onPress={() => onBidPress(lot.lotId)} disabled={isBidDisabled} block haptic>
               {getBidButtonText(lot)}
