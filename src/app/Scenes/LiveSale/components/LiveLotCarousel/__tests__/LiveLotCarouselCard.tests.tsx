@@ -1,9 +1,13 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { LiveLotCarouselCard } from "app/Scenes/LiveSale/components/LiveLotCarousel/LiveLotCarouselCard"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import type { LotState } from "app/Scenes/LiveSale/types/liveAuction"
+import type {
+  ArtworkMetadata,
+  DerivedLotState,
+  LiveAuctionState,
+  LotState,
+} from "app/Scenes/LiveSale/types/liveAuction"
 
-// Mock the animation hooks
 jest.mock("../../../hooks/useSpringValue", () => ({
   useSpringValue: (value: number) => {
     const { Value } = require("react-native").Animated
@@ -11,237 +15,186 @@ jest.mock("../../../hooks/useSpringValue", () => ({
   },
 }))
 
+const mockUseLiveAuction = jest.fn()
+jest.mock("../../../hooks/useLiveAuction", () => ({
+  useLiveAuction: () => mockUseLiveAuction(),
+}))
+
+const createMockLot = (derivedOverrides?: Partial<DerivedLotState>): LotState => ({
+  lotId: "lot-1",
+  events: new Map(),
+  eventHistory: [],
+  processedEventIds: new Set(),
+  derivedState: {
+    reserveStatus: "NoReserve",
+    askingPriceCents: 100000,
+    biddingStatus: "Open",
+    soldStatus: "ForSale",
+    onlineBidCount: 5,
+    hasOpenedBidding: true,
+    ...derivedOverrides,
+  },
+})
+
+const createMockAuctionState = (lot: LotState, currentLotId = lot.lotId): LiveAuctionState => ({
+  isConnected: true,
+  showDisconnectWarning: false,
+  currentLotId,
+  lots: new Map([[lot.lotId, lot]]),
+  isOnHold: false,
+  onHoldMessage: null,
+  operatorConnected: true,
+  pendingBids: new Map(),
+  saleName: "Test Sale",
+  causalitySaleID: "sale-1",
+  jwt: "jwt",
+  credentials: { bidderId: "bidder-other", paddleNumber: "42" },
+  artworkMetadata: new Map(),
+  registrationStatus: "registered",
+  currencySymbol: "$",
+})
+
 describe("LiveLotCarouselCard", () => {
   const mockOnBidPress = jest.fn()
-
-  const createMockLot = (overrides?: Partial<LotState>): LotState => ({
-    lotId: "lot-1",
-    events: new Map(),
-    eventHistory: [],
-    processedEventIds: new Set(),
-    derivedState: {
-      reserveStatus: "NoReserve",
-      askingPriceCents: 100000,
-      biddingStatus: "Open",
-      soldStatus: "ForSale",
-      onlineBidCount: 5,
-    },
-    ...overrides,
-  })
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it("renders lot placeholder image with lot ID", () => {
+  it("renders lot placeholder when no image", () => {
     const lot = createMockLot()
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    // "Lot lot-1" appears in both the placeholder and the lot info section
-    expect(screen.getAllByText("Lot lot-1").length).toBeGreaterThan(0)
+    expect(screen.getByText("Lot lot-1")).toBeOnTheScreen()
     expect(screen.getByText("No image available")).toBeOnTheScreen()
   })
 
-  it("renders lot info when focused", () => {
+  it("renders artwork metadata when focused", () => {
     const lot = createMockLot()
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot))
+
+    const artworkMetadata: ArtworkMetadata = {
+      internalID: "lot-1",
+      lotLabel: "1",
+      estimate: "$1,000–$2,000",
+      lowEstimateCents: 100000,
+      highEstimateCents: 200000,
+      artwork: {
+        title: "Untitled",
+        artistNames: "Some Artist",
+        image: null,
+      },
+    }
 
     renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
+      <LiveLotCarouselCard
+        lot={lot}
+        artworkMetadata={artworkMetadata}
+        isFocused={true}
+        onBidPress={mockOnBidPress}
+      />
     )
 
-    expect(screen.getByText("Current Ask")).toBeOnTheScreen()
-    expect(screen.getByText("$1,000")).toBeOnTheScreen()
-    expect(screen.getByText("Open")).toBeOnTheScreen()
-    expect(screen.getByText("Reserve: NoReserve")).toBeOnTheScreen()
-    expect(screen.getByText("5 online bids")).toBeOnTheScreen()
+    expect(screen.getByText("Some Artist")).toBeOnTheScreen()
+    expect(screen.getByText("Untitled")).toBeOnTheScreen()
+    expect(screen.getByText("Estimate: $1,000–$2,000")).toBeOnTheScreen()
   })
 
   it("does not render lot info when not focused", () => {
     const lot = createMockLot()
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot))
+
+    const artworkMetadata: ArtworkMetadata = {
+      internalID: "lot-1",
+      lotLabel: "1",
+      estimate: "$1,000–$2,000",
+      lowEstimateCents: 100000,
+      highEstimateCents: 200000,
+      artwork: { title: "Untitled", artistNames: "Some Artist", image: null },
+    }
 
     renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={false} onBidPress={mockOnBidPress} />
+      <LiveLotCarouselCard
+        lot={lot}
+        artworkMetadata={artworkMetadata}
+        isFocused={false}
+        onBidPress={mockOnBidPress}
+      />
     )
 
-    expect(screen.queryByText("Current Ask")).not.toBeOnTheScreen()
-    expect(screen.queryByText("$1,000")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Some Artist")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Untitled")).not.toBeOnTheScreen()
   })
 
-  it("displays 'Place Bid' button when bidding is open", () => {
+  it("shows Bid button label for a biddable lot", () => {
     const lot = createMockLot()
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    const button = screen.getByText("Place Bid")
-    expect(button).toBeOnTheScreen()
+    expect(screen.getByText("Bid $1,000")).toBeOnTheScreen()
   })
 
-  it("displays 'Sold' button when lot is sold", () => {
+  it("shows Sold button label for a sold lot", () => {
     const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "ReserveMet",
-        askingPriceCents: 100000,
-        biddingStatus: "Complete",
-        soldStatus: "Sold",
-        onlineBidCount: 10,
-      },
+      biddingStatus: "Complete",
+      soldStatus: "Sold",
+      hasOpenedBidding: false,
     })
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot, "lot-2"))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    // "Sold" appears in both the button and status badge
-    expect(screen.getAllByText("Sold").length).toBeGreaterThan(0)
+    expect(screen.getByText("Sold")).toBeOnTheScreen()
   })
 
-  it("displays 'Passed' button when lot is passed", () => {
+  it("shows Lot Closed button label for a passed lot", () => {
     const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "ReserveNotMet",
-        askingPriceCents: 100000,
-        biddingStatus: "Complete",
-        soldStatus: "Passed",
-        onlineBidCount: 2,
-      },
+      biddingStatus: "Complete",
+      soldStatus: "Passed",
+      hasOpenedBidding: false,
     })
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot, "lot-2"))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    // "Passed" appears in both the button and status badge
-    expect(screen.getAllByText("Passed").length).toBeGreaterThan(0)
+    expect(screen.getByText("Lot Closed")).toBeOnTheScreen()
   })
 
-  it("calls onBidPress when bid button is pressed", () => {
+  it("calls onBidPress with lot ID when bid button is pressed", () => {
     const lot = createMockLot()
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    fireEvent.press(screen.getByText("Place Bid"))
-
+    fireEvent.press(screen.getByRole("button"))
     expect(mockOnBidPress).toHaveBeenCalledWith("lot-1")
   })
 
-  it("disables bid button when bidding is complete", () => {
+  it("renders a disabled button for a sold lot", () => {
     const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "ReserveMet",
-        askingPriceCents: 100000,
-        biddingStatus: "Complete",
-        soldStatus: "Sold",
-        onlineBidCount: 10,
-      },
+      biddingStatus: "Complete",
+      soldStatus: "Sold",
+      hasOpenedBidding: false,
     })
+    mockUseLiveAuction.mockReturnValue(createMockAuctionState(lot, "lot-2"))
 
     renderWithWrappers(
       <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
     )
 
-    // The button should be disabled when bidding is complete
-    const button = screen.getByRole("button")
-    expect(button).toBeDisabled()
-  })
-
-  it("formats price correctly", () => {
-    const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "NoReserve",
-        askingPriceCents: 1234567,
-        biddingStatus: "Open",
-        soldStatus: "ForSale",
-        onlineBidCount: 5,
-      },
-    })
-
-    renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
-    )
-
-    expect(screen.getByText("$12,345.67")).toBeOnTheScreen()
-  })
-
-  it("shows singular 'bid' for one online bid", () => {
-    const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "NoReserve",
-        askingPriceCents: 100000,
-        biddingStatus: "Open",
-        soldStatus: "ForSale",
-        onlineBidCount: 1,
-      },
-    })
-
-    renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
-    )
-
-    expect(screen.getByText("1 online bid")).toBeOnTheScreen()
-  })
-
-  it("shows plural 'bids' for multiple online bids", () => {
-    const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "NoReserve",
-        askingPriceCents: 100000,
-        biddingStatus: "Open",
-        soldStatus: "ForSale",
-        onlineBidCount: 5,
-      },
-    })
-
-    renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
-    )
-
-    expect(screen.getByText("5 online bids")).toBeOnTheScreen()
-  })
-
-  it("displays sold status badge with correct styling", () => {
-    const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "ReserveMet",
-        askingPriceCents: 100000,
-        biddingStatus: "Complete",
-        soldStatus: "Sold",
-        onlineBidCount: 10,
-      },
-    })
-
-    renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
-    )
-
-    // Verify the status badge and button are both present
-    const soldElements = screen.getAllByText("Sold")
-    expect(soldElements.length).toBe(2) // One in badge, one in button
-  })
-
-  it("displays passed status badge with correct styling", () => {
-    const lot = createMockLot({
-      derivedState: {
-        reserveStatus: "ReserveNotMet",
-        askingPriceCents: 100000,
-        biddingStatus: "Complete",
-        soldStatus: "Passed",
-        onlineBidCount: 2,
-      },
-    })
-
-    renderWithWrappers(
-      <LiveLotCarouselCard lot={lot} isFocused={true} onBidPress={mockOnBidPress} />
-    )
-
-    // Verify the status badge and button are both present
-    const passedElements = screen.getAllByText("Passed")
-    expect(passedElements.length).toBe(2) // One in badge, one in button
+    expect(screen.getByRole("button")).toBeDisabled()
   })
 })

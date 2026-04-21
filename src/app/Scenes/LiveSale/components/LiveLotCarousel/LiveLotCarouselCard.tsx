@@ -1,4 +1,7 @@
-import { Button, Flex, Image, Text, useColor, useTheme } from "@artsy/palette-mobile"
+import { Flex, Image, Text, useColor, useTheme } from "@artsy/palette-mobile"
+import { LiveAuctionBidButton } from "app/Scenes/LiveSale/components/LiveAuctionBidButton/LiveAuctionBidButton"
+import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
+import { useLiveAuctionBidButtonState } from "app/Scenes/LiveSale/hooks/useLiveAuctionBidButtonState"
 import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
 import { Animated, useWindowDimensions } from "react-native"
 import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
@@ -12,17 +15,6 @@ interface LiveLotCarouselCardProps {
   onBidPress: (lotId: string) => void
 }
 
-const getBidButtonText = (lot: LotState): string => {
-  if (lot.derivedState.biddingStatus === "Complete") {
-    return lot.derivedState.soldStatus === "Sold" ? "Sold" : "Passed"
-  }
-  return "Place Bid"
-}
-
-const formatPrice = (cents: number): string => {
-  return `$${(cents / 100).toLocaleString()}`
-}
-
 export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
   lot,
   artworkMetadata,
@@ -34,8 +26,8 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
   const color = useColor()
   const { width: screenWidth } = useWindowDimensions()
   const { space } = useTheme()
-
-  const isBidDisabled = lot.derivedState.biddingStatus !== "Open"
+  const auctionState = useLiveAuction()
+  const buttonState = useLiveAuctionBidButtonState(lot.lotId, auctionState)
 
   // Calculate image dimensions to fit within container while maintaining aspect ratio
   const imageAspectRatio = artworkMetadata?.artwork?.image?.aspectRatio ?? 1
@@ -108,9 +100,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
             </Flex>
 
             {/* Bid button */}
-            <Button onPress={() => onBidPress(lot.lotId)} disabled={isBidDisabled} block haptic>
-              {getBidButtonText(lot)}
-            </Button>
+            <LiveAuctionBidButton buttonState={buttonState} onPress={() => onBidPress(lot.lotId)} />
           </Flex>
         )}
       </Flex>

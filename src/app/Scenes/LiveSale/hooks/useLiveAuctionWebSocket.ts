@@ -13,13 +13,20 @@ import type {
   PostEventMessage,
   FirstPriceBidEvent,
   SecondPriceBidEvent,
+  RegistrationStatus,
 } from "app/Scenes/LiveSale/types/liveAuction"
 
 // ==================== State Reducer ====================
 
 export const initialState: Omit<
   LiveAuctionState,
-  "saleName" | "causalitySaleID" | "jwt" | "credentials" | "artworkMetadata"
+  | "saleName"
+  | "causalitySaleID"
+  | "jwt"
+  | "credentials"
+  | "artworkMetadata"
+  | "registrationStatus"
+  | "currencySymbol"
 > = {
   isConnected: false,
   showDisconnectWarning: false,
@@ -70,30 +77,48 @@ export const liveAuctionReducer = (
       // This matches the Swift implementation which iterates through saleArtworks
       for (const lotId of state.artworkMetadata.keys()) {
         const fullLotState = fullLotStateById[lotId]
-        if (!fullLotState) {
-          console.log("No WebSocket data for lot:", lotId)
-          continue
-        }
 
-        console.log("Processing lot:", lotId)
         const lotState = createInitialLotState(lotId)
 
-        // Add events from eventHistory and track processed IDs
-        for (const event of fullLotState.eventHistory) {
-          if (!lotState.processedEventIds.has(event.eventId)) {
-            lotState.events.set(event.eventId, event)
-            lotState.eventHistory.push(event)
-            lotState.processedEventIds.add(event.eventId)
+        if (fullLotState) {
+          // Add events from eventHistory and track processed IDs
+          for (const event of fullLotState.eventHistory) {
+            if (!lotState.processedEventIds.has(event.eventId)) {
+              lotState.events.set(event.eventId, event)
+              lotState.eventHistory.push(event)
+              lotState.processedEventIds.add(event.eventId)
+            }
+          }
+
+          // Sort event history by timestamp
+          lotState.eventHistory.sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+
+          // Calculate derived state from events
+          const eventDerived = calculateDerivedState(lotState.events)
+
+          // The server's derivedLotState is authoritative for closed status.
+          // eventHistory may be incomplete (e.g. LotSold event absent for already-sold lots),
+          // so we trust the server when it says a lot is Complete.
+          const serverDerived = fullLotState.derivedLotState
+          if (
+            serverDerived.biddingStatus === "Complete" &&
+            eventDerived.biddingStatus !== "Complete"
+          ) {
+            const soldStatus =
+              serverDerived.soldStatus === "Sold"
+                ? "Sold"
+                : serverDerived.soldStatus === "Passed"
+                  ? "Passed"
+                  : "Passed"
+            lotState.derivedState = { ...eventDerived, biddingStatus: "Complete", soldStatus }
+          } else {
+            lotState.derivedState = eventDerived
           }
         }
-
-        // Sort event history by timestamp
-        lotState.eventHistory.sort(
-          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        )
-
-        // Calculate derived state from events
-        lotState.derivedState = calculateDerivedState(lotState.events)
+        // If fullLotState is absent the lot stays with default derivedState (biddingStatus: "Open").
+        // deriveBidButtonState will treat it as upcoming until we receive live updates.
 
         newLots.set(lotId, lotState)
       }
@@ -242,6 +267,8 @@ interface UseLiveAuctionWebSocketParams {
   saleName: string
   credentials: BidderCredentials
   artworkMetadata: Map<string, ArtworkMetadata>
+  registrationStatus: RegistrationStatus
+  currencySymbol: string
 }
 
 export const useLiveAuctionWebSocket = ({
@@ -250,6 +277,8 @@ export const useLiveAuctionWebSocket = ({
   saleName,
   credentials,
   artworkMetadata,
+  registrationStatus,
+  currencySymbol,
 }: UseLiveAuctionWebSocketParams) => {
   const [state, dispatch] = useReducer(liveAuctionReducer, {
     ...initialState,
@@ -258,6 +287,8 @@ export const useLiveAuctionWebSocket = ({
     jwt,
     credentials,
     artworkMetadata,
+    registrationStatus,
+    currencySymbol,
   })
 
   const wsRef = useRef<WebSocket | null>(null)

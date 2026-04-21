@@ -5,7 +5,24 @@ import {
   useLiveAuctionWebSocket,
   type LiveAuctionWebSocketReturn,
 } from "./hooks/useLiveAuctionWebSocket"
-import type { ArtworkMetadata, BidderCredentials } from "./types/liveAuction"
+import type { ArtworkMetadata, BidderCredentials, RegistrationStatus } from "./types/liveAuction"
+
+const deriveRegistrationStatus = (
+  bidders:
+    | ReadonlyArray<{ readonly qualifiedForBidding: boolean | null | undefined } | null | undefined>
+    | null
+    | undefined,
+  registrationEndsAt: string | null | undefined
+): RegistrationStatus => {
+  const firstBidder = bidders?.[0]
+  if (firstBidder != null) {
+    return firstBidder.qualifiedForBidding ? "registered" : "pending"
+  }
+  if (registrationEndsAt && new Date() > new Date(registrationEndsAt)) {
+    return "closed"
+  }
+  return "unregistered"
+}
 
 // ==================== Context ====================
 
@@ -99,6 +116,11 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     return map
   }, [data.sale?.saleArtworksConnection?.edges])
 
+  const registrationStatus = deriveRegistrationStatus(
+    data.me?.bidders,
+    data.sale.registrationEndsAt
+  )
+
   // Initialize WebSocket connection
   const wsState = useLiveAuctionWebSocket({
     jwt: data.system.causalityJWT,
@@ -106,6 +128,8 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     saleName: data.sale.name ?? "Live Auction",
     credentials,
     artworkMetadata,
+    registrationStatus,
+    currencySymbol: data.sale.currency ?? "$",
   })
 
   return <LiveAuctionContext.Provider value={wsState}>{children}</LiveAuctionContext.Provider>
@@ -118,6 +142,8 @@ const liveSaleProviderQuery = graphql`
     sale(id: $saleID) {
       name
       internalID
+      currency
+      registrationEndsAt
       startAt
       saleArtworksConnection(all: true) {
         edges {
@@ -151,6 +177,7 @@ const liveSaleProviderQuery = graphql`
       paddleNumber
       bidders(saleID: $saleID) {
         internalID
+        qualifiedForBidding
       }
     }
   }

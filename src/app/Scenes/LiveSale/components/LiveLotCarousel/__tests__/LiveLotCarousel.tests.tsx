@@ -51,6 +51,7 @@ describe("LiveLotCarousel", () => {
             biddingStatus: "Open",
             soldStatus: "ForSale",
             onlineBidCount: 5,
+            hasOpenedBidding: true,
           },
         },
       ],
@@ -67,6 +68,7 @@ describe("LiveLotCarousel", () => {
             biddingStatus: "Complete",
             soldStatus: "Sold",
             onlineBidCount: 10,
+            hasOpenedBidding: false,
           },
         },
       ],
@@ -76,6 +78,11 @@ describe("LiveLotCarousel", () => {
       lots: mockLots,
       placeBid: mockPlaceBid,
       artworkMetadata: new Map(),
+      currentLotId: "lot-1",
+      credentials: { bidderId: "bidder-1", paddleNumber: "42" },
+      registrationStatus: "registered",
+      currencySymbol: "$",
+      pendingBids: new Map(),
     })
 
     renderWithWrappers(<LiveLotCarousel />)
@@ -125,6 +132,11 @@ describe("LiveLotCarousel", () => {
       lots: mockLots,
       placeBid: mockPlaceBid,
       artworkMetadata: new Map(),
+      currentLotId: "lot-1",
+      credentials: { bidderId: "bidder-1", paddleNumber: "42" },
+      registrationStatus: "registered",
+      currencySymbol: "$",
+      pendingBids: new Map(),
     })
 
     renderWithWrappers(<LiveLotCarousel />)

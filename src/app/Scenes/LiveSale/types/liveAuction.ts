@@ -209,10 +209,40 @@ export interface DerivedLotState {
   biddingStatus: "Open" | "Complete"
   soldStatus: "ForSale" | "Passed" | "Sold"
   onlineBidCount: number
+  hasOpenedBidding: boolean
   winningBidEventId?: string
   sellingToBidderId?: string
   floorWinningBidderId?: string
 }
+
+// ==================== Registration ====================
+
+export type RegistrationStatus = "registered" | "pending" | "closed" | "unregistered"
+
+// ==================== Bid Button State ====================
+
+export type LiveAuctionBiddingProgressState =
+  | { kind: "userRegistrationRequired" }
+  | { kind: "userRegistrationPending" }
+  | { kind: "userRegistrationClosed" }
+  | { kind: "biddable"; askingPriceCents: number; currencySymbol: string }
+  | { kind: "biddingInProgress" }
+  | { kind: "bidNotYetAccepted"; askingPriceCents: number; currencySymbol: string }
+  | { kind: "bidBecameMaxBidder" }
+  | { kind: "bidAcknowledged" }
+  | { kind: "bidOutbid" }
+  | { kind: "bidNetworkFail" }
+  | { kind: "bidFailed"; reason: string }
+  | { kind: "lotWaitingToOpen" }
+  | { kind: "lotSold" }
+
+export type LiveAuctionBidButtonState =
+  | { kind: "active"; biddingState: LiveAuctionBiddingProgressState }
+  | {
+      kind: "inactive"
+      lotPhase: "upcoming" | "closedSold" | "closedPassed"
+      isHighestBidder?: boolean
+    }
 
 // ==================== Pending Bids ====================
 
@@ -248,6 +278,8 @@ export interface LiveAuctionState {
   jwt: string
   credentials: BidderCredentials
   artworkMetadata: Map<string, ArtworkMetadata>
+  registrationStatus: RegistrationStatus
+  currencySymbol: string
 }
 
 // ==================== State Actions ====================
@@ -278,6 +310,7 @@ export const createInitialLotState = (lotId: string): LotState => ({
     biddingStatus: "Open",
     soldStatus: "ForSale",
     onlineBidCount: 0,
+    hasOpenedBidding: false,
   },
 })
 
@@ -291,12 +324,17 @@ export const calculateDerivedState = (events: Map<string, LotEvent>): DerivedLot
   let biddingStatus: DerivedLotState["biddingStatus"] = "Open"
   let soldStatus: DerivedLotState["soldStatus"] = "ForSale"
   let onlineBidCount = 0
+  let hasOpenedBidding = false
   let winningBidEventId: string | undefined
   let sellingToBidderId: string | undefined
   let floorWinningBidderId: string | undefined
 
   for (const event of eventArray) {
     switch (event.type) {
+      case "LotOpened":
+      case "BiddingStarted":
+        hasOpenedBidding = true
+        break
       case "ReserveMet":
         reserveStatus = "ReserveMet"
         break
@@ -326,7 +364,6 @@ export const calculateDerivedState = (events: Map<string, LotEvent>): DerivedLot
         soldStatus = "Passed"
         break
       case "FinalCall":
-        // Lot is about to close
         break
     }
   }
@@ -337,6 +374,7 @@ export const calculateDerivedState = (events: Map<string, LotEvent>): DerivedLot
     biddingStatus,
     soldStatus,
     onlineBidCount,
+    hasOpenedBidding,
     winningBidEventId,
     sellingToBidderId,
     floorWinningBidderId,

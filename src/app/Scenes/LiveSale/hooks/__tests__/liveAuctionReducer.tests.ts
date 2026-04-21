@@ -1,13 +1,29 @@
 import { liveAuctionReducer } from "app/Scenes/LiveSale/hooks/useLiveAuctionWebSocket"
 import type {
+  ArtworkMetadata,
   InitialFullSaleStateMessage,
   LiveAuctionState,
   LiveAuctionAction,
   BidderCredentials,
 } from "app/Scenes/LiveSale/types/liveAuction"
 
+const makeArtworkMetadata = (...lotIds: string[]): Map<string, ArtworkMetadata> => {
+  const map = new Map<string, ArtworkMetadata>()
+  for (const id of lotIds) {
+    map.set(id, {
+      internalID: id,
+      lotLabel: null,
+      estimate: null,
+      lowEstimateCents: null,
+      highEstimateCents: null,
+      artwork: null,
+    })
+  }
+  return map
+}
+
 describe("liveAuctionReducer - Initial State Parsing", () => {
-  const createInitialState = (): LiveAuctionState => ({
+  const createInitialState = (lotIds: string[] = []): LiveAuctionState => ({
     isConnected: false,
     showDisconnectWarning: false,
     currentLotId: null,
@@ -23,11 +39,13 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
       bidderId: "bidder-123",
       paddleNumber: "42",
     } as BidderCredentials,
-    artworkMetadata: new Map(),
+    artworkMetadata: makeArtworkMetadata(...lotIds),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should parse initial state with single lot and events", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1"])
 
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
@@ -103,7 +121,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
   })
 
   it("should parse initial state with multiple lots", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1", "lot-2"])
 
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
@@ -160,7 +178,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
   })
 
   it("should handle initial state with no current lot", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1"])
 
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
@@ -246,7 +264,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
   })
 
   it("should prevent duplicate events when processing initial state", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1"])
 
     // Initial state with duplicate event IDs (shouldn't happen but we should handle it)
     const message: InitialFullSaleStateMessage = {
@@ -289,7 +307,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
   })
 
   it("should calculate derived state correctly for reserve met", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1"])
 
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
@@ -328,7 +346,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
   })
 
   it("should sort events by timestamp", () => {
-    const initialState = createInitialState()
+    const initialState = createInitialState(["lot-1"])
 
     const message: InitialFullSaleStateMessage = {
       type: "InitialFullSaleState",
@@ -394,6 +412,8 @@ describe("liveAuctionReducer - Connection State", () => {
       paddleNumber: "42",
     } as BidderCredentials,
     artworkMetadata: new Map(),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should set isConnected to true on CONNECTION_OPENED", () => {
@@ -464,6 +484,7 @@ describe("liveAuctionReducer - Lot Updates", () => {
             biddingStatus: "Open",
             soldStatus: "ForSale",
             onlineBidCount: 0,
+            hasOpenedBidding: false,
           },
         },
       ],
@@ -480,6 +501,8 @@ describe("liveAuctionReducer - Lot Updates", () => {
       paddleNumber: "42",
     } as BidderCredentials,
     artworkMetadata: new Map(),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should add new events to existing lot on LOT_UPDATE_RECEIVED", () => {
@@ -598,6 +621,8 @@ describe("liveAuctionReducer - Current Lot Changes", () => {
       paddleNumber: "42",
     } as BidderCredentials,
     artworkMetadata: new Map(),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should update current lot ID on CURRENT_LOT_CHANGED", () => {
@@ -645,6 +670,8 @@ describe("liveAuctionReducer - Bidding", () => {
       paddleNumber: "42",
     } as BidderCredentials,
     artworkMetadata: new Map(),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should add pending bid on BID_PLACED", () => {
@@ -758,6 +785,8 @@ describe("liveAuctionReducer - Sale State", () => {
       paddleNumber: "42",
     } as BidderCredentials,
     artworkMetadata: new Map(),
+    registrationStatus: "registered",
+    currencySymbol: "$",
   })
 
   it("should set sale on hold with message on SALE_ON_HOLD_CHANGED", () => {
