@@ -5273,6 +5273,35 @@ type BidderPositionSuggestedNextBid {
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
 
+type BrandKit {
+  backgroundColor: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  ctaColor: String
+  fontFamily: String
+  fontStyle: String
+  fontWeight: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  logo: Image
+  partnerID: String
+  textColor: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
+
 type BulkAddArtworksToPartnerListFailure {
   mutationError: GravityMutationError
 }
@@ -10118,6 +10147,46 @@ type CreateBidderPayload {
   clientMutationId: String
 }
 
+type CreateBrandKitFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateBrandKitInput {
+  # Background color hex code (e.g. #FF0000)
+  backgroundColor: String
+  clientMutationId: String
+
+  # CTA color hex code (e.g. #FF0000)
+  ctaColor: String
+
+  # Font family name
+  fontFamily: String
+
+  # Font style
+  fontStyle: String
+
+  # Font weight
+  fontWeight: String
+
+  # The partner ID to create the brand kit for
+  partnerId: String!
+
+  # Text color hex code (e.g. #FF0000)
+  textColor: String
+}
+
+type CreateBrandKitPayload {
+  # On success: the created brand kit
+  brandKitOrError: CreateBrandKitResponseOrError
+  clientMutationId: String
+}
+
+union CreateBrandKitResponseOrError = CreateBrandKitFailure | CreateBrandKitSuccess
+
+type CreateBrandKitSuccess {
+  brandKit: BrandKit
+}
+
 type CreateCanonicalArtistFailure {
   mutationError: GravityMutationError
 }
@@ -11712,6 +11781,52 @@ type DeleteBankAccountPayload {
   bankAccountOrError: BankAccountMutationType
   clientMutationId: String
   me: Me
+}
+
+type DeleteBrandKitFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteBrandKitInput {
+  clientMutationId: String
+
+  # The internal ID of the brand kit to delete
+  id: String!
+}
+
+type DeleteBrandKitLogoFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteBrandKitLogoInput {
+  clientMutationId: String
+
+  # The internal ID of the brand kit
+  id: String!
+}
+
+type DeleteBrandKitLogoPayload {
+  # On success: the brand kit with the logo removed
+  brandKitOrError: DeleteBrandKitLogoResponseOrError
+  clientMutationId: String
+}
+
+union DeleteBrandKitLogoResponseOrError = DeleteBrandKitLogoFailure | DeleteBrandKitLogoSuccess
+
+type DeleteBrandKitLogoSuccess {
+  brandKit: BrandKit
+}
+
+type DeleteBrandKitPayload {
+  # On success: a boolean indicating the brand kit was deleted
+  brandKitOrError: DeleteBrandKitResponseOrError
+  clientMutationId: String
+}
+
+union DeleteBrandKitResponseOrError = DeleteBrandKitFailure | DeleteBrandKitSuccess
+
+type DeleteBrandKitSuccess {
+  success: Boolean
 }
 
 type DeleteCareerHighlightFailure {
@@ -17926,6 +18041,9 @@ type Mutation {
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
 
+  # Create a brand kit for a partner
+  createBrandKit(input: CreateBrandKitInput!): CreateBrandKitPayload
+
   # Create a buyer offer on an order
   createBuyerOffer(input: createBuyerOfferInput!): createBuyerOfferPayload
 
@@ -18119,6 +18237,12 @@ type Mutation {
 
   # Remove a bank account
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
+
+  # Delete a partner's brand kit
+  deleteBrandKit(input: DeleteBrandKitInput!): DeleteBrandKitPayload
+
+  # Remove the logo from a brand kit
+  deleteBrandKitLogo(input: DeleteBrandKitLogoInput!): DeleteBrandKitLogoPayload
 
   # Delete an artist career highlight
   deleteCareerHighlight(input: DeleteCareerHighlightInput!): DeleteCareerHighlightPayload
@@ -18477,6 +18601,12 @@ type Mutation {
   updateArtworkImportRowImages(
     input: UpdateArtworkImportRowImagesInput!
   ): UpdateArtworkImportRowImagesPayload
+
+  # Update a partner's brand kit
+  updateBrandKit(input: UpdateBrandKitInput!): UpdateBrandKitPayload
+
+  # Upload or replace the logo for a brand kit
+  updateBrandKitLogo(input: UpdateBrandKitLogoInput!): UpdateBrandKitLogoPayload
 
   # Update a buyer offer
   updateBuyerOffer(input: updateBuyerOfferInput!): updateBuyerOfferPayload
@@ -19807,6 +19937,9 @@ type Partner implements Node {
     query: String!
     size: Int
   ): ArtworkConnection
+
+  # The partner's brand kit — colors, fonts, and logo used for branded surfaces
+  brandKit: BrandKit
   cached: Int
   categories: [PartnerCategory]
 
@@ -26260,6 +26393,75 @@ type UpdateArtworkMutationPayload {
   # On success: the artwork updated.
   artworkOrError: updateArtworkResponseOrError
   clientMutationId: String
+}
+
+type UpdateBrandKitFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateBrandKitInput {
+  # Background color hex code (e.g. #FF0000)
+  backgroundColor: String
+  clientMutationId: String
+
+  # CTA color hex code (e.g. #FF0000)
+  ctaColor: String
+
+  # Font family name
+  fontFamily: String
+
+  # Font style
+  fontStyle: String
+
+  # Font weight
+  fontWeight: String
+
+  # The internal ID of the brand kit to update
+  id: String!
+
+  # Text color hex code (e.g. #FF0000)
+  textColor: String
+}
+
+type UpdateBrandKitLogoFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateBrandKitLogoInput {
+  clientMutationId: String
+
+  # The internal ID of the brand kit
+  id: String!
+
+  # S3 bucket containing the logo image to upload
+  remoteImageS3Bucket: String!
+
+  # S3 key of the logo image to upload
+  remoteImageS3Key: String!
+}
+
+type UpdateBrandKitLogoPayload {
+  # On success: the brand kit with the updated logo
+  brandKitOrError: UpdateBrandKitLogoResponseOrError
+  clientMutationId: String
+}
+
+union UpdateBrandKitLogoResponseOrError = UpdateBrandKitLogoFailure | UpdateBrandKitLogoSuccess
+
+type UpdateBrandKitLogoSuccess {
+  brandKit: BrandKit
+}
+
+type UpdateBrandKitPayload {
+  # On success: the updated brand kit
+  brandKitOrError: UpdateBrandKitResponseOrError
+  clientMutationId: String
+}
+
+union UpdateBrandKitResponseOrError = UpdateBrandKitFailure | UpdateBrandKitSuccess
+
+type UpdateBrandKitSuccess {
+  brandKit: BrandKit
 }
 
 type UpdateCMSLastAccessTimestampFailure {
