@@ -190,3 +190,6 @@ bin/.yarn/*
 !bin/.yarn/releases
 !bin/.yarn/sdks
 !bin/.yarn/versions
+
+# Sentry - generated at build time, contains DSN
+sentry.options.json
