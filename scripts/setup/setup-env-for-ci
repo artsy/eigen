@@ -7,3 +7,4 @@ aws s3 cp s3://artsy-citadel/eigen/.env.releases .env.releases
 aws s3 cp s3://artsy-citadel/eigen/keys.shared.json keys.shared.json
 
 cp metaflags.example.json metaflags.json
+node scripts/utils/generate-sentry-options.js
