@@ -487,6 +487,7 @@ type Alert {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -1891,6 +1892,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -2352,6 +2354,7 @@ type ArtistPartnerEdge {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -2518,6 +2521,7 @@ type ArtistSeries implements Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -3431,6 +3435,7 @@ type ArtworkFilterNode {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -13108,6 +13113,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -13441,6 +13447,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -13987,6 +13994,7 @@ input FilterArtworksInput {
   partnerCities: [String]
   partnerID: ID
   partnerIDs: [String]
+  partnerListID: String
   period: String
   periods: [String]
   priceRange: String
@@ -14543,6 +14551,7 @@ type Gene implements Node & Searchable {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -16698,6 +16707,7 @@ type MarketingCollection implements Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -20144,6 +20154,7 @@ type Partner implements Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -20538,6 +20549,7 @@ type PartnerArtist {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -20737,6 +20749,7 @@ type PartnerArtistEdge {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -22183,6 +22196,7 @@ type Query {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -22585,6 +22599,7 @@ type Query {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -25295,6 +25310,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -25863,6 +25879,7 @@ type Tag implements Node {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -29104,6 +29121,7 @@ type Viewer {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
@@ -29386,6 +29404,7 @@ type Viewer {
     partnerCities: [String]
     partnerID: ID
     partnerIDs: [String]
+    partnerListID: String
     period: String
     periods: [String]
     priceRange: String
