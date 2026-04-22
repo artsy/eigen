@@ -63,6 +63,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     dsn: sentryDSN,
     release: eigenSentryReleaseName(),
     dist: eigenSentryDist(),
+    enableTombstone: true,
     enableAutoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
