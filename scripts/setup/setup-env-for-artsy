@@ -4,9 +4,10 @@ set -euxo pipefail
 
 aws s3 cp s3://artsy-citadel/eigen/.env.shared .env.shared
 aws s3 cp s3://artsy-citadel/eigen/keys.shared.json keys.shared.json
+aws s3 cp s3://artsy-citadel/eigen/sentry.options.json sentry.options.json
+cp sentry.options.json android/app/src/main/assets/sentry.options.json
 
 cp metaflags.example.json metaflags.json
 
 ./scripts/setup/download-assets
 ./scripts/setup/update-echo
-node scripts/utils/generate-sentry-options.js

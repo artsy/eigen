@@ -8,6 +8,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
   aws s3 cp .env.shared s3://artsy-citadel/eigen/
   aws s3 cp keys.shared.json s3://artsy-citadel/eigen/
+  aws s3 cp sentry.options.json s3://artsy-citadel/eigen/
 
   RED='\033[0;31m'
   RST='\033[0m'
