@@ -19502,6 +19502,9 @@ type Order {
   # Display short version of order's artwork location
   shippingOrigin: String
 
+  # Whether the order ships domestically or internationally
+  shippingRadius: String
+
   # The total amount for shipping
   shippingTotal: Money
 
