@@ -37,13 +37,6 @@ export const ArtsyNativeModule = {
       ? 0
       : NativeModules.ArtsyNativeModule.getConstants().navigationBarHeight / PixelRatio.get()
   },
-  // We only lock screen orientation for phones. For tablets this has no impact
-  lockActivityScreenOrientation:
-    Platform.OS === "ios"
-      ? () => {
-          console.error("lockActivityScreenOrientation is unsupported on iOS")
-        }
-      : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
   clearCache:
     Platform.OS === "ios"
       ? () => {
