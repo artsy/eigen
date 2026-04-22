@@ -9,3 +9,4 @@ cp metaflags.example.json metaflags.json
 
 ./scripts/setup/download-assets
 ./scripts/setup/update-echo
+node scripts/utils/generate-sentry-options.js
