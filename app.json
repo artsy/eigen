@@ -33,7 +33,8 @@
         {
           "url": "https://sentry.io/",
           "project": "eigen",
-          "organization": "artsynet"
+          "organization": "artsynet",
+          "useNativeInit": true
         }
       ],
       [
