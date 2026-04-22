@@ -5392,6 +5392,34 @@ input BulkArtworkFilterInput {
   published: Boolean
 }
 
+type BulkDeleteArtworksFromPartnerListFailure {
+  mutationError: GravityMutationError
+}
+
+input BulkDeleteArtworksFromPartnerListMutationInput {
+  # The IDs of the artworks to remove.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the partner list.
+  listId: String!
+}
+
+type BulkDeleteArtworksFromPartnerListMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner list. On error: the error that occurred.
+  partnerListOrError: BulkDeleteArtworksFromPartnerListResponseOrError
+}
+
+union BulkDeleteArtworksFromPartnerListResponseOrError =
+    BulkDeleteArtworksFromPartnerListFailure
+  | BulkDeleteArtworksFromPartnerListSuccess
+
+type BulkDeleteArtworksFromPartnerListSuccess {
+  partnerList: PartnerList
+}
+
 input BulkUpdateArtworksMetadataInput {
   # The artist IDs to be assigned
   artistIds: [String]
@@ -17716,6 +17744,38 @@ type Money {
   minor: Long!
 }
 
+type MoveArtworksBetweenPartnerListsFailure {
+  mutationError: GravityMutationError
+}
+
+input MoveArtworksBetweenPartnerListsMutationInput {
+  # The IDs of the artworks to move.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the destination partner list.
+  destinationListId: String!
+
+  # The ID of the source partner list.
+  sourceListId: String!
+}
+
+type MoveArtworksBetweenPartnerListsMutationPayload {
+  clientMutationId: String
+
+  # On success: the destination partner list. On error: the error that occurred.
+  partnerListOrError: MoveArtworksBetweenPartnerListsResponseOrError
+}
+
+union MoveArtworksBetweenPartnerListsResponseOrError =
+    MoveArtworksBetweenPartnerListsFailure
+  | MoveArtworksBetweenPartnerListsSuccess
+
+type MoveArtworksBetweenPartnerListsSuccess {
+  # The destination partner list after the move.
+  partnerList: PartnerList
+}
+
 type Mutation {
   # Accept a partner agreement
   acceptPartnerAgreement(input: AcceptPartnerAgreementInput!): AcceptPartnerAgreementPayload
@@ -17801,6 +17861,11 @@ type Mutation {
   bulkAddArtworksToShow(
     input: BulkAddArtworksToShowMutationInput!
   ): BulkAddArtworksToShowMutationPayload
+
+  # Bulk removes artworks from a partner list.
+  bulkDeleteArtworksFromPartnerList(
+    input: BulkDeleteArtworksFromPartnerListMutationInput!
+  ): BulkDeleteArtworksFromPartnerListMutationPayload
 
   # Update all artworks that belong to the partner
   bulkUpdateArtworksMetadata(
@@ -18424,6 +18489,11 @@ type Mutation {
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
+
+  # Moves artworks from one partner list to another.
+  moveArtworksBetweenPartnerLists(
+    input: MoveArtworksBetweenPartnerListsMutationInput!
+  ): MoveArtworksBetweenPartnerListsMutationPayload
 
   # Create an artwork in my collection
   myCollectionCreateArtwork(
