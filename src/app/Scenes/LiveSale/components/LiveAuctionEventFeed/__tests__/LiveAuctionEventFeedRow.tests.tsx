@@ -80,4 +80,85 @@ describe("LiveAuctionEventFeedRow", () => {
       expect.arrayContaining([expect.objectContaining({ textDecorationLine: "line-through" })])
     )
   })
+
+  describe("bid row colors match Swift colorForBidStatus", () => {
+    // useColor() resolves palette tokens to hex in the test environment
+    const GRAY = "#707070" // mono60
+    const RED = "#D71023" // red100
+
+    it("my winning bid is gray (mono60), not black", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow event={makeEvent({ isMine: true, isTopBid: true })} />
+      )
+      expect(screen.getByText("YOU").props.color).toBe(GRAY)
+    })
+
+    it("my outbid row is red", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow event={makeEvent({ isMine: true, isTopBid: false })} />
+      )
+      expect(screen.getByText("YOU").props.color).toBe(RED)
+    })
+
+    it("cancelled bid is gray regardless of top-bid status", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow event={makeEvent({ isCancelled: true, isTopBid: true })} />
+      )
+      expect(screen.getByText("YOU").props.color).toBe(GRAY)
+    })
+
+    it("pending bid is gray", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow event={makeEvent({ isPending: true, isTopBid: true })} />
+      )
+      expect(screen.getByText("YOU").props.color).toBe(GRAY)
+    })
+  })
+
+  describe("non-bid event colors are unaffected by cancelled state", () => {
+    const YELLOW = "#E2B929" // yellow100
+    const ORANGE = "#DA6722" // orange100
+
+    it("cancelled warning row keeps yellow color", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow
+          event={makeEvent({
+            kind: "warning",
+            title: "WARNING",
+            subtitle: null,
+            isCancelled: true,
+          })}
+        />
+      )
+      expect(screen.getByText("WARNING").props.color).toBe(YELLOW)
+    })
+
+    it("cancelled finalCall row keeps orange color", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow
+          event={makeEvent({
+            kind: "finalCall",
+            title: "FINAL CALL",
+            subtitle: null,
+            isCancelled: true,
+          })}
+        />
+      )
+      expect(screen.getByText("FINAL CALL").props.color).toBe(ORANGE)
+    })
+
+    it("cancelled lotOpen row keeps blue color", () => {
+      renderWithWrappers(
+        <LiveAuctionEventFeedRow
+          event={makeEvent({
+            kind: "lotOpen",
+            title: "LOT OPEN FOR BIDDING",
+            subtitle: null,
+            isCancelled: true,
+          })}
+        />
+      )
+      expect(screen.getByText("LOT OPEN FOR BIDDING").props.color).toBe("#1023D7")
+    })
+  })
 })

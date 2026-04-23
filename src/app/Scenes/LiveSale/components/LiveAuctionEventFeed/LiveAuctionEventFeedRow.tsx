@@ -8,11 +8,11 @@ interface Props {
 const useRowColor = (event: LiveAuctionFeedEvent): string => {
   const color = useColor()
 
-  if (event.isCancelled || event.isPending) return color("mono60")
-
+  // Non-bid events always use their fixed color regardless of cancelled state
+  // (Swift only grays out bid rows when cancelled, not warning/finalCall/lotOpen/closed)
   switch (event.kind) {
     case "lotOpen":
-      return color("purple100")
+      return color("blue100")
     case "finalCall":
       return color("orange100")
     case "warning":
@@ -20,7 +20,10 @@ const useRowColor = (event: LiveAuctionFeedEvent): string => {
     case "closed":
       return color("mono100")
     case "bid":
+      if (event.isCancelled || event.isPending) return color("mono60")
       if (event.isMine && !event.isTopBid) return color("red100")
+      // Swift: isMine && isTop → artsyGrayMedium (not black)
+      if (event.isMine && event.isTopBid) return color("mono60")
       return color("mono100")
   }
 }
