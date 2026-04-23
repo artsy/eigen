@@ -52,8 +52,10 @@ export function deriveLotEventFeed(
       case "FirstPriceBidPlaced":
       case "SecondPriceBidPlaced": {
         const isMine = event.bidder?.bidderId === myBidderId
+        const isFloorBid = event.bidder?.type === "OfflineBidder"
         const isConfirmedByComposite = confirmedAmounts.has(event.amountCents)
-        const isPending = !isCancelled && !event.confirmed && !isConfirmedByComposite
+        // Floor bids are placed by the operator and don't go through online confirmation
+        const isPending = !isCancelled && !isFloorBid && !event.confirmed && !isConfirmedByComposite
 
         feedEvents.push({
           id: event.eventId,

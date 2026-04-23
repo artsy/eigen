@@ -92,6 +92,19 @@ describe("deriveLotEventFeed", () => {
       const result = deriveLotEventFeed(events, MY_BIDDER_ID, MY_BIDDER_ID, CURRENCY)
       expect(result[0].isPending).toBe(false)
     })
+
+    it("floor bids (OfflineBidder) are never pending", () => {
+      const events = [
+        makeEvent({
+          type: "FirstPriceBidPlaced",
+          eventId: "e1",
+          amountCents: 100000,
+          bidder: { bidderId: "floor-bidder", type: "OfflineBidder" },
+        }),
+      ]
+      const result = deriveLotEventFeed(events, MY_BIDDER_ID, "floor-bidder", CURRENCY)
+      expect(result[0].isPending).toBe(false)
+    })
   })
 
   describe("Undo events", () => {
