@@ -5513,6 +5513,9 @@ input BulkUpdateArtworksMetadataInput {
   # The price for the artworks
   priceListed: Float
 
+  # The price in minor units, targeting the catalog artwork field
+  priceMinor: Int
+
   # The provenance to be assigned
   provenance: String
 
