@@ -35,6 +35,20 @@ interface LiveSaleProviderProps {
   children: React.ReactNode
 }
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  HKD: "HK$",
+  AUD: "A$",
+  CAD: "CA$",
+  CHF: "CHF",
+  JPY: "¥",
+  CNY: "¥",
+}
+
+const isoCodeToSymbol = (code: string): string => CURRENCY_SYMBOLS[code] ?? code
+
 export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, children }) => {
   // Fetch static data from GraphQL
   const data = useLazyLoadQuery<LiveSaleProviderQuery>(
@@ -129,7 +143,7 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     credentials,
     artworkMetadata,
     registrationStatus,
-    currencySymbol: data.sale.currency ?? "$",
+    currencySymbol: isoCodeToSymbol(data.sale.currency ?? "USD"),
   })
 
   return <LiveAuctionContext.Provider value={wsState}>{children}</LiveAuctionContext.Provider>

@@ -316,7 +316,10 @@ export type LiveAuctionAction =
   | { type: "CONNECTION_OPENED" }
   | { type: "CONNECTION_CLOSED" }
   | { type: "INITIAL_STATE_RECEIVED"; payload: InitialFullSaleStateMessage }
-  | { type: "LOT_UPDATE_RECEIVED"; payload: { lotId: string; lotEvents: LotEvent[] } }
+  | {
+      type: "LOT_UPDATE_RECEIVED"
+      payload: { lotId: string; lotEvents: LotEvent[]; derivedLotState?: DerivedLotStateData }
+    }
   | { type: "CURRENT_LOT_CHANGED"; payload: { currentLotId: string | null } }
   | { type: "BID_RESPONSE_RECEIVED"; payload: { key: string; success: boolean; message?: string } }
   | { type: "SALE_ON_HOLD_CHANGED"; payload: { onHold: boolean; message?: string | null } }

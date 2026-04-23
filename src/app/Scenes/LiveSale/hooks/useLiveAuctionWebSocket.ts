@@ -157,12 +157,16 @@ export const liveAuctionReducer = (
               ...eventDerived,
               biddingStatus: "Complete",
               soldStatus,
+              askingPriceCents:
+                eventDerived.askingPriceCents || serverDerived.askingPriceCents || 0,
               sellingToBidderId: eventDerived.sellingToBidderId ?? serverSellingToBidderId,
               floorWinningBidderId: eventDerived.floorWinningBidderId ?? serverFloorWinningBidderId,
             }
           } else {
             lotState.derivedState = {
               ...eventDerived,
+              askingPriceCents:
+                eventDerived.askingPriceCents || serverDerived.askingPriceCents || 0,
               sellingToBidderId: eventDerived.sellingToBidderId ?? serverSellingToBidderId,
               floorWinningBidderId: eventDerived.floorWinningBidderId ?? serverFloorWinningBidderId,
             }
@@ -185,7 +189,7 @@ export const liveAuctionReducer = (
     }
 
     case "LOT_UPDATE_RECEIVED": {
-      const { lotId, lotEvents } = action.payload
+      const { lotId, lotEvents, derivedLotState: serverDerived } = action.payload
       const newLots = new Map(state.lots)
       let lotState = newLots.get(lotId)
 
@@ -220,8 +224,17 @@ export const liveAuctionReducer = (
           (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         )
 
-        // Recalculate derived state
-        lotState.derivedState = calculateDerivedState(lotState.events)
+        // Recalculate derived state, falling back to server values for fields
+        // that may not be derivable from event history alone
+        const eventDerived = calculateDerivedState(lotState.events)
+        lotState.derivedState = {
+          ...eventDerived,
+          askingPriceCents: eventDerived.askingPriceCents || serverDerived?.askingPriceCents || 0,
+          sellingToBidderId:
+            eventDerived.sellingToBidderId ?? serverDerived?.sellingToBidder?.bidderId,
+          floorWinningBidderId:
+            eventDerived.floorWinningBidderId ?? serverDerived?.floorWinningBidder?.bidderId,
+        }
 
         // Update the lot in the map
         newLots.set(lotId, lotState)
@@ -388,7 +401,10 @@ export const useLiveAuctionWebSocket = ({
           const lotEvents = Object.values(message.events)
           const lotId = lotEvents[0]?.lotId
           if (lotId) {
-            dispatch({ type: "LOT_UPDATE_RECEIVED", payload: { lotId, lotEvents } })
+            dispatch({
+              type: "LOT_UPDATE_RECEIVED",
+              payload: { lotId, lotEvents, derivedLotState: message.derivedLotState },
+            })
           }
           break
         }
