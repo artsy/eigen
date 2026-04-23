@@ -10966,6 +10966,7 @@ input CreatePartnerLocationInput {
 
   # Primary email of given location
   email: String
+  name: String
 
   # ID of the partner
   partnerId: String!
@@ -16261,6 +16262,7 @@ type Location {
 
   # A type-specific ID.
   internalID: ID!
+  name: String
 
   # Union returning opening hours in formatted structure or a string
   openingHours: OpeningHoursUnion
