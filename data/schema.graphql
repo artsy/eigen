@@ -5571,6 +5571,18 @@ type BulkUpdateArtworksMetadataResponse {
   ids: [String]
 }
 
+type BulkUpdateMetadataPreview {
+  counts: BulkUpdateMetadataPreviewCounts!
+}
+
+type BulkUpdateMetadataPreviewCounts {
+  editable: Int!
+
+  # Number of artworks that cannot be edited (total - editable).
+  nonEditable: Int!
+  total: Int!
+}
+
 # Possible sources of the bulk operation
 enum BulkUpdateSourceEnum {
   ADMIN
@@ -20025,6 +20037,18 @@ type Partner implements Node {
 
   # The partner's brand kit — colors, fonts, and logo used for branded surfaces
   brandKit: BrandKit
+
+  # Preview counts of artworks affected by a bulk metadata update.
+  bulkUpdateMetadataPreview(
+    # IDs of artworks to include in the preview.
+    artworkIds: [String!]
+
+    # ID of a partner list to filter artworks.
+    partnerListId: String
+
+    # When true, excludes live artworks from the editable count.
+    updateCatalog: Boolean
+  ): BulkUpdateMetadataPreview
   cached: Int
   categories: [PartnerCategory]
 
