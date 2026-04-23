@@ -102,6 +102,12 @@ export const liveAuctionReducer = (
           // eventHistory may be incomplete (e.g. LotSold event absent for already-sold lots),
           // so we trust the server when it says a lot is Complete.
           const serverDerived = fullLotState.derivedLotState
+
+          // Server's sellingToBidder/floorWinningBidder are nested objects on the wire.
+          // Use them as fallbacks when event history is incomplete.
+          const serverSellingToBidderId = serverDerived.sellingToBidder?.bidderId
+          const serverFloorWinningBidderId = serverDerived.floorWinningBidder?.bidderId
+
           if (
             serverDerived.biddingStatus === "Complete" &&
             eventDerived.biddingStatus !== "Complete"
@@ -112,9 +118,19 @@ export const liveAuctionReducer = (
                 : serverDerived.soldStatus === "Passed"
                   ? "Passed"
                   : "Passed"
-            lotState.derivedState = { ...eventDerived, biddingStatus: "Complete", soldStatus }
+            lotState.derivedState = {
+              ...eventDerived,
+              biddingStatus: "Complete",
+              soldStatus,
+              sellingToBidderId: eventDerived.sellingToBidderId ?? serverSellingToBidderId,
+              floorWinningBidderId: eventDerived.floorWinningBidderId ?? serverFloorWinningBidderId,
+            }
           } else {
-            lotState.derivedState = eventDerived
+            lotState.derivedState = {
+              ...eventDerived,
+              sellingToBidderId: eventDerived.sellingToBidderId ?? serverSellingToBidderId,
+              floorWinningBidderId: eventDerived.floorWinningBidderId ?? serverFloorWinningBidderId,
+            }
           }
         }
         // If fullLotState is absent the lot stays with default derivedState (biddingStatus: "Open").

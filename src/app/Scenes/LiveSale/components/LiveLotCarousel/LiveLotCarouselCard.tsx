@@ -1,9 +1,10 @@
 import { Flex, Image, Text, useColor, useTheme } from "@artsy/palette-mobile"
 import { LiveAuctionBidButton } from "app/Scenes/LiveSale/components/LiveAuctionBidButton/LiveAuctionBidButton"
+import { LiveAuctionEventFeed } from "app/Scenes/LiveSale/components/LiveAuctionEventFeed/LiveAuctionEventFeed"
 import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
 import { useLiveAuctionBidButtonState } from "app/Scenes/LiveSale/hooks/useLiveAuctionBidButtonState"
 import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
-import { Animated, useWindowDimensions } from "react-native"
+import { Animated, ScrollView, useWindowDimensions } from "react-native"
 import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
 
 const IMAGE_CONTAINER_HEIGHT = 300
@@ -78,7 +79,7 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
 
         {/* Lot info - only show when focused */}
         {!!isFocused && (
-          <Flex p={2} gap={2}>
+          <ScrollView contentContainerStyle={{ padding: space(2), gap: space(2) }}>
             {/* Lot number and artist */}
             <Flex>
               {!!artworkMetadata?.artwork?.artistNames && (
@@ -101,7 +102,10 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
 
             {/* Bid button */}
             <LiveAuctionBidButton buttonState={buttonState} onPress={() => onBidPress(lot.lotId)} />
-          </Flex>
+
+            {/* Event feed */}
+            <LiveAuctionEventFeed lotId={lot.lotId} />
+          </ScrollView>
         )}
       </Flex>
     </Animated.View>

@@ -44,8 +44,9 @@ export interface DerivedLotStateData {
   soldStatus?: string
   onlineBidCount?: number
   winningBidEventId?: string
-  sellingToBidderId?: string
-  floorWinningBidderId?: string
+  // wire sends nested objects: sellingToBidder.bidderId, floorWinningBidder.bidderId
+  sellingToBidder?: { bidderId?: string; type?: string }
+  floorWinningBidder?: { bidderId?: string; type?: string }
 }
 
 export interface LotUpdateBroadcastMessage {
@@ -128,25 +129,34 @@ export interface LotEvent {
   bidder?: {
     bidderId: string
     type: "ArtsyBidder" | "OfflineBidder"
+    paddleNumber?: string // present for ArtsyBidder events (wire key: "paddleNumber")
   }
   createdAt: string // ISO timestamp
   confirmed?: boolean
+  // Wire format: nested object `{ eventId: string }` — used by LiveOperatorEventUndone
+  // and CompositeOnlineBidConfirmed to reference the target event. Maps to
+  // Obj-C JSONKeyPathsByPropertyKey: hostedEventID -> "event.eventId"
+  event?: { eventId: string }
 }
 
 export type LotEventType =
-  | "LotOpened"
-  | "BiddingStarted"
+  | "BiddingOpened" // wire: lot opened for bidding (native uses this)
+  | "LotOpened" // legacy alias
+  | "BiddingStarted" // legacy alias
   | "FirstPriceBidPlaced"
   | "SecondPriceBidPlaced"
   | "FairWarning"
   | "FinalCall"
-  | "LotSold"
-  | "LotPassed"
+  | "BiddingClosed" // wire: lot closed (native uses this)
+  | "LotSold" // legacy alias
+  | "LotPassed" // legacy alias
   | "ReserveMet"
   | "ReserveNotMet"
   | "BidAccepted"
   | "BidRejected"
   | "AskingPriceChanged"
+  | "LiveOperatorEventUndone" // marks a prior event as cancelled
+  | "CompositeOnlineBidConfirmed" // confirms a pending bid by amountCents
 
 // ==================== Bid Events (Outbound) ====================
 
@@ -218,6 +228,22 @@ export interface DerivedLotState {
 // ==================== Registration ====================
 
 export type RegistrationStatus = "registered" | "pending" | "closed" | "unregistered"
+
+// ==================== Event Feed ====================
+
+export type LiveAuctionFeedEventKind = "bid" | "lotOpen" | "finalCall" | "warning" | "closed"
+
+export interface LiveAuctionFeedEvent {
+  id: string
+  kind: LiveAuctionFeedEventKind
+  title: string
+  subtitle: string | null
+  isMine: boolean
+  isTopBid: boolean
+  isCancelled: boolean
+  isPending: boolean
+  createdAt: string
+}
 
 // ==================== Bid Button State ====================
 
@@ -331,6 +357,7 @@ export const calculateDerivedState = (events: Map<string, LotEvent>): DerivedLot
 
   for (const event of eventArray) {
     switch (event.type) {
+      case "BiddingOpened":
       case "LotOpened":
       case "BiddingStarted":
         hasOpenedBidding = true
@@ -352,6 +379,7 @@ export const calculateDerivedState = (events: Map<string, LotEvent>): DerivedLot
         winningBidEventId = event.eventId
         sellingToBidderId = event.bidder?.bidderId
         break
+      case "BiddingClosed":
       case "LotSold":
         biddingStatus = "Complete"
         soldStatus = "Sold"
