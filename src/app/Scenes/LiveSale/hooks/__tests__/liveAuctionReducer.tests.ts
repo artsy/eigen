@@ -511,7 +511,6 @@ describe("liveAuctionReducer - Lot Updates", () => {
     const action: LiveAuctionAction = {
       type: "LOT_UPDATE_RECEIVED",
       payload: {
-        type: "LotUpdateBroadcast",
         lotId: "lot-1",
         lotEvents: [
           {
@@ -542,7 +541,6 @@ describe("liveAuctionReducer - Lot Updates", () => {
     const action: LiveAuctionAction = {
       type: "LOT_UPDATE_RECEIVED",
       payload: {
-        type: "LotUpdateBroadcast",
         lotId: "lot-2",
         lotEvents: [
           {
@@ -581,7 +579,6 @@ describe("liveAuctionReducer - Lot Updates", () => {
     const action: LiveAuctionAction = {
       type: "LOT_UPDATE_RECEIVED",
       payload: {
-        type: "LotUpdateBroadcast",
         lotId: "lot-1",
         lotEvents: [
           existingEvent, // Same event

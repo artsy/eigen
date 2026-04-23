@@ -346,9 +346,15 @@ export const useLiveAuctionWebSocket = ({
           dispatch({ type: "INITIAL_STATE_RECEIVED", payload: message })
           break
 
-        case "LotUpdateBroadcast":
-          dispatch({ type: "LOT_UPDATE_RECEIVED", payload: message })
+        case "LotUpdateBroadcast": {
+          // Wire sends events as a dict keyed by eventId; lotId lives inside each value
+          const lotEvents = Object.values(message.events)
+          const lotId = lotEvents[0]?.lotId
+          if (lotId) {
+            dispatch({ type: "LOT_UPDATE_RECEIVED", payload: { lotId, lotEvents } })
+          }
           break
+        }
 
         case "SaleLotChangeBroadcast":
           dispatch({
