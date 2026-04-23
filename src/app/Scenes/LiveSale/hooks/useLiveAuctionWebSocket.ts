@@ -16,6 +16,41 @@ import type {
   RegistrationStatus,
 } from "app/Scenes/LiveSale/types/liveAuction"
 
+// ==================== Debug Logging ====================
+
+const log = (...args: unknown[]) => {
+  if (__DEV__) console.log("[LiveAuction]", ...args)
+}
+
+const summariseMessage = (message: InboundMessage): string => {
+  switch (message.type) {
+    case "InitialFullSaleState": {
+      const lotCount = Object.keys(message.fullLotStateById).length
+      return `currentLot=${message.currentLotId} lots=${lotCount}`
+    }
+    case "LotUpdateBroadcast": {
+      const events = Object.values(message.events)
+      const lotId = events[0]?.lotId ?? "?"
+      const types = events.map((e) => e.type).join(", ")
+      return `lotId=${lotId} events=[${types}]`
+    }
+    case "SaleLotChangeBroadcast":
+      return `currentLot=${message.currentLotId}`
+    case "CommandSuccessful":
+      return `key=${message.key}`
+    case "CommandFailed":
+      return `key=${message.key} reason="${message.message}"`
+    case "PostEventResponse":
+      return `key=${message.key} status=${message.status}`
+    case "OperatorConnectedBroadcast":
+      return `connected=${message.operatorConnected}`
+    case "SaleOnHold":
+      return `onHold=${message.onHold} message="${message.message ?? ""}"`
+    default:
+      return ""
+  }
+}
+
 // ==================== State Reducer ====================
 
 export const initialState: Omit<
@@ -341,6 +376,8 @@ export const useLiveAuctionWebSocket = ({
 
       const message: InboundMessage = JSON.parse(event.data as string)
 
+      log(`← ${message.type}`, summariseMessage(message))
+
       switch (message.type) {
         case "InitialFullSaleState":
           dispatch({ type: "INITIAL_STATE_RECEIVED", payload: message })
@@ -453,6 +490,7 @@ export const useLiveAuctionWebSocket = ({
 
       ws.onopen = () => {
         isConnectingRef.current = false
+        log("connection opened", getWebSocketURL(saleID))
         dispatch({ type: "CONNECTION_OPENED" })
         clearDisconnectWarning()
 
@@ -461,6 +499,7 @@ export const useLiveAuctionWebSocket = ({
           type: "Authorize",
           jwt,
         }
+        log("→ Authorize")
         ws.send(JSON.stringify(authMessage))
 
         // Start heartbeat
@@ -470,12 +509,14 @@ export const useLiveAuctionWebSocket = ({
       ws.onmessage = handleMessage
 
       ws.onerror = (error) => {
+        log("error", error)
         console.error("WebSocket error:", error)
         isConnectingRef.current = false
       }
 
       ws.onclose = () => {
         isConnectingRef.current = false
+        log("connection closed — will reconnect")
         dispatch({ type: "CONNECTION_CLOSED" })
         stopHeartbeat()
         startDisconnectWarning()
@@ -573,6 +614,7 @@ export const useLiveAuctionWebSocket = ({
         event: bidEvent,
       }
 
+      log(`→ PostEvent key=${bidUUID} type=${bidEvent.type} amount=${amountCents} lotId=${lotId}`)
       wsRef.current.send(JSON.stringify(message))
     },
     [credentials]
