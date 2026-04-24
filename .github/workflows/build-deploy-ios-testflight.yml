@@ -43,6 +43,9 @@ jobs:
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
 
+      - name: Verify sentry.options.json
+        run: ls -la sentry.options.json
+
       - name: Build and deploy iOS to TestFlight
         run: bundle exec fastlane ship_beta_ios deployment_target:testflight
         env:
