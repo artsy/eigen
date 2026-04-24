@@ -165,6 +165,11 @@ export const features = {
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
+  AREnableRNLiveSaleScreen: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable React Native Live Sale Screen",
+  },
   AREnableExpandedCityGuide: {
     readyForRelease: true,
     showInDevMenu: true,
@@ -282,6 +287,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTDisableNavigationStateRehydration: {
     description:
       "Disable navigation state rehydration. This change only affects DEV builds. In release builds, navigation state is never rehydrated.",
+  },
+  DTShowLiveSaleDebugButton: {
+    description: "Show debug button in Live Sale screen",
   },
 }
 

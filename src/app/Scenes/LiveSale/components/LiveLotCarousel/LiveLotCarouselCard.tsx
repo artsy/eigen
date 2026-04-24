@@ -1,0 +1,109 @@
+import { Flex, Image, Text, useColor, useTheme } from "@artsy/palette-mobile"
+import { LiveAuctionBidButton } from "app/Scenes/LiveSale/components/LiveAuctionBidButton/LiveAuctionBidButton"
+import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
+import { useLiveAuctionBidButtonState } from "app/Scenes/LiveSale/hooks/useLiveAuctionBidButtonState"
+import { useSpringValue } from "app/Scenes/LiveSale/hooks/useSpringValue"
+import { Animated, useWindowDimensions } from "react-native"
+import type { ArtworkMetadata, LotState } from "app/Scenes/LiveSale/types/liveAuction"
+
+const IMAGE_CONTAINER_HEIGHT = 300
+
+interface LiveLotCarouselCardProps {
+  lot: LotState
+  artworkMetadata?: ArtworkMetadata
+  isFocused: boolean
+  onBidPress: (lotId: string) => void
+}
+
+export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
+  lot,
+  artworkMetadata,
+  isFocused,
+  onBidPress,
+}) => {
+  const scale = useSpringValue(isFocused ? 1.0 : 0.85)
+  const opacity = useSpringValue(isFocused ? 1.0 : 0.6)
+  const color = useColor()
+  const { width: screenWidth } = useWindowDimensions()
+  const { space } = useTheme()
+  const auctionState = useLiveAuction()
+  const buttonState = useLiveAuctionBidButtonState(lot.lotId, auctionState)
+
+  // Calculate image dimensions to fit within container while maintaining aspect ratio
+  const imageAspectRatio = artworkMetadata?.artwork?.image?.aspectRatio ?? 1
+  // Account for card margins and padding (mx={1} on card = 8px each side)
+
+  const availableWidth = screenWidth - space(2) * 2
+  const imageWidth = Math.min(availableWidth, IMAGE_CONTAINER_HEIGHT * imageAspectRatio)
+
+  return (
+    <Animated.View
+      style={{
+        flex: 1,
+        transform: [{ scale }],
+        opacity,
+      }}
+      collapsable={false}
+    >
+      <Flex flex={1} bg={color("mono0")} borderRadius={8} overflow="hidden" mx={1}>
+        {/* Artwork image */}
+        <Flex
+          height={IMAGE_CONTAINER_HEIGHT}
+          bg={color("mono0")}
+          alignItems="center"
+          justifyContent="center"
+          borderBottomWidth={1}
+          borderBottomColor={color("mono10")}
+          width="100%"
+        >
+          {artworkMetadata?.artwork?.image?.url ? (
+            <Image
+              src={artworkMetadata.artwork.image.url}
+              width={imageWidth}
+              height={IMAGE_CONTAINER_HEIGHT}
+              aspectRatio={imageAspectRatio}
+              resizeMode="contain"
+            />
+          ) : (
+            <>
+              <Text variant="lg-display" color={color("mono60")}>
+                Lot {lot.lotId}
+              </Text>
+              <Text variant="xs" color={color("mono60")} mt={1}>
+                No image available
+              </Text>
+            </>
+          )}
+        </Flex>
+
+        {/* Lot info - only show when focused */}
+        {!!isFocused && (
+          <Flex p={2} gap={2}>
+            {/* Lot number and artist */}
+            <Flex>
+              {!!artworkMetadata?.artwork?.artistNames && (
+                <Text variant="md" weight="medium" numberOfLines={1}>
+                  {artworkMetadata.artwork.artistNames}
+                </Text>
+              )}
+              {!!artworkMetadata?.artwork?.title && (
+                <Text variant="sm" numberOfLines={2}>
+                  {artworkMetadata.artwork.title}
+                </Text>
+              )}
+              {/* Estimate range */}
+              {!!artworkMetadata?.estimate && (
+                <Flex>
+                  <Text variant="sm">Estimate: {artworkMetadata.estimate}</Text>
+                </Flex>
+              )}
+            </Flex>
+
+            {/* Bid button */}
+            <LiveAuctionBidButton buttonState={buttonState} onPress={() => onBidPress(lot.lotId)} />
+          </Flex>
+        )}
+      </Flex>
+    </Animated.View>
+  )
+}
