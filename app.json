@@ -14,10 +14,7 @@
         }
       }
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "runtimeVersion": "361b23ccadae02075efb2634e51ebe1c34f5df45",
     "owner": "artsy_org",
     "extra": {
@@ -36,7 +33,8 @@
         {
           "url": "https://sentry.io/",
           "project": "eigen",
-          "organization": "artsynet"
+          "organization": "artsynet",
+          "useNativeInit": true
         }
       ],
       [
