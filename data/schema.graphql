@@ -438,6 +438,9 @@ type Alert {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -1843,6 +1846,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -2305,6 +2311,9 @@ type ArtistPartnerEdge {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -2472,6 +2481,9 @@ type ArtistSeries implements Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -3386,6 +3398,9 @@ type ArtworkFilterNode {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -13081,6 +13096,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -13414,6 +13432,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -13962,6 +13983,9 @@ input FilterArtworksInput {
   availability: String
   before: String
   categories: [String]
+
+  # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+  certificateOfAuthenticity: String
   color: String
   colors: [String]
 
@@ -14518,6 +14542,9 @@ type Gene implements Node & Searchable {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -16675,6 +16702,9 @@ type MarketingCollection implements Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -20134,6 +20164,9 @@ type Partner implements Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -20529,6 +20562,9 @@ type PartnerArtist {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -20729,6 +20765,9 @@ type PartnerArtistEdge {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -22176,6 +22215,9 @@ type Query {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -22576,6 +22618,9 @@ type Query {
 
     # The slug of the discovery category to filter artworks by
     categorySlug: String!
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -25290,6 +25335,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -25859,6 +25907,9 @@ type Tag implements Node {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -29101,6 +29152,9 @@ type Viewer {
     availability: String
     before: String
     categories: [String]
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
@@ -29381,6 +29435,9 @@ type Viewer {
 
     # The slug of the discovery category to filter artworks by
     categorySlug: String!
+
+    # Filter by certificate of authenticity. Accepted values: gallery, authenticating_body, no.
+    certificateOfAuthenticity: String
     color: String
     colors: [String]
 
