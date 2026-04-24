@@ -5474,6 +5474,12 @@ input BulkUpdateArtworksMetadataInput {
   # Array of dates as numbers to be assigned
   dates: [Int]
 
+  # Depth of the artwork
+  depth: String
+
+  # Diameter of the artwork
+  diameter: String
+
   # Set artwork price visibility to price range
   displayPriceRange: Boolean
 
@@ -5495,6 +5501,9 @@ input BulkUpdateArtworksMetadataInput {
   # Whether a certificate of authenticity is provided for these artworks.
   hasCertificateOfAuthenticity: Boolean
 
+  # Height of the artwork
+  height: String
+
   # The image rights to be assigned
   imageRights: String
 
@@ -5509,6 +5518,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The medium (materials) to be assigned, E.g. Oil on Canvas
   medium: String
+
+  # Metric unit for dimensions (in or cm)
+  metric: String
 
   # Whether the artworks must be listed as Make Offer
   offer: Boolean
@@ -5531,6 +5543,9 @@ input BulkUpdateArtworksMetadataInput {
   # The price in minor units, targeting the catalog artwork field
   priceMinor: Int
 
+  # Private notes about the artwork
+  privateNotes: String
+
   # The provenance to be assigned
   provenance: String
 
@@ -5545,6 +5560,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The title of the artwork
   title: String
+
+  # Width of the artwork
+  width: String
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
