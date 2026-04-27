@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
+import { deleteToken } from "app/utils/PushNotification"
 import {
   handleClassicFacebookAuth,
   handleClassicFacebookAuth2,
@@ -1000,9 +1001,15 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
-    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.resetPushPromptLogic()
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
+
+    // Delete from the server and from Firebase before clearing local storage, so both
+    // auth token and push token are still available. Deleting the Firebase token forces
+    // a fresh registration token on the next login (triggering onTokenRefresh).
+    await deleteToken()
+    // await messaging().deleteToken()
 
     await Promise.all([
       Platform.OS === "ios"

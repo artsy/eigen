@@ -12,6 +12,7 @@ export interface PushPromptLogicModel {
   setPushNotificationSystemDialogRejected: Action<PushPromptLogicModel, boolean>
   setPushNotificationSystemDialogSeen: Action<PushPromptLogicModel, boolean>
   setPushNotificationDialogLastSeenTimestamp: Action<PushPromptLogicModel, number>
+  resetPushPromptLogic: Action<PushPromptLogicModel>
 }
 
 export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
@@ -35,5 +36,12 @@ export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
   }),
   setPushNotificationDialogLastSeenTimestamp: action((state, payload) => {
     state.pushNotificationDialogLastSeenTimestamp = payload
+  }),
+  resetPushPromptLogic: action((state) => {
+    state.pushPermissionsRequestedThisSession = false
+    state.pushNotificationSettingsPromptSeen = false
+    state.pushNotificationSystemDialogRejected = false
+    state.pushNotificationSystemDialogSeen = false
+    state.pushNotificationDialogLastSeenTimestamp = null
   }),
 })

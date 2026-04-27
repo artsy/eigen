@@ -137,18 +137,17 @@ describe("useRegisterForPushNotifications", () => {
         expect(mockSaveToken).toHaveBeenCalledWith(mockToken)
       })
 
-      it("should handle null token from native module", async () => {
+      it("should handle null token from native module gracefully and keep refresh listener active", async () => {
         mockGetPushToken.mockResolvedValue(null)
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
         renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
-        expect(consoleSpy).toHaveBeenCalledWith("DEBUG: Failed to obtain FCM token")
+        // No error logged — the refresh listener handles the token when APNS delivers it
         expect(mockSaveToken).not.toHaveBeenCalled()
-
-        consoleSpy.mockRestore()
+        // Refresh listener must still be set up so onTokenRefresh can save the token later
+        expect(mockOnTokenRefresh).toHaveBeenCalledTimes(1)
       })
     })
 
@@ -162,25 +161,21 @@ describe("useRegisterForPushNotifications", () => {
 
         await waitForAsync()
 
-        expect(consoleSpy).toHaveBeenCalledWith(
-          "DEBUG: Error in registerForRemoteMessages:",
-          mockError
-        )
+        expect(consoleSpy).toHaveBeenCalledWith("Error in registerForRemoteMessages:", mockError)
         expect(mockSaveToken).not.toHaveBeenCalled()
         consoleSpy.mockRestore()
       })
 
-      it("should handle empty token", async () => {
+      it("should not call saveToken when token is empty", async () => {
         mockGetToken.mockResolvedValue("")
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
         renderHook(() => useRegisterForPushNotifications())
 
         await waitForAsync()
 
-        expect(consoleSpy).toHaveBeenCalledWith("DEBUG: Failed to obtain FCM token")
         expect(mockSaveToken).not.toHaveBeenCalled()
-        consoleSpy.mockRestore()
+        // Refresh listener is still active
+        expect(mockOnTokenRefresh).toHaveBeenCalledTimes(1)
       })
     })
   })
