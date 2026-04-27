@@ -140,11 +140,16 @@ export const requestPushNotificationsPermission = async () => {
 
   const permissionStatus = await getNotificationPermissionsStatus()
   if (permissionStatus === PushAuthorizationStatus.Authorized) {
-    // On iOS, we need to request the push token again to trigger the onRegister callback
+    // On iOS, re-requesting triggers the onRegister callback so the token is refreshed.
     if (Platform.OS === "ios") {
       requestSystemPermissions()
     }
-    return
+    // If the user has already seen the dialog this session, nothing left to do.
+    // If not (e.g. a different account just signed in after sign-out), fall through
+    // to the pre-prompt so the new user gets a chance to opt in.
+    if (pushNotificationSystemDialogSeen) {
+      return
+    }
   } else if (
     permissionStatus === PushAuthorizationStatus.Denied &&
     pushNotificationSystemDialogSeen

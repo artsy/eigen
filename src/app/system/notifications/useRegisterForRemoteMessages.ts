@@ -22,40 +22,30 @@ export const useRegisterForPushNotifications = () => {
 
   const registerForRemoteMessages = async () => {
     try {
-      // Register the device with FCM
       await messaging().registerDeviceForRemoteMessages()
+
+      // Register the refresh listener before attempting to get the current token.
+      // On iOS, getPushToken() can return null immediately after sign-out (clearUserData
+      // wipes the stored APNS token and re-registration is async). Without this listener
+      // in place first, we'd bail early and never capture the token once APNS delivers it.
+      const unsubscribe = messaging().onTokenRefresh(async (newToken) => {
+        await saveToken(newToken)
+      })
 
       let token = ""
       if (Platform.OS === "android") {
-        // Get the token
         token = await messaging().getToken()
       } else {
-        // Get the token
         token = (await LegacyNativeModules.ArtsyNativeModule.getPushToken()) ?? ""
       }
 
-      if (!token) {
-        console.error("DEBUG: Failed to obtain FCM token")
-        return
+      if (token) {
+        await saveToken(token)
       }
-
-      // Save the token
-      const savedToken = await saveToken(token)
-      if (!savedToken) {
-        console.error("DEBUG: Failed to save token:")
-      }
-
-      // Set up token refresh listener
-      const unsubscribe = messaging().onTokenRefresh(async (newToken) => {
-        const savedToken = await saveToken(newToken)
-        if (!savedToken) {
-          console.error("DEBUG: Failed to save refreshed token:")
-        }
-      })
 
       return unsubscribe
     } catch (error) {
-      console.error("DEBUG: Error in registerForRemoteMessages:", error)
+      console.error("Error in registerForRemoteMessages:", error)
     }
   }
 }
