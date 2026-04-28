@@ -6,10 +6,10 @@
  */
 
 const path = require("path")
-const { mergeConfig, getDefaultConfig } = require("@react-native/metro-config")
+const { mergeConfig } = require("@react-native/metro-config")
 const { withRozeniteExpoAtlasPlugin } = require("@rozenite/expo-atlas-plugin")
 const { withRozenite } = require("@rozenite/metro")
-const { withSentryConfig } = require("@sentry/react-native/metro")
+const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
 const config = {
@@ -35,10 +35,9 @@ const config = {
   },
 }
 
-const mergedConfig = mergeConfig(getDefaultConfig(__dirname), config)
-const sentryConfig = withSentryConfig(mergedConfig)
+const mergedConfig = mergeConfig(getSentryExpoConfig(__dirname), config)
 
-module.exports = withRozenite(sentryConfig, {
+module.exports = withRozenite(mergedConfig, {
   enhanceMetroConfig: (config) => withRozeniteExpoAtlasPlugin(config),
   enabled: process.env.WITH_ROZENITE === "true", // enable only in dev environment
 })
