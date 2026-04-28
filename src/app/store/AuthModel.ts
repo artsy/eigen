@@ -20,7 +20,6 @@ import {
 import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
-
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { stringify } from "qs"
 import { Platform } from "react-native"
@@ -28,7 +27,6 @@ import { LoginManager, LoginTracking } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import Keys from "react-native-keys"
 import SiftReactNative from "sift-react-native"
-import { v4 as uuidv4 } from "uuid"
 import { AuthError } from "./AuthError"
 import { GlobalStore, getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
@@ -1005,10 +1003,10 @@ export const getAuthModel = (): AuthModel => ({
     GlobalStore.actions.artsyPrefs.pushPromptLogic.resetPushPromptLogic()
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
-    // Switch to a fresh anonymous Braze user so this device no longer receives
-    // push notifications for the logged-out user. The BrazePlugin's identify()
-    // skips changeUser when userId is undefined, so we call it explicitly.
-    Braze.changeUser(uuidv4())
+    // Switch Braze to a temp user to avoid sending any more user specific
+    // events until next login, as Braze does not have an identify(null)
+    // or equivalent method
+    Braze.changeUser("00000")
 
     // Delete from the server before clearing local storage, so both
     // auth token and push token are still available.
