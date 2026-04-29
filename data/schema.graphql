@@ -3361,6 +3361,93 @@ interface ArtworkContextGrid {
   title: String
 }
 
+input ArtworkDuplicateMergeFieldOverridesInput {
+  availability: String
+  date: String
+  depth: String
+  diameter: String
+  height: String
+  medium: String
+  metric: String
+  priceCurrency: String
+  priceMinor: Int
+  privateNotes: String
+  title: String
+  width: String
+}
+
+type ArtworkDuplicatePair {
+  artwork1: Artwork!
+  artwork2: Artwork!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String!
+  detectionVersion: String!
+  dismissedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # Metadata from the duplicate detection process, just typed as JSON (for debugging)
+  matchMetadata: JSON
+
+  # Details about the merge operation, just typed as JSON (for debugging)
+  mergeDetails: JSON
+  mergeable: Boolean!
+  mergedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  mergedIntoArtwork: Artwork
+  similarityScore: Float
+  status: ArtworkDuplicatePairStatus!
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String!
+}
+
+# A connection to a list of items.
+type ArtworkDuplicatePairConnection {
+  # A list of edges.
+  edges: [ArtworkDuplicatePairEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkDuplicatePairEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkDuplicatePair
+}
+
+enum ArtworkDuplicatePairStatus {
+  DISMISSED
+  MERGED
+  OPEN
+}
+
 # An edge in a connection.
 type ArtworkEdge implements ArtworkEdgeInterface {
   # A cursor for use in pagination
@@ -12659,6 +12746,35 @@ type Department {
   name: String!
 }
 
+type DetectArtworkDuplicatesFailure {
+  mutationError: GravityMutationError
+}
+
+input DetectArtworkDuplicatesMutationInput {
+  clientMutationId: String
+
+  # Optional detection version to use
+  detectionVersion: String
+
+  # The ID of the partner
+  partnerId: String!
+}
+
+type DetectArtworkDuplicatesMutationPayload {
+  clientMutationId: String
+  detectArtworkDuplicatesResponseOrError: DetectArtworkDuplicatesResponseOrError
+}
+
+union DetectArtworkDuplicatesResponseOrError =
+    DetectArtworkDuplicatesFailure
+  | DetectArtworkDuplicatesSuccess
+
+type DetectArtworkDuplicatesSuccess {
+  detectionVersion: String
+  partnerId: String
+  status: String
+}
+
 type Device {
   # E.g., net.artsy.artsy
   appId: String!
@@ -12843,6 +12959,30 @@ type DislikeArtworkPayload {
   artwork: Artwork
   clientMutationId: String
   me: Me!
+}
+
+type DismissArtworkDuplicatePairFailure {
+  mutationError: GravityMutationError
+}
+
+input DismissArtworkDuplicatePairMutationInput {
+  clientMutationId: String
+
+  # The ID of the artwork duplicate pair
+  id: String!
+}
+
+type DismissArtworkDuplicatePairMutationPayload {
+  artworkDuplicatePairOrError: DismissArtworkDuplicatePairResponseOrError
+  clientMutationId: String
+}
+
+union DismissArtworkDuplicatePairResponseOrError =
+    DismissArtworkDuplicatePairFailure
+  | DismissArtworkDuplicatePairSuccess
+
+type DismissArtworkDuplicatePairSuccess {
+  artworkDuplicatePair: ArtworkDuplicatePair
 }
 
 type DismissTaskFailure {
@@ -17651,6 +17791,36 @@ type MergeArtistsSuccess {
   artist: Artist
 }
 
+type MergeArtworkDuplicatePairFailure {
+  mutationError: GravityMutationError
+}
+
+input MergeArtworkDuplicatePairMutationInput {
+  clientMutationId: String
+
+  # Optional field-level overrides for the merge
+  fieldOverrides: ArtworkDuplicateMergeFieldOverridesInput
+
+  # The ID of the artwork duplicate pair
+  id: String!
+
+  # The ID of the artwork to keep as primary
+  primaryArtworkId: String!
+}
+
+type MergeArtworkDuplicatePairMutationPayload {
+  artworkDuplicatePairOrError: MergeArtworkDuplicatePairResponseOrError
+  clientMutationId: String
+}
+
+union MergeArtworkDuplicatePairResponseOrError =
+    MergeArtworkDuplicatePairFailure
+  | MergeArtworkDuplicatePairSuccess
+
+type MergeArtworkDuplicatePairSuccess {
+  artworkDuplicatePair: ArtworkDuplicatePair
+}
+
 # A message in a conversation.
 type Message implements Node {
   attachments: [Attachment]
@@ -18531,6 +18701,11 @@ type Mutation {
   deleteVideo(input: DeleteVideoMutationInput!): DeleteVideoMutationPayload
   deleteViewingRoom(input: DeleteViewingRoomInput!): DeleteViewingRoomPayload
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
+
+  # Trigger duplicate detection for a partner's artworks
+  detectArtworkDuplicates(
+    input: DetectArtworkDuplicatesMutationInput!
+  ): DetectArtworkDuplicatesMutationPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
 
   # Discard a draft navigation version. Versions that have been published cannot be discarded.
@@ -18538,6 +18713,11 @@ type Mutation {
 
   # Add (or remove) an artwork to (from) a users dislikes.
   dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
+
+  # Dismiss an artwork duplicate pair
+  dismissArtworkDuplicatePair(
+    input: DismissArtworkDuplicatePairMutationInput!
+  ): DismissArtworkDuplicatePairMutationPayload
 
   # Updates a Task on the logged in User
   dismissTask(input: DismissTaskMutationInput!): DismissTaskMutationPayload
@@ -18584,6 +18764,11 @@ type Mutation {
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
+
+  # Merge an artwork duplicate pair
+  mergeArtworkDuplicatePair(
+    input: MergeArtworkDuplicatePairMutationInput!
+  ): MergeArtworkDuplicatePairMutationPayload
 
   # Moves artworks from one partner list to another.
   moveArtworksBetweenPartnerLists(
@@ -18637,6 +18822,11 @@ type Mutation {
   removeInstallShotFromPartnerShow(
     input: RemoveInstallShotFromPartnerShowMutationInput!
   ): RemoveInstallShotFromPartnerShowMutationPayload
+
+  # Reopen a dismissed artwork duplicate pair
+  reopenArtworkDuplicatePair(
+    input: ReopenArtworkDuplicatePairMutationInput!
+  ): ReopenArtworkDuplicatePairMutationPayload
 
   # Reposition artwork images, determining their display order.
   repositionArtworkImages(
@@ -22215,6 +22405,32 @@ type Query {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+
+  # Get a single artwork duplicate pair by ID
+  artworkDuplicatePair(
+    # The ID of the artwork duplicate pair
+    id: String!
+  ): ArtworkDuplicatePair
+
+  # List artwork duplicate pairs for a partner
+  artworkDuplicatePairsConnection(
+    after: String
+    before: String
+
+    # Filter by detection version
+    detectionVersion: String
+    first: Int
+    last: Int
+
+    # Filter by whether the pair can be merged (neither artwork is both published and listed on Artsy)
+    mergeable: Boolean
+
+    # The ID of the partner
+    partnerId: String!
+
+    # Filter by pair status
+    status: ArtworkDuplicatePairStatus
+  ): ArtworkDuplicatePairConnection
   artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
@@ -23921,6 +24137,30 @@ union RemoveInstallShotFromPartnerShowResponseOrError =
 
 type RemoveInstallShotFromPartnerShowSuccess {
   show: Show
+}
+
+type ReopenArtworkDuplicatePairFailure {
+  mutationError: GravityMutationError
+}
+
+input ReopenArtworkDuplicatePairMutationInput {
+  clientMutationId: String
+
+  # The ID of the artwork duplicate pair
+  id: String!
+}
+
+type ReopenArtworkDuplicatePairMutationPayload {
+  artworkDuplicatePairOrError: ReopenArtworkDuplicatePairResponseOrError
+  clientMutationId: String
+}
+
+union ReopenArtworkDuplicatePairResponseOrError =
+    ReopenArtworkDuplicatePairFailure
+  | ReopenArtworkDuplicatePairSuccess
+
+type ReopenArtworkDuplicatePairSuccess {
+  artworkDuplicatePair: ArtworkDuplicatePair
 }
 
 type RepositionArtworkImagesFailure {
@@ -29160,6 +29400,32 @@ type Viewer {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+
+  # Get a single artwork duplicate pair by ID
+  artworkDuplicatePair(
+    # The ID of the artwork duplicate pair
+    id: String!
+  ): ArtworkDuplicatePair
+
+  # List artwork duplicate pairs for a partner
+  artworkDuplicatePairsConnection(
+    after: String
+    before: String
+
+    # Filter by detection version
+    detectionVersion: String
+    first: Int
+    last: Int
+
+    # Filter by whether the pair can be merged (neither artwork is both published and listed on Artsy)
+    mergeable: Boolean
+
+    # The ID of the partner
+    partnerId: String!
+
+    # Filter by pair status
+    status: ArtworkDuplicatePairStatus
+  ): ArtworkDuplicatePairConnection
   artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
