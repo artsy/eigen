@@ -166,6 +166,7 @@ export type BidEvent = FirstPriceBidEvent | SecondPriceBidEvent
 
 export interface FirstPriceBidEvent {
   type: "FirstPriceBidPlaced"
+  lotId: string
   amountCents: number
   bidder: {
     bidderId: string
@@ -175,6 +176,7 @@ export interface FirstPriceBidEvent {
 
 export interface SecondPriceBidEvent {
   type: "SecondPriceBidPlaced"
+  lotId: string
   maxAmountCents: number
   bidder: {
     bidderId: string
@@ -302,6 +304,7 @@ export interface LiveAuctionState {
 
   // Static Data
   saleName: string
+  saleSlug: string
   causalitySaleID: string
   jwt: string
   credentials: BidderCredentials

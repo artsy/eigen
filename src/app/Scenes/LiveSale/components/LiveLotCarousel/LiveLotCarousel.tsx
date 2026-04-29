@@ -1,11 +1,13 @@
 import { Flex, Spinner, Text } from "@artsy/palette-mobile"
 import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useMemo, useRef, useState } from "react"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { LiveLotCarouselCard } from "./LiveLotCarouselCard"
 
 export const LiveLotCarousel: React.FC = () => {
-  const { lots, placeBid, artworkMetadata } = useLiveAuction()
+  const { lots, placeBid, artworkMetadata, saleSlug } = useLiveAuction()
   const [selectedLotIndex, setSelectedLotIndex] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
 
@@ -48,12 +50,16 @@ export const LiveLotCarousel: React.FC = () => {
     }
   }
 
-  const handleBidPress = (lotId: string) => {
-    // Find the lot to get asking price
-    const lot = lotsArray.find((l) => l.lotId === lotId)
-    if (lot) {
-      placeBid(lotId, lot.derivedState.askingPriceCents, false)
+  const handleBidPress = (lotId: string, action: "bid" | "registerToBid" | "submitMaxBid") => {
+    if (action === "bid") {
+      const lot = lotsArray.find((l) => l.lotId === lotId)
+      if (lot) {
+        placeBid(lotId, lot.derivedState.askingPriceCents, false)
+      }
+    } else if (action === "registerToBid") {
+      navigate(`/auction-registration/${saleSlug}`)
     }
+    // "submitMaxBid" → max bid modal (step 3)
   }
 
   // Loading state
@@ -85,7 +91,7 @@ export const LiveLotCarousel: React.FC = () => {
               lot={lot}
               artworkMetadata={artworkMetadata.get(lot.lotId)}
               isFocused={index === selectedLotIndex}
-              onBidPress={handleBidPress}
+              onBidPress={(lotId, action) => handleBidPress(lotId, action)}
             />
           </Flex>
         ))}

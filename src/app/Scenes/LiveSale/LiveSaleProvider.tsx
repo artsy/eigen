@@ -139,6 +139,7 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
   const wsState = useLiveAuctionWebSocket({
     jwt: data.system.causalityJWT,
     saleID: data.sale.internalID,
+    saleSlug: slug,
     saleName: data.sale.name ?? "Live Auction",
     credentials,
     artworkMetadata,

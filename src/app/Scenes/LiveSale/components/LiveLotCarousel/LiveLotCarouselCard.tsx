@@ -13,7 +13,7 @@ interface LiveLotCarouselCardProps {
   lot: LotState
   artworkMetadata?: ArtworkMetadata
   isFocused: boolean
-  onBidPress: (lotId: string) => void
+  onBidPress: (lotId: string, action: "bid" | "registerToBid" | "submitMaxBid") => void
 }
 
 export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
@@ -101,7 +101,10 @@ export const LiveLotCarouselCard: React.FC<LiveLotCarouselCardProps> = ({
             </Flex>
 
             {/* Bid button */}
-            <LiveAuctionBidButton buttonState={buttonState} onPress={() => onBidPress(lot.lotId)} />
+            <LiveAuctionBidButton
+              buttonState={buttonState}
+              onPress={(action) => onBidPress(lot.lotId, action)}
+            />
 
             {/* Event feed */}
             <LiveAuctionEventFeed lotId={lot.lotId} />

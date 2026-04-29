@@ -56,6 +56,7 @@ const summariseMessage = (message: InboundMessage): string => {
 export const initialState: Omit<
   LiveAuctionState,
   | "saleName"
+  | "saleSlug"
   | "causalitySaleID"
   | "jwt"
   | "credentials"
@@ -328,6 +329,7 @@ const getWebSocketURL = (causalitySaleID: string): string => {
 interface UseLiveAuctionWebSocketParams {
   jwt: string
   saleID: string
+  saleSlug: string
   saleName: string
   credentials: BidderCredentials
   artworkMetadata: Map<string, ArtworkMetadata>
@@ -338,6 +340,7 @@ interface UseLiveAuctionWebSocketParams {
 export const useLiveAuctionWebSocket = ({
   jwt,
   saleID,
+  saleSlug,
   saleName,
   credentials,
   artworkMetadata,
@@ -347,6 +350,7 @@ export const useLiveAuctionWebSocket = ({
   const [state, dispatch] = useReducer(liveAuctionReducer, {
     ...initialState,
     saleName,
+    saleSlug,
     causalitySaleID: saleID,
     jwt,
     credentials,
@@ -609,6 +613,7 @@ export const useLiveAuctionWebSocket = ({
       const bidEvent: FirstPriceBidEvent | SecondPriceBidEvent = isMaxBid
         ? {
             type: "SecondPriceBidPlaced",
+            lotId,
             maxAmountCents: amountCents,
             bidder: {
               bidderId: credentials.bidderId,
@@ -617,6 +622,7 @@ export const useLiveAuctionWebSocket = ({
           }
         : {
             type: "FirstPriceBidPlaced",
+            lotId,
             amountCents,
             bidder: {
               bidderId: credentials.bidderId,

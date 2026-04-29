@@ -33,6 +33,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {
@@ -405,6 +406,7 @@ describe("liveAuctionReducer - Connection State", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {
@@ -494,6 +496,7 @@ describe("liveAuctionReducer - Lot Updates", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {
@@ -611,6 +614,7 @@ describe("liveAuctionReducer - Current Lot Changes", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {
@@ -660,6 +664,7 @@ describe("liveAuctionReducer - Bidding", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {
@@ -775,6 +780,7 @@ describe("liveAuctionReducer - Sale State", () => {
     operatorConnected: true,
     pendingBids: new Map(),
     saleName: "Test Auction",
+    saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
     jwt: "test-jwt",
     credentials: {

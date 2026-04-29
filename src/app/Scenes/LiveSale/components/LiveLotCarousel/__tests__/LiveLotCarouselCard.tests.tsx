@@ -46,6 +46,7 @@ const createMockAuctionState = (lot: LotState, currentLotId = lot.lotId): LiveAu
   operatorConnected: true,
   pendingBids: new Map(),
   saleName: "Test Sale",
+  saleSlug: "test-sale",
   causalitySaleID: "sale-1",
   jwt: "jwt",
   credentials: { bidderId: "bidder-other", paddleNumber: "42" },
@@ -180,7 +181,7 @@ describe("LiveLotCarouselCard", () => {
     )
 
     fireEvent.press(screen.getByRole("button"))
-    expect(mockOnBidPress).toHaveBeenCalledWith("lot-1")
+    expect(mockOnBidPress).toHaveBeenCalledWith("lot-1", "bid")
   })
 
   it("renders a disabled button for a sold lot", () => {
