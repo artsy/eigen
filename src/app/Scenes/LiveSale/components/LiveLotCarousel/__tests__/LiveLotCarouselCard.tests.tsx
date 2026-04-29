@@ -50,7 +50,7 @@ const createMockAuctionState = (lot: LotState, currentLotId = lot.lotId): LiveAu
   causalitySaleID: "sale-1",
   bidIncrements: [],
   jwt: "jwt",
-  credentials: { bidderId: "bidder-other", paddleNumber: "42" },
+  credentials: { bidderId: "bidder-other", paddleNumber: "42", userId: "user-other" },
   artworkMetadata: new Map(),
   registrationStatus: "registered",
   currencySymbol: "$",

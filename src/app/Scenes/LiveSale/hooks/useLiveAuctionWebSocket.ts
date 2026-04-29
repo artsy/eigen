@@ -632,27 +632,17 @@ export const useLiveAuctionWebSocket = ({
       dispatch({ type: "BID_PLACED", payload: { key: bidUUID, bid: pendingBid } })
 
       // Create bid event
+      const bidder = {
+        type: "ArtsyBidder" as const,
+        bidderId: credentials.bidderId,
+        paddleNumber: credentials.paddleNumber,
+        userId: credentials.userId,
+      }
+      const clientMetadata = { "User-Agent": "Artsy-Mobile iOS" }
+
       const bidEvent: FirstPriceBidEvent | SecondPriceBidEvent = isMaxBid
-        ? {
-            type: "SecondPriceBidPlaced",
-            lotId,
-            maxAmountCents: amountCents,
-            bidder: {
-              bidderId: credentials.bidderId,
-              paddleNumber: credentials.paddleNumber,
-              type: "ArtsyBidder",
-            },
-          }
-        : {
-            type: "FirstPriceBidPlaced",
-            lotId,
-            amountCents,
-            bidder: {
-              bidderId: credentials.bidderId,
-              paddleNumber: credentials.paddleNumber,
-              type: "ArtsyBidder",
-            },
-          }
+        ? { type: "SecondPriceBidPlaced", lotId, amountCents, bidder, clientMetadata }
+        : { type: "FirstPriceBidPlaced", lotId, amountCents, bidder, clientMetadata }
 
       const message: PostEventMessage = {
         key: bidUUID,

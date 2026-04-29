@@ -31,7 +31,7 @@ const makeState = (overrides?: Partial<LiveAuctionState>): LiveAuctionState => (
   causalitySaleID: "sale-1",
   bidIncrements: [],
   jwt: "jwt",
-  credentials: { bidderId: "bidder-me", paddleNumber: "42" },
+  credentials: { bidderId: "bidder-me", paddleNumber: "42", userId: "user-me" },
   artworkMetadata: new Map(),
   registrationStatus: "registered",
   currencySymbol: "$",

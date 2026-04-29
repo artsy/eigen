@@ -77,6 +77,7 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
   const credentials: BidderCredentials = {
     bidderId: data.me?.bidders?.[0]?.internalID ?? "",
     paddleNumber: data.me?.paddleNumber ?? "",
+    userId: data.me?.internalID ?? "",
   }
 
   // Build artwork metadata map from GraphQL data

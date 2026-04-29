@@ -5,6 +5,7 @@
 export interface BidderCredentials {
   bidderId: string
   paddleNumber: string
+  userId: string
 }
 
 // ==================== WebSocket Message Types ====================
@@ -178,26 +179,28 @@ export interface BidIncrementRule {
 
 export type BidEvent = FirstPriceBidEvent | SecondPriceBidEvent
 
+interface BidEventBidder {
+  type: "ArtsyBidder"
+  bidderId: string
+  paddleNumber: string
+  userId: string
+}
+
 export interface FirstPriceBidEvent {
   type: "FirstPriceBidPlaced"
   lotId: string
   amountCents: number
-  bidder: {
-    bidderId: string
-    paddleNumber: string
-    type: "ArtsyBidder"
-  }
+  bidder: BidEventBidder
+  clientMetadata: { "User-Agent": string }
 }
 
+// SecondPriceBidPlaced (max bid) uses the same amountCents key as FirstPrice — not maxAmountCents.
 export interface SecondPriceBidEvent {
   type: "SecondPriceBidPlaced"
   lotId: string
-  maxAmountCents: number
-  bidder: {
-    bidderId: string
-    paddleNumber: string
-    type: "ArtsyBidder"
-  }
+  amountCents: number
+  bidder: BidEventBidder
+  clientMetadata: { "User-Agent": string }
 }
 
 // ==================== Artwork Metadata ====================
