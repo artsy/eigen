@@ -1,7 +1,7 @@
-import { createInitialLotState, calculateDerivedState } from "app/Scenes/LiveSale/types/liveAuction"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { useEffect, useReducer, useRef, useCallback } from "react"
-import type {
+import {
+  createInitialLotState,
+  calculateDerivedState,
+  type BidIncrementRule,
   ArtworkMetadata,
   BidderCredentials,
   InboundMessage,
@@ -15,6 +15,8 @@ import type {
   SecondPriceBidEvent,
   RegistrationStatus,
 } from "app/Scenes/LiveSale/types/liveAuction"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { useEffect, useReducer, useRef, useCallback } from "react"
 
 // ==================== Debug Logging ====================
 
@@ -63,6 +65,7 @@ export const initialState: Omit<
   | "artworkMetadata"
   | "registrationStatus"
   | "currencySymbol"
+  | "bidIncrements"
 > = {
   isConnected: false,
   showDisconnectWarning: false,
@@ -335,6 +338,7 @@ interface UseLiveAuctionWebSocketParams {
   artworkMetadata: Map<string, ArtworkMetadata>
   registrationStatus: RegistrationStatus
   currencySymbol: string
+  bidIncrements: BidIncrementRule[]
 }
 
 export const useLiveAuctionWebSocket = ({
@@ -346,6 +350,7 @@ export const useLiveAuctionWebSocket = ({
   artworkMetadata,
   registrationStatus,
   currencySymbol,
+  bidIncrements,
 }: UseLiveAuctionWebSocketParams) => {
   const [state, dispatch] = useReducer(liveAuctionReducer, {
     ...initialState,
@@ -357,6 +362,7 @@ export const useLiveAuctionWebSocket = ({
     artworkMetadata,
     registrationStatus,
     currencySymbol,
+    bidIncrements,
   })
 
   const wsRef = useRef<WebSocket | null>(null)

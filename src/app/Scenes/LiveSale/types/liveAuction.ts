@@ -160,6 +160,13 @@ export type LotEventType =
   | "LiveOperatorEventUndone" // marks a prior event as cancelled
   | "CompositeOnlineBidConfirmed" // confirms a pending bid by amountCents
 
+// ==================== Bid Increments ====================
+
+export interface BidIncrementRule {
+  from: number
+  amount: number
+}
+
 // ==================== Bid Events (Outbound) ====================
 
 export type BidEvent = FirstPriceBidEvent | SecondPriceBidEvent
@@ -307,6 +314,7 @@ export interface LiveAuctionState {
   saleSlug: string
   causalitySaleID: string
   jwt: string
+  bidIncrements: BidIncrementRule[]
   credentials: BidderCredentials
   artworkMetadata: Map<string, ArtworkMetadata>
   registrationStatus: RegistrationStatus

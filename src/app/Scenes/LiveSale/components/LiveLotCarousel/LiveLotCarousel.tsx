@@ -1,4 +1,5 @@
 import { Flex, Spinner, Text } from "@artsy/palette-mobile"
+import { LiveAuctionMaxBidModal } from "app/Scenes/LiveSale/components/LiveAuctionMaxBidModal/LiveAuctionMaxBidModal"
 import { useLiveAuction } from "app/Scenes/LiveSale/hooks/useLiveAuction"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -9,6 +10,7 @@ import { LiveLotCarouselCard } from "./LiveLotCarouselCard"
 export const LiveLotCarousel: React.FC = () => {
   const { lots, placeBid, artworkMetadata, saleSlug } = useLiveAuction()
   const [selectedLotIndex, setSelectedLotIndex] = useState(0)
+  const [maxBidLotId, setMaxBidLotId] = useState<string | null>(null)
   const pagerViewRef = useRef<PagerView>(null)
 
   // Convert Map to array (preserves order from WebSocket)
@@ -58,8 +60,9 @@ export const LiveLotCarousel: React.FC = () => {
       }
     } else if (action === "registerToBid") {
       navigate(`/auction-registration/${saleSlug}`)
+    } else if (action === "submitMaxBid") {
+      setMaxBidLotId(lotId)
     }
-    // "submitMaxBid" → max bid modal (step 3)
   }
 
   // Loading state
@@ -96,6 +99,14 @@ export const LiveLotCarousel: React.FC = () => {
           </Flex>
         ))}
       </PagerView>
+
+      {!!maxBidLotId && (
+        <LiveAuctionMaxBidModal
+          lotId={maxBidLotId}
+          visible={!!maxBidLotId}
+          onDismiss={() => setMaxBidLotId(null)}
+        />
+      )}
     </Flex>
   )
 }

@@ -5,7 +5,12 @@ import {
   useLiveAuctionWebSocket,
   type LiveAuctionWebSocketReturn,
 } from "./hooks/useLiveAuctionWebSocket"
-import type { ArtworkMetadata, BidderCredentials, RegistrationStatus } from "./types/liveAuction"
+import type {
+  ArtworkMetadata,
+  BidderCredentials,
+  BidIncrementRule,
+  RegistrationStatus,
+} from "./types/liveAuction"
 
 const deriveRegistrationStatus = (
   bidders:
@@ -135,6 +140,10 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     data.sale.registrationEndsAt
   )
 
+  const bidIncrements: BidIncrementRule[] = (data.sale.bidIncrements ?? []).flatMap((rule) =>
+    rule?.from != null && rule?.amount != null ? [{ from: rule.from, amount: rule.amount }] : []
+  )
+
   // Initialize WebSocket connection
   const wsState = useLiveAuctionWebSocket({
     jwt: data.system.causalityJWT,
@@ -145,6 +154,7 @@ export const LiveSaleProvider: React.FC<LiveSaleProviderProps> = ({ slug, childr
     artworkMetadata,
     registrationStatus,
     currencySymbol: isoCodeToSymbol(data.sale.currency ?? "USD"),
+    bidIncrements,
   })
 
   return <LiveAuctionContext.Provider value={wsState}>{children}</LiveAuctionContext.Provider>
@@ -160,6 +170,10 @@ const liveSaleProviderQuery = graphql`
       currency
       registrationEndsAt
       startAt
+      bidIncrements {
+        from
+        amount
+      }
       saleArtworksConnection(all: true) {
         edges {
           node {

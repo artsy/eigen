@@ -35,6 +35,7 @@ describe("liveAuctionReducer - Initial State Parsing", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
@@ -408,6 +409,7 @@ describe("liveAuctionReducer - Connection State", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
@@ -498,6 +500,7 @@ describe("liveAuctionReducer - Lot Updates", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
@@ -616,6 +619,7 @@ describe("liveAuctionReducer - Current Lot Changes", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
@@ -666,6 +670,7 @@ describe("liveAuctionReducer - Bidding", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
@@ -782,6 +787,7 @@ describe("liveAuctionReducer - Sale State", () => {
     saleName: "Test Auction",
     saleSlug: "test-auction",
     causalitySaleID: "test-sale-id",
+    bidIncrements: [],
     jwt: "test-jwt",
     credentials: {
       bidderId: "bidder-123",
