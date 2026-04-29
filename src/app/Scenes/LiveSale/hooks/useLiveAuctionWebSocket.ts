@@ -427,6 +427,7 @@ export const useLiveAuctionWebSocket = ({
           break
 
         case "CommandSuccessful":
+          log(`← CommandSuccessful (bid response)`, JSON.stringify(message))
           dispatch({
             type: "BID_RESPONSE_RECEIVED",
             payload: { key: message.key, success: true },
@@ -434,6 +435,7 @@ export const useLiveAuctionWebSocket = ({
           break
 
         case "CommandFailed":
+          log(`← CommandFailed (bid response)`, JSON.stringify(message))
           dispatch({
             type: "BID_RESPONSE_RECEIVED",
             payload: { key: message.key, success: false, message: message.message },
@@ -441,6 +443,7 @@ export const useLiveAuctionWebSocket = ({
           break
 
         case "PostEventResponse":
+          log(`← PostEventResponse (bid response)`, JSON.stringify(message))
           dispatch({
             type: "BID_RESPONSE_RECEIVED",
             payload: {
@@ -465,16 +468,29 @@ export const useLiveAuctionWebSocket = ({
           })
           break
 
+        case "InvalidMessageReply":
+          log(`← InvalidMessageReply`, JSON.stringify(message))
+          // The server rejected our PostEvent — surface as a bid failure so the button unsticks.
+          // key is not always present; fall back to clearing all pending bids for this case.
+          if (message.key) {
+            dispatch({
+              type: "BID_RESPONSE_RECEIVED",
+              payload: { key: message.key, success: false, message: message.cause },
+            })
+          } else {
+            console.error("[LiveAuction] InvalidMessageReply with no key:", message.cause)
+          }
+          break
+
         case "SaleNotFound":
         case "ConnectionUnauthorized":
         case "PostEventFailedUnauthorized":
-          // Handle errors - could show error message to user
           console.error(`Live auction error: ${message.type}`, message)
           break
 
         default:
-          // Unknown message type
-          console.warn("Unknown message type:", message)
+          log(`← UNHANDLED message type — full payload:`, JSON.stringify(message))
+          console.warn("[LiveAuction] Unhandled message type:", message)
       }
     } catch (error) {
       console.error("Error parsing WebSocket message:", error)
@@ -623,6 +639,7 @@ export const useLiveAuctionWebSocket = ({
             maxAmountCents: amountCents,
             bidder: {
               bidderId: credentials.bidderId,
+              paddleNumber: credentials.paddleNumber,
               type: "ArtsyBidder",
             },
           }
@@ -632,6 +649,7 @@ export const useLiveAuctionWebSocket = ({
             amountCents,
             bidder: {
               bidderId: credentials.bidderId,
+              paddleNumber: credentials.paddleNumber,
               type: "ArtsyBidder",
             },
           }
@@ -642,7 +660,11 @@ export const useLiveAuctionWebSocket = ({
         event: bidEvent,
       }
 
-      log(`→ PostEvent key=${bidUUID} type=${bidEvent.type} amount=${amountCents} lotId=${lotId}`)
+      log(
+        `→ PostEvent payload:`,
+        JSON.stringify(message),
+        `| credentials: bidderId=${credentials.bidderId} paddleNumber=${credentials.paddleNumber}`
+      )
       wsRef.current.send(JSON.stringify(message))
     },
     [credentials]

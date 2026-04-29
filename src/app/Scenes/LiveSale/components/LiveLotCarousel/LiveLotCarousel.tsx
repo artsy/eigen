@@ -8,7 +8,8 @@ import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { LiveLotCarouselCard } from "./LiveLotCarouselCard"
 
 export const LiveLotCarousel: React.FC = () => {
-  const { lots, placeBid, artworkMetadata, saleSlug } = useLiveAuction()
+  const auctionState = useLiveAuction()
+  const { lots, placeBid, artworkMetadata, saleSlug } = auctionState
   const [selectedLotIndex, setSelectedLotIndex] = useState(0)
   const [maxBidLotId, setMaxBidLotId] = useState<string | null>(null)
   const pagerViewRef = useRef<PagerView>(null)
@@ -56,6 +57,18 @@ export const LiveLotCarousel: React.FC = () => {
     if (action === "bid") {
       const lot = lotsArray.find((l) => l.lotId === lotId)
       if (lot) {
+        if (__DEV__) {
+          const { credentials } = auctionState
+          console.log("[LiveAuction] Placing live bid", {
+            lotId,
+            askingPriceCents: lot.derivedState.askingPriceCents,
+            biddingStatus: lot.derivedState.biddingStatus,
+            currentLotId: auctionState.currentLotId,
+            bidderId: credentials.bidderId,
+            paddleNumber: credentials.paddleNumber,
+            pendingBidsCount: auctionState.pendingBids.size,
+          })
+        }
         placeBid(lotId, lot.derivedState.askingPriceCents, false)
       }
     } else if (action === "registerToBid") {

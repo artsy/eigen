@@ -22,6 +22,7 @@ export type InboundMessage =
   | SaleNotFoundMessage
   | ConnectionUnauthorizedMessage
   | PostEventFailedUnauthorizedMessage
+  | InvalidMessageReplyMessage
 
 export interface InitialFullSaleStateMessage {
   type: "InitialFullSaleState"
@@ -106,6 +107,12 @@ export interface PostEventFailedUnauthorizedMessage {
   message: string
 }
 
+export interface InvalidMessageReplyMessage {
+  type: "InvalidMessageReply"
+  key?: string
+  cause: string
+}
+
 // Outbound Messages
 export type OutboundMessage = AuthorizeMessage | HeartbeatMessage | PostEventMessage
 
@@ -177,6 +184,7 @@ export interface FirstPriceBidEvent {
   amountCents: number
   bidder: {
     bidderId: string
+    paddleNumber: string
     type: "ArtsyBidder"
   }
 }
@@ -187,6 +195,7 @@ export interface SecondPriceBidEvent {
   maxAmountCents: number
   bidder: {
     bidderId: string
+    paddleNumber: string
     type: "ArtsyBidder"
   }
 }
