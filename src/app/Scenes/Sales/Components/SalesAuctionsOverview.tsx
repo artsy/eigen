@@ -20,7 +20,7 @@ export const SalesAuctionsOverviewQueryRenderer = withSuspense({
     const data = useLazyLoadQuery<SalesAuctionsOverviewQuery>(
       SalesAuctionsOverviewScreenQuery,
       {},
-      { fetchPolicy: "store-and-network" }
+      { fetchPolicy: "network-only" }
     )
 
     return (
