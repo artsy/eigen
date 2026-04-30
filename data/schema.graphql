@@ -3377,8 +3377,8 @@ input ArtworkDuplicateMergeFieldOverridesInput {
 }
 
 type ArtworkDuplicatePair {
-  artwork1: Artwork!
-  artwork2: Artwork!
+  artwork1: Artwork
+  artwork2: Artwork
   createdAt(
     format: String
 
@@ -20226,6 +20226,23 @@ type Partner implements Node {
     size: Int
     sort: ArtistAlertsSort
   ): ArtistsWithAlertCountsConnection
+
+  # Artwork duplicate pairs for this partner
+  artworkDuplicatePairsConnection(
+    after: String
+    before: String
+
+    # Filter by detection version
+    detectionVersion: String
+    first: Int
+    last: Int
+
+    # Filter by whether the pair can be merged (neither artwork is both published and listed on Artsy)
+    mergeable: Boolean
+
+    # Filter by pair status
+    status: ArtworkDuplicatePairStatus
+  ): ArtworkDuplicatePairConnection
 
   # A connection of artwork imports from a Partner.
   artworkImportsConnection(
