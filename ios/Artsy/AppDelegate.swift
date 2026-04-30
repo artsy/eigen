@@ -19,7 +19,9 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       _ application: UIApplication,
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-      RNSentrySDK.start()
+        RNSentrySDK.start { options in
+            options.enableCrashHandler = false
+        }
       helper?.setup(launchOptions: launchOptions)
 
       // Set the UNUserNotificationCenter delegate to enable notification tap handling
