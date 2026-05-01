@@ -349,6 +349,16 @@ Started seeing blank screens on android when app was crashing instead of regular
 
 When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
 
+## Braze prebuilt-static podspecs in Podfile
+
+#### When can we remove this:
+
+When Braze publishes a static variant to the main CocoaPods spec, or when Expo's module system no longer requires static linkage for Braze pods. Track: https://github.com/braze-inc/braze-swift-sdk
+
+#### Explanation/Context:
+
+During the Expo integration (PR #11938), Braze's standard dynamic frameworks conflicted with Expo's app delegate module import system. Using the `braze-swift-sdk-prebuilt-static` repo forces static linkage for BrazeKit, BrazeUI, and BrazeLocation without enabling `use_frameworks! :linkage => :static` globally (which breaks other pods). The version must be updated manually when upgrading Braze.
+
 ## Patch for @gorhom/bottom-sheet (scrollTo infinite loop on Fabric)
 
 #### When can we remove this:

@@ -147,7 +147,7 @@ target 'Artsy' do
   pod 'JWTDecode', '2.0.0'
 
 
-  # Need static libs to fix expo compilation in app delegate
+  # Static linkage required for Expo module compatibility — see HACKS.md
   pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec'
   pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec'
   pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec'
