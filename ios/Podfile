@@ -48,32 +48,8 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-def check_for_existing_netrc_file
-  mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
-  if !mapbox_token || mapbox_token.length <= 1
-    raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
-  end
-  # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post-pod-install.rb
-  $netrc_path = File.expand_path('~/.netrc')
-  user_already_had_a_netrc_file = File.exists?($netrc_path)
-  if user_already_had_a_netrc_file
-    system("touch .i-had-a-netrc-file")
-  else
-    system("rm -rf .i-had-a-netrc-file")
-  end
-end
-
-def add_mapbox_creds
-  File.open($netrc_path, 'a+', 0600) { |f|
-    f.write("""machine api.mapbox.com
-login mapbox
-password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
-""")
-  }
-end
-
-check_for_existing_netrc_file
-add_mapbox_creds
+load File.join(__dir__, 'mapbox_setup.rb')
+setup_mapbox_credentials
 
 pre_install do |installer|
   $RNMapboxMaps.pre_install(installer)
