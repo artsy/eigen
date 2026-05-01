@@ -165,18 +165,6 @@ When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fai
 React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
 https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
 
-## Git link in podfile for SwiftyJSON
-
-#### When we can remove this:
-
-When this issue is resolved and version 5.0.2 or above is published on Cocoapods.
-https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
-
-#### Explanation/Context
-
-Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
-privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
-
 ## Modular headers for firebase deps in Podfile
 
 #### When we can remove this

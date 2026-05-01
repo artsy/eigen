@@ -4235,7 +4235,7 @@ DEPENDENCIES:
   - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
+  - SwiftyJSON (= 5.0.2)
   - Then (= 2.3.0)
   - UICKeyChainStore
   - "XCTest+OHHTTPStubSuiteCleanUp"
@@ -4314,6 +4314,7 @@ SPEC REPOS:
     - StripePaymentSheet
     - StripePaymentsUI
     - StripeUICore
+    - SwiftyJSON
     - Then
     - TOCropViewController
     - Turf
@@ -4608,9 +4609,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/sovran-react-native"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
-  SwiftyJSON:
-    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
-    :git: https://github.com/SwiftyJSON/SwiftyJSON/
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -4621,9 +4619,6 @@ CHECKOUT OPTIONS:
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/artsy/Interstellar.git
-  SwiftyJSON:
-    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
-    :git: https://github.com/SwiftyJSON/SwiftyJSON/
 
 SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
@@ -4839,7 +4834,7 @@ SPEC CHECKSUMS:
   StripePaymentSheet: b126816213ae4f56ff4525ad25f94bb985a43e27
   StripePaymentsUI: 05d4be35b34f821d5ddc8617dee04219f3646253
   StripeUICore: d07bd63a4b53dee8cab4d6f81ce5a7ab3e28511e
-  SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
+  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
@@ -4847,6 +4842,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 0fe2facf094f438d19f2bac203d166cb5b7c3a5d
+PODFILE CHECKSUM: cbc753e47f1bc71b2c70c780e7cfef76a12bd9fd
 
 COCOAPODS: 1.16.2
