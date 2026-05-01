@@ -2411,8 +2411,6 @@
 				CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.mm */,
 				CB2033332E56593700A06281 /* main.swift */,
 				CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */,
-				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
-				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE3249E27E275A100395A93 /* AROptions.h */,
@@ -2841,6 +2839,8 @@
 				CBE3259E27E275A200395A93 /* ARTNativeScreenPresenterModule.m */,
 				CBA500F42C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.h */,
 				CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */,
+				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
+				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 			);
 			path = NativeModules;
 			sourceTree = "<group>";
