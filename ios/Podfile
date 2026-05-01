@@ -127,8 +127,7 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # Workaround for firebase flipper issues
-  # See https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1952403075
+  # Workaround for not using use_frameworks! :linkage => :static globally — see HACKS.md
   pod 'FirebaseCore', :modular_headers => true
   pod 'FirebaseCoreExtension', :modular_headers => true
   pod 'FirebaseInstallations', :modular_headers => true

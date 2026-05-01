@@ -169,15 +169,13 @@ https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda
 
 #### When we can remove this
 
-When we stop using flipper or this issue is resolved: https://github.com/invertase/react-native-firebase/issues/6425
+When we switch to `use_frameworks! :linkage => :static` globally (the recommended setup for Expo + Firebase). This requires removing the per-pod `:modular_headers => true` entries and adding `$RNFirebaseAsStaticFramework = true`. See https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
 
 #### Explanation/Context
 
-The latest versions of react-native-firebase require using static frameworks, and unfortunately this breaks flipper.
-https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
-The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
-react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
-that have `:modular_headers => true` and add the static frameworks line from the docs above.
+Flipper is gone, but we still can't use `use_frameworks! :linkage => :static` globally — which is what rnfirebase actually recommends. PR #11550 implemented this correctly, but it was reverted in PR #11898 because enabling static linkage for all pods significantly blew up iOS build times. The `:modular_headers => true` entries are the workaround that lets Firebase compile correctly without global static linkage.
+
+As the iOS pod count decreases, the build time penalty becomes more acceptable and this should be revisited. Alternatively, this could be managed via the `expo-build-properties` plugin (`useFrameworks: "static"` in app.json) rather than a manual Podfile entry. Removing this hack would also allow removing the Braze prebuilt-static podspec hack.
 
 ## Custom lane google_play_track_rollout_percentages in fastlane dir + associated monkey patches in Fastfile
 
