@@ -242,7 +242,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
-  - FLKAutoLayout (1.0.0)
+  - FLKAutoLayout (1.0.1)
   - fmt (11.0.2)
   - Forgeries/Core (1.0.0)
   - Forgeries/Mocks (1.0.0):
@@ -4096,7 +4096,7 @@ DEPENDENCIES:
   - FirebaseCore
   - FirebaseCoreExtension
   - FirebaseInstallations
-  - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
+  - FLKAutoLayout (= 1.0.1)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - Forgeries/Mocks
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -4268,6 +4268,7 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
+    - FLKAutoLayout
     - Forgeries
     - GoogleDataTransport
     - GoogleSignIn
@@ -4370,9 +4371,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
-  FLKAutoLayout:
-    :branch: v1
-    :git: https://github.com/artsy/FLKAutoLayout.git
   fmt:
     :podspec: "../node_modules/react-native/third-party-podspecs/fmt.podspec"
   glog:
@@ -4613,9 +4611,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  FLKAutoLayout:
-    :commit: 44a277d21d4fa104589703a34a4d82647414f435
-    :git: https://github.com/artsy/FLKAutoLayout.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/artsy/Interstellar.git
@@ -4670,7 +4665,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: ff526c22671bb564d1b34a47615e29ba99389dee
   FirebaseInstallations: 6836550c466a6c3f753a777bec6f4e58ea228779
   FirebaseMessaging: 6538be0d8e8d0a3405407bc3813e2223287c0d17
-  FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
@@ -4842,6 +4837,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: cbc753e47f1bc71b2c70c780e7cfef76a12bd9fd
+PODFILE CHECKSUM: adbefaa18fdd364c9fdbfdc5709b727c3c4666f4
 
 COCOAPODS: 1.16.2
