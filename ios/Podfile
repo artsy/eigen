@@ -137,7 +137,7 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'
-  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
+  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe' # see HACKS.md
   pod 'Starscream', '4.0.8'
   pod 'SwiftyJSON', '5.0.2'
 
