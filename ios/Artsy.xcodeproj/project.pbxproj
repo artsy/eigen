@@ -1340,46 +1340,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
-				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
-				1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */,
-				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
-				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
-				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
-			);
-			path = ArtsyUILabels;
-			sourceTree = "<group>";
-		};
-		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */,
-				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
-			);
-			path = ArtsyUIColors;
-			sourceTree = "<group>";
-		};
-		1A4E5112283F91B90008EF35 /* ArtsyUIFonts */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5113283F91B90008EF35 /* UIFont+ArtsyFonts.h */,
-				1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */,
-			);
-			path = ArtsyUIFonts;
-			sourceTree = "<group>";
-		};
-		1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
-				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
-			);
-			path = ArtsyUIButtons;
-			sourceTree = "<group>";
-		};
 		2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
@@ -2322,10 +2282,6 @@
 			children = (
 				CB2033312E5656B700A06281 /* AppDelegate.swift */,
 				CB18283429D36A3A006A0805 /* fonts */,
-				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
-				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
-				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
-				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
 				CBE3249427E275A100395A93 /* App */,
 				CBE3262027E275A200395A93 /* App_Resources */,
 				CBE3245F27E275A100395A93 /* Categories */,
@@ -2410,6 +2366,16 @@
 		CBE3248727E275A100395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
+				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
+				1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */,
+				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
+				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
+				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
+				1A4E5113283F91B90008EF35 /* UIFont+ArtsyFonts.h */,
+				1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */,
+				1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */,
+				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
 				CB5D7CBC2F50DA9A004C6411 /* UIView+BooleanAnimations.h */,
 				CB5D7CBA2F50DA57004C6411 /* UIView+BooleanAnimations.m */,
 				CBE3248827E275A100395A93 /* ORStackView+ArtsyViews.h */,
@@ -2764,6 +2730,8 @@
 		CBE3256F27E275A100395A93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
+				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
 				CBDF02E02FA5014B004EBD71 /* ARSpinner */,
 				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3257027E275A100395A93 /* ARCountdownView.m */,
