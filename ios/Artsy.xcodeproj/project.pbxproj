@@ -1343,27 +1343,14 @@
 		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
-				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
 				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
+				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
 				1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */,
+				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
+				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
+				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
 			);
 			path = ArtsyUILabels;
-			sourceTree = "<group>";
-		};
-		1A4E5100283F91B90008EF35 /* Extraction */ = {
-			isa = PBXGroup;
-			children = (
-				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
-				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
-				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
-				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
-				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
-				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
-				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
-				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
-			);
-			path = Extraction;
 			sourceTree = "<group>";
 		};
 		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
@@ -1387,8 +1374,8 @@
 		1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
 				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
+				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
 			);
 			path = ArtsyUIButtons;
 			sourceTree = "<group>";
@@ -2317,6 +2304,19 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CBDF02E02FA5014B004EBD71 /* ARSpinner */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
+				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
+				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
+				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
+				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
+				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
+			);
+			path = ARSpinner;
+			sourceTree = "<group>";
+		};
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
@@ -2326,7 +2326,6 @@
 				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
 				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
 				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
-				1A4E5100283F91B90008EF35 /* Extraction */,
 				CBE3249427E275A100395A93 /* App */,
 				CBE3262027E275A200395A93 /* App_Resources */,
 				CBE3245F27E275A100395A93 /* Categories */,
@@ -2765,12 +2764,13 @@
 		CBE3256F27E275A100395A93 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CBDF02E02FA5014B004EBD71 /* ARSpinner */,
+				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3257027E275A100395A93 /* ARCountdownView.m */,
 				CBE3257127E275A100395A93 /* Auction */,
 				CBE3257627E275A100395A93 /* Core */,
 				CBE3257827E275A100395A93 /* AuctionColors.swift */,
 				CBE3257927E275A100395A93 /* Utilities */,
-				CBE3258427E275A100395A93 /* ARCountdownView.h */,
 				CBE3258527E275A100395A93 /* Styled_Subclasses */,
 				CBE3258F27E275A100395A93 /* RefinableType.swift */,
 				CBE3259027E275A100395A93 /* Notifications */,
