@@ -895,7 +895,7 @@
 		CBC1F3F22E68D0CC008CCF48 /* ARWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARWindow.h; sourceTree = "<group>"; };
 		CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARWindow.m; sourceTree = "<group>"; };
 		CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarscreamExtensions.swift; sourceTree = "<group>"; };
-		CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Artsy/App_Resources/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
+		CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Artsy/Supporting/PrivacyInfo.xcprivacy; sourceTree = SOURCE_ROOT; };
 		CBE0D12D2C20C8D800DFF17E /* libBrazeUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libBrazeUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBE2946129E4C19000AA77DD /* VirtualArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualArtwork.swift; sourceTree = "<group>"; };
 		CBE3211427D9615000395A93 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -2222,6 +2222,13 @@
 		CB5128102DB82CFD00C6A884 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */,
+				CBE3262127E275A200395A93 /* InfoPlist.strings */,
+				CBE3262327E275A200395A93 /* Artsy.entitlements */,
+				CBE3262427E275A200395A93 /* Artsy.Store.entitlements */,
+				CBE3262527E275A200395A93 /* Info.plist */,
+				CBE3262627E275A200395A93 /* Launch Screen.xib */,
+				E1856EA12C98923B00849C0E /* BootSplash.storyboard */,
 				CB5275152DBA6D0C001AC28E /* QA */,
 				CB51280F2DB82CFD00C6A884 /* Expo.plist */,
 			);
@@ -2283,7 +2290,6 @@
 				CB2033312E5656B700A06281 /* AppDelegate.swift */,
 				CB18283429D36A3A006A0805 /* fonts */,
 				CBE3249427E275A100395A93 /* App */,
-				CBE3262027E275A200395A93 /* App_Resources */,
 				CBE3245F27E275A100395A93 /* Categories */,
 				CBE3245A27E275A100395A93 /* Constants */,
 				CBE325A227E275A200395A93 /* Images.xcassets */,
@@ -3013,20 +3019,6 @@
 			path = API_Modules;
 			sourceTree = "<group>";
 		};
-		CBE3262027E275A200395A93 /* App_Resources */ = {
-			isa = PBXGroup;
-			children = (
-				CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */,
-				CBE3262127E275A200395A93 /* InfoPlist.strings */,
-				CBE3262327E275A200395A93 /* Artsy.entitlements */,
-				CBE3262427E275A200395A93 /* Artsy.Store.entitlements */,
-				CBE3262527E275A200395A93 /* Info.plist */,
-				CBE3262627E275A200395A93 /* Launch Screen.xib */,
-				E1856EA12C98923B00849C0E /* BootSplash.storyboard */,
-			);
-			path = App_Resources;
-			sourceTree = "<group>";
-		};
 		CBE3262727E275A300395A93 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -3616,7 +3608,7 @@
 			inputPaths = (
 				"$(SRCROOT)/.xcode.env",
 				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/Artsy/App_Resources/Artsy.entitlements",
+				"$(SRCROOT)/Artsy/Supporting/Artsy.entitlements",
 				"$(SRCROOT)/Pods/Target Support Files/Pods-Artsy/expo-configure-project.sh",
 			);
 			name = "[Expo] Configure project";
@@ -4109,7 +4101,7 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Artsy/Supporting/Artsy.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
@@ -4132,7 +4124,7 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4190,7 +4182,7 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Artsy/Supporting/Artsy.Store.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
@@ -4212,7 +4204,7 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4824,7 +4816,7 @@
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
-				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Artsy/Supporting/Artsy.Store.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
@@ -4846,7 +4838,7 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/Supporting/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
