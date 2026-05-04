@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-deploy-ios-firebase:
-    runs-on: macos-15
+    runs-on: warp-macos-26-arm64-6x
     timeout-minutes: 90
 
     steps:
