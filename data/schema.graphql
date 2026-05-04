@@ -14656,6 +14656,7 @@ type FulfillmentDetails {
 type FulfillmentOption {
   amount: Money
   selected: Boolean
+  shippingQuoteId: String
   type: FulfillmentOptionTypeEnum!
 }
 
