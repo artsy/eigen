@@ -66,6 +66,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     enableAutoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
+    autoInitializeNativeSdk: false,
     tracesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
     integrations: [navigationInstrumentation],
