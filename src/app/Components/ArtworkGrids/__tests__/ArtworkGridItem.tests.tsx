@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -462,6 +462,57 @@ describe("ArtworkGridItem", () => {
 
         expect(screen.getByTestId("filled-heart-icon")).toBeOnTheScreen()
         expect(screen.queryByTestId("empty-heart-icon")).not.toBeOnTheScreen()
+      })
+
+      it("tracks save with artwork entity id, slug, and context", () => {
+        const { mockResolveLastOperation } = renderWithRelay(
+          {
+            Artwork: () => ({
+              ...artwork,
+              availability: "for sale",
+              isAcquireable: true,
+              isBiddable: false,
+              isInquireable: false,
+              isOfferable: true,
+            }),
+          },
+          {
+            contextModule: ContextModule.newWorksForYouRail,
+            contextScreenOwnerType: OwnerType.home,
+          }
+        )
+
+        fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+        mockResolveLastOperation({
+          SaveArtworkPayload: () => ({
+            artwork: {
+              id: artwork.id,
+              isSaved: true,
+              collectorSignals: null,
+            },
+            me: null,
+          }),
+        })
+
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          [
+            {
+              "acquireable": true,
+              "action": "success",
+              "action_name": "artworkSave",
+              "action_type": "success",
+              "availability": "for sale",
+              "biddable": false,
+              "context_module": "newWorksForYouRail",
+              "context_screen_owner_type": "home",
+              "inquireable": false,
+              "item_id": "abc1234",
+              "item_slug": "cool-artwork",
+              "offerable": true,
+            },
+          ]
+        `)
       })
 
       it("does not render Save CTA if hideSaveIcon is true", () => {

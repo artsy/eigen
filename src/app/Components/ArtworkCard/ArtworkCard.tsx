@@ -114,6 +114,8 @@ export const ArtworkCard: React.FC<ArtworkCardProps> = memo(
           tracks.saveOrUnsaveArtwork(!!isArtworkSaved, {
             context_module: contextModule,
             context_screen_owner_type: ownerType,
+            item_id: artwork.internalID,
+            item_slug: artwork.slug,
           })
         )
       },

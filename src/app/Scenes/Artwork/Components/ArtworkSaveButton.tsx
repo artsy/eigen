@@ -65,6 +65,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
           : Schema.ActionNames.ArtworkUnsave,
         action_type: Schema.ActionTypes.Success,
         context_module: Schema.ContextModules.ArtworkActions,
+        item_id: artworkData.internalID,
+        item_slug: artworkData.slug,
       })
     },
     saveToDefaultCollectionOnly,
@@ -114,6 +116,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
 
 const ArtworkSaveButtonFragment = graphql`
   fragment ArtworkSaveButton_artwork on Artwork {
+    internalID
+    slug
     sale {
       isAuction
       isClosed
