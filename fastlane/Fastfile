@@ -257,7 +257,7 @@ end
 
 desc 'Set the build version in the iOS app plist'
 lane :set_build_version_ios do
-  bundle_version = DateTime.now.strftime('%Y.%m.%d.%H')
+  bundle_version = DateTime.now.strftime('%Y.%m.%d.%H.%M')
   IOS_TARGETS.each do |_id, meta|
     absolute_path = File.expand_path(meta[:plist_path])
     set_info_plist_value(path: absolute_path, key: 'CFBundleShortVersionString', value: $APP_JSON['version'])
@@ -515,22 +515,15 @@ end
 
 desc 'Get next android build version code'
 lane :get_next_android_build_version do
-  # Generate date-based build number in format YYYYMMDDHH (e.g., 2025111310)
-  # This matches iOS format but without dots since Google Play Console doesn't accept them
+  # Generate date-based build number in format YYYYMMDDHHMI (e.g., 202511131045)
+  # Matches iOS format but without dots since Google Play Console doesn't accept them
   now = Time.now.utc
-  next_version_code = now.strftime('%Y%m%d%H')
+  next_version_code = now.strftime('%Y%m%d%H%M')
 
   # Check if this version code already exists in the alpha track
   current_version_code = google_play_track_version_codes(
     track: 'alpha'
   ).first
-
-  # If the generated version code matches the current version code (same hour),
-  # append minutes to create a unique version (YYYYMMDDHHMI format)
-  if current_version_code && next_version_code.to_i == current_version_code.to_i
-    next_version_code = now.strftime('%Y%m%d%H%M')
-    puts "Version code conflict detected. Using extended format with minutes: #{next_version_code}"
-  end
 
   file_dir = "#{Dir.pwd}/next_version_code.txt"
   puts "Writing next version code to: #{file_dir}"
