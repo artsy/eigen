@@ -34,7 +34,6 @@ describe("ArtworkEditionSetItem", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   describe("Dimensions", () => {
@@ -95,11 +94,7 @@ describe("ArtworkEditionSetItem", () => {
     })
   })
 
-  describe("with AREnableArtworksFramedSize feature flag enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
-    })
-
+  describe("framed dimensions", () => {
     it("displays framed dimension with 'with frame included' text when framed dimensions exist", () => {
       __globalStoreTestUtils__?.injectState({ userPrefs: { metric: "in" } })
 

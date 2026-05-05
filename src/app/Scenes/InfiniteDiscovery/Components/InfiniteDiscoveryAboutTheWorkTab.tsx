@@ -45,11 +45,10 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
   const { signalTitle } = useCollectorSignal({ artwork: data })
 
-  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
-    useArtworkDimensions({
-      dimensions: data?.dimensions,
-      framedDimensions: data?.framedDimensions,
-    })
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions } = useArtworkDimensions({
+    dimensions: data?.dimensions,
+    framedDimensions: data?.framedDimensions,
+  })
 
   if (!data) {
     return null
@@ -137,7 +136,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               </Flex>
             )}
 
-            {!!isFramedSizeEnabled && !!hasFramedDimensions && !!framedDimensionText && (
+            {!!hasFramedDimensions && !!framedDimensionText && (
               <Flex flexDirection="row">
                 <Text {...labelStyle}>Framed Dimensions</Text>
                 <Text {...valueStyle}>{framedDimensionText}</Text>

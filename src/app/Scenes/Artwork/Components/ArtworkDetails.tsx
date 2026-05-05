@@ -57,10 +57,12 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
     framedDimensionsToUse = artworkData?.framedDimensions
   }
 
-  const { regularDimensionText, framedDimensionText, hasFramedDimensions, isFramedSizeEnabled } =
-    useArtworkDimensions({ dimensions: dimensionsToUse, framedDimensions: framedDimensionsToUse })
+  const { regularDimensionText, framedDimensionText, hasFramedDimensions } = useArtworkDimensions({
+    dimensions: dimensionsToUse,
+    framedDimensions: framedDimensionsToUse,
+  })
 
-  const shouldShowDimensions = isFramedSizeEnabled && hasFramedDimensions
+  const shouldShowDimensions = hasFramedDimensions
 
   const listItems = [
     ...(shouldShowDimensions

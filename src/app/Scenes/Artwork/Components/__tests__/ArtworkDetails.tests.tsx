@@ -2,7 +2,6 @@ import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkDetails_artwork_TestQuery } from "__generated__/ArtworkDetails_artwork_TestQuery.graphql"
 import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -30,10 +29,6 @@ describe("ArtworkDetails", () => {
         }
       }
     `,
-  })
-
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   it("renders all data correctly", async () => {
@@ -98,11 +93,7 @@ describe("ArtworkDetails", () => {
     expect(screen.queryByTestId("request-condition-report")).not.toBeOnTheScreen()
   })
 
-  describe("with AREnableArtworksFramedSize feature flag enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
-    })
-
+  describe("framed dimensions", () => {
     it("shows both Size and Framed Size when framed dimensions exist", () => {
       renderWithRelay({
         Artwork: () => ({
