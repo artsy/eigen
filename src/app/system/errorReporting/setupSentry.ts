@@ -67,7 +67,6 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
     tracesSampleRate: props.debug ? 1.0 : 0.05,
-    profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
     integrations: [navigationInstrumentation],
     ...props,
