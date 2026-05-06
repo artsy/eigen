@@ -3299,7 +3299,7 @@ PODS:
     - Yoga
   - RNDeviceInfo (14.0.0):
     - React-Core
-  - RNFastImage (8.12.0):
+  - RNFastImage (8.13.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3329,6 +3329,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SDWebImage (>= 5.19.1)
     - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageSVGCoder (~> 1.7.0)
     - SDWebImageWebPCoder (~> 0.14)
     - SocketRocket
     - Yoga
@@ -3942,6 +3943,8 @@ PODS:
   - SDWebImageAVIFCoder (0.11.1):
     - libavif/core (>= 0.11.0)
     - SDWebImage (~> 5.10)
+  - SDWebImageSVGCoder (1.7.0):
+    - SDWebImage/Core (~> 5.6)
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
@@ -4301,6 +4304,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - SDWebImage
     - SDWebImageAVIFCoder
+    - SDWebImageSVGCoder
     - SDWebImageWebPCoder
     - Sentry
     - Sift
@@ -4791,7 +4795,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNCClipboard: adba6334687b7fb2c37760e26dedd550b4846a72
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
-  RNFastImage: 4b6aa4ec13de8dc57deef25f89f00aa93a2cf139
+  RNFastImage: b076a6378b1ce90debc27a927a437db3652bef14
   RNFBApp: fcac8339a5ffd5a735c62d5f0101f79e4d9a7670
   RNFBMessaging: 8c72e2f7d5eb2cc24d87e60c8be21eb2c94da272
   RNGestureHandler: 3a73f098d74712952870e948b3d9cf7b6cae9961
@@ -4811,6 +4815,7 @@ SPEC CHECKSUMS:
   RNWorklets: 5dd32e6d649594b9a938cdd75673dffb2266e119
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
+  SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   segment-analytics-react-native: a0c29c75ede1989118b50cac96b9495ea5c91a1d
   Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
