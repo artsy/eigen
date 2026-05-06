@@ -21,10 +21,6 @@ export interface UseArtworkDimensionsResult {
    */
   dimensionText: string | null
   /**
-   * Whether framed dimensions are being used
-   */
-  isUsingFramedDimensions: boolean
-  /**
    * Whether framed dimensions are available
    */
   hasFramedDimensions: boolean
@@ -93,7 +89,6 @@ export const useArtworkDimensions = ({
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const hasFramedDimensions = dimensionsPresent(framedDimensions)
-  const isUsingFramedDimensions = hasFramedDimensions
 
   const formatDimensions = (dims?: Dimensions | null, addFrameText = false) => {
     if (!dimensionsPresent(dims)) {
@@ -147,15 +142,14 @@ export const useArtworkDimensions = ({
   )
 
   const dimensionText = useMemo(() => {
-    if (isUsingFramedDimensions) {
+    if (hasFramedDimensions) {
       return framedDimensionText
     }
     return regularDimensionText
-  }, [isUsingFramedDimensions, framedDimensionText, regularDimensionText])
+  }, [hasFramedDimensions, framedDimensionText, regularDimensionText])
 
   return {
     dimensionText,
-    isUsingFramedDimensions,
     hasFramedDimensions,
     regularDimensionText,
     framedDimensionText,

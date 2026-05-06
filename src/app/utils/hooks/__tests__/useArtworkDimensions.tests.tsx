@@ -20,7 +20,6 @@ describe("useArtworkDimensions", () => {
       expect(result.current.regularDimensionText).toBeNull()
       expect(result.current.framedDimensionText).toBeNull()
       expect(result.current.hasFramedDimensions).toBe(false)
-      expect(result.current.isUsingFramedDimensions).toBe(false)
     })
   })
 
@@ -37,7 +36,6 @@ describe("useArtworkDimensions", () => {
       expect(result.current.regularDimensionText).toBe("20 × 24 in | 50.8 × 61 cm")
       expect(result.current.framedDimensionText).toBeNull()
       expect(result.current.hasFramedDimensions).toBe(false)
-      expect(result.current.isUsingFramedDimensions).toBe(false)
     })
 
     it("returns formatted dimensions in preferred-metric format", () => {
@@ -65,7 +63,6 @@ describe("useArtworkDimensions", () => {
       expect(result.current.regularDimensionText).toBe("20 × 24 in | 50.8 × 61 cm")
       expect(result.current.framedDimensionText).toBe("24 × 28 in | 61 × 71.1 cm")
       expect(result.current.hasFramedDimensions).toBe(true)
-      expect(result.current.isUsingFramedDimensions).toBe(true)
     })
 
     it("includes 'with frame included' text when includeFrameText is true", () => {
@@ -108,7 +105,6 @@ describe("useArtworkDimensions", () => {
       expect(result.current.regularDimensionText).toBe("20 × 24 in | 50.8 × 61 cm")
       expect(result.current.framedDimensionText).toBeNull()
       expect(result.current.hasFramedDimensions).toBe(false)
-      expect(result.current.isUsingFramedDimensions).toBe(false)
     })
 
     it("returns regular dimensions when framedDimensions has no values", () => {
@@ -119,7 +115,6 @@ describe("useArtworkDimensions", () => {
 
       expect(result.current.dimensionText).toBe("20 × 24 in | 50.8 × 61 cm")
       expect(result.current.hasFramedDimensions).toBe(false)
-      expect(result.current.isUsingFramedDimensions).toBe(false)
     })
   })
 
