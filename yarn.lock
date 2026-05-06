@@ -3066,6 +3066,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@d11/react-native-fast-image@patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch":
+  version: 8.13.0
+  resolution: "@d11/react-native-fast-image@patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch::version=8.13.0&hash=685cc1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/7e854a6c146a1f0f3922844a7101a0afe5d96b0487b78ab35110efa2bdbf1c7898587101bd78583b48867173ba702a3e0b585241ec1b12ec7bff591d03039782
+  languageName: node
+  linkType: hard
+
 "@dominicstop/ts-event-emitter@npm:^1.1.0":
   version: 1.1.0
   resolution: "@dominicstop/ts-event-emitter@npm:1.1.0"
@@ -13323,7 +13333,7 @@ __metadata:
     "@babel/preset-typescript": "npm:7.18.6"
     "@babel/runtime": "npm:7.26.10"
     "@braze/react-native-sdk": "npm:16.1.0"
-    "@d11/react-native-fast-image": "npm:8.13.0"
+    "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch"
     "@expo/react-native-action-sheet": "npm:4.1.1"
     "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.8-1ad4b8f529.patch"
     "@gorhom/portal": "npm:1.0.14"

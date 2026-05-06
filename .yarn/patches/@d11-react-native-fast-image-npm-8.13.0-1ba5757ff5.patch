@@ -1,0 +1,12 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index c4fab65a1201ea1caa4092906c9d64cf8f15df31..c3f8a7919114cc794eea078d7e9d5a6a6380f243 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -105,6 +105,6 @@ dependencies {
+     // TODO: Make this configurable as it increases apk size by 900KB
+     implementation 'com.github.penfeizhou.android.animation:glide-plugin:3.0.5'
+     if (!isSvgDisabled()) {
+-        implementation "com.caverock:androidsvg:1.4"
++        implementation "com.caverock:androidsvg-aar:1.4"
+     }
+ }

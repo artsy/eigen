@@ -373,3 +373,13 @@ On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native 
 The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
 
 Sentry issue: https://artsynet.sentry.io/issues/7304441200/
+
+## patch for @d11/react-native-fast-image
+
+#### Explanation/Context:
+
+Another dependency in the Expo/react-native ecosystem has brought in com.caverock:androidsvg-aar:1.4, the aar version of the library, which causes duplicate symbols errors when linking.
+
+#### When can we remove this:
+
+When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes
