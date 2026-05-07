@@ -1,7 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import { CollapsibleArtworkDetailsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -15,10 +14,6 @@ describe("CollapsibleArtworkDetails", () => {
         }
       }
     `,
-  })
-
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   it("displays basic artwork details when collapsed", () => {
@@ -132,9 +127,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   describe("framed dimensions", () => {
-    it("shows framed dimensions when feature flag is enabled and data is available", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
-
+    it("shows framed dimensions when data is available", async () => {
       renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
@@ -154,31 +147,7 @@ describe("CollapsibleArtworkDetails", () => {
       expect(screen.getByText("24 × 28 in\n61 × 71.1 cm")).toBeVisible()
     })
 
-    it("does not show framed dimensions when feature flag is disabled", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
-
-      renderWithRelay({
-        Artwork: () => ({
-          dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },
-          framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" },
-        }),
-      })
-
-      fireEvent.press(screen.getByLabelText("Show artwork details"))
-
-      await waitFor(() => {
-        expect(screen.getByLabelText("Hide artwork details")).toBeVisible()
-      })
-
-      expect(screen.getByText("Dimensions")).toBeVisible()
-      expect(screen.getByText("20 × 24 in\n50.8 × 61 cm")).toBeVisible()
-      expect(screen.queryByText("Framed Dimensions")).toBeNull()
-      expect(screen.queryByText("24 × 28 in\n61 × 71.1 cm")).toBeNull()
-    })
-
     it("does not show framed dimensions when data is missing", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
-
       renderWithRelay({
         Artwork: () => ({
           dimensions: { in: "20 × 24 in", cm: "50.8 × 61 cm" },

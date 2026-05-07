@@ -16,8 +16,7 @@ export interface CollapsibleArtworkDetailsProps {
 const artworkDetailItems = (
   artwork: CollapsibleArtworkDetails_artwork$data,
   regularDimensionText: string | null,
-  framedDimensionText: string | null,
-  isFramedSizeEnabled: boolean
+  framedDimensionText: string | null
 ) => {
   const items = [
     { title: "Price", value: artwork.saleMessage },
@@ -30,14 +29,10 @@ const artworkDetailItems = (
       title: "Dimensions",
       value: regularDimensionText ? regularDimensionText.replace(" | ", "\n") : null,
     },
-    ...(isFramedSizeEnabled
-      ? [
-          {
-            title: "Framed Dimensions",
-            value: framedDimensionText ? framedDimensionText.replace(" | ", "\n") : null,
-          },
-        ]
-      : []),
+    {
+      title: "Framed Dimensions",
+      value: framedDimensionText ? framedDimensionText.replace(" | ", "\n") : null,
+    },
     { title: "Signature", value: artwork.signatureInfo?.details },
     { title: "Frame", value: artwork.isFramed ? "Included" : "Not included" },
     { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
@@ -53,7 +48,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
 }) => {
   const [isExpanded, setExpanded] = useState(false)
 
-  const { regularDimensionText, framedDimensionText, isFramedSizeEnabled } = useArtworkDimensions({
+  const { regularDimensionText, framedDimensionText } = useArtworkDimensions({
     dimensions: artwork.dimensions,
     framedDimensions: artwork.framedDimensions,
   })
@@ -65,12 +60,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
     })
     setExpanded(!isExpanded)
   }
-  const detailItems = artworkDetailItems(
-    artwork,
-    regularDimensionText,
-    framedDimensionText,
-    isFramedSizeEnabled
-  )
+  const detailItems = artworkDetailItems(artwork, regularDimensionText, framedDimensionText)
 
   return artwork ? (
     <>

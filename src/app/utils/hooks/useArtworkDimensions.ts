@@ -1,6 +1,5 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { useMemo } from "react"
-import { useFeatureFlag } from "./useFeatureFlag"
 
 export interface Dimensions {
   in?: string | null
@@ -22,17 +21,9 @@ export interface UseArtworkDimensionsResult {
    */
   dimensionText: string | null
   /**
-   * Whether framed dimensions are being used
-   */
-  isUsingFramedDimensions: boolean
-  /**
    * Whether framed dimensions are available
    */
   hasFramedDimensions: boolean
-  /**
-   * Whether the feature flag is enabled
-   */
-  isFramedSizeEnabled: boolean
   /**
    * Regular dimensions (for separate display)
    */
@@ -95,11 +86,9 @@ export const useArtworkDimensions = ({
   format = "both-metrics",
   includeFrameText = false,
 }: UseArtworkDimensionsOptions) => {
-  const enableFramedSize = useFeatureFlag("AREnableArtworksFramedSize")
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const hasFramedDimensions = dimensionsPresent(framedDimensions)
-  const isUsingFramedDimensions = enableFramedSize && hasFramedDimensions
 
   const formatDimensions = (dims?: Dimensions | null, addFrameText = false) => {
     if (!dimensionsPresent(dims)) {
@@ -153,17 +142,15 @@ export const useArtworkDimensions = ({
   )
 
   const dimensionText = useMemo(() => {
-    if (isUsingFramedDimensions) {
+    if (hasFramedDimensions) {
       return framedDimensionText
     }
     return regularDimensionText
-  }, [isUsingFramedDimensions, framedDimensionText, regularDimensionText])
+  }, [hasFramedDimensions, framedDimensionText, regularDimensionText])
 
   return {
     dimensionText,
-    isUsingFramedDimensions,
     hasFramedDimensions,
-    isFramedSizeEnabled: enableFramedSize,
     regularDimensionText,
     framedDimensionText,
   }

@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { OrderDetailsMetadata } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsMetadata"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -17,10 +16,6 @@ describe("OrderDetailsMetadata", () => {
         }
       }
     `,
-  })
-
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: false })
   })
 
   it("renders artwork image and metadata", () => {
@@ -161,11 +156,7 @@ describe("OrderDetailsMetadata", () => {
     expect(navigate).toBeCalledWith("/artwork/artwork-id")
   })
 
-  describe("with AREnableArtworksFramedSize feature flag enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksFramedSize: true })
-    })
-
+  describe("framed dimensions", () => {
     it("prioritizes framed dimensions over regular dimensions", () => {
       renderWithRelay({
         Order: () => ({

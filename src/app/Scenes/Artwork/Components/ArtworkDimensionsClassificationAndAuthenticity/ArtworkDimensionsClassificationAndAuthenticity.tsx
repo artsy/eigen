@@ -26,7 +26,7 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
     framedDimensionsToUse = framedDimensions
   }
 
-  const { dimensionText, isFramedSizeEnabled } = useArtworkDimensions({
+  const { dimensionText, hasFramedDimensions } = useArtworkDimensions({
     dimensions: dimensionsToUse,
     framedDimensions: framedDimensionsToUse,
     includeFrameText: true,
@@ -43,7 +43,7 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
           {dimensionText}
         </Text>
       )}
-      {!isFramedSizeEnabled && !!getFrameString(framed?.details, isUnlisted) && (
+      {!hasFramedDimensions && !!getFrameString(framed?.details, isUnlisted) && (
         <Text color="mono60" variant="sm">
           {getFrameString(framed?.details, isUnlisted)}
         </Text>
