@@ -515,10 +515,10 @@ end
 
 desc 'Get next android build version code'
 lane :get_next_android_build_version do
-  # Generate date-based build number in format YYYYMMDDHHMI (e.g., 202511131045)
-  # Matches iOS format but without dots since Google Play Console doesn't accept them
+  # Generate date-based build number in format YYYYMMDDHH (e.g., 2025111310)
+  # This matches iOS format but without dots since Google Play Console doesn't accept them
   now = Time.now.utc
-  next_version_code = now.strftime('%Y%m%d%H%M')
+  next_version_code = now.strftime('%Y%m%d%H')
 
   # Check if this version code already exists in the alpha track
   current_version_code = google_play_track_version_codes(
