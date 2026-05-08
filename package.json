@@ -258,7 +258,6 @@
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",
     "@types/react": "19.1.0",
-    "@types/react-native-push-notification": "8.1.1",
     "@types/react-relay": "18.2.0",
     "@types/react-test-renderer": "19.1.0",
     "@types/react-tracking": "8.1.6",

@@ -28,16 +28,6 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
-## Delay modal display after LoadingModal is dismissed
-
-#### When can we remove this:
-
-Doesn't really need to be removed but can be if view hierarchy issue is fixed in RN or our LoadingModal see PR for more details: https://github.com/artsy/eigen/pull/4283
-
-#### Explanation/Context:
-
-We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
-
 ## android Input placeholder measuring hack
 
 #### When can we remove this:
@@ -49,18 +39,6 @@ Once https://github.com/facebook/react-native/pull/29664 is merged or https://gi
 As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
-
-## `react-native-push-notification` Requiring unknown module on ios
-
-#### When can we remove this:
-
-Once we want to use react-native-push-notification on iOS
-
-#### Explanation/Context:
-
-This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
-adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
-we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
 
 ## `PropsStore` pass functions as props inside navigate() on iOS
 
@@ -240,27 +218,6 @@ When Rozenite stable release is published and no longer requires this resolution
 #### Explanation/Context:
 
 This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
-
-## patch for react-native-reanimated
-
-#### Explanation/Context:
-
-This patch was added to support 16KB page size on Android. It's a copy paste from here https://github.com/software-mansion/react-native-reanimated/pull/7037
-
-#### When can we remove it
-
-It can be removed once we upgrade to any version past 3.17
-
-## Patch for react-native-reanimated (CellRendererComponent)
-
-#### When can we remove this:
-
-When we can update the reanimated flatlist CellRendererComponent or it's style, or when this PR gets merged:
-https://github.com/software-mansion/react-native-reanimated/pull/6573
-
-#### Explanation/Context:
-
-In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
 
 ## patch for react-native RCTEventEmitter
 
