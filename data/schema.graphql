@@ -10733,9 +10733,12 @@ type CreateMailchimpCampaignFailure {
 }
 
 input CreateMailchimpCampaignInput {
-  # Artwork IDs to include in the campaign (mutually exclusive with partnerShowId)
+  # Artwork IDs to associate with the campaign (mutually exclusive with partnerShowId; used to render content unless htmlContent is provided)
   artworkIds: [String!]
   clientMutationId: String
+
+  # Pre-rendered HTML body for the campaign. When provided, supersedes the formatter's output but does not preclude tracking via artworkIds or partnerShowId
+  htmlContent: String
 
   # The Mailchimp list/audience ID to send the campaign to
   listId: String!
@@ -10743,7 +10746,7 @@ input CreateMailchimpCampaignInput {
   # The internal ID of the Mailchimp account to use
   mailchimpAccountId: String!
 
-  # Partner show ID to create campaign from (mutually exclusive with artworkIds)
+  # Partner show ID to associate with the campaign (mutually exclusive with artworkIds; used to render content unless htmlContent is provided)
   partnerShowId: String
 
   # The email preview text
