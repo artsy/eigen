@@ -86,6 +86,17 @@ describe("LoginPasswordStep", () => {
     )
   })
 
+  it("shows an alert when network error occurs", async () => {
+    jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("network_error")
+    jest.spyOn(Alert, "alert")
+    renderWithWrappers(<LoginPasswordStep />)
+    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
+    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    await waitFor(() =>
+      expect(Alert.alert).toHaveBeenCalledWith("Can't Connect", "Check your network and try again")
+    )
+  })
+
   describe("when showLoginLink param is true", () => {
     beforeEach(() => {
       mockUseAuthScreen.mockReturnValue({

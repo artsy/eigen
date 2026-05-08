@@ -1,3 +1,4 @@
+import NetInfo from "@react-native-community/netinfo"
 import { act, fireEvent, screen } from "@testing-library/react-native"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
@@ -7,11 +8,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Platform } from "react-native"
+import { Alert, Platform } from "react-native"
 
 jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation")
 jest.mock("app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus")
 jest.mock("app/utils/platformUtil")
+jest.mock("@react-native-community/netinfo")
 jest.mock("app/Components/Recaptcha/Recaptcha", () => ({
   useRecaptcha: jest.fn().mockReturnValue({
     Recaptcha: () => {},
@@ -32,6 +34,7 @@ describe("LoginWelcomeStep", () => {
      * are completed before making assertions.
      */
     jest.useFakeTimers()
+    jest.clearAllMocks()
   })
 
   afterEach(() => {
@@ -195,6 +198,76 @@ describe("LoginWelcomeStep", () => {
         jest.advanceTimersByTime(50)
       })
 
+      expect(refreshTokenSpy).toHaveBeenCalled()
+      expect(navigateSpy).not.toHaveBeenCalled()
+    })
+
+    it("shows an alert when network is offline and token is missing", async () => {
+      const refreshTokenSpy = jest.fn()
+      const isTokenValidSpy = jest.fn(() => false)
+
+      mockUseRecaptcha.mockReturnValue({
+        Recaptcha: () => {},
+        token: null,
+        isTokenValid: isTokenValidSpy,
+        refreshToken: refreshTokenSpy,
+      })
+
+      const mockNetInfoFetch = NetInfo.fetch as jest.Mock
+      mockNetInfoFetch.mockResolvedValue({ isConnected: false })
+
+      jest.spyOn(Alert, "alert")
+
+      const navigateSpy = jest.fn()
+      mockUseAuthNavigation.mockReturnValue({
+        navigate: navigateSpy,
+      })
+
+      renderExpandedWelcomeStep()
+
+      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+
+      // eslint-disable-next-line testing-library/no-unnecessary-act
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      })
+
+      expect(Alert.alert).toHaveBeenCalledWith("Can't Connect", "Check your network and try again")
+      expect(refreshTokenSpy).not.toHaveBeenCalled()
+      expect(navigateSpy).not.toHaveBeenCalled()
+    })
+
+    it("continues with token refresh when network is online and token is missing", async () => {
+      const refreshTokenSpy = jest.fn()
+      const isTokenValidSpy = jest.fn(() => false)
+
+      mockUseRecaptcha.mockReturnValue({
+        Recaptcha: () => {},
+        token: null,
+        isTokenValid: isTokenValidSpy,
+        refreshToken: refreshTokenSpy,
+      })
+
+      const mockNetInfoFetch = NetInfo.fetch as jest.Mock
+      mockNetInfoFetch.mockResolvedValue({ isConnected: true })
+
+      jest.spyOn(Alert, "alert")
+
+      const navigateSpy = jest.fn()
+      mockUseAuthNavigation.mockReturnValue({
+        navigate: navigateSpy,
+      })
+
+      renderExpandedWelcomeStep()
+
+      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+
+      // eslint-disable-next-line testing-library/no-unnecessary-act
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      })
+
+      expect(Alert.alert).not.toHaveBeenCalled()
       expect(refreshTokenSpy).toHaveBeenCalled()
       expect(navigateSpy).not.toHaveBeenCalled()
     })
