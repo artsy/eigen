@@ -159,7 +159,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      jest.spyOn(Sentry, "captureMessage").mockImplementation(() => {})
+      jest.spyOn(Sentry, "captureMessage").mockImplementation(() => "mock-event-id")
     })
 
     afterEach(() => {
