@@ -7318,108 +7318,139 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rozenite/expo-atlas-plugin@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/expo-atlas-plugin@npm:1.1.0"
+"@rozenite/agent-bridge@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/agent-bridge@npm:1.8.0"
   dependencies:
-    "@rozenite/plugin-bridge": "npm:1.1.0"
+    "@rozenite/agent-shared": "npm:1.8.0"
+    "@rozenite/plugin-bridge": "npm:1.8.0"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    react: ">=17"
+  checksum: 10c0/4b9d06e6c7db1c95be3d6b77eff44011e29d0089cbb476cd9117e3e2194057a0f760b9f7bf6c3c0a7abbe433d2d3e9ca0be340587b44e809eefc93f4ff8c1ee2
+  languageName: node
+  linkType: hard
+
+"@rozenite/agent-shared@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/agent-shared@npm:1.8.0"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  checksum: 10c0/8f508c6844d64f811d064e6a59bde69194846343beef3c91f3c4eb32f10f2872a362815156bccd1fe8bf89f16321ba7aec4d56f77fa5246c24eaef95f3a3f5c3
+  languageName: node
+  linkType: hard
+
+"@rozenite/expo-atlas-plugin@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/expo-atlas-plugin@npm:1.8.0"
+  dependencies:
+    "@rozenite/plugin-bridge": "npm:1.8.0"
     connect: "npm:^3.7.0"
     expo-atlas: "npm:^0.4.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/a84b2f4017044147c5766f3190e61c3ac4ef750d521cee23dc06a4912164717732d1464daf9bd8e334b1e95a229e2f9af02c38428875ad2d7385aefbd8d2369f
+  checksum: 10c0/6ebc31b320894c312af3e71980a192c111a2e23ff1c4bc81466027aede68a658457a9a35ecc615bbed78d4ed52b9843319e961548b09885bb4fa520f95cc052f
   languageName: node
   linkType: hard
 
-"@rozenite/metro@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/metro@npm:1.1.0"
+"@rozenite/metro@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/metro@npm:1.8.0"
   dependencies:
-    "@rozenite/middleware": "npm:1.1.0"
-    "@rozenite/tools": "npm:1.1.0"
+    "@rozenite/middleware": "npm:1.8.0"
+    "@rozenite/tools": "npm:1.8.0"
     tslib: "npm:^2.3.0"
-  checksum: 10c0/3311bf8f1d3e976fb2082f7e2660746f13e77aedfc8475c172cace459b9b6fc9107248d0605f57fa657279a274bfcf9af4e03d068e3975038d7f2e75f811acbd
+  checksum: 10c0/21cbebbb201589ed5c9c9d8ff76628f261706d6c300888174b71b752663bf172af40f104b66b3ba276e3153193e510cf6f5a0dc344d3078a64cb6b667012fbfe
   languageName: node
   linkType: hard
 
-"@rozenite/middleware@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/middleware@npm:1.1.0"
+"@rozenite/middleware@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/middleware@npm:1.8.0"
   dependencies:
-    "@rozenite/runtime": "npm:1.1.0"
-    "@rozenite/tools": "npm:1.1.0"
+    "@rozenite/agent-shared": "npm:1.8.0"
+    "@rozenite/runtime": "npm:1.8.0"
+    "@rozenite/tools": "npm:1.8.0"
     express: "npm:^5.1.0"
     semver: "npm:^7.7.2"
     tslib: "npm:^2.3.0"
-  checksum: 10c0/25eac7e45d6e7ce1aa67729dd5fb8dcc76021dba50f3ed5597a731cdafc5a3dc2dcb40d6b12a639549b21e674e497940e2bd09d54fc84b32f62da41a25f39a3b
+    ws: "npm:^8.18.3"
+  checksum: 10c0/6c1c4059c428877caaa9e048a532a084895726d6ca17b87f61816d33027d50270c9f324a940d238d896c227e3fbdb076e4c7ae92da090098c781d63aaad300bb
   languageName: node
   linkType: hard
 
-"@rozenite/network-activity-plugin@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/network-activity-plugin@npm:1.1.0"
+"@rozenite/network-activity-plugin@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/network-activity-plugin@npm:1.8.0"
   dependencies:
-    "@rozenite/plugin-bridge": "npm:1.1.0"
+    "@rozenite/agent-bridge": "npm:1.8.0"
+    "@rozenite/agent-shared": "npm:1.8.0"
+    "@rozenite/plugin-bridge": "npm:1.8.0"
     nanoevents: "npm:^9.1.0"
   peerDependencies:
+    react-native-nitro-fetch: "*"
     react-native-sse: "*"
   peerDependenciesMeta:
+    react-native-nitro-fetch:
+      optional: true
     react-native-sse:
       optional: true
-  checksum: 10c0/7ac8b8a12e851bd31ac817d35d985806102e6f352e567592e094874b5d53bed98182a1aff58286cc13d48cdd88f647380d0cb64ead1d5d9065e84638f7f6f102
+  checksum: 10c0/e720a464704ac12b3c9affb6f76630a6aba79135c61ae1ad595234c63785215e44182f1bf9b5941b441eb36041e38e9defd838571e632aed6407630597ff1464
   languageName: node
   linkType: hard
 
-"@rozenite/performance-monitor-plugin@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/performance-monitor-plugin@npm:1.1.0"
+"@rozenite/performance-monitor-plugin@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/performance-monitor-plugin@npm:1.8.0"
   dependencies:
-    "@rozenite/plugin-bridge": "npm:1.1.0"
+    "@rozenite/plugin-bridge": "npm:1.8.0"
   peerDependencies:
     react: "*"
     react-native: "*"
     react-native-performance: "*"
-  checksum: 10c0/d9b2b8cf67831b2f6a641f7266507c228f946be719f5eef1bba2009f07a93798971d3529deb4b81767d867d22b100c34c8239546e9f83ff7b3db018b8e3969a7
+  checksum: 10c0/52b304e9777918a2e59ca3935fd817b3e7819051e9a8d72c2cd7ccef09b44df9f98d25bb753e263c534f96cbd816921c9218d2bec49e0b8a360b6ecc6193a74f
   languageName: node
   linkType: hard
 
-"@rozenite/plugin-bridge@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/plugin-bridge@npm:1.1.0"
+"@rozenite/plugin-bridge@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/plugin-bridge@npm:1.8.0"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
     react: ">=17"
-  checksum: 10c0/c5f9e76ee0bc12a6ea3547dcd4ba8a5f221bb41feffd39dc2ea2c90e33b92117172a0becb9d2f97b32a4bd4700ef1957ca8b80ac39c3e8448e85d1e531cf9112
+  checksum: 10c0/44534d7b5b54f6e68aa2dc8a90f8b724579879bccff0eee5d8bc906987bebd73a987e0e4e1cc919f05a48521fe399ffe9aa89571b651c11849e4f1ca08a1b331
   languageName: node
   linkType: hard
 
-"@rozenite/react-navigation-plugin@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/react-navigation-plugin@npm:1.1.0"
+"@rozenite/react-navigation-plugin@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/react-navigation-plugin@npm:1.8.0"
   dependencies:
-    "@rozenite/plugin-bridge": "npm:1.1.0"
+    "@rozenite/agent-bridge": "npm:1.8.0"
+    "@rozenite/agent-shared": "npm:1.8.0"
+    "@rozenite/plugin-bridge": "npm:1.8.0"
     fast-deep-equal: "npm:^3.1.3"
   peerDependencies:
     "@react-navigation/core": ^7.12.1
-  checksum: 10c0/f1e92509d11eb5d678cdce0f3908c4e9f9c200d395d9affe80766e95e6fcab017517d3ba0cf4892d9e674e0222f235a0d74b39400b4ac989b51f4e066f997468
+  checksum: 10c0/5ef5817d462baf585038bf3c86d86c5c22e87d1af442c474a33bf34dd3156c55bde486ff2c49c8730d341d56e523919ef72ec1a04d023a5acea89810af7b7b9c
   languageName: node
   linkType: hard
 
-"@rozenite/runtime@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/runtime@npm:1.1.0"
+"@rozenite/runtime@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/runtime@npm:1.8.0"
   dependencies:
     tslib: "npm:^2.3.0"
-  checksum: 10c0/354bc659e8326ccb4ecf858992d344a02210fd81a6bddd3ef16aafcc02820e6a0eaf6479f0ce9d07f48c3c9eaaa0129eae83f9c265a4f672079d394e1bb7b13b
+  checksum: 10c0/d20c6ab18df17d355c493a0291410ce5940a6a583fee2924f76d3e0f4469fcb8921a4e09f151ce631260b6c7ed6c8638c5c5ea419db171a69c84336a096abeba
   languageName: node
   linkType: hard
 
-"@rozenite/tools@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@rozenite/tools@npm:1.1.0"
-  checksum: 10c0/c88882947932e9848b07ba6826376cf20e690cf433bd5bf3b990f220107fd5011799f2b1a5207d85b5dddbe5bfe601014930595cd6d2cc23a2f4292be59d6671
+"@rozenite/tools@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@rozenite/tools@npm:1.8.0"
+  checksum: 10c0/6966c2521d4390654af85bf74f47eb4b97fa3d5a6f21cbd535461e2dd4818d0c62609d358797f6dc36beb71974b4b353184155007da2d9bb0558ea68d391da82
   languageName: node
   linkType: hard
 
@@ -13369,11 +13400,11 @@ __metadata:
     "@react-navigation/stack": "npm:7.4.9"
     "@rnmapbox/maps": "npm:10.1.44"
     "@rnx-kit/align-deps": "npm:^3.3.0"
-    "@rozenite/expo-atlas-plugin": "npm:1.1.0"
-    "@rozenite/metro": "npm:1.1.0"
-    "@rozenite/network-activity-plugin": "npm:1.1.0"
-    "@rozenite/performance-monitor-plugin": "npm:1.1.0"
-    "@rozenite/react-navigation-plugin": "npm:1.1.0"
+    "@rozenite/expo-atlas-plugin": "npm:1.8.0"
+    "@rozenite/metro": "npm:1.8.0"
+    "@rozenite/network-activity-plugin": "npm:1.8.0"
+    "@rozenite/performance-monitor-plugin": "npm:1.8.0"
+    "@rozenite/react-navigation-plugin": "npm:1.8.0"
     "@segment/analytics-react-native": "npm:2.21.3"
     "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
     "@segment/sovran-react-native": "npm:1.1.3"
