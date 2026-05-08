@@ -9674,13 +9674,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-native-push-notification@npm:8.1.1":
-  version: 8.1.1
-  resolution: "@types/react-native-push-notification@npm:8.1.1"
-  checksum: 10c0/94ada0802844070a08b578a64fcfcb3f82eb868fb9e290bab71ec78ae6bb23872815ad844eaa48f68871996a834bb1b7bbebb9d31ea17fb3a3177f946dc66a49
-  languageName: node
-  linkType: hard
-
 "@types/react-relay@npm:18.2.0":
   version: 18.2.0
   resolution: "@types/react-relay@npm:18.2.0"
@@ -13420,7 +13413,6 @@ __metadata:
     "@types/qs": "npm:6.9.7"
     "@types/query-string": "npm:5.0.1"
     "@types/react": "npm:19.1.0"
-    "@types/react-native-push-notification": "npm:8.1.1"
     "@types/react-relay": "npm:18.2.0"
     "@types/react-test-renderer": "npm:19.1.0"
     "@types/react-tracking": "npm:8.1.6"
