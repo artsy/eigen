@@ -181,7 +181,7 @@
     "react-native-in-app-review": "4.3.3",
     "react-native-ios-context-menu": "patch:react-native-ios-context-menu@npm%3A3.2.0#~/.yarn/patches/react-native-ios-context-menu-npm-3.2.0-17e9444bdf.patch",
     "react-native-ios-utilities": "5.2.0",
-    "react-native-keyboard-controller": "^1.20.2",
+    "react-native-keyboard-controller": "1.21.7",
     "react-native-keychain": "10.0.0",
     "react-native-keys": "patch:react-native-keys@npm%3A0.7.13#~/.yarn/patches/react-native-keys-npm-0.7.13-00e9deb63c.patch",
     "react-native-launch-arguments": "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-2",
