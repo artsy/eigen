@@ -40,42 +40,6 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-## `PropsStore` pass functions as props inside navigate() on iOS
-
-#### When can we remove this:
-
-Once we no longer use our native implementation of pushView on iOS
-
-#### Explanation/Context:
-
-We cannot pass functions as props because `navigate.ts` on ios uses the native obj-c definition of pushView in `ARScreenPresenterModule.m`.
-React native is not able to convert js functions so this is passed as null to the underlying native method
-See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
-
-PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
-
-## `ORStackView` patch (add UIKit import)
-
-#### When can we remove this:
-
-Once we remove ORStackView or the upstream repo adds the import. May want to proactively open a PR for this.
-
-#### Explanation/Context:
-
-The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
-
-## `Map` manual prop update in `PageWrapper`
-
-#### When can we remove this:
-
-We should see if it is still necessary when we remove the old native navigation on iOS. To check: go into City Guide, leave, enter again and then try to change the city. If it works without this code it can be removed.
-If it is still an issue with old native navigation gone this can either be removed when we remove or rebuild City Guide or if we change how props are saved in PageWrapper.
-
-#### Explanation/Context:
-
-City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
-https://github.com/artsy/eigen/pull/6348
-
 ## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
 #### When can we remove this:
@@ -90,13 +54,13 @@ The app restarts when the user takes a picture to pass to `react-native-image-cr
 
 #### When can we remove this:
 
-To remove this, we need to change our InfiniteScrollArtworksGrid to use a FlatList or any VirtualizedList. We haven't done that yet, because we need the masonry layout.
-We either need to find a library that gives us masonry layout using a VirtualizedList, or we need to make our own version of this.
+When all `InfiniteScrollArtworksGrid` callers have been migrated to `MasonryFlashList` (from `@shopify/flash-list`), at which point `ParentAwareScrollView` and `InfiniteScrollArtworksGrid`'s ScrollView path become unused and can be deleted.
 
 #### Explanation/Context:
 
-Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
-Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
+`InfiniteScrollArtworksGrid` renders its masonry layout inside a `ScrollView` (not a `VirtualizedList`), and on Android wraps it in `ParentAwareScrollView` to detect when it's nested inside an outer scroll view of the same orientation and forward scroll events accordingly.
+
+`MasonryFlashList` now provides a virtualized masonry layout, and several scenes have migrated to it, but `InfiniteScrollArtworksGrid` is still used in ~40 places.
 
 ## Podfile postinstall code_signing_required = NO
 
@@ -131,17 +95,6 @@ patch.
 
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
-
-## Patch for @react-navigation/native
-
-#### When we can remove this:
-
-When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
-
-### Explanation/Context
-
-React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
-https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
 
 ## Artsy fork of Interstellar in Podfile
 
@@ -209,16 +162,6 @@ This patch allows us to animate the appearance of the bottom tabs. This is curre
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
 
-## Resolutions @react-native/dev-middleware
-
-#### When can we remove this:
-
-When Rozenite stable release is published and no longer requires this resolution
-
-#### Explanation/Context:
-
-This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
-
 ## patch for react-native RCTEventEmitter
 
 #### Explanation/Context:
@@ -232,17 +175,20 @@ It can be removed once if we stop using the singleton pattern or get rid of ARNo
 
 ## react-native-reanimated package.json flags and react-native patch
 
-### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
-
 #### Explanation/Context:
 
-This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+`package.json` sets the following reanimated `staticFeatureFlags` to fix scroll performance. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
 
-We also added a patch to react-native to support this flag and temporarily enabled preventShadowTreeCommitExhaustion and enableCppPropsIteratorSetter flags to fix performance issues.
+- `USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS`
+- `DISABLE_COMMIT_PAUSING_MECHANISM`
+- `ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS`
+- `IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS`
+
+We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `preventShadowTreeCommitExhaustion()` to return `true`, which is required for these flags to behave correctly.
 
 #### When can we remove this:
 
-When reanimated adopts this by default.
+When reanimated adopts these by default.
 
 ## react-native-webview passing constant for decelerationRate prop
 
