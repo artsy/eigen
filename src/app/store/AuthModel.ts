@@ -42,6 +42,7 @@ type SignInStatus =
   | "on_demand_otp_missing"
   | "invalid_otp"
   | "auth_blocked"
+  | "network_error"
 
 type VerifyUserStatus = "user_exists" | "user_does_not_exist" | "something_went_wrong"
 
@@ -305,28 +306,34 @@ export const getAuthModel = (): AuthModel => ({
       jwt: "jwt",
     }
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/oauth2/access_token`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        email,
-        oauth_provider: oauthProvider,
-        otp_attempt: oauthMode === "email" ? args?.otp ?? undefined : undefined,
-        password: oauthMode === "email" ? args.password : undefined,
-        oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
-        jwt: oauthMode === "jwt" ? args.jwt : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
-        id_token: oauthMode === "idToken" ? args.idToken : undefined,
-        grant_type: grantTypeMap[oauthMode],
-        client_id: clientKey,
-        client_secret: clientSecret,
-        scope: "offline_access",
-      },
-    })
+    let result: Response
 
+    try {
+      result = await actions.gravityUnauthenticatedRequest({
+        path: `/oauth2/access_token`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: {
+          email,
+          oauth_provider: oauthProvider,
+          otp_attempt: oauthMode === "email" ? args?.otp ?? undefined : undefined,
+          password: oauthMode === "email" ? args.password : undefined,
+          oauth_token: oauthMode === "accessToken" ? args.accessToken : undefined,
+          jwt: oauthMode === "jwt" ? args.jwt : undefined,
+          apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
+          id_token: oauthMode === "idToken" ? args.idToken : undefined,
+          grant_type: grantTypeMap[oauthMode],
+          client_id: clientKey,
+          client_secret: clientSecret,
+          scope: "offline_access",
+        },
+      })
+    } catch (error) {
+      Sentry.captureMessage(`AuthModel signIn error ${error}`)
+      return "network_error"
+    }
     if (result.status === 403) {
       return "auth_blocked"
     }

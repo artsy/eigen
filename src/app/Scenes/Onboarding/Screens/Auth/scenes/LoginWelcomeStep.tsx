@@ -10,6 +10,7 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
+import NetInfo from "@react-native-community/netinfo"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
@@ -23,7 +24,7 @@ import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { Alert, Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -88,11 +89,17 @@ export const LoginWelcomeStep: React.FC = () => {
         onSubmit={async ({ email }, { resetForm }) => {
           // Check if token is missing or expired
           if (!token || !isTokenValid()) {
+            const netInfo = await NetInfo.fetch()
+            if (!netInfo.isConnected) {
+              // Show alert if offline
+              Alert.alert("Can't Connect", "Check your network and try again")
+              return
+            }
+            // If online, wait for reCAPTCHA token (existing behavior)
             setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
             refreshToken()
             return
           }
-
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
           if (res === "user_exists") {

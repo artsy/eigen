@@ -18,6 +18,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
+import { Alert } from "react-native"
 import * as Yup from "yup"
 
 export interface LoginPasswordStepFormValues {
@@ -63,6 +64,10 @@ export const LoginPasswordStep: React.FC = () => {
         }
 
         switch (true) {
+          case res === "network_error": {
+            Alert.alert("Can't Connect", "Check your network and try again")
+            break
+          }
           case res === "auth_blocked": {
             showBlockedAuthError("sign in")
             break
