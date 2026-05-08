@@ -1,5 +1,5 @@
 diff --git a/src/hooks/useScrollEventsHandlersDefault.ts b/src/hooks/useScrollEventsHandlersDefault.ts
-index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526dd6955deb 100644
+index 7b84480e8b002f843d349d4f47d4b4f9f66c17bb..8e6c59baa7a41e565fddbfbab55e3d90ccddc5f4 100644
 --- a/src/hooks/useScrollEventsHandlersDefault.ts
 +++ b/src/hooks/useScrollEventsHandlersDefault.ts
 @@ -55,6 +55,9 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
@@ -9,7 +9,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
 +          if (y === lockPosition) {
 +            return;
 +          }
-           // @ts-ignore
+           // @ts-expect-error
            scrollTo(scrollableRef, 0, lockPosition, false);
            scrollableContentOffsetY.value = lockPosition;
 @@ -104,6 +107,9 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
@@ -19,7 +19,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
 +          if (y === lockPosition) {
 +            return;
 +          }
-           // @ts-ignore
+           // @ts-expect-error
            scrollTo(scrollableRef, 0, lockPosition, false);
            scrollableContentOffsetY.value = lockPosition;
 @@ -134,9 +140,12 @@ export const useScrollEventsHandlersDefault: ScrollEventsHandlersHookType = (
@@ -29,7 +29,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
 +          if (y === lockPosition) {
 +            return;
 +          }
-           // @ts-ignore
+           // @ts-expect-error
            scrollTo(scrollableRef, 0, lockPosition, false);
 -          scrollableContentOffsetY.value = 0;
 +          scrollableContentOffsetY.value = lockPosition;
