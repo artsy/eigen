@@ -45,7 +45,6 @@ jobs:
 
       - name: Install imagemagick & librsvg for badge
         run: brew install imagemagick librsvg
-
       - name: Build and deploy iOS to Firebase
         run: bundle exec fastlane ship_beta_ios deployment_target:firebase
         env:
