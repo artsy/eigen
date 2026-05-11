@@ -1112,7 +1112,7 @@ export const getAuthModel = (): AuthModel => ({
   }),
 })
 
-const REFRESH_USER_ACCESS_TOKEN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000
+const REFRESH_USER_ACCESS_TOKEN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000 // one week
 
 const isTokenExpired = (expiresIn: string, bufferMs = 300_000) => {
   const expirationTime = new Date(expiresIn).getTime()
