@@ -60,6 +60,13 @@ export const ImageCarouselFullScreen = () => {
         easing: Easing.ease,
       }).start(() => {
         setEnsureNoFlicker(true)
+        // reset zoom after opacity reaches 0 so the snap is invisible,
+        // but before FULL_SCREEN_FINISHED_EXITING so refs are still valid
+        for (let i = 0; i < media.length; i++) {
+          if (zoomViewRefs[i]) {
+            zoomViewRefs[i].syncResetZoom()
+          }
+        }
         setTimeout(() => dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" }), 16)
       })
     }

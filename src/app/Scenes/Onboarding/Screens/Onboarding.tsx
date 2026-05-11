@@ -5,7 +5,7 @@ import { AuthApp } from "app/Scenes/Onboarding/Screens/Auth/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
-import { isTablet } from "react-native-device-info"
+import { defaultScreenOrientation } from "app/utils/screenOrientation"
 import { ForgotPassword } from "./ForgotPassword"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
@@ -67,7 +67,7 @@ export const OnboardingWelcomeScreens = () => {
       <StackNavigator.Group
         screenOptions={{
           animation: "slide_from_right",
-          orientation: !isTablet() ? "portrait" : "default",
+          orientation: defaultScreenOrientation,
         }}
       >
         <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
@@ -83,7 +83,7 @@ export const OnboardingWelcomeScreens = () => {
 
       <StackNavigator.Group
         screenOptions={{
-          orientation: !isTablet() ? "portrait" : "default",
+          orientation: defaultScreenOrientation,
         }}
       >
         {!!userIsDev && (

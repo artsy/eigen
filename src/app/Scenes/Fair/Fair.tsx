@@ -115,6 +115,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           allowHeaderOverscroll
           headerProps={{
             onBack: goBack,
+            hideTitle: true,
             rightElements: (
               <TouchableOpacity
                 accessibilityRole="button"

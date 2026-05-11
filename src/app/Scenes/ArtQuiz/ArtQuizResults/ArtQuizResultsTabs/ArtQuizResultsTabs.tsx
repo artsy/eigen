@@ -27,6 +27,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
       lazy
       headerProps={{
         onBack: () => popToRoot(),
+        hideTitle: true,
       }}
       onTabChange={({ tabName }) => {
         setActiveTab(tabName as TabName)

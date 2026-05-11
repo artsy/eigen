@@ -155,4 +155,71 @@ describe("OrderDetailsMetadata", () => {
     fireEvent.press(screen.getByRole("image"))
     expect(navigate).toBeCalledWith("/artwork/artwork-id")
   })
+
+  describe("framed dimensions", () => {
+    it("prioritizes framed dimensions over regular dimensions", () => {
+      renderWithRelay({
+        Order: () => ({
+          lineItems: [
+            {
+              artwork: { partner: { name: "Test Partner" } },
+              artworkVersion: { artistNames: "Test Artist", title: "Framed Work", date: "2023" },
+              artworkOrEditionSet: {
+                __typename: "Artwork",
+                price: "€1,000",
+                dimensions: { in: "20 × 30 in", cm: "50 × 76 cm" },
+                framedDimensions: { in: "24 × 34 in", cm: "61 × 86 cm" },
+              },
+            },
+          ],
+        }),
+      })
+
+      expect(screen.getByText("24 × 34 in | 61 × 86 cm")).toBeOnTheScreen()
+      expect(screen.queryByText("20 × 30 in | 50 × 76 cm")).not.toBeOnTheScreen()
+    })
+
+    it("falls back to regular dimensions when framed dimensions are not available", () => {
+      renderWithRelay({
+        Order: () => ({
+          lineItems: [
+            {
+              artwork: { partner: { name: "Test Partner" } },
+              artworkVersion: { artistNames: "Test Artist", title: "Unframed Work", date: "2023" },
+              artworkOrEditionSet: {
+                __typename: "Artwork",
+                price: "€800",
+                dimensions: { in: "18 × 24 in", cm: "45 × 61 cm" },
+                framedDimensions: null,
+              },
+            },
+          ],
+        }),
+      })
+
+      expect(screen.getByText("18 × 24 in | 45 × 61 cm")).toBeOnTheScreen()
+    })
+
+    it("renders single framed dimension when only one unit is provided", () => {
+      renderWithRelay({
+        Order: () => ({
+          lineItems: [
+            {
+              artwork: { partner: { name: "Test Partner" } },
+              artworkVersion: { artistNames: "Test Artist", title: "Framed Work", date: "2023" },
+              artworkOrEditionSet: {
+                __typename: "Artwork",
+                price: "€900",
+                dimensions: { in: "18 × 24 in", cm: "45 × 61 cm" },
+                framedDimensions: { in: "22 × 28 in", cm: null },
+              },
+            },
+          ],
+        }),
+      })
+
+      expect(screen.getByText("22 × 28 in")).toBeOnTheScreen()
+      expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
+    })
+  })
 })

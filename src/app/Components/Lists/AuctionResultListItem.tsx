@@ -7,7 +7,7 @@ import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResu
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
-import moment from "moment"
+import { DateTime } from "luxon"
 import { memo, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -149,7 +149,7 @@ const AuctionResultListItem: React.FC<Props> = memo(
 
               {!!auctionResult.saleDate && (
                 <Text variant="xs" color="mono60" numberOfLines={1} testID="saleInfo">
-                  {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
+                  {DateTime.fromISO(auctionResult.saleDate).toUTC().toFormat("MMM d, yyyy")}
                   {` ${bullet} `}
                   {auctionResult.organization}
                 </Text>

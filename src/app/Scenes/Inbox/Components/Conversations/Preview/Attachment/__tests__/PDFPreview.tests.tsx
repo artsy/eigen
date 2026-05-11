@@ -1,10 +1,16 @@
+import PDFPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Attachment/PDFPreview"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
-import PDFPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Attachment/PDFPreview"
-
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<PDFPreview attachment={attachment as any} />)
+  renderWithWrappersLEGACY(
+    <PDFPreview
+      attachment={attachment as any}
+      url="/path/to/cats.pdf"
+      mimeType="application/pdf"
+      cacheKey="cats"
+    />
+  )
 })
 
 const attachment = {

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import {
@@ -112,7 +112,6 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const theme = useNavigationTheme()
-  const color = useColor()
   const insets = useSafeAreaInsets()
 
   const tracking = useTracking()
@@ -337,15 +336,16 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }, [])
 
   return (
-    <NavigationIndependentTree>
-      <NavigationContainer theme={theme}>
-        <Modal
-          visible={props.visible}
-          onDismiss={handleClosingModal}
-          animationType="slide"
-          testID="artwork-filter-navigator"
-          presentationStyle="overFullScreen"
-        >
+    <Modal
+      visible={props.visible}
+      onDismiss={handleClosingModal}
+      animationType={Platform.OS === "ios" ? "slide" : "fade"}
+      testID="artwork-filter-navigator"
+      presentationStyle="overFullScreen"
+      transparent={Platform.OS === "android"}
+    >
+      <NavigationIndependentTree>
+        <NavigationContainer theme={theme}>
           <KeyboardAvoidingContainer>
             <Flex flex={1}>
               <Stack.Navigator
@@ -355,7 +355,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                   ...TransitionPresets.SlideFromRightIOS,
                   headerShown: false,
                   cardStyle: {
-                    backgroundColor: color("background"),
+                    backgroundColor: "transparent",
                     paddingTop: Platform.OS === "ios" ? insets?.top : 0,
                   },
                 }}
@@ -451,9 +451,9 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               />
             </Flex>
           </KeyboardAvoidingContainer>
-        </Modal>
-      </NavigationContainer>
-    </NavigationIndependentTree>
+        </NavigationContainer>
+      </NavigationIndependentTree>
+    </Modal>
   )
 }
 

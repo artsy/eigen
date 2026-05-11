@@ -51,7 +51,7 @@ export const features = {
     echoFlagKey: "ARDarkModeSupport",
   },
   AREnableArtworksConnectionForAuction2: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Use artworksConnection for Auction screen v2",
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction2",
@@ -152,12 +152,6 @@ export const features = {
     showInDevMenu: true,
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
-  },
-  AREnableNewHomeViewCardRailType: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable new rail type on home",
-    echoFlagKey: "AREnableNewHomeViewCardRailType",
   },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,

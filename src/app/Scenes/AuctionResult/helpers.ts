@@ -1,5 +1,5 @@
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
-import moment from "moment"
+import { DateTime } from "luxon"
 
 type AuctionResultHelperNeededData = "currency" | "boughtIn" | "priceRealized" | "saleDate"
 // This type just mirrors the types that come back from metaphysics.
@@ -34,9 +34,9 @@ export const auctionResultText = (auctionResult: AuctionResultHelperData) => {
     return undefined
   }
 
-  const now = moment()
+  const now = DateTime.now()
   const isFromPastMonth = auctionResult.saleDate
-    ? moment(auctionResult.saleDate).isAfter(now.subtract(1, "month"))
+    ? DateTime.fromISO(auctionResult.saleDate) > now.minus({ months: 1 })
     : false
   return isFromPastMonth ? "Awaiting results" : "Not available"
 }

@@ -31,6 +31,7 @@ export interface SectionSharedProps extends FlexProps {
   index: number
   sectionID: string
   refetchKey?: number
+  shouldShowInGrid?: boolean
 }
 
 export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {

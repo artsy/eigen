@@ -1,7 +1,7 @@
 import { Touchable, useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
-import Animated, { AnimatedProps, AnimatedStyle, FadeIn, FadeOut } from "react-native-reanimated"
+import Animated, { AnimatedProps, AnimatedStyle } from "react-native-reanimated"
 
 interface HeaderButtonProps extends AnimatedProps<ViewProps> {
   style?: StyleProp<AnimatedStyle<ViewStyle>>
@@ -13,7 +13,6 @@ interface HeaderButtonProps extends AnimatedProps<ViewProps> {
 
 // Constants
 const BUTTON_SIZE = 40
-const DURATION = 250
 const BUTTON_HORIZONTAL_OFFSET = 12
 
 export const HeaderButton: React.FC<React.PropsWithChildren<HeaderButtonProps>> = (props) => {
@@ -35,8 +34,6 @@ export const HeaderButton: React.FC<React.PropsWithChildren<HeaderButtonProps>> 
 
   return (
     <Animated.View
-      entering={FadeIn.duration(DURATION)}
-      exiting={FadeOut.duration(DURATION)}
       style={[
         {
           zIndex: 1,

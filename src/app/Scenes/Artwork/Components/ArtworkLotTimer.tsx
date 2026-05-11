@@ -17,7 +17,6 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { Time } from "app/utils/getTimer"
 import { getTimerInfo } from "app/utils/saleTime"
-import moment from "moment"
 import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -153,10 +152,10 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
     }
 
     const time: Time = {
-      days: duration.asDays().toString(),
-      hours: duration.hours().toString(),
-      minutes: duration.minutes().toString(),
-      seconds: duration.seconds().toString(),
+      days: Math.floor(duration.as("days")).toString(),
+      hours: Math.floor(duration.as("hours") % 24).toString(),
+      minutes: Math.floor(duration.as("minutes") % 60).toString(),
+      seconds: Math.floor(duration.as("seconds") % 60).toString(),
     }
 
     const timerInfo = getTimerInfo(time, { hasStarted, isExtended: hasBeenExtended })
@@ -165,7 +164,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   }
 
   // display the timer and progress bar only when duration is positive and lot is biddable
-  const shouldShowTimer = !!isBiddableInAuction && moment.duration(duration).milliseconds() > 0
+  const shouldShowTimer = !!isBiddableInAuction && (duration?.toMillis() ?? 0) > 0
 
   const isBiddingClosed = !!artwork.saleArtwork?.endedAt || timerState === AuctionTimerState.CLOSED
 

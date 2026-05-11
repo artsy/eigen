@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { screen } from "@testing-library/react-native"
 import { GenericGridTestsQuery } from "__generated__/GenericGridTestsQuery.graphql"
 import { GenericGrid } from "app/Components/ArtworkGrids/GenericGrid"
@@ -5,11 +6,39 @@ import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+const mockMasonryInfiniteScrollArtworkGrid = jest.fn()
+
+jest.mock("app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid", () => {
+  const actual = jest.requireActual("app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid")
+
+  return {
+    ...actual,
+    MasonryInfiniteScrollArtworkGrid: (props: any) => {
+      mockMasonryInfiniteScrollArtworkGrid(props)
+      return <actual.MasonryInfiniteScrollArtworkGrid {...props} />
+    },
+  }
+})
+
 describe("GenericGrid", () => {
-  const { renderWithRelay } = setupTestWrapper<GenericGridTestsQuery, { isLoading?: boolean }>({
-    Component: ({ viewer, isLoading }) => {
+  const { renderWithRelay } = setupTestWrapper<
+    GenericGridTestsQuery,
+    {
+      contextModule?: ContextModule
+      contextScreenOwnerType?: ScreenOwnerType
+      isLoading?: boolean
+    }
+  >({
+    Component: ({ viewer, contextModule, contextScreenOwnerType, isLoading }) => {
       const artworks = extractNodes(viewer?.artworksConnection)
-      return <GenericGrid artworks={artworks} isLoading={isLoading} />
+      return (
+        <GenericGrid
+          artworks={artworks}
+          contextModule={contextModule}
+          contextScreenOwnerType={contextScreenOwnerType}
+          isLoading={isLoading}
+        />
+      )
     },
     query: graphql`
       query GenericGridTestsQuery @relay_test_operation {
@@ -24,6 +53,10 @@ describe("GenericGrid", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    mockMasonryInfiniteScrollArtworkGrid.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -63,5 +96,30 @@ describe("GenericGrid", () => {
     )
 
     expect(screen.getByTestId("spinner")).toBeOnTheScreen()
+  })
+
+  it("passes analytics context through to the masonry grid", () => {
+    renderWithRelay(
+      {
+        Artwork: () => ({
+          id: "artwork-1",
+          slug: "test-artwork",
+          image: {
+            aspectRatio: 1.5,
+          },
+        }),
+      },
+      {
+        contextModule: ContextModule.newWorksForYouRail,
+        contextScreenOwnerType: OwnerType.home,
+      }
+    )
+
+    expect(mockMasonryInfiniteScrollArtworkGrid).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contextModule: ContextModule.newWorksForYouRail,
+        contextScreenOwnerType: OwnerType.home,
+      })
+    )
   })
 })

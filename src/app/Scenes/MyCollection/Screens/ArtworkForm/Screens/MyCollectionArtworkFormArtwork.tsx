@@ -50,22 +50,29 @@ export const MyCollectionArtworkFormArtwork: React.FC<
 
       // By setting the path for each image we make sure the image will be uploaded to S3
       // and processed by Gemini.
-      const photos = artworkData.images?.map((image) => ({
-        height: image?.height || undefined,
-        isDefault: image?.isDefault || undefined,
-        imageURL: image?.imageURL || undefined,
-        path: image?.imageURL?.replace(":version", "large") || undefined,
-        width: image?.width || undefined,
-      }))
+      const photos =
+        artworkData.images?.map((image) => ({
+          height: image?.height || undefined,
+          isDefault: image?.isDefault || undefined,
+          imageURL: image?.imageURL || undefined,
+          path: image?.imageURL?.replace(":version", "large") || undefined,
+          width: image?.width || undefined,
+        })) || []
 
-      GlobalStore.actions.myCollection.artwork.updateFormValues({
+      const artworkValues = {
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
         ...filteredFormValues,
         attributionClass:
           getAttributionClassValueByName(artworkData.attributionClass?.name) || undefined,
         photos,
-      })
+      }
+
+      GlobalStore.actions.myCollection.artwork.updateFormValues(artworkValues)
+
+      // Also update formik directly since enableReinitialize is false and the
+      // useEffect in MyCollectionArtworkForm only syncs artist-related fields.
+      formik.setValues((prev) => ({ ...prev, ...artworkValues }))
     } catch (error) {
       console.error("Couldn't load artwork data", error)
     } finally {

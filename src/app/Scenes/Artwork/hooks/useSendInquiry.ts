@@ -2,7 +2,7 @@ import { useSendInquiry_artwork$key } from "__generated__/useSendInquiry_artwork
 import { useSendInquiry_collectorProfile$key } from "__generated__/useSendInquiry_collectorProfile.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
-import { useInquirySuccessPopover } from "app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover"
+import { useInquirySuccessToast } from "app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessToast"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   userShouldBePromptedToAddArtistsToCollection,
@@ -31,7 +31,7 @@ export const useSendInquiry = ({
   const { state, dispatch } = useArtworkInquiryContext()
   const [commit] = useSubmitInquiryRequest()
 
-  const showSuccessPopover = useInquirySuccessPopover()
+  const showSuccessToast = useInquirySuccessToast()
 
   const artwork = useFragment(FRAGMENT_ARTWORK, _artwork)
   const me = useFragment(FRAGMENT_ME, _me)
@@ -100,6 +100,8 @@ export const useSendInquiry = ({
         const profession = me.profession
         const artworksCount = me.myCollectionInfo.artworksCount
 
+        showSuccessToast()
+
         if (
           userShouldBePromptedToAddArtistsToCollection({
             lastUpdatePromptAt,
@@ -117,8 +119,6 @@ export const useSendInquiry = ({
           dispatch({ type: "setProfilePromptVisible", payload: true })
           return
         }
-
-        showSuccessPopover()
       },
     })
   }

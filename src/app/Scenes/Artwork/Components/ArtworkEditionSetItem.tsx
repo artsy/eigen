@@ -1,6 +1,6 @@
 import { Spacer, Flex, Text, RadioButton } from "@artsy/palette-mobile"
 import { ArtworkEditionSetItem_item$data } from "__generated__/ArtworkEditionSetItem_item.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
+import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -17,27 +17,18 @@ const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   onPress,
   disabled,
 }) => {
-  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
-  const { dimensions, editionOf, saleMessage } = item
+  const { dimensions, framedDimensions, editionOf, saleMessage } = item
 
   const handlePress = () => {
     onPress(item.internalID)
   }
 
-  const getMetricLabel = () => {
-    if (preferredMetric === "cm" && dimensions?.cm) {
-      return dimensions.cm
-    }
-
-    if (preferredMetric === "in" && dimensions?.in) {
-      return dimensions.in
-    }
-
-    // display the first available dimension without taking into account the preferred metric
-    return dimensions?.cm ?? dimensions?.in
-  }
-
-  const metric = getMetricLabel()
+  const { dimensionText: metric } = useArtworkDimensions({
+    dimensions,
+    framedDimensions,
+    format: "preferred-metric",
+    includeFrameText: true,
+  })
 
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={handlePress} disabled={disabled}>
@@ -77,6 +68,10 @@ export const ArtworkEditionSetItemFragmentContainer = createFragmentContainer(
         editionOf
 
         dimensions {
+          in
+          cm
+        }
+        framedDimensions {
           in
           cm
         }

@@ -8,10 +8,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
-  useExperimentVariant: jest.fn(() => ({ variant: null })),
-}))
-
 describe("SalesRecommendedAuctionLots", () => {
   const { renderWithRelay } = setupTestWrapper<SalesRecommendedAuctionLotsQuery>({
     Component: () => <SalesRecommendedAuctionLotsQueryRenderer />,

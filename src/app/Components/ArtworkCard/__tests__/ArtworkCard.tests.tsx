@@ -1,6 +1,8 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkCardTestsQuery } from "__generated__/ArtworkCardTestsQuery.graphql"
 import { ArtworkCard } from "app/Components/ArtworkCard/ArtworkCard"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -25,6 +27,7 @@ describe("ArtworkCard", () => {
       supportMultipleImages: false,
       showPager: false,
     }
+    mockTrackEvent.mockClear()
   })
 
   it("renders artwork card with basic information", () => {
@@ -159,6 +162,53 @@ describe("ArtworkCard", () => {
     fireEvent.press(saveButton)
 
     expect(screen.getByText("Saved")).toBeOnTheScreen()
+  })
+
+  it("tracks save with artwork entity id, slug, and context", () => {
+    defaultProps = {
+      ...defaultProps,
+      contextModule: ContextModule.infiniteDiscoveryArtworkCard,
+      ownerType: OwnerType.infiniteDiscoveryArtwork,
+    }
+
+    const { mockResolveLastOperation } = renderWithRelay({
+      Artwork: () => ({
+        id: "test-artwork-relay-id",
+        internalID: "test-artwork-id",
+        slug: "test-artwork-slug",
+        isSaved: false,
+      }),
+      CollectionsConnection: () => ({
+        totalCount: 0,
+      }),
+    })
+
+    fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+    mockResolveLastOperation({
+      SaveArtworkPayload: () => ({
+        artwork: {
+          id: "test-artwork-id",
+          isSaved: true,
+          collectorSignals: null,
+        },
+        me: null,
+      }),
+    })
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "success",
+          "action_name": "artworkSave",
+          "action_type": "success",
+          "context_module": "infiniteDiscoveryArtworkCard",
+          "context_screen_owner_type": "infiniteDiscoveryArtwork",
+          "item_id": "test-artwork-id",
+          "item_slug": "test-artwork-slug",
+        },
+      ]
+    `)
   })
 
   it("renders sale message when available", () => {

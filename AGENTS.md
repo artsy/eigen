@@ -29,8 +29,10 @@ Detailed docs live in `docs/` — reference them instead of duplicating here.
 - `yarn test <path>` — Run Jest tests for specific files
 - `yarn lint --fix <path>` — Lint and auto-fix TypeScript files
 - `yarn start` — Start Metro bundler + Relay watcher
-- `yarn ios` — Run iOS app in simulator
-- `yarn android` — Run Android app in emulator
+- `yarn ios:no-cache` — Run iOS app in simulator
+- `yarn ios` — Run iOS app in simulator with build caching
+- `yarn android:cached` — Run Android app in emulator (uses cached build)
+- `yarn android` — Run Android app in emulator (full rebuild)
 
 ## Pre-Commit Verification
 

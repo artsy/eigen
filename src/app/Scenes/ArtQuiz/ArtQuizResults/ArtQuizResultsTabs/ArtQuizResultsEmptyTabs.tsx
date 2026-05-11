@@ -20,6 +20,7 @@ export const ArtQuizResultsEmptyTabs = () => {
       lazy
       headerProps={{
         onBack: () => popToRoot(),
+        hideTitle: true,
       }}
       BelowTitleHeaderComponent={() => (
         <Flex mb={1}>

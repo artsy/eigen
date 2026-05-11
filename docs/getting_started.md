@@ -137,6 +137,14 @@ yarn start
 
 First, ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id.
 
+#### Using terminal
+
+```sh
+yarn ios
+```
+
+This will use a cached build if one is available. To force a full rebuild, use `yarn ios:no-cache`.
+
 #### Using Xcode
 
 Open the app in Xcode:
@@ -147,21 +155,13 @@ open ios/Artsy.xcworkspace
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.
 
-#### Using terminal
-
-> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
-
-```sh
-yarn ios
-```
-
 ### Run the Android app
 
 ```sh
 yarn android
 ```
 
-This will start the Artsy app in an Android emulator, pointed at Artsy's staging environment.
+This will start the Artsy app in an Android emulator, pointed at Artsy's staging environment. To use build caching, use `yarn android:cached`.
 
 #### Wifi setup on Android emulators
 

@@ -259,7 +259,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
+  const shouldShowCreateAlertReminder =
+    artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD &&
+    // We are intentionally temporarily disabling the create alert reminder on android until
+    // we can make the SubTabBar sticky.
+    Platform.OS !== "android"
 
   return (
     <Flex backgroundColor={color("mono0")} flex={1}>

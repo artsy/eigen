@@ -2,6 +2,7 @@ import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
 import { AlertFillIcon, ChevronRightIcon, IconProps, MoneyFillIcon } from "@artsy/icons/native"
 import { Flex, Text, Color } from "@artsy/palette-mobile"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEventTiming } from "app/utils/useEventTiming"
@@ -67,8 +68,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         message: `${offerType} Received`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertFillIcon,
-        url: `/orders/${orderID}`,
-        modalTitle: "Review Offer",
+        url: `/orders/${orderID}/respond`,
+        modalTitle: "Respond",
       }
       break
     }
@@ -89,8 +90,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         message: `Offer Accepted - Confirm total`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertFillIcon,
-        url: `/orders/${orderID}`,
-        modalTitle: "Review Offer",
+        url: `/orders/${orderID}/respond`,
+        modalTitle: "Respond",
       }
       break
     }
@@ -100,8 +101,8 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         message: `Counteroffer Received - Confirm Total`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertFillIcon,
-        url: `/orders/${orderID}`,
-        modalTitle: "Review Offer",
+        url: `/orders/${orderID}/respond`,
+        modalTitle: "Respond",
       }
       break
     }

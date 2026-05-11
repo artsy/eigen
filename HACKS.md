@@ -28,16 +28,6 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
-## Delay modal display after LoadingModal is dismissed
-
-#### When can we remove this:
-
-Doesn't really need to be removed but can be if view hierarchy issue is fixed in RN or our LoadingModal see PR for more details: https://github.com/artsy/eigen/pull/4283
-
-#### Explanation/Context:
-
-We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
-
 ## android Input placeholder measuring hack
 
 #### When can we remove this:
@@ -49,54 +39,6 @@ Once https://github.com/facebook/react-native/pull/29664 is merged or https://gi
 As you can see in the PR and issue, android doesn't use ellipsis on the placeholder of a TextInput. That makes for a funky cut-off.
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
-
-## `react-native-push-notification` Requiring unknown module on ios
-
-#### When can we remove this:
-
-Once we want to use react-native-push-notification on iOS
-
-#### Explanation/Context:
-
-This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
-adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
-we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
-
-## `PropsStore` pass functions as props inside navigate() on iOS
-
-#### When can we remove this:
-
-Once we no longer use our native implementation of pushView on iOS
-
-#### Explanation/Context:
-
-We cannot pass functions as props because `navigate.ts` on ios uses the native obj-c definition of pushView in `ARScreenPresenterModule.m`.
-React native is not able to convert js functions so this is passed as null to the underlying native method
-See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
-
-PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
-
-## `ORStackView` patch (add UIKit import)
-
-#### When can we remove this:
-
-Once we remove ORStackView or the upstream repo adds the import. May want to proactively open a PR for this.
-
-#### Explanation/Context:
-
-The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
-
-## `Map` manual prop update in `PageWrapper`
-
-#### When can we remove this:
-
-We should see if it is still necessary when we remove the old native navigation on iOS. To check: go into City Guide, leave, enter again and then try to change the city. If it works without this code it can be removed.
-If it is still an issue with old native navigation gone this can either be removed when we remove or rebuild City Guide or if we change how props are saved in PageWrapper.
-
-#### Explanation/Context:
-
-City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
-https://github.com/artsy/eigen/pull/6348
 
 ## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
@@ -112,13 +54,13 @@ The app restarts when the user takes a picture to pass to `react-native-image-cr
 
 #### When can we remove this:
 
-To remove this, we need to change our InfiniteScrollArtworksGrid to use a FlatList or any VirtualizedList. We haven't done that yet, because we need the masonry layout.
-We either need to find a library that gives us masonry layout using a VirtualizedList, or we need to make our own version of this.
+When all `InfiniteScrollArtworksGrid` callers have been migrated to `MasonryFlashList` (from `@shopify/flash-list`), at which point `ParentAwareScrollView` and `InfiniteScrollArtworksGrid`'s ScrollView path become unused and can be deleted.
 
 #### Explanation/Context:
 
-Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
-Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
+`InfiniteScrollArtworksGrid` renders its masonry layout inside a `ScrollView` (not a `VirtualizedList`), and on Android wraps it in `ParentAwareScrollView` to detect when it's nested inside an outer scroll view of the same orientation and forward scroll events accordingly.
+
+`MasonryFlashList` now provides a virtualized masonry layout, and several scenes have migrated to it, but `InfiniteScrollArtworksGrid` is still used in ~40 places.
 
 ## Podfile postinstall code_signing_required = NO
 
@@ -154,42 +96,30 @@ patch.
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
 
-## Patch for @react-navigation/native
+## Artsy fork of Interstellar in Podfile
 
-#### When we can remove this:
+#### When can we remove this:
 
-When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
+Either when:
 
-### Explanation/Context
-
-React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
-https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604
-
-## Git link in podfile for SwiftyJSON
-
-#### When we can remove this:
-
-When this issue is resolved and version 5.0.2 or above is published on Cocoapods.
-https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
+- The upstream `JensRavens/Interstellar` publishes a new CocoaPods release that includes `unsubscribe()` on `ObserverToken` (added in master after 2.2.0, the last published version), **or**
+- We rewrite Live Auctions in React Native, at which point we can drop Interstellar entirely — it is only used by the native Live Auctions view controllers.
 
 #### Explanation/Context
 
-Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
-privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
+The Artsy fork (`artsy/Interstellar`, branch `observable-unsubscribe`) exists solely to add `unsubscribe()` to `ObserverToken`, which is called throughout the native Live Auctions view controllers (`LiveAuctionViewController`, `LiveAuctionLotListViewController`, etc.). The upstream repo added this same feature to master after the 2.2.0 CocoaPods release, but has never cut a new release. The Artsy fork's branch is 18 commits behind upstream master and only 3 ahead — all three of those commits exist in some form upstream — so if needed, we could switch to `JensRavens/Interstellar` master directly (same pattern, true upstream).
 
 ## Modular headers for firebase deps in Podfile
 
 #### When we can remove this
 
-When we stop using flipper or this issue is resolved: https://github.com/invertase/react-native-firebase/issues/6425
+When we switch to `use_frameworks! :linkage => :static` globally (the recommended setup for Expo + Firebase). This requires removing the per-pod `:modular_headers => true` entries and adding `$RNFirebaseAsStaticFramework = true`. See https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
 
 #### Explanation/Context
 
-The latest versions of react-native-firebase require using static frameworks, and unfortunately this breaks flipper.
-https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
-The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
-react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
-that have `:modular_headers => true` and add the static frameworks line from the docs above.
+Flipper is gone, but we still can't use `use_frameworks! :linkage => :static` globally — which is what rnfirebase actually recommends. PR #11550 implemented this correctly, but it was reverted in PR #11898 because enabling static linkage for all pods significantly blew up iOS build times. The `:modular_headers => true` entries are the workaround that lets Firebase compile correctly without global static linkage.
+
+As the iOS pod count decreases, the build time penalty becomes more acceptable and this should be revisited. Alternatively, this could be managed via the `expo-build-properties` plugin (`useFrameworks: "static"` in app.json) rather than a manual Podfile entry. Removing this hack would also allow removing the Braze prebuilt-static podspec hack.
 
 ## Custom lane google_play_track_rollout_percentages in fastlane dir + associated monkey patches in Fastfile
 
@@ -232,47 +162,6 @@ This patch allows us to animate the appearance of the bottom tabs. This is curre
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
 
-## Resolutions @react-native/dev-middleware
-
-#### When can we remove this:
-
-When Rozenite stable release is published and no longer requires this resolution
-
-#### Explanation/Context:
-
-This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.
-
-## patch for react-native-reanimated
-
-#### Explanation/Context:
-
-This patch was added to support 16KB page size on Android. It's a copy paste from here https://github.com/software-mansion/react-native-reanimated/pull/7037
-
-#### When can we remove it
-
-It can be removed once we upgrade to any version past 3.17
-
-## Patch for react-native-reanimated (CellRendererComponent)
-
-#### When can we remove this:
-
-When we can update the reanimated flatlist CellRendererComponent or it's style, or when this PR gets merged:
-https://github.com/software-mansion/react-native-reanimated/pull/6573
-
-#### Explanation/Context:
-
-In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
-
-## patch for react-native-blurhash
-
-#### Explanation/Context:
-
-This patch was added to fix the build on RN81.
-
-#### When can we remove this:
-
-It can be removed once there is a new release with this PR https://github.com/mrousavy/react-native-blurhash/pull/206
-
 ## patch for react-native RCTEventEmitter
 
 #### Explanation/Context:
@@ -286,17 +175,20 @@ It can be removed once if we stop using the singleton pattern or get rid of ARNo
 
 ## react-native-reanimated package.json flags and react-native patch
 
-### USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS
-
 #### Explanation/Context:
 
-This feature flag was added to fix performance issues with scrolling. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
+`package.json` sets the following reanimated `staticFeatureFlags` to fix scroll performance. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
 
-We also added a patch to react-native to support this flag and temporarily enabled preventShadowTreeCommitExhaustion and enableCppPropsIteratorSetter flags to fix performance issues.
+- `USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS`
+- `DISABLE_COMMIT_PAUSING_MECHANISM`
+- `ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS`
+- `IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS`
+
+We also patch `react-native` (`ReactNativeFeatureFlagsDefaults.h`) to flip `preventShadowTreeCommitExhaustion()` to return `true`, which is required for these flags to behave correctly.
 
 #### When can we remove this:
 
-When reanimated adopts this by default.
+When reanimated adopts these by default.
 
 ## react-native-webview passing constant for decelerationRate prop
 
@@ -326,3 +218,71 @@ This ensures accurate logging when using remote cache plugins like our S3 build 
 #### When we can remove this:
 
 When the upstream expo-build-disk-cache repository fixes the logging behavior and releases a new version that properly checks remote cache before logging cache misses.
+
+## patch for react-native
+
+#### Explanation/Context:
+
+Probably related with this sentry issue https://artsynet.sentry.io/issues/7043718518/events/0e89b1ce77cd4dfe95c45feefea1ed22/ EXC_BAD_ACCESS crash on iOS. This patch is attempting to fix the crash and was found in this reanimated issue (but is a react-native patch): https://github.com/software-mansion/react-native-reanimated/issues/7666#issuecomment-3053014969
+
+#### When can we remove this:
+
+When they address this issue on react native main repo
+
+## Patch for react-native-ios-context-menu
+
+#### When can we remove this:
+
+When https://github.com/dominicstop/react-native-ios-context-menu/pull/140 is merged and we upgrade to a version that includes it.
+
+#### Explanation/Context:
+
+Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPreview` during context menu dismissal but Fabric has already detached the underlying view from the window. The fix guards `menuTargetedPreview` to return `nil` when `window` is `nil`, letting iOS fall back to a fade-out dismissal instead of crashing.
+
+See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
+
+## patch for expo-updates
+
+#### Explanation/Context:
+
+Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+
+#### When can we remove this:
+
+When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+
+## Braze prebuilt-static podspecs in Podfile
+
+#### When can we remove this:
+
+When Braze publishes a static variant to the main CocoaPods spec, or when Expo's module system no longer requires static linkage for Braze pods. Track: https://github.com/braze-inc/braze-swift-sdk
+
+#### Explanation/Context:
+
+During the Expo integration (PR #11938), Braze's standard dynamic frameworks conflicted with Expo's app delegate module import system. Using the `braze-swift-sdk-prebuilt-static` repo forces static linkage for BrazeKit, BrazeUI, and BrazeLocation without enabling `use_frameworks! :linkage => :static` globally (which breaks other pods). The version must be updated manually when upgrading Braze.
+
+## Patch for @gorhom/bottom-sheet (scrollTo infinite loop on Fabric)
+
+#### When can we remove this:
+
+When @gorhom/bottom-sheet ships a fix for the infinite `scrollTo` loop on Fabric (New Architecture). Track these upstream issues:
+https://github.com/gorhom/react-native-bottom-sheet/issues/2546
+https://github.com/gorhom/react-native-bottom-sheet/issues/2547
+
+#### Explanation/Context:
+
+On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native commit cycle that re-triggers `onScroll` even when the scroll offset hasn't changed. In `useScrollEventsHandlersDefault`, when the scrollable state is `LOCKED`, `handleOnScroll` calls `scrollTo` to enforce the lock position, which fires another `onScroll`, which calls `scrollTo` again — creating an infinite recursion that crashes with "Maximum call stack size exceeded (native stack depth)".
+
+The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+
+Sentry issue: https://artsynet.sentry.io/issues/7304441200/
+
+## patch for @d11/react-native-fast-image
+
+#### Explanation/Context:
+
+Another dependency in the Expo/react-native ecosystem has brought in com.caverock:androidsvg-aar:1.4, the aar version of the library, which causes duplicate symbols errors when linking.
+
+#### When can we remove this:
+
+When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes

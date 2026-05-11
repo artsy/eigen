@@ -6,7 +6,7 @@ buildscript {
         compileSdkVersion = 36
         targetSdkVersion = 36
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
-        googlePlayServicesAuthVersion = "16.0.1"
+        googlePlayServicesAuthVersion = "21.4.0"
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
     }
@@ -18,7 +18,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath('com.google.gms:google-services:4.3.8')
+        classpath('com.google.gms:google-services:4.4.0')
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }

@@ -31,6 +31,7 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
@@ -42,6 +43,7 @@ import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionShe
 import { KeyboardAwareForm } from "app/utils/keyboard/KeyboardAwareForm"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { useFormikContext } from "formik"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, LayoutChangeEvent, TouchableOpacity } from "react-native"
@@ -56,7 +58,12 @@ export const MyCollectionArtworkFormMain: React.FC<
   const { trackEvent } = useTracking()
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
-  const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+  const dirtyFormCheckValues = GlobalStore.useAppState(
+    (state) => state.myCollection.artwork.sessionState.dirtyFormCheckValues
+  )
+  const storePhotos = GlobalStore.useAppState(
+    (state) => state.myCollection.artwork.sessionState.formValues.photos
+  )
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [showDeleteArtistModal, setShowDeleteArtistModal] = useState(false)
@@ -120,22 +127,23 @@ export const MyCollectionArtworkFormMain: React.FC<
       }
     })
     return backListener
-  }, [
-    navigation,
-    artworkState.sessionState.formValues,
-    artworkState.sessionState.dirtyFormCheckValues,
-  ])
+  }, [navigation, formik.values, dirtyFormCheckValues])
+
+  // Sync photos from GlobalStore into Formik. This covers both inline photo
+  // selection and changes made on the AddPhotos screen. Photos only change on
+  // explicit user actions, so this never fires during typing.
+  useEffect(() => {
+    formik.setFieldValue("photos", storePhotos)
+  }, [storePhotos])
 
   const isFormDirty = useCallback(() => {
-    const { formValues, dirtyFormCheckValues } = artworkState.sessionState
-
     // Check if any fields are filled out when adding a new artwork
     if (mode === "add") {
-      return Object.getOwnPropertyNames(formValues).find(
+      return Object.getOwnPropertyNames(formikValues).find(
         (key) =>
           !["pricePaidCurrency", "metric", "photos", "customArtist"].includes(key) &&
           !key.startsWith("artist") &&
-          (formValues as { [key: string]: any })[key]
+          (formikValues as { [key: string]: any })[key]
       )
 
       // Check if any fields are different from the original values when editing an artwork
@@ -148,20 +156,15 @@ export const MyCollectionArtworkFormMain: React.FC<
         (accum: boolean, key: string) =>
           accum ||
           !isEqual(
-            (formValues as { [key: string]: any })[key],
+            (formikValues as { [key: string]: any })[key],
             (dirtyFormCheckValues as { [key: string]: any })[key]
           ),
         false
       )
     }
-  }, [
-    JSON.stringify(artworkState.sessionState.formValues),
-    JSON.stringify(artworkState.sessionState.dirtyFormCheckValues),
-  ])
+  }, [JSON.stringify(formikValues), JSON.stringify(dirtyFormCheckValues)])
 
   const clearForm = async () => {
-    const { dirtyFormCheckValues } = artworkState.sessionState
-
     const formIsDirty = isFormDirty()
 
     if (formIsDirty) {
@@ -443,7 +446,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <PhotosButton
             testID="PhotosButton"
             onPress={() => {
-              if (isEmpty(artworkState.sessionState.formValues.photos)) {
+              if (isEmpty(formikValues.photos)) {
                 showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
                   artworkActions.addPhotos(photos)
                 })
@@ -502,7 +505,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 }
 
 const ArtistField: React.FC = () => {
-  const { formik } = useArtworkForm()
+  const formik = useFormikContext<ArtworkFormValues>()
 
   if (formik.values.artistSearchResult) {
     return <ArtistSearchResult result={formik.values.artistSearchResult} />

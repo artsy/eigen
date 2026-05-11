@@ -4,9 +4,9 @@ runs:
   using: "composite"
   steps:
     - name: Setup node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
-        node-version: "22.14.0"
+        node-version: "24.6.0"
     - name: Enable Corepack
       run: corepack enable
       shell: bash

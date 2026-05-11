@@ -103,6 +103,8 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         context_screen_owner_id: contextScreenOwnerId,
         context_screen_owner_slug: contextScreenOwnerSlug,
         context_screen_owner_type: contextScreenOwnerType,
+        item_id: artwork.internalID,
+        item_slug: artwork.slug,
         inquireable: isInquireable,
         offerable: isOfferable,
       })

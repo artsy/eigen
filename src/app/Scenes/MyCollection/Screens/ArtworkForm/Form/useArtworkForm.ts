@@ -14,7 +14,8 @@ export function useArtworkForm(disabled?: boolean): { formik: FormikProps<Artwor
     }
 
     GlobalStore.actions.myCollection.artwork.setFormValues(formik.values)
-  }, [formik.values])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(formik.values)])
 
   return {
     formik,

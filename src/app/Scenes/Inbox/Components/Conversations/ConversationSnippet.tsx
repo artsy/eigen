@@ -3,7 +3,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { Schema } from "app/utils/track"
-import moment from "moment"
+import { DateTime } from "luxon"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -77,7 +77,9 @@ export const ConversationSnippet: React.FC<Props> = ({ conversation, onSelected 
   const partnerName = conversation.to.name
 
   const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
-  const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
+  const date = conversation.lastMessageAt
+    ? DateTime.fromISO(conversation.lastMessageAt).toRelative()
+    : null
 
   return (
     <Touchable

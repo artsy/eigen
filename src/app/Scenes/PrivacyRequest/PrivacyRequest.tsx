@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
-import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import React from "react"
 
@@ -16,9 +17,14 @@ export const PrivacyRequest: React.FC = () => {
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm" textAlign="left">
               Please see Artsy's{" "}
-              <RouterLink to="/privacy" hasChildTouchable>
-                <LinkText>Privacy Policy</LinkText>
-              </RouterLink>{" "}
+              <LinkText
+                onPress={() => {
+                  navigate("/privacy")
+                }}
+                variant="sm"
+              >
+                Privacy Policy
+              </LinkText>{" "}
               for more information about the information we collect, how we use it, and why we use
               it.
             </Text>
