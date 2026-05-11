@@ -182,8 +182,6 @@ jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
 
-jest.mock("expo-status-bar", () => {})
-
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "some-build-number",
   getSystemName: () => "some-system-name",

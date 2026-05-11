@@ -35,9 +35,15 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import * as StatusBar from "expo-status-bar"
 import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, Linking, RefreshControl, ViewToken, ListRenderItem } from "react-native"
+import {
+  FlatList,
+  Linking,
+  RefreshControl,
+  ViewToken,
+  ListRenderItem,
+  StatusBar,
+} from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -226,7 +232,7 @@ const HomeViewScreenComponent: React.FC = () => {
 
   const { isDeepLink } = useIsDeepLink()
 
-  StatusBar.setStatusBarStyle(theme === "dark" ? "light" : "dark", true)
+  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
