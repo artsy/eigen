@@ -413,7 +413,7 @@ describe("AuthModel", () => {
         expect(clearAllPriceRangesSpy).toHaveBeenCalled()
       })
     })
-    it("returns 'network_error' when the network request fails", async () => {
+    it("returns 'failure' when the network request fails", async () => {
       const networkError = new Error("Network request failed")
       mockFetch.mockRejectedValueOnce(networkError)
 
@@ -424,11 +424,11 @@ describe("AuthModel", () => {
         password: "hunter2", // pragma: allowlist secret
       })
 
-      expect(result).toBe("network_error")
+      expect(result).toBe("failure")
       expect(Sentry.captureMessage).toHaveBeenCalledWith(`AuthModel signIn error ${networkError}`)
     })
 
-    it("returns 'network_error' when fetch throws an error", async () => {
+    it("returns 'failure' when fetch throws an error", async () => {
       const fetchError = new TypeError("Failed to fetch")
       mockFetch.mockRejectedValueOnce(fetchError)
 
@@ -439,7 +439,7 @@ describe("AuthModel", () => {
         password: "hunter2", // pragma: allowlist secret
       })
 
-      expect(result).toBe("network_error")
+      expect(result).toBe("failure")
       expect(Sentry.captureMessage).toHaveBeenCalledWith(`AuthModel signIn error ${fetchError}`)
     })
   })

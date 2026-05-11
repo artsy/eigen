@@ -10,10 +10,10 @@ import {
   Text,
   useTheme,
 } from "@artsy/palette-mobile"
-import NetInfo from "@react-native-community/netinfo"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
+import { useToast } from "app/Components/Toast/toastHook"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
@@ -24,7 +24,7 @@ import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, Platform } from "react-native"
+import { Platform } from "react-native"
 import { Easing } from "react-native-reanimated"
 import * as Yup from "yup"
 
@@ -37,8 +37,9 @@ export const LoginWelcomeStep: React.FC = () => {
   const isCurrentScreen = currentScreen?.name === "LoginWelcomeStep"
 
   const navigation = useAuthNavigation()
+  const toast = useToast()
 
-  const { Recaptcha, token, isTokenValid, refreshToken } = useRecaptcha({
+  const { Recaptcha, token, state, isTokenValid, refreshToken } = useRecaptcha({
     source: "authentication",
     action: "verify_email",
   })
@@ -89,15 +90,19 @@ export const LoginWelcomeStep: React.FC = () => {
         onSubmit={async ({ email }, { resetForm }) => {
           // Check if token is missing or expired
           if (!token || !isTokenValid()) {
-            const netInfo = await NetInfo.fetch()
-            if (!netInfo.isConnected) {
-              // Show alert if offline
-              Alert.alert("Can't Connect", "Check your network and try again")
+            refreshToken()
+
+            if (state === "error") {
+              toast.show(
+                "Something went wrong. Please try again, or contact support@artsy.net",
+                "bottom",
+                {
+                  backgroundColor: "red100",
+                }
+              )
               return
             }
-            // If online, wait for reCAPTCHA token (existing behavior)
             setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
-            refreshToken()
             return
           }
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })

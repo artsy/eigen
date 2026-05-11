@@ -9,6 +9,7 @@ import {
   Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -18,7 +19,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { Formik, useFormikContext } from "formik"
 import { useRef } from "react"
-import { Alert } from "react-native"
 import * as Yup from "yup"
 
 export interface LoginPasswordStepFormValues {
@@ -28,6 +28,7 @@ export interface LoginPasswordStepFormValues {
 export const LoginPasswordStep: React.FC = () => {
   const screen = useAuthScreen()
   const navigation = useAuthNavigation()
+  const toast = useToast()
 
   return (
     <Formik<LoginPasswordStepFormValues>
@@ -64,15 +65,24 @@ export const LoginPasswordStep: React.FC = () => {
         }
 
         switch (true) {
-          case res === "network_error": {
-            Alert.alert("Can't Connect", "Check your network and try again")
+          case res === "failure": {
+            toast.show(
+              "Something went wrong. Please try again, or contact support@artsy.net",
+              "bottom",
+              {
+                backgroundColor: "red100",
+              }
+            )
             break
           }
           case res === "auth_blocked": {
             showBlockedAuthError("sign in")
             break
           }
-          case res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing": {
+          case res !== "success" &&
+            res !== "otp_missing" &&
+            res !== "on_demand_otp_missing" &&
+            res !== "failure": {
             setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
             break
           }

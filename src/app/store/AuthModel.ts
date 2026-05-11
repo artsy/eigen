@@ -42,7 +42,6 @@ type SignInStatus =
   | "on_demand_otp_missing"
   | "invalid_otp"
   | "auth_blocked"
-  | "network_error"
 
 type VerifyUserStatus = "user_exists" | "user_does_not_exist" | "something_went_wrong"
 
@@ -332,7 +331,7 @@ export const getAuthModel = (): AuthModel => ({
       })
     } catch (error) {
       Sentry.captureMessage(`AuthModel signIn error ${error}`)
-      return "network_error"
+      return "failure"
     }
     if (result.status === 403) {
       return "auth_blocked"
