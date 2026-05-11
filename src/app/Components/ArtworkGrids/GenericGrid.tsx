@@ -33,6 +33,7 @@ type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
 export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   artworks: artworksProp,
+  contextModule,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -58,6 +59,8 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
         <Flex accessibilityLabel="Artworks Content View" mx={-2}>
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
+            contextModule={contextModule}
+            contextScreenOwnerType={contextScreenOwnerType}
             scrollEnabled={false}
             hidePartner={hidePartner}
             trackTap={trackTap}

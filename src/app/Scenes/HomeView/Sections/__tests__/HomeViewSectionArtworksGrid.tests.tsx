@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { HomeViewSectionArtworksGrid } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworksGrid"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -84,6 +84,17 @@ describe("HomeViewSectionArtworksGrid", () => {
         contextModule: gridContextModule,
         position: 1,
         type: "artwork",
+      })
+    )
+  })
+
+  it("passes home analytics context to the artwork grid", () => {
+    renderComponent()
+
+    expect(mockGenericGrid).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contextModule: gridContextModule,
+        contextScreenOwnerType: OwnerType.home,
       })
     )
   })

@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { GenericGrid_artworks$key } from "__generated__/GenericGrid_artworks.graphql"
@@ -79,6 +79,8 @@ export const HomeViewSectionArtworksGrid: React.FC<HomeViewSectionArtworksGridPr
       <View ref={gridContainerRef}>
         <GenericGrid
           artworks={artworks}
+          contextModule={contextModule}
+          contextScreenOwnerType={OwnerType.home}
           onPress={onArtworkPress}
           fitToFrame
           onItemVisibilityChange={handleGridItemVisibilityChange}
