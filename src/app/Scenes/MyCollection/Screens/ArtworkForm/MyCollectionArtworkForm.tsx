@@ -148,7 +148,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   }, [])
 
   const formik = useFormik<ArtworkFormValues>({
-    enableReinitialize: true,
+    enableReinitialize: false,
     initialValues: formValues,
     initialErrors: validateArtworkSchema(formValues),
     onSubmit: handleSubmit,

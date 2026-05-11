@@ -86,6 +86,30 @@ describe("AboutTheWorkTab", () => {
     expect(screen.getByText("Frame not included")).toBeOnTheScreen()
   })
 
+  describe("framed dimensions", () => {
+    it("shows framed dimensions when data is available", () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, framedDimensions: { in: "24 × 28 in", cm: "61 × 71.1 cm" } }),
+      })
+
+      expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
+      expect(screen.getByText("24 × 28 in | 61 × 71.1 cm")).toBeOnTheScreen()
+    })
+
+    it("does not show framed dimensions section when framed dimensions data is missing", () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, framedDimensions: null }),
+      })
+
+      expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
+      expect(screen.queryByText("Framed Dimensions")).not.toBeOnTheScreen()
+    })
+  })
+
   describe("classification and authenticity section", () => {
     it("shows attribution class when available", async () => {
       const { mockResolveLastOperation } = renderWithRelay()

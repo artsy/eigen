@@ -86,6 +86,45 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
         </>
       )
 
+    case "COUNTEROFFER_SENT":
+      return (
+        <>
+          <Text variant="sm">
+            Your counteroffer has been submitted to the gallery. You will receive an email shortly
+            with all the details. Please note making an offer doesn’t guarantee you the work.
+          </Text>
+
+          <Spacer y={2} />
+
+          <Text variant="sm">
+            The gallery will confirm by{" "}
+            <Text variant="sm" fontWeight="bold">
+              {formattedStateExpireTime}
+            </Text>
+            .
+          </Text>
+
+          <Spacer y={2} />
+
+          <Text variant="sm">
+            You can{" "}
+            {!!order.impulseConversationId ? (
+              <LinkText
+                onPress={() => {
+                  orderDetailTracks.tappedContactGallery(order.internalID)
+                  navigate(`/user/conversations/${order.impulseConversationId}`)
+                }}
+              >
+                contact the gallery
+              </LinkText>
+            ) : (
+              "contact the gallery"
+            )}{" "}
+            with any questions.
+          </Text>
+        </>
+      )
+
     case "PAYMENT_FAILED":
       return (
         <Text variant="sm">

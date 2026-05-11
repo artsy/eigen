@@ -7,6 +7,7 @@ import {
   shareContent,
 } from "app/Scenes/Artwork/Components/ArtworkActions"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -151,11 +152,48 @@ describe("ArtworkActions", () => {
         "useSaveArtworkMutation"
       )
     })
+
+    it("tracks save with artwork entity id and slug", () => {
+      const { mockResolveLastOperation } = renderWithRelay({
+        Artwork: () => ({
+          ...artworkActionsArtwork,
+          internalID: "artwork-internal-id",
+          slug: "artwork-slug",
+          isSaved: false,
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      mockResolveLastOperation({
+        SaveArtworkPayload: () => ({
+          artwork: {
+            id: "artwork12345",
+            isSaved: true,
+            collectorSignals: null,
+          },
+          me: null,
+        }),
+      })
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action_name": "artworkSave",
+            "action_type": "success",
+            "context_module": "ArtworkActions",
+            "item_id": "artwork-internal-id",
+            "item_slug": "artwork-slug",
+          },
+        ]
+      `)
+    })
   })
 })
 
 const artworkActionsArtwork = {
   id: "artwork12345",
+  internalID: "artwork-internal-id",
   slug: "andreas-rod-prinzknecht",
   image: {
     url: "image.com/image",

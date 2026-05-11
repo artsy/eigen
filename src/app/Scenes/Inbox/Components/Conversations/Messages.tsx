@@ -2,9 +2,8 @@ import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
-
 import { extractNodes } from "app/utils/extractNodes"
-
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
@@ -25,11 +24,7 @@ const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
 
-type Order = NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<Props["conversation"]["orderConnection"]>["edges"]>[number]
-  >["node"]
->
+type Order = ExtractNodeType<Messages_conversation$data["orderConnection"]>
 type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
 
@@ -152,6 +147,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
               group={item}
               conversationId={conversation?.internalID ?? ""}
               subjectItem={conversation.items?.[0]?.item}
+              formattedFirstMessage={conversation.inquiryRequest?.formattedFirstMessage}
             />
           )
         }}
@@ -250,6 +246,9 @@ export default createPaginationContainer(
               ...ShowPreview_show
             }
           }
+        }
+        inquiryRequest {
+          formattedFirstMessage
         }
       }
     `,

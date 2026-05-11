@@ -1,9 +1,4 @@
 PODS:
-  - Aerodramus (2.0.0):
-    - ISO8601DateFormatter
-  - AFNetworkActivityLogger (2.0.4):
-    - AFNetworking/NSURLConnection (~> 2.0)
-    - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking/NSURLConnection (2.7.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -21,6 +16,10 @@ PODS:
   - AppAuth/Core (1.7.6)
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
+  - AppCheckCore (11.2.0):
+    - GoogleUtilities/Environment (~> 8.0)
+    - GoogleUtilities/UserDefaults (~> 8.0)
+    - PromisesObjC (~> 2.4)
   - boost (1.84.0)
   - braze-react-native-sdk (16.1.0):
     - boost
@@ -60,9 +59,6 @@ PODS:
     - BrazeKit (= 13.2.1)
   - BVLinearGradient (2.8.3):
     - React-Core
-  - CocoaLumberjack (3.9.0):
-    - CocoaLumberjack/Core (= 3.9.0)
-  - CocoaLumberjack/Core (3.9.0)
   - ComputableLayout (0.7.0):
     - DGSwiftUtilities (~> 0.11)
   - ContextMenuAuxiliaryPreview (0.5.2):
@@ -125,9 +121,9 @@ PODS:
     - ExpoModulesCore
     - FBSDKCoreKit
     - React-Core
-  - ExpoAdapterGoogleSignIn (11.0.1):
+  - ExpoAdapterGoogleSignIn (15.0.0):
     - ExpoModulesCore
-    - GoogleSignIn (~> 7.0)
+    - GoogleSignIn (~> 8.0)
     - React-Core
   - ExpoAsset (12.0.12):
     - ExpoModulesCore
@@ -246,7 +242,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 8.1)
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
-  - FLKAutoLayout (1.0.0)
+  - FLKAutoLayout (1.0.1)
   - fmt (11.0.2)
   - Forgeries/Core (1.0.0)
   - Forgeries/Mocks (1.0.0):
@@ -256,10 +252,11 @@ PODS:
   - GoogleDataTransport (10.1.0):
     - nanopb (~> 3.30910.0)
     - PromisesObjC (~> 2.4)
-  - GoogleSignIn (7.0.0):
-    - AppAuth (~> 1.5)
-    - GTMAppAuth (< 3.0, >= 1.3)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
+  - GoogleSignIn (8.0.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - AppCheckCore (~> 11.0)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
   - GoogleUtilities (8.1.0):
     - GoogleUtilities/AppDelegateSwizzler (= 8.1.0)
     - GoogleUtilities/Environment (= 8.1.0)
@@ -300,23 +297,19 @@ PODS:
   - GoogleUtilities/UserDefaults (8.1.0):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - GTMAppAuth (2.0.0):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
   - GTMSessionFetcher/Core (3.5.0)
   - hermes-engine (0.81.5):
     - hermes-engine/Pre-built (= 0.81.5)
   - hermes-engine/Pre-built (0.81.5)
   - Interstellar/Core (2.0.0)
-  - INTUAnimationEngine (1.4.2):
-    - INTUAnimationEngine/SpringSolver (= 1.4.2)
-  - INTUAnimationEngine/SpringSolver (1.4.2)
   - iOSSnapshotTestCase (8.0.0):
     - iOSSnapshotTestCase/SwiftSupport (= 8.0.0)
   - iOSSnapshotTestCase/Core (8.0.0)
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
-  - ISO8601DateFormatter (0.7.1)
   - JWTDecode (2.0.0)
   - libavif/core (0.11.1)
   - libavif/libdav1d (0.11.1):
@@ -2139,7 +2132,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-blurhash (2.1.1):
+  - react-native-blurhash (2.1.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -2170,6 +2163,34 @@ PODS:
   - react-native-cookies (6.0.11):
     - React-Core
   - react-native-document-picker (10.1.5):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
+  - react-native-document-viewer (4.0.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2312,7 +2333,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-keyboard-controller (1.20.2):
+  - react-native-keyboard-controller (1.21.7):
     - boost
     - DoubleConversion
     - fast_float
@@ -2330,7 +2351,7 @@ PODS:
     - React-graphics
     - React-ImageManager
     - React-jsi
-    - react-native-keyboard-controller/common (= 1.20.2)
+    - react-native-keyboard-controller/common (= 1.21.7)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -2341,7 +2362,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-keyboard-controller/common (1.20.2):
+  - react-native-keyboard-controller/common (1.21.7):
     - boost
     - DoubleConversion
     - fast_float
@@ -3278,7 +3299,7 @@ PODS:
     - Yoga
   - RNDeviceInfo (14.0.0):
     - React-Core
-  - RNFastImage (8.12.0):
+  - RNFastImage (8.13.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3308,6 +3329,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SDWebImage (>= 5.19.1)
     - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageSVGCoder (~> 1.7.0)
     - SDWebImageWebPCoder (~> 0.14)
     - SocketRocket
     - Yoga
@@ -3347,9 +3369,35 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNGoogleSignin (11.0.1):
-    - GoogleSignIn (~> 7.0.0)
+  - RNGoogleSignin (15.0.0):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - GoogleSignIn (~> 8.0)
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RNImageCropPicker (0.51.0):
     - boost
     - DoubleConversion
@@ -3685,7 +3733,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (7.9.0):
+  - RNSentry (7.10.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -3895,6 +3943,8 @@ PODS:
   - SDWebImageAVIFCoder (0.11.1):
     - libavif/core (>= 0.11.0)
     - SDWebImage (~> 5.10)
+  - SDWebImageSVGCoder (1.7.0):
+    - SDWebImage/Core (~> 5.6)
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
@@ -4013,14 +4063,11 @@ PODS:
   - TOCropViewController (2.7.4)
   - Turf (2.8.0)
   - UICKeyChainStore (2.2.1)
-  - "UIView+BooleanAnimations (1.0.2)"
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (0.0.0)
 
 DEPENDENCIES:
-  - Aerodramus (= 2.0.0)
-  - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -4029,7 +4076,6 @@ DEPENDENCIES:
   - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec`)
   - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
-  - CocoaLumberjack (= 3.9.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -4053,7 +4099,7 @@ DEPENDENCIES:
   - FirebaseCore
   - FirebaseCoreExtension
   - FirebaseInstallations
-  - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
+  - FLKAutoLayout (= 1.0.1)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - Forgeries/Mocks
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -4061,8 +4107,6 @@ DEPENDENCIES:
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
-  - INTUAnimationEngine
-  - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JWTDecode (= 2.0.0)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
@@ -4114,6 +4158,7 @@ DEPENDENCIES:
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
+  - "react-native-document-viewer (from `../node_modules/@react-native-documents/viewer`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
@@ -4193,21 +4238,17 @@ DEPENDENCIES:
   - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
+  - SwiftyJSON (= 5.0.2)
   - Then (= 2.3.0)
   - UICKeyChainStore
-  - "UIView+BooleanAnimations"
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
   trunk:
-    - AFNetworkActivityLogger
     - AFNetworking
     - AppAuth
-    - CocoaLumberjack
+    - AppCheckCore
     - ComputableLayout
     - ContextMenuAuxiliaryPreview
     - CwlCatchException
@@ -4230,13 +4271,13 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
+    - FLKAutoLayout
     - Forgeries
     - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
-    - INTUAnimationEngine
     - iOSSnapshotTestCase
     - JWTDecode
     - libavif
@@ -4263,6 +4304,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - SDWebImage
     - SDWebImageAVIFCoder
+    - SDWebImageSVGCoder
     - SDWebImageWebPCoder
     - Sentry
     - Sift
@@ -4277,11 +4319,11 @@ SPEC REPOS:
     - StripePaymentSheet
     - StripePaymentsUI
     - StripeUICore
+    - SwiftyJSON
     - Then
     - TOCropViewController
     - Turf
     - UICKeyChainStore
-    - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
@@ -4333,9 +4375,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
-  FLKAutoLayout:
-    :branch: v1
-    :git: https://github.com/artsy/FLKAutoLayout.git
   fmt:
     :podspec: "../node_modules/react-native/third-party-podspecs/fmt.podspec"
   glog:
@@ -4346,8 +4385,6 @@ EXTERNAL SOURCES:
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :git: https://github.com/artsy/iso-8601-date-formatter
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -4422,6 +4459,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
+  react-native-document-viewer:
+    :path: "../node_modules/@react-native-documents/viewer"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
@@ -4572,38 +4611,24 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/sovran-react-native"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
-  SwiftyJSON:
-    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
-    :git: https://github.com/SwiftyJSON/SwiftyJSON/
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  FLKAutoLayout:
-    :commit: 44a277d21d4fa104589703a34a4d82647414f435
-    :git: https://github.com/artsy/FLKAutoLayout.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :commit: 1a48b819c85903ded669e74e476aceffebf311fc
-    :git: https://github.com/artsy/iso-8601-date-formatter
-  SwiftyJSON:
-    :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
-    :git: https://github.com/SwiftyJSON/SwiftyJSON/
 
 SPEC CHECKSUMS:
-  Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
-  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   braze-react-native-sdk: 06e01f3e619ee54edaae49ab6470f643df118422
   BrazeKit: 4dff9532234bb6faa1721a87f7927cc4c2880f28
   BrazeLocation: 7c828b42008203ae512e0ed846c4e0e294c27052
   BrazeUI: df3abdd46d2fe158cac147e9a8651d56be67a337
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
-  CocoaLumberjack: 5644158777912b7de7469fa881f8a3f259c2512a
   ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
   ContextMenuAuxiliaryPreview: 20be0be795b783b68f8792732eed4bed9f202c1c
   CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
@@ -4621,7 +4646,7 @@ SPEC CHECKSUMS:
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: 038e807e43fecf6e306f04df6542d22f2da92d5e
   ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
-  ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
+  ExpoAdapterGoogleSignIn: cde973fe0134b1c0204502eeae5ec701cc379a57
   ExpoAsset: f867e55ceb428aab99e1e8c082b5aee7c159ea18
   ExpoFileSystem: 858a44267a3e6e9057e0888ad7c7cfbf55d52063
   ExpoFont: f543ce20a228dd702813668b1a07b46f51878d47
@@ -4644,20 +4669,18 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: ff526c22671bb564d1b34a47615e29ba99389dee
   FirebaseInstallations: 6836550c466a6c3f753a777bec6f4e58ea228779
   FirebaseMessaging: 6538be0d8e8d0a3405407bc3813e2223287c0d17
-  FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
-  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
+  GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
-  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
   Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
-  INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
-  ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
@@ -4715,16 +4738,17 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 94f4264de2cb156960cd82b338a403f4653f2fd9
   React-microtasksnativemodule: 6c4ee39a36958c39c97b074d28f360246a335e84
   react-native-blob-util: 10c78778354e6c92b7a5afa4a1027cf0f18a9bb9
-  react-native-blurhash: c1721deafe7a685088ea14ab4712a1c460be9fe4
+  react-native-blurhash: 93b024ff78f7912d22b1cdba262f3c91d3e2002e
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: f26f09a90cce65b5d682f21b511e8eb09a506fdc
+  react-native-document-viewer: d879028d0a0148ab69b6a138dff6d9331cbd1240
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-geolocation: 95e48fe2687e5a8280103085372fa62c2297c5d6
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
   react-native-ios-context-menu: afeb0ca80a48e6d13a5d712928ca3b2fdbef037e
   react-native-ios-utilities: d9ed1f5ea011650e9c7e9cb7c82272c1f0363e44
-  react-native-keyboard-controller: d8d31b877dada043156156497b242d9b1ce0d485
+  react-native-keyboard-controller: 3ee1e63487ea8ba3554db4f131af1ebac5e2da39
   react-native-keys: 80dc5f204b236ff384be06a514294eb24c65bd1f
   react-native-launch-arguments: 26b9a5b2ec14819d3eb07150120e18feda572195
   react-native-menu: 5962c8b2413669b5013c3579554df4d8b856c887
@@ -4771,11 +4795,11 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 29f0230e1a25f36c20b05f65e2eb8958d6526e82
   RNCClipboard: adba6334687b7fb2c37760e26dedd550b4846a72
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
-  RNFastImage: 4b6aa4ec13de8dc57deef25f89f00aa93a2cf139
+  RNFastImage: b076a6378b1ce90debc27a927a437db3652bef14
   RNFBApp: fcac8339a5ffd5a735c62d5f0101f79e4d9a7670
   RNFBMessaging: 8c72e2f7d5eb2cc24d87e60c8be21eb2c94da272
   RNGestureHandler: 3a73f098d74712952870e948b3d9cf7b6cae9961
-  RNGoogleSignin: b8f09e3ec56e09497e1e53b0ff66d5a45916c6b1
+  RNGoogleSignin: 3196b01a94355f39731ffa4575ff3e2052022196
   RNImageCropPicker: 07691ec35bc874cf46b39d7710d82f63c9ca0817
   RNKeychain: a2c134ab796272c3d605e035ab727591000b30f3
   RNLocalize: a0ec66afe0980934cfe13f3bc30f476443388a36
@@ -4785,12 +4809,13 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: c164765b15cfa0ac1a2716eda5676e9cd6784e9c
   RNScreens: 0bbf16c074ae6bb1058a7bf2d1ae017f4306797c
-  RNSentry: 8dade4197bddd74024f1e8160669c0ee44dade5a
+  RNSentry: a4c81a5c5bcd58d765126726432348e60cd7183d
   RNShare: 1dba46787d6e5543e05655efaefa0e4bb98380d9
   RNSVG: c5807de8e337c7a643f9bad2ecf48a15aefcc23c
   RNWorklets: 5dd32e6d649594b9a938cdd75673dffb2266e119
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
+  SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   segment-analytics-react-native: a0c29c75ede1989118b50cac96b9495ea5c91a1d
   Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
@@ -4809,15 +4834,14 @@ SPEC CHECKSUMS:
   StripePaymentSheet: b126816213ae4f56ff4525ad25f94bb985a43e27
   StripePaymentsUI: 05d4be35b34f821d5ddc8617dee04219f3646253
   StripeUICore: d07bd63a4b53dee8cab4d6f81ce5a7ab3e28511e
-  SwiftyJSON: 576fbf26942d5ef414daad8870b1642413ecc00c
+  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 728df40394d49f3f471688747cf558158b3a3bd1
 
-PODFILE CHECKSUM: 801d9dc4203ed754f445ff30e22521da0f485fe7
+PODFILE CHECKSUM: 102d35dc318dc6dc1a105c1edca4a0fcaf473519
 
 COCOAPODS: 1.16.2

@@ -1070,7 +1070,8 @@ describe("AuthModel", () => {
       mockFetch.mockClear()
       mockHasPlayServices.mockReturnValue(true)
       mockGoogleSignIn.mockReturnValue({
-        user: { email: "googleEmail@gmail.com", name: "name from google" },
+        type: "success",
+        data: { user: { email: "googleEmail@gmail.com", name: "name from google" } },
       })
       mockGoogleGetTokens.mockReturnValue({ accessToken: "google-token" })
     })
@@ -1171,7 +1172,8 @@ describe("AuthModel", () => {
       mockFetch.mockClear()
       mockHasPlayServices.mockReturnValue(true)
       mockGoogleSignIn.mockReturnValue({
-        user: { email: "googleEmail@gmail.com", name: "name from google" },
+        type: "success",
+        data: { user: { email: "googleEmail@gmail.com", name: "name from google" } },
       })
       mockGoogleGetTokens.mockReturnValue({ accessToken: "google-token" })
     })

@@ -2,6 +2,7 @@ import { BackButton, Button, Flex, Input, Spacer, Text, useTheme } from "@artsy/
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { EmailSubscriptionCheckbox } from "app/Scenes/Onboarding/Components/EmailSubscriptionCheckbox"
 import { TermsOfServiceCheckbox } from "app/Scenes/Onboarding/Components/TermsOfServiceCheckbox"
+import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -24,11 +25,10 @@ interface SignUpNameStepFormValues {
 
 export const SignUpNameStep: React.FC = () => {
   const screen = useAuthScreen()
-  const { loading, isAutomaticallySubscribed } = useCountryCode()
 
-  if (loading) {
-    return null
-  }
+  const isAutomaticallySubscribed = AuthContext.useStoreState(
+    (state) => state.isAutomaticallySubscribed
+  )
 
   return (
     <Formik<SignUpNameStepFormValues>

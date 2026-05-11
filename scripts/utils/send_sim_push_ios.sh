@@ -1,7 +1,7 @@
 
 
 #!/bin/bash
-set -euo pipefail
+set -euxo pipefail
 
 # Send a push notification to iOS simulator
 

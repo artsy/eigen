@@ -75,6 +75,8 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
             },
             profession: values.profession,
             otherRelevantPositions: values.otherRelevantPositions,
+            instagram: values.instagram,
+            linkedIn: values.linkedIn,
             promptedForUpdate: true,
           },
         },
@@ -126,7 +128,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
               disabled={!isValid}
               loading={loading}
             >
-              Save and Continue
+              Save Profile Details
             </Button>
           </FormikProvider>
         </Box>

@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, TextProps, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { GenericGrid_artworks$key } from "__generated__/GenericGrid_artworks.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import Spinner from "app/Components/Spinner"
@@ -20,16 +21,19 @@ interface Props {
   hidePartner?: boolean
   isLoading?: boolean
   itemMargin?: number
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   trackingFlow?: string
   saleInfoTextStyle?: TextProps
+  fitToFrame?: boolean
+  onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
 export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   artworks: artworksProp,
+  contextModule,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -39,6 +43,8 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   trackTap,
   saleInfoTextStyle,
   trackingFlow,
+  fitToFrame = false,
+  onItemVisibilityChange,
 }) => {
   const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
@@ -53,12 +59,16 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
         <Flex accessibilityLabel="Artworks Content View" mx={-2}>
           <MasonryInfiniteScrollArtworkGrid
             artworks={artworks as unknown as MasonryArtworkItem[]}
+            contextModule={contextModule}
+            contextScreenOwnerType={contextScreenOwnerType}
             scrollEnabled={false}
             hidePartner={hidePartner}
             trackTap={trackTap}
             onPress={onPress}
             saleInfoTextStyle={saleInfoTextStyle}
             trackingFlow={trackingFlow}
+            fitToFrame={fitToFrame}
+            onItemVisibilityChange={onItemVisibilityChange}
           />
         </Flex>
         {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}
@@ -70,6 +80,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
 const genericGridFragment = graphql`
   fragment GenericGrid_artworks on Artwork @relay(plural: true) {
     id
+    internalID
     slug
     image(includeAll: false) {
       aspectRatio

@@ -282,7 +282,7 @@ describe("useHandlePushNotifications", () => {
     }
 
     const { rerender } = renderHook(
-      ({ notification }) =>
+      ({ notification }: { notification: PushNotification | null }) =>
         useHandlePushNotifications({
           pushNotification: notification,
           setPushNotification: mockSetPushNotification,

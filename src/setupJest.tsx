@@ -201,8 +201,22 @@ jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
+      CacheDir: "/mock/cache",
     },
+    exists: jest.fn().mockResolvedValue(false),
+    mkdir: jest.fn().mockResolvedValue(undefined),
   },
+  config: jest.fn().mockReturnValue({
+    fetch: jest.fn().mockReturnValue({
+      progress: jest.fn().mockReturnThis(),
+      cancel: jest.fn(),
+      then: jest.fn().mockResolvedValue(undefined),
+    }),
+  }),
+}))
+
+jest.mock("@react-native-documents/viewer", () => ({
+  viewDocument: jest.fn().mockResolvedValue(null),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
@@ -235,7 +249,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
-    isSignedIn: jest.fn(),
+    hasPreviousSignIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -448,7 +462,6 @@ function getNativeModules(): OurNativeModules {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -486,7 +499,6 @@ function getNativeModules(): OurNativeModules {
       launchCount: 3,
       setNavigationBarColor: jest.fn(),
       navigationBarHeight: 11,
-      lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
@@ -504,7 +516,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
-      presentMediaPreviewController: jest.fn(),
     },
     ARTDeeplinkTimeoutModule: {
       invalidateDeeplinkTimeout: jest.fn(),
@@ -540,7 +551,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       launchCount: 3,
       setNavigationBarColor: jest.fn(),
       navigationBarHeight: 11,
-      lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
       updateAuthState: jest.fn(),

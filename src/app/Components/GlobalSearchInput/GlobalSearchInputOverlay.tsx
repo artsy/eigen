@@ -15,6 +15,7 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
+import { KeyboardController } from "react-native-keyboard-controller"
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -115,6 +116,7 @@ export const GlobalSearchInputOverlay: React.FC<{
       setShouldRender(true)
       opacity.value = withTiming(1, { duration: DEFAULT_SCREEN_ANIMATION_DURATION })
     } else {
+      KeyboardController.dismiss()
       opacity.value = withTiming(0, { duration: DEFAULT_SCREEN_ANIMATION_DURATION }, (finished) => {
         if (finished) {
           runOnJS(setShouldRender)(false)

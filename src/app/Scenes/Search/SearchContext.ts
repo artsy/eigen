@@ -1,5 +1,5 @@
 import { InputRef } from "@artsy/palette-mobile"
-import { createContext, Ref, RefObject, useRef } from "react"
+import { createContext, Ref, RefObject, useMemo, useRef } from "react"
 
 export const SearchContext = createContext<{
   inputRef: RefObject<InputRef | null>
@@ -11,8 +11,5 @@ export function useSearchProviderValues(query: string) {
   const queryRef = useRef(query)
   queryRef.current = query
 
-  return {
-    inputRef,
-    queryRef,
-  }
+  return useMemo(() => ({ inputRef, queryRef }), [])
 }

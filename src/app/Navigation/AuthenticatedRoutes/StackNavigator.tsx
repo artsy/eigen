@@ -7,8 +7,8 @@ import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Ta
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { defaultScreenOrientation } from "app/utils/screenOrientation"
 import { Platform } from "react-native"
-import { isTablet } from "react-native-device-info"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
@@ -25,7 +25,7 @@ export const registerScreen = ({ name, module, ...props }: StackNavigatorScreenP
       key={name}
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
-        orientation: !isTablet() ? "portrait" : "default",
+        orientation: defaultScreenOrientation,
         animation: !isModalScreen(module) ? "slide_from_right" : undefined,
         animationDuration: DEFAULT_SCREEN_ANIMATION_DURATION,
         headerShown: module.options?.screenOptions?.headerShown ?? true,

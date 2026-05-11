@@ -40,7 +40,10 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag?.slug,
       }}
     >
-      <Tabs.TabsWithHeader title={tag?.name ?? ""} headerProps={{ onBack: goBack }}>
+      <Tabs.TabsWithHeader
+        title={tag?.name ?? ""}
+        headerProps={{ onBack: goBack, hideTitle: true }}
+      >
         <Tabs.Tab name="Artworks" label="Artworks">
           <ArtworkFiltersStoreProvider>
             <TagArtworksPaginationContainer tag={tag} />

@@ -1,6 +1,7 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { TextProps, useSpace } from "@artsy/palette-mobile"
 import { FlashList, FlashListProps, ListRenderItem } from "@shopify/flash-list"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -37,13 +38,15 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hideViewFollowsLink?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   pageSize?: number
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   saleInfoTextStyle?: TextProps
   trackingFlow?: string
+  fitToFrame?: boolean
+  onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
 }
 
 /**
@@ -86,6 +89,8 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   viewabilityConfig,
   trackTap,
   saleInfoTextStyle,
+  fitToFrame,
+  onItemVisibilityChange,
   ...rest
 }) => {
   const space = useSpace()
@@ -97,6 +102,10 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       loadMore?.(pageSize)
     }
   }, [hasMore, isLoading, loadMore, pageSize])
+
+  const adjustedNumColumns = useMemo(() => {
+    return rest.numColumns ?? NUM_COLUMNS_MASONRY
+  }, [rest.numColumns])
 
   const renderItem: ListRenderItem<MasonryArtworkItem> = useCallback(
     ({ item, index }) => (
@@ -130,9 +139,13 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         saleInfoTextStyle={saleInfoTextStyle}
         trackTap={trackTap}
+        fitToFrame={fitToFrame}
+        onItemVisibilityChange={onItemVisibilityChange}
+        fullWidth={adjustedNumColumns === 1}
       />
     ),
     [
+      adjustedNumColumns,
       contextModule,
       contextScreenOwnerType,
       contextScreen,
@@ -155,14 +168,12 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       hideCreateAlertOnArtworkPreview,
       saleInfoTextStyle,
       trackTap,
+      fitToFrame,
+      onItemVisibilityChange,
     ]
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : FlashList
-
-  const getAdjustedNumColumns = useCallback(() => {
-    return rest.numColumns ?? NUM_COLUMNS_MASONRY
-  }, [rest.numColumns])
 
   const flashlistComponentProps = useMemo(() => {
     return {
@@ -204,7 +215,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       {...flashlistComponentProps}
       data={artworks}
       keyExtractor={(item) => item.id}
-      numColumns={getAdjustedNumColumns()}
+      numColumns={adjustedNumColumns}
       renderItem={renderItem}
       ListFooterComponent={() =>
         hasMore ? (
@@ -214,7 +225,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onEndReached={onEndReached}
       contentContainerStyle={{
         // No paddings are needed for single column grids
-        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(1),
+        paddingHorizontal: adjustedNumColumns === 1 ? 0 : space(1),
       }}
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={viewabilityConfig}

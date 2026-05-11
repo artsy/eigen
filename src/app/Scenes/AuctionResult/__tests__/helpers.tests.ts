@@ -3,13 +3,13 @@ import {
   AuctionResultHelperData,
   auctionResultText,
 } from "app/Scenes/AuctionResult/helpers"
-import moment from "moment"
+import { DateTime } from "luxon"
 
 describe("auction result helpers", () => {
   it("works for existing price", () => {
     const auctionResultWithPrice: AuctionResultHelperData = {
       currency: "USD",
-      saleDate: moment().toISOString(),
+      saleDate: DateTime.now().toISO(),
       priceRealized: { display: "one dollar", displayUSD: "one dollar", cents: 100 },
       boughtIn: false,
     }
@@ -21,7 +21,7 @@ describe("auction result helpers", () => {
   it("works for awaiting results", () => {
     const auctionResultAwaitingResults: AuctionResultHelperData = {
       currency: "USD",
-      saleDate: moment().subtract(2, "days").toISOString(),
+      saleDate: DateTime.now().minus({ days: 2 }).toISO(),
       priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: false,
     }
@@ -33,7 +33,7 @@ describe("auction result helpers", () => {
   it("works for bought in", () => {
     const auctionResultBoughtIn: AuctionResultHelperData = {
       currency: "USD",
-      saleDate: moment().toISOString(),
+      saleDate: DateTime.now().toISO(),
       priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: true,
     }
@@ -45,7 +45,7 @@ describe("auction result helpers", () => {
   it("works for not available", () => {
     const auctionResultNotAvailable: AuctionResultHelperData = {
       currency: "USD",
-      saleDate: moment().subtract(3, "months").toISOString(),
+      saleDate: DateTime.now().minus({ months: 3 }).toISO(),
       priceRealized: { display: "zero", displayUSD: "zero", cents: 0 },
       boughtIn: false,
     }

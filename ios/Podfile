@@ -48,32 +48,8 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-def check_for_existing_netrc_file
-  mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
-  if !mapbox_token || mapbox_token.length <= 1
-    raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
-  end
-  # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post-pod-install.rb
-  $netrc_path = File.expand_path('~/.netrc')
-  user_already_had_a_netrc_file = File.exists?($netrc_path)
-  if user_already_had_a_netrc_file
-    system("touch .i-had-a-netrc-file")
-  else
-    system("rm -rf .i-had-a-netrc-file")
-  end
-end
-
-def add_mapbox_creds
-  File.open($netrc_path, 'a+', 0600) { |f|
-    f.write("""machine api.mapbox.com
-login mapbox
-password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
-""")
-  }
-end
-
-check_for_existing_netrc_file
-add_mapbox_creds
+load File.join(__dir__, 'mapbox_setup.rb')
+setup_mapbox_credentials
 
 pre_install do |installer|
   $RNMapboxMaps.pre_install(installer)
@@ -112,14 +88,9 @@ target 'Artsy' do
 
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
-  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.19.1'
-  pod 'INTUAnimationEngine'
-
   # Core
-  pod 'CocoaLumberjack', '3.9.0'
-  pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
-  pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
+  pod 'FLKAutoLayout', '1.0.1'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
@@ -127,15 +98,12 @@ target 'Artsy' do
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
-  pod 'UIView+BooleanAnimations'
-  pod 'Aerodramus', '2.0.0'
 
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # Workaround for firebase flipper issues
-  # See https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1952403075
+  # Workaround for not using use_frameworks! :linkage => :static globally — see HACKS.md
   pod 'FirebaseCore', :modular_headers => true
   pod 'FirebaseCoreExtension', :modular_headers => true
   pod 'FirebaseInstallations', :modular_headers => true
@@ -145,16 +113,15 @@ target 'Artsy' do
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'
-  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
+  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe' # see HACKS.md
   pod 'Starscream', '4.0.8'
-  # waiting on https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
-  pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON/', :commit => 'af76cf3ef710b6ca5f8c05f3a31307d44a3c5828'
+  pod 'SwiftyJSON', '5.0.2'
 
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
 
 
-  # Need static libs to fix expo compilation in app delegate
+  # Static linkage required for Expo module compatibility — see HACKS.md
   pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeKit.podspec'
   pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec'
   pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec'

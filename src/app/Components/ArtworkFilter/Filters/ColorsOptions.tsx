@@ -59,7 +59,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
   })
 
   return (
-    <Flex onLayout={handleLayout} flexGrow={1}>
+    <Flex onLayout={handleLayout} flexGrow={1} backgroundColor="mono0">
       <ArtworkFilterBackHeader
         title={FilterDisplayName.colors}
         onLeftButtonPress={() => navigation.goBack()}

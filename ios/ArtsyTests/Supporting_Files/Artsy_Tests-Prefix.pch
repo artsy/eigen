@@ -14,7 +14,6 @@
 
     // Pods that come in from the other target
     #import <AFNetworking/AFHTTPRequestOperation.h>
-    #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
     #import <UICKeyChainStore/UICKeyChainStore.h>
     #import <Mantle/Mantle.h>
     #import <Mantle/MTLJSONAdapter.h>
@@ -29,7 +28,6 @@
     #import "ArtsyAPI+Profiles.h"
     #import "ArtsyAPI+RelatedModels.h"
     #import "ArtsyAPI+Sales.h"
-    #import "ArtsyAPI+SystemTime.h"
     #import "ArtsyAPI+ErrorHandlers.h"
 
     #import "ARRouter.h"
@@ -72,7 +70,6 @@
     #import "Fair.h"
     #import "AuctionLot.h"
     #import "Follow.h"
-    #import "SystemTime.h"
     #import "Location.h"
     #import "Extensions.h"
     #import "ARMacros.h"

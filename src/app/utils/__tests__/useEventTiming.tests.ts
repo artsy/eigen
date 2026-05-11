@@ -16,18 +16,21 @@ interface WrapperProps {
 }
 
 const makeObj = ({ currentTime, startAt, endAt }: WrapperProps) => ({
-  currentTime: DateTime.fromObject({
-    year: 2000,
-    ...currentTime,
-  }).toISO(),
-  startAt: DateTime.fromObject({
-    year: 2000,
-    ...startAt,
-  }).toISO(),
-  endAt: DateTime.fromObject({
-    year: 2000,
-    ...endAt,
-  }).toISO(),
+  currentTime:
+    DateTime.fromObject({
+      year: 2000,
+      ...currentTime,
+    }).toISO() || "",
+  startAt:
+    DateTime.fromObject({
+      year: 2000,
+      ...startAt,
+    }).toISO() || "",
+  endAt:
+    DateTime.fromObject({
+      year: 2000,
+      ...endAt,
+    }).toISO() || "",
 })
 
 describe("useEventTiming", () => {

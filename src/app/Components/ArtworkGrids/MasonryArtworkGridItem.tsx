@@ -6,12 +6,14 @@ import ArtworkGridItem, {
   PriceOfferMessage,
 } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
+import { Sentinel } from "app/utils/Sentinel"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { ViewProps } from "react-native"
 import { FragmentRefs } from "relay-runtime"
 
 interface Artwork {
   readonly id: string
+  readonly internalID?: string | null
   readonly image:
     | {
         readonly aspectRatio: number
@@ -33,11 +35,17 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
   index: number
   item: Artwork
   numColumns?: number
-  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data) => void
+  onPress?: (artworkID: string, artwork?: ArtworkGridItem_artwork$data, itemIndex?: number) => void
   partnerOffer?: PartnerOffer | null
   priceOfferMessage?: PriceOfferMessage
   hideSaveIcon?: boolean
   hideSaleInfo?: boolean
+  fitToFrame?: boolean
+  /**
+   * Called when this artwork enters/leaves the viewport.
+   * Use for impression tracking in nested, non-scroll grids.
+   */
+  onItemVisibilityChange?: (artworkInternalID: string, index: number, visible: boolean) => void
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -54,6 +62,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   onPress,
   partnerOffer,
   priceOfferMessage,
+  onItemVisibilityChange,
   ...rest
 }) => {
   const space = useSpace()
@@ -65,30 +74,38 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   const imgHeight = imgWidth / imgAspectRatio
 
   return (
-    <Flex
-      left={
-        fullWidth
-          ? // When displayed full width, we want artworks to be displayed full width
-            // Therefore, we need to remove the padding that comes from artwork grid item
-            -space(1)
-          : 0
-      }
-    >
-      <ArtworkGridItem
-        {...rest}
-        artwork={item}
-        artworkMetaStyle={artworkMetaStyle}
-        contextModule={contextModule}
-        contextScreen={contextScreen}
-        contextScreenOwnerId={contextScreenOwnerId}
-        contextScreenOwnerSlug={contextScreenOwnerSlug}
-        contextScreenOwnerType={contextScreenOwnerType}
-        height={imgHeight}
-        itemIndex={index}
-        onPress={onPress}
-        partnerOffer={partnerOffer}
-        priceOfferMessage={priceOfferMessage}
-      />
-    </Flex>
+    <>
+      <Flex
+        left={
+          fullWidth
+            ? // When displayed full width, we want artworks to be displayed full width
+              // Therefore, we need to remove the padding that comes from artwork grid item
+              -space(1)
+            : 0
+        }
+      >
+        <ArtworkGridItem
+          {...rest}
+          artwork={item}
+          artworkMetaStyle={artworkMetaStyle}
+          contextModule={contextModule}
+          contextScreen={contextScreen}
+          contextScreenOwnerId={contextScreenOwnerId}
+          contextScreenOwnerSlug={contextScreenOwnerSlug}
+          contextScreenOwnerType={contextScreenOwnerType}
+          height={imgHeight}
+          itemIndex={index}
+          onPress={onPress}
+          partnerOffer={partnerOffer}
+          priceOfferMessage={priceOfferMessage}
+        />
+      </Flex>
+      {!!onItemVisibilityChange && (
+        <Sentinel
+          threshold={0.5}
+          onChange={(visible) => onItemVisibilityChange(item.internalID || item.id, index, visible)}
+        />
+      )}
+    </>
   )
 }

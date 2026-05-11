@@ -8,22 +8,31 @@ on:
 permissions:
   contents: write
 
+env:
+  SENTRY_ALERT_CRITICAL_THRESHOLD: 99.2
+  SENTRY_ALERT_WARNING_THRESHOLD: 99.5
+  SENTRY_ALERT_RESOLVE_THRESHOLD: 99.7
+  SENTRY_SLACK_CHANNEL_ID: ${{ secrets.SENTRY_SLACK_CHANNEL_ID }}
+  SENTRY_SLACK_INTEGRATION_ID: ${{ secrets.SENTRY_SLACK_INTEGRATION_ID }}
+  SENTRY_OWNER_TEAM: ${{ secrets.SENTRY_OWNER_TEAM }}
+
 jobs:
   generate-release:
     runs-on: ubuntu-latest
+    outputs:
+      sentry_release_versions: ${{ steps.determine_tags.outputs.sentry_release_versions }}
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup node.js
         uses: ./.github/actions/setup-node
 
       - name: Fetch submission tags
         run: |
-          # Fetch only iOS and Android submission tags with more specific refspecs
+          # Fetch only iOS submission tags with more specific refspecs
           git fetch origin '+refs/tags/ios-*-submission:refs/tags/ios-*-submission' --depth=300 --jobs=8
-          git fetch origin '+refs/tags/android-*-submission:refs/tags/android-*-submission' --depth=300 --jobs=8
           echo "fetched submission tags!"
 
       - name: Determine iOS and Android tags
@@ -36,21 +45,17 @@ jobs:
           last_ios_tag=$(echo "$ios_tags" | head -n1)
           second_last_ios_tag=$(echo "$ios_tags" | head -n2 | tail -n1)
 
-          # Get all Android release tags and sort them
-          android_tags=$(git tag --sort=-creatordate | grep "^android.*submission$" | head -n 10)
+          # Derive Android tag from iOS tag (same version/build, different date format)
+          # iOS:     ios-9.1.1-2026.03.11.18-submission
+          # Android: android-9.1.1-2026031118-submission  (dots removed from build number)
+          inner=$(echo "$last_ios_tag" | sed -E 's/^ios-(.+)-submission$/\1/')
+          version_part=$(echo "$inner" | cut -d'-' -f1)
+          build_part=$(echo "$inner" | cut -d'-' -f2 | tr -d '.')
+          last_android_tag="android-${version_part}-${build_part}-submission"
 
-          # Get the last and second-to-last Android tags (first and second in the sorted list)
-          last_android_tag=$(echo "$android_tags" | head -n1)
-
-
-          # Ensure tags are found
+          # Ensure iOS tags are found
           if [ -z "$last_ios_tag" ] || [ -z "$second_last_ios_tag" ]; then
             echo "Error: Could not determine all required iOS tags."
-            exit 1
-          fi
-
-          if [ -z "$last_android_tag" ]; then
-            echo "Error: Could not determine all required Android tags."
             exit 1
           fi
 
@@ -63,6 +68,11 @@ jobs:
           echo "last_ios_tag=$last_ios_tag" >> $GITHUB_ENV
           echo "second_last_ios_tag=$second_last_ios_tag" >> $GITHUB_ENV
           echo "last_android_tag=$last_android_tag" >> $GITHUB_ENV
+
+          # Build JSON array of release versions for Sentry alert matrix job
+          ios_version=$(echo "$last_ios_tag" | sed -E 's/-submission$//')
+          android_version=$(echo "$last_android_tag" | sed -E 's/-submission$//')
+          echo "sentry_release_versions=[\"${ios_version}\", \"${android_version}\"]" >> $GITHUB_OUTPUT
 
       - name: Create release
         env:
@@ -82,8 +92,8 @@ jobs:
           android_link="${sentry_base_url}/explore/releases/${android_version}/?environment=production&project=${project_id}"
 
           # Add mobile vitals dashboard links
-          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${ios_version}&project=${project_id}"
-          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&primaryRelease=${android_version}&project=${project_id}"
+          mobile_vitals_ios_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=iOS&primaryRelease=${ios_version}&project=${project_id}"
+          mobile_vitals_android_link="${sentry_base_url}/insights/mobile/mobile-vitals/?environment=production&platform=Android&primaryRelease=${android_version}&project=${project_id}"
 
           sentry_header="Check the health of this release in Sentry:"
           sentry_footer=":apple: [iOS Release details](${ios_link}) | :robot: [Android Release details](${android_link})"
@@ -99,3 +109,60 @@ jobs:
               --title "$version" \
               --generate-notes \
               --notes "$(printf "%s\n\n%s\n\n%s" "$sentry_header" "$sentry_footer" "$sentry_mobile_vitals_details")"
+
+  create-sentry-alerts:
+    needs: generate-release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release_version: ${{ fromJson(needs.generate-release.outputs.sentry_release_versions) }}
+
+    steps:
+      - name: Create Sentry crash rate alert
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
+        run: |
+          curl --fail-with-body -X POST https://sentry.io/api/0/organizations/artsynet/alert-rules/ \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"name\": \"Release Crashes Threshold - ${{ matrix.release_version }}\",
+              \"queryType\": 2,
+              \"dataset\": \"metrics\",
+              \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
+              \"query\": \"release:${{ matrix.release_version }}\",
+              \"timeWindow\": 120,
+              \"thresholdType\": 1,
+              \"resolveThreshold\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }},
+              \"environment\": \"production\",
+              \"projects\": [\"eigen\"],
+              \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
+              \"triggers\": [
+                {
+                  \"label\": \"critical\",
+                  \"alertThreshold\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }},
+                  \"actions\": [
+                    {
+                      \"type\": \"slack\",
+                      \"targetType\": \"specific\",
+                      \"targetIdentifier\": \"#mobile-alerts\",
+                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
+                    }
+                  ]
+                },
+                {
+                  \"label\": \"warning\",
+                  \"alertThreshold\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }},
+                  \"actions\": [
+                    {
+                      \"type\": \"slack\",
+                      \"targetType\": \"specific\",
+                      \"targetIdentifier\": \"#mobile-alerts\",
+                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
+                    }
+                  ]
+                }
+              ]
+            }"

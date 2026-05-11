@@ -74,7 +74,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         }
     }
 
-    var dateEventCreated: Date {
+    var dateEventCreated: Date? {
         return ARStandardDateFormatter.shared().date(from: event.createdAtString)
     }
 

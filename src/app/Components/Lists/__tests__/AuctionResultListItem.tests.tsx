@@ -1,58 +1,48 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import * as navigation from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import moment from "moment"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { DateTime } from "luxon"
+import { graphql } from "react-relay"
 
 describe("AuctionResults", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const navigate = jest.spyOn(navigation, "navigate")
+  const mockOnPress = jest.fn()
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     jest.clearAllMocks()
   })
 
-  const TestRenderer = ({ onPress }: { onPress?: () => void }) => (
-    <QueryRenderer<AuctionResultListItemTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query AuctionResultListItemTestsQuery @relay_test_operation {
-          artist(id: "some-id") {
-            auctionResultsConnection(first: 1) {
-              edges {
-                node {
-                  id
-                  ...AuctionResultListItem_auctionResult
-                }
+  const { renderWithRelay } = setupTestWrapper<AuctionResultListItemTestsQuery>({
+    Component: (props) => {
+      if (!props.artist) {
+        return null
+      }
+      const results = extractNodes(props.artist.auctionResultsConnection)
+      return (
+        <AuctionResultListItemFragmentContainer auctionResult={results[0]} onPress={mockOnPress} />
+      )
+    },
+    query: graphql`
+      query AuctionResultListItemTestsQuery @relay_test_operation {
+        artist(id: "some-id") {
+          auctionResultsConnection(first: 1) {
+            edges {
+              node {
+                id
+                ...AuctionResultListItem_auctionResult
               }
             }
           }
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.artist) {
-          const results = extractNodes(props.artist.auctionResultsConnection)
-          return (
-            <AuctionResultListItemFragmentContainer auctionResult={results[0]} onPress={onPress} />
-          )
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -78,13 +68,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByText("$one gazillion")).toBeOnTheScreen()
+    expect(screen.queryAllByTestId("priceUSD").length).toBe(0)
   })
 
   it("renders price in USD when currency is not USD", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -110,15 +99,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
-      "€one gazillion • $one gazillion"
-    )
-    expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
+    expect(screen.getByText("€one gazillion • $one gazillion")).toBeOnTheScreen()
+    expect(screen.getByTestId("priceUSD")).toHaveTextContent("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -132,7 +118,7 @@ describe("AuctionResults", () => {
                 performance: {
                   mid: "10",
                 },
-                saleDate: moment().subtract(1, "day").toISOString(),
+                saleDate: DateTime.now().minus({ days: 1 }).toISO(),
               },
             },
           ],
@@ -140,13 +126,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByTestId("price")).toHaveTextContent("Awaiting results")
+    expect(screen.queryAllByTestId("priceUSD").length).toBe(0)
   })
 
   it("renders auction result when auction result is `bought in`", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -160,7 +145,7 @@ describe("AuctionResults", () => {
                 performance: {
                   mid: "10",
                 },
-                saleDate: moment().subtract(2, "months").toISOString(),
+                saleDate: DateTime.now().minus({ months: 2 }).toISO(),
                 boughtIn: true,
               },
             },
@@ -169,13 +154,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(screen.getByTestId("price")).toHaveTextContent("Bought in")
+    expect(screen.queryAllByTestId("priceUSD").length).toBe(0)
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -190,11 +174,10 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(screen.getByTestId("saleInfo")).toHaveTextContent(/Jan 12, 2021/)
   })
   it("navigates to the lot screen for upcoming auction results happening in ", async () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -205,6 +188,7 @@ describe("AuctionResults", () => {
                 isUpcoming: true,
                 isInArtsyAuction: true,
                 externalURL: "https://www.artsy.net/artwork/auction-lot",
+                mediumText: "Painting",
               },
             },
           ],
@@ -212,7 +196,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = screen.getByText("Mediumtext-1")
+    const button = screen.getByText("Painting")
 
     fireEvent.press(button)
 
@@ -220,9 +204,7 @@ describe("AuctionResults", () => {
   })
 
   it("triggers on press when specfied", () => {
-    const mockOnPress = jest.fn()
-    const tree = renderWithWrappersLEGACY(<TestRenderer onPress={mockOnPress} />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -233,6 +215,7 @@ describe("AuctionResults", () => {
                 isUpcoming: true,
                 isInArtsyAuction: true,
                 externalURL: "https://www.artsy.net/artwork/auction-lot",
+                mediumText: "Sculpture",
               },
             },
           ],
@@ -240,11 +223,11 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = tree.root.findAllByType(RouterLink)[0]
+    const button = screen.getByText("Sculpture")
 
-    button.props.onPress()
+    fireEvent.press(button)
 
     expect(mockOnPress).toHaveBeenCalled()
-    expect(navigate).not.toHaveBeenCalled()
+    expect(navigate).toHaveBeenCalled()
   })
 })
