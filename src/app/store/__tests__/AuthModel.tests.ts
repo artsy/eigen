@@ -1,6 +1,7 @@
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import Cookies from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { AuthError } from "app/store/AuthError"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
@@ -158,6 +159,11 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
+      jest.spyOn(Sentry, "captureMessage").mockImplementation(() => "mock-event-id")
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
     })
 
     it("tries to get an access token from gravity", async () => {
@@ -406,6 +412,35 @@ describe("AuthModel", () => {
         })
         expect(clearAllPriceRangesSpy).toHaveBeenCalled()
       })
+    })
+    it("returns 'failure' when the network request fails", async () => {
+      const networkError = new Error("Network request failed")
+      mockFetch.mockRejectedValueOnce(networkError)
+
+      const result = await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        oauthMode: "email",
+        email: "user@example.com",
+        password: "hunter2", // pragma: allowlist secret
+      })
+
+      expect(result).toBe("failure")
+      expect(Sentry.captureMessage).toHaveBeenCalledWith(`AuthModel signIn error ${networkError}`)
+    })
+
+    it("returns 'failure' when fetch throws an error", async () => {
+      const fetchError = new TypeError("Failed to fetch")
+      mockFetch.mockRejectedValueOnce(fetchError)
+
+      const result = await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        oauthMode: "email",
+        email: "user@example.com",
+        password: "hunter2", // pragma: allowlist secret
+      })
+
+      expect(result).toBe("failure")
+      expect(Sentry.captureMessage).toHaveBeenCalledWith(`AuthModel signIn error ${fetchError}`)
     })
   })
 

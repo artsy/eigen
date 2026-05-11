@@ -13,6 +13,7 @@ import {
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useRecaptcha } from "app/Components/Recaptcha/Recaptcha"
+import { useToast } from "app/Components/Toast/toastHook"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { useAuthNavigation } from "app/Scenes/Onboarding/Screens/Auth/hooks/useAuthNavigation"
 import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useInputAutofocus"
@@ -36,8 +37,9 @@ export const LoginWelcomeStep: React.FC = () => {
   const isCurrentScreen = currentScreen?.name === "LoginWelcomeStep"
 
   const navigation = useAuthNavigation()
+  const toast = useToast()
 
-  const { Recaptcha, token, isTokenValid, refreshToken } = useRecaptcha({
+  const { Recaptcha, token, state, isTokenValid, refreshToken } = useRecaptcha({
     source: "authentication",
     action: "verify_email",
   })
@@ -88,11 +90,21 @@ export const LoginWelcomeStep: React.FC = () => {
         onSubmit={async ({ email }, { resetForm }) => {
           // Check if token is missing or expired
           if (!token || !isTokenValid()) {
-            setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
             refreshToken()
+
+            if (state === "error") {
+              toast.show(
+                "Something went wrong. Please try again, or contact support@artsy.net",
+                "bottom",
+                {
+                  backgroundColor: "red100",
+                }
+              )
+              return
+            }
+            setPendingSubmission({ email, resetForm: () => resetForm({ values: { email } }) })
             return
           }
-
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
           if (res === "user_exists") {
