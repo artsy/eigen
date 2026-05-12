@@ -1,10 +1,6 @@
-import {
-  ArtsyNativeModule,
-  DEFAULT_NAVIGATION_BAR_COLOR,
-  DEFAULT_NAVIGATION_BAR_DARK_COLOR,
-} from "app/NativeModules/ArtsyNativeModule"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
-import * as NavigationBar from "expo-navigation-bar"
+import { setAndroidNavigationBarColor } from "app/utils/setAndroidNavigationBarColor"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 
@@ -23,14 +19,12 @@ export const useAndroidAppStyling = () => {
 
         if (isLoggedIn && Platform.OS === "android") {
           if (theme === "dark") {
-            NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_DARK_COLOR)
-            ArtsyNativeModule.setAppLightContrast(true)
+            setAndroidNavigationBarColor("dark")
           } else {
-            NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_COLOR)
-            ArtsyNativeModule.setAppLightContrast(false)
+            setAndroidNavigationBarColor("light")
           }
         }
       }, 500)
     }
-  }, [isHydrated, isLoggedIn])
+  }, [isHydrated, isLoggedIn, theme])
 }

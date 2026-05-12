@@ -1,10 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import {
-  ArtsyNativeModule,
-  DEFAULT_NAVIGATION_BAR_COLOR,
-  DEFAULT_NAVIGATION_BAR_DARK_COLOR,
-} from "app/NativeModules/ArtsyNativeModule"
-import * as NavigationBar from "expo-navigation-bar"
+import { setAndroidNavigationBarColor } from "app/utils/setAndroidNavigationBarColor"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 
@@ -18,15 +13,13 @@ export const useAndroidStatusBarColor = () => {
 
     const unsubscribeBlur = navigation.addListener("blur", () => {
       requestAnimationFrame(() => {
-        NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_COLOR)
-        ArtsyNativeModule.setAppLightContrast(false)
+        setAndroidNavigationBarColor("light")
       })
     })
 
     const unsubscribeFocus = navigation.addListener("focus", () => {
       requestAnimationFrame(() => {
-        NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_DARK_COLOR)
-        ArtsyNativeModule.setAppLightContrast(true)
+        setAndroidNavigationBarColor("dark")
       })
     })
 
