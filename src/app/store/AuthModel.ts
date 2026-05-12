@@ -182,6 +182,7 @@ export interface AuthModel {
     ReturnType<typeof fetch>
   >
   identifyUser: Action<this>
+  refreshUserAccessToken: Thunk<this, void, {}, GlobalStoreModel, Promise<void>>
   signOut: Thunk<this>
   verifyUser: Thunk<
     this,
@@ -992,6 +993,65 @@ export const getAuthModel = (): AuthModel => ({
     state.sessionState.isUserIdentified = true
   }),
 
+  refreshUserAccessToken: thunk(async (actions, _payload, store) => {
+    const state = store.getState()
+    const currentToken = state.userAccessToken
+    const expiresIn = state.userAccessTokenExpiresIn
+    if (!currentToken || !expiresIn) return
+
+    const expirationTime = new Date(expiresIn).getTime()
+    const withinWindow =
+      isNaN(expirationTime) || expirationTime - Date.now() < REFRESH_USER_ACCESS_TOKEN_WINDOW_MS
+    if (!withinWindow) return
+
+    try {
+      const trustResult = await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/me/trust_token`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-ACCESS-TOKEN": currentToken,
+        },
+      })
+
+      if (trustResult.status === 401 || trustResult.status === 403) {
+        await actions.signOut()
+        return
+      }
+      if (trustResult.status < 200 || trustResult.status >= 300) return
+
+      const { trust_token: trustToken } = await trustResult.json()
+      if (!trustToken) return
+
+      const tokenResult = await actions.gravityUnauthenticatedRequest({
+        path: `/oauth2/access_token`,
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: {
+          grant_type: "trust_token",
+          client_id: clientKey,
+          client_secret: clientSecret,
+          code: trustToken,
+        },
+      })
+
+      if (tokenResult.status === 401 || tokenResult.status === 403) {
+        await actions.signOut()
+        return
+      }
+      if (tokenResult.status < 200 || tokenResult.status >= 300) return
+
+      const { access_token: newAccessToken, expires_in: newExpiresIn } = await tokenResult.json()
+      if (!newAccessToken) return
+
+      actions.setState({
+        userAccessToken: newAccessToken,
+        userAccessTokenExpiresIn: newExpiresIn ?? expiresIn,
+      })
+    } catch (error) {
+      Sentry.captureMessage(`AuthModel refreshUserAccessToken error ${error}`)
+    }
+  }),
   signOut: thunk(async (actions, _) => {
     const signOutGoogle = async () => {
       try {
@@ -1057,6 +1117,8 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
 })
+
+const REFRESH_USER_ACCESS_TOKEN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000 // one week
 
 const isTokenExpired = (expiresIn: string, bufferMs = 300_000) => {
   const expirationTime = new Date(expiresIn).getTime()

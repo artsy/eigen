@@ -1417,6 +1417,103 @@ describe("AuthModel", () => {
     })
   })
 
+  describe("refreshUserAccessToken", () => {
+    const farFuture = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+    const expiringSoon = new Date(Date.now() + 60 * 1000).toISOString()
+
+    beforeEach(async () => {
+      mockFetchJsonOnce({
+        xapp_token: "my-special-token",
+        expires_in: oneWeekFromNow,
+      })
+      await GlobalStore.actions.auth.getXAppToken()
+      mockFetch.mockClear()
+    })
+
+    afterEach(() => {
+      // The 401 case calls actions.signOut(), which dirties mocks observed by
+      // later signOut tests. Reset them here.
+      ;(Cookies.clearAll as jest.Mock).mockClear()
+      ;(LegacyNativeModules.ArtsyNativeModule.clearUserData as jest.Mock).mockClear()
+      ;(LoginManager.logOut as jest.Mock).mockClear()
+    })
+
+    it("does nothing when there is no user access token", async () => {
+      await GlobalStore.actions.auth.refreshUserAccessToken()
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it("does nothing when the token is fresh", async () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userAccessToken: "current-token",
+          userAccessTokenExpiresIn: farFuture,
+        },
+      })
+      await GlobalStore.actions.auth.refreshUserAccessToken()
+      expect(mockFetch).not.toHaveBeenCalled()
+    })
+
+    it("refreshes via the trust_token swap when within the refresh window", async () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userAccessToken: "current-token",
+          userAccessTokenExpiresIn: expiringSoon,
+        },
+      })
+
+      mockFetchJsonOnce({ trust_token: "TT" }, 201)
+      mockFetchJsonOnce({ access_token: "fresh-token", expires_in: farFuture }, 201)
+
+      await GlobalStore.actions.auth.refreshUserAccessToken()
+
+      expect(mockFetch).toHaveBeenCalledTimes(2)
+      expect(mockFetch.mock.calls[0][0]).toContain("/api/v1/me/trust_token")
+      expect(mockFetch.mock.calls[0][1].headers["X-ACCESS-TOKEN"]).toBe("current-token")
+      expect(mockFetch.mock.calls[1][0]).toContain("/oauth2/access_token")
+      expect(JSON.parse(mockFetch.mock.calls[1][1].body)).toEqual(
+        expect.objectContaining({
+          grant_type: "trust_token",
+          code: "TT",
+        })
+      )
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("fresh-token")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe(
+        farFuture
+      )
+    })
+
+    it("signs out when Gravity returns 401", async () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userAccessToken: "current-token",
+          userAccessTokenExpiresIn: expiringSoon,
+        },
+      })
+
+      mockFetchJsonOnce({}, 401)
+
+      await GlobalStore.actions.auth.refreshUserAccessToken()
+
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(null)
+    })
+
+    it("keeps the current token on transient failures", async () => {
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userAccessToken: "current-token",
+          userAccessTokenExpiresIn: expiringSoon,
+        },
+      })
+
+      mockFetchJsonOnce({}, 503)
+
+      await GlobalStore.actions.auth.refreshUserAccessToken()
+
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("current-token")
+    })
+  })
+
   describe("signOut action", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectState({
