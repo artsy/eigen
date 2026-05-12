@@ -1,11 +1,10 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Button, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ListRenderItem } from "@shopify/flash-list"
 import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
 import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -28,11 +27,11 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
 
   const artworks = extractNodes(data.artworksConnection)
 
-  const loadMore = () => {
-    if (!!hasNext && !isLoadingNext) {
+  const loadMore = useCallback(() => {
+    if (hasNext && !isLoadingNext) {
       loadNext(PAGE_SIZE)
     }
-  }
+  }, [hasNext, isLoadingNext, loadNext])
 
   const renderItem: ListRenderItem<ExtractNodeType<typeof data.artworksConnection>> = useCallback(
     ({ item, index }) => {
@@ -62,11 +61,32 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ paddingHorizontal: space(1) }}
       keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={<FilteredArtworkGridZeroState />}
-      ListFooterComponent={() => (
-        <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && !!isLoadingNext} />
-      )}
-      onEndReached={loadMore}
+      ListEmptyComponent={<SimpleMessage m={2}>There are no available works.</SimpleMessage>}
+      // Android: this Masonry is nested inside <BottomSheetScrollView>, which makes the inner
+      // list believe it is fully visible on mount and fires onEndReached immediately regardless
+      // of onEndReachedThreshold. We replace auto-pagination with an explicit "Show more" button
+      // so loading more remains user-initiated on Android.
+      ListFooterComponent={() =>
+        Platform.OS === "android" ? (
+          hasNext ? (
+            <Button
+              mt={2}
+              mb={4}
+              variant="fillGray"
+              size="large"
+              block
+              onPress={loadMore}
+              loading={isLoadingNext}
+            >
+              Show more
+            </Button>
+          ) : null
+        ) : (
+          <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && !!isLoadingNext} />
+        )
+      }
+      // no-op on Android; see ListFooterComponent comment above
+      onEndReached={Platform.OS === "ios" ? loadMore : undefined}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
       renderItem={renderItem}
     />
@@ -80,7 +100,7 @@ const fragment = graphql`
   fragment InfiniteDiscoveryMoreWorksTab_artworks on Query
   @refetchable(queryName: "InfiniteDiscoveryMoreWorksQuery")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 12 }
+    count: { type: "Int", defaultValue: 10 }
     cursor: { type: "String" }
     artistIDs: { type: "[String!]" }
   ) {
