@@ -173,26 +173,4 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         // The directory is now empty so delete it
         return dir.delete();
     }
-
-    @ReactMethod
-    public void clearCache(Promise promise) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            try {
-                deleteDir(context.getCacheDir());
-                deleteDir(context.getExternalCacheDir());
-                promise.resolve(true);
-            } catch (Exception e) {
-                promise.resolve(false);
-            }
-        } else {
-            try {
-                FileUtils.deleteQuietly(context.getCacheDir());
-                FileUtils.deleteQuietly(context.getExternalCacheDir());
-                promise.resolve(true);
-            } catch (Exception e) {
-                promise.resolve(false);
-            }
-        }
-    }
-
 }

@@ -37,12 +37,6 @@ export const ArtsyNativeModule = {
       ? 0
       : NativeModules.ArtsyNativeModule.getConstants().navigationBarHeight / PixelRatio.get()
   },
-  clearCache:
-    Platform.OS === "ios"
-      ? () => {
-          console.error("clearCache is not needed on iOS. See HACKS.md.")
-        }
-      : NativeModules.ArtsyNativeModule.clearCache,
   gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
   isBetaOrDev:
     Platform.OS === "ios"

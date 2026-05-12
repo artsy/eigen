@@ -29,7 +29,6 @@ jest.mock("react-native", () => ({
     ArtsyNativeModule: {
       gitCommitShortHash: "abc123",
       isBetaOrDev: false,
-      clearCache: jest.fn(),
     },
   },
   Text: "Text",
