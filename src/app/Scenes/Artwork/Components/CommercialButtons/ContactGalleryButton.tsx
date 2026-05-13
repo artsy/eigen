@@ -3,6 +3,7 @@ import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import {
@@ -13,7 +14,6 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
-import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -32,27 +32,25 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
-  const requireAuth = useRequireAuth()
 
   return (
     <ArtworkInquiryStateProvider>
       <ArtworkInquiryContext.Consumer>
         {({ dispatch }) => (
-          <Button
-            onPress={requireAuth(
-              () => {
+          <RequireAuth intent="contact_gallery">
+            <Button
+              onPress={() => {
                 trackEvent(
                   tracks.trackTappedContactGallery(analytics, artworkData.collectorSignals)
                 )
                 dispatch({ type: "setInquiryModalVisible", payload: true })
-              },
-              { intent: "contact_gallery" }
-            )}
-            haptic
-            {...rest}
-          >
-            Contact Gallery
-          </Button>
+              }}
+              haptic
+              {...rest}
+            >
+              Contact Gallery
+            </Button>
+          </RequireAuth>
         )}
       </ArtworkInquiryContext.Consumer>
       <InquiryModal artwork={artworkData} me={me} />

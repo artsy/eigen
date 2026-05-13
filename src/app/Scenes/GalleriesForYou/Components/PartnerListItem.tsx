@@ -1,11 +1,11 @@
 import { Flex, FollowButton, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location } from "app/utils/hooks/useLocation"
-import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { pluralize } from "app/utils/pluralize"
 import { isTablet } from "react-native-device-info"
@@ -49,14 +49,9 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     isFollowed: !!profile?.isFollowed,
     onCompleted: onFollow,
   })
-  const requireAuth = useRequireAuth()
-
-  const handleFollowPartner = requireAuth(
-    () => {
-      followProfile()
-    },
-    { intent: "follow_artist" }
-  )
+  const handleFollowPartner = () => {
+    followProfile()
+  }
 
   if (!profile) {
     return null
@@ -105,12 +100,14 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             </Flex>
 
             <Flex mt={0.5}>
-              <FollowButton
-                haptic
-                isFollowed={!!profile?.isFollowed}
-                onPress={handleFollowPartner}
-                disabled={isInFlight}
-              />
+              <RequireAuth intent="follow_artist">
+                <FollowButton
+                  haptic
+                  isFollowed={!!profile?.isFollowed}
+                  onPress={handleFollowPartner}
+                  disabled={isInFlight}
+                />
+              </RequireAuth>
             </Flex>
           </Flex>
         </Flex>

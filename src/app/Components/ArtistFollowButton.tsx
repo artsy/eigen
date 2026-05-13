@@ -1,8 +1,8 @@
 import { FollowButton } from "@artsy/palette-mobile"
 import { ArtistFollowButtonQuery } from "__generated__/ArtistFollowButtonQuery.graphql"
 import { ArtistFollowButton_artist$key } from "__generated__/ArtistFollowButton_artist.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
-import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { useFollowArtist } from "app/utils/mutations/useFollowArtist"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
 import { FC } from "react"
@@ -18,34 +18,34 @@ export const ArtistFollowButton: FC<ArtistFollowButtonProps> = ({ artist }) => {
   const [commitMutation, isInFlight] = useFollowArtist()
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
-  const requireAuth = useRequireAuth()
 
   if (!data) {
     return null
   }
 
-  const handleOnPress = requireAuth(
-    () => {
-      commitMutation({
-        variables: { input: { artistID: data.internalID, unfollow: data.isFollowed } },
-        updater: (store) => {
-          store.get(data.internalID)?.setValue(!data.isFollowed, "isFollowed")
-        },
+  const handleOnPress = () => {
+    commitMutation({
+      variables: { input: { artistID: data.internalID, unfollow: data.isFollowed } },
+      updater: (store) => {
+        store.get(data.internalID)?.setValue(!data.isFollowed, "isFollowed")
+      },
+    })
+
+    trackEvent(
+      tracks.trackFollowUnfollow({
+        analytics,
+        isFollowed: data.isFollowed,
+        internalID: data.internalID,
+        slug: data.slug,
       })
+    )
+  }
 
-      trackEvent(
-        tracks.trackFollowUnfollow({
-          analytics,
-          isFollowed: data.isFollowed,
-          internalID: data.internalID,
-          slug: data.slug,
-        })
-      )
-    },
-    { intent: "follow_artist" }
+  return (
+    <RequireAuth intent="follow_artist">
+      <FollowButton isFollowed={data.isFollowed} onPress={handleOnPress} loading={isInFlight} />
+    </RequireAuth>
   )
-
-  return <FollowButton isFollowed={data.isFollowed} onPress={handleOnPress} loading={isInFlight} />
 }
 
 const fragment = graphql`
