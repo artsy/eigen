@@ -26649,8 +26649,11 @@ input UpdateArtworkEditionSetInput {
   # The height of the artwork
   height: String
 
-  # The id of the artwork to update.
-  id: String!
+  # The id of the edition set to update. Omit to create a new edition set.
+  id: String
+
+  # The inventory count
+  inventoryCount: Int
 
   # The unit of measurement for artwork dimensions
   metric: String
@@ -26671,6 +26674,9 @@ input UpdateArtworkEditionSetInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+
+  # The size type, e.g. "hwd" or "diameter".
+  sizeType: String
   title: String
 
   # The width of the artwork
@@ -26787,6 +26793,9 @@ input UpdateArtworkMutationInput {
   # Whether the artwork is listed on Artsy
   artsyListing: Boolean
 
+  # The attribution class of the artwork
+  attributionClass: ArtworkAttributionClassType
+
   # The availability of the artwork
   availability: String
 
@@ -26838,6 +26847,9 @@ input UpdateArtworkMutationInput {
   # A list of S3 locations (bucket and key pairs) for artwork images to be added.
   imageS3Locations: [S3LocationInput!]
 
+  # The inventory count
+  inventoryCount: Int
+
   # The inventory ID of the artwork
   inventoryId: String
 
@@ -26866,6 +26878,9 @@ input UpdateArtworkMutationInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+
+  # The size type, e.g. "hwd" or "diameter".
+  sizeType: String
   title: String
 
   # The width of the artwork
