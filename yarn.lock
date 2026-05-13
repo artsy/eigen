@@ -7467,9 +7467,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-react-native@npm:2.21.3":
-  version: 2.21.3
-  resolution: "@segment/analytics-react-native@npm:2.21.3"
+"@segment/analytics-react-native@npm:2.22.0":
+  version: 2.22.0
+  resolution: "@segment/analytics-react-native@npm:2.22.0"
   dependencies:
     "@segment/tsub": "npm:2.0.0"
     "@stdlib/number-float64-base-normalize": "npm:0.0.8"
@@ -7485,7 +7485,29 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-async-storage/async-storage":
       optional: true
-  checksum: 10c0/ffa09ec546c710ee0f522a18f394389c37dba6bad89ba6a9356b659309bd5c74b729195134ade7f29d8bcd6613af10258446f4a381c3a4355a0bbd5dea47bf1d
+  checksum: 10c0/c8991c5129d26a0b1256697168888bcd5df398316833566581580f090ad690a235a79992c3c80c31284675f178f6bc65c79f746854330c8340b5a787ca309d5c
+  languageName: node
+  linkType: hard
+
+"@segment/analytics-react-native@patch:@segment/analytics-react-native@npm%3A2.22.0#~/.yarn/patches/@segment-analytics-react-native-npm-2.22.0-e2a16c7f8b.patch":
+  version: 2.22.0
+  resolution: "@segment/analytics-react-native@patch:@segment/analytics-react-native@npm%3A2.22.0#~/.yarn/patches/@segment-analytics-react-native-npm-2.22.0-e2a16c7f8b.patch::version=2.22.0&hash=2a4fe7"
+  dependencies:
+    "@segment/tsub": "npm:2.0.0"
+    "@stdlib/number-float64-base-normalize": "npm:0.0.8"
+    deepmerge: "npm:^4.3.1"
+    js-base64: "npm:^3.7.5"
+    uuid: "npm:^9.0.1"
+  peerDependencies:
+    "@react-native-async-storage/async-storage": 2.x
+    "@segment/sovran-react-native": ^1.1.0
+    react: "*"
+    react-native: "*"
+    react-native-get-random-values: 1.x
+  peerDependenciesMeta:
+    "@react-native-async-storage/async-storage":
+      optional: true
+  checksum: 10c0/f198c92c58bd96d2bddd3273ea42c735a6bae27929941acfacf9bae29e06ca36d0f3517634dd1b80e79e50e8baeefbd03c45df27b82f82639c1204458e1b0a44
   languageName: node
   linkType: hard
 
@@ -9689,15 +9711,6 @@ __metadata:
     "@types/react": "npm:*"
     "@types/relay-runtime": "npm:*"
   checksum: 10c0/0809ad0e7e9c73d02a84b3c66947a1b925e44206595951e84a30f29a6ba9bfb49309c6d490906db81762d86627b42a437a4a8b036c803b95baa76abbcd54af2b
-  languageName: node
-  linkType: hard
-
-"@types/react-test-renderer@npm:19.1.0":
-  version: 19.1.0
-  resolution: "@types/react-test-renderer@npm:19.1.0"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10c0/799654e430df10aeaf267d71507fb64ec151359ead7e3774111bfd4abce7e0911dba461811195c06c22a6d17496ea92537d3185320ff4112fe29954cad1b9152
   languageName: node
   linkType: hard
 
@@ -13388,7 +13401,7 @@ __metadata:
     "@rozenite/network-activity-plugin": "npm:1.7.0"
     "@rozenite/performance-monitor-plugin": "npm:1.7.0"
     "@rozenite/react-navigation-plugin": "npm:1.7.0"
-    "@segment/analytics-react-native": "npm:2.21.3"
+    "@segment/analytics-react-native": "patch:@segment/analytics-react-native@npm%3A2.22.0#~/.yarn/patches/@segment-analytics-react-native-npm-2.22.0-e2a16c7f8b.patch"
     "@segment/analytics-react-native-plugin-braze": "npm:0.9.0"
     "@segment/sovran-react-native": "npm:1.1.3"
     "@sentry/react-native": "npm:7.10.0"
@@ -13409,7 +13422,6 @@ __metadata:
     "@types/query-string": "npm:5.0.1"
     "@types/react": "npm:19.2.10"
     "@types/react-relay": "npm:18.2.0"
-    "@types/react-test-renderer": "npm:19.1.0"
     "@types/react-tracking": "npm:8.1.6"
     "@types/redux-logger": "npm:3.0.9"
     "@types/relay-runtime": "npm:18.2.0"
@@ -13492,7 +13504,7 @@ __metadata:
     react-dom: "npm:19.2.0"
     react-error-boundary: "npm:4.0.13"
     react-fps: "npm:1.0.6"
-    react-native: "npm:0.83.6"
+    react-native: "patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch"
     react-native-blob-util: "npm:0.19.11"
     react-native-blurhash: "npm:2.1.3"
     react-native-bootsplash: "npm:7.1.0"
@@ -13531,7 +13543,7 @@ __metadata:
     react-native-youtube-iframe: "npm:^2.4.1"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
-    react-test-renderer: "npm:19.2.6"
+    react-test-renderer: "npm:19.2.0"
     react-tracking: "npm:9.3.2"
     react-use: "npm:17.6.0"
     reactotron-react-native: "npm:5.1.14"
@@ -21682,7 +21694,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^19.2.6":
+"react-is@npm:^19.2.0":
   version: 19.2.6
   resolution: "react-is@npm:19.2.6"
   checksum: 10c0/263177f370fc156b279d22570dd6e922a0ad641a4a426a4cb70284b8003b00ef532d59f2beca1d22a1ca0b37f85f9077d7733ca5d344ebecd2942e9bc2a2a3c0
@@ -22297,6 +22309,57 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch":
+  version: 0.83.6
+  resolution: "react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch::version=0.83.6&hash=55638f"
+  dependencies:
+    "@jest/create-cache-key-function": "npm:^29.7.0"
+    "@react-native/assets-registry": "npm:0.83.6"
+    "@react-native/codegen": "npm:0.83.6"
+    "@react-native/community-cli-plugin": "npm:0.83.6"
+    "@react-native/gradle-plugin": "npm:0.83.6"
+    "@react-native/js-polyfills": "npm:0.83.6"
+    "@react-native/normalize-colors": "npm:0.83.6"
+    "@react-native/virtualized-lists": "npm:0.83.6"
+    abort-controller: "npm:^3.0.0"
+    anser: "npm:^1.4.9"
+    ansi-regex: "npm:^5.0.0"
+    babel-jest: "npm:^29.7.0"
+    babel-plugin-syntax-hermes-parser: "npm:0.32.0"
+    base64-js: "npm:^1.5.1"
+    commander: "npm:^12.0.0"
+    flow-enums-runtime: "npm:^0.0.6"
+    glob: "npm:^7.1.1"
+    hermes-compiler: "npm:0.14.1"
+    invariant: "npm:^2.2.4"
+    jest-environment-node: "npm:^29.7.0"
+    memoize-one: "npm:^5.0.0"
+    metro-runtime: "npm:^0.83.6"
+    metro-source-map: "npm:^0.83.6"
+    nullthrows: "npm:^1.1.1"
+    pretty-format: "npm:^29.7.0"
+    promise: "npm:^8.3.0"
+    react-devtools-core: "npm:^6.1.5"
+    react-refresh: "npm:^0.14.0"
+    regenerator-runtime: "npm:^0.13.2"
+    scheduler: "npm:0.27.0"
+    semver: "npm:^7.1.3"
+    stacktrace-parser: "npm:^0.1.10"
+    whatwg-fetch: "npm:^3.0.0"
+    ws: "npm:^7.5.10"
+    yargs: "npm:^17.6.2"
+  peerDependencies:
+    "@types/react": ^19.1.1
+    react: ^19.2.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  bin:
+    react-native: cli.js
+  checksum: 10c0/a5530399d82b77e89115cf53a62d2afa853f7585355516369ab144caf9b8b11323aaf2519dc6e71918a7fc8fe1301a0d9df9f25ceef0e1f2face6b453764176c
+  languageName: node
+  linkType: hard
+
 "react-refresh@npm:^0.14.0, react-refresh@npm:^0.14.2":
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
@@ -22383,15 +22446,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:19.2.6":
-  version: 19.2.6
-  resolution: "react-test-renderer@npm:19.2.6"
+"react-test-renderer@npm:19.2.0":
+  version: 19.2.0
+  resolution: "react-test-renderer@npm:19.2.0"
   dependencies:
-    react-is: "npm:^19.2.6"
+    react-is: "npm:^19.2.0"
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.6
-  checksum: 10c0/c8267de9def8ba2b821ebae1de9becb2d67e95f39d5ec4c63560446e60649f651bd1426f041d31bacbedc0dcb1a0cfae321d6d5ebe3563821c709cc8f4171363
+    react: ^19.2.0
+  checksum: 10c0/cc116b908489316f06881bf7392c5fad4b5f66be42d2f04788f4179a19e86674d54f1006b33fe9eba28bde6edb4cb38764ab75b416f28d02e0182c5552c97551
   languageName: node
   linkType: hard
 
