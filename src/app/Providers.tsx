@@ -3,7 +3,6 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
 import FlagProvider from "@unleash/proxy-client-react"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
-import { AuthBottomSheetProvider } from "app/Components/AuthBottomSheet/AuthBottomSheetProvider"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -48,7 +47,6 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
       ArtworkListsProvider,
-      AuthBottomSheetProvider, // uses BottomSheetProvider (provided by ArtworkListsProvider)
       ShareSheetProvider, // uses BottomSheetProvider
       KeyboardControllerProvider,
     ],

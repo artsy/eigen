@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert, Linking } from "react-native"
@@ -10,6 +11,7 @@ jest.spyOn(Alert, "alert")
 describe("MyProfileSettings", () => {
   beforeEach(() => {
     jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
+    __globalStoreTestUtils__?.injectState({ auth: { userID: "user-id" } })
   })
 
   it("renders Transactions section", () => {

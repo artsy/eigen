@@ -71,7 +71,7 @@ import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null | undefined
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
-  me: Artwork_me$data
+  me: Artwork_me$data | null
   isVisible: boolean
   relay: RelayRefetchProp
   tracking?: TrackingProp
@@ -389,7 +389,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         })
       }
 
-      if (shouldRenderPartner()) {
+      if (shouldRenderPartner() && !!me) {
         sections.push({
           key: "partnerCard",
           element: (
@@ -475,7 +475,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       })
     }
 
-    if (!artworkAboveTheFold?.isUnlisted && shouldRenderPartner()) {
+    if (!artworkAboveTheFold?.isUnlisted && shouldRenderPartner() && !!me) {
       sections.push({
         key: "partnerCard",
         element: (
@@ -852,17 +852,13 @@ export const ArtworkScreen: React.FC<ArtworkScreenProps> = ({
       render={{
         renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
         renderComponent: ({ above, below }) => {
-          if (
-            // Make sure that the artwork exists
-            above.artworkResult?.__typename === "Artwork" &&
-            above.me
-          ) {
+          if (above.artworkResult?.__typename === "Artwork") {
             return (
               <ArtworkContainer
                 {...others}
                 artworkAboveTheFold={above.artworkResult}
                 artworkBelowTheFold={below?.artworkResult ?? null}
-                me={above.me}
+                me={above.me ?? null}
               />
             )
           }
