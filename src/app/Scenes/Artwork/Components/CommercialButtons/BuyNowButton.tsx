@@ -8,6 +8,7 @@ import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getTimer } from "app/utils/getTimer"
+import { useRequireAuthGuard } from "app/utils/hooks/useRequireAuth"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -45,6 +46,7 @@ export const BuyNowButton = ({
   const { saleMessage, internalID } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
+  const requireAuth = useRequireAuthGuard()
 
   const [partnerOfferTimer, setPartnerOfferTimer] = useState(
     partnerOffer?.endAt ? getTimer(partnerOffer.endAt) : null
@@ -134,6 +136,10 @@ export const BuyNowButton = ({
   }
 
   const handleCreateOrder = async () => {
+    if (!requireAuth("purchase")) {
+      return
+    }
+
     if (isCommittingCreateOrderMutation) {
       return
     }

@@ -3,7 +3,9 @@ import { Button, ButtonProps } from "@artsy/palette-mobile"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useRequireAuthGuard } from "app/utils/hooks/useRequireAuth"
 
 import React, { useState } from "react"
 import { Alert } from "react-native"
@@ -30,6 +32,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
 
   const tracking = useTracking()
   const analytics = useAnalyticsContext()
+  const requireAuth = useRequireAuthGuard()
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const onMutationError = (error) => {
@@ -53,6 +56,10 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
   }
 
   const handleCreateOfferOrder = () => {
+    if (!requireAuth("make_offer")) {
+      return
+    }
+
     tracking.trackEvent({
       action: ActionType.tappedMakeOffer,
       context_module: analytics.contextModule,

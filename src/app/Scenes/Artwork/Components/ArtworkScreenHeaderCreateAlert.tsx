@@ -7,6 +7,7 @@ import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -38,6 +39,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
     contextScreenOwnerSlug: slug,
     contextModule: "ArtworkScreenHeader" as ContextModule,
   })
+  const requireAuth = useRequireAuth()
 
   if (!!displayCreateAlertHeader || !isEligibleToCreateAlert) {
     return null
@@ -49,10 +51,13 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
         size="small"
         variant={isForSale ? "outline" : "fillDark"}
         haptic
-        onPress={() => {
-          trackCreateAlertTap()
-          setShowCreateArtworkAlertModal(true)
-        }}
+        onPress={requireAuth(
+          () => {
+            trackCreateAlertTap()
+            setShowCreateArtworkAlertModal(true)
+          },
+          { intent: "create_alert" }
+        )}
         icon={<BellStrokeIcon fill={isForSale ? "mono100" : "mono0"} />}
       >
         Create Alert

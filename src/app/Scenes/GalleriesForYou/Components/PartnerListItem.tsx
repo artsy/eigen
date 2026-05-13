@@ -5,6 +5,7 @@ import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location } from "app/utils/hooks/useLocation"
+import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { pluralize } from "app/utils/pluralize"
 import { isTablet } from "react-native-device-info"
@@ -48,10 +49,14 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     isFollowed: !!profile?.isFollowed,
     onCompleted: onFollow,
   })
+  const requireAuth = useRequireAuth()
 
-  const handleFollowPartner = () => {
-    followProfile()
-  }
+  const handleFollowPartner = requireAuth(
+    () => {
+      followProfile()
+    },
+    { intent: "follow_artist" }
+  )
 
   if (!profile) {
     return null

@@ -7,6 +7,7 @@ import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -50,6 +51,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     contextScreenOwnerSlug: slug,
     contextModule: ContextModule.artworkClosedLotHeader,
   })
+  const requireAuth = useRequireAuth()
 
   if (!displayAuctionCreateAlertHeader) {
     return null
@@ -103,10 +105,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             size="large"
             variant="fillDark"
             haptic
-            onPress={() => {
-              trackCreateAlertTap()
-              setShowCreateArtworkAlertModal(true)
-            }}
+            onPress={requireAuth(
+              () => {
+                trackCreateAlertTap()
+                setShowCreateArtworkAlertModal(true)
+              },
+              { intent: "create_alert" }
+            )}
             icon={<BellStrokeIcon fill="mono0" />}
             block
           >

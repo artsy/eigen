@@ -13,6 +13,7 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
+import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -31,16 +32,22 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
 
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
+  const requireAuth = useRequireAuth()
 
   return (
     <ArtworkInquiryStateProvider>
       <ArtworkInquiryContext.Consumer>
         {({ dispatch }) => (
           <Button
-            onPress={() => {
-              trackEvent(tracks.trackTappedContactGallery(analytics, artworkData.collectorSignals))
-              dispatch({ type: "setInquiryModalVisible", payload: true })
-            }}
+            onPress={requireAuth(
+              () => {
+                trackEvent(
+                  tracks.trackTappedContactGallery(analytics, artworkData.collectorSignals)
+                )
+                dispatch({ type: "setInquiryModalVisible", payload: true })
+              },
+              { intent: "contact_gallery" }
+            )}
             haptic
             {...rest}
           >
