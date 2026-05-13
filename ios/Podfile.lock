@@ -4182,7 +4182,7 @@ PODS:
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
-  - segment-analytics-react-native (2.21.3):
+  - segment-analytics-react-native (2.22.0):
     - React-Core
     - sovran-react-native
   - Sentry/HybridSDK (8.58.0)
@@ -5087,7 +5087,7 @@ SPEC CHECKSUMS:
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
-  segment-analytics-react-native: a0c29c75ede1989118b50cac96b9495ea5c91a1d
+  segment-analytics-react-native: 8ab9c49df1859bbd6be93cf90a91ade17f20a0aa
   Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
   Sift: 742454b5796a717df185f6dbae569e5dce357322
   sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
