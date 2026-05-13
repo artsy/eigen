@@ -399,6 +399,10 @@ jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
 }))
 
+jest.mock("expo-navigation-bar", () => ({
+  setBackgroundColorAsync: jest.fn(),
+}))
+
 jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
@@ -496,7 +500,6 @@ function getNativeModules(): OurNativeModules {
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
-      setNavigationBarColor: jest.fn(),
       setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       gitCommitShortHash: "de4dc0de",
@@ -550,7 +553,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
-      setNavigationBarColor: jest.fn(),
       setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       gitCommitShortHash: "de4dc0de",

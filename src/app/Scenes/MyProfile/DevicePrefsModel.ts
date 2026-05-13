@@ -1,9 +1,6 @@
-import {
-  ArtsyNativeModule,
-  DEFAULT_NAVIGATION_BAR_COLOR,
-} from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
+import { setAndroidNavigationBarColor } from "app/utils/setAndroidNavigationBarColor"
 import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-peasy"
 import { Appearance, Platform, StatusBar } from "react-native"
 
@@ -68,15 +65,13 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
       StatusBar.setBarStyle("light-content")
 
       if (Platform.OS === "android") {
-        ArtsyNativeModule.setNavigationBarColor("#000000")
-        ArtsyNativeModule.setAppLightContrast(true)
+        setAndroidNavigationBarColor("dark")
       }
     } else {
       StatusBar.setBarStyle("dark-content")
 
       if (Platform.OS === "android") {
-        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-        ArtsyNativeModule.setAppLightContrast(false)
+        setAndroidNavigationBarColor("light")
       }
     }
   }),
