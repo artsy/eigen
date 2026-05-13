@@ -11,9 +11,9 @@ runs:
       uses: actions/cache@v4
       with:
         path: .yarn/cache
-        key: yarn-v4-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+        key: yarn-v5-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          yarn-v4-${{ runner.os }}-
+          yarn-v5-${{ runner.os }}-
 
     - name: Install Node.js dependencies
       run: yarn install --immutable
