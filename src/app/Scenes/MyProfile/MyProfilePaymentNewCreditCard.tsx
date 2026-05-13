@@ -10,6 +10,7 @@ import { SelectRef } from "app/Components/Select"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useSafeTimeout } from "app/utils/hooks/useSafeTimeout"
 import { refreshCreditCardsList } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -71,6 +72,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const { createToken } = useStripe()
+  const setSafeTimeout = useSafeTimeout()
 
   const [state, actions] = useLocalStore<Store>(() => ({
     fields: {
@@ -255,7 +257,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           onSubmitEditing={() => {
             stateRef.current?.blur()
             scrollViewRef.current?.scrollToEnd()
-            setTimeout(() => {
+            setSafeTimeout(() => {
               countryRef.current?.openSelectModal()
             }, 100)
           }}

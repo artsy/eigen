@@ -1,6 +1,7 @@
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useSafeTimeout } from "app/utils/hooks/useSafeTimeout"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"
 
@@ -74,6 +75,7 @@ export const VerticalSwipeToDismiss: React.FC<React.PropsWithChildren<{ onClose(
   )
 
   const ref = useRef<ScrollView | null>(null)
+  const setSafeTimeout = useSafeTimeout()
 
   // 😭😭😭
   // sometimes in landscape mode the `contentOffset` prop is not respected
@@ -81,10 +83,10 @@ export const VerticalSwipeToDismiss: React.FC<React.PropsWithChildren<{ onClose(
   // What is this I don't even.
   // So we set it manually after mounting and orientation change to make sure it's always good.
   useEffect(() => {
-    setTimeout(() => {
+    setSafeTimeout(() => {
       ref.current?.scrollTo({ animated: false, x: 0, y: screenHeight })
     }, 10)
-  }, [screenHeight])
+  }, [screenHeight, setSafeTimeout])
   return (
     <Animated.ScrollView
       ref={ref}
