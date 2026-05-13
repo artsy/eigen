@@ -1,8 +1,13 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
+import { ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { AuthIntent } from "app/Components/AuthBottomSheet/AuthBottomSheetTypes"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
 import { AuthScenes } from "app/Scenes/Onboarding/Screens/Auth/AuthScenes"
+import type { OnboardingWebViewRoute } from "app/Scenes/Onboarding/Screens/OnboardingWebView"
 
 const INTENT_COPY: Record<AuthIntent, string> = {
   save_artwork: "Sign up or log in to save artworks",
@@ -15,21 +20,45 @@ const INTENT_COPY: Record<AuthIntent, string> = {
   generic: "Sign up or log in",
 }
 
+type AuthSheetStack = {
+  AuthMain: undefined
+  OnboardingWebView: { url: OnboardingWebViewRoute }
+}
+
+const Stack = createStackNavigator<AuthSheetStack>()
+
 interface AuthBottomSheetContentProps {
   intent: AuthIntent
 }
 
 export const AuthBottomSheetContent: React.FC<AuthBottomSheetContentProps> = ({ intent }) => {
+  const theme = useNavigationTheme()
+
   return (
-    <BottomSheetView>
-      <AuthContext.Provider>
-        <Flex px={2} pt={2}>
-          <Text variant="sm-display" textAlign="center">
-            {INTENT_COPY[intent]}
-          </Text>
-        </Flex>
-        <AuthScenes />
-      </AuthContext.Provider>
-    </BottomSheetView>
+    <NavigationIndependentTree>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="AuthMain">
+            {() => (
+              <BottomSheetView>
+                <AuthContext.Provider>
+                  <Flex px={2} pt={2}>
+                    <Text variant="sm-display" textAlign="center">
+                      {INTENT_COPY[intent]}
+                    </Text>
+                  </Flex>
+                  <AuthScenes />
+                </AuthContext.Provider>
+              </BottomSheetView>
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="OnboardingWebView">
+            {({ route, navigation }) => (
+              <ArtsyWebViewPage url={route.params.url} backAction={() => navigation.goBack()} />
+            )}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }
