@@ -340,6 +340,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
+    "babel-preset-expo": "14.0.0",
     "form-data@^3.0.0": "3.0.4",
     "form-data@^4.0.0": "4.0.4",
     "@types/relay-runtime": "18.2.0",
