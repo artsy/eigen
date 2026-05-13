@@ -84,6 +84,8 @@ export const AuctionResult: React.FC<Props> = (props) => {
             {label}
           </Text>
           <TextInput
+            // https://github.com/facebook/react-native/issues/55059
+            key={value}
             accessibilityLabel="Text input field"
             editable={false}
             value={value}
