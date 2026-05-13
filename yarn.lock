@@ -13518,7 +13518,7 @@ __metadata:
     react-native-reanimated: "npm:4.2.1"
     react-native-reanimated-zoom: "npm:0.3.3"
     react-native-render-html: "npm:6.3.4"
-    react-native-safe-area-context: "npm:5.6.2"
+    react-native-safe-area-context: "patch:react-native-safe-area-context@npm%3A5.6.2#~/.yarn/patches/react-native-safe-area-context-npm-5.6.2-8af8830f4e.patch"
     react-native-screens: "npm:4.23.0"
     react-native-shake: "npm:6.8.1"
     react-native-share: "npm:12.0.9"
@@ -22087,6 +22087,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/3c8df21a1dbac83116b9c9bd5d20b7c1bb7649ecef44a111af6fb6b237241f5f4d692189eec30a69f5701b857249257da3621b9e17165460a2bb71faac7b92ae
+  languageName: node
+  linkType: hard
+
+"react-native-safe-area-context@patch:react-native-safe-area-context@npm%3A5.6.2#~/.yarn/patches/react-native-safe-area-context-npm-5.6.2-8af8830f4e.patch":
+  version: 5.6.2
+  resolution: "react-native-safe-area-context@patch:react-native-safe-area-context@npm%3A5.6.2#~/.yarn/patches/react-native-safe-area-context-npm-5.6.2-8af8830f4e.patch::version=5.6.2&hash=1bf0a4"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/a433bc5a79c74539a3b0a9c9709f6ccf8a680432804b3a37c129fe0c4f652d32dfb2ca70806b05605f421de4f933662e7afe97fdf954cbcff46c7ae5a518c0f1
   languageName: node
   linkType: hard
 
