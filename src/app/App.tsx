@@ -19,6 +19,7 @@ import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
+import { useRefreshUserAccessToken } from "app/utils/useRefreshUserAccessToken"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useTrackAppState } from "app/utils/useTrackAppState"
@@ -105,6 +106,7 @@ const Main = () => {
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
+  useRefreshUserAccessToken()
   usePushNotifications()
   usePreferredThemeTracking()
   useScreenReaderAndFontScaleTracking()

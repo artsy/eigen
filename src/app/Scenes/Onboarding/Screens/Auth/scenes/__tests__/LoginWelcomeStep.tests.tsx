@@ -32,6 +32,7 @@ describe("LoginWelcomeStep", () => {
      * are completed before making assertions.
      */
     jest.useFakeTimers()
+    jest.clearAllMocks()
   })
 
   afterEach(() => {
@@ -126,6 +127,7 @@ describe("LoginWelcomeStep", () => {
         get token() {
           return tokenValue
         },
+        state: undefined,
         isTokenValid: isTokenValidSpy,
         refreshToken: () => {
           refreshTokenSpy()
@@ -148,11 +150,7 @@ describe("LoginWelcomeStep", () => {
       // eslint-disable-next-line testing-library/no-unnecessary-act
       await act(async () => {
         fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
-      })
-
-      // Advance timers to allow async operations to complete
-      act(() => {
-        jest.advanceTimersByTime(100)
+        jest.runAllTimers()
       })
 
       expect(refreshTokenSpy).toHaveBeenCalled()
@@ -173,6 +171,7 @@ describe("LoginWelcomeStep", () => {
       mockUseRecaptcha.mockReturnValue({
         Recaptcha: () => {},
         token: "expired-token",
+        state: undefined,
         isTokenValid: isTokenValidSpy,
         refreshToken: refreshTokenSpy,
       })
@@ -192,9 +191,51 @@ describe("LoginWelcomeStep", () => {
       })
 
       act(() => {
+        jest.advanceTimersByTime(1000)
+      })
+
+      act(() => {
         jest.advanceTimersByTime(50)
       })
 
+      expect(refreshTokenSpy).toHaveBeenCalled()
+      expect(navigateSpy).not.toHaveBeenCalled()
+    })
+
+    it("shows a toast when token refresh fails", async () => {
+      const refreshTokenSpy = jest.fn()
+      const isTokenValidSpy = jest.fn(() => false)
+
+      mockUseRecaptcha.mockReturnValue({
+        Recaptcha: () => {},
+        token: null,
+        state: "error",
+        isTokenValid: isTokenValidSpy,
+        refreshToken: refreshTokenSpy,
+      })
+
+      const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
+
+      const navigateSpy = jest.fn()
+      mockUseAuthNavigation.mockReturnValue({
+        navigate: navigateSpy,
+      })
+
+      renderExpandedWelcomeStep()
+
+      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "foo@bar.baz")
+
+      // eslint-disable-next-line testing-library/no-unnecessary-act
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+        jest.runAllTimers()
+      })
+
+      expect(toastSpy).toHaveBeenCalledWith({
+        message: "Something went wrong. Please try again, or contact support@artsy.net",
+        placement: "bottom",
+        options: { backgroundColor: "red100" },
+      })
       expect(refreshTokenSpy).toHaveBeenCalled()
       expect(navigateSpy).not.toHaveBeenCalled()
     })

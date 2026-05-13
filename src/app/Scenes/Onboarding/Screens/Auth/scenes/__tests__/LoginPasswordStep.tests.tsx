@@ -37,14 +37,6 @@ describe("LoginPasswordStep", () => {
     await waitFor(() => expect(GlobalStore.actions.auth.signIn).toHaveBeenCalled())
   })
 
-  it("shows an error when login fails", async () => {
-    jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("failure")
-    renderWithWrappers(<LoginPasswordStep />)
-    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password2")
-    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
-    await screen.findByText("Incorrect email or password")
-  })
-
   it("navigates to the standard OTP step with required", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("otp_missing")
     renderWithWrappers(<LoginPasswordStep />)
@@ -83,6 +75,21 @@ describe("LoginPasswordStep", () => {
         "Please try signing in from a different internet connection or contact support@artsy.net for help.",
         expect.any(Array)
       )
+    )
+  })
+
+  it("shows a toast when login fails", async () => {
+    jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("failure")
+    const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
+    renderWithWrappers(<LoginPasswordStep />)
+    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
+    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    await waitFor(() =>
+      expect(toastSpy).toHaveBeenCalledWith({
+        message: "Something went wrong. Please try again, or contact support@artsy.net",
+        placement: "bottom",
+        options: { backgroundColor: "red100" },
+      })
     )
   })
 

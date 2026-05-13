@@ -24,3 +24,6 @@ export const SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET = 120
 
 // This is the default value of iOS transition duration
 export const DEFAULT_SCREEN_ANIMATION_DURATION = 350
+
+export const DEFAULT_NAVIGATION_BAR_COLOR = "#FFFFFF"
+export const DEFAULT_NAVIGATION_BAR_DARK_COLOR = "#000000"

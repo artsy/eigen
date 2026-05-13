@@ -119,12 +119,13 @@ export const Conversation: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    NetInfo.addEventListener(handleConnectivityChange)
+    const unsubscribeNetInfo = NetInfo.addEventListener(handleConnectivityChange)
     maybeMarkLastMessageAsRead()
     navigationEvents.addListener("modalDismissed", handleModalDismissed)
     navigationEvents.addListener("goBack", handleModalDismissed)
 
     return () => {
+      unsubscribeNetInfo()
       navigationEvents.removeListener("modalDismissed", handleModalDismissed)
       navigationEvents.removeListener("goBack", handleModalDismissed)
     }
