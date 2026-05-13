@@ -1,5 +1,12 @@
-pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
-plugins { id("com.facebook.react.settings") }
+pluginManagement {
+  includeBuild("../node_modules/@react-native/gradle-plugin")
+  includeBuild("../node_modules/expo-modules-autolinking/android/expo-gradle-plugin")
+  includeBuild("../node_modules/expo-modules-core/expo-module-gradle-plugin")
+}
+plugins {
+  id("com.facebook.react.settings")
+  id("expo-autolinking-settings")
+}
 extensions.configure(com.facebook.react.ReactSettingsExtension){ ex ->
   def command = [
     'node',
@@ -13,9 +20,20 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex ->
   ].toList()
   ex.autolinkLibrariesFromCommand(command)
 }
+expoAutolinking.useExpoModules()
+expoAutolinking.useExpoVersionCatalog()
+
 rootProject.name = 'Artsy'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
 
-apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
-useExpoModules()
+// Re-add jcenter() for Gradle 9 compatibility.
+// Some node_modules still reference it but it was removed in Gradle 9.
+gradle.beforeProject { project ->
+    project.buildscript.repositories.metaClass.jcenter = { ->
+        delegate.maven { url 'https://jcenter.bintray.com/' }
+    }
+    project.repositories.metaClass.jcenter = { ->
+        delegate.maven { url 'https://jcenter.bintray.com/' }
+    }
+}
