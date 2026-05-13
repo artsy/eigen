@@ -5,15 +5,7 @@ import {
 } from "app/Components/AuthBottomSheet/AuthBottomSheetTypes"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 
 interface AuthBottomSheetContextValue {
   present: (options?: AuthBottomSheetPresentOptions) => void
@@ -56,7 +48,7 @@ export const AuthBottomSheetProvider: React.FC<React.PropsWithChildren> = ({ chi
     [present, dismiss]
   )
 
-  // Auto-dismiss when the user becomes authenticated (signIn flips userID).
+  // // Auto-dismiss when the user becomes authenticated (signIn flips userID).
   useEffect(() => {
     if (visible && userID) {
       setVisible(false)
