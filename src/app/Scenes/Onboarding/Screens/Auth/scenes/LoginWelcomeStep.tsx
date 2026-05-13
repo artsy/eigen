@@ -8,6 +8,7 @@ import {
   LinkText,
   Spacer,
   Text,
+  Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
@@ -20,6 +21,7 @@ import { useInputAutofocus } from "app/Scenes/Onboarding/Screens/Auth/hooks/useI
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSocialLogin } from "app/utils/auth/socialSignInHelpers"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { Formik, useFormikContext } from "formik"
 import { MotiView } from "moti"
@@ -131,6 +133,7 @@ const LoginWelcomeStepForm: React.FC = () => {
   const setModalExpanded = AuthContext.useStoreActions((actions) => actions.setModalExpanded)
   const isModalExpanded = AuthContext.useStoreState((state) => state.isModalExpanded)
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
+  const loggedOutEnabled = useFeatureFlag("AREnableLoggedOutMode")
 
   const { color } = useTheme()
   const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
@@ -251,6 +254,23 @@ const LoginWelcomeStepForm: React.FC = () => {
             </LinkText>
             .
           </Text>
+
+          {!!loggedOutEnabled && (
+            <>
+              <Spacer y={2} />
+              <Touchable
+                onPress={() => {
+                  GlobalStore.actions.auth.setSkippedOnboarding(true)
+                }}
+                accessibilityHint="Continue browsing without signing in"
+                accessibilityLabel="Continue without an account"
+              >
+                <Text variant="xs" textAlign="center" underline>
+                  Continue without an account
+                </Text>
+              </Touchable>
+            </>
+          )}
         </MotiView>
       )}
     </Flex>

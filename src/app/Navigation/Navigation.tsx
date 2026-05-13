@@ -37,7 +37,10 @@ export const Navigation = () => {
 
   useReactNavigationDevTools({ ref: internal_navigationRef })
 
-  const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
+  const userID = GlobalStore.useAppState((state) => state.auth.userID)
+  const skippedOnboarding = GlobalStore.useAppState((state) => state.auth.skippedOnboarding)
+  const loggedOutEnabled = useFeatureFlag("AREnableLoggedOutMode")
+  const showAuthedRoutes = !!userID || (loggedOutEnabled && skippedOnboarding)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   const theme = useNavigationTheme()
@@ -111,8 +114,8 @@ export const Navigation = () => {
           }
         }}
       >
-        {!isLoggedIn && <OnboardingWelcomeScreens />}
-        {!!isLoggedIn && <AuthenticatedRoutes />}
+        {!showAuthedRoutes && <OnboardingWelcomeScreens />}
+        {!!showAuthedRoutes && <AuthenticatedRoutes />}
       </NavigationContainer>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </Fragment>
