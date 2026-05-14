@@ -18932,6 +18932,11 @@ type Mutation {
   # Submit an order
   submitOrder(input: submitOrderInput!): submitOrderPayload
 
+  # Syncs catalog artwork (OS) values to the CMS artwork, applying mapping rules for medium, availability, and price.
+  syncCatalogToArtwork(
+    input: SyncCatalogToArtworkMutationInput!
+  ): SyncCatalogToArtworkMutationPayload
+
   # Transfers My Collection artworks from one user to another.
   transferMyCollection(input: TransferMyCollectionInput!): TransferMyCollectionPayload
 
@@ -20380,6 +20385,9 @@ type Partner implements Node {
   displayFullPartnerPage: Boolean
   displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
+
+  # Whether auto-sync of variable fields to marketplaces is enabled. Defaults to false.
+  distributionSyncEnabled: Boolean
 
   # Return partner documents if current user has CMS access.
   documentsConnection(
@@ -26163,6 +26171,32 @@ type SuggestedAddressFields {
   lines: [String]
 }
 
+type SyncCatalogToArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input SyncCatalogToArtworkMutationInput {
+  # The ID of the artwork to sync.
+  artworkID: String!
+  clientMutationId: String
+}
+
+type SyncCatalogToArtworkMutationPayload {
+  # On success: the synced artwork and any partial errors. On error: the error that occurred.
+  artworkOrError: SyncCatalogToArtworkResponseOrError
+  clientMutationId: String
+}
+
+union SyncCatalogToArtworkResponseOrError =
+    SyncCatalogToArtworkFailure
+  | SyncCatalogToArtworkSuccess
+
+type SyncCatalogToArtworkSuccess {
+  artwork: Artwork
+  syncErrors: [String]
+  syncedFields: [String]
+}
+
 type System {
   # Deprecated Algolia fields, temporarily kept for legacy compatibility
   algolia: Algolia @deprecated(reason: "Algolia search is no longer supported")
@@ -27768,6 +27802,9 @@ input UpdatePartnerFlagsMutationInput {
   # The default weight metric system to use for artworks. If null, the flag will be unset.
   artworksDefaultWeightMetric: String
   clientMutationId: String
+
+  # Whether auto-sync of variable fields to marketplaces is enabled. If null, the flag will be unset.
+  distributionSyncEnabled: Boolean
 
   # Whether the partner has accepted the GDPR DPA. The server will record the acceptance timestamp.
   gdprDpaAccepted: Boolean
