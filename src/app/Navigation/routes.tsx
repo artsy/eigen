@@ -11,7 +11,6 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
-import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
 import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
 import {
@@ -137,6 +136,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { LiveSaleContainer } from "app/Scenes/LiveSale/LiveSaleContainer"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -249,7 +249,6 @@ import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
-import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 
 export interface ViewOptions {
@@ -1831,37 +1830,23 @@ export const artsyDotNetRoutes = defineRoutes([
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([
-  Platform.OS === "ios"
-    ? {
-        path: "/*",
-        name: "LiveAuction",
-        Component: LiveAuctionView,
-        options: {
-          alwaysPresentModally: true,
-          hidesBottomTabs: true,
-          screenOptions: {
-            gestureEnabled: false,
-            headerShown: false,
-          },
-        },
-        injectParams: (params) => ({ slug: params["*"] }),
-      }
-    : {
-        path: "/*",
-        name: "LiveAuctionWebView",
-        Component: ArtsyWebViewPage,
-        options: {
-          alwaysPresentModally: true,
-          hidesBottomTabs: true,
-          screenOptions: {
-            gestureEnabled: false,
-            headerShown: false,
-          },
-        },
-        injectParams: (params) => ({
-          url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
-        }),
+  {
+    path: "/*",
+    name: "LiveAuction",
+    Component: LiveSaleContainer,
+    options: {
+      alwaysPresentModally: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        gestureEnabled: false,
+        headerShown: false,
       },
+    },
+    injectParams: (params) => ({
+      slug: params["*"],
+      url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
+    }),
+  },
 ])
 
 export const routes = compact([...artsyDotNetRoutes, ...liveDotArtsyRoutes])
