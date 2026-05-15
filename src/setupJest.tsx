@@ -508,7 +508,6 @@ function getNativeModules(): OurNativeModules {
       getPushToken: jest.fn(),
       getRecentPushPayloads: jest.fn(),
       clearUserData: jest.fn(),
-      clearCache: jest.fn(),
     },
   }
 }

@@ -1,6 +1,5 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import RNDocumentPicker, { DocumentPickerResponse } from "@react-native-documents/picker"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
 import { Platform } from "react-native"
@@ -56,12 +55,6 @@ export async function showDocumentsAndPhotosActionSheet(
             resolve(photos)
           }
           if (buttonIndex === 2) {
-            if (Platform.OS === "android") {
-              // We attempt to clear the cache due to an ImagePicker bug
-              // See Hacks.md for more.
-              // We don't restrict users from proceeding even if clearCache resolves to false
-              await ArtsyNativeModule.clearCache()
-            }
             const photo = await ImagePicker.openCamera({
               mediaType: "photo",
             })

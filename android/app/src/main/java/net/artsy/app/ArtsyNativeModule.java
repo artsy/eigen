@@ -17,8 +17,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,44 +135,4 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         }
         return 0;
     }
-
-    private boolean deleteDir(File dir) {
-        if (dir == null) return true;
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            if (children != null) {
-                for (String child : children) {
-                    // delete everything in the directory one by one recursively
-                    boolean success = deleteDir(new File(dir, child));
-                    if (!success) {
-                        return false;
-                    }
-                }
-            }
-        }
-        // The directory is now empty so delete it
-        return dir.delete();
-    }
-
-    @ReactMethod
-    public void clearCache(Promise promise) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            try {
-                deleteDir(context.getCacheDir());
-                deleteDir(context.getExternalCacheDir());
-                promise.resolve(true);
-            } catch (Exception e) {
-                promise.resolve(false);
-            }
-        } else {
-            try {
-                FileUtils.deleteQuietly(context.getCacheDir());
-                FileUtils.deleteQuietly(context.getExternalCacheDir());
-                promise.resolve(true);
-            } catch (Exception e) {
-                promise.resolve(false);
-            }
-        }
-    }
-
 }
