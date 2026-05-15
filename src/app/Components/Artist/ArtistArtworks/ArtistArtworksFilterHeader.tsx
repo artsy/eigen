@@ -4,6 +4,7 @@ import { SavedSearchButtonV2 } from "app/Components/Artist/ArtistArtworks/SavedS
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtistArtworksFilterProps {
@@ -37,13 +38,13 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
         selectedFiltersCount={appliedFiltersCount}
         childrenPosition="left"
       >
-        <SavedSearchButtonV2
-          artistId={data.internalID}
-          artistSlug={data.slug}
-          onPress={() => {
-            showCreateAlertModal()
-          }}
-        />
+        <RequireAuth intent="create_alert">
+          <SavedSearchButtonV2
+            artistId={data.internalID}
+            artistSlug={data.slug}
+            onPress={showCreateAlertModal}
+          />
+        </RequireAuth>
       </ArtworksFilterHeader>
     </Flex>
   )

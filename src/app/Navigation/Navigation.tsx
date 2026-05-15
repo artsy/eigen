@@ -4,6 +4,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useReactNavigationDevTools } from "@rozenite/react-navigation-plugin"
 import { addBreadcrumb } from "@sentry/react-native"
+import { AuthBottomSheetProvider } from "app/Components/AuthBottomSheet/AuthBottomSheetProvider"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
@@ -37,7 +38,10 @@ export const Navigation = () => {
 
   useReactNavigationDevTools({ ref: internal_navigationRef })
 
-  const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
+  const userID = GlobalStore.useAppState((state) => state.auth.userID)
+  const skippedOnboarding = GlobalStore.useAppState((state) => state.auth.skippedOnboarding)
+  const loggedOutEnabled = useFeatureFlag("AREnableLoggedOutMode")
+  const showAuthedRoutes = !!userID || (loggedOutEnabled && skippedOnboarding)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   const theme = useNavigationTheme()
@@ -111,8 +115,10 @@ export const Navigation = () => {
           }
         }}
       >
-        {!isLoggedIn && <OnboardingWelcomeScreens />}
-        {!!isLoggedIn && <AuthenticatedRoutes />}
+        <AuthBottomSheetProvider>
+          {!showAuthedRoutes && <OnboardingWelcomeScreens />}
+          {!!showAuthedRoutes && <AuthenticatedRoutes />}
+        </AuthBottomSheetProvider>
       </NavigationContainer>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </Fragment>

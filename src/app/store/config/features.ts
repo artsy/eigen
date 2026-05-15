@@ -44,6 +44,11 @@ export type FeatureDescriptor = (
 export type FeatureName = keyof typeof features
 
 export const features = {
+  AREnableLoggedOutMode: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Allow browsing the app without an account",
+  },
   ARDarkModeSupport: {
     readyForRelease: true,
     showInDevMenu: true,

@@ -3,6 +3,7 @@ import { Flex, FollowButton, Screen, useSpace } from "@artsy/palette-mobile"
 import { ArtistHeaderNavRightQuery } from "__generated__/ArtistHeaderNavRightQuery.graphql"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -69,12 +70,14 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       py={1}
     >
       <MotiView style={[followButtonStyle, { marginRight: space(0.5) }]}>
-        <FollowButton
-          haptic
-          isFollowed={isFollowed}
-          followCount={artist?.counts.follows}
-          onPress={() => setIsFollowed(!isFollowed)}
-        />
+        <RequireAuth intent="follow_artist">
+          <FollowButton
+            haptic
+            isFollowed={isFollowed}
+            followCount={artist?.counts.follows}
+            onPress={() => setIsFollowed(!isFollowed)}
+          />
+        </RequireAuth>
       </MotiView>
 
       <TouchableOpacity

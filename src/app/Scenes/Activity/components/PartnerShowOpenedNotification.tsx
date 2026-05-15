@@ -1,5 +1,6 @@
 import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerShowOpenedNotification_notification$key } from "__generated__/PartnerShowOpenedNotification_notification.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { ShowItem } from "app/Components/ShowItem"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { goBack } from "app/system/navigation/navigate"
@@ -43,13 +44,15 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
 
           <Spacer y={1} />
 
-          <FollowButton
-            haptic
-            isFollowed={!!profile?.isFollowed}
-            onPress={followProfile}
-            disabled={isInFlight}
-            mr={1}
-          />
+          <RequireAuth intent="follow_artist">
+            <FollowButton
+              haptic
+              isFollowed={!!profile?.isFollowed}
+              onPress={followProfile}
+              disabled={isInFlight}
+              mr={1}
+            />
+          </RequireAuth>
 
           <Spacer y={4} />
 

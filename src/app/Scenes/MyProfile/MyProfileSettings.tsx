@@ -10,6 +10,7 @@ import { Flex, Join, LinkText, Screen, Spacer, Text, Touchable } from "@artsy/pa
 import * as Sentry from "@sentry/react-native"
 import { DarkModeIcon } from "app/Components/Icons/DarkModeIcon"
 import { MenuItem } from "app/Components/MenuItem"
+import { LoggedOutAccountHeader } from "app/Scenes/MyProfile/Components/UserAccountHeader/LoggedOutAccountHeader"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
@@ -34,6 +35,7 @@ const MyProfileSettingsContent: React.FC = () => {
   const appVersion = getAppVersion()
   const { updateTapCount } = useSetDevMode()
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userID)
   const tracking = useTracking()
 
   const scrollableRef = useBottomTabsScrollToTop() as React.RefObject<ScrollView>
@@ -43,57 +45,71 @@ const MyProfileSettingsContent: React.FC = () => {
       <Screen.Body fullwidth>
         <Sentry.TimeToInitialDisplay record>
           <ScrollView ref={scrollableRef}>
-            <UserAccountHeaderQueryRenderer
-              showBorder
-              showMyCollectionPreview
-              tappable
-              showCompleteProfile
-              onAvatarPress={() => {
-                tracking.trackEvent(tracks.trackTappedEditedProfile())
-              }}
-              onCardPress={() => {
-                tracking.trackEvent(tracks.trackTappedMyCollection())
-              }}
-            />
+            {isLoggedIn ? (
+              <UserAccountHeaderQueryRenderer
+                showBorder
+                showMyCollectionPreview
+                tappable
+                showCompleteProfile
+                onAvatarPress={() => {
+                  tracking.trackEvent(tracks.trackTappedEditedProfile())
+                }}
+                onCardPress={() => {
+                  tracking.trackEvent(tracks.trackTappedMyCollection())
+                }}
+              />
+            ) : (
+              <LoggedOutAccountHeader showBorder />
+            )}
 
             <Text variant="lg-display" px={2} mt={4}>
               Account
             </Text>
             <Join separator={<Spacer y={4} />}>
-              <>
-                <Text variant="xs" color="mono60" px={2} mt={2}>
-                  Transactions
-                </Text>
+              {!!isLoggedIn && (
+                <>
+                  <Text variant="xs" color="mono60" px={2} mt={2}>
+                    Transactions
+                  </Text>
 
-                <MenuItem title="Your Orders" href="/orders" icon={<BagIcon />} />
-              </>
+                  <MenuItem title="Your Orders" href="/orders" icon={<BagIcon />} />
+                </>
+              )}
 
               <>
                 <Text variant="xs" color="mono60" px={2} mt={2}>
                   Preferences
                 </Text>
 
-                <MenuItem
-                  title="Artwork Budget"
-                  href="/my-account/edit-price-range"
-                  icon={<MoneyBackIcon />}
-                />
+                {!!isLoggedIn && (
+                  <MenuItem
+                    title="Artwork Budget"
+                    href="/my-account/edit-price-range"
+                    icon={<MoneyBackIcon />}
+                  />
+                )}
                 <MenuItem title="Dark Mode" href="/my-account/dark-mode" icon={<DarkModeIcon />} />
               </>
 
-              <>
-                <Text variant="xs" color="mono60" px={2}>
-                  Account
-                </Text>
+              {!!isLoggedIn && (
+                <>
+                  <Text variant="xs" color="mono60" px={2}>
+                    Account
+                  </Text>
 
-                <MenuItem title="Login and Security" href="my-account" icon={<LockIcon />} />
-                <MenuItem title="Payments" href="my-profile/payment" icon={<CreditCardIcon />} />
-                <MenuItem
-                  title="Notifications"
-                  href="my-profile/push-notifications"
-                  icon={<MobileIcon />}
-                />
-              </>
+                  <MenuItem title="Login and Security" href="my-account" icon={<LockIcon />} />
+                  <MenuItem
+                    title="Payments"
+                    href="my-profile/payment"
+                    icon={<CreditCardIcon />}
+                  />
+                  <MenuItem
+                    title="Notifications"
+                    href="my-profile/push-notifications"
+                    icon={<MobileIcon />}
+                  />
+                </>
+              )}
 
               <>
                 <Text variant="xs" color="mono60" px={2}>
@@ -134,9 +150,11 @@ const MyProfileSettingsContent: React.FC = () => {
               </>
 
               <Flex justifyContent="center" px={2} pb={2}>
-                <LinkText onPress={confirmLogout} variant="sm">
-                  Log out
-                </LinkText>
+                {!!isLoggedIn && (
+                  <LinkText onPress={confirmLogout} variant="sm">
+                    Log out
+                  </LinkText>
+                )}
                 <Spacer y={4} />
                 <Touchable
                   accessibilityRole="button"

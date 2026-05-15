@@ -1,10 +1,15 @@
 import { EventEmitter } from "events"
 import { CommonActions, StackActions, TabActions } from "@react-navigation/native"
+import { presentAuthBottomSheet } from "app/Components/AuthBottomSheet/AuthBottomSheetProvider"
 import { tabsTracks } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { GlobalStore } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  unsafe_getFeatureFlag,
+  unsafe_getUserAccessToken,
+} from "app/store/GlobalStore"
 import { getValidTargetURL } from "app/system/navigation/utils/getValidTargetURL"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -62,6 +67,15 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   const module = modules[result.module]
 
   if (shouldQuit(options, targetURL)) {
+    return
+  }
+
+  if (
+    module.options?.authRequired &&
+    !unsafe_getUserAccessToken() &&
+    unsafe_getFeatureFlag("AREnableLoggedOutMode")
+  ) {
+    presentAuthBottomSheet({ intent: "generic" })
     return
   }
 

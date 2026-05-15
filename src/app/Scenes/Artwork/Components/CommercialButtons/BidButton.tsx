@@ -4,8 +4,10 @@ import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
+import { useRequireAuthGuard } from "app/utils/hooks/useRequireAuth"
 import { Schema } from "app/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -47,6 +49,7 @@ const IdentityVerificationRequiredMessage: React.FC<TextProps> = ({
 export const BidButton: React.FC<BidButtonProps> = (props) => {
   const { artwork, me, auctionState, variant } = props
   const { trackEvent } = useTracking()
+  const requireAuth = useRequireAuthGuard()
 
   const redirectToIdentityVerificationFAQ = () => {
     trackEvent({
@@ -58,6 +61,10 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
   }
 
   const redirectToRegister = () => {
+    if (!requireAuth("bid")) {
+      return
+    }
+
     trackEvent({
       action_name: Schema.ActionNames.RegisterToBid,
       action_type: Schema.ActionTypes.Tap,
@@ -91,6 +98,10 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
   }
 
   const redirectToBid = (firstIncrement: number) => {
+    if (!requireAuth("bid")) {
+      return
+    }
+
     const myLotStanding = getMyLotStanding(artwork)
     const hasBid = getHasBid(myLotStanding)
 

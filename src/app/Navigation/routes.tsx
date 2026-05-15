@@ -255,6 +255,10 @@ import { GraphQLTaggedNode } from "react-relay"
 export interface ViewOptions {
   alwaysPresentModally?: boolean
   hidesBottomTabs?: boolean
+  // Mark routes that should never open without an authenticated user. When
+  // logged-out browsing is enabled, navigate() short-circuits these and
+  // presents the auth bottom sheet instead.
+  authRequired?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
@@ -801,6 +805,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Conversation",
     Component: ConversationQueryRenderer,
     options: {
+      authRequired: true,
       onlyShowInTabName: "inbox",
       screenOptions: {
         headerShown: false,
@@ -991,6 +996,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Inbox",
     Component: InboxScreen,
     options: {
+      authRequired: true,
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
       screenOptions: {
@@ -1074,6 +1080,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "MyAccount",
     Component: MyAccountQueryRenderer,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Account Settings",
         headerShown: false,
@@ -1149,6 +1156,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyCollectionQueryRenderer,
     queries: [myCollectionArtworksQuery],
     options: {
+      authRequired: true,
       screenOptions: {
         headerShown: false,
       },
@@ -1261,6 +1269,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "CompleteMyProfile",
     Component: CompleteMyProfile,
     options: {
+      authRequired: true,
       hidesBottomTabs: true,
       screenOptions: {
         headerShown: false,
@@ -1285,6 +1294,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "MyProfileEditForm",
     Component: MyProfileEditFormScreen,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Edit Profile",
       },
@@ -1296,6 +1306,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "MyProfilePayment",
     Component: MyProfilePaymentQueryRenderer,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Payment",
         headerShown: false,
@@ -1384,6 +1395,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "OrderHistory",
     Component: OrderHistoryQueryRender,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Order History",
       },
@@ -1690,6 +1702,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Conversation",
     Component: ConversationQueryRenderer,
     options: {
+      authRequired: true,
       onlyShowInTabName: "inbox",
       screenOptions: {
         headerShown: false,
@@ -1702,6 +1715,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "OrderDetail",
     Component: OrderDetailsQR,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Order Details",
       },
@@ -1712,6 +1726,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "OrderDetails",
     Component: OrderDetailsQR,
     options: {
+      authRequired: true,
       screenOptions: {
         headerTitle: "Order Details",
       },

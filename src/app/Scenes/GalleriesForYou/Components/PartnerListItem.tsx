@@ -1,6 +1,7 @@
 import { Flex, FollowButton, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
@@ -48,7 +49,6 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     isFollowed: !!profile?.isFollowed,
     onCompleted: onFollow,
   })
-
   const handleFollowPartner = () => {
     followProfile()
   }
@@ -100,12 +100,14 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             </Flex>
 
             <Flex mt={0.5}>
-              <FollowButton
-                haptic
-                isFollowed={!!profile?.isFollowed}
-                onPress={handleFollowPartner}
-                disabled={isInFlight}
-              />
+              <RequireAuth intent="follow_artist">
+                <FollowButton
+                  haptic
+                  isFollowed={!!profile?.isFollowed}
+                  onPress={handleFollowPartner}
+                  disabled={isInFlight}
+                />
+              </RequireAuth>
             </Flex>
           </Flex>
         </Flex>

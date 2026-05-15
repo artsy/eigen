@@ -121,12 +121,14 @@ export interface AuthModel {
   xApptokenExpiresIn: string | null
   userEmail: string | null
   previousSessionUserID: string | null
+  skippedOnboarding: boolean
 
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
   // Actions
   setState: Action<this, Partial<StateMapper<this>>>
   setSessionState: Action<this, Partial<SessionState>>
+  setSkippedOnboarding: Action<this, boolean>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
   signIn: Thunk<
@@ -212,11 +214,15 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   userEmail: null,
   previousSessionUserID: null,
+  skippedOnboarding: false,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }
+  }),
+  setSkippedOnboarding: action((state, payload) => {
+    state.skippedOnboarding = payload
   }),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
@@ -351,6 +357,7 @@ export const getAuthModel = (): AuthModel => ({
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
         userEmail: email,
+        skippedOnboarding: false,
       })
 
       GlobalStore.actions.onboarding.setOnboardingState("complete")

@@ -1,6 +1,7 @@
 import { FollowButton } from "@artsy/palette-mobile"
 import { PartnerFollowButtonQuery } from "__generated__/PartnerFollowButtonQuery.graphql"
 import { PartnerFollowButton_partner$key } from "__generated__/PartnerFollowButton_partner.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
@@ -21,7 +22,6 @@ export const PartnerFollowButton: FC<PartnerFollowButtonProps> = ({ partner }) =
     internalID: data?.profile.internalID ?? "",
     isFollowed: !!data?.profile.isFollowed,
   })
-
   if (!data) {
     return null
   }
@@ -32,11 +32,13 @@ export const PartnerFollowButton: FC<PartnerFollowButtonProps> = ({ partner }) =
   }
 
   return (
-    <FollowButton
-      isFollowed={!!data.profile.isFollowed}
-      onPress={handleOnPress}
-      loading={isInFlight}
-    />
+    <RequireAuth intent="follow_artist">
+      <FollowButton
+        isFollowed={!!data.profile.isFollowed}
+        onPress={handleOnPress}
+        loading={isInFlight}
+      />
+    </RequireAuth>
   )
 }
 

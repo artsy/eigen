@@ -1,6 +1,7 @@
 import { FollowButton } from "@artsy/palette-mobile"
 import { ArtistFollowButtonQuery } from "__generated__/ArtistFollowButtonQuery.graphql"
 import { ArtistFollowButton_artist$key } from "__generated__/ArtistFollowButton_artist.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFollowArtist } from "app/utils/mutations/useFollowArtist"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
@@ -40,7 +41,11 @@ export const ArtistFollowButton: FC<ArtistFollowButtonProps> = ({ artist }) => {
     )
   }
 
-  return <FollowButton isFollowed={data.isFollowed} onPress={handleOnPress} loading={isInFlight} />
+  return (
+    <RequireAuth intent="follow_artist">
+      <FollowButton isFollowed={data.isFollowed} onPress={handleOnPress} loading={isInFlight} />
+    </RequireAuth>
+  )
 }
 
 const fragment = graphql`

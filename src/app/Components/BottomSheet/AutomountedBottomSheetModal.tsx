@@ -17,11 +17,13 @@ export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps 
 export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> = ({
   visible,
   closeOnBackdropClick = true,
+  onDismiss: onDismissProp,
   ...rest
 }) => {
   const color = useColor()
   const ref = useRef<BottomSheetModal>(null)
   const [modalIsPresented, setModalIsPresented] = useState(false)
+  const isPresentedRef = useRef(false)
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   // dismiss modal on back button press on Android
@@ -36,17 +38,20 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   }, [modalIsPresented, visible])
 
   const handlePresent = () => {
+    isPresentedRef.current = true
     setModalIsPresented(true)
   }
 
   const handleDismiss = () => {
+    isPresentedRef.current = false
     setModalIsPresented(false)
+    onDismissProp?.()
   }
 
   useEffect(() => {
     if (visible) {
       ref.current?.present()
-    } else {
+    } else if (isPresentedRef.current) {
       ref.current?.dismiss()
     }
   }, [visible])
