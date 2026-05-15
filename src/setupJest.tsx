@@ -499,8 +499,6 @@ function getNativeModules(): OurNativeModules {
     },
     ArtsyNativeModule: {
       launchCount: 3,
-      setAppStyling: jest.fn(),
-      setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
@@ -552,8 +550,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ArtsyNativeModule: {
       launchCount: 3,
-      setAppStyling: jest.fn(),
-      setAppLightContrast: jest.fn(),
       navigationBarHeight: 11,
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,

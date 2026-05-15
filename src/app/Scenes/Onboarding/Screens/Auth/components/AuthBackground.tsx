@@ -52,6 +52,7 @@ export const AuthBackground: React.FC = () => {
               variant={isTablet() ? "xxl" : "xl"}
               // We want to show this text in white regardless of the theme to make sure it can be read clearly
               color="white"
+              selectable={false}
             >
               Discover and Buy Art that Moves You
             </Text>
@@ -60,6 +61,7 @@ export const AuthBackground: React.FC = () => {
               variant={isTablet() ? "lg" : "sm"}
               // We want to show this text in white regardless of the theme to make sure it can be read clearly
               color="white"
+              selectable={false}
             >
               Your personalized guide to fresh artworks and the latest stories—and the easiest way
               to buy art you love.
