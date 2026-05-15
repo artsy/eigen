@@ -20264,6 +20264,9 @@ type Partner implements Node {
     after: String
     before: String
     first: Int
+
+    # Include inactive imports in results. Defaults to false.
+    includeInactive: Boolean
     last: Int
 
     # Filter by import source: 'bulk_import' or 'multi_add'. Returns all sources if omitted.
