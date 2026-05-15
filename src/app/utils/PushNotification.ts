@@ -93,6 +93,35 @@ export const saveToken = async (token: string) => {
   return true
 }
 
+export const deleteToken = async () => {
+  const { authenticationToken, userAgent } = getCurrentEmissionState()
+  const token = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
+
+  if (!token || !authenticationToken) {
+    return
+  }
+
+  const environment = unsafe__getEnvironment()
+  const url = `${environment.gravityURL}/api/v1/device/${token}`
+
+  const headers = {
+    "Content-Type": "application/json",
+    "X-ACCESS-TOKEN": authenticationToken,
+    "User-Agent": userAgent,
+  }
+
+  try {
+    await fetch(new Request(url, { method: "DELETE", headers }))
+  } catch (error) {
+    if (__DEV__) {
+      console.warn("Error deleting push notification token:", error)
+    } else {
+      captureMessage(`Error deleting push notification token: ${error}`, "error")
+    }
+  }
+}
+
 module.exports = {
   saveToken,
+  deleteToken,
 }

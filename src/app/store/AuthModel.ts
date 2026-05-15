@@ -8,6 +8,7 @@ import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
+import { deleteToken } from "app/utils/PushNotification"
 import {
   handleClassicFacebookAuth,
   handleClassicFacebookAuth2,
@@ -19,7 +20,6 @@ import {
 import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
-
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { stringify } from "qs"
 import { Platform } from "react-native"
@@ -1066,9 +1066,17 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
-    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.resetPushPromptLogic()
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
+    // Switch Braze to a temp user to avoid sending any more user specific
+    // events until next login, as Braze does not have an identify(null)
+    // or equivalent method
+    Braze.changeUser("00000")
+
+    // Delete from the server before clearing local storage, so both
+    // auth token and push token are still available.
+    await deleteToken()
 
     await Promise.all([
       Platform.OS === "ios"
