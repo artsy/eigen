@@ -24,9 +24,9 @@ runs:
       uses: actions/cache@v4
       with:
         path: android/.gradle
-        key: gradle-project-v1-${{ runner.os }}-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/build.gradle', 'android/app/build.gradle') }}
+        key: gradle-project-v2-${{ runner.os }}-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/build.gradle', 'android/app/build.gradle') }}
         restore-keys: |
-          gradle-project-v1-${{ runner.os }}-
+          gradle-project-v2-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts
