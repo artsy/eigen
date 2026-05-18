@@ -62,13 +62,13 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
     const [state] = change.current
 
     if (state.colorScheme === "dark") {
-      StatusBar.setBarStyle("light-content")
+      StatusBar.setBarStyle("light-content", true)
 
       if (Platform.OS === "android") {
         setAndroidNavigationBarColor("dark")
       }
     } else {
-      StatusBar.setBarStyle("dark-content")
+      StatusBar.setBarStyle("dark-content", true)
 
       if (Platform.OS === "android") {
         setAndroidNavigationBarColor("light")

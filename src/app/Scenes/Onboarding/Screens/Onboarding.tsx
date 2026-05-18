@@ -56,12 +56,14 @@ export const __unsafe__onboardingNavigationRef: React.MutableRefObject<Navigatio
 export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
   const color = useColor()
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   return (
     <StackNavigator.Navigator
       initialRouteName="OnboardingHome"
       screenOptions={{
         headerShown: false,
+        statusBarStyle: "light",
       }}
     >
       <StackNavigator.Group
@@ -95,6 +97,8 @@ export const OnboardingWelcomeScreens = () => {
               headerShown: true,
               headerTintColor: color("mono100"),
               headerLeft: () => <></>,
+              // Override the navigation container theme
+              statusBarStyle: theme === "dark" ? "light" : "dark",
             }}
           />
         )}
