@@ -40,16 +40,6 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
-
-#### When can we remove this:
-
-When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-196
-
-#### Explanation/Context:
-
-The app restarts when the user takes a picture to pass to `react-native-image-crop-picker` (https://github.com/ivpusic/react-native-image-crop-picker/issues/1704). We do not know exactly why this is happening. And it seems to happen on random devices, but mostly on android-10 and android-11s. This hack silently clears the cache on android before taking the photo.
-
 ## ParentAwareScrollView
 
 #### When can we remove this:
