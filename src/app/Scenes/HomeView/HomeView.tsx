@@ -40,9 +40,9 @@ import {
   FlatList,
   Linking,
   RefreshControl,
-  StatusBar,
   ViewToken,
   ListRenderItem,
+  StatusBar,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -232,7 +232,7 @@ const HomeViewScreenComponent: React.FC = () => {
 
   const { isDeepLink } = useIsDeepLink()
 
-  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
+  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
