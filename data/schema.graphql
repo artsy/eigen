@@ -17307,9 +17307,6 @@ type Me implements Node {
   # User has confirmed their email address
   emailConfirmed: Boolean!
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
-
-  # Frequency of marketing emails.
-  emailFrequency: String @deprecated(reason: "This field is no longer used.")
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasPassword: Boolean!
@@ -27461,9 +27458,6 @@ input UpdateMyProfileInput {
 
   # The given email of the user.
   email: String
-
-  # Frequency of marketing emails.
-  emailFrequency: String @deprecated(reason: "This field is no longer used.")
 
   # Gender.
   gender: String
