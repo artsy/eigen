@@ -5849,6 +5849,13 @@ type CatalogArtworkDocument {
   ): String
 }
 
+# Fields that can be synced from catalog artwork (OS) to CMS.
+enum CatalogSyncableField {
+  AVAILABILITY
+  MEDIUM
+  PRICE
+}
+
 type CausalityLotState {
   bidCount: Int
   floorSellingPrice: Money
@@ -26183,6 +26190,9 @@ input SyncCatalogToArtworkMutationInput {
   # The ID of the artwork to sync.
   artworkID: String!
   clientMutationId: String
+
+  # Specific fields to sync. Omit to sync all.
+  fields: [CatalogSyncableField]
 }
 
 type SyncCatalogToArtworkMutationPayload {
