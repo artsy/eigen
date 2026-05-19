@@ -3,7 +3,6 @@ package net.artsy.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
 
@@ -43,20 +42,8 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
         constants.put("launchCount", ArtsyNativeModule.launchCount);
-        constants.put("navigationBarHeight", getNavigationBarSize(this.getReactApplicationContext()));
         constants.put("gitCommitShortHash", BuildConfig.GITCommitShortHash);
         constants.put("isBeta", BuildConfig.IS_BETA);
         return constants;
-    }
-
-
-    public static int getNavigationBarSize(Context context) {
-        boolean hasHardwareMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
-        int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0 && !hasHardwareMenuKey)
-        {
-            return context.getResources().getDimensionPixelSize(resourceId);
-        }
-        return 0;
     }
 }
