@@ -4,10 +4,10 @@ index c216e1cfaff3b6c0bcae4f0fd68f02cadac7aabd..702735099c49f811caae7f71ce9291f9
 +++ b/android/src/main/java/expo/modules/updates/errorrecovery/ErrorRecovery.kt
 @@ -29,6 +29,7 @@ class ErrorRecovery(
    internal lateinit var handler: Handler
- 
+
    private var shouldHandleReactInstanceException = false
 +  private var previousBridgelessExceptionHandler: ((Exception) -> Unit)? = null
- 
+
    fun initialize(delegate: ErrorRecoveryDelegate) {
      if (!::handler.isInitialized) {
 @@ -49,6 +50,13 @@ class ErrorRecovery(
@@ -23,9 +23,9 @@ index c216e1cfaff3b6c0bcae4f0fd68f02cadac7aabd..702735099c49f811caae7f71ce9291f9
 +      }
      }
    }
- 
+
 @@ -92,9 +100,16 @@ class ErrorRecovery(
- 
+
    private fun registerErrorHandler(devSupportManager: DevSupportManager) {
      shouldHandleReactInstanceException = true
 +    // PATCHED: Store the current default uncaught exception handler as fallback
@@ -33,7 +33,7 @@ index c216e1cfaff3b6c0bcae4f0fd68f02cadac7aabd..702735099c49f811caae7f71ce9291f9
 +      Thread.getDefaultUncaughtExceptionHandler()?.uncaughtException(Thread.currentThread(), exception)
 +    }
    }
- 
+
    private fun unregisterErrorHandler() {
      shouldHandleReactInstanceException = false
 +    // PATCHED: Do NOT clear previousBridgelessExceptionHandler
