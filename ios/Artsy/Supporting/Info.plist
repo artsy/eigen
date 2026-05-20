@@ -4,6 +4,8 @@
 <dict>
 	<key>AppIdentifierPrefix</key>
 	<string>$(AppIdentifierPrefix)</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -114,8 +116,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIDesignRequiresCompatibility</key>
-	<true />
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>MGLGlyphsRasterizationMode</key>
@@ -129,8 +129,6 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>ReactNativeReleaseLevel</key>
-	<string>experimental</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
@@ -149,6 +147,8 @@
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
+	<key>ReactNativeReleaseLevel</key>
+	<string>experimental</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Unica77LL-Italic.otf</string>

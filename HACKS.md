@@ -231,15 +231,15 @@ Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPre
 
 See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
 
-## patch for expo-updates
-
-#### Explanation/Context:
-
-Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+## Patch for Segment
 
 #### When can we remove this:
 
-When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+This gets merged: https://github.com/segmentio/analytics-react-native/pull/1146
+
+#### Explanation/Context:
+
+React Native's New Architecture replaces ReactNativeHost with a newer system (reactHost). However, the latter is still being used inside analytics-react-native.
 
 ## Braze prebuilt-static podspecs in Podfile
 
@@ -276,3 +276,13 @@ Another dependency in the Expo/react-native ecosystem has brought in com.caveroc
 #### When can we remove this:
 
 When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes
+
+## patch for expo-updates
+
+#### Explanation/Context:
+
+Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+
+#### When can we remove this:
+
+When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543

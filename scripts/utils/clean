@@ -23,6 +23,11 @@ yarn clear-local-build-cache
 echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
 if [ -d android ]; then
 	cd android
+	# Wipe stale CMake state before gradlew clean. RN new-arch's CMake
+	# regenerate-step runs during Gradle configuration and references codegen
+	# dirs (app/build/generated and node_modules/*/android/build/generated)
+	# that `clean` itself is about to delete, so it fails without this.
+	rm -rf app/.cxx app/build/generated
 	./gradlew clean
 	cd -
 fi
