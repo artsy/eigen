@@ -10741,12 +10741,12 @@ type CreateMailchimpCampaignFailure {
 }
 
 input CreateMailchimpCampaignInput {
-  # Artwork IDs to associate with the campaign (mutually exclusive with partnerShowId; used to render content unless htmlContent is provided)
+  # Artwork IDs to associate with the campaign for tracking (mutually exclusive with partnerShowId)
   artworkIds: [String!]
   clientMutationId: String
 
-  # Pre-rendered HTML body for the campaign. When provided, supersedes the formatter's output but does not preclude tracking via artworkIds or partnerShowId
-  htmlContent: String
+  # Pre-rendered HTML body for the campaign
+  htmlContent: String!
 
   # The Mailchimp list/audience ID to send the campaign to
   listId: String!
@@ -10754,7 +10754,7 @@ input CreateMailchimpCampaignInput {
   # The internal ID of the Mailchimp account to use
   mailchimpAccountId: String!
 
-  # Partner show ID to associate with the campaign (mutually exclusive with artworkIds; used to render content unless htmlContent is provided)
+  # Partner show ID to associate with the campaign for tracking (mutually exclusive with artworkIds)
   partnerShowId: String
 
   # The email preview text
@@ -18467,7 +18467,7 @@ type Mutation {
   createInstagramPost(input: CreateInstagramPostInput!): CreateInstagramPostPayload
   createInvoicePayment(input: CreateInvoicePaymentInput!): CreateInvoicePaymentPayload
 
-  # Create a Mailchimp campaign draft for a partner
+  # Create a Mailchimp campaign draft for a partner from pre-rendered HTML
   createMailchimpCampaign(input: CreateMailchimpCampaignInput!): CreateMailchimpCampaignPayload
   createNavigationDraft(input: CreateNavigationDraftInput!): CreateNavigationDraftPayload
   createNavigationItem(input: CreateNavigationItemInput!): CreateNavigationItemPayload
