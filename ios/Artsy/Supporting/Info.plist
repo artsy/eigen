@@ -214,7 +214,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
