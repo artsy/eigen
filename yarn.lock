@@ -13506,7 +13506,7 @@ __metadata:
     moti: "npm:0.30.0"
     ora: "npm:5.4.0"
     ordinal: "npm:1.0.3"
-    pod-install: "npm:1.0.14"
+    pod-install: "npm:1.0.18"
     postinstall-prepare: "npm:1.0.1"
     prettier: "npm:3.1.1"
     prompt-sync: "npm:4.2.0"
@@ -13517,7 +13517,7 @@ __metadata:
     react-dom: "npm:19.2.0"
     react-error-boundary: "npm:4.0.13"
     react-fps: "npm:1.0.6"
-    react-native: "patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch"
+    react-native: "patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch"
     react-native-blob-util: "npm:0.19.11"
     react-native-blurhash: "npm:2.1.3"
     react-native-bootsplash: "npm:7.1.0"
@@ -21175,12 +21175,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pod-install@npm:1.0.14":
-  version: 1.0.14
-  resolution: "pod-install@npm:1.0.14"
+"pod-install@npm:1.0.18":
+  version: 1.0.18
+  resolution: "pod-install@npm:1.0.18"
   bin:
     pod-install: build/index.js
-  checksum: 10c0/44d1b4619d2072832887776a71d0202b854324bf3d4bc6eb343e63fc977b2930343316258b36e9bac1b9d869f5344584a8d4656b470f634a6abed18379aa3fe3
+  checksum: 10c0/375c80788c05037ac0f5d5e2bda576847dc989538bd1e08c12905b8557593f21a349b7701aee5b118def6f5de29eeaa65076c005bb9a48c99714be2fdb669572
   languageName: node
   linkType: hard
 
@@ -22349,9 +22349,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch":
+"react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch":
   version: 0.83.6
-  resolution: "react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-d8232ef145.patch::version=0.83.6&hash=55638f"
+  resolution: "react-native@patch:react-native@npm%3A0.83.6#~/.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch::version=0.83.6&hash=3b909d"
   dependencies:
     "@jest/create-cache-key-function": "npm:^29.7.0"
     "@react-native/assets-registry": "npm:0.83.6"
@@ -22396,7 +22396,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10c0/a5530399d82b77e89115cf53a62d2afa853f7585355516369ab144caf9b8b11323aaf2519dc6e71918a7fc8fe1301a0d9df9f25ceef0e1f2face6b453764176c
+  checksum: 10c0/649952bd107b932172a337c8d23c43061a134323bda99fa8da7bbfcee5baf4e98fea6929f9b5d8cf37e19f63fa1a127767208ddf1c4aa02f333af35adb960de6
   languageName: node
   linkType: hard
 

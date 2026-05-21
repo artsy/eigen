@@ -4969,7 +4969,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   GTMAppAuth: 217a876b249c3c585a54fd6f73e6b58c4f5c4238
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
-  hermes-engine: e0a7dff0944d05d21ef36618859c130e24af6d27
+  hermes-engine: f37e1d6f1eb198649a60b3f17b6f685a6ac12470
   Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
