@@ -49,7 +49,7 @@ echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf node_modules
 
 echo 'Clear cocoapods directory (ノಠ益ಠ)ノ彡┻━┻'
-rm -rf Pods
+rm -rf ios/Pods
 
 echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
 # sometimes this fails on first try even with -rf
