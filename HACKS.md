@@ -286,3 +286,17 @@ Started seeing blank screens on android when app was crashing instead of regular
 #### When can we remove this:
 
 When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+
+## Hermes engine podspec path fix in react-native patch
+
+#### Explanation/Context:
+
+After the Expo 55 bump (`react-native@0.83.6`), the `hermes-engine.podspec` resolves `HERMES_CLI_PATH` (the path to `hermesc`) by running `node -p require.resolve("hermes-compiler", ...)` at pod install time. This produces an **absolute path** containing the current user's home directory (e.g. `/Users/george/…/node_modules/hermes-compiler/hermesc/osx-bin/hermesc`).
+
+Because each developer has a different username, CocoaPods computes a **different checksum** for the `hermes-engine` pod on every machine, causing `Podfile.lock` to show a diff after every `pod install` even when nothing actually changed. See upstream issue: https://github.com/facebook/react-native/issues/54891
+
+The fix (bundled into `.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch`) replaces the dynamic `node` resolution with a static CocoaPods-relative path: `$(PODS_ROOT)/../../node_modules/hermes-compiler/hermesc/osx-bin/hermesc`. This path is identical on every machine, so the checksum stabilises.
+
+#### When can we remove this:
+
+When https://github.com/facebook/react-native/issues/54891 is resolved upstream and we upgrade to a version of `react-native` that uses a machine-independent path for `HERMES_CLI_PATH`.
