@@ -5815,6 +5815,7 @@ type CatalogArtwork {
   priceCurrency: String
   priceListed: Money
   privateNotes: String
+  syncedMedium: String
   updatedAt(
     format: String
 
