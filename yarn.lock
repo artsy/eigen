@@ -9874,13 +9874,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:10.0.0":
-  version: 10.0.0
-  resolution: "@types/uuid@npm:10.0.0"
-  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
-  languageName: node
-  linkType: hard
-
 "@types/yargs-parser@npm:*":
   version: 13.1.0
   resolution: "@types/yargs-parser@npm:13.1.0"
@@ -13445,7 +13438,6 @@ __metadata:
     "@types/styled-system": "npm:5.1.24"
     "@types/styled-system__theme-get": "npm:5.0.4"
     "@types/supercluster": "npm:5.0.3"
-    "@types/uuid": "npm:10.0.0"
     "@types/yup": "npm:0.29.13"
     "@typescript-eslint/eslint-plugin": "npm:5.57.0"
     "@typescript-eslint/parser": "npm:5.57.0"
@@ -13579,7 +13571,6 @@ __metadata:
     typescript: "npm:5.9.2"
     unleash-proxy-client: "npm:3.7.6"
     url: "npm:0.11.3"
-    uuid: "npm:14.0.0"
     victory-native: "npm:37.3.4"
     yargs: "npm:17.7.2"
     yup: "npm:0.31.1"
@@ -25782,15 +25773,6 @@ __metadata:
   dependencies:
     base64-arraybuffer: "npm:^1.0.2"
   checksum: 10c0/eaffe645bd81a39e4bc3abb23df5895e9961dbdd49748ef3b173529e8b06ce9dd1163e9705d5309a1c61ee41ffcb825e2043bc0fd1659845ffbdf4b1515dfdb4
-  languageName: node
-  linkType: hard
-
-"uuid@npm:14.0.0":
-  version: 14.0.0
-  resolution: "uuid@npm:14.0.0"
-  bin:
-    uuid: dist-node/bin/uuid
-  checksum: 10c0/a57ae7794c45005c1a9208989196c5baf79a7679c30f43c1bee9033a2c4d113a2cea216fa6fcc9663b08b0d55635df1a7c6eb7e7f3d21c3e50688c698fa39a50
   languageName: node
   linkType: hard
 
