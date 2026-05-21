@@ -20394,8 +20394,8 @@ type Partner implements Node {
   displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
 
-  # Whether auto-sync of variable fields to marketplaces is enabled. Defaults to false.
-  distributionSyncEnabled: Boolean
+  # Whether auto-sync of variable fields to marketplaces is enabled. Defaults to true.
+  distributionSyncEnabled: Boolean!
 
   # Return partner documents if current user has CMS access.
   documentsConnection(
