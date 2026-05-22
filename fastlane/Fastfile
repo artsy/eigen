@@ -359,9 +359,10 @@ lane :ship_beta_android do |options|
     upload_sentry_artifacts(
       sentry_release_name: sentry_release_name,
       dist_version: "#{vcode}",
-      platform: 'android'
+      platform: 'android',
+      build_type: build_type
     )
-    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/#{build_type}/app-#{build_type}.aab")
   end
 
   deploy_android_beta(deployment_target: deployment_target)

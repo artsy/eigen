@@ -17,7 +17,8 @@ lane :upload_sentry_artifacts do |options|
     UI.user_error!("Sentry distribution version not specified")
   end
 
-  settings = platform_settings(options[:platform])
+  build_type = options[:build_type] || 'release'
+  settings = platform_settings(options[:platform], build_type: build_type)
   sourcemap_path = settings[:sourcemap_path]
   bundle_path = settings[:bundle_path]
   outfile = settings[:outfile]
@@ -99,15 +100,15 @@ lane :upload_dsyms_to_sentry do |options|
   puts "Uploaded dsyms for #{project_slug}"
 end
 
-def platform_settings(platform)
+def platform_settings(platform, build_type: 'release')
   settings = {
     ios: {
       sourcemap_path: 'dist/ios/main.jsbundle.map',
       bundle_path: 'dist/ios/main.jsbundle'
     },
     android: {
-      sourcemap_path: 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map',
-      bundle_path: 'android/app/build/generated/assets/createBundleReleaseJsAndAssets/index.android.bundle'
+      sourcemap_path: "android/app/build/generated/sourcemaps/react/#{build_type}/index.android.bundle.map",
+      bundle_path: "android/app/build/generated/assets/react/#{build_type}/index.android.bundle"
     }
   }
   settings[platform.to_sym]
