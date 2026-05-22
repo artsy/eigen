@@ -7,8 +7,8 @@ import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import {
-  HomeViewSectionsConnection_viewer$key,
   HomeViewSectionsConnection_viewer$data,
+  HomeViewSectionsConnection_viewer$key,
 } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -36,14 +36,7 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
-import {
-  FlatList,
-  Linking,
-  RefreshControl,
-  ViewToken,
-  ListRenderItem,
-  StatusBar,
-} from "react-native"
+import { FlatList, Linking, ListRenderItem, RefreshControl, ViewToken } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -226,13 +219,10 @@ export const HomeView: React.FC = memo(() => {
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
-  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
-
-  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
