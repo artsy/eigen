@@ -22,19 +22,15 @@ const extractTime = (time: number) => {
 }
 
 export const getTimer = (endDate: string, startAt = ""): Timer => {
-  const currentTime = DateTime.now().toISO() || DateTime.now().toUTC().toString()
+  const currentTime = DateTime.now().toISO()
 
-  // Handle empty endDate - treat as no end date (ongoing event)
-  const timeBeforeEnd =
-    endDate === ""
-      ? Duration.fromMillis(Number.MAX_SAFE_INTEGER)
-      : Duration.fromISO(
-          DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO() || "PT0S"
-        )
-  const hasEnded = endDate !== "" && Math.floor(timeBeforeEnd.seconds) <= 0
+  const timeBeforeEnd = Duration.fromISO(
+    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO()
+  )
+  const hasEnded = Math.floor(timeBeforeEnd.seconds) <= 0
 
   const timeBeforeStart = Duration.fromISO(
-    DateTime.fromISO(startAt).diff(DateTime.fromISO(currentTime)).toISO() || "PT0S"
+    DateTime.fromISO(startAt).diff(DateTime.fromISO(currentTime)).toString()
   )
 
   const hasStarted = Math.floor(timeBeforeStart.seconds) <= 0

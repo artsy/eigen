@@ -1,25 +1,24 @@
 import { Box, BoxProps, Text, TextProps } from "@artsy/palette-mobile"
-import { DateTime } from "luxon"
+import moment from "moment"
 import { ViewStyle } from "react-native"
 
 const exactDate = (time: string) => {
   if (!time) {
     return null
   }
-  const date = DateTime.fromISO(time)
-  const now = DateTime.now()
-  const isToday = date.hasSame(now, "day")
-  const isYesterday = date.hasSame(now.minus({ days: 1 }), "day")
-  const daysSince = Math.floor(now.diff(date, "days").days)
+  const date = moment(time)
+  const isToday = moment().isSame(date, "day")
+  const isYesterday = moment().subtract(1, "days").isSame(date, "day")
+  const daysSince = moment().diff(date, "days")
 
   if (isToday) {
-    return `Today ${date.toFormat("h:mm A")}`
+    return date.format("[Today] h:mm A")
   } else if (isYesterday) {
-    return `Yesterday ${date.toFormat("h:mm A")}`
+    return date.format("[Yesterday] h:mm A")
   } else if (daysSince < 7) {
-    return date.toFormat("EEEE h:mmA")
+    return date.format("dddd h:mmA")
   } else {
-    return date.toFormat("EEE, MMM d, h:mm A")
+    return date.format("ddd, MMM Do, h:mm A")
   }
 }
 
@@ -27,8 +26,8 @@ export const relativeDate = (time: string) => {
   if (!time) {
     return null
   }
-  const date = DateTime.fromISO(time)
-  return date.toRelative()
+  const date = moment(time)
+  return date.fromNow()
 }
 
 interface TimeSinceProps extends Omit<BoxProps, "color"> {
