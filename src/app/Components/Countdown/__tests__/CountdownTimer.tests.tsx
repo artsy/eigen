@@ -1,8 +1,15 @@
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { LabeledTicker } from ".."
+
+// Mock moment to always give back a formatted time string
+jest.mock("moment-timezone", () => ({
+  ...jest.requireActual("moment-timezone"),
+  format: jest.fn(() => ({
+    format: (format: string) => (format.length > 3 ? "Mon" : "7pm"),
+  })),
+}))
 
 const dateString = (m: number) => new Date(m).toISOString()
 
@@ -25,7 +32,7 @@ describe("CountdownTimer", () => {
   })
 
   it("renders upcoming properly", () => {
-    renderWithWrappers(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens May 10 at 8:22pm"
         startAt="2018-05-10T20:22:42+00:00"
@@ -34,11 +41,11 @@ describe("CountdownTimer", () => {
       />
     )
 
-    expect(screen.getByText("Opens May 10 at 8:22pm")).toBeTruthy()
+    expect(getByText("Opens May 10 at 8:22pm")).toBeTruthy()
   })
 
   it("renders current properly", () => {
-    renderWithWrappers(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens Apr 14 at 8:00pm"
         startAt="2018-04-14T20:00:00+00:00"
@@ -47,11 +54,11 @@ describe("CountdownTimer", () => {
       />
     )
 
-    expect(screen.getByText("Opens Apr 14 at 8:00pm")).toBeTruthy()
+    expect(getByText("Opens Apr 14 at 8:00pm")).toBeTruthy()
   })
 
   it("renders closed properly", () => {
-    renderWithWrappers(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Closed"
         startAt={dateString(Date.now() - 2000)}
@@ -60,6 +67,6 @@ describe("CountdownTimer", () => {
       />
     )
 
-    expect(screen.getByText("Closed")).toBeTruthy()
+    expect(getByText("Closed")).toBeTruthy()
   })
 })

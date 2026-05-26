@@ -1,9 +1,8 @@
 import { Text } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
 import { CountdownProps } from "app/Components/Bidding/Components/Timer"
 import { StateManager } from "app/Components/Countdown/StateManager"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Duration } from "luxon"
+import moment from "moment"
 
 describe("StateManager", () => {
   const Countdown = (props: CountdownProps) => {
@@ -19,7 +18,7 @@ describe("StateManager", () => {
 
   it("Manages a DurationProvider", () => {
     const onNextTickerStateMock = jest.fn(() => ({ label: "bar", state: "foo" }))
-    renderWithWrappers(
+    const { getByText } = renderWithWrappers(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
@@ -31,8 +30,8 @@ describe("StateManager", () => {
       />
     )
 
-    const duration = Duration.fromMillis(1000).toString()
-    expect(screen.getByText(duration)).toBeTruthy()
+    const duration = moment.duration(1000).toString()
+    expect(getByText(duration)).toBeTruthy()
   })
 
   it("Transitions state when duration expires", () => {

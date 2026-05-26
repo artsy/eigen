@@ -5,7 +5,7 @@ import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { DateTime } from "luxon"
+import moment from "moment"
 import { Component } from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
@@ -132,11 +132,7 @@ export class MessageGroup extends Component<MessageGroupProps> {
                   message={message}
                   formattedFirstMessage={formattedFirstMessage}
                   nextMessage={group[messageIndex + 1]}
-                  isSameDay={
-                    firstItem.createdAt
-                      ? DateTime.fromISO(firstItem.createdAt).hasSame(DateTime.now(), "day")
-                      : false
-                  }
+                  isSameDay={moment(firstItem.createdAt).isSame(moment(), "day")}
                 />
               )
             })}
