@@ -36,7 +36,14 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, Linking, ListRenderItem, RefreshControl, ViewToken } from "react-native"
+import {
+  FlatList,
+  Linking,
+  ListRenderItem,
+  RefreshControl,
+  StatusBar,
+  ViewToken,
+} from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -219,10 +226,17 @@ export const HomeView: React.FC = memo(() => {
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+    })
+  }, [theme])
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
