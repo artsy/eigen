@@ -18,7 +18,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React, { useEffect } from "react"
-import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
+import { Alert, NativeModules, PixelRatio, ScrollView, StatusBar } from "react-native"
 
 export const DevMenu: React.FC<{}> = () => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -26,6 +26,8 @@ export const DevMenu: React.FC<{}> = () => {
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
   const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   const handleBackButton = () => {
     goBack()
     return true
@@ -42,6 +44,10 @@ export const DevMenu: React.FC<{}> = () => {
       ),
     })
   }, [navigation])
+
+  useEffect(() => {
+    StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+  }, [theme])
 
   const handleDarkModePress = () => {
     Alert.alert("Dark Mode", undefined, [
