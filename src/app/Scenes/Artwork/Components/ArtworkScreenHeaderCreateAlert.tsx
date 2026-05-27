@@ -3,9 +3,9 @@ import { BellStrokeIcon } from "@artsy/icons/native"
 import { Button, Flex } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$key } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
-import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { lotIsClosed } from "app/Scenes/Artwork/utils/lotIsClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
+import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -25,12 +25,13 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
   const { isForSale, sale, saleArtwork, isInAuction, isEligibleToCreateAlert, internalID, slug } =
     artwork
 
-  const isLotClosedOrBiddingEnded =
-    hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
+  const biddingEndAt = saleArtwork?.extendedBiddingEndAt ?? saleArtwork?.endAt
+  const { hasEnded } = getTimer(biddingEndAt as string, sale?.startAt as string)
 
-  const displayCreateAlertHeader =
-    isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
+  const isLotClosed = hasEnded || lotIsClosed(sale, saleArtwork)
+
+  const displayCreateAlertHeader = isInAuction && isLotClosed && enableAuctionHeaderAlertCTA
 
   const { trackCreateAlertTap } = useCreateAlertTracking({
     contextScreenOwnerType: OwnerType.artwork,
