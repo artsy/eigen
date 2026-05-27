@@ -9628,10 +9628,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/luxon@npm:2.0.9":
-  version: 2.0.9
-  resolution: "@types/luxon@npm:2.0.9"
-  checksum: 10c0/912c95fcf0309e486e835aba5f622b41f714404399ca0a6e515c59ff0129538e23b7466ac9c75d188cda0c1e625e59737f27dc2c049ed9e8ac025381b97b63f8
+"@types/luxon@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@types/luxon@npm:2.4.0"
+  checksum: 10c0/2686d03827a3799f0374923323148f4d0d07f9e4321551389b2ae285e5085e178cfe908806041ab32bf66534497702b4ae8459d1b4190258af133818d4b846c9
   languageName: node
   linkType: hard
 
@@ -13437,7 +13437,7 @@ __metadata:
     "@types/jest": "npm:29.5.14"
     "@types/jscodeshift": "npm:0.11.6"
     "@types/lodash": "npm:4.14.180"
-    "@types/luxon": "npm:2.0.9"
+    "@types/luxon": "npm:2.4.0"
     "@types/moment-timezone": "npm:0.5.30"
     "@types/prompts": "npm:^2.4.9"
     "@types/qs": "npm:6.9.7"
