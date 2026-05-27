@@ -1,5 +1,12 @@
+import { renderHook, act } from "@testing-library/react-native"
 import { IANATimezone } from "app/utils/IANATimezone"
-import { saleTime } from "app/utils/saleTime"
+import { Time } from "app/utils/getTimer"
+import {
+  getAbsoluteTimeOfSale,
+  getTimerInfo,
+  saleTime,
+  useRelativeTimeOfSale,
+} from "app/utils/saleTime"
 
 const timezones: Record<string, IANATimezone> = {
   ny: "America/New_York",
@@ -261,5 +268,307 @@ describe("#saleTime.relative", () => {
     expect(saleTime(pastNoEndAtSale).relative).toEqual(null)
     expect(saleTime(futureNoStartAtSale).relative).toEqual(null)
     expect(saleTime(pastNoStartAtSale).relative).toEqual(null)
+  })
+})
+
+const makeTime = (overrides: Partial<Time> = {}): Time => ({
+  days: "00",
+  hours: "00",
+  minutes: "00",
+  seconds: "00",
+  ...overrides,
+})
+
+describe("getTimerInfo", () => {
+  describe("when sale has not started", () => {
+    it("shows days when days >= 1", () => {
+      expect(getTimerInfo(makeTime({ days: "02" }), { hasStarted: false })).toEqual({
+        copy: "2 Days Until Bidding Starts",
+        color: "blue100",
+      })
+    })
+
+    it("uses singular 'Day' when days = 1", () => {
+      expect(getTimerInfo(makeTime({ days: "01" }), { hasStarted: false })).toEqual({
+        copy: "1 Day Until Bidding Starts",
+        color: "blue100",
+      })
+    })
+
+    it("shows hours and minutes when days < 1 and hours >= 1", () => {
+      expect(getTimerInfo(makeTime({ hours: "03", minutes: "15" }), { hasStarted: false })).toEqual(
+        {
+          copy: "3h 15m Until Bidding Starts",
+          color: "blue100",
+        }
+      )
+    })
+
+    it("shows minutes and seconds when days < 1 and hours < 1", () => {
+      expect(
+        getTimerInfo(makeTime({ minutes: "45", seconds: "30" }), { hasStarted: false })
+      ).toEqual({
+        copy: "45m 30s Until Bidding Starts",
+        color: "blue100",
+      })
+    })
+  })
+
+  describe("when sale is extended", () => {
+    it("shows extended format with red color", () => {
+      expect(
+        getTimerInfo(makeTime({ minutes: "05", seconds: "10" }), {
+          hasStarted: true,
+          isExtended: true,
+        })
+      ).toEqual({
+        copy: "Extended: 5m 10s",
+        color: "red100",
+      })
+    })
+  })
+
+  describe("when sale has started and isSaleInfo=true", () => {
+    it("shows 'Lots are closing' when saleHasEnded=true", () => {
+      expect(
+        getTimerInfo(makeTime(), { hasStarted: true, isSaleInfo: true, saleHasEnded: true })
+      ).toEqual({
+        copy: "Lots are closing",
+        color: "red100",
+      })
+    })
+
+    it("shows days until lots close when days >= 1", () => {
+      expect(
+        getTimerInfo(makeTime({ days: "02", hours: "03" }), {
+          hasStarted: true,
+          isSaleInfo: true,
+          saleHasEnded: false,
+        })
+      ).toEqual({
+        copy: "2 Days Until Lots Start Closing",
+        color: "blue100",
+      })
+    })
+
+    it("uses singular 'Day' when days = 1", () => {
+      expect(
+        getTimerInfo(makeTime({ days: "01" }), {
+          hasStarted: true,
+          isSaleInfo: true,
+          saleHasEnded: false,
+        })
+      ).toEqual({
+        copy: "1 Day Until Lots Start Closing",
+        color: "blue100",
+      })
+    })
+
+    it("shows hours and minutes when days < 1 and hours >= 1", () => {
+      expect(
+        getTimerInfo(makeTime({ hours: "03", minutes: "15" }), {
+          hasStarted: true,
+          isSaleInfo: true,
+          saleHasEnded: false,
+        })
+      ).toEqual({
+        copy: "3h 15m Until Lots Start Closing",
+        color: "red100",
+      })
+    })
+
+    it("shows minutes and seconds when days < 1 and hours < 1", () => {
+      expect(
+        getTimerInfo(makeTime({ minutes: "45", seconds: "30" }), {
+          hasStarted: true,
+          isSaleInfo: true,
+          saleHasEnded: false,
+        })
+      ).toEqual({
+        copy: "45m 30s Until Lots Start Closing",
+        color: "red100",
+      })
+    })
+  })
+
+  describe("when sale has started and isSaleInfo=false (lot timer)", () => {
+    it("shows days and hours when days >= 1", () => {
+      expect(
+        getTimerInfo(makeTime({ days: "02", hours: "03" }), {
+          hasStarted: true,
+          isSaleInfo: false,
+        })
+      ).toEqual({
+        copy: "2d 3h",
+        color: "blue100",
+      })
+    })
+
+    it("shows hours and minutes when days < 1 and hours >= 1", () => {
+      expect(
+        getTimerInfo(makeTime({ hours: "03", minutes: "15" }), {
+          hasStarted: true,
+          isSaleInfo: false,
+        })
+      ).toEqual({
+        copy: "3h 15m",
+        color: "blue100",
+      })
+    })
+
+    it("shows minutes and seconds with red color when days < 1 and hours < 1", () => {
+      expect(
+        getTimerInfo(makeTime({ minutes: "45", seconds: "30" }), {
+          hasStarted: true,
+          isSaleInfo: false,
+        })
+      ).toEqual({
+        copy: "45m 30s",
+        color: "red100",
+      })
+    })
+  })
+})
+
+describe("getAbsoluteTimeOfSale", () => {
+  it("returns null when timeZone is missing", () => {
+    expect(
+      getAbsoluteTimeOfSale({
+        startAt: times.future60,
+        endAt: null,
+        endedAt: null,
+        timeZone: null,
+      })
+    ).toBeNull()
+  })
+
+  it("returns formatted start date when startAt is in the future", () => {
+    expect(
+      getAbsoluteTimeOfSale({
+        startAt: times.future60,
+        endAt: null,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    ).toEqual("Oct 1, 2020 • 3:00pm EDT")
+  })
+
+  it("returns 'Closed' string when endedAt is in the past", () => {
+    expect(
+      getAbsoluteTimeOfSale({
+        startAt: null,
+        endAt: null,
+        endedAt: times.past20,
+        timeZone: timezones.ny,
+      })
+    ).toEqual("Closed Aug 1, 2020 • 3:00pm EDT")
+  })
+
+  it("returns formatted end date when endAt is set and not ended", () => {
+    expect(
+      getAbsoluteTimeOfSale({
+        startAt: null,
+        endAt: times.future30,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    ).toEqual("Sep 5, 2020 • 3:00pm EDT")
+  })
+
+  it("returns null when no relevant dates are provided", () => {
+    expect(
+      getAbsoluteTimeOfSale({
+        startAt: null,
+        endAt: null,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    ).toBeNull()
+  })
+})
+
+describe("useRelativeTimeOfSale", () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ now: new Date(times.present + "Z") })
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  it("returns null initially", () => {
+    const { result } = renderHook(() =>
+      useRelativeTimeOfSale({
+        startAt: times.past10,
+        endAt: times.future30,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    )
+    expect(result.current).toBeNull()
+  })
+
+  it("stays null after interval when endedAt is set", () => {
+    const { result } = renderHook(() =>
+      useRelativeTimeOfSale({
+        startAt: times.past10,
+        endAt: times.future30,
+        endedAt: times.future20,
+        timeZone: timezones.ny,
+      })
+    )
+    act(() => {
+      jest.advanceTimersByTime(1001)
+    })
+    expect(result.current).toBeNull()
+  })
+
+  it("stays null after interval when endAt is missing", () => {
+    const { result } = renderHook(() =>
+      useRelativeTimeOfSale({
+        startAt: times.past10,
+        endAt: null,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    )
+    act(() => {
+      jest.advanceTimersByTime(1001)
+    })
+    expect(result.current).toBeNull()
+  })
+
+  it("stays null after interval when startAt is missing", () => {
+    const { result } = renderHook(() =>
+      useRelativeTimeOfSale({
+        startAt: null,
+        endAt: times.future30,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    )
+    act(() => {
+      jest.advanceTimersByTime(1001)
+    })
+    expect(result.current).toBeNull()
+  })
+
+  it("returns timer info after interval fires for a valid in-progress sale", () => {
+    const { result } = renderHook(() =>
+      useRelativeTimeOfSale({
+        startAt: times.past10,
+        endAt: times.future30,
+        endedAt: null,
+        timeZone: timezones.ny,
+      })
+    )
+    act(() => {
+      jest.advanceTimersByTime(1001)
+    })
+    expect(result.current).not.toBeNull()
+    expect(result.current).toMatchObject({
+      copy: expect.any(String),
+      color: expect.any(String),
+    })
   })
 })
