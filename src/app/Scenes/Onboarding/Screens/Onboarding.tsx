@@ -1,11 +1,12 @@
 import { useColor } from "@artsy/palette-mobile"
-import { NavigationContainerRef } from "@react-navigation/native"
+import { NavigationContainerRef, useFocusEffect } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AuthApp } from "app/Scenes/Onboarding/Screens/Auth/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { defaultScreenOrientation } from "app/utils/screenOrientation"
+import { StatusBar } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
@@ -56,14 +57,19 @@ export const __unsafe__onboardingNavigationRef: React.MutableRefObject<Navigatio
 export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
   const color = useColor()
-  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  useFocusEffect(() => {
+    requestAnimationFrame(() => {
+      // Explicitly set the status bar style to Light Content due to our auth screen background
+      StatusBar.setBarStyle("light-content", true)
+    })
+  })
 
   return (
     <StackNavigator.Navigator
       initialRouteName="OnboardingHome"
       screenOptions={{
         headerShown: false,
-        statusBarStyle: "light",
       }}
     >
       <StackNavigator.Group
@@ -97,8 +103,6 @@ export const OnboardingWelcomeScreens = () => {
               headerShown: true,
               headerTintColor: color("mono100"),
               headerLeft: () => <></>,
-              // Override the navigation container theme
-              statusBarStyle: theme === "dark" ? "light" : "dark",
             }}
           />
         )}

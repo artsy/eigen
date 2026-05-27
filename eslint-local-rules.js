@@ -82,4 +82,76 @@ module.exports = {
       }
     },
   },
+  "no-status-bar-style-in-navigation-options": {
+    meta: {
+      type: "problem",
+      docs: {
+        description:
+          "Disallow statusBarStyle in navigation options (screenOptions or options props)",
+      },
+      messages: {
+        noStatusBarStyleInNavigationOptions:
+          "Please do not use 'statusBarStyle' in navigation options. Using it will cause an crash in iOS with UIViewControllerBasedStatusBarAppearance, please use react-native StatusBar instead.",
+      },
+      schema: [],
+    },
+    create(context) {
+      const checkForStatusBarStyle = (objectExpression) => {
+        if (!objectExpression || objectExpression.type !== "ObjectExpression") {
+          return
+        }
+
+        for (const property of objectExpression.properties) {
+          if (
+            property.type === "Property" &&
+            property.key.type === "Identifier" &&
+            property.key.name === "statusBarStyle"
+          ) {
+            context.report({
+              node: property,
+              messageId: "noStatusBarStyleInNavigationOptions",
+            })
+          }
+        }
+      }
+
+      return {
+        JSXElement(node) {
+          const elementName = node.openingElement.name
+
+          // Check for Stack.Navigator or StackNavigator.Navigator (screenOptions)
+          const isNavigator =
+            elementName.type === "JSXMemberExpression" &&
+            elementName.property.type === "JSXIdentifier" &&
+            elementName.property.name === "Navigator"
+
+          // Check for Stack.Screen or StackNavigator.Screen (options)
+          const isScreen =
+            elementName.type === "JSXMemberExpression" &&
+            elementName.property.type === "JSXIdentifier" &&
+            elementName.property.name === "Screen"
+
+          if (!isNavigator && !isScreen) {
+            return
+          }
+
+          // Find the relevant prop (screenOptions for Navigator, options for Screen)
+          const propName = isNavigator ? "screenOptions" : "options"
+          const targetProp = node.openingElement.attributes.find(
+            (attr) => attr.type === "JSXAttribute" && attr.name.name === propName
+          )
+
+          if (!targetProp || !targetProp.value) {
+            return
+          }
+
+          // Handle JSXExpressionContainer (e.g., screenOptions={{...}})
+          if (targetProp.value.type === "JSXExpressionContainer") {
+            const expression = targetProp.value.expression
+            checkForStatusBarStyle(expression, targetProp)
+          }
+        },
+      }
+    },
+  },
 }

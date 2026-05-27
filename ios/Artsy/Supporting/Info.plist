@@ -187,8 +187,6 @@
 	<string>BootSplash</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDarkContent</string>
 	<key>UIStatusBarTintParameters</key>
 	<dict>
 		<key>UINavigationBar</key>
@@ -214,7 +212,7 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+	<false/>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>

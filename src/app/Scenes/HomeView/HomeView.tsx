@@ -7,8 +7,8 @@ import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import {
-  HomeViewSectionsConnection_viewer$key,
   HomeViewSectionsConnection_viewer$data,
+  HomeViewSectionsConnection_viewer$key,
 } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -39,10 +39,10 @@ import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } f
 import {
   FlatList,
   Linking,
-  RefreshControl,
-  ViewToken,
   ListRenderItem,
+  RefreshControl,
   StatusBar,
+  ViewToken,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -232,7 +232,11 @@ const HomeViewScreenComponent: React.FC = () => {
 
   const { isDeepLink } = useIsDeepLink()
 
-  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+    })
+  }, [theme])
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {

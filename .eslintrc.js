@@ -46,6 +46,7 @@ module.exports = {
      */
     "local-rules/no-palette-icon-imports": ERR,
     "local-rules/no-onpress-in-routerlink": ERR,
+    "local-rules/no-status-bar-style-in-navigation-options": ERR,
     "artsy/no-uselazyloadquery-inside-suspense": ERR,
     "import/order": [
       ERR,

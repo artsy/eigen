@@ -62,17 +62,21 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
     const [state] = change.current
 
     if (state.colorScheme === "dark") {
-      StatusBar.setBarStyle("light-content", true)
-
       if (Platform.OS === "android") {
         setAndroidNavigationBarColor("dark")
       }
-    } else {
-      StatusBar.setBarStyle("dark-content", true)
 
+      requestAnimationFrame(() => {
+        StatusBar.setBarStyle("light-content", true)
+      })
+    } else {
       if (Platform.OS === "android") {
         setAndroidNavigationBarColor("light")
       }
+
+      requestAnimationFrame(() => {
+        StatusBar.setBarStyle("dark-content", true)
+      })
     }
   }),
   setSessionState: action((state, sessionState) => {
