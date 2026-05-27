@@ -119,7 +119,7 @@ export const OnboardingSocialLink: React.FC<
     if (permittedProviders.length === 1 && permittedProviders[0] === "email") {
       return `You already have an Artsy account with ${email}. Enter your password to link both log-in options to your account.`
     }
-    if (!showPasswordForm) {
+    if (permittedProviders.length >= 1 && !showPasswordForm) {
       return "You already have an account with that email address. Link both log-in options to your Artsy account, by logging in now with your previous log-in method."
     } else if (showPasswordForm) {
       return "Enter your password to link both log-in options to your account."

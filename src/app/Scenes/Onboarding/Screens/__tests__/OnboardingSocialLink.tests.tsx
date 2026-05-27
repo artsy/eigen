@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { OnboardingSocialLink } from "app/Scenes/Onboarding/Screens/OnboardingSocialLink"
 import { OAuthProvider } from "app/store/AuthModel"
@@ -28,7 +28,7 @@ describe("OnboardingSocialLink", () => {
   }
 
   const getWrapper = (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
-    return renderWithWrappers(
+    renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
           <OnboardingSocialLink
@@ -45,9 +45,9 @@ describe("OnboardingSocialLink", () => {
       const mockAuthGoogle = jest.fn(() => ({ success: true })) as any
       GlobalStore.actions.auth.authGoogle = mockAuthGoogle
       const params = { ...defaultParams, providers: ["email", "google"] as OAuthProvider[] }
-      const tree = getWrapper(params)
+      getWrapper(params)
 
-      const linkWithGoogle = tree.getByTestId("linkWithGoogle")
+      const linkWithGoogle = screen.getByTestId("linkWithGoogle")
       expect(linkWithGoogle).toBeDefined()
       fireEvent.press(linkWithGoogle)
 
@@ -76,9 +76,9 @@ describe("OnboardingSocialLink", () => {
           appleUid: "appleUid",
         },
       }
-      const tree = getWrapper(params)
+      getWrapper(params)
 
-      const linkWithApple = tree.getByTestId("linkWithApple")
+      const linkWithApple = screen.getByTestId("linkWithApple")
       fireEvent.press(linkWithApple)
       expect(mockAuthApple).toBeCalledWith({
         onSignIn: expect.any(Function),
@@ -94,9 +94,9 @@ describe("OnboardingSocialLink", () => {
         providers: ["email", "facebook"] as OAuthProvider[],
         providerToBeLinked: "google" as OAuthProvider,
       }
-      const tree = getWrapper(params)
+      getWrapper(params)
 
-      const linkWithFacebook = tree.getByTestId("linkWithFacebook")
+      const linkWithFacebook = screen.getByTestId("linkWithFacebook")
       fireEvent.press(linkWithFacebook)
       expect(mockAuthFB).toBeCalledWith({
         signInOrUp: "signIn",
@@ -104,14 +104,28 @@ describe("OnboardingSocialLink", () => {
       })
     })
 
+    it("Facebook Link Account Button shows body text when Facebook is the only provider", () => {
+      const params = {
+        ...defaultParams,
+        providers: ["facebook"] as OAuthProvider[],
+        providerToBeLinked: "google" as OAuthProvider,
+      }
+      getWrapper(params)
+      expect(screen.getByTestId("linkWithFacebook")).toBeDefined()
+      expect(
+        screen.getByText(
+          "You already have an account with that email address. Link both log-in options to your Artsy account, by logging in now with your previous log-in method."
+        )
+      ).toBeDefined()
+    })
+
     it("Email Link Account Button switches screen to show only password form", () => {
-      const tree = getWrapper()
-      expect(() => tree.getByTestId("artsySocialLinkPasswordInput")).toThrowError(
+      getWrapper()
+      expect(() => screen.getByTestId("artsySocialLinkPasswordInput")).toThrow(
         "Unable to find an element with testID: artsySocialLinkPasswordInput"
       )
-      const linkWithEmail = tree.getByTestId("linkWithEmail")
-      fireEvent.press(linkWithEmail)
-      expect(tree.getByTestId("artsySocialLinkPasswordInput")).toBeDefined()
+      fireEvent.press(screen.getByTestId("linkWithEmail"))
+      expect(screen.getByTestId("artsySocialLinkPasswordInput")).toBeDefined()
     })
   })
 })
