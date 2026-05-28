@@ -1,6 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import SaleListItem from "app/Scenes/Sales/Components/SaleListItem"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
 
 describe("SaleListItem", () => {
   it("renders without throwing an error", () => {
@@ -11,11 +11,11 @@ describe("SaleListItem", () => {
 
   describe("SalesRail Subtitle", () => {
     it("renders formattedStartDateTime as the subtitle", () => {
-      const wrapper = renderWithWrappers(
+      renderWithWrappers(
         <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
       )
 
-      expect(wrapper.getByText(props.formattedStartDateTime)).toBeDefined()
+      expect(screen.getByText(props.formattedStartDateTime)).toBeDefined()
     })
   })
 })
@@ -26,9 +26,9 @@ const props = {
   href: "http://foo.bar",
   is_open: true,
   is_live_open: false,
-  start_at: moment().add(2, "hour").toISOString(),
+  start_at: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
   end_at: null,
-  registration_ends_at: moment().subtract(1, "day").toISOString(),
+  registration_ends_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
   live_url_if_open: null,
   formattedStartDateTime: "Live May 19 at 11:00pm CEST",
   cover_image: {

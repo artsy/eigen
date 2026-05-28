@@ -1,10 +1,9 @@
 import { saleStatus } from "app/Scenes/Sale/helpers"
-import moment from "moment"
 
-const dAdd = (date: number, amount: number, type: "day" | "days") =>
-  moment(date).add(amount, type).toISOString()
-const dSub = (date: number, amount: number, type: "day" | "days") =>
-  moment(date).subtract(amount, type).toISOString()
+const dAdd = (date: number, amount: number, _type: "day" | "days") =>
+  new Date(date + amount * 24 * 60 * 60 * 1000).toISOString()
+const dSub = (date: number, amount: number, _type: "day" | "days") =>
+  new Date(date - amount * 24 * 60 * 60 * 1000).toISOString()
 
 describe(saleStatus, () => {
   it("returns the right sale status", () => {
