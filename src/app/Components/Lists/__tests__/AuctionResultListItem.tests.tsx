@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/await-async-queries, testing-library/no-node-access */
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
@@ -7,7 +8,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import moment from "moment"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -132,7 +132,7 @@ describe("AuctionResults", () => {
                 performance: {
                   mid: "10",
                 },
-                saleDate: moment().subtract(1, "day").toISOString(),
+                saleDate: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
               },
             },
           ],
@@ -160,7 +160,7 @@ describe("AuctionResults", () => {
                 performance: {
                   mid: "10",
                 },
-                saleDate: moment().subtract(2, "months").toISOString(),
+                saleDate: new Date(Date.now() - 62 * 24 * 60 * 60 * 1000).toISOString(),
                 boughtIn: true,
               },
             },
@@ -174,7 +174,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    const view = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -190,7 +190,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(view.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
   })
   it("navigates to the lot screen for upcoming auction results happening in ", async () => {
     renderWithWrappers(<TestRenderer />)
@@ -221,7 +221,7 @@ describe("AuctionResults", () => {
 
   it("triggers on press when specfied", () => {
     const mockOnPress = jest.fn()
-    const tree = renderWithWrappersLEGACY(<TestRenderer onPress={mockOnPress} />)
+    const view = renderWithWrappersLEGACY(<TestRenderer onPress={mockOnPress} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -240,7 +240,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = tree.root.findAllByType(RouterLink)[0]
+    const button = view.root.findAllByType(RouterLink)[0]
 
     button.props.onPress()
 
