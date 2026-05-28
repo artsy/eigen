@@ -1,36 +1,39 @@
 import { Flex, Text, TextProps } from "@artsy/palette-mobile"
 import { Time } from "app/utils/getTimer"
 import { getTimerInfo } from "app/utils/saleTime"
-import { Duration } from "moment"
+import { Duration } from "luxon"
 import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
-  textProps: TextProps
+  textProps?: TextProps
   time: string
   label: string
 }
 
 const padWithZero = (number: number) => number.toString().padStart(2, "0")
 
-export const durationSections = (duration: Duration, labels: [string, string, string, string]) => [
-  {
-    time: padWithZero(Math.floor(duration.asDays())),
-    label: labels[0],
-  },
-  {
-    time: padWithZero(duration.hours()),
-    label: labels[1],
-  },
-  {
-    time: padWithZero(duration.minutes()),
-    label: labels[2],
-  },
-  {
-    time: padWithZero(duration.seconds()),
-    label: labels[3],
-  },
-]
+export const durationSections = (duration: Duration, labels: [string, string, string, string]) => {
+  const d = duration.shiftTo("days", "hours", "minutes", "seconds")
+  return [
+    {
+      time: padWithZero(Math.floor(d.days)),
+      label: labels[0],
+    },
+    {
+      time: padWithZero(d.hours),
+      label: labels[1],
+    },
+    {
+      time: padWithZero(d.minutes),
+      label: labels[2],
+    },
+    {
+      time: padWithZero(d.seconds),
+      label: labels[3],
+    },
+  ]
+}
 
 const LabeledTimeSection: React.FC<TimeSectionProps> = ({ time, label, textProps }) => (
   <Flex alignItems="center" justifyContent="center">
@@ -58,7 +61,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection {...section} textProps={textProps!} />
+          <LabeledTimeSection {...section} textProps={textProps} />
           {!!(idx < sections.length - 1 && renderSeparator) && renderSeparator()}
         </React.Fragment>
       ))}
@@ -99,11 +102,12 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({
   if (!duration) {
     return null
   }
+  const shifted = duration.shiftTo("days", "hours", "minutes", "seconds")
   const time: Time = {
-    days: duration.asDays().toString(),
-    hours: duration.hours().toString(),
-    minutes: duration.minutes().toString(),
-    seconds: duration.seconds().toString(),
+    days: duration.as("days").toString(),
+    hours: shifted.hours.toString(),
+    minutes: shifted.minutes.toString(),
+    seconds: shifted.seconds.toString(),
   }
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
