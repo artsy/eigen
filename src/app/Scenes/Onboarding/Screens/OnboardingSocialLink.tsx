@@ -119,7 +119,7 @@ export const OnboardingSocialLink: React.FC<
     if (permittedProviders.length === 1 && permittedProviders[0] === "email") {
       return `You already have an Artsy account with ${email}. Enter your password to link both log-in options to your account.`
     }
-    if (permittedProviders.length > 1 && !showPasswordForm) {
+    if (permittedProviders.length >= 1 && !showPasswordForm) {
       return "You already have an account with that email address. Link both log-in options to your Artsy account, by logging in now with your previous log-in method."
     } else if (showPasswordForm) {
       return "Enter your password to link both log-in options to your account."
@@ -169,7 +169,7 @@ export const OnboardingSocialLink: React.FC<
           <Flex px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
             <Text variant="lg-display">Link Accounts</Text>
             <Spacer y={2} />
-            <Text variant="xs">{screenText()}</Text>
+            <Text variant="sm">{screenText()}</Text>
 
             <Spacer y={4} />
 
@@ -244,7 +244,7 @@ export const OnboardingSocialLink: React.FC<
       <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
         <Text variant="lg-display">Link Accounts</Text>
         <Spacer y={2} />
-        <Text variant="xs">{screenText()}</Text>
+        <Text variant="sm">{screenText()}</Text>
         <Spacer y={4} />
         {permittedProviders.map((provider) => (
           <LinkAccountButton
