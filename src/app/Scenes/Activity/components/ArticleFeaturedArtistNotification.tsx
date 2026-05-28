@@ -3,6 +3,7 @@ import { ArticleCard_article$data } from "__generated__/ArticleCard_article.grap
 import { ArticleFeaturedArtistNotificationFollowArtistMutation } from "__generated__/ArticleFeaturedArtistNotificationFollowArtistMutation.graphql"
 import { ArticleFeaturedArtistNotification_notification$key } from "__generated__/ArticleFeaturedArtistNotification_notification.graphql"
 import { ArticleCard } from "app/Components/ArticleCard"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
@@ -73,11 +74,13 @@ export const ArticleFeaturedArtistNotification: React.FC<
 
               {artists.length === 1 && (
                 <>
-                  <FollowButton
-                    haptic
-                    isFollowed={!!artists[0].isFollowed}
-                    onPress={handleFollowArtist}
-                  />
+                  <RequireAuth intent="follow_artist">
+                    <FollowButton
+                      haptic
+                      isFollowed={!!artists[0].isFollowed}
+                      onPress={handleFollowArtist}
+                    />
+                  </RequireAuth>
                   <Spacer y={2} />
                 </>
               )}

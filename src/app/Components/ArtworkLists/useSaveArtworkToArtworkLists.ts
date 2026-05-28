@@ -3,6 +3,7 @@ import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListCo
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { useRequireAuth } from "app/utils/hooks/useRequireAuth"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,6 +19,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const openSelectArtworkListsView = ArtworkListsStore.useStoreActions(
     (actions) => actions.openSelectArtworkListsView
   )
+  const requireAuth = useRequireAuth()
 
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
@@ -78,19 +80,22 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     openSelectArtworkListsView(artworkEntity)
   }
 
-  const saveArtworkToLists = () => {
-    if (options.saveToDefaultCollectionOnly) {
+  const saveArtworkToLists = requireAuth(
+    () => {
+      if (options.saveToDefaultCollectionOnly) {
+        saveArtworkToDefaultArtworkList()
+        return
+      }
+
+      if (artworkListID || isSavedToCustomArtworkLists) {
+        openSelectArtworkListsForArtworkView()
+        return
+      }
+
       saveArtworkToDefaultArtworkList()
-      return
-    }
-
-    if (artworkListID || isSavedToCustomArtworkLists) {
-      openSelectArtworkListsForArtworkView()
-      return
-    }
-
-    saveArtworkToDefaultArtworkList()
-  }
+    },
+    { intent: "save_artwork" }
+  )
 
   return {
     isSaved,

@@ -3,13 +3,14 @@ import {
   AvatarSize,
   EntityHeader,
   Flex,
-  FollowButton,
   Text,
   Touchable,
   useColor,
+  FollowButton,
 } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
@@ -185,12 +186,14 @@ const ArtistListItem: React.FC<Props> = ({
         )}
         {!!showFollowButton && (
           <Flex>
-            <FollowButton
-              testID="follow-artist-button"
-              haptic
-              isFollowed={!!is_followed}
-              onPress={handleFollowArtist}
-            />
+            <RequireAuth intent="follow_artist">
+              <FollowButton
+                testID="follow-artist-button"
+                haptic
+                isFollowed={!!is_followed}
+                onPress={handleFollowArtist}
+              />
+            </RequireAuth>
           </Flex>
         )}
       </Flex>

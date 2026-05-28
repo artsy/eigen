@@ -3,6 +3,7 @@ import { BellStrokeIcon } from "@artsy/icons/native"
 import { Button, Flex } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$key } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
@@ -38,25 +39,26 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
     contextScreenOwnerSlug: slug,
     contextModule: "ArtworkScreenHeader" as ContextModule,
   })
-
   if (!!displayCreateAlertHeader || !isEligibleToCreateAlert) {
     return null
   }
 
   return (
     <Flex>
-      <Button
-        size="small"
-        variant={isForSale ? "outline" : "fillDark"}
-        haptic
-        onPress={() => {
-          trackCreateAlertTap()
-          setShowCreateArtworkAlertModal(true)
-        }}
-        icon={<BellStrokeIcon fill={isForSale ? "mono100" : "mono0"} />}
-      >
-        Create Alert
-      </Button>
+      <RequireAuth intent="create_alert">
+        <Button
+          size="small"
+          variant={isForSale ? "outline" : "fillDark"}
+          haptic
+          onPress={() => {
+            trackCreateAlertTap()
+            setShowCreateArtworkAlertModal(true)
+          }}
+          icon={<BellStrokeIcon fill={isForSale ? "mono100" : "mono0"} />}
+        >
+          Create Alert
+        </Button>
+      </RequireAuth>
 
       <CreateArtworkAlertModal
         artwork={artwork}

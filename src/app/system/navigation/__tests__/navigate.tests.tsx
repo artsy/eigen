@@ -18,6 +18,7 @@ jest.mock("app/store/GlobalStore", () => ({
   }),
   unsafe_getFeatureFlag: jest.fn(),
   unsafe_getDevToggle: jest.fn().mockReturnValue(false),
+  unsafe_getUserAccessToken: jest.fn().mockReturnValue("user-access-token"),
   GlobalStore: {
     actions: {
       bottomTabs: {

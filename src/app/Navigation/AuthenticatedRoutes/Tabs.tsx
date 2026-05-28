@@ -207,8 +207,10 @@ export const AuthenticatedRoutesStack = createNativeStackNavigator()
 
 export const AuthenticatedRoutes: React.FC = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
+  const userID = GlobalStore.useAppState((state) => state.auth.userID)
 
-  if (onboardingState === "incomplete") {
+  // Anonymous (logged-out browsing) users never see the onboarding quiz.
+  if (!!userID && onboardingState === "incomplete") {
     return <OnboardingQuiz />
   }
 

@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@artsy/icons/native"
 import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
 import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -64,7 +65,9 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
           <Spacer y={2} />
 
-          <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowArtist} />
+          <RequireAuth intent="follow_artist">
+            <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowArtist} />
+          </RequireAuth>
         </Flex>
 
         <NotificationArtworkList artworksConnection={artworksConnection} />

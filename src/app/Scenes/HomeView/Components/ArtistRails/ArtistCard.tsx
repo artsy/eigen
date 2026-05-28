@@ -2,6 +2,7 @@ import { CloseIcon } from "@artsy/icons/native"
 import { Flex, FollowButton, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { memo } from "react"
@@ -62,10 +63,12 @@ export const ArtistCard: React.FC<ArtistCardProps> = memo(
             </Flex>
             {!!(onFollow || showDefaultFollowButton) && (
               <Flex>
-                <FollowButton
-                  isFollowed={!!artist.isFollowed}
-                  onPress={onFollow ?? handleFollowToggle}
-                />
+                <RequireAuth intent="follow_artist">
+                  <FollowButton
+                    isFollowed={!!artist.isFollowed}
+                    onPress={onFollow ?? handleFollowToggle}
+                  />
+                </RequireAuth>
               </Flex>
             )}
           </Flex>

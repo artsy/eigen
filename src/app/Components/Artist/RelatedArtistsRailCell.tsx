@@ -8,6 +8,7 @@ import {
   RelatedArtistsRailCell_relatedArtist$data,
   RelatedArtistsRailCell_relatedArtist$key,
 } from "__generated__/RelatedArtistsRailCell_relatedArtist.graphql"
+import { RequireAuth } from "app/Components/RequireAuth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFollowArtist } from "app/utils/mutations/useFollowArtist"
 import { graphql, useFragment } from "react-relay"
@@ -76,7 +77,9 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
             {relatedArtistData.formattedNationalityAndBirthday}
           </Text>
         </Flex>
-        <FollowButton isFollowed={!!relatedArtistData.isFollowed} onPress={handleOnFollow} />
+        <RequireAuth intent="follow_artist">
+          <FollowButton isFollowed={!!relatedArtistData.isFollowed} onPress={handleOnFollow} />
+        </RequireAuth>
       </Flex>
     </RouterLink>
   )
