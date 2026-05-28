@@ -1,4 +1,4 @@
-import moment from "moment-timezone"
+import { DateTime } from "luxon"
 import { useState } from "react"
 import useInterval from "react-use/lib/useInterval"
 import { Time, getTimer } from "./getTimer"
@@ -109,89 +109,87 @@ export const saleTime = (sale: {
   const endDate = sale.endAt
 
   const saleType = sale.liveStartAt != null ? "live" : "timed"
-  const userTimeZone = moment.tz.guess()
-  const startDateMoment = startDate
-    ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+  const userTimeZone = DateTime.now().zoneName
+  const startDateLuxon = startDate
+    ? DateTime.fromISO(startDate, { zone: sale.timeZone }).setZone(userTimeZone)
     : null
-  const endDateMoment = endDate
-    ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+  const endDateLuxon = endDate
+    ? DateTime.fromISO(endDate, { zone: sale.timeZone }).setZone(userTimeZone)
     : null
-  const now = moment()
+  const now = DateTime.now()
 
   return {
-    absolute: absolute(now, startDateMoment, endDateMoment, userTimeZone, saleType),
-    relative: relative(now.utc(), startDateMoment?.utc() ?? null, endDateMoment?.utc() ?? null),
+    absolute: absolute(now, startDateLuxon, endDateLuxon, saleType),
+    relative: relative(now.toUTC(), startDateLuxon?.toUTC() ?? null, endDateLuxon?.toUTC() ?? null),
   }
 }
 
+// Produce "3:00pm" style — luxon's `a` token is uppercase in some locales
+const formatMeridiem = (dt: DateTime): string => dt.toFormat("h:mm") + (dt.hour >= 12 ? "pm" : "am")
+
 const absolute = (
-  now: moment.Moment,
-  startDateMoment: moment.Moment | null,
-  endDateMoment: moment.Moment | null,
-  userTimeZone: string,
+  now: DateTime,
+  startDateLuxon: DateTime | null,
+  endDateLuxon: DateTime | null,
   saleType: "live" | "timed"
 ): string | null => {
   // definitely not open yet
-  if (startDateMoment !== null && now.isBefore(startDateMoment)) {
-    return begins(startDateMoment, userTimeZone, saleType)
+  if (startDateLuxon !== null && now < startDateLuxon) {
+    return begins(startDateLuxon, saleType)
   }
 
   // definitely already closed
-  if (endDateMoment !== null && now.isAfter(endDateMoment)) {
-    return closed(endDateMoment)
+  if (endDateLuxon !== null && now > endDateLuxon) {
+    return closed(endDateLuxon)
   }
 
   // if we have both start and end and we're in between them
   if (
-    startDateMoment !== null &&
-    now.isAfter(startDateMoment) &&
-    endDateMoment !== null &&
-    now.isBefore(endDateMoment)
+    startDateLuxon !== null &&
+    now > startDateLuxon &&
+    endDateLuxon !== null &&
+    now < endDateLuxon
   ) {
-    return closes(endDateMoment, userTimeZone, saleType)
+    return closes(endDateLuxon, saleType)
   }
 
   // otherwise don't display anything
   return null
 }
 
-const begins = (
-  startDate: moment.Moment,
-  userTimeZone: string,
-  saleType: "live" | "timed"
-): string =>
+const begins = (startDate: DateTime, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
-  `begins ${startDate.format("MMM D")} ` +
-  `at ${startDate.format("h:mma")} ` +
-  moment.tz(userTimeZone).format("z")
+  `begins ${startDate.toFormat("MMM d")} ` +
+  `at ${formatMeridiem(startDate)} ` +
+  startDate.toFormat("ZZZZ")
 
-const closes = (endDate: moment.Moment, userTimeZone: string, saleType: "live" | "timed"): string =>
+const closes = (endDate: DateTime, saleType: "live" | "timed"): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
-  `closes ${endDate.format("MMM D")} ` +
-  `at ${endDate.format("h:mma")} ` +
-  moment.tz(userTimeZone).format("z")
+  `closes ${endDate.toFormat("MMM d")} ` +
+  `at ${formatMeridiem(endDate)} ` +
+  endDate.toFormat("ZZZZ")
 
-const closed = (endDate: moment.Moment): string => `Closed on ${endDate.format("MMM D")}`
+const closed = (endDate: DateTime): string => `Closed on ${endDate.toFormat("MMM d")}`
 
 // UTC FROM HERE AND DOWN
 const relative = (
-  now: moment.Moment,
-  startDateMoment: moment.Moment | null,
-  endDateMoment: moment.Moment | null
+  now: DateTime,
+  startDateLuxon: DateTime | null,
+  endDateLuxon: DateTime | null
 ): string | null => {
   // definitely not open yet
-  if (startDateMoment !== null && now.isBefore(startDateMoment)) {
-    return starts(now, startDateMoment)
+  if (startDateLuxon !== null && now < startDateLuxon) {
+    return starts(now, startDateLuxon)
   }
 
   // we are currently open
   if (
-    startDateMoment !== null &&
-    now.isAfter(startDateMoment) &&
-    endDateMoment !== null &&
-    now.isBefore(endDateMoment)
+    startDateLuxon !== null &&
+    now > startDateLuxon &&
+    endDateLuxon !== null &&
+    now < endDateLuxon
   ) {
-    return ends(now, endDateMoment)
+    return ends(now, endDateLuxon)
   }
 
   // otherwise don't display anything
@@ -204,10 +202,10 @@ const maybeAddMinutes = (minutesUntilSale: number) =>
     ? ""
     : ` ${minutesUntilSale % 60} ${maybePluralise("minute", minutesUntilSale)}`
 
-const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
-  const hours = startDate.diff(now, "hours")
-  const minutes = startDate.diff(now, "minutes")
-  const days = startDate.startOf("day").diff(now.startOf("day"), "days")
+const starts = (now: DateTime, startDate: DateTime): string | null => {
+  const hours = Math.floor(startDate.diff(now, "hours").hours)
+  const minutes = Math.floor(startDate.diff(now, "minutes").minutes)
+  const days = Math.floor(startDate.startOf("day").diff(now.startOf("day"), "days").days)
   if (minutes < 60) {
     return `Starts in ${minutes} ${maybePluralise("minute", minutes)}`
   } else if (hours < 24) {
@@ -219,9 +217,9 @@ const starts = (now: moment.Moment, startDate: moment.Moment): string | null => 
   }
 }
 
-const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
-  const hours = endDate.diff(now, "hours")
-  const days = endDate.startOf("day").diff(now.startOf("day"), "days")
+const ends = (now: DateTime, endDate: DateTime): string | null => {
+  const hours = Math.floor(endDate.diff(now, "hours").hours)
+  const days = Math.floor(endDate.startOf("day").diff(now.startOf("day"), "days").days)
   if (days < 1) {
     return `Ends in ${hours} ${maybePluralise("hour", hours)}`
   } else if (days < 7) {
@@ -231,26 +229,32 @@ const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
   }
 }
 
-const getMomentForDate = (date: string, timeZone: string): moment.Moment => {
-  const userTimeZone = moment.tz.guess()
-  return moment.tz(date, moment.ISO_8601, timeZone).tz(userTimeZone)
+const getDateTimeFor = (date: string, timeZone: string): DateTime => {
+  const userTimeZone = DateTime.now().zoneName
+  return DateTime.fromISO(date, { zone: timeZone }).setZone(userTimeZone)
 }
 
 export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null | undefined => {
   if (!sale.timeZone) {
     return null
   }
-  const startDateMoment = sale.startAt ? getMomentForDate(sale.startAt, sale.timeZone) : null
-  const endDateMoment = sale.endAt ? getMomentForDate(sale.endAt, sale.timeZone) : null
-  const endedDateMoment = sale.endedAt ? getMomentForDate(sale.endedAt, sale.timeZone) : null
-  const thisMoment = moment.tz(moment(), moment.tz.guess())
+  const startDateLuxon = sale.startAt ? getDateTimeFor(sale.startAt, sale.timeZone) : null
+  const endDateLuxon = sale.endAt ? getDateTimeFor(sale.endAt, sale.timeZone) : null
+  const endedDateLuxon = sale.endedAt ? getDateTimeFor(sale.endedAt, sale.timeZone) : null
+  const thisMoment = DateTime.now()
 
-  if (startDateMoment && thisMoment.isBefore(startDateMoment)) {
-    return `${startDateMoment.format("MMM D, YYYY")} • ${startDateMoment.format("h:mma z")}`
-  } else if (endedDateMoment && thisMoment.isAfter(endedDateMoment)) {
-    return `Closed ${endedDateMoment.format("MMM D, YYYY")} • ${endedDateMoment.format("h:mma z")}`
-  } else if (endDateMoment) {
-    return `${endDateMoment.format("MMM D, YYYY")} • ${endDateMoment.format("h:mma z")}`
+  if (startDateLuxon && thisMoment < startDateLuxon) {
+    return `${startDateLuxon.toFormat("MMM d, yyyy")} • ${formatMeridiem(
+      startDateLuxon
+    )} ${startDateLuxon.toFormat("ZZZZ")}`
+  } else if (endedDateLuxon && thisMoment > endedDateLuxon) {
+    return `Closed ${endedDateLuxon.toFormat("MMM d, yyyy")} • ${formatMeridiem(
+      endedDateLuxon
+    )} ${endedDateLuxon.toFormat("ZZZZ")}`
+  } else if (endDateLuxon) {
+    return `${endDateLuxon.toFormat("MMM d, yyyy")} • ${formatMeridiem(
+      endDateLuxon
+    )} ${endDateLuxon.toFormat("ZZZZ")}`
   } else {
     return null
   }

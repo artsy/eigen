@@ -7,20 +7,13 @@ import {
   saleTime,
   useRelativeTimeOfSale,
 } from "app/utils/saleTime"
+import { DateTime } from "luxon"
 
 const timezones: Record<string, IANATimezone> = {
   ny: "America/New_York",
   la: "America/Los_Angeles",
   de: "Europe/Berlin",
 }
-
-jest.mock("moment-timezone", () => {
-  const timezone = "America/New_York"
-  const momentMock = jest.requireActual("moment-timezone")
-  momentMock.tz.setDefault(timezone)
-  momentMock.tz.guess = () => timezone
-  return momentMock
-})
 
 const times = {
   past20: "2020-08-01T15:00:00",
@@ -174,8 +167,13 @@ const pastNoStartAtSale: Sale = {
 }
 
 beforeEach(() => {
-  // @ts-ignore
-  Date.now = jest.fn(() => new Date(times.present + "Z"))
+  jest
+    .spyOn(DateTime, "now")
+    .mockReturnValue(DateTime.fromISO(times.present + "Z").setZone(timezones.ny))
+})
+
+afterEach(() => {
+  jest.restoreAllMocks()
 })
 
 describe("saleTime", () => {
@@ -243,8 +241,9 @@ describe("#saleTime.relative", () => {
   })
 
   it("handles breaks across years", () => {
-    // @ts-ignore
-    Date.now = jest.fn(() => new Date("2020-12-31T19:00:00Z"))
+    jest
+      .spyOn(DateTime, "now")
+      .mockReturnValue(DateTime.fromISO("2020-12-31T19:00:00Z").setZone(timezones.ny))
     expect(saleTime(liveSale2021).relative).toEqual("Starts in 2 days")
   })
 
