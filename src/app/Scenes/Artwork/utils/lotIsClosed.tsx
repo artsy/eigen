@@ -6,9 +6,9 @@ interface SaleArtworkAttributes {
   endedAt: string | null | undefined
 }
 
-// TODO: duplites Force's logic
-//       consider moving this to Metaphysics
-export const isLotClosed = (
+// TODO: duplicates Force's logic
+// consider moving this to Metaphysics
+export const lotIsClosed = (
   sale: SaleAttributes | null | undefined,
   saleArtwork: SaleArtworkAttributes | null | undefined
 ): boolean => {
