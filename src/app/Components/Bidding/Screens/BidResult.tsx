@@ -7,9 +7,10 @@ import { Markdown } from "app/Components/Markdown"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import React from "react"
+import { useEffect } from "react"
 import { Image, ImageRequireSource } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -41,6 +42,17 @@ export const BidResult: React.FC<BidResultProps> = ({
   const setSelectedBidIndex = BidFlowContextStore.useStoreActions(
     (actions) => actions.setSelectedBidIndex
   )
+
+  useEffect(() => {
+    if (refreshBidderInfo) {
+      refreshBidderInfo()
+    }
+
+    if (refreshSaleArtwork) {
+      refreshSaleArtwork()
+    }
+  }, [refreshBidderInfo, refreshSaleArtwork])
+
   const saleArtworkData = useFragment(bidResultFragment, saleArtwork)
   const { status, messageHeader, messageDescriptionMD } = bidderPositionResult
 
