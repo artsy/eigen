@@ -6,11 +6,14 @@ on:
     types:
       - completed
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/maestro-blacksmith
 
 jobs:
   e2e-tests:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: macos-15 # iOS simulators require macOS runners
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: blacksmith-6vcpu-macos-26 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
