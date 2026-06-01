@@ -2,9 +2,8 @@ import { act, screen } from "@testing-library/react-native"
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { SaleHeaderContainer } from "app/Scenes/Sale/Components/SaleHeader"
-import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import moment from "moment"
+import { Settings } from "luxon"
 import { Animated } from "react-native"
 import { graphql } from "react-relay"
 
@@ -26,7 +25,11 @@ describe("SaleHeader", () => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
     })
-    mockTimezone("America/New_York")
+    Settings.defaultZone = "America/New_York"
+  })
+
+  afterEach(() => {
+    Settings.defaultZone = "local"
   })
 
   it("renders without throwing an error", () => {
@@ -51,7 +54,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when cascading end time is enabled", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: moment().subtract(1, "day").toISOString(),
+        endAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {
@@ -70,7 +73,7 @@ describe("SaleHeader", () => {
   it("does not render auction is closed when an auction is still active", () => {
     renderWithRelay({
       Sale: () => ({
-        endAt: moment().add(1, "day").toISOString(),
+        endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
         startAt: "2020-09-01T15:00:00",
         timeZone: "Europe/Berlin",
         coverImage: {

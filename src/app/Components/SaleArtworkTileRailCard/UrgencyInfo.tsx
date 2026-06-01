@@ -2,7 +2,6 @@ import { StopwatchIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Time, getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
-import moment from "moment-timezone"
 import { useEffect, useState } from "react"
 import useInterval from "react-use/lib/useInterval"
 
@@ -77,8 +76,6 @@ const useTimeText = (props: UrgencyInfoProps) => {
   const [timerInfoText, setTimerInfoText] = useState({ prev: "", current: "" })
   const [color, setColor] = useState<string | undefined>(undefined)
 
-  const userTimeZone = moment.tz.guess()
-
   const callback = () => {
     let prefix = isLiveAuction ? "Live in" : ""
     let suffix = isLiveAuction ? "" : "left"
@@ -87,19 +84,15 @@ const useTimeText = (props: UrgencyInfoProps) => {
 
     const { text, textColor } = getInfo(time)
 
-    const startDateMoment = !!startAt
-      ? moment.tz(startAt, moment.ISO_8601, saleTimeZone).tz(userTimeZone)
-      : null
-    const endDateMoment = !!endAt
-      ? moment.tz(endAt, moment.ISO_8601, saleTimeZone).tz(userTimeZone)
-      : null
-    const now = moment()
+    const startDateLuxon = startAt ? DateTime.fromISO(startAt, { zone: saleTimeZone }) : null
+    const endDateLuxon = endAt ? DateTime.fromISO(endAt, { zone: saleTimeZone }) : null
+    const now = DateTime.now()
 
     if (
-      startDateMoment !== null &&
-      now.isAfter(startDateMoment) &&
-      endDateMoment !== null &&
-      now.isBefore(endDateMoment)
+      startDateLuxon !== null &&
+      now > startDateLuxon &&
+      endDateLuxon !== null &&
+      now < endDateLuxon
     ) {
       prefix = ""
       suffix = "left"

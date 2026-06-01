@@ -15,15 +15,7 @@ export const LotProgressBar: React.FC<LotProgressBarProps> = (props) => {
     return null
   }
 
-  const time = {
-    days: duration.asDays(),
-    hours: duration.hours(),
-    minutes: duration.minutes(),
-    seconds: duration.seconds(),
-  }
-
-  const hasFinishedRunning =
-    Object.values(time).reduce((accumulator, timeUnit) => accumulator + timeUnit, 0) <= 0
+  const hasFinishedRunning = duration.toMillis() <= 0
 
   if (hasFinishedRunning) {
     return null

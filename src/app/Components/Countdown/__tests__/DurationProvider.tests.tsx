@@ -2,11 +2,10 @@ import { Text } from "@artsy/palette-mobile"
 import { act, screen } from "@testing-library/react-native"
 import { DurationProvider } from "app/Components/Countdown/DurationProvider"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
 
 describe("DurationProvider", () => {
   const DurationConsumer = (props: any) => {
-    return <Text>{props.duration.toString()}</Text>
+    return <Text>{props.duration.toISO()}</Text>
   }
 
   beforeEach(() => {
@@ -24,8 +23,7 @@ describe("DurationProvider", () => {
       </DurationProvider>
     )
 
-    const duration = moment.duration(1000).toString()
-    expect(screen.getByText(duration)).toBeTruthy()
+    expect(screen.getByText("PT1S")).toBeTruthy()
   })
 
   it("updates duration every second", () => {
@@ -40,7 +38,6 @@ describe("DurationProvider", () => {
       jest.advanceTimersByTime(1000)
     })
 
-    const duration = moment.duration(0).toString()
-    expect(screen.getByText(duration)).toBeTruthy()
+    expect(screen.getByText("PT0S")).toBeTruthy()
   })
 })

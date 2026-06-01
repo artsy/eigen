@@ -2,7 +2,7 @@ import { ProgressBar } from "@artsy/palette-mobile"
 import { LotProgressBar, LotProgressBarProps } from "app/Components/ArtworkGrids/LotProgressBar"
 import { DurationProvider } from "app/Components/Countdown"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import moment from "moment"
+import { Duration } from "luxon"
 
 describe("LotProgressBar", () => {
   const getWrapper = (props: LotProgressBarProps) => {
@@ -58,7 +58,7 @@ describe("LotProgressBar", () => {
         startAt: now,
         biddingEndAt: now,
         hasBeenExtended: true,
-        duration: moment.duration(),
+        duration: Duration.fromMillis(0),
       }
 
       const { UNSAFE_queryAllByType } = getWrapper(props)
