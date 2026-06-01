@@ -3160,6 +3160,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Minimal location information describing from where artwork will be shipped.
   shippingOrigin: String
+
+  # Display name of the shipping origin country or region (e.g., 'United Kingdom', 'European Union'). Returns empty string if shipping origin is not set.
+  shippingOriginRegion: String
   shippingWeight: Float
 
   # The unit of measurement for the shipping weight
