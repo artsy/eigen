@@ -13574,7 +13574,7 @@ __metadata:
     styled-components: "npm:6.1.19"
     styled-system: "npm:5.1.5"
     supercluster: "npm:7.1.5"
-    tmp: "npm:0.2.4"
+    tmp: "npm:0.2.6"
     tsx: "npm:4.19.1"
     typescript: "npm:5.9.2"
     unleash-proxy-client: "npm:3.7.6"
@@ -24971,10 +24971,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:0.2.4":
-  version: 0.2.4
-  resolution: "tmp@npm:0.2.4"
-  checksum: 10c0/ac4a7538a9ddb89ead6f4ee019bc23c28ce31549a0bd0ba499a64f81e0804b1e9a3a758622b33807a1f9644dbde9a0205637985f9450abdba1d5062704f98782
+"tmp@npm:0.2.6":
+  version: 0.2.6
+  resolution: "tmp@npm:0.2.6"
+  checksum: 10c0/fa5b9bfbe60f70904aba5c96b4970e9158d99867891302d10320fe35eee1e45f42946fded4cf5c8514baa087bebee44419029b7deb227da05a68b5205a12d8ab
   languageName: node
   linkType: hard
 
