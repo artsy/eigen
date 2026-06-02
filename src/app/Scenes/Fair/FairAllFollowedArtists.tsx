@@ -9,6 +9,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderText } from "app/utils/placeholders"
 import React from "react"
@@ -106,7 +107,7 @@ const FairAllFollowedArtistsContent = withSuspense({
     return <FairAllFollowedArtists fair={data.fair} fairForFilters={data.fairForFilters} />
   },
   LoadingFallback: () => <FairAllFollowedArtistsPlaceholder />,
-  ErrorFallback: () => null,
+  ErrorFallback: () => <SimpleErrorMessage />,
 })
 
 export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
