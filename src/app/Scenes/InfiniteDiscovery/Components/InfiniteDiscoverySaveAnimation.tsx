@@ -30,11 +30,13 @@ const easeInOut = Easing.inOut(Easing.cubic)
 
 interface InfiniteDiscoverySaveAnimationProps {
   imageUrl?: string
+  onReachChevron?: () => void
   onComplete?: () => void
 }
 
 export const InfiniteDiscoverySaveAnimation: React.FC<InfiniteDiscoverySaveAnimationProps> = ({
   imageUrl,
+  onReachChevron,
   onComplete,
 }) => {
   const { width: W, height: H } = useWindowDimensions()
@@ -62,6 +64,7 @@ export const InfiniteDiscoverySaveAnimation: React.FC<InfiniteDiscoverySaveAnima
 
   useEffect(() => {
     const done = () => onComplete?.()
+    const touchChevron = () => onReachChevron?.()
 
     opacity.set(() =>
       withSequence(
@@ -82,7 +85,9 @@ export const InfiniteDiscoverySaveAnimation: React.FC<InfiniteDiscoverySaveAnima
     translateY.set(() =>
       withSequence(
         withTiming(startY, { duration: T_FADE_IN }),
-        withTiming(endY, { duration: T_DRIFT, easing: easeInOut }),
+        withTiming(endY, { duration: T_DRIFT, easing: easeInOut }, () => {
+          runOnJS(touchChevron)()
+        }),
         withTiming(endY, { duration: T_FADE_OUT })
       )
     )

@@ -15,7 +15,13 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import {
+  DeviceEventEmitter,
+  FlatList,
+  GestureResponderEvent,
+  Text as RNText,
+  ViewStyle,
+} from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -334,6 +340,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         {!!showSaveAnimation && (
           <InfiniteDiscoverySaveAnimation
             imageUrl={artwork.images[0]?.url ?? undefined}
+            onReachChevron={() => DeviceEventEmitter.emit("infiniteDiscovery:chevronTouch")}
             onComplete={() => setShowSaveAnimation(false)}
           />
         )}
