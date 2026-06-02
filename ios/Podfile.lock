@@ -3992,7 +3992,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNSentry (7.10.0):
+  - RNSentry (8.13.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -4019,7 +4019,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - Sentry/HybridSDK (= 8.58.0)
+    - Sentry (= 9.15.0)
     - SocketRocket
     - Yoga
   - RNShare (12.0.9):
@@ -4210,7 +4210,9 @@ PODS:
   - segment-analytics-react-native (2.22.0):
     - React-Core
     - sovran-react-native
-  - Sentry/HybridSDK (8.58.0)
+  - Sentry (9.15.0):
+    - Sentry/Core (= 9.15.0)
+  - Sentry/Core (9.15.0)
   - Sift (2.2.4)
   - sift-react-native (0.1.15):
     - React
@@ -5131,7 +5133,7 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: f63b0e221a0c6e8c90bf0f9575502c40c2500158
   RNScreens: afaf526a9c804c3b4503f950cf3e67ed81e29ada
-  RNSentry: a4c81a5c5bcd58d765126726432348e60cd7183d
+  RNSentry: 7077776018fd4f5c6ec022275113c782c28d22fe
   RNShare: 1dba46787d6e5543e05655efaefa0e4bb98380d9
   RNSVG: 595abfa0f9ac26d56afcaaedf4e37a00f54cab71
   RNWorklets: a3184955a41f2be46898a937e2821469c8c8da42
@@ -5140,7 +5142,7 @@ SPEC CHECKSUMS:
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   segment-analytics-react-native: 8ab9c49df1859bbd6be93cf90a91ade17f20a0aa
-  Sentry: d587a8fe91ca13503ecd69a1905f3e8a0fcf61be
+  Sentry: d5b72948d692d369ded835e2e77baadcd3c492dd
   Sift: 742454b5796a717df185f6dbae569e5dce357322
   sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
