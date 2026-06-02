@@ -257,7 +257,7 @@ end
 
 desc 'Set the build version in the iOS app plist'
 lane :set_build_version_ios do
-  bundle_version = DateTime.now.strftime('%Y.%m.%d.%H.%M')
+  bundle_version = DateTime.now.strftime('%Y.%m.%d.%H')
   IOS_TARGETS.each do |_id, meta|
     absolute_path = File.expand_path(meta[:plist_path])
     set_info_plist_value(path: absolute_path, key: 'CFBundleShortVersionString', value: $APP_JSON['version'])
