@@ -66,7 +66,14 @@ export const HomeView: React.FC = memo(() => {
   )
 
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [showCompletionAnimation, setShowCompletionAnimation] = useState(true)
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(false)
+
+  const hasPendingCompletionAnimation = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasPendingCompletionAnimation
+  )
+  const savedArtworkImageUrls = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.savedArtworkImageUrls
+  )
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
@@ -135,6 +142,15 @@ export const HomeView: React.FC = memo(() => {
     useCallback(() => {
       tracking.screen(OwnerType.home)
     }, [])
+  )
+
+  useFocusEffect(
+    useCallback(() => {
+      if (hasPendingCompletionAnimation) {
+        GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(false)
+        setShowCompletionAnimation(true)
+      }
+    }, [hasPendingCompletionAnimation])
   )
 
   const fetchSavedArtworksCount = async () => {
@@ -225,7 +241,11 @@ export const HomeView: React.FC = memo(() => {
       </Screen>
       {!!showCompletionAnimation && (
         <InfiniteDiscoveryCompletionAnimation
-          onComplete={() => setShowCompletionAnimation(false)}
+          artworkImageUrls={savedArtworkImageUrls}
+          onComplete={() => {
+            setShowCompletionAnimation(false)
+            GlobalStore.actions.infiniteDiscovery.resetSavedArtworkImageUrls()
+          }}
         />
       )}
     </>

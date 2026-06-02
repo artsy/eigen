@@ -4,6 +4,10 @@ export interface InfiniteDiscoveryModel {
   hasSavedArtworks: boolean
   hasInteractedWithOnboarding: boolean
   savedArtworksCount: number
+  // Image URLs of the last 5 saved artworks (most recent first) — used by the home screen animation
+  savedArtworkImageUrls: string[]
+  // Set to true when the user exits Infinite Discovery with saves — triggers home screen animation
+  hasPendingCompletionAnimation: boolean
   sessionState: {
     moreInfoSheetVisible: boolean
   }
@@ -13,12 +17,17 @@ export interface InfiniteDiscoveryModel {
   setHasInteractedWithOnboarding: Action<this, boolean>
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
+  addSavedArtworkImageUrl: Action<this, string>
+  resetSavedArtworkImageUrls: Action<this>
+  setHasPendingCompletionAnimation: Action<this, boolean>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   hasSavedArtworks: false,
   hasInteractedWithOnboarding: false,
   savedArtworksCount: 0,
+  savedArtworkImageUrls: [],
+  hasPendingCompletionAnimation: false,
   sessionState: {
     moreInfoSheetVisible: false,
   },
@@ -39,5 +48,14 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   setMoreInfoSheetVisible: action((state, payload) => {
     state.sessionState.moreInfoSheetVisible = payload
+  }),
+  addSavedArtworkImageUrl: action((state, url) => {
+    state.savedArtworkImageUrls = [url, ...state.savedArtworkImageUrls].slice(0, 5)
+  }),
+  resetSavedArtworkImageUrls: action((state) => {
+    state.savedArtworkImageUrls = []
+  }),
+  setHasPendingCompletionAnimation: action((state, payload) => {
+    state.hasPendingCompletionAnimation = payload
   }),
 })

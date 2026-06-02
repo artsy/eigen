@@ -1,7 +1,7 @@
 import { useColor } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { useEffect } from "react"
-import { Modal, PixelRatio, StyleSheet, useWindowDimensions, View } from "react-native"
+import { Image, Modal, PixelRatio, StyleSheet, useWindowDimensions, View } from "react-native"
 import Animated, {
   Easing,
   runOnJS,
@@ -67,9 +67,10 @@ const easeInOut = Easing.inOut(Easing.cubic)
 
 const PRE_DELAY_MS = 600
 
-export const InfiniteDiscoveryCompletionAnimation: React.FC<{ onComplete?: () => void }> = ({
-  onComplete,
-}) => {
+export const InfiniteDiscoveryCompletionAnimation: React.FC<{
+  artworkImageUrls?: string[]
+  onComplete?: () => void
+}> = ({ artworkImageUrls, onComplete }) => {
   const { width: W, height: H } = useWindowDimensions()
   const insets = useSafeAreaInsets()
   const color = useColor()
@@ -258,11 +259,21 @@ export const InfiniteDiscoveryCompletionAnimation: React.FC<{ onComplete?: () =>
   return (
     <Modal transparent statusBarTranslucent animationType="none" visible>
       <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-        <Animated.View style={[styles.card, { backgroundColor: COLORS[4] }, s4]} />
-        <Animated.View style={[styles.card, { backgroundColor: COLORS[3] }, s3]} />
-        <Animated.View style={[styles.card, { backgroundColor: COLORS[2] }, s2]} />
-        <Animated.View style={[styles.card, { backgroundColor: COLORS[1] }, s1]} />
-        <Animated.View style={[styles.card, { backgroundColor: COLORS[0] }, s0]} />
+        {([4, 3, 2, 1, 0] as const).map((i, idx) => {
+          const animStyle = [s4, s3, s2, s1, s0][idx]
+          const imageUrl = artworkImageUrls?.[i]
+          return (
+            <Animated.View key={i} style={[styles.card, { backgroundColor: COLORS[i] }, animStyle]}>
+              {!!imageUrl && (
+                <Image
+                  source={{ uri: imageUrl }}
+                  style={StyleSheet.absoluteFillObject}
+                  resizeMode="cover"
+                />
+              )}
+            </Animated.View>
+          )
+        })}
 
         <Animated.View
           style={[
@@ -283,7 +294,15 @@ export const InfiniteDiscoveryCompletionAnimation: React.FC<{ onComplete?: () =>
             { left: favIconLeft, top: favIconTop, width: FAV_CARD_W, height: FAV_CARD_H },
             favStyle,
           ]}
-        />
+        >
+          {!!artworkImageUrls?.[0] && (
+            <Image
+              source={{ uri: artworkImageUrls[0] }}
+              style={StyleSheet.absoluteFillObject}
+              resizeMode="cover"
+            />
+          )}
+        </Animated.View>
       </View>
     </Modal>
   )
@@ -301,13 +320,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 4,
     borderColor: "white",
+    overflow: "hidden",
   },
   favCard: {
     position: "absolute",
     borderRadius: 3,
     borderWidth: 3,
     borderColor: "white",
-    backgroundColor: "#0000FF",
+    backgroundColor: "#0000FF", // fallback when no image
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,

@@ -55,7 +55,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
-    const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
+    const { incrementSavedArtworksCount, decrementSavedArtworksCount, addSavedArtworkImageUrl } =
       GlobalStore.actions.infiniteDiscovery
 
     const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
@@ -305,6 +305,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
                 incrementSavedArtworksCount()
                 setShowSaveAnimation(true)
+                const imageUrl = artwork.images[0]?.url
+                if (imageUrl) {
+                  addSavedArtworkImageUrl(imageUrl)
+                }
               }
 
               saveArtworkToLists()

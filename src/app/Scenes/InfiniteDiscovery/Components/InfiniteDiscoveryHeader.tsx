@@ -54,6 +54,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
 
   const handleExitPressed = () => {
     track.tappedExit()
+    if (savedArtworksCount > 0) {
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+    }
     goBack()
   }
 
