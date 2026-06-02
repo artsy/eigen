@@ -4,8 +4,8 @@ export interface InfiniteDiscoveryModel {
   hasSavedArtworks: boolean
   hasInteractedWithOnboarding: boolean
   savedArtworksCount: number
-  // Image URLs of the last 5 saved artworks (most recent first) — used by the home screen animation
-  savedArtworkImageUrls: string[]
+  // Last 5 saved artworks (most recent first) — url + blurhash for the home screen animation
+  savedArtworkImageUrls: Array<{ url: string; blurhash?: string | null }>
   // Set to true when the user exits Infinite Discovery with saves — triggers home screen animation
   hasPendingCompletionAnimation: boolean
   sessionState: {
@@ -17,7 +17,7 @@ export interface InfiniteDiscoveryModel {
   setHasInteractedWithOnboarding: Action<this, boolean>
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
-  addSavedArtworkImageUrl: Action<this, string>
+  addSavedArtworkImageUrl: Action<this, { url: string; blurhash?: string | null }>
   resetSavedArtworkImageUrls: Action<this>
   setHasPendingCompletionAnimation: Action<this, boolean>
 }

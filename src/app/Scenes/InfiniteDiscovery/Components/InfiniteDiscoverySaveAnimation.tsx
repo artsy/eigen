@@ -1,5 +1,6 @@
+import { Image } from "@artsy/palette-mobile"
 import { useEffect } from "react"
-import { Image, Modal, StyleSheet, useWindowDimensions } from "react-native"
+import { Modal, StyleSheet, useWindowDimensions } from "react-native"
 import Animated, {
   Easing,
   runOnJS,
@@ -29,13 +30,13 @@ const T_FADE_OUT = 200
 const easeInOut = Easing.inOut(Easing.cubic)
 
 interface InfiniteDiscoverySaveAnimationProps {
-  imageUrl?: string
+  image?: { url: string; blurhash?: string | null }
   onReachChevron?: () => void
   onComplete?: () => void
 }
 
 export const InfiniteDiscoverySaveAnimation: React.FC<InfiniteDiscoverySaveAnimationProps> = ({
-  imageUrl,
+  image,
   onReachChevron,
   onComplete,
 }) => {
@@ -101,11 +102,13 @@ export const InfiniteDiscoverySaveAnimation: React.FC<InfiniteDiscoverySaveAnima
   return (
     <Modal transparent statusBarTranslucent animationType="none" visible>
       <Animated.View style={[styles.card, style]} pointerEvents="none">
-        {!!imageUrl && (
+        {!!image && (
           <Image
-            source={{ uri: imageUrl }}
-            style={StyleSheet.absoluteFillObject}
-            resizeMode="cover"
+            src={image.url}
+            blurhash={image.blurhash ?? undefined}
+            width={CARD_W}
+            height={CARD_H}
+            style={{ position: "absolute", top: 0, left: 0 }}
           />
         )}
       </Animated.View>

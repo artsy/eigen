@@ -1,7 +1,7 @@
-import { useColor } from "@artsy/palette-mobile"
+import { Image, useColor } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { useEffect } from "react"
-import { Image, Modal, PixelRatio, StyleSheet, useWindowDimensions, View } from "react-native"
+import { Modal, PixelRatio, StyleSheet, useWindowDimensions, View } from "react-native"
 import Animated, {
   Easing,
   runOnJS,
@@ -68,7 +68,7 @@ const easeInOut = Easing.inOut(Easing.cubic)
 const PRE_DELAY_MS = 600
 
 export const InfiniteDiscoveryCompletionAnimation: React.FC<{
-  artworkImageUrls?: string[]
+  artworkImageUrls?: Array<{ url: string; blurhash?: string | null }>
   onComplete?: () => void
 }> = ({ artworkImageUrls, onComplete }) => {
   const { width: W, height: H } = useWindowDimensions()
@@ -266,9 +266,11 @@ export const InfiniteDiscoveryCompletionAnimation: React.FC<{
             <Animated.View key={i} style={[styles.card, { backgroundColor: COLORS[i] }, animStyle]}>
               {!!imageUrl && (
                 <Image
-                  source={{ uri: imageUrl }}
-                  style={StyleSheet.absoluteFillObject}
-                  resizeMode="cover"
+                  src={imageUrl.url}
+                  blurhash={imageUrl.blurhash ?? undefined}
+                  width={CARD_W}
+                  height={CARD_H}
+                  style={{ position: "absolute", top: 0, left: 0 }}
                 />
               )}
             </Animated.View>
@@ -297,9 +299,11 @@ export const InfiniteDiscoveryCompletionAnimation: React.FC<{
         >
           {!!artworkImageUrls?.[0] && (
             <Image
-              source={{ uri: artworkImageUrls[0] }}
-              style={StyleSheet.absoluteFillObject}
-              resizeMode="cover"
+              src={artworkImageUrls[0].url}
+              blurhash={artworkImageUrls[0].blurhash ?? undefined}
+              width={FAV_CARD_W}
+              height={FAV_CARD_H}
+              style={{ position: "absolute", top: 0, left: 0 }}
             />
           )}
         </Animated.View>

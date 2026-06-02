@@ -3,7 +3,7 @@ import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
-import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast"
+// import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast" — suppressed while animation prototype is active
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -22,7 +22,7 @@ interface InfiniteDiscoveryHeaderProps {
 }
 
 export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = ({ topArtwork }) => {
-  useSavesSummaryToast()
+  // useSavesSummaryToast() — suppressed while animation prototype is active
   const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
   const track = useInfiniteDiscoveryTracking()
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery

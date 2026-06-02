@@ -68,6 +68,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
+      // Suppresses the "saved to list" toast while the animation prototype is active
+      saveToDefaultCollectionOnly: true,
       onCompleted: (isArtworkSaved) => {
         if (!!artwork) {
           track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
@@ -305,9 +307,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
                 incrementSavedArtworksCount()
                 setShowSaveAnimation(true)
-                const imageUrl = artwork.images[0]?.url
-                if (imageUrl) {
-                  addSavedArtworkImageUrl(imageUrl)
+                const firstImage = artwork.images[0]
+                if (firstImage?.url) {
+                  addSavedArtworkImageUrl({ url: firstImage.url, blurhash: firstImage.blurhash })
                 }
               }
 
@@ -343,7 +345,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
         {!!showSaveAnimation && (
           <InfiniteDiscoverySaveAnimation
-            imageUrl={artwork.images[0]?.url ?? undefined}
+            image={
+              artwork.images[0]?.url
+                ? { url: artwork.images[0].url, blurhash: artwork.images[0].blurhash }
+                : undefined
+            }
             onReachChevron={() => DeviceEventEmitter.emit("infiniteDiscovery:chevronTouch")}
             onComplete={() => setShowSaveAnimation(false)}
           />
