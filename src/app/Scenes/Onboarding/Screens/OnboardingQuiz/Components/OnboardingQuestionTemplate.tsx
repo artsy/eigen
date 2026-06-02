@@ -163,12 +163,15 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                       variant="default"
                       isVisible={isVisible}
                       key={`${answer}-pill`}
-                      Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : undefined}
+                      Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : CheckIconPlaceholder}
                       onPress={() => action && dispatch({ type: action, payload: answer })}
                       selected={selected(answer)}
                     >
-                      {!!shouldShowPillTick && <Spacer x={1} />}
-                      <Text variant="sm" color={selected(answer) ? "mono0" : "mono100"}>
+                      <Text
+                        variant="sm"
+                        lineHeight="16px"
+                        color={selected(answer) ? "mono0" : "mono100"}
+                      >
                         {answer}
                       </Text>
                     </AnimatedFadingPill>
@@ -190,7 +193,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
 const CheckCircleFillIconWhite = () => {
   return (
-    <Flex pr={Platform.OS === "android" ? 1 : 0}>
+    <Flex pr={Platform.OS === "android" ? 1 : 0} mr={0.5}>
       <CheckmarkFillIcon
         fill="mono0"
         height={ACCESSIBLE_DEFAULT_ICON_SIZE}
@@ -199,6 +202,10 @@ const CheckCircleFillIconWhite = () => {
     </Flex>
   )
 }
+
+const CheckIconPlaceholder = () => (
+  <Flex width={0} height={ACCESSIBLE_DEFAULT_ICON_SIZE} overflow="hidden" />
+)
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {
   SET_ANSWER_ONE: "questionOne",
