@@ -171,6 +171,11 @@ export const features = {
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
   },
+  AREnableExperienceBasedOnboarding: {
+    readyForRelease: false,
+    description: "Enable experience-based onboarding",
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
