@@ -280,7 +280,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
-          <Flex mb={6}>
+          <Flex mb={6} mt={4}>
             <FilteredArtworkGridZeroState
               id={data.internalID}
               slug={data.slug}
