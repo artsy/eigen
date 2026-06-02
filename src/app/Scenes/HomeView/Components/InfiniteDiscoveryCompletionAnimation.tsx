@@ -13,8 +13,8 @@ import Animated, {
 } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-const CARD_W = 72
-const CARD_H = 96
+const CARD_W = 56
+const CARD_H = 75
 
 // top → bottom: blue, yellow, red, green, orange
 const COLORS = ["#0000FF", "#FFFF00", "#FF0000", "#00FF00", "#FF8C00"] as const

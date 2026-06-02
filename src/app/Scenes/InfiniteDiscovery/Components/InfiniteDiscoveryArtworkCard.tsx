@@ -9,6 +9,7 @@ import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
+import { InfiniteDiscoverySaveAnimation } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoverySaveAnimation"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -85,6 +86,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
     const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
+    const [showSaveAnimation, setShowSaveAnimation] = useState(false)
 
     useEffect(() => {
       // Revert showScreenTapToSave if the artwork is not saved
@@ -296,6 +298,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               } else {
                 // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
                 incrementSavedArtworksCount()
+                setShowSaveAnimation(true)
               }
 
               saveArtworkToLists()
@@ -327,6 +330,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             </InfiniteDiscoveryArtworkCardPopover>
           </Touchable>
         </Flex>
+
+        {!!showSaveAnimation && (
+          <InfiniteDiscoverySaveAnimation
+            imageUrl={artwork.images[0]?.url ?? undefined}
+            onComplete={() => setShowSaveAnimation(false)}
+          />
+        )}
       </Flex>
     )
   }
