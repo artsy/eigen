@@ -210,6 +210,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     (state) => state.setFiltersCountAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const artworks = data.fairArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
@@ -229,7 +230,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
   })
 
   useEffect(() => {
-    if (initiallyAppliedFilter) {
+    if (initiallyAppliedFilter && appliedFilters.length === 0) {
       setInitialFilterStateAction(initiallyAppliedFilter)
     }
   }, [])
