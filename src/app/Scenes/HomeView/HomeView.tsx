@@ -16,6 +16,7 @@ import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboar
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
+import { InfiniteDiscoveryCompletionAnimation } from "app/Scenes/HomeView/Components/InfiniteDiscoveryCompletionAnimation"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
@@ -65,6 +66,7 @@ export const HomeView: React.FC = memo(() => {
   )
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showCompletionAnimation, setShowCompletionAnimation] = useState(true)
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
@@ -189,37 +191,44 @@ export const HomeView: React.FC = memo(() => {
   )
 
   return (
-    <Screen safeArea={true}>
-      <Screen.Body fullwidth>
-        <FlatList
-          automaticallyAdjustKeyboardInsets
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          ref={flashlistRef as RefObject<FlatList>}
-          data={sections}
-          keyExtractor={(item) => item.internalID}
-          renderItem={renderItem}
-          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
-          ListHeaderComponent={HomeHeader}
-          ListFooterComponent={() =>
-            hasNext ? (
-              <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          onEndReachedThreshold={2}
-          maxToRenderPerBatch={6}
-          stickyHeaderIndices={[0]}
-          windowSize={15}
-          viewabilityConfig={viewabilityConfig}
-          onViewableItemsChanged={onViewableItemsChanged}
+    <>
+      <Screen safeArea={true}>
+        <Screen.Body fullwidth>
+          <FlatList
+            automaticallyAdjustKeyboardInsets
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            ref={flashlistRef as RefObject<FlatList>}
+            data={sections}
+            keyExtractor={(item) => item.internalID}
+            renderItem={renderItem}
+            onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
+            ListHeaderComponent={HomeHeader}
+            ListFooterComponent={() =>
+              hasNext ? (
+                <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
+                  <Spinner />
+                </Flex>
+              ) : null
+            }
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+            onEndReachedThreshold={2}
+            maxToRenderPerBatch={6}
+            stickyHeaderIndices={[0]}
+            windowSize={15}
+            viewabilityConfig={viewabilityConfig}
+            onViewableItemsChanged={onViewableItemsChanged}
+          />
+          {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
+        </Screen.Body>
+      </Screen>
+      {!!showCompletionAnimation && (
+        <InfiniteDiscoveryCompletionAnimation
+          onComplete={() => setShowCompletionAnimation(false)}
         />
-        {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
-      </Screen.Body>
-    </Screen>
+      )}
+    </>
   )
 })
 
