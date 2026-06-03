@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { FairAllFollowedArtistsTestsQuery } from "__generated__/FairAllFollowedArtistsTestsQuery.graphql"
-import { FairAllFollowedArtistsFragmentContainer } from "app/Scenes/Fair/FairAllFollowedArtists"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { FairAllFollowedArtists } from "app/Scenes/Fair/FairAllFollowedArtists"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -8,10 +9,9 @@ import { graphql } from "react-relay"
 describe("FairAllFollowedArtists", () => {
   const { renderWithRelay } = setupTestWrapper<FairAllFollowedArtistsTestsQuery>({
     Component: (props) => (
-      <FairAllFollowedArtistsFragmentContainer
-        fair={props.fair}
-        fairForFilters={props.fairForFilters}
-      />
+      <ArtworkFiltersStoreProvider>
+        <FairAllFollowedArtists fair={props.fair} fairForFilters={props.fairForFilters} />
+      </ArtworkFiltersStoreProvider>
     ),
     query: graphql`
       query FairAllFollowedArtistsTestsQuery {
