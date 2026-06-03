@@ -171,7 +171,11 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             defaultValue={values.addressLine2}
             error={showError("addressLine2")}
             optional
-            placeholder="Add your apt, floor, suite, etc."
+            placeholder={[
+              "Add your apt, floor, suite, etc.",
+              "Add your apt, floor, etc.",
+              "Add your apt, etc.",
+            ]}
             onChangeText={handleChange("addressLine2")}
             onBlur={handleBlur("addressLine2")}
             returnKeyType="next"
