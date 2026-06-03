@@ -117,7 +117,7 @@
     "@braze/react-native-sdk": "16.1.0",
     "@d11/react-native-fast-image": "patch:@d11/react-native-fast-image@npm%3A8.13.0#~/.yarn/patches/@d11-react-native-fast-image-npm-8.13.0-1ba5757ff5.patch",
     "@expo/react-native-action-sheet": "4.1.1",
-    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.13#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.13-979ee744d3.patch",
+    "@gorhom/bottom-sheet": "patch:@gorhom/bottom-sheet@npm%3A5.2.8#~/.yarn/patches/@gorhom-bottom-sheet-npm-5.2.8-1ad4b8f529.patch",
     "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.4",
