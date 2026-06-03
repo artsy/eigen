@@ -62,7 +62,9 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
       const convertedRange = convertToFilterFormatRange(sliderValueThrottled)
       updateRange(convertedRange)
     }
-  }, [sliderValueThrottled, updateRange])
+    // updateRange intentionally omitted: including it causes the effect to re-run when the parent re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sliderValueThrottled])
 
   const sliderRange = parseSliderRange(range)
   const [minValue, maxValue] = range
