@@ -3091,9 +3091,15 @@ type Artwork implements Node & Searchable & Sellable {
     before: String
     first: Int
     last: Int
+
+    # Filter by offer type(s). Gravity defaults to bulk offers when omitted.
+    offerType: [PartnerOfferTypeEnum]
     page: Int
     size: Int
     sort: PartnerOfferSorts
+
+    # Only return offers targeting this user (e.g. a personalized offer from a conversation).
+    userID: String
   ): PartnerOfferConnection
 
   # A connection of orders for this artwork from the partner's perspective.
@@ -21656,6 +21662,7 @@ enum PartnerOfferSorts {
 
 enum PartnerOfferSourceEnum {
   ABANDONED_ORDER
+  CONVERSATION
   SAVE
 }
 
@@ -21712,6 +21719,11 @@ enum PartnerOfferToCollectorSorts {
   CREATED_AT_DESC
   END_AT_ASC
   END_AT_DESC
+}
+
+enum PartnerOfferTypeEnum {
+  BULK
+  PERSONALIZED
 }
 
 # A connection to a list of items.
