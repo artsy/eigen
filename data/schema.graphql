@@ -5798,6 +5798,9 @@ type CareerHighlight implements Node {
 type CatalogArtwork {
   artworkId: String
   availability: String
+
+  # Edition sets associated with this catalog artwork.
+  catalogEditionSets: [CatalogEditionSet]
   createdAt(
     format: String
 
@@ -5845,6 +5848,30 @@ type CatalogArtworkDocument {
   internalID: ID!
   publicURL: String!
   title: String
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
+
+type CatalogEditionSet {
+  availability: String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  editionSetId: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  priceListed: Money
   updatedAt(
     format: String
 
