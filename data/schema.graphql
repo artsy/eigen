@@ -31080,7 +31080,9 @@ input createPartnerOfferMutationInput {
   artwork_id: String!
   clientMutationId: String
   discount_percentage: Int!
+  impulse_conversation_id: String
   note: String
+  user_id: String
 }
 
 type createPartnerOfferMutationPayload {
