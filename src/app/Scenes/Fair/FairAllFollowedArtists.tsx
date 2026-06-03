@@ -17,37 +17,6 @@ import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useFragment } from "react-relay"
 import { FairArtworksWithoutTabs } from "./Components/FairArtworks"
 
-const fairFragment = graphql`
-  fragment FairAllFollowedArtists_fair on Fair {
-    internalID
-    slug
-    ...FairArtworks_fair
-      @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch" })
-  }
-`
-
-const fairForFiltersFragment = graphql`
-  fragment FairAllFollowedArtists_fairForFilters on Fair {
-    filterArtworksConnection(
-      first: 0
-      aggregations: [PARTNER, MAJOR_PERIOD, MEDIUM, FOLLOWED_ARTISTS, ARTIST]
-    ) {
-      aggregations {
-        slice
-        counts {
-          count
-          name
-          value
-        }
-      }
-
-      counts {
-        followedArtists
-      }
-    }
-  }
-`
-
 interface FairAllFollowedArtistsProps {
   fair: FairAllFollowedArtists_fair$key
   fairForFilters: FairAllFollowedArtists_fairForFilters$key
@@ -126,3 +95,34 @@ export const FairAllFollowedArtistsPlaceholder: React.FC = () => (
     <PlaceholderGrid />
   </Flex>
 )
+
+const fairFragment = graphql`
+  fragment FairAllFollowedArtists_fair on Fair {
+    internalID
+    slug
+    ...FairArtworks_fair
+      @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch" })
+  }
+`
+
+const fairForFiltersFragment = graphql`
+  fragment FairAllFollowedArtists_fairForFilters on Fair {
+    filterArtworksConnection(
+      first: 0
+      aggregations: [PARTNER, MAJOR_PERIOD, MEDIUM, FOLLOWED_ARTISTS, ARTIST]
+    ) {
+      aggregations {
+        slice
+        counts {
+          count
+          name
+          value
+        }
+      }
+
+      counts {
+        followedArtists
+      }
+    }
+  }
+`
