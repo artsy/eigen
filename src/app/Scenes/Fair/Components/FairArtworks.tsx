@@ -210,6 +210,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     (state) => state.setFiltersCountAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const artworks = data.fairArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
@@ -229,7 +230,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
   })
 
   useEffect(() => {
-    if (initiallyAppliedFilter) {
+    if (initiallyAppliedFilter && appliedFilters.length === 0) {
       setInitialFilterStateAction(initiallyAppliedFilter)
     }
   }, [])
@@ -258,15 +259,14 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     tracking.trackEvent(tracks.trackClear(id, slug))
   }
 
-  const handleFilterToggle = () => {
-    setFilterArtworkModalVisible((prev) => {
-      if (!prev) {
-        tracking.trackEvent(tracks.openArtworksFilter(fair))
-      } else {
-        tracking.trackEvent(tracks.closeArtworksFilter(fair))
-      }
-      return !prev
-    })
+  const handleFilterOpen = () => {
+    setFilterArtworkModalVisible(true)
+    tracking.trackEvent(tracks.openArtworksFilter(fair))
+  }
+
+  const handleFilterClose = () => {
+    setFilterArtworkModalVisible(false)
+    tracking.trackEvent(tracks.closeArtworksFilter(fair))
   }
 
   const filteredArtworks = extractNodes(data.fairArtworks)
@@ -280,7 +280,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: space(1) }}
         ListEmptyComponent={
-          <Flex mb={6}>
+          <Flex mb={6} mt={4}>
             <FilteredArtworkGridZeroState
               id={data.internalID}
               slug={data.slug}
@@ -288,7 +288,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
             />
           </Flex>
         }
-        ListHeaderComponent={<HeaderArtworksFilterWithTotalArtworks onPress={handleFilterToggle} />}
+        ListHeaderComponent={<HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />}
         ListFooterComponent={() =>
           !!isLoadingNext ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
@@ -320,8 +320,8 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         id={data.internalID}
         slug={data.slug}
         mode={FilterModalMode.Fair}
-        exitModal={handleFilterToggle}
-        closeModal={handleFilterToggle}
+        exitModal={handleFilterClose}
+        closeModal={handleFilterClose}
       />
     </>
   )
