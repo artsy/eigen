@@ -10730,7 +10730,7 @@ input CreateInstagramPostInput {
   # The internal ID of the Instagram account to post from
   instagramAccountId: String!
 
-  # Slides for the Instagram post. Each slide references an artwork and a custom image. The order determines the carousel position.
+  # Slides for the Instagram post. Each slide requires an s3Key and an optional artworkId for custom image-only slides. The order determines the carousel position.
   slides: [InstagramPostSlideInput!]!
 }
 
@@ -16272,10 +16272,10 @@ type InstagramPostEdge {
 
 # A slide in an Instagram carousel post. The order of slides in the array determines their position in the carousel.
 input InstagramPostSlideInput {
-  # The ID of the artwork for this slide
-  artworkId: String!
+  # The ID of the artwork for this slide (optional for custom image-only slides)
+  artworkId: String
 
-  # S3 object key for this slide's custom image
+  # S3 object key for this slide's image (required)
   s3Key: String!
 }
 
