@@ -5877,6 +5877,7 @@ type CatalogEditionSet {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  priceCurrency: String
   priceListed: Money
   updatedAt(
     format: String
@@ -27160,6 +27161,9 @@ input UpdateCatalogEditionSetInput {
 
   # The ID of the edition set.
   editionSetID: String!
+
+  # Price currency (ISO 4217).
+  priceCurrency: String
 
   # Price in minor currency units (e.g., cents).
   priceMinor: Int
