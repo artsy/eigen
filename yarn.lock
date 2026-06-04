@@ -13495,7 +13495,7 @@ __metadata:
     expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:55.0.14"
     expo-navigation-bar: "npm:55.0.13"
-    expo-updates: "patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch"
+    expo-updates: "npm:55.0.22"
     formik: "npm:2.2.9"
     graphql: "npm:16.8.1"
     graphql-request: "npm:5.1.0"
@@ -15025,34 +15025,6 @@ __metadata:
   bin:
     expo-updates: bin/cli.js
   checksum: 10c0/4fb2eb0f383174329fd877cb84fa4411463ae9ca0404e1185450c9ff0d67d94c2842deebec00d1b8c1afc88ccc864e3d6a869fe7c03756bdd2111848cf676fe2
-  languageName: node
-  linkType: hard
-
-"expo-updates@patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch":
-  version: 55.0.22
-  resolution: "expo-updates@patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch::version=55.0.22&hash=c07c93"
-  dependencies:
-    "@expo/code-signing-certificates": "npm:^0.0.6"
-    "@expo/plist": "npm:^0.5.3"
-    "@expo/spawn-async": "npm:^1.7.2"
-    arg: "npm:^4.1.0"
-    chalk: "npm:^4.1.2"
-    debug: "npm:^4.3.4"
-    expo-eas-client: "npm:~55.0.5"
-    expo-manifests: "npm:~55.0.17"
-    expo-structured-headers: "npm:~55.0.2"
-    expo-updates-interface: "npm:~55.1.6"
-    getenv: "npm:^2.0.0"
-    glob: "npm:^13.0.0"
-    ignore: "npm:^5.3.1"
-    resolve-from: "npm:^5.0.0"
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  bin:
-    expo-updates: bin/cli.js
-  checksum: 10c0/a62bb0e25ced7f315e45027f884cf9435a175f60c74ac1eb86b9c38dd8ffa150395c64a4a1af76bff150412fa193c40fff88337209bf24558a541615254e5412
   languageName: node
   linkType: hard
 
