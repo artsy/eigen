@@ -155,7 +155,7 @@
     "expo": "55.0.24",
     "expo-build-properties": "55.0.14",
     "expo-navigation-bar": "55.0.13",
-    "expo-updates": "patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch",
+    "expo-updates": "55.0.22",
     "formik": "2.2.9",
     "html-entities": "2.3.3",
     "jwt-decode": "4.0.0",

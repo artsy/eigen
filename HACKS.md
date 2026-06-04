@@ -277,16 +277,6 @@ Another dependency in the Expo/react-native ecosystem has brought in com.caveroc
 
 When the upstream @d11/react-native-fast-image closes and releases this PR https://github.com/dream-horizon-org/react-native-fast-image/pull/354/changes
 
-## patch for expo-updates
-
-#### Explanation/Context:
-
-Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
-
-#### When can we remove this:
-
-When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
-
 ## Hermes engine podspec path fix in react-native patch
 
 #### Explanation/Context:
