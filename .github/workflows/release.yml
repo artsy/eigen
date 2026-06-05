@@ -26,9 +26,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      - name: Setup node.js
-        uses: ./.github/actions/setup-node
-
       - name: Fetch submission tags
         run: |
           # Fetch only iOS submission tags with more specific refspecs
