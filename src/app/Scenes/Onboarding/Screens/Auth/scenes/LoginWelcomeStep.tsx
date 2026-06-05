@@ -133,8 +133,17 @@ const LoginWelcomeStepForm: React.FC = () => {
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const { color } = useTheme()
-  const { handleChange, handleSubmit, isSubmitting, isValid, resetForm, values } =
-    useFormikContext<LoginEmailFormValues>()
+  const {
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    resetForm,
+    values,
+    errors,
+    touched,
+  } = useFormikContext<LoginEmailFormValues>()
 
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const emailRef = useRef<Input>(null)
@@ -178,6 +187,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
+        error={touched.email && errors.email ? errors.email : undefined}
         placeholderTextColor={color("mono30")}
         ref={emailRef}
         spellCheck={false}
@@ -185,6 +195,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         returnKeyType="next"
         title="Email"
         defaultValue={values.email}
+        onBlur={handleBlur("email")}
         onKeyPress={(e) => {
           // Avoid spaces from being submitted
           if (e.nativeEvent.key === "Space") {
