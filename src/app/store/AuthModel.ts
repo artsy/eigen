@@ -41,6 +41,7 @@ type SignInStatus =
   | "otp_missing"
   | "on_demand_otp_missing"
   | "invalid_otp"
+  | "invalid_credentials"
   | "auth_blocked"
 
 type VerifyUserStatus = "user_exists" | "user_does_not_exist" | "something_went_wrong"
@@ -393,7 +394,8 @@ export const getAuthModel = (): AuthModel => ({
         return "on_demand_otp_missing"
       case "invalid two-factor authentication code":
         return "invalid_otp"
-
+      case "invalid email or password":
+        return "invalid_credentials"
       default:
         return "failure"
     }
@@ -1061,7 +1063,6 @@ export const getAuthModel = (): AuthModel => ({
           await GoogleSignin.signOut()
         }
       } catch (error) {
-        console.log("Failed to signout from Google")
         console.error(error)
       }
     }

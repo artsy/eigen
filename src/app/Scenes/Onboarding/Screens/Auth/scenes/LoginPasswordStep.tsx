@@ -9,6 +9,7 @@ import {
   Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -27,6 +28,7 @@ export interface LoginPasswordStepFormValues {
 export const LoginPasswordStep: React.FC = () => {
   const screen = useAuthScreen()
   const navigation = useAuthNavigation()
+  const toast = useToast()
 
   return (
     <Formik<LoginPasswordStepFormValues>
@@ -64,6 +66,16 @@ export const LoginPasswordStep: React.FC = () => {
 
         switch (true) {
           case res === "failure": {
+            toast.show(
+              "Something went wrong. Please try again, or contact support@artsy.net",
+              "bottom",
+              {
+                backgroundColor: "red100",
+              }
+            )
+            break
+          }
+          case res === "invalid_credentials": {
             setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
             break
           }
@@ -74,7 +86,8 @@ export const LoginPasswordStep: React.FC = () => {
           case res !== "success" &&
             res !== "otp_missing" &&
             res !== "on_demand_otp_missing" &&
-            res !== "failure": {
+            res !== "failure" &&
+            res !== "invalid_credentials": {
             setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
             break
           }

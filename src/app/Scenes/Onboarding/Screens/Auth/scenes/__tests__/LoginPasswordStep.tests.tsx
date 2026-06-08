@@ -78,8 +78,23 @@ describe("LoginPasswordStep", () => {
     )
   })
 
-  it("shows an inline error when login fails", async () => {
+  it("shows a toast when login fails", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("failure")
+    const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
+    renderWithWrappers(<LoginPasswordStep />)
+    fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
+    fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+    await waitFor(() =>
+      expect(toastSpy).toHaveBeenCalledWith({
+        message: "Something went wrong. Please try again, or contact support@artsy.net",
+        placement: "bottom",
+        options: { backgroundColor: "red100" },
+      })
+    )
+  })
+
+  it("shows an inline error when login fails with bad email or password", async () => {
+    jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("invalid_credentials")
     const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
     renderWithWrappers(<LoginPasswordStep />)
     fireEvent.changeText(screen.getByA11yHint("Enter your password"), "Password1")
