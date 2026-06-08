@@ -5826,7 +5826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@preeternal/react-native-cookie-manager@npm:^6.3.2":
+"@preeternal/react-native-cookie-manager@npm:6.3.2":
   version: 6.3.2
   resolution: "@preeternal/react-native-cookie-manager@npm:6.3.2"
   peerDependencies:
@@ -13379,7 +13379,7 @@ __metadata:
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"
     "@notifee/react-native": "npm:9.1.8"
     "@octokit/rest": "npm:16.34.1"
-    "@preeternal/react-native-cookie-manager": "npm:^6.3.2"
+    "@preeternal/react-native-cookie-manager": "npm:6.3.2"
     "@ptomasroos/react-native-multi-slider": "npm:2.2.2"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
     "@react-native-clipboard/clipboard": "npm:1.16.2"
