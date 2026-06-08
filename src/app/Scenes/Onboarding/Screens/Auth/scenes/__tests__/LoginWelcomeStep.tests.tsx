@@ -239,6 +239,21 @@ describe("LoginWelcomeStep", () => {
       expect(refreshTokenSpy).toHaveBeenCalled()
       expect(navigateSpy).not.toHaveBeenCalled()
     })
+
+    it("shows an inline error for invalid email format", async () => {
+      renderExpandedWelcomeStep()
+      fireEvent.changeText(screen.getByA11yHint("Enter your email address"), "invalidemail")
+
+      // eslint-disable-next-line testing-library/no-unnecessary-act
+      await act(async () => {
+        fireEvent.press(screen.getByA11yHint("Continue to the next screen"))
+      })
+
+      act(() => {
+        jest.runAllTimers()
+      })
+      expect(screen.getByText("Please provide a valid email address")).toBeTruthy()
+    })
   })
 
   it("shows the Sign in with Apple button on iOS versions >= 13 ", () => {

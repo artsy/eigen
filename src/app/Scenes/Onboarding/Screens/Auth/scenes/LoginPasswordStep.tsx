@@ -9,7 +9,6 @@ import {
   Touchable,
   useTheme,
 } from "@artsy/palette-mobile"
-import { useToast } from "app/Components/Toast/toastHook"
 import {
   useAuthNavigation,
   useAuthScreen,
@@ -28,7 +27,6 @@ export interface LoginPasswordStepFormValues {
 export const LoginPasswordStep: React.FC = () => {
   const screen = useAuthScreen()
   const navigation = useAuthNavigation()
-  const toast = useToast()
 
   return (
     <Formik<LoginPasswordStepFormValues>
@@ -66,13 +64,7 @@ export const LoginPasswordStep: React.FC = () => {
 
         switch (true) {
           case res === "failure": {
-            toast.show(
-              "Something went wrong. Please try again, or contact support@artsy.net",
-              "bottom",
-              {
-                backgroundColor: "red100",
-              }
-            )
+            setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
             break
           }
           case res === "auth_blocked": {
@@ -100,12 +92,14 @@ export const LoginPasswordStep: React.FC = () => {
 const LoginPasswordStepForm: React.FC = () => {
   const {
     errors,
+    handleBlur,
     handleChange,
     handleSubmit,
     isSubmitting,
     isValid,
     resetForm,
     submitCount,
+    touched,
     values,
   } = useFormikContext<LoginPasswordStepFormValues>()
 
@@ -141,7 +135,9 @@ const LoginPasswordStepForm: React.FC = () => {
         importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
-        error={submitCount > 0 ? errors.password : undefined}
+        error={
+          (touched.password || submitCount > 0) && errors.password ? errors.password : undefined
+        }
         placeholderTextColor={color("mono30")}
         ref={passwordRef}
         returnKeyType="done"
@@ -149,6 +145,7 @@ const LoginPasswordStepForm: React.FC = () => {
         testID="password"
         title="Password"
         value={values.password}
+        onBlur={handleBlur("password")}
         onChangeText={(text) => {
           handleChange("password")(text)
         }}
