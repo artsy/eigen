@@ -1,5 +1,5 @@
 import { appleAuth } from "@invertase/react-native-apple-authentication"
-import Cookies from "@react-native-cookies/cookies"
+import CookieManager from "@preeternal/react-native-cookie-manager"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -1433,7 +1433,7 @@ describe("AuthModel", () => {
     afterEach(() => {
       // The 401 case calls actions.signOut(), which dirties mocks observed by
       // later signOut tests. Reset them here.
-      ;(Cookies.clearAll as jest.Mock).mockClear()
+      ;(CookieManager.clearAll as jest.Mock).mockClear()
       ;(LegacyNativeModules.ArtsyNativeModule.clearUserData as jest.Mock).mockClear()
       ;(LoginManager.logOut as jest.Mock).mockClear()
     })
@@ -1546,9 +1546,9 @@ describe("AuthModel", () => {
     })
 
     it("clears all cookies", async () => {
-      expect(Cookies.clearAll).not.toHaveBeenCalled()
+      expect(CookieManager.clearAll).not.toHaveBeenCalled()
       await GlobalStore.actions.auth.signOut()
-      expect(Cookies.clearAll).toHaveBeenCalledTimes(1)
+      expect(CookieManager.clearAll).toHaveBeenCalledTimes(1)
     })
 
     it("clears user data", async () => {

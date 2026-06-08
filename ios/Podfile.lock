@@ -63,6 +63,34 @@ PODS:
     - DGSwiftUtilities (~> 0.11)
   - ContextMenuAuxiliaryPreview (0.5.2):
     - DGSwiftUtilities (~> 0.29)
+  - CookieManager (6.3.2):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - CwlCatchException (2.2.1):
     - CwlCatchExceptionSupport (~> 2.2.1)
   - CwlCatchExceptionSupport (2.2.1)
@@ -2315,8 +2343,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-cookies (6.0.11):
-    - React-Core
   - react-native-document-picker (10.1.5):
     - boost
     - DoubleConversion
@@ -4337,6 +4363,7 @@ DEPENDENCIES:
   - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeLocation.podspec`)
   - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
+  - "CookieManager (from `../node_modules/@preeternal/react-native-cookie-manager`)"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -4423,7 +4450,6 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
-  - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
   - "react-native-document-viewer (from `../node_modules/@react-native-documents/viewer`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
@@ -4609,6 +4635,8 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/13.2.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
+  CookieManager:
+    :path: "../node_modules/@preeternal/react-native-cookie-manager"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EASClient:
@@ -4737,8 +4765,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blob-util"
   react-native-blurhash:
     :path: "../node_modules/react-native-blurhash"
-  react-native-cookies:
-    :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/@react-native-documents/picker"
   react-native-document-viewer:
@@ -4919,6 +4945,7 @@ SPEC CHECKSUMS:
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   ComputableLayout: c50faffac4ed9f8f05b0ce5e6f3a60df1f6042c8
   ContextMenuAuxiliaryPreview: 20be0be795b783b68f8792732eed4bed9f202c1c
+  CookieManager: 5c29252f32005de8943dae6be1f1bf05b3a490db
   CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
   CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
   CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
@@ -5032,7 +5059,6 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: c71eb8a79998c20dd13de58a7525eb32d200d9c8
   react-native-blob-util: 10c78778354e6c92b7a5afa4a1027cf0f18a9bb9
   react-native-blurhash: 93b024ff78f7912d22b1cdba262f3c91d3e2002e
-  react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: f26f09a90cce65b5d682f21b511e8eb09a506fdc
   react-native-document-viewer: d879028d0a0148ab69b6a138dff6d9331cbd1240
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
