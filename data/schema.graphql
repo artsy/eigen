@@ -26334,6 +26334,9 @@ input SyncCatalogToArtworkMutationInput {
   artworkID: String!
   clientMutationId: String
 
+  # Edition set ID. When provided, syncs the catalog edition set to the edition set instead of the artwork.
+  editionSetID: String
+
   # Specific fields to sync. Omit to sync all.
   fields: [CatalogSyncableField]
 }
