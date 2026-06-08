@@ -93,7 +93,7 @@ describe("LoginPasswordStep", () => {
     )
   })
 
-  it("shows an inline error when login fails with bad credentials", async () => {
+  it("shows an inline error when login fails with bad email or password", async () => {
     jest.spyOn(GlobalStore.actions.auth, "signIn").mockResolvedValue("invalid_credentials")
     const toastSpy = jest.spyOn(GlobalStore.actions.toast, "add")
     renderWithWrappers(<LoginPasswordStep />)
