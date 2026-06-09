@@ -8,7 +8,7 @@ on:
   # workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
   push:
     branches:
-      - gkartalis/maestro-blacksmith
+      - gkartalis/trial-blacksmith-e2e
 
 jobs:
   e2e-tests:
