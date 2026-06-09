@@ -217,7 +217,7 @@ jest.mock("@react-native-documents/viewer", () => ({
   viewDocument: jest.fn().mockResolvedValue(null),
 }))
 
-jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
+jest.mock("@preeternal/react-native-cookie-manager", () => ({ clearAll: jest.fn() }))
 
 jest.mock("react-native-fbsdk-next", () => ({
   LoginManager: {

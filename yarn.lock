@@ -5826,6 +5826,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@preeternal/react-native-cookie-manager@npm:6.3.2":
+  version: 6.3.2
+  resolution: "@preeternal/react-native-cookie-manager@npm:6.3.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/85716e59210c3e8c56c636d98de191f13289c213876ee916ccbe0148ec320563e920f3b2c82ad0bd69b28f0490f6452d169a383789ed8bfb8d412383866f7568
+  languageName: node
+  linkType: hard
+
 "@protobufjs/aspromise@npm:^1.1.1, @protobufjs/aspromise@npm:^1.1.2":
   version: 1.1.2
   resolution: "@protobufjs/aspromise@npm:1.1.2"
@@ -6621,17 +6631,6 @@ __metadata:
     react: "*"
     react-native: ">=0.59"
   checksum: 10c0/d5301d7d8b363753b6980f5d17dc47ad4933fc46e4010aceb937c0f673b35a6648f259df930b2b48d99344a90ff7a187344486100c4874462d88545f1647bef5
-  languageName: node
-  linkType: hard
-
-"@react-native-cookies/cookies@npm:6.0.11":
-  version: 6.0.11
-  resolution: "@react-native-cookies/cookies@npm:6.0.11"
-  dependencies:
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    react-native: ">= 0.60.2"
-  checksum: 10c0/0ad6d3181b9b3168822cb8cdde251abf9125f0324bc4606dc447327bfe37ddebca2ff5fb779ab16c430f563c94d125e498d0283872a7dcfd4d2752229ae3a55b
   languageName: node
   linkType: hard
 
@@ -13380,6 +13379,7 @@ __metadata:
     "@kesha-antonov/react-native-action-cable": "npm:1.1.4"
     "@notifee/react-native": "npm:9.1.8"
     "@octokit/rest": "npm:16.34.1"
+    "@preeternal/react-native-cookie-manager": "npm:6.3.2"
     "@ptomasroos/react-native-multi-slider": "npm:2.2.2"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
     "@react-native-clipboard/clipboard": "npm:1.16.2"
@@ -13388,7 +13388,6 @@ __metadata:
     "@react-native-community/cli-platform-ios": "npm:20.0.0"
     "@react-native-community/geolocation": "npm:3.4.0"
     "@react-native-community/netinfo": "npm:11.5.2"
-    "@react-native-cookies/cookies": "npm:6.0.11"
     "@react-native-documents/picker": "npm:10.1.5"
     "@react-native-documents/viewer": "npm:4.0.0"
     "@react-native-firebase/app": "npm:23.1.0"
