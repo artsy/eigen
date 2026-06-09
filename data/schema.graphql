@@ -17635,6 +17635,9 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
+
+    # Filter by offer type(s). Gravity defaults to all a users partner offers when omitted.
+    offerType: [PartnerOfferTypeEnum]
     page: Int
     size: Int
     sort: PartnerOfferToCollectorSorts
