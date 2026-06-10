@@ -9830,6 +9830,19 @@ type Conversation implements Node {
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
 
+  # Partner offers for this conversation's artwork, scoped to the user who initiated the conversation (from_id).
+  partnerOffersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Filter by offer type(s). Gravity defaults to bulk offers when omitted.
+    offerType: [PartnerOfferTypeEnum]
+    page: Int
+    size: Int
+  ): PartnerOfferConnection
+
   # A connection of orders for artworks in this conversation from the partner's perspective.
   partnerOrdersConnection(
     after: String
