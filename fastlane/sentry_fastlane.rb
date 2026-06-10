@@ -100,6 +100,15 @@ lane :upload_dsyms_to_sentry do |options|
   puts "Uploaded dsyms for #{project_slug}"
 end
 
+def update_sentry_options(file_path, release:, dist:)
+  options = JSON.parse(File.read(file_path))
+  options['release'] = release
+  options['dist'] = dist
+  options['environment'] = 'staging'
+  File.write(file_path, JSON.pretty_generate(options) + "\n")
+  UI.success("✅ Updated #{file_path} — release=#{release}, dist=#{dist}, environment=staging")
+end
+
 def platform_settings(platform, build_type: 'release')
   settings = {
     ios: {

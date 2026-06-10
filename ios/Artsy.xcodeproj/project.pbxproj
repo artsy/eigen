@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		166193FD2FD170E7009CBB38 /* sentry.options.json in Resources */ = {isa = PBXBuildFile; fileRef = 166193FC2FD170E7009CBB38 /* sentry.options.json */; };
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
 		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.mm */; };
 		1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9798283CDD5900878EAE /* AREmission.m */; };
@@ -519,6 +520,7 @@
 /* Begin PBXFileReference section */
 		0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		166193FC2FD170E7009CBB38 /* sentry.options.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = sentry.options.json; path = Artsy/sentry.options.json; sourceTree = SOURCE_ROOT; };
 		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
@@ -2848,6 +2850,7 @@
 		CBE325A327E275A200395A93 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				166193FC2FD170E7009CBB38 /* sentry.options.json */,
 				CB18282A29D35F29006A0805 /* GoogleService-Info.plist */,
 				CBE325A427E275A200395A93 /* Map_Annotations */,
 				CBE325A627E275A200395A93 /* Artsy-Bridging-Header.h */,
@@ -3403,6 +3406,7 @@
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
 				CB18283D29D36A3A006A0805 /* Unica77LL-Regular.otf in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
+				166193FD2FD170E7009CBB38 /* sentry.options.json in Resources */,
 				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
 				CBE3273E27E275A400395A93 /* serif_modal_close@2x.png in Resources */,
 				CBE3273227E275A400395A93 /* SearchButton@3x.png in Resources */,
