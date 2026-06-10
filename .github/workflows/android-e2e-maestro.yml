@@ -113,9 +113,8 @@ jobs:
             adb install Artsy.apk
 
             echo "🔗 Configuring Android App Links..."
-            DOMAINS="artsy.net www.artsy.net staging.artsy.net click.artsy.net email-link.artsy.net"
             adb shell pm set-app-links --package "$MAESTRO_APP_ID" 0 all
-            adb shell pm set-app-links-user-selection --user 0 --package "$MAESTRO_APP_ID" true $DOMAINS
+            adb shell pm set-app-links-user-selection --user 0 --package "$MAESTRO_APP_ID" true artsy.net www.artsy.net staging.artsy.net click.artsy.net email-link.artsy.net
             adb shell pm get-app-links "$MAESTRO_APP_ID"
 
             echo "🧪 Testing app launch before running Maestro tests..."
