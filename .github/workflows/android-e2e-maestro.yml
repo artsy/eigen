@@ -59,6 +59,11 @@ jobs:
       - name: Set up maestro env
         run: ./scripts/setup/setup-env-for-maestro android
 
+      - name: Export Maestro app id
+        run: |
+          MAESTRO_APP_ID=$(grep MAESTRO_APP_ID .env.maestro.android | sed -E 's/.*MAESTRO_APP_ID[[:space:]]*=[[:space:]]*//' | tr -d '"'"'"' \r')
+          echo "MAESTRO_APP_ID=$MAESTRO_APP_ID" >> $GITHUB_ENV
+
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
@@ -108,7 +113,6 @@ jobs:
             adb install Artsy.apk
 
             echo "🔗 Configuring Android App Links..."
-            set -a && . ./.env.maestro.android && set +a
             DOMAINS="artsy.net www.artsy.net staging.artsy.net click.artsy.net email-link.artsy.net"
             adb shell pm set-app-links --package "$MAESTRO_APP_ID" 0 all
             adb shell pm set-app-links-user-selection --user 0 --package "$MAESTRO_APP_ID" true $DOMAINS
