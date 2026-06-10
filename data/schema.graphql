@@ -3000,6 +3000,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether a user can make an offer on the work through inquiry
   isOfferableFromInquiry: Boolean
   isOnHold: String
+
+  # Whether a partner can send an offer for this work
+  isPartnerOfferable: Boolean!
   isPartnerPromoted: Boolean
 
   # Whether a work is available for pickup
