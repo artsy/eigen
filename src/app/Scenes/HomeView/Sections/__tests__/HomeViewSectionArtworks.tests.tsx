@@ -1,4 +1,5 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
+import { useFlag } from "@unleash/proxy-client-react"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import {
   HomeViewStore,
@@ -14,6 +15,9 @@ import { Actions } from "easy-peasy"
 import { useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
+import { MockPayloadGenerator } from "relay-test-utils"
+
+const mockUseFlag = useFlag as jest.Mock
 
 let homeViewStoreActions: Actions<HomeViewStoreModel>
 
@@ -373,6 +377,131 @@ describe("HomeViewSectionArtworks", () => {
         item_id: "artwork-1-id",
         position: 0,
       })
+    })
+  })
+
+  describe("live recommendations", () => {
+    const RECOMMENDED_SECTION = {
+      internalID: "home-view-section-recommended-artworks",
+      contextModule: "newWorksForYouRail",
+      component: { title: "We think you'll love" },
+      trackItemImpressions: true,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              internalID: "artwork-1-id",
+              slug: "artwork-1-slug",
+              title: "Artwork 1",
+              href: "/artwork-1-href",
+            },
+          },
+        ],
+      },
+    }
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableHidingDislikedArtworks: true,
+        ARImpressionsTrackingHomeItemViews: true,
+        AREnableLiveHomeRecommendations: true,
+      })
+      // Unleash flag onyx_artwork-recommendations-gravity
+      mockUseFlag.mockReturnValue(true)
+    })
+
+    afterEach(() => {
+      mockUseFlag.mockReturnValue(false)
+    })
+
+    it("force-refetches the rail and re-fires railViewed after a refresh is requested", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      // Simulate pull-to-refresh / returning to the home screen.
+      act(() => {
+        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
+      })
+
+      // The rail issues a forced refetch; resolving it should re-fire railViewed.
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "railViewed",
+        context_module: "newWorksForYouRail",
+        context_screen: "home",
+        position_y: 0,
+      })
+    })
+
+    it("re-enables itemViewed tracking after a refresh", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+
+      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const onViewableItemsChanged = artworkRail.props.onViewableItemsChanged
+      const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
+
+      // Item is tracked once initially.
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(1)
+
+      // Refresh the rail.
+      act(() => {
+        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
+      })
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      // The same item becoming viewable again should re-fire after the refresh.
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(2)
+    })
+
+    it("does not force-refetch when the flags are off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableLiveHomeRecommendations: false })
+      mockUseFlag.mockReturnValue(false)
+
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+
+      act(() => {
+        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
+      })
+
+      // No forced refetch operation should have been queued.
+      expect(env.mock.getAllOperations()).toHaveLength(0)
     })
   })
 })

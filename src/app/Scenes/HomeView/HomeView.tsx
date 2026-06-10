@@ -18,6 +18,7 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Co
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
@@ -63,6 +64,11 @@ export const HomeView: React.FC = memo(() => {
   const setViewableSections = HomeViewStore.useStoreActions(
     (actions) => actions.setViewableSections
   )
+  const bumpRecommendedArtworksRefetchKey = HomeViewStore.useStoreActions(
+    (actions) => actions.bumpRecommendedArtworksRefetchKey
+  )
+
+  const enableLiveRecommendations = useEnableLiveHomeRecommendations()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -135,6 +141,26 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
+  // Proactively refresh the recommended artworks rail whenever the user returns
+  // to the home screen (e.g. pressing back from another part of the app). We skip
+  // the very first focus because the initial mount already loads fresh data. This
+  // is driven entirely by user navigation, so it never polls on its own.
+  const hasFocusedHomeOnce = useRef(false)
+  useFocusEffect(
+    useCallback(() => {
+      if (!enableLiveRecommendations) {
+        return
+      }
+
+      if (!hasFocusedHomeOnce.current) {
+        hasFocusedHomeOnce.current = true
+        return
+      }
+
+      bumpRecommendedArtworksRefetchKey()
+    }, [enableLiveRecommendations, bumpRecommendedArtworksRefetchKey])
+  )
+
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(
       getRelayEnvironment(),
@@ -173,6 +199,11 @@ export const HomeView: React.FC = memo(() => {
       complete: () => {
         setIsRefreshing(false)
         setRefetchKey((prev) => prev + 1)
+
+        // Force a fresh update of the recommended artworks rail on pull to refresh.
+        if (enableLiveRecommendations) {
+          bumpRecommendedArtworksRefetchKey()
+        }
       },
       error: (error: Error) => {
         setIsRefreshing(false)

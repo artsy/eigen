@@ -5,11 +5,15 @@ export interface HomeViewStoreModel {
   trackedSectionTypes: string[]
   trackedExperiments: string[]
   viewableSections: string[]
+  // Bumped to request a forced refresh of the recommended artworks rail
+  // (live recommendations). Scoped to the HomeView provider.
+  recommendedArtworksRefetchKey: number
 
   addTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
   setViewableSections: Action<this, string[]>
+  bumpRecommendedArtworksRefetchKey: Action<this>
 }
 
 export const HomeViewStoreModel: HomeViewStoreModel = {
@@ -17,6 +21,7 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
   trackedSectionTypes: [],
   trackedExperiments: [],
   viewableSections: [],
+  recommendedArtworksRefetchKey: 0,
 
   addTrackedSection: action((state, payload) => {
     if (state.trackedSections.includes(payload)) {
@@ -38,6 +43,9 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
   }),
   setViewableSections: action((state, payload) => {
     state.viewableSections = payload
+  }),
+  bumpRecommendedArtworksRefetchKey: action((state) => {
+    state.recommendedArtworksRefetchKey += 1
   }),
 }
 

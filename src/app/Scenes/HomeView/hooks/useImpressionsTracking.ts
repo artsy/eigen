@@ -109,8 +109,15 @@ export const useItemsImpressionsTracking = ({
     [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
   )
 
+  // Clears the per-item "already tracked" guard so itemViewed events become
+  // eligible to fire again, e.g. after a forced data refresh of the rail.
+  const resetTracking = useCallback(() => {
+    trackedItems.clear()
+  }, [trackedItems])
+
   return {
     onViewableItemsChanged,
     viewabilityConfig,
+    resetTracking,
   }
 }

@@ -9,6 +9,10 @@ export const experiments = {
     description: "Experiment description",
     variantSuggestions: ["control", "experiment"],
   },
+  "onyx_artwork-recommendations-gravity": {
+    description:
+      "Enable Gravity-backed artwork recommendations for the Home screen recommendations rail",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
