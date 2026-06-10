@@ -257,6 +257,9 @@ export const HomeView: React.FC = memo(() => {
 
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
+  const onboardingDestination = GlobalStore.useAppState(
+    (state) => state.onboarding.onboardingDestination
+  )
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
@@ -280,6 +283,14 @@ const HomeViewScreenComponent: React.FC = () => {
     }
   }, [artQuizState, isNavigationReady])
 
+  useEffect(() => {
+    if (onboardingDestination === "infinite-discovery" && isNavigationReady) {
+      requestAnimationFrame(() => {
+        navigate("/infinite-discovery")
+      })
+    }
+  }, [onboardingDestination, isNavigationReady])
+
   // We want to avoid rendering the home view when the user comes back from a deep link
   // Because it triggers a lot of queries that affect the user's experience and can be avoided
   if (isDeepLink !== false) {
@@ -287,6 +298,10 @@ const HomeViewScreenComponent: React.FC = () => {
   }
 
   if (artQuizState === "incomplete") {
+    return null
+  }
+
+  if (onboardingDestination === "infinite-discovery") {
     return null
   }
 

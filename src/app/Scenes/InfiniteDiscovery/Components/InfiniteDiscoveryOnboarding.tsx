@@ -46,6 +46,18 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
 
+  const onboardingDestination = GlobalStore.useAppState(
+    (state) => state.onboarding.onboardingDestination
+  )
+  const isComingFromOnboardingRef = useRef(onboardingDestination === "infinite-discovery")
+
+  const handleDismiss = () => {
+    setIsVisible(false)
+    if (isComingFromOnboardingRef.current) {
+      GlobalStore.actions.onboarding.setOnboardingDestination(null)
+    }
+  }
+
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
@@ -54,6 +66,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }
   }, [isVisible])
   useEffect(() => {
+    const delay = isComingFromOnboardingRef.current ? 0 : 1000
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
@@ -63,7 +76,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           setEnableTapToDismiss(true)
         }, 1500)
       }
-    }, 1000)
+    }, delay)
   }, [hasInteractedWithOnboarding])
 
   useEffect(() => {
@@ -115,14 +128,14 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       animationType="fade"
       visible={isVisible}
       transparent
-      onRequestClose={() => setIsVisible(false)}
+      onRequestClose={handleDismiss}
       presentationStyle="overFullScreen"
     >
       <TouchableWithoutFeedback
         accessibilityRole="button"
         onPress={() => {
           if (enableTapToDismiss) {
-            setIsVisible(false)
+            handleDismiss()
           }
         }}
       >
@@ -203,13 +216,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
                   <MotiView animate={{ opacity: enableTapToDismiss ? 1 : 0 }}>
                     <Flex alignItems="flex-end">
-                      <LinkText
-                        onPress={() => {
-                          setIsVisible(false)
-                        }}
-                      >
-                        Tap to get started
-                      </LinkText>
+                      <LinkText onPress={handleDismiss}>Tap to get started</LinkText>
                     </Flex>
                   </MotiView>
                 </Flex>

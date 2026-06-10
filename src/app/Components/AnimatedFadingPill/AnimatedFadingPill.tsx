@@ -1,6 +1,8 @@
-import { IconProps } from "@artsy/icons/native"
-import { Pill, PillVariant } from "@artsy/palette-mobile"
+import { CheckmarkFillIcon, IconProps } from "@artsy/icons/native"
+import { Flex, Pill, PillVariant } from "@artsy/palette-mobile"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { MotiPressableProps } from "moti/interactions"
+import { Platform } from "react-native"
 import Animated, { FadeInUp, FadeOutDown, Layout } from "react-native-reanimated"
 
 interface FadingPillProps {
@@ -14,6 +16,20 @@ interface FadingPillProps {
 }
 
 export const FADE_OUT_PILL_ANIMATION_DURATION = 500
+
+export const PillCheckmarkIcon = () => (
+  <Flex pr={Platform.OS === "android" ? 1 : 0} mr={0.5}>
+    <CheckmarkFillIcon
+      fill="mono0"
+      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+    />
+  </Flex>
+)
+
+export const PillIconPlaceholder = () => (
+  <Flex width={0} height={ACCESSIBLE_DEFAULT_ICON_SIZE} overflow="hidden" />
+)
 
 export const AnimatedFadingPill: React.FC<React.PropsWithChildren<FadingPillProps>> = ({
   isVisible,

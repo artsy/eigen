@@ -11,6 +11,10 @@ import {
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import {
+  AnimatedFadingPill,
+  FADE_OUT_PILL_ANIMATION_DURATION,
+} from "app/Components/AnimatedFadingPill/AnimatedFadingPill"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import {
   OnboardingContextAction,
@@ -21,7 +25,6 @@ import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
 import { LayoutAnimation, Platform } from "react-native"
-import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
   answers?: string[]
