@@ -285,6 +285,7 @@ const HomeViewScreenComponent: React.FC = () => {
 
   useEffect(() => {
     if (onboardingDestination === "infinite-discovery" && isNavigationReady) {
+      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
       requestAnimationFrame(() => {
         navigate("/infinite-discovery")
       })
