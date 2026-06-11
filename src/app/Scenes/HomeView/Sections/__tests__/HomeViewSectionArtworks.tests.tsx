@@ -15,7 +15,6 @@ import { Actions } from "easy-peasy"
 import { useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
-import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
   useExperimentFlag: jest.fn(),
@@ -417,8 +416,8 @@ describe("HomeViewSectionArtworks", () => {
       mockUseExperimentFlag.mockReturnValue(false)
     })
 
-    it("force-refetches the rail and re-fires railViewed after a refresh is requested", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed when a live refresh is requested", () => {
+      renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -427,16 +426,7 @@ describe("HomeViewSectionArtworks", () => {
 
       // Simulate pull-to-refresh / returning to the home screen.
       act(() => {
-        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
-      })
-
-      // The rail issues a forced refetch; resolving it should re-fire railViewed.
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
-          })
-        )
+        homeViewStoreActions.bumpLiveRefetchKey()
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -447,8 +437,8 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("re-enables itemViewed tracking after a refresh", async () => {
-      const { env, UNSAFE_root } = renderWithRelay({
+    it("re-enables itemViewed tracking when a live refresh is requested", async () => {
+      const { UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -467,16 +457,9 @@ describe("HomeViewSectionArtworks", () => {
         mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
       ).toHaveLength(1)
 
-      // Refresh the rail.
+      // Refresh the rail (resets the impression guard).
       act(() => {
-        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
-      })
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
-          })
-        )
+        homeViewStoreActions.bumpLiveRefetchKey()
       })
 
       // The same item becoming viewable again should re-fire after the refresh.
@@ -489,21 +472,23 @@ describe("HomeViewSectionArtworks", () => {
       ).toHaveLength(2)
     })
 
-    it("does not force-refetch when the flags are off", () => {
+    it("does not re-fire analytics when the flags are off", () => {
       mockUseExperimentFlag.mockReturnValue(false)
 
-      const { env } = renderWithRelay({
+      renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
 
       act(() => {
-        homeViewStoreActions.bumpRecommendedArtworksRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey()
       })
 
-      // No forced refetch operation should have been queued.
-      expect(env.mock.getAllOperations()).toHaveLength(0)
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
     })
   })
 })

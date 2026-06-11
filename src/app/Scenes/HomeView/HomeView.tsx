@@ -64,9 +64,7 @@ export const HomeView: React.FC = memo(() => {
   const setViewableSections = HomeViewStore.useStoreActions(
     (actions) => actions.setViewableSections
   )
-  const bumpRecommendedArtworksRefetchKey = HomeViewStore.useStoreActions(
-    (actions) => actions.bumpRecommendedArtworksRefetchKey
-  )
+  const bumpLiveRefetchKey = HomeViewStore.useStoreActions((actions) => actions.bumpLiveRefetchKey)
 
   const enableLiveRecommendations = useEnableLiveHomeRecommendations()
 
@@ -160,8 +158,8 @@ export const HomeView: React.FC = memo(() => {
         return
       }
 
-      bumpRecommendedArtworksRefetchKey()
-    }, [enableLiveRecommendations, bumpRecommendedArtworksRefetchKey])
+      bumpLiveRefetchKey()
+    }, [enableLiveRecommendations, bumpLiveRefetchKey])
   )
 
   const fetchSavedArtworksCount = async () => {
@@ -203,9 +201,9 @@ export const HomeView: React.FC = memo(() => {
         setIsRefreshing(false)
         setRefetchKey((prev) => prev + 1)
 
-        // Force a fresh update of the recommended artworks rail on pull to refresh.
+        // Force a fresh update of any live home view section on pull to refresh.
         if (enableLiveRecommendations) {
-          bumpRecommendedArtworksRefetchKey()
+          bumpLiveRefetchKey()
         }
       },
       error: (error: Error) => {
