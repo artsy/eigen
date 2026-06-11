@@ -27,6 +27,7 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -34,7 +35,7 @@ import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledF
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useEffect } from "react"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
   section: HomeViewSectionArtworks_section$key
@@ -58,6 +59,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
   const enableLiveRecommendations = useEnableLiveHomeRecommendations()
+  const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
   const liveRefetchKey = HomeViewStore.useStoreState((state) => state.liveRefetchKey)
 
   const isLiveRecommendationsRail =
@@ -75,16 +77,32 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   })
 
   // Live recommendations: when the live refetch key is bumped (returning to the home
-  // screen or pull to refresh), the section query is re-run with `force: true` (see the
-  // query renderer below) and the store updates in place. We re-enable impression
-  // tracking here so railViewed and itemViewed fire again for the refreshed content.
+  // screen or pull to refresh), force a fresh fetch of the rail's artworks. We re-fire
+  // impression tracking only in the `complete` callback — i.e. once the refreshed data
+  // is actually in the store — so railViewed and itemViewed reflect the new content
+  // rather than the stale rail. The forced fetch writes to the store, so the rail's
+  // useLazyLoadQuery re-renders in place with the fresh data.
   useEffect(() => {
     if (!isLiveRecommendationsRail || liveRefetchKey === 0) {
       return
     }
 
-    resetTracking()
-    tracking.viewedSection(contextModule, index)
+    const subscription = fetchQuery<HomeViewSectionArtworksQuery>(
+      getRelayEnvironment(),
+      homeViewSectionArtworksQuery,
+      { id: section.internalID, enableHidingDislikedArtworks },
+      { networkCacheConfig: { force: true } }
+    ).subscribe({
+      complete: () => {
+        resetTracking()
+        tracking.viewedSection(contextModule, index)
+      },
+      error: (error: Error) => {
+        console.error("Failed to refresh live artworks rail", error)
+      },
+    })
+
+    return () => subscription.unsubscribe()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveRefetchKey])
 
@@ -282,7 +300,6 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
     Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
       const enableLiveRecommendations = useEnableLiveHomeRecommendations()
-      const liveRefetchKey = HomeViewStore.useStoreState((state) => state.liveRefetchKey)
 
       const isLiveRecommendationsRail =
         enableLiveRecommendations && sectionID === RECOMMENDED_ARTWORKS_SECTION_ID
@@ -294,14 +311,11 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           enableHidingDislikedArtworks,
         },
         {
-          // Live sections refresh off the dedicated liveRefetchKey (bumped on focus
-          // return + pull to refresh) and force past the Relay response cache, so they
-          // ignore the shared refetchKey to avoid a redundant double fetch. The initial
-          // load (key 0) stays cached; only an actual refresh forces the network.
-          fetchKey: isLiveRecommendationsRail ? liveRefetchKey : refetchKey,
+          // Live sections refresh via a forced fetchQuery in the component (so analytics
+          // can fire on completion), which writes to the store and re-renders this query
+          // in place. They therefore ignore the shared refetchKey to avoid a double fetch.
+          fetchKey: isLiveRecommendationsRail ? undefined : refetchKey,
           fetchPolicy: "store-and-network",
-          networkCacheConfig:
-            isLiveRecommendationsRail && liveRefetchKey > 0 ? { force: true } : undefined,
         }
       )
 
