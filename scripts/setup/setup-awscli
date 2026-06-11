@@ -7,6 +7,7 @@ then
 
   # install awscli
   if [ "$(uname)" == "Darwin" ]; then # MacOS
+    export NONINTERACTIVE=1
     brew update || true
     brew install awscli
   else # Assume Linux
