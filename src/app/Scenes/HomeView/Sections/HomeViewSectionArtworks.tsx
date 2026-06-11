@@ -95,8 +95,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
-        // `liveRefetchKey` is the refresh sequence number (1 = first refresh, ...).
-        tracking.viewedSection(contextModule, index, liveRefetchKey)
+        tracking.viewedSection(contextModule, index)
       },
       error: (error: Error) => {
         console.error("Failed to refresh live artworks rail", error)

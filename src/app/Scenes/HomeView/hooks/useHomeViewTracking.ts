@@ -525,20 +525,15 @@ export const useHomeViewTracking = () => {
       trackEvent(payload)
     },
 
-    viewedSection: (contextModule: ContextModule, index: number, refreshCount?: number) => {
-      const payload = {
+    viewedSection: (contextModule: ContextModule, index: number) => {
+      const payload: RailViewed = {
         action: ActionType.railViewed,
         context_module: contextModule,
         context_screen: OwnerType.home,
         position_y: index,
-        // TODO: `refresh_count` needs to be added to cohesion's RailViewed schema (and
-        // accepted by the data pipeline) before this is a real, typed field. It is the
-        // number of times the rail has been live-refreshed (0 = initial, unset for
-        // non-live rails).
-        ...(refreshCount !== undefined && { refresh_count: refreshCount }),
       }
 
-      trackEvent(payload as RailViewed)
+      trackEvent(payload)
     },
 
     tappedChangePaymentMethod: (
