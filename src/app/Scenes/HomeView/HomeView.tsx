@@ -141,10 +141,13 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
-  // Proactively refresh the recommended artworks rail whenever the user returns
-  // to the home screen (e.g. pressing back from another part of the app). We skip
-  // the very first focus because the initial mount already loads fresh data. This
-  // is driven entirely by user navigation, so it never polls on its own.
+  // Proactively refresh the recommended artworks rail whenever the user returns to
+  // the home screen (e.g. pressing back from another part of the app). We use
+  // `useFocusEffect` (a navigation focus-event subscription) rather than detecting
+  // focus inside the rail, because inactive screens are frozen/detached
+  // (detachInactiveScreens defaults to true) and wouldn't reliably observe the
+  // transition. The first focus is skipped since the initial mount already loads
+  // fresh data. Driven entirely by navigation, so it never polls on its own.
   const hasFocusedHomeOnce = useRef(false)
   useFocusEffect(
     useCallback(() => {

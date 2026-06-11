@@ -34,7 +34,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo, useEffect, useRef } from "react"
+import { memo, useEffect } from "react"
 import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -60,9 +60,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const enableLiveRecommendations = useEnableLiveHomeRecommendations()
   const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
-  const recommendedArtworksRefetchKey = HomeViewStore.useStoreState(
-    (state) => state.recommendedArtworksRefetchKey
-  )
 
   const isLiveRecommendationsRail =
     enableLiveRecommendations && section.internalID === RECOMMENDED_ARTWORKS_SECTION_ID
@@ -77,40 +74,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
     contextModule,
   })
-
-  // Live recommendations: when the rail is asked to refresh (pull to refresh, or
-  // returning to the home screen), force a fresh fetch of its artworks. Once the
-  // refresh succeeds we re-enable impression tracking so railViewed and itemViewed
-  // become eligible to fire again for the updated content.
-  const isInitialRefetch = useRef(true)
-  useEffect(() => {
-    if (!isLiveRecommendationsRail) {
-      return
-    }
-
-    if (isInitialRefetch.current) {
-      isInitialRefetch.current = false
-      return
-    }
-
-    const subscription = fetchQuery<HomeViewSectionArtworksQuery>(
-      getRelayEnvironment(),
-      homeViewSectionArtworksQuery,
-      { id: section.internalID, enableHidingDislikedArtworks },
-      { networkCacheConfig: { force: true } }
-    ).subscribe({
-      complete: () => {
-        resetTracking()
-        tracking.viewedSection(contextModule, index)
-      },
-      error: (error: Error) => {
-        console.error("Failed to refresh recommended artworks rail", error)
-      },
-    })
-
-    return () => subscription.unsubscribe()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recommendedArtworksRefetchKey])
 
   let artworks = extractNodes(section.artworksConnection)
 
@@ -210,6 +173,16 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         />
       )}
 
+      {!!isLiveRecommendationsRail && (
+        <RecommendedArtworksRailRefetcher
+          sectionID={section.internalID}
+          enableHidingDislikedArtworks={enableHidingDislikedArtworks}
+          contextModule={contextModule}
+          index={index}
+          onRefetched={resetTracking}
+        />
+      )}
+
       <HomeViewSectionSentinel
         contextModule={contextModule}
         sectionType={section.__typename}
@@ -217,6 +190,64 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       />
     </Flex>
   )
+}
+
+interface RecommendedArtworksRailRefetcherProps {
+  sectionID: string
+  enableHidingDislikedArtworks: boolean
+  contextModule: ContextModule
+  index: number
+  onRefetched: () => void
+}
+
+/**
+ * Encapsulates the live-recommendations forced refresh for the recommended artworks
+ * rail. It is rendered only for that rail, so the refetch-key store subscription and
+ * the fetch effect don't run (or trigger re-renders) for every artwork rail on the
+ * home screen.
+ *
+ * The refresh is keyed off the store counter (which survives remounts) rather than a
+ * per-mount ref: the counter starts at 0 on initial load (no refetch) and is bumped
+ * on every refresh request (pull to refresh, or returning to the home screen), so a
+ * refresh is never missed even if the rail remounts between navigations.
+ */
+const RecommendedArtworksRailRefetcher: React.FC<RecommendedArtworksRailRefetcherProps> = ({
+  sectionID,
+  enableHidingDislikedArtworks,
+  contextModule,
+  index,
+  onRefetched,
+}) => {
+  const tracking = useHomeViewTracking()
+  const recommendedArtworksRefetchKey = HomeViewStore.useStoreState(
+    (state) => state.recommendedArtworksRefetchKey
+  )
+
+  useEffect(() => {
+    if (recommendedArtworksRefetchKey === 0) {
+      return
+    }
+
+    const subscription = fetchQuery<HomeViewSectionArtworksQuery>(
+      getRelayEnvironment(),
+      homeViewSectionArtworksQuery,
+      { id: sectionID, enableHidingDislikedArtworks },
+      { networkCacheConfig: { force: true } }
+    ).subscribe({
+      complete: () => {
+        onRefetched()
+        tracking.viewedSection(contextModule, index)
+      },
+      error: (error: Error) => {
+        console.error("Failed to refresh recommended artworks rail", error)
+      },
+    })
+
+    return () => subscription.unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recommendedArtworksRefetchKey])
+
+  return null
 }
 
 const fragment = graphql`
