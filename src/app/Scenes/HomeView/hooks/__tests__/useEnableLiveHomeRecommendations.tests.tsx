@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
@@ -17,14 +16,15 @@ const TestComponent: React.FC = () => {
 }
 
 const isEnabled = ({
-  featureFlag,
-  unleashFlag,
+  eigenFlag,
+  gravityFlag,
 }: {
-  featureFlag: boolean
-  unleashFlag: boolean
+  eigenFlag: boolean
+  gravityFlag: boolean
 }): boolean => {
-  __globalStoreTestUtils__?.injectFeatureFlags({ AREnableLiveHomeRecommendations: featureFlag })
-  mockUseExperimentFlag.mockReturnValue(unleashFlag)
+  mockUseExperimentFlag.mockImplementation((name: string) =>
+    name === "onyx_artwork-recommendations-refresh-eigen" ? eigenFlag : gravityFlag
+  )
 
   renderWithWrappers(<TestComponent />)
   return screen.queryByText("enabled") !== null
@@ -32,22 +32,22 @@ const isEnabled = ({
 
 describe("useEnableLiveHomeRecommendations", () => {
   afterEach(() => {
-    mockUseExperimentFlag.mockReturnValue(false)
+    mockUseExperimentFlag.mockReset()
   })
 
-  it("is enabled only when both the feature flag and the Unleash flag are on", () => {
-    expect(isEnabled({ featureFlag: true, unleashFlag: true })).toBe(true)
+  it("is enabled only when both Unleash flags are on", () => {
+    expect(isEnabled({ eigenFlag: true, gravityFlag: true })).toBe(true)
   })
 
-  it("is disabled when only the feature flag is on", () => {
-    expect(isEnabled({ featureFlag: true, unleashFlag: false })).toBe(false)
+  it("is disabled when only the eigen flag is on", () => {
+    expect(isEnabled({ eigenFlag: true, gravityFlag: false })).toBe(false)
   })
 
-  it("is disabled when only the Unleash flag is on", () => {
-    expect(isEnabled({ featureFlag: false, unleashFlag: true })).toBe(false)
+  it("is disabled when only the gravity flag is on", () => {
+    expect(isEnabled({ eigenFlag: false, gravityFlag: true })).toBe(false)
   })
 
   it("is disabled when both flags are off", () => {
-    expect(isEnabled({ featureFlag: false, unleashFlag: false })).toBe(false)
+    expect(isEnabled({ eigenFlag: false, gravityFlag: false })).toBe(false)
   })
 })

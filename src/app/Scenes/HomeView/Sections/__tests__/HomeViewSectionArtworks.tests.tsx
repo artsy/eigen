@@ -408,9 +408,8 @@ describe("HomeViewSectionArtworks", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableHidingDislikedArtworks: true,
         ARImpressionsTrackingHomeItemViews: true,
-        AREnableLiveHomeRecommendations: true,
       })
-      // Unleash flag onyx_artwork-recommendations-gravity
+      // Both Unleash flags (eigen + gravity) on
       mockUseExperimentFlag.mockReturnValue(true)
     })
 
@@ -491,7 +490,6 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not force-refetch when the flags are off", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableLiveHomeRecommendations: false })
       mockUseExperimentFlag.mockReturnValue(false)
 
       const { env } = renderWithRelay({

@@ -13,6 +13,9 @@ export const experiments = {
     description:
       "Enable Gravity-backed artwork recommendations for the Home screen recommendations rail",
   },
+  "onyx_artwork-recommendations-refresh-eigen": {
+    description: "Enable live-refreshing the Home screen recommendations rail in eigen",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

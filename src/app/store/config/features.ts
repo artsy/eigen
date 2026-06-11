@@ -62,11 +62,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
-  AREnableLiveHomeRecommendations: {
-    description: "Live-refresh the recommended artworks rail on the Home screen",
-    readyForRelease: false,
-    showInDevMenu: true,
-  },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
     readyForRelease: true,
