@@ -45,17 +45,12 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
-
-  const onboardingDestination = GlobalStore.useAppState(
-    (state) => state.onboarding.onboardingDestination
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
   )
-  const isComingFromOnboardingRef = useRef(onboardingDestination === "infinite-discovery")
 
   const handleDismiss = () => {
     setIsVisible(false)
-    if (isComingFromOnboardingRef.current) {
-      GlobalStore.actions.onboarding.setOnboardingDestination(null)
-    }
   }
 
   useEffect(() => {
@@ -66,7 +61,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }
   }, [isVisible])
   useEffect(() => {
-    const delay = isComingFromOnboardingRef.current ? 0 : 1000
+    const delay = isOnboardingSession ? 0 : 1000
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
@@ -77,7 +72,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
         }, 1500)
       }
     }, delay)
-  }, [hasInteractedWithOnboarding])
+  }, [hasInteractedWithOnboarding, isOnboardingSession])
 
   useEffect(() => {
     if (isVisible) {
@@ -200,23 +195,35 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
                   <Spacer y={1} />
 
-                  <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
-                    Start{" "}
-                    <Text variant="lg-display" fontWeight="500">
-                      swiping
-                    </Text>{" "}
-                    to discover art, and{" "}
-                    <Text variant="lg-display" fontWeight="500">
-                      save
-                    </Text>{" "}
-                    the works you love.
-                  </Text>
+                  {isOnboardingSession ? (
+                    <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
+                      Save{" "}
+                      <Text variant="lg-display" fontWeight="500">
+                        5 different artworks
+                      </Text>{" "}
+                      to build your taste profile.
+                    </Text>
+                  ) : (
+                    <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
+                      Start{" "}
+                      <Text variant="lg-display" fontWeight="500">
+                        swiping
+                      </Text>{" "}
+                      to discover art, and{" "}
+                      <Text variant="lg-display" fontWeight="500">
+                        save
+                      </Text>{" "}
+                      the works you love.
+                    </Text>
+                  )}
 
                   <Spacer y={2} />
 
                   <MotiView animate={{ opacity: enableTapToDismiss ? 1 : 0 }}>
                     <Flex alignItems="flex-end">
-                      <LinkText onPress={handleDismiss}>Tap to get started</LinkText>
+                      <LinkText onPress={handleDismiss}>
+                        {isOnboardingSession ? "Tap to start swiping" : "Tap to get started"}
+                      </LinkText>
                     </Flex>
                   </MotiView>
                 </Flex>

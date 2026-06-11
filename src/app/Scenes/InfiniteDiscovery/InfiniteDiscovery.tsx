@@ -41,6 +41,21 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
 
+  const onboardingDestination = GlobalStore.useAppState(
+    (state) => state.onboarding.onboardingDestination
+  )
+
+  useEffect(() => {
+    if (onboardingDestination === "infinite-discovery") {
+      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+      GlobalStore.actions.onboarding.setOnboardingDestination(null)
+    }
+    return () => {
+      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
   const topArtwork = useMemo(
     () => artworks.find((artwork) => artwork.internalID === topArtworkId),

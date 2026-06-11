@@ -6,6 +6,7 @@ export interface InfiniteDiscoveryModel {
   savedArtworksCount: number
   sessionState: {
     moreInfoSheetVisible: boolean
+    isOnboardingSession: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -13,6 +14,7 @@ export interface InfiniteDiscoveryModel {
   setHasInteractedWithOnboarding: Action<this, boolean>
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
+  setIsOnboardingSession: Action<this, boolean>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
@@ -21,6 +23,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   savedArtworksCount: 0,
   sessionState: {
     moreInfoSheetVisible: false,
+    isOnboardingSession: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -39,5 +42,8 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   setMoreInfoSheetVisible: action((state, payload) => {
     state.sessionState.moreInfoSheetVisible = payload
+  }),
+  setIsOnboardingSession: action((state, payload) => {
+    state.sessionState.isOnboardingSession = payload
   }),
 })
