@@ -708,29 +708,6 @@ jest.mock("app/utils/Sentinel", () => {
   }
 })
 
-// Unleash has no provider in the test environment, so its hooks would throw.
-// Default every flag to OFF; tests can opt in via
-// `(useFlag as jest.Mock).mockReturnValue(true)`.
-jest.mock("@unleash/proxy-client-react", () => ({
-  __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => children,
-  useFlag: jest.fn().mockReturnValue(false),
-  useVariant: jest.fn().mockReturnValue({ enabled: false, name: "disabled" }),
-  useFlagsStatus: jest.fn().mockReturnValue({ flagsReady: true, flagsError: null }),
-  useUnleashContext: jest.fn().mockReturnValue(jest.fn()),
-  useUnleashClient: jest.fn().mockReturnValue({
-    isEnabled: jest.fn().mockReturnValue(false),
-    getVariant: jest.fn(),
-    on: jest.fn(),
-    off: jest.fn(),
-    start: jest.fn(),
-    stop: jest.fn(),
-    updateContext: jest.fn(),
-    setContextField: jest.fn(),
-    getContext: jest.fn().mockReturnValue({}),
-  }),
-}))
-
 jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
   getNotificationPermissionsStatus: mockFetchNotificationPermissions,
   PushAuthorizationStatus: {

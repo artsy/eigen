@@ -1,5 +1,4 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
-import { useFlag } from "@unleash/proxy-client-react"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import {
   HomeViewStore,
@@ -8,6 +7,7 @@ import {
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -17,7 +17,11 @@ import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-const mockUseFlag = useFlag as jest.Mock
+jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
+  useExperimentFlag: jest.fn(),
+}))
+
+const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
 let homeViewStoreActions: Actions<HomeViewStoreModel>
 
@@ -407,11 +411,11 @@ describe("HomeViewSectionArtworks", () => {
         AREnableLiveHomeRecommendations: true,
       })
       // Unleash flag onyx_artwork-recommendations-gravity
-      mockUseFlag.mockReturnValue(true)
+      mockUseExperimentFlag.mockReturnValue(true)
     })
 
     afterEach(() => {
-      mockUseFlag.mockReturnValue(false)
+      mockUseExperimentFlag.mockReturnValue(false)
     })
 
     it("force-refetches the rail and re-fires railViewed after a refresh is requested", () => {
@@ -488,7 +492,7 @@ describe("HomeViewSectionArtworks", () => {
 
     it("does not force-refetch when the flags are off", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableLiveHomeRecommendations: false })
-      mockUseFlag.mockReturnValue(false)
+      mockUseExperimentFlag.mockReturnValue(false)
 
       const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
