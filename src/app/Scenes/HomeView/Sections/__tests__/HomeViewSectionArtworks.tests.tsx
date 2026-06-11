@@ -449,7 +449,39 @@ describe("HomeViewSectionArtworks", () => {
         context_module: "newWorksForYouRail",
         context_screen: "home",
         position_y: 0,
+        refresh_count: 1,
       })
+    })
+
+    it("increments refresh_count on each successful refresh", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      const refreshOnce = () => {
+        act(() => {
+          homeViewStoreActions.bumpLiveRefetchKey()
+        })
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+            })
+          )
+        })
+      }
+
+      refreshOnce()
+      refreshOnce()
+
+      const refreshCounts = mockTrackEvent.mock.calls
+        .filter((call) => (call[0] as any)?.action === "railViewed")
+        .map((call) => (call[0] as any).refresh_count)
+
+      expect(refreshCounts).toEqual([1, 2])
     })
 
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
