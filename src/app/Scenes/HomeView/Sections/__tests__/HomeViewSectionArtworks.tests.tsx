@@ -7,6 +7,7 @@ import {
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -14,6 +15,13 @@ import { Actions } from "easy-peasy"
 import { useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
+import { MockPayloadGenerator } from "relay-test-utils"
+
+jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
+  useExperimentFlag: jest.fn(),
+}))
+
+const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
 let homeViewStoreActions: Actions<HomeViewStoreModel>
 
@@ -373,6 +381,136 @@ describe("HomeViewSectionArtworks", () => {
         item_id: "artwork-1-id",
         position: 0,
       })
+    })
+  })
+
+  describe("live recommendations", () => {
+    const RECOMMENDED_SECTION = {
+      internalID: "home-view-section-recommended-artworks",
+      contextModule: "newWorksForYouRail",
+      component: { title: "We think you'll love" },
+      trackItemImpressions: true,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              internalID: "artwork-1-id",
+              slug: "artwork-1-slug",
+              title: "Artwork 1",
+              href: "/artwork-1-href",
+            },
+          },
+        ],
+      },
+    }
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableHidingDislikedArtworks: true,
+        ARImpressionsTrackingHomeItemViews: true,
+      })
+      // Both Unleash flags (eigen + gravity) on
+      mockUseExperimentFlag.mockReturnValue(true)
+    })
+
+    afterEach(() => {
+      mockUseExperimentFlag.mockReturnValue(false)
+    })
+
+    it("re-fires railViewed only after the live refresh completes", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      // Request a refresh (focus return / pull to refresh).
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      // Nothing fires yet — the refreshed data hasn't landed.
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+
+      // Once the forced refetch completes, railViewed fires for the fresh data.
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "railViewed",
+        context_module: "newWorksForYouRail",
+        context_screen: "home",
+        position_y: 0,
+      })
+    })
+
+    it("re-enables itemViewed tracking after the live refresh completes", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+
+      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const onViewableItemsChanged = artworkRail.props.onViewableItemsChanged
+      const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
+
+      // Item is tracked once initially.
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(1)
+
+      // Refresh the rail and complete it — the impression guard resets on completion.
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      // The same item becoming viewable again should re-fire after the refresh.
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(2)
+    })
+
+    it("does not re-fire analytics when the flags are off", () => {
+      mockUseExperimentFlag.mockReturnValue(false)
+
+      renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
     })
   })
 })
