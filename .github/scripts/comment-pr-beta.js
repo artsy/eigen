@@ -79,7 +79,12 @@ module.exports = async ({ github, context, core }) => {
         if (platformSectionMatch) {
           // Platform section exists, append to it
           const existingSection = platformSectionMatch[0]
-          const updatedSection = existingSection.trimEnd() + "\n" + newBetaEntry
+          // Preserve the trailing whitespace (the blank line separating this
+          // section from the next ### header) so we don't collapse the new
+          // entry into the following header, e.g. "TestFlight### Android 🤖"
+          const trailingWhitespace = existingSection.match(/\s*$/)[0]
+          const updatedSection =
+            existingSection.trimEnd() + "\n" + newBetaEntry + trailingWhitespace
           commentBody = commentBody.replace(existingSection, updatedSection)
         } else {
           // Platform section doesn't exist, add it
