@@ -2,6 +2,7 @@ internal import Expo
 import React
 import ReactAppDependencyProvider
 import UserNotifications
+import RNSentry
 
 class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
@@ -19,6 +20,7 @@ class AppDelegate: ExpoAppDelegate, UNUserNotificationCenterDelegate {
       _ application: UIApplication,
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+      RNSentrySDK.start()
       helper?.setup(launchOptions: launchOptions)
 
       // Set the UNUserNotificationCenter delegate to enable notification tap handling
