@@ -587,7 +587,12 @@ workflows:
           project_id: 37
 
       - check-and-deploy:
-          <<: *main_only
+          # TEMP: also run on this branch to test the awscli CI fix. Revert to `<<: *main_only` before merge.
+          filters:
+            branches:
+              only:
+                - main
+                - gkartalis/fix-aws-cli-failure
 
       - test-js:
           <<: *ignore_beta_branches
