@@ -257,8 +257,17 @@ export const HomeView: React.FC = memo(() => {
 
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
+  const onboardingDestination = GlobalStore.useAppState(
+    (state) => state.onboarding.onboardingDestination
+  )
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  )
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const isNavigatingToInfiniteDiscovery =
+    onboardingDestination === "infinite-discovery" || isOnboardingSession
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -271,14 +280,21 @@ const HomeViewScreenComponent: React.FC = () => {
   }, [theme])
 
   useEffect(() => {
-    if (artQuizState === "incomplete" && isNavigationReady) {
+    if (!isNavigationReady) return
+
+    if (artQuizState === "incomplete") {
       // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
       requestAnimationFrame(() => {
         navigate("/art-quiz")
       })
-      return
+    } else if (onboardingDestination === "infinite-discovery") {
+      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+      GlobalStore.actions.onboarding.setOnboardingDestination(null)
+      requestAnimationFrame(() => {
+        navigate("/infinite-discovery")
+      })
     }
-  }, [artQuizState, isNavigationReady])
+  }, [artQuizState, onboardingDestination, isNavigationReady])
 
   // We want to avoid rendering the home view when the user comes back from a deep link
   // Because it triggers a lot of queries that affect the user's experience and can be avoided
@@ -287,6 +303,10 @@ const HomeViewScreenComponent: React.FC = () => {
   }
 
   if (artQuizState === "incomplete") {
+    return null
+  }
+
+  if (isNavigatingToInfiniteDiscovery) {
     return null
   }
 
