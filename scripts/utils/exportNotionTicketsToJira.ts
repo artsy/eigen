@@ -140,8 +140,13 @@ async function createJiraIssue(
     }
 
     const data = await response.json()
-    console.log(chalk.bold.green("Successfully created Jira issue:"))
-    console.log(JSON.stringify(data, null, 2))
+    const jiraUrl = `${JIRA_BASE_URL}/browse/${data.key}`
+    console.log(
+      chalk.bold.green(
+        `Successfully created Jira issue: ${data.key} — [${appName}] ${issueSummary}`
+      )
+    )
+    console.log(chalk.cyan(jiraUrl))
 
     return data.key
   } catch (error) {
