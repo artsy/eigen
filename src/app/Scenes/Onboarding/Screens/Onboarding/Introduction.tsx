@@ -64,7 +64,7 @@ export const Introduction: React.FC = () => {
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }, [])
 
-  const renderStep = () => {
+  const renderStep = useCallback(() => {
     switch (currentStep) {
       case STEP_QUESTION:
         return (
@@ -84,7 +84,7 @@ export const Introduction: React.FC = () => {
       default:
         return null
     }
-  }
+  }, [currentStep, next, handleSkipToHome])
 
   return (
     <Flex flex={1} backgroundColor="background">
