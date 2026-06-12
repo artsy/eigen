@@ -38,7 +38,6 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const prefetch = usePrefetch()
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
-
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 

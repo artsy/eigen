@@ -49,10 +49,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
   )
 
-  const handleDismiss = () => {
-    setIsVisible(false)
-  }
-
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
@@ -123,14 +119,14 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       animationType="fade"
       visible={isVisible}
       transparent
-      onRequestClose={handleDismiss}
+      onRequestClose={() => setIsVisible(false)}
       presentationStyle="overFullScreen"
     >
       <TouchableWithoutFeedback
         accessibilityRole="button"
         onPress={() => {
           if (enableTapToDismiss) {
-            handleDismiss()
+            setIsVisible(false)
           }
         }}
       >
@@ -199,9 +195,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                     <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
                       Save{" "}
                       <Text variant="lg-display" fontWeight="500">
-                        5 different artworks
+                        5
                       </Text>{" "}
-                      to build your taste profile.
+                      different artworks to build your taste profile.
                     </Text>
                   ) : (
                     <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
@@ -221,7 +217,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
                   <MotiView animate={{ opacity: enableTapToDismiss ? 1 : 0 }}>
                     <Flex alignItems="flex-end">
-                      <LinkText onPress={handleDismiss}>
+                      <LinkText onPress={() => setIsVisible(false)}>
                         {isOnboardingSession ? "Tap to start swiping" : "Tap to get started"}
                       </LinkText>
                     </Flex>
