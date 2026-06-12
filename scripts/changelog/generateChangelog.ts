@@ -111,7 +111,9 @@ async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetRe
 
   const prs: PullsGetResponse[] = []
   for (const commit of compare.data.commits) {
-    const match = commit.commit.message.match(/\(#(\d+)\)/m)
+    const match =
+      commit.commit.message.match(/\(#(\d+)\)/m) ||
+      commit.commit.message.match(/Merge pull request #(\d+)/m)
     if (match) {
       const prNumber = parseInt(match[1], 10)
       const pr = await octokit.pulls.get({
