@@ -14,6 +14,10 @@ then
     unzip -o -qq awscliv2.zip
     sudo ./aws/install
   fi
+  # ensure awscli is installed
+  # and version details
+  which aws
+  aws --version
 
   # configure awscli
   mkdir -p ~/.aws
