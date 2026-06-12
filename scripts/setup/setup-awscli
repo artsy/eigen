@@ -7,9 +7,8 @@ then
 
   # install awscli
   if [ "$(uname)" == "Darwin" ]; then # MacOS
-    export NONINTERACTIVE=1
-    brew update || true
-    brew install awscli
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+    sudo installer -pkg AWSCLIV2.pkg -target /
   else # Assume Linux
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip -o -qq awscliv2.zip
