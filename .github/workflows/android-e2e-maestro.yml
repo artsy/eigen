@@ -13,7 +13,7 @@ on:
 jobs:
   e2e-tests:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: blacksmith-4vcpu-ubuntu-2404 # Use ubuntu-latest for better Android emulator support
+    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
