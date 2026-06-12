@@ -42,7 +42,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   )
 
   useEffect(() => {
-    GlobalStore.actions.onboarding.setOnboardingDestination(null)
     return () => {
       GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
     }

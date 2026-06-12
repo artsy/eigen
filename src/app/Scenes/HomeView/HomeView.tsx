@@ -260,8 +260,14 @@ const HomeViewScreenComponent: React.FC = () => {
   const onboardingDestination = GlobalStore.useAppState(
     (state) => state.onboarding.onboardingDestination
   )
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  )
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const isNavigatingToInfiniteDiscovery =
+    onboardingDestination === "infinite-discovery" || isOnboardingSession
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -286,6 +292,7 @@ const HomeViewScreenComponent: React.FC = () => {
   useEffect(() => {
     if (onboardingDestination === "infinite-discovery" && isNavigationReady) {
       GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+      GlobalStore.actions.onboarding.setOnboardingDestination(null)
       requestAnimationFrame(() => {
         navigate("/infinite-discovery")
       })
@@ -302,7 +309,7 @@ const HomeViewScreenComponent: React.FC = () => {
     return null
   }
 
-  if (onboardingDestination === "infinite-discovery") {
+  if (isNavigatingToInfiniteDiscovery) {
     return null
   }
 
