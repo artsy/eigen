@@ -59,8 +59,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     // State to track the current image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
+    const isOnboardingSession = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+    )
+
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
+      suppressToasts: isOnboardingSession,
       onCompleted: (isArtworkSaved) => {
         if (!!artwork) {
           track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)

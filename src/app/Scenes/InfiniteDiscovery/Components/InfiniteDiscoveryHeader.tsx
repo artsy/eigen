@@ -1,5 +1,6 @@
 import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Screen, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
@@ -20,9 +21,19 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  )
+  const savedArtworksCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.savedArtworksCount
+  )
 
   const handleExitPressed = () => {
     track.tappedExit()
+    goBack()
+  }
+
+  const handleSkipPressed = () => {
     goBack()
   }
 
@@ -60,6 +71,28 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
     } else {
       handleSharePressed()
     }
+  }
+
+  if (isOnboardingSession) {
+    return (
+      <Flex mb={1}>
+        <Screen.Header
+          title="Discover Daily"
+          leftElements={<OnboardingProgressBadge current={savedArtworksCount} total={5} />}
+          rightElements={
+            <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Skip onboarding"
+              onPress={handleSkipPressed}
+              hitSlop={DEFAULT_HIT_SLOP}
+              haptic
+            >
+              <Text>Skip</Text>
+            </Touchable>
+          }
+        />
+      </Flex>
+    )
   }
 
   return (

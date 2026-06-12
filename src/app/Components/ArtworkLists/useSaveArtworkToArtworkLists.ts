@@ -9,11 +9,12 @@ import { graphql, useFragment } from "react-relay"
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
   saveToDefaultCollectionOnly?: boolean
+  suppressToasts?: boolean
 }
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const toast = useArtworkListToast(null)
-  const { artworkFragmentRef, onCompleted, ...restOptions } = options
+  const { artworkFragmentRef, onCompleted, suppressToasts, ...restOptions } = options
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const openSelectArtworkListsView = ArtworkListsStore.useStoreActions(
     (actions) => actions.openSelectArtworkListsView
@@ -58,6 +59,10 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       }
 
       if (options.saveToDefaultCollectionOnly) {
+        return
+      }
+
+      if (suppressToasts) {
         return
       }
 

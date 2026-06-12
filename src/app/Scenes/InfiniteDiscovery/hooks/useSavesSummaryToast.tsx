@@ -14,9 +14,13 @@ export const useSavesSummaryToast = () => {
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  )
   const track = useInfiniteDiscoveryTracking()
 
   const showSavedCountToast = useCallback(() => {
+    if (isOnboardingSession) return
     if (savedArtworksCount > 0) {
       toast.show(
         `Nice! You saved ${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)}.`,
@@ -36,7 +40,7 @@ export const useSavesSummaryToast = () => {
         }
       )
     }
-  }, [toast, savedArtworksCount, track])
+  }, [toast, savedArtworksCount, isOnboardingSession, track])
 
   useEffect(() => {
     const unsubscribe = addListener("beforeRemove", showSavedCountToast)
