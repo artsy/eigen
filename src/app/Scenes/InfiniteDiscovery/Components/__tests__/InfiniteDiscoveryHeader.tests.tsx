@@ -124,8 +124,14 @@ describe("InfiniteDiscoveryHeader", () => {
     })
 
     it("reflects the current saved artworks count in the badge", () => {
-      GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
-      GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
+      GlobalStore.actions.infiniteDiscovery.addOnboardingSavedArtworkImage({
+        internalID: "artwork-1",
+        url: "https://example.com/1.jpg",
+      })
+      GlobalStore.actions.infiniteDiscovery.addOnboardingSavedArtworkImage({
+        internalID: "artwork-2",
+        url: "https://example.com/2.jpg",
+      })
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       expect(screen.getByText("2/5")).toBeOnTheScreen()

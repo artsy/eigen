@@ -13,7 +13,7 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
     <Flex borderRadius={50} borderWidth={1} borderColor="mono60" px={1} py={0.5}>
       <Text variant="xs">
         <Text variant="xs" fontWeight="500">
-          {current}
+          {Math.min(current, total)}
         </Text>
         /{total}
       </Text>

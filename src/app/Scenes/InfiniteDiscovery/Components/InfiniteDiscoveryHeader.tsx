@@ -24,8 +24,8 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const isOnboardingSession = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
   )
-  const savedArtworksCount = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.savedArtworksCount
+  const onboardingSavedArtworkCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.onboardingSavedArtworkImages.length
   )
 
   const handleExitPressed = () => {
@@ -78,7 +78,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
       <Flex mb={1}>
         <Screen.Header
           title="Discover Daily"
-          leftElements={<OnboardingProgressBadge current={savedArtworksCount} total={5} />}
+          leftElements={<OnboardingProgressBadge current={onboardingSavedArtworkCount} total={5} />}
           rightElements={
             <Touchable
               accessibilityRole="button"
