@@ -59,7 +59,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   useEffect(() => {
     const delay = isOnboardingSession ? 0 : 1000
     setTimeout(() => {
-      if (!hasInteractedWithOnboarding) {
+      if (isOnboardingSession || !hasInteractedWithOnboarding) {
         setIsVisible(true)
         // Make sure the user can tap to dismiss the onboarding only after a delay
         // This is required to make sure they can see the onboarding content
