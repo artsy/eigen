@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { SaleLotsListViewer_viewer$key } from "__generated__/SaleLotsListViewer_viewer.graphql"
-import { SaleLotsList_saleArtworksConnection$key } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
   filterArtworksParams,
@@ -255,9 +254,7 @@ const saleLotsPaginationFragment = graphql`
   }
 `
 
-// Wrapper component that chooses the right implementation based on feature flag
 export const SaleLotsListContainer: React.FC<{
-  saleArtworksConnection: SaleLotsList_saleArtworksConnection$key
   unfilteredSaleArtworksConnection:
     | SaleLotsList_unfilteredSaleArtworksConnection$data
     | null

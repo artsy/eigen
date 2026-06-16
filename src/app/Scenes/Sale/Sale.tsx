@@ -170,7 +170,6 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     if (below) {
       return (
         <SaleLotsListContainer
-          saleArtworksConnection={below as any}
           unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection as any}
           saleID={sale.internalID}
           saleSlug={sale.slug}
@@ -426,7 +425,6 @@ const SaleScreenBelowQuery = graphql`
     $enableArtworksConnection: Boolean = false
     $input: FilterArtworksInput
   ) {
-    ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
     unfilteredSaleArtworksConnection: saleArtworksConnection(
       saleID: $saleID
       aggregations: [TOTAL]
