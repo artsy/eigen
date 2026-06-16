@@ -2,8 +2,10 @@ import { Touchable } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
-import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
+import { Composer } from "app/Scenes/Inbox/Components/Conversations/Composer"
+import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
 import { ConversationFragmentContainer } from "app/Scenes/Inbox/Screens/Conversation"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import "react-native"
@@ -136,4 +138,54 @@ it("handles a dismissed modal with goBack event", () => {
 
   // Simulate the event - the functional component handles this internally
   navigationEvents.emit("goBack")
+})
+
+describe("partner offer banner priority", () => {
+  const futureISO = () => new Date(Date.now() + 60 * 60 * 1000).toISOString()
+
+  const offerResolvers = (activeOrderEdges: any[]) => ({
+    Me: () => ({
+      partnerOffersConnection: {
+        edges: [
+          {
+            node: {
+              internalID: "partner-offer-id",
+              artworkId: "artwork-id",
+              endAt: futureISO(),
+              isAvailable: true,
+              note: null,
+              priceWithDiscount: { display: "US$450" },
+            },
+          },
+        ],
+      },
+    }),
+    Conversation: () => ({
+      internalID: "conversation-id",
+      items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
+      activeOrders: { edges: activeOrderEdges },
+    }),
+    // Both `items.item` and `liveArtwork` resolve to the artwork the offer targets.
+    Artwork: () => ({
+      internalID: "artwork-id",
+      href: "/artwork/foo",
+      isOfferableFromInquiry: true,
+    }),
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
+  })
+
+  it("shows the partner offer banner when there is no active order", () => {
+    renderWithRelay(offerResolvers([]))
+
+    expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(1)
+  })
+
+  it("hides the partner offer banner when there is an active order", () => {
+    renderWithRelay(offerResolvers([{ node: { internalID: "order-1" } }]))
+
+    expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(0)
+  })
 })

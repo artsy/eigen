@@ -7,7 +7,7 @@ import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { ComposerFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Composer"
+import { Composer } from "app/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "app/Scenes/Inbox/Components/Conversations/SendConversationMessage"
 import { updateConversation } from "app/Scenes/Inbox/Components/Conversations/UpdateConversation"
@@ -156,8 +156,9 @@ export const Conversation: React.FC<Props> = ({
         </Touchable>
       }
     >
-      <ComposerFragmentContainer
+      <Composer
         conversation={conversation}
+        me={me}
         disabled={sendingMessage || !isConnected}
         // @ts-expect-error REACT_18_UPGRADE
         value={failedMessageText}
@@ -184,6 +185,7 @@ export const Conversation: React.FC<Props> = ({
           <Messages
             componentRef={(messages) => (messagesRef.current = messages)}
             conversation={conversation}
+            me={me}
             onRefresh={() => {
               relay.refetch(
                 { conversationID: conversation?.internalID },
@@ -198,7 +200,7 @@ export const Conversation: React.FC<Props> = ({
             }}
           />
         </Container>
-      </ComposerFragmentContainer>
+      </Composer>
     </PageWithSimpleHeader>
   )
 }
@@ -208,6 +210,8 @@ export const ConversationFragmentContainer = createRefetchContainer(
   {
     me: graphql`
       fragment Conversation_me on Me {
+        ...usePartnerOffer_me
+
         conversation(id: $conversationID) {
           ...Composer_conversation
           ...Messages_conversation
