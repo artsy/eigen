@@ -11,9 +11,7 @@ interface BuyNowArtworksRailProps {
 }
 
 export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) => {
-  const artworks = extractNodes(sale.promotedSale?.saleArtworksConnection).map(
-    (saleArtwork) => saleArtwork.artwork
-  )
+  const artworks = extractNodes(sale.promotedSale?.artworksConnection)
 
   if (!artworks?.length) {
     return null
@@ -21,26 +19,25 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
 
   return (
     <Flex mt={4} testID="bnmo-rail-wrapper">
-      <SectionTitle title="Artworks Available to Inquire" />
+      <SectionTitle title="Artworks Available to Inquire" mx={2} />
 
       <ArtworkRail artworks={compact(artworks)} />
     </Flex>
   )
 }
 
+// TODO: Replace NewBuyNowArtworksRail with BuyNowArtworksRail when AREnableArtworksConnectionForAuction is released
 export const BuyNowArtworksRailContainer = createFragmentContainer(BuyNowArtworksRail, {
   sale: graphql`
     fragment BuyNowArtworksRail_sale on Sale
     @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
       internalID
       promotedSale {
-        saleArtworksConnection(first: $count, after: $cursor)
-          @connection(key: "Sale_saleArtworksConnection") {
+        artworksConnection(first: $count, after: $cursor)
+          @connection(key: "BuyNowArtworksRail_artworksConnection") {
           edges {
             node {
-              artwork {
-                ...ArtworkRail_artworks
-              }
+              ...ArtworkRail_artworks
             }
           }
         }

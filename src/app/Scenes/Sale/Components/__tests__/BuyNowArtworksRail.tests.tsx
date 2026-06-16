@@ -16,47 +16,47 @@ describe("BuyNowArtworksRail", () => {
     variables: { id: "sale-id" },
   })
 
-  it(`renders title "Buy now"`, () => {
+  it(`renders "Buy now" rail and artworks`, () => {
     renderWithRelay(mockProps)
     expect(screen.getByText("Artworks Available to Inquire")).toBeDefined()
+    expect(screen.getAllByText("Best artwork ever, 2019")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
     const noArtworksProps = {
       Sale: () => ({
-        saleArtworksConnection: {
+        artworksConnection: {
           edges: [],
         },
       }),
     }
+
     renderWithRelay(noArtworksProps)
     expect(screen.queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })
 
-const saleArtworksConnectionEdges = new Array(10).fill({
+const artworksConnectionEdges = new Array(10).fill({
   node: {
-    artwork: {
-      id: "artwork-id",
-      title: "Best artwork ever",
-      date: "2019",
-      saleMessage: "Price on request",
-      artistNames: "Banksy",
-      href: "/artwork/artwroks-href",
-      image: {
-        url: "artworkImageUrl",
-      },
-      partner: {
-        name: "Heritage Auctions",
-      },
+    id: "artwork-id",
+    title: "Best artwork ever",
+    date: "2019",
+    saleMessage: "Price on request",
+    artistNames: "Banksy",
+    href: "/artwork/artwroks-href",
+    image: {
+      url: "artworkImageUrl",
+    },
+    partner: {
+      name: "Heritage Auctions",
     },
   },
 })
 
 const mockProps = {
   Sale: () => ({
-    saleArtworksConnection: {
-      edges: saleArtworksConnectionEdges,
+    artworksConnection: {
+      edges: artworksConnectionEdges,
     },
   }),
 }

@@ -32,7 +32,7 @@ import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
-import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
+import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -226,7 +226,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: BUY_NOW_ARTWORKS_RAIL,
-      content: <NewBuyNowArtworksRailContainer sale={sale} />,
+      content: <BuyNowArtworksRailContainer sale={sale} />,
     },
     {
       key: SALE_LOTS_LIST,
@@ -371,7 +371,6 @@ export const SaleContainer = createRefetchContainer(
         ...SaleHeader_sale
         ...RegisterToBidButton_sale
         ...BuyNowArtworksRail_sale
-        ...NewBuyNowArtworksRail_sale
         endAt
         internalID
         liveStartAt
