@@ -244,7 +244,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { globalStoreInstance, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
@@ -259,7 +259,7 @@ export interface ViewOptions {
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
-  screenOptions?: NativeStackNavigationOptions
+  screenOptions?: NativeStackNavigationOptions | (() => NativeStackNavigationOptions)
   topTabsNavigatorOptions?: {
     topTabName: string
   }
@@ -1007,11 +1007,14 @@ export const artsyDotNetRoutes = defineRoutes([
     prepareVariables: [() => infiniteDiscoveryVariables],
     options: {
       hidesBottomTabs: true,
-      screenOptions: {
-        animation: "slide_from_bottom",
+      screenOptions: () => ({
+        animation: globalStoreInstance().getState().infiniteDiscovery.sessionState
+          .isOnboardingSession
+          ? "fade"
+          : "slide_from_bottom",
         gestureEnabled: false,
         headerShown: false,
-      },
+      }),
     },
   },
   {

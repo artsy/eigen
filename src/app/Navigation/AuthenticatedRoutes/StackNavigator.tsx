@@ -1,6 +1,9 @@
 import { ChevronLeftIcon, CloseIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, THEMES, Touchable } from "@artsy/palette-mobile"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import {
+  NativeStackNavigationOptions,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
@@ -23,51 +26,57 @@ export const registerScreen = ({ name, module, ...props }: StackNavigatorScreenP
       {...props}
       name={name}
       key={name}
-      options={{
-        presentation: isModalScreen(module) ? "fullScreenModal" : "card",
-        orientation: defaultScreenOrientation,
-        animation: !isModalScreen(module) ? "slide_from_right" : undefined,
-        animationDuration: DEFAULT_SCREEN_ANIMATION_DURATION,
-        headerShown: module.options?.screenOptions?.headerShown ?? true,
-        headerLeft: ({ canGoBack }) => {
-          if (!canGoBack) {
-            return null
-          }
+      options={() => {
+        const resolvedScreenOptions: NativeStackNavigationOptions =
+          typeof module.options?.screenOptions === "function"
+            ? module.options.screenOptions()
+            : module.options?.screenOptions ?? {}
+        return {
+          presentation: isModalScreen(module) ? "fullScreenModal" : "card",
+          orientation: defaultScreenOrientation,
+          animation: !isModalScreen(module) ? "slide_from_right" : undefined,
+          animationDuration: DEFAULT_SCREEN_ANIMATION_DURATION,
+          headerShown: resolvedScreenOptions?.headerShown ?? true,
+          headerLeft: ({ canGoBack }) => {
+            if (!canGoBack) {
+              return null
+            }
 
-          return (
-            <Touchable
-              accessibilityRole="button"
-              accessibilityLabel={isModalScreen(module) ? "Close modal" : "Go back"}
-              accessibilityHint={
-                isModalScreen(module)
-                  ? "Closes the modal screen"
-                  : "Goes back to the previous screen"
-              }
-              onPress={() => {
-                goBack()
-              }}
-              underlayColor="transparent"
-              hitSlop={DEFAULT_HIT_SLOP}
-            >
-              {isModalScreen(module) ? (
-                <CloseIcon fill="mono100" />
-              ) : (
-                <ChevronLeftIcon fill="mono100" />
-              )}
-            </Touchable>
-          )
-        },
-        headerTitle: "",
-        headerTitleAlign: "center",
-        ...module.options?.screenOptions,
-        gestureEnabled: true,
-        headerShadowVisible: Platform.OS === "ios",
-        headerTitleStyle: {
-          fontWeight: "400",
-          fontFamily: THEMES.v3.fonts.sans.regular,
-          ...THEMES.v3.textTreatments["sm-display"],
-          ...((module.options?.screenOptions?.headerTitleStyle as {} | undefined) ?? {}),
-        },
+            return (
+              <Touchable
+                accessibilityRole="button"
+                accessibilityLabel={isModalScreen(module) ? "Close modal" : "Go back"}
+                accessibilityHint={
+                  isModalScreen(module)
+                    ? "Closes the modal screen"
+                    : "Goes back to the previous screen"
+                }
+                onPress={() => {
+                  goBack()
+                }}
+                underlayColor="transparent"
+                hitSlop={DEFAULT_HIT_SLOP}
+              >
+                {isModalScreen(module) ? (
+                  <CloseIcon fill="mono100" />
+                ) : (
+                  <ChevronLeftIcon fill="mono100" />
+                )}
+              </Touchable>
+            )
+          },
+          headerTitle: "",
+          headerTitleAlign: "center",
+          ...resolvedScreenOptions,
+          gestureEnabled: true,
+          headerShadowVisible: Platform.OS === "ios",
+          headerTitleStyle: {
+            fontWeight: "400",
+            fontFamily: THEMES.v3.fonts.sans.regular,
+            ...THEMES.v3.textTreatments["sm-display"],
+            ...(resolvedScreenOptions?.headerTitleStyle as object | undefined),
+          },
+        }
       }}
       children={(screenProps) => {
         const params = screenProps.route.params || {}
