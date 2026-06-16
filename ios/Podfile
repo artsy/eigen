@@ -163,5 +163,28 @@ target 'Artsy' do
             config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "16.6"
         end
     end
+
+    # Remove the private `netinet6/in6.h` import from AFNetworking.
+    # The iPhoneSimulator SDK shipped with Xcode >= 26.4 treats this as a
+    # private header and fails the build with:
+    #   "Use of private header from outside its module: 'netinet6/in6.h'".
+    # `netinet/in.h` (already imported alongside it) covers the IPv6
+    # definitions AFNetworking needs, so dropping the import is safe.
+    af_sources = [
+      'AFNetworking/AFNetworking/AFNetworkReachabilityManager.m',
+      'AFNetworking/AFNetworking/AFHTTPSessionManager.m',
+    ]
+    af_sources.each do |relative_path|
+      path = File.join(__dir__, 'Pods', relative_path)
+      next unless File.exist?(path)
+
+      content = File.read(path)
+      patched = content.gsub("#import <netinet6/in6.h>\n", "")
+      next if patched == content
+
+      File.chmod(0644, path)
+      File.write(path, patched)
+      puts "[post_install] Removed private netinet6/in6.h import from #{relative_path}"
+    end
   end
 end
