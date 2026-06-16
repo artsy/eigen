@@ -4,6 +4,7 @@
 "use strict"
 
 import { resolve } from "path"
+import readline from "readline"
 import chalk from "chalk"
 import { config } from "dotenv"
 import { hideBin } from "yargs/helpers"
@@ -25,6 +26,7 @@ const NOTION_API_TOKEN = process.env.NOTION_API_TOKEN
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL
 const JIRA_EMAIL = process.env.JIRA_EMAIL
 const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN
+const SLACK_URL = process.env.SLACK_URL
 
 if (!NOTION_API_TOKEN) {
   console.error(chalk.bold.red("Missing NOTION_API_TOKEN in environment variables."))
@@ -36,17 +38,24 @@ if (!JIRA_BASE_URL || !JIRA_EMAIL || !JIRA_API_TOKEN) {
   process.exit(1)
 }
 
-const argv = yargs(hideBin(process.argv)).option("app", {
-  describe: "App name to prepend to ticket titles",
-  choices: ["eigen", "energy"],
-  demandOption: true,
-  type: "string",
-}).argv as any
+const argv = yargs(hideBin(process.argv))
+  .option("app", {
+    describe: "App name to prepend to ticket titles",
+    choices: ["eigen", "energy"],
+    demandOption: true,
+    type: "string",
+  })
+  .option("test-slack", {
+    describe: "Preview and send the Slack message with dummy data without hitting Notion or Jira",
+    type: "boolean",
+    default: false,
+  }).argv as any
 
 const databaseId = argv._[0]
 const appName = argv.app
+const testSlack = argv["test-slack"]
 
-if (!databaseId) {
+if (!testSlack && !databaseId) {
   console.error(
     chalk.bold.red("Usage: yarn export-notion-to-jira <databaseId> --app <eigen|energy>")
   )
@@ -140,8 +149,13 @@ async function createJiraIssue(
     }
 
     const data = await response.json()
-    console.log(chalk.bold.green("Successfully created Jira issue:"))
-    console.log(JSON.stringify(data, null, 2))
+    const jiraUrl = `${JIRA_BASE_URL}/browse/${data.key}`
+    console.log(
+      chalk.bold.green(
+        `Successfully created Jira issue: ${data.key} — [${appName}] ${issueSummary}`
+      )
+    )
+    console.log(chalk.cyan(jiraUrl))
 
     return data.key
   } catch (error) {
@@ -185,6 +199,7 @@ interface ValidIssue {
   severity: string
   team: string
   notionUrl: string
+  isLaunchBlocking: boolean
 }
 
 const severityMap = {
@@ -193,6 +208,58 @@ const severityMap = {
   P3: "P3 - Moderate",
   P4: "P4 - Low",
   P5: "P5 - Informal",
+}
+
+function formatLinkText(summary: string, maxLength = 80): string {
+  const cleaned = `${appName} ${summary}`
+    .replace(/[|<>]/g, "") // chars that break Slack's <url|text> mrkdwn format
+    .trim()
+  return cleaned.length > maxLength ? cleaned.slice(0, maxLength).trimEnd() + "…" : cleaned
+}
+
+function formatSlackLine(key: string, summary: string): string {
+  return `:red_circle: - <${JIRA_BASE_URL}/browse/${key}|${formatLinkText(summary)}>`
+}
+
+function buildSlackMessage(lines: string): string {
+  return `Thanks all for joining QA! We found the following launch blocking bugs which need volunteers - please shout if you want to work on any of them!\n${lines}`
+}
+
+function promptConfirm(question: string): Promise<boolean> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+  return new Promise((resolve) => {
+    rl.question(`${question} (y/n): `, (answer) => {
+      rl.close()
+      resolve(answer.toLowerCase() === "y")
+    })
+  })
+}
+
+async function sendSlackMessage(text: string) {
+  if (!SLACK_URL) {
+    console.error(chalk.bold.red("Missing SLACK_URL in environment variables."))
+    return
+  }
+  const response = await fetch(SLACK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text }),
+  })
+  if (!response.ok) {
+    throw new Error(`Failed to send Slack message: ${response.status} ${response.statusText}`)
+  }
+  console.log(chalk.bold.green("Successfully sent Slack message"))
+}
+
+async function previewAndSend(slackMessage: string) {
+  console.log(chalk.bold.cyan("\n--- Launch blocker Slack message preview ---"))
+  console.log(slackMessage)
+  console.log(chalk.bold.cyan("--------------------------------------------\n"))
+
+  const shouldSend = await promptConfirm("Send this message to Slack?")
+  if (shouldSend) {
+    await sendSlackMessage(slackMessage)
+  }
 }
 
 async function main() {
@@ -226,8 +293,11 @@ async function main() {
         severity: fullSeverity,
         team,
         notionUrl: notionPageUrl,
+        isLaunchBlocking: status === "Launch Blocking",
       })
     }
+
+    const launchBlockers: Array<{ key: string; summary: string }> = []
 
     for (const issue of validIssues) {
       const issueKey = await createJiraIssue(
@@ -238,9 +308,31 @@ async function main() {
       )
       if (issueKey) {
         await updateJiraLabels(issueKey, [issue.team, "mobile"])
+        if (issue.isLaunchBlocking) {
+          launchBlockers.push({ key: issueKey, summary: issue.summary })
+        }
       }
+    }
+
+    if (launchBlockers.length > 0) {
+      const lines = launchBlockers
+        .map(({ key, summary }) => formatSlackLine(key, summary))
+        .join("\n")
+      await previewAndSend(buildSlackMessage(lines))
     }
   }
 }
 
-main().catch((err) => console.error(chalk.bold.red(err)))
+if (testSlack) {
+  const dummyBlockers = [
+    {
+      key: "PBRW-1894",
+      summary: `Inbox → Active bids - I can see Complete Registration for the bid that closes on Juna 8 4 days ago.`,
+    },
+    { key: "PBRW-1895", summary: `Android Pill text is being cut` },
+  ]
+  const lines = dummyBlockers.map(({ key, summary }) => formatSlackLine(key, summary)).join("\n")
+  previewAndSend(buildSlackMessage(lines)).catch((err) => console.error(chalk.bold.red(err)))
+} else {
+  main().catch((err) => console.error(chalk.bold.red(err)))
+}
