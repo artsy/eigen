@@ -1,16 +1,17 @@
 import { Button, Flex, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
+import { Composer_conversation$key } from "__generated__/Composer_conversation.graphql"
+import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
 import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { ConversationCTAFragmentContainer } from "./ConversationCTA"
+import { ConversationCTA } from "./ConversationCTA"
 
 interface ContainerProps {
   active: boolean
@@ -32,12 +33,14 @@ interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
-  conversation: Composer_conversation$data
+  conversation: Composer_conversation$key
+  me: usePartnerOffer_me$key
 }
 
-const ComposerInner: React.FC<
+export const Composer: React.FC<
   React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInput> }>
-> = ({ disabled, onSubmit, value, conversation, children, forwardedRef }) => {
+> = ({ disabled, onSubmit, value, conversation, me, children, forwardedRef }) => {
+  const data = useFragment(fragment, conversation)
   const { bottom } = useSafeAreaInsets()
   const [active, setActive] = useState(false)
   const [text, setText] = useState<string | null>(null)
@@ -87,6 +90,7 @@ const ComposerInner: React.FC<
       }
     }
   }, [forwardedRef])
+
   return (
     <KeyboardAvoidingContainer
       keyboardVerticalOffset={bottom + 80}
@@ -94,7 +98,7 @@ const ComposerInner: React.FC<
     >
       {children}
       <Flex flexDirection="column">
-        <ConversationCTAFragmentContainer show={!active} conversation={conversation} />
+        <ConversationCTA show={!active} conversation={data} me={me} />
         <Container active={active}>
           <TextInput
             accessibilityLabel="Text input field"
@@ -124,28 +128,21 @@ const ComposerInner: React.FC<
   )
 }
 
-const Composer = React.forwardRef<TextInput, Props>((props, ref) => (
-  <ComposerInner {...props} forwardedRef={ref} />
-))
-
-export default Composer
-
-export const ComposerFragmentContainer = createFragmentContainer(Composer, {
-  conversation: graphql`
-    fragment Composer_conversation on Conversation {
-      ...ConversationCTA_conversation
-      items {
-        item {
-          __typename
-          ... on Artwork {
-            href
-            slug
-          }
-          ... on Show {
-            href
-          }
+const fragment = graphql`
+  fragment Composer_conversation on Conversation {
+    ...ConversationPartnerOfferCTA_conversation
+    ...ConversationCTA_conversation
+    items {
+      item {
+        __typename
+        ... on Artwork {
+          href
+          slug
+        }
+        ... on Show {
+          href
         }
       }
     }
-  `,
-})
+  }
+`

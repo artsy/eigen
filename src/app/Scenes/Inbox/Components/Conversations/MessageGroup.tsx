@@ -6,9 +6,13 @@ import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Previe
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { DateTime } from "luxon"
-import { Component } from "react"
+import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
+import {
+  ConversationPartnerOfferUpdate,
+  PartnerOfferConversationEvent,
+} from "./ConversationPartnerOfferUpdate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ShowPreview from "./Preview/ShowPreview"
@@ -20,7 +24,10 @@ const SubjectContainer = styled(Flex)`
 `
 type Item = NonNullable<NonNullable<Messages_conversation$data["items"]>[0]>["item"]
 
-export type DisplayableMessage = OrderUpdate_event$data | Message_message$data
+export type DisplayableMessage =
+  | OrderUpdate_event$data
+  | Message_message$data
+  | PartnerOfferConversationEvent
 
 interface MessageGroupProps {
   group: DisplayableMessage[]
@@ -95,58 +102,75 @@ const InitialMessage: React.FC<{
   )
 }
 
-export class MessageGroup extends Component<MessageGroupProps> {
-  render() {
-    const { group, conversationId, isLastMessage, subjectItem, formattedFirstMessage } = this.props
-    if (group[0].__typename === "%other") {
-      return null
-    }
-
-    // Events come as a single item in an array
-    if (isRelevantEventArray(group)) {
-      const onlyEvent = group[0]
-      return (
-        <>
-          {!!isLastMessage && (
-            <InitialMessage subjectItem={subjectItem} createdAt={onlyEvent.createdAt} />
-          )}
-          <OrderUpdateFragmentContainer event={onlyEvent as any} conversationId={conversationId} />
-        </>
-      )
-    }
-    if (isMessageArray(group)) {
-      const firstItem = group[0]
-      return (
-        <>
-          <View>
-            {!isLastMessage && (
-              <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
-            )}
-            {[...group].reverse().map((message: Message_message$data, messageIndex: number) => {
-              const messageKey = `message-${messageIndex}`
-              return (
-                <IndividualMessage
-                  conversationId={conversationId}
-                  isLastMessage={messageIndex === group.length - 1}
-                  key={messageKey}
-                  message={message}
-                  formattedFirstMessage={formattedFirstMessage}
-                  nextMessage={group[messageIndex + 1]}
-                  isSameDay={DateTime.fromISO(firstItem.createdAt ?? "").hasSame(
-                    DateTime.now(),
-                    "day"
-                  )}
-                />
-              )
-            })}
-          </View>
-
-          {!!isLastMessage && (
-            <InitialMessage subjectItem={subjectItem} createdAt={firstItem.createdAt} />
-          )}
-        </>
-      )
-    }
+export const MessageGroup: React.FC<MessageGroupProps> = ({
+  conversationId,
+  formattedFirstMessage,
+  group,
+  isLastMessage,
+  subjectItem,
+}) => {
+  if (group[0].__typename === "%other") {
     return null
   }
+
+  // A partner offer isn't an order event; it's injected into the timeline by
+  // `Messages` (only when the feature flag is on) and rendered on its own.
+  if (group[0].__typename === "PartnerOfferEvent") {
+    const onlyEvent = group[0] as PartnerOfferConversationEvent
+    return (
+      <>
+        {!!isLastMessage && (
+          <InitialMessage subjectItem={subjectItem} createdAt={onlyEvent.createdAt} />
+        )}
+        <ConversationPartnerOfferUpdate event={onlyEvent} />
+      </>
+    )
+  }
+  if (isRelevantEventArray(group)) {
+    // Events come as a single item in an array
+    const onlyEvent = group[0]
+    return (
+      <>
+        {!!isLastMessage && (
+          <InitialMessage subjectItem={subjectItem} createdAt={onlyEvent.createdAt} />
+        )}
+        <OrderUpdateFragmentContainer event={onlyEvent as any} conversationId={conversationId} />
+      </>
+    )
+  }
+
+  if (isMessageArray(group)) {
+    const firstItem = group[0]
+    return (
+      <>
+        <View>
+          {!isLastMessage && (
+            <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
+          )}
+          {[...group].reverse().map((message: Message_message$data, messageIndex: number) => {
+            const messageKey = `message-${messageIndex}`
+            return (
+              <IndividualMessage
+                conversationId={conversationId}
+                isLastMessage={messageIndex === group.length - 1}
+                key={messageKey}
+                message={message}
+                formattedFirstMessage={formattedFirstMessage}
+                nextMessage={group[messageIndex + 1]}
+                isSameDay={DateTime.fromISO(firstItem.createdAt ?? "").hasSame(
+                  DateTime.now(),
+                  "day"
+                )}
+              />
+            )
+          })}
+        </View>
+
+        {!!isLastMessage && (
+          <InitialMessage subjectItem={subjectItem} createdAt={firstItem.createdAt} />
+        )}
+      </>
+    )
+  }
+  return null
 }

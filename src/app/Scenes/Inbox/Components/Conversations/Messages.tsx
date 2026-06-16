@@ -1,20 +1,25 @@
 import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
+import { Messages_partnerOffers$key } from "__generated__/Messages_partnerOffers.graphql"
+import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
+import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp, useFragment } from "react-relay"
 import styled from "styled-components/native"
+import { PartnerOfferConversationEvent } from "./ConversationPartnerOfferUpdate"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
 interface Props {
   conversation: Messages_conversation$data
+  me: usePartnerOffer_me$key
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
   onRefresh?: () => void
@@ -29,11 +34,34 @@ type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
-  const { conversation, relay, onDataFetching, onRefresh } = props
+  const { conversation, me, relay, onDataFetching, onRefresh } = props
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
   const [messages, setMessages] = useState<ConversationItem[][]>([])
+
+  const subjectArtwork = conversation.items?.[0]?.item
+  const artworkId = subjectArtwork?.__typename === "Artwork" ? subjectArtwork.internalID : null
+  const { hasActivePartnerOffer, partnerOffers: partnerOffersRef } = usePartnerOffer({
+    me,
+    artworkId,
+  })
+  const partnerOffers = useFragment(
+    partnerOffersFragment,
+    partnerOffersRef as unknown as Messages_partnerOffers$key
+  )
+  const partnerOffer = partnerOffers?.find((offer) => offer.artworkId === artworkId)
+
+  const partnerOfferEvent: (PartnerOfferConversationEvent & { key: string; __id: string }) | null =
+    hasActivePartnerOffer && partnerOffer
+      ? {
+          __typename: "PartnerOfferEvent",
+          __id: "partner-offer-event",
+          key: "partner-offer-event",
+          createdAt: partnerOffer.createdAt ?? null,
+          amountDisplay: partnerOffer.priceWithDiscount?.display ?? null,
+        }
+      : null
 
   // Get all messages and give them a key for use with flatlist
   const allMessages = extractNodes(conversation.messagesConnection)
@@ -66,13 +94,23 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   // Combine and group events/messages
   useEffect(() => {
-    const sortedMessages = sortBy([...orderEventsWithoutFailedPayment, ...allMessages], (message) =>
-      DateTime.fromISO(message.createdAt ?? "")
+    const sortedMessages = sortBy(
+      [
+        ...orderEventsWithoutFailedPayment,
+        ...allMessages,
+        ...(partnerOfferEvent ? [partnerOfferEvent] : []),
+      ],
+      (message) => DateTime.fromISO(message.createdAt ?? "")
     )
     const groupedMessages = groupConversationItems(sortedMessages)
 
     setMessages(groupedMessages)
-  }, [allOrderEvents.length, allMessages.length])
+  }, [
+    allOrderEvents.length,
+    allMessages.length,
+    partnerOfferEvent?.__id,
+    partnerOfferEvent?.createdAt,
+  ])
 
   const flatList = useRef<FlatList>(null)
 
@@ -169,6 +207,16 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   )
 })
 
+const partnerOffersFragment = graphql`
+  fragment Messages_partnerOffers on PartnerOfferToCollector @relay(plural: true) {
+    artworkId
+    createdAt
+    priceWithDiscount {
+      display
+    }
+  }
+`
+
 export default createPaginationContainer(
   Messages,
   {
@@ -237,6 +285,7 @@ export default createPaginationContainer(
           item {
             __typename
             ... on Artwork {
+              internalID
               href
               ...ArtworkPreview_artwork
             }

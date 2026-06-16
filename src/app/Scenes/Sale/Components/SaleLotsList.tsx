@@ -139,10 +139,26 @@ const SaleLotsList: React.FC<SaleLotsListProps> = ({
 
   const connectionData = data?.artworksConnection
 
+  const hasActiveFilters = appliedFiltersState.some(
+    (filter) =>
+      filter.paramName !== FilterParamName.sort && filter.paramName !== FilterParamName.viewAs
+  )
+
   if (!connectionData?.edges?.length) {
+    if (hasActiveFilters) {
+      return (
+        <Box my="80px">
+          <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
+        </Box>
+      )
+    }
     return (
       <Box my="80px">
-        <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
+        <Flex flexDirection="column" alignItems="center" px={4}>
+          <Text textAlign="center" color="mono100" variant="sm">
+            No results found
+          </Text>
+        </Flex>
       </Box>
     )
   }

@@ -1,7 +1,9 @@
 import { AlertFillIcon, IconProps, MoneyFillIcon } from "@artsy/icons/native"
-import { Spacer, Flex, Text, LinkText, Color } from "@artsy/palette-mobile"
+import { Spacer, Flex, Color } from "@artsy/palette-mobile"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
+import { ConversationEventRow } from "app/Scenes/Inbox/Components/Conversations/ConversationEventRow"
 
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
@@ -87,24 +89,13 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
   return (
     <Flex>
       <TimeSince style={{ alignSelf: "center" }} time={event.createdAt} exact mb={1} />
-      <Flex px={2} justifyContent="center" flexDirection="row">
-        <Flex flexDirection="row">
-          <Icon mt="1px" fill={color} />
-          <Flex flexDirection="column" pl={1}>
-            <Text color={textColor || color} variant="xs">
-              {message}
-              {!!action.label && !!action.onPress && (
-                <>
-                  {". "}
-                  <LinkText variant="xs" onPress={action.onPress}>
-                    {action.label}.
-                  </LinkText>
-                </>
-              )}
-            </Text>
-          </Flex>
-        </Flex>
-      </Flex>
+      <ConversationEventRow
+        Icon={Icon}
+        iconFill={color}
+        message={message}
+        textColor={textColor || color}
+        action={action}
+      />
       <Spacer y={2} />
     </Flex>
   )
