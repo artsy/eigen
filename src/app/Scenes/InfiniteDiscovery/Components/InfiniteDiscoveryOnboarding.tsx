@@ -68,7 +68,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
         }, 1500)
       }
     }, delay)
-  }, [hasInteractedWithOnboarding, isOnboardingSession])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (isVisible) {
