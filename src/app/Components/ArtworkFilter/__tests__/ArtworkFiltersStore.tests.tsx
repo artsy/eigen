@@ -2109,7 +2109,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Lot Number Ascending",
           paramName: "sort",
-          paramValue: "position",
+          paramValue: "sale_position",
         },
         {
           displayText: "All",
@@ -2244,7 +2244,7 @@ describe("selectedOptionsUnion", () => {
         {
           displayText: "Lot Number Ascending",
           paramName: "sort",
-          paramValue: "position",
+          paramValue: "sale_position",
         },
         {
           displayText: "All",
