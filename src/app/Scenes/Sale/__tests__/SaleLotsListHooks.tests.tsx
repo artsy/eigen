@@ -62,7 +62,6 @@ describe("SaleLotsListContainer", () => {
           }}
         >
           <SaleLotsListContainer
-            unfilteredSaleArtworksConnection={{ counts: { total: 100 } } as any}
             saleID="sale-id"
             saleSlug="sale-slug"
             scrollToTop={mockScrollToTop}
@@ -105,7 +104,6 @@ describe("SaleLotsListContainer", () => {
           }}
         >
           <SaleLotsListContainer
-            unfilteredSaleArtworksConnection={{ counts: { total: 50 } } as any}
             saleID="sale-id"
             saleSlug="sale-slug"
             scrollToTop={mockScrollToTop}

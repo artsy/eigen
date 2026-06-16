@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { SaleLotsListViewer_viewer$key } from "__generated__/SaleLotsListViewer_viewer.graphql"
-import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
@@ -28,10 +27,6 @@ interface SaleLotsListProps {
   artworksRefetchRef?: MutableRefObject<() => void>
   artworksLoadMoreRef?: MutableRefObject<() => void>
   viewer: SaleLotsListViewer_viewer$key
-  unfilteredSaleArtworksConnection:
-    | SaleLotsList_unfilteredSaleArtworksConnection$data
-    | null
-    | undefined
 }
 
 export const SaleLotsListSortMode = ({
@@ -67,7 +62,6 @@ export const SaleLotsListSortMode = ({
 
 const SaleLotsList: React.FC<SaleLotsListProps> = ({
   viewer,
-  unfilteredSaleArtworksConnection,
   saleID,
   saleSlug,
   artworksRefetchRef,
@@ -141,12 +135,6 @@ const SaleLotsList: React.FC<SaleLotsListProps> = ({
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
     })
-  }
-
-  const totalCountForCheck = unfilteredSaleArtworksConnection?.counts?.total
-
-  if (totalCountForCheck === 0) {
-    return null
   }
 
   const connectionData = data?.artworksConnection
@@ -255,10 +243,6 @@ const saleLotsPaginationFragment = graphql`
 `
 
 export const SaleLotsListContainer: React.FC<{
-  unfilteredSaleArtworksConnection:
-    | SaleLotsList_unfilteredSaleArtworksConnection$data
-    | null
-    | undefined
   saleID: string
   saleSlug: string
   scrollToTop: () => void
@@ -273,7 +257,6 @@ export const SaleLotsListContainer: React.FC<{
   return (
     <SaleLotsList
       viewer={props.viewer}
-      unfilteredSaleArtworksConnection={props.unfilteredSaleArtworksConnection}
       saleID={props.saleID}
       saleSlug={props.saleSlug}
       scrollToTop={props.scrollToTop}
