@@ -172,7 +172,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                     >
                       <Text
                         variant="sm"
-                        lineHeight="16px"
+                        lineHeight={Platform.OS === "android" ? "18px" : "16px"}
                         color={selected(answer) ? "mono0" : "mono100"}
                       >
                         {answer}
