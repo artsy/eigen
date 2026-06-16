@@ -9,7 +9,7 @@ import {
   ViewAsValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_NEW_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { ORDERED_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -39,7 +39,7 @@ export const SaleLotsListSortMode = ({
   totalCount: number | null | undefined
 }) => {
   const getSortDescription = useCallback(() => {
-    const sortMode = ORDERED_NEW_SALE_ARTWORK_SORTS.find(
+    const sortMode = ORDERED_SALE_ARTWORK_SORTS.find(
       (sort) => sort.paramValue === filterParams?.sort
     )
     if (sortMode) {
@@ -112,14 +112,14 @@ const SaleLotsList: React.FC<SaleLotsListProps> = ({
   useArtworkFilters({
     refetch,
     aggregations: data?.artworksConnection?.aggregations,
-    componentPath: "Sale/NewSaleLotsList",
+    componentPath: "Sale/SaleLotsList",
     refetchVariables,
     onApply: () => scrollToTop(),
     refetchRef: artworksRefetchRef,
   })
 
   useEffect(() => {
-    setFilterTypeAction("newSaleArtwork")
+    setFilterTypeAction("saleArtwork")
   }, [setFilterTypeAction])
 
   useEffect(() => {

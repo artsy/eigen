@@ -11,7 +11,7 @@ import {
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { DEFAULT_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
@@ -458,7 +458,7 @@ export const SaleQueryRenderer: React.FC<{
             variables: {
               saleID,
               input: {
-                sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                sort: DEFAULT_SALE_ARTWORK_SORT.paramValue,
                 priceRange: "",
               },
             },
