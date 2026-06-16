@@ -259,6 +259,7 @@ export interface ViewOptions {
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
+  // Can be a function (evaluated at navigation time) to read runtime state like GlobalStore
   screenOptions?: NativeStackNavigationOptions | (() => NativeStackNavigationOptions)
   topTabsNavigatorOptions?: {
     topTabName: string
