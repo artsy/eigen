@@ -176,6 +176,11 @@ export const features = {
     description: "Enable experience-based onboarding",
     showInDevMenu: true,
   },
+  AREnableConversationPartnerOffers: {
+    readyForRelease: false,
+    description: "Show partner offers in convos",
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

@@ -1,19 +1,28 @@
-import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
+import { ConversationCTA_conversation$key } from "__generated__/ConversationCTA_conversation.graphql"
+import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
+import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
+import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
 import { extractNodes } from "app/utils/extractNodes"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
   show: boolean
-  conversation: ConversationCTA_conversation$data
+  conversation: ConversationCTA_conversation$key
+  me: usePartnerOffer_me$key
 }
 
-export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
+export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, me, show }) => {
+  const conversation = useFragment(conversationFragment, _conversation)
   const liveArtwork = conversation?.items?.[0]?.liveArtwork
+  const { hasActivePartnerOffer } = usePartnerOffer({
+    me,
+    artworkId: liveArtwork?.__typename === "Artwork" ? liveArtwork.internalID : null,
+  })
 
-  if (liveArtwork?.__typename !== "Artwork") {
+  if (!conversation || !me || liveArtwork?.__typename !== "Artwork") {
     return null
   }
 
@@ -21,18 +30,21 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   const isOfferableConversationalBuyNow = liveArtwork?.isOfferable
   const conversationalBuyNow = liveArtwork?.isAcquireable
 
-  // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
-  const conversationID = conversation.conversationID
-
   const activeOrder = extractNodes(conversation.activeOrders)[0]
 
-  if (!activeOrder && !!conversationID) {
+  if (!activeOrder && !!conversation.internalID) {
+    // When there's an active partner offer, the dedicated offer banner replaces
+    // the inquiry transaction buttons.
+    if (hasActivePartnerOffer) {
+      return <ConversationPartnerOfferCTA conversation={conversation} me={me} />
+    }
+
     if (isOfferableFromInquiry || isOfferableConversationalBuyNow || conversationalBuyNow) {
       return (
         <CTAPopUp show={show}>
           <OpenInquiryModalButtonFragmentContainer
             artwork={liveArtwork}
-            conversationID={conversationID}
+            conversationID={conversation.internalID}
           />
         </CTAPopUp>
       )
@@ -71,10 +83,14 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
   }
 
-  if (!!kind && !!conversationID) {
+  if (!!kind && !!conversation.internalID) {
     return (
       <CTAPopUp show={show}>
-        <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
+        <ReviewOfferButton
+          kind={kind}
+          activeOrder={activeOrder}
+          conversationID={conversation.internalID}
+        />
       </CTAPopUp>
     )
   }
@@ -82,52 +98,52 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   return null
 }
 
-export const ConversationCTAFragmentContainer = createFragmentContainer(ConversationCTA, {
-  conversation: graphql`
-    fragment ConversationCTA_conversation on Conversation {
-      conversationID: internalID
-      items {
-        item {
-          __typename
-          ... on Artwork {
-            artworkID: internalID
-          }
-        }
-        liveArtwork {
-          ... on Artwork {
-            isOfferableFromInquiry
-            isOfferable
-            isAcquireable
-            internalID
-            __typename
-            ...OpenInquiryModalButton_artwork
-          }
+const conversationFragment = graphql`
+  fragment ConversationCTA_conversation on Conversation {
+    ...ConversationPartnerOfferCTA_conversation
+
+    internalID
+    items {
+      item {
+        __typename
+        ... on Artwork {
+          artworkID: internalID
         }
       }
-      activeOrders: orderConnection(
-        first: 10
-        states: [APPROVED, FULFILLED, SUBMITTED, REFUNDED, PROCESSING_APPROVAL]
-      ) {
-        edges {
-          node {
-            internalID
-            mode
-            state
-            stateReason
-            stateExpiresAt
-            lastTransactionFailed
-            ... on CommerceOfferOrder {
-              lastOffer {
-                fromParticipant
-                createdAt
-                definesTotal
-                offerAmountChanged
-              }
-              offers(first: 5) {
-                edges {
-                  node {
-                    internalID
-                  }
+      liveArtwork {
+        ... on Artwork {
+          isOfferableFromInquiry
+          isOfferable
+          isAcquireable
+          internalID
+          __typename
+          ...OpenInquiryModalButton_artwork
+        }
+      }
+    }
+    activeOrders: orderConnection(
+      first: 10
+      states: [APPROVED, FULFILLED, SUBMITTED, REFUNDED, PROCESSING_APPROVAL]
+    ) {
+      edges {
+        node {
+          internalID
+          mode
+          state
+          stateReason
+          stateExpiresAt
+          lastTransactionFailed
+          ... on CommerceOfferOrder {
+            lastOffer {
+              fromParticipant
+              createdAt
+              definesTotal
+              offerAmountChanged
+            }
+            offers(first: 5) {
+              edges {
+                node {
+                  internalID
                 }
               }
             }
@@ -135,5 +151,5 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
         }
       }
     }
-  `,
-})
+  }
+`

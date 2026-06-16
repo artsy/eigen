@@ -1,13 +1,12 @@
 import { Text } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
-import { QueryRenderer, graphql } from "react-relay"
-import { act } from "react-test-renderer"
-import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -23,11 +22,8 @@ jest.mock("@react-native-community/netinfo", () => {
   }
 })
 
-let env: ReturnType<typeof createMockEnvironment>
-
 beforeEach(() => {
   jest.useFakeTimers({ legacyFakeTimers: true })
-  env = createMockEnvironment()
 })
 
 afterEach(() => {
@@ -36,48 +32,34 @@ afterEach(() => {
 
 const onRefresh = jest.fn()
 
-const TestRenderer = () => (
-  <QueryRenderer<MessagesTestsQuery>
-    environment={env}
-    query={graphql`
-      query MessagesTestsQuery($conversationID: String!) @relay_test_operation {
-        me {
-          conversation(id: $conversationID) {
-            ...Messages_conversation
-          }
+const { renderWithRelay } = setupTestWrapper<MessagesTestsQuery>({
+  Component: ({ me }) => (
+    <Messages conversation={me!.conversation!} me={me!} onRefresh={onRefresh} />
+  ),
+  query: graphql`
+    query MessagesTestsQuery($conversationID: String!) @relay_test_operation {
+      me {
+        ...usePartnerOffer_me
+        conversation(id: $conversationID) {
+          ...Messages_conversation
         }
       }
-    `}
-    variables={{ conversationID: "conversation-id" }}
-    render={({ props, error }) => {
-      if (Boolean(props?.me)) {
-        return <Messages conversation={props!.me!.conversation!} onRefresh={onRefresh} />
-      } else if (Boolean(error)) {
-        console.log(error)
-      }
-    }}
-  />
-)
+    }
+  `,
+  variables: { conversationID: "conversation-id" },
+})
 
-const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
-  return tree
-}
+const getWrapper = (mockResolvers = {}) => renderWithRelay(mockResolvers)
 
 it("renders without throwing an error", () => {
   getWrapper()
 })
 
 it("calls onRefresh prop when the messages are refreshed", () => {
-  const wrapper = getWrapper()
+  getWrapper()
 
   expect(onRefresh).not.toHaveBeenCalled()
-  wrapper.root.findByType(RefreshControl).props.onRefresh()
+  screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
   expect(onRefresh).toHaveBeenCalled()
 })
 
@@ -116,7 +98,7 @@ const withConversationItems = (
 
 describe("messages with order updates", () => {
   it("shows a submitted offer", () => {
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOfferSubmittedEvent",
@@ -128,11 +110,11 @@ describe("messages with order updates", () => {
       ],
     })
 
-    expect(extractText(tree.root)).toMatch("You sent an offer for")
+    expect(extractText(screen.UNSAFE_root)).toMatch("You sent an offer for")
   })
 
   it("shows a toast message", () => {
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOfferSubmittedEvent",
@@ -144,11 +126,11 @@ describe("messages with order updates", () => {
       ],
     })
 
-    expect(extractText(tree.root)).toMatch(
+    expect(extractText(screen.UNSAFE_root)).toMatch(
       "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
 
-    const toast = tree.root.findAllByType(ToastComponent)[0]
+    const toast = screen.UNSAFE_getAllByType(ToastComponent)[0]
     expect(toast).toBeDefined()
   })
 
@@ -158,7 +140,7 @@ describe("messages with order updates", () => {
     const day2Time1 = "2020-03-19T01:58:37.699Z"
     const day2Time2 = "2020-03-19T01:59:37.699Z"
 
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       messages: [
         { createdAt: day1Time1, body: "Day 1 message", attachments: [] },
         { createdAt: day2Time1, body: "Day 2 message", attachments: [] },
@@ -189,8 +171,8 @@ describe("messages with order updates", () => {
       ],
     })
     // get all elements and remove timestamps
-    const messagesAndUpdates = tree.root
-      .findAllByType(Text)
+    const messagesAndUpdates = screen
+      .UNSAFE_getAllByType(Text)
       .filter((element) => element.props.color !== "mono60")
       .map((element) => extractText(element))
 
@@ -205,7 +187,7 @@ describe("messages with order updates", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
 
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       events: [
         // this event should be omitted from the output because it is irrelevant
         {
@@ -221,8 +203,8 @@ describe("messages with order updates", () => {
       ],
     })
     // get all elements and remove timestamps
-    const messagesAndUpdates = tree.root
-      .findAllByType(Text)
+    const messagesAndUpdates = screen
+      .UNSAFE_getAllByType(Text)
       .filter((element) => element.props.color !== "mono30")
       .map((element) => extractText(element))
 
@@ -232,7 +214,7 @@ describe("messages with order updates", () => {
   it("does not remove 'Offer accepted' events when payment succeeds", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOrderStateChangedEvent",
@@ -250,8 +232,8 @@ describe("messages with order updates", () => {
       ],
     })
     // get all elements and remove timestamps
-    const messagesAndUpdates = tree.root
-      .findAllByType(Text)
+    const messagesAndUpdates = screen
+      .UNSAFE_getAllByType(Text)
       .filter((element) => element.props.color !== "mono30")
       .map((element) => extractText(element))
     expect(messagesAndUpdates).toContain("Offer Accepted")
@@ -264,7 +246,7 @@ describe("messages with order updates", () => {
     const lastMessageTime = "2020-03-19T01:58:37.699Z"
     const afterLastMessageTime = "2020-03-19T01:59:37.699Z"
 
-    const tree = withConversationItems(getWrapper, {
+    withConversationItems(getWrapper, {
       messages: [{ createdAt: lastMessageTime, body: "Last Message", attachments: [] }],
       events: [
         {
@@ -296,8 +278,8 @@ describe("messages with order updates", () => {
         },
       ],
     })
-    expect(extractText(tree.root)).toContain("You sent an offer for 10")
-    expect(extractText(tree.root)).toContain("You received a counteroffer for 11")
-    expect(extractText(tree.root)).toContain("You sent a counteroffer for 12")
+    expect(extractText(screen.UNSAFE_root)).toContain("You sent an offer for 10")
+    expect(extractText(screen.UNSAFE_root)).toContain("You received a counteroffer for 11")
+    expect(extractText(screen.UNSAFE_root)).toContain("You sent a counteroffer for 12")
   })
 })
