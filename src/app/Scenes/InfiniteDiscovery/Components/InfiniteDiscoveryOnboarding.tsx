@@ -46,7 +46,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
 
-  const [isVisible, setIsVisible] = useState(isOnboardingSession)
+  const [isVisible, setIsVisible] = useState(isNewUserOnboardingSession)
   const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)
 
   useEffect(() => {

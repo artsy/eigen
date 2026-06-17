@@ -1293,11 +1293,11 @@ describe("InfiniteDiscovery screenOptions", () => {
   const screenOptions = infiniteDiscoveryRoute.options?.screenOptions as () => object
 
   beforeEach(() => {
-    GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
   })
 
   it("uses fade animation in an onboarding session", () => {
-    GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     expect(screenOptions()).toMatchObject({ animation: "fade" })
   })
 

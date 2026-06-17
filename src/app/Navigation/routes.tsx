@@ -1010,7 +1010,7 @@ export const artsyDotNetRoutes = defineRoutes([
       hidesBottomTabs: true,
       screenOptions: () => ({
         animation: globalStoreInstance().getState().infiniteDiscovery.sessionState
-          .isOnboardingSession
+          .isNewUserOnboardingSession
           ? "fade"
           : "slide_from_bottom",
         gestureEnabled: false,
