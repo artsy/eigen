@@ -13,8 +13,8 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
     <Flex
       backgroundColor="blue100"
       borderRadius={30}
-      // 1px vertical asymmetry compensates for Unica77's font metric offset
-      style={{ paddingHorizontal: 15, paddingTop: 5, paddingBottom: 4 }}
+      // paddingTop and paddingBottom are offset to center the text
+      style={{ paddingHorizontal: 15, paddingTop: 5, paddingBottom: 8 }}
       alignItems="center"
       justifyContent="center"
       alignSelf="flex-start"
