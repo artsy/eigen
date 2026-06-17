@@ -26,7 +26,6 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
   )
 }
 
-// TODO: Replace NewBuyNowArtworksRail with BuyNowArtworksRail when AREnableArtworksConnectionForAuction is released
 export const BuyNowArtworksRailContainer = createFragmentContainer(BuyNowArtworksRail, {
   sale: graphql`
     fragment BuyNowArtworksRail_sale on Sale
