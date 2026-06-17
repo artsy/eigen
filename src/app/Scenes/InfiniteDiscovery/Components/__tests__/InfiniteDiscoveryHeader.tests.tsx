@@ -111,7 +111,7 @@ describe("InfiniteDiscoveryHeader", () => {
     )
   })
 
-  describe("in onboarding mode", () => {
+  describe("in new user onboarding mode", () => {
     beforeEach(() => {
       GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     })
@@ -147,7 +147,7 @@ describe("InfiniteDiscoveryHeader", () => {
     it("calls goBack when Skip is pressed", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
 
       expect(mockGoBack).toHaveBeenCalled()
     })

@@ -24,7 +24,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const isNewUserOnboardingSession = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
-  const onboardingSavedArtworkCount = GlobalStore.useAppState(
+  const newUserOnboardingSavedArtworkCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
 
@@ -78,11 +78,13 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
       <Flex mb={1}>
         <Screen.Header
           title="Discover Daily"
-          leftElements={<OnboardingProgressBadge current={onboardingSavedArtworkCount} total={5} />}
+          leftElements={
+            <OnboardingProgressBadge current={newUserOnboardingSavedArtworkCount} total={5} />
+          }
           rightElements={
             <Touchable
               accessibilityRole="button"
-              accessibilityLabel="Skip onboarding"
+              accessibilityLabel="Skip new user onboarding"
               onPress={handleSkipPressed}
               hitSlop={DEFAULT_HIT_SLOP}
               haptic
