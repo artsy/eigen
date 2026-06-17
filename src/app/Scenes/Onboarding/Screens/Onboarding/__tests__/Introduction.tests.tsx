@@ -69,7 +69,7 @@ describe("Introduction", () => {
       expect(screen.getByText("Welcome next")).toBeOnTheScreen()
     })
 
-    it("sets onboardingDestination and completes onboarding when done", () => {
+    it("navigates to InfiniteDiscovery when done", () => {
       renderWithWrappers(<Introduction />)
 
       fireEvent.press(screen.getByText("Select beginner"))
@@ -77,9 +77,7 @@ describe("Introduction", () => {
       fireEvent.press(screen.getByText("Montage next"))
       fireEvent.press(screen.getByText("Welcome next"))
 
-      const state = __globalStoreTestUtils__?.getCurrentState()
-      expect(state?.onboarding.onboardingDestination).toBe("infinite-discovery")
-      expect(state?.onboarding.onboardingState).toBe("complete")
+      expect(mockNavigate).toHaveBeenCalledWith("InfiniteDiscovery")
     })
 
     it("completes onboarding when skipping to home from BrowsePromptStep", () => {
