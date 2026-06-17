@@ -124,11 +124,11 @@ describe("InfiniteDiscoveryHeader", () => {
     })
 
     it("reflects the current saved artworks count in the badge", () => {
-      GlobalStore.actions.infiniteDiscovery.addOnboardingSavedArtworkImage({
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-1",
         url: "https://example.com/1.jpg",
       })
-      GlobalStore.actions.infiniteDiscovery.addOnboardingSavedArtworkImage({
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-2",
         url: "https://example.com/2.jpg",
       })

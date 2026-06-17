@@ -25,7 +25,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
     (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
   const onboardingSavedArtworkCount = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.onboardingSavedArtworkImages.length
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
 
   const handleExitPressed = () => {

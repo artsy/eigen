@@ -1,6 +1,6 @@
 import { Action, action } from "easy-peasy"
 
-export interface OnboardingSavedArtworkImage {
+export interface NewUserOnboardingSavedArtwork {
   internalID: string
   url: string
   blurhash?: string | null
@@ -13,7 +13,7 @@ export interface InfiniteDiscoveryModel {
   sessionState: {
     moreInfoSheetVisible: boolean
     isNewUserOnboardingSession: boolean
-    onboardingSavedArtworkImages: OnboardingSavedArtworkImage[]
+    newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -22,8 +22,8 @@ export interface InfiniteDiscoveryModel {
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
   setIsNewUserOnboardingSession: Action<this, boolean>
-  addOnboardingSavedArtworkImage: Action<this, OnboardingSavedArtworkImage>
-  removeOnboardingSavedArtworkImage: Action<this, string>
+  addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
+  removeNewUserOnboardingSavedArtwork: Action<this, string>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
@@ -33,7 +33,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   sessionState: {
     moreInfoSheetVisible: false,
     isNewUserOnboardingSession: false,
-    onboardingSavedArtworkImages: [],
+    newUserOnboardingSavedArtworks: [],
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -43,7 +43,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   resetSavedArtworksCount: action((state) => {
     state.savedArtworksCount = 0
-    state.sessionState.onboardingSavedArtworkImages = []
+    state.sessionState.newUserOnboardingSavedArtworks = []
   }),
   setHasInteractedWithOnboarding: action((state, payload) => {
     state.hasInteractedWithOnboarding = payload
@@ -57,17 +57,17 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   setIsNewUserOnboardingSession: action((state, payload) => {
     state.sessionState.isNewUserOnboardingSession = payload
   }),
-  addOnboardingSavedArtworkImage: action((state, payload) => {
-    const { onboardingSavedArtworkImages } = state.sessionState
-    const alreadyAdded = onboardingSavedArtworkImages.some(
+  addNewUserOnboardingSavedArtwork: action((state, payload) => {
+    const { newUserOnboardingSavedArtworks } = state.sessionState
+    const alreadyAdded = newUserOnboardingSavedArtworks.some(
       (a) => a.internalID === payload.internalID
     )
-    if (!alreadyAdded && onboardingSavedArtworkImages.length < 5) {
-      onboardingSavedArtworkImages.push(payload)
+    if (!alreadyAdded && newUserOnboardingSavedArtworks.length < 5) {
+      newUserOnboardingSavedArtworks.push(payload)
     }
   }),
-  removeOnboardingSavedArtworkImage: action((state, internalID) => {
-    state.sessionState.onboardingSavedArtworkImages =
-      state.sessionState.onboardingSavedArtworkImages.filter((a) => a.internalID !== internalID)
+  removeNewUserOnboardingSavedArtwork: action((state, internalID) => {
+    state.sessionState.newUserOnboardingSavedArtworks =
+      state.sessionState.newUserOnboardingSavedArtworks.filter((a) => a.internalID !== internalID)
   }),
 })
