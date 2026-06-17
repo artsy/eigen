@@ -24,7 +24,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -86,6 +86,15 @@ const AppTabs: React.FC = () => {
     [selectedTab]
   )
 
+  const [hidesBottomTabs, setHidesBottomTabs] = useState(false)
+
+  useEffect(() => {
+    internal_navigationRef.current?.addListener("state", () => {
+      const routeName = internal_navigationRef.current?.getCurrentRoute()?.name
+      setHidesBottomTabs(modules[routeName as AppModule]?.options?.hidesBottomTabs ?? false)
+    })
+  }, [])
+
   const stagingTabBarStyle = {
     borderColor: color("devpurple"),
     borderTopWidth: 1,
@@ -94,11 +103,6 @@ const AppTabs: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
-        const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
-
-        const hidesBottomTabs =
-          currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
-
         return {
           animation: "none",
           headerShown: false,
