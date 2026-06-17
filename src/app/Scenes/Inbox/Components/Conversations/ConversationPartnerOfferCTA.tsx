@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, PartnerOfferInConversationViewed } from "@artsy/cohesion"
 import { ChevronRightIcon, StopwatchIcon } from "@artsy/icons/native"
 import { Color, Flex, Text } from "@artsy/palette-mobile"
 import { ConversationPartnerOfferCTA_conversation$key } from "__generated__/ConversationPartnerOfferCTA_conversation.graphql"
@@ -9,6 +10,7 @@ import { Time, getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
 import { useEffect, useRef, useState } from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ConversationPartnerOfferCTAProps {
   conversation: ConversationPartnerOfferCTA_conversation$key
@@ -24,6 +26,7 @@ export const ConversationPartnerOfferCTA: React.FC<ConversationPartnerOfferCTAPr
   conversation: _conversation,
   me,
 }) => {
+  const { trackEvent } = useTracking()
   const conversation = useFragment(fragment, _conversation)
   const artwork = conversation.items?.[0]?.item
   const artworkHref = artwork?.__typename === "Artwork" ? artwork.href : null
@@ -35,6 +38,12 @@ export const ConversationPartnerOfferCTA: React.FC<ConversationPartnerOfferCTAPr
   })
   const partnerOffers = useFragment(partnerOfferFragment, _partnerOffers)
   const partnerOffer = partnerOffers?.find((p) => p.artworkId === artworkId)
+
+  useEffect(() => {
+    if (conversation?.internalID) {
+      trackEvent(tracks.tappedArtworkGroupThumbnail(conversation.internalID))
+    }
+  }, [conversation?.internalID, trackEvent])
 
   if (!artworkHref || !partnerOffer || !hasActivePartnerOffer) {
     return null
@@ -119,6 +128,7 @@ const PartnerOfferExpiresIn: React.FC<{ endAt: string }> = ({ endAt }) => {
 
 const fragment = graphql`
   fragment ConversationPartnerOfferCTA_conversation on Conversation {
+    internalID
     items {
       item {
         __typename
@@ -142,3 +152,11 @@ const partnerOfferFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedArtworkGroupThumbnail: (conversationId: string): PartnerOfferInConversationViewed => ({
+    action: ActionType.partnerOfferInConversationViewed,
+    context_owner_id: conversationId,
+    context_owner_type: OwnerType.conversation,
+  }),
+}

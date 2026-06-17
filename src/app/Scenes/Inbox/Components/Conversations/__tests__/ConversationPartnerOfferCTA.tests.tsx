@@ -3,6 +3,7 @@ import { ConversationPartnerOfferCTA_Test_Query } from "__generated__/Conversati
 import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -29,6 +30,7 @@ const offerResolvers = (
   artworkOverrides: Record<string, unknown> = {}
 ) => ({
   Conversation: () => ({
+    internalID: "conversation-id",
     items: [
       {
         item: {
@@ -63,10 +65,16 @@ describe("ConversationPartnerOfferCTA", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
   })
 
-  it("renders the offer banner and navigates to the artwork with the partner offer id", () => {
+  it("renders the offer banner, tracks it, and navigates to the artwork with the partner offer id", () => {
     renderWithRelay(offerResolvers())
 
     expect(screen.getByText("Offer received for $450")).toBeTruthy()
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "partnerOfferInConversationViewed",
+      context_owner_id: "conversation-id",
+      context_owner_type: "conversation",
+    })
 
     fireEvent.press(screen.getByTestId("partnerOfferActionLink"))
     expect(navigate).toHaveBeenCalledWith("/artwork/some-artwork?partner_offer_id=partner-offer-id")
