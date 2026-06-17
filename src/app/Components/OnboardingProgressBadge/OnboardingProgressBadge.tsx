@@ -1,4 +1,4 @@
-import { Flex, Text, useTextStyleForPalette } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 
 interface OnboardingProgressBadgeProps {
   current: number
@@ -9,8 +9,6 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   current,
   total,
 }) => {
-  const textStyle = useTextStyleForPalette("sm-display")
-
   return (
     <Flex
       backgroundColor="blue100"
@@ -22,7 +20,7 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
       alignSelf="flex-start"
     >
       {/* tabular-nums keeps all digits equal width so the pill doesn't resize as the count changes */}
-      <Text color="mono0" style={{ ...textStyle, fontVariant: ["tabular-nums"] }}>
+      <Text color="mono0" variant="sm-display" style={{ fontVariant: ["tabular-nums"] }}>
         {Math.min(current, total)}/{total}
       </Text>
     </Flex>
