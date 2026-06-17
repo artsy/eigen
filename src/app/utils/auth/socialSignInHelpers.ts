@@ -82,7 +82,9 @@ export const useSocialLogin = () => {
 
     if (["google", "facebook"].includes(providerToBeLinked)) {
       if (!oauthToken) {
-        console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
+        showErrorAlert("no account", {
+          message: `Your ${titleizedProvider} account is linked to an existing Artsy account. Please sign in with your existing account and connect ${titleizedProvider} from your profile settings.`,
+        })
         return
       }
       tokenForProviderToBeLinked = oauthToken
