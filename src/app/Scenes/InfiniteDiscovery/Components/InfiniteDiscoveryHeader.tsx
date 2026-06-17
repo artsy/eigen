@@ -34,7 +34,8 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipPressed = () => {
-    goBack()
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
 
   const handleSharePressed = () => {

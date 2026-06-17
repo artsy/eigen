@@ -257,17 +257,8 @@ export const HomeView: React.FC = memo(() => {
 
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
-  const onboardingDestination = GlobalStore.useAppState(
-    (state) => state.onboarding.onboardingDestination
-  )
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-  const isNavigatingToInfiniteDiscovery =
-    onboardingDestination === "infinite-discovery" || isNewUserOnboardingSession
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -287,14 +278,8 @@ const HomeViewScreenComponent: React.FC = () => {
       requestAnimationFrame(() => {
         navigate("/art-quiz")
       })
-    } else if (onboardingDestination === "infinite-discovery") {
-      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
-      GlobalStore.actions.onboarding.setOnboardingDestination(null)
-      requestAnimationFrame(() => {
-        navigate("/infinite-discovery")
-      })
     }
-  }, [artQuizState, onboardingDestination, isNavigationReady])
+  }, [artQuizState, isNavigationReady])
 
   // We want to avoid rendering the home view when the user comes back from a deep link
   // Because it triggers a lot of queries that affect the user's experience and can be avoided
@@ -303,10 +288,6 @@ const HomeViewScreenComponent: React.FC = () => {
   }
 
   if (artQuizState === "incomplete") {
-    return null
-  }
-
-  if (isNavigatingToInfiniteDiscovery) {
     return null
   }
 

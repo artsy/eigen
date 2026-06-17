@@ -1,6 +1,4 @@
-import { artsyDotNetRoutes } from "app/Navigation/routes"
 import { addRoute, addWebViewRoute } from "app/Navigation/utils/addRoute"
-import { GlobalStore } from "app/store/GlobalStore"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { View } from "react-native"
@@ -1285,23 +1283,5 @@ describe("addRoute", () => {
         Component: View,
       }).match(["home", "mounir", "thing", "blah", "other_thing", "blah2"])
     ).toEqual({ id: "mounir", slug: "blah", slug2: "blah2" })
-  })
-})
-
-describe("InfiniteDiscovery screenOptions", () => {
-  const infiniteDiscoveryRoute = artsyDotNetRoutes.find((r) => r.name === "InfiniteDiscovery")!
-  const screenOptions = infiniteDiscoveryRoute.options?.screenOptions as () => object
-
-  beforeEach(() => {
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
-  })
-
-  it("uses fade animation in an onboarding session", () => {
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
-    expect(screenOptions()).toMatchObject({ animation: "fade" })
-  })
-
-  it("uses slide_from_bottom animation outside of an onboarding session", () => {
-    expect(screenOptions()).toMatchObject({ animation: "slide_from_bottom" })
   })
 })

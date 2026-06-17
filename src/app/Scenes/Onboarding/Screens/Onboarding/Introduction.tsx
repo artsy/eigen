@@ -23,8 +23,8 @@ export const Introduction: React.FC = () => {
   const handleDone = useCallback(
     (experience: Experience) => {
       if (experience === "beginner") {
-        GlobalStore.actions.onboarding.setOnboardingDestination("infinite-discovery")
-        GlobalStore.actions.onboarding.setOnboardingState("complete")
+        GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+        navigate("InfiniteDiscovery")
       } else {
         navigate("FollowArtists")
       }
