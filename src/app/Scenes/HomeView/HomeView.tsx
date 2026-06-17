@@ -260,14 +260,14 @@ const HomeViewScreenComponent: React.FC = () => {
   const onboardingDestination = GlobalStore.useAppState(
     (state) => state.onboarding.onboardingDestination
   )
-  const isOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  const isNewUserOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const isNavigatingToInfiniteDiscovery =
-    onboardingDestination === "infinite-discovery" || isOnboardingSession
+    onboardingDestination === "infinite-discovery" || isNewUserOnboardingSession
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -288,7 +288,7 @@ const HomeViewScreenComponent: React.FC = () => {
         navigate("/art-quiz")
       })
     } else if (onboardingDestination === "infinite-discovery") {
-      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
       GlobalStore.actions.onboarding.setOnboardingDestination(null)
       requestAnimationFrame(() => {
         navigate("/infinite-discovery")

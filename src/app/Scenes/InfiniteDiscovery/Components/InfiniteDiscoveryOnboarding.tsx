@@ -45,8 +45,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
-  const isOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  const isNewUserOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
 
   useEffect(() => {
@@ -57,9 +57,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }
   }, [isVisible])
   useEffect(() => {
-    const delay = isOnboardingSession ? 0 : 1000
+    const delay = isNewUserOnboardingSession ? 0 : 1000
     setTimeout(() => {
-      if (!hasInteractedWithOnboarding) {
+      if (isNewUserOnboardingSession || !hasInteractedWithOnboarding) {
         setIsVisible(true)
         // Make sure the user can tap to dismiss the onboarding only after a delay
         // This is required to make sure they can see the onboarding content
@@ -68,7 +68,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
         }, 1500)
       }
     }, delay)
-  }, [hasInteractedWithOnboarding, isOnboardingSession])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (isVisible) {
@@ -191,7 +192,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
                   <Spacer y={1} />
 
-                  {isOnboardingSession ? (
+                  {isNewUserOnboardingSession ? (
                     <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
                       Save{" "}
                       <Text variant="lg-display" fontWeight="500">
@@ -218,7 +219,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                   <MotiView animate={{ opacity: enableTapToDismiss ? 1 : 0 }}>
                     <Flex alignItems="flex-end">
                       <LinkText onPress={() => setIsVisible(false)}>
-                        {isOnboardingSession ? "Tap to start swiping" : "Tap to get started"}
+                        {isNewUserOnboardingSession ? "Tap to start swiping" : "Tap to get started"}
                       </LinkText>
                     </Flex>
                   </MotiView>

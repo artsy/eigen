@@ -40,10 +40,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
+  const isNewUserOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
+  )
 
   useEffect(() => {
     return () => {
-      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
     }
   }, [])
 
@@ -158,8 +161,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
-    // If this is the first time the user swipes, dismiss the onboarding.
-    if (!hasInteractedWithOnboarding) {
+    // If this is the first time the user swipes (outside of new user onboarding), dismiss the onboarding (tutorial).
+    if (!hasInteractedWithOnboarding && !isNewUserOnboardingSession) {
       GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
     }
 

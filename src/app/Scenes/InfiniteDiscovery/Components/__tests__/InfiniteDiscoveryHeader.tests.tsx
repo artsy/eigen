@@ -9,8 +9,8 @@ const mockGoBack = jest.fn()
 const mockNavigate = jest.fn()
 
 jest.mock("app/system/navigation/navigate", () => ({
-  goBack: mockGoBack,
-  navigate: mockNavigate,
+  goBack: (...args: any[]) => mockGoBack(...args),
+  navigate: (...args: any[]) => mockNavigate(...args),
 }))
 
 jest.mock("react-native-share", () => ({
@@ -77,6 +77,7 @@ describe("InfiniteDiscoveryHeader", () => {
     jest.clearAllMocks()
     ;(mockAddListener as any).beforeRemoveCallback = undefined
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: false })
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
@@ -108,6 +109,56 @@ describe("InfiniteDiscoveryHeader", () => {
         description: expect.anything(),
       })
     )
+  })
+
+  describe("in new user onboarding mode", () => {
+    beforeEach(() => {
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+    })
+
+    it("shows the progress badge instead of the exit chevron", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      expect(screen.getByText("0/5")).toBeOnTheScreen()
+      expect(screen.queryByTestId("close-icon")).not.toBeOnTheScreen()
+    })
+
+    it("reflects the current saved artworks count in the badge", () => {
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-1",
+        url: "https://example.com/1.jpg",
+      })
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-2",
+        url: "https://example.com/2.jpg",
+      })
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      expect(screen.getByText("2/5")).toBeOnTheScreen()
+    })
+
+    it("shows a Skip button instead of the share/more button", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+
+      expect(screen.getByText("Skip")).toBeOnTheScreen()
+      expect(screen.queryByTestId("top-right-icon")).not.toBeOnTheScreen()
+    })
+
+    it("calls goBack when Skip is pressed", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+
+      expect(mockGoBack).toHaveBeenCalled()
+    })
+
+    it("suppresses the save summary toast when navigating away", () => {
+      GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
+      renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+      ;(mockAddListener as any).beforeRemoveCallback()
+
+      expect(mockUseToast.show).not.toHaveBeenCalled()
+    })
   })
 
   describe("when negative signals feature flag is enabled", () => {

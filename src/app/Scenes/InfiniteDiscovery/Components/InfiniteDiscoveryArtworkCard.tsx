@@ -48,8 +48,12 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
-    const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
-      GlobalStore.actions.infiniteDiscovery
+    const {
+      incrementSavedArtworksCount,
+      decrementSavedArtworksCount,
+      addNewUserOnboardingSavedArtwork,
+      removeNewUserOnboardingSavedArtwork,
+    } = GlobalStore.actions.infiniteDiscovery
 
     const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
@@ -59,8 +63,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     // State to track the current image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
+    const isNewUserOnboardingSession = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
+    )
+
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
+      suppressToasts: isNewUserOnboardingSession,
       onCompleted: (isArtworkSaved) => {
         if (!!artwork) {
           track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
@@ -76,9 +85,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         if (isSaved) {
           // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
+          if (isNewUserOnboardingSession && artwork) {
+            addNewUserOnboardingSavedArtwork({
+              internalID: artwork.internalID,
+              url: artwork.images[0]?.url ?? "",
+              blurhash: artwork.images[0]?.blurhash,
+            })
+          }
         } else {
           // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
           decrementSavedArtworksCount()
+          if (isNewUserOnboardingSession && artwork) {
+            removeNewUserOnboardingSavedArtwork(artwork.internalID)
+          }
         }
       },
     })
@@ -293,9 +312,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               if (isSaved) {
                 // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
                 decrementSavedArtworksCount()
+                if (isNewUserOnboardingSession) {
+                  removeNewUserOnboardingSavedArtwork(artwork.internalID)
+                }
               } else {
-                // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
+                // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
                 incrementSavedArtworksCount()
+                if (isNewUserOnboardingSession) {
+                  addNewUserOnboardingSavedArtwork({
+                    internalID: artwork.internalID,
+                    url: artwork.images[0]?.url ?? "",
+                    blurhash: artwork.images[0]?.blurhash,
+                  })
+                }
               }
 
               saveArtworkToLists()
