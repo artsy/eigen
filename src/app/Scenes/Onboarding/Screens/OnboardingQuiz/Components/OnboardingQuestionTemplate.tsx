@@ -112,7 +112,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   }
 
   // This is the hook that is used to override the back button behavior on Android
-  // if we don't call this hook, the back button will crash the app
+  // if we don't call this hook, the back button will crash the app!
   useBackHandler(androidHardwareBackButtonHandler)
 
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
@@ -172,7 +172,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                     >
                       <Text
                         variant="sm"
-                        lineHeight="16px"
+                        lineHeight={Platform.OS === "android" ? "18px" : "16px"}
                         color={selected(answer) ? "mono0" : "mono100"}
                       >
                         {answer}
