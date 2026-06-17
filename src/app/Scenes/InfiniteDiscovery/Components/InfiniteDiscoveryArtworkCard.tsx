@@ -63,13 +63,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     // State to track the current image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-    const isOnboardingSession = GlobalStore.useAppState(
-      (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+    const isNewUserOnboardingSession = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
     )
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
-      suppressToasts: isOnboardingSession,
+      suppressToasts: isNewUserOnboardingSession,
       onCompleted: (isArtworkSaved) => {
         if (!!artwork) {
           track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
@@ -85,7 +85,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         if (isSaved) {
           // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
-          if (isOnboardingSession && artwork) {
+          if (isNewUserOnboardingSession && artwork) {
             addOnboardingSavedArtworkImage({
               internalID: artwork.internalID,
               url: artwork.images[0]?.url ?? "",
@@ -95,7 +95,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         } else {
           // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
           decrementSavedArtworksCount()
-          if (isOnboardingSession && artwork) {
+          if (isNewUserOnboardingSession && artwork) {
             removeOnboardingSavedArtworkImage(artwork.internalID)
           }
         }
@@ -312,13 +312,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               if (isSaved) {
                 // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
                 decrementSavedArtworksCount()
-                if (isOnboardingSession) {
+                if (isNewUserOnboardingSession) {
                   removeOnboardingSavedArtworkImage(artwork.internalID)
                 }
               } else {
                 // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
                 incrementSavedArtworksCount()
-                if (isOnboardingSession) {
+                if (isNewUserOnboardingSession) {
                   addOnboardingSavedArtworkImage({
                     internalID: artwork.internalID,
                     url: artwork.images[0]?.url ?? "",

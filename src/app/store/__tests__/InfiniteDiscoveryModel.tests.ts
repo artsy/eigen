@@ -3,7 +3,7 @@ import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 describe("InfiniteDiscoveryModel", () => {
   beforeEach(() => {
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
-    GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
   })
 
   const state = () => __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery

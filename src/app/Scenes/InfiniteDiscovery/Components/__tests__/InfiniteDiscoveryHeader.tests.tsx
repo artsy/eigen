@@ -77,7 +77,7 @@ describe("InfiniteDiscoveryHeader", () => {
     jest.clearAllMocks()
     ;(mockAddListener as any).beforeRemoveCallback = undefined
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
-    GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(false)
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: false })
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
@@ -113,7 +113,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
   describe("in onboarding mode", () => {
     beforeEach(() => {
-      GlobalStore.actions.infiniteDiscovery.setIsOnboardingSession(true)
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     })
 
     it("shows the progress badge instead of the exit chevron", () => {

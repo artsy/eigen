@@ -21,8 +21,8 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
-  const isOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  const isNewUserOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
   const onboardingSavedArtworkCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.onboardingSavedArtworkImages.length
@@ -73,7 +73,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
     }
   }
 
-  if (isOnboardingSession) {
+  if (isNewUserOnboardingSession) {
     return (
       <Flex mb={1}>
         <Screen.Header

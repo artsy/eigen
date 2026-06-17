@@ -12,7 +12,7 @@ export interface InfiniteDiscoveryModel {
   savedArtworksCount: number
   sessionState: {
     moreInfoSheetVisible: boolean
-    isOnboardingSession: boolean
+    isNewUserOnboardingSession: boolean
     onboardingSavedArtworkImages: OnboardingSavedArtworkImage[]
   }
   incrementSavedArtworksCount: Action<this>
@@ -21,7 +21,7 @@ export interface InfiniteDiscoveryModel {
   setHasInteractedWithOnboarding: Action<this, boolean>
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
-  setIsOnboardingSession: Action<this, boolean>
+  setIsNewUserOnboardingSession: Action<this, boolean>
   addOnboardingSavedArtworkImage: Action<this, OnboardingSavedArtworkImage>
   removeOnboardingSavedArtworkImage: Action<this, string>
 }
@@ -32,7 +32,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   savedArtworksCount: 0,
   sessionState: {
     moreInfoSheetVisible: false,
-    isOnboardingSession: false,
+    isNewUserOnboardingSession: false,
     onboardingSavedArtworkImages: [],
   },
   incrementSavedArtworksCount: action((state) => {
@@ -54,8 +54,8 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   setMoreInfoSheetVisible: action((state, payload) => {
     state.sessionState.moreInfoSheetVisible = payload
   }),
-  setIsOnboardingSession: action((state, payload) => {
-    state.sessionState.isOnboardingSession = payload
+  setIsNewUserOnboardingSession: action((state, payload) => {
+    state.sessionState.isNewUserOnboardingSession = payload
   }),
   addOnboardingSavedArtworkImage: action((state, payload) => {
     const { onboardingSavedArtworkImages } = state.sessionState

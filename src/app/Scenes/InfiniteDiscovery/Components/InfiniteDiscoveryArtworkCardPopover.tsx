@@ -21,8 +21,8 @@ export const InfiniteDiscoveryArtworkCardPopover: React.FC<
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
   const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
-  const isOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isOnboardingSession
+  const isNewUserOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
   )
 
   const showSaveAlertReminder1 =
@@ -49,7 +49,7 @@ export const InfiniteDiscoveryArtworkCardPopover: React.FC<
   }
 
   if (
-    !isOnboardingSession &&
+    !isNewUserOnboardingSession &&
     isTopCard &&
     !hasSavedArtworks &&
     (showSaveAlertReminder1 || showSaveAlertReminder2)
