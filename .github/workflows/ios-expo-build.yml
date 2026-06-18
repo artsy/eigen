@@ -31,7 +31,7 @@ jobs:
   ios-expo-cache-build:
     needs: check-build-needed
     if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 90
     env:
       EXPO_BUILD_CACHE_UPLOAD: 1
