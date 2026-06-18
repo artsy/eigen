@@ -47,6 +47,8 @@ import {
   ViewToken,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { ArtistSaveOnboardingBottomSheet } from "./Components/ArtistSaveOnboardingBottomSheet"
+import { DUMMY_FOLLOWED_ARTISTS } from "./Components/dummyArtistData"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
 
@@ -267,6 +269,26 @@ const HomeViewScreenComponent: React.FC = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
+  const showBottomSheet = GlobalStore.useAppState(
+    (state) => state.onboarding.showArtistSaveBottomSheet
+  )
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false)
+
+  const handleBottomSheetDismiss = () => {
+    setIsBottomSheetVisible(false)
+    GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
+  }
+
+  useEffect(() => {
+    if (showBottomSheet) {
+      const timer = setTimeout(() => {
+        setIsBottomSheetVisible(true)
+      }, 2000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showBottomSheet])
+
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
@@ -312,6 +334,11 @@ const HomeViewScreenComponent: React.FC = () => {
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
       </RetryErrorBoundary>
+      <ArtistSaveOnboardingBottomSheet
+        visible={isBottomSheetVisible}
+        onDismiss={handleBottomSheetDismiss}
+        artists={DUMMY_FOLLOWED_ARTISTS}
+      />
     </HomeViewStoreProvider>
   )
 }
