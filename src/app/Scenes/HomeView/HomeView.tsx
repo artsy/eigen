@@ -23,6 +23,7 @@ import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHome
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -66,7 +67,10 @@ export const HomeView: React.FC = memo(() => {
   )
   const bumpLiveRefetchKey = HomeViewStore.useStoreActions((actions) => actions.bumpLiveRefetchKey)
 
-  const enableLiveRecommendations = useEnableLiveHomeRecommendations()
+  const { enabled: enableLiveRecommendations } = useEnableLiveHomeRecommendations()
+  const { trackExperiment: trackLiveRecommendationsExperiment } = useExperimentVariant(
+    "onyx_artwork-recommendations-refresh-eigen"
+  )
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -139,13 +143,16 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
-  // Proactively refresh the recommended artworks rail whenever the user returns to
-  // the home screen (e.g. pressing back from another part of the app). We use
-  // `useFocusEffect` (a navigation focus-event subscription) rather than detecting
-  // focus inside the rail, because inactive screens are frozen/detached
-  // (detachInactiveScreens defaults to true) and wouldn't reliably observe the
-  // transition. The first focus is skipped since the initial mount already loads
-  // fresh data. Driven entirely by navigation, so it never polls on its own.
+  // Track the live-recommendations experiment exposure once on mount (no-op until Unleash
+  // has resolved a variant).
+  useEffect(() => {
+    trackLiveRecommendationsExperiment()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Refresh the recommended artworks rail when the user returns to home. We use
+  // `useFocusEffect` rather than detecting focus inside the rail, since inactive screens are
+  // frozen/detached and wouldn't observe the transition. The first (mount) focus is skipped.
   const hasFocusedHomeOnce = useRef(false)
   useFocusEffect(
     useCallback(() => {

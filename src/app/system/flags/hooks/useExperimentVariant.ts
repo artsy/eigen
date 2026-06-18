@@ -21,6 +21,7 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
   ) as { variant: IVariant; overrideApplied: boolean }
 
   const trackExperiment = (contextProps?: ContextProps) => {
+
     if (!variant.enabled || overrideApplied) {
       if (__DEV__) {
         console.warn(
