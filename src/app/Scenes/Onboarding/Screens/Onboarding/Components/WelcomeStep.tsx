@@ -4,7 +4,7 @@ import { Suspense, useEffect } from "react"
 import { PreloadedQuery, graphql, usePreloadedQuery } from "react-relay"
 import { Logo } from "./Logo"
 
-const WELCOME_DISPLAY_DURATION = 3000
+const WELCOME_DISPLAY_DURATION = 2000
 
 interface WelcomeStepProps {
   onNext: () => void

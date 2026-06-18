@@ -62,7 +62,7 @@ export const Introduction: React.FC = () => {
   }, [currentStep, next, selectExperience, handleSkipToHome, welcomeQueryRef])
 
   return (
-    <Flex flex={1} backgroundColor="background">
+    <Flex flex={1} backgroundColor="mono100">
       <AnimatePresence>
         <MotiView
           key={currentStep}
@@ -70,6 +70,7 @@ export const Introduction: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ type: "timing", duration: 300 }}
+          exitTransition={{ type: "timing", duration: 300 }}
           style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
         >
           {renderStep()}
