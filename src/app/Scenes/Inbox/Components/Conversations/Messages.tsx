@@ -1,19 +1,17 @@
 import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
-import { Messages_partnerOffers$key } from "__generated__/Messages_partnerOffers.graphql"
 import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
-import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
+import { usePartnerOfferEvent } from "app/Scenes/Inbox/hooks/usePartnerOfferEvent"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp, useFragment } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
-import { PartnerOfferConversationEvent } from "./ConversationPartnerOfferUpdate"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
@@ -42,26 +40,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const subjectArtwork = conversation.items?.[0]?.item
   const artworkId = subjectArtwork?.__typename === "Artwork" ? subjectArtwork.internalID : null
-  const { hasActivePartnerOffer, partnerOffers: partnerOffersRef } = usePartnerOffer({
-    me,
-    artworkId,
-  })
-  const partnerOffers = useFragment(
-    partnerOffersFragment,
-    partnerOffersRef as unknown as Messages_partnerOffers$key
-  )
-  const partnerOffer = partnerOffers?.find((offer) => offer.artworkId === artworkId)
-
-  const partnerOfferEvent: (PartnerOfferConversationEvent & { key: string; __id: string }) | null =
-    hasActivePartnerOffer && partnerOffer
-      ? {
-          __typename: "PartnerOfferEvent",
-          __id: "partner-offer-event",
-          key: "partner-offer-event",
-          createdAt: partnerOffer.createdAt ?? null,
-          amountDisplay: partnerOffer.priceWithDiscount?.display ?? null,
-        }
-      : null
+  const partnerOfferEvent = usePartnerOfferEvent({ me, artworkId, conversation })
 
   // Get all messages and give them a key for use with flatlist
   const allMessages = extractNodes(conversation.messagesConnection)
@@ -108,8 +87,8 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   }, [
     allOrderEvents.length,
     allMessages.length,
-    partnerOfferEvent?.__id,
     partnerOfferEvent?.createdAt,
+    partnerOfferEvent?.isPurchased,
   ])
 
   const flatList = useRef<FlatList>(null)
@@ -207,16 +186,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   )
 })
 
-const partnerOffersFragment = graphql`
-  fragment Messages_partnerOffers on PartnerOfferToCollector @relay(plural: true) {
-    artworkId
-    createdAt
-    priceWithDiscount {
-      display
-    }
-  }
-`
-
 export default createPaginationContainer(
   Messages,
   {
@@ -231,6 +200,7 @@ export default createPaginationContainer(
         to {
           name
         }
+        ...usePartnerOfferEvent_conversation
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {

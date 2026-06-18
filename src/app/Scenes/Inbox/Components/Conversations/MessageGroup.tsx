@@ -115,14 +115,14 @@ export const MessageGroup: React.FC<MessageGroupProps> = ({
 
   // A partner offer isn't an order event; it's injected into the timeline by
   // `Messages` (only when the feature flag is on) and rendered on its own.
-  if (group[0].__typename === "PartnerOfferEvent") {
-    const onlyEvent = group[0] as PartnerOfferConversationEvent
+  if (group[0].__typename === "PartnerOfferToCollector") {
+    const onlyEvent = group[0]
     return (
       <>
         {!!isLastMessage && (
           <InitialMessage subjectItem={subjectItem} createdAt={onlyEvent.createdAt} />
         )}
-        <ConversationPartnerOfferUpdate event={onlyEvent} />
+        <ConversationPartnerOfferUpdate partnerOffer={onlyEvent} />
       </>
     )
   }

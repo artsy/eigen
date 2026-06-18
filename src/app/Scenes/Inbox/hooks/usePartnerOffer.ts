@@ -30,7 +30,7 @@ const fragment = graphql`
       edges {
         node {
           ...ConversationPartnerOfferCTA_partnerOffers
-          ...Messages_partnerOffers
+          ...usePartnerOfferEvent_partnerOffers
           internalID
           artworkId
           endAt
