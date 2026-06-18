@@ -1,12 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { switchTab } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-jest.mock("app/system/navigation/navigate")
-
-const mockSwitchTab = switchTab as jest.Mock
 
 const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
   internalID: `artwork-${i + 1}`,
@@ -16,7 +11,6 @@ const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
 
 describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(false)
     GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
@@ -38,7 +32,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
     expect(screen.queryByText("Continue Browsing")).not.toBeOnTheScreen()
   })
 
-  it('"Take me home" clears isNewUserOnboardingSession and navigates home', () => {
+  it('"Take me home" completes onboarding, exiting the onboarding navigator to the home tab', () => {
     GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
 
@@ -46,9 +40,8 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
 
     fireEvent.press(screen.getByText("Take me home"))
 
-    const state = __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery
-    expect(state?.sessionState.isNewUserOnboardingSession).toBe(false)
-    expect(mockSwitchTab).toHaveBeenCalledWith("home")
+    const onboardingState = __globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState
+    expect(onboardingState).toBe("complete")
   })
 
   it("renders 5 artwork images from the store", () => {

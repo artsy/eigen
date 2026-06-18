@@ -2,7 +2,6 @@ import { Button, Flex, Image, Spacer, Text, useColor } from "@artsy/palette-mobi
 import BottomSheet from "@gorhom/bottom-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
-import { switchTab } from "app/system/navigation/navigate"
 import { useRef } from "react"
 import { View, ViewStyle } from "react-native"
 
@@ -65,7 +64,7 @@ export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC =
   const savedArtworks = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
   )
-  const { setIsNewUserOnboardingSession } = GlobalStore.actions.infiniteDiscovery
+  const { setOnboardingState } = GlobalStore.actions.onboarding
 
   if (!completionBottomSheetVisible) {
     return null
@@ -108,8 +107,7 @@ export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC =
         <Button
           block
           onPress={() => {
-            setIsNewUserOnboardingSession(false)
-            switchTab("home")
+            setOnboardingState("complete")
           }}
         >
           Take me home
