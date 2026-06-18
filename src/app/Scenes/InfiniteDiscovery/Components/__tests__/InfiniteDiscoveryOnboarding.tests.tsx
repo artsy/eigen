@@ -27,12 +27,8 @@ describe("InfiniteDiscoveryOnboarding", () => {
       GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     })
 
-    it("shows the overlay", () => {
+    it("shows the overlay immediately", () => {
       renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
-
-      act(() => {
-        jest.runAllTimers()
-      })
 
       expect(screen.getByText("Welcome to Discover Daily")).toBeOnTheScreen()
     })
