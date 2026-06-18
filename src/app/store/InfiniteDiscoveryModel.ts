@@ -14,6 +14,7 @@ export interface InfiniteDiscoveryModel {
     moreInfoSheetVisible: boolean
     isNewUserOnboardingSession: boolean
     newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
+    completionBottomSheetVisible: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -22,6 +23,7 @@ export interface InfiniteDiscoveryModel {
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
   setIsNewUserOnboardingSession: Action<this, boolean>
+  setCompletionBottomSheetVisible: Action<this, boolean>
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
 }
@@ -34,6 +36,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     moreInfoSheetVisible: false,
     isNewUserOnboardingSession: false,
     newUserOnboardingSavedArtworks: [],
+    completionBottomSheetVisible: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -57,6 +60,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   setIsNewUserOnboardingSession: action((state, payload) => {
     state.sessionState.isNewUserOnboardingSession = payload
   }),
+  setCompletionBottomSheetVisible: action((state, payload) => {
+    state.sessionState.completionBottomSheetVisible = payload
+  }),
   addNewUserOnboardingSavedArtwork: action((state, payload) => {
     const { newUserOnboardingSavedArtworks } = state.sessionState
     const alreadyAdded = newUserOnboardingSavedArtworks.some(
@@ -64,6 +70,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     )
     if (!alreadyAdded && newUserOnboardingSavedArtworks.length < 5) {
       newUserOnboardingSavedArtworks.push(payload)
+      if (newUserOnboardingSavedArtworks.length === 5) {
+        state.sessionState.completionBottomSheetVisible = true
+      }
     }
   }),
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {

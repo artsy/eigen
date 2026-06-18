@@ -33,6 +33,26 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
     })
 
+    it("sets completionBottomSheetVisible to true when the 5th artwork is added", () => {
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+
+      for (let i = 1; i <= 4; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-5",
+        url: "https://example.com/5.jpg",
+      })
+
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+    })
+
     it("stores the blurhash when provided", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-1",
@@ -41,6 +61,18 @@ describe("InfiniteDiscoveryModel", () => {
       })
 
       expect(state()?.sessionState.newUserOnboardingSavedArtworks[0].blurhash).toBe("LGFFaS%2IV00")
+    })
+  })
+
+  describe("setCompletionBottomSheetVisible", () => {
+    it("toggles completionBottomSheetVisible", () => {
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(false)
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
     })
   })
 

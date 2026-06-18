@@ -1,6 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
+import { createGeminiUrl } from "@artsy/palette-mobile/dist/utils/createGeminiUrl"
 import {
   InfiniteDiscoveryArtworkCard_artwork$data,
   InfiniteDiscoveryArtworkCard_artwork$key,
@@ -14,7 +15,14 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import {
+  FlatList,
+  GestureResponderEvent,
+  Image as RNImage,
+  PixelRatio,
+  Text as RNText,
+  ViewStyle,
+} from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -27,6 +35,16 @@ import Animated, {
 import { graphql, useFragment } from "react-relay"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
+
+const MINIATURE_CARD_WIDTH = 95
+const MINIATURE_CARD_HEIGHT = 125
+
+const getNewUserOnboardingThumbnailUrl = (url: string) =>
+  createGeminiUrl({
+    imageURL: url,
+    width: MINIATURE_CARD_WIDTH * PixelRatio.get(),
+    height: MINIATURE_CARD_HEIGHT * PixelRatio.get(),
+  })
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -86,11 +104,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
           if (isNewUserOnboardingSession && artwork) {
+            const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
             addNewUserOnboardingSavedArtwork({
               internalID: artwork.internalID,
-              url: artwork.images[0]?.url ?? "",
+              url: resizedUrl,
               blurhash: artwork.images[0]?.blurhash,
             })
+            RNImage.prefetch(resizedUrl)
           }
         } else {
           // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
@@ -171,6 +191,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           if (!isSaved) {
             Haptic.trigger("impactLight")
             setShowScreenTapToSave(true)
+            if (!hasSavedArtworks) {
+              setHasSavedArtwors(true)
+            }
+            incrementSavedArtworksCount()
+            if (isNewUserOnboardingSession) {
+              const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
+              addNewUserOnboardingSavedArtwork({
+                internalID: artwork.internalID,
+                url: resizedUrl,
+                blurhash: artwork.images[0]?.blurhash,
+              })
+              RNImage.prefetch(resizedUrl)
+            }
             saveArtworkToLists()
           }
           return true
@@ -319,11 +352,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
                 incrementSavedArtworksCount()
                 if (isNewUserOnboardingSession) {
+                  const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
                   addNewUserOnboardingSavedArtwork({
                     internalID: artwork.internalID,
-                    url: artwork.images[0]?.url ?? "",
+                    url: resizedUrl,
                     blurhash: artwork.images[0]?.blurhash,
                   })
+                  RNImage.prefetch(resizedUrl)
                 }
               }
 
