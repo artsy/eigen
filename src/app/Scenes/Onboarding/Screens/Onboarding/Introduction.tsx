@@ -26,7 +26,7 @@ export const Introduction: React.FC = () => {
 
   useEffect(() => {
     loadWelcomeQuery({}, { fetchPolicy: "network-only" })
-  }, [])
+  }, [loadWelcomeQuery])
 
   const handleDone = useCallback(
     (experience: Experience) => {
@@ -59,7 +59,7 @@ export const Introduction: React.FC = () => {
       default:
         return null
     }
-  }, [currentStep, next, selectExperience, handleSkipToHome])
+  }, [currentStep, next, selectExperience, handleSkipToHome, welcomeQueryRef])
 
   return (
     <Flex flex={1} backgroundColor="background">
