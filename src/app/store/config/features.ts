@@ -171,9 +171,10 @@ export const features = {
     showInDevMenu: true,
   },
   AREnableConversationPartnerOffers: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show partner offers in convos",
     showInDevMenu: true,
+    echoFlagKey: "AREnableConversationPartnerOffers",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
