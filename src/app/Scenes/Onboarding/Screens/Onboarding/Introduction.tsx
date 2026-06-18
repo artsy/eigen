@@ -1,13 +1,15 @@
 import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnimatePresence, MotiView } from "moti"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
+import { useQueryLoader } from "react-relay"
 import { ArtworkMontageStep } from "./Components/ArtworkMontageStep"
 import { BrowsePromptStep } from "./Components/BrowsePromptStep"
 import { Experience, QuestionStep } from "./Components/QuestionStep"
-import { WelcomeStep } from "./Components/WelcomeStep"
+import { WelcomeStep, WelcomeStepScreenQuery } from "./Components/WelcomeStep"
 import { NavigationStack } from "./Onboarding"
 import {
   STEP_ARTWORK_MONTAGE,
@@ -19,6 +21,12 @@ import {
 
 export const Introduction: React.FC = () => {
   const { navigate } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
+  const [welcomeQueryRef, loadWelcomeQuery] =
+    useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
+
+  useEffect(() => {
+    loadWelcomeQuery({}, { fetchPolicy: "network-only" })
+  }, [])
 
   const handleDone = useCallback(
     (experience: Experience) => {
@@ -47,7 +55,7 @@ export const Introduction: React.FC = () => {
       case STEP_ARTWORK_MONTAGE:
         return <ArtworkMontageStep onNext={next} />
       case STEP_WELCOME:
-        return <WelcomeStep onNext={next} />
+        return welcomeQueryRef ? <WelcomeStep onNext={next} queryRef={welcomeQueryRef} /> : null
       default:
         return null
     }
