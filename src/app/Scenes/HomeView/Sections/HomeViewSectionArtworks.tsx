@@ -44,8 +44,7 @@ interface HomeViewSectionArtworksProps extends FlexProps {
 
 const GRID_MAX_ARTWORKS_COUNT = 4
 
-// The home view section id for the personalized recommended artworks rail, scoped
-// to the live-recommendations refresh behavior (forced refetch + analytics re-firing).
+// Section id for the recommended artworks rail (the rail with live-refresh behavior).
 const RECOMMENDED_ARTWORKS_SECTION_ID = "home-view-section-recommended-artworks"
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
@@ -58,7 +57,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
-  const enableLiveRecommendations = useEnableLiveHomeRecommendations()
+  const { enabled: enableLiveRecommendations } = useEnableLiveHomeRecommendations()
   const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
   const liveRefetchKey = HomeViewStore.useStoreState((state) => state.liveRefetchKey)
 
@@ -76,12 +75,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
-  // Live recommendations: when the live refetch key is bumped (returning to the home
-  // screen or pull to refresh), force a fresh fetch of the rail's artworks. We re-fire
-  // impression tracking only in the `complete` callback — i.e. once the refreshed data
-  // is actually in the store — so railViewed and itemViewed reflect the new content
-  // rather than the stale rail. The forced fetch writes to the store, so the rail's
-  // useLazyLoadQuery re-renders in place with the fresh data.
+  // When the live refetch key is bumped (returning to home or pull to refresh), force a fresh
+  // fetch of the rail's artworks. Impression tracking is re-fired in `complete` — once the new
+  // data is in the store — so railViewed/itemViewed reflect the new content, not the stale rail.
   useEffect(() => {
     if (!isLiveRecommendationsRail || liveRefetchKey === 0) {
       return
@@ -299,7 +295,7 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
   withSuspense({
     Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
-      const enableLiveRecommendations = useEnableLiveHomeRecommendations()
+      const { enabled: enableLiveRecommendations } = useEnableLiveHomeRecommendations()
 
       const isLiveRecommendationsRail =
         enableLiveRecommendations && sectionID === RECOMMENDED_ARTWORKS_SECTION_ID
@@ -311,9 +307,8 @@ export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> 
           enableHidingDislikedArtworks,
         },
         {
-          // Live sections refresh via a forced fetchQuery in the component (so analytics
-          // can fire on completion), which writes to the store and re-renders this query
-          // in place. They therefore ignore the shared refetchKey to avoid a double fetch.
+          // Live sections refresh via their own forced fetchQuery, so they ignore the shared
+          // refetchKey to avoid a double fetch.
           fetchKey: isLiveRecommendationsRail ? undefined : refetchKey,
           fetchPolicy: "store-and-network",
         }

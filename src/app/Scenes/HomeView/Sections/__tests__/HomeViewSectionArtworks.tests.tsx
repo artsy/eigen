@@ -6,8 +6,8 @@ import {
   HomeViewStoreProvider,
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -17,11 +17,18 @@ import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
-  useExperimentFlag: jest.fn(),
+jest.mock("app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations", () => ({
+  useEnableLiveHomeRecommendations: jest.fn(),
 }))
 
-const mockUseExperimentFlag = useExperimentFlag as jest.Mock
+const mockUseEnableLiveHomeRecommendations = useEnableLiveHomeRecommendations as jest.Mock
+
+const setLiveRecommendationsEnabled = (enabled: boolean) => {
+  mockUseEnableLiveHomeRecommendations.mockReturnValue({
+    enabled,
+    trackExperiment: jest.fn(),
+  })
+}
 
 let homeViewStoreActions: Actions<HomeViewStoreModel>
 
@@ -40,6 +47,7 @@ const HomeViewStoreVisitor: React.FC = () => {
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
+    setLiveRecommendationsEnabled(false)
   })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
@@ -409,12 +417,12 @@ describe("HomeViewSectionArtworks", () => {
         AREnableHidingDislikedArtworks: true,
         ARImpressionsTrackingHomeItemViews: true,
       })
-      // Both Unleash flags (eigen + gravity) on
-      mockUseExperimentFlag.mockReturnValue(true)
+      // Treatment arm with Gravity ready (both Unleash flags effectively on)
+      setLiveRecommendationsEnabled(true)
     })
 
     afterEach(() => {
-      mockUseExperimentFlag.mockReturnValue(false)
+      setLiveRecommendationsEnabled(false)
     })
 
     it("re-fires railViewed only after the live refresh completes", () => {
@@ -495,7 +503,7 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not re-fire analytics when the flags are off", () => {
-      mockUseExperimentFlag.mockReturnValue(false)
+      setLiveRecommendationsEnabled(false)
 
       renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,

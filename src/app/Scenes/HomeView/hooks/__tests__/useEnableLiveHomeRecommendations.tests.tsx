@@ -1,53 +1,65 @@
-import { screen } from "@testing-library/react-native"
+import { renderHook } from "@testing-library/react-native"
 import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text } from "react-native"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 
 jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
   useExperimentFlag: jest.fn(),
 }))
 
+jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
+  useExperimentVariant: jest.fn(),
+}))
+
 const mockUseExperimentFlag = useExperimentFlag as jest.Mock
+const mockUseExperimentVariant = useExperimentVariant as jest.Mock
 
-const TestComponent: React.FC = () => {
-  const enabled = useEnableLiveHomeRecommendations()
-  return <Text>{enabled ? "enabled" : "disabled"}</Text>
-}
-
-const isEnabled = ({
-  eigenFlag,
+const setup = ({
   gravityFlag,
+  variantName,
+  variantEnabled,
 }: {
-  eigenFlag: boolean
   gravityFlag: boolean
-}): boolean => {
+  variantName: string
+  variantEnabled: boolean
+}) => {
   mockUseExperimentFlag.mockImplementation((name: string) =>
-    name === "onyx_artwork-recommendations-refresh-eigen" ? eigenFlag : gravityFlag
+    name === "onyx_artwork-recommendations-gravity" ? gravityFlag : false
   )
+  mockUseExperimentVariant.mockReturnValue({
+    variant: { name: variantName, enabled: variantEnabled },
+    trackExperiment: jest.fn(),
+  })
 
-  renderWithWrappers(<TestComponent />)
-  return screen.queryByText("enabled") !== null
+  return renderHook(() => useEnableLiveHomeRecommendations())
 }
 
 describe("useEnableLiveHomeRecommendations", () => {
   afterEach(() => {
-    mockUseExperimentFlag.mockReset()
+    jest.clearAllMocks()
   })
 
-  it("is enabled only when both Unleash flags are on", () => {
-    expect(isEnabled({ eigenFlag: true, gravityFlag: true })).toBe(true)
+  it("enables the behavior only for the treatment arm when Gravity is ready", () => {
+    const { result } = setup({ gravityFlag: true, variantName: "variant", variantEnabled: true })
+
+    expect(result.current.enabled).toBe(true)
   })
 
-  it("is disabled when only the eigen flag is on", () => {
-    expect(isEnabled({ eigenFlag: true, gravityFlag: false })).toBe(false)
+  it("does not enable the behavior for the control arm", () => {
+    const { result } = setup({ gravityFlag: true, variantName: "control", variantEnabled: true })
+
+    expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when only the gravity flag is on", () => {
-    expect(isEnabled({ eigenFlag: false, gravityFlag: true })).toBe(false)
+  it("is disabled when Gravity is not ready, even for the treatment arm", () => {
+    const { result } = setup({ gravityFlag: false, variantName: "variant", variantEnabled: true })
+
+    expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when both flags are off", () => {
-    expect(isEnabled({ eigenFlag: false, gravityFlag: false })).toBe(false)
+  it("is disabled when the user has not been assigned a variant", () => {
+    const { result } = setup({ gravityFlag: true, variantName: "disabled", variantEnabled: false })
+
+    expect(result.current.enabled).toBe(false)
   })
 })
