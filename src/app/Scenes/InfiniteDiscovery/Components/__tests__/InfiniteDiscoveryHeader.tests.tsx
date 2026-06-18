@@ -144,12 +144,19 @@ describe("InfiniteDiscoveryHeader", () => {
       expect(screen.queryByTestId("top-right-icon")).not.toBeOnTheScreen()
     })
 
-    it("calls goBack when Skip is pressed", () => {
+    it("exits onboarding when Skip is pressed", () => {
+      const setIsNewUserOnboardingSessionSpy = jest.spyOn(
+        GlobalStore.actions.infiniteDiscovery,
+        "setIsNewUserOnboardingSession"
+      )
+      const setOnboardingStateSpy = jest.spyOn(GlobalStore.actions.onboarding, "setOnboardingState")
+
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
 
-      expect(mockGoBack).toHaveBeenCalled()
+      expect(setIsNewUserOnboardingSessionSpy).toHaveBeenCalledWith(false)
+      expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
     })
 
     it("suppresses the save summary toast when navigating away", () => {
