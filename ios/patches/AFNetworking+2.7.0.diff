@@ -1,0 +1,30 @@
+diff --git a/cocoapods-patch-20260622-88004-7t7st8/AFNetworking/AFNetworking/AFHTTPSessionManager.m b/Pods/AFNetworking/AFNetworking/AFHTTPSessionManager.m
+index 32fe154acd..95e8610366 100644
+--- a/cocoapods-patch-20260622-88004-7t7st8/AFNetworking/AFNetworking/AFHTTPSessionManager.m
++++ b/Pods/AFNetworking/AFNetworking/AFHTTPSessionManager.m
+@@ -31,7 +31,9 @@
+
+ #ifdef _SYSTEMCONFIGURATION_H
+ #import <netinet/in.h>
+-#import <netinet6/in6.h>
++// This line breaks build on XCode 26.5
++// See https://stackoverflow.com/questions/79919483/use-of-private-header-from-outside-its-module-in-a-cocoapods-dependency-in-an
++// #import <netinet6/in6.h>
+ #import <arpa/inet.h>
+ #import <ifaddrs.h>
+ #import <netdb.h>
+diff --git a/cocoapods-patch-20260622-88004-7t7st8/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m b/Pods/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m
+index 3aeba65c2c..13fc7ed70f 100644
+--- a/cocoapods-patch-20260622-88004-7t7st8/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m
++++ b/Pods/AFNetworking/AFNetworking/AFNetworkReachabilityManager.m
+@@ -23,7 +23,9 @@
+ #if !TARGET_OS_WATCH
+
+ #import <netinet/in.h>
+-#import <netinet6/in6.h>
++// This line breaks build on XCode 26.5
++// See https://stackoverflow.com/questions/79919483/use-of-private-header-from-outside-its-module-in-a-cocoapods-dependency-in-an
++// #import <netinet6/in6.h>
+ #import <arpa/inet.h>
+ #import <ifaddrs.h>
+ #import <netdb.h>
