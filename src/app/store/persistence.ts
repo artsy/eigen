@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { State } from "easy-peasy"
-import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
-import { Middleware } from "redux"
+import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString } from "lodash"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 import { migrate } from "./migration"
 
@@ -84,18 +83,5 @@ export async function unpersist(): Promise<DeepPartial<State<GlobalStoreModel>>>
       console.error(e)
     }
     return {}
-  }
-}
-
-export const persistenceMiddleware: Middleware = (store) => {
-  const throttledPersist = throttle(persist, 1000, { leading: false, trailing: true })
-  return (next) => (action) => {
-    const result = next(action)
-    // use requestAnimationFrame to make doubly sure we avoid blocking UI updates
-    requestAnimationFrame(() => {
-      throttledPersist(store.getState())
-    })
-
-    return result
   }
 }
