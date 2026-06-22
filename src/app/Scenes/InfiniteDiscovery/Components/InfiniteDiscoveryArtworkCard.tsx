@@ -18,7 +18,6 @@ import { memo, useEffect, useRef, useState } from "react"
 import {
   FlatList,
   GestureResponderEvent,
-  Image as RNImage,
   PixelRatio,
   Text as RNText,
   ViewStyle,
@@ -107,16 +106,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
           if (isNewUserOnboardingSession && artwork) {
-            const resizedUrl = getNewUserOnboardingThumbnailUrl(
-              artwork.images[0]?.url ?? "",
-              screenWidth
-            )
             addNewUserOnboardingSavedArtwork({
               internalID: artwork.internalID,
-              url: resizedUrl,
+              url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
               blurhash: artwork.images[0]?.blurhash,
             })
-            RNImage.prefetch(resizedUrl)
           }
         } else {
           // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
@@ -202,16 +196,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             }
             incrementSavedArtworksCount()
             if (isNewUserOnboardingSession) {
-              const resizedUrl = getNewUserOnboardingThumbnailUrl(
-                artwork.images[0]?.url ?? "",
-                screenWidth
-              )
               addNewUserOnboardingSavedArtwork({
                 internalID: artwork.internalID,
-                url: resizedUrl,
+                url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
                 blurhash: artwork.images[0]?.blurhash,
               })
-              RNImage.prefetch(resizedUrl)
             }
             saveArtworkToLists()
           }
@@ -361,16 +350,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
                 incrementSavedArtworksCount()
                 if (isNewUserOnboardingSession) {
-                  const resizedUrl = getNewUserOnboardingThumbnailUrl(
-                    artwork.images[0]?.url ?? "",
-                    screenWidth
-                  )
                   addNewUserOnboardingSavedArtwork({
                     internalID: artwork.internalID,
-                    url: resizedUrl,
+                    url: getNewUserOnboardingThumbnailUrl(
+                      artwork.images[0]?.url ?? "",
+                      screenWidth
+                    ),
                     blurhash: artwork.images[0]?.blurhash,
                   })
-                  RNImage.prefetch(resizedUrl)
                 }
               }
 

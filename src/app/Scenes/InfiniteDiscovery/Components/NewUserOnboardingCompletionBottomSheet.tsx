@@ -2,8 +2,8 @@ import { Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useCallback, useRef } from "react"
-import { useWindowDimensions, View } from "react-native"
+import { useCallback, useEffect, useRef } from "react"
+import { Image, useWindowDimensions, View } from "react-native"
 
 const SNAP_HEIGHT = 450
 
@@ -34,6 +34,13 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
   )
   const { setOnboardingState } = GlobalStore.actions.onboarding
+
+  useEffect(() => {
+    const latest = savedArtworks[savedArtworks.length - 1]
+    if (latest) {
+      Image.prefetch(latest.url)
+    }
+  }, [savedArtworks])
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
