@@ -75,8 +75,11 @@ export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC =
       ref={ref}
       enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[1, SNAP_HEIGHT]}
-      index={1}
+      enableHandlePanningGesture={false}
+      enableContentPanningGesture={false}
+      handleComponent={null}
+      snapPoints={[SNAP_HEIGHT]}
+      index={0}
       backgroundStyle={{ backgroundColor: color("mono0") }}
     >
       <Flex px={2} pb={2}>
