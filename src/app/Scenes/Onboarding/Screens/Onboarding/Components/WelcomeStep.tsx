@@ -1,21 +1,18 @@
 import { Flex, Spinner, Text } from "@artsy/palette-mobile"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { Suspense, useEffect } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { PreloadedQuery, graphql, usePreloadedQuery } from "react-relay"
 import { Logo } from "./Logo"
 
-const WELCOME_DISPLAY_DURATION = 3000
+const WELCOME_DISPLAY_DURATION = 2000
 
 interface WelcomeStepProps {
   onNext: () => void
+  queryRef: PreloadedQuery<WelcomeStepQuery>
 }
 
-const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext }) => {
-  const { me } = useLazyLoadQuery<WelcomeStepQuery>(
-    WelcomeStepScreenQuery,
-    {},
-    { fetchPolicy: "network-only" }
-  )
+const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) => {
+  const { me } = usePreloadedQuery<WelcomeStepQuery>(WelcomeStepScreenQuery, queryRef)
 
   useEffect(() => {
     const timer = setTimeout(onNext, WELCOME_DISPLAY_DURATION)
@@ -40,13 +37,13 @@ const Placeholder: React.FC = () => (
   </Flex>
 )
 
-export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onNext }) => (
+export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) => (
   <Suspense fallback={<Placeholder />}>
-    <WelcomeStepContent onNext={onNext} />
+    <WelcomeStepContent onNext={onNext} queryRef={queryRef} />
   </Suspense>
 )
 
-const WelcomeStepScreenQuery = graphql`
+export const WelcomeStepScreenQuery = graphql`
   query WelcomeStepQuery {
     me {
       name

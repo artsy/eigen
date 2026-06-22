@@ -1,13 +1,15 @@
 import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnimatePresence, MotiView } from "moti"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
+import { useQueryLoader } from "react-relay"
 import { ArtworkMontageStep } from "./Components/ArtworkMontageStep"
 import { BrowsePromptStep } from "./Components/BrowsePromptStep"
 import { Experience, QuestionStep } from "./Components/QuestionStep"
-import { WelcomeStep } from "./Components/WelcomeStep"
+import { WelcomeStep, WelcomeStepScreenQuery } from "./Components/WelcomeStep"
 import { NavigationStack } from "./Onboarding"
 import {
   STEP_ARTWORK_MONTAGE,
@@ -19,6 +21,12 @@ import {
 
 export const Introduction: React.FC = () => {
   const { navigate } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
+  const [welcomeQueryRef, loadWelcomeQuery] =
+    useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
+
+  useEffect(() => {
+    loadWelcomeQuery({}, { fetchPolicy: "network-only" })
+  }, [loadWelcomeQuery])
 
   const handleDone = useCallback(
     (experience: Experience) => {
@@ -47,14 +55,14 @@ export const Introduction: React.FC = () => {
       case STEP_ARTWORK_MONTAGE:
         return <ArtworkMontageStep onNext={next} />
       case STEP_WELCOME:
-        return <WelcomeStep onNext={next} />
+        return welcomeQueryRef ? <WelcomeStep onNext={next} queryRef={welcomeQueryRef} /> : null
       default:
         return null
     }
-  }, [currentStep, next, selectExperience, handleSkipToHome])
+  }, [currentStep, next, selectExperience, handleSkipToHome, welcomeQueryRef])
 
   return (
-    <Flex flex={1} backgroundColor="background">
+    <Flex flex={1} backgroundColor="mono100">
       <AnimatePresence>
         <MotiView
           key={currentStep}
@@ -62,6 +70,7 @@ export const Introduction: React.FC = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ type: "timing", duration: 300 }}
+          exitTransition={{ type: "timing", duration: 300 }}
           style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
         >
           {renderStep()}

@@ -39,8 +39,10 @@ jest.mock("../Components/ArtworkMontageStep", () => {
 
 jest.mock("../Components/WelcomeStep", () => {
   const { Text } = require("react-native")
+  const actual = jest.requireActual("../Components/WelcomeStep")
   return {
     WelcomeStep: ({ onNext }: { onNext: () => void }) => <Text onPress={onNext}>Welcome next</Text>,
+    WelcomeStepScreenQuery: actual.WelcomeStepScreenQuery,
   }
 })
 
