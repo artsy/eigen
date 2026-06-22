@@ -59,6 +59,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   setIsNewUserOnboardingSession: action((state, payload) => {
     state.sessionState.isNewUserOnboardingSession = payload
+    if (!payload) {
+      state.sessionState.completionBottomSheetVisible = false
+    }
   }),
   setCompletionBottomSheetVisible: action((state, payload) => {
     state.sessionState.completionBottomSheetVisible = payload
