@@ -9,8 +9,8 @@ import {
   InfiniteDiscoveryNegativeSignalsBottomSheet,
   negativeSignalsQuery,
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNegativeSignalsBottomSheet"
-import { InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
+import { NewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingCompletionBottomSheet"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
@@ -215,7 +215,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             )}
           </>
         )}
-        <InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />
+        <NewUserOnboardingCompletionBottomSheet />
       </Screen.Body>
     </Screen>
   )

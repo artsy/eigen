@@ -18,7 +18,7 @@ const FAN_CARD_CONFIGS = [
   { left: 239.5, top: 40.5, width: 86.5, height: 108, rotate: "27.46deg" },
 ]
 
-export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC = () => {
+export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const color = useColor()
   const ref = useRef<BottomSheet>(null)
   const { width: screenWidth } = useWindowDimensions()

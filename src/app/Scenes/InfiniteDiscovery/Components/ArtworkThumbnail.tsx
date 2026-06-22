@@ -19,7 +19,6 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
   style,
 }) => {
   const color = useColor()
-  // Border and radius scale proportionally to card width, based on Figma values at reference size
   const borderWidth = (width / 88) * 8
   const outerRadius = (width / 88) * 14
   const innerRadius = outerRadius - borderWidth

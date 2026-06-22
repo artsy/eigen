@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet"
+import { NewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingCompletionBottomSheet"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -9,7 +9,7 @@ const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
   blurhash: null,
 }))
 
-describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
+describe("NewUserOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(false)
     GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
@@ -17,7 +17,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it("renders nothing when completionBottomSheetVisible is false", () => {
-    renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
     expect(screen.queryByText("First five works saved!")).not.toBeOnTheScreen()
   })
@@ -26,7 +26,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
     GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
 
-    renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
     expect(screen.getByText("First five works saved!")).toBeOnTheScreen()
     expect(screen.getByText("Take me home")).toBeOnTheScreen()
@@ -37,7 +37,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
     GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
 
-    renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
     fireEvent.press(screen.getByText("Take me home"))
 
@@ -51,7 +51,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork(artwork)
     })
 
-    renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
     expect(screen.getByText("First five works saved!")).toBeOnTheScreen()
   })
