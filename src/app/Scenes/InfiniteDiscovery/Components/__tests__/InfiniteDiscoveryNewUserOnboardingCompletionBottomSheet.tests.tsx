@@ -23,6 +23,7 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it("renders the sheet content when completionBottomSheetVisible is true", () => {
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
@@ -45,10 +46,10 @@ describe("InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it("renders 5 artwork images from the store", () => {
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
     SAVED_ARTWORKS.forEach((artwork) => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork(artwork)
     })
-    GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet />)
 

@@ -1,7 +1,7 @@
-import { Button, Flex, Image, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
+import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { useCallback, useRef } from "react"
 import { useWindowDimensions, View } from "react-native"
 
@@ -17,51 +17,6 @@ const FAN_CARD_CONFIGS = [
   { left: 183.5, top: 12, width: 87.5, height: 106, rotate: "13.56deg" },
   { left: 239.5, top: 40.5, width: 86.5, height: 108, rotate: "27.46deg" },
 ]
-
-interface FanCardProps {
-  artwork: NewUserOnboardingSavedArtwork
-  scale: number
-  config: (typeof FAN_CARD_CONFIGS)[number]
-}
-
-const FanCard: React.FC<FanCardProps> = ({ artwork, scale, config }) => {
-  const color = useColor()
-  const cardWidth = config.width * scale
-  const cardHeight = config.height * scale
-  const borderWidth = 8 * scale
-  const outerRadius = 14 * scale
-  const innerRadius = outerRadius - borderWidth
-  return (
-    <View
-      style={{
-        position: "absolute",
-        left: config.left * scale,
-        top: config.top * scale,
-        width: cardWidth,
-        height: cardHeight,
-        transform: [{ rotate: config.rotate }],
-        borderRadius: outerRadius,
-        borderWidth,
-        borderColor: color("mono0"),
-        backgroundColor: color("mono0"),
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.08,
-        shadowRadius: 6,
-        elevation: 3,
-      }}
-    >
-      <View style={{ flex: 1, borderRadius: innerRadius, overflow: "hidden" }}>
-        <Image
-          src={artwork.url}
-          width={cardWidth - borderWidth * 2}
-          height={cardHeight - borderWidth * 2}
-          blurhash={artwork.blurhash ?? undefined}
-        />
-      </View>
-    </View>
-  )
-}
 
 export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const color = useColor()
@@ -113,14 +68,20 @@ export const InfiniteDiscoveryNewUserOnboardingCompletionBottomSheet: React.FC =
     >
       <Flex px={2} pb={2} pt={2}>
         <View style={{ height: FAN_CONTAINER_HEIGHT_BASE * scale, width: REFERENCE_WIDTH * scale }}>
-          {savedArtworks.map((artwork, index) => (
-            <FanCard
-              key={artwork.internalID}
-              artwork={artwork}
-              scale={scale}
-              config={FAN_CARD_CONFIGS[index]}
-            />
-          ))}
+          {savedArtworks.map((artwork, index) => {
+            const config = FAN_CARD_CONFIGS[index]
+            return (
+              <ArtworkThumbnail
+                key={artwork.internalID}
+                imageUrl={artwork.url}
+                blurhash={artwork.blurhash}
+                width={config.width * scale}
+                height={config.height * scale}
+                rotate={config.rotate}
+                style={{ position: "absolute", left: config.left * scale, top: config.top * scale }}
+              />
+            )
+          })}
         </View>
 
         <Spacer y={2} />
