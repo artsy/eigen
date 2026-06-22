@@ -36,15 +36,18 @@ import { graphql, useFragment } from "react-relay"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
 
-const MINIATURE_CARD_WIDTH = 95
-const MINIATURE_CARD_HEIGHT = 125
+const ARTWORK_THUMBNAIL_REFERENCE_WIDTH = 88.5
+const ARTWORK_THUMBNAIL_REFERENCE_HEIGHT = 105
+const ARTWORK_THUMBNAIL_SCALE_REFERENCE = 350
 
-const getNewUserOnboardingThumbnailUrl = (url: string) =>
-  createGeminiUrl({
+const getNewUserOnboardingThumbnailUrl = (url: string, screenWidth: number) => {
+  const scale = (screenWidth - 40) / ARTWORK_THUMBNAIL_SCALE_REFERENCE
+  return createGeminiUrl({
     imageURL: url,
-    width: MINIATURE_CARD_WIDTH * PixelRatio.get(),
-    height: MINIATURE_CARD_HEIGHT * PixelRatio.get(),
+    width: Math.round(ARTWORK_THUMBNAIL_REFERENCE_WIDTH * scale * PixelRatio.get()),
+    height: Math.round(ARTWORK_THUMBNAIL_REFERENCE_HEIGHT * scale * PixelRatio.get()),
   })
+}
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -104,7 +107,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
           if (isNewUserOnboardingSession && artwork) {
-            const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
+            const resizedUrl = getNewUserOnboardingThumbnailUrl(
+              artwork.images[0]?.url ?? "",
+              screenWidth
+            )
             addNewUserOnboardingSavedArtwork({
               internalID: artwork.internalID,
               url: resizedUrl,
@@ -196,7 +202,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             }
             incrementSavedArtworksCount()
             if (isNewUserOnboardingSession) {
-              const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
+              const resizedUrl = getNewUserOnboardingThumbnailUrl(
+                artwork.images[0]?.url ?? "",
+                screenWidth
+              )
               addNewUserOnboardingSavedArtwork({
                 internalID: artwork.internalID,
                 url: resizedUrl,
@@ -352,7 +361,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
                 incrementSavedArtworksCount()
                 if (isNewUserOnboardingSession) {
-                  const resizedUrl = getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "")
+                  const resizedUrl = getNewUserOnboardingThumbnailUrl(
+                    artwork.images[0]?.url ?? "",
+                    screenWidth
+                  )
                   addNewUserOnboardingSavedArtwork({
                     internalID: artwork.internalID,
                     url: resizedUrl,
