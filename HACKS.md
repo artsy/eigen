@@ -300,3 +300,13 @@ The fix (bundled into `.yarn/patches/react-native-npm-0.83.6-hermes-checksum.pat
 #### When can we remove this:
 
 When https://github.com/facebook/react-native/issues/54891 is resolved upstream and we upgrade to a version of `react-native` that uses a machine-independent path for `HERMES_CLI_PATH`.
+
+## patch for AFNetworking
+
+#### Explanation/Context:
+
+On XCode 26.5 we get "error Use of private header from outside its module: 'netinet6/in6.h'" breaking the iOS build.
+
+#### When can we remove this:
+
+When this gets addressed from Xcode side or we upgrade to a new version of AFNetworking
