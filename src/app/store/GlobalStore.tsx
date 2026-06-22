@@ -1,9 +1,7 @@
-import { captureException } from "@sentry/react-native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
 import { logAction } from "app/utils/loggers"
 import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
-import { throttle } from "lodash"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
@@ -11,25 +9,13 @@ import logger from "redux-logger"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
-import { persist, unpersist } from "./persistence"
-
-// Outermost middleware: catches errors thrown by immer/reducers (e.g. the Hermes 0.14.1
-// "Proxy handler is null" bug on iOS 26 — EIGEN-AZR1, EIGEN-AZA6) and reports them to
-// Sentry without letting them propagate to RCTFatal and crash the app.
-export const dispatchErrorMiddleware: Middleware = (_api) => (next) => (action) => {
-  try {
-    return next(action)
-  } catch (e) {
-    captureException(e, { level: "error", tags: { handled: "true" } })
-    return undefined
-  }
-}
+import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
   const middleware: Middleware[] = []
 
   if (!__TEST__) {
-    middleware.push(dispatchErrorMiddleware)
+    middleware.push(persistenceMiddleware)
 
     if (__DEV__) {
       if (logAction) {
@@ -58,17 +44,6 @@ function createGlobalStore() {
   })
 
   if (!__TEST__) {
-    const throttledPersist = throttle(() => persist(store.getState()), 1000, {
-      leading: false,
-      trailing: true,
-    })
-    // Persist after every successful state change. Using subscribe() rather than a middleware
-    // keeps persistence decoupled from the dispatch chain — it only fires when state actually
-    // updated, and uses requestAnimationFrame to avoid blocking UI work.
-    store.subscribe(() => {
-      requestAnimationFrame(throttledPersist)
-    })
-
     unpersist().then(async (state) => {
       store.getActions().rehydrate(state)
     })

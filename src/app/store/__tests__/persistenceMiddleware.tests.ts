@@ -1,15 +1,18 @@
 import { captureException } from "@sentry/react-native"
-import { dispatchErrorMiddleware } from "app/store/GlobalStore"
+import { persistenceMiddleware } from "app/store/persistence"
 import { action, createStore as createEasyPeasyStore } from "easy-peasy"
 import { Immer } from "immer"
 import { applyMiddleware, createStore, Reducer } from "redux"
 
 jest.mock("@sentry/react-native")
+jest.mock("@react-native-async-storage/async-storage", () => ({
+  setItem: jest.fn().mockResolvedValue(undefined),
+  getItem: jest.fn().mockResolvedValue(null),
+}))
 
-const makeStore = (reducer: Reducer) =>
-  createStore(reducer, applyMiddleware(dispatchErrorMiddleware))
+const makeStore = (reducer: Reducer) => createStore(reducer, applyMiddleware(persistenceMiddleware))
 
-describe("dispatchErrorMiddleware", () => {
+describe("persistenceMiddleware", () => {
   it("does not throw when a reducer throws", () => {
     const store = makeStore((state = {}, action) => {
       if (action.type === "THROW") throw new Error("Proxy handler is null")
@@ -67,10 +70,9 @@ describe("dispatchErrorMiddleware", () => {
 //   Hermes 0.14.1 on iOS 26 throws "TypeError: Proxy handler is null" inside
 //   immer's finishDraft() when revoking a Proxy — easy-peasy calls this after
 //   every action handler that mutates draft state (e.g. setIsReady).
-//   Without dispatchErrorMiddleware the error propagates to RCTFatal → expo-updates
-//   recovery pipeline → intentional crash. This test verifies the middleware
-//   catches the immer error before it escapes.
-describe("dispatchErrorMiddleware — immer Proxy crash (EIGEN-AZR1 regression)", () => {
+//   Without the try/catch in persistenceMiddleware the error propagates to
+//   RCTFatal → expo-updates recovery pipeline → intentional crash.
+describe("persistenceMiddleware — immer Proxy crash (EIGEN-AZR1 regression)", () => {
   // Minimal model that mirrors the mutation pattern of the failing action:
   //   ProgressiveOnboardingModel.setIsReady: action((state, v) => { state.sessionState.isReady = v })
   const model = {
@@ -81,7 +83,7 @@ describe("dispatchErrorMiddleware — immer Proxy crash (EIGEN-AZR1 regression)"
   }
 
   it("does not throw and reports to Sentry when immer finishDraft throws during dispatch", () => {
-    const store = createEasyPeasyStore(model, { middleware: [dispatchErrorMiddleware] })
+    const store = createEasyPeasyStore(model, { middleware: [persistenceMiddleware] })
 
     // Warm up: dispatch once so easy-peasy creates its internal Immer instance
     store.getActions().setIsReady(false)
@@ -94,7 +96,7 @@ describe("dispatchErrorMiddleware — immer Proxy crash (EIGEN-AZR1 regression)"
     }
 
     try {
-      // This must NOT propagate — dispatchErrorMiddleware should swallow it
+      // This must NOT propagate — persistenceMiddleware should swallow it
       expect(() => store.getActions().setIsReady(true)).not.toThrow()
 
       expect(captureException).toHaveBeenCalledWith(proxyError, {
