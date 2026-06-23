@@ -28,7 +28,7 @@ import { LayoutAnimation, Platform } from "react-native"
 
 interface OnboardingQuestionTemplateProps {
   answers?: string[]
-  action: Exclude<OnboardingContextAction["type"], "RESET">
+  action: Exclude<OnboardingContextAction["type"], "RESET" | "FOLLOW">
   onNext: () => void
   question: string
   subtitle?: string
