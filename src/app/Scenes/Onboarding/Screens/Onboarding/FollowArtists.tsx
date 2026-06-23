@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  DEFAULT_HIT_SLOP,
   Flex,
   Screen,
   SearchInput,
@@ -8,6 +9,7 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
+import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
 import { OnboardingOrderedSetScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingOrderedSet"
 import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -20,7 +22,7 @@ const MIN_FOLLOWED = 3
 export const FollowArtists: React.FC = () => {
   const [query, setQuery] = useState("")
   const { bottom } = useSafeAreaInsets()
-  const [count, setCount] = useState(0)
+  const [count] = useState(0)
   const setId = "onboarding:suggested-artists"
   const placeholder = "Search Artists"
 
@@ -29,9 +31,26 @@ export const FollowArtists: React.FC = () => {
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
 
+  const handleSkipPressed = () => {
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
+  }
+
   return (
     <Screen>
-      <Screen.Header />
+      <Screen.Header
+        leftElements={<OnboardingProgressBadge current={count} total={MIN_FOLLOWED} />}
+        rightElements={
+          <Touchable
+            accessibilityRole="button"
+            accessibilityLabel="Skip new user onboarding"
+            onPress={handleSkipPressed}
+            hitSlop={DEFAULT_HIT_SLOP}
+            haptic
+          >
+            <Text>Skip</Text>
+          </Touchable>
+        }
+      />
 
       <Screen.Body>
         <Box mt={2}>
