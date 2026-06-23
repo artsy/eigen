@@ -215,8 +215,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             )}
           </>
         )}
+        <NewUserOnboardingCompletionBottomSheet />
       </Screen.Body>
-      <NewUserOnboardingCompletionBottomSheet />
     </Screen>
   )
 }

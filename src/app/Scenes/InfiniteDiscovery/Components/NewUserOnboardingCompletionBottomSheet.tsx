@@ -1,11 +1,14 @@
-import { Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
+import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useCallback, useEffect, useRef } from "react"
-import { Image, useWindowDimensions, View } from "react-native"
-
-const SNAP_HEIGHT = 450
+import { useCallback, useEffect } from "react"
+import { Image, View } from "react-native"
 
 const REFERENCE_WIDTH = 350
 const CARD_WIDTH = 85
@@ -28,9 +31,7 @@ const FAN_CONFIGS = Array.from({ length: CARD_COUNT }, (_, i) => {
 const FAN_CONTAINER_HEIGHT = ARC_RADIUS * (1 - Math.cos(toRad(SPREAD_ANGLE / 2))) + CARD_HEIGHT + 10
 
 export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
-  const color = useColor()
-  const ref = useRef<BottomSheet>(null)
-  const { width: screenWidth } = useWindowDimensions()
+  const { width: screenWidth, safeAreaInsets } = useScreenDimensions()
   const scale = (screenWidth - 40) / REFERENCE_WIDTH
 
   const newUserOnboardingCompletionBottomSheetVisible = GlobalStore.useAppState(
@@ -65,67 +66,68 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     []
   )
 
-  if (!newUserOnboardingCompletionBottomSheetVisible || !isNewUserOnboardingSession) {
-    return null
-  }
+  const visible = newUserOnboardingCompletionBottomSheetVisible && isNewUserOnboardingSession
 
   return (
-    <BottomSheet
-      ref={ref}
-      enableDynamicSizing={false}
+    <AutomountedBottomSheetModal
+      visible={visible}
+      closeOnBackdropClick={false}
       enablePanDownToClose={false}
       enableHandlePanningGesture={false}
       enableContentPanningGesture={false}
       handleComponent={null}
       backdropComponent={renderBackdrop}
-      snapPoints={[SNAP_HEIGHT]}
-      index={0}
-      backgroundStyle={{ backgroundColor: color("mono0") }}
     >
-      <Flex px={2} pb={2} pt={2}>
-        <View style={{ height: FAN_CONTAINER_HEIGHT * scale, width: REFERENCE_WIDTH * scale }}>
-          {savedArtworks.map((artwork, index) => {
-            const config = FAN_CONFIGS[index]
-            return (
-              <ArtworkThumbnail
-                key={artwork.internalID}
-                imageUrl={artwork.url}
-                blurhash={artwork.blurhash}
-                width={CARD_WIDTH * scale}
-                height={CARD_HEIGHT * scale}
-                rotate={config.rotate}
-                style={{ position: "absolute", left: config.left * scale, top: config.top * scale }}
-              />
-            )
-          })}
-        </View>
+      <BottomSheetView>
+        <Flex px={2} pt={2} style={{ paddingBottom: safeAreaInsets.bottom + 16 }}>
+          <View style={{ height: FAN_CONTAINER_HEIGHT * scale, width: REFERENCE_WIDTH * scale }}>
+            {savedArtworks.map((artwork, index) => {
+              const config = FAN_CONFIGS[index]
+              return (
+                <ArtworkThumbnail
+                  key={artwork.internalID}
+                  imageUrl={artwork.url}
+                  blurhash={artwork.blurhash}
+                  width={CARD_WIDTH * scale}
+                  height={CARD_HEIGHT * scale}
+                  rotate={config.rotate}
+                  style={{
+                    position: "absolute",
+                    left: config.left * scale,
+                    top: config.top * scale,
+                  }}
+                />
+              )
+            })}
+          </View>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
 
-        <Flex gap={1} alignItems="center">
-          <Text variant="lg-display" textAlign="center">
-            First five works saved!
-          </Text>
-          <Text variant="sm" textAlign="center">
-            We're starting to understand what draws you in.
-          </Text>
-          <Text variant="xs" textAlign="center">
-            Visit your homepage to see what we've put together so far, or keep browsing.
-          </Text>
+          <Flex gap={1} alignItems="center">
+            <Text variant="lg-display" textAlign="center">
+              First five works saved!
+            </Text>
+            <Text variant="sm" textAlign="center">
+              We're starting to understand what draws you in.
+            </Text>
+            <Text variant="xs" textAlign="center">
+              Visit your homepage to see what we've put together so far, or keep browsing.
+            </Text>
+          </Flex>
+
+          <Spacer y={2} />
+
+          <Button
+            block
+            variant="fillDark"
+            onPress={() => {
+              setOnboardingState("complete")
+            }}
+          >
+            Take me home
+          </Button>
         </Flex>
-
-        <Spacer y={2} />
-
-        <Button
-          block
-          variant="fillDark"
-          onPress={() => {
-            setOnboardingState("complete")
-          }}
-        >
-          Take me home
-        </Button>
-      </Flex>
-    </BottomSheet>
+      </BottomSheetView>
+    </AutomountedBottomSheetModal>
   )
 }
