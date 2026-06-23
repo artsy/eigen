@@ -5,7 +5,7 @@ import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItemNew_artist$key
-  onFollow: () => void
+  onFollow: (wasFollowed: boolean) => void
 }
 
 export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFollow, ...rest }) => {
@@ -23,7 +23,7 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
         },
       },
       onCompleted() {
-        onFollow()
+        onFollow(!!isFollowed)
       },
     })
   }

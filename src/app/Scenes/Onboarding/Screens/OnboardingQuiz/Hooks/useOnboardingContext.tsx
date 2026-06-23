@@ -24,7 +24,7 @@ export type OnboardingContextAction =
   | { type: "SET_ANSWER_TWO"; payload: string }
   | { type: "SET_ANSWER_THREE"; payload: string }
   | { type: "SET_PRICE_RANGE"; payload: string }
-  | { type: "FOLLOW"; payload: string }
+  | { type: "FOLLOW"; payload: string; wasFollowed: boolean }
 
 const reducer = (onReset: () => void) => (state: State, action: OnboardingContextAction) => {
   switch (action.type) {
@@ -59,10 +59,13 @@ const reducer = (onReset: () => void) => (state: State, action: OnboardingContex
       }
 
     case "FOLLOW":
+      if (action.wasFollowed) {
+        return { ...state, followedIds: state.followedIds.filter((id) => id !== action.payload) }
+      }
       return {
         ...state,
         followedIds: state.followedIds.includes(action.payload)
-          ? state.followedIds.filter((id) => id !== action.payload)
+          ? state.followedIds
           : [...state.followedIds, action.payload],
       }
 
@@ -145,4 +148,29 @@ export const OnboardingProvider: React.FC<React.PropsWithChildren<OnboardingProv
 
 export const useOnboardingContext = () => {
   return useContext(OnboardingContext)
+}
+
+// Minimal provider for screens that need follow tracking but not the quiz workflow.
+export const StandaloneOnboardingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [state, dispatch] = useReducer(
+    reducer(() => {}),
+    DEFAULT_STATE
+  )
+
+  return (
+    <OnboardingContext.Provider
+      value={{
+        back: () => {},
+        current: undefined,
+        dispatch,
+        next: () => {},
+        onDone: () => {},
+        progress: 0,
+        state,
+        workflowEngine: new WorkflowEngine({ workflow: [] }),
+      }}
+    >
+      {children}
+    </OnboardingContext.Provider>
+  )
 }

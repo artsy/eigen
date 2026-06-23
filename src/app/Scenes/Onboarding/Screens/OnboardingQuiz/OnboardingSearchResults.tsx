@@ -63,9 +63,9 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
           case "Artist":
             return (
               <ArtistListItemNew
-                onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
                 artist={item}
               />
@@ -80,9 +80,9 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
               />
             )

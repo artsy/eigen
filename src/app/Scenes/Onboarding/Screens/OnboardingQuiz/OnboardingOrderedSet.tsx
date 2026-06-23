@@ -29,7 +29,11 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
     }
   )
 
-  const orderedSet = orderedSets![0]?.orderedSet
+  if (!orderedSets || orderedSets.length === 0) {
+    return null
+  }
+
+  const orderedSet = orderedSets[0]?.orderedSet
 
   if (isEmpty(orderedSet)) {
     return null
@@ -51,9 +55,9 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
             return (
               <ArtistListItemNew
                 artist={item}
-                onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
               />
             )
@@ -67,9 +71,9 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
               />
             )
