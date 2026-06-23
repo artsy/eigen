@@ -2,8 +2,9 @@ import { Button, Flex, Image, useSpace, Spacer, Text, useColor } from "@artsy/pa
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Platform } from "react-native"
+import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { DummyArtist } from "./dummyArtistData"
 
 interface ArtistSaveOnboardingBottomSheetProps {
@@ -18,7 +19,8 @@ export const ArtistSaveOnboardingBottomSheet = ({
   artists,
 }: ArtistSaveOnboardingBottomSheetProps) => {
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
-  const [currentPage, setCurrentPage] = useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const pagerViewRef = useRef<PagerView>(null)
   const space = useSpace()
   const color = useColor()
   const { width: screenWidth } = useScreenDimensions()
@@ -26,10 +28,16 @@ export const ArtistSaveOnboardingBottomSheet = ({
   const barWidth = (screenWidth - 40) / numberOfPages
 
   const handleButtonPress = () => {
-    if (currentPage === 0) {
-      setCurrentPage(1)
+    if (activeStep === 0) {
+      pagerViewRef.current?.setPage(1)
     } else {
       onDismiss()
+    }
+  }
+
+  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
+    if (e.nativeEvent.position !== undefined && e.nativeEvent.position !== -1) {
+      setActiveStep(e.nativeEvent.position)
     }
   }
 
@@ -42,9 +50,17 @@ export const ArtistSaveOnboardingBottomSheet = ({
     >
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
-          {currentPage === 0 ? (
-            // PAGE 1: Artists + Favorites
-            <>
+          <PagerView
+            style={{ width: "100%", height: 350 }}
+            initialPage={0}
+            onPageScroll={handleIndexChange}
+            ref={pagerViewRef}
+            pageMargin={0}
+            overdrag={false}
+            offscreenPageLimit={1}
+          >
+            {/* PAGE 1: Artists + Favorites */}
+            <Flex key="page-0" alignItems="center">
               {/* Artist Images - Overlapping Circles */}
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {artists.slice(0, 3).map((artist, index) => (
@@ -92,11 +108,31 @@ export const ArtistSaveOnboardingBottomSheet = ({
                   [Nav Bar Image Placeholder]
                 </Text>
               </Flex>
-            </>
-          ) : (
-            // PAGE 2: Alerts Notification
-            <>
-              <Spacer y={4} />
+            </Flex>
+
+            {/* PAGE 2: Alerts Notification */}
+            <Flex key="page-1" alignItems="center">
+              {/* Artist Images - Overlapping Circles */}
+              <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                {artists.slice(0, 3).map((artist, index) => (
+                  <Flex
+                    key={artist.id}
+                    style={{
+                      marginLeft: index > 0 ? -16 : 0,
+                      zIndex: artists.length - index,
+                    }}
+                  >
+                    <Image
+                      src={artist.imageUrl}
+                      width={64}
+                      height={64}
+                      style={{ borderRadius: 32 }}
+                    />
+                  </Flex>
+                ))}
+              </Flex>
+
+              <Spacer y={2} />
 
               {/* Title */}
               <Text variant="lg-display" textAlign="center">
@@ -126,8 +162,8 @@ export const ArtistSaveOnboardingBottomSheet = ({
               </Flex>
 
               <Spacer y={2} />
-            </>
-          )}
+            </Flex>
+          </PagerView>
 
           {/* Page indicator - horizontal bars */}
           <Flex flexDirection="row" justifyContent="center" mb={2}>
@@ -140,7 +176,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
                   marginRight: index < numberOfPages - 1 ? space(1) : 0,
                   borderRadius: 2,
                   backgroundColor: color("mono100"),
-                  opacity: currentPage === index ? 1 : 0.2,
+                  opacity: activeStep === index ? 1 : 0.2,
                 }}
               />
             ))}
@@ -148,7 +184,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
           {/* CTA Button */}
           <Button block onPress={handleButtonPress}>
-            {currentPage === 0 ? "Next" : "View For You"}
+            {activeStep === 0 ? "Next" : "View For You"}
           </Button>
         </Flex>
       </BottomSheetView>
