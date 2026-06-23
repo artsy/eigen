@@ -51,7 +51,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
         style={[props.style, { backgroundColor: "rgb(229,229,229)" }]}
       />
     ),
-    [color]
+    []
   )
 
   return (
@@ -73,7 +73,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
             overdrag={false}
             offscreenPageLimit={1}
           >
-            {/* Page 1: Artists + Favorites */}
+            {/* Page 1 */}
             <Flex key="page-0" alignItems="center" width="100%">
               <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
@@ -122,7 +122,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
               />
             </Flex>
 
-            {/* Page 2: Alerts Notification */}
+            {/* Page 2 */}
             <Flex key="page-1" alignItems="center" width="100%">
               <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
