@@ -1,4 +1,4 @@
-import { Button, Flex, Image, useSpace, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { useState, useRef } from "react"
@@ -47,7 +47,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
           <PagerView
-            style={{ width: "100%", height: 300 }}
+            style={{ width: "100%", height: 320 }}
             initialPage={0}
             onPageScroll={handleIndexChange}
             ref={pagerViewRef}
@@ -58,6 +58,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
             {/* PAGE 1: Artists + Favorites */}
             <Flex key="page-0" alignItems="center" width="100%">
               {/* Artist Images - Overlapping Circles */}
+              <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {artists.slice(0, 3).map((artist, index) => (
                   <Flex
@@ -106,6 +107,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
             {/* PAGE 2: Alerts Notification */}
             <Flex key="page-1" alignItems="center" width="100%">
               {/* Artist Images - Overlapping Circles */}
+              <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {artists.slice(0, 3).map((artist, index) => (
                   <Flex
