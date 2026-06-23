@@ -62,7 +62,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const saveAnimationProgress = useSharedValue(0)
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
-    const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
+    const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
 
@@ -192,7 +192,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             Haptic.trigger("impactLight")
             setShowScreenTapToSave(true)
             if (!hasSavedArtworks) {
-              setHasSavedArtwors(true)
+              setHasSavedArtworks(true)
             }
             incrementSavedArtworksCount()
             if (isNewUserOnboardingSession) {
@@ -337,7 +337,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
             onPress={() => {
               if (!hasSavedArtworks) {
-                setHasSavedArtwors(true)
+                setHasSavedArtworks(true)
               }
 
               if (isSaved) {
