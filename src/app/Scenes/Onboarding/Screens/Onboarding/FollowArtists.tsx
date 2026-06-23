@@ -67,9 +67,7 @@ export const FollowArtists: React.FC = () => {
         <Flex backgroundColor="mono0" flex={1}>
           <SearchInput placeholder="Search Artists" onChangeText={setQuery} value={query} />
           <Spacer y={2} />
-          <FollowedArtistsBank />
-          <Text variant="md">Leading artists on Artsy</Text>
-          <Spacer y={2} />
+
           {debouncedValue.length >= 2 ? (
             <OnboardingSearchResultsScreen
               term={debouncedValue}
@@ -77,7 +75,12 @@ export const FollowArtists: React.FC = () => {
               onArtistFollowed={handleArtistFollowed}
             />
           ) : (
-            <OnboardingOrderedSetScreen id={setId} onArtistFollowed={handleArtistFollowed} />
+            <>
+              <FollowedArtistsBank />
+              <Text variant="md">Leading artists on Artsy</Text>
+              <Spacer y={2} />
+              <OnboardingOrderedSetScreen id={setId} onArtistFollowed={handleArtistFollowed} />
+            </>
           )}
         </Flex>
         <Flex pb={`${bottom}px`} pt={2}>
