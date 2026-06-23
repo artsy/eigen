@@ -1,18 +1,56 @@
-import { Button, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Box,
+  Button,
+  Flex,
+  Screen,
+  SearchInput,
+  Spacer,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { OnboardingOrderedSetScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingOrderedSet"
+import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_FOLLOWED = 3
 
 export const FollowArtists: React.FC = () => {
+  const [query, setQuery] = useState("")
   const { bottom } = useSafeAreaInsets()
   const [count, setCount] = useState(0)
+  const setId = "onboarding:suggested-artists"
+  const placeholder = "Search Artists"
+
+  const title = `Tell us which artists you’re interested in?`
+  const subtitle = `Follow ${MIN_FOLLOWED} or more artists to see more of their work.`
+
+  const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
 
   return (
     <Screen>
+      <Screen.Header />
+
       <Screen.Body>
-        <Flex flex={1} justifyContent="center" alignItems="center">
+        <Box mt={2}>
+          <Text variant="lg-display">{title}</Text>
+          <Text variant="sm-display" color="mono60" mt={1}>
+            {subtitle}
+          </Text>
+        </Box>
+        <Spacer y={2} />
+        <Flex backgroundColor="mono0" flex={1}>
+          <SearchInput placeholder={placeholder} onChangeText={setQuery} value={query} />
+          <Spacer y={2} />
+          {debouncedValue.length >= 2 ? (
+            <OnboardingSearchResultsScreen term={debouncedValue} entities="ARTIST" />
+          ) : (
+            <OnboardingOrderedSetScreen id={setId} />
+          )}
+        </Flex>
+        {/* <Flex flex={1} justifyContent="center" alignItems="center">
           <Flex flexDirection="row" alignItems="center" gap={4}>
             <Touchable
               accessibilityRole="button"
@@ -30,7 +68,7 @@ export const FollowArtists: React.FC = () => {
               </Text>
             </Touchable>
           </Flex>
-        </Flex>
+        </Flex> */}
         <Flex pb={`${bottom}px`}>
           <Button
             block
