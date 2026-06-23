@@ -104,9 +104,8 @@ def update_sentry_options(file_path, release:, dist:)
   options = JSON.parse(File.read(file_path))
   options['release'] = release
   options['dist'] = dist
-  options['environment'] = 'staging'
   File.write(file_path, JSON.pretty_generate(options) + "\n")
-  UI.success("✅ Updated #{file_path} — release=#{release}, dist=#{dist}, environment=staging")
+  UI.success("✅ Updated #{file_path} — release=#{release}, dist=#{dist}, environment=#{options['environment']}")
 end
 
 def platform_settings(platform, build_type: 'release')
