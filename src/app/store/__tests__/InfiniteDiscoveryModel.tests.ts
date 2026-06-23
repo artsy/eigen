@@ -76,6 +76,16 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
+  describe("setIsNewUserOnboardingSession", () => {
+    it("clears completionBottomSheetVisible when set to false", () => {
+      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+    })
+  })
+
   describe("removeNewUserOnboardingSavedArtwork", () => {
     it("removes the artwork with the given internalID", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
