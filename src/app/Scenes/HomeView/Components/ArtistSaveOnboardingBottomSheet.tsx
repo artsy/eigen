@@ -1,7 +1,11 @@
 import { Button, Flex, Image, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import { BottomSheetView } from "@gorhom/bottom-sheet"
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { useState, useRef } from "react"
+import { useState, useRef, useCallback } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { DummyArtist } from "./dummyArtistData"
@@ -37,12 +41,26 @@ export const ArtistSaveOnboardingBottomSheet = ({
     }
   }
 
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        opacity={0.5}
+        style={[props.style, { backgroundColor: "rgb(229,229,229)" }]}
+      />
+    ),
+    [color]
+  )
+
   return (
     <AutomountedBottomSheetModal
       enableDynamicSizing
       visible={visible}
       name="ArtistSaveOnboardingBottomSheet"
       onDismiss={onDismiss}
+      backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
@@ -55,9 +73,8 @@ export const ArtistSaveOnboardingBottomSheet = ({
             overdrag={false}
             offscreenPageLimit={1}
           >
-            {/* PAGE 1: Artists + Favorites */}
+            {/* Page 1: Artists + Favorites */}
             <Flex key="page-0" alignItems="center" width="100%">
-              {/* Artist Images - Overlapping Circles */}
               <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {artists.slice(0, 3).map((artist, index) => (
@@ -65,7 +82,12 @@ export const ArtistSaveOnboardingBottomSheet = ({
                     key={artist.id}
                     style={{
                       marginLeft: index > 0 ? -10 : 0,
-                      zIndex: artists.length - index,
+                      zIndex: index,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 3 },
+                      shadowOpacity: 0.35,
+                      shadowRadius: 6,
+                      elevation: 8,
                     }}
                   >
                     <Image
@@ -80,21 +102,17 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
               <Spacer y={2} />
 
-              {/* Title */}
               <Text variant="sm-display" weight="medium" textAlign="center">
                 Your followed artists are saved to Favorites.
               </Text>
 
               <Spacer y={1} />
 
-              {/* Body Text */}
               <Text variant="xs" color="black60" textAlign="center">
                 Find them anytime in the Favorites tab at the bottom of your screen.
               </Text>
 
               <Spacer y={2} />
-
-              {/* Nav bar image */}
 
               <Image
                 src="https://files.artsy.net/images/nav-bar.png"
@@ -104,9 +122,8 @@ export const ArtistSaveOnboardingBottomSheet = ({
               />
             </Flex>
 
-            {/* PAGE 2: Alerts Notification */}
+            {/* Page 2: Alerts Notification */}
             <Flex key="page-1" alignItems="center" width="100%">
-              {/* Artist Images - Overlapping Circles */}
               <Spacer y={2} />
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {artists.slice(0, 3).map((artist, index) => (
@@ -114,7 +131,12 @@ export const ArtistSaveOnboardingBottomSheet = ({
                     key={artist.id}
                     style={{
                       marginLeft: index > 0 ? -10 : 0,
-                      zIndex: artists.length - index,
+                      zIndex: index,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 3 },
+                      shadowOpacity: 0.35,
+                      shadowRadius: 6,
+                      elevation: 8,
                     }}
                   >
                     <Image
@@ -129,14 +151,12 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
               <Spacer y={2} />
 
-              {/* Title */}
               <Text variant="sm-display" weight="medium" textAlign="center">
                 We'll let you know when new works arrive.
               </Text>
 
               <Spacer y={1} />
 
-              {/* Body */}
               <Text variant="xs" color="black60" textAlign="center">
                 When a new work by an artist you follow is added to Artsy, you'll see a notification
                 on the Alerts icon at the top of your For You page.
@@ -144,7 +164,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
               <Spacer y={2} />
 
-              {/* Search bar image */}
               <Image
                 src="https://files.artsy.net/images/search-bar.png"
                 height={75}
@@ -156,7 +175,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
             </Flex>
           </PagerView>
 
-          {/* Page indicator */}
           <Flex flexDirection="row" justifyContent="center" mb={2} gap={0.5} py={0.5}>
             {Array.from(Array(numberOfPages).keys()).map((index) => (
               <Flex
@@ -169,7 +187,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
             ))}
           </Flex>
 
-          {/* CTA Button */}
           <Button block onPress={handleButtonPress}>
             {activeStep === 0 ? "Next" : "View For You"}
           </Button>
