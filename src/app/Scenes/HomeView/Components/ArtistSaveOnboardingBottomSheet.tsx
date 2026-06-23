@@ -20,7 +20,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
   const [activeStep, setActiveStep] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
-  const space = useSpace()
   const color = useColor()
   const numberOfPages = 2
 
