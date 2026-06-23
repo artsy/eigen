@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { captureException } from "@sentry/react-native"
 import { State } from "easy-peasy"
 import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
 import { Middleware } from "redux"
@@ -39,6 +40,27 @@ export function assignDeep(object: any, otherObject: any) {
       object[k] = otherObject[k]
     } else {
       assignDeep(object[k], otherObject[k])
+    }
+  }
+}
+
+// Catches errors thrown by immer/reducers (e.g. the Hermes 0.14.1 "Proxy handler is null"
+// bug on iOS 26 — EIGEN-AZR1, EIGEN-AZA6) and reports them to Sentry without letting
+// them propagate to RCTFatal and crash the app. Also throttles state persistence.
+export const persistenceMiddleware: Middleware = (api) => {
+  const throttledPersist = throttle(() => persist(api.getState()), 1000, {
+    leading: false,
+    trailing: true,
+  })
+
+  return (next) => (action) => {
+    try {
+      const result = next(action)
+      throttledPersist()
+      return result
+    } catch (e) {
+      captureException(e, { level: "error", tags: { handled: "true" } })
+      return undefined
     }
   }
 }
@@ -84,18 +106,5 @@ export async function unpersist(): Promise<DeepPartial<State<GlobalStoreModel>>>
       console.error(e)
     }
     return {}
-  }
-}
-
-export const persistenceMiddleware: Middleware = (store) => {
-  const throttledPersist = throttle(persist, 1000, { leading: false, trailing: true })
-  return (next) => (action) => {
-    const result = next(action)
-    // use requestAnimationFrame to make doubly sure we avoid blocking UI updates
-    requestAnimationFrame(() => {
-      throttledPersist(store.getState())
-    })
-
-    return result
   }
 }
