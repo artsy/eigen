@@ -17,6 +17,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useState } from "react"
+import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_FOLLOWED = 3
@@ -30,6 +31,11 @@ export const FollowArtists: React.FC = () => {
   const setId = "onboarding:suggested-artists"
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
+
+  const handleCancel = () => {
+    setQuery("")
+    KeyboardController.dismiss()
+  }
 
   const handleArtistFollowed = (artist: OnboardingFollowedArtist, wasFollowed: boolean) => {
     if (wasFollowed) {
@@ -65,7 +71,23 @@ export const FollowArtists: React.FC = () => {
         </Box>
         <Spacer y={2} />
         <Flex backgroundColor="mono0" flex={1}>
-          <SearchInput placeholder="Search Artists" onChangeText={setQuery} value={query} />
+          <Flex flexDirection="row" alignItems="center" gap={1}>
+            <Flex flex={1}>
+              <SearchInput placeholder="Search Artists" onChangeText={setQuery} value={query} />
+            </Flex>
+            {!!query && (
+              <Touchable
+                accessibilityRole="button"
+                onPress={handleCancel}
+                hitSlop={DEFAULT_HIT_SLOP}
+                haptic
+              >
+                <Text variant="sm-display" color="mono60">
+                  Cancel
+                </Text>
+              </Touchable>
+            )}
+          </Flex>
           <Spacer y={2} />
 
           {debouncedValue.length >= 2 ? (
