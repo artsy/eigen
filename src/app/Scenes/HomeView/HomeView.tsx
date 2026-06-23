@@ -30,6 +30,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -272,6 +273,9 @@ const HomeViewScreenComponent: React.FC = () => {
   const showBottomSheet = GlobalStore.useAppState(
     (state) => state.onboarding.showArtistSaveBottomSheet
   )
+
+  const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
+
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false)
 
   const handleBottomSheetDismiss = () => {
@@ -280,14 +284,14 @@ const HomeViewScreenComponent: React.FC = () => {
   }
 
   useEffect(() => {
-    if (showBottomSheet) {
+    if (showBottomSheet && isExperienceOnboardingEnabled) {
       const timer = setTimeout(() => {
         setIsBottomSheetVisible(true)
       }, 2000)
 
       return () => clearTimeout(timer)
     }
-  }, [showBottomSheet])
+  }, [showBottomSheet, isExperienceOnboardingEnabled])
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
