@@ -33,8 +33,8 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
     })
 
-    it("sets completionBottomSheetVisible to true when the 5th artwork is added", () => {
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+    it("sets newUserOnboardingCompletionBottomSheetVisible to true when the 5th artwork is added", () => {
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
 
       for (let i = 1; i <= 4; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -43,14 +43,14 @@ describe("InfiniteDiscoveryModel", () => {
         })
       }
 
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
 
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-5",
         url: "https://example.com/5.jpg",
       })
 
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
     })
 
     it("stores the blurhash when provided", () => {
@@ -64,25 +64,25 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
-  describe("setCompletionBottomSheetVisible", () => {
-    it("toggles completionBottomSheetVisible", () => {
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+  describe("setNewUserOnboardingCompletionBottomSheetVisible", () => {
+    it("toggles newUserOnboardingCompletionBottomSheetVisible", () => {
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
 
-      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
 
-      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(false)
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(false)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
     })
   })
 
   describe("setIsNewUserOnboardingSession", () => {
-    it("clears completionBottomSheetVisible when set to false", () => {
-      GlobalStore.actions.infiniteDiscovery.setCompletionBottomSheetVisible(true)
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(true)
+    it("clears newUserOnboardingCompletionBottomSheetVisible when set to false", () => {
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
 
       GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
-      expect(state()?.sessionState.completionBottomSheetVisible).toBe(false)
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
     })
   })
 

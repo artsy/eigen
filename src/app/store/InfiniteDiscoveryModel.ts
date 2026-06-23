@@ -14,7 +14,7 @@ export interface InfiniteDiscoveryModel {
     moreInfoSheetVisible: boolean
     isNewUserOnboardingSession: boolean
     newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
-    completionBottomSheetVisible: boolean
+    newUserOnboardingCompletionBottomSheetVisible: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -23,7 +23,7 @@ export interface InfiniteDiscoveryModel {
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
   setIsNewUserOnboardingSession: Action<this, boolean>
-  setCompletionBottomSheetVisible: Action<this, boolean>
+  setNewUserOnboardingCompletionBottomSheetVisible: Action<this, boolean>
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
 }
@@ -36,7 +36,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     moreInfoSheetVisible: false,
     isNewUserOnboardingSession: false,
     newUserOnboardingSavedArtworks: [],
-    completionBottomSheetVisible: false,
+    newUserOnboardingCompletionBottomSheetVisible: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -60,11 +60,11 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   setIsNewUserOnboardingSession: action((state, payload) => {
     state.sessionState.isNewUserOnboardingSession = payload
     if (!payload) {
-      state.sessionState.completionBottomSheetVisible = false
+      state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
     }
   }),
-  setCompletionBottomSheetVisible: action((state, payload) => {
-    state.sessionState.completionBottomSheetVisible = payload
+  setNewUserOnboardingCompletionBottomSheetVisible: action((state, payload) => {
+    state.sessionState.newUserOnboardingCompletionBottomSheetVisible = payload
   }),
   addNewUserOnboardingSavedArtwork: action((state, payload) => {
     const { newUserOnboardingSavedArtworks } = state.sessionState
@@ -74,7 +74,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     if (!alreadyAdded && newUserOnboardingSavedArtworks.length < 5) {
       newUserOnboardingSavedArtworks.push(payload)
       if (newUserOnboardingSavedArtworks.length === 5) {
-        state.sessionState.completionBottomSheetVisible = true
+        state.sessionState.newUserOnboardingCompletionBottomSheetVisible = true
       }
     }
   }),

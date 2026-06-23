@@ -24,8 +24,8 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const { width: screenWidth } = useWindowDimensions()
   const scale = (screenWidth - 40) / REFERENCE_WIDTH
 
-  const completionBottomSheetVisible = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.completionBottomSheetVisible
+  const newUserOnboardingCompletionBottomSheetVisible = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
   )
   const isNewUserOnboardingSession = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
@@ -56,7 +56,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     []
   )
 
-  if (!completionBottomSheetVisible || !isNewUserOnboardingSession) {
+  if (!newUserOnboardingCompletionBottomSheetVisible || !isNewUserOnboardingSession) {
     return null
   }
 
