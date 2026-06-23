@@ -63,6 +63,8 @@ export const FollowArtists: React.FC = () => {
         <Flex backgroundColor="mono0" flex={1}>
           <SearchInput placeholder={placeholder} onChangeText={setQuery} value={query} />
           <Spacer y={2} />
+          <Text variant="md">Leading artists on Artsy</Text>
+          <Spacer y={2} />
           {debouncedValue.length >= 2 ? (
             <OnboardingSearchResultsScreen term={debouncedValue} entities="ARTIST" />
           ) : (
@@ -88,7 +90,7 @@ export const FollowArtists: React.FC = () => {
             </Touchable>
           </Flex>
         </Flex> */}
-        <Flex pb={`${bottom}px`}>
+        <Flex pb={`${bottom}px`} pt={2}>
           <Button
             block
             disabled={count < MIN_FOLLOWED}
