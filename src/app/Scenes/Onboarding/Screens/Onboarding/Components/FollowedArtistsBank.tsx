@@ -46,7 +46,7 @@ export const FollowedArtistsBank: React.FC = () => {
   const followedArtists = GlobalStore.useAppState(
     (state) => state.onboarding.followedOnboardingArtists
   )
-  const ids = useMemo(() => followedArtists.map((a) => a.internalID), [followedArtists])
+  const ids = useMemo(() => followedArtists.slice(0, 3).map((a) => a.internalID), [followedArtists])
   const deferredIds = useDeferredValue(ids)
 
   if (ids.length === 0 && deferredIds.length === 0) return null
