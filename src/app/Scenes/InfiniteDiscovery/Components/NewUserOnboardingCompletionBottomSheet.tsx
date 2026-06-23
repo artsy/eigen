@@ -8,15 +8,24 @@ import { Image, useWindowDimensions, View } from "react-native"
 const SNAP_HEIGHT = 450
 
 const REFERENCE_WIDTH = 350
-const FAN_CONTAINER_HEIGHT_BASE = 165
+const CARD_WIDTH = 85
+const CARD_HEIGHT = 106
+const SPREAD_ANGLE = 56
+const ARC_RADIUS = 260
 
-const FAN_CARD_CONFIGS = [
-  { left: 24.5, top: 40.5, width: 86.5, height: 108, rotate: "-27.46deg" },
-  { left: 71, top: 12, width: 87.5, height: 106, rotate: "-13.56deg" },
-  { left: 126.5, top: 0, width: 88.5, height: 105, rotate: "0deg" },
-  { left: 183.5, top: 12, width: 87.5, height: 106, rotate: "13.56deg" },
-  { left: 239.5, top: 40.5, width: 86.5, height: 108, rotate: "27.46deg" },
-]
+const CARD_COUNT = 5
+const toRad = (deg: number) => (deg * Math.PI) / 180
+
+const FAN_CONFIGS = Array.from({ length: CARD_COUNT }, (_, i) => {
+  const angle = ((i - Math.floor(CARD_COUNT / 2)) * SPREAD_ANGLE) / (CARD_COUNT - 1)
+  return {
+    left: REFERENCE_WIDTH / 2 + ARC_RADIUS * Math.sin(toRad(angle)) - CARD_WIDTH / 2,
+    top: ARC_RADIUS * (1 - Math.cos(toRad(angle))),
+    rotate: `${angle.toFixed(2)}deg`,
+  }
+})
+
+const FAN_CONTAINER_HEIGHT = ARC_RADIUS * (1 - Math.cos(toRad(SPREAD_ANGLE / 2))) + CARD_HEIGHT + 10
 
 export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const color = useColor()
@@ -74,16 +83,16 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
       backgroundStyle={{ backgroundColor: color("mono0") }}
     >
       <Flex px={2} pb={2} pt={2}>
-        <View style={{ height: FAN_CONTAINER_HEIGHT_BASE * scale, width: REFERENCE_WIDTH * scale }}>
+        <View style={{ height: FAN_CONTAINER_HEIGHT * scale, width: REFERENCE_WIDTH * scale }}>
           {savedArtworks.map((artwork, index) => {
-            const config = FAN_CARD_CONFIGS[index]
+            const config = FAN_CONFIGS[index]
             return (
               <ArtworkThumbnail
                 key={artwork.internalID}
                 imageUrl={artwork.url}
                 blurhash={artwork.blurhash}
-                width={config.width * scale}
-                height={config.height * scale}
+                width={CARD_WIDTH * scale}
+                height={CARD_HEIGHT * scale}
                 rotate={config.rotate}
                 style={{ position: "absolute", left: config.left * scale, top: config.top * scale }}
               />

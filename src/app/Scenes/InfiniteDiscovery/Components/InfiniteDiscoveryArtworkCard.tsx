@@ -35,16 +35,15 @@ import { graphql, useFragment } from "react-relay"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
 
-const ARTWORK_THUMBNAIL_REFERENCE_WIDTH = 88.5
-const ARTWORK_THUMBNAIL_REFERENCE_HEIGHT = 105
-const ARTWORK_THUMBNAIL_SCALE_REFERENCE = 350
-
 const getNewUserOnboardingThumbnailUrl = (url: string, screenWidth: number) => {
-  const scale = (screenWidth - 40) / ARTWORK_THUMBNAIL_SCALE_REFERENCE
+  const referenceWidth = 85
+  const referenceHeight = 106
+  const scaleReference = 350
+  const scale = (screenWidth - 40) / scaleReference
   return createGeminiUrl({
     imageURL: url,
-    width: Math.round(ARTWORK_THUMBNAIL_REFERENCE_WIDTH * scale * PixelRatio.get()),
-    height: Math.round(ARTWORK_THUMBNAIL_REFERENCE_HEIGHT * scale * PixelRatio.get()),
+    width: Math.round(referenceWidth * scale * PixelRatio.get()),
+    height: Math.round(referenceHeight * scale * PixelRatio.get()),
   })
 }
 
