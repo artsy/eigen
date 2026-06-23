@@ -4,6 +4,7 @@ import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQue
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
@@ -16,9 +17,10 @@ import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
+  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
+const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id, onArtistFollowed }) => {
   const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
@@ -58,6 +60,14 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
                 onFollow={(wasFollowed) => {
                   trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  onArtistFollowed?.(
+                    {
+                      internalID: item.internalID,
+                      imageUrl: item.coverArtwork?.image?.url ?? null,
+                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                    },
+                    wasFollowed
+                  )
                 }}
               />
             )
@@ -126,6 +136,16 @@ const OnboardingOrderedSetScreenQuery = graphql`
             ... on Artist {
               internalID
               isFollowed
+              name
+              nationality
+              birthday
+              deathday
+              coverArtwork {
+                image {
+                  url
+                  blurhash
+                }
+              }
               ...ArtistListItemNew_artist
             }
             ... on Profile {

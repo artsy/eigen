@@ -76,6 +76,7 @@ const ArtistListItemFragment = graphql`
     coverArtwork {
       image {
         url
+        blurhash
       }
     }
   }

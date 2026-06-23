@@ -4,6 +4,7 @@ import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResu
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -18,9 +19,14 @@ import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
   term: string
+  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
+const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
+  entities,
+  term,
+  onArtistFollowed,
+}) => {
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
   const { getId } = useNavigation()
@@ -66,6 +72,14 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
                 onFollow={(wasFollowed) => {
                   trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  onArtistFollowed?.(
+                    {
+                      internalID: item.internalID,
+                      imageUrl: item.coverArtwork?.image?.url ?? null,
+                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                    },
+                    wasFollowed
+                  )
                 }}
                 artist={item}
               />
@@ -110,10 +124,15 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
 export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProps> = ({
   entities,
   term,
+  onArtistFollowed,
 }) => {
   return (
     <Suspense fallback={<Placeholder />}>
-      <OnboardingSearchResults term={term} entities={entities} />
+      <OnboardingSearchResults
+        term={term}
+        entities={entities}
+        onArtistFollowed={onArtistFollowed}
+      />
     </Suspense>
   )
 }
@@ -148,6 +167,16 @@ const OnboardingSearchResultsFragment = graphql`
           ... on Artist {
             internalID
             isFollowed
+            name
+            nationality
+            birthday
+            deathday
+            coverArtwork {
+              image {
+                url
+                blurhash
+              }
+            }
             ...ArtistListItemNew_artist
           }
           ... on Profile {
