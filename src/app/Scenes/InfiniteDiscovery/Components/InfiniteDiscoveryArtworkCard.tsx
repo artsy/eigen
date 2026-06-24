@@ -1,27 +1,16 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
-import { createGeminiUrl } from "@artsy/palette-mobile/dist/utils/createGeminiUrl"
-import {
-  InfiniteDiscoveryArtworkCard_artwork$data,
-  InfiniteDiscoveryArtworkCard_artwork$key,
-} from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
+import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
-import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
+import { useInfiniteDiscoveryCardSave } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryCardSave"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
-import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import {
-  FlatList,
-  GestureResponderEvent,
-  PixelRatio,
-  Text as RNText,
-  ViewStyle,
-} from "react-native"
+import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -34,18 +23,6 @@ import Animated, {
 import { graphql, useFragment } from "react-relay"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
-
-const getNewUserOnboardingThumbnailUrl = (url: string, screenWidth: number) => {
-  const referenceWidth = 85
-  const referenceHeight = 106
-  const scaleReference = 350
-  const scale = (screenWidth - 40) / scaleReference
-  return createGeminiUrl({
-    imageURL: url,
-    width: Math.round(referenceWidth * scale * PixelRatio.get()),
-    height: Math.round(referenceHeight * scale * PixelRatio.get()),
-  })
-}
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -60,66 +37,24 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   ({ artwork: artworkProp, containerStyle, isSaved: isSavedProp, index, isTopCard }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const saveAnimationProgress = useSharedValue(0)
-    const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
-    const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
-    const {
-      incrementSavedArtworksCount,
-      decrementSavedArtworksCount,
-      addNewUserOnboardingSavedArtwork,
-      removeNewUserOnboardingSavedArtwork,
-    } = GlobalStore.actions.infiniteDiscovery
 
     const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
       artworkProp
     )
 
-    // State to track the current image index
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-    const isNewUserOnboardingSession = GlobalStore.useAppState(
-      (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-    )
-
-    const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-      artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
-      suppressToasts: isNewUserOnboardingSession,
-      onCompleted: (isArtworkSaved) => {
-        if (!!artwork) {
-          track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
-        }
-      },
-      onError: () => {
-        /**
-         * This logic assumes that the saved artworks count was optimistically incremented or decremented when the save button was pressed.
-         * If the save operation fails, we need to revert the saved artworks count to its previous state.
-         * This is needed because the optimisticUpdater callback in useSaveArtworkToArtworkLists performs some actions that can take severel seconds to complete,
-         * and as a result the saved artworks count can be out of sync with the actual state of the artwork.
-         */
-        if (isSaved) {
-          // if the artwork is currently saved, we optimistically decremented the count, so increment it back
-          incrementSavedArtworksCount()
-          if (isNewUserOnboardingSession && artwork) {
-            addNewUserOnboardingSavedArtwork({
-              internalID: artwork.internalID,
-              url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
-              blurhash: artwork.images[0]?.blurhash,
-            })
-          }
-        } else {
-          // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
-          decrementSavedArtworksCount()
-          if (isNewUserOnboardingSession && artwork) {
-            removeNewUserOnboardingSavedArtwork(artwork.internalID)
-          }
-        }
-      },
-    })
+    const {
+      isSaved: isSavedToArtworkList,
+      handleSaveButtonPress,
+      handleDoubleTapSave,
+    } = useInfiniteDiscoveryCardSave(artwork)
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
     const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
@@ -190,18 +125,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           if (!isSaved) {
             Haptic.trigger("impactLight")
             setShowScreenTapToSave(true)
-            if (!hasSavedArtworks) {
-              setHasSavedArtworks(true)
-            }
-            incrementSavedArtworksCount()
-            if (isNewUserOnboardingSession) {
-              addNewUserOnboardingSavedArtwork({
-                internalID: artwork.internalID,
-                url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
-                blurhash: artwork.images[0]?.blurhash,
-              })
-            }
-            saveArtworkToLists()
+            handleDoubleTapSave()
           }
           return true
         }
@@ -334,34 +258,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             accessibilityRole="button"
             haptic
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
-            onPress={() => {
-              if (!hasSavedArtworks) {
-                setHasSavedArtworks(true)
-              }
-
-              if (isSaved) {
-                // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
-                decrementSavedArtworksCount()
-                if (isNewUserOnboardingSession) {
-                  removeNewUserOnboardingSavedArtwork(artwork.internalID)
-                }
-              } else {
-                // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
-                incrementSavedArtworksCount()
-                if (isNewUserOnboardingSession) {
-                  addNewUserOnboardingSavedArtwork({
-                    internalID: artwork.internalID,
-                    url: getNewUserOnboardingThumbnailUrl(
-                      artwork.images[0]?.url ?? "",
-                      screenWidth
-                    ),
-                    blurhash: artwork.images[0]?.blurhash,
-                  })
-                }
-              }
-
-              saveArtworkToLists()
-            }}
+            onPress={handleSaveButtonPress}
             testID="save-artwork-icon"
           >
             <InfiniteDiscoveryArtworkCardPopover index={index} isTopCard={isTopCard}>
