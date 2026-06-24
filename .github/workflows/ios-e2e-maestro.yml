@@ -19,11 +19,11 @@ jobs:
       MAESTRO_VERSION: 2.2.0
       MAESTRO_CLI_NO_ANALYTICS: 1
       MAESTRO_DRIVER_STARTUP_TIMEOUT: 600000
-    strategy:
-      fail-fast: false # Don't cancel other jobs if one fails
-      matrix:
-        node_index: [0, 1, 2]
-        total_nodes: [3]
+    # strategy:
+    #   fail-fast: false # Don't cancel other jobs if one fails
+    #   matrix:
+    #     node_index: [0, 1, 2]
+    #     total_nodes: [3]
 
     steps:
       - name: Checkout repository
@@ -119,7 +119,17 @@ jobs:
           xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
           xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
 
-      - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
+      - name: Run Maestro E2E Tests (Shard 1)
         run: |
-          echo "🧪 Running Maestro E2E tests for shard ${{ matrix.node_index }} of ${{ matrix.total_nodes }}..."
-          ./scripts/utils/run_maestro_shard ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+          echo "🧪 Running Maestro E2E tests for shard 1 of 3..."
+          ./scripts/utils/run_maestro_shard ios 1 3
+
+      - name: Run Maestro E2E Tests (Shard 2)
+        run: |
+          echo "🧪 Running Maestro E2E tests for shard 2 of 3..."
+          ./scripts/utils/run_maestro_shard ios 2 3
+
+      - name: Run Maestro E2E Tests (Shard 3)
+        run: |
+          echo "🧪 Running Maestro E2E tests for shard 3 of 3..."
+          ./scripts/utils/run_maestro_shard ios 3 3
