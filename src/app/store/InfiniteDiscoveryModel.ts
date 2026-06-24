@@ -14,6 +14,7 @@ export interface InfiniteDiscoveryModel {
     moreInfoSheetVisible: boolean
     isNewUserOnboardingSession: boolean
     newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
+    newUserOnboardingCompletionBottomSheetVisible: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -22,6 +23,7 @@ export interface InfiniteDiscoveryModel {
   setHasSavedArtworks: Action<this, boolean>
   setMoreInfoSheetVisible: Action<this, boolean>
   setIsNewUserOnboardingSession: Action<this, boolean>
+  setNewUserOnboardingCompletionBottomSheetVisible: Action<this, boolean>
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
 }
@@ -34,6 +36,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     moreInfoSheetVisible: false,
     isNewUserOnboardingSession: false,
     newUserOnboardingSavedArtworks: [],
+    newUserOnboardingCompletionBottomSheetVisible: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -56,6 +59,12 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   setIsNewUserOnboardingSession: action((state, payload) => {
     state.sessionState.isNewUserOnboardingSession = payload
+    if (!payload) {
+      state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
+    }
+  }),
+  setNewUserOnboardingCompletionBottomSheetVisible: action((state, payload) => {
+    state.sessionState.newUserOnboardingCompletionBottomSheetVisible = payload
   }),
   addNewUserOnboardingSavedArtwork: action((state, payload) => {
     const { newUserOnboardingSavedArtworks } = state.sessionState
@@ -64,6 +73,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     )
     if (!alreadyAdded && newUserOnboardingSavedArtworks.length < 5) {
       newUserOnboardingSavedArtworks.push(payload)
+      if (newUserOnboardingSavedArtworks.length === 5) {
+        state.sessionState.newUserOnboardingCompletionBottomSheetVisible = true
+      }
     }
   }),
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {

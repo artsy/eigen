@@ -1,6 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
+import { createGeminiUrl } from "@artsy/palette-mobile/dist/utils/createGeminiUrl"
 import {
   InfiniteDiscoveryArtworkCard_artwork$data,
   InfiniteDiscoveryArtworkCard_artwork$key,
@@ -14,7 +15,13 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import {
+  FlatList,
+  GestureResponderEvent,
+  PixelRatio,
+  Text as RNText,
+  ViewStyle,
+} from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -27,6 +34,18 @@ import Animated, {
 import { graphql, useFragment } from "react-relay"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
+
+const getNewUserOnboardingThumbnailUrl = (url: string, screenWidth: number) => {
+  const referenceWidth = 85
+  const referenceHeight = 106
+  const scaleReference = 350
+  const scale = (screenWidth - 40) / scaleReference
+  return createGeminiUrl({
+    imageURL: url,
+    width: Math.round(referenceWidth * scale * PixelRatio.get()),
+    height: Math.round(referenceHeight * scale * PixelRatio.get()),
+  })
+}
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -42,7 +61,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const saveAnimationProgress = useSharedValue(0)
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
-    const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
+    const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
 
@@ -88,7 +107,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           if (isNewUserOnboardingSession && artwork) {
             addNewUserOnboardingSavedArtwork({
               internalID: artwork.internalID,
-              url: artwork.images[0]?.url ?? "",
+              url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
               blurhash: artwork.images[0]?.blurhash,
             })
           }
@@ -171,6 +190,17 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           if (!isSaved) {
             Haptic.trigger("impactLight")
             setShowScreenTapToSave(true)
+            if (!hasSavedArtworks) {
+              setHasSavedArtworks(true)
+            }
+            incrementSavedArtworksCount()
+            if (isNewUserOnboardingSession) {
+              addNewUserOnboardingSavedArtwork({
+                internalID: artwork.internalID,
+                url: getNewUserOnboardingThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
+                blurhash: artwork.images[0]?.blurhash,
+              })
+            }
             saveArtworkToLists()
           }
           return true
@@ -306,7 +336,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
             onPress={() => {
               if (!hasSavedArtworks) {
-                setHasSavedArtwors(true)
+                setHasSavedArtworks(true)
               }
 
               if (isSaved) {
@@ -321,7 +351,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 if (isNewUserOnboardingSession) {
                   addNewUserOnboardingSavedArtwork({
                     internalID: artwork.internalID,
-                    url: artwork.images[0]?.url ?? "",
+                    url: getNewUserOnboardingThumbnailUrl(
+                      artwork.images[0]?.url ?? "",
+                      screenWidth
+                    ),
                     blurhash: artwork.images[0]?.blurhash,
                   })
                 }
