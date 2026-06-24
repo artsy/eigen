@@ -337,12 +337,12 @@ const HomeViewScreenComponent: React.FC = () => {
           </Sentry.TimeToInitialDisplay>
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
+        <ArtistSaveOnboardingBottomSheet
+          visible={isBottomSheetVisible}
+          onDismiss={handleBottomSheetDismiss}
+          artists={DUMMY_FOLLOWED_ARTISTS}
+        />
       </RetryErrorBoundary>
-      <ArtistSaveOnboardingBottomSheet
-        visible={isBottomSheetVisible}
-        onDismiss={handleBottomSheetDismiss}
-        artists={DUMMY_FOLLOWED_ARTISTS}
-      />
     </HomeViewStoreProvider>
   )
 }

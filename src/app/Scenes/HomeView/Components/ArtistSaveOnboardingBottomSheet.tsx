@@ -108,7 +108,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
               <Spacer y={1} />
 
-              <Text variant="xs" color="black60" textAlign="center">
+              <Text variant="xs" color="mono60" textAlign="center">
                 Find them anytime in the Favorites tab at the bottom of your screen.
               </Text>
 
@@ -117,7 +117,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
               <Image
                 src="https://files.artsy.net/images/nav-bar.png"
                 height={75}
-                aspectRatio={350 / 75}
+                width={350}
                 resizeMode="contain"
               />
             </Flex>
@@ -157,7 +157,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
 
               <Spacer y={1} />
 
-              <Text variant="xs" color="black60" textAlign="center">
+              <Text variant="xs" color="mono60" textAlign="center">
                 When a new work by an artist you follow is added to Artsy, you'll see a notification
                 on the Alerts icon at the top of your For You page.
               </Text>
@@ -167,7 +167,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
               <Image
                 src="https://files.artsy.net/images/search-bar.png"
                 height={75}
-                aspectRatio={350 / 75}
+                width={350}
                 resizeMode="contain"
               />
 
