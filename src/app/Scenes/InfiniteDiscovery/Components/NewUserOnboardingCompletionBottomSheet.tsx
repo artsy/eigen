@@ -7,8 +7,8 @@ import {
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useCallback, useEffect } from "react"
-import { Image, View } from "react-native"
+import { useCallback } from "react"
+import { View } from "react-native"
 
 const REFERENCE_WIDTH = 350
 const CARD_WIDTH = 85
@@ -44,13 +44,6 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
   )
   const { setOnboardingState } = GlobalStore.actions.onboarding
-
-  useEffect(() => {
-    const latest = savedArtworks[savedArtworks.length - 1]
-    if (latest) {
-      Image.prefetch(latest.url)
-    }
-  }, [savedArtworks])
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
