@@ -20,7 +20,7 @@ import {
 } from "./config"
 
 export const Introduction: React.FC = () => {
-  const { navigate } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
+  const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
 
@@ -32,12 +32,12 @@ export const Introduction: React.FC = () => {
     (experience: Experience) => {
       if (experience === "beginner") {
         GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
-        navigate("InfiniteDiscovery")
+        replace("InfiniteDiscovery")
       } else {
-        navigate("FollowArtists")
+        replace("FollowArtists")
       }
     },
-    [navigate]
+    [replace]
   )
 
   const handleSkipToHome = useCallback(() => {
