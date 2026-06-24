@@ -1,0 +1,36 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Search smoke test: log in, search for an artist, open the artist page.
+# Selectors were discovered live with agent-device against the running app:
+#   - search entry point:   id "search-button"
+#   - search text field:    placeholder "Search artists, artworks, galleries etc."
+#   - autosuggest row:      id "autosuggest-search-result-<displayLabel>"
+#                           (testID from AutosuggestSearchResult.tsx)
+#   - artist page landed:   "American, b. 1974" + Follow/Following button
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
+# Open search
+- tapOn:
+    id: "search-button"
+- tapOn: "Search artists.*"
+- inputText: "KAWS"
+
+# Wait for the autosuggest result and open the artist
+- extendedWaitUntil:
+    visible:
+      id: "autosuggest-search-result-KAWS"
+    timeout: 20000
+- tapOn:
+    id: "autosuggest-search-result-KAWS"
+
+# Assert we landed on the KAWS artist page
+- assertVisible: "American, b. 1974"
+- assertVisible: "Follow.*"

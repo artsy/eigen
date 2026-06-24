@@ -30,6 +30,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
       <ProgressiveOnboardingSaveAlert>
         <TouchableHighlightColor
           haptic
+          testID="create-alert-button"
           onPress={handlePress}
           render={({ color }) => (
             <Flex flexDirection="row" alignItems="center">

@@ -30,15 +30,17 @@ interface Button {
   disabled?: boolean
   icon?: React.ReactNode
   onPress: () => void
+  testID?: string
 }
 
 const InnerButton: React.FC<Button> = (props) => {
-  const { label, disabled, icon, onPress } = props
+  const { label, disabled, icon, onPress, testID } = props
   const [isPressed, setIsPressed] = useState(false)
 
   return (
     <Pressable
       accessibilityRole="button"
+      testID={testID}
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       onPress={onPress}
@@ -108,6 +110,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                       label="Create Alert"
                       icon={<BellStrokeIcon fill="mono0" width="15px" height="15px" mr={1} />}
                       onPress={onCreateAlertPress}
+                      testID="create-alert-button"
                     />
                   </ProgressiveOnboardingAlertFinish>
                 </Flex>
@@ -121,6 +124,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                   label="Create Alert"
                   icon={<BellStrokeIcon fill="mono0" width="15px" height="15px" mr={1} />}
                   onPress={onCreateAlertPress}
+                  testID="create-alert-button"
                 />
                 <Box width="1" height={20} backgroundColor="mono0" mx={1} />
               </>

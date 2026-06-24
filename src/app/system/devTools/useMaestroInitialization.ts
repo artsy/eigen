@@ -1,5 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
+import { LogBox } from "react-native"
 import { LaunchArguments } from "react-native-launch-arguments"
 
 interface MaestroLaunchArguments {
@@ -29,6 +30,9 @@ export const useMaestroInitialization = () => {
     if (!useMaestroInit) {
       return
     }
+
+    // Suppresses the dev warning banner so it doesn't block UI interactions
+    LogBox.ignoreAllLogs()
 
     // Hides the push permission prompt for Maestro tests
     setPushPermissionsRequestedThisSession(true)
