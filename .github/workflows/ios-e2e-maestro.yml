@@ -29,13 +29,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Select Xcode version
-        run: |
-          XCODE_VERSION=$(jq -r '.xcode_version' ios-config.json)
-          echo "Selecting Xcode ${XCODE_VERSION} (from ios-config.json)..."
-          sudo xcode-select -s "/Applications/Xcode_${XCODE_VERSION}.app"
-          xcodebuild -version
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
