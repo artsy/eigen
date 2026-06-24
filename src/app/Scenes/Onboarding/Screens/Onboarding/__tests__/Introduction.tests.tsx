@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { mockReplace } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("../Components/QuestionStep", () => {
@@ -79,7 +79,7 @@ describe("Introduction", () => {
       fireEvent.press(screen.getByText("Montage next"))
       fireEvent.press(screen.getByText("Welcome next"))
 
-      expect(mockNavigate).toHaveBeenCalledWith("InfiniteDiscovery")
+      expect(mockReplace).toHaveBeenCalledWith("InfiniteDiscovery")
     })
 
     it("completes onboarding when skipping to home from BrowsePromptStep", () => {
@@ -111,7 +111,7 @@ describe("Introduction", () => {
       fireEvent.press(screen.getByText("Montage next"))
       fireEvent.press(screen.getByText("Welcome next"))
 
-      expect(mockNavigate).toHaveBeenCalledWith("FollowArtists")
+      expect(mockReplace).toHaveBeenCalledWith("FollowArtists")
     })
   })
 })
