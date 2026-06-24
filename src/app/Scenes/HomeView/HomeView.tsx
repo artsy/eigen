@@ -270,28 +270,28 @@ const HomeViewScreenComponent: React.FC = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
-  const showBottomSheet = GlobalStore.useAppState(
+  const showArtistSaveBottomSheet = GlobalStore.useAppState(
     (state) => state.onboarding.showArtistSaveBottomSheet
   )
 
   const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
 
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false)
+  const [isArtistSaveBottomSheetVisible, setIsArtistSaveBottomSheetVisible] = useState(false)
 
-  const handleBottomSheetDismiss = () => {
-    setIsBottomSheetVisible(false)
+  const handleArtistSaveBottomSheetDismiss = () => {
+    setIsArtistSaveBottomSheetVisible(false)
     GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
   }
 
   useEffect(() => {
-    if (showBottomSheet && isExperienceOnboardingEnabled) {
+    if (showArtistSaveBottomSheet && isExperienceOnboardingEnabled) {
       const timer = setTimeout(() => {
-        setIsBottomSheetVisible(true)
+        setIsArtistSaveBottomSheetVisible(true)
       }, 2000)
 
       return () => clearTimeout(timer)
     }
-  }, [showBottomSheet, isExperienceOnboardingEnabled])
+  }, [showArtistSaveBottomSheet, isExperienceOnboardingEnabled])
 
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -338,8 +338,8 @@ const HomeViewScreenComponent: React.FC = () => {
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
         <ArtistSaveOnboardingBottomSheet
-          visible={isBottomSheetVisible}
-          onDismiss={handleBottomSheetDismiss}
+          visible={isArtistSaveBottomSheetVisible}
+          onDismiss={handleArtistSaveBottomSheetDismiss}
           artists={DUMMY_FOLLOWED_ARTISTS}
         />
       </RetryErrorBoundary>
