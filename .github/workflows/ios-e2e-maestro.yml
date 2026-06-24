@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-26 # iOS simulators require macOS runners
     timeout-minutes: 45
     env:
-      MAESTRO_VERSION: 2.2.0
+      MAESTRO_VERSION: 1.4.0
       MAESTRO_CLI_NO_ANALYTICS: 1
       MAESTRO_DRIVER_STARTUP_TIMEOUT: 600000
     # strategy:
