@@ -17,7 +17,6 @@ import com.facebook.react.common.ReleaseLevel
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.segment.analytics.Analytics
-import io.sentry.react.RNSentrySDK
 import com.reactnativekeysjsi.KeysModule.getSecureFor
 
 class MainApplication : Application(), ReactApplication {
@@ -36,7 +35,6 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
-        RNSentrySDK.init(this)
 
         try {
           DefaultNewArchitectureEntryPoint.releaseLevel = ReleaseLevel.valueOf(BuildConfig.REACT_NATIVE_RELEASE_LEVEL.uppercase())
