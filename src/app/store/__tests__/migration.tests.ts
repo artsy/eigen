@@ -1299,4 +1299,23 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.pendingPushNotification).toEqual(undefined)
     })
   })
+  describe("App version Versions.AddFollowedOnboardingArtistsToOnboardingModel", () => {
+    it("should add followedOnboardingArtists to onboarding model", () => {
+      const migrationToTest = Versions.AddFollowedOnboardingArtistsToOnboardingModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.onboarding.followedOnboardingArtists).toEqual(undefined)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.onboarding.followedOnboardingArtists).toEqual([])
+    })
+  })
 })
