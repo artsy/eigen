@@ -17,14 +17,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useState } from "react"
-import { KeyboardController } from "react-native-keyboard-controller"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 
 const MIN_FOLLOWED = 3
 
 export const FollowArtists: React.FC = () => {
   const [query, setQuery] = useState("")
-  const { bottom } = useSafeAreaInsets()
+
   const count = GlobalStore.useAppState(
     (state) => state.onboarding.followedOnboardingArtists.length
   )
@@ -62,7 +61,7 @@ export const FollowArtists: React.FC = () => {
         }
       />
 
-      <Screen.Body>
+      <Screen.Body disableKeyboardAvoidance>
         <Box mt={2}>
           <Text variant="lg-display">Tell us which artists you’re interested in?</Text>
           <Text variant="sm-display" color="mono60" mt={1}>
@@ -105,15 +104,17 @@ export const FollowArtists: React.FC = () => {
             </>
           )}
         </Flex>
-        <Flex pb={`${bottom}px`} pt={2}>
-          <Button
-            block
-            disabled={count < MIN_FOLLOWED}
-            onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
-          >
-            Continue to Artsy
-          </Button>
-        </Flex>
+        <KeyboardStickyView>
+          <Flex p={2} backgroundColor="mono0">
+            <Button
+              block
+              disabled={count < MIN_FOLLOWED}
+              onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
+            >
+              Continue to Artsy
+            </Button>
+          </Flex>
+        </KeyboardStickyView>
       </Screen.Body>
     </Screen>
   )
