@@ -7,7 +7,13 @@ const LOGO_TOP_OFFSET = 44
 export const Logo: React.FC = () => {
   const { top } = useSafeAreaInsets()
   return (
-    <Box position="absolute" top={`${top + LOGO_TOP_OFFSET}px`} left={2}>
+    <Box
+      position="absolute"
+      top={`${top + LOGO_TOP_OFFSET}px`}
+      left={0}
+      right={0}
+      alignItems="center"
+    >
       <ArtsyLogoIcon height={32} width={94} fill="mono0" />
     </Box>
   )
