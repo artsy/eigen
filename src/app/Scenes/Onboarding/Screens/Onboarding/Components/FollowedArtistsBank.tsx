@@ -35,7 +35,7 @@ const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
               } else {
                 GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
                   internalID: artist.internalID,
-                  imageUrl: artist.coverArtwork?.image?.url ?? null,
+                  imageUrl: artist.coverArtwork?.image?.cropped?.src ?? null,
                   blurhash: artist.coverArtwork?.image?.blurhash ?? null,
                 })
               }
@@ -72,8 +72,10 @@ const FollowedArtistsBankGQLQuery = graphql`
       internalID
       coverArtwork {
         image {
-          url
           blurhash
+          cropped(width: $imageSize, height: $imageSize) {
+            src
+          }
         }
       }
       ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)

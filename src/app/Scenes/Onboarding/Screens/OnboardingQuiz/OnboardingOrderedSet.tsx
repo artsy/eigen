@@ -77,7 +77,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
                   onArtistFollowed?.(
                     {
                       internalID: item.internalID,
-                      imageUrl: item.coverArtwork?.image?.url ?? null,
+                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
                       blurhash: item.coverArtwork?.image?.blurhash ?? null,
                     },
                     wasFollowed
@@ -158,6 +158,9 @@ const OnboardingOrderedSetScreenQuery = graphql`
                 image {
                   url
                   blurhash
+                  cropped(width: $imageSize, height: $imageSize) {
+                    src
+                  }
                 }
               }
               ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
