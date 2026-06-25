@@ -96,12 +96,17 @@ export const FollowArtists: React.FC = () => {
               onArtistFollowed={handleArtistFollowed}
             />
           ) : (
-            <>
-              <FollowedArtistsBank />
-              <Text variant="md">Leading artists on Artsy</Text>
-              <Spacer y={2} />
-              <OnboardingOrderedSetScreen id={setId} onArtistFollowed={handleArtistFollowed} />
-            </>
+            <OnboardingOrderedSetScreen
+              id={setId}
+              onArtistFollowed={handleArtistFollowed}
+              listHeaderComponent={
+                <>
+                  <FollowedArtistsBank />
+                  <Text variant="md">Leading artists on Artsy</Text>
+                  <Spacer y={2} />
+                </>
+              }
+            />
           )}
         </Flex>
         <KeyboardStickyView>

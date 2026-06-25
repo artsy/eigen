@@ -17,10 +17,15 @@ import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
+  listHeaderComponent?: React.ReactElement
   onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id, onArtistFollowed }) => {
+const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
+  id,
+  listHeaderComponent,
+  onArtistFollowed,
+}) => {
   const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
@@ -49,6 +54,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id, onArtis
       contentContainerStyle={{
         paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
+      ListHeaderComponent={listHeaderComponent}
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => {
