@@ -149,28 +149,3 @@ export const OnboardingProvider: React.FC<React.PropsWithChildren<OnboardingProv
 export const useOnboardingContext = () => {
   return useContext(OnboardingContext)
 }
-
-// Minimal provider for screens that need follow tracking but not the quiz workflow.
-export const StandaloneOnboardingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [state, dispatch] = useReducer(
-    reducer(() => {}),
-    DEFAULT_STATE
-  )
-
-  return (
-    <OnboardingContext.Provider
-      value={{
-        back: () => {},
-        current: undefined,
-        dispatch,
-        next: () => {},
-        onDone: () => {},
-        progress: 0,
-        state,
-        workflowEngine: new WorkflowEngine({ workflow: [] }),
-      }}
-    >
-      {children}
-    </OnboardingContext.Provider>
-  )
-}
