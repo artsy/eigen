@@ -11,7 +11,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
-import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { mockNavigate, mockReplace } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
@@ -148,6 +148,7 @@ jest.mock("@react-navigation/native", () => {
     useIsFocused: () => jest.fn(),
     useNavigation: () => ({
       navigate: mockNavigate,
+      replace: mockReplace,
       dispatch: jest.fn(),
       addListener: jest.fn(),
       setOptions: jest.fn(),
