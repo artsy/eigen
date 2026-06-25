@@ -1,10 +1,11 @@
-import { Button, Flex, Image, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useState, useRef, useCallback } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -24,7 +25,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
   const [activeStep, setActiveStep] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
-  const color = useColor()
   const numberOfPages = 2
 
   const handleButtonPress = () => {
@@ -175,16 +175,8 @@ export const ArtistSaveOnboardingBottomSheet = ({
             </Flex>
           </PagerView>
 
-          <Flex flexDirection="row" justifyContent="center" mb={2} gap={0.5} py={0.5}>
-            {Array.from(Array(numberOfPages).keys()).map((index) => (
-              <Flex
-                key={index}
-                flex={1}
-                height={1}
-                borderRadius={2}
-                backgroundColor={activeStep === index ? color("mono60") : "#d9d9d9"}
-              />
-            ))}
+          <Flex mb={2} py={0.5}>
+            <PaginationBars currentIndex={activeStep} length={numberOfPages} />
           </Flex>
 
           <Button block onPress={handleButtonPress}>
