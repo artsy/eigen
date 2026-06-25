@@ -115,7 +115,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
       if (viewForYouButton) {
         fireEvent.press(viewForYouButton)
 
-        const state = __globalStoreTestUtils__.getCurrentState()
+        const state = __globalStoreTestUtils__!.getCurrentState()
         expect(state.onboarding.showArtistSaveBottomSheet).toBe(false)
       }
     })
