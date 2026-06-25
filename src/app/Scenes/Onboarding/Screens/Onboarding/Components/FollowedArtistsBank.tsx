@@ -3,14 +3,20 @@ import { FollowedArtistsBankQuery } from "__generated__/FollowedArtistsBankQuery
 import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Suspense, useDeferredValue, useMemo } from "react"
+import { PixelRatio } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
+
+const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 
 interface FollowedArtistsBankContentProps {
   ids: string[]
 }
 
 const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({ ids }) => {
-  const data = useLazyLoadQuery<FollowedArtistsBankQuery>(FollowedArtistsBankGQLQuery, { ids })
+  const data = useLazyLoadQuery<FollowedArtistsBankQuery>(FollowedArtistsBankGQLQuery, {
+    ids,
+    imageSize: AVATAR_SIZE,
+  })
 
   const artists = (data.artists ?? []).filter((a): a is NonNullable<typeof a> => a !== null)
 
@@ -61,7 +67,7 @@ export const FollowedArtistsBank: React.FC = () => {
 }
 
 const FollowedArtistsBankGQLQuery = graphql`
-  query FollowedArtistsBankQuery($ids: [String]) {
+  query FollowedArtistsBankQuery($ids: [String], $imageSize: Int!) {
     artists(ids: $ids) {
       internalID
       coverArtwork {
@@ -70,7 +76,7 @@ const FollowedArtistsBankGQLQuery = graphql`
           blurhash
         }
       }
-      ...ArtistListItemNew_artist
+      ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
     }
   }
 `

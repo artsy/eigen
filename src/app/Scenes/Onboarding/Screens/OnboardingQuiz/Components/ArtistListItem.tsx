@@ -1,6 +1,7 @@
 import { Flex, FlexProps, EntityHeader, FollowButton } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
+import { Image } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArtistListItemProps extends FlexProps {
@@ -23,6 +24,9 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
         },
       },
       onCompleted() {
+        if (!isFollowed && coverArtwork?.image?.cropped?.src) {
+          Image.prefetch(coverArtwork.image.cropped.src)
+        }
         onFollow(!!isFollowed)
       },
     })
@@ -62,7 +66,8 @@ const FollowArtistMutation = graphql`
 `
 
 const ArtistListItemFragment = graphql`
-  fragment ArtistListItemNew_artist on Artist {
+  fragment ArtistListItemNew_artist on Artist
+  @argumentDefinitions(imageSize: { type: "Int!", defaultValue: 150 }) {
     id
     internalID
     slug
@@ -77,6 +82,9 @@ const ArtistListItemFragment = graphql`
       image {
         url
         blurhash
+        cropped(width: $imageSize, height: $imageSize) {
+          src
+        }
       }
     }
   }

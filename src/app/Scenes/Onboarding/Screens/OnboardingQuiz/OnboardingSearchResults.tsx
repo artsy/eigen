@@ -9,7 +9,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
-import { FlatList } from "react-native"
+import { FlatList, PixelRatio } from "react-native"
+
+const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
@@ -36,6 +38,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
     {
       term,
       entities: [entities],
+      imageSize: AVATAR_SIZE,
     }
   )
 
@@ -138,9 +141,14 @@ export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProp
 }
 
 const OnboardingSearchResultsScreenQuery = graphql`
-  query OnboardingSearchResultsQuery($term: String!, $entities: [SearchEntity!]!) {
+  query OnboardingSearchResultsQuery(
+    $term: String!
+    $entities: [SearchEntity!]!
+    $imageSize: Int!
+  ) {
     viewer {
-      ...OnboardingSearchResults_viewer @arguments(term: $term, entities: $entities)
+      ...OnboardingSearchResults_viewer
+        @arguments(term: $term, entities: $entities, imageSize: $imageSize)
     }
   }
 `
@@ -153,6 +161,7 @@ const OnboardingSearchResultsFragment = graphql`
     entities: { type: "[SearchEntity!]!" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
+    imageSize: { type: "Int!" }
   ) {
     matchConnection(
       term: $term
@@ -177,7 +186,7 @@ const OnboardingSearchResultsFragment = graphql`
                 blurhash
               }
             }
-            ...ArtistListItemNew_artist
+            ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
           }
           ... on Profile {
             internalID

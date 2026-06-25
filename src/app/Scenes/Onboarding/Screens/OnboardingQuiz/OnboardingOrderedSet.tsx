@@ -9,7 +9,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
 import { Suspense } from "react"
-import { FlatList } from "react-native"
+import { FlatList, PixelRatio } from "react-native"
+
+const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
@@ -35,6 +37,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
     OnboardingOrderedSetScreenQuery,
     {
       key: id,
+      imageSize: AVATAR_SIZE,
     }
   )
 
@@ -138,7 +141,7 @@ export const OnboardingOrderedSetScreen: React.FC<OnboardingOrderedSetProps> = (
 )
 
 const OnboardingOrderedSetScreenQuery = graphql`
-  query OnboardingOrderedSetQuery($key: String!) {
+  query OnboardingOrderedSetQuery($key: String!, $imageSize: Int!) {
     orderedSets(key: $key) {
       orderedSet: orderedItemsConnection(first: 50) {
         edges {
@@ -157,7 +160,7 @@ const OnboardingOrderedSetScreenQuery = graphql`
                   blurhash
                 }
               }
-              ...ArtistListItemNew_artist
+              ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
             }
             ... on Profile {
               internalID
