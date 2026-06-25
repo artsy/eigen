@@ -98,6 +98,7 @@ export const FollowArtists: React.FC = () => {
           ) : (
             <OnboardingOrderedSetScreen
               id={setId}
+              hideFollowedArtists
               onArtistFollowed={handleArtistFollowed}
               listHeaderComponent={
                 <>

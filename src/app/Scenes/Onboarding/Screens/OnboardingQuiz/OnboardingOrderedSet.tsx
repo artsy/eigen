@@ -17,12 +17,14 @@ import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
+  hideFollowedArtists?: boolean
   listHeaderComponent?: React.ReactElement
   onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
 const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
   id,
+  hideFollowedArtists,
   listHeaderComponent,
   onArtistFollowed,
 }) => {
@@ -46,7 +48,10 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
     return null
   }
 
-  const nodes = extractNodes(orderedSet)
+  const allNodes = extractNodes(orderedSet)
+  const nodes = hideFollowedArtists
+    ? allNodes.filter((node) => node.__typename !== "Artist" || !node.isFollowed)
+    : allNodes
 
   return (
     <FlatList
