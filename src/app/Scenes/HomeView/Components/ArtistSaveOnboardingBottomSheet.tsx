@@ -6,32 +6,47 @@ import {
 } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
-import { useState, useRef, useCallback } from "react"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { DummyArtist } from "./dummyArtistData"
 
 interface ArtistSaveOnboardingBottomSheetProps {
-  visible: boolean
-  onDismiss: () => void
   artists: DummyArtist[]
 }
 
 export const ArtistSaveOnboardingBottomSheet = ({
-  visible,
-  onDismiss,
   artists,
 }: ArtistSaveOnboardingBottomSheetProps) => {
+  const showArtistSaveBottomSheet = GlobalStore.useAppState(
+    (state) => state.onboarding.showArtistSaveBottomSheet
+  )
+  const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
+  const [isVisible, setIsVisible] = useState(false)
+
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
   const [activeStep, setActiveStep] = useState(0)
   const pagerViewRef = useRef<PagerView>(null)
   const numberOfPages = 2
 
+  useEffect(() => {
+    if (showArtistSaveBottomSheet && isExperienceOnboardingEnabled) {
+      setIsVisible(true)
+    }
+  }, [showArtistSaveBottomSheet, isExperienceOnboardingEnabled])
+
+  const handleDismiss = () => {
+    setIsVisible(false)
+    GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
+  }
+
   const handleButtonPress = () => {
     if (activeStep === 0) {
       pagerViewRef.current?.setPage(1)
     } else {
-      onDismiss()
+      handleDismiss()
     }
   }
 
@@ -54,12 +69,16 @@ export const ArtistSaveOnboardingBottomSheet = ({
     []
   )
 
+  if (!isVisible) {
+    return null
+  }
+
   return (
     <AutomountedBottomSheetModal
       enableDynamicSizing
-      visible={visible}
+      visible={isVisible}
       name="ArtistSaveOnboardingBottomSheet"
-      onDismiss={onDismiss}
+      onDismiss={handleDismiss}
       backdropComponent={renderBackdrop}
     >
       <BottomSheetView style={bottomSheetViewStyles}>
@@ -91,7 +110,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
           </Flex>
 
           <PagerView
-            style={{ width: "100%", height: 220 }}
+            style={{ width: "100%", height: 200 }}
             initialPage={0}
             onPageScroll={handleIndexChange}
             ref={pagerViewRef}

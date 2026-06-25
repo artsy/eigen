@@ -270,29 +270,6 @@ const HomeViewScreenComponent: React.FC = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
-  const showArtistSaveBottomSheet = GlobalStore.useAppState(
-    (state) => state.onboarding.showArtistSaveBottomSheet
-  )
-
-  const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
-
-  const [isArtistSaveBottomSheetVisible, setIsArtistSaveBottomSheetVisible] = useState(false)
-
-  const handleArtistSaveBottomSheetDismiss = () => {
-    setIsArtistSaveBottomSheetVisible(false)
-    GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
-  }
-
-  useEffect(() => {
-    if (showArtistSaveBottomSheet && isExperienceOnboardingEnabled) {
-      const timer = setTimeout(() => {
-        setIsArtistSaveBottomSheetVisible(true)
-      }, 2000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showArtistSaveBottomSheet, isExperienceOnboardingEnabled])
-
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
@@ -337,11 +314,7 @@ const HomeViewScreenComponent: React.FC = () => {
           </Sentry.TimeToInitialDisplay>
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
-        <ArtistSaveOnboardingBottomSheet
-          visible={isArtistSaveBottomSheetVisible}
-          onDismiss={handleArtistSaveBottomSheetDismiss}
-          artists={DUMMY_FOLLOWED_ARTISTS}
-        />
+        <ArtistSaveOnboardingBottomSheet artists={DUMMY_FOLLOWED_ARTISTS} />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )
