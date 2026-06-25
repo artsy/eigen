@@ -64,8 +64,34 @@ export const ArtistSaveOnboardingBottomSheet = ({
     >
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
+          <Spacer y={1} />
+
+          <Flex flexDirection="row" justifyContent="center" alignItems="center">
+            {artists.slice(0, 3).map((artist, index) => (
+              <Flex
+                key={artist.id}
+                style={{
+                  marginLeft: index > 0 ? -10 : 0,
+                  zIndex: index,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: 0.35,
+                  shadowRadius: 6,
+                  elevation: 8,
+                }}
+              >
+                <Image
+                  src={artist.imageUrl}
+                  width={75}
+                  height={75}
+                  style={{ borderRadius: 37.5 }}
+                />
+              </Flex>
+            ))}
+          </Flex>
+
           <PagerView
-            style={{ width: "100%", height: 320 }}
+            style={{ width: "100%", height: 220 }}
             initialPage={0}
             onPageScroll={handleIndexChange}
             ref={pagerViewRef}
@@ -75,31 +101,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
           >
             {/* Page 1 */}
             <Flex key="page-0" alignItems="center" width="100%">
-              <Spacer y={2} />
-              <Flex flexDirection="row" justifyContent="center" alignItems="center">
-                {artists.slice(0, 3).map((artist, index) => (
-                  <Flex
-                    key={artist.id}
-                    style={{
-                      marginLeft: index > 0 ? -10 : 0,
-                      zIndex: index,
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 3 },
-                      shadowOpacity: 0.35,
-                      shadowRadius: 6,
-                      elevation: 8,
-                    }}
-                  >
-                    <Image
-                      src={artist.imageUrl}
-                      width={75}
-                      height={75}
-                      style={{ borderRadius: 37.5 }}
-                    />
-                  </Flex>
-                ))}
-              </Flex>
-
               <Spacer y={2} />
 
               <Text variant="sm-display" weight="medium" textAlign="center">
@@ -125,31 +126,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
             {/* Page 2 */}
             <Flex key="page-1" alignItems="center" width="100%">
               <Spacer y={2} />
-              <Flex flexDirection="row" justifyContent="center" alignItems="center">
-                {artists.slice(0, 3).map((artist, index) => (
-                  <Flex
-                    key={artist.id}
-                    style={{
-                      marginLeft: index > 0 ? -10 : 0,
-                      zIndex: index,
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 3 },
-                      shadowOpacity: 0.35,
-                      shadowRadius: 6,
-                      elevation: 8,
-                    }}
-                  >
-                    <Image
-                      src={artist.imageUrl}
-                      width={75}
-                      height={75}
-                      style={{ borderRadius: 37.5 }}
-                    />
-                  </Flex>
-                ))}
-              </Flex>
-
-              <Spacer y={2} />
 
               <Text variant="sm-display" weight="medium" textAlign="center">
                 We'll let you know when new works arrive.
@@ -162,7 +138,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
                 on the Alerts icon at the top of your For You page.
               </Text>
 
-              <Spacer y={2} />
+              <Spacer y={1} />
 
               <Image
                 src="https://files.artsy.net/images/search-bar.png"
@@ -170,8 +146,6 @@ export const ArtistSaveOnboardingBottomSheet = ({
                 width={350}
                 resizeMode="contain"
               />
-
-              <Spacer y={2} />
             </Flex>
           </PagerView>
 
