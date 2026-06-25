@@ -68,10 +68,10 @@ export const Versions = {
   AddHasSavedArtworksToInfiniteDiscoveryModel: 55,
   AddPreviouslySelectedCitySlugToUserPrefsModel: 56,
   RemovePendingPushNotificationModel: 57,
-  AddShowArtistSaveBottomSheetToOnboardingModel: 58,
+  AddShowFollowedArtistSummaryBottomSheetToOnboardingModel: 58,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddShowArtistSaveBottomSheetToOnboardingModel
+export const CURRENT_APP_VERSION = Versions.AddShowFollowedArtistSummaryBottomSheetToOnboardingModel
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
   [Versions.AddSearchesAndNativeAndBottomTabs]: (_) => ({
@@ -384,8 +384,8 @@ export const artsyAppMigrations: Migrations = {
   [Versions.RemovePendingPushNotificationModel]: (state) => {
     delete state.pendingPushNotification
   },
-  [Versions.AddShowArtistSaveBottomSheetToOnboardingModel]: (state) => {
-    state.onboarding.showArtistSaveBottomSheet = false
+  [Versions.AddShowFollowedArtistSummaryBottomSheetToOnboardingModel]: (state) => {
+    state.onboarding.showFollowedArtistSummaryBottomSheet = false
   },
 }
 

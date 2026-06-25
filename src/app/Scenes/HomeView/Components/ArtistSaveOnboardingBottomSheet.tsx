@@ -20,8 +20,8 @@ interface ArtistSaveOnboardingBottomSheetProps {
 export const ArtistSaveOnboardingBottomSheet = ({
   artists,
 }: ArtistSaveOnboardingBottomSheetProps) => {
-  const showArtistSaveBottomSheet = GlobalStore.useAppState(
-    (state) => state.onboarding.showArtistSaveBottomSheet
+  const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
+    (state) => state.onboarding.showFollowedArtistSummaryBottomSheet
   )
   const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
   const [isVisible, setIsVisible] = useState(false)
@@ -32,14 +32,14 @@ export const ArtistSaveOnboardingBottomSheet = ({
   const numberOfPages = 2
 
   useEffect(() => {
-    if (showArtistSaveBottomSheet && isExperienceOnboardingEnabled) {
+    if (showFollowedArtistSummaryBottomSheet && isExperienceOnboardingEnabled) {
       setIsVisible(true)
     }
-  }, [showArtistSaveBottomSheet, isExperienceOnboardingEnabled])
+  }, [showFollowedArtistSummaryBottomSheet, isExperienceOnboardingEnabled])
 
   const handleDismiss = () => {
     setIsVisible(false)
-    GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
+    GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
   }
 
   const handleButtonPress = () => {

@@ -17,13 +17,13 @@ const TEST_ARTISTS = Array.from({ length: 3 }, (_, i) => ({
 describe("ArtistSaveOnboardingBottomSheet", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
+    GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
     ;(useFeatureFlag as jest.Mock).mockReturnValue(true)
   })
 
   describe("Visibility", () => {
-    it("does not render content when showArtistSaveBottomSheet is false", () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(false)
+    it("does not render content when showFollowedArtistSummaryBottomSheet is false", () => {
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -34,7 +34,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
 
     it("does not render content when feature flag is disabled", () => {
       ;(useFeatureFlag as jest.Mock).mockReturnValue(false)
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -44,7 +44,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     })
 
     it("renders the sheet content when both conditions are met", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -56,7 +56,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
 
   describe("Content", () => {
     it("renders page 1 content", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -69,7 +69,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     })
 
     it("renders page 2 content", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -84,7 +84,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
 
   describe("Button behavior", () => {
     it("shows Next button on page 1", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -93,7 +93,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     })
 
     it("shows View For You button on page 2", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -104,7 +104,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     })
 
     it("dismisses and resets global state when View For You is pressed", async () => {
-      GlobalStore.actions.onboarding.setShowArtistSaveBottomSheet(true)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
 
@@ -116,7 +116,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
         fireEvent.press(viewForYouButton)
 
         const state = __globalStoreTestUtils__!.getCurrentState()
-        expect(state.onboarding.showArtistSaveBottomSheet).toBe(false)
+        expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
       }
     })
   })
