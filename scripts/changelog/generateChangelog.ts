@@ -5,6 +5,7 @@
 
 import { execSync } from "child_process"
 import { resolve } from "path"
+import { changelogTemplateSections, parsePRDescription } from "@artsy/changelog"
 import Octokit, { PullsGetResponse } from "@octokit/rest"
 import chalk from "chalk"
 import { config } from "dotenv"
@@ -15,13 +16,6 @@ import yargs from "yargs/yargs"
 config({ path: resolve(__dirname, "../../.env.releases") })
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
-
-const SECTIONS = [
-  "Cross-platform user-facing changes",
-  "iOS user-facing changes",
-  "Android user-facing changes",
-  "Dev changes",
-]
 
 type Platform = "ios" | "android"
 
@@ -127,76 +121,30 @@ async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetRe
   return prs
 }
 
-const parseSectionChanges = (content: string) => {
-  const entries = content.split("\n")
-
-  // Remove section title (e.g `#### iOS user-facing changes`)
-  entries.splice(0, 1)
-
-  const trimmedEntries = entries.map((entry) => entry.trim())
-  const filledEntries = trimmedEntries.filter((entry) => {
-    const isNotEmpty = entry.length > 0
-    const isNotEntryDelimiter = entry !== "-"
-
-    return isNotEmpty && isNotEntryDelimiter
-  })
-
-  return filledEntries
-}
-
-const parseSectionPositions = (section: string, body: string) => {
-  const startSectionPosition = body.indexOf(`#### ${section}`)
-
-  if (startSectionPosition === -1) {
-    return null
-  }
-
-  let endSectionPosition = body.indexOf("####", startSectionPosition + 1)
-
-  /**
-   * If we didn't get the position of the next section,
-   * it means that the current section is the **last** section.
-   * Trying to get the position of the end of the block with changelog sections
-   */
-  if (endSectionPosition === -1) {
-    endSectionPosition = body.indexOf("<!-- end_changelog_updates -->", startSectionPosition + 1)
-  }
-
-  if (startSectionPosition !== -1 && endSectionPosition !== -1) {
-    return {
-      start: startSectionPosition,
-      end: endSectionPosition,
-    }
-  }
-
-  return null
-}
-
 async function getChangelogFromPrs(prs: PullsGetResponse[]) {
   let changelog = ""
   const prsWithoutChangelog: PullsGetResponse[] = []
   const prsWithNoChangelog: PullsGetResponse[] = []
   for (const pr of prs) {
-    // pr body without comments except <!-- end_changelog_updates --> (used in parseSectionPositions)
-    const prBody = pr.body.replace(/<!--((?!end_changelog).)*-->/g, "")
-    let prHasChangelog = false
-    for (const section of SECTIONS) {
-      const positions = parseSectionPositions(section, prBody)
-      if (positions !== null) {
-        const sectionContent = prBody.slice(positions.start, positions.end)
-        const sectionChanges = parseSectionChanges(sectionContent)
-        for (let entry of sectionChanges) {
-          const authorName = pr.user.login
-          entry = `${entry} - ${authorName}`
-          changelog += `${entry} : ${section} : PR #${pr.number}\n`
-          prHasChangelog = true
-        }
-      }
+    const result = parsePRDescription(pr.body)
+
+    if (result.type === "no_changes") {
+      prsWithNoChangelog.push(pr)
+      continue
     }
-    if (!prHasChangelog) {
-      prBody.toLocaleLowerCase().includes("#nochangelog")
-        ? prsWithNoChangelog.push(pr)
-        : prsWithoutChangelog.push(pr)
+
+    if (result.type === "error") {
+      prsWithoutChangelog.push(pr)
+      continue
+    }
+
+    const authorName = pr.user.login
+    for (const [sectionKey, sectionTitle] of Object.entries(changelogTemplateSections)) {
+      const entries = result[sectionKey as keyof typeof changelogTemplateSections]
+      for (let entry of entries) {
+        entry = `${entry} - ${authorName}`
+        changelog += `${entry} : ${sectionTitle} : PR #${pr.number}\n`
+      }
     }
   }
   return { changelog, prsWithoutChangelog, prsWithNoChangelog }
