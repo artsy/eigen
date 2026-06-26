@@ -1,13 +1,12 @@
-import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
 import { useCallback, useRef, useState } from "react"
 import { Experience } from "./Components/QuestionStep"
 
-export const STEP_QUESTION = "question"
-export const STEP_BROWSE_PROMPT = "browse_prompt"
 export const STEP_ARTWORK_MONTAGE = "artwork_montage"
 export const STEP_WELCOME = "welcome"
+export const STEP_QUESTION = "question"
+export const STEP_BROWSE_PROMPT = "browse_prompt"
 
-const CHECK_EXPERIENCE = "check_experience"
+const STEPS = [STEP_ARTWORK_MONTAGE, STEP_WELCOME, STEP_QUESTION, STEP_BROWSE_PROMPT]
 
 interface UseConfigProps {
   onDone: (experience: Experience) => void
@@ -15,41 +14,27 @@ interface UseConfigProps {
 
 export const useConfig = ({ onDone }: UseConfigProps) => {
   const experienceRef = useRef<Experience | null>(null)
-
-  const workflowEngine = useRef(
-    new WorkflowEngine({
-      workflow: [
-        STEP_QUESTION,
-        {
-          [CHECK_EXPERIENCE]: {
-            beginner: [STEP_BROWSE_PROMPT, STEP_ARTWORK_MONTAGE, STEP_WELCOME],
-            experienced: [STEP_ARTWORK_MONTAGE, STEP_WELCOME],
-          },
-        },
-      ],
-      conditions: {
-        [CHECK_EXPERIENCE]: () => experienceRef.current ?? "experienced",
-      },
-    })
-  )
-
-  const [currentStep, setCurrentStep] = useState(workflowEngine.current.current())
+  const [stepIndex, setStepIndex] = useState(0)
+  const currentStep = STEPS[stepIndex]
 
   const next = useCallback(() => {
-    if (workflowEngine.current.isEnd()) {
+    if (stepIndex >= STEPS.length - 1) {
       onDone(experienceRef.current ?? "experienced")
       return
     }
-    const nextStep = workflowEngine.current.next()
-    if (nextStep) setCurrentStep(nextStep)
-  }, [onDone])
+    setStepIndex((i) => i + 1)
+  }, [stepIndex, onDone])
 
   const selectExperience = useCallback(
     (experience: Experience) => {
       experienceRef.current = experience
-      next()
+      if (experience === "experienced") {
+        onDone(experience)
+      } else {
+        next()
+      }
     },
-    [next]
+    [next, onDone]
   )
 
   return { currentStep, next, selectExperience }
