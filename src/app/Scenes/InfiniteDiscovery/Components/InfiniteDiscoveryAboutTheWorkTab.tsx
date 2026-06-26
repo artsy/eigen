@@ -90,13 +90,17 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
                   <ArtworkIcon height={18} width={18} fill="mono60" />
                   {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
-                  <RouterLink
-                    to="/artwork-classifications"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">{attributionClass[1]}</LinkText>
-                  </RouterLink>
+                  {isOnboardingSession ? (
+                    <Text variant="xs">{attributionClass[1]}</Text>
+                  ) : (
+                    <RouterLink
+                      to="/artwork-classifications"
+                      hasChildTouchable
+                      onPress={handleCollapse}
+                    >
+                      <LinkText variant="xs">{attributionClass[1]}</LinkText>
+                    </RouterLink>
+                  )}
                 </Flex>
               </Sentinel>
             )}
@@ -111,13 +115,17 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
                 <Flex flexDirection="row">
                   <Text variant="xs">Includes a </Text>
-                  <RouterLink
-                    to="/artwork-certificate-of-authenticity"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">Certificate of Authenticity</LinkText>
-                  </RouterLink>
+                  {isOnboardingSession ? (
+                    <Text variant="xs">Certificate of Authenticity</Text>
+                  ) : (
+                    <RouterLink
+                      to="/artwork-certificate-of-authenticity"
+                      hasChildTouchable
+                      onPress={handleCollapse}
+                    >
+                      <LinkText variant="xs">Certificate of Authenticity</LinkText>
+                    </RouterLink>
+                  )}
                 </Flex>
               </Flex>
             )}

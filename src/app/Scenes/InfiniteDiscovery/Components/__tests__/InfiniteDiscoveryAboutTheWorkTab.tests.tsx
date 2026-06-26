@@ -134,6 +134,24 @@ describe("AboutTheWorkTab", () => {
       fireEvent.press(screen.getByText("Test Artist"))
       expect(mockNavigate).not.toHaveBeenCalled()
     })
+
+    it("renders the attribution class as plain text, not a link", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      mockResolveLastOperation({ Artwork: () => artwork })
+
+      const container = await screen.findByTestId("attribution")
+      expect(within(container).getByText("unique work")).toBeOnTheScreen()
+      expect(within(container).queryByRole("link")).toBeNull()
+    })
+
+    it("renders the certificate of authenticity as plain text, not a link", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      mockResolveLastOperation({ Artwork: () => artwork })
+
+      const container = await screen.findByTestId("authenticity-certificate")
+      expect(within(container).getByText("Certificate of Authenticity")).toBeOnTheScreen()
+      expect(within(container).queryByRole("link")).toBeNull()
+    })
   })
 
   describe("classification and authenticity section", () => {
