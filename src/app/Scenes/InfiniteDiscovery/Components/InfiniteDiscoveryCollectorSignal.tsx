@@ -1,5 +1,6 @@
 import { Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { useCollectorSignal_artwork$key } from "__generated__/useCollectorSignal_artwork.graphql"
+import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
 import { FC } from "react"
@@ -15,6 +16,9 @@ export const InfiniteDiscoveryCollectorSignal: FC<InfiniteDiscoveryCollectorSign
 }) => {
   const { SignalIcon, signalTitle, signalDescription, href, hasCollectorSignal } =
     useCollectorSignal({ artwork })
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
+  )
 
   if (!hasCollectorSignal) {
     return null
@@ -33,7 +37,7 @@ export const InfiniteDiscoveryCollectorSignal: FC<InfiniteDiscoveryCollectorSign
       <Flex flex={1} flexDirection="row" gap={0.5}>
         <Flex style={{ width: ICON_SIZE, height: ICON_SIZE }} />
 
-        {href ? (
+        {href && !isOnboardingSession ? (
           <RouterLink to={href} hasChildTouchable>
             <LinkText variant="xs" color="mono100">
               {signalDescription}
