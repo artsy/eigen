@@ -150,10 +150,6 @@ const OnboardingOrderedSetScreenQuery = graphql`
             ... on Artist {
               internalID
               isFollowed
-              name
-              nationality
-              birthday
-              deathday
               coverArtwork {
                 image {
                   url
