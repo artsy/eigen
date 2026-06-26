@@ -40,11 +40,14 @@ export const usePartnerOfferEvent = ({
     return null
   }
 
-  // The offer is fulfilled when one of the collector's orders has a line item
-  // tied to it; in that case we show a purchase confirmation instead of letting
-  // the offer expire after it ends.
+  // Only treat the offer as purchased if the order is in an active state
+  // (SUBMITTED, APPROVED, or COMPLETED) and has a line item tied to this offer.
+  // This prevents abandoned or canceled orders from showing a purchase confirmation.
+  const PURCHASED_BUYER_STATES = new Set(["SUBMITTED", "APPROVED", "COMPLETED"])
+
   const isPurchased = extractNodes(collectorOrdersConnection).some(
     (order) =>
+      PURCHASED_BUYER_STATES.has(order.buyerState ?? "") &&
       order.lineItems?.some((lineItem) => lineItem?.partnerOfferId === partnerOffer.internalID)
   )
 
@@ -70,6 +73,7 @@ const conversationFragment = graphql`
     collectorOrdersConnection(first: 10) {
       edges {
         node {
+          buyerState
           lineItems {
             partnerOfferId
           }
