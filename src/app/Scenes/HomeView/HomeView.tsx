@@ -48,7 +48,6 @@ import {
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistSaveOnboardingBottomSheet } from "./Components/ArtistSaveOnboardingBottomSheet"
-import { DUMMY_FOLLOWED_ARTISTS } from "./Components/dummyArtistData"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
 
@@ -313,7 +312,7 @@ const HomeViewScreenComponent: React.FC = () => {
           </Sentry.TimeToInitialDisplay>
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
-        <ArtistSaveOnboardingBottomSheet artists={DUMMY_FOLLOWED_ARTISTS} />
+        <ArtistSaveOnboardingBottomSheet />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )

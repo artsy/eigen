@@ -8,12 +8,6 @@ jest.mock("app/utils/hooks/useFeatureFlag", () => ({
   useFeatureFlag: jest.fn(),
 }))
 
-const TEST_ARTISTS = Array.from({ length: 3 }, (_, i) => ({
-  id: `${i + 1}`,
-  name: `Artist ${i + 1}`,
-  imageUrl: `https://example.com/artist-${i + 1}.jpg`,
-}))
-
 describe("ArtistSaveOnboardingBottomSheet", () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -25,7 +19,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("does not render content when showFollowedArtistSummaryBottomSheet is false", () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       expect(
         screen.queryByText("Your followed artists are saved to Favorites.")
@@ -36,7 +30,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
       ;(useFeatureFlag as jest.Mock).mockReturnValue(false)
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       expect(
         screen.queryByText("Your followed artists are saved to Favorites.")
@@ -46,7 +40,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("renders the sheet content when both conditions are met", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       expect(
         await screen.findByText("Your followed artists are saved to Favorites.")
@@ -58,7 +52,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("renders page 1 content", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       expect(
         await screen.findByText("Your followed artists are saved to Favorites.")
@@ -71,7 +65,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("renders page 2 content", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       expect(await screen.findByText("We'll let you know when new works arrive.")).toBeOnTheScreen()
       expect(
@@ -86,7 +80,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("shows Next button on page 1", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       // Component starts on page 1 (activeStep = 0)
       expect(await screen.findByText("Next")).toBeOnTheScreen()
@@ -95,7 +89,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("shows View For You button on page 2", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
@@ -106,7 +100,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
     it("dismisses and resets global state when View For You is pressed", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<ArtistSaveOnboardingBottomSheet artists={TEST_ARTISTS} />)
+      renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 

@@ -11,15 +11,32 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
-import { DummyArtist } from "./dummyArtistData"
 
-interface ArtistSaveOnboardingBottomSheetProps {
-  artists: DummyArtist[]
+interface DummyArtist {
+  id: string
+  name: string
+  imageUrl: string
 }
 
-export const ArtistSaveOnboardingBottomSheet = ({
-  artists,
-}: ArtistSaveOnboardingBottomSheetProps) => {
+const DUMMY_FOLLOWED_ARTISTS: DummyArtist[] = [
+  {
+    id: "1",
+    name: "Artist 1",
+    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/8YQ9RcIGqoKC0ftglHMBeQ/large.jpg",
+  },
+  {
+    id: "2",
+    name: "Artist 2",
+    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/fEdSbiBZs9MJftHqjyW3sA/square140.png",
+  },
+  {
+    id: "3",
+    name: "Artist 3",
+    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/ENomMxabvEP15hIKHt5jmw/wide.jpg",
+  },
+]
+
+export const ArtistSaveOnboardingBottomSheet = () => {
   const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
     (state) => state.onboarding.showFollowedArtistSummaryBottomSheet
   )
@@ -86,7 +103,7 @@ export const ArtistSaveOnboardingBottomSheet = ({
           <Spacer y={1} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
-            {artists.slice(0, 3).map((artist, index) => (
+            {DUMMY_FOLLOWED_ARTISTS.slice(0, 3).map((artist, index) => (
               <Flex
                 key={artist.id}
                 style={{
