@@ -111,6 +111,7 @@
     "shell-quote": "Pinned to 1.8.4 to fix GHSA-w7jw-789q-3m8p (critical). @segment/sovran-react-native exact-pins the vulnerable 1.8.0 with no fixed release; remove this once Segment bumps it upstream."
   },
   "dependencies": {
+    "@artsy/changelog": "^0.1.0",
     "@artsy/cohesion": "^4.360.0",
     "@artsy/icons": "3.67.0",
     "@artsy/palette-mobile": "23.12.0",

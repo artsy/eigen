@@ -1,6 +1,6 @@
 import * as fs from "fs"
+import { changelogTemplateSections } from "@artsy/changelog"
 import prettier from "prettier"
-import { changelogTemplateSections } from "./changelogTemplateSections"
 
 export const generateChangelogSectionTemplate = () => {
   return `### Changelog updates
