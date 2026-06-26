@@ -35,7 +35,10 @@ export const FollowArtists: React.FC = () => {
           <Button
             block
             disabled={count < MIN_FOLLOWED}
-            onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
+            onPress={() => {
+              GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+              GlobalStore.actions.onboarding.setOnboardingState("complete")
+            }}
           >
             Continue to Artsy
           </Button>
