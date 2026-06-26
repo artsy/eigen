@@ -15,10 +15,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/changelog@file:../changelog::locator=eigen%40workspace%3A.":
+"@artsy/changelog@npm:^0.1.0":
   version: 0.1.0
-  resolution: "@artsy/changelog@file:../changelog#../changelog::hash=1f16ca&locator=eigen%40workspace%3A."
-  checksum: 10c0/ffe7ce62422551a80b49a555574067191abc9a670d4ba6962173c7f613dac37173e84a2cf49569f1f2c3f3c93f2384997f5424169b17e6cf869ac0a290a3e66e
+  resolution: "@artsy/changelog@npm:0.1.0"
+  checksum: 10c0/d1827f5b3b14ef76520f8e554861d1f651a5cb0b51c79e1122caca7015e3af0ec67dbf0c85e021633ef96613275c77e1ee8f8916c5460f18a1c4e977047c00f0
   languageName: node
   linkType: hard
 
@@ -13361,7 +13361,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/changelog": "file:../changelog"
+    "@artsy/changelog": "npm:^0.1.0"
     "@artsy/cohesion": "npm:^4.360.0"
     "@artsy/icons": "npm:3.67.0"
     "@artsy/palette-mobile": "npm:23.12.0"
