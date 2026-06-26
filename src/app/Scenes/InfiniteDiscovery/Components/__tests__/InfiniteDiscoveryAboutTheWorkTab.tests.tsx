@@ -1,12 +1,24 @@
-import { screen, within } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { InfiniteDiscoveryAboutTheWorkTabTestQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabTestQuery.graphql"
 import { AboutTheWorkTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
+import { GlobalStore } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
 import { Text } from "react-native"
 import { graphql } from "react-relay"
 
+const mockNavigate = jest.fn()
+
+jest.mock("app/system/navigation/navigate", () => ({
+  navigate: (...args: any[]) => mockNavigate(...args),
+}))
+
 describe("AboutTheWorkTab", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+  })
+
   const { renderWithRelay } = setupTestWrapper<InfiniteDiscoveryAboutTheWorkTabTestQuery>({
     Component: ({ artwork, me }: any) => {
       return (
@@ -107,6 +119,20 @@ describe("AboutTheWorkTab", () => {
 
       expect(screen.getByText("20 × 24 in | 50.8 × 61 cm")).toBeOnTheScreen()
       expect(screen.queryByText("Framed Dimensions")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("in onboarding mode", () => {
+    beforeEach(() => {
+      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+    })
+
+    it("does not navigate when the artist row is tapped", () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      mockResolveLastOperation({ Artwork: () => artwork, Artist: () => ({ name: "Test Artist" }) })
+
+      fireEvent.press(screen.getByText("Test Artist"))
+      expect(mockNavigate).not.toHaveBeenCalled()
     })
   })
 

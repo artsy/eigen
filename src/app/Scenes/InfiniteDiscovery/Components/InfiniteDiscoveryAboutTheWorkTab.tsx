@@ -24,6 +24,7 @@ import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
+import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
@@ -41,6 +42,9 @@ interface AboutTheWorkTabProps {
 // TODO: export TAB_BAR_HEIGHT from palette-mobile
 export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const data = useFragment(fragment, artwork)
+  const isOnboardingSession = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
+  )
   const { collapse } = useBottomSheet()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
   const { signalTitle } = useCollectorSignal({ artwork: data })
@@ -205,7 +209,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   <ArtistListItemContainer
                     key={`artist-${index}`}
                     artist={artist}
-                    onPress={() => handleCollapse()}
+                    onPress={isOnboardingSession ? undefined : () => handleCollapse()}
+                    disableNavigation={isOnboardingSession}
                   />
                 )
               })}
