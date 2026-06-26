@@ -6,7 +6,7 @@ import { graphql, useFragment, useMutation } from "react-relay"
 
 interface OnboardingPartnerListItemProps {
   partner: OnboardingPartnerListItem_partner$key
-  onFollow: () => void
+  onFollow: (wasFollowed: boolean) => void
 }
 
 export const OnboardingPartnerListItem: React.FC<OnboardingPartnerListItemProps> = ({
@@ -30,7 +30,7 @@ export const OnboardingPartnerListItem: React.FC<OnboardingPartnerListItemProps>
         },
       },
       onCompleted() {
-        onFollow()
+        onFollow(!!profile?.isFollowed)
       },
     })
   }

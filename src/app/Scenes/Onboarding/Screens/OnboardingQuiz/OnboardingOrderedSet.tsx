@@ -4,11 +4,14 @@ import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQue
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
 import { Suspense } from "react"
-import { FlatList } from "react-native"
+import { FlatList, PixelRatio } from "react-native"
+
+const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
@@ -16,9 +19,17 @@ import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
+  hideFollowedArtists?: boolean
+  listHeaderComponent?: React.ReactElement
+  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
+const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
+  id,
+  hideFollowedArtists,
+  listHeaderComponent,
+  onArtistFollowed,
+}) => {
   const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
@@ -26,16 +37,24 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
     OnboardingOrderedSetScreenQuery,
     {
       key: id,
+      imageSize: AVATAR_SIZE,
     }
   )
 
-  const orderedSet = orderedSets![0]?.orderedSet
+  if (!orderedSets || orderedSets.length === 0) {
+    return null
+  }
+
+  const orderedSet = orderedSets[0]?.orderedSet
 
   if (isEmpty(orderedSet)) {
     return null
   }
 
-  const nodes = extractNodes(orderedSet)
+  const allNodes = extractNodes(orderedSet)
+  const nodes = hideFollowedArtists
+    ? allNodes.filter((node) => node.__typename !== "Artist" || !node.isFollowed)
+    : allNodes
 
   return (
     <FlatList
@@ -43,6 +62,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
       contentContainerStyle={{
         paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
+      ListHeaderComponent={listHeaderComponent}
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => {
@@ -51,9 +71,17 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
             return (
               <ArtistListItemNew
                 artist={item}
-                onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  onArtistFollowed?.(
+                    {
+                      internalID: item.internalID,
+                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                    },
+                    wasFollowed
+                  )
                 }}
               />
             )
@@ -67,9 +95,9 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
               />
             )
@@ -113,7 +141,7 @@ export const OnboardingOrderedSetScreen: React.FC<OnboardingOrderedSetProps> = (
 )
 
 const OnboardingOrderedSetScreenQuery = graphql`
-  query OnboardingOrderedSetQuery($key: String!) {
+  query OnboardingOrderedSetQuery($key: String!, $imageSize: Int!) {
     orderedSets(key: $key) {
       orderedSet: orderedItemsConnection(first: 50) {
         edges {
@@ -122,7 +150,20 @@ const OnboardingOrderedSetScreenQuery = graphql`
             ... on Artist {
               internalID
               isFollowed
-              ...ArtistListItemNew_artist
+              name
+              nationality
+              birthday
+              deathday
+              coverArtwork {
+                image {
+                  url
+                  blurhash
+                  cropped(width: $imageSize, height: $imageSize) {
+                    src
+                  }
+                }
+              }
+              ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
             }
             ... on Profile {
               internalID

@@ -4,11 +4,14 @@ import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResu
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
-import { FlatList } from "react-native"
+import { FlatList, PixelRatio } from "react-native"
+
+const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
@@ -18,9 +21,14 @@ import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
   term: string
+  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
+const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
+  entities,
+  term,
+  onArtistFollowed,
+}) => {
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
   const { getId } = useNavigation()
@@ -30,6 +38,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
     {
       term,
       entities: [entities],
+      imageSize: AVATAR_SIZE,
     }
   )
 
@@ -63,9 +72,17 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
           case "Artist":
             return (
               <ArtistListItemNew
-                onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  onArtistFollowed?.(
+                    {
+                      internalID: item.internalID,
+                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                    },
+                    wasFollowed
+                  )
                 }}
                 artist={item}
               />
@@ -80,9 +97,9 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                onFollow={(wasFollowed) => {
+                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
                 }}
               />
             )
@@ -110,18 +127,28 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
 export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProps> = ({
   entities,
   term,
+  onArtistFollowed,
 }) => {
   return (
     <Suspense fallback={<Placeholder />}>
-      <OnboardingSearchResults term={term} entities={entities} />
+      <OnboardingSearchResults
+        term={term}
+        entities={entities}
+        onArtistFollowed={onArtistFollowed}
+      />
     </Suspense>
   )
 }
 
 const OnboardingSearchResultsScreenQuery = graphql`
-  query OnboardingSearchResultsQuery($term: String!, $entities: [SearchEntity!]!) {
+  query OnboardingSearchResultsQuery(
+    $term: String!
+    $entities: [SearchEntity!]!
+    $imageSize: Int!
+  ) {
     viewer {
-      ...OnboardingSearchResults_viewer @arguments(term: $term, entities: $entities)
+      ...OnboardingSearchResults_viewer
+        @arguments(term: $term, entities: $entities, imageSize: $imageSize)
     }
   }
 `
@@ -134,6 +161,7 @@ const OnboardingSearchResultsFragment = graphql`
     entities: { type: "[SearchEntity!]!" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
+    imageSize: { type: "Int!" }
   ) {
     matchConnection(
       term: $term
@@ -148,7 +176,20 @@ const OnboardingSearchResultsFragment = graphql`
           ... on Artist {
             internalID
             isFollowed
-            ...ArtistListItemNew_artist
+            name
+            nationality
+            birthday
+            deathday
+            coverArtwork {
+              image {
+                url
+                blurhash
+                cropped(width: $imageSize, height: $imageSize) {
+                  src
+                }
+              }
+            }
+            ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
           }
           ... on Profile {
             internalID

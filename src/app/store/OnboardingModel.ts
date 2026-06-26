@@ -3,20 +3,43 @@ import { Action, action } from "easy-peasy"
 type OnboardingState = "incomplete" | "complete"
 type OnboardingArtQuizState = "none" | "incomplete" | "complete"
 
+export interface OnboardingFollowedArtist {
+  internalID: string
+  imageUrl: string | null
+  blurhash: string | null
+}
+
 export interface OnboardingModel {
   onboardingState: OnboardingState
   onboardingArtQuizState: OnboardingArtQuizState
+  followedOnboardingArtists: OnboardingFollowedArtist[]
   setArtQuizState: Action<this, OnboardingArtQuizState>
   setOnboardingState: Action<this, OnboardingState>
+  addFollowedOnboardingArtist: Action<this, OnboardingFollowedArtist>
+  removeFollowedOnboardingArtist: Action<this, string>
 }
 
 export const getOnboardingModel = (): OnboardingModel => ({
   onboardingState: "incomplete",
   onboardingArtQuizState: "none",
+  followedOnboardingArtists: [],
   setArtQuizState: action((state, artQuizState) => {
     state.onboardingArtQuizState = artQuizState
   }),
   setOnboardingState: action((state, onboardingState) => {
     state.onboardingState = onboardingState
+  }),
+  addFollowedOnboardingArtist: action((state, artist) => {
+    const alreadyAdded = state.followedOnboardingArtists.some(
+      (a) => a.internalID === artist.internalID
+    )
+    if (!alreadyAdded) {
+      state.followedOnboardingArtists.push(artist)
+    }
+  }),
+  removeFollowedOnboardingArtist: action((state, internalID) => {
+    state.followedOnboardingArtists = state.followedOnboardingArtists.filter(
+      (a) => a.internalID !== internalID
+    )
   }),
 })
