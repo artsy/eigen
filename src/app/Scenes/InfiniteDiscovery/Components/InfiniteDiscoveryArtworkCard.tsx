@@ -8,6 +8,7 @@ import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscover
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useInfiniteDiscoveryCardSave } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryCardSave"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
+import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
@@ -42,6 +43,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
+    const isOnboardingSession = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
+    )
 
     const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
@@ -158,6 +162,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             contextModule={ContextModule.infiniteDiscoveryArtworkCard}
             contextScreenOwnerId={artwork.internalID}
             contextScreenOwnerSlug={artwork.slug}
+            disableNavigation={isOnboardingSession}
           />
         </Flex>
         <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
