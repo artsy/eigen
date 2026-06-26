@@ -3965,6 +3965,7 @@ type ArtworkImportTransformedData {
   price: String
   priceMax: String
   priceMin: String
+  privateNotes: String
   provenance: String
   publisher: String
   reserve: String
