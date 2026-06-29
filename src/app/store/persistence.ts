@@ -48,6 +48,7 @@ export function assignDeep(object: any, otherObject: any) {
 // the same frame collapse into a single write — mirroring easy-peasy's own persist middleware.
 export const persistenceMiddleware: Middleware = (api) => {
   let rafHandle: ReturnType<typeof requestAnimationFrame> | null = null
+  let writeChain = Promise.resolve()
 
   return (next) => (action) => {
     const result = next(action)
@@ -58,11 +59,13 @@ export const persistenceMiddleware: Middleware = (api) => {
     }
 
     rafHandle = requestAnimationFrame(() => {
-      persist(state).catch((e) => {
-        if (__DEV__) {
-          console.error("Failed to persist store state", e)
-        }
-      })
+      writeChain = writeChain
+        .then(() => persist(state))
+        .catch((e) => {
+          if (__DEV__) {
+            console.error("Failed to persist store state", e)
+          }
+        })
       rafHandle = null
     })
 
