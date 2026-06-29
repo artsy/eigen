@@ -59,6 +59,7 @@ jobs:
       - name: Install Facebook IDB
         run: |
           brew tap facebook/fb
+          brew trust --formula facebook/fb/idb-companion
           brew install idb-companion
       - name: Set up JDK 17
         uses: actions/setup-java@v4
