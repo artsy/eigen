@@ -237,26 +237,28 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               onPress={handleCollapse}
               disableNavigation={isNewUserOnboardingSession}
             />
-            <Flex
-              flexDirection="row"
-              flexWrap="wrap"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text variant="xs" color="mono60">
-                Questions about this piece?
-              </Text>
+            {!isNewUserOnboardingSession && (
+              <Flex
+                flexDirection="row"
+                flexWrap="wrap"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text variant="xs" color="mono60">
+                  Questions about this piece?
+                </Text>
 
-              <Flex>
-                <ContactGalleryButton
-                  artwork={data}
-                  me={me}
-                  variant="outlineGray"
-                  size="small"
-                  icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
-                />
+                <Flex>
+                  <ContactGalleryButton
+                    artwork={data}
+                    me={me}
+                    variant="outlineGray"
+                    size="small"
+                    icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
+                  />
+                </Flex>
               </Flex>
-            </Flex>
+            )}
           </Flex>
         </Flex>
 
