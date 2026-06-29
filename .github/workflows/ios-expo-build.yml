@@ -70,6 +70,7 @@ jobs:
       - name: Install Facebook IDB
         run: |
           brew tap facebook/fb
+          brew trust --formula facebook/fb/idb-companion
           brew install idb-companion
 
       - name: Create and boot iPhone 17 Pro iOS 26.2 simulator
