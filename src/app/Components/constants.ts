@@ -13,10 +13,10 @@ export const HEART_ICON_SIZE = 22
 export const DEFAULT_ICON_SIZE = 24
 export const ACCESSIBLE_DEFAULT_ICON_SIZE = 24 * PixelRatio.getFontScale()
 export const ICON_HIT_SLOP = {
-  top: 5,
-  right: 5,
-  bottom: 5,
-  left: 5,
+  top: 8,
+  right: 6,
+  bottom: 8,
+  left: 8,
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
 export const SCROLLVIEW_PADDING_BOTTOM_OFFSET = 80
