@@ -42,9 +42,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
 
   const [isVisible, setIsVisible] = useState(isNewUserOnboardingSession)
   const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)

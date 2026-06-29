@@ -12,7 +12,7 @@ const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
 describe("NewUserOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(false)
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
   })
 
@@ -21,7 +21,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it("renders the sheet content when completionBottomSheetVisible is true", () => {
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
@@ -32,7 +32,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it('"Take me home" completes onboarding, exiting the onboarding navigator to the home tab', () => {
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
@@ -44,7 +44,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
   })
 
   it("renders 5 artwork images from the store", () => {
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     SAVED_ARTWORKS.forEach((artwork) => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork(artwork)
     })

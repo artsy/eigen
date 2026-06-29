@@ -26,9 +26,8 @@ export const useInfiniteDiscoveryCardSave = (
 
   const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
   const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
   const {
     incrementSavedArtworksCount,
     decrementSavedArtworksCount,
