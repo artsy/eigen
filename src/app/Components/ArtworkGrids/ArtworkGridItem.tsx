@@ -25,7 +25,6 @@ import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessag
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
-// import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
