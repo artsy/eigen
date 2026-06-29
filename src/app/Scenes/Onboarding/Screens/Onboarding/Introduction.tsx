@@ -31,7 +31,6 @@ export const Introduction: React.FC = () => {
   const handleDone = useCallback(
     (experience: Experience) => {
       if (experience === "beginner") {
-        GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
         replace("InfiniteDiscovery")
       } else {
         replace("FollowArtists")

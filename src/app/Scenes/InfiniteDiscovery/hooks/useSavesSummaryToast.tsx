@@ -14,9 +14,8 @@ export const useSavesSummaryToast = () => {
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
   const track = useInfiniteDiscoveryTracking()
 
   const showSavedCountToast = useCallback(() => {

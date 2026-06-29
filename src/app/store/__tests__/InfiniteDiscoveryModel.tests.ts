@@ -3,7 +3,6 @@ import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 describe("InfiniteDiscoveryModel", () => {
   beforeEach(() => {
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
   })
 
   const state = () => __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery
@@ -72,16 +71,6 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
 
       GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(false)
-      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
-    })
-  })
-
-  describe("setIsNewUserOnboardingSession", () => {
-    it("clears newUserOnboardingCompletionBottomSheetVisible when set to false", () => {
-      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
-      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
-
-      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
     })
   })

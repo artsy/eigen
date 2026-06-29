@@ -37,9 +37,8 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const newUserOnboardingCompletionBottomSheetVisible = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
   )
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
   const savedArtworks = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
   )

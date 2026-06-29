@@ -41,15 +41,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
-  const isNewUserOnboardingSession = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.isNewUserOnboardingSession
-  )
-
-  useEffect(() => {
-    return () => {
-      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
-    }
-  }, [])
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
 
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
   const topArtwork = useMemo(

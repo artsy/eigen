@@ -14,7 +14,7 @@ jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () 
 describe("InfiniteDiscoveryOnboarding", () => {
   beforeEach(() => {
     jest.useFakeTimers()
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
     GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(false)
   })
 
@@ -24,7 +24,7 @@ describe("InfiniteDiscoveryOnboarding", () => {
 
   describe("in new user onboarding session", () => {
     beforeEach(() => {
-      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+      GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
     it("shows the overlay immediately", () => {
