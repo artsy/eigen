@@ -24,6 +24,7 @@ import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
+import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
@@ -50,6 +51,9 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
     framedDimensions: data?.framedDimensions,
   })
 
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
+
   if (!data) {
     return null
   }
@@ -65,6 +69,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   }
 
   const handleCollapse = () => {
+    if (isNewUserOnboardingSession) return
     collapse()
   }
 
@@ -205,7 +210,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   <ArtistListItemContainer
                     key={`artist-${index}`}
                     artist={artist}
-                    onPress={() => handleCollapse()}
+                    onPress={handleCollapse}
+                    disableNavigation={isNewUserOnboardingSession}
                   />
                 )
               })}
