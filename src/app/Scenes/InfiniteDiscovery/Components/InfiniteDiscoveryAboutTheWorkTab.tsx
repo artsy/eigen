@@ -234,7 +234,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
             <PartnerListItemShort
               disabledLocation
               partner={data.partner}
-              onPress={() => handleCollapse()}
+              onPress={handleCollapse}
+              disableNavigation={isNewUserOnboardingSession}
             />
             <Flex
               flexDirection="row"
