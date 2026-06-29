@@ -1587,7 +1587,7 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/favorites/follows",
-    name: "SavedArtworks",
+    name: "FollowedArtists",
     Component: SavedArtworks,
     options: {
       topTabsNavigatorOptions: {
