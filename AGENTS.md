@@ -79,6 +79,7 @@ android/                 # Android native code and Gradle project
 
 ## Workflow
 
+- When opening a pull request, always use the template at `docs/pull_request_template.md`
 - Do not import components/hooks/functions directly from a different Scene — extract shared code to `src/app/Components/` or `src/app/utils/`
 - When adding a screen with a corresponding artsy.net page, match the route path and enable deep linking (add to `AndroidManifest.xml` for Android)
 - Use independent `NavigationContainer` stacks for context-specific flows (multi-step forms, modal sequences) rather than adding global routes
