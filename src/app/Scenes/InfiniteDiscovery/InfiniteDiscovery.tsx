@@ -10,6 +10,7 @@ import {
   negativeSignalsQuery,
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNegativeSignalsBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
+import { NewUserOnboardingArtworkCardBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingArtworkCardBottomSheet"
 import { NewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingCompletionBottomSheet"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
@@ -36,13 +37,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 }) => {
   const track = useInfiniteDiscoveryTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
-  const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
   const isNewUserOnboardingSession =
     GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
+
+  const negativeSignalsEnabled =
+    useFeatureFlag("AREnabledDiscoverDailyNegativeSignals") && !isNewUserOnboardingSession
 
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
   const topArtwork = useMemo(
@@ -194,12 +197,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         />
         {!!topArtwork && (
           <>
-            <ArtworkCardBottomSheet
-              artworkID={topArtwork.internalID}
-              artworkSlug={topArtwork.slug}
-              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-              contextModule={ContextModule.infiniteDiscovery}
-            />
+            {isNewUserOnboardingSession ? (
+              <NewUserOnboardingArtworkCardBottomSheet
+                artworkID={topArtwork.internalID}
+                key={topArtwork.internalID}
+              />
+            ) : (
+              <ArtworkCardBottomSheet
+                artworkID={topArtwork.internalID}
+                artworkSlug={topArtwork.slug}
+                artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+                contextModule={ContextModule.infiniteDiscovery}
+              />
+            )}
             {!!negativeSignalsEnabled && (
               <InfiniteDiscoveryNegativeSignalsBottomSheet
                 artworkID={topArtwork.internalID}
