@@ -1,10 +1,7 @@
-import { captureException } from "@sentry/react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { persistenceMiddleware } from "app/store/persistence"
-import { action, createStore as createEasyPeasyStore } from "easy-peasy"
-import { Immer } from "immer"
 import { applyMiddleware, createStore, Reducer } from "redux"
 
-jest.mock("@sentry/react-native")
 jest.mock("@react-native-async-storage/async-storage", () => ({
   setItem: jest.fn().mockResolvedValue(undefined),
   getItem: jest.fn().mockResolvedValue(null),
@@ -12,32 +9,20 @@ jest.mock("@react-native-async-storage/async-storage", () => ({
 
 const makeStore = (reducer: Reducer) => createStore(reducer, applyMiddleware(persistenceMiddleware))
 
+// Flushes RAF callbacks and the resulting promise chain
+const flushAll = () => jest.runAllTimersAsync()
+
+beforeEach(() => {
+  jest.useFakeTimers()
+  jest.clearAllMocks()
+})
+
+afterEach(() => {
+  jest.useRealTimers()
+})
+
 describe("persistenceMiddleware", () => {
-  it("does not throw when a reducer throws", () => {
-    const store = makeStore((state = {}, action) => {
-      if (action.type === "THROW") throw new Error("Proxy handler is null")
-      return state
-    })
-
-    expect(() => store.dispatch({ type: "THROW" })).not.toThrow()
-  })
-
-  it("reports the caught error to Sentry as handled", () => {
-    const error = new Error("Proxy handler is null")
-    const store = makeStore((state = {}, action) => {
-      if (action.type === "THROW") throw error
-      return state
-    })
-
-    store.dispatch({ type: "THROW" })
-
-    expect(captureException).toHaveBeenCalledWith(error, {
-      level: "error",
-      tags: { handled: "true" },
-    })
-  })
-
-  it("passes successful actions through and updates state normally", () => {
+  it("passes actions through and updates state normally", () => {
     const store = makeStore((state: { count: number } = { count: 0 }, action) => {
       if (action.type === "INCREMENT") return { count: state.count + 1 }
       return state
@@ -55,56 +40,76 @@ describe("persistenceMiddleware", () => {
     expect(result).toEqual({ type: "NOOP" })
   })
 
-  it("returns undefined when a reducer throws", () => {
-    const store = makeStore((state = {}, action) => {
-      if (action.type === "THROW") throw new Error("boom")
+  it("calls AsyncStorage.setItem after the next animation frame", async () => {
+    const store = makeStore((state: { value: string } = { value: "a" }, action) => {
+      if (action.type === "SET") return { value: action.payload }
       return state
     })
 
-    const result = store.dispatch({ type: "THROW" })
-    expect(result).toBeUndefined()
+    store.dispatch({ type: "SET", payload: "b" })
+
+    expect(AsyncStorage.setItem).not.toHaveBeenCalled()
+
+    await flushAll()
+
+    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
   })
-})
 
-// Simulates the real EIGEN-AZR1 / EIGEN-AZA6 crash path:
-//   Hermes 0.14.1 on iOS 26 throws "TypeError: Proxy handler is null" inside
-//   immer's finishDraft() when revoking a Proxy — easy-peasy calls this after
-//   every action handler that mutates draft state (e.g. setIsReady).
-//   Without the try/catch in persistenceMiddleware the error propagates to
-//   RCTFatal → expo-updates recovery pipeline → intentional crash.
-describe("persistenceMiddleware — immer Proxy crash (EIGEN-AZR1 regression)", () => {
-  // Minimal model that mirrors the mutation pattern of the failing action:
-  //   ProgressiveOnboardingModel.setIsReady: action((state, v) => { state.sessionState.isReady = v })
-  const model = {
-    sessionState: { isReady: false },
-    setIsReady: action((state: any, value: boolean) => {
-      state.sessionState.isReady = value
-    }),
-  }
+  it("collapses multiple actions in the same frame into a single write", async () => {
+    const store = makeStore((state: { count: number } = { count: 0 }, action) => {
+      if (action.type === "INCREMENT") return { count: state.count + 1 }
+      return state
+    })
 
-  it("does not throw and reports to Sentry when immer finishDraft throws during dispatch", () => {
-    const store = createEasyPeasyStore(model, { middleware: [persistenceMiddleware] })
+    store.dispatch({ type: "INCREMENT" })
+    store.dispatch({ type: "INCREMENT" })
+    store.dispatch({ type: "INCREMENT" })
 
-    // Warm up: dispatch once so easy-peasy creates its internal Immer instance
-    store.getActions().setIsReady(false)
+    await flushAll()
 
-    // Patch Immer.prototype.finishDraft to simulate "Proxy handler is null" (Hermes 0.14.1 bug)
-    const originalFinishDraft = Immer.prototype.finishDraft
-    const proxyError = new TypeError("Proxy handler is null")
-    Immer.prototype.finishDraft = () => {
-      throw proxyError
-    }
+    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
+  })
 
-    try {
-      // This must NOT propagate — persistenceMiddleware should swallow it
-      expect(() => store.getActions().setIsReady(true)).not.toThrow()
+  it("persists the latest state when multiple actions fire before the frame", async () => {
+    const store = makeStore((state: { value: string } = { value: "a" }, action) => {
+      if (action.type === "SET") return { value: action.payload }
+      return state
+    })
 
-      expect(captureException).toHaveBeenCalledWith(proxyError, {
-        level: "error",
-        tags: { handled: "true" },
-      })
-    } finally {
-      Immer.prototype.finishDraft = originalFinishDraft
-    }
+    store.dispatch({ type: "SET", payload: "b" })
+    store.dispatch({ type: "SET", payload: "c" })
+
+    await flushAll()
+
+    const serialized = (AsyncStorage.setItem as jest.Mock).mock.calls[0][1]
+    expect(JSON.parse(serialized)).toMatchObject({ value: "c" })
+  })
+
+  it("writes are serialised — a second write waits for the first to finish", async () => {
+    let resolveFirst!: () => void
+    const firstWrite = new Promise<void>((resolve) => {
+      resolveFirst = resolve
+    })
+    ;(AsyncStorage.setItem as jest.Mock)
+      .mockReturnValueOnce(firstWrite)
+      .mockResolvedValue(undefined)
+
+    const store = makeStore((state: { value: string } = { value: "a" }, action) => {
+      if (action.type === "SET") return { value: action.payload }
+      return state
+    })
+
+    store.dispatch({ type: "SET", payload: "b" })
+    await flushAll()
+    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
+
+    store.dispatch({ type: "SET", payload: "c" })
+    await flushAll()
+    // first write still in progress — second should not have started yet
+    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(1)
+
+    resolveFirst()
+    await flushAll()
+    expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2)
   })
 })

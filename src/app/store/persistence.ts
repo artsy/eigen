@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { captureException } from "@sentry/react-native"
 import { State } from "easy-peasy"
-import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
+import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString } from "lodash"
 import { Middleware } from "redux"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 import { migrate } from "./migration"
@@ -44,24 +43,33 @@ export function assignDeep(object: any, otherObject: any) {
   }
 }
 
-// Catches errors thrown by immer/reducers (e.g. the Hermes 0.14.1 "Proxy handler is null"
-// bug on iOS 26 — EIGEN-AZR1, EIGEN-AZA6) and reports them to Sentry without letting
-// them propagate to RCTFatal and crash the app. Also throttles state persistence.
+// Captures state synchronously after each action (while Immer Proxies are still alive),
+// then defers the AsyncStorage write to the next animation frame. Multiple actions in
+// the same frame collapse into a single write — mirroring easy-peasy's own persist middleware.
 export const persistenceMiddleware: Middleware = (api) => {
-  const throttledPersist = throttle(() => persist(api.getState()), 1000, {
-    leading: false,
-    trailing: true,
-  })
+  let rafHandle: ReturnType<typeof requestAnimationFrame> | null = null
+  let writeChain = Promise.resolve()
 
   return (next) => (action) => {
-    try {
-      const result = next(action)
-      throttledPersist()
-      return result
-    } catch (e) {
-      captureException(e, { level: "error", tags: { handled: "true" } })
-      return undefined
+    const result = next(action)
+    const state = api.getState()
+
+    if (rafHandle !== null) {
+      cancelAnimationFrame(rafHandle)
     }
+
+    rafHandle = requestAnimationFrame(() => {
+      writeChain = writeChain
+        .then(() => persist(state))
+        .catch((e) => {
+          if (__DEV__) {
+            console.error("Failed to persist store state", e)
+          }
+        })
+      rafHandle = null
+    })
+
+    return result
   }
 }
 
