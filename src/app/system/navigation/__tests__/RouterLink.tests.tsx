@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, TouchableProps } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
@@ -28,7 +28,7 @@ describe("RouterLink", () => {
     jest.clearAllMocks()
   })
 
-  const TestComponent = (props: Partial<RouterLinkProps>) => (
+  const TestComponent = (props: Partial<RouterLinkProps & TouchableProps>) => (
     <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
       <Text>Test Link</Text>
     </RouterLink>
@@ -72,6 +72,25 @@ describe("RouterLink", () => {
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
       passProps: { id: "test-id" },
+    })
+  })
+
+  describe("when disableNavigation is true", () => {
+    it("does not navigate on press", () => {
+      renderWithWrappers(<TestComponent disableNavigation />)
+
+      fireEvent.press(screen.getByText("Test Link"))
+
+      expect(navigate).not.toHaveBeenCalled()
+    })
+
+    it("still calls onPress", () => {
+      const onPress = jest.fn()
+      renderWithWrappers(<TestComponent disableNavigation onPress={onPress} />)
+
+      fireEvent.press(screen.getByText("Test Link"))
+
+      expect(onPress).toHaveBeenCalledTimes(1)
     })
   })
 
