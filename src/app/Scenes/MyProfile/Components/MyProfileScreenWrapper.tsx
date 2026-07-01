@@ -60,6 +60,8 @@ export const MyProfileScreenWrapper: React.FC<
           >
             <Flex p={2} backgroundColor="mono0">
               <Button
+                // Remount to fix a bug on validity change to clear a stale disabled (gray) state that
+                // lingered after pasting a password and toggling the input's secureTextEntry prop.
                 key={`save-button-${isValid}`}
                 block
                 onPress={onPress}
