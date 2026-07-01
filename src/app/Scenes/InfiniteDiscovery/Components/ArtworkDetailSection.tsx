@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Text, TextProps } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailSection_artwork$key } from "__generated__/ArtworkDetailSection_artwork.graphql"
 import { useArtworkDimensions } from "app/utils/hooks/useArtworkDimensions"
 import { FC } from "react"
@@ -26,71 +26,33 @@ export const ArtworkDetailSection: FC<ArtworkDetailSectionProps> = ({ artwork })
     isFramed,
   } = data
 
+  const metadata = [
+    { label: "Materials", value: medium },
+    { label: "Dimensions", value: regularDimensionText },
+    { label: "Framed Dimensions", value: hasFramedDimensions ? framedDimensionText : null },
+    { label: "Rarity", value: attributionClass?.name },
+    { label: "Medium", value: mediumType?.name },
+    { label: "Condition", value: condition?.displayText },
+    { label: "Signature", value: signatureInfo?.details },
+    { label: "Certificate of Authenticity", value: certificateOfAuthenticity?.details },
+    { label: "Publisher", value: publisher },
+    { label: "Frame", value: isFramed ? "Frame included" : "Frame not included" },
+  ].filter(({ value }) => !!value)
+
   return (
     <Flex gap={1}>
-      <Flex flexDirection="row">
-        <Text {...labelStyle}>Materials</Text>
-        <Text {...valueStyle}>{medium}</Text>
-      </Flex>
-
-      {!!regularDimensionText && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Dimensions</Text>
-          <Text {...valueStyle}>{regularDimensionText}</Text>
+      {metadata.map(({ label, value }) => (
+        <Flex key={label} flexDirection="row">
+          <Flex width="35%">
+            <Text variant="xs" color="mono60">
+              {label}
+            </Text>
+          </Flex>
+          <Flex width="65%">
+            <Text variant="xs">{value}</Text>
+          </Flex>
         </Flex>
-      )}
-
-      {!!hasFramedDimensions && !!framedDimensionText && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Framed Dimensions</Text>
-          <Text {...valueStyle}>{framedDimensionText}</Text>
-        </Flex>
-      )}
-
-      <Flex flexDirection="row">
-        <Text {...labelStyle}>Rarity</Text>
-        <Text {...valueStyle}>{attributionClass?.name}</Text>
-      </Flex>
-
-      {!!mediumType?.name && (
-        <Flex flexDirection="row" width="100%">
-          <Text {...labelStyle}>Medium</Text>
-          <Text {...valueStyle}>{mediumType.name}</Text>
-        </Flex>
-      )}
-
-      {!!condition?.displayText && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Condition</Text>
-          <Text {...valueStyle}>{condition.displayText}</Text>
-        </Flex>
-      )}
-
-      {!!signatureInfo?.details && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Signature</Text>
-          <Text {...valueStyle}>{signatureInfo.details}</Text>
-        </Flex>
-      )}
-
-      {!!certificateOfAuthenticity?.details && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Certificate of Authenticity</Text>
-          <Text {...valueStyle}>{certificateOfAuthenticity.details}</Text>
-        </Flex>
-      )}
-
-      {!!publisher && (
-        <Flex flexDirection="row">
-          <Text {...labelStyle}>Publisher</Text>
-          <Text {...valueStyle}>{publisher}</Text>
-        </Flex>
-      )}
-
-      <Flex flexDirection="row">
-        <Text {...labelStyle}>Frame</Text>
-        <Text {...valueStyle}>{isFramed ? "Frame included" : "Frame not included"}</Text>
-      </Flex>
+      ))}
     </Flex>
   )
 }
@@ -125,14 +87,3 @@ const fragment = graphql`
     isFramed
   }
 `
-
-export const labelStyle = {
-  width: "35%",
-  variant: "xs",
-  color: "mono60",
-} satisfies TextProps | FlexProps
-
-export const valueStyle = {
-  width: "65%",
-  variant: "xs",
-} satisfies TextProps | FlexProps
