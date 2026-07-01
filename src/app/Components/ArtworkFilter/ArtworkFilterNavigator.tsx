@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import {
@@ -111,6 +111,7 @@ export type ArtworkFilterNavigationStack = {
 const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
+  const color = useColor()
   const theme = useNavigationTheme()
   const insets = useSafeAreaInsets()
 
@@ -355,7 +356,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                   ...TransitionPresets.SlideFromRightIOS,
                   headerShown: false,
                   cardStyle: {
-                    backgroundColor: "transparent",
+                    backgroundColor: color("mono0"),
                     paddingTop: Platform.OS === "ios" ? insets?.top : 0,
                   },
                 }}
