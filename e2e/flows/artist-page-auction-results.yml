@@ -1,0 +1,92 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Artist Page - Steps 8-11: Auction Results tab
+# Covers: tab content, filter, market signals, and viewing an auction detail.
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
+
+- tapOn:
+    id: "search-button"
+- tapOn: "Search artists.*"
+- inputText: "KAWS"
+- extendedWaitUntil:
+    visible:
+      id: "autosuggest-search-result-KAWS"
+    timeout: 20000
+- tapOn:
+    id: "autosuggest-search-result-KAWS"
+
+# Step 8: Tap Auction Results tab and verify content
+- tapOn: "Auction Results"
+- extendedWaitUntil:
+    visible: "Market Signals"
+    timeout: 20000
+- assertVisible: "Market Signals"
+
+# Step 9: Filter auction results — Sort & Filter is below Market Signals, scroll to it
+- scrollUntilVisible:
+    element:
+      text: "Sort & Filter"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Sort & Filter"
+- extendedWaitUntil:
+    visible: "Sort By"
+    timeout: 10000
+- assertVisible: "Sort By"
+- assertVisible: "Medium"
+- assertVisible: "Size"
+- assertVisible: "Artwork Date"
+- assertVisible: "Auction House"
+
+# Select a filter option — "Show Results" on the Sort By sub-screen closes the entire filter
+- tapOn: "Sort By"
+- extendedWaitUntil:
+    visible: "Sale Price"
+    timeout: 10000
+- tapOn: "Sale Price"
+- tapOn: "Show Results"
+- extendedWaitUntil:
+    notVisible: "Sort By"
+    timeout: 10000
+
+# Step 10: Market Signals — back on Auction Results tab, scroll to the top
+- extendedWaitUntil:
+    visible: "Market Signals"
+    timeout: 20000
+- assertVisible: "Market Signals"
+- extendedWaitUntil:
+    visible:
+      id: "annualLotsSold"
+    timeout: 15000
+- assertVisible:
+    id: "annualLotsSold"
+
+# Step 11: View an auction result detail tile (tap the first sale info row)
+- extendedWaitUntil:
+    visible:
+      id: "saleInfo"
+    timeout: 20000
+- tapOn:
+    id: "saleInfo"
+- extendedWaitUntil:
+    visible:
+      id: "saleDate"
+    timeout: 15000
+- assertVisible:
+    id: "saleDate"
+- scrollUntilVisible:
+    element:
+      id: "comparableWorks"
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: "comparableWorks"

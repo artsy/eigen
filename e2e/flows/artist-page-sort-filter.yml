@@ -1,0 +1,50 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Artist Page - Step 4: Sort & filter artist artworks
+# Opens an artist page, opens Sort & Filter, selects a sort option,
+# and verifies the filter sheet and dismissal.
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
+- tapOn:
+    id: "search-button"
+- tapOn: "Search artists.*"
+- inputText: "KAWS"
+- extendedWaitUntil:
+    visible:
+      id: "autosuggest-search-result-KAWS"
+    timeout: 20000
+- tapOn:
+    id: "autosuggest-search-result-KAWS"
+
+# Open Sort & Filter from Artworks tab
+- assertVisible: "Sort & Filter"
+- tapOn: "Sort & Filter"
+- extendedWaitUntil:
+    visible: "Sort By"
+    timeout: 10000
+
+# Verify filter options are present
+- assertVisible: "Sort By"
+- assertVisible: "Rarity"
+- assertVisible: "Medium"
+- assertVisible: "Price"
+- assertVisible: "Size"
+
+# Select a sort option
+- tapOn: "Sort By"
+- extendedWaitUntil:
+    visible: "Recently Added"
+    timeout: 10000
+- tapOn: "Recently Added"
+
+# Apply the filter and verify sheet dismisses
+- tapOn: "Show Results"
+- assertNotVisible: "Sort By"

@@ -1,0 +1,49 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Artist Page - Step 3: Create artist alert
+# Opens an artist page, taps Artworks tab, opens Create Alert,
+# verifies the alert form, submits, and confirms success.
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
+- tapOn:
+    id: "search-button"
+- tapOn: "Search artists.*"
+- inputText: "KAWS"
+- extendedWaitUntil:
+    visible:
+      id: "autosuggest-search-result-KAWS"
+    timeout: 20000
+- tapOn:
+    id: "autosuggest-search-result-KAWS"
+
+# Artworks tab is the default; verify Create Alert is present there
+- assertVisible: "Artworks"
+- assertVisible: "Create Alert"
+
+# Other tabs should NOT show Create Alert
+- tapOn: "Auction Results"
+- assertNotVisible: "Create Alert"
+- tapOn: "Artworks"
+
+# Open Create Alert form — tap the black button at the bottom, not the info icon
+- tapOn:
+    id: "create-alert-button"
+- extendedWaitUntil:
+    visible: "We'll send you alerts for"
+    timeout: 10000
+- assertVisible: "We'll send you alerts for"
+- assertVisible: "More Filters"
+- assertVisible: "Push Notifications"
+- assertVisible: "Email"
+
+# Submit the alert — verify the form dismisses (toast or onboarding modal may follow)
+- tapOn: "Create Alert"
+- assertNotVisible: "We'll send you alerts for"

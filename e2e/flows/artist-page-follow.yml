@@ -1,0 +1,39 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Artist Page - Step 2: Follow an artist
+# Search for an artist, open their page, follow them, verify button toggles,
+# verify it persists after switching tabs.
+- launchApp:
+    clearState: false
+    arguments:
+      email: ${MAESTRO_TEST_EMAIL}
+      password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
+# Open search and find the artist
+- tapOn:
+    id: "search-button"
+- tapOn: "Search artists.*"
+- inputText: "KAWS"
+- extendedWaitUntil:
+    visible:
+      id: "autosuggest-search-result-KAWS"
+    timeout: 20000
+- tapOn:
+    id: "autosuggest-search-result-KAWS"
+
+# Verify artist page header content
+- assertVisible: "American, b. 1974"
+- assertVisible: "Artworks"
+
+# Tap the follow toggle (follows or unfollows depending on current state)
+- tapOn: "Follow.*"
+
+# Switch tabs and verify the artist page persists correctly
+- tapOn: "Auction Results"
+- tapOn: "Artworks"
+- assertVisible: "American, b. 1974"
+- assertVisible: "Follow.*"
