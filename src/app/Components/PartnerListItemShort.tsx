@@ -39,7 +39,8 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
 
   return (
     <RouterLink
-      to={!disableNavigation ? data.href : undefined}
+      to={data.href}
+      disableNavigation={disableNavigation}
       onPress={onPress}
       style={{ flex: 1 }}
     >
