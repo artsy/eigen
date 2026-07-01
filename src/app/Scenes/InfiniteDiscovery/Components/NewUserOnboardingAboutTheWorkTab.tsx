@@ -1,8 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtworkIcon, CertificateIcon, EnvelopeIcon } from "@artsy/icons/native"
+import { ArtworkIcon, CertificateIcon } from "@artsy/icons/native"
 import {
   Flex,
-  LinkText,
   SimpleMessage,
   Skeleton,
   SkeletonBox,
@@ -11,20 +10,17 @@ import {
   Tabs,
   Text,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
-import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
-import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
-import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
-import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { NewUserOnboardingAboutTheWorkTabQuery } from "__generated__/NewUserOnboardingAboutTheWorkTabQuery.graphql"
+import { NewUserOnboardingAboutTheWorkTab_artwork$key } from "__generated__/NewUserOnboardingAboutTheWorkTab_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
-import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
+import { ACCESSIBLE_SMALL_ICON_SIZE } from "app/Components/constants"
 import { ArtworkDetailSection } from "app/Scenes/InfiniteDiscovery/Components/ArtworkDetailSection"
 import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
 import { useCollectorSignal } from "app/utils/artwork/useCollectorSignal"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -32,14 +28,11 @@ import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface AboutTheWorkTabProps {
-  artwork: InfiniteDiscoveryAboutTheWorkTab_artwork$key
-  me: MyProfileEditModal_me$key & useSendInquiry_me$key
+  artwork: NewUserOnboardingAboutTheWorkTab_artwork$key
 }
 
-// TODO: export TAB_BAR_HEIGHT from palette-mobile
-export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
+const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
   const data = useFragment(fragment, artwork)
-  const { collapse } = useBottomSheet()
   const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
   const { signalTitle } = useCollectorSignal({ artwork: data })
 
@@ -57,10 +50,6 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
     }
   }
 
-  const handleCollapse = () => {
-    collapse()
-  }
-
   return (
     <BottomSheetScrollView>
       <AnalyticsContextProvider
@@ -70,22 +59,20 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         contextScreenOwnerSlug={data.slug}
       >
         <Flex flex={1} px={2} gap={2}>
-          <Spacer y={4} />
+          <Spacer y={1} />
           <Flex gap={1} pt={1}>
             <InfiniteDiscoveryCollectorSignal artwork={data} />
 
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
                 <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
-                  <ArtworkIcon height={18} width={18} fill="mono60" />
+                  <ArtworkIcon
+                    height={ACCESSIBLE_SMALL_ICON_SIZE}
+                    width={ACCESSIBLE_SMALL_ICON_SIZE}
+                    fill="mono60"
+                  />
                   {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
-                  <RouterLink
-                    to="/artwork-classifications"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">{attributionClass[1]}</LinkText>
-                  </RouterLink>
+                  <Text variant="xs">{attributionClass[1]}</Text>
                 </Flex>
               </Sentinel>
             )}
@@ -97,16 +84,15 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 alignItems="center"
                 testID="authenticity-certificate"
               >
-                <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
+                <CertificateIcon
+                  height={ACCESSIBLE_SMALL_ICON_SIZE}
+                  width={ACCESSIBLE_SMALL_ICON_SIZE}
+                  fill="mono60"
+                  testID="certificate-icon"
+                />
                 <Flex flexDirection="row">
                   <Text variant="xs">Includes a </Text>
-                  <RouterLink
-                    to="/artwork-certificate-of-authenticity"
-                    hasChildTouchable
-                    onPress={handleCollapse}
-                  >
-                    <LinkText variant="xs">Certificate of Authenticity</LinkText>
-                  </RouterLink>
+                  <Text variant="xs">Certificate of Authenticity</Text>
                 </Flex>
               </Flex>
             )}
@@ -134,7 +120,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   <ArtistListItemContainer
                     key={`artist-${index}`}
                     artist={artist}
-                    onPress={handleCollapse}
+                    disableNavigation
                   />
                 )
               })}
@@ -146,44 +132,18 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
           <Flex gap={1}>
             <Text variant="sm-display">Gallery</Text>
 
-            <PartnerListItemShort
-              disabledLocation
-              partner={data.partner}
-              onPress={handleCollapse}
-            />
-            <Flex
-              flexDirection="row"
-              flexWrap="wrap"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text variant="xs" color="mono60">
-                Questions about this piece?
-              </Text>
-
-              <Flex>
-                <ContactGalleryButton
-                  artwork={data}
-                  me={me}
-                  variant="outlineGray"
-                  size="small"
-                  icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
-                />
-              </Flex>
-            </Flex>
+            <PartnerListItemShort disabledLocation partner={data.partner} disableNavigation />
           </Flex>
         </Flex>
 
-        <Spacer y={12} />
-        <Spacer y={6} />
+        <Spacer y={4} />
       </AnalyticsContextProvider>
     </BottomSheetScrollView>
   )
 }
 
 const fragment = graphql`
-  fragment InfiniteDiscoveryAboutTheWorkTab_artwork on Artwork {
-    ...ContactGalleryButton_artwork
+  fragment NewUserOnboardingAboutTheWorkTab_artwork on Artwork {
     ...useCollectorSignal_artwork
     ...ArtworkDetailSection_artwork
 
@@ -206,46 +166,39 @@ const fragment = graphql`
   }
 `
 
-interface InfiniteDiscoveryAboutTheWorkTabProps {
+interface NewUserOnboardingAboutTheWorkTabProps {
   artworkID: string
 }
 
-const infiniteDiscoveryAboutTheWorkQuery = graphql`
-  query InfiniteDiscoveryAboutTheWorkTabQuery($id: String!) {
+const newUserOnboardingAboutTheWorkQuery = graphql`
+  query NewUserOnboardingAboutTheWorkTabQuery($id: String!) {
     artwork(id: $id) {
-      ...InfiniteDiscoveryAboutTheWorkTab_artwork
-    }
-    me {
-      ...useSendInquiry_me
-      ...MyProfileEditModal_me
-      ...BidButton_me
-      ...ArtworkCardBottomSheetFooter_me
+      ...NewUserOnboardingAboutTheWorkTab_artwork
     }
   }
 `
 
-export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> =
+export const NewUserOnboardingAboutTheWorkTab: FC<NewUserOnboardingAboutTheWorkTabProps> =
   withSuspense({
     Component: ({ artworkID }) => {
-      const data = useLazyLoadQuery<InfiniteDiscoveryAboutTheWorkTabQuery>(
-        infiniteDiscoveryAboutTheWorkQuery,
+      const data = useLazyLoadQuery<NewUserOnboardingAboutTheWorkTabQuery>(
+        newUserOnboardingAboutTheWorkQuery,
         {
           id: artworkID,
         }
       )
 
-      if (!data?.artwork || !data?.me) {
+      if (!data?.artwork) {
         return (
           <Tabs.ScrollView>
-            {/* This should never be the case, but we'll handle it anyway */}
             <SimpleMessage m={2}>No details available.</SimpleMessage>
           </Tabs.ScrollView>
         )
       }
 
-      return <AboutTheWorkTab artwork={data.artwork} me={data.me} />
+      return <AboutTheWorkTab artwork={data.artwork} />
     },
-    LoadingFallback: () => <InfiniteDiscoveryAboutTheWorkTabSkeleton />,
+    LoadingFallback: () => <NewUserOnboardingAboutTheWorkTabSkeleton />,
     ErrorFallback: () => {
       return (
         <Tabs.ScrollView contentContainerStyle={{ marginTop: 20 }}>
@@ -255,12 +208,12 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
     },
   })
 
-export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
+const NewUserOnboardingAboutTheWorkTabSkeleton: FC = () => {
   return (
     <BottomSheetScrollView scrollEnabled={false}>
       <Skeleton>
         <Flex gap={2} px={2} flex={1}>
-          <Spacer y={4} />
+          <Spacer y={1} />
           <Flex gap={1} pt={1}>
             <Flex flexDirection="row" gap={0.5} alignItems="center">
               <SkeletonBox size={18} />
@@ -290,7 +243,7 @@ export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
                 <Flex width="35%">
                   <SkeletonText variant="xs">{label}</SkeletonText>
                 </Flex>
-                <SkeletonText variant="xs">{label + "a".repeat(Math.random() * 10)}</SkeletonText>
+                <SkeletonText variant="xs">{label}</SkeletonText>
               </Flex>
             ))}
           </Flex>
@@ -311,8 +264,6 @@ export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
                 <SkeletonBox justifySelf="flex-end" height={30} width={90} borderRadius={25} />
               </Flex>
             </Flex>
-
-            <SkeletonText variant="xs">{"Biogr ".repeat(20)}</SkeletonText>
           </Flex>
         </Flex>
       </Skeleton>
