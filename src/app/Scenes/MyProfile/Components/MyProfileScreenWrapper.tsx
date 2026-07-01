@@ -59,7 +59,15 @@ export const MyProfileScreenWrapper: React.FC<
             offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
           >
             <Flex p={2} backgroundColor="mono0">
-              <Button block onPress={onPress} disabled={!isValid} loading={loading}>
+              <Button
+                // Remount to fix a bug on validity change to clear a stale disabled (gray) state that
+                // lingered after pasting a password and toggling the input's secureTextEntry prop.
+                key={`save-button-${isValid}`}
+                block
+                onPress={onPress}
+                disabled={!isValid}
+                loading={loading}
+              >
                 Save
               </Button>
             </Flex>
