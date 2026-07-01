@@ -59,7 +59,13 @@ export const MyProfileScreenWrapper: React.FC<
             offset={{ opened: bottom + BOTTOM_TABS_HEIGHT }}
           >
             <Flex p={2} backgroundColor="mono0">
-              <Button block onPress={onPress} disabled={!isValid} loading={loading}>
+              <Button
+                key={`save-button-${isValid}`}
+                block
+                onPress={onPress}
+                disabled={!isValid}
+                loading={loading}
+              >
                 Save
               </Button>
             </Flex>
