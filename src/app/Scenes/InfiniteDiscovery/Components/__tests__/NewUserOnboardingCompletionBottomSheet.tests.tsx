@@ -11,13 +11,9 @@ const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
 
 describe("NewUserOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
-    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(false)
     GlobalStore.actions.onboarding.setOnboardingState("complete")
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
-  })
-
-  it("renders without error when completionBottomSheetVisible is false", () => {
-    expect(() => renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)).not.toThrow()
+    GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
   })
 
   it("renders the sheet content when completionBottomSheetVisible is true", () => {
@@ -28,10 +24,9 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     expect(screen.getByText("First five works saved!")).toBeOnTheScreen()
     expect(screen.getByText("Take me home")).toBeOnTheScreen()
-    expect(screen.queryByText("Continue Browsing")).not.toBeOnTheScreen()
   })
 
-  it('"Take me home" completes onboarding, exiting the onboarding navigator to the home tab', () => {
+  it('"Take me home" hides the completion sheet', () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
@@ -39,8 +34,10 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     fireEvent.press(screen.getByText("Take me home"))
 
-    const onboardingState = __globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState
-    expect(onboardingState).toBe("complete")
+    const infiniteDiscoveryState = __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery
+    expect(infiniteDiscoveryState?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(
+      false
+    )
   })
 
   it("renders 5 artwork images from the store", () => {

@@ -37,7 +37,8 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const env = getRelayEnvironment()
     const prefetch = usePrefetch()
 
-    const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
+    const { resetSavedArtworksCount, resetNewUserOnboardingSessionState } =
+      GlobalStore.actions.infiniteDiscovery
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
@@ -82,6 +83,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     useEffect(() => {
       retainQuery(infiniteDiscoveryVariables.excludeArtworkIds)
       resetSavedArtworksCount()
+      resetNewUserOnboardingSessionState()
 
       // Mark the queries to be disposed by GC, invalidate cache and prefetch a infinite discovery again
       return () => {
