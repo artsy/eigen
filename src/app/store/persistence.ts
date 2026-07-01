@@ -59,6 +59,9 @@ export const persistenceMiddleware: Middleware = (api) => {
     }
 
     rafHandle = requestAnimationFrame(() => {
+      // This looks a bit overcomplicated but it's intentional
+      // 1. We want to prioritise other middleware work over persistence to avoid blocking UI updates
+      // 2. Each persistence/write operation, is a promise in order to make sure these are queued and triggered in order
       writeChain = writeChain
         .then(() => persist(state))
         .catch((e) => {
