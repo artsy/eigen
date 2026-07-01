@@ -11,6 +11,7 @@ import { Variables } from "relay-runtime"
 
 export interface RouterLinkProps {
   disablePrefetch?: boolean
+  disableNavigation?: boolean
   navigationProps?: NavigateOptions["passProps"]
   to?: string | null | undefined
   // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
@@ -27,6 +28,7 @@ type PrefetchState = "started" | "complete" | null
  */
 export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   disablePrefetch,
+  disableNavigation,
   to,
   prefetchVariables,
   onPress,
@@ -45,7 +47,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
 
-    if (!to) return
+    if (!to || disableNavigation) return
 
     if (navigationProps) {
       navigate(to, { passProps: navigationProps })

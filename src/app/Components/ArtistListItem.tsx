@@ -158,8 +158,8 @@ const ArtistListItem: React.FC<Props> = ({
   return (
     <RouterLink
       noFeedback={!withFeedback}
-      // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
-      to={!disableNavigation ? href : undefined}
+      to={href}
+      disableNavigation={disableNavigation}
       onPress={() => callOnPress()}
       underlayColor={color("mono5")}
       style={containerStyle}
