@@ -1,20 +1,18 @@
-import { useColor } from "@artsy/palette-mobile"
+import { useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/ArtworkCardBottomSheetHandle"
 import { NewUserOnboardingAboutTheWorkTab } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingAboutTheWorkTab" // pragma: allowlist secret
 import { FC, useCallback } from "react"
-import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface NewUserOnboardingArtworkCardBottomSheetProps {
   artworkID: string
 }
 
-const { height } = Dimensions.get("screen")
-
 export const NewUserOnboardingArtworkCardBottomSheet: FC<
   NewUserOnboardingArtworkCardBottomSheetProps
 > = ({ artworkID }) => {
+  const { height } = useScreenDimensions()
   const { bottom, top } = useSafeAreaInsets()
   const color = useColor()
 
