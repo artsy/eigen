@@ -16,6 +16,7 @@ import { NewUserOnboardingAboutTheWorkTab_artwork$key } from "__generated__/NewU
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
+import { ACCESSIBLE_SMALL_ICON_SIZE } from "app/Components/constants"
 import { ArtworkDetailSection } from "app/Scenes/InfiniteDiscovery/Components/ArtworkDetailSection"
 import { InfiniteDiscoveryCollectorSignal } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryCollectorSignal"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
@@ -65,7 +66,11 @@ const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
                 <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
-                  <ArtworkIcon height={18} width={18} fill="mono60" />
+                  <ArtworkIcon
+                    height={ACCESSIBLE_SMALL_ICON_SIZE}
+                    width={ACCESSIBLE_SMALL_ICON_SIZE}
+                    fill="mono60"
+                  />
                   {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
                   <Text variant="xs">{attributionClass[1]}</Text>
                 </Flex>
@@ -79,7 +84,12 @@ const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
                 alignItems="center"
                 testID="authenticity-certificate"
               >
-                <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
+                <CertificateIcon
+                  height={ACCESSIBLE_SMALL_ICON_SIZE}
+                  width={ACCESSIBLE_SMALL_ICON_SIZE}
+                  fill="mono60"
+                  testID="certificate-icon"
+                />
                 <Flex flexDirection="row">
                   <Text variant="xs">Includes a </Text>
                   <Text variant="xs">Certificate of Authenticity</Text>
