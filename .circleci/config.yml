@@ -255,8 +255,6 @@ jobs:
       - android/save_gradle_cache
       - store_test_results:
           path: android/app/build/test-results
-      - store_artifacts:
-          path: android/app/build/reports/tests
 
   nightly-create-next-version:
     environment:
@@ -336,8 +334,6 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
             JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
-      - store_artifacts:
-          path: ./reports/junit/
       - store_test_results:
           path: ./reports/junit/
 
@@ -471,12 +467,6 @@ jobs:
           paths:
             - xcode_test_raw.log
 
-      - store_artifacts:
-          path: xcode_build_raw.log
-
-      - store_artifacts:
-          path: xcode_test_raw.log
-
   build-test-app-android:
     docker:
       - image: cimg/android:2025.03.1-node
@@ -487,12 +477,6 @@ jobs:
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'
-
-      - store_artifacts:
-          path: android/app/build/reports
-
-      - store_artifacts:
-          path: .gradle/daemon/
 
       - save_cache:
           key: << pipeline.parameters.android_native_cache_key >>
