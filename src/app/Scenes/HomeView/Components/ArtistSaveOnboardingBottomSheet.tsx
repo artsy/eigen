@@ -127,7 +127,7 @@ export const ArtistSaveOnboardingBottomSheet = () => {
                   transition={{
                     type: "timing",
                     duration: 300,
-                    delay: 300,
+                    delay: 1000,
                   }}
                 >
                   <Flex
