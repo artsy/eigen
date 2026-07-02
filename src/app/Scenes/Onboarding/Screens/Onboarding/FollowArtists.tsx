@@ -9,9 +9,13 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
+import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
-import { FollowedArtistsBank } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
-import { OnboardingOrderedSetScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingOrderedSet"
+import { FollowArtistsOrderedSetScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet"
+import {
+  ArtistRef,
+  FollowedArtistsBank,
+} from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
 import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
@@ -20,6 +24,7 @@ import { useState } from "react"
 import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 
 const MIN_FOLLOWED = 3
+const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
   const [query, setQuery] = useState("")
@@ -28,9 +33,9 @@ export const FollowArtists: React.FC = () => {
   )
   const [followedArtists, setFollowedArtists] =
     useState<OnboardingFollowedArtist[]>(storedFollowedArtists)
+  const [followedArtistRefs, setFollowedArtistRefs] = useState<ArtistRef[]>([])
 
   const count = followedArtists.length
-  const setId = "onboarding:suggested-artists"
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
 
@@ -39,14 +44,19 @@ export const FollowArtists: React.FC = () => {
     KeyboardController.dismiss()
   }
 
-  const handleArtistFollowed = (artist: OnboardingFollowedArtist) => {
+  const handleArtistFollowed = (
+    artistRef: ArtistListItemNew_artist$key,
+    artist: OnboardingFollowedArtist
+  ) => {
     setFollowedArtists((prev) => [artist, ...prev])
+    setFollowedArtistRefs((prev) => [{ ref: artistRef, internalID: artist.internalID }, ...prev])
     GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
   }
 
-  const handleArtistUnfollowed = (artist: OnboardingFollowedArtist) => {
-    setFollowedArtists((prev) => prev.filter((a) => a.internalID !== artist.internalID))
-    GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(artist.internalID)
+  const handleArtistUnfollowed = (internalID: string) => {
+    setFollowedArtists((prev) => prev.filter((a) => a.internalID !== internalID))
+    setFollowedArtistRefs((prev) => prev.filter((a) => a.internalID !== internalID))
+    GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(internalID)
   }
 
   return (
@@ -68,7 +78,7 @@ export const FollowArtists: React.FC = () => {
 
       <Screen.Body disableKeyboardAvoidance>
         <Box mt={2}>
-          <Text variant="lg-display">Tell us which artists you’re interested in?</Text>
+          <Text variant="lg-display">Tell us which artists you're interested in?</Text>
           <Text variant="sm-display" color="mono60" mt={1}>
             Follow {MIN_FOLLOWED} or more artists to see more of their work.
           </Text>
@@ -102,16 +112,15 @@ export const FollowArtists: React.FC = () => {
               onArtistUnfollowed={handleArtistUnfollowed}
             />
           ) : (
-            <OnboardingOrderedSetScreen
-              id={setId}
+            <FollowArtistsOrderedSetScreen
+              id={SET_ID}
               hideFollowedArtists
               onArtistFollowed={handleArtistFollowed}
               onArtistUnfollowed={handleArtistUnfollowed}
               listHeaderComponent={
                 <>
                   <FollowedArtistsBank
-                    followedArtists={followedArtists}
-                    onArtistFollowed={handleArtistFollowed}
+                    artistRefs={followedArtistRefs.slice(0, 3)}
                     onArtistUnfollowed={handleArtistUnfollowed}
                   />
                   <Text variant="md">Leading artists on Artsy</Text>

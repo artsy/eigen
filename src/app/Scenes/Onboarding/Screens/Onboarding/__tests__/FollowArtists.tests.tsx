@@ -19,10 +19,10 @@ jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBa
   FollowedArtistsBank: () => null,
 }))
 
-jest.mock("app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingOrderedSet", () => {
+jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet", () => {
   const { Text } = require("react-native")
   return {
-    OnboardingOrderedSetScreen: () => <Text>OrderedSet</Text>,
+    FollowArtistsOrderedSetScreen: () => <Text>OrderedSet</Text>,
   }
 })
 

@@ -1,5 +1,6 @@
 import { Flex, Join, Message, Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
+import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -20,8 +21,11 @@ import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
   term: string
-  onArtistFollowed?: (artist: OnboardingFollowedArtist) => void
-  onArtistUnfollowed?: (artist: OnboardingFollowedArtist) => void
+  onArtistFollowed?: (
+    artistRef: ArtistListItemNew_artist$key,
+    artist: OnboardingFollowedArtist
+  ) => void
+  onArtistUnfollowed?: (internalID: string) => void
 }
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
@@ -76,7 +80,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
                 onFollow={() => {
                   trackArtistFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.({
+                  onArtistFollowed?.(item, {
                     internalID: item.internalID,
                     imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
                     blurhash: item.coverArtwork?.image?.blurhash ?? null,
@@ -84,11 +88,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
                 }}
                 onUnfollow={() => {
                   trackArtistFollow(true, item.internalID, getId() ?? "")
-                  onArtistUnfollowed?.({
-                    internalID: item.internalID,
-                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                  })
+                  onArtistUnfollowed?.(item.internalID)
                 }}
                 artist={item}
               />
