@@ -1,12 +1,10 @@
 import { Join, Separator, Spacer } from "@artsy/palette-mobile"
 import { FollowedArtistsBankQuery } from "__generated__/FollowedArtistsBankQuery.graphql"
 import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
+import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Suspense, useDeferredValue, useMemo } from "react"
-import { PixelRatio } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
-
-const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
 
 interface FollowedArtistsBankContentProps {
   ids: string[]

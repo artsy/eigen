@@ -4,14 +4,13 @@ import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQue
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
 import { Suspense } from "react"
-import { FlatList, PixelRatio } from "react-native"
-
-const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
+import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"

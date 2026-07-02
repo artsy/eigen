@@ -4,14 +4,13 @@ import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResu
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
-import { FlatList, PixelRatio } from "react-native"
-
-const AVATAR_SIZE = Math.round(75 * PixelRatio.get())
+import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
 import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
