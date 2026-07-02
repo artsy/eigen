@@ -73,7 +73,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
               <ArtistListItemNew
                 onFollow={(wasFollowed) => {
                   trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
-                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
                   onArtistFollowed?.(
                     {
                       internalID: item.internalID,
@@ -98,7 +98,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
                 partner={partner}
                 onFollow={(wasFollowed) => {
                   trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
-                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
             )

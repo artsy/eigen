@@ -24,7 +24,7 @@ export type OnboardingContextAction =
   | { type: "SET_ANSWER_TWO"; payload: string }
   | { type: "SET_ANSWER_THREE"; payload: string }
   | { type: "SET_PRICE_RANGE"; payload: string }
-  | { type: "FOLLOW"; payload: string; wasFollowed: boolean }
+  | { type: "FOLLOW"; payload: string }
 
 const reducer = (onReset: () => void) => (state: State, action: OnboardingContextAction) => {
   switch (action.type) {
@@ -59,9 +59,6 @@ const reducer = (onReset: () => void) => (state: State, action: OnboardingContex
       }
 
     case "FOLLOW":
-      if (action.wasFollowed) {
-        return { ...state, followedIds: state.followedIds.filter((id) => id !== action.payload) }
-      }
       return {
         ...state,
         followedIds: state.followedIds.includes(action.payload)

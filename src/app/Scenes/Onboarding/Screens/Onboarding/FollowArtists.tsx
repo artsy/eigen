@@ -23,10 +23,13 @@ const MIN_FOLLOWED = 3
 
 export const FollowArtists: React.FC = () => {
   const [query, setQuery] = useState("")
-
-  const count = GlobalStore.useAppState(
-    (state) => state.onboarding.followedOnboardingArtists.length
+  const storedFollowedArtists = GlobalStore.useAppState(
+    (state) => state.onboarding.followedOnboardingArtists
   )
+  const [followedArtists, setFollowedArtists] =
+    useState<OnboardingFollowedArtist[]>(storedFollowedArtists)
+
+  const count = followedArtists.length
   const setId = "onboarding:suggested-artists"
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
@@ -38,8 +41,10 @@ export const FollowArtists: React.FC = () => {
 
   const handleArtistFollowed = (artist: OnboardingFollowedArtist, wasFollowed: boolean) => {
     if (wasFollowed) {
+      setFollowedArtists((prev) => prev.filter((a) => a.internalID !== artist.internalID))
       GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(artist.internalID)
     } else {
+      setFollowedArtists((prev) => [...prev, artist])
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
     }
   }
@@ -102,7 +107,10 @@ export const FollowArtists: React.FC = () => {
               onArtistFollowed={handleArtistFollowed}
               listHeaderComponent={
                 <>
-                  <FollowedArtistsBank />
+                  <FollowedArtistsBank
+                    followedArtists={followedArtists}
+                    onArtistFollowed={handleArtistFollowed}
+                  />
                   <Text variant="md">Leading artists on Artsy</Text>
                   <Spacer y={2} />
                 </>

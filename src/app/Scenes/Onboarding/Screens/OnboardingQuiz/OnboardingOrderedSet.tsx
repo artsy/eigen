@@ -72,7 +72,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
                 artist={item}
                 onFollow={(wasFollowed) => {
                   trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
-                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
                   onArtistFollowed?.(
                     {
                       internalID: item.internalID,
@@ -96,7 +96,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
                 partner={partner}
                 onFollow={(wasFollowed) => {
                   trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
-                  dispatch({ type: "FOLLOW", payload: item.internalID, wasFollowed })
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
             )

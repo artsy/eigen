@@ -2,15 +2,19 @@ import { Join, Separator, Spacer } from "@artsy/palette-mobile"
 import { FollowedArtistsBankQuery } from "__generated__/FollowedArtistsBankQuery.graphql"
 import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
 import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
-import { GlobalStore } from "app/store/GlobalStore"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { Suspense, useDeferredValue, useMemo } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface FollowedArtistsBankContentProps {
   ids: string[]
+  onArtistFollowed: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
 }
 
-const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({ ids }) => {
+const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
+  ids,
+  onArtistFollowed,
+}) => {
   const data = useLazyLoadQuery<FollowedArtistsBankQuery>(FollowedArtistsBankGQLQuery, {
     ids,
     imageSize: AVATAR_SIZE,
@@ -28,15 +32,14 @@ const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
             key={artist.internalID}
             artist={artist}
             onFollow={(wasFollowed) => {
-              if (wasFollowed) {
-                GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(artist.internalID)
-              } else {
-                GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
+              onArtistFollowed(
+                {
                   internalID: artist.internalID,
                   imageUrl: artist.coverArtwork?.image?.cropped?.src ?? null,
                   blurhash: artist.coverArtwork?.image?.blurhash ?? null,
-                })
-              }
+                },
+                wasFollowed
+              )
             }}
           />
         ))}
@@ -46,10 +49,15 @@ const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
   )
 }
 
-export const FollowedArtistsBank: React.FC = () => {
-  const followedArtists = GlobalStore.useAppState(
-    (state) => state.onboarding.followedOnboardingArtists
-  )
+interface FollowedArtistsBankProps {
+  followedArtists: OnboardingFollowedArtist[]
+  onArtistFollowed: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
+}
+
+export const FollowedArtistsBank: React.FC<FollowedArtistsBankProps> = ({
+  followedArtists,
+  onArtistFollowed,
+}) => {
   const ids = useMemo(() => followedArtists.slice(0, 3).map((a) => a.internalID), [followedArtists])
   const deferredIds = useDeferredValue(ids)
 
@@ -57,9 +65,16 @@ export const FollowedArtistsBank: React.FC = () => {
 
   return (
     <Suspense
-      fallback={deferredIds.length > 0 ? <FollowedArtistsBankContent ids={deferredIds} /> : null}
+      fallback={
+        deferredIds.length > 0 ? (
+          <FollowedArtistsBankContent ids={deferredIds} onArtistFollowed={onArtistFollowed} />
+        ) : null
+      }
     >
-      <FollowedArtistsBankContent ids={ids.length > 0 ? ids : deferredIds} />
+      <FollowedArtistsBankContent
+        ids={ids.length > 0 ? ids : deferredIds}
+        onArtistFollowed={onArtistFollowed}
+      />
     </Suspense>
   )
 }
