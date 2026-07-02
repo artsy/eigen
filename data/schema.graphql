@@ -18368,6 +18368,9 @@ type Mutation {
   # Accept a partner agreement
   acceptPartnerAgreement(input: AcceptPartnerAgreementInput!): AcceptPartnerAgreementPayload
 
+  # Accept a seller's offer on an order
+  acceptSellerOffer(input: acceptSellerOfferInput!): acceptSellerOfferPayload
+
   # Updates a Task on the logged in User
   ackTask(input: AckTaskMutationInput!): AckTaskMutationPayload
 
@@ -19129,6 +19132,9 @@ type Mutation {
   # Refresh the access token for a connected Instagram account
   refreshInstagramAccount(input: RefreshInstagramAccountInput!): RefreshInstagramAccountPayload
 
+  # Decline a seller's offer on an order
+  rejectSellerOffer(input: rejectSellerOfferInput!): rejectSellerOfferPayload
+
   # Removes an artwork from a partner list.
   removeArtworkFromPartnerList(
     input: RemoveArtworkFromPartnerListMutationInput!
@@ -19237,6 +19243,9 @@ type Mutation {
   startIdentityVerification(
     input: startIdentityVerificationMutationInput!
   ): startIdentityVerificationMutationPayload
+
+  # Submit a pending buyer offer
+  submitBuyerOffer(input: submitBuyerOfferInput!): submitBuyerOfferPayload
 
   # Create an artwork inquiry request
   submitInquiryRequestMutation(
@@ -31424,6 +31433,21 @@ type YearRange {
   startAt: Int
 }
 
+input acceptSellerOfferInput {
+  clientMutationId: String
+
+  # Offer id to accept.
+  offerID: ID!
+
+  # Order id.
+  orderID: ID!
+}
+
+type acceptSellerOfferPayload {
+  clientMutationId: String
+  orderOrError: OrderMutationResponse
+}
+
 type addOrderedSetItemFailure {
   mutationError: GravityMutationError
 }
@@ -31522,6 +31546,9 @@ input createBuyerOfferInput {
 
   # Order id.
   orderID: ID!
+
+  # Offer id this counteroffer responds to.
+  respondsToID: ID
 }
 
 type createBuyerOfferPayload {
@@ -31826,6 +31853,24 @@ type purchases {
   totalPrivateSaleCount: Int!
 }
 
+input rejectSellerOfferInput {
+  clientMutationId: String
+
+  # Offer id to decline.
+  offerID: ID!
+
+  # Order id.
+  orderID: ID!
+
+  # Optional reason for declining the offer.
+  rejectReason: String
+}
+
+type rejectSellerOfferPayload {
+  clientMutationId: String
+  orderOrError: OrderMutationResponse
+}
+
 input setOrderFulfillmentOptionInput {
   clientMutationId: String
   fulfillmentOption: FulfillmentOptionInput!
@@ -31878,6 +31923,21 @@ input startIdentityVerificationMutationInput {
 type startIdentityVerificationMutationPayload {
   clientMutationId: String
   startIdentityVerificationResponseOrError: StartIdentityVerificationResponseOrError
+}
+
+input submitBuyerOfferInput {
+  clientMutationId: String
+
+  # Offer id to submit.
+  offerID: ID!
+
+  # Order id.
+  orderID: ID!
+}
+
+type submitBuyerOfferPayload {
+  clientMutationId: String
+  offerOrError: OfferMutationResponse
 }
 
 input submitOrderInput {
