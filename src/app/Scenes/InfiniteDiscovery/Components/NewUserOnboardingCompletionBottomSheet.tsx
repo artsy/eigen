@@ -43,6 +43,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
   )
   const { setOnboardingState } = GlobalStore.actions.onboarding
+  const { setNewUserOnboardingCompletionBottomSheetVisible } = GlobalStore.actions.infiniteDiscovery
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -69,6 +70,9 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
       enableContentPanningGesture={false}
       handleComponent={null}
       backdropComponent={renderBackdrop}
+      onDismiss={() => {
+        setOnboardingState("complete")
+      }}
     >
       <BottomSheetView>
         <Flex px={2} pt={2} style={{ paddingBottom: safeAreaInsets.bottom + 16 }}>
@@ -113,7 +117,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
             block
             variant="fillDark"
             onPress={() => {
-              setOnboardingState("complete")
+              setNewUserOnboardingCompletionBottomSheetVisible(false)
             }}
           >
             Take me home

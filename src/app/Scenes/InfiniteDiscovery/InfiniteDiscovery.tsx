@@ -198,10 +198,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         {!!topArtwork && (
           <>
             {isNewUserOnboardingSession ? (
-              <NewUserOnboardingArtworkCardBottomSheet
-                artworkID={topArtwork.internalID}
-                key={topArtwork.internalID}
-              />
+              <NewUserOnboardingArtworkCardBottomSheet artworkID={topArtwork.internalID} />
             ) : (
               <ArtworkCardBottomSheet
                 artworkID={topArtwork.internalID}
