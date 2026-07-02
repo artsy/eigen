@@ -4,8 +4,6 @@ import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQue
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
-import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
-import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
@@ -18,28 +16,15 @@ import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
-  hideFollowedArtists?: boolean
-  listHeaderComponent?: React.ReactElement
-  onArtistFollowed?: (artist: OnboardingFollowedArtist) => void
-  onArtistUnfollowed?: (artist: OnboardingFollowedArtist) => void
 }
 
-const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
-  id,
-  hideFollowedArtists,
-  listHeaderComponent,
-  onArtistFollowed,
-  onArtistUnfollowed,
-}) => {
+const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
   const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
   const { orderedSets } = useLazyLoadQuery<OnboardingOrderedSetQuery>(
     OnboardingOrderedSetScreenQuery,
-    {
-      key: id,
-      imageSize: AVATAR_SIZE,
-    }
+    { key: id }
   )
 
   if (!orderedSets || orderedSets.length === 0) {
@@ -52,10 +37,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
     return null
   }
 
-  const allNodes = extractNodes(orderedSet)
-  const nodes = hideFollowedArtists
-    ? allNodes.filter((node) => node.__typename !== "Artist" || !node.isFollowed)
-    : allNodes
+  const nodes = extractNodes(orderedSet)
 
   return (
     <FlatList
@@ -63,7 +45,6 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
       contentContainerStyle={{
         paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
-      ListHeaderComponent={listHeaderComponent}
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => {
@@ -75,19 +56,9 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
                 onFollow={() => {
                   trackArtistFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.({
-                    internalID: item.internalID,
-                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                  })
                 }}
                 onUnfollow={() => {
                   trackArtistFollow(true, item.internalID, getId() ?? "")
-                  onArtistUnfollowed?.({
-                    internalID: item.internalID,
-                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                  })
                 }}
               />
             )
@@ -150,7 +121,7 @@ export const OnboardingOrderedSetScreen: React.FC<OnboardingOrderedSetProps> = (
 )
 
 const OnboardingOrderedSetScreenQuery = graphql`
-  query OnboardingOrderedSetQuery($key: String!, $imageSize: Int!) {
+  query OnboardingOrderedSetQuery($key: String!) {
     orderedSets(key: $key) {
       orderedSet: orderedItemsConnection(first: 50) {
         edges {
@@ -158,17 +129,7 @@ const OnboardingOrderedSetScreenQuery = graphql`
             __typename
             ... on Artist {
               internalID
-              isFollowed
-              coverArtwork {
-                image {
-                  url
-                  blurhash
-                  cropped(width: $imageSize, height: $imageSize) {
-                    src
-                  }
-                }
-              }
-              ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
+              ...ArtistListItemNew_artist
             }
             ... on Profile {
               internalID
