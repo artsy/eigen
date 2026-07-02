@@ -8,6 +8,7 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { MotiView } from "moti"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -103,27 +104,53 @@ export const ArtistSaveOnboardingBottomSheet = () => {
           <Spacer y={1} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
-            {DUMMY_FOLLOWED_ARTISTS.slice(0, 3).map((artist, index) => (
-              <Flex
-                key={artist.id}
-                style={{
-                  marginLeft: index > 0 ? -10 : 0,
-                  zIndex: index,
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 3 },
-                  shadowOpacity: 0.35,
-                  shadowRadius: 6,
-                  elevation: 8,
-                }}
-              >
-                <Image
-                  src={artist.imageUrl}
-                  width={75}
-                  height={75}
-                  style={{ borderRadius: 37.5 }}
-                />
-              </Flex>
-            ))}
+            {DUMMY_FOLLOWED_ARTISTS.slice(0, 3).map((artist, index) => {
+              let startPosition = 0
+              let zIndexValue = 1
+
+              if (index === 0) {
+                startPosition = 40
+                zIndexValue = 0
+              } else if (index === 1) {
+                startPosition = 0
+                zIndexValue = 1
+              } else if (index === 2) {
+                startPosition = -40
+                zIndexValue = 2
+              }
+
+              return (
+                <MotiView
+                  key={artist.id}
+                  from={{ translateX: startPosition }}
+                  animate={{ translateX: 0 }}
+                  transition={{
+                    type: "timing",
+                    duration: 300,
+                    delay: 1000,
+                  }}
+                >
+                  <Flex
+                    style={{
+                      marginLeft: index > 0 ? -10 : 0,
+                      zIndex: zIndexValue,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 3 },
+                      shadowOpacity: 0.35,
+                      shadowRadius: 6,
+                      elevation: 8,
+                    }}
+                  >
+                    <Image
+                      src={artist.imageUrl}
+                      width={75}
+                      height={75}
+                      style={{ borderRadius: 37.5 }}
+                    />
+                  </Flex>
+                </MotiView>
+              )
+            })}
           </Flex>
 
           <PagerView
