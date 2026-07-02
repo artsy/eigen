@@ -6,10 +6,16 @@ import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItemNew_artist$key
-  onFollow: (wasFollowed: boolean) => void
+  onFollow: () => void
+  onUnfollow?: () => void
 }
 
-export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFollow, ...rest }) => {
+export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({
+  artist,
+  onFollow,
+  onUnfollow,
+  ...rest
+}) => {
   const { name, nationality, birthday, deathday, initials, coverArtwork, isFollowed, slug } =
     useFragment<ArtistListItemNew_artist$key>(ArtistListItemFragment, artist)
 
@@ -27,7 +33,11 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
         if (!isFollowed && coverArtwork?.image?.cropped?.src) {
           Image.prefetch(coverArtwork.image.cropped.src)
         }
-        onFollow(!!isFollowed)
+        if (isFollowed) {
+          onUnfollow?.()
+        } else {
+          onFollow()
+        }
       },
     })
   }

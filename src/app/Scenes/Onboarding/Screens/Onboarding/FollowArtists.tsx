@@ -39,14 +39,14 @@ export const FollowArtists: React.FC = () => {
     KeyboardController.dismiss()
   }
 
-  const handleArtistFollowed = (artist: OnboardingFollowedArtist, wasFollowed: boolean) => {
-    if (wasFollowed) {
-      setFollowedArtists((prev) => prev.filter((a) => a.internalID !== artist.internalID))
-      GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(artist.internalID)
-    } else {
-      setFollowedArtists((prev) => [...prev, artist])
-      GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
-    }
+  const handleArtistFollowed = (artist: OnboardingFollowedArtist) => {
+    setFollowedArtists((prev) => [...prev, artist])
+    GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
+  }
+
+  const handleArtistUnfollowed = (artist: OnboardingFollowedArtist) => {
+    setFollowedArtists((prev) => prev.filter((a) => a.internalID !== artist.internalID))
+    GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(artist.internalID)
   }
 
   return (
@@ -99,17 +99,20 @@ export const FollowArtists: React.FC = () => {
               term={debouncedValue}
               entities="ARTIST"
               onArtistFollowed={handleArtistFollowed}
+              onArtistUnfollowed={handleArtistUnfollowed}
             />
           ) : (
             <OnboardingOrderedSetScreen
               id={setId}
               hideFollowedArtists
               onArtistFollowed={handleArtistFollowed}
+              onArtistUnfollowed={handleArtistUnfollowed}
               listHeaderComponent={
                 <>
                   <FollowedArtistsBank
                     followedArtists={followedArtists}
                     onArtistFollowed={handleArtistFollowed}
+                    onArtistUnfollowed={handleArtistUnfollowed}
                   />
                   <Text variant="md">Leading artists on Artsy</Text>
                   <Spacer y={2} />

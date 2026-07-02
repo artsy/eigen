@@ -20,13 +20,15 @@ import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
   term: string
-  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
+  onArtistFollowed?: (artist: OnboardingFollowedArtist) => void
+  onArtistUnfollowed?: (artist: OnboardingFollowedArtist) => void
 }
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
   entities,
   term,
   onArtistFollowed,
+  onArtistUnfollowed,
 }) => {
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
@@ -71,17 +73,22 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
           case "Artist":
             return (
               <ArtistListItemNew
-                onFollow={(wasFollowed) => {
-                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                onFollow={() => {
+                  trackArtistFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.(
-                    {
-                      internalID: item.internalID,
-                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                    },
-                    wasFollowed
-                  )
+                  onArtistFollowed?.({
+                    internalID: item.internalID,
+                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  })
+                }}
+                onUnfollow={() => {
+                  trackArtistFollow(true, item.internalID, getId() ?? "")
+                  onArtistUnfollowed?.({
+                    internalID: item.internalID,
+                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  })
                 }}
                 artist={item}
               />
@@ -96,9 +103,12 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={(wasFollowed) => {
-                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                onFollow={() => {
+                  trackGalleryFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+                onUnfollow={() => {
+                  trackGalleryFollow(true, item.internalID, getId() ?? "")
                 }}
               />
             )
@@ -127,6 +137,7 @@ export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProp
   entities,
   term,
   onArtistFollowed,
+  onArtistUnfollowed,
 }) => {
   return (
     <Suspense fallback={<Placeholder />}>
@@ -134,6 +145,7 @@ export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProp
         term={term}
         entities={entities}
         onArtistFollowed={onArtistFollowed}
+        onArtistUnfollowed={onArtistUnfollowed}
       />
     </Suspense>
   )

@@ -20,7 +20,8 @@ interface OnboardingOrderedSetProps {
   id: string
   hideFollowedArtists?: boolean
   listHeaderComponent?: React.ReactElement
-  onArtistFollowed?: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
+  onArtistFollowed?: (artist: OnboardingFollowedArtist) => void
+  onArtistUnfollowed?: (artist: OnboardingFollowedArtist) => void
 }
 
 const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
@@ -28,6 +29,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
   hideFollowedArtists,
   listHeaderComponent,
   onArtistFollowed,
+  onArtistUnfollowed,
 }) => {
   const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
@@ -70,17 +72,22 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
             return (
               <ArtistListItemNew
                 artist={item}
-                onFollow={(wasFollowed) => {
-                  trackArtistFollow(wasFollowed, item.internalID, getId() ?? "")
+                onFollow={() => {
+                  trackArtistFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.(
-                    {
-                      internalID: item.internalID,
-                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                    },
-                    wasFollowed
-                  )
+                  onArtistFollowed?.({
+                    internalID: item.internalID,
+                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  })
+                }}
+                onUnfollow={() => {
+                  trackArtistFollow(true, item.internalID, getId() ?? "")
+                  onArtistUnfollowed?.({
+                    internalID: item.internalID,
+                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  })
                 }}
               />
             )
@@ -94,9 +101,12 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({
             return (
               <OnboardingPartnerListItem
                 partner={partner}
-                onFollow={(wasFollowed) => {
-                  trackGalleryFollow(wasFollowed, item.internalID, getId() ?? "")
+                onFollow={() => {
+                  trackGalleryFollow(false, item.internalID, getId() ?? "")
                   dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+                onUnfollow={() => {
+                  trackGalleryFollow(true, item.internalID, getId() ?? "")
                 }}
               />
             )

@@ -8,12 +8,14 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface FollowedArtistsBankContentProps {
   ids: string[]
-  onArtistFollowed: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
+  onArtistFollowed: (artist: OnboardingFollowedArtist) => void
+  onArtistUnfollowed: (artist: OnboardingFollowedArtist) => void
 }
 
 const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
   ids,
   onArtistFollowed,
+  onArtistUnfollowed,
 }) => {
   const data = useLazyLoadQuery<FollowedArtistsBankQuery>(FollowedArtistsBankGQLQuery, {
     ids,
@@ -31,15 +33,19 @@ const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
           <ArtistListItemNew
             key={artist.internalID}
             artist={artist}
-            onFollow={(wasFollowed) => {
-              onArtistFollowed(
-                {
-                  internalID: artist.internalID,
-                  imageUrl: artist.coverArtwork?.image?.cropped?.src ?? null,
-                  blurhash: artist.coverArtwork?.image?.blurhash ?? null,
-                },
-                wasFollowed
-              )
+            onFollow={() => {
+              onArtistFollowed({
+                internalID: artist.internalID,
+                imageUrl: artist.coverArtwork?.image?.cropped?.src ?? null,
+                blurhash: artist.coverArtwork?.image?.blurhash ?? null,
+              })
+            }}
+            onUnfollow={() => {
+              onArtistUnfollowed({
+                internalID: artist.internalID,
+                imageUrl: artist.coverArtwork?.image?.cropped?.src ?? null,
+                blurhash: artist.coverArtwork?.image?.blurhash ?? null,
+              })
             }}
           />
         ))}
@@ -51,12 +57,14 @@ const FollowedArtistsBankContent: React.FC<FollowedArtistsBankContentProps> = ({
 
 interface FollowedArtistsBankProps {
   followedArtists: OnboardingFollowedArtist[]
-  onArtistFollowed: (artist: OnboardingFollowedArtist, wasFollowed: boolean) => void
+  onArtistFollowed: (artist: OnboardingFollowedArtist) => void
+  onArtistUnfollowed: (artist: OnboardingFollowedArtist) => void
 }
 
 export const FollowedArtistsBank: React.FC<FollowedArtistsBankProps> = ({
   followedArtists,
   onArtistFollowed,
+  onArtistUnfollowed,
 }) => {
   const ids = useMemo(() => followedArtists.slice(0, 3).map((a) => a.internalID), [followedArtists])
   const deferredIds = useDeferredValue(ids)
@@ -67,13 +75,18 @@ export const FollowedArtistsBank: React.FC<FollowedArtistsBankProps> = ({
     <Suspense
       fallback={
         deferredIds.length > 0 ? (
-          <FollowedArtistsBankContent ids={deferredIds} onArtistFollowed={onArtistFollowed} />
+          <FollowedArtistsBankContent
+            ids={deferredIds}
+            onArtistFollowed={onArtistFollowed}
+            onArtistUnfollowed={onArtistUnfollowed}
+          />
         ) : null
       }
     >
       <FollowedArtistsBankContent
         ids={ids.length > 0 ? ids : deferredIds}
         onArtistFollowed={onArtistFollowed}
+        onArtistUnfollowed={onArtistUnfollowed}
       />
     </Suspense>
   )
