@@ -1,8 +1,7 @@
 import * as fs from "fs"
+import { ParseResult, changelogTemplateSections, parsePRDescription } from "@artsy/changelog"
 import { danger, fail, markdown, warn } from "danger"
 import { isArray, pickBy } from "lodash"
-import { changelogTemplateSections } from "./scripts/changelog/changelogTemplateSections"
-import { ParseResult, parsePRDescription } from "./scripts/changelog/parsePRDescription"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 

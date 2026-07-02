@@ -17,12 +17,15 @@ export interface OnboardingModel {
   setOnboardingState: Action<this, OnboardingState>
   addFollowedOnboardingArtist: Action<this, OnboardingFollowedArtist>
   removeFollowedOnboardingArtist: Action<this, string>
+  showFollowedArtistSummaryBottomSheet: boolean
+  setShowFollowedArtistSummaryBottomSheet: Action<this, boolean>
 }
 
 export const getOnboardingModel = (): OnboardingModel => ({
   onboardingState: "incomplete",
   onboardingArtQuizState: "none",
   followedOnboardingArtists: [],
+  showFollowedArtistSummaryBottomSheet: false,
   setArtQuizState: action((state, artQuizState) => {
     state.onboardingArtQuizState = artQuizState
   }),
@@ -41,5 +44,8 @@ export const getOnboardingModel = (): OnboardingModel => ({
     state.followedOnboardingArtists = state.followedOnboardingArtists.filter(
       (a) => a.internalID !== internalID
     )
+  }),
+  setShowFollowedArtistSummaryBottomSheet: action((state, show) => {
+    state.showFollowedArtistSummaryBottomSheet = show
   }),
 })

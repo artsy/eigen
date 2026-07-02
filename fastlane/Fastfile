@@ -71,12 +71,6 @@ lane :ship_beta_ios do |options|
 
   latest_version = $APP_JSON['version']
 
-  update_sentry_options(
-    '../ios/Artsy/sentry.options.json',
-    release: "ios-#{latest_version}-#{bundle_version}",
-    dist: bundle_version
-  )
-
   # Builds the app
   sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
@@ -346,13 +340,6 @@ lane :ship_beta_android do |options|
   else
     vname, vcode = set_build_version_android(version_code: version_code)
   end
-
-  update_sentry_options(
-    '../android/app/src/main/assets/sentry.options.json',
-    release: "android-#{vname}-#{vcode}",
-    dist: "#{vcode}"
-  )
-
 
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")

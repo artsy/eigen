@@ -47,6 +47,7 @@ import {
   ViewToken,
 } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { ArtistSaveOnboardingBottomSheet } from "./Components/ArtistSaveOnboardingBottomSheet"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
 
@@ -311,6 +312,7 @@ const HomeViewScreenComponent: React.FC = () => {
           </Sentry.TimeToInitialDisplay>
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
+        <ArtistSaveOnboardingBottomSheet />
       </RetryErrorBoundary>
     </HomeViewStoreProvider>
   )

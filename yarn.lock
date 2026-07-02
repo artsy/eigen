@@ -15,6 +15,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@artsy/changelog@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@artsy/changelog@npm:0.1.0"
+  checksum: 10c0/d1827f5b3b14ef76520f8e554861d1f651a5cb0b51c79e1122caca7015e3af0ec67dbf0c85e021633ef96613275c77e1ee8f8916c5460f18a1c4e977047c00f0
+  languageName: node
+  linkType: hard
+
 "@artsy/cohesion@npm:^4.360.0":
   version: 4.360.0
   resolution: "@artsy/cohesion@npm:4.360.0"
@@ -13354,6 +13361,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
+    "@artsy/changelog": "npm:^0.1.0"
     "@artsy/cohesion": "npm:^4.360.0"
     "@artsy/icons": "npm:3.67.0"
     "@artsy/palette-mobile": "npm:23.12.0"

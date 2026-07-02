@@ -14,6 +14,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface PartnerListItemShortProps {
   partner: PartnerListItemShort_partner$key
   disabledLocation?: boolean
+  disableNavigation?: boolean
   onPress?: () => void
 }
 
@@ -21,6 +22,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
   partner,
   onPress,
   disabledLocation,
+  disableNavigation,
 }) => {
   const data = useFragment(fragment, partner)
   const { location } = useLocation({ disabled: !!disabledLocation })
@@ -36,7 +38,12 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
     : locations
 
   return (
-    <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
+    <RouterLink
+      to={data.href}
+      disableNavigation={disableNavigation}
+      onPress={onPress}
+      style={{ flex: 1 }}
+    >
       <EntityHeader
         avatarSize="sm"
         name={data.name}

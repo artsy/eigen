@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { mockReplace } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("../Components/QuestionStep", () => {
@@ -51,67 +51,57 @@ describe("Introduction", () => {
     jest.clearAllMocks()
   })
 
-  it("shows the question step initially", () => {
+  it("shows the artwork montage step initially", () => {
     renderWithWrappers(<Introduction />)
+    expect(screen.getByText("Montage next")).toBeOnTheScreen()
+  })
+
+  it("routes through ArtworkMontageStep → WelcomeStep → QuestionStep in order", () => {
+    renderWithWrappers(<Introduction />)
+
+    fireEvent.press(screen.getByText("Montage next"))
+    expect(screen.getByText("Welcome next")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("Welcome next"))
     expect(screen.getByText("Select beginner")).toBeOnTheScreen()
     expect(screen.getByText("Select experienced")).toBeOnTheScreen()
   })
 
-  describe("beginner path", () => {
-    it("routes through BrowsePromptStep → ArtworkMontageStep → WelcomeStep in order", () => {
+  describe("experienced path", () => {
+    it("navigates directly to FollowArtists", () => {
       renderWithWrappers(<Introduction />)
 
+      fireEvent.press(screen.getByText("Montage next"))
+      fireEvent.press(screen.getByText("Welcome next"))
+      fireEvent.press(screen.getByText("Select experienced"))
+
+      expect(mockReplace).toHaveBeenCalledWith("FollowArtists")
+    })
+  })
+
+  describe("beginner path", () => {
+    it("routes through BrowsePromptStep before navigating to InfiniteDiscovery", () => {
+      renderWithWrappers(<Introduction />)
+
+      fireEvent.press(screen.getByText("Montage next"))
+      fireEvent.press(screen.getByText("Welcome next"))
       fireEvent.press(screen.getByText("Select beginner"))
       expect(screen.getByText("Browse next")).toBeOnTheScreen()
 
       fireEvent.press(screen.getByText("Browse next"))
-      expect(screen.getByText("Montage next")).toBeOnTheScreen()
-
-      fireEvent.press(screen.getByText("Montage next"))
-      expect(screen.getByText("Welcome next")).toBeOnTheScreen()
+      expect(mockReplace).toHaveBeenCalledWith("InfiniteDiscovery")
     })
 
-    it("navigates to InfiniteDiscovery when done", () => {
+    it("completes onboarding when skipping from BrowsePromptStep", () => {
       renderWithWrappers(<Introduction />)
 
-      fireEvent.press(screen.getByText("Select beginner"))
-      fireEvent.press(screen.getByText("Browse next"))
       fireEvent.press(screen.getByText("Montage next"))
       fireEvent.press(screen.getByText("Welcome next"))
-
-      expect(mockNavigate).toHaveBeenCalledWith("InfiniteDiscovery")
-    })
-
-    it("completes onboarding when skipping to home from BrowsePromptStep", () => {
-      renderWithWrappers(<Introduction />)
-
       fireEvent.press(screen.getByText("Select beginner"))
       fireEvent.press(screen.getByText("Browse skip"))
 
       const state = __globalStoreTestUtils__?.getCurrentState()
       expect(state?.onboarding.onboardingState).toBe("complete")
-    })
-  })
-
-  describe("experienced path", () => {
-    it("skips BrowsePromptStep and routes ArtworkMontageStep → WelcomeStep", () => {
-      renderWithWrappers(<Introduction />)
-
-      fireEvent.press(screen.getByText("Select experienced"))
-      expect(screen.getByText("Montage next")).toBeOnTheScreen()
-
-      fireEvent.press(screen.getByText("Montage next"))
-      expect(screen.getByText("Welcome next")).toBeOnTheScreen()
-    })
-
-    it("navigates to FollowArtists when done", () => {
-      renderWithWrappers(<Introduction />)
-
-      fireEvent.press(screen.getByText("Select experienced"))
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-
-      expect(mockNavigate).toHaveBeenCalledWith("FollowArtists")
     })
   })
 })

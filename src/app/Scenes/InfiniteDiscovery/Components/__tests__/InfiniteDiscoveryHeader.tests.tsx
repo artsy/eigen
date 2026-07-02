@@ -77,7 +77,7 @@ describe("InfiniteDiscoveryHeader", () => {
     jest.clearAllMocks()
     ;(mockAddListener as any).beforeRemoveCallback = undefined
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
-    GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: false })
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
@@ -113,7 +113,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
   describe("in new user onboarding mode", () => {
     beforeEach(() => {
-      GlobalStore.actions.infiniteDiscovery.setIsNewUserOnboardingSession(true)
+      GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
     it("shows the progress badge instead of the exit chevron", () => {
@@ -145,17 +145,12 @@ describe("InfiniteDiscoveryHeader", () => {
     })
 
     it("exits onboarding when Skip is pressed", () => {
-      const setIsNewUserOnboardingSessionSpy = jest.spyOn(
-        GlobalStore.actions.infiniteDiscovery,
-        "setIsNewUserOnboardingSession"
-      )
       const setOnboardingStateSpy = jest.spyOn(GlobalStore.actions.onboarding, "setOnboardingState")
 
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
       fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
 
-      expect(setIsNewUserOnboardingSessionSpy).toHaveBeenCalledWith(false)
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
     })
 
