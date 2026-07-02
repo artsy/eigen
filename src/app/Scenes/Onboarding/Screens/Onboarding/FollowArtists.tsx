@@ -1,48 +1,149 @@
-import { Button, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Box,
+  Button,
+  DEFAULT_HIT_SLOP,
+  Flex,
+  Screen,
+  SearchInput,
+  Spacer,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
+import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
+import { FollowArtistsOrderedSetScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet"
+import {
+  ArtistRef,
+  FollowedArtistsBank,
+} from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
+import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
+import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useState } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 
 const MIN_FOLLOWED = 3
+const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
-  const { bottom } = useSafeAreaInsets()
-  const [count, setCount] = useState(0)
+  const [query, setQuery] = useState("")
+  const storedFollowedArtists = GlobalStore.useAppState(
+    (state) => state.onboarding.followedOnboardingArtists
+  )
+  const [followedArtists, setFollowedArtists] =
+    useState<OnboardingFollowedArtist[]>(storedFollowedArtists)
+  const [followedArtistRefs, setFollowedArtistRefs] = useState<ArtistRef[]>([])
+
+  const count = followedArtists.length
+
+  const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
+
+  const handleCancel = () => {
+    setQuery("")
+    KeyboardController.dismiss()
+  }
+
+  const handleArtistFollowed = (
+    artistRef: ArtistListItemNew_artist$key,
+    artist: OnboardingFollowedArtist
+  ) => {
+    setFollowedArtists((prev) => [artist, ...prev])
+    setFollowedArtistRefs((prev) => [{ ref: artistRef, internalID: artist.internalID }, ...prev])
+    GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
+  }
+
+  const handleArtistUnfollowed = (internalID: string) => {
+    setFollowedArtists((prev) => prev.filter((a) => a.internalID !== internalID))
+    setFollowedArtistRefs((prev) => prev.filter((a) => a.internalID !== internalID))
+    GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(internalID)
+  }
 
   return (
     <Screen>
-      <Screen.Body>
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Flex flexDirection="row" alignItems="center" gap={4}>
-            <Touchable
-              accessibilityRole="button"
-              onPress={() => setCount((c) => Math.max(0, c - 1))}
-              disabled={count === 0}
-            >
-              <Text variant="xxl" fontWeight="bold" color={count === 0 ? "mono30" : "mono100"}>
-                −
-              </Text>
-            </Touchable>
-            <Text variant="xxl">{count}</Text>
-            <Touchable accessibilityRole="button" onPress={() => setCount((c) => c + 1)}>
-              <Text variant="xxl" fontWeight="bold">
-                +
-              </Text>
-            </Touchable>
-          </Flex>
-        </Flex>
-        <Flex pb={`${bottom}px`}>
-          <Button
-            block
-            disabled={count < MIN_FOLLOWED}
-            onPress={() => {
-              GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
-              GlobalStore.actions.onboarding.setOnboardingState("complete")
-            }}
+      <Screen.Header
+        leftElements={<OnboardingProgressBadge current={count} total={MIN_FOLLOWED} />}
+        rightElements={
+          <Touchable
+            accessibilityRole="button"
+            accessibilityLabel="Skip new user onboarding"
+            onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
+            hitSlop={DEFAULT_HIT_SLOP}
+            haptic
           >
-            Continue to Artsy
-          </Button>
+            <Text>Skip</Text>
+          </Touchable>
+        }
+      />
+
+      <Screen.Body disableKeyboardAvoidance>
+        <Box mt={2}>
+          <Text variant="lg-display">Tell us which artists you're interested in?</Text>
+          <Text variant="sm-display" color="mono60" mt={1}>
+            Follow {MIN_FOLLOWED} or more artists to see more of their work.
+          </Text>
+        </Box>
+        <Spacer y={2} />
+        <Flex backgroundColor="mono0" flex={1}>
+          <Flex flexDirection="row" alignItems="center" gap={1}>
+            <Flex flex={1}>
+              <SearchInput placeholder="Search Artists" onChangeText={setQuery} value={query} />
+            </Flex>
+            {!!query && (
+              <Touchable
+                accessibilityRole="button"
+                onPress={handleCancel}
+                hitSlop={DEFAULT_HIT_SLOP}
+                haptic
+              >
+                <Text variant="sm-display" color="mono60">
+                  Cancel
+                </Text>
+              </Touchable>
+            )}
+          </Flex>
+          <Spacer y={2} />
+
+          {debouncedValue.length >= 2 ? (
+            <OnboardingSearchResultsScreen
+              term={debouncedValue}
+              entities="ARTIST"
+              onArtistFollowed={handleArtistFollowed}
+              onArtistUnfollowed={handleArtistUnfollowed}
+            />
+          ) : (
+            <FollowArtistsOrderedSetScreen
+              id={SET_ID}
+              hideFollowedArtists
+              onArtistFollowed={handleArtistFollowed}
+              onArtistUnfollowed={handleArtistUnfollowed}
+              listHeaderComponent={
+                <>
+                  <FollowedArtistsBank
+                    artistRefs={followedArtistRefs.slice(0, 3)}
+                    onArtistUnfollowed={handleArtistUnfollowed}
+                  />
+                  <Text variant="md">Leading artists on Artsy</Text>
+                  <Spacer y={2} />
+                </>
+              }
+            />
+          )}
         </Flex>
+        <KeyboardStickyView>
+          <Flex p={2} backgroundColor="mono0">
+            <Button
+              block
+              disabled={count < MIN_FOLLOWED}
+              onPress={() => {
+                GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+                GlobalStore.actions.onboarding.setOnboardingState("complete")
+              }}
+            >
+              Continue to Artsy
+            </Button>
+          </Flex>
+        </KeyboardStickyView>
       </Screen.Body>
     </Screen>
   )

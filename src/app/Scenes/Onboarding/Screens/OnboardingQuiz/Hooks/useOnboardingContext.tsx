@@ -62,7 +62,7 @@ const reducer = (onReset: () => void) => (state: State, action: OnboardingContex
       return {
         ...state,
         followedIds: state.followedIds.includes(action.payload)
-          ? state.followedIds.filter((id) => id !== action.payload)
+          ? state.followedIds
           : [...state.followedIds, action.payload],
       }
 

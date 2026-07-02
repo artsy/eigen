@@ -65,7 +65,11 @@ export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSe
       </Box>
       <Box mt={2} mx={2}>
         {!!artist && (
-          <ArtistListItemNew artist={artist} onFollow={() => trackFollowOrUnfollow(artist)} />
+          <ArtistListItemNew
+            artist={artist}
+            onFollow={() => trackFollowOrUnfollow(artist)}
+            onUnfollow={() => trackFollowOrUnfollow(artist)}
+          />
         )}
       </Box>
     </>

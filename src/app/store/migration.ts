@@ -69,9 +69,11 @@ export const Versions = {
   AddPreviouslySelectedCitySlugToUserPrefsModel: 56,
   RemovePendingPushNotificationModel: 57,
   AddShowFollowedArtistSummaryBottomSheetToOnboardingModel: 58,
+  AddFollowedOnboardingArtistsToOnboardingModel: 59,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddShowFollowedArtistSummaryBottomSheetToOnboardingModel
+export const CURRENT_APP_VERSION = Versions.AddFollowedOnboardingArtistsToOnboardingModel
+
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
   [Versions.AddSearchesAndNativeAndBottomTabs]: (_) => ({
@@ -386,6 +388,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddShowFollowedArtistSummaryBottomSheetToOnboardingModel]: (state) => {
     state.onboarding.showFollowedArtistSummaryBottomSheet = false
+  },
+  [Versions.AddFollowedOnboardingArtistsToOnboardingModel]: (state) => {
+    state.onboarding.followedOnboardingArtists = []
   },
 }
 
