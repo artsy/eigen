@@ -40,7 +40,7 @@ export const FollowArtists: React.FC = () => {
   }
 
   const handleArtistFollowed = (artist: OnboardingFollowedArtist) => {
-    setFollowedArtists((prev) => [...prev, artist])
+    setFollowedArtists((prev) => [artist, ...prev])
     GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
   }
 
