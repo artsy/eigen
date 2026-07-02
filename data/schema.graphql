@@ -5586,6 +5586,26 @@ input BulkArtworkFilterInput {
   published: Boolean
 }
 
+input BulkDeleteArtworkFilterInput {
+  # Filter artworks by artist id
+  artistId: String
+
+  # Filter artworks with matching ids
+  artworkIds: [String]
+
+  # Filter artworks by availability
+  availability: Availability
+
+  # Filter artworks by location
+  locationId: String
+
+  # Filter artworks by partner artist id
+  partnerArtistId: String
+
+  # Filter artworks by published status
+  published: Boolean
+}
+
 type BulkDeleteArtworksFromPartnerListFailure {
   mutationError: GravityMutationError
 }
@@ -5612,6 +5632,42 @@ union BulkDeleteArtworksFromPartnerListResponseOrError =
 
 type BulkDeleteArtworksFromPartnerListSuccess {
   partnerList: PartnerList
+}
+
+type BulkDeleteArtworksMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input BulkDeleteArtworksMutationInput {
+  clientMutationId: String
+
+  # Filter options to select the artworks to delete. At least one filter is required.
+  filters: BulkDeleteArtworkFilterInput
+
+  # ID of the partner
+  id: String!
+
+  # Source of the mutation being triggered, E.g. admin, artworks_list
+  source: BulkUpdateSourceEnum
+}
+
+type BulkDeleteArtworksMutationPayload {
+  bulkDeleteArtworksOrError: BulkDeleteArtworksMutationType
+  clientMutationId: String
+}
+
+type BulkDeleteArtworksMutationSuccess {
+  deletedPartnerArtworks: BulkDeleteArtworksResponse
+  skippedPartnerArtworks: BulkDeleteArtworksResponse
+}
+
+union BulkDeleteArtworksMutationType =
+    BulkDeleteArtworksMutationFailure
+  | BulkDeleteArtworksMutationSuccess
+
+type BulkDeleteArtworksResponse {
+  count: Int
+  ids: [String]
 }
 
 input BulkUpdateArtworksMetadataInput {
@@ -18393,6 +18449,9 @@ type Mutation {
   bulkAddArtworksToShow(
     input: BulkAddArtworksToShowMutationInput!
   ): BulkAddArtworksToShowMutationPayload
+
+  # Delete all artworks that belong to the partner
+  bulkDeleteArtworks(input: BulkDeleteArtworksMutationInput!): BulkDeleteArtworksMutationPayload
 
   # Bulk removes artworks from a partner list.
   bulkDeleteArtworksFromPartnerList(
