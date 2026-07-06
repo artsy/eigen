@@ -25,8 +25,20 @@ extension PublicFunctions {
 
     func setActiveIndex(_ index: Int?) {
         currentIndex = index
-        invalidateLayout()
-        collectionView?.reloadData()
+
+        // `reloadData()` is dispatched asynchronously to avoid a fatal main-thread deadlock (EIGEN-AZ99).
+        // This method is called synchronously from inside an Interstellar `Observable.update` (via the
+        // `lotStateSignal` observer in `LiveAuctionLotListViewController`), which holds a non-recursive
+        // mutex while notifying its observers. `reloadData()` synchronously tears down cells, and
+        // `LotListCollectionViewCell`'s `deinit`/`prepareForReuse` calls `unsubscribe()` on that same
+        // signal — which would try to re-lock the already-held mutex on the same thread and deadlock.
+        // Deferring the reload lets `update` finish and release the lock before the cells are torn down.
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            self.invalidateLayout()
+            self.collectionView?.reloadData()
+        }
     }
 }
 
