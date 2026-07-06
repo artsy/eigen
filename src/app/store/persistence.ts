@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { captureException } from "@sentry/react-native"
 import { State } from "easy-peasy"
-import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString } from "lodash"
+import { isArray, isBoolean, isNull, isNumber, isPlainObject, isString, throttle } from "lodash"
 import { Middleware } from "redux"
 import { GlobalStoreModel } from "./GlobalStoreModel"
 import { migrate } from "./migration"
@@ -43,36 +44,36 @@ export function assignDeep(object: any, otherObject: any) {
   }
 }
 
-// Captures state synchronously after each action (while Immer Proxies are still alive),
-// then defers the AsyncStorage write to the next animation frame. Multiple actions in
-// the same frame collapse into a single write — mirroring easy-peasy's own persist middleware.
+// Serializes state synchronously after each action (while Immer Proxies are guaranteed alive),
+// then throttles the AsyncStorage write so rapid successive actions collapse into a single
+// write of the latest state.
 export const persistenceMiddleware: Middleware = (api) => {
-  let rafHandle: ReturnType<typeof requestAnimationFrame> | null = null
-  let writeChain = Promise.resolve()
+  const throttledWrite = throttle(
+    (serializedState: string) => {
+      AsyncStorage.setItem(STORAGE_KEY, serializedState).catch((e) => {
+        if (__DEV__) {
+          console.error("Failed to persist store state", e)
+        }
+      })
+    },
+    1000,
+    { leading: false, trailing: true }
+  )
 
   return (next) => (action) => {
-    const result = next(action)
-    const state = api.getState()
+    try {
+      const result = next(action)
 
-    if (rafHandle !== null) {
-      cancelAnimationFrame(rafHandle)
+      // Serialize the whole tree now: any deferred state access can hit revoked Immer
+      // proxies and throw "TypeError: Proxy handler is null" (EIGEN-AZR1, EIGEN-AZA6).
+      throttledWrite(JSON.stringify(sanitize(api.getState())))
+
+      return result
+    } catch (e) {
+      // Report as handled and keep the app alive instead of crashing via RCTFatal
+      captureException(e, { level: "error", tags: { handled: "true" } })
+      return undefined
     }
-
-    rafHandle = requestAnimationFrame(() => {
-      // This looks a bit overcomplicated but it's intentional
-      // 1. We want to prioritise other middleware work over persistence to avoid blocking UI updates
-      // 2. Each persistence/write operation, is a promise in order to make sure these are queued and triggered in order
-      writeChain = writeChain
-        .then(() => persist(state))
-        .catch((e) => {
-          if (__DEV__) {
-            console.error("Failed to persist store state", e)
-          }
-        })
-      rafHandle = null
-    })
-
-    return result
   }
 }
 
