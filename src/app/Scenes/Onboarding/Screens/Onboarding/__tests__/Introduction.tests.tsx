@@ -1,6 +1,8 @@
+import { ActionType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockReplace } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -56,6 +58,12 @@ describe("Introduction", () => {
     expect(screen.getByText("Montage next")).toBeOnTheScreen()
   })
 
+  it("fires startedOnboarding when it mounts", () => {
+    renderWithWrappers(<Introduction />)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.startedOnboarding })
+  })
+
   it("routes through ArtworkMontageStep → WelcomeStep → QuestionStep in order", () => {
     renderWithWrappers(<Introduction />)
 
@@ -102,6 +110,7 @@ describe("Introduction", () => {
 
       const state = __globalStoreTestUtils__?.getCurrentState()
       expect(state?.onboarding.onboardingState).toBe("complete")
+      expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
   })
 })

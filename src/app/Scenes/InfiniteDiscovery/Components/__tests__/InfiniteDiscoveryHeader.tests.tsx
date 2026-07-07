@@ -1,7 +1,9 @@
+import { ActionType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import RNShare from "react-native-share"
 
@@ -152,6 +154,7 @@ describe("InfiniteDiscoveryHeader", () => {
       fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
 
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
+      expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
     it("suppresses the save summary toast when navigating away", () => {
