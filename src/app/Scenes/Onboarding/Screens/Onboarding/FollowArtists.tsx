@@ -16,6 +16,7 @@ import {
   ArtistRef,
   FollowedArtistsBank,
 } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
@@ -27,6 +28,7 @@ const MIN_FOLLOWED = 3
 const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
+  const { trackCompletedOnboarding } = useOnboardingTracking()
   const [query, setQuery] = useState("")
   const storedFollowedArtists = GlobalStore.useAppState(
     (state) => state.onboarding.followedOnboardingArtists
@@ -67,7 +69,10 @@ export const FollowArtists: React.FC = () => {
           <Touchable
             accessibilityRole="button"
             accessibilityLabel="Skip new user onboarding"
-            onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
+            onPress={() => {
+              trackCompletedOnboarding()
+              GlobalStore.actions.onboarding.setOnboardingState("complete")
+            }}
             hitSlop={DEFAULT_HIT_SLOP}
             haptic
           >
@@ -136,6 +141,7 @@ export const FollowArtists: React.FC = () => {
               block
               disabled={count < MIN_FOLLOWED}
               onPress={() => {
+                trackCompletedOnboarding()
                 GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
                 GlobalStore.actions.onboarding.setOnboardingState("complete")
               }}

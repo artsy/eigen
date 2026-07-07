@@ -1,6 +1,8 @@
+import { ActionType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtists } from "app/Scenes/Onboarding/Screens/Onboarding/FollowArtists"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { KeyboardController } from "react-native-keyboard-controller"
 
@@ -196,6 +198,7 @@ describe("FollowArtists", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
       )
+      expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
   })
 
@@ -208,6 +211,7 @@ describe("FollowArtists", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
       )
+      expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
   })
 })

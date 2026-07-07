@@ -6,6 +6,7 @@ import {
 } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback } from "react"
 import { View } from "react-native"
@@ -44,6 +45,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   )
   const { setOnboardingState } = GlobalStore.actions.onboarding
   const { setNewUserOnboardingCompletionBottomSheetVisible } = GlobalStore.actions.infiniteDiscovery
+  const { trackCompletedOnboarding } = useOnboardingTracking()
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -71,6 +73,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
       handleComponent={null}
       backdropComponent={renderBackdrop}
       onDismiss={() => {
+        trackCompletedOnboarding()
         setOnboardingState("complete")
       }}
     >

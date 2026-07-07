@@ -2,6 +2,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnimatePresence, MotiView } from "moti"
 import { useCallback, useEffect } from "react"
@@ -23,10 +24,16 @@ export const Introduction: React.FC = () => {
   const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
+  const { trackStartedOnboarding, trackCompletedOnboarding } = useOnboardingTracking()
 
   useEffect(() => {
     loadWelcomeQuery({}, { fetchPolicy: "network-only" })
   }, [loadWelcomeQuery])
+
+  useEffect(() => {
+    trackStartedOnboarding()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleDone = useCallback(
     (experience: Experience) => {
@@ -40,8 +47,9 @@ export const Introduction: React.FC = () => {
   )
 
   const handleSkipToHome = useCallback(() => {
+    trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
-  }, [])
+  }, [trackCompletedOnboarding])
 
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })
 

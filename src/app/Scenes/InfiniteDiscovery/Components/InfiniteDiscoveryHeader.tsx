@@ -5,6 +5,7 @@ import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -18,6 +19,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   useSavesSummaryToast()
   const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
   const track = useInfiniteDiscoveryTracking()
+  const { trackCompletedOnboarding } = useOnboardingTracking()
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
@@ -33,6 +35,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipPressed = () => {
+    trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
 
