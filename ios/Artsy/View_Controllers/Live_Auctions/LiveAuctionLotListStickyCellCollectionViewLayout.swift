@@ -25,8 +25,14 @@ extension PublicFunctions {
 
     func setActiveIndex(_ index: Int?) {
         currentIndex = index
-        invalidateLayout()
-        collectionView?.reloadData()
+
+       // !! reloadData() is dispatched asynchronously to avoid a fatal main-thread deadlock (EIGEN-AZ99)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            self.invalidateLayout()
+            self.collectionView?.reloadData()
+        }
     }
 }
 
