@@ -6,7 +6,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
            const lockPosition = context.shouldLockInitialPosition
              ? (context.initialContentOffsetY ?? 0)
              : 0;
-+          if (y === lockPosition) {
++          if (Math.abs(y - lockPosition) < 1) {
 +            return;
 +          }
            // @ts-ignore
@@ -16,7 +16,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
            const lockPosition = context.shouldLockInitialPosition
              ? (context.initialContentOffsetY ?? 0)
              : 0;
-+          if (y === lockPosition) {
++          if (Math.abs(y - lockPosition) < 1) {
 +            return;
 +          }
            // @ts-ignore
@@ -26,7 +26,7 @@ index c0594494415a0f996aafce7a67e7175ee26117d8..27f1c49191c094161ba96269f6cb526d
            const lockPosition = context.shouldLockInitialPosition
              ? (context.initialContentOffsetY ?? 0)
              : 0;
-+          if (y === lockPosition) {
++          if (Math.abs(y - lockPosition) < 1) {
 +            return;
 +          }
            // @ts-ignore
