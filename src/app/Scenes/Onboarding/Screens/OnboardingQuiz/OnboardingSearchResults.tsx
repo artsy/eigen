@@ -1,5 +1,4 @@
 import { Flex, Join, Message, Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
@@ -23,7 +22,8 @@ interface OnboardingSearchResultsProps {
   term: string
   onArtistFollowed?: (
     artistRef: ArtistListItemNew_artist$key,
-    artist: OnboardingFollowedArtist
+    artist: OnboardingFollowedArtist,
+    slug: string
   ) => void
   onArtistUnfollowed?: (internalID: string) => void
 }
@@ -36,7 +36,6 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
 }) => {
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
-  const { getId } = useNavigation()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
     OnboardingSearchResultsScreenQuery,
@@ -78,16 +77,20 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
             return (
               <ArtistListItemNew
                 onFollow={() => {
-                  trackArtistFollow(false, item.internalID, getId() ?? "")
+                  trackArtistFollow(false, item.internalID, item.slug)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.(item, {
-                    internalID: item.internalID,
-                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                  })
+                  onArtistFollowed?.(
+                    item,
+                    {
+                      internalID: item.internalID,
+                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                    },
+                    item.slug
+                  )
                 }}
                 onUnfollow={() => {
-                  trackArtistFollow(true, item.internalID, getId() ?? "")
+                  trackArtistFollow(true, item.internalID, item.slug)
                   onArtistUnfollowed?.(item.internalID)
                 }}
                 artist={item}
@@ -104,11 +107,11 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
               <OnboardingPartnerListItem
                 partner={partner}
                 onFollow={() => {
-                  trackGalleryFollow(false, item.internalID, getId() ?? "")
+                  trackGalleryFollow(false, item.internalID, item.slug)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
                 onUnfollow={() => {
-                  trackGalleryFollow(true, item.internalID, getId() ?? "")
+                  trackGalleryFollow(true, item.internalID, item.slug)
                 }}
               />
             )
@@ -186,6 +189,7 @@ const OnboardingSearchResultsFragment = graphql`
           __typename
           ... on Artist {
             internalID
+            slug
             isFollowed
             coverArtwork {
               image {
@@ -200,6 +204,7 @@ const OnboardingSearchResultsFragment = graphql`
           }
           ... on Profile {
             internalID
+            slug
             isFollowed
             owner {
               __typename

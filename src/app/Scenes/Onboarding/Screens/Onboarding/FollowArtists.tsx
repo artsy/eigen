@@ -30,14 +30,9 @@ const SET_ID = "onboarding:suggested-artists"
 export const FollowArtists: React.FC = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
   const [query, setQuery] = useState("")
-  const storedFollowedArtists = GlobalStore.useAppState(
-    (state) => state.onboarding.followedOnboardingArtists
-  )
-  const [followedArtists, setFollowedArtists] =
-    useState<OnboardingFollowedArtist[]>(storedFollowedArtists)
   const [followedArtistRefs, setFollowedArtistRefs] = useState<ArtistRef[]>([])
 
-  const count = followedArtists.length
+  const count = followedArtistRefs.length
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
 
@@ -48,15 +43,17 @@ export const FollowArtists: React.FC = () => {
 
   const handleArtistFollowed = (
     artistRef: ArtistListItemNew_artist$key,
-    artist: OnboardingFollowedArtist
+    artist: OnboardingFollowedArtist,
+    slug: string
   ) => {
-    setFollowedArtists((prev) => [artist, ...prev])
-    setFollowedArtistRefs((prev) => [{ ref: artistRef, internalID: artist.internalID }, ...prev])
+    setFollowedArtistRefs((prev) => [
+      { ref: artistRef, internalID: artist.internalID, slug },
+      ...prev,
+    ])
     GlobalStore.actions.onboarding.addFollowedOnboardingArtist(artist)
   }
 
   const handleArtistUnfollowed = (internalID: string) => {
-    setFollowedArtists((prev) => prev.filter((a) => a.internalID !== internalID))
     setFollowedArtistRefs((prev) => prev.filter((a) => a.internalID !== internalID))
     GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(internalID)
   }
@@ -121,7 +118,6 @@ export const FollowArtists: React.FC = () => {
               id={SET_ID}
               hideFollowedArtists
               onArtistFollowed={handleArtistFollowed}
-              onArtistUnfollowed={handleArtistUnfollowed}
               listHeaderComponent={
                 <>
                   <FollowedArtistsBank

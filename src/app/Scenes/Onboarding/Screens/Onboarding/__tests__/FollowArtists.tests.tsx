@@ -24,7 +24,20 @@ jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBa
 jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet", () => {
   const { Text } = require("react-native")
   return {
-    FollowArtistsOrderedSetScreen: () => <Text>OrderedSet</Text>,
+    FollowArtistsOrderedSetScreen: ({ onArtistFollowed }: any) => (
+      <Text
+        onPress={() =>
+          onArtistFollowed?.({} as any, {
+            internalID: "artist-id",
+            slug: "artist-slug",
+            imageUrl: null,
+            blurhash: null,
+          })
+        }
+      >
+        OrderedSet
+      </Text>
+    ),
   }
 })
 
@@ -115,34 +128,22 @@ describe("FollowArtists", () => {
       expect(screen.getByText("0/3")).toBeOnTheScreen()
     })
 
-    it("reflects the number of followed artists from the store", () => {
-      __globalStoreTestUtils__?.injectState({
-        onboarding: {
-          followedOnboardingArtists: [
-            { internalID: "1", imageUrl: null, blurhash: null },
-            { internalID: "2", imageUrl: null, blurhash: null },
-          ],
-        },
-      })
-
+    it("reflects the number of followed artists", () => {
       renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByText("2/3")).toBeOnTheScreen()
     })
 
     it("caps badge display at 3/3 even with more than 3 followed artists", () => {
-      __globalStoreTestUtils__?.injectState({
-        onboarding: {
-          followedOnboardingArtists: [
-            { internalID: "1", imageUrl: null, blurhash: null },
-            { internalID: "2", imageUrl: null, blurhash: null },
-            { internalID: "3", imageUrl: null, blurhash: null },
-            { internalID: "4", imageUrl: null, blurhash: null },
-          ],
-        },
-      })
-
       renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByText("3/3")).toBeOnTheScreen()
     })
@@ -150,48 +151,30 @@ describe("FollowArtists", () => {
 
   describe("Continue button", () => {
     it("is disabled when fewer than 3 artists are followed", () => {
-      __globalStoreTestUtils__?.injectState({
-        onboarding: {
-          followedOnboardingArtists: [
-            { internalID: "1", imageUrl: null, blurhash: null },
-            { internalID: "2", imageUrl: null, blurhash: null },
-          ],
-        },
-      })
-
       renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByText("Continue to Artsy")).toBeDisabled()
     })
 
     it("is enabled when 3 or more artists are followed", () => {
-      __globalStoreTestUtils__?.injectState({
-        onboarding: {
-          followedOnboardingArtists: [
-            { internalID: "1", imageUrl: null, blurhash: null },
-            { internalID: "2", imageUrl: null, blurhash: null },
-            { internalID: "3", imageUrl: null, blurhash: null },
-          ],
-        },
-      })
-
       renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByText("Continue to Artsy")).not.toBeDisabled()
     })
 
     it("sets onboardingState to complete when pressed", () => {
-      __globalStoreTestUtils__?.injectState({
-        onboarding: {
-          followedOnboardingArtists: [
-            { internalID: "1", imageUrl: null, blurhash: null },
-            { internalID: "2", imageUrl: null, blurhash: null },
-            { internalID: "3", imageUrl: null, blurhash: null },
-          ],
-        },
-      })
-
       renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
 
       fireEvent.press(screen.getByText("Continue to Artsy"))
 
