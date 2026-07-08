@@ -7,13 +7,18 @@ jest.mock("app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper", () => ({
   Swiper: () => null,
 }))
 
+const mockTrack = {
+  onboardingView: jest.fn(),
+}
+
 jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () => ({
-  useInfiniteDiscoveryTracking: () => ({ onboardingView: jest.fn() }),
+  useInfiniteDiscoveryTracking: () => mockTrack,
 }))
 
 describe("InfiniteDiscoveryOnboarding", () => {
   beforeEach(() => {
     jest.useFakeTimers()
+    jest.clearAllMocks()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
     GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(false)
   })
@@ -31,6 +36,12 @@ describe("InfiniteDiscoveryOnboarding", () => {
       renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
       expect(screen.getByText("Welcome to Discover Daily")).toBeOnTheScreen()
+    })
+
+    it("tracks the onboarding view", () => {
+      renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
+
+      expect(mockTrack.onboardingView).toHaveBeenCalled()
     })
 
     it("shows the onboarding-specific save prompt", () => {

@@ -1,7 +1,9 @@
-import { screen, within } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { InfiniteDiscoveryAboutTheWorkTabTestQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabTestQuery.graphql"
 import { AboutTheWorkTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Schema } from "app/utils/track"
 import { Suspense } from "react"
 import { Text } from "react-native"
 import { graphql } from "react-relay"
@@ -139,6 +141,38 @@ describe("AboutTheWorkTab", () => {
       renderWithRelay({ Artwork: () => ({ ...artwork, isBiddable: true }) })
 
       expect(screen.queryByTestId("certificate-icon")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("artist follow tracking", () => {
+    it("tracks the artwork's context when an artist is followed", () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({
+        Artwork: () => ({ ...artwork, internalID: "artwork-internal-id", slug: "artwork-slug" }),
+        Artist: () => ({
+          internalID: "artist-internal-id",
+          slug: "test-artist",
+          isFollowed: false,
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Follow"))
+
+      mockResolveLastOperation({
+        Artist: () => ({ isFollowed: true }),
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action_name: Schema.ActionNames.ArtistFollow,
+        action_type: Schema.ActionTypes.Success,
+        owner_id: "artist-internal-id",
+        owner_slug: "test-artist",
+        owner_type: Schema.OwnerEntityTypes.Artist,
+        context_module: "infiniteDiscoveryDrawer",
+        context_screen_owner_id: "artwork-internal-id",
+        context_screen_owner_slug: "artwork-slug",
+      })
     })
   })
 })

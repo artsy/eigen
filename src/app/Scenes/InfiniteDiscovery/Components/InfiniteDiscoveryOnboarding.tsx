@@ -72,8 +72,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
   useEffect(() => {
     if (isVisible) {
-      track.onboardingView
+      track.onboardingView()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible])
 
   const showOnboardingAnimation = () => {

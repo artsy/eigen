@@ -135,6 +135,9 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                     key={`artist-${index}`}
                     artist={artist}
                     onPress={handleCollapse}
+                    contextModule={ContextModule.infiniteDiscoveryDrawer}
+                    contextScreenOwnerId={data.internalID}
+                    contextScreenOwnerSlug={data.slug}
                   />
                 )
               })}
