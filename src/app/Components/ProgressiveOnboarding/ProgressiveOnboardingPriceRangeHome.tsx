@@ -5,7 +5,10 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME } from "app/store/ProgressiveOnboardingModel"
+import {
+  PROGRESSIVE_ONBOARDING_ARTIST_SUMMARY_BOTTOM_SHEET,
+  PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
+} from "app/store/ProgressiveOnboardingModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
@@ -48,6 +51,9 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
   const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
 
   const isDismissed = isDismissedFn(PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME).status
+  const isArtistSummaryBottomSheetDismissed = isDismissedFn(
+    PROGRESSIVE_ONBOARDING_ARTIST_SUMMARY_BOTTOM_SHEET
+  ).status
 
   const isPriceRangePopoverDisplayable =
     // We don't want to show the price range popover if the user has already set a price range
@@ -55,7 +61,8 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
     !isDismissed &&
-    isReady
+    isReady &&
+    isArtistSummaryBottomSheetDismissed
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
 

@@ -7,6 +7,7 @@ import {
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
+import { PROGRESSIVE_ONBOARDING_ARTIST_SUMMARY_BOTTOM_SHEET } from "app/store/ProgressiveOnboardingModel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
@@ -57,6 +58,9 @@ export const ArtistSaveOnboardingBottomSheet = () => {
   const handleDismiss = () => {
     setIsVisible(false)
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
+    GlobalStore.actions.progressiveOnboarding.dismiss(
+      PROGRESSIVE_ONBOARDING_ARTIST_SUMMARY_BOTTOM_SHEET
+    )
   }
 
   const handleButtonPress = () => {
