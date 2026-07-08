@@ -1,4 +1,4 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, ContextModule } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -84,6 +84,20 @@ describe("Introduction", () => {
       fireEvent.press(screen.getByText("Select experienced"))
 
       expect(mockReplace).toHaveBeenCalledWith("FollowArtists")
+    })
+
+    it("tracks the selected answer", () => {
+      renderWithWrappers(<Introduction />)
+
+      fireEvent.press(screen.getByText("Montage next"))
+      fireEvent.press(screen.getByText("Welcome next"))
+      fireEvent.press(screen.getByText("Select experienced"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.onboardingUserInputData,
+        context_module: ContextModule.onboardingCollectorLevel,
+        data_input: "experienced",
+      })
     })
   })
 

@@ -35,6 +35,16 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }
 
+  const trackAnsweredExperienceQuestion = (experience: "experienced" | "beginner") => {
+    const payload: OnboardingUserInputData = {
+      action: ActionType.onboardingUserInputData,
+      context_module: ContextModule.onboardingCollectorLevel,
+      data_input: experience,
+    }
+
+    trackEvent(payload)
+  }
+
   const trackAnsweredQuestionTwo = (response: string[]) => {
     const payload: OnboardingUserInputData = {
       action: ActionType.onboardingUserInputData,
@@ -132,6 +142,7 @@ export const useOnboardingTracking = () => {
   return {
     trackStartedOnboarding,
     trackAnsweredQuestionOne,
+    trackAnsweredExperienceQuestion,
     trackAnsweredQuestionTwo,
     trackAnsweredQuestionThree,
     trackArtistFollow,

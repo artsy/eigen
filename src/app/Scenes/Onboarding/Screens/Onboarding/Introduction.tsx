@@ -24,7 +24,8 @@ export const Introduction: React.FC = () => {
   const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
-  const { trackStartedOnboarding, trackCompletedOnboarding } = useOnboardingTracking()
+  const { trackStartedOnboarding, trackCompletedOnboarding, trackAnsweredExperienceQuestion } =
+    useOnboardingTracking()
 
   useEffect(() => {
     loadWelcomeQuery({}, { fetchPolicy: "network-only" })
@@ -53,10 +54,15 @@ export const Introduction: React.FC = () => {
 
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })
 
-  const renderStep = useCallback(() => {
+  const handleSelectExperience = (experience: Experience) => {
+    trackAnsweredExperienceQuestion(experience)
+    selectExperience(experience)
+  }
+
+  const renderStep = () => {
     switch (currentStep) {
       case STEP_QUESTION:
-        return <QuestionStep onSelect={selectExperience} />
+        return <QuestionStep onSelect={handleSelectExperience} />
       case STEP_BROWSE_PROMPT:
         return <BrowsePromptStep onNext={next} onSkip={handleSkipToHome} />
       case STEP_ARTWORK_MONTAGE:
@@ -66,7 +72,7 @@ export const Introduction: React.FC = () => {
       default:
         return null
     }
-  }, [currentStep, next, selectExperience, handleSkipToHome, welcomeQueryRef])
+  }
 
   return (
     <Flex flex={1} backgroundColor="mono100">
