@@ -65,20 +65,37 @@ describe("ConversationPartnerOfferCTA", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
   })
 
-  it("renders the offer banner, tracks it, and navigates to the artwork with the partner offer id", () => {
-    renderWithRelay(offerResolvers())
+  // The `partnerOffersConnection` query fetches both `BULK` (sent via the
+  // partner dashboard's send-offer tool) and `PERSONALIZED` offer types.
+  // Eigen can't distinguish between the two once fetched, so the banner
+  // should render identically for both.
+  describe.each([["a personalized partner offer"], ["a bulk offer (send offer)"]])(
+    "with %s",
+    () => {
+      it("renders the offer banner, tracks it, and navigates to the artwork with the partner offer id", () => {
+        renderWithRelay(offerResolvers())
 
-    expect(screen.getByText("Offer received for $450")).toBeTruthy()
+        expect(screen.getByText("Offer received for $450")).toBeTruthy()
 
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "partnerOfferInConversationViewed",
-      context_owner_id: "conversation-id",
-      context_owner_type: "conversation",
-    })
+        expect(mockTrackEvent).toHaveBeenCalledWith({
+          action: "partnerOfferInConversationViewed",
+          context_owner_id: "conversation-id",
+          context_owner_type: "conversation",
+        })
 
-    fireEvent.press(screen.getByTestId("partnerOfferActionLink"))
-    expect(navigate).toHaveBeenCalledWith("/artwork/some-artwork?partner_offer_id=partner-offer-id")
-  })
+        fireEvent.press(screen.getByTestId("partnerOfferActionLink"))
+        expect(navigate).toHaveBeenCalledWith(
+          "/artwork/some-artwork?partner_offer_id=partner-offer-id"
+        )
+      })
+
+      it("renders nothing when the offer has expired", () => {
+        renderWithRelay(offerResolvers({ endAt: pastISO() }))
+
+        expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
+      })
+    }
+  )
 
   it("falls back to a generic title when there is no discounted price", () => {
     renderWithRelay(offerResolvers({ priceWithDiscount: null }))
@@ -99,12 +116,6 @@ describe("ConversationPartnerOfferCTA", () => {
 
   it("renders nothing when there is no artwork href", () => {
     renderWithRelay(offerResolvers({}, { href: null }))
-
-    expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
-  })
-
-  it("renders nothing when the offer has expired", () => {
-    renderWithRelay(offerResolvers({ endAt: pastISO() }))
 
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()
   })

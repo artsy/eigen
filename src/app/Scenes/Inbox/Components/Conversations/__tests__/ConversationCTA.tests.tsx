@@ -95,52 +95,70 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
     expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
   })
 
-  describe("with an active partner offer", () => {
-    const futureISO = () => new Date(Date.now() + 60 * 60 * 1000).toISOString()
+  // The `partnerOffersConnection` query fetches both `BULK` (sent via the
+  // partner dashboard's send-offer tool) and `PERSONALIZED` offer types.
+  // Eigen can't distinguish between the two once fetched, so both should
+  // behave identically here.
+  describe.each([["a personalized partner offer"], ["a bulk offer (send offer)"]])(
+    "with %s",
+    () => {
+      const futureISO = () => new Date(Date.now() + 60 * 60 * 1000).toISOString()
+      const pastISO = () => new Date(Date.now() - 60 * 60 * 1000).toISOString()
 
-    const partnerOfferResolvers = {
-      Conversation: () => ({
-        items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
-        activeOrders: { edges: [] },
-      }),
-      // Ensures both `items.item` and `liveArtwork` resolve to the same artwork id
-      // that the offer below references.
-      Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
-      Me: () => ({
-        partnerOffersConnection: {
-          edges: [
-            {
-              node: {
-                internalID: "partner-offer-id",
-                artworkId: "123",
-                endAt: futureISO(),
-                isAvailable: true,
-                priceWithDiscount: { display: "US$450" },
+      const buildPartnerOfferResolvers = (offerOverrides: Record<string, unknown> = {}) => ({
+        Conversation: () => ({
+          items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
+          activeOrders: { edges: [] },
+        }),
+        // Ensures both `items.item` and `liveArtwork` resolve to the same artwork id
+        // that the offer below references.
+        Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
+        Me: () => ({
+          partnerOffersConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "partner-offer-id",
+                  artworkId: "123",
+                  endAt: futureISO(),
+                  isAvailable: true,
+                  priceWithDiscount: { display: "US$450" },
+                  ...offerOverrides,
+                },
               },
-            },
-          ],
-        },
-      }),
+            ],
+          },
+        }),
+      })
+
+      it("replaces the inquiry buttons with the offer banner when the flag is on", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
+
+        renderWithRelay(buildPartnerOfferResolvers())
+
+        // The dedicated offer banner replaces the inquiry transaction buttons.
+        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(0)
+        expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(1)
+      })
+
+      it("still renders the inquiry buttons when the flag is off", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: false })
+
+        renderWithRelay(buildPartnerOfferResolvers())
+
+        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
+      })
+
+      it("falls back to the inquiry buttons once the offer expires", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
+
+        renderWithRelay(buildPartnerOfferResolvers({ endAt: pastISO() }))
+
+        expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(0)
+        expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
+      })
     }
-
-    it("replaces the inquiry buttons with the offer banner when the flag is on", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
-
-      renderWithRelay(partnerOfferResolvers)
-
-      // The dedicated offer banner replaces the inquiry transaction buttons.
-      expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(0)
-      expect(screen.UNSAFE_queryAllByType(ConversationPartnerOfferCTA)).toHaveLength(1)
-    })
-
-    it("still renders the inquiry buttons when the flag is off", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: false })
-
-      renderWithRelay(partnerOfferResolvers)
-
-      expect(screen.UNSAFE_queryAllByType(OpenInquiryModalButton)).toHaveLength(1)
-    })
-  })
+  )
 
   it("renders the payment failed message if the payment failed", () => {
     renderWithOrders({ lastTransactionFailed: true, mode: "OFFER" })
