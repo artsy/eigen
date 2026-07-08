@@ -2,6 +2,7 @@ export const useOnboardingTracking = jest.fn().mockImplementation(() => {
   return {
     trackStartedOnboarding: jest.fn(),
     trackAnsweredQuestionOne: jest.fn(),
+    trackAnsweredExperienceQuestion: jest.fn(),
     trackAnsweredQuestionTwo: jest.fn(),
     trackAnsweredQuestionThree: jest.fn(),
     trackArtistFollow: jest.fn(),
