@@ -1,11 +1,9 @@
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { FollowArtistsOrderedSetQuery } from "__generated__/FollowArtistsOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
-import { OnboardingPartnerListItem } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/OnboardingPartnerListItem"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
@@ -22,9 +20,9 @@ interface FollowArtistsOrderedSetProps {
   listHeaderComponent?: React.ReactElement
   onArtistFollowed?: (
     artistRef: ArtistListItemNew_artist$key,
-    artist: OnboardingFollowedArtist
+    artist: OnboardingFollowedArtist,
+    slug: string
   ) => void
-  onArtistUnfollowed?: (internalID: string) => void
 }
 
 const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
@@ -32,10 +30,8 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
   hideFollowedArtists,
   listHeaderComponent,
   onArtistFollowed,
-  onArtistUnfollowed,
 }) => {
-  const { getId } = useNavigation()
-  const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
+  const { trackArtistFollow } = useOnboardingTracking()
 
   const { orderedSets } = useLazyLoadQuery<FollowArtistsOrderedSetQuery>(
     FollowArtistsOrderedSetScreenQuery,
@@ -60,54 +56,29 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => {
-        switch (item.__typename) {
-          case "Artist":
-            return (
-              <ArtistListItemNew
-                artist={item}
-                onFollow={() => {
-                  trackArtistFollow(false, item.internalID, getId() ?? "")
-                  onArtistFollowed?.(item, {
-                    internalID: item.internalID,
-                    imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                    blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                  })
-                }}
-                onUnfollow={() => {
-                  trackArtistFollow(true, item.internalID, getId() ?? "")
-                  onArtistUnfollowed?.(item.internalID)
-                }}
-              />
-            )
-          case "Profile": {
-            const partner = item.owner
-            if (!partner || partner.__typename !== "Partner") return null
-            return (
-              <OnboardingPartnerListItem
-                partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(false, item.internalID, getId() ?? "")
-                }}
-                onUnfollow={() => {
-                  trackGalleryFollow(true, item.internalID, getId() ?? "")
-                }}
-              />
-            )
-          }
-          default:
-            return null
-        }
+        if (item.__typename !== "Artist") return null
+
+        return (
+          <ArtistListItemNew
+            artist={item}
+            onFollow={() => {
+              trackArtistFollow(false, item.internalID, item.slug)
+              onArtistFollowed?.(
+                item,
+                {
+                  internalID: item.internalID,
+                  imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                  blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                },
+                item.slug
+              )
+            }}
+          />
+        )
       }}
-      keyExtractor={(item, index) => {
-        switch (item.__typename) {
-          case "Artist":
-            return item.internalID
-          case "Profile":
-            return item.internalID
-          default:
-            return item.__typename + index
-        }
-      }}
+      keyExtractor={(item, index) =>
+        item.__typename === "Artist" ? item.internalID : item.__typename + index
+      }
     />
   )
 }
@@ -141,6 +112,7 @@ const FollowArtistsOrderedSetScreenQuery = graphql`
             __typename
             ... on Artist {
               internalID
+              slug
               isFollowed
               coverArtwork {
                 image {
@@ -151,16 +123,6 @@ const FollowArtistsOrderedSetScreenQuery = graphql`
                 }
               }
               ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
-            }
-            ... on Profile {
-              internalID
-              isFollowed
-              owner {
-                __typename
-                ... on Partner {
-                  ...OnboardingPartnerListItem_partner
-                }
-              }
             }
           }
         }
