@@ -47,7 +47,10 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [],
+        dismissed: [
+          // Mock that the artist summary bottom sheet has been dismissed
+          { key: "artist-summary-bottom-sheet", timestamp: Date.now() },
+        ],
       },
     })
 
@@ -94,7 +97,26 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
   it("does not show popover when the user has seen the popover before", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        dismissed: [{ key: "price-range-popover-home", timestamp: Date.now() }],
+        dismissed: [
+          { key: "artist-summary-bottom-sheet", timestamp: Date.now() },
+          { key: "price-range-popover-home", timestamp: Date.now() },
+        ],
+      },
+    })
+
+    renderWithRelay(mockProps)
+
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    expect(screen.getByText("Content")).toBeOnTheScreen()
+  })
+
+  it("does not show popover when the artist summary bottom sheet has not been dismissed", async () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true },
+        dismissed: [],
       },
     })
 
