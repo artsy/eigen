@@ -26,7 +26,7 @@ export const usePartnerOffer = ({ conversation, artworkId }: UsePartnerOfferProp
 
 const fragment = graphql`
   fragment usePartnerOffer_conversation on Conversation {
-    collectorPartnerOffersConnection(first: 10, offerType: [PERSONALIZED]) {
+    collectorPartnerOffersConnection(first: 10, offerType: [BULK, PERSONALIZED]) {
       edges {
         node {
           ...ConversationPartnerOfferCTA_partnerOffers

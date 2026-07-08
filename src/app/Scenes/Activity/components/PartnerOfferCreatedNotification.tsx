@@ -41,9 +41,9 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   const noLongerAvailable = !item?.partnerOffer?.isAvailable
   const isOfferFromSaves = item?.partnerOffer?.source === "SAVE"
 
-  let subtitle = isOfferFromSaves
+  let subtitle: string | null = isOfferFromSaves
     ? "Review the offer on your saved artwork"
-    : "Review the offer before it expires"
+    : null
 
   if (noLongerAvailable) {
     subtitle =
@@ -87,7 +87,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
               <Spacer y={0.5} />
 
-              <Text variant="sm-display">{subtitle}</Text>
+              {!!subtitle && <Text variant="sm-display">{subtitle}</Text>}
 
               <Spacer y={0.5} />
 
