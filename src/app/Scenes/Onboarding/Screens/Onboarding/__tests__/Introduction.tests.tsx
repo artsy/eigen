@@ -1,4 +1,4 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -125,6 +125,22 @@ describe("Introduction", () => {
       const state = __globalStoreTestUtils__?.getCurrentState()
       expect(state?.onboarding.onboardingState).toBe("complete")
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+    })
+
+    it("tracks the skip tap when skipping from BrowsePromptStep", () => {
+      renderWithWrappers(<Introduction />)
+
+      fireEvent.press(screen.getByText("Montage next"))
+      fireEvent.press(screen.getByText("Welcome next"))
+      fireEvent.press(screen.getByText("Select beginner"))
+      fireEvent.press(screen.getByText("Browse skip"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedSkip,
+        context_module: ContextModule.onboardingFlow,
+        context_screen_owner_type: OwnerType.onboarding,
+        subject: "Skip",
+      })
     })
   })
 })

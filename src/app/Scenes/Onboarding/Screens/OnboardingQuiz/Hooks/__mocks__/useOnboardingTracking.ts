@@ -10,5 +10,6 @@ export const useOnboardingTracking = jest.fn().mockImplementation(() => {
     trackPartnerFollow: jest.fn(),
     trackGalleryFollow: jest.fn(),
     trackCompletedOnboarding: jest.fn(),
+    trackTappedSkip: jest.fn(),
   }
 })

@@ -1,4 +1,4 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtists } from "app/Scenes/Onboarding/Screens/Onboarding/FollowArtists"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -195,6 +195,19 @@ describe("FollowArtists", () => {
         "complete"
       )
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+    })
+
+    it("tracks the skip tap", () => {
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedSkip,
+        context_module: ContextModule.onboardingFlow,
+        context_screen_owner_type: OwnerType.onboarding,
+        subject: "Skip",
+      })
     })
   })
 })

@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
@@ -24,8 +25,12 @@ export const Introduction: React.FC = () => {
   const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
-  const { trackStartedOnboarding, trackCompletedOnboarding, trackAnsweredExperienceQuestion } =
-    useOnboardingTracking()
+  const {
+    trackStartedOnboarding,
+    trackCompletedOnboarding,
+    trackAnsweredExperienceQuestion,
+    trackTappedSkip,
+  } = useOnboardingTracking()
 
   useEffect(() => {
     loadWelcomeQuery({}, { fetchPolicy: "network-only" })
@@ -48,9 +53,10 @@ export const Introduction: React.FC = () => {
   )
 
   const handleSkipToHome = useCallback(() => {
+    trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
     trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
-  }, [trackCompletedOnboarding])
+  }, [trackCompletedOnboarding, trackTappedSkip])
 
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })
 

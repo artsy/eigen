@@ -7,7 +7,9 @@ import {
   FollowedPartner,
   OnboardingUserInputData,
   OwnerType,
+  ScreenOwnerType,
   StartedOnboarding,
+  TappedSkip,
   UnfollowedArtist,
   UnfollowedGene,
   UnfollowedPartner,
@@ -139,6 +141,24 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }
 
+  const trackTappedSkip = (
+    contextModule: ContextModule,
+    contextScreenOwnerType: ScreenOwnerType,
+    contextScreenOwnerId?: string,
+    contextScreenOwnerSlug?: string
+  ) => {
+    const payload: TappedSkip = {
+      action: ActionType.tappedSkip,
+      context_module: contextModule,
+      context_screen_owner_type: contextScreenOwnerType,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      subject: "Skip",
+    }
+
+    trackEvent(payload)
+  }
+
   return {
     trackStartedOnboarding,
     trackAnsweredQuestionOne,
@@ -149,5 +169,6 @@ export const useOnboardingTracking = () => {
     trackGalleryFollow,
     trackGeneFollow,
     trackCompletedOnboarding,
+    trackTappedSkip,
   }
 }
