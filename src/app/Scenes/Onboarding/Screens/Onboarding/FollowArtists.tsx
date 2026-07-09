@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Box,
   Button,
@@ -28,7 +29,7 @@ const MIN_FOLLOWED = 3
 const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
-  const { trackCompletedOnboarding } = useOnboardingTracking()
+  const { trackCompletedOnboarding, trackTappedSkip } = useOnboardingTracking()
   const [query, setQuery] = useState("")
   const [followedArtistRefs, setFollowedArtistRefs] = useState<ArtistRef[]>([])
 
@@ -67,6 +68,7 @@ export const FollowArtists: React.FC = () => {
             accessibilityRole="button"
             accessibilityLabel="Skip new user onboarding"
             onPress={() => {
+              trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
               trackCompletedOnboarding()
               GlobalStore.actions.onboarding.setOnboardingState("complete")
             }}

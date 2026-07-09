@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
@@ -19,7 +20,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   useSavesSummaryToast()
   const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
   const track = useInfiniteDiscoveryTracking()
-  const { trackCompletedOnboarding } = useOnboardingTracking()
+  const { trackCompletedOnboarding, trackTappedSkip } = useOnboardingTracking()
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
@@ -35,6 +36,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipPressed = () => {
+    trackTappedSkip(ContextModule.infiniteDiscovery, OwnerType.infiniteDiscoveryArtwork)
     trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
