@@ -3,6 +3,7 @@ import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { StepProgressBar } from "app/Components/StepProgressBar/StepProgressBar"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast"
@@ -97,6 +98,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
             </Touchable>
           }
         />
+        <Flex px={2}>
+          <StepProgressBar current={newUserOnboardingSavedArtworkCount} total={5} />
+        </Flex>
       </Flex>
     )
   }
