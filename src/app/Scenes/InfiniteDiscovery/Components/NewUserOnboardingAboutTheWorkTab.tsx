@@ -121,6 +121,9 @@ const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
                     key={`artist-${index}`}
                     artist={artist}
                     disableNavigation
+                    contextModule={ContextModule.infiniteDiscoveryDrawer}
+                    contextScreenOwnerId={data.internalID}
+                    contextScreenOwnerSlug={data.slug}
                   />
                 )
               })}
