@@ -339,6 +339,7 @@
     "tmp": "0.2.7",
     "tsx": "4.19.1",
     "typescript": "7.0.2",
+    "typescript5": "npm:typescript@~5.9.3",
     "yargs": "17.7.2"
   },
   "resolutions": {

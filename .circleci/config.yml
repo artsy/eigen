@@ -374,10 +374,10 @@ jobs:
             fi
       - run:
           name: Danger
-          # DANGER_DISABLE_TSC: danger's dangerfile transpiler calls the legacy
-          # ts.transpileModule API, which typescript@7 no longer exposes; this
-          # makes danger use @babel/plugin-transform-typescript instead.
-          command: DANGER_DISABLE_TSC=true yarn danger ci --verbose
+          # danger transpiles dangerfile.ts via the legacy ts.transpileModule
+          # API, which typescript@7 no longer exposes; preload a TS 5 shim so
+          # danger keeps working (see scripts/typescript5-shim.js).
+          command: NODE_OPTIONS="--require ./scripts/typescript5-shim.js" yarn danger ci --verbose
 
   check-flags:
     environment:

@@ -13721,6 +13721,7 @@ __metadata:
     tmp: "npm:0.2.7"
     tsx: "npm:4.19.1"
     typescript: "npm:7.0.2"
+    typescript5: "npm:typescript@~5.9.3"
     unleash-proxy-client: "npm:3.7.6"
     url: "npm:0.11.3"
     uuid: "npm:14.0.0"
@@ -25514,6 +25515,16 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 10c0/6005cb31df50eef8b1f3c780eb71a17925f3038a100d82f9406ac2ad1de5eb59f8e6decbdc145b3a1f8e5836e17b0c0002fb698b9fe2516b8f9f9ff602d36412
+  languageName: node
+  linkType: hard
+
+"typescript5@npm:typescript@~5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
   languageName: node
   linkType: hard
 
