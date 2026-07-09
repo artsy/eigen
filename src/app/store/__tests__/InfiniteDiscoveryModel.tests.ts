@@ -62,6 +62,45 @@ describe("InfiniteDiscoveryModel", () => {
 
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
     })
+
+    it("sets newUserOnboardingCompleted to true when the 5th artwork is added", () => {
+      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
+
+      for (let i = 1; i <= 4; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-5",
+        url: "https://example.com/5.jpg",
+      })
+
+      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(true)
+    })
+
+    it("does not add further artworks once completed", () => {
+      for (let i = 1; i <= 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-6",
+        url: "https://example.com/6.jpg",
+      })
+
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks.map((a) => a.internalID)).toEqual(
+        ["artwork-1", "artwork-2", "artwork-3", "artwork-4", "artwork-5"]
+      )
+    })
   })
 
   describe("setNewUserOnboardingCompletionBottomSheetVisible", () => {
@@ -91,6 +130,19 @@ describe("InfiniteDiscoveryModel", () => {
 
       expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(1)
       expect(state()?.sessionState.newUserOnboardingSavedArtworks[0].internalID).toBe("artwork-2")
+    })
+
+    it("does not remove artworks once onboarding is completed", () => {
+      for (let i = 1; i <= 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
+
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
     })
   })
 
@@ -132,6 +184,21 @@ describe("InfiniteDiscoveryModel", () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
+    })
+
+    it("clears newUserOnboardingCompleted", () => {
+      for (let i = 1; i <= 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
     })
   })
 })

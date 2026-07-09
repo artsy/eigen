@@ -22,22 +22,39 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("First five works saved!")).toBeOnTheScreen()
-    expect(screen.getByText("Take me home")).toBeOnTheScreen()
+    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
+    expect(screen.getByText("Continue Browsing")).toBeOnTheScreen()
+    expect(screen.getByText("Take Me Home")).toBeOnTheScreen()
   })
 
-  it('"Take me home" hides the completion sheet', () => {
+  it('"Continue Browsing" hides the sheet and keeps onboarding incomplete', () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Take me home"))
+    fireEvent.press(screen.getByText("Continue Browsing"))
 
-    const infiniteDiscoveryState = __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery
-    expect(infiniteDiscoveryState?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(
-      false
-    )
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(
+      state?.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
+    ).toBe(false)
+    expect(state?.onboarding.onboardingState).toBe("incomplete")
+  })
+
+  it('"Take Me Home" hides the sheet and completes onboarding', () => {
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Take Me Home"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(
+      state?.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
+    ).toBe(false)
+    expect(state?.onboarding.onboardingState).toBe("complete")
   })
 
   it("renders 5 artwork images from the store", () => {
@@ -48,6 +65,6 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("First five works saved!")).toBeOnTheScreen()
+    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
   })
 })

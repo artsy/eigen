@@ -177,6 +177,50 @@ describe("InfiniteDiscoveryHeader", () => {
 
       expect(mockUseToast.show).not.toHaveBeenCalled()
     })
+
+    describe("once the 5-save milestone is completed", () => {
+      beforeEach(() => {
+        for (let i = 1; i <= 5; i++) {
+          GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+            internalID: `artwork-${i}`,
+            url: `https://example.com/${i}.jpg`,
+          })
+        }
+      })
+
+      it("shows an Exit button instead of Skip, with the badge frozen at 5/5", () => {
+        renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+        expect(screen.getByText("5/5")).toBeOnTheScreen()
+        expect(screen.getByText("Exit")).toBeOnTheScreen()
+        expect(screen.queryByText("Skip")).not.toBeOnTheScreen()
+      })
+
+      it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
+        const setOnboardingStateSpy = jest.spyOn(
+          GlobalStore.actions.onboarding,
+          "setOnboardingState"
+        )
+
+        renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+        fireEvent.press(screen.getByLabelText("Exit new user onboarding"))
+
+        expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
+        expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+        expect(mockTrackEvent).not.toHaveBeenCalledWith(
+          expect.objectContaining({ action: ActionType.tappedSkip })
+        )
+      })
+
+      it("keeps the badge frozen at 5/5 even if a saved artwork is removed", () => {
+        GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
+
+        renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+        expect(screen.getByText("5/5")).toBeOnTheScreen()
+      })
+    })
   })
 
   describe("when negative signals feature flag is enabled", () => {
