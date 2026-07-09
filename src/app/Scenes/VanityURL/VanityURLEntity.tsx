@@ -60,6 +60,12 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
+  // Guard against a missing slug: the query declares `$id: String!`, so running the
+  // QueryRenderer with a null/undefined slug throws a GraphQL non-null variable error.
+  if (!slug) {
+    return <VanityURLPossibleRedirect slug={slug} />
+  }
+
   if (slugType === "fairID") {
     return <FairScreen fairID={slug} />
   } else if (!entity && !slugType) {
