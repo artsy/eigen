@@ -54,13 +54,10 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
   const isDismissed = isDismissedFn(PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME).status
 
   const isPriceRangePopoverDisplayable =
-    // We don't want to show the price range popover if the user has already set a price range
     hasPriceRange === false &&
-    // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
     !isDismissed &&
     isReady &&
-    // Only show when the artist summary bottom sheet is not currently showing
     !showFollowedArtistSummaryBottomSheet
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
