@@ -338,7 +338,7 @@
     "sponge": "0.1.0",
     "tmp": "0.2.7",
     "tsx": "4.19.1",
-    "typescript": "5.9.2",
+    "typescript": "7.0.2",
     "yargs": "17.7.2"
   },
   "resolutions": {
@@ -374,5 +374,5 @@
       "IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS": true
     }
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.17.1"
 }
