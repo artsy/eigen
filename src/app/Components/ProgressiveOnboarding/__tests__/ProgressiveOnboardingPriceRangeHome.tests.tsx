@@ -49,6 +49,9 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
         sessionState: { isReady: true },
         dismissed: [],
       },
+      onboarding: {
+        showFollowedArtistSummaryBottomSheet: false,
+      },
     })
 
     jest.spyOn(internal_navigationRef.current as any, "getCurrentRoute").mockReturnValue({
@@ -95,6 +98,28 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         dismissed: [{ key: "price-range-popover-home", timestamp: Date.now() }],
+      },
+      onboarding: {
+        showFollowedArtistSummaryBottomSheet: false,
+      },
+    })
+
+    renderWithRelay(mockProps)
+
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    expect(screen.getByText("Content")).toBeOnTheScreen()
+  })
+
+  it("does not show popover when the artist summary bottom sheet is currently showing", async () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true },
+        dismissed: [],
+      },
+      onboarding: {
+        showFollowedArtistSummaryBottomSheet: true,
       },
     })
 
