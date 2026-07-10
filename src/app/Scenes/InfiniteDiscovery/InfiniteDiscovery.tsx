@@ -187,7 +187,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       */}
       <Screen.Body fullwidth style={{ marginTop: insets.top }} disableKeyboardAvoidance>
         <Swiper
-          HeaderComponent={() => <InfiniteDiscoveryHeader topArtwork={topArtwork} />}
+          HeaderComponent={<InfiniteDiscoveryHeader topArtwork={topArtwork} />}
           cards={artworks}
           onReachTriggerIndex={handleFetchMore}
           triggerIndex={2}

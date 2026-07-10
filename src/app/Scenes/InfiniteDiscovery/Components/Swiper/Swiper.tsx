@@ -22,7 +22,7 @@ type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
   cardStyle?: ViewStyle
   containerStyle?: ViewStyle
-  HeaderComponent?: () => React.ReactNode
+  HeaderComponent?: React.ReactNode
   isArtworkSaved?: (index: number) => boolean
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
@@ -205,7 +205,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     return (
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
-          {!!HeaderComponent && <HeaderComponent />}
+          {HeaderComponent}
           <Flex>
             {cards.map((c, i) => {
               if (i < initialSliceIndex) {

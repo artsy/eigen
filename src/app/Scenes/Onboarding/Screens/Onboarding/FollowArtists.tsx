@@ -12,6 +12,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
+import { StepProgressBar } from "app/Components/StepProgressBar/StepProgressBar"
 import { FollowArtistsOrderedSetScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet"
 import {
   ArtistRef,
@@ -79,6 +80,9 @@ export const FollowArtists: React.FC = () => {
           </Touchable>
         }
       />
+      <Flex px={2}>
+        <StepProgressBar current={count} total={MIN_FOLLOWED} />
+      </Flex>
 
       <Screen.Body disableKeyboardAvoidance>
         <Box mt={2}>
