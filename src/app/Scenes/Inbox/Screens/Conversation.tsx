@@ -16,6 +16,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useConversationsWebsocket } from "app/utils/Websockets/conversations/useConversationsWebsocket"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -70,6 +71,19 @@ export const Conversation: React.FC<Props> = ({
   const handleModalDismissed = React.useCallback(() => {
     refetch()
   }, [refetch])
+
+  const conversationID = me.conversation?.internalID
+
+  useConversationsWebsocket({
+    subscriptionKey: `conversation:${conversationID}`,
+    enabled: !!conversationID,
+    onEvent: (event) => {
+      if (event.conversation_id === conversationID) {
+        refetch()
+        GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+      }
+    },
+  })
 
   const maybeMarkLastMessageAsRead = React.useCallback(() => {
     const conversation = me.conversation
