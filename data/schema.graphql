@@ -3625,6 +3625,116 @@ type ArtistsWithAlertCountsEdge {
   totalAlertCount: Int
 }
 
+type ArtnetNewsArticle {
+  authors: [ArtnetNewsAuthor!]!
+
+  """
+  Rendered HTML of the article. Only present when fetched via the single-article field.
+  """
+  body: String
+  category: ArtnetNewsCategory
+
+  """
+  SEO meta description of the article
+  """
+  description: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+  image: ArtnetNewsImage
+
+  """
+  A type-specific ID.
+  """
+  internalID: ID!
+  publishedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  title: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  Absolute URL of the article on news.artnet.com
+  """
+  url: String
+}
+
+"""
+A connection to a list of items.
+"""
+type ArtnetNewsArticleConnection {
+  """
+  A list of edges.
+  """
+  edges: [ArtnetNewsArticleEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type ArtnetNewsArticleEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: ArtnetNewsArticle
+}
+
+type ArtnetNewsAuthor {
+  facebook: String
+  instagram: String
+  name: String
+
+  """
+  URL of the author’s avatar
+  """
+  photo: String
+  title: String
+  twitter: String
+}
+
+type ArtnetNewsCategory {
+  name: String
+  slug: String
+}
+
+type ArtnetNewsImage {
+  alt: String
+  height: Int
+
+  """
+  URL of a square-cropped variant of the image
+  """
+  thumbnailUrl: String
+  url: String
+  width: Int
+}
+
 type ArtsyShippingOptInMutationFailure {
   mutationError: GravityMutationError
 }
@@ -20896,6 +21006,43 @@ An artists section in the home view
 """
 type HomeViewSectionArtists implements HomeViewSectionGeneric & Node {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+
+  """
+  Component prescription for this section, for overriding or customizing presentation and behavior
+  """
+  component: HomeViewComponent
+
+  """
+  [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  """
+  contextModule: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  """
+  ownerType: String
+}
+
+"""
+An artnet News articles section in the home view
+"""
+type HomeViewSectionArtnetNews implements HomeViewSectionGeneric & Node {
+  artnetNewsArticlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtnetNewsArticleConnection
 
   """
   Component prescription for this section, for overriding or customizing presentation and behavior

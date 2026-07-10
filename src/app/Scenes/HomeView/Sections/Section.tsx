@@ -4,6 +4,7 @@ import { HomeViewSectionActivityQueryRenderer } from "app/Scenes/HomeView/Sectio
 import { HomeViewSectionArticlesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticles"
 import { HomeViewSectionArticlesCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArticlesCards"
 import { HomeViewSectionArtistsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtists"
+import { HomeViewSectionArtnetNewsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtnetNews"
 import { HomeViewSectionArtworksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
 import { HomeViewSectionAuctionResultsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import { HomeViewSectionCardQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCard"
@@ -65,6 +66,8 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
       return <HomeViewSectionGeneric section={section} {...rest} />
     case "HomeViewSectionArticles":
       return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionArtnetNews":
+      return <HomeViewSectionArtnetNewsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtists":
       return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionAuctionResults":
