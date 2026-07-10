@@ -30,14 +30,22 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const newUserOnboardingSavedArtworkCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
+  const newUserOnboardingGoalReached = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
+  )
+  const displayedSavedArtworkCount = newUserOnboardingGoalReached
+    ? 5
+    : newUserOnboardingSavedArtworkCount
 
   const handleExitPressed = () => {
     track.tappedExit()
     goBack()
   }
 
-  const handleSkipPressed = () => {
-    trackTappedSkip(ContextModule.infiniteDiscovery, OwnerType.infiniteDiscoveryArtwork)
+  const handleSkipOrExitPressed = () => {
+    if (!newUserOnboardingGoalReached) {
+      trackTappedSkip(ContextModule.infiniteDiscovery, OwnerType.infiniteDiscoveryArtwork)
+    }
     trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
@@ -83,18 +91,20 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
       <Flex mb={1}>
         <Screen.Header
           title="Discover Daily"
-          leftElements={
-            <OnboardingProgressBadge current={newUserOnboardingSavedArtworkCount} total={5} />
-          }
+          leftElements={<OnboardingProgressBadge current={displayedSavedArtworkCount} total={5} />}
           rightElements={
             <Touchable
               accessibilityRole="button"
-              accessibilityLabel="Skip new user onboarding"
-              onPress={handleSkipPressed}
+              accessibilityLabel={
+                newUserOnboardingGoalReached
+                  ? "Exit new user onboarding"
+                  : "Skip new user onboarding"
+              }
+              onPress={handleSkipOrExitPressed}
               hitSlop={DEFAULT_HIT_SLOP}
               haptic
             >
-              <Text>Skip</Text>
+              <Text>{newUserOnboardingGoalReached ? "Exit" : "Skip"}</Text>
             </Touchable>
           }
         />

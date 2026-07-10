@@ -41,11 +41,21 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const isNewUserOnboardingSession =
     GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
   const savedArtworks = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalSnapshot
   )
   const { setOnboardingState } = GlobalStore.actions.onboarding
   const { setNewUserOnboardingCompletionBottomSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const { trackCompletedOnboarding } = useOnboardingTracking()
+
+  const handleContinueBrowsing = () => {
+    setNewUserOnboardingCompletionBottomSheetVisible(false)
+  }
+
+  const handleTakeMeHome = () => {
+    trackCompletedOnboarding()
+    setOnboardingState("complete")
+    setNewUserOnboardingCompletionBottomSheetVisible(false)
+  }
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -72,10 +82,6 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
       enableContentPanningGesture={false}
       handleComponent={null}
       backdropComponent={renderBackdrop}
-      onDismiss={() => {
-        trackCompletedOnboarding()
-        setOnboardingState("complete")
-      }}
     >
       <BottomSheetView>
         <Flex px={2} pt={2} style={{ paddingBottom: safeAreaInsets.bottom + 16 }}>
@@ -104,27 +110,27 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
 
           <Flex gap={1} alignItems="center">
             <Text variant="lg-display" textAlign="center">
-              First five works saved!
+              Five works is all it takes to start.
             </Text>
             <Text variant="sm" textAlign="center">
-              We're starting to understand what draws you in.
+              We're beginning to see what moves you.
             </Text>
             <Text variant="xs" textAlign="center">
-              Visit your homepage to see what we've put together so far, or keep browsing.
+              Visit your For You page, or stay and keep exploring.
             </Text>
           </Flex>
 
           <Spacer y={2} />
 
-          <Button
-            block
-            variant="fillDark"
-            onPress={() => {
-              setNewUserOnboardingCompletionBottomSheetVisible(false)
-            }}
-          >
-            Take me home
-          </Button>
+          <Flex gap={1}>
+            <Button block variant="outline" onPress={handleContinueBrowsing}>
+              Continue Browsing
+            </Button>
+
+            <Button block variant="fillDark" onPress={handleTakeMeHome}>
+              Take Me Home
+            </Button>
+          </Flex>
         </Flex>
       </BottomSheetView>
     </AutomountedBottomSheetModal>

@@ -13,7 +13,9 @@ export interface InfiniteDiscoveryModel {
   sessionState: {
     moreInfoSheetVisible: boolean
     newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
+    newUserOnboardingGoalSnapshot: NewUserOnboardingSavedArtwork[]
     newUserOnboardingCompletionBottomSheetVisible: boolean
+    newUserOnboardingGoalReached: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -34,7 +36,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   sessionState: {
     moreInfoSheetVisible: false,
     newUserOnboardingSavedArtworks: [],
+    newUserOnboardingGoalSnapshot: [],
     newUserOnboardingCompletionBottomSheetVisible: false,
+    newUserOnboardingGoalReached: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -47,7 +51,9 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   resetNewUserOnboardingSessionState: action((state) => {
     state.sessionState.newUserOnboardingSavedArtworks = []
+    state.sessionState.newUserOnboardingGoalSnapshot = []
     state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
+    state.sessionState.newUserOnboardingGoalReached = false
   }),
   setHasInteractedWithOnboarding: action((state, payload) => {
     state.hasInteractedWithOnboarding = payload
@@ -66,11 +72,21 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     const alreadyAdded = newUserOnboardingSavedArtworks.some(
       (a) => a.internalID === payload.internalID
     )
-    if (!alreadyAdded && newUserOnboardingSavedArtworks.length < 5) {
-      newUserOnboardingSavedArtworks.push(payload)
-      if (newUserOnboardingSavedArtworks.length === 5) {
-        state.sessionState.newUserOnboardingCompletionBottomSheetVisible = true
-      }
+    if (alreadyAdded) {
+      return
+    }
+
+    newUserOnboardingSavedArtworks.push(payload)
+
+    if (
+      !state.sessionState.newUserOnboardingGoalReached &&
+      newUserOnboardingSavedArtworks.length === 5
+    ) {
+      state.sessionState.newUserOnboardingCompletionBottomSheetVisible = true
+      state.sessionState.newUserOnboardingGoalReached = true
+      // Keep a snapshot of the saved artworks when the onboarding goal was reached.
+      // Used in the post-onboarding animation in case the user goes back and unsaves them.
+      state.sessionState.newUserOnboardingGoalSnapshot = [...newUserOnboardingSavedArtworks]
     }
   }),
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {
