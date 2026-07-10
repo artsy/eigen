@@ -3,7 +3,10 @@ import { Flex, useColor, Text, Separator, Tabs } from "@artsy/palette-mobile"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useConversationsWebsocket } from "app/utils/Websockets/conversations/useConversationsWebsocket"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -86,6 +89,15 @@ export const Conversations: React.FC<Props> = (props) => {
       refreshConversations()
     }
   }, [isActiveTab])
+
+  useConversationsWebsocket({
+    subscriptionKey: "inbox",
+    enabled: isActiveTab,
+    onEvent: () => {
+      refreshConversations()
+      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+    },
+  })
 
   const conversations = extractNodes(props.me?.conversations)
 
