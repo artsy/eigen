@@ -63,8 +63,8 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(true)
     })
 
-    it("sets newUserOnboardingCompleted to true when the 5th artwork is added", () => {
-      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
+    it("sets newUserOnboardingGoalReached to true when the 5th artwork is added", () => {
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
 
       for (let i = 1; i <= 4; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -73,14 +73,14 @@ describe("InfiniteDiscoveryModel", () => {
         })
       }
 
-      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
 
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-5",
         url: "https://example.com/5.jpg",
       })
 
-      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(true)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(true)
     })
 
     it("does not add further artworks once completed", () => {
@@ -186,7 +186,7 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
     })
 
-    it("clears newUserOnboardingCompleted", () => {
+    it("clears newUserOnboardingGoalReached", () => {
       for (let i = 1; i <= 5; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
           internalID: `artwork-${i}`,
@@ -194,11 +194,11 @@ describe("InfiniteDiscoveryModel", () => {
         })
       }
 
-      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(true)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(true)
 
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
-      expect(state()?.sessionState.newUserOnboardingCompleted).toBe(false)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
     })
   })
 })

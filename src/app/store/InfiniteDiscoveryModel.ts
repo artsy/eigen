@@ -14,7 +14,7 @@ export interface InfiniteDiscoveryModel {
     moreInfoSheetVisible: boolean
     newUserOnboardingSavedArtworks: NewUserOnboardingSavedArtwork[]
     newUserOnboardingCompletionBottomSheetVisible: boolean
-    newUserOnboardingCompleted: boolean
+    newUserOnboardingGoalReached: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -36,7 +36,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     moreInfoSheetVisible: false,
     newUserOnboardingSavedArtworks: [],
     newUserOnboardingCompletionBottomSheetVisible: false,
-    newUserOnboardingCompleted: false,
+    newUserOnboardingGoalReached: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -50,7 +50,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   resetNewUserOnboardingSessionState: action((state) => {
     state.sessionState.newUserOnboardingSavedArtworks = []
     state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
-    state.sessionState.newUserOnboardingCompleted = false
+    state.sessionState.newUserOnboardingGoalReached = false
   }),
   setHasInteractedWithOnboarding: action((state, payload) => {
     state.hasInteractedWithOnboarding = payload
@@ -65,7 +65,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     state.sessionState.newUserOnboardingCompletionBottomSheetVisible = payload
   }),
   addNewUserOnboardingSavedArtwork: action((state, payload) => {
-    if (state.sessionState.newUserOnboardingCompleted) {
+    if (state.sessionState.newUserOnboardingGoalReached) {
       return
     }
 
@@ -77,12 +77,12 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
       newUserOnboardingSavedArtworks.push(payload)
       if (newUserOnboardingSavedArtworks.length === 5) {
         state.sessionState.newUserOnboardingCompletionBottomSheetVisible = true
-        state.sessionState.newUserOnboardingCompleted = true
+        state.sessionState.newUserOnboardingGoalReached = true
       }
     }
   }),
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {
-    if (state.sessionState.newUserOnboardingCompleted) {
+    if (state.sessionState.newUserOnboardingGoalReached) {
       return
     }
 

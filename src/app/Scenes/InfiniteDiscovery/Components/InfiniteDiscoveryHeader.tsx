@@ -29,8 +29,8 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const newUserOnboardingSavedArtworkCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
-  const newUserOnboardingCompleted = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingCompleted
+  const newUserOnboardingGoalReached = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
   )
 
   const handleExitPressed = () => {
@@ -39,7 +39,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipOrExitPressed = () => {
-    if (!newUserOnboardingCompleted) {
+    if (!newUserOnboardingGoalReached) {
       trackTappedSkip(ContextModule.infiniteDiscovery, OwnerType.infiniteDiscoveryArtwork)
     }
     trackCompletedOnboarding()
@@ -94,13 +94,15 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
             <Touchable
               accessibilityRole="button"
               accessibilityLabel={
-                newUserOnboardingCompleted ? "Exit new user onboarding" : "Skip new user onboarding"
+                newUserOnboardingGoalReached
+                  ? "Exit new user onboarding"
+                  : "Skip new user onboarding"
               }
               onPress={handleSkipOrExitPressed}
               hitSlop={DEFAULT_HIT_SLOP}
               haptic
             >
-              <Text>{newUserOnboardingCompleted ? "Exit" : "Skip"}</Text>
+              <Text>{newUserOnboardingGoalReached ? "Exit" : "Skip"}</Text>
             </Touchable>
           }
         />
