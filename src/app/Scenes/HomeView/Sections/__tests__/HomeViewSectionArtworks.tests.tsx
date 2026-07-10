@@ -460,6 +460,68 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
+    it("does not re-fire railViewed on refresh when the WTYL rail is off screen", () => {
+      // The refresh-driven re-fire only applies to the live "We think you'll love" (WTYL) section
+      // (home-view-section-recommended-artworks); no other section takes this path.
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      // Rail is not in the viewport.
+      homeViewStoreActions.setViewableSections([])
+      mockTrackEvent.mockClear()
+
+      // Request a refresh (focus return / pull to refresh).
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      // Complete the forced refetch.
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      // railViewed should not fire because the rail is off screen.
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+    })
+
+    it("re-fires railViewed on every refresh while the rail is in view", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      const refresh = () => {
+        act(() => {
+          homeViewStoreActions.bumpLiveRefetchKey()
+        })
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+            })
+          )
+        })
+      }
+
+      // Two separate returns to home, both with the rail in view.
+      refresh()
+      refresh()
+
+      const railViewedCalls = mockTrackEvent.mock.calls.filter(
+        (call) => (call[0] as any)?.action === "railViewed"
+      )
+      expect(railViewedCalls).toHaveLength(2)
+    })
+
     it("re-enables itemViewed tracking after the live refresh completes", async () => {
       const { env, UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,

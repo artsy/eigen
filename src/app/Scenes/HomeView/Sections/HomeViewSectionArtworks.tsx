@@ -34,7 +34,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo, useEffect } from "react"
+import { memo, useEffect, useRef } from "react"
 import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -67,17 +67,25 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const shouldShowInGrid = section.component?.type === "ArtworksGrid"
   const contextModule = section.contextModule as ContextModule
 
+  const isRailInViewport = viewableSections.includes(section.internalID)
+
+  // Keep the latest visibility in a ref so the async `complete` callback below reads the current
+  // value rather than the stale one captured when the refetch was kicked off.
+  const isRailInViewportRef = useRef(isRailInViewport)
+  isRailInViewportRef.current = isRailInViewport
+
   const { onViewableItemsChanged, viewabilityConfig, resetTracking } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
     // on the screen because it's within a scrollable container.
-    isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
+    isInViewport: isRailInViewport && section.trackItemImpressions,
     contextModule,
   })
 
   // When the live refetch key is bumped (returning to home or pull to refresh), force a fresh
-  // fetch of the rail's artworks. Impression tracking is re-fired in `complete` — once the new
-  // data is in the store — so railViewed/itemViewed reflect the new content, not the stale rail.
+  // fetch of the rail's artworks. On `complete` we reset the per-item impression guard so
+  // itemViewed can re-fire for the fresh content, and re-fire railViewed — but only if the rail
+  // is actually on screen, so returning to home while the rail is scrolled off doesn't fire it.
   useEffect(() => {
     if (!isLiveRecommendationsRail || liveRefetchKey === 0) {
       return
@@ -91,7 +99,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
-        tracking.viewedSection(contextModule, index)
+
+        if (isRailInViewportRef.current) {
+          tracking.viewedSection(contextModule, index)
+        }
       },
       error: (error: Error) => {
         console.error("Failed to refresh live artworks rail", error)
