@@ -37,11 +37,11 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }
 
-  const trackAnsweredExperienceQuestion = (experience: "experienced" | "beginner") => {
+  const trackAnsweredExperienceQuestion = (buttonText: string) => {
     const payload: OnboardingUserInputData = {
       action: ActionType.onboardingUserInputData,
       context_module: ContextModule.onboardingCollectorLevel,
-      data_input: experience,
+      data_input: buttonText,
     }
 
     trackEvent(payload)

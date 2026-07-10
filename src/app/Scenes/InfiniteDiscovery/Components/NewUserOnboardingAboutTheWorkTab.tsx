@@ -53,7 +53,7 @@ const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
   return (
     <BottomSheetScrollView>
       <AnalyticsContextProvider
-        contextModule={ContextModule.infiniteDiscoveryDrawer}
+        contextModule={ContextModule.onboardingFlow}
         contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}
@@ -121,7 +121,7 @@ const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork }) => {
                     key={`artist-${index}`}
                     artist={artist}
                     disableNavigation
-                    contextModule={ContextModule.infiniteDiscoveryDrawer}
+                    contextModule={ContextModule.onboardingFlow}
                     contextScreenOwnerId={data.internalID}
                     contextScreenOwnerSlug={data.slug}
                   />

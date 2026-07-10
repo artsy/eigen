@@ -164,7 +164,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,
-        context_module: ContextModule.infiniteDiscovery,
+        context_module: ContextModule.onboardingFlow,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
         subject: "Skip",
       })

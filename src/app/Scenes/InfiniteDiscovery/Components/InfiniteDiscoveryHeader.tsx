@@ -44,7 +44,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
 
   const handleSkipOrExitPressed = () => {
     if (!newUserOnboardingGoalReached) {
-      trackTappedSkip(ContextModule.infiniteDiscovery, OwnerType.infiniteDiscoveryArtwork)
+      trackTappedSkip(ContextModule.onboardingFlow, OwnerType.infiniteDiscoveryArtwork)
     }
     trackCompletedOnboarding()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
