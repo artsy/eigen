@@ -22,15 +22,15 @@ describe("InfiniteDiscoveryModel", () => {
       })
     })
 
-    it("caps at 5 artworks", () => {
-      for (let i = 1; i <= 6; i++) {
+    it("keeps tracking saved artworks beyond 5 once the goal is reached", () => {
+      for (let i = 1; i <= 7; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
           internalID: `artwork-${i}`,
           url: `https://example.com/${i}.jpg`,
         })
       }
 
-      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(7)
     })
 
     it("stores the blurhash when provided", () => {
@@ -83,7 +83,7 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(true)
     })
 
-    it("does not add further artworks once completed", () => {
+    it("captures an immutable snapshot of the first 5 artworks when the goal is reached", () => {
       for (let i = 1; i <= 5; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
           internalID: `artwork-${i}`,
@@ -91,15 +91,58 @@ describe("InfiniteDiscoveryModel", () => {
         })
       }
 
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot.map((a) => a.internalID)).toEqual([
+        "artwork-1",
+        "artwork-2",
+        "artwork-3",
+        "artwork-4",
+        "artwork-5",
+      ])
+
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
         internalID: "artwork-6",
         url: "https://example.com/6.jpg",
       })
 
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(6)
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot.map((a) => a.internalID)).toEqual([
+        "artwork-1",
+        "artwork-2",
+        "artwork-3",
+        "artwork-4",
+        "artwork-5",
+      ])
+    })
+
+    it("does not re-trigger the completion sheet or overwrite the snapshot if the count dips below 5 and returns to 5", () => {
+      for (let i = 1; i <= 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(false)
+
+      GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
+      GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-2")
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-6",
+        url: "https://example.com/6.jpg",
+      })
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-7",
+        url: "https://example.com/7.jpg",
+      })
+
       expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
-      expect(state()?.sessionState.newUserOnboardingSavedArtworks.map((a) => a.internalID)).toEqual(
-        ["artwork-1", "artwork-2", "artwork-3", "artwork-4", "artwork-5"]
-      )
+      expect(state()?.sessionState.newUserOnboardingCompletionBottomSheetVisible).toBe(false)
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot.map((a) => a.internalID)).toEqual([
+        "artwork-1",
+        "artwork-2",
+        "artwork-3",
+        "artwork-4",
+        "artwork-5",
+      ])
     })
   })
 
@@ -132,7 +175,7 @@ describe("InfiniteDiscoveryModel", () => {
       expect(state()?.sessionState.newUserOnboardingSavedArtworks[0].internalID).toBe("artwork-2")
     })
 
-    it("does not remove artworks once onboarding is completed", () => {
+    it("keeps removing artworks after the goal is reached, without touching the first-five snapshot", () => {
       for (let i = 1; i <= 5; i++) {
         GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
           internalID: `artwork-${i}`,
@@ -142,7 +185,14 @@ describe("InfiniteDiscoveryModel", () => {
 
       GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
 
-      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(5)
+      expect(state()?.sessionState.newUserOnboardingSavedArtworks).toHaveLength(4)
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot.map((a) => a.internalID)).toEqual([
+        "artwork-1",
+        "artwork-2",
+        "artwork-3",
+        "artwork-4",
+        "artwork-5",
+      ])
     })
   })
 
@@ -199,6 +249,21 @@ describe("InfiniteDiscoveryModel", () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
       expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
+    })
+
+    it("clears newUserOnboardingGoalSnapshot", () => {
+      for (let i = 1; i <= 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `artwork-${i}`,
+          url: `https://example.com/${i}.jpg`,
+        })
+      }
+
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot).toHaveLength(5)
+
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      expect(state()?.sessionState.newUserOnboardingGoalSnapshot).toHaveLength(0)
     })
   })
 })
