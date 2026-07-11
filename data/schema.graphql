@@ -18864,9 +18864,42 @@ type FeatureFlag {
   variants: [FeatureFlagVariantType]
 }
 
+type FeatureFlagConstraint {
+  caseInsensitive: Boolean
+  contextName: String
+  inverted: Boolean
+  operator: String
+
+  """
+  The Partners referenced by this constraint's values, resolved when contextName is `partnerId`
+  """
+  partnerConnection(after: String, before: String, first: Int, last: Int): PartnerConnection
+  value: String
+  values: [String]
+}
+
 type FeatureFlagEnvironments {
   enabled: Boolean!
   name: String!
+  strategies: [FeatureFlagStrategy]
+}
+
+type FeatureFlagSegment {
+  constraints: [FeatureFlagConstraint]
+  description: String
+  internalID: Int
+  name: String
+}
+
+type FeatureFlagStrategy {
+  constraints: [FeatureFlagConstraint]
+  name: String
+  parameters: JSON
+
+  """
+  Constraints applied to this strategy via a reusable, named Unleash segment (as opposed to inline constraints)
+  """
+  segments: [FeatureFlagSegment]
 }
 
 input FeatureFlagStrategyInput {
