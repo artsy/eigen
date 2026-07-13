@@ -82,9 +82,11 @@ export const ArtistSaveOnboardingBottomSheet = () => {
           <Spacer y={1} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
-            {followedOnboardingArtists.slice(0, 3).map((artist, index) => (
+            {followedOnboardingArtists.slice(-3).map((artist, index) => (
               <Flex
                 key={artist.internalID}
+                backgroundColor="mono0"
+                borderRadius={35}
                 style={{
                   marginLeft: index > 0 ? -10 : 0,
                   zIndex: index,

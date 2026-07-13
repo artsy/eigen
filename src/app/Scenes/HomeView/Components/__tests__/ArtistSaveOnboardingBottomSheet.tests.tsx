@@ -53,7 +53,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
   })
 
   describe("Followed artist avatars", () => {
-    it("renders an avatar for each real followed artist, up to 3", async () => {
+    it("renders the last 3 followed artists when more than 3 were followed", async () => {
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-1",
         imageUrl: "https://example.com/artist-1.jpg",
@@ -88,10 +88,10 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
         .UNSAFE_getAllByType(FastImage)
         .map((img) => img.props.source.uri)
 
-      expect(renderedImages.some((uri: string) => uri.includes("artist-1.jpg"))).toBe(true)
+      expect(renderedImages.some((uri: string) => uri.includes("artist-1.jpg"))).toBe(false)
       expect(renderedImages.some((uri: string) => uri.includes("artist-2.jpg"))).toBe(true)
       expect(renderedImages.some((uri: string) => uri.includes("artist-3.jpg"))).toBe(true)
-      expect(renderedImages.some((uri: string) => uri.includes("artist-4.jpg"))).toBe(false)
+      expect(renderedImages.some((uri: string) => uri.includes("artist-4.jpg"))).toBe(true)
     })
 
     it("falls back to the artist's initials when there is no image", async () => {
