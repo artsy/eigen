@@ -16,8 +16,9 @@ const EXPERIENCE_OPTIONS: { label: string; experience: Experience }[] = [
 
 const HORIZONTAL_MARGIN = 20
 const QUESTION_HEIGHT = 64
-const QUESTION_TOP_OFFSET = 112
+const QUESTION_TOP_OFFSET = 70
 const QUESTION_SUBTITLE_GAP = 10
+const SUBTITLE_ANSWERS_GAP = 34
 
 interface QuestionStepProps {
   onSelect: (experience: Experience, label: string) => void
@@ -37,6 +38,9 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
   const questionEndTop = top + QUESTION_TOP_OFFSET
   const questionStartTop = screenHeight / 2 - QUESTION_HEIGHT / 2
   const translateYStart = questionStartTop - questionEndTop
+
+  const subtitleTop = questionEndTop + QUESTION_HEIGHT + QUESTION_SUBTITLE_GAP
+  const answersOffset = subtitleTop + SUBTITLE_ANSWERS_GAP
 
   return (
     <Flex flex={1} backgroundColor="mono100">
@@ -66,41 +70,70 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
           entering={FadeInUp.duration(400).easing(Easing.out(Easing.quad))}
           style={{
             position: "absolute",
-            top: questionEndTop + QUESTION_HEIGHT + QUESTION_SUBTITLE_GAP,
+            top: subtitleTop,
             left: HORIZONTAL_MARGIN,
             right: HORIZONTAL_MARGIN,
-            bottom: 0,
           }}
         >
-          <Flex flex={1} flexDirection="column">
-            <Text variant="xs" color="mono30">
-              Please select one answer
-            </Text>
-            <Flex flex={1} justifyContent="center">
-              {EXPERIENCE_OPTIONS.map(({ label }) => {
-                const isSelected = selectedLabel === label
-                return (
-                  <Flex key={label} alignSelf="flex-start">
-                    <Pill
-                      variant="onboarding"
-                      selected={isSelected}
-                      alignSelf="flex-start"
-                      onPress={() => setSelectedLabel(label)}
-                    >
-                      <Text variant="xs" color="mono0">
-                        {label}
-                      </Text>
-                    </Pill>
-                    <Spacer y={2} />
-                  </Flex>
-                )
-              })}
-            </Flex>
-            <Flex pb={`${bottom}px`}>
-              <Button variant="fillLight" block disabled={!selectedLabel} onPress={handleContinue}>
-                Continue
-              </Button>
-            </Flex>
+          <Text variant="xs" color="mono30">
+            Please select one answer
+          </Text>
+        </Animated.View>
+      )}
+
+      {!!questionSettled && (
+        <Animated.View
+          entering={FadeInUp.duration(400).easing(Easing.out(Easing.quad))}
+          style={{
+            position: "absolute",
+            top: answersOffset,
+            bottom: answersOffset,
+            left: HORIZONTAL_MARGIN,
+            right: HORIZONTAL_MARGIN,
+          }}
+        >
+          <Flex flex={1} justifyContent="center">
+            {EXPERIENCE_OPTIONS.map(({ label }) => {
+              const isSelected = selectedLabel === label
+              return (
+                <Flex key={label} alignSelf="flex-start">
+                  <Pill
+                    variant="onboarding"
+                    selected={isSelected}
+                    alignSelf="flex-start"
+                    onPress={() => setSelectedLabel(label)}
+                  >
+                    <Text variant="xs" color="mono0" textAlign="center">
+                      {label}
+                    </Text>
+                  </Pill>
+                  <Spacer y={2} />
+                </Flex>
+              )
+            })}
+          </Flex>
+        </Animated.View>
+      )}
+
+      {!!questionSettled && (
+        <Animated.View
+          entering={FadeInUp.duration(400).easing(Easing.out(Easing.quad))}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: HORIZONTAL_MARGIN,
+            right: HORIZONTAL_MARGIN,
+          }}
+        >
+          <Flex pb={`${bottom}px`}>
+            <Button
+              variant={selectedLabel ? "fillLight" : "text"}
+              block
+              disabled={!selectedLabel}
+              onPress={handleContinue}
+            >
+              Continue
+            </Button>
           </Flex>
         </Animated.View>
       )}

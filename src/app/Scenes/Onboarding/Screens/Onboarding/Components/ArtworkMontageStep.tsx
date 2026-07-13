@@ -4,6 +4,7 @@ import { MotiView } from "moti"
 import { useEffect } from "react"
 import { Image } from "react-native"
 import { Easing } from "react-native-reanimated"
+import { Logo } from "./Logo"
 
 const IMG_DISPLAY_DURATION = 500
 const LAST_IMG_DISPLAY_DURATION = 600
@@ -45,6 +46,8 @@ export const ArtworkMontageStep: React.FC<ArtworkMontageStepProps> = ({ onNext }
           <Image source={image} resizeMode="cover" style={{ height: "100%", width: screenWidth }} />
         </MotiView>
       ))}
+
+      <Logo />
     </Flex>
   )
 }
