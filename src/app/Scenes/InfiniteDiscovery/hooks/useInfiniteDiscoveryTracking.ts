@@ -7,11 +7,17 @@ import {
   TappedSeeFewerWorks,
   TappedShare,
 } from "@artsy/cohesion"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
 
 export const useInfiniteDiscoveryTracking = () => {
   const { trackEvent } = useTracking()
+  const isNewUserOnboardingSession =
+    GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
+
+  const getContextModule = (defaultContextModule: ContextModule) =>
+    isNewUserOnboardingSession ? ContextModule.onboardingFlow : defaultContextModule
 
   return {
     displayedNewArtwork: (artworkId: string, artworkSlug: string) => {
@@ -35,7 +41,7 @@ export const useInfiniteDiscoveryTracking = () => {
     swipedArtwork: (artworkId: string, artworkSlug: string) => {
       trackEvent({
         action: ActionType.swipedInfiniteDiscoveryArtwork,
-        context_module: ContextModule.infiniteDiscovery,
+        context_module: getContextModule(ContextModule.infiniteDiscovery),
         context_screen_owner_id: artworkId,
         context_screen_owner_slug: artworkSlug,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
@@ -50,7 +56,7 @@ export const useInfiniteDiscoveryTracking = () => {
     tappedRewind: (artworkId: string, artworkSlug: string) => {
       trackEvent({
         action: ActionType.tappedRewind,
-        context_module: ContextModule.infiniteDiscovery,
+        context_module: getContextModule(ContextModule.infiniteDiscovery),
         context_screen_owner_id: artworkId,
         context_screen_owner_slug: artworkSlug,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
@@ -116,14 +122,14 @@ export const useInfiniteDiscoveryTracking = () => {
       trackEvent({
         action_name: Schema.ActionNames.ArtworkImageSwipe,
         action_type: Schema.ActionTypes.Swipe,
-        context_module: ContextModule.infiniteDiscoveryArtworkCard,
+        context_module: getContextModule(ContextModule.infiniteDiscoveryArtworkCard),
       })
     },
     savedArtwork: (isSaved: boolean, ownerId: string, ownerSlug: string) => {
       trackEvent({
         action_name: isSaved ? Schema.ActionNames.ArtworkSave : Schema.ActionNames.ArtworkUnsave,
         action_type: Schema.ActionTypes.Success,
-        context_module: ContextModule.infiniteDiscoveryArtworkCard,
+        context_module: getContextModule(ContextModule.infiniteDiscoveryArtworkCard),
         context_screen_owner_id: ownerId,
         context_screen_owner_slug: ownerSlug,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,

@@ -9,10 +9,16 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 jest.mock("../Components/QuestionStep", () => {
   const { Text } = require("react-native")
   return {
-    QuestionStep: ({ onSelect }: { onSelect: (e: "beginner" | "experienced") => void }) => (
+    QuestionStep: ({
+      onSelect,
+    }: {
+      onSelect: (experience: "beginner" | "experienced", label: string) => void
+    }) => (
       <>
-        <Text onPress={() => onSelect("beginner")}>Select beginner</Text>
-        <Text onPress={() => onSelect("experienced")}>Select experienced</Text>
+        <Text onPress={() => onSelect("beginner", "Select beginner")}>Select beginner</Text>
+        <Text onPress={() => onSelect("experienced", "Select experienced")}>
+          Select experienced
+        </Text>
       </>
     ),
   }
@@ -96,7 +102,7 @@ describe("Introduction", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.onboardingUserInputData,
         context_module: ContextModule.onboardingCollectorLevel,
-        data_input: "experienced",
+        data_input: "Select experienced",
       })
     })
   })

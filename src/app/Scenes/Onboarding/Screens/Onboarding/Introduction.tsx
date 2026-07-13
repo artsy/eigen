@@ -60,8 +60,8 @@ export const Introduction: React.FC = () => {
 
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })
 
-  const handleSelectExperience = (experience: Experience) => {
-    trackAnsweredExperienceQuestion(experience)
+  const handleSelectExperience = (experience: Experience, label: string) => {
+    trackAnsweredExperienceQuestion(label)
     selectExperience(experience)
   }
 

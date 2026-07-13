@@ -20,7 +20,7 @@ const QUESTION_TOP_OFFSET = 112
 const QUESTION_SUBTITLE_GAP = 10
 
 interface QuestionStepProps {
-  onSelect: (experience: Experience) => void
+  onSelect: (experience: Experience, label: string) => void
 }
 
 export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
@@ -31,7 +31,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
 
   const handleContinue = () => {
     const option = EXPERIENCE_OPTIONS.find((o) => o.label === selectedLabel)
-    if (option) onSelect(option.experience)
+    if (option) onSelect(option.experience, option.label)
   }
 
   const questionEndTop = top + QUESTION_TOP_OFFSET
