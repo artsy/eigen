@@ -255,6 +255,7 @@ export const getAuthModel = (): AuthModel => ({
 
     return await fetch(`${gravityBaseURL}${payload.path}`, {
       method: payload.method || "GET",
+      credentials: "omit", // don't send cookies to avoid stale sessions breaking auth
       headers: {
         "X-Xapp-Token": xAppToken,
         Accept: "application/json",
