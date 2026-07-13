@@ -215,7 +215,9 @@ export const getAuthModel = (): AuthModel => ({
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
-  setState: action((state, payload) => Object.assign(state, payload)),
+  setState: action((state, payload) => {
+    Object.assign(state, payload)
+  }),
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }
   }),
