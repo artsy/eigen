@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
+import { Avatar, Button, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -7,15 +7,10 @@ import {
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
-import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
-
-const hasImageUrl = (
-  artist: OnboardingFollowedArtist
-): artist is OnboardingFollowedArtist & { imageUrl: string } => !!artist.imageUrl
 
 export const ArtistSaveOnboardingBottomSheet = () => {
   const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
@@ -87,31 +82,27 @@ export const ArtistSaveOnboardingBottomSheet = () => {
           <Spacer y={1} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
-            {followedOnboardingArtists
-              .filter(hasImageUrl)
-              .slice(0, 3)
-              .map((artist, index) => (
-                <Flex
-                  key={artist.internalID}
-                  style={{
-                    marginLeft: index > 0 ? -10 : 0,
-                    zIndex: index,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 3 },
-                    shadowOpacity: 0.35,
-                    shadowRadius: 6,
-                    elevation: 8,
-                  }}
-                >
-                  <Image
-                    src={artist.imageUrl}
-                    blurhash={artist.blurhash}
-                    width={75}
-                    height={75}
-                    style={{ borderRadius: 37.5 }}
-                  />
-                </Flex>
-              ))}
+            {followedOnboardingArtists.slice(0, 3).map((artist, index) => (
+              <Flex
+                key={artist.internalID}
+                style={{
+                  marginLeft: index > 0 ? -10 : 0,
+                  zIndex: index,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 3 },
+                  shadowOpacity: 0.35,
+                  shadowRadius: 6,
+                  elevation: 8,
+                }}
+              >
+                <Avatar
+                  src={artist.imageUrl ?? undefined}
+                  blurhash={artist.blurhash}
+                  initials={artist.initials ?? undefined}
+                  size="sm"
+                />
+              </Flex>
+            ))}
           </Flex>
 
           <PagerView

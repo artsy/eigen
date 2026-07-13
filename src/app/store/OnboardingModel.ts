@@ -7,6 +7,7 @@ export interface OnboardingFollowedArtist {
   internalID: string
   imageUrl: string | null
   blurhash: string | null
+  initials: string | null
 }
 
 export interface OnboardingModel {

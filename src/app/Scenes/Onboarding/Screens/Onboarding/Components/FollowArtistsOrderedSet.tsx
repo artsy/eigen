@@ -69,6 +69,7 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
                   internalID: item.internalID,
                   imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
                   blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  initials: item.firstInitial ?? null,
                 },
                 item.slug
               )
@@ -114,6 +115,7 @@ const FollowArtistsOrderedSetScreenQuery = graphql`
               internalID
               slug
               isFollowed
+              firstInitial: initials(length: 1)
               coverArtwork {
                 image {
                   blurhash

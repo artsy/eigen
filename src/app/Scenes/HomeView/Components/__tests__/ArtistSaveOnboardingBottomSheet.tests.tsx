@@ -58,21 +58,25 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
         internalID: "artist-1",
         imageUrl: "https://example.com/artist-1.jpg",
         blurhash: null,
+        initials: "A",
       })
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-2",
         imageUrl: "https://example.com/artist-2.jpg",
         blurhash: null,
+        initials: "B",
       })
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-3",
         imageUrl: "https://example.com/artist-3.jpg",
         blurhash: null,
+        initials: "C",
       })
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-4",
         imageUrl: "https://example.com/artist-4.jpg",
         blurhash: null,
+        initials: "D",
       })
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
@@ -90,22 +94,26 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
       expect(renderedImages.some((uri: string) => uri.includes("artist-4.jpg"))).toBe(false)
     })
 
-    it("skips followed artists without an image", async () => {
+    it("falls back to the artist's initials when there is no image", async () => {
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-1",
         imageUrl: null,
         blurhash: null,
+        initials: "A",
       })
       GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
         internalID: "artist-2",
         imageUrl: "https://example.com/artist-2.jpg",
         blurhash: null,
+        initials: "B",
       })
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<ArtistSaveOnboardingBottomSheet />)
 
       await screen.findByText("Your followed artists are saved to Favorites.")
+
+      expect(screen.getByText("A")).toBeOnTheScreen()
 
       const avatarImages = screen
         .UNSAFE_getAllByType(FastImage)
