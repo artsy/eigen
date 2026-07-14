@@ -14,9 +14,7 @@ describe("ArtistSaveOnboardingBottomSheet", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
-    ;["artist-1", "artist-2", "artist-3", "artist-4"].forEach((internalID) => {
-      GlobalStore.actions.onboarding.removeFollowedOnboardingArtist(internalID)
-    })
+    GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
     ;(useFeatureFlag as jest.Mock).mockReturnValue(true)
   })
 
