@@ -171,6 +171,12 @@ export const features = {
     description: "Update conversations in real time over websockets",
     echoFlagKey: "AREnableConversationsRealtime",
   },
+  AREnableFollowShowsAndFairs: {
+    description: "Enable following Shows & Fairs (screen buttons + Favorites Fairs tab)",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableFollowShowsAndFairs",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
