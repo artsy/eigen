@@ -80,24 +80,25 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
       <Spacer y={1} />
 
       <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between">
-        <RouterLink onPress={onPress} to={href} style={{ flex: 1 }}>
-          {!!title && (
-            <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
-              {title}
-            </Text>
-          )}
-          {!!subtitle && (
-            <Text color="mono60" variant="xs">
-              {subtitle}
-            </Text>
-          )}
-          {!!tag && (
-            <Text color="mono100" variant="xs">
-              {tag}
-            </Text>
-          )}
-        </RouterLink>
-
+        <Flex flex={1}>
+          <RouterLink onPress={onPress} to={href}>
+            {!!title && (
+              <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
+                {title}
+              </Text>
+            )}
+            {!!subtitle && (
+              <Text color="mono60" variant="xs">
+                {subtitle}
+              </Text>
+            )}
+            {!!tag && (
+              <Text color="mono100" variant="xs">
+                {tag}
+              </Text>
+            )}
+          </RouterLink>
+        </Flex>
         {!!actionElement && <Flex ml={1}>{actionElement}</Flex>}
       </Flex>
     </Flex>
