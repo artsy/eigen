@@ -28,7 +28,8 @@ import {
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
-import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
+import { NewsScreenQuery } from "app/Scenes/Articles/News/News"
+import { NewsHub } from "app/Scenes/Articles/NewsHub"
 import {
   ArtistQueryRenderer,
   ArtistScreenQuery,
@@ -1349,7 +1350,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/news",
     name: "News",
-    Component: NewsScreen,
+    Component: NewsHub,
     options: {
       isRootViewForTabName: "news",
       screenOptions: {

@@ -14,7 +14,12 @@ import { Suspense, useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export const News: React.FC = () => {
+/**
+ * The Artsy editorial (News) article list, without any screen chrome. Extracted
+ * so it can be rendered both as the standalone /news screen (below) and inside
+ * the News tab's Artsy/Artnet sub-navigation (NewsHub).
+ */
+export const ArtsyNewsList: React.FC = () => {
   const queryData = useLazyLoadQuery<NewsQuery>(NewsScreenQuery, newsArticlesQueryVariables)
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -47,6 +52,20 @@ export const News: React.FC = () => {
   const articles = extractNodes(data.articlesConnection)
 
   return (
+    <ArticlesList
+      articles={articles as any}
+      isLoading={() => isLoadingNext}
+      hasMore={() => hasNext}
+      refreshing={refreshing}
+      handleLoadMore={handleLoadMore}
+      handleRefresh={handleRefresh}
+      handleOnPress={handleOnPress}
+    />
+  )
+}
+
+export const News: React.FC = () => {
+  return (
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
@@ -56,15 +75,7 @@ export const News: React.FC = () => {
         <Screen.AnimatedHeader onBack={goBack} title="News" />
         <Screen.StickySubHeader title="News" />
         <Screen.Body fullwidth>
-          <ArticlesList
-            articles={articles as any}
-            isLoading={() => isLoadingNext}
-            hasMore={() => hasNext}
-            refreshing={refreshing}
-            handleLoadMore={handleLoadMore}
-            handleRefresh={handleRefresh}
-            handleOnPress={handleOnPress}
-          />
+          <ArtsyNewsList />
         </Screen.Body>
       </ProvideScreenTrackingWithCohesionSchema>
     </Screen>
