@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
 import { ArtistShow_show$data, ArtistShow_show$key } from "__generated__/ArtistShow_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { hrefForPartialShow } from "app/utils/router"
 import { View, ViewStyle } from "react-native"
@@ -37,14 +38,19 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
   return (
     <RouterLink haptic onPress={handleTap} to={hrefForPartialShow(data)}>
       <View style={[styles?.container]}>
-        <View style={[styles?.imageMargin]}>
-          <ImageWithFallback
-            src={imageURL}
-            width={imageDimensions.width}
-            height={imageDimensions.height}
-            blurhash={image?.blurhash}
-            style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
-          />
+        <View style={{ position: "relative" }}>
+          <View style={[styles?.imageMargin]}>
+            <ImageWithFallback
+              src={imageURL}
+              width={imageDimensions.width}
+              height={imageDimensions.height}
+              blurhash={image?.blurhash}
+              style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
+            />
+          </View>
+          <View style={{ position: "absolute", top: 4, right: 4 }}>
+            <ShowFollowButton show={data} />
+          </View>
         </View>
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
@@ -57,6 +63,7 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
 
 const query = graphql`
   fragment ArtistShow_show on Show {
+    ...ShowFollowButton_show
     internalID
     slug
     href
