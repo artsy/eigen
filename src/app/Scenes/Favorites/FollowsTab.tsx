@@ -1,9 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
+import { SelectedFromDrawerSubject } from "@artsy/cohesion/dist/Schema/Events/Favorites"
 import { ChevronSmallDownIcon } from "@artsy/icons/native"
 import { Flex, Join, RadioButton, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
+import { FollowedFairsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedFairs"
 import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
@@ -12,12 +14,13 @@ import {
   useFavoritesTracking,
 } from "app/Scenes/Favorites/useFavoritesTracking"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-export type FollowOption = "artists" | "shows" | "galleries"
+export type FollowOption = "artists" | "shows" | "galleries" | "fairs"
 
-const FOLLOW_OPTIONS: {
+const BASE_FOLLOW_OPTIONS: {
   value: FollowOption
   label: string
 }[] = [
@@ -35,9 +38,20 @@ const FOLLOW_OPTIONS: {
   },
 ]
 
+const useFollowOptions = () => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
+
+  if (enableFollowShowsAndFairs) {
+    return [...BASE_FOLLOW_OPTIONS, { value: "fairs" as const, label: "Fairs" }]
+  }
+
+  return BASE_FOLLOW_OPTIONS
+}
+
 export const FollowOptionPicker: React.FC<{}> = () => {
   const { followOption } = FavoritesContextStore.useStoreState((state) => state)
   const { setShowFollowsBottomSheet } = FavoritesContextStore.useStoreActions((actions) => actions)
+  const followOptions = useFollowOptions()
 
   return (
     <Flex px={2} pb={2}>
@@ -51,7 +65,7 @@ export const FollowOptionPicker: React.FC<{}> = () => {
       >
         <Flex flexDirection="row" alignItems="center">
           <Text variant="sm-display" mr={0.5}>
-            {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
+            {followOptions.find(({ value }) => value === followOption)?.label}
           </Text>
           <ChevronSmallDownIcon
             style={{
@@ -79,12 +93,14 @@ export const FollowsTab = () => {
   )
 
   const { trackSelectedFromDrawer } = useFavoritesTracking()
+  const followOptions = useFollowOptions()
 
   return (
     <Flex flex={1}>
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
       {followOption === "shows" && <FollowedShowsQueryRenderer />}
       {followOption === "galleries" && <FollowedGalleriesQueryRenderer />}
+      {followOption === "fairs" && <FollowedFairsQueryRenderer />}
 
       <AutomountedBottomSheetModal
         visible={showFollowsBottomSheet}
@@ -104,7 +120,7 @@ export const FollowsTab = () => {
             <Spacer y={2} />
 
             <Join separator={<Spacer y={2} />}>
-              {FOLLOW_OPTIONS.map(({ value, label }) => (
+              {followOptions.map(({ value, label }) => (
                 <RadioButton
                   key={value}
                   block
@@ -115,7 +131,9 @@ export const FollowsTab = () => {
                     setTimeout(() => {
                       setShowFollowsBottomSheet(false)
                     }, 200)
-                    trackSelectedFromDrawer(value)
+                    // TODO: `SelectedFromDrawerSubject` (from @artsy/cohesion) does not yet include
+                    // "fairs" as a value. Cast until cohesion is updated to add it.
+                    trackSelectedFromDrawer(value as SelectedFromDrawerSubject)
                   }}
                   selected={followOption === value}
                   text={label}
