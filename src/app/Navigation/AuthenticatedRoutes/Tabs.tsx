@@ -8,7 +8,7 @@ import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveO
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
-import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
+import { NewsTab } from "app/Navigation/AuthenticatedRoutes/NewsTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
@@ -45,7 +45,7 @@ type TabRoutesParams = {
   search: undefined
   inbox: undefined
   favorites: undefined
-  profile: undefined
+  news: undefined
 }
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
@@ -148,7 +148,7 @@ const AppTabs: React.FC = () => {
               )
             }
 
-            if (route.name === "profile") {
+            if (route.name === "news") {
               return <WrappedIcon />
             }
 
@@ -204,7 +204,7 @@ const AppTabs: React.FC = () => {
         component={FavoritesTab}
         options={{ ...tabsBadges["favorites"] }}
       />
-      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
+      <Tab.Screen name="news" component={NewsTab} options={{ ...tabsBadges["news"] }} />
     </Tab.Navigator>
   )
 }
@@ -242,6 +242,9 @@ export const tabsTracks = {
         break
       case "inbox":
         tabScreen = OwnerType.inbox
+        break
+      case "news":
+        tabScreen = OwnerType.articles
         break
       case "profile":
         tabScreen = OwnerType.profile

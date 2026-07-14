@@ -1152,7 +1152,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
       },
-      onlyShowInTabName: "profile",
     },
   },
   {
@@ -1272,8 +1271,9 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "MyProfile",
     Component: MyProfileSettings,
     options: {
-      isRootViewForTabName: "profile",
-      onlyShowInTabName: "profile",
+      // POC: Profile is no longer a bottom tab. Leaving it un-bound to a tab
+      // means it's registered via sharedRoutes and pushed onto the current
+      // stack (e.g. Home, from the header avatar) instead of jumping to a tab.
       screenOptions: {
         headerShown: false,
       },
@@ -1351,6 +1351,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "News",
     Component: NewsScreen,
     options: {
+      isRootViewForTabName: "news",
       screenOptions: {
         headerShown: false,
       },

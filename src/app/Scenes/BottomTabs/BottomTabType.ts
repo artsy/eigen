@@ -6,6 +6,7 @@ export const BottomTabOption = {
   search: OwnerType.search,
   inbox: OwnerType.inbox,
   favorites: OwnerType.favorites,
+  news: OwnerType.articles,
   profile: OwnerType.profile,
 } as const
 

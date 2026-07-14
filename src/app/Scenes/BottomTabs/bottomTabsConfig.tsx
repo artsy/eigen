@@ -1,8 +1,8 @@
 import { OwnerType, TappedTabBarArgs } from "@artsy/cohesion"
 import { BottomTabType } from "./BottomTabType"
 
-export type BottomTabRoute = "/" | "/search" | "/inbox" | "/favorites" | "/my-profile"
-export const BottomTabRoutes = ["/", "/search", "/inbox", "/favorites", "/my-profile"]
+export type BottomTabRoute = "/" | "/search" | "/inbox" | "/favorites" | "/news" | "/my-profile"
+export const BottomTabRoutes = ["/", "/search", "/inbox", "/favorites", "/news", "/my-profile"]
 
 export const bottomTabsConfig: {
   [k in BottomTabType]: {
@@ -31,6 +31,12 @@ export const bottomTabsConfig: {
     route: "/favorites",
     analyticsDescription: OwnerType.favorites,
     name: "Favorites",
+  },
+  news: {
+    route: "/news",
+    // POC: "articles" isn't part of cohesion's Tab union yet, so cast for now
+    analyticsDescription: OwnerType.articles as unknown as TappedTabBarArgs["tab"],
+    name: "News",
   },
   profile: {
     route: "/my-profile",

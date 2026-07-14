@@ -1,8 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { PersonIcon } from "@artsy/icons/native"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { ActivityIndicator } from "./ActivityIndicator"
@@ -23,6 +26,13 @@ export const HomeHeader: React.FC = memo(() => {
           </Flex>
           <Flex alignItems="flex-end">
             <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
+          </Flex>
+          <Flex alignItems="flex-end">
+            <Box justifyContent="center">
+              <RouterLink to="/my-profile" accessibilityLabel="Profile" hitSlop={ICON_HIT_SLOP}>
+                <PersonIcon height={24} width={24} />
+              </RouterLink>
+            </Box>
           </Flex>
         </Flex>
       </Flex>
