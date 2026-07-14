@@ -2,6 +2,7 @@ import { bullet, useTheme } from "@artsy/palette-mobile"
 import { FairCard_fair$data, FairCard_fair$key } from "__generated__/FairCard_fair.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardWithMetaData, useNumColumns } from "app/Components/Cards/CardWithMetaData"
+import { FairFollowButton } from "app/Components/FairFollowButton"
 import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
@@ -59,12 +60,14 @@ export const FairCard: FC<FairCardProps> = memo(({ fair: fairFragment, onPress, 
       onPress={() => {
         onPress?.(fair)
       }}
+      actionElement={<FairFollowButton fair={fair} />}
     />
   )
 })
 
 const fragment = graphql`
   fragment FairCard_fair on Fair {
+    ...FairFollowButton_fair
     internalID
     slug
     profile {
