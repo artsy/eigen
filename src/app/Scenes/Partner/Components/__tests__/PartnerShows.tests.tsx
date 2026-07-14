@@ -82,6 +82,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         node: {
           __typename: "Show",
           isDisplayable: true,
+          isFollowed: false,
           partner: null,
           id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=",
           internalID: "5d6420cf2a41e4000f1c03a1",
@@ -98,6 +99,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         node: {
           __typename: "Show",
           isDisplayable: true,
+          isFollowed: false,
           partner: null,
           id: "U2hvdzo1ZDY0MWJmMjAzNDliYTAwMTAxMzM4NmQ=",
           internalID: "5d641bf20349ba001013386d",
@@ -121,6 +123,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         node: {
           __typename: "Show",
           isDisplayable: true,
+          isFollowed: false,
           partner: null,
           id: "U2hvdzo1ZDY0MjAwODEyZDI5MDAwMGUxZTVkMzU=",
           internalID: "5d64200812d290000e1e5d35",
