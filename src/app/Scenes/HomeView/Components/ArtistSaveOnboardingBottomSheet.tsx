@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
+import { Avatar, Button, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -12,33 +12,12 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 
-interface DummyArtist {
-  id: string
-  name: string
-  imageUrl: string
-}
-
-const DUMMY_FOLLOWED_ARTISTS: DummyArtist[] = [
-  {
-    id: "1",
-    name: "Artist 1",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/8YQ9RcIGqoKC0ftglHMBeQ/large.jpg",
-  },
-  {
-    id: "2",
-    name: "Artist 2",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/fEdSbiBZs9MJftHqjyW3sA/square140.png",
-  },
-  {
-    id: "3",
-    name: "Artist 3",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/ENomMxabvEP15hIKHt5jmw/wide.jpg",
-  },
-]
-
 export const ArtistSaveOnboardingBottomSheet = () => {
   const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
     (state) => state.onboarding.showFollowedArtistSummaryBottomSheet
+  )
+  const followedOnboardingArtists = GlobalStore.useAppState(
+    (state) => state.onboarding.followedOnboardingArtists
   )
   const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
   const [isVisible, setIsVisible] = useState(false)
@@ -57,6 +36,7 @@ export const ArtistSaveOnboardingBottomSheet = () => {
   const handleDismiss = () => {
     setIsVisible(false)
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
+    GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
   }
 
   const handleButtonPress = () => {
@@ -103,24 +83,26 @@ export const ArtistSaveOnboardingBottomSheet = () => {
           <Spacer y={1} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
-            {DUMMY_FOLLOWED_ARTISTS.slice(0, 3).map((artist, index) => (
+            {followedOnboardingArtists.slice(-3).map((artist, index) => (
               <Flex
-                key={artist.id}
+                key={artist.internalID}
+                backgroundColor="mono0"
+                borderRadius={35}
                 style={{
                   marginLeft: index > 0 ? -10 : 0,
                   zIndex: index,
                   shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 3 },
-                  shadowOpacity: 0.35,
-                  shadowRadius: 6,
-                  elevation: 8,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.08,
+                  shadowRadius: 4,
+                  elevation: 2,
                 }}
               >
-                <Image
-                  src={artist.imageUrl}
-                  width={75}
-                  height={75}
-                  style={{ borderRadius: 37.5 }}
+                <Avatar
+                  src={artist.imageUrl ?? undefined}
+                  blurhash={artist.blurhash}
+                  initials={artist.initials ?? undefined}
+                  size="sm"
                 />
               </Flex>
             ))}

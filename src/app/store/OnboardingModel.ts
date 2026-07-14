@@ -7,6 +7,7 @@ export interface OnboardingFollowedArtist {
   internalID: string
   imageUrl: string | null
   blurhash: string | null
+  initials: string | null
 }
 
 export interface OnboardingModel {
@@ -17,6 +18,7 @@ export interface OnboardingModel {
   setOnboardingState: Action<this, OnboardingState>
   addFollowedOnboardingArtist: Action<this, OnboardingFollowedArtist>
   removeFollowedOnboardingArtist: Action<this, string>
+  resetFollowedOnboardingArtists: Action<this>
   showFollowedArtistSummaryBottomSheet: boolean
   setShowFollowedArtistSummaryBottomSheet: Action<this, boolean>
 }
@@ -44,6 +46,9 @@ export const getOnboardingModel = (): OnboardingModel => ({
     state.followedOnboardingArtists = state.followedOnboardingArtists.filter(
       (a) => a.internalID !== internalID
     )
+  }),
+  resetFollowedOnboardingArtists: action((state) => {
+    state.followedOnboardingArtists = []
   }),
   setShowFollowedArtistSummaryBottomSheet: action((state, show) => {
     state.showFollowedArtistSummaryBottomSheet = show

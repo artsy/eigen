@@ -85,6 +85,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
                       internalID: item.internalID,
                       imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
                       blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                      initials: item.initials ?? null,
                     },
                     item.slug
                   )
@@ -191,6 +192,7 @@ const OnboardingSearchResultsFragment = graphql`
             internalID
             slug
             isFollowed
+            initials
             coverArtwork {
               image {
                 url

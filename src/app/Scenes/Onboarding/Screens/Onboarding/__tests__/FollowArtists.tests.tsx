@@ -32,6 +32,7 @@ jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrde
             slug: "artist-slug",
             imageUrl: null,
             blurhash: null,
+            initials: null,
           })
         }
       >

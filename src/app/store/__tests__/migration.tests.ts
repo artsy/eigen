@@ -1318,4 +1318,32 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.onboarding.followedOnboardingArtists).toEqual([])
     })
   })
+  describe("App version Versions.AddInitialsToFollowedOnboardingArtists", () => {
+    it("should add initials to existing followedOnboardingArtists entries", () => {
+      const migrationToTest = Versions.AddInitialsToFollowedOnboardingArtists
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.onboarding.followedOnboardingArtists = [
+        { internalID: "artist-1", imageUrl: "https://example.com/artist-1.jpg", blurhash: null },
+      ]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.onboarding.followedOnboardingArtists).toEqual([
+        {
+          internalID: "artist-1",
+          imageUrl: "https://example.com/artist-1.jpg",
+          blurhash: null,
+          initials: null,
+        },
+      ])
+    })
+  })
 })
