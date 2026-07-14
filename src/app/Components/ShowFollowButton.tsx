@@ -42,7 +42,7 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
                 id
                 slug
                 internalID
-                is_followed: isFollowed
+                isFollowed
               }
             }
           }
@@ -60,14 +60,14 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
               id: nodeID,
               slug: show.slug,
               internalID: showID,
-              is_followed: !isShowFollowed,
+              isFollowed: !isShowFollowed,
             },
           },
         },
         updater: (store) => {
           const showRecord = store?.get(nodeID)
           if (showRecord) {
-            showRecord.setValue(!isShowFollowed, "is_followed")
+            showRecord.setValue(!isShowFollowed, "isFollowed")
           }
         },
       })
