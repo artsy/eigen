@@ -70,9 +70,10 @@ export const Versions = {
   RemovePendingPushNotificationModel: 57,
   AddShowFollowedArtistSummaryBottomSheetToOnboardingModel: 58,
   AddFollowedOnboardingArtistsToOnboardingModel: 59,
+  AddInitialsToFollowedOnboardingArtists: 60,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddFollowedOnboardingArtistsToOnboardingModel
+export const CURRENT_APP_VERSION = Versions.AddInitialsToFollowedOnboardingArtists
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -391,6 +392,11 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddFollowedOnboardingArtistsToOnboardingModel]: (state) => {
     state.onboarding.followedOnboardingArtists = []
+  },
+  [Versions.AddInitialsToFollowedOnboardingArtists]: (state) => {
+    state.onboarding.followedOnboardingArtists.forEach((artist: any) => {
+      artist.initials = null
+    })
   },
 }
 

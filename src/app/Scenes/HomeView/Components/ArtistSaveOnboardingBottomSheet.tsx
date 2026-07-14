@@ -36,6 +36,7 @@ export const ArtistSaveOnboardingBottomSheet = () => {
   const handleDismiss = () => {
     setIsVisible(false)
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
+    GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
   }
 
   const handleButtonPress = () => {
