@@ -1,5 +1,6 @@
-import { Button, Image, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
 import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { hrefForPartialShow } from "app/utils/router"
 import { graphql, useFragment } from "react-relay"
@@ -8,10 +9,15 @@ const DEFAULT_CELL_WIDTH = 335
 
 interface ShowItemProps {
   displayViewShowButton?: boolean
+  shouldHideFollowButton?: boolean
   show: ShowItem_show$key
 }
 
-export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = false, show }) => {
+export const ShowItem: React.FC<ShowItemProps> = ({
+  displayViewShowButton = false,
+  shouldHideFollowButton = false,
+  show,
+}) => {
   const data = useFragment(showGraphql, show)
 
   if (!data) {
@@ -26,13 +32,20 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
 
   return (
     <RouterLink to={href} style={{ width: DEFAULT_CELL_WIDTH }} testID="show-item-visit-show-link">
-      <Image
-        testID="show-cover"
-        src={data.coverImage?.url ?? ""}
-        blurhash={data.coverImage?.blurhash}
-        aspectRatio={1.3}
-        width={DEFAULT_CELL_WIDTH}
-      />
+      <Flex position="relative">
+        <Image
+          testID="show-cover"
+          src={data.coverImage?.url ?? ""}
+          blurhash={data.coverImage?.blurhash}
+          aspectRatio={1.3}
+          width={DEFAULT_CELL_WIDTH}
+        />
+        {!shouldHideFollowButton && (
+          <Flex position="absolute" top={1} right={1}>
+            <ShowFollowButton show={data} />
+          </Flex>
+        )}
+      </Flex>
 
       <Text variant="lg-display" mt={1}>
         {data.name}
@@ -55,6 +68,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
 
 const showGraphql = graphql`
   fragment ShowItem_show on Show {
+    ...ShowFollowButton_show
     slug
     href
     name
