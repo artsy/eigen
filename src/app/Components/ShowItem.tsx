@@ -43,18 +43,20 @@ export const ShowItem: React.FC<ShowItemProps> = ({
       </RouterLink>
 
       <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between" mt={1}>
-        <RouterLink to={href} style={{ flex: 1 }}>
-          <Text variant="lg-display">{data.name}</Text>
-          <Text variant="sm-display">{data.partner?.name}</Text>
-          {!!data.exhibitionPeriod && (
-            <Text variant="sm-display" color="mono60">
-              {data.exhibitionPeriod}
-            </Text>
-          )}
-        </RouterLink>
+        <Flex flex={1}>
+          <RouterLink to={href}>
+            <Text variant="lg-display">{data.name}</Text>
+            <Text variant="sm-display">{data.partner?.name}</Text>
+            {!!data.exhibitionPeriod && (
+              <Text variant="sm-display" color="mono60">
+                {data.exhibitionPeriod}
+              </Text>
+            )}
+          </RouterLink>
+        </Flex>
 
         {!shouldHideFollowButton && (
-          <Flex ml={1}>
+          <Flex ml={0.5}>
             <ShowFollowButton show={data} />
           </Flex>
         )}
