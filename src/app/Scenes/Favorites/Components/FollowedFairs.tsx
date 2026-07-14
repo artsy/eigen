@@ -2,6 +2,7 @@ import { Box, Flex, Image, Screen, Spacer, Text, Touchable, useColor } from "@ar
 import { FollowedFairsQuery } from "__generated__/FollowedFairsQuery.graphql"
 import { FollowedFairs_fair$key } from "__generated__/FollowedFairs_fair.graphql"
 import { FollowedFairs_me$key } from "__generated__/FollowedFairs_me.graphql"
+import { FairFollowButton } from "app/Components/FairFollowButton"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
@@ -83,7 +84,7 @@ interface FollowedFairRowProps {
   fair: FollowedFairs_fair$key
 }
 
-// Minimal, compact list row for a followed fair (image thumbnail + name + exhibition dates).
+// Compact list row for a followed fair (image thumbnail + name + exhibition dates + follow button).
 const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => {
   const color = useColor()
   const fair = useFragment(followedFairRowFragment, fairProp)
@@ -123,6 +124,8 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
             </Text>
           )}
         </Flex>
+
+        <FairFollowButton fair={fair} />
       </Flex>
     </Touchable>
   )
@@ -130,6 +133,7 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
 
 const followedFairRowFragment = graphql`
   fragment FollowedFairs_fair on Fair {
+    ...FairFollowButton_fair
     internalID
     slug
     name
