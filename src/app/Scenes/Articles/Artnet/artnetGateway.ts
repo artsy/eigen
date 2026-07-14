@@ -5,6 +5,11 @@ export const ARTNET_GATEWAY_URL = "https://gateway.artnet-dev.com/graphql"
 export const ARTNET_CF_ACCESS_CLIENT_ID = Keys.secureFor("ARTNET_CF_ACCESS_CLIENT_ID")
 export const ARTNET_CF_ACCESS_CLIENT_SECRET = Keys.secureFor("ARTNET_CF_ACCESS_CLIENT_SECRET")
 
+export interface ArtnetImage {
+  aspectRatio: string | null
+  url: string | null
+}
+
 export interface ArtnetArticle {
   id: string
   author: string | null
@@ -12,7 +17,7 @@ export interface ArtnetArticle {
   categoryName: string | null
   categoryUrl: string | null
   date: string | null
-  featuredImage: { aspectRatio: number | null; url: string | null } | null
+  featuredImage: ArtnetImage[] | null
   title: string | null
   url: string
 }

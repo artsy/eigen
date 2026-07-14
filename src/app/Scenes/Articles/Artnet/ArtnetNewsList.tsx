@@ -42,7 +42,7 @@ export const ArtnetNewsList: React.FC = () => {
             <CardWithMetaData
               isFluid
               href={item.url}
-              imageURL={item.featuredImage?.url}
+              imageURL={item.featuredImage?.[0]?.url}
               title={item.title}
               subtitle={item.author}
               tag={item.categoryName}
