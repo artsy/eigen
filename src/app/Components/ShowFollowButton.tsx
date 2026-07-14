@@ -39,6 +39,7 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
           mutation ShowFollowButtonMutation($input: FollowShowInput!) {
             followShow(input: $input) {
               show {
+                id
                 slug
                 internalID
                 is_followed: isFollowed
@@ -56,6 +57,7 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
         optimisticResponse: {
           followShow: {
             show: {
+              id: nodeID,
               slug: show.slug,
               internalID: showID,
               is_followed: !isShowFollowed,
