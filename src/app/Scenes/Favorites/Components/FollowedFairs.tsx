@@ -77,13 +77,13 @@ export const FollowedFairs: React.FC<Props> = ({ me }) => {
   )
 }
 
+const IMAGE_SIZE = 62
+
 interface FollowedFairRowProps {
   fair: FollowedFairs_fair$key
 }
 
 // Minimal, compact list row for a followed fair (image thumbnail + name + exhibition dates).
-// Intentionally does not include a follow/save button - that's handled separately by the
-// Fair follow button work happening in parallel.
 const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => {
   const color = useColor()
   const fair = useFragment(followedFairRowFragment, fairProp)
@@ -100,17 +100,25 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
       style={{ paddingHorizontal: 20, paddingVertical: 5 }}
     >
       <Flex flexDirection="row" alignItems="center">
-        <Box width={62} height={62} borderRadius={2} overflow="hidden" backgroundColor="mono10">
-          {!!fair.image?.url && <Image width={62} height={62} src={fair.image.url} />}
+        <Box
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
+          borderRadius={2}
+          overflow="hidden"
+          backgroundColor="mono10"
+        >
+          {!!fair.image?.url && (
+            <Image width={IMAGE_SIZE} height={IMAGE_SIZE} src={fair.image.url} />
+          )}
         </Box>
         <Flex flexDirection="column" flexGrow={1} ml="15px" mr={1}>
           {!!fair.name && (
-            <Text variant="sm" lineHeight="20px" color="mono100" weight="medium" numberOfLines={1}>
+            <Text variant="sm" color="mono100" weight="medium" numberOfLines={1}>
               {fair.name}
             </Text>
           )}
           {!!fair.exhibition_period && (
-            <Text variant="sm" lineHeight="20px" color={color("mono60")} numberOfLines={1}>
+            <Text variant="sm" color={color("mono60")} numberOfLines={1}>
               {fair.exhibition_period}
             </Text>
           )}
