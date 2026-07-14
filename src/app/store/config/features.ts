@@ -176,6 +176,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableConversationPartnerOffers",
   },
+  AREnableFollowShowsAndFairs: {
+    description: "Enable following Shows & Fairs (screen buttons + Favorites Fairs tab)",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableFollowShowsAndFairs",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
