@@ -31,8 +31,8 @@ export const ShowItem: React.FC<ShowItemProps> = ({
   })
 
   return (
-    <RouterLink to={href} style={{ width: DEFAULT_CELL_WIDTH }} testID="show-item-visit-show-link">
-      <Flex position="relative">
+    <Flex style={{ width: DEFAULT_CELL_WIDTH }}>
+      <RouterLink to={href} testID="show-item-visit-show-link">
         <Image
           testID="show-cover"
           src={data.coverImage?.url ?? ""}
@@ -40,29 +40,32 @@ export const ShowItem: React.FC<ShowItemProps> = ({
           aspectRatio={1.3}
           width={DEFAULT_CELL_WIDTH}
         />
+      </RouterLink>
+
+      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between" mt={1}>
+        <RouterLink to={href} style={{ flex: 1 }}>
+          <Text variant="lg-display">{data.name}</Text>
+          <Text variant="sm-display">{data.partner?.name}</Text>
+          {!!data.exhibitionPeriod && (
+            <Text variant="sm-display" color="mono60">
+              {data.exhibitionPeriod}
+            </Text>
+          )}
+        </RouterLink>
+
         {!shouldHideFollowButton && (
-          <Flex position="absolute" top={1} right={1}>
+          <Flex ml={1}>
             <ShowFollowButton show={data} />
           </Flex>
         )}
       </Flex>
-
-      <Text variant="lg-display" mt={1}>
-        {data.name}
-      </Text>
-      <Text variant="sm-display">{data.partner?.name}</Text>
-      {!!data.exhibitionPeriod && (
-        <Text variant="sm-display" color="mono60">
-          {data.exhibitionPeriod}
-        </Text>
-      )}
 
       {!!displayViewShowButton && (
         <RouterLink hasChildTouchable to={href}>
           <Button my={2}>View Show</Button>
         </RouterLink>
       )}
-    </RouterLink>
+    </Flex>
   )
 }
 
