@@ -11,6 +11,7 @@ import {
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { FairFollowButton } from "app/Components/FairFollowButton"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
@@ -56,7 +57,14 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
   }, [data.internalID])
 
   const renderBelowHeaderComponent = useCallback(() => {
-    return <FairHeader fair={data} />
+    return (
+      <>
+        <FairHeader fair={data} />
+        <Flex px={2} pb={1}>
+          <FairFollowButton fair={data} />
+        </Flex>
+      </>
+    )
   }, [data])
 
   if (!data) {
@@ -161,6 +169,7 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
 const fragment = graphql`
   fragment Fair_fair on Fair {
     ...FairHeader_fair
+    ...FairFollowButton_fair
     internalID
     slug
     name
