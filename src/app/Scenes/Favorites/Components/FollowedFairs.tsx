@@ -112,9 +112,9 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
             <Image width={IMAGE_SIZE} height={IMAGE_SIZE} src={fair.image.url} />
           )}
         </Box>
-        <Flex flexDirection="column" flexGrow={1} ml="15px" mr={1}>
+        <Flex flex={1} flexGrow={1} ml="15px" mr={1}>
           {!!fair.name && (
-            <Text variant="sm" color="mono100" weight="medium" numberOfLines={1}>
+            <Text variant="sm" color="mono100" weight="medium" numberOfLines={2} lineHeight="20px">
               {fair.name}
             </Text>
           )}
