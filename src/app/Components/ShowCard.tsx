@@ -1,6 +1,7 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { compact } from "lodash"
 import { memo } from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"
@@ -35,6 +36,7 @@ export const ShowCard: React.FC<ShowCardProps> = memo(({ show, isFluid, onPress 
       subtitle={show.partner?.name}
       tag={formattedCityAndDate}
       onPress={onPress}
+      actionElement={<ShowFollowButton show={show} />}
     />
   )
 })
@@ -78,6 +80,7 @@ export const getShowCity = ({
 export const ShowCardContainer = createFragmentContainer(ShowCard, {
   show: graphql`
     fragment ShowCard_show on Show {
+      ...ShowFollowButton_show
       name
       formattedStartAt: startAt(format: "MMM D")
       formattedEndAt: endAt(format: "MMM D")

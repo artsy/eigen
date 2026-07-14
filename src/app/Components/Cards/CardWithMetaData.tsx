@@ -35,10 +35,14 @@ interface CardWithMetaDataProps {
   tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
   testId?: string
+  // Rendered as an overlay in the top-right corner of the image, outside the card's
+  // RouterLink so it can be pressed independently (e.g. a follow/save button).
+  actionElement?: React.ReactNode
 }
 
 export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
-  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent } = props
+  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent, actionElement } =
+    props
   const numColumns = useNumColumns()
 
   const { space } = useTheme()
@@ -90,6 +94,12 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
           )}
         </Flex>
       </RouterLink>
+
+      {!!actionElement && (
+        <Flex position="absolute" top={1} right={1}>
+          {actionElement}
+        </Flex>
+      )}
     </Flex>
   )
 }
