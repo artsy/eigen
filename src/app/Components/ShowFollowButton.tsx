@@ -33,8 +33,16 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
 
       setIsFollowedSaving(true)
       commitMutation<ShowFollowButtonMutation>(getRelayEnvironment(), {
-        onCompleted: () => setIsFollowedSaving(false),
-        onError: () => setIsFollowedSaving(false),
+        onCompleted: (_response, errors) => {
+          setIsFollowedSaving(false)
+          if (errors?.length) {
+            console.error("ShowFollowButton: followShow mutation returned errors", errors)
+          }
+        },
+        onError: (error) => {
+          setIsFollowedSaving(false)
+          console.error("ShowFollowButton: followShow mutation failed", error)
+        },
         mutation: graphql`
           mutation ShowFollowButtonMutation($input: FollowShowInput!) {
             followShow(input: $input) {
