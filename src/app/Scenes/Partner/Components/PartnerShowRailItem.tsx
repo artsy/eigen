@@ -1,6 +1,7 @@
 import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
@@ -28,31 +29,38 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   const sectionWidth = windowWidth - 100
 
   return (
-    <RouterLink onPress={onPress} to={`/show/${props.show.slug}`}>
-      <Flex my="15px" mr={2} width={sectionWidth}>
-        <ImageWithFallback
-          height={200}
-          width={sectionWidth}
-          src={imageURL}
-          blurhash={coverImage?.blurhash}
-        />
-        <Spacer y={1} />
-        <Text variant="sm" numberOfLines={1}>
-          {name}
-        </Text>
-        {!!(exhibitionPeriod && endAt) && (
-          <Text variant="sm" color="mono60">
-            {exhibitionDates(exhibitionPeriod, endAt)}
+    <Flex my="15px" mr={2} width={sectionWidth}>
+      <RouterLink onPress={onPress} to={`/show/${props.show.slug}`}>
+        <Flex width={sectionWidth}>
+          <ImageWithFallback
+            height={200}
+            width={sectionWidth}
+            src={imageURL}
+            blurhash={coverImage?.blurhash}
+          />
+          <Spacer y={1} />
+          <Text variant="sm" numberOfLines={1}>
+            {name}
           </Text>
-        )}
+          {!!(exhibitionPeriod && endAt) && (
+            <Text variant="sm" color="mono60">
+              {exhibitionDates(exhibitionPeriod, endAt)}
+            </Text>
+          )}
+        </Flex>
+      </RouterLink>
+
+      <Flex position="absolute" top={1} right={1}>
+        <ShowFollowButton show={show} />
       </Flex>
-    </RouterLink>
+    </Flex>
   )
 }
 
 export const PartnerShowRailItemContainer = createFragmentContainer(PartnerShowRailItem, {
   show: graphql`
     fragment PartnerShowRailItem_show on Show {
+      ...ShowFollowButton_show
       internalID
       slug
       name
