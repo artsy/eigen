@@ -160,7 +160,7 @@ export const ShowItemRow: React.FC<Props> = ({
                 loading={isFollowedSaving}
                 longestText="Saved"
               >
-                {show.is_followed ? "Saved" : "Save"}
+                {show.is_followed ? "Followed" : "Follow"}
               </Button>
             )}
           </Flex>
