@@ -1,5 +1,4 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SelectedFromDrawerSubject } from "@artsy/cohesion/dist/Schema/Events/Favorites"
 import { ChevronSmallDownIcon } from "@artsy/icons/native"
 import { Flex, Join, RadioButton, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
@@ -131,9 +130,7 @@ export const FollowsTab = () => {
                     setTimeout(() => {
                       setShowFollowsBottomSheet(false)
                     }, 200)
-                    // TODO: `SelectedFromDrawerSubject` (from @artsy/cohesion) does not yet include
-                    // "fairs" as a value. Cast until cohesion is updated to add it.
-                    trackSelectedFromDrawer(value as SelectedFromDrawerSubject)
+                    trackSelectedFromDrawer(value)
                   }}
                   selected={followOption === value}
                   text={label}
