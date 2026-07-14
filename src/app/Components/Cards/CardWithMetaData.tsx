@@ -74,9 +74,13 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
           ) : (
             <Box height={CARD_IMAGE_HEIGHT} width={CARD_IMAGE_WIDTH} />
           )}
+        </Flex>
+      </RouterLink>
 
-          <Spacer y={1} />
+      <Spacer y={1} />
 
+      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between">
+        <RouterLink onPress={onPress} to={href} style={{ flex: 1 }}>
           {!!title && (
             <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
               {title}
@@ -92,14 +96,10 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
               {tag}
             </Text>
           )}
-        </Flex>
-      </RouterLink>
+        </RouterLink>
 
-      {!!actionElement && (
-        <Flex position="absolute" top={1} right={1}>
-          {actionElement}
-        </Flex>
-      )}
+        {!!actionElement && <Flex ml={1}>{actionElement}</Flex>}
+      </Flex>
     </Flex>
   )
 }

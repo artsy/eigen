@@ -36,28 +36,30 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
   const imageURL = image && image.url
 
   return (
-    <RouterLink haptic onPress={handleTap} to={hrefForPartialShow(data)}>
-      <View style={[styles?.container]}>
-        <View style={{ position: "relative" }}>
-          <View style={[styles?.imageMargin]}>
-            <ImageWithFallback
-              src={imageURL}
-              width={imageDimensions.width}
-              height={imageDimensions.height}
-              blurhash={image?.blurhash}
-              style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
-            />
-          </View>
-          <View style={{ position: "absolute", top: 4, right: 4 }}>
-            <ShowFollowButton show={data} />
-          </View>
+    <View style={[styles?.container]}>
+      <RouterLink
+        haptic
+        onPress={handleTap}
+        to={hrefForPartialShow(data)}
+        style={{ flexDirection: "row", alignItems: "center", flex: 1 }}
+      >
+        <View style={[styles?.imageMargin]}>
+          <ImageWithFallback
+            src={imageURL}
+            width={imageDimensions.width}
+            height={imageDimensions.height}
+            blurhash={image?.blurhash}
+            style={[{ overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          />
         </View>
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
           <Metadata show={data} style={!!styles && styles.metadata} />
         </View>
-      </View>
-    </RouterLink>
+      </RouterLink>
+
+      <ShowFollowButton show={data} />
+    </View>
   )
 }
 

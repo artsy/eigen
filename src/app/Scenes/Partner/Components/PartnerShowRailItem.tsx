@@ -31,14 +31,18 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   return (
     <Flex my="15px" mr={2} width={sectionWidth}>
       <RouterLink onPress={onPress} to={`/show/${props.show.slug}`}>
-        <Flex width={sectionWidth}>
-          <ImageWithFallback
-            height={200}
-            width={sectionWidth}
-            src={imageURL}
-            blurhash={coverImage?.blurhash}
-          />
-          <Spacer y={1} />
+        <ImageWithFallback
+          height={200}
+          width={sectionWidth}
+          src={imageURL}
+          blurhash={coverImage?.blurhash}
+        />
+      </RouterLink>
+
+      <Spacer y={1} />
+
+      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between">
+        <RouterLink onPress={onPress} to={`/show/${props.show.slug}`} style={{ flex: 1 }}>
           <Text variant="sm" numberOfLines={1}>
             {name}
           </Text>
@@ -47,11 +51,11 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
               {exhibitionDates(exhibitionPeriod, endAt)}
             </Text>
           )}
-        </Flex>
-      </RouterLink>
+        </RouterLink>
 
-      <Flex position="absolute" top={1} right={1}>
-        <ShowFollowButton show={show} />
+        <Flex ml={1}>
+          <ShowFollowButton show={show} />
+        </Flex>
       </Flex>
     </Flex>
   )

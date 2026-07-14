@@ -56,14 +56,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   }, [data.internalID])
 
   const renderBelowHeaderComponent = useCallback(() => {
-    return (
-      <>
-        <FairHeader fair={data} />
-        <Flex px={2} pb={1}>
-          <FairFollowButton fair={data} />
-        </Flex>
-      </>
-    )
+    return <FairHeader fair={data} />
   }, [data])
 
   if (!data) {
@@ -125,15 +118,18 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
             onBack: goBack,
             hideTitle: true,
             rightElements: (
-              <TouchableOpacity
-                accessibilityRole="button"
-                accessibilityLabel="Share Fair"
-                onPress={() => {
-                  handleSharePress()
-                }}
-              >
-                <ShareIcon width={24} height={24} />
-              </TouchableOpacity>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
+                <FairFollowButton fair={data} />
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  accessibilityLabel="Share Fair"
+                  onPress={() => {
+                    handleSharePress()
+                  }}
+                >
+                  <ShareIcon width={24} height={24} />
+                </TouchableOpacity>
+              </Flex>
             ),
           }}
         >
