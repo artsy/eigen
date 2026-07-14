@@ -1,0 +1,162 @@
+name: RC Release Automation
+
+# When the release bot (artsyit) opens a release-candidate PR (head branch
+# `rc-v<version>`), this orchestrates the release-day automation:
+#   1. trigger-betas    — push the RC branch to beta-ios / beta-android, which
+#                          fires the 4 existing beta build workflows.
+#   2. wait-for-betas   — poll until all 4 beta builds complete; fail on any failure.
+#   3. create-qa-document — read the beta build numbers from the git tags, lift
+#                          the changelog out of the PR body, duplicate the Notion
+#                          QA template with all of it stamped in, and post to Slack.
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+jobs:
+  guard:
+    # Only rc-v* PRs opened by the release bot.
+    if: startsWith(github.head_ref, 'rc-v') && github.event.pull_request.user.login == 'artsyit'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      sha: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Derive version from branch name
+        id: version
+        run: |
+          branch="${{ github.head_ref }}"
+          echo "version=${branch#rc-v}" >> "$GITHUB_OUTPUT"
+
+  trigger-betas:
+    needs: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the RC branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.guard.outputs.sha }}
+          # Push with a PAT — a push made with the default GITHUB_TOKEN does NOT
+          # trigger the downstream beta build workflows (GitHub blocks recursion).
+          token: ${{ secrets.EIGEN_GITHUB_PAT_TOKEN }}
+
+      - name: Push to beta branches to trigger the 4 beta builds
+        run: |
+          git push origin HEAD:beta-ios -f --no-verify
+          git push origin HEAD:beta-android -f --no-verify
+
+  wait-for-betas:
+    needs: [guard, trigger-betas]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SHA: ${{ needs.guard.outputs.sha }}
+    steps:
+      - name: Wait for all 4 beta builds to succeed
+        run: |
+          set -euo pipefail
+          workflows=(
+            build-deploy-ios-testflight.yml
+            build-deploy-ios-firebase.yml
+            build-deploy-android-playstore.yml
+            build-deploy-android-firebase.yml
+          )
+          # Overall deadline just under the job timeout.
+          deadline=$(( $(date +%s) + 115 * 60 ))
+          for wf in "${workflows[@]}"; do
+            echo "::group::Waiting for $wf (sha ${SHA})"
+            while true; do
+              if [ "$(date +%s)" -gt "$deadline" ]; then
+                echo "Timed out waiting for $wf"; exit 1
+              fi
+              run=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$wf" --limit 30 \
+                --json headSha,status,conclusion \
+                --jq "[.[] | select(.headSha == \"${SHA}\")] | .[0]")
+              status=$(echo "$run" | jq -r '.status // empty')
+              conclusion=$(echo "$run" | jq -r '.conclusion // empty')
+              if [ -z "$status" ]; then
+                echo "  run not found yet; polling…"; sleep 30; continue
+              fi
+              if [ "$status" = "completed" ]; then
+                if [ "$conclusion" = "success" ]; then
+                  echo "  ✅ $wf succeeded"; break
+                fi
+                echo "  ❌ $wf concluded: $conclusion"; exit 1
+              fi
+              echo "  status=$status; polling…"; sleep 30
+            done
+            echo "::endgroup::"
+          done
+          echo "All 4 beta builds succeeded."
+
+  create-qa-document:
+    needs: [guard, wait-for-betas]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository (with tags)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Fetch tags
+        run: git fetch origin --tags --force
+
+      - name: Read beta build numbers from tags
+        id: builds
+        env:
+          VERSION: ${{ needs.guard.outputs.version }}
+        run: |
+          # Beta tags: ios-<version>-<build> / android-<version>-<code>
+          # (exclude -submission and -expo- OTA tags; newest by version sort).
+          ios_tag=$(git tag -l "ios-${VERSION}-*" | grep -v -- '-expo-' | grep -v -- '-submission' | sort -V | tail -1 || true)
+          android_tag=$(git tag -l "android-${VERSION}-*" | grep -v -- '-expo-' | grep -v -- '-submission' | sort -V | tail -1 || true)
+          echo "ios_build=${ios_tag#ios-${VERSION}-}" >> "$GITHUB_OUTPUT"
+          echo "android_build=${android_tag#android-${VERSION}-}" >> "$GITHUB_OUTPUT"
+          echo "iOS tag: ${ios_tag:-<none>} / Android tag: ${android_tag:-<none>}"
+
+      - name: Setup node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Install Node.js dependencies
+        run: yarn install --immutable
+
+      - name: Create Mobile App QA document in Notion
+        env:
+          NOTION_RELEASE_LOOKOUT_TOKEN: ${{ secrets.NOTION_RELEASE_LOOKOUT_TOKEN }}
+          SLACK_URL: ${{ secrets.SLACK_URL }}
+          RC_BRANCH: ${{ github.head_ref }}
+          IOS_BUILD: ${{ steps.builds.outputs.ios_build }}
+          ANDROID_BUILD: ${{ steps.builds.outputs.android_build }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: yarn create-qa
+
+  notify-qa-failure:
+    # Fires only when the betas succeeded (those have their own Slack alert) but
+    # creating the QA document failed — the one failure mode nothing else pings
+    # about. Skips cleanly for non-rc PRs (all jobs skipped ⇒ failure() is false)
+    # and for beta failures (wait-for-betas.result != 'success').
+    needs: [guard, wait-for-betas, create-qa-document]
+    if: failure() && needs.wait-for-betas.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Post QA-document failure to Slack
+        env:
+          SLACK_URL: ${{ secrets.SLACK_URL }}
+          VERSION: ${{ needs.guard.outputs.version }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "${SLACK_URL:-}" ]; then
+            echo "No SLACK_URL set; skipping failure notification."
+            exit 0
+          fi
+          curl -sf -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\":rotating_light: QA document creation failed for v${VERSION} (betas were fine) — <${RUN_URL}|view run>\"}" \
+            "$SLACK_URL"
