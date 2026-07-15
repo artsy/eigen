@@ -27056,9 +27056,47 @@ type OfferResponse {
 
 type OfferableActivity {
   """
+  Details of the collectors with eligible offerable activities.
+  """
+  collectors: [OfferableActivityCollector]
+
+  """
   Count of collectors with eligible offerable activities.
   """
   totalCount: Int
+}
+
+"""
+A collector with eligible offerable activity on the artwork, and how they engaged with it.
+"""
+type OfferableActivityCollector {
+  confirmedBuyerAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  firstNameLastInitial: String
+  icon: Image
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  isIdentityVerified: Boolean
+  location: MyLocation
+
+  """
+  The way this collector engaged with the artwork (e.g. saved it and/or abandoned an order).
+  """
+  sources: [PartnerOfferSourceEnum]
 }
 
 type OpeningHoursArray {
