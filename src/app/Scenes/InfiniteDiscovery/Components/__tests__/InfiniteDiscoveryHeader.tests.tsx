@@ -92,6 +92,12 @@ describe("InfiniteDiscoveryHeader", () => {
     expect(moreButton).toHaveAccessibleName("Share Artwork")
   })
 
+  it("shows the Discover Daily title outside of new user onboarding", () => {
+    renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+
+    expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
+  })
+
   it("shows toast when exiting with saved artworks", () => {
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
@@ -118,10 +124,16 @@ describe("InfiniteDiscoveryHeader", () => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
+    it("hides the Discover Daily title", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      expect(screen.queryByText("Discover Daily")).not.toBeOnTheScreen()
+    })
+
     it("shows the progress badge instead of the exit chevron", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("0/5")).toBeOnTheScreen()
+      expect(screen.getByText("0 of 5 saves")).toBeOnTheScreen()
       expect(screen.queryByTestId("close-icon")).not.toBeOnTheScreen()
     })
 
@@ -136,13 +148,13 @@ describe("InfiniteDiscoveryHeader", () => {
       })
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("2/5")).toBeOnTheScreen()
+      expect(screen.getByText("2 of 5 saves")).toBeOnTheScreen()
     })
 
     it("shows a Skip button instead of the share/more button", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-      expect(screen.getByText("Skip")).toBeOnTheScreen()
+      expect(screen.getByText("Skip to home")).toBeOnTheScreen()
       expect(screen.queryByTestId("top-right-icon")).not.toBeOnTheScreen()
     })
 
@@ -188,12 +200,12 @@ describe("InfiniteDiscoveryHeader", () => {
         }
       })
 
-      it("shows an Exit button instead of Skip, with the badge frozen at 5/5", () => {
+      it("shows a Go to home button instead of Skip, with the badge frozen at Complete", () => {
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-        expect(screen.getByText("5/5")).toBeOnTheScreen()
-        expect(screen.getByText("Exit")).toBeOnTheScreen()
-        expect(screen.queryByText("Skip")).not.toBeOnTheScreen()
+        expect(screen.getByText("Complete")).toBeOnTheScreen()
+        expect(screen.getByText("Go to home")).toBeOnTheScreen()
+        expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
       })
 
       it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
@@ -213,12 +225,12 @@ describe("InfiniteDiscoveryHeader", () => {
         )
       })
 
-      it("keeps the badge frozen at 5/5 even if a saved artwork is removed", () => {
+      it("keeps the badge frozen at Complete even if a saved artwork is removed", () => {
         GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
 
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-        expect(screen.getByText("5/5")).toBeOnTheScreen()
+        expect(screen.getByText("Complete")).toBeOnTheScreen()
       })
     })
   })

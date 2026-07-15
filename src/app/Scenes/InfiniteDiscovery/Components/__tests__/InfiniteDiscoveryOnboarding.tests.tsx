@@ -44,14 +44,16 @@ describe("InfiniteDiscoveryOnboarding", () => {
       expect(mockTrack.onboardingView).toHaveBeenCalled()
     })
 
-    it("shows the onboarding-specific save prompt", () => {
+    it("shows the onboarding-specific instructions", () => {
       renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
       act(() => {
         jest.runAllTimers()
       })
 
-      expect(screen.getByText(/different artworks to build your taste profile/)).toBeOnTheScreen()
+      expect(
+        screen.getByText("Swipe to see the next artwork, tap the heart to save it.")
+      ).toBeOnTheScreen()
     })
   })
 
