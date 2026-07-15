@@ -59,27 +59,28 @@ export const createQaDocument = async (
   const changelog = extractChangelogFromPrBody(process.env.PR_BODY ?? "") ?? undefined
 
   // Idempotency: don't create a second doc if one for this version already
-  // exists (e.g. the RC PR was reopened or the job re-run).
+  // exists (e.g. the RC PR was reopened or the job re-run). Either way the
+  // channel just wants the link, so we announce it with the same message.
   const existing = await findExistingCopy(QA_DESTINATION_URL, [version])
+  let url: string
   if (existing) {
     console.log(`QA document already exists: ${existing}`)
-    await postToSlack(`The mobile QA document for v${version} already exists here: ${existing}`)
-    return
+    url = existing
+  } else {
+    url = await duplicateTemplate(QA_TEMPLATE_URL, QA_DESTINATION_URL, {
+      version,
+      today,
+      iosBuild,
+      androidBuild,
+      changelog,
+    })
+    console.log(`Successfully created QA document: ${url}`)
   }
-
-  const url = await duplicateTemplate(QA_TEMPLATE_URL, QA_DESTINATION_URL, {
-    version,
-    today,
-    iosBuild,
-    androidBuild,
-    changelog,
-  })
 
   const changelogSection = changelog ? `\n\n*Changelog*\n${changelog}` : ""
   await postToSlack(
-    `:notion: The mobile QA document for v${version} was automatically created here: ${url}${changelogSection}`
+    `:notion: The mobile QA document for v${version} is available here: ${url}${changelogSection}`
   )
-  console.log(`Successfully created QA document: ${url}`)
 }
 
 // Prevents auto-execution when imported in tests.

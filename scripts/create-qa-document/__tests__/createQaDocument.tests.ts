@@ -94,7 +94,7 @@ describe("createQaDocument", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({
-          text: ":notion: The mobile QA document for v9.12.0 was automatically created here: https://notion.so/new-qa-page",
+          text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/new-qa-page",
         }),
       })
     )
@@ -110,7 +110,7 @@ describe("createQaDocument", () => {
       "https://hooks.slack.com/services/TEST",
       expect.objectContaining({
         body: JSON.stringify({
-          text: "The mobile QA document for v9.12.0 already exists here: https://notion.so/existing-qa-page",
+          text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/existing-qa-page",
         }),
       })
     )
@@ -158,7 +158,7 @@ describe("createQaDocument", () => {
       "https://hooks.slack.com/services/TEST",
       expect.objectContaining({
         body: JSON.stringify({
-          text: ":notion: The mobile QA document for v9.12.0 was automatically created here: https://notion.so/new-qa-page\n\n*Changelog*\n### Dev changes\n- did a thing (#1)",
+          text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/new-qa-page\n\n*Changelog*\n### Dev changes\n- did a thing (#1)",
         }),
       })
     )
