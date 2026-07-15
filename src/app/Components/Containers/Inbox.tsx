@@ -37,7 +37,10 @@ interface Props {
 }
 
 export const Inbox: React.FC<Props> = memo(({ me, relay: _relay, isVisible: _isVisible }) => {
-  const [activeTab, setActiveTab] = useState<Tab>(Tab.bids)
+  const hasActiveBids = (me?.myBids?.active ?? []).length > 0
+  const initialPageName = hasActiveBids ? "bids" : "inquiries"
+
+  const [activeTab, setActiveTab] = useState<Tab>(hasActiveBids ? Tab.bids : Tab.inquiries)
   const listenerRef = useRef<EmitterSubscription | null>(null)
   const tracking = useTracking()
 
@@ -69,9 +72,6 @@ export const Inbox: React.FC<Props> = memo(({ me, relay: _relay, isVisible: _isV
 
     setActiveTab(tabName as Tab)
   }
-
-  const hasActiveBids = (me?.myBids?.active ?? []).length > 0
-  const initialPageName = hasActiveBids ? "bids" : "inquiries"
 
   return (
     <TabsContainer
