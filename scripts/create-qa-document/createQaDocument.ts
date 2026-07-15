@@ -1,7 +1,3 @@
-#!/usr/bin/env node
-/// <reference types="node" />
-"use strict"
-
 import { resolve } from "path"
 import { config } from "dotenv"
 import { DateTime } from "luxon"
@@ -79,8 +75,9 @@ export const createQaDocument = async (
     changelog,
   })
 
+  const changelogSection = changelog ? `\n\n*Changelog*\n${changelog}` : ""
   await postToSlack(
-    `:notion: The mobile QA document for v${version} was automatically created here: ${url}`
+    `:notion: The mobile QA document for v${version} was automatically created here: ${url}${changelogSection}`
   )
   console.log(`Successfully created QA document: ${url}`)
 }

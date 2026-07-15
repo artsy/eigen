@@ -148,6 +148,22 @@ describe("createQaDocument", () => {
     )
   })
 
+  it("includes the changelog in the Slack message when present", async () => {
+    process.env.PR_BODY =
+      "## Release Candidate\n\n## Changelog\n\n### Dev changes\n- did a thing (#1)\n\n#nochangelog"
+
+    await createQaDocument(RC_BRANCH, NOW)
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      "https://hooks.slack.com/services/TEST",
+      expect.objectContaining({
+        body: JSON.stringify({
+          text: ":notion: The mobile QA document for v9.12.0 was automatically created here: https://notion.so/new-qa-page\n\n*Changelog*\n### Dev changes\n- did a thing (#1)",
+        }),
+      })
+    )
+  })
+
   it("skips the Slack post (without throwing) when SLACK_URL is not set", async () => {
     delete process.env.SLACK_URL
 
