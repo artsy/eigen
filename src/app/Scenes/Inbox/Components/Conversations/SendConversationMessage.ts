@@ -107,7 +107,6 @@ export function sendConversationMessage(
             body: text,
             from: {
               email: conversation.from.email,
-              name: null,
             },
             is_from_user: true,
             createdAt: new Date().toISOString(),
