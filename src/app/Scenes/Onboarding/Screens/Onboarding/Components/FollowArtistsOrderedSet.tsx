@@ -1,4 +1,4 @@
-import { Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { FollowArtistsOrderedSetQuery } from "__generated__/FollowArtistsOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -16,6 +16,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface FollowArtistsOrderedSetProps {
   id: string
+  hasFollowedArtists?: boolean
   hideFollowedArtists?: boolean
   listHeaderComponent?: React.ReactElement
   onArtistFollowed?: (
@@ -27,6 +28,7 @@ interface FollowArtistsOrderedSetProps {
 
 const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
   id,
+  hasFollowedArtists,
   hideFollowedArtists,
   listHeaderComponent,
   onArtistFollowed,
@@ -52,7 +54,18 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
     <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
-      ListHeaderComponent={listHeaderComponent}
+      ListHeaderComponent={
+        <>
+          {listHeaderComponent}
+          {nodes.length > 0 && (
+            <>
+              {!!hasFollowedArtists && <Separator my={2} />}
+              <Text variant="md">Leading artists on Artsy</Text>
+              <Spacer y={2} />
+            </>
+          )}
+        </>
+      }
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => {
