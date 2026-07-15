@@ -9,6 +9,9 @@ then
   if [ "$(uname)" == "Darwin" ]; then # MacOS
     curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
     sudo installer -pkg AWSCLIV2.pkg -target /
+    # Remove the installer so fastlane deliver doesn't auto-detect it via Dir["*.pkg"]
+    # and force the delivery platform to 'osx'. See detect_values.rb#find_platform.
+    rm -f AWSCLIV2.pkg
   else # Assume Linux
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip -o -qq awscliv2.zip

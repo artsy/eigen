@@ -184,7 +184,6 @@ lane :create_next_app_version do |options|
   deliver(
     api_key: api_key,
     app_version: next_version,
-    platform: 'ios',
     skip_metadata: true,
     automatic_release: false,
     phased_release: false,
