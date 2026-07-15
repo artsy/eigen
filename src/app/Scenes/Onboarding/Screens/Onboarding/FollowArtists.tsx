@@ -122,17 +122,14 @@ export const FollowArtists: React.FC = () => {
           ) : (
             <FollowArtistsOrderedSetScreen
               id={SET_ID}
+              hasFollowedArtists={count > 0}
               hideFollowedArtists
               onArtistFollowed={handleArtistFollowed}
               listHeaderComponent={
-                <>
-                  <FollowedArtistsBank
-                    artistRefs={followedArtistRefs.slice(0, 3)}
-                    onArtistUnfollowed={handleArtistUnfollowed}
-                  />
-                  <Text variant="md">Leading artists on Artsy</Text>
-                  <Spacer y={2} />
-                </>
+                <FollowedArtistsBank
+                  artistRefs={followedArtistRefs}
+                  onArtistUnfollowed={handleArtistUnfollowed}
+                />
               }
             />
           )}

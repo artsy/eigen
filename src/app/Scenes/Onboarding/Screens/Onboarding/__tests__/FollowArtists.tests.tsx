@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
+import { FollowedArtistsBank } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
 import { FollowArtists } from "app/Scenes/Onboarding/Screens/Onboarding/FollowArtists"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -18,26 +19,29 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
 }))
 
 jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank", () => ({
-  FollowedArtistsBank: () => null,
+  FollowedArtistsBank: jest.fn(() => null),
 }))
 
 jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet", () => {
   const { Text } = require("react-native")
   return {
-    FollowArtistsOrderedSetScreen: ({ onArtistFollowed }: any) => (
-      <Text
-        onPress={() =>
-          onArtistFollowed?.({} as any, {
-            internalID: "artist-id",
-            slug: "artist-slug",
-            imageUrl: null,
-            blurhash: null,
-            initials: null,
-          })
-        }
-      >
-        OrderedSet
-      </Text>
+    FollowArtistsOrderedSetScreen: ({ onArtistFollowed, listHeaderComponent }: any) => (
+      <>
+        {listHeaderComponent}
+        <Text
+          onPress={() =>
+            onArtistFollowed?.({} as any, {
+              internalID: "artist-id",
+              slug: "artist-slug",
+              imageUrl: null,
+              blurhash: null,
+              initials: null,
+            })
+          }
+        >
+          OrderedSet
+        </Text>
+      </>
     ),
   }
 })
@@ -147,6 +151,20 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
 
       expect(screen.getByText("3/3")).toBeOnTheScreen()
+    })
+  })
+
+  describe("Followed artists bank", () => {
+    it("includes every followed artist", () => {
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+
+      const lastCall = (FollowedArtistsBank as jest.Mock).mock.calls.at(-1)
+      expect(lastCall[0].artistRefs).toHaveLength(4)
     })
   })
 
