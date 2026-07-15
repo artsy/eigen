@@ -70,7 +70,7 @@ export const useConversationsWebsocket = ({
     return () => {
       channel.removeListener("received", handleReceived)
       channel.unsubscribe()
-      delete cable.channels[channelKey]
+      delete channelsHolder.channels[channelKey]
     }
   }, [isFeatureEnabled, enabled, cable, channelsHolder, userAccessToken, subscriptionKey])
 }

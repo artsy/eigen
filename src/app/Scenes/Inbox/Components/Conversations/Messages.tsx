@@ -8,12 +8,12 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import React, { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { MessageGroup } from "./MessageGroup"
-import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
+import { groupConversationItems } from "./utils/groupConversationItems"
 
 interface Props {
   conversation: Messages_conversation$data
@@ -36,7 +36,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
-  const [messages, setMessages] = useState<ConversationItem[][]>([])
 
   const subjectArtwork = conversation.items?.[0]?.item
   const artworkId = subjectArtwork?.__typename === "Artwork" ? subjectArtwork.internalID : null
@@ -72,24 +71,15 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   })
 
   // Combine and group events/messages
-  useEffect(() => {
-    const sortedMessages = sortBy(
-      [
-        ...orderEventsWithoutFailedPayment,
-        ...allMessages,
-        ...(partnerOfferEvent ? [partnerOfferEvent] : []),
-      ],
-      (message) => DateTime.fromISO(message.createdAt ?? "")
-    )
-    const groupedMessages = groupConversationItems(sortedMessages)
-
-    setMessages(groupedMessages)
-  }, [
-    allOrderEvents.length,
-    allMessages.length,
-    partnerOfferEvent?.createdAt,
-    partnerOfferEvent?.isPurchased,
-  ])
+  const sortedMessages = sortBy(
+    [
+      ...orderEventsWithoutFailedPayment,
+      ...allMessages,
+      ...(partnerOfferEvent ? [partnerOfferEvent] : []),
+    ],
+    (message) => DateTime.fromISO(message.createdAt ?? "")
+  )
+  const messages = groupConversationItems(sortedMessages)
 
   const flatList = useRef<FlatList>(null)
 
