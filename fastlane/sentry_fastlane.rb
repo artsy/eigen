@@ -68,14 +68,30 @@ lane :upload_sentry_sourcemaps do |options|
   silence_failures = options[:silence_failures]
 
   begin
-    sentry_upload_sourcemap(
-      auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      org_slug: org_slug,
-      project_slug: project_slug,
-      version: sentry_release_name,
-      dist: dist,
-      sourcemap: [bundle_path, sourcemap_path],
-      rewrite: true
+    # Use the modern Debug-ID based upload (`sentry-cli sourcemaps upload`) instead of the
+    # legacy release-based `sentry_upload_sourcemap`.
+    #
+    # Since @sentry/react-native v8, Sentry symbolicates Hermes stack traces by matching the
+    # Debug ID that the Metro plugin (`getSentryExpoConfig` in metro.config.js) bakes into the
+    # shipped bundle + sourcemap against an uploaded artifact bundle carrying the same Debug ID.
+    # The legacy `sentry_upload_sourcemap` (with `rewrite: true`) uploaded the map as a
+    # release artifact and re-injected a *different* Debug ID, so events showed a JS debug image
+    # in "Images Loaded" with no matching sourcemap and Hermes frames stayed minified.
+    #
+    # `sentry-cli sourcemaps upload` preserves the embedded Debug ID (no rewrite). `--release`
+    # and `--dist` are kept only for grouping in the Sentry UI. This mirrors the OTA path, which
+    # already uploads correctly via `sentry-expo-upload-sourcemaps`.
+    # `--debug-id-reference`: the shipped bundle is Hermes bytecode (a binary bundle), so
+    # sentry-cli can't read the Debug ID from it directly — this flag tells it to use the
+    # Debug ID carried by the linked sourcemap instead.
+    sh(
+      "cd .. && " \
+      "SENTRY_AUTH_TOKEN=#{ENV['SENTRY_UPLOAD_AUTH_KEY']} " \
+      "./node_modules/.bin/sentry-cli sourcemaps upload " \
+      "--org #{org_slug} --project #{project_slug} " \
+      "--release '#{sentry_release_name}' --dist '#{dist}' " \
+      "--debug-id-reference " \
+      "'#{bundle_path}' '#{sourcemap_path}'"
     )
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
