@@ -238,7 +238,6 @@ lane :promote_beta_ios do
   deliver(
     api_key: api_key,
     app_version: $APP_JSON['version'],
-    platform: 'ios',
     build_number: build_number,
     submit_for_review: true,
     automatic_release: true,
