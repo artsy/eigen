@@ -2689,6 +2689,16 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   ): [ArtistInsight!]!
 
   """
+  Instagram media for display on an artist page.
+  """
+  instagramMedia(
+    """
+    The number of media items to return.
+    """
+    first: Int
+  ): [ArtistInstagramMedia]
+
+  """
   A type-specific ID likely used as a database ID.
   """
   internalID: ID!
@@ -3021,6 +3031,13 @@ type ArtistInsightsCount {
   groupShowCount: Int!
   reviewedCount: Int!
   soloShowCount: Int!
+}
+
+type ArtistInstagramMedia {
+  caption: String
+  image: Image
+  internalID: String
+  permalink: String
 }
 
 type ArtistMeta {
