@@ -32,10 +32,10 @@ describe("useConversationsWebsocket", () => {
     }
     mockCable = {
       subscriptions: { create: jest.fn(() => ({})) },
-      channels: {},
     }
     mockChannelsHolder = {
       setChannel: jest.fn(() => mockChannel),
+      channels: {},
     }
     mockUseCable.mockReturnValue({ cable: mockCable, channelsHolder: mockChannelsHolder })
 
