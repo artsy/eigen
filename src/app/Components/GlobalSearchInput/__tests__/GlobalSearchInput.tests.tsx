@@ -26,6 +26,12 @@ describe("GlobalSearchInput", () => {
     expect(/Search Artsy/).toBeTruthy()
   })
 
+  it("renders the camera icon on the resting search bar", () => {
+    renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+
+    expect(screen.getByTestId("global-search-camera-icon")).toBeTruthy()
+  })
+
   it("tracks the search bar tapped event", () => {
     renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 
