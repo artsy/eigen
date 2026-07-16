@@ -17,7 +17,7 @@ import {
 } from "app/Scenes/Articles/Artnet/artnetGatewayV2"
 import { useArtnetFilterFacets } from "app/Scenes/Articles/Artnet/useArtnetFilterFacets"
 import { useEffect, useState } from "react"
-import { Modal, ScrollView } from "react-native"
+import { Modal, Platform, ScrollView } from "react-native"
 
 interface ArtnetEditorialFilterModalProps {
   visible: boolean
@@ -35,7 +35,7 @@ export const ArtnetEditorialFilterModal: React.FC<ArtnetEditorialFilterModalProp
   onClose,
   onApply,
 }) => {
-  const { bottom } = useScreenDimensions().safeAreaInsets
+  const { top, bottom } = useScreenDimensions().safeAreaInsets
   const { facets, loading, error } = useArtnetFilterFacets(visible)
 
   const [staged, setStaged] = useState<ArtnetEditorialFilters>(currentFilters)
@@ -63,7 +63,7 @@ export const ArtnetEditorialFilterModal: React.FC<ArtnetEditorialFilterModalProp
 
   return (
     <Modal visible={visible} onRequestClose={onClose} animationType="slide">
-      <Flex flex={1} backgroundColor="mono0">
+      <Flex flex={1} backgroundColor="mono0" pt={Platform.OS === "ios" ? `${top}px` : 0}>
         <NavigationHeader
           useXButton
           onLeftButtonPress={onClose}
