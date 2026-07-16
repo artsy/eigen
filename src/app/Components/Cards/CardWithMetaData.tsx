@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
-import { RouterLink } from "app/system/navigation/RouterLink"
+import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import {
   PlaceholderBox,
@@ -34,11 +34,23 @@ interface CardWithMetaDataProps {
   subtitle: string | null | undefined
   tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
+  /** Extra props forwarded to the underlying RouterLink (passed to the destination screen). */
+  navigationProps?: RouterLinkProps["navigationProps"]
   testId?: string
 }
 
 export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
-  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent } = props
+  const {
+    isFluid,
+    href,
+    imageURL,
+    title,
+    subtitle,
+    tag,
+    onPress,
+    navigationProps,
+    imageComponent,
+  } = props
   const numColumns = useNumColumns()
 
   const { space } = useTheme()
@@ -52,7 +64,12 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
 
   return (
     <Flex width={cardWidth}>
-      <RouterLink onPress={onPress} testID="article-card" to={href}>
+      <RouterLink
+        onPress={onPress}
+        testID="article-card"
+        to={href}
+        navigationProps={navigationProps}
+      >
         <Flex width={cardWidth} overflow="hidden">
           {!!imageURL ? (
             isFluid ? (

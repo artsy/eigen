@@ -28,6 +28,7 @@ import {
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
+import { ArtnetArticleScreen } from "app/Scenes/Articles/Artnet/ArtnetArticleScreen"
 import { NewsScreenQuery } from "app/Scenes/Articles/News/News"
 import { NewsHub } from "app/Scenes/Articles/NewsHub"
 import {
@@ -402,6 +403,19 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtQuizResultsScreenQuery],
+  },
+  {
+    // POC: Artnet article detail. `uri` is passed via passProps (the WP URI
+    // contains slashes, so it isn't a path param). Not deep-linkable for now.
+    path: "/artnet-article",
+    name: "ArtnetArticle",
+    Component: ArtnetArticleScreen,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/article/:articleID",

@@ -161,6 +161,48 @@ export const fetchArtnetEditorialFeed = async ({
   }
 }
 
+export interface ArtnetArticleDetail {
+  title: string | null
+  date: string | null
+  uri: string
+  content: string | null
+  excerpt: string | null
+  isPremium: boolean
+  isAccessibleForFree: boolean
+  isPartnerContent: boolean
+  featuredImage: { node: { sourceUrl: string | null; altText: string | null } | null } | null
+  categories: { nodes: { name: string | null; uri: string | null }[] } | null
+  topics: { nodes: { name: string | null; slug: string | null }[] } | null
+  coAuthors:
+    | { name: string | null; bio: string | null; url: string | null; avatarUrl: string | null }[]
+    | null
+}
+
+const ARTICLE_QUERY = `query ArtnetArticle($uri: ID!) {
+  post(id: $uri, idType: URI) {
+    title
+    date
+    uri
+    content
+    excerpt
+    isPremium
+    isAccessibleForFree
+    isPartnerContent
+    featuredImage { node { sourceUrl altText } }
+    categories { nodes { name uri } }
+    topics { nodes { name slug } }
+    coAuthors { name bio url avatarUrl }
+  }
+}`
+
+export const fetchArtnetArticle = async (uri: string): Promise<ArtnetArticleDetail | null> => {
+  const data = await postToArtnetGateway<{ post: ArtnetArticleDetail | null }>(ARTICLE_QUERY, {
+    uri,
+  })
+
+  return data.post ?? null
+}
+
 /** A single selectable filter option. `value` is what gets sent to the feed query. */
 export interface ArtnetFacetOption {
   label: string

@@ -5,6 +5,7 @@ import {
   useNumColumns,
 } from "app/Components/Cards/CardWithMetaData"
 import { ArtnetEditorialFilterModal } from "app/Scenes/Articles/Artnet/ArtnetEditorialFilterModal"
+import { ArtnetPremiumBadge } from "app/Scenes/Articles/Artnet/ArtnetPremiumBadge"
 import {
   ArtnetEditorialFilters,
   countActiveArtnetFilters,
@@ -64,14 +65,22 @@ export const ArtnetEditorialV2: React.FC = () => {
           renderItem={({ item, index }) => {
             return (
               <CardWithMetaDataListItem index={index}>
-                <CardWithMetaData
-                  isFluid
-                  href={undefined}
-                  imageURL={item.featuredImage?.node?.sourceUrl}
-                  title={item.title}
-                  subtitle={item.coAuthors?.[0]?.name}
-                  tag={item.categories?.nodes?.[0]?.name}
-                />
+                <Flex>
+                  {!!item.isPremium && (
+                    <Flex position="absolute" top={0} left={0} m={1} zIndex={1}>
+                      <ArtnetPremiumBadge />
+                    </Flex>
+                  )}
+                  <CardWithMetaData
+                    isFluid
+                    href="/artnet-article"
+                    navigationProps={{ uri: item.uri }}
+                    imageURL={item.featuredImage?.node?.sourceUrl}
+                    title={item.title}
+                    subtitle={item.coAuthors?.[0]?.name}
+                    tag={item.categories?.nodes?.[0]?.name}
+                  />
+                </Flex>
               </CardWithMetaDataListItem>
             )
           }}
