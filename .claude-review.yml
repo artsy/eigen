@@ -37,6 +37,8 @@ focus_areas:
     Naming conventions: Components and component folders use PascalCase; everything else
     (hooks, utils, mutations folders) uses camelCase. Test files end in `.tests.ts(x)` and
     live in a sibling `__tests__` folder.
+  - |
+    PR Content: PRs should include Screenshots/Recordings on Both Android & iOS.
 
 ignore_paths:
   - "src/__generated__/**"
