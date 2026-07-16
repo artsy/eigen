@@ -9,22 +9,14 @@ interface CollectorNoteProps {
   dark?: boolean
 }
 
-// The inline badge shows at most 2 lines. Notes longer than this are very likely
-// to be truncated in the narrow grid/rail card, so we surface a "Read more" cue.
-// A length heuristic keeps layout stable (no measuring pass that could momentarily
-// render the full note) and is good enough for a fixed-width card.
-const READ_MORE_THRESHOLD = 80
-
 /**
  * Renders a curator's note for an artwork within a marketing collection.
  *
  * The note is an edge-level field on `MarketingCollection.artworksConnection`
  * (not a field on the `Artwork` node), so it is passed in as a plain string
- * prop rather than via a Relay fragment. It is intentionally distinct from the
- * collector social signal badge (`ArtworkSocialSignal`) and renders directly
- * above it.
- *
- * The inline badge is truncated; tapping it opens a bottom sheet with the full note.
+ * prop rather than via a Relay fragment. It renders as a compact, bordered
+ * label (styled like the collector signal labels) that invites a tap; tapping
+ * opens a bottom sheet with the full note.
  */
 export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false }) => {
   const [visible, setVisible] = useState(false)
@@ -34,9 +26,7 @@ export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false
   }
 
   const primaryColor = dark ? "mono0" : "mono100"
-  const secondaryColor = dark ? "mono30" : "mono60"
-  const linkColor = dark ? "mono0" : "blue100"
-  const showReadMore = note.length > READ_MORE_THRESHOLD
+  const borderColor = dark ? "mono30" : "mono60"
 
   // The bottom sheet renders differently on iOS vs Android; mirror the pattern
   // used elsewhere in the app (see AlertBottomSheet).
@@ -49,18 +39,18 @@ export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false
         accessibilityLabel="Read the curator’s note"
         onPress={() => setVisible(true)}
       >
-        <Flex flexDirection="column">
-          <Text color={secondaryColor} variant="xs">
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          alignSelf="flex-start"
+          borderWidth={1}
+          borderColor={borderColor}
+          borderRadius={3}
+          px={0.5}
+        >
+          <Text color={primaryColor} variant="xs">
             Curator’s note
           </Text>
-          <Text color={primaryColor} variant="xs" numberOfLines={2} ellipsizeMode="tail">
-            {note}
-          </Text>
-          {!!showReadMore && (
-            <Text color={linkColor} variant="xs" underline>
-              Read more
-            </Text>
-          )}
         </Flex>
       </Touchable>
 
