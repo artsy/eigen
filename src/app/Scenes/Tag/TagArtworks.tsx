@@ -25,11 +25,16 @@ import {
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 type TagArtworkType = ExtractNodeType<NonNullable<TagArtworks_tag$data["artworks"]>>
+
+// Hoisted so their identity is stable across renders — passing new references to FlashList forces
+// it (and its header/footer) to re-render on every container re-render.
+const keyExtractor = (item: TagArtworkType) => item.id
+const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
 
 interface TagArtworksProps {
   tag?: TagArtworks_tag$data | null
@@ -44,15 +49,15 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const { width } = useScreenDimensions()
   const artworksTotal = tag?.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
-  const artworks = extractNodes(tag?.artworks) ?? []
+  const artworks = useMemo(() => extractNodes(tag?.artworks) ?? [], [tag?.artworks])
   const shouldDisplaySpinner =
     !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const trackClear = () => {
+  const trackClear = useCallback(() => {
     if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
     }
-  }
+  }, [tracking, tag?.id, tag?.slug])
 
   useArtworkFilters({
     relay,
@@ -61,22 +66,21 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
-  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
-  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
+  const handleCloseFilterArtworksModal = useCallback(() => setFilterArtworkModalVisible(false), [])
 
-  const openFilterArtworksModal = () => {
+  const openFilterArtworksModal = useCallback(() => {
     if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.openFilterWindow(tag.id, tag.slug))
-      handleOpenFilterArtworksModal()
+      setFilterArtworkModalVisible(true)
     }
-  }
+  }, [tracking, tag?.id, tag?.slug])
 
-  const closeFilterArtworksModal = () => {
+  const closeFilterArtworksModal = useCallback(() => {
     if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.closeFilterWindow(tag.id, tag.slug))
-      handleCloseFilterArtworksModal()
+      setFilterArtworkModalVisible(false)
     }
-  }
+  }, [tracking, tag?.id, tag?.slug])
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
@@ -90,21 +94,61 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem: ListRenderItem<TagArtworkType> = useCallback(({ item }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<TagArtworkType> = useCallback(
+    ({ item }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <ArtworkGridItem
-        contextScreenOwnerType={OwnerType.tag}
-        contextScreenOwnerId={tag?.internalID}
-        contextScreenOwnerSlug={tag?.slug}
-        artwork={item}
-        height={imgHeight}
-      />
-    )
-  }, [])
+      return (
+        <ArtworkGridItem
+          contextScreenOwnerType={OwnerType.tag}
+          contextScreenOwnerId={tag?.internalID}
+          contextScreenOwnerSlug={tag?.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      )
+    },
+    [width, space, tag?.internalID, tag?.slug]
+  )
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () =>
+      initialArtworksTotal ? (
+        <Box mt={1}>
+          <SimpleMessage>There aren’t any works available in the tag at this time.</SimpleMessage>
+        </Box>
+      ) : (
+        <Box pt={1}>
+          <FilteredArtworkGridZeroState id={tag?.id} slug={tag?.slug} trackClear={trackClear} />
+        </Box>
+      ),
+    [tag?.id, tag?.slug, trackClear]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <TagArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
+        </Tabs.SubTabBar>
+        <Flex pt={1} backgroundColor="mono0">
+          <Text variant="xs" color="mono60">
+            Showing {artworksTotal} works
+          </Text>
+        </Flex>
+      </Flex>
+    ),
+    [openFilterArtworksModal, artworksTotal]
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
 
   return (
     <>
@@ -112,42 +156,17 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListEmptyComponent={
-          initialArtworksTotal ? (
-            <Box mt={1}>
-              <SimpleMessage>
-                There aren’t any works available in the tag at this time.
-              </SimpleMessage>
-            </Box>
-          ) : (
-            <Box pt={1}>
-              <FilteredArtworkGridZeroState id={tag?.id} slug={tag?.slug} trackClear={trackClear} />
-            </Box>
-          )
-        }
-        keyExtractor={(item) => item.id}
+        contentContainerStyle={contentContainerStyle}
+        ListEmptyComponent={listEmptyComponent}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={{ zIndex: 1 }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <TagArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
-            </Tabs.SubTabBar>
-            <Flex pt={1} backgroundColor="mono0">
-              <Text variant="xs" color="mono60">
-                Showing {artworksTotal} works
-              </Text>
-            </Flex>
-          </Flex>
-        }
+        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponent={listHeaderComponent}
       />
       <ArtworkFilterNavigator
         id={tag?.internalID}

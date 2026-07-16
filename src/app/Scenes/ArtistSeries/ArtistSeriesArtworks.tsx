@@ -28,6 +28,11 @@ const PAGE_SIZE = 10
 
 type Artworks = ExtractNodeType<ArtistSeriesArtworks_artistSeries$data["artistSeriesArtworks"]>
 
+// Hoisted so their identity is stable across renders — passing new references to FlashList forces
+// it (and its header/footer) to re-render on every container re-render.
+const keyExtractor = (item: Artworks) => item?.id
+const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
+
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries }) => {
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment(
     fragment,
@@ -64,17 +69,17 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     })
   }, [artworksTotal])
 
-  const openFilterArtworksModal = () => {
+  const openFilterArtworksModal = useCallback(() => {
     tracking.trackEvent(tracks.openFilterWindow(data.id, data.slug))
 
     setFilterArtworkModalVisible(true)
-  }
+  }, [tracking, data.id, data.slug])
 
-  const closeFilterArtworksModal = () => {
+  const closeFilterArtworksModal = useCallback(() => {
     tracking.trackEvent(tracks.closeFilterWindow(data.id, data.slug))
 
     setFilterArtworkModalVisible(false)
-  }
+  }, [tracking, data.id, data.slug])
 
   const loadMore = useCallback(() => {
     if (!isLoadingNext && hasNext) {
@@ -88,26 +93,63 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     }
   }, [isLoadingNext, hasNext])
 
-  const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent(tracks.clearFilters(id, slug))
-  }
+  const trackClear = useCallback(
+    (id: string, slug: string) => {
+      tracking.trackEvent(tracks.clearFilters(id, slug))
+    },
+    [tracking]
+  )
 
-  const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<Artworks> = useCallback(
+    ({ item, index }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <ArtworkGridItem
-        itemIndex={index}
-        contextScreenOwnerType={OwnerType.artistSeries}
-        contextScreenOwnerId={data.internalID}
-        contextScreenOwnerSlug={data.slug}
-        artwork={item}
-        height={imgHeight}
-      />
-    )
-  }, [])
+      return (
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.artistSeries}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      )
+    },
+    [width, space, data.internalID, data.slug]
+  )
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Box mb="80px" pt={2}>
+        <FilteredArtworkGridZeroState
+          id={data.internalID}
+          slug={data.slug}
+          trackClear={trackClear}
+        />
+      </Box>
+    ),
+    [data.internalID, data.slug, trackClear]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
+        </Tabs.SubTabBar>
+      </Flex>
+    ),
+    [openFilterArtworksModal]
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
 
   return (
     <>
@@ -117,33 +159,17 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <FilteredArtworkGridZeroState
-              id={data.internalID}
-              slug={data.slug}
-              trackClear={trackClear}
-            />
-          </Box>
-        }
-        keyExtractor={(item) => item?.id}
+        ListEmptyComponent={listEmptyComponent}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={{ zIndex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <HeaderArtworksFilterWithTotalArtworks onPress={openFilterArtworksModal} />
-            </Tabs.SubTabBar>
-          </Flex>
-        }
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        contentContainerStyle={contentContainerStyle}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
       />
       <ArtworkFilterNavigator
         id={data.internalID}

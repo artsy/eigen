@@ -482,11 +482,13 @@ export const Artwork: React.FC<ArtworkProps> = memo(
           </RouterLink>
         </ContextMenuArtwork>
 
-        <CreateArtworkAlertModal
-          artwork={artwork}
-          onClose={() => setShowCreateArtworkAlertModal(false)}
-          visible={showCreateArtworkAlertModal}
-        />
+        {!!showCreateArtworkAlertModal && (
+          <CreateArtworkAlertModal
+            artwork={artwork}
+            onClose={() => setShowCreateArtworkAlertModal(false)}
+            visible={showCreateArtworkAlertModal}
+          />
+        )}
       </Disappearable>
     )
   }

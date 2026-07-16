@@ -66,6 +66,11 @@ import { useTracking } from "react-tracking"
 
 type ArtworkType = ExtractNodeType<ArtistArtworks_artist$data["artworks"]>
 
+// Hoisted so their identity is stable across renders — passing new references to FlashList forces
+// it (and its header/footer) to re-render on every container re-render.
+const keyExtractor = (item: ArtworkType) => item.id
+const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
+
 interface ArtworksGridProps extends InfiniteScrollGridProps, ArtistArtworksQueryRendererProps {
   artist: NonNullable<ArtistArtworksQuery$data["artist"]>
 }
@@ -159,16 +164,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     entityOwnerType: OwnerType.artist,
   })
 
-  const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.ArtworkGrid,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-  }
+  const trackClear = useCallback(
+    (id: string, slug: string) => {
+      tracking.trackEvent({
+        action_name: "clearFilters",
+        context_screen: Schema.ContextModules.ArtworkGrid,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_id: id,
+        context_screen_owner_slug: slug,
+        action_type: Schema.ActionTypes.Tap,
+      })
+    },
+    [tracking]
+  )
 
   const handleCompleteSavedSearch = () => {
     // TODO: Get the new count of the artist alerts
@@ -209,6 +217,57 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       />
     ),
     [showCreateAlertAtEndOfList, isLoadingNext, hasNext, artist, setIsCreateAlertModalVisible]
+  )
+
+  const shouldShowCreateAlertReminder =
+    artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD &&
+    // We are intentionally temporarily disabling the create alert reminder on android until
+    // we can make the SubTabBar sticky.
+    Platform.OS !== "android"
+
+  const showCreateAlertModal = useCallback(() => {
+    if (shouldShowCreateAlertReminder) {
+      dismissAllCreateAlertReminder()
+    }
+
+    setIsCreateAlertModalVisible(true)
+  }, [shouldShowCreateAlertReminder, dismissAllCreateAlertReminder, setIsCreateAlertModalVisible])
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Box mb="80px" pt={2}>
+        <FilteredArtworkGridZeroState
+          id={artist.id}
+          slug={artist.slug}
+          trackClear={trackClear}
+          hideClearButton={!appliedFilters.length}
+        />
+      </Box>
+    ),
+    [artist.id, artist.slug, trackClear, appliedFilters.length]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <Flex flexDirection="row">
+            <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
+            <Flex flex={1}>
+              <ArtistArtworksFilterHeader artist={artist} showCreateAlertModal={showCreateAlertModal} />
+            </Flex>
+          </Flex>
+        </Tabs.SubTabBar>
+        <Flex pt={1}>
+          <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
+            artworksCount > 1 ? "s" : ""
+          }:`}</Text>
+        </Flex>
+      </Flex>
+    ),
+    [shouldShowCreateAlertReminder, artist, showCreateAlertModal, artworksCount]
   )
 
   if (!artist.statuses?.artworks) {
@@ -259,12 +318,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const shouldShowCreateAlertReminder =
-    artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD &&
-    // We are intentionally temporarily disabling the create alert reminder on android until
-    // we can make the SubTabBar sticky.
-    Platform.OS !== "android"
-
   return (
     <Flex backgroundColor={color("mono0")} flex={1}>
       <Tabs.Masonry
@@ -272,50 +325,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <FilteredArtworkGridZeroState
-              id={artist.id}
-              slug={artist.slug}
-              trackClear={trackClear}
-              hideClearButton={!appliedFilters.length}
-            />
-          </Box>
-        }
-        keyExtractor={(item) => item.id}
+        ListEmptyComponent={listEmptyComponent}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
+        contentContainerStyle={contentContainerStyle}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={{ zIndex: 1 }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <Flex flexDirection="row">
-                <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
-                <Flex flex={1}>
-                  <ArtistArtworksFilterHeader
-                    artist={artist}
-                    showCreateAlertModal={() => {
-                      if (shouldShowCreateAlertReminder) {
-                        dismissAllCreateAlertReminder()
-                      }
-
-                      setIsCreateAlertModalVisible(true)
-                    }}
-                  />
-                </Flex>
-              </Flex>
-            </Tabs.SubTabBar>
-            <Flex pt={1}>
-              <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
-                artworksCount > 1 ? "s" : ""
-              }:`}</Text>
-            </Flex>
-          </Flex>
-        }
+        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
       />
 

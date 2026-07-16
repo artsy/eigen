@@ -26,7 +26,7 @@ import {
   useRefreshControl,
   useRefreshFetchKey,
 } from "app/utils/refreshHelpers"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import {
   localSortAndFilterArtworks,
@@ -46,7 +46,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
 
   const { data, loadNext, isLoadingNext, hasNext, refetch } = usePaginationFragment(meFragment, me)
 
-  const artworks = extractNodes(data?.myCollectionConnection)
+  const artworks = useMemo(
+    () => extractNodes(data?.myCollectionConnection),
+    [data?.myCollectionConnection]
+  )
 
   useLocalArtworkFilter(artworks)
 
@@ -57,11 +60,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
-  const filteredArtworks = localSortAndFilterArtworks(
-    artworks as any,
-    appliedFiltersState,
-    filterOptions,
-    query
+  const filteredArtworks = useMemo(
+    () => localSortAndFilterArtworks(artworks as any, appliedFiltersState, filterOptions, query),
+    [artworks, appliedFiltersState, filterOptions, query]
   )
 
   useEffect(() => {
@@ -80,6 +81,32 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     )
   }, [])
 
+  const keyExtractor = useCallback((item: (typeof filteredArtworks)[0]) => item.id, [])
+
+  const shouldDisplaySpinner = isLoadingNext && hasNext
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Box mb="80px" pt={2}>
+        <FilteredArtworkGridZeroState hideClearButton />
+      </Box>
+    ),
+    []
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
+
+  const onEndReached = useCallback(() => {
+    if (hasNext && !isLoadingNext) {
+      loadNext(PAGE_SIZE)
+    }
+  }, [hasNext, isLoadingNext, loadNext])
+
   const RefreshControl = useRefreshControl(refetch)
 
   if (!data.myCollectionConnection) {
@@ -94,8 +121,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     return <MyCollectionZeroState RefreshControl={RefreshControl} />
   }
 
-  const shouldDisplaySpinner = isLoadingNext && hasNext
-
   return (
     <Flex flex={1}>
       <ArtworkFilterNavigator
@@ -108,23 +133,13 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
         data={filteredArtworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <FilteredArtworkGridZeroState hideClearButton />
-          </Box>
-        }
-        keyExtractor={(item) => item.id}
+        contentContainerStyle={contentContainerStyle}
+        ListEmptyComponent={listEmptyComponent}
+        keyExtractor={keyExtractor}
         renderItem={renderItem}
-        onEndReached={() => {
-          if (hasNext && !isLoadingNext) {
-            loadNext(PAGE_SIZE)
-          }
-        }}
+        onEndReached={onEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        ListFooterComponent={listFooterComponent}
         refreshControl={RefreshControl}
       />
     </Flex>
