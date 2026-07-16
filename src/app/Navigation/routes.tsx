@@ -57,6 +57,7 @@ import {
 } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
+import { ArtworkArtistGame } from "app/Scenes/ArtworkArtistGame/ArtworkArtistGame"
 import {
   ArtworkAttributionClassFAQQueryRenderer,
   ArtworkAttributionClassFAQScreenQuery,
@@ -364,6 +365,17 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ActivityItemQuery],
+  },
+  {
+    path: "/artwork-artist-game",
+    name: "ArtworkArtistGame",
+    Component: ArtworkArtistGame,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+      hidesBottomTabs: true,
+    },
   },
   {
     path: "/art-quiz",
