@@ -70,7 +70,7 @@ export const FollowArtists: React.FC = () => {
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="Go to home"
+            accessibilityLabel="Skip to home"
             onPress={() => {
               trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
               trackCompletedOnboarding()
@@ -80,7 +80,7 @@ export const FollowArtists: React.FC = () => {
             haptic
           >
             <Flex flexDirection="row" alignItems="center" gap={0.5}>
-              <Text>Go to home</Text>
+              <Text>Skip to home</Text>
               <ChevronRightIcon fill="mono100" />
             </Flex>
           </Touchable>
