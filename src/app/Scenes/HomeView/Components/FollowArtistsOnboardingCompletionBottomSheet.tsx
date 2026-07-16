@@ -12,7 +12,7 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 
-export const ArtistSaveOnboardingBottomSheet = () => {
+export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
     (state) => state.onboarding.showFollowedArtistSummaryBottomSheet
   )
@@ -74,7 +74,7 @@ export const ArtistSaveOnboardingBottomSheet = () => {
     <AutomountedBottomSheetModal
       enableDynamicSizing
       visible={isVisible}
-      name="ArtistSaveOnboardingBottomSheet"
+      name="FollowArtistsOnboardingCompletionBottomSheet"
       onDismiss={handleDismiss}
       backdropComponent={renderBackdrop}
     >
