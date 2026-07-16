@@ -69,10 +69,10 @@ describe("FollowArtists", () => {
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
     })
 
-    it("does not show the Cancel button when there is no query", () => {
+    it("does not show the Clear button when there is no query", () => {
       renderWithWrappers(<FollowArtists />)
 
-      expect(screen.queryByText("Cancel")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
   })
 
@@ -95,32 +95,32 @@ describe("FollowArtists", () => {
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
     })
 
-    it("shows Cancel button when query is non-empty", () => {
+    it("shows Clear button when query is non-empty", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
 
-      expect(screen.getByText("Cancel")).toBeOnTheScreen()
+      expect(screen.getByText("Clear")).toBeOnTheScreen()
     })
 
-    it("pressing Cancel clears the query and returns to ordered set", () => {
+    it("pressing Clear clears the query and returns to ordered set", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
       expect(screen.getByText("SearchResults")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Cancel"))
+      fireEvent.press(screen.getByText("Clear"))
 
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
-      expect(screen.queryByText("Cancel")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
 
-    it("pressing Cancel dismisses the keyboard", () => {
+    it("pressing Clear dismisses the keyboard", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
-      fireEvent.press(screen.getByText("Cancel"))
+      fireEvent.press(screen.getByText("Clear"))
 
       expect(dismissSpy).toHaveBeenCalledTimes(1)
     })

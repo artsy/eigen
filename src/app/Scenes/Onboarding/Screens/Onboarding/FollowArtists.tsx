@@ -110,7 +110,7 @@ export const FollowArtists: React.FC = () => {
                 haptic
               >
                 <Text variant="sm-display" color="mono60">
-                  Cancel
+                  Clear
                 </Text>
               </Touchable>
             )}
