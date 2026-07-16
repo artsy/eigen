@@ -31071,6 +31071,26 @@ type Query {
     )
 
   """
+  A connection of artworks matching an uploaded query image, using a pure vector (neural) image search.
+  """
+  artworksByImageConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    S3 bucket of the uploaded query image.
+    """
+    s3Bucket: String!
+
+    """
+    S3 key of the uploaded query image.
+    """
+    s3Key: String!
+  ): ArtworkConnection
+
+  """
   Artworks Elastic Search results
   """
   artworksConnection(
@@ -40726,6 +40746,26 @@ type Viewer {
     @deprecated(
       reason: "This is only for use in resolving stitched queries, not for first-class client use!"
     )
+
+  """
+  A connection of artworks matching an uploaded query image, using a pure vector (neural) image search.
+  """
+  artworksByImageConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    S3 bucket of the uploaded query image.
+    """
+    s3Bucket: String!
+
+    """
+    S3 key of the uploaded query image.
+    """
+    s3Key: String!
+  ): ArtworkConnection
 
   """
   Artworks Elastic Search results
