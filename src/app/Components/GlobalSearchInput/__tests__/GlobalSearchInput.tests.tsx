@@ -85,17 +85,21 @@ describe("GlobalSearchInput", () => {
       expect(requestPhotos).toHaveBeenCalledWith(false)
     })
 
-    it("keeps the buttons visible after a query is entered", async () => {
+    it("collapses to the title (without hiding) once the user starts typing", async () => {
       renderOverlay()
 
+      // expanded before typing: buttons visible
       await screen.findByText("Take a photo")
+
       fireEvent.changeText(
         screen.getByLabelText("Search artists, artworks, galleries etc."),
         "banksy"
       )
 
-      expect(screen.getByText("Take a photo")).toBeTruthy()
-      expect(screen.getByText("Add an image")).toBeTruthy()
+      // collapsed: buttons gone, but the title is still there (never fully hidden)
+      expect(screen.queryByText("Take a photo")).toBeNull()
+      expect(screen.queryByText("Add an image")).toBeNull()
+      expect(screen.getByText("See it? Search it.")).toBeTruthy()
     })
 
     it("collapses to the title only and expands again when toggling the chevron", async () => {

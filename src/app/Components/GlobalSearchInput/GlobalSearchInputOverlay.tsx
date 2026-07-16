@@ -153,7 +153,13 @@ export const GlobalSearchInputOverlay: React.FC<{
     }
   })
 
-  // Collapse the footer once the user starts scrolling the results/recent searches.
+  // Collapse the prompt to its title once the user starts typing; expand it again when the
+  // query is cleared. It's never hidden — the title stays with a chevron to re-expand.
+  useEffect(() => {
+    setIsFooterExpanded(!query)
+  }, [query])
+
+  // Also collapse it as soon as the user starts scrolling the results/recent searches.
   const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
 
   const uploadAndSearchByImage = async (imagePath?: string) => {
@@ -224,11 +230,10 @@ export const GlobalSearchInputOverlay: React.FC<{
             </Suspense>
           </Flex>
 
-          {/* KeyboardStickyView lifts the footer above the keyboard while it's open. When
-           the keyboard is folded/dismissed the negative `closed` offset lifts the footer
-           above the absolutely-positioned bottom tab bar (BOTTOM_TABS_HEIGHT + safe area),
-           which would otherwise cover it, so the buttons stay visible in both states.
-           */}
+          {/* The image-search prompt is always present (never fully hidden). It shows in full
+           before searching, and collapses to just its title once the user starts typing — the
+           chevron lets them re-expand. KeyboardStickyView keeps it above the keyboard; the
+           negative `closed` offset lifts it above the bottom tab bar when the keyboard folds. */}
           <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
             <Box backgroundColor="blue10" px={2} py={1}>
               <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
