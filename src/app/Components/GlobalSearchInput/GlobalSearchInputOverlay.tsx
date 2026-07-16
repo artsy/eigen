@@ -117,6 +117,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const [query, setQuery] = useState("")
   const [shouldRender, setShouldRender] = useState(false)
   const [isFooterExpanded, setIsFooterExpanded] = useState(true)
+  const [uploadingSource, setUploadingSource] = useState<"camera" | "library" | null>(null)
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
@@ -166,11 +167,16 @@ export const GlobalSearchInputOverlay: React.FC<{
   // Also collapse it as soon as the user starts scrolling the results/recent searches.
   const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
 
-  const uploadAndSearchByImage = async (imagePath?: string) => {
+  const uploadAndSearchByImage = async (
+    imagePath: string | undefined,
+    source: "camera" | "library"
+  ) => {
     if (!imagePath) {
       return
     }
 
+    // Uploading to S3 can take a few seconds — show a loading state so the user has feedback.
+    setUploadingSource(source)
     try {
       const { key, bucket } = await uploadImageToS3(imagePath)
       hideModal()
@@ -179,13 +185,15 @@ export const GlobalSearchInputOverlay: React.FC<{
       })
     } catch (error) {
       console.error("Failed to upload image to S3", error)
+    } finally {
+      setUploadingSource(null)
     }
   }
 
   const handleTakePhoto = async () => {
     try {
       const photo = await ImagePicker.openCamera({ mediaType: "photo" })
-      await uploadAndSearchByImage(photo.path)
+      await uploadAndSearchByImage(photo.path, "camera")
     } catch (error) {
       // User cancelled the camera or denied permission — no-op
     }
@@ -194,7 +202,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const handleAddImage = async () => {
     try {
       const [photo] = await requestPhotos(false)
-      await uploadAndSearchByImage(photo?.path)
+      await uploadAndSearchByImage(photo?.path, "library")
     } catch (error) {
       // User cancelled the photo picker — no-op
     }
@@ -262,7 +270,13 @@ export const GlobalSearchInputOverlay: React.FC<{
                   </Text>
                   <Flex flexDirection="row">
                     <Flex flex={1}>
-                      <Button block variant="fillDark" onPress={handleTakePhoto}>
+                      <Button
+                        block
+                        variant="fillDark"
+                        onPress={handleTakePhoto}
+                        loading={uploadingSource === "camera"}
+                        disabled={!!uploadingSource}
+                      >
                         Take a photo
                       </Button>
                     </Flex>
@@ -270,7 +284,13 @@ export const GlobalSearchInputOverlay: React.FC<{
                     <Spacer x={1} />
 
                     <Flex flex={1}>
-                      <Button block variant="fillDark" onPress={handleAddImage}>
+                      <Button
+                        block
+                        variant="fillDark"
+                        onPress={handleAddImage}
+                        loading={uploadingSource === "library"}
+                        disabled={!!uploadingSource}
+                      >
                         Add an image
                       </Button>
                     </Flex>

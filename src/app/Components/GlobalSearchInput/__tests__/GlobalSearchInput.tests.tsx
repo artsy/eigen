@@ -109,6 +109,33 @@ describe("GlobalSearchInput", () => {
       })
     })
 
+    it("shows a loading state while uploading and only navigates once it finishes", async () => {
+      ;(navigate as jest.Mock).mockClear()
+      ;(ImagePicker.openCamera as jest.Mock).mockResolvedValueOnce({ path: "file:///camera.jpg" })
+      let resolveUpload: (value: { key: string; bucket: string }) => void = () => {}
+      ;(uploadImageToS3 as jest.Mock).mockReturnValueOnce(
+        new Promise((resolve) => {
+          resolveUpload = resolve
+        })
+      )
+      renderOverlay()
+
+      fireEvent.press(await screen.findByText("Take a photo"))
+
+      // upload is in flight — the button shows a loading state and we haven't navigated yet
+      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalledWith("file:///camera.jpg"))
+      expect(navigate).not.toHaveBeenCalled()
+
+      // once the upload resolves, we navigate to the results screen
+      resolveUpload({ key: "some-key", bucket: "some-bucket" })
+
+      await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith("/image-search-results", {
+          passProps: { s3Key: "some-key", s3Bucket: "some-bucket" },
+        })
+      )
+    })
+
     it("collapses to the title (without hiding) once the user starts typing", async () => {
       renderOverlay()
 
