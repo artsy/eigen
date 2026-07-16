@@ -15,4 +15,12 @@ describe("CollectorNote", () => {
 
     expect(screen.queryByText("Curator’s note")).not.toBeOnTheScreen()
   })
+
+  it("shows a Read more cue for long notes but not short ones", () => {
+    const { rerender } = renderWithWrappers(<CollectorNote note="A short note." />)
+    expect(screen.queryByText("Read more")).not.toBeOnTheScreen()
+
+    rerender(<CollectorNote note={"A much longer curator note ".repeat(6)} />)
+    expect(screen.getByText("Read more")).toBeOnTheScreen()
+  })
 })

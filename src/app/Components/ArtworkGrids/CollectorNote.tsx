@@ -9,6 +9,12 @@ interface CollectorNoteProps {
   dark?: boolean
 }
 
+// The inline badge shows at most 2 lines. Notes longer than this are very likely
+// to be truncated in the narrow grid/rail card, so we surface a "Read more" cue.
+// A length heuristic keeps layout stable (no measuring pass that could momentarily
+// render the full note) and is good enough for a fixed-width card.
+const READ_MORE_THRESHOLD = 80
+
 /**
  * Renders a curator's note for an artwork within a marketing collection.
  *
@@ -29,6 +35,8 @@ export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false
 
   const primaryColor = dark ? "mono0" : "mono100"
   const secondaryColor = dark ? "mono30" : "mono60"
+  const linkColor = dark ? "mono0" : "blue100"
+  const showReadMore = note.length > READ_MORE_THRESHOLD
 
   // The bottom sheet renders differently on iOS vs Android; mirror the pattern
   // used elsewhere in the app (see AlertBottomSheet).
@@ -48,6 +56,11 @@ export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false
           <Text color={primaryColor} variant="xs" numberOfLines={2} ellipsizeMode="tail">
             {note}
           </Text>
+          {!!showReadMore && (
+            <Text color={linkColor} variant="xs" underline>
+              Read more
+            </Text>
+          )}
         </Flex>
       </Touchable>
 
