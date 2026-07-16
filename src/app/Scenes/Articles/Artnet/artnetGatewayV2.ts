@@ -47,8 +47,8 @@ const postToArtnetGateway = async <T>(
 export type ArtnetSort = "DESC" | "ASC"
 
 export interface ArtnetEditorialFilters {
-  /** category.databaseId values → `categoryIn` */
-  sectionIds?: number[]
+  /** category.databaseId values (as strings) → `categoryIn` */
+  sectionIds?: string[]
   /** topic.slug values → `topicIn` */
   topicSlugs?: string[]
   /** contributor.nicename values → `contributorIn` */
@@ -57,6 +57,13 @@ export interface ArtnetEditorialFilters {
   /** sort by publish date; defaults to DESC (newest first) */
   sort?: ArtnetSort
 }
+
+/** Number of active filters (for the Filter button badge / Clear enablement). Sort is excluded. */
+export const countActiveArtnetFilters = (filters: ArtnetEditorialFilters): number =>
+  (filters.sectionIds?.length ?? 0) +
+  (filters.topicSlugs?.length ?? 0) +
+  (filters.authorNicenames?.length ?? 0) +
+  (filters.search ? 1 : 0)
 
 export interface ArtnetFeedArticle {
   databaseId: number
@@ -151,5 +158,63 @@ export const fetchArtnetEditorialFeed = async ({
     articles: data.posts?.nodes ?? [],
     hasNextPage: data.posts?.pageInfo?.hasNextPage ?? false,
     endCursor: data.posts?.pageInfo?.endCursor ?? null,
+  }
+}
+
+/** A single selectable filter option. `value` is what gets sent to the feed query. */
+export interface ArtnetFacetOption {
+  label: string
+  value: string
+  count: number
+}
+
+export interface ArtnetFilterFacets {
+  /** sections — `value` is category.databaseId (→ `categoryIn`) */
+  sections: ArtnetFacetOption[]
+  /** topics — `value` is topic.slug (→ `topicIn`) */
+  topics: ArtnetFacetOption[]
+  /** authors — `value` is contributor.nicename (→ `contributorIn`) */
+  authors: ArtnetFacetOption[]
+}
+
+// `topics`/`contributors` are custom to this POC; `categories` is standard
+// WPGraphQL. Authors use displayName/nicename (not the cap-prefixed raw slug).
+const FILTER_FACETS_QUERY = `query ArtnetFilterFacets {
+  categories(first: 100, where: { hideEmpty: true }) {
+    nodes { name databaseId count }
+  }
+  topics(first: 100, where: { hideEmpty: true, orderby: COUNT, order: DESC }) {
+    nodes { name slug count }
+  }
+  contributors(first: 100, where: { hideEmpty: true, orderby: COUNT, order: DESC }) {
+    nodes { displayName nicename count }
+  }
+}`
+
+export const fetchArtnetFilterFacets = async (): Promise<ArtnetFilterFacets> => {
+  const data = await postToArtnetGateway<{
+    categories: {
+      nodes: { name: string | null; databaseId: number; count: number | null }[]
+    } | null
+    topics: { nodes: { name: string | null; slug: string | null; count: number | null }[] } | null
+    contributors: {
+      nodes: { displayName: string | null; nicename: string | null; count: number | null }[]
+    } | null
+  }>(FILTER_FACETS_QUERY, {})
+
+  return {
+    sections: (data.categories?.nodes ?? [])
+      .filter((n) => !!n.name)
+      .map((n) => ({ label: n.name as string, value: String(n.databaseId), count: n.count ?? 0 })),
+    topics: (data.topics?.nodes ?? [])
+      .filter((n) => !!n.name && !!n.slug)
+      .map((n) => ({ label: n.name as string, value: n.slug as string, count: n.count ?? 0 })),
+    authors: (data.contributors?.nodes ?? [])
+      .filter((n) => !!n.displayName && !!n.nicename)
+      .map((n) => ({
+        label: n.displayName as string,
+        value: n.nicename as string,
+        count: n.count ?? 0,
+      })),
   }
 }
