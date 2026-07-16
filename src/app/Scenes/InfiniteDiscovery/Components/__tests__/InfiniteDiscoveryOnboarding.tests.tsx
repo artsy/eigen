@@ -35,7 +35,7 @@ describe("InfiniteDiscoveryOnboarding", () => {
     it("shows the overlay immediately", () => {
       renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
-      expect(screen.getByText("Welcome to Discover Daily")).toBeOnTheScreen()
+      expect(screen.getByText("Tap to start swiping")).toBeOnTheScreen()
     })
 
     it("tracks the onboarding view", () => {
@@ -61,13 +61,13 @@ describe("InfiniteDiscoveryOnboarding", () => {
     it("shows the overlay after 1 second on first visit", () => {
       renderWithWrappers(<InfiniteDiscoveryOnboarding artworks={[]} />)
 
-      expect(screen.queryByText("Welcome to Discover Daily")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Tap to get started")).not.toBeOnTheScreen()
 
       act(() => {
         jest.advanceTimersByTime(1000)
       })
 
-      expect(screen.getByText("Welcome to Discover Daily")).toBeOnTheScreen()
+      expect(screen.getByText("Tap to get started")).toBeOnTheScreen()
     })
 
     it("does not show the overlay for a returning visitor", () => {
@@ -78,7 +78,7 @@ describe("InfiniteDiscoveryOnboarding", () => {
         jest.runAllTimers()
       })
 
-      expect(screen.queryByText("Welcome to Discover Daily")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Tap to get started")).not.toBeOnTheScreen()
     })
   })
 })

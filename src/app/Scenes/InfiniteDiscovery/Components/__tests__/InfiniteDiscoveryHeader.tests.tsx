@@ -200,29 +200,12 @@ describe("InfiniteDiscoveryHeader", () => {
         }
       })
 
-      it("shows a Go to home button instead of Skip, with the badge frozen at Complete", () => {
+      it("keeps showing Skip to home, with the badge frozen at Complete, until the user chooses to continue browsing", () => {
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
         expect(screen.getByText("Complete")).toBeOnTheScreen()
-        expect(screen.getByText("Go to home")).toBeOnTheScreen()
-        expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
-      })
-
-      it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
-        const setOnboardingStateSpy = jest.spyOn(
-          GlobalStore.actions.onboarding,
-          "setOnboardingState"
-        )
-
-        renderWithWrappers(<InfiniteDiscoveryHeader />)
-
-        fireEvent.press(screen.getByLabelText("Exit new user onboarding"))
-
-        expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
-        expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
-        expect(mockTrackEvent).not.toHaveBeenCalledWith(
-          expect.objectContaining({ action: ActionType.tappedSkip })
-        )
+        expect(screen.getByText("Skip to home")).toBeOnTheScreen()
+        expect(screen.queryByText("Go to home")).not.toBeOnTheScreen()
       })
 
       it("keeps the badge frozen at Complete even if a saved artwork is removed", () => {
@@ -231,6 +214,38 @@ describe("InfiniteDiscoveryHeader", () => {
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
         expect(screen.getByText("Complete")).toBeOnTheScreen()
+      })
+
+      describe("and the user has chosen to continue browsing", () => {
+        beforeEach(() => {
+          GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(
+            false
+          )
+        })
+
+        it("shows a Go to home button instead of Skip", () => {
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          expect(screen.getByText("Go to home")).toBeOnTheScreen()
+          expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
+        })
+
+        it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
+          const setOnboardingStateSpy = jest.spyOn(
+            GlobalStore.actions.onboarding,
+            "setOnboardingState"
+          )
+
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          fireEvent.press(screen.getByLabelText("Exit new user onboarding"))
+
+          expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
+          expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+          expect(mockTrackEvent).not.toHaveBeenCalledWith(
+            expect.objectContaining({ action: ActionType.tappedSkip })
+          )
+        })
       })
     })
   })

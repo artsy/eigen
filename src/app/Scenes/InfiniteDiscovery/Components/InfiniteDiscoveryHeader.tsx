@@ -33,6 +33,11 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const newUserOnboardingGoalReached = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
   )
+  const newUserOnboardingCompletionBottomSheetVisible = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
+  )
+  const hasChosenToContinueBrowsing =
+    newUserOnboardingGoalReached && !newUserOnboardingCompletionBottomSheetVisible
   const displayedSavedArtworkCount = newUserOnboardingGoalReached
     ? 5
     : newUserOnboardingSavedArtworkCount
@@ -43,7 +48,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipOrExitPressed = () => {
-    if (!newUserOnboardingGoalReached) {
+    if (!hasChosenToContinueBrowsing) {
       trackTappedSkip(ContextModule.onboardingFlow, OwnerType.infiniteDiscoveryArtwork)
     }
     trackCompletedOnboarding()
@@ -98,7 +103,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
             <Touchable
               accessibilityRole="button"
               accessibilityLabel={
-                newUserOnboardingGoalReached
+                hasChosenToContinueBrowsing
                   ? "Exit new user onboarding"
                   : "Skip new user onboarding"
               }
@@ -107,7 +112,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
               haptic
             >
               <Flex flexDirection="row" alignItems="center" gap={0.5}>
-                <Text>{newUserOnboardingGoalReached ? "Go to home" : "Skip to home"}</Text>
+                <Text>{hasChosenToContinueBrowsing ? "Go to home" : "Skip to home"}</Text>
                 <ChevronRightIcon fill="onBackgroundHigh" />
               </Flex>
             </Touchable>
