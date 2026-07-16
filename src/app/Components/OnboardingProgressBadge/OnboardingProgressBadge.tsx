@@ -31,7 +31,7 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   }
 
   return (
-    <Text variant="sm-display" color="mono100" style={{ fontVariant: ["tabular-nums"] }}>
+    <Text variant="sm-display" color="mono100">
       <Text variant="sm-display" weight="medium" color="blue100">
         {current}
       </Text>
