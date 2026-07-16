@@ -116,6 +116,7 @@ import {
   HOME_SECTION_SCREEN_QUERY,
   HomeViewSectionScreenQueryRenderer,
 } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
+import { ImageSearchResultsScreen } from "app/Scenes/ImageSearchResults/ImageSearchResults"
 import {
   MakeOfferModalQueryRenderer,
   MakeOfferModalScreenQuery,
@@ -589,6 +590,17 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Artwork Recommendations",
+      },
+    },
+  },
+  {
+    path: "/image-search-results",
+    name: "ImageSearchResults",
+    Component: ImageSearchResultsScreen,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
       },
     },
   },

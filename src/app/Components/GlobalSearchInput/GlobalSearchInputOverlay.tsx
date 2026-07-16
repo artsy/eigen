@@ -23,6 +23,10 @@ import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+// Imperative navigation is required here — we navigate after the async image upload
+// resolves, so RouterLink (declarative) can't be used.
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
@@ -169,8 +173,10 @@ export const GlobalSearchInputOverlay: React.FC<{
 
     try {
       const { key, bucket } = await uploadImageToS3(imagePath)
-      // TODO: pass { key, bucket } to the image search query
-      console.warn("Uploaded image to S3", { key, bucket })
+      hideModal()
+      navigate("/image-search-results", {
+        passProps: { s3Key: key, s3Bucket: bucket },
+      })
     } catch (error) {
       console.error("Failed to upload image to S3", error)
     }

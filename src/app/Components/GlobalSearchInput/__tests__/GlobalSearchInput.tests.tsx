@@ -1,16 +1,22 @@
 import { OwnerType } from "@artsy/cohesion"
 import { PortalHost } from "@gorhom/portal"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
+import { navigate } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import ImagePicker from "react-native-image-crop-picker"
 
 jest.mock("app/utils/requestPhotos", () => ({
   requestPhotos: jest.fn(),
+}))
+
+jest.mock("app/utils/uploadImageToS3", () => ({
+  uploadImageToS3: jest.fn(),
 }))
 
 jest.mock("app/utils/hooks/useSelectedTab", () => ({
@@ -69,20 +75,38 @@ describe("GlobalSearchInput", () => {
       expect(screen.getByText("Add an image")).toBeTruthy()
     })
 
-    it("opens the camera when tapping take a photo", async () => {
+    it("uploads the camera photo and opens the image-search results", async () => {
+      ;(ImagePicker.openCamera as jest.Mock).mockResolvedValueOnce({ path: "file:///camera.jpg" })
+      ;(uploadImageToS3 as jest.Mock).mockResolvedValueOnce({
+        key: "some-key",
+        bucket: "some-bucket",
+      })
       renderOverlay()
 
       fireEvent.press(await screen.findByText("Take a photo"))
 
       expect(ImagePicker.openCamera).toHaveBeenCalledWith({ mediaType: "photo" })
+      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalledWith("file:///camera.jpg"))
+      expect(navigate).toHaveBeenCalledWith("/image-search-results", {
+        passProps: { s3Key: "some-key", s3Bucket: "some-bucket" },
+      })
     })
 
-    it("opens the photo library when tapping add an image", async () => {
+    it("uploads the selected image and opens the image-search results", async () => {
+      ;(requestPhotos as jest.Mock).mockResolvedValueOnce([{ path: "file:///library.jpg" }])
+      ;(uploadImageToS3 as jest.Mock).mockResolvedValueOnce({
+        key: "some-key",
+        bucket: "some-bucket",
+      })
       renderOverlay()
 
       fireEvent.press(await screen.findByText("Add an image"))
 
       expect(requestPhotos).toHaveBeenCalledWith(false)
+      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalledWith("file:///library.jpg"))
+      expect(navigate).toHaveBeenCalledWith("/image-search-results", {
+        passProps: { s3Key: "some-key", s3Bucket: "some-bucket" },
+      })
     })
 
     it("collapses to the title (without hiding) once the user starts typing", async () => {

@@ -2689,6 +2689,16 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   ): [ArtistInsight!]!
 
   """
+  Instagram media for display on an artist page.
+  """
+  instagramMedia(
+    """
+    The number of media items to return.
+    """
+    first: Int
+  ): [ArtistInstagramMedia]
+
+  """
   A type-specific ID likely used as a database ID.
   """
   internalID: ID!
@@ -3021,6 +3031,13 @@ type ArtistInsightsCount {
   groupShowCount: Int!
   reviewedCount: Int!
   soloShowCount: Int!
+}
+
+type ArtistInstagramMedia {
+  caption: String
+  image: Image
+  internalID: String
+  permalink: String
 }
 
 type ArtistMeta {
@@ -18864,9 +18881,42 @@ type FeatureFlag {
   variants: [FeatureFlagVariantType]
 }
 
+type FeatureFlagConstraint {
+  caseInsensitive: Boolean
+  contextName: String
+  inverted: Boolean
+  operator: String
+
+  """
+  The Partners referenced by this constraint's values, resolved when contextName is `partnerId`
+  """
+  partnerConnection(after: String, before: String, first: Int, last: Int): PartnerConnection
+  value: String
+  values: [String]
+}
+
 type FeatureFlagEnvironments {
   enabled: Boolean!
   name: String!
+  strategies: [FeatureFlagStrategy]
+}
+
+type FeatureFlagSegment {
+  constraints: [FeatureFlagConstraint]
+  description: String
+  internalID: Int
+  name: String
+}
+
+type FeatureFlagStrategy {
+  constraints: [FeatureFlagConstraint]
+  name: String
+  parameters: JSON
+
+  """
+  Constraints applied to this strategy via a reusable, named Unleash segment (as opposed to inline constraints)
+  """
+  segments: [FeatureFlagSegment]
 }
 
 input FeatureFlagStrategyInput {
@@ -27023,9 +27073,47 @@ type OfferResponse {
 
 type OfferableActivity {
   """
+  Details of the collectors with eligible offerable activities.
+  """
+  collectors: [OfferableActivityCollector]
+
+  """
   Count of collectors with eligible offerable activities.
   """
   totalCount: Int
+}
+
+"""
+A collector with eligible offerable activity on the artwork, and how they engaged with it.
+"""
+type OfferableActivityCollector {
+  confirmedBuyerAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  firstNameLastInitial: String
+  icon: Image
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  isIdentityVerified: Boolean
+  location: MyLocation
+
+  """
+  The way this collector engaged with the artwork (e.g. saved it and/or abandoned an order).
+  """
+  sources: [PartnerOfferSourceEnum]
 }
 
 type OpeningHoursArray {
@@ -30981,6 +31069,26 @@ type Query {
     @deprecated(
       reason: "This is only for use in resolving stitched queries, not for first-class client use!"
     )
+
+  """
+  A connection of artworks matching an uploaded query image, using a pure vector (neural) image search.
+  """
+  artworksByImageConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    S3 bucket of the uploaded query image.
+    """
+    s3Bucket: String!
+
+    """
+    S3 key of the uploaded query image.
+    """
+    s3Key: String!
+  ): ArtworkConnection
 
   """
   Artworks Elastic Search results
@@ -40638,6 +40746,26 @@ type Viewer {
     @deprecated(
       reason: "This is only for use in resolving stitched queries, not for first-class client use!"
     )
+
+  """
+  A connection of artworks matching an uploaded query image, using a pure vector (neural) image search.
+  """
+  artworksByImageConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    S3 bucket of the uploaded query image.
+    """
+    s3Bucket: String!
+
+    """
+    S3 key of the uploaded query image.
+    """
+    s3Key: String!
+  ): ArtworkConnection
 
   """
   Artworks Elastic Search results
