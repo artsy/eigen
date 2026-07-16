@@ -229,7 +229,7 @@ export const GlobalSearchInputOverlay: React.FC<{
 
                 <Flex flex={1}>
                   <Button block variant="fillDark" onPress={handleAddImage}>
-                    Upload an image
+                    Add an image
                   </Button>
                 </Flex>
               </Flex>

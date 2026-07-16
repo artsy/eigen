@@ -25,11 +25,24 @@ describe("uploadImageToS3", () => {
   })
 
   it("uploads the image and returns the s3 key and bucket", async () => {
-    const result = await uploadImageToS3("file:///photo.jpg")
+    const result = await uploadImageToS3("file:///tmp/my-photo.jpg")
 
     expect(uploadFileToS3Mock).toHaveBeenCalledWith(
-      expect.objectContaining({ filePath: "file:///photo.jpg", acl: "private" })
+      expect.objectContaining({
+        filePath: "file:///tmp/my-photo.jpg",
+        acl: "private",
+        // derived from the path so the key doesn't end in `/undefined`
+        filename: "my-photo.jpg",
+      })
     )
     expect(result).toEqual({ key: "test-key", bucket: "test-bucket" })
+  })
+
+  it("falls back to a default filename when the path has none", async () => {
+    await uploadImageToS3("")
+
+    expect(uploadFileToS3Mock).toHaveBeenCalledWith(
+      expect.objectContaining({ filename: "photo.jpg" })
+    )
   })
 })

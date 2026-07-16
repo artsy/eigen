@@ -28,10 +28,15 @@ export async function uploadImageToS3(imagePath: string): Promise<S3ImageUpload>
 
   const bucket = assetCredentials.policyDocument.conditions.bucket
 
+  // Derive a filename from the local path so the S3 key ends in a real name
+  // (e.g. `<geminiKey>+/photo.jpg`) instead of `<geminiKey>+/undefined`.
+  const filename = imagePath.split("/").pop() || "photo.jpg"
+
   const { key } = await uploadFileToS3({
     filePath: imagePath,
     acl,
     assetCredentials,
+    filename,
   })
 
   return { key, bucket }
