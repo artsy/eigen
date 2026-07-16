@@ -1,10 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -13,9 +14,11 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
-import { KeyboardController } from "react-native-keyboard-controller"
+import ImagePicker from "react-native-image-crop-picker"
+import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -133,6 +136,24 @@ export const GlobalSearchInputOverlay: React.FC<{
     }
   })
 
+  const handleTakePhoto = async () => {
+    try {
+      await ImagePicker.openCamera({ mediaType: "photo" })
+      // TODO: pass the captured photo to the image search flow
+    } catch (error) {
+      // User cancelled the camera or denied permission — no-op
+    }
+  }
+
+  const handleAddImage = async () => {
+    try {
+      await requestPhotos(false)
+      // TODO: pass the selected image to the image search flow
+    } catch (error) {
+      // User cancelled the photo picker — no-op
+    }
+  }
+
   if (!shouldRender) {
     return null
   }
@@ -140,11 +161,9 @@ export const GlobalSearchInputOverlay: React.FC<{
   return (
     <Portal hostName={`${ownerType}-SearchOverlay`}>
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
-        <Flex
-          flex={1}
-          backgroundColor="mono0"
-          style={{ top: insets.top, marginBottom: insets.bottom }}
-        >
+        {/* Use paddingTop (not `top`) so the container stays full-screen height and its
+         bottom edge isn't pushed off-screen, which was cropping the footer below. */}
+        <Flex flex={1} backgroundColor="mono0" style={{ paddingTop: insets.top }}>
           <Flex px={2} mt={2}>
             <RoundSearchInput
               placeholder={SEARCH_INPUT_PLACEHOLDER}
@@ -163,9 +182,35 @@ export const GlobalSearchInputOverlay: React.FC<{
 
           <Spacer y={2} />
 
-          <Suspense fallback={null}>
-            <GlobalSearchInputOverlayContent query={query} />
-          </Suspense>
+          {/* Bound the content to the available space so it lays out above the footer,
+           which reserves the footer's height in normal flow (no overlap, no crop). */}
+          <Flex flex={1}>
+            <Suspense fallback={null}>
+              <GlobalSearchInputOverlayContent query={query} />
+            </Suspense>
+          </Flex>
+
+          {/* KeyboardStickyView lifts the footer above the keyboard while it's open. When
+           the keyboard is folded/dismissed the negative `closed` offset lifts the footer
+           above the absolutely-positioned bottom tab bar (BOTTOM_TABS_HEIGHT + safe area),
+           which would otherwise cover it, so the buttons stay visible in both states. */}
+          <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
+            <Flex flexDirection="row" px={2} py={1} backgroundColor="mono0">
+              <Flex flex={1}>
+                <Button block variant="outline" onPress={handleTakePhoto}>
+                  Take a photo
+                </Button>
+              </Flex>
+
+              <Spacer x={1} />
+
+              <Flex flex={1}>
+                <Button block variant="outline" onPress={handleAddImage}>
+                  Add an image
+                </Button>
+              </Flex>
+            </Flex>
+          </KeyboardStickyView>
         </Flex>
       </Animated.View>
     </Portal>

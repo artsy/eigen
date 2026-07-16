@@ -1,9 +1,17 @@
 import { OwnerType } from "@artsy/cohesion"
+import { PortalHost } from "@gorhom/portal"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import ImagePicker from "react-native-image-crop-picker"
+
+jest.mock("app/utils/requestPhotos", () => ({
+  requestPhotos: jest.fn(),
+}))
 
 jest.mock("app/utils/hooks/useSelectedTab", () => ({
   useSelectedTab: jest.fn(),
@@ -43,5 +51,51 @@ describe("GlobalSearchInput", () => {
         context_screen_owner_type: "home",
       })
     )
+  })
+
+  describe("when the search overlay is active", () => {
+    const renderOverlay = () =>
+      renderWithWrappers(
+        <>
+          <GlobalSearchInputOverlay ownerType={OwnerType.search} visible hideModal={jest.fn()} />
+          <PortalHost name={`${OwnerType.search}-SearchOverlay`} />
+        </>
+      )
+
+    it("renders the take a photo and add an image buttons", async () => {
+      renderOverlay()
+
+      await screen.findByText("Take a photo")
+      expect(screen.getByText("Add an image")).toBeTruthy()
+    })
+
+    it("opens the camera when tapping take a photo", async () => {
+      renderOverlay()
+
+      fireEvent.press(await screen.findByText("Take a photo"))
+
+      expect(ImagePicker.openCamera).toHaveBeenCalledWith({ mediaType: "photo" })
+    })
+
+    it("opens the photo library when tapping add an image", async () => {
+      renderOverlay()
+
+      fireEvent.press(await screen.findByText("Add an image"))
+
+      expect(requestPhotos).toHaveBeenCalledWith(false)
+    })
+
+    it("keeps the buttons visible after a query is entered", async () => {
+      renderOverlay()
+
+      await screen.findByText("Take a photo")
+      fireEvent.changeText(
+        screen.getByLabelText("Search artists, artworks, galleries etc."),
+        "banksy"
+      )
+
+      expect(screen.getByText("Take a photo")).toBeTruthy()
+      expect(screen.getByText("Add an image")).toBeTruthy()
+    })
   })
 })
