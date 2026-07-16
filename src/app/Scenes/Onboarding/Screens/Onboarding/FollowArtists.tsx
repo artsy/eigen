@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
   Box,
   Button,
@@ -63,11 +64,13 @@ export const FollowArtists: React.FC = () => {
   return (
     <Screen>
       <Screen.Header
-        leftElements={<OnboardingProgressBadge current={count} total={MIN_FOLLOWED} />}
+        leftElements={
+          <OnboardingProgressBadge current={count} total={MIN_FOLLOWED} unit="follows" />
+        }
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="Skip new user onboarding"
+            accessibilityLabel="Skip to home"
             onPress={() => {
               trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
               trackCompletedOnboarding()
@@ -76,7 +79,10 @@ export const FollowArtists: React.FC = () => {
             hitSlop={DEFAULT_HIT_SLOP}
             haptic
           >
-            <Text>Skip</Text>
+            <Flex flexDirection="row" alignItems="center" gap={0.5}>
+              <Text>Skip to home</Text>
+              <ChevronRightIcon fill="mono100" />
+            </Flex>
           </Touchable>
         }
       />
@@ -86,9 +92,8 @@ export const FollowArtists: React.FC = () => {
 
       <Screen.Body disableKeyboardAvoidance>
         <Box mt={2}>
-          <Text variant="lg-display">Tell us which artists you're interested in?</Text>
-          <Text variant="sm-display" color="mono60" mt={1}>
-            Follow {MIN_FOLLOWED} or more artists to see more of their work.
+          <Text variant="lg-display">
+            Show us what you're drawn to, follow {MIN_FOLLOWED} or more artists to get started.
           </Text>
         </Box>
         <Spacer y={2} />
@@ -105,7 +110,7 @@ export const FollowArtists: React.FC = () => {
                 haptic
               >
                 <Text variant="sm-display" color="mono60">
-                  Cancel
+                  Clear
                 </Text>
               </Touchable>
             )}
@@ -137,6 +142,7 @@ export const FollowArtists: React.FC = () => {
         <KeyboardStickyView>
           <Flex p={2} backgroundColor="mono0">
             <Button
+              testID="continue-button"
               block
               disabled={count < MIN_FOLLOWED}
               onPress={() => {
@@ -145,7 +151,7 @@ export const FollowArtists: React.FC = () => {
                 GlobalStore.actions.onboarding.setOnboardingState("complete")
               }}
             >
-              Continue to Artsy
+              Go to home
             </Button>
           </Flex>
         </KeyboardStickyView>

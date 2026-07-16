@@ -128,7 +128,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
             </Button>
 
             <Button block variant="fillDark" onPress={handleTakeMeHome}>
-              Take Me Home
+              Go to home
             </Button>
           </Flex>
         </Flex>

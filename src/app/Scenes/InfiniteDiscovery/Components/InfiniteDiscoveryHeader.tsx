@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
+import { ChevronDownIcon, ChevronRightIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
@@ -33,6 +33,11 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const newUserOnboardingGoalReached = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
   )
+  const newUserOnboardingCompletionBottomSheetVisible = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
+  )
+  const hasChosenToContinueBrowsing =
+    newUserOnboardingGoalReached && !newUserOnboardingCompletionBottomSheetVisible
   const displayedSavedArtworkCount = newUserOnboardingGoalReached
     ? 5
     : newUserOnboardingSavedArtworkCount
@@ -43,7 +48,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleSkipOrExitPressed = () => {
-    if (!newUserOnboardingGoalReached) {
+    if (!hasChosenToContinueBrowsing) {
       trackTappedSkip(ContextModule.onboardingFlow, OwnerType.infiniteDiscoveryArtwork)
     }
     trackCompletedOnboarding()
@@ -90,26 +95,27 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
     return (
       <Flex mb={1}>
         <Screen.Header
-          title="Discover Daily"
-          leftElements={<OnboardingProgressBadge current={displayedSavedArtworkCount} total={5} />}
+          hideTitle
+          leftElements={
+            <OnboardingProgressBadge current={displayedSavedArtworkCount} total={5} unit="saves" />
+          }
           rightElements={
             <Touchable
               accessibilityRole="button"
-              accessibilityLabel={
-                newUserOnboardingGoalReached
-                  ? "Exit new user onboarding"
-                  : "Skip new user onboarding"
-              }
+              accessibilityLabel={hasChosenToContinueBrowsing ? "Go to home" : "Skip to home"}
               onPress={handleSkipOrExitPressed}
               hitSlop={DEFAULT_HIT_SLOP}
               haptic
             >
-              <Text>{newUserOnboardingGoalReached ? "Exit" : "Skip"}</Text>
+              <Flex flexDirection="row" alignItems="center" gap={0.5}>
+                <Text>{hasChosenToContinueBrowsing ? "Go to home" : "Skip to home"}</Text>
+                <ChevronRightIcon fill="mono100" />
+              </Flex>
             </Touchable>
           }
         />
         <Flex px={2}>
-          <StepProgressBar current={newUserOnboardingSavedArtworkCount} total={5} />
+          <StepProgressBar current={displayedSavedArtworkCount} total={5} />
         </Flex>
       </Flex>
     )

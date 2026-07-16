@@ -8,10 +8,10 @@ import { Logo } from "./Logo"
 export type Experience = "experienced" | "beginner"
 
 const EXPERIENCE_OPTIONS: { label: string; experience: Experience }[] = [
-  { label: "I have collected many works (4 or more)", experience: "experienced" },
-  { label: "I have collected a few works (1-3)", experience: "experienced" },
-  { label: "I'm just starting out but have something in mind", experience: "beginner" },
-  { label: "I'm just starting out and want to explore", experience: "beginner" },
+  { label: "I'm an experienced collector (4+ works)", experience: "experienced" },
+  { label: "I've started my collection (1-3 works)", experience: "experienced" },
+  { label: "I'm new to collecting, but I have something in mind", experience: "beginner" },
+  { label: "I'm new to collecting and ready to explore", experience: "beginner" },
 ]
 
 const HORIZONTAL_MARGIN = 20
@@ -61,7 +61,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
         }}
       >
         <Text variant="lg-display" color="mono0">
-          What is your art collecting experience?
+          Where are you in your art collecting journey?
         </Text>
       </MotiView>
 

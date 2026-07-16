@@ -92,6 +92,12 @@ describe("InfiniteDiscoveryHeader", () => {
     expect(moreButton).toHaveAccessibleName("Share Artwork")
   })
 
+  it("shows the Discover Daily title outside of new user onboarding", () => {
+    renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
+
+    expect(screen.getByText("Discover Daily")).toBeOnTheScreen()
+  })
+
   it("shows toast when exiting with saved artworks", () => {
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
@@ -118,10 +124,16 @@ describe("InfiniteDiscoveryHeader", () => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
+    it("hides the Discover Daily title", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      expect(screen.queryByText("Discover Daily")).not.toBeOnTheScreen()
+    })
+
     it("shows the progress badge instead of the exit chevron", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("0/5")).toBeOnTheScreen()
+      expect(screen.getByText("0 of 5 saves")).toBeOnTheScreen()
       expect(screen.queryByTestId("close-icon")).not.toBeOnTheScreen()
     })
 
@@ -136,13 +148,13 @@ describe("InfiniteDiscoveryHeader", () => {
       })
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("2/5")).toBeOnTheScreen()
+      expect(screen.getByText("2 of 5 saves")).toBeOnTheScreen()
     })
 
     it("shows a Skip button instead of the share/more button", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-      expect(screen.getByText("Skip")).toBeOnTheScreen()
+      expect(screen.getByText("Skip to home")).toBeOnTheScreen()
       expect(screen.queryByTestId("top-right-icon")).not.toBeOnTheScreen()
     })
 
@@ -151,7 +163,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
@@ -160,7 +172,7 @@ describe("InfiniteDiscoveryHeader", () => {
     it("tracks the skip tap", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,
@@ -188,37 +200,67 @@ describe("InfiniteDiscoveryHeader", () => {
         }
       })
 
-      it("shows an Exit button instead of Skip, with the badge frozen at 5/5", () => {
+      it("keeps showing Skip to home, with the badge frozen at Complete, until the user chooses to continue browsing", () => {
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-        expect(screen.getByText("5/5")).toBeOnTheScreen()
-        expect(screen.getByText("Exit")).toBeOnTheScreen()
-        expect(screen.queryByText("Skip")).not.toBeOnTheScreen()
+        expect(screen.getByText("Complete")).toBeOnTheScreen()
+        expect(screen.getByText("Skip to home")).toBeOnTheScreen()
+        expect(screen.queryByText("Go to home")).not.toBeOnTheScreen()
       })
 
-      it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
-        const setOnboardingStateSpy = jest.spyOn(
-          GlobalStore.actions.onboarding,
-          "setOnboardingState"
-        )
-
-        renderWithWrappers(<InfiniteDiscoveryHeader />)
-
-        fireEvent.press(screen.getByLabelText("Exit new user onboarding"))
-
-        expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
-        expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
-        expect(mockTrackEvent).not.toHaveBeenCalledWith(
-          expect.objectContaining({ action: ActionType.tappedSkip })
-        )
-      })
-
-      it("keeps the badge frozen at 5/5 even if a saved artwork is removed", () => {
+      it("keeps the badge and progress bar frozen at Complete even if a saved artwork is removed", () => {
         GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
 
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-        expect(screen.getByText("5/5")).toBeOnTheScreen()
+        expect(screen.getByText("Complete")).toBeOnTheScreen()
+        expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
+      })
+
+      describe("and the user has chosen to continue browsing", () => {
+        beforeEach(() => {
+          GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(
+            false
+          )
+        })
+
+        it("shows a Go to home button instead of Skip", () => {
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          expect(screen.getByText("Go to home")).toBeOnTheScreen()
+          expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
+        })
+
+        it("keeps the badge and progress bar frozen at Complete even after unsaving and resaving artworks", () => {
+          GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
+          GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-2")
+          GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+            internalID: "artwork-6",
+            url: "https://example.com/6.jpg",
+          })
+
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          expect(screen.getByText("Complete")).toBeOnTheScreen()
+          expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
+        })
+
+        it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {
+          const setOnboardingStateSpy = jest.spyOn(
+            GlobalStore.actions.onboarding,
+            "setOnboardingState"
+          )
+
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          fireEvent.press(screen.getByLabelText("Go to home"))
+
+          expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
+          expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+          expect(mockTrackEvent).not.toHaveBeenCalledWith(
+            expect.objectContaining({ action: ActionType.tappedSkip })
+          )
+        })
       })
     })
   })

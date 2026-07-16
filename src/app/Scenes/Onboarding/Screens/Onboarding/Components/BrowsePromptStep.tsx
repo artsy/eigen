@@ -21,7 +21,7 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext, onSk
       <Logo />
       <Flex flex={1} justifyContent="center">
         <Text variant="xl" color="mono0">
-          Try our artwork browsing tool to start developing your tastes.
+          We'll show you a selection of art. To get started, save 5 that speak to you.
         </Text>
       </Flex>
       <AnimatedFlex
@@ -35,7 +35,7 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext, onSk
           Start browsing
         </Button>
         <Button variant="fillDark" block onPress={onSkip}>
-          Skip to homepage
+          Skip to home
         </Button>
       </AnimatedFlex>
     </Flex>

@@ -1,28 +1,41 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
+
+export type OnboardingProgressUnit = "follows" | "saves"
+
+const getProgressText = (unit: OnboardingProgressUnit, total: number) => {
+  switch (unit) {
+    case "follows":
+      return `of ${total} follows`
+    case "saves":
+      return `of ${total} saves`
+  }
+}
 
 interface OnboardingProgressBadgeProps {
   current: number
   total: number
+  unit: OnboardingProgressUnit
 }
 
 export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = ({
   current,
   total,
+  unit,
 }) => {
-  return (
-    <Flex
-      backgroundColor="blue100"
-      borderRadius={30}
-      // paddingTop and paddingBottom are offset to center the text
-      style={{ paddingHorizontal: 15, paddingTop: 5, paddingBottom: 8 }}
-      alignItems="center"
-      justifyContent="center"
-      alignSelf="flex-start"
-    >
-      {/* tabular-nums keeps all digits equal width so the pill doesn't resize as the count changes */}
-      <Text color="mono0" variant="sm-display" style={{ fontVariant: ["tabular-nums"] }}>
-        {Math.min(current, total)}/{total}
+  if (current >= total) {
+    return (
+      <Text variant="sm-display" color="blue100">
+        Complete
       </Text>
-    </Flex>
+    )
+  }
+
+  return (
+    <Text variant="sm-display" color="mono100">
+      <Text variant="sm-display" weight="medium" color="blue100">
+        {current}
+      </Text>
+      {` ${getProgressText(unit, total)}`}
+    </Text>
   )
 }

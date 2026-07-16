@@ -24,7 +24,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
     expect(screen.getByText("Continue Browsing")).toBeOnTheScreen()
-    expect(screen.getByText("Take Me Home")).toBeOnTheScreen()
+    expect(screen.getByText("Go to home")).toBeOnTheScreen()
   })
 
   it('"Continue Browsing" hides the sheet and keeps onboarding incomplete', () => {
@@ -42,13 +42,13 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("incomplete")
   })
 
-  it('"Take Me Home" hides the sheet and completes onboarding', () => {
+  it('"Go to home" hides the sheet and completes onboarding', () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Take Me Home"))
+    fireEvent.press(screen.getByText("Go to home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(

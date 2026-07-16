@@ -69,10 +69,10 @@ describe("FollowArtists", () => {
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
     })
 
-    it("does not show the Cancel button when there is no query", () => {
+    it("does not show the Clear button when there is no query", () => {
       renderWithWrappers(<FollowArtists />)
 
-      expect(screen.queryByText("Cancel")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
   })
 
@@ -95,42 +95,42 @@ describe("FollowArtists", () => {
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
     })
 
-    it("shows Cancel button when query is non-empty", () => {
+    it("shows Clear button when query is non-empty", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
 
-      expect(screen.getByText("Cancel")).toBeOnTheScreen()
+      expect(screen.getByText("Clear")).toBeOnTheScreen()
     })
 
-    it("pressing Cancel clears the query and returns to ordered set", () => {
+    it("pressing Clear clears the query and returns to ordered set", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
       expect(screen.getByText("SearchResults")).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByText("Cancel"))
+      fireEvent.press(screen.getByText("Clear"))
 
       expect(screen.queryByText("SearchResults")).not.toBeOnTheScreen()
       expect(screen.getByText("OrderedSet")).toBeOnTheScreen()
-      expect(screen.queryByText("Cancel")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
     })
 
-    it("pressing Cancel dismisses the keyboard", () => {
+    it("pressing Clear dismisses the keyboard", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.changeText(screen.getByPlaceholderText("Search Artists"), "Banksy")
-      fireEvent.press(screen.getByText("Cancel"))
+      fireEvent.press(screen.getByText("Clear"))
 
       expect(dismissSpy).toHaveBeenCalledTimes(1)
     })
   })
 
   describe("progress badge", () => {
-    it("shows 0/3 initially", () => {
+    it("shows 0 of 3 follows initially", () => {
       renderWithWrappers(<FollowArtists />)
 
-      expect(screen.getByText("0/3")).toBeOnTheScreen()
+      expect(screen.getByText("0 of 3 follows")).toBeOnTheScreen()
     })
 
     it("reflects the number of followed artists", () => {
@@ -139,10 +139,10 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("2/3")).toBeOnTheScreen()
+      expect(screen.getByText("2 of 3 follows")).toBeOnTheScreen()
     })
 
-    it("caps badge display at 3/3 even with more than 3 followed artists", () => {
+    it("shows Complete once 3 or more artists are followed", () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.press(screen.getByText("OrderedSet"))
@@ -150,7 +150,7 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("3/3")).toBeOnTheScreen()
+      expect(screen.getByText("Complete")).toBeOnTheScreen()
     })
   })
 
@@ -175,7 +175,7 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("Continue to Artsy")).toBeDisabled()
+      expect(screen.getByTestId("continue-button")).toBeDisabled()
     })
 
     it("is enabled when 3 or more artists are followed", () => {
@@ -185,7 +185,7 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("Continue to Artsy")).not.toBeDisabled()
+      expect(screen.getByTestId("continue-button")).not.toBeDisabled()
     })
 
     it("sets onboardingState to complete when pressed", () => {
@@ -195,7 +195,7 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      fireEvent.press(screen.getByText("Continue to Artsy"))
+      fireEvent.press(screen.getByTestId("continue-button"))
 
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
@@ -208,7 +208,7 @@ describe("FollowArtists", () => {
     it("sets onboardingState to complete", () => {
       renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
@@ -219,7 +219,7 @@ describe("FollowArtists", () => {
     it("tracks the skip tap", () => {
       renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,

@@ -188,17 +188,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                 </MotiView>
 
                 <Flex flex={1} px={2}>
-                  <Text>Welcome to Discover Daily</Text>
-
-                  <Spacer y={1} />
-
                   {isNewUserOnboardingSession ? (
                     <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
-                      Save{" "}
-                      <Text variant="lg-display" fontWeight="500">
-                        5
-                      </Text>{" "}
-                      different artworks to build your taste profile.
+                      Swipe to see the next artwork, tap the heart to save it.
                     </Text>
                   ) : (
                     <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>

@@ -127,8 +127,13 @@ export const ArtistSaveOnboardingBottomSheet = () => {
 
               <Spacer y={1} />
 
-              <Text variant="xs" color="mono60" textAlign="center">
-                Find them anytime in the Favorites tab at the bottom of your screen.
+              <Text
+                variant="xs"
+                color="mono60"
+                textAlign="center"
+                style={{ width: 350, paddingHorizontal: 10 }}
+              >
+                Find them any time in the Favorites tab at the bottom of your screen.
               </Text>
 
               <Spacer y={2} />
@@ -151,9 +156,14 @@ export const ArtistSaveOnboardingBottomSheet = () => {
 
               <Spacer y={1} />
 
-              <Text variant="xs" color="mono60" textAlign="center">
-                When a new work by an artist you follow is added to Artsy, you'll see a notification
-                on the Alerts icon at the top of your For You page.
+              <Text
+                variant="xs"
+                color="mono60"
+                textAlign="center"
+                style={{ width: 350, paddingHorizontal: 10 }}
+              >
+                When there's a new work by an artist you follow, you'll see a notification at the
+                top of your For You page.
               </Text>
 
               <Spacer y={1} />
