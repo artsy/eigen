@@ -1,0 +1,79 @@
+exclude:
+  title_patterns:
+    - "update metaphysics graphql schema"
+    - "update expo runtimeVersion"
+    - "bump version"
+    - "chore(release): * RC"
+
+focus_areas:
+  - |
+    Never use React Native's built-in `Keyboard` API. All keyboard interactions must go
+    through `react-native-keyboard-controller` or the wrappers in `app/utils/keyboard`
+    (KeyboardAvoidingContainer, KeyboardAwareForm, KeyboardStickyView). An ESLint rule
+    enforces this, so only flag it if you actually see a raw `Keyboard` import slip through.
+  - |
+    Prefer `FlashList` (from @shopify/flash-list) over `FlatList` for list rendering.
+    Never nest ScrollViews / VirtualizedLists — flag nested scrollable containers.
+  - |
+    Data fetching uses Relay hooks (useLazyLoadQuery, useFragment, usePaginationFragment),
+    not the legacy container/HOC API (createFragmentContainer, createPaginationContainer).
+    New code should use hooks; refactoring HOCs to hooks is encouraged, not required.
+  - |
+    Cross-scene imports are not allowed: a component/hook/util in one Scene must not be
+    imported directly from another Scene. Shared code belongs in `src/app/Components/`
+    or `src/app/utils/`. Flag imports that reach across `src/app/Scenes/<A>` into
+    `src/app/Scenes/<B>`.
+  - |
+    Avoid adding new `index.ts(x)` barrel files — they create noise and circular-dependency
+    risk. This is a convention, so raise it as a 🟢 Suggestion, not blocking.
+  - |
+    STRICTNESS_MIGRATION: the codebase is migrating off `@ts-expect-error STRICTNESS_MIGRATION`
+    comments. When touched code contains one and the fix is straightforward, it should be
+    removed and the underlying type error fixed. Do not demand this for unrelated or risky code.
+  - |
+    Analytics/tracking events go through `react-tracking` (the `useTracking` hook / `@track`)
+    and should follow the Segment schema in `@artsy/cohesion`. Flag hand-rolled analytics calls.
+  - |
+    Naming conventions: Components and component folders use PascalCase; everything else
+    (hooks, utils, mutations folders) uses camelCase. Test files end in `.tests.ts(x)` and
+    live in a sibling `__tests__` folder.
+  - |
+    PR Content: PRs should include Screenshots/Recordings on Both Android & iOS.
+
+ignore_paths:
+  - "src/__generated__/**"
+  - "data/schema.graphql"
+  - "data/complete.queryMap.json"
+  - "**/*.snap"
+  - "ios/Pods/**"
+  - "**/Gemfile.lock"
+  - "**/yarn.lock"
+
+context: |
+  Eigen is Artsy's mobile app — a bare React Native application using the Expo SDK,
+  shipping on both iOS and Android. It powers the Artsy (artsy.net) marketplace for
+  discovering and collecting art.
+
+  Tech stack:
+  - React Native + TypeScript (strict mode enabled)
+  - Relay for GraphQL data fetching against Metaphysics (Artsy's GraphQL gateway)
+  - @artsy/palette-mobile — design system (Flex, Box, Text, Spacer, Separator, etc.)
+  - react-navigation for routing; routes often mirror artsy.net page paths and support deep linking
+  - Formik for forms; react-native-reanimated / Moti for animations
+  - Jest + @testing-library/react-native for tests
+  - Yarn 4
+
+  Key conventions:
+  - Relay artifacts live in `src/__generated__/` and are generated — never hand-edited.
+  - Screens live under `src/app/Scenes/`; shared code under `src/app/Components/` and
+    `src/app/utils/`. See AGENTS.md and docs/best_practices.md for full conventions.
+  - Some legacy screens remain in native Obj-C/Swift/Kotlin (Live Auctions, AR View In Room) —
+    changes there are intentional, not something to "port to React Native".
+
+  Review notes:
+  - 🔴 Blocking is only for provable bugs, security issues, or broken functionality —
+    not style/pattern preferences (use 🟢 Suggestion) and not anything you're hedging on.
+  - Don't claim "tests will fail" — CI catches that. Suggest adding/updating tests as 🟡 or 🟢.
+  - If your explanation contradicts your conclusion, put it under "Questions for Author".
+
+  See AGENTS.md, CLAUDE.md, and docs/best_practices.md for additional coding conventions.
