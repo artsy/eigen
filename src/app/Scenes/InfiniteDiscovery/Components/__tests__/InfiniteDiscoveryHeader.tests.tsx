@@ -163,7 +163,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
@@ -172,7 +172,7 @@ describe("InfiniteDiscoveryHeader", () => {
     it("tracks the skip tap", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Skip to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,
@@ -253,7 +253,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
           renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-          fireEvent.press(screen.getByLabelText("Exit new user onboarding"))
+          fireEvent.press(screen.getByLabelText("Go to home"))
 
           expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
           expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })

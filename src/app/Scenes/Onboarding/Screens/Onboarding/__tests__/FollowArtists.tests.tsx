@@ -208,7 +208,7 @@ describe("FollowArtists", () => {
     it("sets onboardingState to complete", () => {
       renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Go to home"))
 
       expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
         "complete"
@@ -219,7 +219,7 @@ describe("FollowArtists", () => {
     it("tracks the skip tap", () => {
       renderWithWrappers(<FollowArtists />)
 
-      fireEvent.press(screen.getByLabelText("Skip new user onboarding"))
+      fireEvent.press(screen.getByLabelText("Go to home"))
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedSkip,

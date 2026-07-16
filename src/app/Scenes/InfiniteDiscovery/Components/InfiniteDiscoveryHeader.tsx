@@ -102,11 +102,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
           rightElements={
             <Touchable
               accessibilityRole="button"
-              accessibilityLabel={
-                hasChosenToContinueBrowsing
-                  ? "Exit new user onboarding"
-                  : "Skip new user onboarding"
-              }
+              accessibilityLabel={hasChosenToContinueBrowsing ? "Go to home" : "Skip to home"}
               onPress={handleSkipOrExitPressed}
               hitSlop={DEFAULT_HIT_SLOP}
               haptic

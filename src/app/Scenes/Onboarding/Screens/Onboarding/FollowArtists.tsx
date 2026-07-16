@@ -70,7 +70,7 @@ export const FollowArtists: React.FC = () => {
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="Skip new user onboarding"
+            accessibilityLabel="Go to home"
             onPress={() => {
               trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
               trackCompletedOnboarding()
