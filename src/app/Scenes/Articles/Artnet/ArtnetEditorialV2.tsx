@@ -58,7 +58,7 @@ export const ArtnetEditorialV2: React.FC = () => {
             <Flex flexDirection="row" alignItems="center">
               <FilterIcon fill={color} width="20px" height="20px" />
               <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
-                Sort & Filter
+                Browse by
               </Text>
               {activeCount > 0 && (
                 <Text variant="xs" color="blue100">
