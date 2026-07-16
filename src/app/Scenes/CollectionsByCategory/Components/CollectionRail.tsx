@@ -25,6 +25,15 @@ export const CollectionRail: FC<CollectionRailProps> = ({
 
   const artworks = extractNodes(collection?.artworksConnection)
 
+  // `note` is an edge-level field, so build a lookup keyed by artwork internalID and
+  // pass it to the rail, which threads each note down to its card as a plain prop.
+  const curatorNotes: Record<string, string | null> = {}
+  collection?.artworksConnection?.edges?.forEach((edge) => {
+    if (edge?.node?.internalID && edge?.note) {
+      curatorNotes[edge.node.internalID] = edge.note
+    }
+  })
+
   if (!collection || !artworks.length) {
     return null
   }
@@ -55,6 +64,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
         <ArtworkRail
           onPress={handleArtworkPress}
           artworks={artworks}
+          curatorNotes={curatorNotes}
           showSaveIcon
           showPartnerName
         />
@@ -71,6 +81,7 @@ const fragment = graphql`
 
     artworksConnection(first: 10, sort: "-decayed_merch") {
       edges {
+        note
         node {
           ...ArtworkRail_artworks
 

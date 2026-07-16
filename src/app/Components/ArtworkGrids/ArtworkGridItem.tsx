@@ -20,6 +20,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
+import { CollectorNote } from "app/Components/ArtworkGrids/CollectorNote"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
@@ -54,6 +55,8 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   artistNamesTextStyle?: TextProps
   artwork: ArtworkGridItem_artwork$data
   artworkMetaStyle?: ViewProps["style"]
+  /** Curator's note for this artwork within a marketing collection (edge-level field) */
+  curatorNote?: string | null
   disableArtworksListPrompt?: boolean
   disableProgressiveOnboarding?: boolean
   /** Hide sale info */
@@ -90,6 +93,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     artistNamesTextStyle,
     artwork,
     artworkMetaStyle,
+    curatorNote,
     contextModule,
     contextScreen,
     contextScreenOwnerId,
@@ -446,6 +450,8 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       hideRegisterBySignal={hideRegisterBySignal}
                     />
                   )}
+
+                  {!!curatorNote && <CollectorNote note={curatorNote} />}
 
                   {!!displayArtworkSocialSignal && (
                     <ArtworkSocialSignal

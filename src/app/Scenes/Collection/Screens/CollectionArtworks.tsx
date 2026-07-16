@@ -45,6 +45,19 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     () => extractNodes(collection.collectionArtworks),
     [collection.collectionArtworks]
   )
+
+  // `note` is an edge-level field on the marketing collection's artworksConnection,
+  // so it can't ride along on the artwork node fragment. Build a lookup keyed by the
+  // node id and thread it into each grid item as a plain prop.
+  const curatorNotesByArtworkId = useMemo(() => {
+    const notes: Record<string, string> = {}
+    collection.collectionArtworks?.edges?.forEach((edge) => {
+      if (edge?.node?.id && edge?.note) {
+        notes[edge.node.id] = edge.note
+      }
+    })
+    return notes
+  }, [collection.collectionArtworks])
   const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
 
   const scrollToTop = () => {
@@ -120,11 +133,12 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         contextScreenOwnerSlug={collection.slug}
         artwork={item}
         height={imgHeight}
+        curatorNote={curatorNotesByArtworkId[item.id]}
         hideCuratorsPickSignal={hideSignals}
         hideIncreasedInterestSignal={hideSignals}
       />
     )
-  }, [])
+  }, [collection.id, collection.slug, curatorNotesByArtworkId, width, space])
 
   return (
     <>
@@ -213,6 +227,7 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
             total
           }
           edges {
+            note
             node {
               id
               slug

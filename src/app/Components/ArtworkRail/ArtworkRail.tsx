@@ -23,6 +23,12 @@ type Artwork = ArtworkRail_artworks$data[0]
 export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   artworks: ArtworkRail_artworks$key
   onPress?: (artwork: ArtworkRail_artworks$data[0], index: number) => void
+  /**
+   * Curator's notes keyed by artwork `internalID`. Used to render a curator's note
+   * badge on marketing-collection rails. `note` is an edge-level field, so it can't
+   * ride along on the artwork node fragment and is threaded in via this map.
+   */
+  curatorNotes?: Record<string, string | null>
   dark?: boolean
   hideArtistName?: boolean
   hideCuratorsPickSignal?: boolean
@@ -60,6 +66,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     onMorePress,
     hideIncreasedInterestSignal,
     hideCuratorsPickSignal,
+    curatorNotes,
     ...otherProps
   }) => {
     const artworks = useFragment(artworksFragment, otherProps.artworks)
@@ -80,11 +87,22 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
             showSaveIcon={showSaveIcon}
             hideIncreasedInterestSignal={hideIncreasedInterestSignal}
             hideCuratorsPickSignal={hideCuratorsPickSignal}
+            curatorNote={curatorNotes?.[item.internalID]}
             {...otherProps}
           />
         )
       },
-      [hideArtistName, onPress, showPartnerName]
+      [
+        hideArtistName,
+        onPress,
+        showPartnerName,
+        curatorNotes,
+        dark,
+        showSaveIcon,
+        hideIncreasedInterestSignal,
+        hideCuratorsPickSignal,
+        itemHref,
+      ]
     )
 
     const listFooterComponent = useMemo(() => {

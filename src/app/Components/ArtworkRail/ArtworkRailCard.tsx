@@ -40,6 +40,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
     contextScreenOwnerId,
     contextScreenOwnerSlug,
     contextScreen,
+    curatorNote,
     dark = false,
     href,
     hideArtistName = false,
@@ -128,6 +129,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
                     contextScreenOwnerId={contextScreenOwnerId}
                     contextScreenOwnerSlug={contextScreenOwnerSlug}
                     contextScreenOwnerType={contextScreenOwnerType}
+                    curatorNote={curatorNote}
                     dark={dark}
                     hideArtistName={hideArtistName}
                     hideCuratorsPickSignal={hideCuratorsPickSignal}

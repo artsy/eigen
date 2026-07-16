@@ -3,6 +3,7 @@ import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMe
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
+import { CollectorNote } from "app/Components/ArtworkGrids/CollectorNote"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
@@ -20,6 +21,8 @@ import { useTracking } from "react-tracking"
 // These are the props that are shared between ArtworkRailCard and ArtworkRailCardMeta
 export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   dark?: boolean
+  /** Curator's note for this artwork within a marketing collection (edge-level field) */
+  curatorNote?: string | null
   hideArtistName?: boolean
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
@@ -49,6 +52,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
+  curatorNote,
   dark = false,
   hideArtistName = false,
   hideCuratorsPickSignal = false,
@@ -194,6 +198,8 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         {!!displayAuctionSignal && !!collectorSignals && (
           <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
         )}
+
+        {!!curatorNote && <CollectorNote note={curatorNote} dark={dark} />}
 
         {!!displayArtworkSocialSignal && (
           <ArtworkSocialSignal
