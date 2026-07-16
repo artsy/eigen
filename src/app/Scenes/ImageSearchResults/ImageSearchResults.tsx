@@ -1,13 +1,19 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { ImageSearchResultsQuery } from "__generated__/ImageSearchResultsQuery.graphql"
+import {
+  ImageSearchResults_artworks$data,
+  ImageSearchResults_artworks$key,
+} from "__generated__/ImageSearchResults_artworks.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { PAGE_SIZE } from "app/Components/constants"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "Visual Search"
 
@@ -17,10 +23,16 @@ interface ImageSearchResultsProps {
 }
 
 export const ImageSearchResults: React.FC<ImageSearchResultsProps> = ({ s3Bucket, s3Key }) => {
-  const data = useLazyLoadQuery<ImageSearchResultsQuery>(imageSearchResultsQuery, {
+  const queryData = useLazyLoadQuery<ImageSearchResultsQuery>(imageSearchResultsQuery, {
     s3Bucket,
     s3Key,
+    count: PAGE_SIZE,
   })
+
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
+    ImageSearchResultsQuery,
+    ImageSearchResults_artworks$key
+  >(artworksFragment, queryData)
 
   const artworks = extractNodes(data.artworksByImageConnection)
 
@@ -30,13 +42,23 @@ export const ImageSearchResults: React.FC<ImageSearchResultsProps> = ({ s3Bucket
       <Screen.StickySubHeader title={SCREEN_TITLE} />
 
       <Screen.Body fullwidth>
-        <ArtworksGrid artworks={artworks} />
+        <ArtworksGrid
+          artworks={artworks}
+          hasNext={hasNext}
+          isLoadingNext={isLoadingNext}
+          loadMore={(pageSize) => loadNext(pageSize)}
+        />
       </Screen.Body>
     </Screen>
   )
 }
 
-const ArtworksGrid: React.FC<{ artworks: any[] }> = ({ artworks }) => {
+const ArtworksGrid: React.FC<{
+  artworks: ExtractNodeType<ImageSearchResults_artworks$data["artworksByImageConnection"]>[]
+  hasNext: boolean
+  isLoadingNext: boolean
+  loadMore: (pageSize: number) => void
+}> = ({ artworks, hasNext, isLoadingNext, loadMore }) => {
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
   return (
@@ -50,15 +72,25 @@ const ArtworksGrid: React.FC<{ artworks: any[] }> = ({ artworks }) => {
           We couldn’t find any matches for that image. Try another photo.
         </SimpleMessage>
       }
-      hasMore={false}
+      hasMore={hasNext}
+      isLoading={isLoadingNext}
+      loadMore={loadMore}
       onScroll={scrollHandler}
     />
   )
 }
 
-export const imageSearchResultsQuery = graphql`
-  query ImageSearchResultsQuery($s3Bucket: String!, $s3Key: String!) {
-    artworksByImageConnection(s3Bucket: $s3Bucket, s3Key: $s3Key, first: 30) {
+const artworksFragment = graphql`
+  fragment ImageSearchResults_artworks on Query
+  @refetchable(queryName: "ImageSearchResultsPaginationQuery")
+  @argumentDefinitions(
+    s3Bucket: { type: "String!" }
+    s3Key: { type: "String!" }
+    count: { type: "Int", defaultValue: 30 }
+    after: { type: "String" }
+  ) {
+    artworksByImageConnection(s3Bucket: $s3Bucket, s3Key: $s3Key, first: $count, after: $after)
+      @connection(key: "ImageSearchResults_artworksByImageConnection") {
       edges {
         node {
           id
@@ -71,6 +103,13 @@ export const imageSearchResultsQuery = graphql`
         }
       }
     }
+  }
+`
+
+export const imageSearchResultsQuery = graphql`
+  query ImageSearchResultsQuery($s3Bucket: String!, $s3Key: String!, $count: Int, $after: String) {
+    ...ImageSearchResults_artworks
+      @arguments(s3Bucket: $s3Bucket, s3Key: $s3Key, count: $count, after: $after)
   }
 `
 
