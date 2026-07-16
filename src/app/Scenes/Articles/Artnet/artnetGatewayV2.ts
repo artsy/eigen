@@ -58,12 +58,13 @@ export interface ArtnetEditorialFilters {
   sort?: ArtnetSort
 }
 
-/** Number of active filters (for the Filter button badge / Clear enablement). Sort is excluded. */
+// Count of active facet filters (for the Filter button badge / Clear enablement).
+// Sort and search are excluded — sort has a default, and search lives inline on
+// the list page rather than in the modal.
 export const countActiveArtnetFilters = (filters: ArtnetEditorialFilters): number =>
   (filters.sectionIds?.length ?? 0) +
   (filters.topicSlugs?.length ?? 0) +
-  (filters.authorNicenames?.length ?? 0) +
-  (filters.search ? 1 : 0)
+  (filters.authorNicenames?.length ?? 0)
 
 export interface ArtnetFeedArticle {
   databaseId: number

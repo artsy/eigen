@@ -22,7 +22,7 @@ export const NewsHub: React.FC = () => {
         <Flex mx={2} mt={2}>
           <Text variant="lg-display">Editorial</Text>
           <Spacer y={2} />
-          <Flex flexDirection="row" gap={0.5} mb={1}>
+          <Flex flexDirection="row" justifyContent="space-between" mb={1}>
             {SOURCES.map(({ key, label }) => (
               <Pill
                 key={key}

@@ -1,4 +1,5 @@
-import { Button, Flex, Spacer, Text, Screen } from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { bullet, Flex, Spacer, Text, Screen, TouchableHighlightColor } from "@artsy/palette-mobile"
 import {
   CardWithMetaData,
   CardWithMetaDataListItem,
@@ -6,6 +7,7 @@ import {
 } from "app/Components/Cards/CardWithMetaData"
 import { ArtnetEditorialFilterModal } from "app/Scenes/Articles/Artnet/ArtnetEditorialFilterModal"
 import { ArtnetPremiumBadge } from "app/Scenes/Articles/Artnet/ArtnetPremiumBadge"
+import { ArtnetSearchInput } from "app/Scenes/Articles/Artnet/ArtnetSearchInput"
 import {
   ArtnetEditorialFilters,
   countActiveArtnetFilters,
@@ -21,22 +23,51 @@ export const ArtnetEditorialV2: React.FC = () => {
   const [filters, setFilters] = useState<ArtnetEditorialFilters>(INITIAL_FILTERS)
   const [filterModalVisible, setFilterModalVisible] = useState(false)
 
+  const [searchText, setSearchText] = useState(filters.search ?? "")
+
   const { articles, loading, error, hasNextPage, loadMore, refetch } =
     useArtnetEditorialFeed(filters)
 
   const activeCount = countActiveArtnetFilters(filters)
 
+  const commitSearch = (text: string) => {
+    setFilters((prev) => ({ ...prev, search: text.trim() || undefined }))
+  }
+
   return (
     <Flex flex={1}>
-      <Flex mx={2} mb={1} flexDirection="row" justifyContent="flex-end">
-        <Button
-          variant="outline"
-          size="small"
+      <Flex mx={2} mt={1} mb={2} flexDirection="row" alignItems="center">
+        <Flex flex={1}>
+          <ArtnetSearchInput
+            placeholder="Search articles"
+            value={searchText}
+            onChangeText={setSearchText}
+            onSubmitEditing={() => commitSearch(searchText)}
+            onClear={() => {
+              setSearchText("")
+              commitSearch("")
+            }}
+          />
+        </Flex>
+        <Spacer x={2} />
+        <TouchableHighlightColor
+          haptic
           onPress={() => setFilterModalVisible(true)}
           testID="artnet-editorial-filter-button"
-        >
-          {activeCount > 0 ? `Filter (${activeCount})` : "Filter"}
-        </Button>
+          render={({ color }) => (
+            <Flex flexDirection="row" alignItems="center">
+              <FilterIcon fill={color} width="20px" height="20px" />
+              <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
+                Sort & Filter
+              </Text>
+              {activeCount > 0 && (
+                <Text variant="xs" color="blue100">
+                  {` ${bullet} ${activeCount}`}
+                </Text>
+              )}
+            </Flex>
+          )}
+        />
       </Flex>
 
       {error ? (

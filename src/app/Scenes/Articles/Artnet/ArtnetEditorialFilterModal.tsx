@@ -2,7 +2,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  Input,
   RadioButton,
   Separator,
   Spacer,
@@ -69,24 +68,15 @@ export const ArtnetEditorialFilterModal: React.FC<ArtnetEditorialFilterModalProp
           onLeftButtonPress={onClose}
           rightButtonText="Clear"
           rightButtonDisabled={stagedCount === 0}
-          onRightButtonPress={() => setStaged({ sort: staged.sort ?? "DESC" })}
+          // preserve sort + search (search is managed inline on the list page)
+          onRightButtonPress={() =>
+            setStaged({ sort: staged.sort ?? "DESC", search: staged.search })
+          }
         >
           Filters
         </NavigationHeader>
 
         <ScrollView contentContainerStyle={{ padding: 20 }}>
-          <Input
-            title="Search"
-            placeholder="Search articles"
-            value={staged.search ?? ""}
-            onChangeText={(text) => setStaged((prev) => ({ ...prev, search: text }))}
-            returnKeyType="search"
-          />
-
-          <Spacer y={2} />
-          <Separator />
-          <Spacer y={2} />
-
           <Text variant="sm-display" mb={1}>
             Sort
           </Text>
