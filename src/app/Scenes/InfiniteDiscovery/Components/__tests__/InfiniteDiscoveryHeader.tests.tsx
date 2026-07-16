@@ -208,12 +208,13 @@ describe("InfiniteDiscoveryHeader", () => {
         expect(screen.queryByText("Go to home")).not.toBeOnTheScreen()
       })
 
-      it("keeps the badge frozen at Complete even if a saved artwork is removed", () => {
+      it("keeps the badge and progress bar frozen at Complete even if a saved artwork is removed", () => {
         GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
 
         renderWithWrappers(<InfiniteDiscoveryHeader />)
 
         expect(screen.getByText("Complete")).toBeOnTheScreen()
+        expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
       })
 
       describe("and the user has chosen to continue browsing", () => {
@@ -228,6 +229,20 @@ describe("InfiniteDiscoveryHeader", () => {
 
           expect(screen.getByText("Go to home")).toBeOnTheScreen()
           expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
+        })
+
+        it("keeps the badge and progress bar frozen at Complete even after unsaving and resaving artworks", () => {
+          GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-1")
+          GlobalStore.actions.infiniteDiscovery.removeNewUserOnboardingSavedArtwork("artwork-2")
+          GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+            internalID: "artwork-6",
+            url: "https://example.com/6.jpg",
+          })
+
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          expect(screen.getByText("Complete")).toBeOnTheScreen()
+          expect(screen.getByTestId("step-progress-bar-checkmark")).toBeOnTheScreen()
         })
 
         it("exits onboarding when Exit is pressed, without tracking a skip tap", () => {

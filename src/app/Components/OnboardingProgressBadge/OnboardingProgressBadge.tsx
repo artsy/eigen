@@ -22,9 +22,7 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   total,
   unit,
 }) => {
-  const displayedCurrent = Math.min(current, total)
-
-  if (displayedCurrent >= total) {
+  if (current >= total) {
     return (
       <Text variant="sm-display" color="blue100">
         Complete
@@ -35,7 +33,7 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   return (
     <Text variant="sm-display" color="mono100" style={{ fontVariant: ["tabular-nums"] }}>
       <Text variant="sm-display" weight="medium" color="blue100">
-        {displayedCurrent}
+        {current}
       </Text>
       {` ${getProgressText(unit, total)}`}
     </Text>

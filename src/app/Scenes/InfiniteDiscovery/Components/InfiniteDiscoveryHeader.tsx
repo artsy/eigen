@@ -119,7 +119,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
           }
         />
         <Flex px={2}>
-          <StepProgressBar current={newUserOnboardingSavedArtworkCount} total={5} />
+          <StepProgressBar current={displayedSavedArtworkCount} total={5} />
         </Flex>
       </Flex>
     )
