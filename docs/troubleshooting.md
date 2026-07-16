@@ -18,9 +18,16 @@ Still nothing?
 
 - No, seriously. Try turning the computer off and on again
 
-## asdf
+## Runtime manager (mise / asdf)
 
-if your problems come from asdf package manager try
+We use [mise](https://mise.jdx.dev/) to manage node, ruby and java. Both mise and asdf read the pinned versions from `.tool-versions`.
+
+If your problems come from mise try
+
+- `mise install` (installs everything pinned in `.tool-versions`)
+- `mise doctor` (diagnoses activation / PATH issues)
+
+If you're still on asdf try
 
 - `asdf install node x.y.z`
 - `asdf local node x.y.z`
@@ -35,7 +42,7 @@ if your problems come from asdf package manager try
 We've noticed an issue where the DX is impacted when _not_ booting the app from Xcode. For example, a common (problematic) workflow is:
 
 - `git pull`
-- `yarn open-Xcode`
+- `yarn open-xcode`
 - compile the app
 - go back to terminal
 - `yarn start`
@@ -152,7 +159,7 @@ these screenshots are checked in to the source control. When you change e.g. the
 button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
 threshold.
 
-In order to update existing screenshots, run `./scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using `cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
+In order to update existing screenshots, run `./scripts/utils/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using `cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/utils/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
 

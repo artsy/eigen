@@ -1,12 +1,31 @@
 # Getting Started
 
-It is recommended to follow the steps for a fresh environment setup from the [react native docs](https://reactnative.dev/docs/0.76/set-up-your-environment) depending on the version that you are aiming to develop for.
+It is recommended to follow the steps for a fresh environment setup from the [react native docs](https://reactnative.dev/docs/set-up-your-environment) depending on the version that you are aiming to develop for.
 
 ### Prerequisites
 
-You'll need [homebrew](https://brew.sh) [asdf](https://asdf-vm.com/guide/getting-started.html), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
+You'll need [homebrew](https://brew.sh), a runtime manager ([mise](https://mise.jdx.dev/) — preferred — or [asdf](https://asdf-vm.com/guide/getting-started.html)), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
-#### Setting up asdf
+We pin the versions of java, nodejs and ruby in `.tool-versions`. Both mise and asdf read that file, so either tool will install the correct versions.
+
+#### Setting up mise (preferred)
+
+Full instructions: https://mise.jdx.dev/getting-started.html
+
+```
+brew install mise
+# ...or, without homebrew: curl https://mise.run | sh
+
+# activate mise in your shell (zsh shown here — see the mise docs for other shells)
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc && source ~/.zshrc
+
+# from the eigen directory, install the pinned tool versions
+mise install
+```
+
+mise uses PATH-based activation (not shims) by default, so there's no reshim step. It has built-in support for node, ruby and java — no plugins to add. `mise install` reads `.tool-versions` and installs everything.
+
+#### Setting up asdf (alternative)
 
 There are instructions here: https://asdf-vm.com/guide/getting-started.html
 You will want the java, nodejs, and ruby plugins to get all of our tooling.
@@ -21,7 +40,7 @@ asdf plugin add java
 
 ### Set up iOS
 
-Download Xcode version 16. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Download Xcode version 26.2 (the version CI builds against — see `ios-config.json`). You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 Ask your mentor to add you on the [firebase.console](https://console.firebase.google.com/project/eigen-a7d3b/settings/iam) to be able to release.
 
@@ -35,21 +54,15 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Setti
 ### Set up Android
 
 > [!IMPORTANT]
-> We use asdf for managing java, you can skip the section in the docs below around the Java Development Kit. Instead do:
+> We manage java with our runtime manager (mise or asdf), so you can skip the section in the docs below around the Java Development Kit. Instead, from the eigen directory:
 >
-> `asdf install` in the eigen directory.
+> **mise (preferred):** run `mise install`. mise activation sets `JAVA_HOME` automatically — no extra step needed. Confirm with `echo $JAVA_HOME`.
 >
-> then set JAVA_HOME in you shell config (e.g. .zshrc) to the asdf java install path.
->
-> find that path by running:
->
-> `asdf where java`
->
-> and then add to your shell config:
+> **asdf:** run `asdf install`, then set `JAVA_HOME` in your shell config (e.g. `.zshrc`) to the asdf java install path. Find it with `asdf where java`, then add:
 >
 > `export JAVA_HOME="<YOUR-ASDF-JAVA-PATH-HERE>"`
 
-1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/0.73/environment-setup?package-manager=yarn&guide=native). Select "React Native CLI Quickstart" tab
+1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/set-up-your-environment?platform=android). Select "React Native CLI Quickstart" tab
 
 2. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
@@ -69,7 +82,7 @@ cd eigen
 1. Run
 
 ```
-asdf install
+mise install # or `asdf install`
 yarn setup:artsy
 yarn install:all
 yarn relay
@@ -178,7 +191,7 @@ In order to have internet access on android emulator you need to add Google's DN
 
 ## Run native tests
 
-We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.2 Simulator. This is because we use visual snapshots for UI regressions.
+We can only run tests in one specific environment, today that is the iPhone 17 Pro with the iOS 26.2 Simulator (see `ios-config.json` for the source of truth). This is because we use visual snapshots for UI regressions.
 
 ### Run tests in Xcode
 
@@ -216,73 +229,3 @@ When you connect an iPhone to your machine, Xcode will prompt you to join a team
 ## Read more
 
 Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/main/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.
-
-## Steps To Upgrade `react-native` to 0.73.9 on your machine:
-
-#### Upgrading JAVA:
-
-For asdf users:
-
-1. install the new Java version:
-
-```sh
-# in the eigen directory
-asdf install
-```
-
-2. Update `$JAVA_HOME` in your shell config (`.zshrc`) to the asdf java install path.
-
-- Open your `.zshrc` file with the editor of your choice and add the following lines:
-
-```
-. ~/.asdf/plugins/java/set-java-home.zsh
-```
-
-- Save the file and run `source ~/.zshrc` to make the changes effective.
-
-3. Set global java version in your machine (optional):
-
-```sh
-$ asdf global java zulu-17.50.19
-```
-
-For brew users:
-
-1. install the new Java version
-
-```sh
-brew install --cask zulu@17
-
-# Get path to where cask was installed to double-click installer
-brew info --cask zulu@17
-```
-
-2. Update `$JAVA_HOME` in your shell config (`.zshrc`) to the homebrew java install path.
-
-- Open your `.zshrc` file with the editor of your choice and add the following lines:
-
-```
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
-```
-
-- Save the file and run `source ~/.zshrc` to make the changes effective.
-
-> [!NOTE]
-> For both approaches - you can try out in the terminal by typing $JAVA_HOME to make sure that it was updated properly.
-
-#### Before running the app and in order to install without any caching issues
-
-```sh
-# Delete node modules and caches:
-rm -rf node_modules && rm -rf .cache && rm -rf "$TMPDIR/metro*" && rm -rf "$TMPDIR/haste-map-*"
-
-# install all the dependencies needed
-yarn install:all
-
-# you will most likely have to run also the following to bump hermes-engine:
-cd ios && bundle exec pod update hermes-engine --no-repo-update & cd ..
-```
-
-#### Read more on proper environmet setup
-
-You can also find more information on how to properly setup your environment for react native in [this official doc](https://reactnative.dev/docs/0.73/environment-setup).
