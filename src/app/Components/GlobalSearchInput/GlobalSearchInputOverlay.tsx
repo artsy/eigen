@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Button, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, RoundSearchInput, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
@@ -193,23 +193,32 @@ export const GlobalSearchInputOverlay: React.FC<{
           {/* KeyboardStickyView lifts the footer above the keyboard while it's open. When
            the keyboard is folded/dismissed the negative `closed` offset lifts the footer
            above the absolutely-positioned bottom tab bar (BOTTOM_TABS_HEIGHT + safe area),
-           which would otherwise cover it, so the buttons stay visible in both states. */}
+           which would otherwise cover it, so the buttons stay visible in both states.
+           */}
           <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
-            <Flex flexDirection="row" px={2} py={1} backgroundColor="mono0">
-              <Flex flex={1}>
-                <Button block variant="outline" onPress={handleTakePhoto}>
-                  Take a photo
-                </Button>
-              </Flex>
+            <Box backgroundColor="blue10" px={2} py={1}>
+              <Text fontWeight="bold" mb={0.5}>
+                See it? Search it.
+              </Text>
+              <Text pb={1}>
+                Take a photo or upload an image to find the piece that matches the mood.
+              </Text>
+              <Flex flexDirection="row">
+                <Flex flex={1}>
+                  <Button block variant="fillDark" onPress={handleTakePhoto}>
+                    Take a photo
+                  </Button>
+                </Flex>
 
-              <Spacer x={1} />
+                <Spacer x={1} />
 
-              <Flex flex={1}>
-                <Button block variant="outline" onPress={handleAddImage}>
-                  Add an image
-                </Button>
+                <Flex flex={1}>
+                  <Button block variant="fillDark" onPress={handleAddImage}>
+                    Upload an image
+                  </Button>
+                </Flex>
               </Flex>
-            </Flex>
+            </Box>
           </KeyboardStickyView>
         </Flex>
       </Animated.View>
