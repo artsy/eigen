@@ -50,6 +50,15 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   const artworks = extractNodes(section.artworksConnection)
   const viewAllHref = getHomeViewSectionHref(viewAll?.href, section)
 
+  // `note` is an edge-level field, so build a lookup keyed by artwork internalID and
+  // pass it to the rail, which threads each note down to its card as a plain prop.
+  const curatorNotes: Record<string, string | null> = {}
+  section.artworksConnection?.edges?.forEach((edge) => {
+    if (edge?.node?.internalID && edge?.note) {
+      curatorNotes[edge.node.internalID] = edge.note
+    }
+  })
+
   const onHeaderPress = () => {
     tracking.tappedArtworkGroupViewAll(
       section.contextModule as ContextModule,
@@ -106,6 +115,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
           dark
           showPartnerName
           artworks={artworks}
+          curatorNotes={curatorNotes}
           onPress={handleOnArtworkPress}
           moreHref={viewAllHref}
           onMorePress={onSectionViewAll}
@@ -143,7 +153,9 @@ const fragment = graphql`
 
     artworksConnection(first: 10) {
       edges {
+        note
         node {
+          internalID
           ...ArtworkRail_artworks
         }
       }
