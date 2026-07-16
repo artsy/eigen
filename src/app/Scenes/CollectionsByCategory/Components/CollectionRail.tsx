@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ChevronRightIcon } from "@artsy/icons/native"
 import { Flex, Separator, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
@@ -39,7 +40,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
   }
 
   const handleArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
-    trackArtworkRailItemTap(artwork.internalID, index)
+    trackArtworkRailItemTap(artwork.internalID, index, !!curatorNotes[artwork.internalID])
   }
 
   const handleTitlePress = () => {
@@ -65,6 +66,9 @@ export const CollectionRail: FC<CollectionRailProps> = ({
           onPress={handleArtworkPress}
           artworks={artworks}
           curatorNotes={curatorNotes}
+          contextModule={ContextModule.collectionRail}
+          contextScreenOwnerType={OwnerType.collectionsCategory}
+          contextScreenOwnerSlug={collection.slug}
           showSaveIcon
           showPartnerName
         />

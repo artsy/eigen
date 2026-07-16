@@ -23,13 +23,14 @@ export const useCollectionByCategoryTracking = () => {
     trackEvent(payload)
   }
 
-  const trackArtworkRailItemTap = (slug: string, index: number) => {
+  const trackArtworkRailItemTap = (slug: string, index: number, hasCuratorNote?: boolean) => {
     const payload: TappedArtworkGroup = {
       action: ActionType.tappedArtworkGroup,
       context_module: ContextModule.collectionRail,
       context_screen_owner_type: OwnerType.collectionsCategory,
       destination_screen_owner_slug: slug,
       destination_screen_owner_type: OwnerType.artwork,
+      has_curator_note: hasCuratorNote,
       horizontal_slide_position: index,
       type: "thumbnail",
     }

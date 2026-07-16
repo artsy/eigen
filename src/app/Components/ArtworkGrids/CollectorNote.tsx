@@ -1,12 +1,15 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { Platform } from "react-native"
 
 interface CollectorNoteProps {
   note: string
   dark?: boolean
+  /** Fired when the note is tapped, before the bottom sheet opens (for tracking). */
+  onTap?: () => void
 }
 
 /**
@@ -18,10 +21,11 @@ interface CollectorNoteProps {
  * label (styled like the collector signal labels) that invites a tap; tapping
  * opens a bottom sheet with the full note.
  */
-export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false }) => {
+export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false, onTap }) => {
   const [visible, setVisible] = useState(false)
+  const enableCuratorNotes = useFeatureFlag("AREnableCuratorNotes")
 
-  if (!note) {
+  if (!note || !enableCuratorNotes) {
     return null
   }
 
@@ -37,7 +41,10 @@ export const CollectorNote: React.FC<CollectorNoteProps> = ({ note, dark = false
       <Touchable
         accessibilityRole="button"
         accessibilityLabel="Read the curator’s note"
-        onPress={() => setVisible(true)}
+        onPress={() => {
+          onTap?.()
+          setVisible(true)
+        }}
       >
         <Flex
           flexDirection="row"

@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedCuratorNote,
+  TappedMainArtworkGrid,
+} from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -232,6 +238,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
           destination_screen_owner_type: OwnerType.artwork,
           destination_screen_owner_id: artwork.internalID,
           destination_screen_owner_slug: artwork.slug,
+          has_curator_note: !!curatorNote,
           position: itemIndex,
           query: contextScreenQuery,
           sort: filterParams?.sort,
@@ -451,7 +458,26 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                     />
                   )}
 
-                  {!!curatorNote && <CollectorNote note={curatorNote} />}
+                  {!!curatorNote && (
+                    <CollectorNote
+                      note={curatorNote}
+                      onTap={() => {
+                        if (!contextScreenOwnerType) {
+                          return
+                        }
+                        const noteTapEvent: TappedCuratorNote = {
+                          action: ActionType.tappedCuratorNote,
+                          context_module: contextModule || ContextModule.artworkGrid,
+                          context_screen_owner_type: contextScreenOwnerType,
+                          context_screen_owner_id: contextScreenOwnerId,
+                          context_screen_owner_slug: contextScreenOwnerSlug,
+                          artwork_id: artwork.internalID,
+                          artwork_slug: artwork.slug,
+                        }
+                        tracking.trackEvent(noteTapEvent)
+                      }}
+                    />
+                  )}
 
                   {!!displayArtworkSocialSignal && (
                     <ArtworkSocialSignal

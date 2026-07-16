@@ -1,3 +1,4 @@
+import { ActionType, TappedCuratorNote } from "@artsy/cohesion"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
@@ -199,7 +200,27 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           <ArtworkAuctionTimer collectorSignals={collectorSignals} inRailCard />
         )}
 
-        {!!curatorNote && <CollectorNote note={curatorNote} dark={dark} />}
+        {!!curatorNote && (
+          <CollectorNote
+            note={curatorNote}
+            dark={dark}
+            onTap={() => {
+              if (!contextModule || !contextScreenOwnerType) {
+                return
+              }
+              const noteTapEvent: TappedCuratorNote = {
+                action: ActionType.tappedCuratorNote,
+                context_module: contextModule,
+                context_screen_owner_type: contextScreenOwnerType,
+                context_screen_owner_id: contextScreenOwnerId,
+                context_screen_owner_slug: contextScreenOwnerSlug,
+                artwork_id: artwork.internalID,
+                artwork_slug: artwork.slug,
+              }
+              trackEvent(noteTapEvent)
+            }}
+          />
+        )}
 
         {!!displayArtworkSocialSignal && (
           <ArtworkSocialSignal

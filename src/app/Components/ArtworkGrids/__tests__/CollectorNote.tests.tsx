@@ -3,6 +3,10 @@ import { CollectorNote } from "app/Components/ArtworkGrids/CollectorNote"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("CollectorNote", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCuratorNotes: true })
+  })
+
   it("renders a tappable Curator's note label", () => {
     renderWithWrappers(<CollectorNote note="Chosen for its bold use of color" />)
 
@@ -14,6 +18,14 @@ describe("CollectorNote", () => {
 
   it("renders nothing when the note is empty", () => {
     renderWithWrappers(<CollectorNote note="" />)
+
+    expect(screen.queryByText("Curator’s note")).not.toBeOnTheScreen()
+  })
+
+  it("renders nothing when the feature flag is off", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCuratorNotes: false })
+
+    renderWithWrappers(<CollectorNote note="Chosen for its bold use of color" />)
 
     expect(screen.queryByText("Curator’s note")).not.toBeOnTheScreen()
   })

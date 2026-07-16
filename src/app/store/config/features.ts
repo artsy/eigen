@@ -61,6 +61,12 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
+  AREnableCuratorNotes: {
+    description: "Show curator notes on collection artworks",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCuratorNotes",
+  },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
