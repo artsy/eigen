@@ -36,7 +36,7 @@ export const bottomTabsConfig: {
     route: "/news",
     // POC: "articles" isn't part of cohesion's Tab union yet, so cast for now
     analyticsDescription: OwnerType.articles as unknown as TappedTabBarArgs["tab"],
-    name: "News",
+    name: "Editorial",
   },
   profile: {
     route: "/my-profile",
