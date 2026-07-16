@@ -16,9 +16,14 @@ interface SearchResultsProps {
   selectedPill: PillType
   query: string
   onRetry: () => void
+  onScrollBeginDrag?: () => void
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query }) => {
+export const SearchResults: React.FC<SearchResultsProps> = ({
+  selectedPill,
+  query,
+  onScrollBeginDrag,
+}) => {
   const { trackEvent } = useTracking()
   const { queryRef } = useContext(SearchContext)
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
@@ -49,6 +54,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
           showResultType
           showQuickNavigationButtons
           showOnRetryErrorMessage
+          onScrollBeginDrag={onScrollBeginDrag}
           trackResultPress={handleTrackAutosuggestResultPress}
         />
       </Flex>

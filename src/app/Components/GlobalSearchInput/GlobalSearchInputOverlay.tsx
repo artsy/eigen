@@ -1,5 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Button, Flex, RoundSearchInput, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
+import {
+  Box,
+  Button,
+  Flex,
+  RoundSearchInput,
+  Spacer,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
@@ -16,7 +26,7 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import ImagePicker from "react-native-image-crop-picker"
 import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
@@ -37,7 +47,10 @@ export const globalSearchInputOverlayQuery = graphql`
   }
 `
 
-const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query }) => {
+const GlobalSearchInputOverlayContent: React.FC<{
+  query: string
+  onScrollBeginDrag?: () => void
+}> = ({ query, onScrollBeginDrag }) => {
   const space = useSpace()
   const {
     data,
@@ -69,6 +82,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
           <SearchResults
             selectedPill={selectedPill}
             query={query}
+            onScrollBeginDrag={onScrollBeginDrag}
             onRetry={() => {
               refetch({ term: query, skipSearchQuery: false })
             }}
@@ -78,6 +92,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
+          onScrollBeginDrag={onScrollBeginDrag}
           contentContainerStyle={{
             paddingHorizontal: space(2),
             paddingBottom: space(6),
@@ -97,6 +112,7 @@ export const GlobalSearchInputOverlay: React.FC<{
 }> = ({ hideModal, ownerType, visible }) => {
   const [query, setQuery] = useState("")
   const [shouldRender, setShouldRender] = useState(false)
+  const [isFooterExpanded, setIsFooterExpanded] = useState(true)
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
@@ -136,6 +152,9 @@ export const GlobalSearchInputOverlay: React.FC<{
       opacity: opacity.value,
     }
   })
+
+  // Collapse the footer once the user starts scrolling the results/recent searches.
+  const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
 
   const uploadAndSearchByImage = async (imagePath?: string) => {
     if (!imagePath) {
@@ -201,7 +220,7 @@ export const GlobalSearchInputOverlay: React.FC<{
            which reserves the footer's height in normal flow (no overlap, no crop). */}
           <Flex flex={1}>
             <Suspense fallback={null}>
-              <GlobalSearchInputOverlayContent query={query} />
+              <GlobalSearchInputOverlayContent query={query} onScrollBeginDrag={collapseFooter} />
             </Suspense>
           </Flex>
 
@@ -212,27 +231,41 @@ export const GlobalSearchInputOverlay: React.FC<{
            */}
           <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
             <Box backgroundColor="blue10" px={2} py={1}>
-              <Text fontWeight="bold" mb={0.5}>
-                See it? Search it.
-              </Text>
-              <Text pb={1}>
-                Take a photo or upload an image to find the piece that matches the mood.
-              </Text>
-              <Flex flexDirection="row">
-                <Flex flex={1}>
-                  <Button block variant="fillDark" onPress={handleTakePhoto}>
-                    Take a photo
-                  </Button>
-                </Flex>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text fontWeight="bold">See it? Search it.</Text>
 
-                <Spacer x={1} />
-
-                <Flex flex={1}>
-                  <Button block variant="fillDark" onPress={handleAddImage}>
-                    Add an image
-                  </Button>
-                </Flex>
+                <Touchable
+                  accessibilityRole="button"
+                  accessibilityLabel={isFooterExpanded ? "Collapse" : "Expand"}
+                  onPress={() => setIsFooterExpanded((expanded) => !expanded)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  {isFooterExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                </Touchable>
               </Flex>
+
+              {!!isFooterExpanded && (
+                <>
+                  <Text pt={0.5} pb={1}>
+                    Take a photo or upload an image to find the piece that matches the mood.
+                  </Text>
+                  <Flex flexDirection="row">
+                    <Flex flex={1}>
+                      <Button block variant="fillDark" onPress={handleTakePhoto}>
+                        Take a photo
+                      </Button>
+                    </Flex>
+
+                    <Spacer x={1} />
+
+                    <Flex flex={1}>
+                      <Button block variant="fillDark" onPress={handleAddImage}>
+                        Add an image
+                      </Button>
+                    </Flex>
+                  </Flex>
+                </>
+              )}
             </Box>
           </KeyboardStickyView>
         </Flex>

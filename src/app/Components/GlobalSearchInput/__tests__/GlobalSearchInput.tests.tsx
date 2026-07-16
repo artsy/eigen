@@ -97,5 +97,28 @@ describe("GlobalSearchInput", () => {
       expect(screen.getByText("Take a photo")).toBeTruthy()
       expect(screen.getByText("Add an image")).toBeTruthy()
     })
+
+    it("collapses to the title only and expands again when toggling the chevron", async () => {
+      renderOverlay()
+
+      // starts expanded: buttons + description visible
+      await screen.findByText("Take a photo")
+      expect(
+        screen.getByText("Take a photo or upload an image to find the piece that matches the mood.")
+      ).toBeTruthy()
+
+      // collapse: only the title remains
+      fireEvent.press(screen.getByLabelText("Collapse"))
+
+      expect(screen.getByText("See it? Search it.")).toBeTruthy()
+      expect(screen.queryByText("Take a photo")).toBeNull()
+      expect(screen.queryByText("Add an image")).toBeNull()
+
+      // expand again via the chevron
+      fireEvent.press(screen.getByLabelText("Expand"))
+
+      expect(screen.getByText("Take a photo")).toBeTruthy()
+      expect(screen.getByText("Add an image")).toBeTruthy()
+    })
   })
 })
