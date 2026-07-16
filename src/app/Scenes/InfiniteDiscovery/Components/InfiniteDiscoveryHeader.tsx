@@ -109,7 +109,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
             >
               <Flex flexDirection="row" alignItems="center" gap={0.5}>
                 <Text>{hasChosenToContinueBrowsing ? "Go to home" : "Skip to home"}</Text>
-                <ChevronRightIcon fill="onBackgroundHigh" />
+                <ChevronRightIcon fill="mono100" />
               </Flex>
             </Touchable>
           }

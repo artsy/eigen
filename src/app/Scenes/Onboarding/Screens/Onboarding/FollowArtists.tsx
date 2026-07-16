@@ -81,7 +81,7 @@ export const FollowArtists: React.FC = () => {
           >
             <Flex flexDirection="row" alignItems="center" gap={0.5}>
               <Text>Go to home</Text>
-              <ChevronRightIcon fill="onBackgroundHigh" />
+              <ChevronRightIcon fill="mono100" />
             </Flex>
           </Touchable>
         }
