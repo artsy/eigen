@@ -15,6 +15,7 @@ import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { requestPhotos } from "app/utils/requestPhotos"
+import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import ImagePicker from "react-native-image-crop-picker"
@@ -136,10 +137,24 @@ export const GlobalSearchInputOverlay: React.FC<{
     }
   })
 
+  const uploadAndSearchByImage = async (imagePath?: string) => {
+    if (!imagePath) {
+      return
+    }
+
+    try {
+      const { key, bucket } = await uploadImageToS3(imagePath)
+      // TODO: pass { key, bucket } to the image search query
+      console.warn("Uploaded image to S3", { key, bucket })
+    } catch (error) {
+      console.error("Failed to upload image to S3", error)
+    }
+  }
+
   const handleTakePhoto = async () => {
     try {
-      await ImagePicker.openCamera({ mediaType: "photo" })
-      // TODO: pass the captured photo to the image search flow
+      const photo = await ImagePicker.openCamera({ mediaType: "photo" })
+      await uploadAndSearchByImage(photo.path)
     } catch (error) {
       // User cancelled the camera or denied permission — no-op
     }
@@ -147,8 +162,8 @@ export const GlobalSearchInputOverlay: React.FC<{
 
   const handleAddImage = async () => {
     try {
-      await requestPhotos(false)
-      // TODO: pass the selected image to the image search flow
+      const [photo] = await requestPhotos(false)
+      await uploadAndSearchByImage(photo?.path)
     } catch (error) {
       // User cancelled the photo picker — no-op
     }
