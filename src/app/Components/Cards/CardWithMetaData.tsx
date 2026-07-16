@@ -19,6 +19,7 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
+import { useState } from "react"
 import { FlatList, GestureResponderEvent, useWindowDimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 
@@ -72,20 +73,15 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
       >
         <Flex width={cardWidth} overflow="hidden">
           {!!imageURL ? (
-            isFluid ? (
-              <Image
-                src={imageURL}
-                // aspect ratio is fixed to 1.33 to match the old image aspect ratio
-                aspectRatio={1.33}
-                width={cardWidth}
-              />
-            ) : (
-              <Image src={imageURL} width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
-            )
+            <CardImage imageURL={imageURL} isFluid={isFluid} cardWidth={cardWidth} />
           ) : !!imageComponent ? (
             imageComponent
           ) : (
-            <Box height={CARD_IMAGE_HEIGHT} width={CARD_IMAGE_WIDTH} />
+            <Box
+              bg="mono10"
+              width={cardWidth}
+              height={isFluid ? cardWidth / 1.33 : CARD_IMAGE_HEIGHT}
+            />
           )}
 
           <Spacer y={1} />
@@ -108,6 +104,43 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
         </Flex>
       </RouterLink>
     </Flex>
+  )
+}
+
+interface CardImageProps {
+  imageURL: string
+  isFluid?: boolean
+  cardWidth: number
+}
+
+const CardImage: React.FC<CardImageProps> = ({ imageURL, isFluid, cardWidth }) => {
+  const [failed, setFailed] = useState(false)
+
+  if (failed) {
+    // show a gray placeholder instead of a broken/white box when the image fails to load.
+    // mirror palette Image's sizing: explicit numeric width/height (height = width / aspectRatio).
+    return isFluid ? (
+      <Box bg="mono10" width={cardWidth} height={cardWidth / 1.33} />
+    ) : (
+      <Box bg="mono10" width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
+    )
+  }
+
+  return isFluid ? (
+    <Image
+      src={imageURL}
+      // aspect ratio is fixed to 1.33 to match the old image aspect ratio
+      aspectRatio={1.33}
+      width={cardWidth}
+      onError={() => setFailed(true)}
+    />
+  ) : (
+    <Image
+      src={imageURL}
+      width={CARD_IMAGE_WIDTH}
+      height={CARD_IMAGE_HEIGHT}
+      onError={() => setFailed(true)}
+    />
   )
 }
 
