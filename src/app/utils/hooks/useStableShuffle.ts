@@ -55,7 +55,7 @@ const mulberry32 = (a: number) => {
  * Returns a Fisher-Yates shuffle function seeded with seed value
  * https://stackoverflow.com/a/53758827/160937
  */
-const seededShuffle = (seed: string) => {
+export const seededShuffle = (seed: string) => {
   const hash = xmur3(seed)
   const random = mulberry32(hash())
 
