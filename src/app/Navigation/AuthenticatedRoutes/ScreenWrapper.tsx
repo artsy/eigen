@@ -6,6 +6,7 @@ import { AppModule } from "app/Navigation/routes"
 import { modules } from "app/Navigation/utils/modules"
 import { MotiView } from "moti"
 import { memo, useEffect } from "react"
+import { StyleProp, ViewStyle } from "react-native"
 import { useAnimatedStyle, useSharedValue } from "react-native-reanimated"
 
 export interface ScreenWrapperProps {
@@ -48,7 +49,7 @@ export const ScreenWrapper: React.FC<React.PropsWithChildren<ScreenWrapperProps>
 
     return (
       <RetryErrorBoundary>
-        <MotiView style={animatedStyles}>{children}</MotiView>
+        <MotiView style={animatedStyles as StyleProp<ViewStyle>}>{children}</MotiView>
       </RetryErrorBoundary>
     )
   }

@@ -8,7 +8,7 @@ import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
-import { PixelRatio, TouchableOpacity } from "react-native"
+import { PixelRatio, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import { useAnimatedStyle } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
@@ -68,7 +68,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       width={CONTAINER_WIDTH}
       py={1}
     >
-      <MotiView style={[followButtonStyle, { marginRight: space(0.5) }]}>
+      <MotiView style={[followButtonStyle, { marginRight: space(0.5) }] as StyleProp<ViewStyle>}>
         <FollowButton
           haptic
           isFollowed={isFollowed}
