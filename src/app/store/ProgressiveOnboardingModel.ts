@@ -47,10 +47,8 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
       [...state.dismissed, ...keys.map((k) => ({ key: k, timestamp }))],
       (d) => d.key
     )
-    state.sessionState = {
-      isReady: state.sessionState.isReady,
-      deferHomeTooltipsThisSession: state.sessionState.deferHomeTooltipsThisSession,
-    }
+    const { activePopover: _activePopover, ...rest } = state.sessionState
+    state.sessionState = rest
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
