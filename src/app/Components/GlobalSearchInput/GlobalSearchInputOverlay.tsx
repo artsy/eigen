@@ -179,7 +179,8 @@ export const GlobalSearchInputOverlay: React.FC<{
     setUploadingSource(source)
     try {
       const { key, bucket } = await uploadImageToS3(imagePath)
-      hideModal()
+      // Keep the overlay open (don't hideModal) so going back from the results screen
+      // returns the user to the search overlay with the image-search buttons still there.
       navigate("/image-search-results", {
         passProps: { s3Key: key, s3Bucket: bucket },
       })
