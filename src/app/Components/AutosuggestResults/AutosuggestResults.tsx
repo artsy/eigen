@@ -41,6 +41,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent?: React.ComponentType<any>
   numColumns?: number
   onResultPress?: OnResultPress
+  onScrollBeginDrag?: () => void
   prependResults?: AutosuggestResult[]
   query: string
   relay: RelayPaginationProp
@@ -57,6 +58,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent = () => <Spacer y={2} />,
   numColumns = 1,
   onResultPress,
+  onScrollBeginDrag: onScrollBeginDragProp,
   prependResults = [],
   query,
   relay,
@@ -79,13 +81,15 @@ const AutosuggestResultsFlatList: React.FC<{
     inputRef.current?.blur()
     // dismisses the keyboard
     KeyboardController.dismiss()
+    // let consumers react to the scroll (e.g. collapse the image-search footer)
+    onScrollBeginDragProp?.()
 
     if (!userHasStartedScrolling.current) {
       userHasStartedScrolling.current = true
       // fetch second page immediately
       loadMore()
     }
-  }, [])
+  }, [onScrollBeginDragProp])
   const onEndReached = useCallback(() => {
     if (userHasStartedScrolling.current) {
       loadMore()
@@ -344,6 +348,7 @@ export const AutosuggestResults: React.FC<{
   ListHeaderComponent?: React.ComponentType<any>
   numColumns?: number
   onResultPress?: OnResultPress
+  onScrollBeginDrag?: () => void
   prependResults?: any[]
   query: string
   showOnRetryErrorMessage?: boolean
@@ -361,6 +366,7 @@ export const AutosuggestResults: React.FC<{
     ListHeaderComponent,
     numColumns = 1,
     onResultPress,
+    onScrollBeginDrag,
     prependResults,
     query,
     showOnRetryErrorMessage,
@@ -430,6 +436,7 @@ export const AutosuggestResults: React.FC<{
               showResultType={showResultType}
               showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
+              onScrollBeginDrag={onScrollBeginDrag}
               trackResultPress={trackResultPress}
               ListEmptyComponent={ListEmptyComponent}
               ListHeaderComponent={ListHeaderComponent}

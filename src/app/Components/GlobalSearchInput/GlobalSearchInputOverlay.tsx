@@ -1,10 +1,21 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
+import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
+import {
+  Box,
+  Button,
+  Flex,
+  RoundSearchInput,
+  Spacer,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -12,10 +23,17 @@ import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+// Imperative navigation is required here — we navigate after the async image upload
+// resolves, so RouterLink (declarative) can't be used.
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { Suspense, useEffect, useState } from "react"
+import { requestPhotos } from "app/utils/requestPhotos"
+import { uploadImageToS3 } from "app/utils/uploadImageToS3"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
-import { KeyboardController } from "react-native-keyboard-controller"
+import ImagePicker from "react-native-image-crop-picker"
+import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -33,7 +51,10 @@ export const globalSearchInputOverlayQuery = graphql`
   }
 `
 
-const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query }) => {
+const GlobalSearchInputOverlayContent: React.FC<{
+  query: string
+  onScrollBeginDrag?: () => void
+}> = ({ query, onScrollBeginDrag }) => {
   const space = useSpace()
   const {
     data,
@@ -65,6 +86,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
           <SearchResults
             selectedPill={selectedPill}
             query={query}
+            onScrollBeginDrag={onScrollBeginDrag}
             onRetry={() => {
               refetch({ term: query, skipSearchQuery: false })
             }}
@@ -74,6 +96,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
+          onScrollBeginDrag={onScrollBeginDrag}
           contentContainerStyle={{
             paddingHorizontal: space(2),
             paddingBottom: space(6),
@@ -93,6 +116,8 @@ export const GlobalSearchInputOverlay: React.FC<{
 }> = ({ hideModal, ownerType, visible }) => {
   const [query, setQuery] = useState("")
   const [shouldRender, setShouldRender] = useState(false)
+  const [isFooterExpanded, setIsFooterExpanded] = useState(true)
+  const [uploadingSource, setUploadingSource] = useState<"camera" | "library" | null>(null)
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
@@ -133,6 +158,56 @@ export const GlobalSearchInputOverlay: React.FC<{
     }
   })
 
+  // Collapse the prompt to its title once the user starts typing; expand it again when the
+  // query is cleared. It's never hidden — the title stays with a chevron to re-expand.
+  useEffect(() => {
+    setIsFooterExpanded(!query)
+  }, [query])
+
+  // Also collapse it as soon as the user starts scrolling the results/recent searches.
+  const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
+
+  const uploadAndSearchByImage = async (
+    imagePath: string | undefined,
+    source: "camera" | "library"
+  ) => {
+    if (!imagePath) {
+      return
+    }
+
+    // Uploading to S3 can take a few seconds — show a loading state so the user has feedback.
+    setUploadingSource(source)
+    try {
+      const { key, bucket } = await uploadImageToS3(imagePath)
+      hideModal()
+      navigate("/image-search-results", {
+        passProps: { s3Key: key, s3Bucket: bucket },
+      })
+    } catch (error) {
+      console.error("Failed to upload image to S3", error)
+    } finally {
+      setUploadingSource(null)
+    }
+  }
+
+  const handleTakePhoto = async () => {
+    try {
+      const photo = await ImagePicker.openCamera({ mediaType: "photo" })
+      await uploadAndSearchByImage(photo.path, "camera")
+    } catch (error) {
+      // User cancelled the camera or denied permission — no-op
+    }
+  }
+
+  const handleAddImage = async () => {
+    try {
+      const [photo] = await requestPhotos(false)
+      await uploadAndSearchByImage(photo?.path, "library")
+    } catch (error) {
+      // User cancelled the photo picker — no-op
+    }
+  }
+
   if (!shouldRender) {
     return null
   }
@@ -140,11 +215,9 @@ export const GlobalSearchInputOverlay: React.FC<{
   return (
     <Portal hostName={`${ownerType}-SearchOverlay`}>
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
-        <Flex
-          flex={1}
-          backgroundColor="mono0"
-          style={{ top: insets.top, marginBottom: insets.bottom }}
-        >
+        {/* Use paddingTop (not `top`) so the container stays full-screen height and its
+         bottom edge isn't pushed off-screen, which was cropping the footer below. */}
+        <Flex flex={1} backgroundColor="mono0" style={{ paddingTop: insets.top }}>
           <Flex px={2} mt={2}>
             <RoundSearchInput
               placeholder={SEARCH_INPUT_PLACEHOLDER}
@@ -163,9 +236,69 @@ export const GlobalSearchInputOverlay: React.FC<{
 
           <Spacer y={2} />
 
-          <Suspense fallback={null}>
-            <GlobalSearchInputOverlayContent query={query} />
-          </Suspense>
+          {/* Bound the content to the available space so it lays out above the footer,
+           which reserves the footer's height in normal flow (no overlap, no crop). */}
+          <Flex flex={1}>
+            <Suspense fallback={null}>
+              <GlobalSearchInputOverlayContent query={query} onScrollBeginDrag={collapseFooter} />
+            </Suspense>
+          </Flex>
+
+          {/* The image-search prompt is always present (never fully hidden). It shows in full
+           before searching, and collapses to just its title once the user starts typing — the
+           chevron lets them re-expand. KeyboardStickyView keeps it above the keyboard; the
+           negative `closed` offset lifts it above the bottom tab bar when the keyboard folds. */}
+          <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
+            <Box backgroundColor="blue10" px={2} py={1}>
+              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Text fontWeight="bold">See it? Search it.</Text>
+
+                <Touchable
+                  accessibilityRole="button"
+                  accessibilityLabel={isFooterExpanded ? "Collapse" : "Expand"}
+                  onPress={() => setIsFooterExpanded((expanded) => !expanded)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  {isFooterExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                </Touchable>
+              </Flex>
+
+              {!!isFooterExpanded && (
+                <>
+                  <Text pt={0.5} pb={1}>
+                    Take a photo or upload an image to find the piece that matches the mood.
+                  </Text>
+                  <Flex flexDirection="row">
+                    <Flex flex={1}>
+                      <Button
+                        block
+                        variant="fillDark"
+                        onPress={handleTakePhoto}
+                        loading={uploadingSource === "camera"}
+                        disabled={!!uploadingSource}
+                      >
+                        Take a photo
+                      </Button>
+                    </Flex>
+
+                    <Spacer x={1} />
+
+                    <Flex flex={1}>
+                      <Button
+                        block
+                        variant="fillDark"
+                        onPress={handleAddImage}
+                        loading={uploadingSource === "library"}
+                        disabled={!!uploadingSource}
+                      >
+                        Add an image
+                      </Button>
+                    </Flex>
+                  </Flex>
+                </>
+              )}
+            </Box>
+          </KeyboardStickyView>
         </Flex>
       </Animated.View>
     </Portal>
