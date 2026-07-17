@@ -23,6 +23,7 @@ export interface ProgressiveOnboardingModel {
     // we use this to control which popover is active, we cannot have 2 popovers
     // active at the same time
     activePopover?: string
+    // Each Home tooltip must check this itself; setting it doesn't block anything on its own
     deferHomeTooltipsThisSession: boolean
   }
   setIsReady: Action<this, boolean>
