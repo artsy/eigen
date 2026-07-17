@@ -1,7 +1,7 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
-import { Platform } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 
@@ -13,29 +13,39 @@ interface RequestPhotosOptions {
   cropping?: boolean
 }
 
+const cropImage = (path: string): Promise<Image> =>
+  // Wait for the picker to finish dismissing before presenting the cropper — presenting it
+  // while the picker is still on screen makes the cropper silently fail to appear.
+  new Promise((resolve) => {
+    InteractionManager.runAfterInteractions(() => resolve(undefined))
+  }).then(() =>
+    ImagePicker.openCropper({
+      path,
+      mediaType: "photo",
+      freeStyleCropEnabled: true,
+    })
+  )
+
 export async function requestPhotos(
   allowMultiple = true,
   { cropping = false }: RequestPhotosOptions = {}
 ): Promise<Image[]> {
-  // The native iOS picker can't crop, and presenting a cropper after it dismisses is unreliable.
-  // So when cropping is requested we use image-crop-picker's openPicker, which does pick + crop
-  // in a single native flow. Cropping implies single selection.
-  if (cropping) {
-    const image = await ImagePicker.openPicker({
-      mediaType: "photo",
-      multiple: false,
-      cropping: true,
-      freeStyleCropEnabled: true,
-    })
-    return isArray(image) ? image : [image]
-  }
-
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
-    return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(allowMultiple)
+    // Keeps the native grid picker (opens straight to photos, not the albums list).
+    const images: Image[] =
+      await LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(allowMultiple)
+
+    if (!cropping) {
+      return images
+    }
+
+    // The native picker has no crop step, so crop each selected image afterwards.
+    return Promise.all(images.map((image) => cropImage(image.path)))
   } else {
     const images = await ImagePicker.openPicker({
       mediaType: "photo",
       multiple: allowMultiple,
+      ...(cropping ? { cropping: true, freeStyleCropEnabled: true } : {}),
     })
     if (isArray(images)) {
       return images

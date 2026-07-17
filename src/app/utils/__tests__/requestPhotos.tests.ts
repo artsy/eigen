@@ -1,13 +1,24 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { Platform } from "react-native"
-import { openPicker } from "react-native-image-crop-picker"
+import { InteractionManager, Platform } from "react-native"
+import { openCropper, openPicker } from "react-native-image-crop-picker"
 
 jest.mock("react-native-image-crop-picker", () => ({
   openPicker: jest.fn(),
+  openCropper: jest.fn(),
 }))
 
 describe("requestPhotos", () => {
+  beforeEach(() => {
+    // Run the deferred cropper callback synchronously in tests.
+    jest.spyOn(InteractionManager, "runAfterInteractions").mockImplementation(((
+      task?: () => void
+    ) => {
+      task?.()
+      return { then: () => undefined, done: () => undefined, cancel: () => undefined }
+    }) as any)
+  })
+
   describe("on iOS", () => {
     it("calls the native module on iOS 14 and above", () => {
       Platform.OS = "ios"
@@ -20,22 +31,21 @@ describe("requestPhotos", () => {
       expect(mockRequestPhotos).toHaveBeenCalled()
     })
 
-    it("uses the crop-capable picker (not the native module) when cropping is requested", async () => {
+    it("keeps the native grid picker and crops each image afterwards when cropping is requested", async () => {
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 15,
       })
-      const mockRequestPhotos = jest.fn()
-      LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos = mockRequestPhotos
-      ;(openPicker as jest.Mock).mockResolvedValue({ path: "file:///cropped.jpg" })
+      LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos = jest
+        .fn()
+        .mockResolvedValue([{ path: "file:///original.jpg" }])
+      ;(openCropper as jest.Mock).mockResolvedValue({ path: "file:///cropped.jpg" })
 
       const result = await requestPhotos(false, { cropping: true })
 
-      expect(mockRequestPhotos).not.toHaveBeenCalled()
-      expect(openPicker).toHaveBeenCalledWith({
+      expect(openCropper).toHaveBeenCalledWith({
+        path: "file:///original.jpg",
         mediaType: "photo",
-        multiple: false,
-        cropping: true,
         freeStyleCropEnabled: true,
       })
       expect(result).toEqual([{ path: "file:///cropped.jpg" }])
