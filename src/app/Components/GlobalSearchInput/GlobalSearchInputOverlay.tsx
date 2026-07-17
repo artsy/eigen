@@ -28,6 +28,7 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { Suspense, useCallback, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
@@ -161,7 +162,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   // query is cleared. It's never hidden — the title stays with a chevron to re-expand.
   useEffect(() => {
     setIsFooterExpanded(!query)
-  }, [query])
+  }, [isFooterExpanded, query])
 
   // Also collapse it as soon as the user starts scrolling the results/recent searches.
   const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
@@ -206,13 +207,9 @@ export const GlobalSearchInputOverlay: React.FC<{
 
   const handleAddImage = async () => {
     try {
-      // Pick from the gallery with a free-form crop step before we search with the image.
-      const photo = await ImagePicker.openPicker({
-        mediaType: "photo",
-        cropping: true,
-        freeStyleCropEnabled: true,
-      })
-      await uploadAndSearchByImage(photo.path, "library")
+      // Keep the standard photo picker, with a free-form crop step before we search.
+      const [photo] = await requestPhotos(false, { cropping: true })
+      await uploadAndSearchByImage(photo?.path, "library")
     } catch (error) {
       // User cancelled the photo picker — no-op
     }

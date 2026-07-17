@@ -5,10 +5,15 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { navigate } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import ImagePicker from "react-native-image-crop-picker"
+
+jest.mock("app/utils/requestPhotos", () => ({
+  requestPhotos: jest.fn(),
+}))
 
 jest.mock("app/utils/uploadImageToS3", () => ({
   uploadImageToS3: jest.fn(),
@@ -91,8 +96,8 @@ describe("GlobalSearchInput", () => {
       })
     })
 
-    it("uploads the selected image and opens the image-search results", async () => {
-      ;(ImagePicker.openPicker as jest.Mock).mockResolvedValueOnce({ path: "file:///library.jpg" })
+    it("uploads the selected (cropped) image and opens the image-search results", async () => {
+      ;(requestPhotos as jest.Mock).mockResolvedValueOnce([{ path: "file:///library.jpg" }])
       ;(uploadImageToS3 as jest.Mock).mockResolvedValueOnce({
         key: "some-key",
         bucket: "some-bucket",
@@ -101,11 +106,7 @@ describe("GlobalSearchInput", () => {
 
       fireEvent.press(await screen.findByText("Add an image"))
 
-      expect(ImagePicker.openPicker).toHaveBeenCalledWith({
-        mediaType: "photo",
-        cropping: true,
-        freeStyleCropEnabled: true,
-      })
+      expect(requestPhotos).toHaveBeenCalledWith(false, { cropping: true })
       await waitFor(() => expect(uploadImageToS3).toHaveBeenCalledWith("file:///library.jpg"))
       expect(navigate).toHaveBeenCalledWith("/image-search-results", {
         passProps: { s3Key: "some-key", s3Bucket: "some-bucket" },

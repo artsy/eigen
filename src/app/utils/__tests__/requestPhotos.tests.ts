@@ -19,6 +19,27 @@ describe("requestPhotos", () => {
       requestPhotos()
       expect(mockRequestPhotos).toHaveBeenCalled()
     })
+
+    it("uses the crop-capable picker (not the native module) when cropping is requested", async () => {
+      Platform.OS = "ios"
+      Object.defineProperty(Platform, "Version", {
+        get: () => 15,
+      })
+      const mockRequestPhotos = jest.fn()
+      LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos = mockRequestPhotos
+      ;(openPicker as jest.Mock).mockResolvedValue({ path: "file:///cropped.jpg" })
+
+      const result = await requestPhotos(false, { cropping: true })
+
+      expect(mockRequestPhotos).not.toHaveBeenCalled()
+      expect(openPicker).toHaveBeenCalledWith({
+        mediaType: "photo",
+        multiple: false,
+        cropping: true,
+        freeStyleCropEnabled: true,
+      })
+      expect(result).toEqual([{ path: "file:///cropped.jpg" }])
+    })
   })
 
   describe("on Android", () => {
@@ -29,6 +50,23 @@ describe("requestPhotos", () => {
       })
       requestPhotos()
       expect(openPicker).toHaveBeenCalled()
+    })
+
+    it("passes cropping options to the picker when cropping is requested", async () => {
+      Platform.OS = "android"
+      Object.defineProperty(Platform, "Version", {
+        get: () => 23,
+      })
+      ;(openPicker as jest.Mock).mockResolvedValue({ path: "file:///a.jpg" })
+
+      await requestPhotos(false, { cropping: true })
+
+      expect(openPicker).toHaveBeenCalledWith({
+        mediaType: "photo",
+        multiple: false,
+        cropping: true,
+        freeStyleCropEnabled: true,
+      })
     })
   })
 })

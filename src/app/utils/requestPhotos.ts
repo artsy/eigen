@@ -5,7 +5,31 @@ import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 
-export async function requestPhotos(allowMultiple = true): Promise<Image[]> {
+interface RequestPhotosOptions {
+  /**
+   * Let the user crop each selected image (free-form) before it's returned.
+   * Intended for single selection (`allowMultiple = false`).
+   */
+  cropping?: boolean
+}
+
+export async function requestPhotos(
+  allowMultiple = true,
+  { cropping = false }: RequestPhotosOptions = {}
+): Promise<Image[]> {
+  // The native iOS picker can't crop, and presenting a cropper after it dismisses is unreliable.
+  // So when cropping is requested we use image-crop-picker's openPicker, which does pick + crop
+  // in a single native flow. Cropping implies single selection.
+  if (cropping) {
+    const image = await ImagePicker.openPicker({
+      mediaType: "photo",
+      multiple: false,
+      cropping: true,
+      freeStyleCropEnabled: true,
+    })
+    return isArray(image) ? image : [image]
+  }
+
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
     return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(allowMultiple)
   } else {
