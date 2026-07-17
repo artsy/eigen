@@ -162,7 +162,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   // query is cleared. It's never hidden — the title stays with a chevron to re-expand.
   useEffect(() => {
     setIsFooterExpanded(!query)
-  }, [isFooterExpanded, query])
+  }, [query])
 
   // Also collapse it as soon as the user starts scrolling the results/recent searches.
   const collapseFooter = useCallback(() => setIsFooterExpanded(false), [])
