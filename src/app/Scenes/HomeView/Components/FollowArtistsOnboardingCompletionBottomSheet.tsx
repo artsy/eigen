@@ -9,7 +9,7 @@ import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/Paginati
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState, useRef, useCallback, useEffect } from "react"
-import { Platform } from "react-native"
+import { Platform, Pressable, StyleSheet } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 
 export const FollowArtistsOnboardingCompletionBottomSheet = () => {
@@ -39,13 +39,13 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
     GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
   }
 
-  const handleButtonPress = () => {
+  const handleButtonPress = useCallback(() => {
     if (activeStep === 0) {
       pagerViewRef.current?.setPage(1)
     } else {
       handleDismiss()
     }
-  }
+  }, [activeStep])
 
   const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
     if (e.nativeEvent.position !== undefined && e.nativeEvent.position !== -1) {
@@ -55,15 +55,26 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        opacity={0.5}
-        style={[props.style, { backgroundColor: "rgb(229,229,229)" }]}
-      />
+      <Pressable
+        onPress={handleButtonPress}
+        style={StyleSheet.absoluteFill}
+        accessibilityRole="button"
+        accessibilityLabel={
+          activeStep === 0 ? "Advance to the next step" : "Dismiss the onboarding sheet"
+        }
+      >
+        <BottomSheetBackdrop
+          {...props}
+          appearsOnIndex={0}
+          disappearsOnIndex={-1}
+          opacity={0.5}
+          pressBehavior="none"
+          enableTouchThrough
+          style={[props.style, { backgroundColor: "rgb(229,229,229)" }]}
+        />
+      </Pressable>
     ),
-    []
+    [handleButtonPress, activeStep]
   )
 
   if (!isVisible) {
@@ -77,10 +88,14 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
       name="FollowArtistsOnboardingCompletionBottomSheet"
       onDismiss={handleDismiss}
       backdropComponent={renderBackdrop}
+      enablePanDownToClose={false}
+      enableHandlePanningGesture={false}
+      enableContentPanningGesture={false}
+      handleComponent={null}
     >
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
-          <Spacer y={1} />
+          <Spacer y={2} />
 
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
             {followedOnboardingArtists.slice(-3).map((artist, index) => (
