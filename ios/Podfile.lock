@@ -3842,7 +3842,7 @@ PODS:
     - Yoga
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (4.2.1):
+  - RNReanimated (4.3.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3869,11 +3869,12 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 4.2.1)
+    - RNReanimated/apple (= 4.3.2)
+    - RNReanimated/common (= 4.3.2)
     - RNWorklets
     - SocketRocket
     - Yoga
-  - RNReanimated/reanimated (4.2.1):
+  - RNReanimated/apple (4.3.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -3900,11 +3901,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 4.2.1)
     - RNWorklets
     - SocketRocket
     - Yoga
-  - RNReanimated/reanimated/apple (4.2.1):
+  - RNReanimated/common (4.3.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -4108,7 +4108,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNWorklets (0.7.4):
+  - RNWorklets (0.8.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -4135,10 +4135,11 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNWorklets/worklets (= 0.7.4)
+    - RNWorklets/apple (= 0.8.3)
+    - RNWorklets/common (= 0.8.3)
     - SocketRocket
     - Yoga
-  - RNWorklets/worklets (0.7.4):
+  - RNWorklets/apple (0.8.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -4165,10 +4166,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNWorklets/worklets/apple (= 0.7.4)
     - SocketRocket
     - Yoga
-  - RNWorklets/worklets/apple (0.7.4):
+  - RNWorklets/common (0.8.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -5134,12 +5134,12 @@ SPEC CHECKSUMS:
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNPermissions: d1b50022f1cb4d183dc9b7e1e1764764e9dd5f2b
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
-  RNReanimated: f63b0e221a0c6e8c90bf0f9575502c40c2500158
+  RNReanimated: e5ca049200da5198d987dba2387de1d7bfdf80af
   RNScreens: afaf526a9c804c3b4503f950cf3e67ed81e29ada
   RNSentry: 7077776018fd4f5c6ec022275113c782c28d22fe
   RNShare: 1dba46787d6e5543e05655efaefa0e4bb98380d9
   RNSVG: 595abfa0f9ac26d56afcaaedf4e37a00f54cab71
-  RNWorklets: a3184955a41f2be46898a937e2821469c8c8da42
+  RNWorklets: 534af667da0c0049e0060ae43f03c7df8cc9a6e0
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
