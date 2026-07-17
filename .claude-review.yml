@@ -38,7 +38,13 @@ focus_areas:
     (hooks, utils, mutations folders) uses camelCase. Test files end in `.tests.ts(x)` and
     live in a sibling `__tests__` folder.
   - |
-    PR Content: PRs should include Screenshots/Recordings on Both Android & iOS.
+    PR Content: If a PR makes changes to UI components or its description suggests a UI fix/change,
+    then remind the author to include Screenshots/Recordings on Both Android & iOS.
+  - |
+    PR Conventions: If the PR was opened by an AI Coding agent, or it has a coding agent as a co-author,
+    and it doesn't clearly mention it in the description as "Assisted by: Sonnet/Opus/Cursor..."
+    or any equivalent way, then remind the author to mention it as agreed on
+    RFC: disclose LLM usage in commits or PRs: https://github.com/artsy/README/pull/582
 
 ignore_paths:
   - "src/__generated__/**"
