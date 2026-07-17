@@ -295,7 +295,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   }
 )
 
-const infiniteDiscoveryArtworkCardFragment = graphql`
+export const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
     artistNames
     artists(shallow: true) {

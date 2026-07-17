@@ -137,6 +137,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { InfiniteExplorerQueryRenderer } from "app/Scenes/InfiniteExplorer/InfiniteExplorerQueryRenderer"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -1010,6 +1011,20 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         animation: "slide_from_bottom",
         gestureEnabled: false,
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/infinite-explorer",
+    name: "InfiniteExplorer",
+    Component: InfiniteExplorerQueryRenderer,
+    queries: [infiniteDiscoveryQuery],
+    prepareVariables: [() => infiniteDiscoveryVariables],
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        animation: "slide_from_bottom",
         headerShown: false,
       },
     },

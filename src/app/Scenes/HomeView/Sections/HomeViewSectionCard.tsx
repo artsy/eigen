@@ -235,7 +235,7 @@ function getRoute(card: any) {
   }
 
   if (card.entityType === "Page" && card.entityID === OwnerType.infiniteDiscovery) {
-    return "/infinite-discovery"
+    return "/infinite-explorer"
   }
 
   return route
