@@ -192,7 +192,8 @@ export const GlobalSearchInputOverlay: React.FC<{
 
   const handleTakePhoto = async () => {
     try {
-      const photo = await ImagePicker.openCamera({ mediaType: "photo" })
+      // `cropping` lets the user crop the shot before we search with it.
+      const photo = await ImagePicker.openCamera({ mediaType: "photo", cropping: true })
       await uploadAndSearchByImage(photo.path, "camera")
     } catch (error) {
       // User cancelled the camera or denied permission — no-op

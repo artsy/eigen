@@ -85,7 +85,7 @@ describe("GlobalSearchInput", () => {
 
       fireEvent.press(await screen.findByText("Take a photo"))
 
-      expect(ImagePicker.openCamera).toHaveBeenCalledWith({ mediaType: "photo" })
+      expect(ImagePicker.openCamera).toHaveBeenCalledWith({ mediaType: "photo", cropping: true })
       await waitFor(() => expect(uploadImageToS3).toHaveBeenCalledWith("file:///camera.jpg"))
       expect(navigate).toHaveBeenCalledWith("/image-search-results", {
         passProps: { s3Key: "some-key", s3Bucket: "some-bucket" },
