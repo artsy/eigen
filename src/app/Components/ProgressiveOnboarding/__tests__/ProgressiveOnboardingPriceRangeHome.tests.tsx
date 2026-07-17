@@ -130,6 +130,25 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
+
+  it("does not show popover when Home tooltips are deferred to the next session", async () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true, deferHomeTooltipsThisSession: true },
+        dismissed: [],
+      },
+      onboarding: {
+        showFollowedArtistSummaryBottomSheet: false,
+      },
+    })
+
+    renderWithRelay(mockProps)
+
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    expect(screen.getByText("Content")).toBeOnTheScreen()
+  })
 })
 
 const mockProps = {

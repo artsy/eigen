@@ -23,9 +23,11 @@ export interface ProgressiveOnboardingModel {
     // we use this to control which popover is active, we cannot have 2 popovers
     // active at the same time
     activePopover?: string
+    deferHomeTooltipsThisSession: boolean
   }
   setIsReady: Action<this, boolean>
   setActivePopover: Action<this, string | undefined>
+  setDeferHomeTooltipsThisSession: Action<this, boolean>
   __clearDissmissed: Action<this>
   reset: Action<this>
 }
@@ -33,6 +35,7 @@ export interface ProgressiveOnboardingModel {
 export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => ({
   sessionState: {
     isReady: false,
+    deferHomeTooltipsThisSession: false,
   },
   dismissed: [],
   dismiss: action((state, key) => {
@@ -43,7 +46,10 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
       [...state.dismissed, ...keys.map((k) => ({ key: k, timestamp }))],
       (d) => d.key
     )
-    state.sessionState = { isReady: state.sessionState.isReady }
+    state.sessionState = {
+      isReady: state.sessionState.isReady,
+      deferHomeTooltipsThisSession: state.sessionState.deferHomeTooltipsThisSession,
+    }
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
@@ -66,12 +72,15 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   setActivePopover: action((state, id) => {
     state.sessionState.activePopover = id
   }),
+  setDeferHomeTooltipsThisSession: action((state, defer) => {
+    state.sessionState.deferHomeTooltipsThisSession = defer
+  }),
   __clearDissmissed: action((state) => {
     state.dismissed = []
   }),
   reset: action((state) => {
     state.dismissed = []
-    state.sessionState = { isReady: false }
+    state.sessionState = { isReady: false, deferHomeTooltipsThisSession: false }
   }),
 })
 
@@ -113,6 +122,8 @@ export const PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2 =
 
 export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME = "price-range-popover-home"
 
+export const PROGRESSIVE_ONBOARDING_FAVORITES_TAB = "favorites-tab"
+
 export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
@@ -128,6 +139,7 @@ export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2,
   PROGRESSIVE_ONBOARDING_DARK_MODE,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
+  PROGRESSIVE_ONBOARDING_FAVORITES_TAB,
 ] as const
 
 export type ProgressiveOnboardingKey = (typeof PROGRESSIVE_ONBOARDING_KEYS)[number]

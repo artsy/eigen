@@ -57,6 +57,19 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("complete")
   })
 
+  it('"Go to home" defers Home tooltips to the next session', () => {
+    GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Go to home"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(true)
+  })
+
   it("renders 5 artwork images from the store", () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     SAVED_ARTWORKS.forEach((artwork) => {

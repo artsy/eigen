@@ -52,6 +52,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
       trackTappedSkip(ContextModule.onboardingFlow, OwnerType.infiniteDiscoveryArtwork)
     }
     trackCompletedOnboarding()
+    if (newUserOnboardingSavedArtworkCount >= 1) {
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
+    }
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
 

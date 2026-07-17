@@ -53,6 +53,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
 
   const handleTakeMeHome = () => {
     trackCompletedOnboarding()
+    GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
     setOnboardingState("complete")
     setNewUserOnboardingCompletionBottomSheetVisible(false)
   }
