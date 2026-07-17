@@ -1,6 +1,6 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { InteractionManager, Platform } from "react-native"
+import { Platform } from "react-native"
 import { openCropper, openPicker } from "react-native-image-crop-picker"
 
 jest.mock("react-native-image-crop-picker", () => ({
@@ -9,16 +9,6 @@ jest.mock("react-native-image-crop-picker", () => ({
 }))
 
 describe("requestPhotos", () => {
-  beforeEach(() => {
-    // Run the deferred cropper callback synchronously in tests.
-    jest.spyOn(InteractionManager, "runAfterInteractions").mockImplementation(((
-      task?: () => void
-    ) => {
-      task?.()
-      return { then: () => undefined, done: () => undefined, cancel: () => undefined }
-    }) as any)
-  })
-
   describe("on iOS", () => {
     it("calls the native module on iOS 14 and above", () => {
       Platform.OS = "ios"
@@ -32,6 +22,7 @@ describe("requestPhotos", () => {
     })
 
     it("keeps the native grid picker and crops each image afterwards when cropping is requested", async () => {
+      jest.useFakeTimers()
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 15,
@@ -41,7 +32,9 @@ describe("requestPhotos", () => {
         .mockResolvedValue([{ path: "file:///original.jpg" }])
       ;(openCropper as jest.Mock).mockResolvedValue({ path: "file:///cropped.jpg" })
 
-      const result = await requestPhotos(false, { cropping: true })
+      const promise = requestPhotos(false, { cropping: true })
+      await jest.advanceTimersByTimeAsync(600)
+      const result = await promise
 
       expect(openCropper).toHaveBeenCalledWith({
         path: "file:///original.jpg",
@@ -49,6 +42,7 @@ describe("requestPhotos", () => {
         freeStyleCropEnabled: true,
       })
       expect(result).toEqual([{ path: "file:///cropped.jpg" }])
+      jest.useRealTimers()
     })
   })
 
