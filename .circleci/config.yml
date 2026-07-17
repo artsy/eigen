@@ -523,7 +523,7 @@ parameters:
     default: v21-test-success
   android_native_cache_key:
     type: string
-    default: v21-test-success-{{ checksum ".manifests/android_native }}
+    default: v21-test-success-{{ checksum ".manifests/android_native" }}
 
 workflows:
   nightly:
