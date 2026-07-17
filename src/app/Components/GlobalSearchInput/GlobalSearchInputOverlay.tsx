@@ -28,7 +28,6 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { requestPhotos } from "app/utils/requestPhotos"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { Suspense, useCallback, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
@@ -192,8 +191,13 @@ export const GlobalSearchInputOverlay: React.FC<{
 
   const handleTakePhoto = async () => {
     try {
-      // `cropping` lets the user crop the shot before we search with it.
-      const photo = await ImagePicker.openCamera({ mediaType: "photo", cropping: true })
+      // `cropping` lets the user crop the shot before we search with it;
+      // `freeStyleCropEnabled` allows a free-form crop rectangle instead of a locked square.
+      const photo = await ImagePicker.openCamera({
+        mediaType: "photo",
+        cropping: true,
+        freeStyleCropEnabled: true,
+      })
       await uploadAndSearchByImage(photo.path, "camera")
     } catch (error) {
       // User cancelled the camera or denied permission — no-op
@@ -202,8 +206,13 @@ export const GlobalSearchInputOverlay: React.FC<{
 
   const handleAddImage = async () => {
     try {
-      const [photo] = await requestPhotos(false)
-      await uploadAndSearchByImage(photo?.path, "library")
+      // Pick from the gallery with a free-form crop step before we search with the image.
+      const photo = await ImagePicker.openPicker({
+        mediaType: "photo",
+        cropping: true,
+        freeStyleCropEnabled: true,
+      })
+      await uploadAndSearchByImage(photo.path, "library")
     } catch (error) {
       // User cancelled the photo picker — no-op
     }

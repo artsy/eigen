@@ -330,6 +330,7 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
 jest.mock("react-native-image-crop-picker", () => ({
   openPicker: jest.fn(),
   openCamera: jest.fn(),
+  openCropper: jest.fn(),
   cleanSingle: jest.fn(),
   clean: jest.fn(),
 }))
