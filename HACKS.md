@@ -169,7 +169,6 @@ It can be removed once if we stop using the singleton pattern or get rid of ARNo
 
 `package.json` sets the following reanimated `staticFeatureFlags` to fix scroll performance. See https://docs.swmansion.com/react-native-reanimated/docs/guides/performance/#%EF%B8%8F-lower-fps-while-scrolling
 
-- `USE_COMMIT_HOOK_ONLY_FOR_REACT_COMMITS`
 - `DISABLE_COMMIT_PAUSING_MECHANISM`
 - `ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS`
 - `IOS_SYNCHRONOUSLY_UPDATE_UI_PROPS`
