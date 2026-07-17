@@ -1,6 +1,6 @@
 {
   "appName": "eigen",
-  "version": "9.13.0",
+  "version": "9.14.0",
   "slug": "eigen",
   "expo": {
     "buildCacheProvider": {
@@ -14,10 +14,7 @@
         }
       }
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "runtimeVersion": "2c6a148974d40bab8d3796d7b69c5f0208b08478",
     "owner": "artsy_org",
     "extra": {
