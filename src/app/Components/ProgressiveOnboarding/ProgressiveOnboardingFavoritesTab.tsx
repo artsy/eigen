@@ -10,10 +10,6 @@ import { switchTab } from "app/system/navigation/navigate"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useTracking } from "react-tracking"
 
-export const PROGRESSIVE_ONBOARDING_FAVORITES_TAB_TITLE = "Your saves get stored here."
-export const PROGRESSIVE_ONBOARDING_FAVORITES_TAB_CONTENT =
-  "Visit your favorites at any time to see your saves and follows."
-
 const FAVORITES_TAB_ONBOARDING_POPOVER_DELAY = 1000
 
 export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren> = ({
@@ -75,7 +71,7 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
           <Text variant="xs" color="mono0" fontWeight="bold">
-            {PROGRESSIVE_ONBOARDING_FAVORITES_TAB_TITLE}
+            Your saves get stored here.
           </Text>
         </Touchable>
       }
@@ -83,7 +79,7 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
         <Touchable noFeedback accessibilityRole="button" onPress={onPress}>
           <Flex maxWidth={250}>
             <Text variant="xs" color="mono0">
-              {PROGRESSIVE_ONBOARDING_FAVORITES_TAB_CONTENT}
+              Visit your favorites at any time to see your saves and follows.
             </Text>
           </Flex>
         </Touchable>

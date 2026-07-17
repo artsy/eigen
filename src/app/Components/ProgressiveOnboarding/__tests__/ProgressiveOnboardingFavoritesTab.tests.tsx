@@ -1,8 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import {
-  PROGRESSIVE_ONBOARDING_FAVORITES_TAB_TITLE,
-  ProgressiveOnboardingFavoritesTab,
-} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFavoritesTab"
+import { ProgressiveOnboardingFavoritesTab } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFavoritesTab"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -116,7 +113,7 @@ describe("ProgressiveOnboardingFavoritesTab", () => {
       expect(screen.getByText("Popover")).toBeOnTheScreen()
     })
 
-    fireEvent.press(screen.getByText(PROGRESSIVE_ONBOARDING_FAVORITES_TAB_TITLE))
+    fireEvent.press(screen.getByText("Your saves get stored here."))
 
     expect(mockSwitchTab).toHaveBeenCalledWith("favorites")
     expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ type: "favorites-tab" }))
