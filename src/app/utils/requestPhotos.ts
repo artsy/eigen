@@ -1,7 +1,7 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
-import { InteractionManager, Platform } from "react-native"
+import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 
@@ -13,18 +13,20 @@ interface RequestPhotosOptions {
   cropping?: boolean
 }
 
-const cropImage = (path: string): Promise<Image> =>
-  // Wait for the picker to finish dismissing before presenting the cropper — presenting it
-  // while the picker is still on screen makes the cropper silently fail to appear.
-  new Promise((resolve) => {
-    InteractionManager.runAfterInteractions(() => resolve(undefined))
-  }).then(() =>
-    ImagePicker.openCropper({
-      path,
-      mediaType: "photo",
-      freeStyleCropEnabled: true,
-    })
-  )
+// Give the native picker time to finish dismissing before presenting the cropper. Presenting
+// it too early makes the cropper silently fail. A fixed timeout is used (instead of
+// InteractionManager) because navigation/animation interaction handles can otherwise leave
+// `runAfterInteractions` permanently pending, which broke cropping on the 2nd+ attempt.
+const CROPPER_PRESENTATION_DELAY = 600
+
+const cropImage = async (path: string): Promise<Image> => {
+  await new Promise<void>((resolve) => setTimeout(resolve, CROPPER_PRESENTATION_DELAY))
+  return ImagePicker.openCropper({
+    path,
+    mediaType: "photo",
+    freeStyleCropEnabled: true,
+  })
+}
 
 export async function requestPhotos(
   allowMultiple = true,
