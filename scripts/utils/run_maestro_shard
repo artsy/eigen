@@ -21,6 +21,11 @@ EXIT_CODE=0
 # the app from a clean state.
 MAX_ATTEMPTS=2
 
+# Flows that are structurally fragile (real network + universal-link
+# resolution via Safari) still run and retry, but a final failure only
+# warns instead of failing the shard, so they don't gate the whole suite.
+NON_BLOCKING_FLOWS="deeplinks.yml"
+
 for TEST_FILE in $TEST_FILES; do
   ATTEMPT=1
   while true; do
@@ -29,8 +34,15 @@ for TEST_FILE in $TEST_FILES; do
       break
     fi
     if [ $ATTEMPT -ge $MAX_ATTEMPTS ]; then
-      echo "Test failed after $MAX_ATTEMPTS attempts: $TEST_FILE"
-      EXIT_CODE=1
+      case " $NON_BLOCKING_FLOWS " in
+        *" $(basename "$TEST_FILE") "*)
+          echo "⚠️  Non-blocking test failed after $MAX_ATTEMPTS attempts (not failing shard): $TEST_FILE"
+          ;;
+        *)
+          echo "Test failed after $MAX_ATTEMPTS attempts: $TEST_FILE"
+          EXIT_CODE=1
+          ;;
+      esac
       break
     fi
     echo "Test failed, retrying: $TEST_FILE"
