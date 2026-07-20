@@ -111,3 +111,12 @@ jobs:
 
             echo "🧪 Running maestro test..."
             ./scripts/utils/run_maestro_shard android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+
+      - name: Upload Maestro screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android-shard-${{ matrix.node_index }}
+          path: ~/.maestro/tests/
+          retention-days: 14
+          if-no-files-found: ignore

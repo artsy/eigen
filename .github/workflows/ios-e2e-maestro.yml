@@ -130,3 +130,12 @@ jobs:
         run: |
           echo "🧪 Running Maestro E2E tests for shard ${{ matrix.node_index }} of ${{ matrix.total_nodes }}..."
           ./scripts/utils/run_maestro_shard ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+
+      - name: Upload Maestro screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-ios-shard-${{ matrix.node_index }}
+          path: ~/.maestro/tests/
+          retention-days: 14
+          if-no-files-found: ignore
