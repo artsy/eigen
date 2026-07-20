@@ -60,7 +60,7 @@ jobs:
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
       - name: Install Maestro
-        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
+        run: export MAESTRO_VERSION=2.6.1; curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
@@ -111,3 +111,12 @@ jobs:
 
             echo "🧪 Running maestro test..."
             ./scripts/utils/run_maestro_shard android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+
+      - name: Upload Maestro screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android-shard-${{ matrix.node_index }}
+          path: ~/.maestro/tests/
+          retention-days: 14
+          if-no-files-found: ignore

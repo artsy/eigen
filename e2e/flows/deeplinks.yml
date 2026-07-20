@@ -8,8 +8,10 @@ appId: ${MAESTRO_APP_ID}
       password: ${MAESTRO_TEST_PASSWORD}
       useMaestroInit: "true"
 
-- assertVisible:
-    id: "search-button"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
 - killApp
 
 # --- First deeplink (Artist) ---

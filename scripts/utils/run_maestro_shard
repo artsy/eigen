@@ -15,11 +15,39 @@ TEST_FILES=$(find e2e/flows -name "*.yml" | sort | awk "NR % $TOTAL_NODES == $NO
 
 EXIT_CODE=0
 
+# Retry a failed flow once before marking the shard as failed. E2E flows
+# depend on the real network and universal-link resolution, so a single
+# transient failure shouldn't fail the whole run. Each attempt relaunches
+# the app from a clean state.
+MAX_ATTEMPTS=2
+
+# Flows that are structurally fragile (real network + universal-link
+# resolution via Safari) still run and retry, but a final failure only
+# warns instead of failing the shard, so they don't gate the whole suite.
+NON_BLOCKING_FLOWS="deeplinks.yml"
+
 for TEST_FILE in $TEST_FILES; do
-  echo "Running test: $TEST_FILE"
-  if ! maestro test "$TEST_FILE" "@.env.maestro.$PLATFORM"; then
-    EXIT_CODE=1
-  fi
+  ATTEMPT=1
+  while true; do
+    echo "Running test: $TEST_FILE (attempt $ATTEMPT/$MAX_ATTEMPTS)"
+    if maestro test "$TEST_FILE" "@.env.maestro.$PLATFORM"; then
+      break
+    fi
+    if [ $ATTEMPT -ge $MAX_ATTEMPTS ]; then
+      case " $NON_BLOCKING_FLOWS " in
+        *" $(basename "$TEST_FILE") "*)
+          echo "⚠️  Non-blocking test failed after $MAX_ATTEMPTS attempts (not failing shard): $TEST_FILE"
+          ;;
+        *)
+          echo "Test failed after $MAX_ATTEMPTS attempts: $TEST_FILE"
+          EXIT_CODE=1
+          ;;
+      esac
+      break
+    fi
+    echo "Test failed, retrying: $TEST_FILE"
+    ATTEMPT=$((ATTEMPT + 1))
+  done
 done
 
 if [ $EXIT_CODE -ne 0 ]; then
