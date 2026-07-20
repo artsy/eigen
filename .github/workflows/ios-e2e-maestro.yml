@@ -124,7 +124,7 @@ jobs:
           prefetch_association https://click.artsy.net/apple-app-site-association
 
       - name: Set Maestro driver timeout
-        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=120000" >> $GITHUB_ENV
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=240000" >> $GITHUB_ENV
 
       - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
         run: |
