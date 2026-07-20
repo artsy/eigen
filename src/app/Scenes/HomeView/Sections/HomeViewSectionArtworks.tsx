@@ -56,6 +56,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const liveSectionIDs = useLiveHomeViewSectionIDs()
   const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
   const liveRefetchKey = HomeViewStore.useStoreState((state) => state.liveRefetchKey)
+  const liveRefetchInViewportOnly = HomeViewStore.useStoreState(
+    (state) => state.liveRefetchInViewportOnly
+  )
 
   const isLiveRefreshRail = liveSectionIDs.includes(section.internalID)
 
@@ -77,12 +80,17 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
-  // When the live refetch key is bumped (returning to home or pull to refresh), force a fresh
-  // fetch of the rail's artworks. On `complete` we reset the per-item impression guard so
-  // itemViewed can re-fire for the fresh content, and re-fire railViewed — but only if the rail
-  // is actually on screen, so returning to home while the rail is scrolled off doesn't fire it.
+  // When the live refetch key is bumped, force a fresh fetch of the rail's artworks. Pull to
+  // refresh refetches all live rails; returning to home only refetches rails currently in the
+  // viewport (so returning from one rail's flow doesn't refetch other, off-screen live rails).
+  // On `complete` we reset the per-item impression guard so itemViewed can re-fire for the fresh
+  // content, and re-fire railViewed — but only if the rail is actually on screen.
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
+      return
+    }
+
+    if (liveRefetchInViewportOnly && !isRailInViewportRef.current) {
       return
     }
 

@@ -171,7 +171,8 @@ export const HomeView: React.FC = memo(() => {
         return
       }
 
-      bumpLiveRefetchKey()
+      // Returning to home only refreshes live rails currently on screen.
+      bumpLiveRefetchKey({ inViewportOnly: true })
     }, [hasLiveSections, bumpLiveRefetchKey])
   )
 
@@ -214,9 +215,9 @@ export const HomeView: React.FC = memo(() => {
         setIsRefreshing(false)
         setRefetchKey((prev) => prev + 1)
 
-        // Force a fresh update of any live home view section on pull to refresh.
+        // Force a fresh update of all live home view sections on pull to refresh.
         if (hasLiveSections) {
-          bumpLiveRefetchKey()
+          bumpLiveRefetchKey({ inViewportOnly: false })
         }
       },
       error: (error: Error) => {

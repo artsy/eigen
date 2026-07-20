@@ -437,7 +437,7 @@ describe("HomeViewSectionArtworks", () => {
 
       // Request a refresh (focus return / pull to refresh).
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       // Nothing fires yet — the refreshed data hasn't landed.
@@ -474,7 +474,7 @@ describe("HomeViewSectionArtworks", () => {
 
       // Request a refresh (focus return / pull to refresh).
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       // Complete the forced refetch.
@@ -502,7 +502,7 @@ describe("HomeViewSectionArtworks", () => {
 
       const refresh = () => {
         act(() => {
-          homeViewStoreActions.bumpLiveRefetchKey()
+          homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
         })
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -545,7 +545,7 @@ describe("HomeViewSectionArtworks", () => {
 
       // Refresh the rail and complete it — the impression guard resets on completion.
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
@@ -576,12 +576,46 @@ describe("HomeViewSectionArtworks", () => {
       mockTrackEvent.mockClear()
 
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       expect(mockTrackEvent).not.toHaveBeenCalledWith(
         expect.objectContaining({ action: "railViewed" })
       )
+    })
+
+    it("does not refetch on return-to-home when the rail is off screen", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      // Rail is scrolled off screen.
+      homeViewStoreActions.setViewableSections([])
+
+      // Return-to-home requests an in-viewport-only refresh.
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: true })
+      })
+
+      // No forced refetch is queued for the off-screen rail.
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+    })
+
+    it("refetches on pull-to-refresh even when the rail is off screen", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      // Rail is scrolled off screen.
+      homeViewStoreActions.setViewableSections([])
+
+      // Pull-to-refresh requests a refresh of all live rails.
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
+      })
+
+      // A forced refetch is queued regardless of viewport.
+      expect(env.mock.getAllOperations().length).toBeGreaterThan(0)
     })
   })
 
@@ -627,7 +661,7 @@ describe("HomeViewSectionArtworks", () => {
       mockTrackEvent.mockClear()
 
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       // Nothing fires yet — the refreshed data hasn't landed.
@@ -671,7 +705,7 @@ describe("HomeViewSectionArtworks", () => {
       ).toHaveLength(1)
 
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
@@ -703,7 +737,7 @@ describe("HomeViewSectionArtworks", () => {
       mockTrackEvent.mockClear()
 
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       // No forced refetch is queued and no railViewed re-fires for the NWFY rail.
@@ -724,7 +758,7 @@ describe("HomeViewSectionArtworks", () => {
       mockTrackEvent.mockClear()
 
       act(() => {
-        homeViewStoreActions.bumpLiveRefetchKey()
+        homeViewStoreActions.bumpLiveRefetchKey({ inViewportOnly: false })
       })
 
       expect(mockTrackEvent).not.toHaveBeenCalledWith(
