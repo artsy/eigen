@@ -24,7 +24,7 @@ lane :upload_sentry_artifacts do |options|
   outfile = settings[:outfile]
 
   begin
-    sentry_create_release(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
+    sentry_create_release(auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -69,7 +69,7 @@ lane :upload_sentry_sourcemaps do |options|
 
   begin
     sentry_upload_sourcemap(
-      auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -91,7 +91,7 @@ lane :upload_dsyms_to_sentry do |options|
   project_slug = options[:project_slug]
 
    sentry_debug_files_upload(
-      auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
       org_slug: org_slug,
       project_slug: project_slug,
       include_sources: true
