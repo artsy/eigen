@@ -18,9 +18,9 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Co
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
-import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { useLiveHomeViewSectionIDs } from "app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
@@ -68,10 +68,14 @@ export const HomeView: React.FC = memo(() => {
   )
   const bumpLiveRefetchKey = HomeViewStore.useStoreActions((actions) => actions.bumpLiveRefetchKey)
 
-  const { enabled: enableLiveRecommendations } = useEnableLiveHomeRecommendations()
+  const liveSectionIDs = useLiveHomeViewSectionIDs()
+  const hasLiveSections = liveSectionIDs.length > 0
+
   const { trackExperiment: trackLiveRecommendationsExperiment } = useExperimentVariant(
     "onyx_artwork-recommendations-refresh-eigen"
   )
+  const { trackExperiment: trackLiveNewWorksForYouExperiment } =
+    useExperimentVariant("onyx_nwfy-refresh-eigen")
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -144,10 +148,11 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
-  // Track the live-recommendations experiment exposure once on mount (no-op until Unleash
-  // has resolved a variant).
+  // Track each live-refresh experiment's exposure once on mount (no-op until Unleash has resolved
+  // a variant). Both rails' experiments are tracked independently.
   useEffect(() => {
     trackLiveRecommendationsExperiment()
+    trackLiveNewWorksForYouExperiment()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -157,7 +162,7 @@ export const HomeView: React.FC = memo(() => {
   const hasFocusedHomeOnce = useRef(false)
   useFocusEffect(
     useCallback(() => {
-      if (!enableLiveRecommendations) {
+      if (!hasLiveSections) {
         return
       }
 
@@ -167,7 +172,7 @@ export const HomeView: React.FC = memo(() => {
       }
 
       bumpLiveRefetchKey()
-    }, [enableLiveRecommendations, bumpLiveRefetchKey])
+    }, [hasLiveSections, bumpLiveRefetchKey])
   )
 
   const fetchSavedArtworksCount = async () => {
@@ -210,7 +215,7 @@ export const HomeView: React.FC = memo(() => {
         setRefetchKey((prev) => prev + 1)
 
         // Force a fresh update of any live home view section on pull to refresh.
-        if (enableLiveRecommendations) {
+        if (hasLiveSections) {
           bumpLiveRefetchKey()
         }
       },
