@@ -23,6 +23,7 @@ import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 // Imperative navigation is required here — we navigate after the async image upload
 // resolves, so RouterLink (declarative) can't be used.
 // eslint-disable-next-line no-restricted-imports
@@ -122,6 +123,10 @@ export const GlobalSearchInputOverlay: React.FC<{
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
 
+  const { variant: artsyLensVariant, trackExperiment: trackArtsyLensExperiment } =
+    useExperimentVariant("onyx_artsy-lens")
+  const showImageSearch = artsyLensVariant.enabled && artsyLensVariant.name === "variant"
+
   useBackHandler(() => {
     if (!!canGoBack()) {
       goBack()
@@ -140,6 +145,7 @@ export const GlobalSearchInputOverlay: React.FC<{
     if (visible) {
       setShouldRender(true)
       opacity.value = withTiming(1, { duration: DEFAULT_SCREEN_ANIMATION_DURATION })
+      trackArtsyLensExperiment()
     } else {
       KeyboardController.dismiss()
       opacity.value = withTiming(0, { duration: DEFAULT_SCREEN_ANIMATION_DURATION }, (finished) => {
@@ -256,57 +262,59 @@ export const GlobalSearchInputOverlay: React.FC<{
            before searching, and collapses to just its title once the user starts typing — the
            chevron lets them re-expand. KeyboardStickyView keeps it above the keyboard; the
            negative `closed` offset lifts it above the bottom tab bar when the keyboard folds. */}
-          <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
-            <Box backgroundColor="blue10" px={2} py={1}>
-              <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-                <Text fontWeight="bold">See it? Search it.</Text>
+          {!!showImageSearch && (
+            <KeyboardStickyView offset={{ closed: -(BOTTOM_TABS_HEIGHT + insets.bottom) }}>
+              <Box backgroundColor="blue10" px={2} py={1}>
+                <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                  <Text fontWeight="bold">See it? Search it.</Text>
 
-                <Touchable
-                  accessibilityRole="button"
-                  accessibilityLabel={isFooterExpanded ? "Collapse" : "Expand"}
-                  onPress={() => setIsFooterExpanded((expanded) => !expanded)}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  {isFooterExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
-                </Touchable>
-              </Flex>
+                  <Touchable
+                    accessibilityRole="button"
+                    accessibilityLabel={isFooterExpanded ? "Collapse" : "Expand"}
+                    onPress={() => setIsFooterExpanded((expanded) => !expanded)}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  >
+                    {isFooterExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                  </Touchable>
+                </Flex>
 
-              {!!isFooterExpanded && (
-                <>
-                  <Text pt={0.5} pb={1}>
-                    Take a photo or upload an image to find the piece that matches the mood.
-                  </Text>
-                  <Flex flexDirection="row">
-                    <Flex flex={1}>
-                      <Button
-                        block
-                        variant="fillDark"
-                        onPress={handleTakePhoto}
-                        loading={uploadingSource === "camera"}
-                        disabled={!!uploadingSource}
-                      >
-                        Take a photo
-                      </Button>
+                {!!isFooterExpanded && (
+                  <>
+                    <Text pt={0.5} pb={1}>
+                      Take a photo or upload an image to find the piece that matches the mood.
+                    </Text>
+                    <Flex flexDirection="row">
+                      <Flex flex={1}>
+                        <Button
+                          block
+                          variant="fillDark"
+                          onPress={handleTakePhoto}
+                          loading={uploadingSource === "camera"}
+                          disabled={!!uploadingSource}
+                        >
+                          Take a photo
+                        </Button>
+                      </Flex>
+
+                      <Spacer x={1} />
+
+                      <Flex flex={1}>
+                        <Button
+                          block
+                          variant="fillDark"
+                          onPress={handleAddImage}
+                          loading={uploadingSource === "library"}
+                          disabled={!!uploadingSource}
+                        >
+                          Add an image
+                        </Button>
+                      </Flex>
                     </Flex>
-
-                    <Spacer x={1} />
-
-                    <Flex flex={1}>
-                      <Button
-                        block
-                        variant="fillDark"
-                        onPress={handleAddImage}
-                        loading={uploadingSource === "library"}
-                        disabled={!!uploadingSource}
-                      >
-                        Add an image
-                      </Button>
-                    </Flex>
-                  </Flex>
-                </>
-              )}
-            </Box>
-          </KeyboardStickyView>
+                  </>
+                )}
+              </Box>
+            </KeyboardStickyView>
+          )}
         </Flex>
       </Animated.View>
     </Portal>

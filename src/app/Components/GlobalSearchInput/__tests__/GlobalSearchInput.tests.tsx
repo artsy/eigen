@@ -3,6 +3,7 @@ import { PortalHost } from "@gorhom/portal"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { requestPhotos } from "app/utils/requestPhotos"
@@ -23,15 +24,30 @@ jest.mock("app/utils/hooks/useSelectedTab", () => ({
   useSelectedTab: jest.fn(),
 }))
 
+jest.mock("app/system/flags/hooks/useExperimentVariant", () => ({
+  useExperimentVariant: jest.fn(),
+}))
+
 jest.mock("app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress", () => ({
   useDismissSearchOverlayOnTabBarPress: jest.fn(),
 }))
+
+const mockUseExperimentVariant = useExperimentVariant as jest.Mock
+
+const mockArtsyLensVariant = (variantName: string, enabled = true) => {
+  mockUseExperimentVariant.mockReturnValue({
+    variant: { name: variantName, enabled },
+    trackExperiment: jest.fn(),
+  })
+}
 
 describe("GlobalSearchInput", () => {
   const mockUseledTab = useSelectedTab as jest.Mock
 
   beforeEach(() => {
     mockUseledTab.mockReturnValue("home")
+    // Default to the treatment arm so the image-search buttons render.
+    mockArtsyLensVariant("variant")
   })
 
   it("renders the search label properly", () => {
@@ -68,11 +84,23 @@ describe("GlobalSearchInput", () => {
         </>
       )
 
-    it("renders the take a photo and add an image buttons", async () => {
+    it("renders the take a photo and add an image buttons for the experiment variant", async () => {
+      mockArtsyLensVariant("variant")
       renderOverlay()
 
       await screen.findByText("Take a photo")
       expect(screen.getByText("Add an image")).toBeTruthy()
+    })
+
+    it("does not render the image-search buttons for the control arm", async () => {
+      mockArtsyLensVariant("control")
+      renderOverlay()
+
+      // the overlay still renders its search input, but the image-search prompt is gone
+      await screen.findByLabelText("Search artists, artworks, galleries etc.")
+      expect(screen.queryByText("Take a photo")).toBeNull()
+      expect(screen.queryByText("Add an image")).toBeNull()
+      expect(screen.queryByText("See it? Search it.")).toBeNull()
     })
 
     it("uploads the camera photo and opens the image-search results", async () => {

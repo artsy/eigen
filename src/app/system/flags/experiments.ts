@@ -16,6 +16,11 @@ export const experiments = {
   "onyx_artwork-recommendations-refresh-eigen": {
     description: "Enable live-refreshing the Home screen recommendations rail in eigen",
   },
+  "onyx_artsy-lens": {
+    description:
+      "Enable Artsy Lens image search (take a photo / add an image) in the global search overlay",
+    variantSuggestions: ["control", "variant"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
