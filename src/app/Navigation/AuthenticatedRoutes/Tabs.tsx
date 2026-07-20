@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { PlatformPressable } from "@react-navigation/elements"
 import { EventArg } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { ProgressiveOnboardingFavoritesTab } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFavoritesTab"
 import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
@@ -140,7 +141,7 @@ const AppTabs: React.FC = () => {
               )
             }
 
-            const WrappedIcon = () => {
+            const WrappedProfileIcon = () => {
               return (
                 <ProgressiveOnboardingPriceRangeHome>
                   <Icon />
@@ -148,8 +149,20 @@ const AppTabs: React.FC = () => {
               )
             }
 
+            const WrappedFavoritesIcon = () => {
+              return (
+                <ProgressiveOnboardingFavoritesTab>
+                  <Icon />
+                </ProgressiveOnboardingFavoritesTab>
+              )
+            }
+
             if (route.name === "profile") {
-              return <WrappedIcon />
+              return <WrappedProfileIcon />
+            }
+
+            if (route.name === "favorites") {
+              return <WrappedFavoritesIcon />
             }
 
             return <Icon />

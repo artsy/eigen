@@ -169,6 +169,38 @@ describe("InfiniteDiscoveryHeader", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
+    it("does not defer Home tooltips when Skip is pressed without any saves", () => {
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
+          .deferHomeTooltipsThisSession
+      ).toBe(false)
+    })
+
+    it("defers Home tooltips to the next session when Skip is pressed after saving at least one", () => {
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+        internalID: "artwork-1",
+        url: "https://example.com/1.jpg",
+      })
+
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
+          .deferHomeTooltipsThisSession
+      ).toBe(true)
+    })
+
     it("tracks the skip tap", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 

@@ -57,6 +57,35 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("complete")
   })
 
+  it('"Go to home" defers Home tooltips to the next session when at least one artwork was saved', () => {
+    GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    SAVED_ARTWORKS.forEach((artwork) => {
+      GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork(artwork)
+    })
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Go to home"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(true)
+  })
+
+  it('"Go to home" does not defer Home tooltips when no artworks were saved', () => {
+    GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Go to home"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(false)
+  })
+
   it("renders 5 artwork images from the store", () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     SAVED_ARTWORKS.forEach((artwork) => {

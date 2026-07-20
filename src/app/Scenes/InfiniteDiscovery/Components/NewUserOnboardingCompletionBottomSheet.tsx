@@ -43,6 +43,9 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const savedArtworks = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalSnapshot
   )
+  const newUserOnboardingSavedArtworkCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
+  )
   const { setOnboardingState } = GlobalStore.actions.onboarding
   const { setNewUserOnboardingCompletionBottomSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const { trackCompletedOnboarding } = useOnboardingTracking()
@@ -53,6 +56,9 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
 
   const handleTakeMeHome = () => {
     trackCompletedOnboarding()
+    if (newUserOnboardingSavedArtworkCount >= 1) {
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
+    }
     setOnboardingState("complete")
     setNewUserOnboardingCompletionBottomSheetVisible(false)
   }

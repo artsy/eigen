@@ -1,8 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { screen, waitFor } from "@testing-library/react-native"
 import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { useEffect } from "react"
 import { Text, View } from "react-native"
@@ -62,9 +61,9 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
   it("shows popover when all conditions are met", async () => {
     renderWithRelay(mockProps)
 
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Popover")).toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.getByText("Popover")).toBeOnTheScreen()
+    })
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
@@ -75,9 +74,9 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
 
     renderWithRelay(mockProps)
 
-    await flushPromiseQueue()
-
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    })
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
@@ -88,9 +87,9 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    })
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
@@ -106,9 +105,9 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
 
     renderWithRelay(mockProps)
 
-    await flushPromiseQueue()
-
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    })
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 
@@ -125,9 +124,28 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
 
     renderWithRelay(mockProps)
 
-    await flushPromiseQueue()
+    await waitFor(() => {
+      expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    })
+    expect(screen.getByText("Content")).toBeOnTheScreen()
+  })
 
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+  it("does not show popover when Home tooltips are deferred to the next session", async () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true, deferHomeTooltipsThisSession: true },
+        dismissed: [],
+      },
+      onboarding: {
+        showFollowedArtistSummaryBottomSheet: false,
+      },
+    })
+
+    renderWithRelay(mockProps)
+
+    await waitFor(() => {
+      expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    })
     expect(screen.getByText("Content")).toBeOnTheScreen()
   })
 })
