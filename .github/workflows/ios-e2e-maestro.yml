@@ -50,7 +50,7 @@ jobs:
         run: unzip Artsy.zip
 
       - name: Install Maestro
-        run: export MAESTRO_VERSION=2.6.1; curl -Ls "https://get.maestro.mobile.dev" | bash
+        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
@@ -107,21 +107,10 @@ jobs:
           echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
-          echo "Prefetch app associations (non-fatal — network hiccups must not fail the run)"
-          prefetch_association() {
-            for attempt in 1 2 3; do
-              if xcrun simctl openurl booted "$1"; then
-                return 0
-              fi
-              echo "⚠️  openurl failed for $1 (attempt $attempt/3), retrying..."
-              sleep 3
-            done
-            echo "⚠️  Giving up prefetching $1 after 3 attempts (continuing anyway)"
-            return 0
-          }
-          prefetch_association https://artsy.net/apple-app-site-association
-          prefetch_association https://email-link.artsy.net/apple-app-site-association
-          prefetch_association https://click.artsy.net/apple-app-site-association
+          echo "Prefetch app associations"
+          xcrun simctl openurl booted https://artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
 
       - name: Set Maestro driver timeout
         run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=120000" >> $GITHUB_ENV
@@ -130,12 +119,3 @@ jobs:
         run: |
           echo "🧪 Running Maestro E2E tests for shard ${{ matrix.node_index }} of ${{ matrix.total_nodes }}..."
           ./scripts/utils/run_maestro_shard ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
-
-      - name: Upload Maestro screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: maestro-ios-shard-${{ matrix.node_index }}
-          path: ~/.maestro/tests/
-          retention-days: 14
-          if-no-files-found: ignore
