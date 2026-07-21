@@ -31,11 +31,6 @@ import { useTracking } from "react-tracking"
 
 type TagArtworkType = ExtractNodeType<NonNullable<TagArtworks_tag$data["artworks"]>>
 
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it (and its header/footer) to re-render on every container re-render.
-const keyExtractor = (item: TagArtworkType) => item.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
-
 interface TagArtworksProps {
   tag?: TagArtworks_tag$data | null
   relay: RelayPaginationProp
@@ -158,14 +153,14 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={contentContainerStyle}
         ListEmptyComponent={listEmptyComponent}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={listHeaderComponent}
       />
       <ArtworkFilterNavigator

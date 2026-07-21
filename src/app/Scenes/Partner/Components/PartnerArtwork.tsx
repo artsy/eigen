@@ -23,12 +23,6 @@ import React, { useCallback, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 type PartnerArtworkType = ExtractNodeType<NonNullable<PartnerArtwork_partner$data["artworks"]>>
-
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it (and its header/footer) to re-render on every container re-render. Profiling the artworks
-// scroll showed the filter header SVG re-rendering once per container (pagination) re-render.
-const keyExtractor = (item: PartnerArtworkType) => item.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
 const EMPTY_TEXT =
   "There are no matching works from this gallery.\nTry changing your search filters"
 
@@ -122,14 +116,14 @@ export const PartnerArtwork: React.FC<{
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={contentContainerStyle}
         ListEmptyComponent={listEmptyComponent}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={listHeaderComponent}
       />
 

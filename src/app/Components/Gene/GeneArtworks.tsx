@@ -35,11 +35,6 @@ interface GeneArtworksContainerProps {
 
 type Artwork = ExtractNodeType<GeneArtworks_gene$data["artworks"]>
 
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it to fully re-render (and re-render all cells) on every container re-render.
-const keyExtractor = (item: Artwork) => item.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
-
 export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -150,14 +145,14 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={listEmptyComponent}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         contentContainerStyle={contentContainerStyle}
         ListHeaderComponent={listHeaderComponent}
       />

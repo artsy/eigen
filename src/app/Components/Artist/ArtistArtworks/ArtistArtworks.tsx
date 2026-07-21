@@ -66,11 +66,6 @@ import { useTracking } from "react-tracking"
 
 type ArtworkType = ExtractNodeType<ArtistArtworks_artist$data["artworks"]>
 
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it (and its header/footer) to re-render on every container re-render.
-const keyExtractor = (item: ArtworkType) => item.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
-
 interface ArtworksGridProps extends InfiniteScrollGridProps, ArtistArtworksQueryRendererProps {
   artist: NonNullable<ArtistArtworksQuery$data["artist"]>
 }
@@ -256,7 +251,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           <Flex flexDirection="row">
             <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
             <Flex flex={1}>
-              <ArtistArtworksFilterHeader artist={artist} showCreateAlertModal={showCreateAlertModal} />
+              <ArtistArtworksFilterHeader
+                artist={artist}
+                showCreateAlertModal={showCreateAlertModal}
+              />
             </Flex>
           </Flex>
         </Tabs.SubTabBar>
@@ -326,14 +324,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={listEmptyComponent}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={contentContainerStyle}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
       />

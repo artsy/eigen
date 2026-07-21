@@ -28,11 +28,6 @@ const PAGE_SIZE = 10
 
 type Artworks = ExtractNodeType<ArtistSeriesArtworks_artistSeries$data["artistSeriesArtworks"]>
 
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it (and its header/footer) to re-render on every container re-render.
-const keyExtractor = (item: Artworks) => item?.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
-
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries }) => {
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment(
     fragment,
@@ -160,13 +155,13 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={listEmptyComponent}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item?.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         contentContainerStyle={contentContainerStyle}
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}

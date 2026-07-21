@@ -44,12 +44,6 @@ interface FairArtworksProps {
 
 type FairArtworkType = ExtractNodeType<NonNullable<FairArtworks_fair$data["fairArtworks"]>>
 
-// Hoisted so their identity is stable across renders — passing new references to FlashList forces
-// it (and its header/footer) to re-render on every container re-render. Profiling the Fair artworks
-// tab showed the filter header re-rendering once per pagination-driven container render.
-const keyExtractor = (item: FairArtworkType) => item.id
-const LIST_HEADER_COMPONENT_STYLE = { zIndex: 1 }
-
 export const FairArtworks: React.FC<FairArtworksProps> = ({
   fair,
   initiallyAppliedFilter,
@@ -189,14 +183,14 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     <>
       <Tabs.Masonry
         data={filteredArtworks}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={contentContainerStyle}
         ListEmptyComponent={listEmptyComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
-        ListHeaderComponentStyle={LIST_HEADER_COMPONENT_STYLE}
+        ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={listHeaderComponent}
         ListFooterComponent={listFooterComponent}
         onEndReached={handleOnEndReached}
@@ -355,7 +349,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     <>
       <FlashList
         data={filteredArtworks}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={contentContainerStyle}
