@@ -5,6 +5,7 @@ import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBott
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { MotiView } from "moti"
 import { FC } from "react"
+import { StyleProp, ViewStyle } from "react-native"
 import { useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 export interface MyCollectionArtistsPromptProps {
@@ -27,7 +28,7 @@ export const MyCollectionArtistsPrompt: FC<MyCollectionArtistsPromptProps> = ({
   })
 
   return (
-    <MotiView style={style}>
+    <MotiView style={style as StyleProp<ViewStyle>}>
       <Flex px={2} pt={1} pb={2} flex={1}>
         <Text variant="md">{title}</Text>
 
