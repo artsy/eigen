@@ -2,7 +2,7 @@ name: 🤖 AI PR Review
 
 on:
   pull_request:
-    types: [opened, synchronize, ready_for_review]
+    types: [opened, synchronize, ready_for_review, labeled, unlabeled]
 
 jobs:
   claude-review:
