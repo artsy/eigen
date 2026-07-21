@@ -41,7 +41,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     [artistDisplayOptions]
   )
 
-  const { handleSelect, isSelected } = useMultiSelect({
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options: artistDisplayOptions,
     paramName: FilterParamName.artistIDs,
   })
@@ -87,12 +87,28 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     [selectedArtistIFollowOption, handleSelect]
   )
 
+  const isArtistsIFollowActive = !!selectedArtistIFollowOption?.paramValue
+  const isClearActive = isActive || isArtistsIFollowActive
+
+  const handleClearAll = useCallback(() => {
+    handleClear()
+
+    if (isArtistsIFollowActive) {
+      selectFiltersAction({
+        displayText: "All Artists I Follow",
+        paramName: FilterParamName.artistsIFollow,
+        paramValue: false,
+      })
+    }
+  }, [handleClear, isArtistsIFollowActive, selectFiltersAction])
+
   return (
     <MultiSelectOptionScreen
       filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={allOptions}
       onSelect={selectOption}
       navigation={navigation}
+      {...(isClearActive ? { rightButtonText: "Clear", onRightButtonPress: handleClearAll } : {})}
     />
   )
 }

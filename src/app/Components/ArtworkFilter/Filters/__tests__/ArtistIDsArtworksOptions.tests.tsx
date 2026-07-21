@@ -265,4 +265,95 @@ describe("Artist options screen", () => {
       expect(screen.queryByText("All Artists I Follow")).not.toBeOnTheScreen()
     })
   })
+
+  describe("Clear button", () => {
+    it("is hidden when no artist is selected", () => {
+      const injectedState: ArtworkFiltersState = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+        showFilterArtworksModal: false,
+        sizeMetric: "cm",
+      }
+
+      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+
+      expect(screen.queryByText("Clear")).not.toBeOnTheScreen()
+    })
+
+    it("is shown and clears selected artists when tapped", () => {
+      const injectedState: ArtworkFiltersState = {
+        selectedFilters: [
+          {
+            paramName: FilterParamName.artistIDs,
+            paramValue: ["artist-2"],
+            displayText: "Artist 2",
+          },
+        ],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+        showFilterArtworksModal: false,
+        sizeMetric: "cm",
+      }
+
+      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(screen.getByText("Clear")).toBeOnTheScreen()
+      expect(checkboxes[2]).toHaveProp("selected", true)
+
+      fireEvent.press(screen.getByText("Clear"))
+
+      expect(checkboxes[2]).toHaveProp("selected", false)
+    })
+
+    it("is shown when only 'All Artists I Follow' is selected and clears it when tapped", () => {
+      const injectedState: ArtworkFiltersState = {
+        selectedFilters: [
+          {
+            paramName: FilterParamName.artistsIFollow,
+            paramValue: true,
+            displayText: "All Artists I Follow",
+          },
+        ],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+        showFilterArtworksModal: false,
+        sizeMetric: "cm",
+      }
+
+      renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(screen.getByText("Clear")).toBeOnTheScreen()
+      expect(checkboxes[0]).toHaveProp("selected", true)
+
+      fireEvent.press(screen.getByText("Clear"))
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+    })
+  })
 })
