@@ -51,7 +51,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
   const featured = extractNodes(queryData.featuredViewingRooms)
   const { shuffled: featuredAndShuffled } = useStableShuffle({ items: featured })
   const combined = featuredAndShuffled.concat(regular)
-  const viewingRooms = uniqBy(combined, (vr) => vr.internalID).slice(0, 12)
+  const viewingRooms = uniqBy(combined, (vr) => vr.internalID).slice(0, 20)
 
   const { trackEvent } = useTracking()
 
@@ -106,7 +106,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
 
 const ViewingRoomsHomeRailMainQuery = graphql`
   query ViewingRoomsHomeRailQuery {
-    viewingRooms: viewingRoomsConnection(first: 12) {
+    viewingRooms: viewingRoomsConnection(first: 20) {
       edges {
         node {
           internalID
@@ -127,7 +127,7 @@ const ViewingRoomsHomeRailMainQuery = graphql`
       }
     }
 
-    featuredViewingRooms: viewingRoomsConnection(first: 12, featured: true) {
+    featuredViewingRooms: viewingRoomsConnection(first: 20, featured: true) {
       edges {
         node {
           internalID
