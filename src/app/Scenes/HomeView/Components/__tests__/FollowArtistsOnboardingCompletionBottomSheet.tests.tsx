@@ -213,4 +213,46 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       ).toEqual([])
     })
   })
+
+  describe("Deferral behavior", () => {
+    it('"View For You" defers Home tooltips to the next session when at least one artist was followed', async () => {
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+      GlobalStore.actions.onboarding.addFollowedOnboardingArtist({
+        internalID: "artist-1",
+        imageUrl: "https://example.com/artist-1.jpg",
+        blurhash: null,
+        initials: "A",
+      })
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+
+      const pagerView = screen.UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+
+      fireEvent.press(await screen.findByText("View For You"))
+
+      const state = __globalStoreTestUtils__?.getCurrentState()
+      expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(true)
+    })
+
+    it('"View For You" does not defer Home tooltips when no artists were followed', async () => {
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+
+      const pagerView = screen.UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+
+      fireEvent.press(await screen.findByText("View For You"))
+
+      const state = __globalStoreTestUtils__?.getCurrentState()
+      expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(false)
+    })
+  })
 })

@@ -36,6 +36,9 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const handleDismiss = () => {
     setIsVisible(false)
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
+    if (followedOnboardingArtists.length >= 1) {
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
+    }
     GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
   }
 
