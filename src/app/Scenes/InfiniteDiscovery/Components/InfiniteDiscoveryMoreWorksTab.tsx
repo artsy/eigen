@@ -3,7 +3,10 @@ import { Button, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@art
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { ListRenderItem } from "@shopify/flash-list"
 import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
-import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
+import {
+  InfiniteDiscoveryMoreWorksTab_artworks$data,
+  InfiniteDiscoveryMoreWorksTab_artworks$key,
+} from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
@@ -12,7 +15,7 @@ import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { FC, useCallback } from "react"
+import { FC, useCallback, useMemo } from "react"
 import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -20,12 +23,16 @@ interface MoreWorksTabProps {
   artworks: InfiniteDiscoveryMoreWorksTab_artworks$key
 }
 
+type MoreWorksArtwork = ExtractNodeType<
+  InfiniteDiscoveryMoreWorksTab_artworks$data["artworksConnection"]
+>
+
 export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => {
   const { data, hasNext, isLoadingNext, loadNext } = usePaginationFragment(fragment, _artworks)
   const space = useSpace()
   const { width } = useScreenDimensions()
 
-  const artworks = extractNodes(data.artworksConnection)
+  const artworks = useMemo(() => extractNodes(data.artworksConnection), [data.artworksConnection])
 
   const loadMore = useCallback(() => {
     if (hasNext && !isLoadingNext) {
@@ -33,7 +40,9 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
     }
   }, [hasNext, isLoadingNext, loadNext])
 
-  const renderItem: ListRenderItem<ExtractNodeType<typeof data.artworksConnection>> = useCallback(
+  const keyExtractor = useCallback((item: MoreWorksArtwork) => item?.internalID, [])
+
+  const renderItem: ListRenderItem<MoreWorksArtwork> = useCallback(
     ({ item, index }) => {
       const imgAspectRatio = item.image?.aspectRatio ?? 1
       const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
@@ -51,7 +60,36 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
         />
       )
     },
+    [width, space]
+  )
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => <SimpleMessage m={2}>There are no available works.</SimpleMessage>,
     []
+  )
+
+  const listFooterComponent = useMemo(
+    () =>
+      Platform.OS === "android" ? (
+        hasNext ? (
+          <Button
+            mt={2}
+            mb={4}
+            variant="fillGray"
+            size="large"
+            block
+            onPress={loadMore}
+            loading={isLoadingNext}
+          >
+            Show more
+          </Button>
+        ) : null
+      ) : (
+        <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && !!isLoadingNext} />
+      ),
+    [hasNext, isLoadingNext, loadMore]
   )
 
   const masonry = (
@@ -59,32 +97,14 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ paddingHorizontal: space(1) }}
-      keyExtractor={(item) => item?.internalID}
-      ListEmptyComponent={<SimpleMessage m={2}>There are no available works.</SimpleMessage>}
+      contentContainerStyle={contentContainerStyle}
+      keyExtractor={keyExtractor}
+      ListEmptyComponent={listEmptyComponent}
       // Android: this Masonry is nested inside <BottomSheetScrollView>, which makes the inner
       // list believe it is fully visible on mount and fires onEndReached immediately regardless
       // of onEndReachedThreshold. We replace auto-pagination with an explicit "Show more" button
       // so loading more remains user-initiated on Android.
-      ListFooterComponent={() =>
-        Platform.OS === "android" ? (
-          hasNext ? (
-            <Button
-              mt={2}
-              mb={4}
-              variant="fillGray"
-              size="large"
-              block
-              onPress={loadMore}
-              loading={isLoadingNext}
-            >
-              Show more
-            </Button>
-          ) : null
-        ) : (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && !!isLoadingNext} />
-        )
-      }
+      ListFooterComponent={listFooterComponent}
       // no-op on Android; see ListFooterComponent comment above
       onEndReached={Platform.OS === "ios" ? loadMore : undefined}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}

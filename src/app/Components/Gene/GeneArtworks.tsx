@@ -24,7 +24,7 @@ import {
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -41,7 +41,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
   const space = useSpace()
   const tracking = useTracking()
   const { width } = useScreenDimensions()
-  const artworks = extractNodes(gene.artworks)
+  const artworks = useMemo(() => extractNodes(gene.artworks), [gene.artworks])
   const shouldDisplaySpinner =
     !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
@@ -55,17 +55,16 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     pageSize: MASONRY_LIST_PAGE_SIZE,
   })
 
-  const trackClear = () => {
+  const trackClear = useCallback(() => {
     tracking.trackEvent(tracks.clearFilters(gene.id, gene.slug))
-  }
+  }, [tracking, gene.id, gene.slug])
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
-  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
-  const openFilterArtworksModal = () => {
+  const openFilterArtworksModal = useCallback(() => {
     tracking.trackEvent(tracks.openFilterWindow(gene.id, gene.slug))
-    handleOpenFilterArtworksModal()
-  }
+    setFilterArtworkModalVisible(true)
+  }, [tracking, gene.id, gene.slug])
 
   const closeFilterArtworksModal = () => {
     tracking.trackEvent(tracks.closeFilterWindow(gene.id, gene.slug))
@@ -100,48 +99,62 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     )
   }, [])
 
+  const listEmptyComponent = useMemo(
+    () =>
+      initialArtworksTotal ? (
+        <Box mt={1}>
+          <SimpleMessage>
+            There aren’t any works available in the category at this time.
+          </SimpleMessage>
+        </Box>
+      ) : (
+        <Box pt={1}>
+          <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
+        </Box>
+      ),
+    [gene.id, gene.slug, trackClear]
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
+        </Tabs.SubTabBar>
+        <Flex pt={1}>
+          <Text variant="xs" color="mono60">
+            {`Showing ${artworksTotal} work${artworksTotal > 1 ? "s" : ""}`}
+          </Text>
+        </Flex>
+      </Flex>
+    ),
+    [openFilterArtworksModal, artworksTotal]
+  )
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
   return (
     <>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={
-          initialArtworksTotal ? (
-            <Box mt={1}>
-              <SimpleMessage>
-                There aren’t any works available in the category at this time.
-              </SimpleMessage>
-            </Box>
-          ) : (
-            <Box pt={1}>
-              <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
-            </Box>
-          )
-        }
+        ListEmptyComponent={listEmptyComponent}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
-            </Tabs.SubTabBar>
-            <Flex pt={1}>
-              <Text variant="xs" color="mono60">
-                {`Showing ${artworksTotal} work${artworksTotal > 1 ? "s" : ""}`}
-              </Text>
-            </Flex>
-          </Flex>
-        }
+        contentContainerStyle={contentContainerStyle}
+        ListHeaderComponent={listHeaderComponent}
       />
       <ArtworkFilterNavigator
         id={gene.internalID}

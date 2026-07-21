@@ -63,13 +63,13 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const shouldDisplaySpinner =
     !!isLoading && !!artworksList.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const handleFilterOpen = () => {
+  const handleFilterOpen = useCallback(() => {
     setFilterArtworkModalVisible(true)
-  }
+  }, [])
 
-  const handleFilterClose = () => {
+  const handleFilterClose = useCallback(() => {
     setFilterArtworkModalVisible(false)
-  }
+  }, [])
 
   const loadMore = () => {
     if (relay.hasMore() && !relay.isLoading()) {
@@ -94,37 +94,74 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     setFiltersCountAction(filterCount)
   }, [artworksTotal])
 
-  const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.Collection,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-  }
+  const trackClear = useCallback(
+    (id: string, slug: string) => {
+      tracking.trackEvent({
+        action_name: "clearFilters",
+        context_screen: Schema.ContextModules.Collection,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Collection,
+        context_screen_owner_id: id,
+        context_screen_owner_slug: slug,
+        action_type: Schema.ActionTypes.Tap,
+      })
+    },
+    [tracking]
+  )
 
-  const renderItem: ListRenderItem<Artworks> = useCallback(({ item, index }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<Artworks> = useCallback(
+    ({ item, index }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
+      const hideSignals = CURATORS_PICKS_SLUGS.includes(collection.slug)
 
-    return (
-      <ArtworkGridItem
-        itemIndex={index}
-        contextScreenOwnerType={OwnerType.collection}
-        contextScreenOwnerId={collection.id}
-        contextScreenOwnerSlug={collection.slug}
-        artwork={item}
-        height={imgHeight}
-        hideCuratorsPickSignal={hideSignals}
-        hideIncreasedInterestSignal={hideSignals}
-      />
-    )
-  }, [])
+      return (
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.collection}
+          contextScreenOwnerId={collection.id}
+          contextScreenOwnerSlug={collection.slug}
+          artwork={item}
+          height={imgHeight}
+          hideCuratorsPickSignal={hideSignals}
+          hideIncreasedInterestSignal={hideSignals}
+        />
+      )
+    },
+    [width, space, collection.id, collection.slug]
+  )
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Box mb="80px" pt={2}>
+        <FilteredArtworkGridZeroState
+          id={collection.id}
+          slug={collection.slug}
+          trackClear={trackClear}
+        />
+      </Box>
+    ),
+    [collection.id, collection.slug, trackClear]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
+        </Tabs.SubTabBar>
+      </Flex>
+    ),
+    [handleFilterOpen]
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
 
   return (
     <>
@@ -133,15 +170,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <FilteredArtworkGridZeroState
-              id={collection.id}
-              slug={collection.slug}
-              trackClear={trackClear}
-            />
-          </Box>
-        }
+        ListEmptyComponent={listEmptyComponent}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
@@ -149,17 +178,9 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
-            </Tabs.SubTabBar>
-          </Flex>
-        }
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        contentContainerStyle={contentContainerStyle}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
       />
       <ArtworkFilterNavigator
         id={collection.id}

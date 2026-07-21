@@ -19,10 +19,12 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 type PartnerArtworkType = ExtractNodeType<NonNullable<PartnerArtwork_partner$data["artworks"]>>
+const EMPTY_TEXT =
+  "There are no matching works from this gallery.\nTry changing your search filters"
 
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner$data
@@ -41,7 +43,7 @@ export const PartnerArtwork: React.FC<{
   })
   const appliedFiltersCount = useSelectedFiltersCount()
 
-  const artworks = extractNodes(partner.artworks)
+  const artworks = useMemo(() => extractNodes(partner.artworks), [partner.artworks])
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
@@ -58,8 +60,7 @@ export const PartnerArtwork: React.FC<{
   const shouldDisplaySpinner =
     !!isLoading && !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const emptyText =
-    "There are no matching works from this gallery.\nTry changing your search filters"
+  const openFilterArtworksModal = useCallback(() => setIsFilterArtworksModalVisible(true), [])
 
   const renderItem: ListRenderItem<PartnerArtworkType> = useCallback(({ item }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
@@ -77,38 +78,53 @@ export const PartnerArtwork: React.FC<{
     )
   }, [])
 
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Box mb="80px" pt={2}>
+        <TabEmptyState text={EMPTY_TEXT} />
+      </Box>
+    ),
+    []
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />,
+    [shouldDisplaySpinner]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <ArtworksFilterHeader
+            selectedFiltersCount={appliedFiltersCount}
+            onFilterPress={openFilterArtworksModal}
+          />
+        </Tabs.SubTabBar>
+      </Flex>
+    ),
+    [appliedFiltersCount, openFilterArtworksModal]
+  )
+
   return (
     <>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <TabEmptyState text={emptyText} />
-          </Box>
-        }
+        contentContainerStyle={contentContainerStyle}
+        ListEmptyComponent={listEmptyComponent}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-        )}
+        ListFooterComponent={listFooterComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <ArtworksFilterHeader
-                selectedFiltersCount={appliedFiltersCount}
-                onFilterPress={() => setIsFilterArtworksModalVisible(true)}
-              />
-            </Tabs.SubTabBar>
-          </Flex>
-        }
+        ListHeaderComponent={listHeaderComponent}
       />
 
       <ArtworkFilterNavigator

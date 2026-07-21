@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useCallback } from "react"
 
 export const CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD = 40
 const DAYS = 1000 * 60 * 60 * 24
@@ -22,7 +23,7 @@ export const useDismissAlertReminder = () => {
 
   const isDisplayable = isReady && (displayFirstTime || displaySecondTime) && isFocused
 
-  const dismissNextCreateAlertReminder = () => {
+  const dismissNextCreateAlertReminder = useCallback(() => {
     setIsReady(false)
 
     if (!isDismissed("alert-create-reminder-1").status) {
@@ -30,12 +31,12 @@ export const useDismissAlertReminder = () => {
     } else {
       dismiss("alert-create-reminder-2")
     }
-  }
+  }, [setIsReady, isDismissed, dismiss])
 
-  const dismissAllCreateAlertReminder = () => {
+  const dismissAllCreateAlertReminder = useCallback(() => {
     dismiss("alert-create-reminder-1")
     dismiss("alert-create-reminder-2")
-  }
+  }, [dismiss])
 
   return {
     isDisplayable,

@@ -31,7 +31,7 @@ import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMaso
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -91,28 +91,27 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
-  const renderItem: ListRenderItem<FairArtworkType> = useCallback(({ item, index }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: ListRenderItem<FairArtworkType> = useCallback(
+    ({ item, index }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <ArtworkGridItem
-        itemIndex={index}
-        contextScreenOwnerType={OwnerType.fair}
-        contextScreenOwnerId={data.internalID}
-        contextScreenOwnerSlug={data.slug}
-        artwork={item}
-        height={imgHeight}
-      />
-    )
-  }, [])
+      return (
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.fair}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      )
+    },
+    [width, space, data.internalID, data.slug]
+  )
 
-  if (!data) {
-    return null
-  }
-
-  const handleOnEndReached = () => {
+  const handleOnEndReached = useCallback(() => {
     if (!isLoadingNext && hasNext) {
       loadNext(FAIR2_ARTWORKS_PAGE_SIZE, {
         onComplete: (error) => {
@@ -122,25 +121,63 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         },
       })
     }
-  }
+  }, [isLoadingNext, hasNext, loadNext])
 
-  const handleTrackClear = (id: string, slug: string) => {
-    tracking.trackEvent(tracks.trackClear(id, slug))
-  }
+  const handleTrackClear = useCallback(
+    (id: string, slug: string) => {
+      tracking.trackEvent(tracks.trackClear(id, slug))
+    },
+    [tracking]
+  )
 
-  const handleFilterOpen = () => {
+  const handleFilterOpen = useCallback(() => {
     setFilterArtworkModalVisible(true)
 
     tracking.trackEvent(tracks.openArtworksFilter(fair))
-  }
+  }, [tracking, fair])
 
-  const handleFilterClose = () => {
+  const handleFilterClose = useCallback(() => {
     setFilterArtworkModalVisible(false)
 
     tracking.trackEvent(tracks.closeArtworksFilter(fair))
-  }
+  }, [tracking, fair])
 
-  const filteredArtworks = extractNodes(data.fairArtworks)
+  const filteredArtworks = useMemo(() => extractNodes(data.fairArtworks), [data.fairArtworks])
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Flex mb={6}>
+        <FilteredArtworkGridZeroState
+          id={data.internalID}
+          slug={data.slug}
+          trackClear={handleTrackClear}
+        />
+      </Flex>
+    ),
+    [data.internalID, data.slug, handleTrackClear]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => (
+      <Flex px={1}>
+        <Tabs.SubTabBar>
+          <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
+        </Tabs.SubTabBar>
+      </Flex>
+    ),
+    [handleFilterOpen]
+  )
+
+  const listFooterComponent = useMemo(
+    () => <AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />,
+    [isLoadingNext]
+  )
+
+  if (!data) {
+    return null
+  }
 
   return (
     <>
@@ -149,29 +186,13 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListEmptyComponent={
-          <Flex mb={6}>
-            <FilteredArtworkGridZeroState
-              id={data.internalID}
-              slug={data.slug}
-              trackClear={handleTrackClear}
-            />
-          </Flex>
-        }
+        contentContainerStyle={contentContainerStyle}
+        ListEmptyComponent={listEmptyComponent}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
-        ListHeaderComponent={
-          <Flex px={1}>
-            <Tabs.SubTabBar>
-              <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />
-            </Tabs.SubTabBar>
-          </Flex>
-        }
-        ListFooterComponent={() => (
-          <AnimatedMasonryListFooter shouldDisplaySpinner={isLoadingNext} />
-        )}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         renderItem={renderItem}
@@ -239,11 +260,7 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
-  if (!data) {
-    return null
-  }
-
-  const handleOnEndReached = () => {
+  const handleOnEndReached = useCallback(() => {
     if (!isLoadingNext && hasNext) {
       loadNext(MASONRY_LIST_PAGE_SIZE, {
         onComplete: (error) => {
@@ -253,23 +270,80 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         },
       })
     }
-  }
+  }, [isLoadingNext, hasNext, loadNext])
 
-  const handleTrackClear = (id: string, slug: string) => {
-    tracking.trackEvent(tracks.trackClear(id, slug))
-  }
+  const handleTrackClear = useCallback(
+    (id: string, slug: string) => {
+      tracking.trackEvent(tracks.trackClear(id, slug))
+    },
+    [tracking]
+  )
 
-  const handleFilterOpen = () => {
+  const handleFilterOpen = useCallback(() => {
     setFilterArtworkModalVisible(true)
     tracking.trackEvent(tracks.openArtworksFilter(fair))
-  }
+  }, [tracking, fair])
 
-  const handleFilterClose = () => {
+  const handleFilterClose = useCallback(() => {
     setFilterArtworkModalVisible(false)
     tracking.trackEvent(tracks.closeArtworksFilter(fair))
-  }
+  }, [tracking, fair])
 
-  const filteredArtworks = extractNodes(data.fairArtworks)
+  const filteredArtworks = useMemo(() => extractNodes(data.fairArtworks), [data.fairArtworks])
+
+  const contentContainerStyle = useMemo(() => ({ paddingHorizontal: space(1) }), [space])
+
+  const renderItem: ListRenderItem<FairArtworkType> = useCallback(
+    ({ item, index }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
+
+      return (
+        <ArtworkGridItem
+          itemIndex={index}
+          contextScreenOwnerType={OwnerType.fair}
+          contextScreenOwnerId={data.internalID}
+          contextScreenOwnerSlug={data.slug}
+          artwork={item}
+          height={imgHeight}
+        />
+      )
+    },
+    [width, space, data.internalID, data.slug]
+  )
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <Flex mb={6} mt={4}>
+        <FilteredArtworkGridZeroState
+          id={data.internalID}
+          slug={data.slug}
+          trackClear={handleTrackClear}
+        />
+      </Flex>
+    ),
+    [data.internalID, data.slug, handleTrackClear]
+  )
+
+  const listHeaderComponent = useMemo(
+    () => <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />,
+    [handleFilterOpen]
+  )
+
+  const listFooterComponent = useMemo(
+    () =>
+      !!isLoadingNext ? (
+        <Flex my={4} flexDirection="row" justifyContent="center">
+          <Spinner />
+        </Flex>
+      ) : null,
+    [isLoadingNext]
+  )
+
+  if (!data) {
+    return null
+  }
 
   return (
     <>
@@ -278,42 +352,13 @@ export const FairArtworksWithoutTabs: React.FC<FairArtworksProps> = ({
         keyExtractor={(item) => item.id}
         numColumns={NUM_COLUMNS_MASONRY}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(1) }}
-        ListEmptyComponent={
-          <Flex mb={6} mt={4}>
-            <FilteredArtworkGridZeroState
-              id={data.internalID}
-              slug={data.slug}
-              trackClear={handleTrackClear}
-            />
-          </Flex>
-        }
-        ListHeaderComponent={<HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />}
-        ListFooterComponent={() =>
-          !!isLoadingNext ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
-        }
+        contentContainerStyle={contentContainerStyle}
+        ListEmptyComponent={listEmptyComponent}
+        ListHeaderComponent={listHeaderComponent}
+        ListFooterComponent={listFooterComponent}
         onEndReached={handleOnEndReached}
         onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-        renderItem={({ item, index }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
-
-          return (
-            <ArtworkGridItem
-              itemIndex={index}
-              contextScreenOwnerType={OwnerType.fair}
-              contextScreenOwnerId={data.internalID}
-              contextScreenOwnerSlug={data.slug}
-              artwork={item}
-              height={imgHeight}
-            />
-          )
-        }}
+        renderItem={renderItem}
       />
       <ArtworkFilterNavigator
         visible={isFilterArtworksModalVisible}
