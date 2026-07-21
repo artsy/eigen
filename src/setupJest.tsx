@@ -220,10 +220,6 @@ jest.mock("@react-native-documents/viewer", () => ({
 
 jest.mock("@preeternal/react-native-cookie-manager", () => ({ clearAll: jest.fn() }))
 
-jest.mock("react-native-launch-arguments", () => ({
-  LaunchArguments: { value: () => ({}) },
-}))
-
 jest.mock("react-native-fbsdk-next", () => ({
   LoginManager: {
     logOut: jest.fn(),

@@ -13,7 +13,5 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - inputText: ${MAESTRO_TEST_PASSWORD}
 - tapOn: "Continue.*"
-- extendedWaitUntil:
-    visible:
-      id: "search-button"
-    timeout: 30000
+- assertVisible:
+    id: "search-button"
