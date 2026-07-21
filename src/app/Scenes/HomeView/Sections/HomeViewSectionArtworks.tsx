@@ -76,8 +76,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
-  // On a refetch bump, force-fetch this rail (every live rail refetches, in view or not, so
-  // off-screen rails don't go stale). On complete, reset the impression guard and re-fire
+  // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
+  // (recommended, new works for you, and any future ones in liveSectionIDs) refetches — in view
+  // or not — so no live rail goes stale. On complete, reset the impression guard and re-fire
   // railViewed only if the rail is on screen.
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
