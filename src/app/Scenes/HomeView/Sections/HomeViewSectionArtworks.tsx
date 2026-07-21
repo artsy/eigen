@@ -56,9 +56,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const liveSectionIDs = useLiveHomeViewSectionIDs()
   const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
   const liveRefetchKey = HomeViewStore.useStoreState((state) => state.liveRefetchKey)
-  const liveRefetchInViewportOnly = HomeViewStore.useStoreState(
-    (state) => state.liveRefetchInViewportOnly
-  )
 
   const isLiveRefreshRail = liveSectionIDs.includes(section.internalID)
 
@@ -67,8 +64,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const isRailInViewport = viewableSections.includes(section.internalID)
 
-  // Keep the latest visibility in a ref so the async `complete` callback below reads the current
-  // value rather than the stale one captured when the refetch was kicked off.
+  // Ref so the async `complete` callback reads current visibility, not the value at kick-off.
   const isRailInViewportRef = useRef(isRailInViewport)
   isRailInViewportRef.current = isRailInViewport
 
@@ -80,17 +76,11 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
-  // When the live refetch key is bumped, force a fresh fetch of the rail's artworks. Pull to
-  // refresh refetches all live rails; returning to home only refetches rails currently in the
-  // viewport (so returning from one rail's flow doesn't refetch other, off-screen live rails).
-  // On `complete` we reset the per-item impression guard so itemViewed can re-fire for the fresh
-  // content, and re-fire railViewed — but only if the rail is actually on screen.
+  // On a refetch bump, force-fetch this rail (every live rail refetches, in view or not, so
+  // off-screen rails don't go stale). On complete, reset the impression guard and re-fire
+  // railViewed only if the rail is on screen.
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
-      return
-    }
-
-    if (liveRefetchInViewportOnly && !isRailInViewportRef.current) {
       return
     }
 

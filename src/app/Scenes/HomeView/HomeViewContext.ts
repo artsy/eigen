@@ -5,18 +5,12 @@ export interface HomeViewStoreModel {
   trackedSectionTypes: string[]
   trackedExperiments: string[]
   viewableSections: string[]
-  // Bumped to request a forced refresh of the "live" home view sections. Section-agnostic; each
-  // live rail watches this key. Scoped to the HomeView provider.
   liveRefetchKey: number
-  // Scope of the latest refresh request. When true (return-to-home), only rails currently in the
-  // viewport should refetch. When false (pull-to-refresh), all live rails refetch.
-  liveRefetchInViewportOnly: boolean
-
   addTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
   setViewableSections: Action<this, string[]>
-  bumpLiveRefetchKey: Action<this, { inViewportOnly: boolean } | undefined>
+  bumpLiveRefetchKey: Action<this>
 }
 
 export const HomeViewStoreModel: HomeViewStoreModel = {
@@ -25,7 +19,6 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
   trackedExperiments: [],
   viewableSections: [],
   liveRefetchKey: 0,
-  liveRefetchInViewportOnly: false,
 
   addTrackedSection: action((state, payload) => {
     if (state.trackedSections.includes(payload)) {
@@ -48,9 +41,8 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
   setViewableSections: action((state, payload) => {
     state.viewableSections = payload
   }),
-  bumpLiveRefetchKey: action((state, payload) => {
+  bumpLiveRefetchKey: action((state) => {
     state.liveRefetchKey += 1
-    state.liveRefetchInViewportOnly = payload?.inViewportOnly ?? false
   }),
 }
 

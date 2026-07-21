@@ -148,17 +148,15 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
-  // Track each live-refresh experiment's exposure once on mount (no-op until Unleash has resolved
-  // a variant). Both rails' experiments are tracked independently.
+  // Track each live-refresh experiment's exposure once on mount.
   useEffect(() => {
     trackLiveRecommendationsExperiment()
     trackLiveNewWorksForYouExperiment()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Refresh the recommended artworks rail when the user returns to home. We use
-  // `useFocusEffect` rather than detecting focus inside the rail, since inactive screens are
-  // frozen/detached and wouldn't observe the transition. The first (mount) focus is skipped.
+  // Refresh all live rails when returning to home (skipping the initial mount focus).
+  // useFocusEffect is used because inactive screens are frozen and wouldn't observe the transition.
   const hasFocusedHomeOnce = useRef(false)
   useFocusEffect(
     useCallback(() => {
@@ -171,8 +169,7 @@ export const HomeView: React.FC = memo(() => {
         return
       }
 
-      // Returning to home only refreshes live rails currently on screen.
-      bumpLiveRefetchKey({ inViewportOnly: true })
+      bumpLiveRefetchKey()
     }, [hasLiveSections, bumpLiveRefetchKey])
   )
 
@@ -217,7 +214,7 @@ export const HomeView: React.FC = memo(() => {
 
         // Force a fresh update of all live home view sections on pull to refresh.
         if (hasLiveSections) {
-          bumpLiveRefetchKey({ inViewportOnly: false })
+          bumpLiveRefetchKey()
         }
       },
       error: (error: Error) => {
