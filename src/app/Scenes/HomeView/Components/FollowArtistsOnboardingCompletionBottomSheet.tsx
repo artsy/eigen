@@ -30,15 +30,19 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   useEffect(() => {
     if (showFollowedArtistSummaryBottomSheet && isExperienceOnboardingEnabled) {
       setIsVisible(true)
+      if (followedOnboardingArtists.length >= 1) {
+        GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
+      }
     }
-  }, [showFollowedArtistSummaryBottomSheet, isExperienceOnboardingEnabled])
+  }, [
+    showFollowedArtistSummaryBottomSheet,
+    isExperienceOnboardingEnabled,
+    followedOnboardingArtists.length,
+  ])
 
   const handleDismiss = () => {
     setIsVisible(false)
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
-    if (followedOnboardingArtists.length >= 1) {
-      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
-    }
     GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
   }
 

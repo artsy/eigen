@@ -58,7 +58,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     currentRoute === "Home" &&
     !isDismissed &&
     isReady &&
-    !showFollowedArtistSummaryBottomSheet &&
     !deferHomeTooltipsThisSession
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
