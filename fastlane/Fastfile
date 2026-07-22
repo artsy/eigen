@@ -89,11 +89,6 @@ lane :ship_beta_ios do |options|
   # Select Xcode version
   xcode_select("/Applications/Xcode_#{$IOS_CONFIG['xcode_version']}.app")
 
-  # Enable Sentry Hermes source map upload (Debug ID based) during the iOS build.
-  # The wrapped bundle build phase runs compose-source-maps + copy-debugid so the
-  # composed source map carries the same Debug ID embedded in the shipped bundle.
-  enable_sentry_ios_build_upload if deployment_target == 'testflight'
-
   build_params = ios_build_params(deployment_target)
   build_ios_app(**build_params)
 

@@ -98,24 +98,43 @@ lane :upload_dsyms_to_sentry do |options|
     )
 
   puts "Uploaded dsyms for #{project_slug}"
+
+  upload_hermes_debug_files_to_sentry(org_slug: org_slug, project_slug: project_slug)
 end
 
-# Enables the Sentry-wrapped iOS bundle build phase to upload Hermes source maps
-# by Debug ID during `build_ios_app`. sentry-cli reads org/project/url from these env
-# vars (we don't commit a sentry.properties file), and the auth token from SENTRY_AUTH_TOKEN.
-# When no token is available (e.g. local builds), upload is skipped gracefully so the
-# build phase falls back to a plain bundle.
-def enable_sentry_ios_build_upload
-  if (ENV['SENTRY_AUTH_TOKEN'] || '').strip.empty?
-    UI.important("SENTRY_AUTH_TOKEN not set — skipping Sentry iOS source map upload for this build")
+# Uploads debug information for the prebuilt Hermes VM framework.
+#
+# Since RN 0.83 / Expo 55, Hermes ships as a prebuilt `hermesvm.xcframework`. Xcode copies
+# the vendored binary into the app as-is and never generates a dSYM for it, the pod ships
+# none, and no `hermesvm` dSYM ends up in the archive's dSYMs folder — so the default dSYM
+# upload above misses it and native Hermes VM frames show up unsymbolicated in Sentry
+# (Image `hermesvm` → Missing). The prebuilt binary is not stripped, so sentry-cli can read
+# `symtab`/`unwind` straight from the Mach-O; we point it at the device slice explicitly.
+def upload_hermes_debug_files_to_sentry(options = {})
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+
+  hermes_framework = File.expand_path(
+    '../ios/Pods/hermes-engine/destroot/Library/Frameworks/universal/hermesvm.xcframework/ios-arm64/hermesvm.framework',
+    __dir__
+  )
+
+  unless File.exist?(hermes_framework)
+    UI.important("Hermes framework not found at #{hermes_framework} — skipping Hermes debug files upload")
     return
   end
 
-  ENV['SENTRY_ORG'] = 'artsynet'
-  ENV['SENTRY_PROJECT'] = 'eigen'
-  ENV['SENTRY_URL'] = 'https://sentry.io/'
-  ENV['SENTRY_ALLOW_AUTO_UPLOAD'] = 'true'
-  UI.message("Enabled Sentry iOS build-time source map upload (org: artsynet, project: eigen)")
+  begin
+    sentry_debug_files_upload(
+      auth_token: ENV['SENTRY_AUTH_TOKEN'],
+      org_slug: org_slug,
+      project_slug: project_slug,
+      path: [hermes_framework]
+    )
+    puts "Uploaded Hermes VM debug files for #{project_slug}"
+  rescue StandardError => e
+    handle_error(e, 'Uploading Hermes VM debug files to Sentry failed.')
+  end
 end
 
 def platform_settings(platform, build_type: 'release')
