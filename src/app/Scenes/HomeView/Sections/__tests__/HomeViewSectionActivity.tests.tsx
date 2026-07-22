@@ -48,21 +48,9 @@ describe("HomeViewSectionActivity", () => {
   it("renders header and handles header press", () => {
     renderWithRelay({
       HomeViewSectionActivity: () => ({
-        internalID: "home-view-section-latest-activity",
-        component: {
-          title: "Latest Activity",
-        },
+        ...latestActivitySection,
         notificationsConnection: {
-          edges: [
-            {
-              node: {
-                internalID: "id-1",
-                notificationType: "ARTWORK_ALERT",
-                headline: "artwork alert",
-                targetHref: "/artwork-room/id-1",
-              },
-            },
-          ],
+          edges: [{ node: artworkAlertNotification }],
         },
       }),
     })
@@ -84,20 +72,10 @@ describe("HomeViewSectionActivity", () => {
   it("renders a list of activities", () => {
     renderWithRelay({
       HomeViewSectionActivity: () => ({
-        internalID: "home-view-section-latest-activity",
-        component: {
-          title: "Latest Activity",
-        },
+        ...latestActivitySection,
         notificationsConnection: {
           edges: [
-            {
-              node: {
-                internalID: "id-1",
-                notificationType: "ARTWORK_ALERT",
-                headline: "artwork alert",
-                targetHref: "/artwork-room/id-1",
-              },
-            },
+            { node: artworkAlertNotification },
             {
               node: {
                 internalID: "id-2",
@@ -131,4 +109,44 @@ describe("HomeViewSectionActivity", () => {
         ]
       `)
   })
+
+  it("navigates to the notification screen when an article activity is pressed", () => {
+    renderWithRelay({
+      HomeViewSectionActivity: () => ({
+        ...latestActivitySection,
+        notificationsConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "id-1",
+                notificationType: "ARTICLE_FEATURED_ARTIST",
+                headline: "Example Article Title",
+                targetHref: "/article/example-article-title",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.getByText(/Example Article Title/)).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText(/Example Article Title/))
+
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
+  })
 })
+
+const latestActivitySection = {
+  internalID: "home-view-section-latest-activity",
+  component: {
+    title: "Latest Activity",
+  },
+}
+
+const artworkAlertNotification = {
+  internalID: "id-1",
+  notificationType: "ARTWORK_ALERT",
+  headline: "artwork alert",
+  targetHref: "/artwork-room/id-1",
+}

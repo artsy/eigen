@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ActivityRailItemTestQuery } from "__generated__/ActivityRailItemTestQuery.graphql"
 import { ActivityRailItem } from "app/Scenes/HomeView/Components/ActivityRailItem"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -80,6 +81,23 @@ describe("ActivityRail", () => {
     expect(screen.getByText("Example Article Title")).toBeOnTheScreen()
     expect(screen.getByText("An artist you follow is featured")).toBeOnTheScreen()
     expect(screen.getByText("Editorial •")).toBeOnTheScreen()
+  })
+
+  it("navigates to the notification screen when an ARTICLE_FEATURED_ARTIST item is pressed", () => {
+    renderWithRelay({
+      Me: () => ({
+        notification: {
+          internalID: "id-1",
+          notificationType: "ARTICLE_FEATURED_ARTIST",
+          headline: "Example Article Title",
+          message: "An artist you follow is featured",
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Example Article Title"))
+
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
   })
 
   it("renders a PARTNER_OFFER_CREATED artwork alert activity item", () => {
