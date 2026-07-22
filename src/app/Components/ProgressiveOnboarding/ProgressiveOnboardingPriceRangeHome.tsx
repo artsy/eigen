@@ -27,10 +27,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     sessionState: { isReady, deferHomeTooltipsThisSession },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
-    (state) => state.onboarding.showFollowedArtistSummaryBottomSheet
-  )
-
   const [hasPriceRange, setHasPriceRange] = useState<boolean | null>(null)
 
   const tracking = useTracking()
@@ -58,7 +54,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildr
     currentRoute === "Home" &&
     !isDismissed &&
     isReady &&
-    !showFollowedArtistSummaryBottomSheet &&
     !deferHomeTooltipsThisSession
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)

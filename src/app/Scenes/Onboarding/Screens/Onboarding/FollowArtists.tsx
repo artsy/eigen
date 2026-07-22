@@ -147,6 +147,7 @@ export const FollowArtists: React.FC = () => {
               disabled={count < MIN_FOLLOWED}
               onPress={() => {
                 trackCompletedOnboarding()
+                GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
                 GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
                 GlobalStore.actions.onboarding.setOnboardingState("complete")
               }}

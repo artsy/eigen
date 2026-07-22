@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowedArtistsBank } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
 import { FollowArtists } from "app/Scenes/Onboarding/Screens/Onboarding/FollowArtists"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { KeyboardController } from "react-native-keyboard-controller"
@@ -168,7 +168,7 @@ describe("FollowArtists", () => {
     })
   })
 
-  describe("Continue button", () => {
+  describe("Go to Home button", () => {
     it("is disabled when fewer than 3 artists are followed", () => {
       renderWithWrappers(<FollowArtists />)
 
@@ -201,6 +201,23 @@ describe("FollowArtists", () => {
         "complete"
       )
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+    })
+
+    it("defers home tooltips when pressed", () => {
+      renderWithWrappers(<FollowArtists />)
+
+      GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+
+      fireEvent.press(screen.getByTestId("continue-button"))
+
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().progressiveOnboarding.sessionState
+          .deferHomeTooltipsThisSession
+      ).toBe(true)
     })
   })
 
