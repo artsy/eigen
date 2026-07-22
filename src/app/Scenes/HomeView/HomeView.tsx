@@ -18,9 +18,9 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Co
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
-import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { useLiveHomeViewSectionIDs } from "app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
@@ -68,10 +68,14 @@ export const HomeView: React.FC = memo(() => {
   )
   const bumpLiveRefetchKey = HomeViewStore.useStoreActions((actions) => actions.bumpLiveRefetchKey)
 
-  const { enabled: enableLiveRecommendations } = useEnableLiveHomeRecommendations()
+  const liveSectionIDs = useLiveHomeViewSectionIDs()
+  const hasLiveSections = liveSectionIDs.length > 0
+
   const { trackExperiment: trackLiveRecommendationsExperiment } = useExperimentVariant(
     "onyx_artwork-recommendations-refresh-eigen"
   )
+  const { trackExperiment: trackLiveNewWorksForYouExperiment } =
+    useExperimentVariant("onyx_nwfy-refresh-eigen")
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -144,20 +148,19 @@ export const HomeView: React.FC = memo(() => {
     }, [])
   )
 
-  // Track the live-recommendations experiment exposure once on mount (no-op until Unleash
-  // has resolved a variant).
+  // Track each live-refresh experiment's exposure once on mount.
   useEffect(() => {
     trackLiveRecommendationsExperiment()
+    trackLiveNewWorksForYouExperiment()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Refresh the recommended artworks rail when the user returns to home. We use
-  // `useFocusEffect` rather than detecting focus inside the rail, since inactive screens are
-  // frozen/detached and wouldn't observe the transition. The first (mount) focus is skipped.
+  // Refresh all live rails when returning to home (skipping the initial mount focus).
+  // useFocusEffect is used because inactive screens are frozen and wouldn't observe the transition.
   const hasFocusedHomeOnce = useRef(false)
   useFocusEffect(
     useCallback(() => {
-      if (!enableLiveRecommendations) {
+      if (!hasLiveSections) {
         return
       }
 
@@ -167,7 +170,7 @@ export const HomeView: React.FC = memo(() => {
       }
 
       bumpLiveRefetchKey()
-    }, [enableLiveRecommendations, bumpLiveRefetchKey])
+    }, [hasLiveSections, bumpLiveRefetchKey])
   )
 
   const fetchSavedArtworksCount = async () => {
@@ -209,8 +212,8 @@ export const HomeView: React.FC = memo(() => {
         setIsRefreshing(false)
         setRefetchKey((prev) => prev + 1)
 
-        // Force a fresh update of any live home view section on pull to refresh.
-        if (enableLiveRecommendations) {
+        // Force a fresh update of all live home view sections on pull to refresh.
+        if (hasLiveSections) {
           bumpLiveRefetchKey()
         }
       },

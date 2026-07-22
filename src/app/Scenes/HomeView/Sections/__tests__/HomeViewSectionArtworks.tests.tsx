@@ -6,7 +6,11 @@ import {
   HomeViewStoreProvider,
 } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
-import { useEnableLiveHomeRecommendations } from "app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations"
+import {
+  NEW_WORKS_FOR_YOU_SECTION_ID,
+  RECOMMENDED_ARTWORKS_SECTION_ID,
+  useLiveHomeViewSectionIDs,
+} from "app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -17,17 +21,15 @@ import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { MockPayloadGenerator } from "relay-test-utils"
 
-jest.mock("app/Scenes/HomeView/hooks/useEnableLiveHomeRecommendations", () => ({
-  useEnableLiveHomeRecommendations: jest.fn(),
+jest.mock("app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs", () => ({
+  ...jest.requireActual("app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"),
+  useLiveHomeViewSectionIDs: jest.fn(),
 }))
 
-const mockUseEnableLiveHomeRecommendations = useEnableLiveHomeRecommendations as jest.Mock
+const mockUseLiveHomeViewSectionIDs = useLiveHomeViewSectionIDs as jest.Mock
 
-const setLiveRecommendationsEnabled = (enabled: boolean) => {
-  mockUseEnableLiveHomeRecommendations.mockReturnValue({
-    enabled,
-    trackExperiment: jest.fn(),
-  })
+const setLiveSectionIDs = (ids: string[]) => {
+  mockUseLiveHomeViewSectionIDs.mockReturnValue(ids)
 }
 
 let homeViewStoreActions: Actions<HomeViewStoreModel>
@@ -47,7 +49,7 @@ const HomeViewStoreVisitor: React.FC = () => {
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
-    setLiveRecommendationsEnabled(false)
+    setLiveSectionIDs([])
   })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
@@ -216,7 +218,6 @@ describe("HomeViewSectionArtworks", () => {
 
       homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
-      // Find the ArtworkRail component and trigger onViewableItemsChanged
       const artworkRail = await UNSAFE_root.findByType(FlatList)
 
       act(() => {
@@ -275,7 +276,6 @@ describe("HomeViewSectionArtworks", () => {
 
       homeViewStoreActions.setViewableSections([])
 
-      // Find the ArtworkRail component and trigger onViewableItemsChanged
       const artworkRail = await UNSAFE_root.findByType(FlatList)
 
       act(() => {
@@ -417,12 +417,12 @@ describe("HomeViewSectionArtworks", () => {
         AREnableHidingDislikedArtworks: true,
         ARImpressionsTrackingHomeItemViews: true,
       })
-      // Treatment arm with Gravity ready (both Unleash flags effectively on)
-      setLiveRecommendationsEnabled(true)
+      // WTYL live-refresh experiment in the treatment arm (both Unleash flags effectively on).
+      setLiveSectionIDs([RECOMMENDED_ARTWORKS_SECTION_ID])
     })
 
     afterEach(() => {
-      setLiveRecommendationsEnabled(false)
+      setLiveSectionIDs([])
     })
 
     it("re-fires railViewed only after the live refresh completes", () => {
@@ -433,7 +433,6 @@ describe("HomeViewSectionArtworks", () => {
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
       mockTrackEvent.mockClear()
 
-      // Request a refresh (focus return / pull to refresh).
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
@@ -461,22 +460,18 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not re-fire railViewed on refresh when the WTYL rail is off screen", () => {
-      // The refresh-driven re-fire only applies to the live "We think you'll love" (WTYL) section
-      // (home-view-section-recommended-artworks); no other section takes this path.
+      // The refresh-driven railViewed re-fire only happens while the rail is actually on screen.
       const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
-      // Rail is not in the viewport.
       homeViewStoreActions.setViewableSections([])
       mockTrackEvent.mockClear()
 
-      // Request a refresh (focus return / pull to refresh).
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
-      // Complete the forced refetch.
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -565,13 +560,204 @@ describe("HomeViewSectionArtworks", () => {
     })
 
     it("does not re-fire analytics when the flags are off", () => {
-      setLiveRecommendationsEnabled(false)
+      setLiveSectionIDs([])
 
       renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
       homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockTrackEvent.mockClear()
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+    })
+
+    it("refetches every live rail on a bump even when the rail is off screen", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([])
+
+      const operationsBeforeRefresh = env.mock.getAllOperations().length
+
+      // A refresh (return-to-home or pull-to-refresh) refreshes all live rails.
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      // A forced refetch is queued regardless of viewport, so the off-screen rail isn't stale.
+      expect(env.mock.getAllOperations().length).toBeGreaterThan(operationsBeforeRefresh)
+    })
+
+    it("refetches but does not re-fire railViewed when the rail is off screen", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([])
+      mockTrackEvent.mockClear()
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
+          })
+        )
+      })
+
+      // The rail refreshed, but tracking stays gated on the rail being in view.
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+    })
+  })
+
+  describe("live New Works for You", () => {
+    const NWFY_SECTION = {
+      internalID: NEW_WORKS_FOR_YOU_SECTION_ID,
+      contextModule: "newWorksForYouRail",
+      component: { title: "New Works for You" },
+      trackItemImpressions: true,
+      artworksConnection: {
+        edges: [
+          {
+            node: {
+              internalID: "artwork-1-id",
+              slug: "artwork-1-slug",
+              title: "Artwork 1",
+              href: "/artwork-1-href",
+            },
+          },
+        ],
+      },
+    }
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableHidingDislikedArtworks: true,
+        ARImpressionsTrackingHomeItemViews: true,
+      })
+      // NWFY live-refresh experiment in the treatment arm, independent of WTYL.
+      setLiveSectionIDs([NEW_WORKS_FOR_YOU_SECTION_ID])
+    })
+
+    afterEach(() => {
+      setLiveSectionIDs([])
+    })
+
+    it("re-fires railViewed only after the live refresh completes", () => {
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => NWFY_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
+      mockTrackEvent.mockClear()
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      // Nothing fires yet — the refreshed data hasn't landed.
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => NWFY_SECTION,
+          })
+        )
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "railViewed",
+        context_module: "newWorksForYouRail",
+        context_screen: "home",
+        position_y: 0,
+      })
+    })
+
+    it("re-enables itemViewed tracking after the live refresh completes", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
+        HomeViewSectionArtworks: () => NWFY_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
+
+      const artworkRail = await UNSAFE_root.findByType(FlatList)
+      const onViewableItemsChanged = artworkRail.props.onViewableItemsChanged
+      const viewableItems = [{ item: { internalID: "artwork-1-id" }, index: 0 }]
+
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(1)
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            HomeViewSectionArtworks: () => NWFY_SECTION,
+          })
+        )
+      })
+
+      act(() => {
+        onViewableItemsChanged({ viewableItems, changed: [] })
+      })
+
+      expect(
+        mockTrackEvent.mock.calls.filter((call) => (call[0] as any)?.action === "item_viewed")
+      ).toHaveLength(2)
+    })
+
+    it("does not refresh when only the WTYL experiment is enabled", () => {
+      // NWFY's live-refresh is gated by its own experiment — enabling WTYL alone must not make
+      // the NWFY rail refetch.
+      setLiveSectionIDs([RECOMMENDED_ARTWORKS_SECTION_ID])
+
+      const { env } = renderWithRelay({
+        HomeViewSectionArtworks: () => NWFY_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
+      mockTrackEvent.mockClear()
+
+      act(() => {
+        homeViewStoreActions.bumpLiveRefetchKey()
+      })
+
+      // No forced refetch is queued and no railViewed re-fires for the NWFY rail.
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: "railViewed" })
+      )
+    })
+
+    it("does not re-fire analytics when the flags are off", () => {
+      setLiveSectionIDs([])
+
+      renderWithRelay({
+        HomeViewSectionArtworks: () => NWFY_SECTION,
+      })
+
+      homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
       mockTrackEvent.mockClear()
 
       act(() => {

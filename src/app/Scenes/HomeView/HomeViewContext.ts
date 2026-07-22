@@ -5,10 +5,7 @@ export interface HomeViewStoreModel {
   trackedSectionTypes: string[]
   trackedExperiments: string[]
   viewableSections: string[]
-  // Bumped to request a forced refresh of any "live" home view section (currently the
-  // recommended artworks rail). Section-agnostic. Scoped to the HomeView provider.
   liveRefetchKey: number
-
   addTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
