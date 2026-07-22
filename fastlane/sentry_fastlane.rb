@@ -100,6 +100,24 @@ lane :upload_dsyms_to_sentry do |options|
   puts "Uploaded dsyms for #{project_slug}"
 end
 
+# Enables the Sentry-wrapped iOS bundle build phase to upload Hermes source maps
+# by Debug ID during `build_ios_app`. sentry-cli reads org/project/url from these env
+# vars (we don't commit a sentry.properties file), and the auth token from SENTRY_AUTH_TOKEN.
+# When no token is available (e.g. local builds), upload is skipped gracefully so the
+# build phase falls back to a plain bundle.
+def enable_sentry_ios_build_upload
+  if (ENV['SENTRY_AUTH_TOKEN'] || '').strip.empty?
+    UI.important("SENTRY_AUTH_TOKEN not set — skipping Sentry iOS source map upload for this build")
+    return
+  end
+
+  ENV['SENTRY_ORG'] = 'artsynet'
+  ENV['SENTRY_PROJECT'] = 'eigen'
+  ENV['SENTRY_URL'] = 'https://sentry.io/'
+  ENV['SENTRY_ALLOW_AUTO_UPLOAD'] = 'true'
+  UI.message("Enabled Sentry iOS build-time source map upload (org: artsynet, project: eigen)")
+end
+
 def platform_settings(platform, build_type: 'release')
   settings = {
     ios: {
