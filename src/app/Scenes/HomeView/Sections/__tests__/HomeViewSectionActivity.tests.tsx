@@ -131,4 +131,33 @@ describe("HomeViewSectionActivity", () => {
         ]
       `)
   })
+
+  it("navigates to the notification screen when an article activity is pressed", () => {
+    renderWithRelay({
+      HomeViewSectionActivity: () => ({
+        internalID: "home-view-section-latest-activity",
+        component: {
+          title: "Latest Activity",
+        },
+        notificationsConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "id-1",
+                notificationType: "ARTICLE_FEATURED_ARTIST",
+                headline: "Example Article Title",
+                targetHref: "/article/example-article-title",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.getByText(/Example Article Title/)).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText(/Example Article Title/))
+
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
+  })
 })
