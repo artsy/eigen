@@ -148,7 +148,7 @@
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>ReactNativeReleaseLevel</key>
-	<string>experimental</string>
+	<string>stable</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Unica77LL-Italic.otf</string>
