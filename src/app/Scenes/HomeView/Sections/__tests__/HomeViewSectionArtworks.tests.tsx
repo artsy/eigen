@@ -585,13 +585,15 @@ describe("HomeViewSectionArtworks", () => {
 
       homeViewStoreActions.setViewableSections([])
 
+      const operationsBeforeRefresh = env.mock.getAllOperations().length
+
       // A refresh (return-to-home or pull-to-refresh) refreshes all live rails.
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
       // A forced refetch is queued regardless of viewport, so the off-screen rail isn't stale.
-      expect(env.mock.getAllOperations().length).toBeGreaterThan(0)
+      expect(env.mock.getAllOperations().length).toBeGreaterThan(operationsBeforeRefresh)
     })
 
     it("refetches but does not re-fire railViewed when the rail is off screen", () => {
