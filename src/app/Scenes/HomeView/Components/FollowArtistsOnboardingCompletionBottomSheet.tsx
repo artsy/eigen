@@ -30,15 +30,8 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   useEffect(() => {
     if (showFollowedArtistSummaryBottomSheet && isExperienceOnboardingEnabled) {
       setIsVisible(true)
-      if (followedOnboardingArtists.length >= 1) {
-        GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
-      }
     }
-  }, [
-    showFollowedArtistSummaryBottomSheet,
-    isExperienceOnboardingEnabled,
-    followedOnboardingArtists.length,
-  ])
+  }, [showFollowedArtistSummaryBottomSheet, isExperienceOnboardingEnabled])
 
   const handleDismiss = () => {
     setIsVisible(false)
