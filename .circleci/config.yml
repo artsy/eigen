@@ -29,7 +29,7 @@ defaults_ignore_main: &ignore_main_branches
 orbs:
   node: circleci/node@7.2.1
   horizon: artsy/release@0.0.1
-  macos: circleci/macos@2.5.4
+  macos: circleci/macos@3.0.0
   android: circleci/android@3.2.0
 
 commands:
