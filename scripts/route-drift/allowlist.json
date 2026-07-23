@@ -1,0 +1,14 @@
+{
+  "_comment": "Intentional divergences between eigen routes.tsx and artsy/force. Entries here are suppressed from the drift report's actionable section and from `yarn route-drift --strict`. Add a `reason` so the next person understands why. `ignorePrefixes` suppresses any force path starting with the prefix (good for whole families like dev tooling); `expectedWebview` is keyed by exact force path; `expectedOrphans` by exact eigen path.",
+  "ignorePrefixes": [
+    {
+      "prefix": "/admin",
+      "reason": "Admin dashboard — internal web tooling, no native app surface."
+    },
+    { "prefix": "/debug", "reason": "Debug / error-page test routes — dev only." },
+    { "prefix": "/dev", "reason": "Dev menu and dev tooling — not shipped to users." },
+    { "prefix": "/example", "reason": "Force's Example demo app — not a real product surface." }
+  ],
+  "expectedWebview": [],
+  "expectedOrphans": []
+}
