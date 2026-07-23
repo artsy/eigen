@@ -7,6 +7,7 @@ export interface HomeViewStoreModel {
   viewableSections: string[]
   liveRefetchKey: number
   addTrackedSection: Action<this, string>
+  removeTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
   setViewableSections: Action<this, string[]>
@@ -25,6 +26,9 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
       return
     }
     state.trackedSections.push(payload)
+  }),
+  removeTrackedSection: action((state, payload) => {
+    state.trackedSections = state.trackedSections.filter((section) => section !== payload)
   }),
   addTrackedSectionTypes: action((state, payload) => {
     if (state.trackedSectionTypes.includes(payload)) {

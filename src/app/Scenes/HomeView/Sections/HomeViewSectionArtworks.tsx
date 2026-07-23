@@ -64,6 +64,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const isRailInViewport = viewableSections.includes(section.internalID)
 
+  const removeTrackedSection = HomeViewStore.useStoreActions(
+    (actions) => actions.removeTrackedSection
+  )
+
   const { onViewableItemsChanged, viewabilityConfig, resetTracking } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
@@ -73,13 +77,16 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   })
 
   // Bumped when the forced refetch completes, so HomeViewSectionSentinel re-measures and re-fires
-  // railViewed for this section (see the effect there — it doesn't trust `viewableSections`, which
-  // can be stale right as the screen regains focus and the refetch completes).
+  // railViewed if this section happens to be on screen at that exact moment (see the effect there —
+  // it doesn't trust `viewableSections`, which can be stale right as the screen regains focus and
+  // the refetch completes).
   const [liveRefetchCompletionKey, setLiveRefetchCompletionKey] = useState(0)
 
   // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
   // (recommended, new works for you, and any future ones in liveSectionIDs) refetches — in view
-  // or not — so no live rail goes stale. On complete, reset the impression guard.
+  // or not — so no live rail goes stale. On complete, reset both impression guards: the per-item
+  // guard (so items already tracked can re-fire itemViewed) and the once-ever section guard (so a
+  // later scroll-into-view re-fires railViewed too, not just an already-on-screen rail).
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
       return
@@ -93,6 +100,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
+        removeTrackedSection(contextModule)
         setLiveRefetchCompletionKey((key) => key + 1)
       },
       error: (error: Error) => {
@@ -202,6 +210,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         contextModule={contextModule}
         sectionType={section.__typename}
         index={index}
+        isLiveRefreshRail={isLiveRefreshRail}
         refreshKey={liveRefetchCompletionKey}
       />
     </Flex>
