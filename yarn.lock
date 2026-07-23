@@ -15,14 +15,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/changelog@npm:^0.1.0":
+"@artsy/changelog@npm:0.1.0":
   version: 0.1.0
   resolution: "@artsy/changelog@npm:0.1.0"
   checksum: 10c0/d1827f5b3b14ef76520f8e554861d1f651a5cb0b51c79e1122caca7015e3af0ec67dbf0c85e021633ef96613275c77e1ee8f8916c5460f18a1c4e977047c00f0
   languageName: node
   linkType: hard
 
-"@artsy/cohesion@npm:^4.360.0":
+"@artsy/cohesion@npm:4.360.0":
   version: 4.360.0
   resolution: "@artsy/cohesion@npm:4.360.0"
   dependencies:
@@ -7559,7 +7559,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/align-deps@npm:^3.3.0":
+"@rnx-kit/align-deps@npm:3.3.0":
   version: 3.3.0
   resolution: "@rnx-kit/align-deps@npm:3.3.0"
   bin:
@@ -9928,7 +9928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prompts@npm:^2.4.9":
+"@types/prompts@npm:2.4.9":
   version: 2.4.9
   resolution: "@types/prompts@npm:2.4.9"
   dependencies:
@@ -13612,8 +13612,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "eigen@workspace:."
   dependencies:
-    "@artsy/changelog": "npm:^0.1.0"
-    "@artsy/cohesion": "npm:^4.360.0"
+    "@artsy/changelog": "npm:0.1.0"
+    "@artsy/cohesion": "npm:4.360.0"
     "@artsy/icons": "npm:3.74.0"
     "@artsy/palette-mobile": "npm:24.3.0"
     "@artsy/to-title-case": "npm:1.2.0"
@@ -13662,7 +13662,7 @@ __metadata:
     "@react-navigation/native-stack": "npm:7.3.27"
     "@react-navigation/stack": "npm:7.4.9"
     "@rnmapbox/maps": "npm:10.3.1"
-    "@rnx-kit/align-deps": "npm:^3.3.0"
+    "@rnx-kit/align-deps": "npm:3.3.0"
     "@rozenite/expo-atlas-plugin": "npm:1.7.0"
     "@rozenite/metro": "npm:1.7.0"
     "@rozenite/network-activity-plugin": "npm:1.7.0"
@@ -13684,7 +13684,7 @@ __metadata:
     "@types/jscodeshift": "npm:0.11.6"
     "@types/lodash": "npm:4.14.180"
     "@types/luxon": "npm:2.4.0"
-    "@types/prompts": "npm:^2.4.9"
+    "@types/prompts": "npm:2.4.9"
     "@types/qs": "npm:6.9.7"
     "@types/query-string": "npm:5.0.1"
     "@types/react": "npm:19.2.10"
@@ -13765,7 +13765,7 @@ __metadata:
     postinstall-prepare: "npm:1.0.1"
     prettier: "npm:3.1.1"
     prompt-sync: "npm:4.2.0"
-    prompts: "npm:^2.4.2"
+    prompts: "npm:2.4.2"
     pull-lock: "npm:1.0.0"
     query-string: "npm:4.3.4"
     react: "npm:19.2.0"
@@ -13808,7 +13808,7 @@ __metadata:
     react-native-vimeo-iframe: "npm:1.2.1"
     react-native-webview: "npm:13.16.0"
     react-native-worklets: "npm:0.8.3"
-    react-native-youtube-iframe: "npm:^2.4.1"
+    react-native-youtube-iframe: "npm:2.4.1"
     react-relay: "npm:18.2.0"
     react-relay-network-modern: "npm:6.2.2"
     react-test-renderer: "npm:19.2.0"
@@ -13838,7 +13838,7 @@ __metadata:
     victory-native: "npm:37.3.4"
     yargs: "npm:17.7.2"
     yup: "npm:0.31.1"
-    zeego: "npm:^3.0.6"
+    zeego: "npm:3.0.6"
   languageName: unknown
   linkType: soft
 
@@ -21637,7 +21637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prompts@npm:^2.0.1, prompts@npm:^2.3.2, prompts@npm:^2.4.2":
+"prompts@npm:2.4.2, prompts@npm:^2.0.1, prompts@npm:^2.3.2, prompts@npm:^2.4.2":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
   dependencies:
@@ -22544,7 +22544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-youtube-iframe@npm:^2.4.1":
+"react-native-youtube-iframe@npm:2.4.1":
   version: 2.4.1
   resolution: "react-native-youtube-iframe@npm:2.4.1"
   dependencies:
@@ -27305,7 +27305,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zeego@npm:^3.0.6":
+"zeego@npm:3.0.6":
   version: 3.0.6
   resolution: "zeego@npm:3.0.6"
   dependencies:
