@@ -76,6 +76,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@artsy/palette-mobile@patch:@artsy/palette-mobile@npm%3A24.3.0#~/.yarn/patches/@artsy-palette-mobile-npm-24.3.0-9cf90bebed.patch":
+  version: 24.3.0
+  resolution: "@artsy/palette-mobile@patch:@artsy/palette-mobile@npm%3A24.3.0#~/.yarn/patches/@artsy-palette-mobile-npm-24.3.0-9cf90bebed.patch::version=24.3.0&hash=08e209"
+  dependencies:
+    "@artsy/palette-tokens": "npm:7.0.0"
+    "@react-spring/native": "npm:10.0.3"
+    "@styled-system/theme-get": "npm:^5.1.2"
+    events: "npm:3.3.0"
+    react-nanny: "npm:2.15.0"
+    react-native-popover-view: "npm:^6.1.0"
+  peerDependencies:
+    "@d11/react-native-fast-image": "*"
+    react: "*"
+    react-native: "*"
+    react-native-blurhash: "*"
+    react-native-collapsible-tab-view: "*"
+    react-native-haptic-feedback: "*"
+    react-native-linear-gradient: "*"
+    react-native-pager-view: "*"
+    react-native-reanimated: "*"
+    react-native-svg: "*"
+    react-native-worklets: "*"
+    styled-components: ">= 5"
+  checksum: 10c0/de09225c5e4ada9eae3ae71fb25efecb86b85bc586bbcbb31715313e0ac8f65b6170a74e4ced0d7993981076f8b6c308af923291da0e333f8b89e5b54fa6ae1d
+  languageName: node
+  linkType: hard
+
 "@artsy/palette-tokens@npm:7.0.0":
   version: 7.0.0
   resolution: "@artsy/palette-tokens@npm:7.0.0"
@@ -13615,7 +13642,7 @@ __metadata:
     "@artsy/changelog": "npm:0.1.0"
     "@artsy/cohesion": "npm:4.386.1"
     "@artsy/icons": "npm:3.74.0"
-    "@artsy/palette-mobile": "npm:24.3.0"
+    "@artsy/palette-mobile": "patch:@artsy/palette-mobile@npm%3A24.3.0#~/.yarn/patches/@artsy-palette-mobile-npm-24.3.0-9cf90bebed.patch"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.8.2"
     "@babel/core": "npm:7.26.0"
