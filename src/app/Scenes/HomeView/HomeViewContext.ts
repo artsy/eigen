@@ -28,6 +28,9 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
     state.trackedSections.push(payload)
   }),
   removeTrackedSection: action((state, payload) => {
+    if (!state.trackedSections.includes(payload)) {
+      return
+    }
     state.trackedSections = state.trackedSections.filter((section) => section !== payload)
   }),
   addTrackedSectionTypes: action((state, payload) => {
