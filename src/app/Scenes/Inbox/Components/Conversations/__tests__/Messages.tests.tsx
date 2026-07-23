@@ -33,13 +33,10 @@ afterEach(() => {
 const onRefresh = jest.fn()
 
 const { renderWithRelay } = setupTestWrapper<MessagesTestsQuery>({
-  Component: ({ me }) => (
-    <Messages conversation={me!.conversation!} me={me!} onRefresh={onRefresh} />
-  ),
+  Component: ({ me }) => <Messages conversation={me!.conversation!} onRefresh={onRefresh} />,
   query: graphql`
     query MessagesTestsQuery($conversationID: String!) @relay_test_operation {
       me {
-        ...usePartnerOffer_me
         conversation(id: $conversationID) {
           ...Messages_conversation
         }

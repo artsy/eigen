@@ -2,7 +2,6 @@ import { ActionType, OwnerType, PartnerOfferInConversationViewed } from "@artsy/
 import { ChevronRightIcon, StopwatchIcon } from "@artsy/icons/native"
 import { Color, Flex, Text } from "@artsy/palette-mobile"
 import { ConversationPartnerOfferCTA_conversation$key } from "__generated__/ConversationPartnerOfferCTA_conversation.graphql"
-import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { formattedTimeLeftForPartnerOffer } from "app/Scenes/Artwork/utils/formattedTimeLeftForPartnerOffer"
 import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -14,7 +13,6 @@ import { useTracking } from "react-tracking"
 
 interface ConversationPartnerOfferCTAProps {
   conversation: ConversationPartnerOfferCTA_conversation$key
-  me: usePartnerOffer_me$key
 }
 
 /**
@@ -24,7 +22,6 @@ interface ConversationPartnerOfferCTAProps {
  */
 export const ConversationPartnerOfferCTA: React.FC<ConversationPartnerOfferCTAProps> = ({
   conversation: _conversation,
-  me,
 }) => {
   const { trackEvent } = useTracking()
   const conversation = useFragment(fragment, _conversation)
@@ -33,7 +30,7 @@ export const ConversationPartnerOfferCTA: React.FC<ConversationPartnerOfferCTAPr
   const artworkId = artwork?.__typename === "Artwork" ? artwork.internalID : null
 
   const { partnerOffers: _partnerOffers, hasActivePartnerOffer } = usePartnerOffer({
-    me,
+    conversation,
     artworkId,
   })
   const partnerOffers = useFragment(partnerOfferFragment, _partnerOffers)
@@ -128,6 +125,7 @@ const PartnerOfferExpiresIn: React.FC<{ endAt: string }> = ({ endAt }) => {
 
 const fragment = graphql`
   fragment ConversationPartnerOfferCTA_conversation on Conversation {
+    ...usePartnerOffer_conversation
     internalID
     items {
       item {

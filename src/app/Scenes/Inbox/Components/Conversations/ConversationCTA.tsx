@@ -1,5 +1,4 @@
 import { ConversationCTA_conversation$key } from "__generated__/ConversationCTA_conversation.graphql"
-import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { ConversationPartnerOfferCTA } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferCTA"
 import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,18 +10,17 @@ import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 interface Props {
   show: boolean
   conversation: ConversationCTA_conversation$key
-  me: usePartnerOffer_me$key
 }
 
-export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, me, show }) => {
+export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, show }) => {
   const conversation = useFragment(conversationFragment, _conversation)
   const liveArtwork = conversation?.items?.[0]?.liveArtwork
   const { hasActivePartnerOffer } = usePartnerOffer({
-    me,
+    conversation,
     artworkId: liveArtwork?.__typename === "Artwork" ? liveArtwork.internalID : null,
   })
 
-  if (!conversation || !me || liveArtwork?.__typename !== "Artwork") {
+  if (!conversation || liveArtwork?.__typename !== "Artwork") {
     return null
   }
 
@@ -36,7 +34,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, 
     // When there's an active partner offer, the dedicated offer banner replaces
     // the inquiry transaction buttons.
     if (hasActivePartnerOffer) {
-      return <ConversationPartnerOfferCTA conversation={conversation} me={me} />
+      return <ConversationPartnerOfferCTA conversation={conversation} />
     }
 
     if (isOfferableFromInquiry || isOfferableConversationalBuyNow || conversationalBuyNow) {
@@ -101,6 +99,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation: _conversation, 
 const conversationFragment = graphql`
   fragment ConversationCTA_conversation on Conversation {
     ...ConversationPartnerOfferCTA_conversation
+    ...usePartnerOffer_conversation
 
     internalID
     items {
