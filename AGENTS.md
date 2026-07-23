@@ -86,6 +86,16 @@ android/                 # Android native code and Gradle project
 - Run `yarn relay` after modifying any GraphQL queries or fragments
 - Sync the GraphQL schema with `yarn sync-schema` when Metaphysics changes
 
+## End-to-End Testing (Maestro)
+
+E2E flows live in `e2e/flows/` and run with [Maestro](https://maestro.mobile.dev/). See [`e2e/README.md`](e2e/README.md) for the full build/install/run steps.
+
+- **Run locally:** `maestro test e2e/` runs all flows (reads `e2e/config.yml`); `maestro test e2e/flows/login.yml` runs a single flow. Do not run `maestro test *` — it tries to execute non-flow files (`config.yml`, `README.md`) and fails with `Commands Section Required`.
+- **Version:** keep your local Maestro in sync with the CI pin (currently `2.6.1`, set in `.github/workflows/ios-e2e-maestro.yml`). Version drift causes local/CI behavior differences.
+- **CI:** the daily "Build iOS QA App for Maestro" workflow publishes an app to S3, then "iOS E2E Tests (Maestro)" shards the flows across runners via `scripts/utils/run_maestro_shard`.
+- **Flakiness handling:** flows depend on the real network and universal-link resolution, so the shard runner retries each flow once from a clean launch before failing. Structurally fragile flows listed in `NON_BLOCKING_FLOWS` (currently `deeplinks.yml`) still run and retry but only warn on failure instead of failing the shard.
+- **Writing stable flows:** prefer `extendedWaitUntil` with an explicit `timeout` over bare `assertVisible` for anything that renders after a network fetch (e.g. the post-login HomeView). Keep any real-network setup in CI non-fatal so infra hiccups don't fail the run.
+
 ## Gotchas
 
 - `yarn pod-install` may fail on first run due to a cocoapods-keys bug — re-run to fix
@@ -98,6 +108,7 @@ android/                 # Android native code and Gradle project
 - [Getting Started](docs/getting_started.md)
 - [Best Practices](docs/best_practices.md)
 - [Testing](docs/testing.md)
+- [E2E Testing (Maestro)](e2e/README.md)
 - [Fetching Data](docs/fetching_data.md)
 - [Adding a New Route](docs/adding_a_new_route.md)
 - [Adding a New Screen](docs/add_a_new_screen.md)
