@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RefObject, useCallback, useEffect, useRef } from "react"
 import { Dimensions, View } from "react-native"
@@ -37,6 +38,7 @@ export const useGridItemVisibility = ({
   onVisibilityChange,
 }: UseGridItemVisibilityArgs) => {
   const insets = useSafeAreaInsets()
+  const isFocused = useIsFocused()
 
   // Read via a ref so the poll below always calls the latest version, regardless of when its
   // closure was created.
@@ -68,8 +70,11 @@ export const useGridItemVisibility = ({
     [threshold, ref, insets.bottom]
   )
 
+  // Paused while Home isn't focused (e.g. a pushed artwork screen on top of it) — react-native-
+  // screens freezes the Home tree in that state without unmounting it, so this interval would
+  // otherwise keep firing a native measure() every second for as long as the user is elsewhere.
   useEffect(() => {
-    if (!enabled) {
+    if (!enabled || !isFocused) {
       return
     }
 
@@ -78,5 +83,5 @@ export const useGridItemVisibility = ({
     }, POLL_INTERVAL)
 
     return () => clearInterval(interval)
-  }, [enabled, measure])
+  }, [enabled, isFocused, measure])
 }

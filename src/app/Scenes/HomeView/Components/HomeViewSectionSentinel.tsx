@@ -1,4 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
+import { useIsFocused } from "@react-navigation/native"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Sentinel } from "app/utils/Sentinel"
@@ -33,6 +34,7 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
   )
 
   const markerRef = useRef<View>(null)
+  const isFocused = useIsFocused()
 
   const handleVisibilityChange = useCallback(
     (visible: boolean) => {
@@ -71,8 +73,11 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
   // live refresh doesn't need to explicitly tell this component anything. `handleVisibilityChange`'s
   // own "already tracked" guard (reset by the parent on refresh) is what decides whether a given
   // report actually fires railViewed; a redundant "still visible" report is a harmless no-op.
+  // Paused while Home isn't focused (e.g. a pushed artwork screen on top of it) — react-native-
+  // screens freezes the Home tree in that state without unmounting it, so this interval would
+  // otherwise keep firing a native measure() every second for as long as the user is elsewhere.
   useEffect(() => {
-    if (!isLiveRefreshRail) {
+    if (!isLiveRefreshRail || !isFocused) {
       return
     }
 
@@ -86,7 +91,7 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
     }, POLL_INTERVAL)
 
     return () => clearInterval(interval)
-  }, [isLiveRefreshRail])
+  }, [isLiveRefreshRail, isFocused])
 
   if (isLiveRefreshRail) {
     return <View ref={markerRef} collapsable={false} testID="home-view-section-sentinel-marker" />
