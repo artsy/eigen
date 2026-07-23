@@ -126,12 +126,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
           }}
         >
           <Flex pb={`${bottom}px`}>
-            <Button
-              variant={selectedLabel ? "fillLight" : "text"}
-              block
-              disabled={!selectedLabel}
-              onPress={handleContinue}
-            >
+            <Button variant="fillLight" block disabled={!selectedLabel} onPress={handleContinue}>
               Continue
             </Button>
           </Flex>
