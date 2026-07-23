@@ -54,7 +54,7 @@ export const AuthBackground: React.FC = () => {
               color="white"
               selectable={false}
             >
-              Discover and Buy Art that Moves You
+              Discover and Buy Art That Moves You
             </Text>
 
             <Text
@@ -63,7 +63,7 @@ export const AuthBackground: React.FC = () => {
               color="white"
               selectable={false}
             >
-              Your personalized guide to fresh artworks and the latest stories—and the easiest way
+              Your personalized guide to fresh artworks and the latest stories–and the easiest way
               to buy art you love.
             </Text>
           </Flex>

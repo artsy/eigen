@@ -60,7 +60,7 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
           {nodes.length > 0 && (
             <>
               {!!hasFollowedArtists && <Separator my={2} />}
-              <Text variant="md">Leading artists on Artsy</Text>
+              <Text variant="md">Popular on Artsy</Text>
               <Spacer y={2} />
             </>
           )}

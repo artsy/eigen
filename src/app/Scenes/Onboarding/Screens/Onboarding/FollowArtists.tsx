@@ -93,7 +93,7 @@ export const FollowArtists: React.FC = () => {
       <Screen.Body disableKeyboardAvoidance>
         <Box mt={2}>
           <Text variant="lg-display">
-            Show us what you're drawn to, follow {MIN_FOLLOWED} or more artists to get started.
+            What art are you drawn to? Follow {MIN_FOLLOWED} or more artists to get started.
           </Text>
         </Box>
         <Spacer y={2} />

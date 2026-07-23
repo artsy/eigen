@@ -126,7 +126,7 @@ const SignUpNameStepForm: React.FC = () => {
         returnKeyType="done"
         spellCheck={false}
         textContentType="none"
-        title="Full Name"
+        title="Full name"
         value={values.name}
         onChangeText={(text) => {
           if (errors.name) {

@@ -116,13 +116,13 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
 
           <Flex gap={1} alignItems="center">
             <Text variant="lg-display" textAlign="center">
-              Five works is all it takes to start.
+              First five saved. We're beginning to see what moves you.
             </Text>
             <Text variant="sm" textAlign="center">
               We're beginning to see what moves you.
             </Text>
             <Text variant="xs" textAlign="center">
-              Visit your For You page, or stay and keep exploring.
+              Visit your For You page, or stay and keep exploring artworks.
             </Text>
           </Flex>
 
