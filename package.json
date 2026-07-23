@@ -41,6 +41,7 @@
     "generate-cities-cache": "node scripts/city-guide/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/city-guide/generate-cities-objc.js",
     "generate-changelog": "tsx scripts/changelog/generateChangelog.ts",
+    "route-drift": "tsx scripts/route-drift/generate.ts",
     "navigate-to-route": "./scripts/utils/navigate-to-route",
     "navigate-to-route-android": "./scripts/utils/navigate-to-route-android",
     "init-metaflags": "jq -Rn '{ }' | sponge metaflags.json",
