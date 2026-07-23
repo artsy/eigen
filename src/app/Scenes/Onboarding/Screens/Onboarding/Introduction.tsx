@@ -81,6 +81,7 @@ export const Introduction: React.FC = () => {
   }
 
   return (
+    // Pinned to light theme: this intro is always black-on-white, regardless of Dark Mode.
     <Theme theme="v3light">
       <Flex flex={1} backgroundColor="mono100">
         <AnimatePresence>
