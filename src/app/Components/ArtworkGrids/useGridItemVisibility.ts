@@ -56,12 +56,25 @@ export const useGridItemVisibility = ({
           // actually hidden behind the tab bar.
           const viewportHeight = window.height - BOTTOM_TABS_HEIGHT - insets.bottom
 
-          const isVisible =
-            pageY + height != 0 &&
-            pageY >= 0 &&
-            pageY + height - height * (1 - threshold) <= viewportHeight &&
-            pageX + width > 0 &&
-            pageX + width - width * (1 - threshold) <= window.width
+          if (height <= 0 || width <= 0) {
+            report(false)
+            return
+          }
+
+          // Overlap between the item's bounds and the viewport on each axis, as a fraction of the
+          // item's own size — symmetric at both edges, unlike a pair of one-sided inequalities
+          // (e.g. a hard `pageY >= 0` for the top combined with a thresholded check at the bottom
+          // only), which would under-report items that are mostly visible but clipped at the top.
+          const visibleHeight = Math.max(
+            0,
+            Math.min(pageY + height, viewportHeight) - Math.max(pageY, 0)
+          )
+          const visibleWidth = Math.max(
+            0,
+            Math.min(pageX + width, window.width) - Math.max(pageX, 0)
+          )
+
+          const isVisible = visibleHeight >= height * threshold && visibleWidth >= width * threshold
 
           report(isVisible)
         }
