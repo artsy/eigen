@@ -27,7 +27,7 @@ interface Props {
   saleInfoTextStyle?: TextProps
   fitToFrame?: boolean
   onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
-  refreshKey?: number
+  useLiveVisibilityTracking?: boolean
 }
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
@@ -46,7 +46,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   trackingFlow,
   fitToFrame = false,
   onItemVisibilityChange,
-  refreshKey,
+  useLiveVisibilityTracking,
 }) => {
   const space = useSpace()
   const artworks = useFragment(genericGridFragment, artworksProp)
@@ -71,7 +71,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
             trackingFlow={trackingFlow}
             fitToFrame={fitToFrame}
             onItemVisibilityChange={onItemVisibilityChange}
-            refreshKey={refreshKey}
+            useLiveVisibilityTracking={useLiveVisibilityTracking}
           />
         </Flex>
         {isLoading ? <Spinner style={{ marginTop: space(2) }} testID="spinner" /> : null}

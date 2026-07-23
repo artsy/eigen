@@ -99,7 +99,7 @@ export const HomeViewSectionArtworksGrid: React.FC<HomeViewSectionArtworksGridPr
           onPress={onArtworkPress}
           fitToFrame
           onItemVisibilityChange={handleGridItemVisibilityChange}
-          refreshKey={refreshKey}
+          useLiveVisibilityTracking={refreshKey !== undefined}
         />
       </View>
       {hasGridLaidOut ? (

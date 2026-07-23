@@ -76,10 +76,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
-  // Bumped when the forced refetch completes, so HomeViewSectionSentinel re-measures and re-fires
-  // railViewed if this section happens to be on screen at that exact moment (see the effect there —
-  // it doesn't trust `viewableSections`, which can be stale right as the screen regains focus and
-  // the refetch completes).
+  // Bumped when the forced refetch completes, so HomeViewSectionArtworksGrid clears its per-item
+  // "already tracked" guard (only relevant for the grid path — NWFY).
   const [liveRefetchCompletionKey, setLiveRefetchCompletionKey] = useState(0)
 
   // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
@@ -212,7 +210,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         sectionType={section.__typename}
         index={index}
         isLiveRefreshRail={isLiveRefreshRail}
-        refreshKey={liveRefetchCompletionKey}
       />
     </Flex>
   )
