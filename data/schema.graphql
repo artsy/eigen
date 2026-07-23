@@ -13505,6 +13505,23 @@ type Conversation implements Node {
   ): MeOrdersConnection
 
   """
+  The current (collector) user's partner offers for this conversation's artwork.
+  """
+  collectorPartnerOffersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Filter by offer type(s). Gravity defaults to all of the user's partner offers when omitted.
+    """
+    offerType: [PartnerOfferTypeEnum]
+    page: Int
+    size: Int
+  ): PartnerOfferToCollectorConnection
+
+  """
   The collector profile of the user who initiated the conversation. Do not use this field for Partners
   """
   collectorResume: CollectorResume
@@ -29927,6 +29944,11 @@ type PartnerOfferToCollector implements Node {
   internalID: ID!
   isActive: Boolean
   isAvailable: Boolean
+
+  """
+  Whether the collector already has an order created from this partner offer in a purchased buyer state (submitted, approved, or completed).
+  """
+  isPurchased: Boolean!
   note: String
   partnerId: String
   priceWithDiscount: Money
