@@ -4589,6 +4589,14 @@ interface ArtworkContextGrid {
   title: String
 }
 
+"""
+The surface an artwork was created from.
+"""
+enum ArtworkCreatedSurface {
+  CMS
+  OS
+}
+
 input ArtworkDuplicateMergeFieldOverridesInput {
   availability: String
   date: String
@@ -14246,6 +14254,11 @@ input CreateArtworkMutationInput {
   """
   artsyListing: Boolean
   clientMutationId: String
+
+  """
+  The surface the artwork is being created from. Defaults to CMS.
+  """
+  createdSurface: ArtworkCreatedSurface
 
   """
   The S3 bucket where the artwork image is stored.
