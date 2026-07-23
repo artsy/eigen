@@ -187,6 +187,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           onArtworkPress={handleOnGridArtworkPress}
           trackItemImpressions={section.trackItemImpressions}
           contextModule={contextModule}
+          refreshKey={isLiveRefreshRail ? liveRefetchCompletionKey : undefined}
         />
       ) : (
         <ArtworkRail

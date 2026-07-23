@@ -47,6 +47,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   trackingFlow?: string
   fitToFrame?: boolean
   onItemVisibilityChange?: (artworkID: string, index: number, visible: boolean) => void
+  refreshKey?: number
 }
 
 /**
@@ -91,6 +92,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   saleInfoTextStyle,
   fitToFrame,
   onItemVisibilityChange,
+  refreshKey,
   ...rest
 }) => {
   const space = useSpace()
@@ -141,6 +143,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         trackTap={trackTap}
         fitToFrame={fitToFrame}
         onItemVisibilityChange={onItemVisibilityChange}
+        refreshKey={refreshKey}
         fullWidth={adjustedNumColumns === 1}
       />
     ),
@@ -170,6 +173,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       trackTap,
       fitToFrame,
       onItemVisibilityChange,
+      refreshKey,
     ]
   )
 

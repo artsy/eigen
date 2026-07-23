@@ -5,6 +5,7 @@ import ArtworkGridItem, {
   ArtworkProps,
   PriceOfferMessage,
 } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { GridItemVisibilitySentinel } from "app/Components/ArtworkGrids/GridItemVisibilitySentinel"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { Sentinel } from "app/utils/Sentinel"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
@@ -46,6 +47,15 @@ interface MasonryArtworkGridItemProps extends Omit<ArtworkProps, "artwork"> {
    * Use for impression tracking in nested, non-scroll grids.
    */
   onItemVisibilityChange?: (artworkInternalID: string, index: number, visible: boolean) => void
+  /**
+   * Bump to force this item to re-report its current visibility (e.g. after a live refresh).
+   * Only meaningful together with onItemVisibilityChange. When provided (including `0`), visibility
+   * is tracked via GridItemVisibilitySentinel, which supports repeat detection, instead of the
+   * shared Sentinel, which only ever fires its first "true" transition — fine for one-shot
+   * consumers elsewhere, but not for a grid that needs to re-track already-visible items after a
+   * refresh. Leave undefined to keep the default Sentinel-based behavior.
+   */
+  refreshKey?: number
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -63,6 +73,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   partnerOffer,
   priceOfferMessage,
   onItemVisibilityChange,
+  refreshKey,
   ...rest
 }) => {
   const space = useSpace()
@@ -100,12 +111,23 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
           priceOfferMessage={priceOfferMessage}
         />
       </Flex>
-      {!!onItemVisibilityChange && (
-        <Sentinel
-          threshold={0.5}
-          onChange={(visible) => onItemVisibilityChange(item.internalID || item.id, index, visible)}
-        />
-      )}
+      {!!onItemVisibilityChange &&
+        (refreshKey !== undefined ? (
+          <GridItemVisibilitySentinel
+            threshold={0.5}
+            refreshKey={refreshKey}
+            onVisibilityChange={(visible) =>
+              onItemVisibilityChange(item.internalID || item.id, index, visible)
+            }
+          />
+        ) : (
+          <Sentinel
+            threshold={0.5}
+            onChange={(visible) =>
+              onItemVisibilityChange(item.internalID || item.id, index, visible)
+            }
+          />
+        ))}
     </>
   )
 }
