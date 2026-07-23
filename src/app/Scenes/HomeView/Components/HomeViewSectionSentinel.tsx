@@ -51,7 +51,15 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
         }
       }
     },
-    [contextModule, viewedSection, addTrackedSection, trackedSections, index, sectionType]
+    [
+      contextModule,
+      viewedSection,
+      addTrackedSection,
+      trackedSections,
+      index,
+      sectionType,
+      addTrackedSectionTypes,
+    ]
   )
 
   // Read via a ref inside the interval below so it always calls the latest version (the poll
@@ -114,7 +122,7 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
   }, [isLiveRefreshRail, refreshKey, measure])
 
   if (isLiveRefreshRail) {
-    return <View ref={markerRef} collapsable={false} />
+    return <View ref={markerRef} collapsable={false} testID="home-view-section-sentinel-marker" />
   }
 
   return <Sentinel onChange={handleVisibilityChange} />

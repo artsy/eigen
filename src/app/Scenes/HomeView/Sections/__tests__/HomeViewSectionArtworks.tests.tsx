@@ -19,6 +19,7 @@ import { Actions } from "easy-peasy"
 import { useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
+import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs", () => ({
@@ -45,6 +46,19 @@ const HomeViewStoreVisitor: React.FC = () => {
 
   return null
 }
+
+// HomeViewSectionSentinel measures its own marker view directly (see justification in the PR) to
+// decide if the section is on screen for the post-refresh railViewed re-fire — real native
+// `.measure()` is a no-op in the RN jest environment, so tests stub it on the marker instance.
+const mockSectionOnScreen = async (root: ReactTestInstance, onScreen: boolean) => {
+  const marker = await root.findByProps({ testID: "home-view-section-sentinel-marker" })
+  ;(marker.instance as { measure: (...args: any[]) => void }).measure = (callback) =>
+    callback(0, 0, 100, onScreen ? 100 : 50, 0, onScreen ? 0 : -500)
+}
+
+// requestAnimationFrame is mocked as `setTimeout(cb, 0)` in the RN jest environment, so the
+// refresh re-check effect's measurement runs on a real (if immediate) timer tick.
+const flushRaf = () => act(() => new Promise((resolve) => setTimeout(resolve, 0)))
 
 describe("HomeViewSectionArtworks", () => {
   beforeEach(() => {
@@ -425,12 +439,12 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed only after the live refresh completes", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
-      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockSectionOnScreen(UNSAFE_root, true)
       mockTrackEvent.mockClear()
 
       act(() => {
@@ -450,6 +464,7 @@ describe("HomeViewSectionArtworks", () => {
           })
         )
       })
+      await flushRaf()
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "railViewed",
@@ -459,13 +474,13 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("does not re-fire railViewed on refresh when the WTYL rail is off screen", () => {
+    it("does not re-fire railViewed on refresh when the WTYL rail is off screen", async () => {
       // The refresh-driven railViewed re-fire only happens while the rail is actually on screen.
-      const { env } = renderWithRelay({
+      const { env, UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
-      homeViewStoreActions.setViewableSections([])
+      mockSectionOnScreen(UNSAFE_root, false)
       mockTrackEvent.mockClear()
 
       act(() => {
@@ -479,6 +494,7 @@ describe("HomeViewSectionArtworks", () => {
           })
         )
       })
+      await flushRaf()
 
       // railViewed should not fire because the rail is off screen.
       expect(mockTrackEvent).not.toHaveBeenCalledWith(
@@ -486,15 +502,15 @@ describe("HomeViewSectionArtworks", () => {
       )
     })
 
-    it("re-fires railViewed on every refresh while the rail is in view", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed on every refresh while the rail is in view", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
-      homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      mockSectionOnScreen(UNSAFE_root, true)
       mockTrackEvent.mockClear()
 
-      const refresh = () => {
+      const refresh = async () => {
         act(() => {
           homeViewStoreActions.bumpLiveRefetchKey()
         })
@@ -505,11 +521,12 @@ describe("HomeViewSectionArtworks", () => {
             })
           )
         })
+        await flushRaf()
       }
 
       // Two separate returns to home, both with the rail in view.
-      refresh()
-      refresh()
+      await refresh()
+      await refresh()
 
       const railViewedCalls = mockTrackEvent.mock.calls.filter(
         (call) => (call[0] as any)?.action === "railViewed"
@@ -655,12 +672,12 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed only after the live refresh completes", async () => {
+      const { env, UNSAFE_root } = renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
-      homeViewStoreActions.setViewableSections([NEW_WORKS_FOR_YOU_SECTION_ID])
+      mockSectionOnScreen(UNSAFE_root, true)
       mockTrackEvent.mockClear()
 
       act(() => {
@@ -679,6 +696,7 @@ describe("HomeViewSectionArtworks", () => {
           })
         )
       })
+      await flushRaf()
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "railViewed",
