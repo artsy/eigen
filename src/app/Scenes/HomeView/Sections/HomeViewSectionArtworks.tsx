@@ -33,7 +33,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo, useEffect, useRef } from "react"
+import { memo, useEffect, useState } from "react"
 import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -64,10 +64,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const isRailInViewport = viewableSections.includes(section.internalID)
 
-  // Ref so the async `complete` callback reads current visibility, not the value at kick-off.
-  const isRailInViewportRef = useRef(isRailInViewport)
-  isRailInViewportRef.current = isRailInViewport
-
   const { onViewableItemsChanged, viewabilityConfig, resetTracking } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
@@ -76,10 +72,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
+  // Bumped when the forced refetch completes, so HomeViewSectionSentinel re-measures and re-fires
+  // railViewed for this section (see the effect there — it doesn't trust `viewableSections`, which
+  // can be stale right as the screen regains focus and the refetch completes).
+  const [liveRefetchCompletionKey, setLiveRefetchCompletionKey] = useState(0)
+
   // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
   // (recommended, new works for you, and any future ones in liveSectionIDs) refetches — in view
-  // or not — so no live rail goes stale. On complete, reset the impression guard and re-fire
-  // railViewed only if the rail is on screen.
+  // or not — so no live rail goes stale. On complete, reset the impression guard.
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
       return
@@ -93,10 +93,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
-
-        if (isRailInViewportRef.current) {
-          tracking.viewedSection(contextModule, index)
-        }
+        setLiveRefetchCompletionKey((key) => key + 1)
       },
       error: (error: Error) => {
         console.error("Failed to refresh live artworks rail", error)
@@ -205,6 +202,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         contextModule={contextModule}
         sectionType={section.__typename}
         index={index}
+        refreshKey={liveRefetchCompletionKey}
       />
     </Flex>
   )
