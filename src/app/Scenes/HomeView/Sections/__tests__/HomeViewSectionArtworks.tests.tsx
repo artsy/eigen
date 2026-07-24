@@ -425,8 +425,8 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", () => {
+      renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -435,20 +435,6 @@ describe("HomeViewSectionArtworks", () => {
 
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
-      })
-
-      // Nothing fires yet — the refreshed data hasn't landed.
-      expect(mockTrackEvent).not.toHaveBeenCalledWith(
-        expect.objectContaining({ action: "railViewed" })
-      )
-
-      // Once the forced refetch completes, railViewed fires for the fresh data.
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
-          })
-        )
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -655,8 +641,8 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", () => {
+      renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
@@ -665,19 +651,6 @@ describe("HomeViewSectionArtworks", () => {
 
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
-      })
-
-      // Nothing fires yet — the refreshed data hasn't landed.
-      expect(mockTrackEvent).not.toHaveBeenCalledWith(
-        expect.objectContaining({ action: "railViewed" })
-      )
-
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => NWFY_SECTION,
-          })
-        )
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith({

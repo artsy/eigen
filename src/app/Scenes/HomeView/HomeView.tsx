@@ -46,6 +46,7 @@ import {
   StatusBar,
   ViewToken,
 } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { FollowArtistsOnboardingCompletionBottomSheet } from "./Components/FollowArtistsOnboardingCompletionBottomSheet"
 
@@ -62,6 +63,7 @@ type HomeViewSectionType = ExtractNodeType<
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+  const safeInsets = useSafeAreaInsets()
 
   const setViewableSections = HomeViewStore.useStoreActions(
     (actions) => actions.setViewableSections

@@ -90,6 +90,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         { networkCacheConfig: { force: true } }
       ).subscribe({
         complete: () => {
+          if (
+            // The rail is visible
+            isRailInViewportRef.current
+          ) {
+            tracking.viewedSection(contextModule, index)
+          }
+
           resetTracking()
         },
         error: (error: Error) => {
@@ -101,21 +108,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [liveRefetchKey])
-
-  // Trigger rail viewed tracking each time
-  useEffect(() => {
-    if (
-      // We don't want to track non live sections more than once
-      isLiveRefreshRail &&
-      // We already trigger tracking on mount
-      liveRefetchKey > 0 &&
-      // The rail is visible
-      isRailInViewportRef.current
-    ) {
-      tracking.viewedSection(contextModule, index)
-      return
-    }
   }, [liveRefetchKey])
 
   let artworks = extractNodes(section.artworksConnection)
@@ -184,6 +176,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         title={section.component?.title}
         onPress={moreHref ? onSectionViewAll : undefined}
       />
+
+      {!!shouldShowInGrid && (
+        <HomeViewSectionSentinel
+          contextModule={contextModule}
+          sectionType={section.__typename}
+          index={index}
+        />
+      )}
 
       {shouldShowInGrid ? (
         <HomeViewSectionArtworksGrid
