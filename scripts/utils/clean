@@ -17,26 +17,50 @@ set -euxo pipefail
 #
 # For a complete fix workflow, use `yarn repair` instead, which runs:
 # yarn clean && yarn setup:artsy && yarn install:all
+#
+# Pass --light (or use `yarn clean:light`) to skip the slower, native-side
+# steps (Gradle clean, watchman reset, Xcode DerivedData, gem vendor dir) and
+# only clear node_modules and the JS/CocoaPods caches. Useful when you just
+# want a quick JS dependency reset without paying for a full native rebuild.
 
-yarn clear-local-build-cache
+light=false
+if [ "${1:-}" = "--light" ]; then
+	light=true
+fi
 
-echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
-if [ -d android ]; then
-	cd android
-	# Wipe stale CMake state before gradlew clean. RN new-arch's CMake
-	# regenerate-step runs during Gradle configuration and references codegen
-	# dirs (app/build/generated and node_modules/*/android/build/generated)
-	# that `clean` itself is about to delete, so it fails without this.
-	rm -rf app/.cxx app/build/generated
-	./gradlew clean
-	cd -
+# Yarn 4 (node-modules linker) keeps its own install-state file inside
+# node_modules. If node_modules is already missing (e.g. this is a repeat run
+# of clean/clean:light), any `yarn <script>` call below — and any future
+# `yarn` command in general, including re-running this script — fails with
+# "Couldn't find the node_modules state file" until an install happens.
+# Running a bare install up front guarantees the rest of this script (and
+# whatever you run afterwards) can rely on yarn commands working.
+echo 'Ensuring yarn itself is runnable before cleaning (づ｡◕‿‿◕｡)づ'
+yarn
+
+if [ "$light" = false ]; then
+	yarn clear-local-build-cache
+
+	echo "Clear Android Gradle build artifacts (╯°□°)╯︵ ┻━┻"
+	if [ -d android ]; then
+		cd android
+		# Wipe stale CMake state before gradlew clean. RN new-arch's CMake
+		# regenerate-step runs during Gradle configuration and references codegen
+		# dirs (app/build/generated and node_modules/*/android/build/generated)
+		# that `clean` itself is about to delete, so it fails without this.
+		rm -rf app/.cxx app/build/generated
+		./gradlew clean
+		cd -
+	fi
 fi
 
 echo 'Clear node modules (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf node_modules
 
-echo "Reset watchman (ノಠ益ಠ)ノ彡┻━┻"
-watchman watch-del .
+if [ "$light" = false ]; then
+	echo "Reset watchman (ノಠ益ಠ)ノ彡┻━┻"
+	watchman watch-del .
+fi
 
 echo "Clear caches (linting and metro) (┛◉Д◉)┛彡┻━┻"
 rm -rf .cache
@@ -48,14 +72,16 @@ rm -rf "${TMPDIR%/}"/haste-map-*
 echo "Clear CocoaPods cache (ノಠ益ಠ)ノ彡┻━┻"
 rm -rf ~/Library/Caches/CocoaPods
 
-echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
-# sometimes this fails on first try even with -rf
-# but a second try takes it home
-if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
-	rm -rf ~/Library/Developer/Xcode/DerivedData
-fi
+if [ "$light" = false ]; then
+	echo 'Clear Xcode derived data (╯°□°)╯︵ ┻━┻'
+	# sometimes this fails on first try even with -rf
+	# but a second try takes it home
+	if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
+		rm -rf ~/Library/Developer/Xcode/DerivedData
+	fi
 
-echo "Clear Gems (┛ಠ_ಠ)┛彡┻━┻"
-rm -rf .vendor
+	echo "Clear Gems (┛ಠ_ಠ)┛彡┻━┻"
+	rm -rf .vendor
+fi
 
 echo '✅ Clean complete!'
