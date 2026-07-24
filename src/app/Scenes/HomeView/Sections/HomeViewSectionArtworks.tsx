@@ -81,6 +81,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // or not — so no live rail goes stale. On complete, reset the impression guard and re-fire
   // railViewed only if the rail is on screen.
   useEffect(() => {
+    // TODO: Should we retrigger the refetch, if the rail is not visible
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
       return
     }
@@ -93,10 +94,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
-
-        if (isRailInViewportRef.current) {
-          tracking.viewedSection(contextModule, index)
-        }
       },
       error: (error: Error) => {
         console.error("Failed to refresh live artworks rail", error)
@@ -105,6 +102,21 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
     return () => subscription.unsubscribe()
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveRefetchKey])
+
+  // Trigger rail viewed tracking each time
+  useEffect(() => {
+    if (
+      // We don't want to track non live sections more than once
+      isLiveRefreshRail &&
+      // We already trigger tracking on mount
+      liveRefetchKey > 0 &&
+      // The rail is visible
+      isRailInViewportRef.current
+    ) {
+      tracking.viewedSection(contextModule, index)
+      return
+    }
   }, [liveRefetchKey])
 
   let artworks = extractNodes(section.artworksConnection)
