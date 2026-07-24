@@ -7,7 +7,7 @@ const fs = require("fs")
 module.exports.checkFlags = () => {
   try {
     const fileContent = fs.readFileSync("./src/app/store/config/features.ts", "utf8")
-    const allFlags = this.parseAllFlags(fileContent) ?? [[], []]
+    const allFlags = module.exports.parseAllFlags(fileContent) ?? [[], []]
     const hiddenFlags = allFlags[0]
     const releasedFlags = allFlags[1]
     return { hiddenFlags, releasedFlags }
@@ -68,7 +68,7 @@ module.exports.parseAllFlags = (content) => {
 
 // @ts-ignore
 if (require.main === module) {
-  const flags = this.checkFlags()
+  const flags = module.exports.checkFlags()
   // write output to a file so we can retrieve in fastlane
   fs.writeFileSync("./fastlane/flags.json", JSON.stringify(flags))
 }
