@@ -18,6 +18,7 @@ import { join } from "path"
 import { parse } from "url"
 import { classifyURL, compileEigenRoutes } from "./match"
 import { AASAExclusions, fetchAASAExclusions } from "./parseAASA"
+import { AndroidAllowlist, parseAndroidManifest } from "./parseAndroidManifest"
 import { EigenRoute, parseEigenRoutes } from "./parseEigenRoutes"
 import {
   ForceRoute,
@@ -41,6 +42,8 @@ interface ForceRow extends ForceRoute {
   isNative: boolean
   allowlisted: boolean
   aasaExcluded: boolean
+  /** Matched an ignore-prefix (dev tooling) — hidden from the report entirely. */
+  ignored: boolean
 }
 
 const NON_NATIVE = new Set(["ReactWebView", "ModalWebView", "VanityURLEntity"])
@@ -79,6 +82,47 @@ function main() {
     aasaWarn.push(`Could not fetch AASA exclusions (skipping this layer): ${(e as Error).message}`)
   }
 
+  // 3b. Android App Links allowlist (local AndroidManifest.xml)
+  const manifestWarn: string[] = []
+  let android: AndroidAllowlist = { rules: [], prefixes: [], match: () => null }
+  try {
+    android = parseAndroidManifest()
+    console.log(`  loaded ${android.prefixes.length} Android manifest path rules`)
+  } catch (e) {
+    manifestWarn.push(
+      `Could not parse AndroidManifest.xml (skipping Android checks): ${(e as Error).message}`
+    )
+  }
+
+  // Check A — cross-platform inconsistency: paths the Android manifest INCLUDES
+  // that iOS AASA deliberately EXCLUDES (e.g. /news). Android prefix matching is
+  // not segment-aware, so overlap = either string is a prefix of the other.
+  const conflictMap = new Map<string, Set<string>>()
+  for (const pattern of aasa.patterns) {
+    const base = pattern.replace(/\/\*$/, "").replace(/\*$/, "")
+    for (const prefix of android.prefixes) {
+      if (base === prefix || base.startsWith(prefix) || prefix.startsWith(base)) {
+        const patterns = conflictMap.get(prefix) ?? new Set<string>()
+        patterns.add(pattern)
+        conflictMap.set(prefix, patterns)
+      }
+    }
+  }
+  const androidConflicts = [...conflictMap.entries()]
+    .map(([manifestPath, patterns]) => ({ manifestPath, aasaPatterns: [...patterns].sort() }))
+    .sort((a, b) => a.manifestPath.localeCompare(b.manifestPath))
+
+  // Check B — eigen native screens NOT reachable via an Android App Link (no
+  // matching manifest rule). Parallel to the iOS 🔀 check.
+  const nativeNotInManifest = eigenRoutes
+    .filter((r) => !NON_NATIVE.has(r.name))
+    .filter((r) => r.path !== "/" && !r.path.includes("*"))
+    // Leading-param routes (e.g. "/:profile_id_ignored/artist/:artistID", a legacy
+    // alias) have no static prefix, so Android can't allowlist them — not actionable.
+    .filter((r) => !r.path.startsWith("/:"))
+    .filter((r) => !matchesIgnorePrefix(r.path))
+    .filter((r) => !android.match(concretePath(r.path)))
+
   // 4. forward: classify every force route through eigen's matcher
   const forceRows: ForceRow[] = forceRoutes.map((r) => {
     const res = classifyURL(r.sampleURL, compiled)
@@ -90,6 +134,7 @@ function main() {
       isNative: res.isNative,
       allowlisted: isSuppressed(r.forcePath),
       aasaExcluded: aasa.matches(pathname),
+      ignored: matchesIgnorePrefix(r.forcePath),
     }
   })
 
@@ -110,8 +155,10 @@ function main() {
     drift,
     orphans,
     aasaPatterns: aasa.patterns,
+    androidConflicts,
+    nativeNotInManifest,
     eigenCount: eigenRoutes.length,
-    warnings: [...eigenWarn, ...compiled.warnings, ...forceWarn, ...aasaWarn],
+    warnings: [...eigenWarn, ...compiled.warnings, ...forceWarn, ...aasaWarn, ...manifestWarn],
   })
   writeFileSync(REPORT_PATH, reportMarkdown)
 
@@ -125,6 +172,9 @@ function main() {
     } webview (${aasaCount} AASA-excluded, ${drift.length} actionable)`
   )
   console.log(`Eigen orphan routes (no force match): ${orphans.length}`)
+  console.log(
+    `Android: ${androidConflicts.length} manifest↔AASA conflicts, ${nativeNotInManifest.length} native routes missing from manifest`
+  )
 
   if (strict && (drift.length > 0 || orphans.length > 0)) {
     console.error(
@@ -132,6 +182,11 @@ function main() {
     )
     process.exit(1)
   }
+}
+
+/** Replace `:param` segments with a placeholder so a route path can be matched. */
+function concretePath(path: string): string {
+  return path.replace(/:([\w-]+)/g, "x")
 }
 
 /** Positional param normalization: :slug / :fairID / :id all collapse to `*`. */
@@ -164,14 +219,33 @@ function buildReportMarkdown(data: {
   drift: ForceRow[]
   orphans: EigenRoute[]
   aasaPatterns: string[]
+  androidConflicts: { manifestPath: string; aasaPatterns: string[] }[]
+  nativeNotInManifest: EigenRoute[]
   eigenCount: number
   warnings: string[]
 }): string {
-  const { forceRows, drift, orphans, aasaPatterns, eigenCount, warnings } = data
+  const {
+    forceRows,
+    drift,
+    orphans,
+    aasaPatterns,
+    androidConflicts,
+    nativeNotInManifest,
+    eigenCount,
+    warnings,
+  } = data
   const native = forceRows.filter((r) => r.isNative)
   const suppressed = forceRows.filter((r) => !r.isNative && r.allowlisted)
   const aasaExcluded = forceRows.filter((r) => !r.isNative && !r.allowlisted && r.aasaExcluded)
-  const byApp = groupBy(forceRows, (r) => r.app)
+  // Contradiction: eigen has a native screen, but the AASA file excludes the URL
+  // from universal links — so web links never reach the native screen.
+  const excludedButNative = forceRows.filter((r) => r.isNative && r.aasaExcluded)
+  // Full coverage table omits ignore-prefixed dev tooling (admin/debug/dev/example).
+  const byApp = groupBy(
+    forceRows.filter((r) => !r.ignored),
+    (r) => r.app
+  )
+  const ignoredCount = forceRows.filter((r) => r.ignored).length
 
   const lines: string[] = []
   lines.push("# Route Drift Report — eigen ↔ artsy/force")
@@ -192,6 +266,15 @@ function buildReportMarkdown(data: {
   lines.push(`  - **Actionable drift: ${drift.length}**`)
   lines.push(
     `- Eigen native routes with no force counterpart (candidate orphans): **${orphans.length}**`
+  )
+  lines.push(
+    `- AASA-excluded but eigen has a native screen (review — universal links bypass the app): **${excludedButNative.length}**`
+  )
+  lines.push(
+    `- Android manifest allowlists a path that iOS AASA excludes (cross-platform inconsistency): **${androidConflicts.length}**`
+  )
+  lines.push(
+    `- Eigen native routes missing from the Android manifest allowlist: **${nativeNotInManifest.length}**`
   )
   lines.push(`- Eigen routes in table: ${eigenCount}`)
   lines.push("")
@@ -232,8 +315,66 @@ function buildReportMarkdown(data: {
   }
   lines.push("")
 
+  // Review: AASA excludes it, but eigen has a native screen
+  lines.push("## 🔀 Review: AASA-excluded but eigen has a native screen")
+  lines.push("")
+  if (excludedButNative.length === 0) {
+    lines.push("_None._")
+  } else {
+    lines.push(
+      "eigen has a native screen for these, but the AASA file excludes the URL from universal links — so tapping a web link opens the browser, never the native screen. Often a stale AASA exclusion from before the screen existed. Either remove it from the AASA `NOT` list (in [artsy/artsy-eigen-web-association](https://github.com/artsy/artsy-eigen-web-association)'s `constants.ts`) or confirm the exclusion is intentional. See the AASA rubric in the README."
+    )
+    lines.push("")
+    lines.push("| App | Force path | Native module |")
+    lines.push("| --- | --- | --- |")
+    for (const r of sortRows(excludedButNative)) {
+      lines.push(`| ${r.app} | \`${r.forcePath}\` | ${r.module} |`)
+    }
+  }
+  lines.push("")
+
+  // Android: manifest allowlists a path iOS AASA excludes
+  lines.push("## 🤖 Android manifest allowlists a path that iOS excludes")
+  lines.push("")
+  if (androidConflicts.length === 0) {
+    lines.push("_None._")
+  } else {
+    lines.push(
+      "These paths are in the Android App Links allowlist (`android/app/src/main/AndroidManifest.xml`) but iOS AASA deliberately excludes them — so the same link deep-links into the app on Android yet opens the browser on iOS. Reconcile: either add the path to the iOS AASA `NOT` list too, or remove it from both. (`/news` is the canonical example.)"
+    )
+    lines.push("")
+    lines.push("| Android manifest pathPrefix | Conflicting iOS AASA exclusion(s) |")
+    lines.push("| --- | --- |")
+    for (const c of androidConflicts) {
+      lines.push(`| \`${c.manifestPath}\` | ${c.aasaPatterns.map((p) => `\`${p}\``).join(", ")} |`)
+    }
+  }
+  lines.push("")
+
+  // Android: native eigen routes missing from the manifest allowlist
+  lines.push("## 🤖 Eigen native routes missing from the Android manifest allowlist")
+  lines.push("")
+  if (nativeNotInManifest.length === 0) {
+    lines.push("_None._")
+  } else {
+    lines.push(
+      "eigen has a native screen for these, but no matching `<data>` rule exists in the Android App Links intent-filter — so tapping the web link on Android opens the browser instead of the app. Add a `pathPrefix` in `android/app/src/main/AndroidManifest.xml` (or confirm the route isn't meant to be deep-linked)."
+    )
+    lines.push("")
+    lines.push("| Eigen path | Module |")
+    lines.push("| --- | --- |")
+    for (const r of [...nativeNotInManifest].sort((a, b) => a.path.localeCompare(b.path))) {
+      lines.push(`| \`${r.path}\` | ${r.name} |`)
+    }
+  }
+  lines.push("")
+
   // Full coverage table
   lines.push("## Full coverage by app")
+  lines.push("")
+  lines.push(
+    `_Omits ${ignoredCount} ignore-prefixed dev-tooling routes (admin/debug/dev/example)._`
+  )
   lines.push("")
   for (const app of Object.keys(byApp).sort()) {
     const rows = sortRows(byApp[app])
@@ -244,7 +385,9 @@ function buildReportMarkdown(data: {
     lines.push("| --- | --- | --- | --- |")
     for (const r of rows) {
       const status = r.isNative
-        ? "✅ native"
+        ? r.aasaExcluded
+          ? "🔀 native (⚠️ AASA-excluded)"
+          : "✅ native"
         : r.allowlisted
           ? "🟡 webview (allowlisted)"
           : r.aasaExcluded
