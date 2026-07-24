@@ -68,42 +68,45 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const isRailInViewportRef = useRef(isRailInViewport)
   isRailInViewportRef.current = isRailInViewport
 
-  const { onViewableItemsChanged, viewabilityConfig, resetTracking } = useItemsImpressionsTracking({
-    // It is important here to tell if the rail is visible or not, because the viewability config
-    // default behavior, doesn't take into account the fact that the rail could be not visible
-    // on the screen because it's within a scrollable container.
-    isInViewport: isRailInViewport && section.trackItemImpressions,
-    contextModule,
-  })
+  const { onViewableItemsChanged, viewabilityConfig, resetTracking, trackingKey } =
+    useItemsImpressionsTracking({
+      // It is important here to tell if the rail is visible or not, because the viewability config
+      // default behavior, doesn't take into account the fact that the rail could be not visible
+      // on the screen because it's within a scrollable container.
+      isInViewport: isRailInViewport && section.trackItemImpressions,
+      contextModule,
+    })
 
   // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
   // (recommended, new works for you, and any future ones in liveSectionIDs) refetches — in view
   // or not — so no live rail goes stale. On complete, reset the impression guard and re-fire
   // railViewed only if the rail is on screen.
   useEffect(() => {
-    if (!isLiveRefreshRail || liveRefetchKey === 0) {
-      return
+    if (isLiveRefreshRail && liveRefetchKey > 0) {
+      const subscription = fetchQuery<HomeViewSectionArtworksQuery>(
+        getRelayEnvironment(),
+        homeViewSectionArtworksQuery,
+        { id: section.internalID, enableHidingDislikedArtworks },
+        { networkCacheConfig: { force: true } }
+      ).subscribe({
+        complete: () => {
+          if (
+            // The rail is visible
+            isRailInViewportRef.current
+          ) {
+            tracking.viewedSection(contextModule, index)
+          }
+
+          resetTracking()
+        },
+        error: (error: Error) => {
+          console.error("Failed to refresh live artworks rail", error)
+        },
+      })
+
+      return () => subscription.unsubscribe()
     }
 
-    const subscription = fetchQuery<HomeViewSectionArtworksQuery>(
-      getRelayEnvironment(),
-      homeViewSectionArtworksQuery,
-      { id: section.internalID, enableHidingDislikedArtworks },
-      { networkCacheConfig: { force: true } }
-    ).subscribe({
-      complete: () => {
-        resetTracking()
-
-        if (isRailInViewportRef.current) {
-          tracking.viewedSection(contextModule, index)
-        }
-      },
-      error: (error: Error) => {
-        console.error("Failed to refresh live artworks rail", error)
-      },
-    })
-
-    return () => subscription.unsubscribe()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveRefetchKey])
 
@@ -174,6 +177,14 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         onPress={moreHref ? onSectionViewAll : undefined}
       />
 
+      {!!shouldShowInGrid && (
+        <HomeViewSectionSentinel
+          contextModule={contextModule}
+          sectionType={section.__typename}
+          index={index}
+        />
+      )}
+
       {shouldShowInGrid ? (
         <HomeViewSectionArtworksGrid
           artworks={artworksForGrid}
@@ -182,6 +193,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           onArtworkPress={handleOnGridArtworkPress}
           trackItemImpressions={section.trackItemImpressions}
           contextModule={contextModule}
+          // We are using this key to force a re-render to track item impressions again
+          key={trackingKey}
         />
       ) : (
         <ArtworkRail
