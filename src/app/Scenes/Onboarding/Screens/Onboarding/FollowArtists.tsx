@@ -2,7 +2,6 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ChevronRightIcon } from "@artsy/icons/native"
 import {
   Box,
-  Button,
   DEFAULT_HIT_SLOP,
   Flex,
   Screen,
@@ -14,6 +13,7 @@ import {
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
 import { StepProgressBar } from "app/Components/StepProgressBar/StepProgressBar"
+import { FollowArtistsContinueButton } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsContinueButton"
 import { FollowArtistsOrderedSetScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrderedSet"
 import {
   ArtistRef,
@@ -141,9 +141,8 @@ export const FollowArtists: React.FC = () => {
         </Flex>
         <KeyboardStickyView>
           <Flex p={2} backgroundColor="mono0">
-            <Button
+            <FollowArtistsContinueButton
               testID="continue-button"
-              block
               disabled={count < MIN_FOLLOWED}
               onPress={() => {
                 trackCompletedOnboarding()
@@ -153,7 +152,7 @@ export const FollowArtists: React.FC = () => {
               }}
             >
               Go to home
-            </Button>
+            </FollowArtistsContinueButton>
           </Flex>
         </KeyboardStickyView>
       </Screen.Body>
