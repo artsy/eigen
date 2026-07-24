@@ -21,15 +21,15 @@ export const durationSections = (duration: Duration, labels: [string, string, st
       label: labels[0],
     },
     {
-      time: padWithZero(d.hours),
+      time: padWithZero(Math.floor(d.hours)),
       label: labels[1],
     },
     {
-      time: padWithZero(d.minutes),
+      time: padWithZero(Math.floor(d.minutes)),
       label: labels[2],
     },
     {
-      time: padWithZero(d.seconds),
+      time: padWithZero(Math.floor(d.seconds)),
       label: labels[3],
     },
   ]
