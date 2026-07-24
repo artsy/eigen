@@ -3,5 +3,8 @@
   "private": true,
   "devDependencies": {
     "eas-cli": "16.9.0"
+  },
+  "resolutions": {
+    "form-data": "4.0.6"
   }
 }
