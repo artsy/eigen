@@ -24,16 +24,15 @@ set -euxo pipefail
 # Pass --light (or use `yarn repair:light`) to run the lighter `yarn clean
 # --light` instead, skipping the slower native-side cleanup steps.
 
-light_flag=()
-if [ "${1:-}" = "--light" ]; then
-	light_flag=(--light)
-fi
-
 echo '🔧 Starting full environment repair...'
 echo ''
 
 echo '📦 Step 1/3: Cleaning all dependencies, caches, and build artifacts'
-yarn clean "${light_flag[@]}"
+if [ "${1:-}" = "--light" ]; then
+	yarn clean --light
+else
+	yarn clean
+fi
 
 echo '🎨 Step 2/4: Yarn install' # needed for yarn 4
 yarn
