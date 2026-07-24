@@ -1,7 +1,13 @@
 {
   "name": "eigen-bin",
   "private": true,
+  "dependenciesComments": {
+    "form-data": "Pinned to fix GHSA-hmw2-7cc7-3qxx (CRLF injection). eas-cli exact-pins the vulnerable form-data@4.0.0 with no fixed release; remove this once eas-cli bumps it upstream."
+  },
   "devDependencies": {
     "eas-cli": "16.9.0"
+  },
+  "resolutions": {
+    "form-data": "4.0.6"
   }
 }
