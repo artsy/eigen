@@ -11,7 +11,11 @@ export const experiments = {
   },
   "onyx_artwork-recommendations-gravity": {
     description:
-      "Enable Gravity-backed artwork recommendations for the Home screen recommendations rail",
+      "Enable Gravity-backed artwork recommendations for the Home screen We Think You'll Love recommendations rail",
+  },
+  "onyx_nwfy-gravity": {
+    description:
+      "Enable Gravity-backed artwork recommendations for the Home screen New Works for You rail",
   },
   "onyx_artwork-recommendations-refresh-eigen": {
     description: "Enable live-refreshing the Home screen recommendations rail in eigen",

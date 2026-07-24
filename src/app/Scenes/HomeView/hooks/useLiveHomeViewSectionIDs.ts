@@ -15,7 +15,7 @@ export const useEnableLiveHomeRecommendations = (): { enabled: boolean } => {
 
 export const useEnableLiveNewWorksForYou = (): { enabled: boolean } => {
   const { variant } = useExperimentVariant("onyx_nwfy-refresh-eigen")
-  const enabledForGravity = useExperimentFlag("onyx_artwork-recommendations-gravity")
+  const enabledForGravity = useExperimentFlag("onyx_nwfy-gravity")
 
   const enabled = enabledForGravity && variant.enabled && variant.name === "experiment"
 
