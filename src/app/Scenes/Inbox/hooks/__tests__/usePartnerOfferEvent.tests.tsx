@@ -8,11 +8,10 @@ import { graphql } from "react-relay"
 
 const futureISO = () => new Date(Date.now() + 60 * 60 * 1000).toISOString()
 
-const TestComponent = ({ me }: any) => {
+const TestComponent = ({ conversation }: any) => {
   const event = usePartnerOfferEvent({
-    me,
+    conversation,
     artworkId: "artwork-id",
-    conversation: me.conversation,
   })
 
   if (!event) {
@@ -23,26 +22,21 @@ const TestComponent = ({ me }: any) => {
 }
 
 const { renderWithRelay } = setupTestWrapper<usePartnerOfferEvent_Test_Query>({
-  Component: ({ me }) => <TestComponent me={me} />,
+  Component: ({ me }) => <TestComponent conversation={me!.conversation} />,
   query: graphql`
-    query usePartnerOfferEvent_Test_Query($conversationID: String!) @relay_test_operation {
+    query usePartnerOfferEvent_Test_Query @relay_test_operation {
       me {
-        ...usePartnerOffer_me
-        conversation(id: $conversationID) {
-          ...usePartnerOfferEvent_conversation
+        conversation(id: "conversation-id") {
+          ...usePartnerOffer_conversation
         }
       }
     }
   `,
-  variables: { conversationID: "conversation-id" },
 })
 
-const activeOfferResolvers = (
-  orderOverrides: Record<string, unknown> = {},
-  offerOverrides: Record<string, unknown> = {}
-) => ({
-  Me: () => ({
-    partnerOffersConnection: {
+const activeOfferResolvers = (offerOverrides: Record<string, unknown> = {}) => ({
+  Conversation: () => ({
+    collectorPartnerOffersConnection: {
       edges: [
         {
           node: {
@@ -50,23 +44,12 @@ const activeOfferResolvers = (
             artworkId: "artwork-id",
             endAt: futureISO(),
             isAvailable: true,
+            isPurchased: false,
             priceWithDiscount: { display: "$450" },
             ...offerOverrides,
           },
         },
       ],
-    },
-    conversation: {
-      collectorOrdersConnection: {
-        edges: [
-          {
-            node: {
-              lineItems: [{ partnerOfferId: "partner-offer-id" }],
-              ...orderOverrides,
-            },
-          },
-        ],
-      },
     },
   }),
 })
@@ -76,31 +59,16 @@ describe("usePartnerOfferEvent", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationPartnerOffers: true })
   })
 
-  it("shows 'You purchased this artwork' when the order is SUBMITTED", () => {
-    renderWithRelay(activeOfferResolvers({ buyerState: "SUBMITTED" }))
+  it("shows 'You purchased this artwork' when the offer has been purchased", () => {
+    renderWithRelay(activeOfferResolvers({ isPurchased: true }))
 
     expect(screen.getByText("You purchased this artwork")).toBeTruthy()
   })
 
-  it("shows 'You purchased this artwork' when the order is APPROVED", () => {
-    renderWithRelay(activeOfferResolvers({ buyerState: "APPROVED" }))
+  it("shows the offer message when the offer has not been purchased", () => {
+    renderWithRelay(activeOfferResolvers({ isPurchased: false }))
 
-    expect(screen.getByText("You purchased this artwork")).toBeTruthy()
+    expect(screen.queryByText("You purchased this artwork")).toBeNull()
+    expect(screen.getByText("You received an offer for $450")).toBeTruthy()
   })
-
-  it("shows 'You purchased this artwork' when the order is COMPLETED", () => {
-    renderWithRelay(activeOfferResolvers({ buyerState: "COMPLETED" }))
-
-    expect(screen.getByText("You purchased this artwork")).toBeTruthy()
-  })
-
-  it.each(["INCOMPLETE", "CANCELED"])(
-    "does not show 'You purchased this artwork' when the order has buyerState %s",
-    (buyerState) => {
-      renderWithRelay(activeOfferResolvers({ buyerState }))
-
-      expect(screen.queryByText("You purchased this artwork")).toBeNull()
-      expect(screen.getByText("You received an offer for $450")).toBeTruthy()
-    }
-  )
 })

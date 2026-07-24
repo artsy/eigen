@@ -1,7 +1,6 @@
 import { Button, Flex, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$key } from "__generated__/Composer_conversation.graphql"
-import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
@@ -34,12 +33,11 @@ interface Props {
   onSubmit?: (text: string) => any
   value?: string
   conversation: Composer_conversation$key
-  me: usePartnerOffer_me$key
 }
 
 export const Composer: React.FC<
   React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInput> }>
-> = ({ disabled, onSubmit, value, conversation, me, children, forwardedRef }) => {
+> = ({ disabled, onSubmit, value, conversation, children, forwardedRef }) => {
   const data = useFragment(fragment, conversation)
   const { bottom } = useSafeAreaInsets()
   const [active, setActive] = useState(false)
@@ -98,7 +96,7 @@ export const Composer: React.FC<
     >
       {children}
       <Flex flexDirection="column">
-        <ConversationCTA show={!active} conversation={data} me={me} />
+        <ConversationCTA show={!active} conversation={data} />
         <Container active={active}>
           <TextInput
             accessibilityLabel="Text input field"
