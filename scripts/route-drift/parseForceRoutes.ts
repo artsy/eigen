@@ -256,8 +256,19 @@ function appNameFromPath(file: string): string {
 }
 
 function ghApi(endpoint: string, jq: string): string {
-  return execFileSync("gh", ["api", endpoint, "--jq", jq], {
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  }).trimEnd()
+  // Retry transient network failures — a dropped fetch would silently omit a
+  // whole app's routes and understate drift (or inflate orphans).
+  const MAX_ATTEMPTS = 3
+  let lastErr: unknown
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return execFileSync("gh", ["api", endpoint, "--jq", jq], {
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+      }).trimEnd()
+    } catch (e) {
+      lastErr = e
+    }
+  }
+  throw lastErr
 }

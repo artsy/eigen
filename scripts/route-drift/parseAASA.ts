@@ -7,7 +7,9 @@ import { execFileSync } from "child_process"
  * in the browser. That makes it an authoritative, self-updating source of
  * "intentionally not deep-linked" paths, complementing the manual allowlist.
  *
- * https://www.artsy.net/.well-known/apple-app-site-association
+ * Served at https://www.artsy.net/.well-known/apple-app-site-association by a
+ * Cloudflare Worker; the NOT list is maintained in constants.ts in
+ * https://github.com/artsy/artsy-eigen-web-association
  */
 const DEFAULT_AASA_URL = "https://www.artsy.net/.well-known/apple-app-site-association"
 const BROWSER_UA =

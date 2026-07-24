@@ -7,8 +7,21 @@
     },
     { "prefix": "/debug", "reason": "Debug / error-page test routes — dev only." },
     { "prefix": "/dev", "reason": "Dev menu and dev tooling — not shipped to users." },
-    { "prefix": "/example", "reason": "Force's Example demo app — not a real product surface." }
+    { "prefix": "/example", "reason": "Force's Example demo app — not a real product surface." },
+    {
+      "prefix": "/html",
+      "reason": "HTMLTest — internal kitchen-sink screen for the HTML component; no web page."
+    },
+    {
+      "prefix": "/games",
+      "reason": "Games (Hammer Price) — web-only surface, not handled natively in the app."
+    }
   ],
   "expectedWebview": [],
-  "expectedOrphans": []
+  "expectedOrphans": [
+    {
+      "eigenPath": "/:profile_id_ignored/artist/:artistID",
+      "reason": "Legacy artist URL alias (/<profile>/artist/<id>); the leading segment is ignored and it resolves to the same Artist screen as /artist/:id. No distinct force counterpart by design."
+    }
+  ]
 }
