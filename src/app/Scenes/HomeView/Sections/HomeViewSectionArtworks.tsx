@@ -33,7 +33,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo, useEffect, useRef } from "react"
+import { memo, useEffect, useState } from "react"
 import { fetchQuery, graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionArtworksProps extends FlexProps {
@@ -64,9 +64,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const isRailInViewport = viewableSections.includes(section.internalID)
 
-  // Ref so the async `complete` callback reads current visibility, not the value at kick-off.
-  const isRailInViewportRef = useRef(isRailInViewport)
-  isRailInViewportRef.current = isRailInViewport
+  const removeTrackedSection = HomeViewStore.useStoreActions(
+    (actions) => actions.removeTrackedSection
+  )
 
   const { onViewableItemsChanged, viewabilityConfig, resetTracking } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
@@ -76,10 +76,15 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     contextModule,
   })
 
+  // Bumped when the forced refetch completes, so HomeViewSectionArtworksGrid clears its per-item
+  // "already tracked" guard (only relevant for the grid path — NWFY).
+  const [liveRefetchCompletionKey, setLiveRefetchCompletionKey] = useState(0)
+
   // On a refetch bump, force-fetch this rail. This effect runs per-section, so every live rail
   // (recommended, new works for you, and any future ones in liveSectionIDs) refetches — in view
-  // or not — so no live rail goes stale. On complete, reset the impression guard and re-fire
-  // railViewed only if the rail is on screen.
+  // or not — so no live rail goes stale. On complete, reset both impression guards: the per-item
+  // guard (so items already tracked can re-fire itemViewed) and the once-ever section guard (so a
+  // later scroll-into-view re-fires railViewed too, not just an already-on-screen rail).
   useEffect(() => {
     if (!isLiveRefreshRail || liveRefetchKey === 0) {
       return
@@ -93,10 +98,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     ).subscribe({
       complete: () => {
         resetTracking()
-
-        if (isRailInViewportRef.current) {
-          tracking.viewedSection(contextModule, index)
-        }
+        removeTrackedSection(contextModule)
+        setLiveRefetchCompletionKey((key) => key + 1)
       },
       error: (error: Error) => {
         console.error("Failed to refresh live artworks rail", error)
@@ -182,6 +185,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           onArtworkPress={handleOnGridArtworkPress}
           trackItemImpressions={section.trackItemImpressions}
           contextModule={contextModule}
+          refreshKey={isLiveRefreshRail ? liveRefetchCompletionKey : undefined}
         />
       ) : (
         <ArtworkRail
@@ -205,6 +209,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         contextModule={contextModule}
         sectionType={section.__typename}
         index={index}
+        isLiveRefreshRail={isLiveRefreshRail}
       />
     </Flex>
   )
