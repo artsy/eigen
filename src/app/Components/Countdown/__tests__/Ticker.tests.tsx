@@ -42,6 +42,18 @@ describe("SimpleTicker", () => {
       })
     ).toBeTruthy()
   })
+
+  it("does not render fractional seconds / milliseconds", () => {
+    // 1s + 789ms — the fractional remainder that used to leak through
+    const fractional = Duration.fromMillis(1789)
+    renderWithWrappers(<SimpleTicker duration={fractional} separator="  " variant="sm-display" />)
+
+    expect(
+      screen.getByText("00d  00h  00m  01s", {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
+    ).toBeTruthy()
+  })
 })
 
 describe("LabeledTicker", () => {
