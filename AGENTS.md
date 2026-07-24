@@ -33,6 +33,10 @@ Detailed docs live in `docs/` — reference them instead of duplicating here.
 - `yarn ios` — Run iOS app in simulator with build caching
 - `yarn android:cached` — Run Android app in emulator (uses cached build)
 - `yarn android` — Run Android app in emulator (full rebuild)
+- `yarn clean` — Wipe caches/build artifacts (Gradle, watchman, Metro, CocoaPods, Xcode DerivedData, gems) and reinstall bare `node_modules`; does not run `setup:artsy`/`install:all`
+- `yarn clean:light` — Same as `yarn clean` but skips the slower native-side steps (Gradle, watchman, DerivedData, gems) — quick JS-only reset
+- `yarn repair` — Full fix-it workflow: `yarn clean && yarn setup:artsy && yarn install:all`
+- `yarn repair:light` — Same as `yarn repair` but uses `yarn clean:light` for a faster reset
 
 ## Pre-Commit Verification
 
