@@ -26,16 +26,26 @@ const DISABLED: Variant = { name: "disabled", enabled: false }
 
 const setupFlags = ({
   gravity = true,
+  wtylGravity = gravity,
+  nwfyGravity = gravity,
   wtyl = DISABLED,
   nwfy = DISABLED,
 }: {
+  // Convenience default for both gravity flags; override per-couple with wtylGravity / nwfyGravity.
   gravity?: boolean
+  wtylGravity?: boolean
+  nwfyGravity?: boolean
   wtyl?: Variant
   nwfy?: Variant
 }) => {
-  mockUseExperimentFlag.mockImplementation((name: string) =>
-    name === "onyx_artwork-recommendations-gravity" ? gravity : false
-  )
+  mockUseExperimentFlag.mockImplementation((name: string) => {
+    // Each rail is gated by its own gravity flag, coupled with its own refresh experiment:
+    //   WTYL: onyx_artwork-recommendations-gravity + onyx_artwork-recommendations-refresh-eigen
+    //   NWFY: onyx_nwfy-gravity + onyx_nwfy-refresh-eigen
+    if (name === "onyx_artwork-recommendations-gravity") return wtylGravity
+    if (name === "onyx_nwfy-gravity") return nwfyGravity
+    return false
+  })
   mockUseExperimentVariant.mockImplementation((name: string) => {
     const variant =
       name === "onyx_artwork-recommendations-refresh-eigen"
@@ -66,8 +76,9 @@ describe("useEnableLiveHomeRecommendations", () => {
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when Gravity is not ready, even for the treatment arm", () => {
-    setupFlags({ gravity: false, wtyl: { name: "variant", enabled: true } })
+  it("is disabled when its Gravity flag is not ready, even for the treatment arm", () => {
+    // WTYL's own gravity off, NWFY's gravity on — WTYL must still be disabled.
+    setupFlags({ wtylGravity: false, nwfyGravity: true, wtyl: { name: "variant", enabled: true } })
 
     const { result } = renderHook(() => useEnableLiveHomeRecommendations())
 
@@ -102,8 +113,13 @@ describe("useEnableLiveNewWorksForYou", () => {
     expect(result.current.enabled).toBe(false)
   })
 
-  it("is disabled when Gravity is not ready, even for the experiment arm", () => {
-    setupFlags({ gravity: false, nwfy: { name: "experiment", enabled: true } })
+  it("is disabled when its Gravity flag is not ready, even for the experiment arm", () => {
+    // NWFY's own gravity off, WTYL's gravity on — NWFY must still be disabled.
+    setupFlags({
+      nwfyGravity: false,
+      wtylGravity: true,
+      nwfy: { name: "experiment", enabled: true },
+    })
 
     const { result } = renderHook(() => useEnableLiveNewWorksForYou())
 
@@ -155,5 +171,29 @@ describe("useLiveHomeViewSectionIDs", () => {
     const { result } = renderHook(() => useLiveHomeViewSectionIDs())
 
     expect(result.current).toEqual([RECOMMENDED_ARTWORKS_SECTION_ID, NEW_WORKS_FOR_YOU_SECTION_ID])
+  })
+
+  it("requires each rail's own gravity flag — one couple's gravity does not enable the other", () => {
+    // Both refresh experiments in their enabled arm, but only WTYL's gravity flag is on.
+    setupFlags({
+      wtylGravity: true,
+      nwfyGravity: false,
+      wtyl: TREATMENT_WTYL,
+      nwfy: TREATMENT_NWFY,
+    })
+
+    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+
+    // Only WTYL goes live; NWFY stays off because onyx_nwfy-gravity is off.
+    expect(result.current).toEqual([RECOMMENDED_ARTWORKS_SECTION_ID])
+  })
+
+  it("does not enable a rail from gravity alone without its refresh experiment", () => {
+    // Both gravity flags on, but neither refresh experiment is in its enabled arm.
+    setupFlags({ wtylGravity: true, nwfyGravity: true, wtyl: DISABLED, nwfy: DISABLED })
+
+    const { result } = renderHook(() => useLiveHomeViewSectionIDs())
+
+    expect(result.current).toEqual([])
   })
 })
