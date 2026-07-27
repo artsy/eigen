@@ -21,7 +21,6 @@ describe("useConversationsWebsocket", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.useFakeTimers()
 
     channelListeners = {}
     mockChannel = {
@@ -47,10 +46,6 @@ describe("useConversationsWebsocket", () => {
 
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationsRealtime: true })
     __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "user-access-token" } })
-  })
-
-  afterEach(() => {
-    jest.useRealTimers()
   })
 
   const renderTheHook = (
@@ -105,22 +100,6 @@ describe("useConversationsWebsocket", () => {
     channelListeners.received(event)
 
     expect(onEvent).toHaveBeenCalledWith(event)
-  })
-
-  it("collapses a burst of events into a leading and a trailing call", () => {
-    const { onEvent } = renderTheHook()
-
-    channelListeners.received({ message_id: "message-1" })
-    channelListeners.received({ message_id: "message-2" })
-    channelListeners.received({ message_id: "message-3" })
-
-    expect(onEvent).toHaveBeenCalledTimes(1)
-    expect(onEvent).toHaveBeenCalledWith({ message_id: "message-1" })
-
-    jest.runAllTimers()
-
-    expect(onEvent).toHaveBeenCalledTimes(2)
-    expect(onEvent).toHaveBeenLastCalledWith({ message_id: "message-3" })
   })
 
   it("invokes onConnected on reconnects but not on the initial connection", () => {

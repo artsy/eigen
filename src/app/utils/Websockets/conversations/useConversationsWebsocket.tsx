@@ -1,12 +1,7 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCable } from "app/utils/Websockets/GravityWebsocketContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { debounce } from "lodash"
 import { useEffect, useRef } from "react"
-
-// Collapses bursts (e.g. a partner sending several messages in a row) into a
-// leading call plus one trailing call instead of one refetch per message.
-const RECEIVED_DEBOUNCE_MS = 500
 
 export interface ConversationsWebsocketEvent {
   type?: string
@@ -78,13 +73,9 @@ export const useConversationsWebsocket = ({
       return
     }
 
-    const handleReceived = debounce(
-      (event: ConversationsWebsocketEvent) => {
-        onEventRef.current(event)
-      },
-      RECEIVED_DEBOUNCE_MS,
-      { leading: true, trailing: true }
-    )
+    const handleReceived = (event: ConversationsWebsocketEvent) => {
+      onEventRef.current(event)
+    }
 
     // "connected" also fires when the subscription is first confirmed;
     // consumers fetch on mount already, so only surface re-connects.
@@ -101,7 +92,6 @@ export const useConversationsWebsocket = ({
     channel.on("connected", handleConnected)
 
     return () => {
-      handleReceived.cancel()
       channel.removeListener("received", handleReceived)
       channel.removeListener("connected", handleConnected)
       channel.unsubscribe()
