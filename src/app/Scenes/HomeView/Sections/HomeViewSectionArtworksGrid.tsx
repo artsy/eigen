@@ -6,7 +6,7 @@ import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -32,9 +32,18 @@ export const HomeViewSectionArtworksGrid: React.FC<HomeViewSectionArtworksGridPr
   contextModule,
 }) => {
   const [hasGridLaidOut, setHasGridLaidOut] = useState(false)
+  const gridContainerRef = useRef<View>(null)
   const { trackEvent } = useTracking()
   const enableItemsViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const trackedGridItems = useRef<Set<string>>(new Set()).current
+
+  useLayoutEffect(() => {
+    gridContainerRef.current?.measureInWindow((_x, _y, _width, height) => {
+      if (height > 0) {
+        setHasGridLaidOut(true)
+      }
+    })
+  }, [artworks])
 
   // Handles per-item visibility updates for the nested HomeView grid.
   // We use this instead of list-level viewability callbacks for the grid path,
@@ -67,15 +76,7 @@ export const HomeViewSectionArtworksGrid: React.FC<HomeViewSectionArtworksGridPr
 
   return (
     <Flex mx={2} gap={2}>
-      <View
-        onLayout={(event) => {
-          // Show the "View More" button only once the grid has actually laid out (its masonry list
-          // reports height 0 on the first render), so the button doesn't flash in above the grid.
-          if (event.nativeEvent.layout.height > 0) {
-            setHasGridLaidOut(true)
-          }
-        }}
-      >
+      <View ref={gridContainerRef}>
         <GenericGrid
           artworks={artworks}
           contextModule={contextModule}
