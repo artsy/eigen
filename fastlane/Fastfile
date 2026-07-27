@@ -71,6 +71,14 @@ lane :ship_beta_ios do |options|
 
   latest_version = $APP_JSON['version']
 
+  if deployment_target == 'testflight' && testflight_build_already_shipped?(bundle_version)
+    UI.important("⏭️ Skipping: TestFlight build #{latest_version} (#{bundle_version}) was already shipped by another run. This can happen when multiple betas are triggered within the same hour.")
+    next
+  elsif deployment_target == 'firebase' && firebase_build_already_shipped?(ENV['FIREBASE_IOS_APP_ID'], bundle_version)
+    UI.important("⏭️ Skipping: Firebase build #{latest_version} (#{bundle_version}) was already shipped by another run. This can happen when multiple betas are triggered within the same hour.")
+    next
+  end
+
   # Builds the app
   sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
@@ -338,6 +346,14 @@ lane :ship_beta_android do |options|
     vname, vcode = set_build_version_android
   else
     vname, vcode = set_build_version_android(version_code: version_code)
+  end
+
+  if deployment_target == 'play_store' && play_store_version_already_shipped?(vcode)
+    UI.important("⏭️ Skipping: Play Store version #{vname} (#{vcode}) was already shipped by another run. This can happen when multiple betas are triggered within the same hour.")
+    next
+  elsif deployment_target == 'firebase' && firebase_build_already_shipped?(ENV['FIREBASE_ANDROID_APP_ID'], vcode)
+    UI.important("⏭️ Skipping: Firebase version #{vname} (#{vcode}) was already shipped by another run. This can happen when multiple betas are triggered within the same hour.")
+    next
   end
 
   set_git_properties_android
