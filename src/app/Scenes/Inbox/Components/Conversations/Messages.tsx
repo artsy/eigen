@@ -7,7 +7,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
-import React, { forwardRef, useImperativeHandle, useRef, useState } from "react"
+import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
@@ -40,44 +40,56 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const partnerOfferEvent = usePartnerOfferEvent({ conversation, artworkId })
 
   // Get all messages and give them a key for use with flatlist
-  const allMessages = extractNodes(conversation.messagesConnection)
-    .filter((node) => {
-      if (node.isFirstMessage) {
-        return true
-      }
-      return node.body?.length || node.attachments?.length
-    })
-    .map((node) => {
-      return { key: node.id, ...node }
-    })
-
-  // flatmap all orders' events and give them a synthetic `key` for use with flatlist
-  const allOrderEvents = extractNodes(conversation?.orderConnection)
-    .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
-    .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
-
-  const orderEventsWithoutFailedPayment = allOrderEvents.filter((event, index) => {
-    if (
-      !(
-        event.state === "APPROVED" &&
-        allOrderEvents[index + 1] &&
-        allOrderEvents[index + 1].state === "SUBMITTED"
-      )
-    ) {
-      return event
-    }
-  })
-
-  // Combine and group events/messages
-  const sortedMessages = sortBy(
-    [
-      ...orderEventsWithoutFailedPayment,
-      ...allMessages,
-      ...(partnerOfferEvent ? [partnerOfferEvent] : []),
-    ],
-    (message) => DateTime.fromISO(message.createdAt ?? "")
+  const allMessages = useMemo(
+    () =>
+      extractNodes(conversation.messagesConnection)
+        .filter((node) => {
+          if (node.isFirstMessage) {
+            return true
+          }
+          return node.body?.length || node.attachments?.length
+        })
+        .map((node) => {
+          return { key: node.id, ...node }
+        }),
+    [conversation.messagesConnection]
   )
-  const messages = groupConversationItems(sortedMessages)
+
+  const orderEventsWithoutFailedPayment = useMemo(() => {
+    // flatmap all orders' events and give them a synthetic `key` for use with flatlist
+    const allOrderEvents = extractNodes(conversation?.orderConnection)
+      .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
+      .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
+
+    return allOrderEvents.filter((event, index) => {
+      if (
+        !(
+          event.state === "APPROVED" &&
+          allOrderEvents[index + 1] &&
+          allOrderEvents[index + 1].state === "SUBMITTED"
+        )
+      ) {
+        return event
+      }
+    })
+  }, [conversation?.orderConnection])
+
+  // Combine and group events/messages, keeping the array identity stable so
+  // the FlatList `data` prop doesn't churn on unrelated re-renders
+  const messages = useMemo(
+    () =>
+      groupConversationItems(
+        sortBy(
+          [
+            ...orderEventsWithoutFailedPayment,
+            ...allMessages,
+            ...(partnerOfferEvent ? [partnerOfferEvent] : []),
+          ],
+          (message) => DateTime.fromISO(message.createdAt ?? "")
+        )
+      ),
+    [orderEventsWithoutFailedPayment, allMessages, partnerOfferEvent]
+  )
 
   const flatList = useRef<FlatList>(null)
 

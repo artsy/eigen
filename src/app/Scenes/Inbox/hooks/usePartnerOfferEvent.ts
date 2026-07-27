@@ -2,6 +2,7 @@ import { usePartnerOfferEvent_partnerOffers$key } from "__generated__/usePartner
 import { usePartnerOffer_conversation$key } from "__generated__/usePartnerOffer_conversation.graphql"
 import { PartnerOfferConversationEvent } from "app/Scenes/Inbox/Components/Conversations/ConversationPartnerOfferUpdate"
 import { usePartnerOffer } from "app/Scenes/Inbox/hooks/usePartnerOffer"
+import { useMemo } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface UsePartnerOfferEventProps {
@@ -30,19 +31,23 @@ export const usePartnerOfferEvent = ({
     partnerOffersRef as unknown as usePartnerOfferEvent_partnerOffers$key
   )
 
-  const partnerOffer = partnerOffers?.find((offer) => offer.artworkId === artworkId)
+  // Memoized so consumers (e.g. `Messages`) can use the event as a
+  // dependency without recomputing on every render
+  return useMemo(() => {
+    const partnerOffer = partnerOffers?.find((offer) => offer.artworkId === artworkId)
 
-  if (!partnerOffer) {
-    return null
-  }
+    if (!partnerOffer) {
+      return null
+    }
 
-  const isPurchased = !!partnerOffer.isPurchased
+    const isPurchased = !!partnerOffer.isPurchased
 
-  if (!hasActivePartnerOffer && !isPurchased) {
-    return null
-  }
+    if (!hasActivePartnerOffer && !isPurchased) {
+      return null
+    }
 
-  return { ...partnerOffer, isPurchased }
+    return { ...partnerOffer, isPurchased }
+  }, [partnerOffers, artworkId, hasActivePartnerOffer])
 }
 
 const partnerOffersFragment = graphql`

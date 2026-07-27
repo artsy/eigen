@@ -45,7 +45,7 @@ export const Conversation: React.FC<Props> = ({
 }) => {
   const [sendingMessage, setSendingMessage] = useState(false)
   const [isConnected, setIsConnected] = useState(true)
-  const [markedMessageAsRead, setMarkedMessageAsRead] = useState(false)
+  const [lastMarkedMessageID, setLastMarkedMessageID] = useState<string | null>(null)
   const [failedMessageText, setFailedMessageText] = useState<string | null>(null)
 
   const messagesRef = useRef<any>(null)
@@ -83,26 +83,31 @@ export const Conversation: React.FC<Props> = ({
         GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       }
     },
+    // Catch up on anything broadcast while the socket was down.
+    onConnected: refetch,
   })
 
   const maybeMarkLastMessageAsRead = React.useCallback(() => {
     const conversation = me.conversation
-    if (conversation?.unread && !markedMessageAsRead && conversation.lastMessageID) {
+    const lastMessageID = conversation?.lastMessageID
+    // Track the id (not a boolean) so messages arriving while the
+    // conversation is open still get marked as read.
+    if (conversation?.unread && lastMessageID && lastMessageID !== lastMarkedMessageID) {
       updateConversation(
         conversation as any,
-        conversation.lastMessageID,
+        lastMessageID,
         (_response) => {
-          setMarkedMessageAsRead(true)
+          setLastMarkedMessageID(lastMessageID)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         (error) => {
           console.warn(error)
-          setMarkedMessageAsRead(true)
+          setLastMarkedMessageID(lastMessageID)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }
-  }, [me.conversation, markedMessageAsRead])
+  }, [me.conversation, lastMarkedMessageID])
 
   const messageSuccessfullySent = (text: string) => {
     tracking.trackEvent({
