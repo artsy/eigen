@@ -130,7 +130,8 @@ jobs:
       - name: Create Mobile App QA document in Notion
         env:
           NOTION_RELEASE_LOOKOUT_TOKEN: ${{ secrets.NOTION_RELEASE_LOOKOUT_TOKEN }}
-          SLACK_URL: ${{ secrets.SLACK_URL }}
+          SLACK_TOKEN: ${{ secrets.RELEASE_LOOKOUT_SLACK_TOKEN }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
           RC_BRANCH: ${{ github.head_ref }}
           IOS_BUILD: ${{ steps.builds.outputs.ios_build }}
           ANDROID_BUILD: ${{ steps.builds.outputs.android_build }}
@@ -149,14 +150,15 @@ jobs:
     steps:
       - name: Post QA-document failure to Slack
         env:
-          SLACK_URL: ${{ secrets.SLACK_URL }}
+          SLACK_TOKEN: ${{ secrets.RELEASE_LOOKOUT_SLACK_TOKEN }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
           VERSION: ${{ needs.guard.outputs.version }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ -z "${SLACK_URL:-}" ]; then
-            echo "No SLACK_URL set; skipping failure notification."
+          if [ -z "${SLACK_TOKEN:-}" ] || [ -z "${SLACK_CHANNEL:-}" ]; then
+            echo "No SLACK_TOKEN/SLACK_CHANNEL set; skipping failure notification."
             exit 0
           fi
-          curl -sf -X POST -H 'Content-type: application/json' \
-            --data "{\"text\":\":rotating_light: QA document creation failed for v${VERSION} (betas were fine) — <${RUN_URL}|view run>\"}" \
-            "$SLACK_URL"
+          curl -sf -X POST -H 'Content-type: application/json' -H "Authorization: Bearer ${SLACK_TOKEN}" \
+            --data "{\"channel\":\"${SLACK_CHANNEL}\",\"text\":\":rotating_light: QA document creation failed for v${VERSION} (betas were fine) — <${RUN_URL}|view run>\"}" \
+            "https://slack.com/api/chat.postMessage"

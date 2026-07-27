@@ -10,32 +10,48 @@ import { duplicateTemplate, findExistingCopy } from "./duplicateNotionTemplate"
 import { fetchWithTimeout } from "./notion"
 import { getVersionFromBranch } from "./version"
 
-// Post a simple message to Slack via the incoming webhook (same pattern as
-// scripts/utils/exportNotionTicketsToJira.ts). Best-effort and never fatal: the
-// QA document is the deliverable, so a Slack outage must not fail the job (which
+// Post via the release-lookout Slack bot (chat.postMessage), same auth model as
+// release-lookout/src/release-reminders.ts. Best-effort and never fatal: the QA
+// document is the deliverable, so a Slack outage must not fail the job (which
 // would only report a false failure and, thanks to idempotency, keep failing on
 // every re-run while Slack is down).
-const postToSlack = async (text: string): Promise<void> => {
-  const slackUrl = process.env.SLACK_URL ?? ""
-  if (!slackUrl) {
-    console.warn("Missing SLACK_URL; skipping Slack notification.")
-    return
+// Returns the posted message's `ts` (used to thread a follow-up reply under it),
+// or undefined if the post was skipped/failed.
+const postToSlack = async (text: string, threadTs?: string): Promise<string | undefined> => {
+  const slackToken = process.env.SLACK_TOKEN ?? ""
+  const slackChannel = process.env.SLACK_CHANNEL ?? ""
+  if (!slackToken || !slackChannel) {
+    console.warn("Missing SLACK_TOKEN or SLACK_CHANNEL; skipping Slack notification.")
+    return undefined
   }
   try {
     const res = await fetchWithTimeout(
-      slackUrl,
+      "https://slack.com/api/chat.postMessage",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${slackToken}`,
+        },
+        body: JSON.stringify({
+          channel: slackChannel,
+          text,
+          ...(threadTs ? { thread_ts: threadTs } : {}),
+        }),
       },
       10_000
     )
-    if (!res.ok) {
-      console.warn(`Failed to send Slack message: ${res.status} ${res.statusText}`)
+    const body = await res.json().catch(() => null)
+    if (!res.ok || !body?.ok) {
+      console.warn(
+        `Failed to send Slack message: ${res.status} ${res.statusText} ${body?.error ?? ""}`
+      )
+      return undefined
     }
+    return body.ts
   } catch (error) {
     console.warn(`Failed to send Slack message: ${error}`)
+    return undefined
   }
 }
 
@@ -77,10 +93,15 @@ export const createQaDocument = async (
     console.log(`Successfully created QA document: ${url}`)
   }
 
-  const changelogSection = changelog ? `\n\n*Changelog*\n${changelog}` : ""
-  await postToSlack(
-    `:notion: The mobile QA document for v${version} is available here: ${url}${changelogSection}`
+  const parentTs = await postToSlack(
+    `:notion: The mobile QA document for v${version} is available here: ${url}`
   )
+
+  // Changelog goes as a threaded reply under the main announcement, rather than
+  // in the same message, so the channel stays scannable when it's long.
+  if (changelog) {
+    await postToSlack(`*Changelog*\n${changelog}`, parentTs)
+  }
 }
 
 // Prevents auto-execution when imported in tests.
