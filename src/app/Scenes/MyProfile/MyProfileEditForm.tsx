@@ -209,7 +209,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
         <Message
           variant="info"
           title="Complete your profile and make a great impression"
-          text="The information you provide here will be shared when you contact a gallery or make an offer."
+          text="The information you provide here will be shared when you contact a gallery, start an order, set an alert, or save an artwork."
           showCloseButton
         />
       )}
