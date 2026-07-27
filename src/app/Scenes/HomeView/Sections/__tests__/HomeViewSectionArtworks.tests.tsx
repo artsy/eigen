@@ -445,8 +445,7 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("does not re-fire railViewed on refresh when the WTYL rail is off screen", () => {
-      // The refresh-driven railViewed re-fire only happens while the rail is actually on screen.
+    it("re-fires railViewed once an off-screen rail is scrolled into view after a refresh", () => {
       const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
@@ -466,10 +465,17 @@ describe("HomeViewSectionArtworks", () => {
         )
       })
 
-      // railViewed should not fire because the rail is off screen.
+      // Off screen at refresh time — nothing fires yet.
       expect(mockTrackEvent).not.toHaveBeenCalledWith(
         expect.objectContaining({ action: "railViewed" })
       )
+
+      // Scrolled into view afterwards — the pending refresh re-fires railViewed.
+      act(() => {
+        homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ action: "railViewed" }))
     })
 
     it("re-fires railViewed on every refresh while the rail is in view", () => {
