@@ -184,14 +184,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         onPress={moreHref ? onSectionViewAll : undefined}
       />
 
-      {!!shouldShowInGrid && (
-        <HomeViewSectionSentinel
-          contextModule={contextModule}
-          sectionType={section.__typename}
-          index={index}
-        />
-      )}
-
       {shouldShowInGrid ? (
         <HomeViewSectionArtworksGrid
           artworks={artworksForGrid}
