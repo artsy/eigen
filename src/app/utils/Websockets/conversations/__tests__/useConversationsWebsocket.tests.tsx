@@ -17,9 +17,11 @@ describe("useConversationsWebsocket", () => {
   let mockChannel: any
   let mockCable: any
   let mockChannelsHolder: any
+  let mockSubscription: any
 
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.useFakeTimers()
 
     channelListeners = {}
     mockChannel = {
@@ -30,11 +32,15 @@ describe("useConversationsWebsocket", () => {
       removeListener: jest.fn(() => mockChannel),
       unsubscribe: jest.fn(),
     }
+    mockSubscription = { unsubscribe: jest.fn() }
     mockCable = {
-      subscriptions: { create: jest.fn(() => ({})) },
+      subscriptions: { create: jest.fn(() => mockSubscription) },
     }
     mockChannelsHolder = {
-      setChannel: jest.fn(() => mockChannel),
+      setChannel: jest.fn((key: string) => {
+        mockChannelsHolder.channels[key] = mockChannel
+        return mockChannel
+      }),
       channels: {},
     }
     mockUseCable.mockReturnValue({ cable: mockCable, channelsHolder: mockChannelsHolder })
@@ -43,24 +49,35 @@ describe("useConversationsWebsocket", () => {
     __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "user-access-token" } })
   })
 
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
   const renderTheHook = (
-    params: { subscriptionKey?: string; enabled?: boolean; onEvent?: jest.Mock } = {}
+    params: {
+      subscriptionKey?: string
+      enabled?: boolean
+      onEvent?: jest.Mock
+      onConnected?: jest.Mock
+    } = {}
   ) => {
     const onEvent = params.onEvent ?? jest.fn()
+    const onConnected = params.onConnected
     const wrapper = ({ children }: { children: React.ReactNode }) => {
       return <GlobalStoreProvider>{children}</GlobalStoreProvider>
     }
     const utils = renderHook(
-      () => {
+      (props: { subscriptionKey: string }) => {
         return useConversationsWebsocket({
-          subscriptionKey: params.subscriptionKey ?? "inbox",
+          subscriptionKey: props.subscriptionKey,
           enabled: params.enabled,
           onEvent,
+          onConnected,
         })
       },
-      { wrapper }
+      { wrapper, initialProps: { subscriptionKey: params.subscriptionKey ?? "inbox" } }
     )
-    return { ...utils, onEvent }
+    return { ...utils, onEvent, onConnected }
   }
 
   it("subscribes to the ConversationsChannel with the user's access token", () => {
@@ -90,13 +107,65 @@ describe("useConversationsWebsocket", () => {
     expect(onEvent).toHaveBeenCalledWith(event)
   })
 
+  it("collapses a burst of events into a leading and a trailing call", () => {
+    const { onEvent } = renderTheHook()
+
+    channelListeners.received({ message_id: "message-1" })
+    channelListeners.received({ message_id: "message-2" })
+    channelListeners.received({ message_id: "message-3" })
+
+    expect(onEvent).toHaveBeenCalledTimes(1)
+    expect(onEvent).toHaveBeenCalledWith({ message_id: "message-1" })
+
+    jest.runAllTimers()
+
+    expect(onEvent).toHaveBeenCalledTimes(2)
+    expect(onEvent).toHaveBeenLastCalledWith({ message_id: "message-3" })
+  })
+
+  it("invokes onConnected on reconnects but not on the initial connection", () => {
+    const onConnected = jest.fn()
+    renderTheHook({ onConnected })
+
+    channelListeners.connected()
+    expect(onConnected).not.toHaveBeenCalled()
+
+    channelListeners.connected()
+    expect(onConnected).toHaveBeenCalledTimes(1)
+  })
+
   it("unsubscribes from the channel on unmount", () => {
     const { unmount } = renderTheHook()
+
+    expect(mockChannelsHolder.channels["conversations:inbox"]).toBe(mockChannel)
 
     unmount()
 
     expect(mockChannel.removeListener).toHaveBeenCalledWith("received", expect.any(Function))
+    expect(mockChannel.removeListener).toHaveBeenCalledWith("connected", expect.any(Function))
     expect(mockChannel.unsubscribe).toHaveBeenCalled()
+    expect(mockChannelsHolder.channels["conversations:inbox"]).toBeUndefined()
+  })
+
+  it("resubscribes when the subscriptionKey changes", () => {
+    const { rerender } = renderTheHook({ subscriptionKey: "inbox" })
+
+    rerender({ subscriptionKey: "conversation:123" })
+
+    expect(mockChannel.unsubscribe).toHaveBeenCalledTimes(1)
+    expect(mockChannelsHolder.channels["conversations:inbox"]).toBeUndefined()
+    expect(mockChannelsHolder.setChannel).toHaveBeenLastCalledWith(
+      "conversations:conversation:123",
+      expect.anything()
+    )
+  })
+
+  it("unsubscribes the created subscription when setChannel returns nothing", () => {
+    mockChannelsHolder.setChannel = jest.fn(() => undefined)
+
+    renderTheHook()
+
+    expect(mockSubscription.unsubscribe).toHaveBeenCalled()
   })
 
   it("does not subscribe when disabled", () => {
