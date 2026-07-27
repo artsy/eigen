@@ -97,6 +97,11 @@ export const Conversations: React.FC<Props> = (props) => {
       refreshConversations()
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
     },
+    // Catch up on anything broadcast while the socket was down.
+    onConnected: () => {
+      refreshConversations()
+      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+    },
   })
 
   const conversations = extractNodes(props.me?.conversations)
