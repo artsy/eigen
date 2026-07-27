@@ -21,7 +21,7 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext, onSk
       <Logo />
       <Flex flex={1} justifyContent="center">
         <Text variant="xl" color="mono0">
-          We’ll show you a selection of artworks. Save five that speak to you to get started.
+          We’ll show you a selection of art. To get started, save five that speak to you
         </Text>
       </Flex>
       <AnimatedFlex

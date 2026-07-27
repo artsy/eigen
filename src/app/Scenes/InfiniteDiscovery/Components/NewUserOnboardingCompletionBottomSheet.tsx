@@ -118,9 +118,9 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
             <Text variant="lg-display" textAlign="center">
               First five saved. We're beginning to see what moves you.
             </Text>
-            <Text variant="sm" textAlign="center">
+            {/* <Text variant="sm" textAlign="center">
               We're beginning to see what moves you.
-            </Text>
+            </Text> */}
             <Text variant="xs" textAlign="center">
               Visit your For You page, or stay and keep exploring artworks.
             </Text>
