@@ -41,13 +41,12 @@ export const ArtworkMontageStep: React.FC<ArtworkMontageStepProps> = ({ onNext }
   }, [])
 
   useEffect(() => {
+    if (reduceMotionEnabled === null) {
+      return
+    }
+
     if (reduceMotionEnabled) {
       onNextRef.current()
-    }
-  }, [reduceMotionEnabled])
-
-  useEffect(() => {
-    if (reduceMotionEnabled !== false) {
       return
     }
 
