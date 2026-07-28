@@ -213,4 +213,60 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       ).toEqual([])
     })
   })
+
+  describe("Tap to progress behavior", () => {
+    it("advances from page 0 to page 1 when tapping anywhere on the sheet", async () => {
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+      expect(screen.getByText("Next")).toBeOnTheScreen()
+
+      // Get PagerView and spy on setPage
+      const pagerView = UNSAFE_getByType(PagerView)
+      const setPageSpy = jest.spyOn(pagerView.props.ref.current, "setPage")
+
+      // Simulate tap using gesture handler test utils
+      const {
+        fireGestureHandler,
+        getByGestureTestId,
+      } = require("react-native-gesture-handler/jest-utils")
+      fireGestureHandler(getByGestureTestId("tap-to-progress"))
+
+      // Verify tap called setPage(1)
+      expect(setPageSpy).toHaveBeenCalledWith(1)
+    })
+
+    it("dismisses the sheet when tapping anywhere on page 1", async () => {
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+
+      // Navigate to page 1
+      const pagerView = UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+
+      // Should show "View For You" button on page 1
+      expect(await screen.findByText("View For You")).toBeOnTheScreen()
+
+      // Simulate tap gesture
+      const {
+        fireGestureHandler,
+        getByGestureTestId,
+      } = require("react-native-gesture-handler/jest-utils")
+      fireGestureHandler(getByGestureTestId("tap-to-progress"))
+
+      // Should dismiss and reset state
+      const state = __globalStoreTestUtils__!.getCurrentState()
+      expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
+      expect(state.onboarding.followedOnboardingArtists).toEqual([])
+    })
+  })
 })

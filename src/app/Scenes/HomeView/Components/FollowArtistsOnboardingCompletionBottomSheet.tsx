@@ -10,7 +10,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform, Pressable, StyleSheet } from "react-native"
-import { TapGestureHandler, State } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 
 export const FollowArtistsOnboardingCompletionBottomSheet = () => {
@@ -54,14 +54,12 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
     }
   }
 
-  const handleTap = useCallback(
-    (event: any) => {
-      if (event.nativeEvent.state === State.END) {
-        handleButtonPress()
-      }
-    },
-    [handleButtonPress]
-  )
+  const tap = Gesture.Tap()
+    .withTestId("tap-to-progress")
+    .runOnJS(true)
+    .onEnd(() => {
+      handleButtonPress()
+    })
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -104,8 +102,8 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
       handleComponent={null}
     >
       <BottomSheetView style={bottomSheetViewStyles}>
-        <TapGestureHandler onHandlerStateChange={handleTap}>
-          <Flex mb={4} mx={2} alignItems="center">
+        <GestureDetector gesture={tap}>
+          <Flex pb={4} px={2} alignItems="center">
             <Spacer y={2} />
 
             <Flex flexDirection="row" justifyContent="center" alignItems="center">
@@ -211,7 +209,7 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
               {activeStep === 0 ? "Next" : "View For You"}
             </Button>
           </Flex>
-        </TapGestureHandler>
+        </GestureDetector>
       </BottomSheetView>
     </AutomountedBottomSheetModal>
   )
