@@ -1,5 +1,8 @@
 import { act, screen } from "@testing-library/react-native"
-import { ArtworkMontageStep } from "app/Scenes/Onboarding/Screens/Onboarding/Components/ArtworkMontageStep"
+import {
+  ArtworkMontageStep,
+  REDUCE_MOTION_CHECK_TIMEOUT,
+} from "app/Scenes/Onboarding/Screens/Onboarding/Components/ArtworkMontageStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AccessibilityInfo, Image } from "react-native"
 
@@ -8,10 +11,13 @@ import { AccessibilityInfo, Image } from "react-native"
 const flushReduceMotionCheck = () => act(async () => await Promise.resolve())
 
 describe("ArtworkMontageStep", () => {
+  let isReduceMotionEnabledMock: jest.SpyInstance
+
   beforeEach(() => {
     jest.clearAllMocks()
     jest.useFakeTimers()
-    jest.spyOn(AccessibilityInfo, "isReduceMotionEnabled").mockResolvedValue(false)
+    isReduceMotionEnabledMock = jest.spyOn(AccessibilityInfo, "isReduceMotionEnabled")
+    isReduceMotionEnabledMock.mockResolvedValue(false)
   })
 
   afterEach(() => {
@@ -55,7 +61,7 @@ describe("ArtworkMontageStep", () => {
   })
 
   it("skips the montage and calls onNext immediately when Reduce Motion is enabled", async () => {
-    ;(AccessibilityInfo.isReduceMotionEnabled as jest.Mock).mockResolvedValue(true)
+    isReduceMotionEnabledMock.mockResolvedValue(true)
 
     const onNext = jest.fn()
     renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
@@ -65,10 +71,29 @@ describe("ArtworkMontageStep", () => {
     expect(screen.UNSAFE_queryAllByType(Image)).toHaveLength(0)
   })
 
+  it("advances if the Reduce Motion check never settles, via the check's own timeout", async () => {
+    isReduceMotionEnabledMock.mockReturnValue(new Promise(() => {}))
+
+    const onNext = jest.fn()
+    renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
+
+    await act(async () => {
+      jest.advanceTimersByTime(REDUCE_MOTION_CHECK_TIMEOUT)
+      await Promise.resolve()
+    })
+
+    expect(onNext).not.toHaveBeenCalled()
+    expect(screen.UNSAFE_getAllByType(Image)).toHaveLength(5)
+
+    act(() => {
+      jest.runAllTimers()
+    })
+
+    expect(onNext).toHaveBeenCalledTimes(1)
+  })
+
   it("falls back to showing the montage when the Reduce Motion check rejects", async () => {
-    ;(AccessibilityInfo.isReduceMotionEnabled as jest.Mock).mockRejectedValue(
-      new Error("unavailable")
-    )
+    isReduceMotionEnabledMock.mockRejectedValue(new Error("unavailable"))
 
     const onNext = jest.fn()
     renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
