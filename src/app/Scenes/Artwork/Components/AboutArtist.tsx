@@ -78,7 +78,12 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
             variant="sm"
           />
           {!!canExpand && (
-            <LinkText variant="sm-display" color={textColor} onPress={handleExpandPress}>
+            <LinkText
+              variant="sm-display"
+              color={textColor}
+              accessibilityRole="button"
+              onPress={handleExpandPress}
+            >
               {expanded ? "Read Less" : "Read More"}
             </LinkText>
           )}
