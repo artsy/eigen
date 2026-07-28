@@ -177,18 +177,21 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses and resets global state when View For You is pressed", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
-      const viewForYouButton = screen.queryByText("View For You")
+      // Navigate to page 1 to show "View For You" button
+      const pagerView = UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
 
-      if (viewForYouButton) {
-        fireEvent.press(viewForYouButton)
+      const viewForYouButton = await screen.findByText("View For You")
+      fireEvent.press(viewForYouButton)
 
-        const state = __globalStoreTestUtils__!.getCurrentState()
-        expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
-      }
+      const state = __globalStoreTestUtils__!.getCurrentState()
+      expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
     })
 
     it("clears followedOnboardingArtists once the sheet is dismissed", async () => {
