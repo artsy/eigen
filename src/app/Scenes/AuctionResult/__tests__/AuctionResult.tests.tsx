@@ -25,10 +25,7 @@ describe("Activity", () => {
 
   it("renders items", async () => {
     renderWithHookWrappersTL(
-      <AuctionResultQueryRenderer
-        auctionResultInternalID="auction-result-id"
-        artistID="artist-id"
-      />,
+      <AuctionResultQueryRenderer auctionResultInternalID="auction-result-id" />,
       mockEnvironment
     )
 

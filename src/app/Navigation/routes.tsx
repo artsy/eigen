@@ -425,6 +425,62 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    // Alias for article URLs prefixed with an ignorable vanity/profile segment
+    // (e.g. /:ignore/article/:articleID). The leading segment is a variable, so this only
+    // matches 3-segment paths whose middle segment is literally "article"; no other route
+    // uses "article" as a middle segment, so there's no shadowing. Mirrors the
+    // /:profile_id_ignored/artist/:artistID alias below. The extra `ignore` param is unused.
+    path: "/:ignore/article/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // A post is just an article; force redirects /post/:id to the article page, so we
+    // resolve it to the native Article screen directly.
+    path: "/post/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // A series item is just an article; force redirects /series/:id to the article page.
+    // NOTE: /series/* is currently AASA-excluded, so universal links won't reach the app
+    // until that exclusion is removed — follow-up needed.
+    path: "/series/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // /series/:ignore/:articleID — same as above but with an ignorable vanity segment in the
+    // middle; the trailing segment is the article id. Same AASA follow-up applies.
+    path: "/series/:ignore/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
     path: "/articles",
     name: "Articles",
     Component: ArticlesScreen,
@@ -482,6 +538,14 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
+    name: "AuctionResult",
+    Component: AuctionResultQueryRenderer,
+    queries: [AuctionResultScreenQuery],
+  },
+  {
+    // Standalone auction result page (force redirects here). The artist is derived from the
+    // auction result itself, so unlike the artist-scoped route above no artistID is needed.
+    path: "/auction-result/:auctionResultInternalID",
     name: "AuctionResult",
     Component: AuctionResultQueryRenderer,
     queries: [AuctionResultScreenQuery],
@@ -623,6 +687,20 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [BrowseSimilarWorksScreenQuery],
+  },
+  {
+    // Alias for artwork URLs with a trailing segment (e.g. /artwork/:artworkID/:optional).
+    // Force exposes this optional segment but eigen has no distinct screen for it, so we
+    // resolve it to the same Artwork screen and ignore the extra segment. MUST stay below
+    // the more specific /artwork/:artworkID/medium and /browse-similar-works routes, since
+    // matching is first-match-wins and this pattern would otherwise shadow them.
+    path: "/artwork/:artworkID/:optional",
+    name: "Artwork",
+    Component: ArtworkScreen,
+    options: {
+      hidesBottomTabs: true,
+    },
+    queries: [ArtworkScreenQuery],
   },
   {
     path: "/auction-registration/:saleID",
@@ -1368,6 +1446,20 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [NewsScreenQuery],
+  },
+  {
+    // A news item is just an article; force redirects /news/:id to the article page, so we
+    // resolve it to the native Article screen directly. NOTE: /news/* is currently AASA-excluded,
+    // so universal links won't reach the app until that exclusion is removed — follow-up needed.
+    path: "/news/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
   },
   {
     path: "/new-for-you",
