@@ -1,4 +1,5 @@
 import {
+  Color,
   Flex,
   FlexProps,
   TextProps,
@@ -15,6 +16,7 @@ import RenderHtml, { CustomBlockRenderer, MixedStyleRecord } from "react-native-
 
 interface HTMLProps extends FlexProps {
   html: string
+  color?: Color
   onLinkPress?: (href: string) => void
   tagStyles?: MixedStyleRecord
   variant?: TextProps["variant"]
@@ -29,6 +31,7 @@ export const FONTS = {
 
 export const HTML: React.FC<HTMLProps> = ({
   html,
+  color: textColor = "mono100",
   onLinkPress,
   tagStyles = {},
   variant = "sm",
@@ -71,25 +74,25 @@ export const HTML: React.FC<HTMLProps> = ({
           {
             a: {
               textDecorationLine: "underline",
-              textDecorationColor: color("mono100"),
-              color: color("mono100"),
+              textDecorationColor: color(textColor),
+              color: color(textColor),
               textDecorationStyle: "solid",
             },
             p: {
               fontFamily: FONTS.regular,
-              color: color("mono100"),
+              color: color(textColor),
               marginBottom: "1em",
               ...variantStyles,
             },
             li: {
               fontFamily: FONTS.regular,
-              color: color("mono100"),
+              color: color(textColor),
               marginBottom: "1em",
               ...omit(variantStyles, "lineHeight"), // to prevent mis-aligned markers
             },
             em: {
               fontFamily: FONTS.italic,
-              color: color("mono100"),
+              color: color(textColor),
             },
             h1: {
               fontFamily: FONTS.medium,
@@ -98,7 +101,7 @@ export const HTML: React.FC<HTMLProps> = ({
               letterSpacing: theme.textTreatments["xl"].letterSpacing,
               marginBottom: "1em",
               fontWeight: "normal",
-              color: color("mono100"),
+              color: color(textColor),
             },
             h2: {
               fontFamily: FONTS.medium,
@@ -107,7 +110,7 @@ export const HTML: React.FC<HTMLProps> = ({
               letterSpacing: theme.textTreatments["lg-display"].letterSpacing,
               marginBottom: "1em",
               fontWeight: "normal",
-              color: color("mono100"),
+              color: color(textColor),
             },
             h3: {
               fontFamily: FONTS.regular,
@@ -116,7 +119,7 @@ export const HTML: React.FC<HTMLProps> = ({
               letterSpacing: theme.textTreatments["md"].letterSpacing,
               marginBottom: "1em",
               fontWeight: "normal",
-              color: color("mono100"),
+              color: color(textColor),
             },
           },
           tagStyles
