@@ -110,7 +110,7 @@
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated",
-    "shell-quote": "Pinned to 1.8.4 to fix GHSA-w7jw-789q-3m8p (critical). @segment/sovran-react-native exact-pins the vulnerable 1.8.0 with no fixed release; remove this once Segment bumps it upstream."
+    "shell-quote": "Pinned to 1.9.0 to fix GHSA-w7jw-789q-3m8p (critical) and GHSA-395f-4hp3-45gv (ReDoS). @segment/sovran-react-native exact-pins the vulnerable 1.8.0 with no fixed release; remove this once Segment bumps it upstream."
   },
   "dependencies": {
     "@artsy/changelog": "0.1.0",
@@ -348,7 +348,7 @@
     "@types/relay-runtime": "18.2.0",
     "@types/react-relay": "18.2.0",
     "braces": "3.0.3",
-    "shell-quote": "1.8.4",
+    "shell-quote": "1.9.0",
     "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
     "fast-xml-parser": "5.3.7"
   },
