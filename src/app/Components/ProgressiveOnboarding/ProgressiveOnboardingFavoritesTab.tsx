@@ -67,6 +67,7 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
       onOpenComplete={trackEvent}
+      backgroundStyle={{ backgroundColor: "transparent" }}
       placement="top"
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
