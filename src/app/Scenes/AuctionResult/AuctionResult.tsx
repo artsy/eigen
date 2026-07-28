@@ -404,31 +404,28 @@ const artistFragment = graphql`
 `
 
 export const AuctionResultScreenQuery = graphql`
-  query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
+  query AuctionResultQuery($auctionResultInternalID: String!) {
     auctionResult(id: $auctionResultInternalID) {
       ...AuctionResult_auctionResult
-    }
-    artist(id: $artistID) {
-      ...AuctionResult_artist
+      artist {
+        ...AuctionResult_artist
+      }
     }
   }
 `
 
 interface AuctionResultQueryRendererProps {
   auctionResultInternalID: string
-  artistID: string
 }
 
 export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererProps> = ({
   auctionResultInternalID,
-  artistID,
 }) => {
   const data = useLazyLoadQuery<AuctionResultQuery>(AuctionResultScreenQuery, {
     auctionResultInternalID,
-    artistID,
   })
 
-  if (!data?.auctionResult || !data?.artist) {
+  if (!data?.auctionResult || !data?.auctionResult.artist) {
     return (
       <Flex>
         <Text>Wrong link</Text>
@@ -436,7 +433,7 @@ export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererPr
     )
   }
 
-  return <AuctionResult artist={data.artist} auctionResult={data.auctionResult} />
+  return <AuctionResult artist={data.auctionResult.artist} auctionResult={data.auctionResult} />
 }
 
 export const AuctionResultQueryRenderer: React.FC<AuctionResultQueryRendererProps> = (props) => {
