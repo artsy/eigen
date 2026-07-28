@@ -85,7 +85,7 @@ describe("AboutArtist", () => {
       }),
     })
 
-    const readMoreLink = screen.getByText("Read more")
+    const readMoreLink = screen.getByText("Read More")
     fireEvent.press(readMoreLink)
     expect(mockTrackEvent).toBeCalledWith({
       action_name: "readMore",
@@ -93,5 +93,27 @@ describe("AboutArtist", () => {
       context_module: "ArtistBiography",
       flow: "AboutTheArtist",
     })
+  })
+
+  it("renders HTML-formatted bio content without raw markdown markers", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        isUnlisted: false,
+        displayArtistBio: true,
+        artists: [
+          {
+            biographyBlurb: {
+              text: "<h3>Key Exhibitions</h3><ul><li>David Hockney, The Metropolitan Museum of Art, 2017</li></ul>",
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(screen.getByText("Key Exhibitions")).toBeOnTheScreen()
+    expect(
+      screen.getByText("David Hockney, The Metropolitan Museum of Art, 2017")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText(/###/)).not.toBeOnTheScreen()
   })
 })

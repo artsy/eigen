@@ -1,16 +1,21 @@
-import { Spacer, Flex, Box, Text, Join, Screen } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, LinkText, Join, Screen } from "@artsy/palette-mobile"
 import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
-import { ReadMore } from "app/Components/ReadMore"
+import { HTML } from "app/Components/HTML"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
+import { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface AboutArtistProps {
   artwork: AboutArtist_artwork$data
 }
 
 export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
+  const tracking = useTracking()
+  const [expanded, setExpanded] = useState(false)
+
   const artists = artwork.artists || []
 
   const hasSingleArtist = artists && artists.length === 1
@@ -28,6 +33,21 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
 
   const backgroundColor = artwork.isUnlisted ? "mono100" : "mono0"
   const textColor = artwork.isUnlisted ? "mono0" : "mono100"
+
+  const truncatedText = text?.slice(0, textLimit)
+  const canExpand = !!text && text.length > textLimit
+
+  const handleExpandPress = () => {
+    if (!expanded) {
+      tracking.trackEvent({
+        action_name: Schema.ActionNames.ReadMore,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: Schema.ContextModules.ArtistBiography,
+        flow: Schema.Flow.AboutTheArtist,
+      })
+    }
+    setExpanded((prev) => !prev)
+  }
 
   return (
     <Screen.FullWidthItem p={2} backgroundColor={backgroundColor}>
@@ -51,16 +71,16 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
       </Flex>
       {!!hasSingleArtist && !!text && !!artwork.displayArtistBio && (
         <Box mt={2} mb={artwork.isUnlisted ? 1 : 0}>
-          <ReadMore
-            content={text}
-            contextModule={Schema.ContextModules.ArtistBiography}
-            maxChars={textLimit}
-            textStyle="new"
-            trackingFlow={Schema.Flow.AboutTheArtist}
-            textVariant="sm"
-            linkTextVariant="sm-display"
+          <HTML
+            html={expanded ? text : `${truncatedText}${canExpand ? "... " : ""}`}
             color={textColor}
+            variant="sm"
           />
+          {!!canExpand && (
+            <LinkText variant="sm-display" color={textColor} onPress={handleExpandPress}>
+              {expanded ? "Read Less" : "Read More"}
+            </LinkText>
+          )}
         </Box>
       )}
     </Screen.FullWidthItem>
@@ -73,7 +93,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
       displayArtistBio
       artists(shallow: true) {
         id
-        biographyBlurb(partnerBio: false) {
+        biographyBlurb(format: HTML, partnerBio: false) {
           text
         }
 
