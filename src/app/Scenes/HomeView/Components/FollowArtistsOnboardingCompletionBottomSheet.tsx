@@ -148,7 +148,7 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
                 textAlign="center"
                 style={{ width: 350, paddingHorizontal: 10 }}
               >
-                Find them any time in the Favorites tab at the bottom of your screen.
+                Find them anytime in the Favorites tab at the bottom of your screen.
               </Text>
 
               <Spacer y={2} />

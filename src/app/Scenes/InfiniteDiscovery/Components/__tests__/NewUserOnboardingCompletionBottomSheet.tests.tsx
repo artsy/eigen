@@ -22,9 +22,11 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
-    expect(screen.getByText("Continue Browsing")).toBeOnTheScreen()
-    expect(screen.getByText("Go to home")).toBeOnTheScreen()
+    expect(
+      screen.getByText("First five saved: We’re beginning to understand your taste.")
+    ).toBeOnTheScreen()
+    expect(screen.getByText("See More Works")).toBeOnTheScreen()
+    expect(screen.getByText("Take Me Home")).toBeOnTheScreen()
   })
 
   it('"Continue Browsing" hides the sheet and keeps onboarding incomplete', () => {
@@ -33,7 +35,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Continue Browsing"))
+    fireEvent.press(screen.getByText("See More Works"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(
@@ -48,7 +50,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(
@@ -67,7 +69,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(true)
@@ -80,7 +82,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(false)
@@ -94,6 +96,8 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
+    expect(
+      screen.getByText("First five saved: We’re beginning to understand your taste.")
+    ).toBeOnTheScreen()
   })
 })

@@ -57,7 +57,7 @@ describe("FollowArtistsOrderedSet", () => {
         screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
       )
 
-      expect(screen.getByText("Leading artists on Artsy")).toBeOnTheScreen()
+      expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.UNSAFE_queryAllByType(Separator)).toHaveLength(1)
     })
 
@@ -77,7 +77,7 @@ describe("FollowArtistsOrderedSet", () => {
         screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
       )
 
-      expect(screen.getByText("Leading artists on Artsy")).toBeOnTheScreen()
+      expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.UNSAFE_queryAllByType(Separator)).toHaveLength(0)
     })
 
