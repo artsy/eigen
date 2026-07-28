@@ -4,6 +4,7 @@ import { FollowArtistsOnboardingCompletionBottomSheet } from "app/Scenes/HomeVie
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import PagerView from "react-native-pager-view"
 
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({
@@ -230,14 +231,13 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       const setPageSpy = jest.spyOn(pagerView.props.ref.current, "setPage")
 
       // Simulate tap using gesture handler test utils
-      const {
-        fireGestureHandler,
-        getByGestureTestId,
-      } = require("react-native-gesture-handler/jest-utils")
       fireGestureHandler(getByGestureTestId("tap-to-progress"))
 
-      // Verify tap called setPage(1)
+      // Verify tap called setPage(1) and did not dismiss
       expect(setPageSpy).toHaveBeenCalledWith(1)
+      expect(
+        __globalStoreTestUtils__!.getCurrentState().onboarding.showFollowedArtistSummaryBottomSheet
+      ).toBe(true)
     })
 
     it("dismisses the sheet when tapping anywhere on page 1", async () => {
@@ -257,10 +257,6 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       expect(await screen.findByText("View For You")).toBeOnTheScreen()
 
       // Simulate tap gesture
-      const {
-        fireGestureHandler,
-        getByGestureTestId,
-      } = require("react-native-gesture-handler/jest-utils")
       fireGestureHandler(getByGestureTestId("tap-to-progress"))
 
       // Should dismiss and reset state

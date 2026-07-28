@@ -57,8 +57,10 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const tap = Gesture.Tap()
     .withTestId("tap-to-progress")
     .runOnJS(true)
-    .onEnd(() => {
-      handleButtonPress()
+    .onEnd((_event, success) => {
+      if (success) {
+        handleButtonPress()
+      }
     })
 
   const renderBackdrop = useCallback(
