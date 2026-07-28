@@ -1,55 +1,54 @@
 import { act, screen } from "@testing-library/react-native"
 import {
+  ARTWORKS_DURATION,
   ArtworkMontageStep,
-  REDUCE_MOTION_CHECK_TIMEOUT,
 } from "app/Scenes/Onboarding/Screens/Onboarding/Components/ArtworkMontageStep"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { AccessibilityInfo, Image } from "react-native"
+import { Image } from "react-native"
+import { useReducedMotion } from "react-native-reanimated"
 
-// Flushes the pending `AccessibilityInfo.isReduceMotionEnabled()` microtask, which in turn
-// triggers the effect that either starts the montage timer or fires `onNext` immediately.
-const flushReduceMotionCheck = () => act(async () => await Promise.resolve())
+jest.mock("react-native-reanimated", () => ({
+  ...jest.requireActual("react-native-reanimated"),
+  useReducedMotion: jest.fn(),
+}))
 
 describe("ArtworkMontageStep", () => {
-  let isReduceMotionEnabledMock: jest.SpyInstance
-
   beforeEach(() => {
     jest.clearAllMocks()
     jest.useFakeTimers()
-    isReduceMotionEnabledMock = jest.spyOn(AccessibilityInfo, "isReduceMotionEnabled")
-    isReduceMotionEnabledMock.mockResolvedValue(false)
+    ;(useReducedMotion as jest.Mock).mockReturnValue(false)
   })
 
   afterEach(() => {
     jest.useRealTimers()
   })
 
-  it("renders all 5 onboarding images", async () => {
+  it("renders all 5 onboarding images", () => {
     renderWithWrappers(<ArtworkMontageStep onNext={jest.fn()} />)
-    await flushReduceMotionCheck()
 
-    const images = screen.UNSAFE_getAllByType(Image)
-    expect(images).toHaveLength(5)
+    expect(screen.UNSAFE_getAllByType(Image)).toHaveLength(5)
   })
 
-  it("calls onNext once the montage duration elapses", async () => {
+  it("does not call onNext before the montage duration elapses, and does so right after", () => {
     const onNext = jest.fn()
     renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
-    await flushReduceMotionCheck()
+
+    act(() => {
+      jest.advanceTimersByTime(ARTWORKS_DURATION - 1)
+    })
 
     expect(onNext).not.toHaveBeenCalled()
 
     act(() => {
-      jest.runAllTimers()
+      jest.advanceTimersByTime(1)
     })
 
     expect(onNext).toHaveBeenCalledTimes(1)
   })
 
-  it("clears the timer on unmount and does not call onNext afterward", async () => {
+  it("clears the timer on unmount and does not call onNext afterward", () => {
     const onNext = jest.fn()
     const { unmount } = renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
-    await flushReduceMotionCheck()
 
     unmount()
 
@@ -60,51 +59,13 @@ describe("ArtworkMontageStep", () => {
     expect(onNext).not.toHaveBeenCalled()
   })
 
-  it("skips the montage and calls onNext immediately when Reduce Motion is enabled", async () => {
-    isReduceMotionEnabledMock.mockResolvedValue(true)
+  it("skips the montage and calls onNext immediately when Reduce Motion is enabled", () => {
+    ;(useReducedMotion as jest.Mock).mockReturnValue(true)
 
     const onNext = jest.fn()
     renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
-    await flushReduceMotionCheck()
 
     expect(onNext).toHaveBeenCalledTimes(1)
     expect(screen.UNSAFE_queryAllByType(Image)).toHaveLength(0)
-  })
-
-  it("advances if the Reduce Motion check never settles, via the check's own timeout", async () => {
-    isReduceMotionEnabledMock.mockReturnValue(new Promise(() => {}))
-
-    const onNext = jest.fn()
-    renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
-
-    await act(async () => {
-      jest.advanceTimersByTime(REDUCE_MOTION_CHECK_TIMEOUT)
-      await Promise.resolve()
-    })
-
-    expect(onNext).not.toHaveBeenCalled()
-    expect(screen.UNSAFE_getAllByType(Image)).toHaveLength(5)
-
-    act(() => {
-      jest.runAllTimers()
-    })
-
-    expect(onNext).toHaveBeenCalledTimes(1)
-  })
-
-  it("falls back to showing the montage when the Reduce Motion check rejects", async () => {
-    isReduceMotionEnabledMock.mockRejectedValue(new Error("unavailable"))
-
-    const onNext = jest.fn()
-    renderWithWrappers(<ArtworkMontageStep onNext={onNext} />)
-    await flushReduceMotionCheck()
-
-    expect(screen.UNSAFE_getAllByType(Image)).toHaveLength(5)
-
-    act(() => {
-      jest.runAllTimers()
-    })
-
-    expect(onNext).toHaveBeenCalledTimes(1)
   })
 })
