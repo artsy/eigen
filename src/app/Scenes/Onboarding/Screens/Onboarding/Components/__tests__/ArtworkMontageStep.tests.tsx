@@ -8,7 +8,7 @@ import { Image } from "react-native"
 import { useReducedMotion } from "react-native-reanimated"
 
 jest.mock("react-native-reanimated", () => ({
-  ...jest.requireActual("react-native-reanimated"),
+  ...require("react-native-reanimated/mock"),
   useReducedMotion: jest.fn(),
 }))
 
