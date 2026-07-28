@@ -1,6 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { Biography_artist$key } from "__generated__/Biography_artist.graphql"
 import { HTML } from "app/Components/HTML"
+import { truncateHtml, visibleHtmlTextLength } from "app/utils/truncateHtml"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -22,15 +23,13 @@ export const Biography: React.FC<BiographyProps> = ({ artist, variant = "sm" }) 
 
   const credit = data.biographyBlurb.credit
   const text = !!credit ? `${data.biographyBlurb.text} ${credit}` : data.biographyBlurb.text
-  const truncatedText = text.slice(0, MAX_CHARS)
-  const canExpand = text.length > MAX_CHARS
+  const canExpand = visibleHtmlTextLength(text) > MAX_CHARS
+  const truncatedText = truncateHtml(text, MAX_CHARS)
 
   return (
     <>
       <HTML
-        html={`${expanded ? text : truncatedText}${
-          text.length > MAX_CHARS && !expanded ? "... " : " "
-        }`}
+        html={`${expanded ? text : truncatedText}${canExpand && !expanded ? "... " : " "}`}
         variant={variant}
       />
 
