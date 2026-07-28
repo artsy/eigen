@@ -50,6 +50,7 @@ export const HTML: React.FC<HTMLProps> = ({
       <RenderHtml
         contentWidth={contentWidth}
         source={{ html }}
+        baseStyle={{ color: color(textColor) }}
         systemFonts={[FONTS.regular, FONTS.italic, FONTS.medium, FONTS.mediumItalic]}
         renderers={{
           h2: CustomH2Renderer as CustomBlockRenderer,
