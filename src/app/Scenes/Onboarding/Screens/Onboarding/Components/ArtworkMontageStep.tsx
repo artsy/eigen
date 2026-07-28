@@ -33,7 +33,7 @@ export const ArtworkMontageStep: React.FC<ArtworkMontageStepProps> = ({ onNext }
   }, [onNext])
 
   return (
-    <Flex flex={1} backgroundColor="mono100">
+    <Flex flex={1} backgroundColor="black">
       {ONBOARDING_IMAGES.map((image, index) => (
         <MotiView
           key={index}

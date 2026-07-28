@@ -68,7 +68,11 @@ export const Introduction: React.FC = () => {
   const renderStep = () => {
     switch (currentStep) {
       case STEP_QUESTION:
-        return <QuestionStep onSelect={handleSelectExperience} />
+        return (
+          <Theme theme="v3light">
+            <QuestionStep onSelect={handleSelectExperience} />
+          </Theme>
+        )
       case STEP_BROWSE_PROMPT:
         return <BrowsePromptStep onNext={next} onSkip={handleSkipToHome} />
       case STEP_ARTWORK_MONTAGE:
@@ -81,23 +85,20 @@ export const Introduction: React.FC = () => {
   }
 
   return (
-    // Pinned to light theme: this intro is always black-on-white, regardless of Dark Mode.
-    <Theme theme="v3light">
-      <Flex flex={1} backgroundColor="mono100">
-        <AnimatePresence>
-          <MotiView
-            key={currentStep}
-            from={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "timing", duration: 300 }}
-            exitTransition={{ type: "timing", duration: 300 }}
-            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-          >
-            {renderStep()}
-          </MotiView>
-        </AnimatePresence>
-      </Flex>
-    </Theme>
+    <Flex flex={1} backgroundColor="black">
+      <AnimatePresence>
+        <MotiView
+          key={currentStep}
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ type: "timing", duration: 300 }}
+          exitTransition={{ type: "timing", duration: 300 }}
+          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          {renderStep()}
+        </MotiView>
+      </AnimatePresence>
+    </Flex>
   )
 }

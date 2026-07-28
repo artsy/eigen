@@ -20,9 +20,9 @@ const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) =>
   }, [onNext])
 
   return (
-    <Flex flex={1} justifyContent="center" px={2} backgroundColor="mono100">
+    <Flex flex={1} justifyContent="center" px={2} backgroundColor="black">
       <Logo />
-      <Text variant="xl" color="mono0">
+      <Text variant="xl" color="white">
         Welcome{"\n"}to Artsy,{"\n"}
         {me?.name}
       </Text>
@@ -31,9 +31,9 @@ const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) =>
 }
 
 const Placeholder: React.FC = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="mono100">
+  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black">
     <Logo />
-    <Spinner color="mono0" />
+    <Spinner color="white" />
   </Flex>
 )
 
