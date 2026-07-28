@@ -114,6 +114,6 @@ describe("AboutArtist", () => {
     expect(
       screen.getByText("David Hockney, The Metropolitan Museum of Art, 2017")
     ).toBeOnTheScreen()
-    expect(screen.queryByText(/###/)).not.toBeOnTheScreen()
+    expect(screen.queryByText(/<h3>/)).not.toBeOnTheScreen()
   })
 })
