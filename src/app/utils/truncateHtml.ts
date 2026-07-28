@@ -1,14 +1,9 @@
 const ENTITY_PATTERN = "&(#\\d+|#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);"
 const ENTITY_REGEX = new RegExp(`^${ENTITY_PATTERN}`)
-const ENTITY_REGEX_GLOBAL = new RegExp(ENTITY_PATTERN, "g")
 
-/**
- * Strips tags to measure the length of the text a user would actually see.
- * Entity references (e.g. `&amp;`) count as a single character, matching how
- * they render.
- */
-export function visibleHtmlTextLength(html: string): number {
-  return html.replace(/<[^>]*>/g, "").replace(ENTITY_REGEX_GLOBAL, "&").length
+export interface TruncatedHtml {
+  text: string
+  wasTruncated: boolean
 }
 
 /**
@@ -16,11 +11,15 @@ export function visibleHtmlTextLength(html: string): number {
  * without ever cutting in the middle of a tag, an attribute, or an entity reference
  * (e.g. `&amp;`). Once the budget is spent, still emits any tags needed to close
  * elements that are already open, but stops before a new tag would open.
+ *
+ * `wasTruncated` and the returned `text` come from the same scan, so callers can't
+ * see them disagree about whether truncation happened.
  */
-export function truncateHtml(html: string, maxVisibleChars: number): string {
+export function truncateHtml(html: string, maxVisibleChars: number): TruncatedHtml {
   let result = ""
   let visibleCount = 0
   let inTag = false
+  let wasTruncated = false
 
   for (let i = 0; i < html.length; i++) {
     const char = html[i]
@@ -36,6 +35,7 @@ export function truncateHtml(html: string, maxVisibleChars: number): string {
     if (char === "<") {
       const isClosingTag = html[i + 1] === "/"
       if (visibleCount >= maxVisibleChars && !isClosingTag) {
+        wasTruncated = true
         break
       }
       inTag = true
@@ -47,6 +47,7 @@ export function truncateHtml(html: string, maxVisibleChars: number): string {
       const entityMatch = ENTITY_REGEX.exec(html.slice(i))
       if (entityMatch) {
         if (visibleCount >= maxVisibleChars) {
+          wasTruncated = true
           break
         }
         result += entityMatch[0]
@@ -57,6 +58,7 @@ export function truncateHtml(html: string, maxVisibleChars: number): string {
     }
 
     if (visibleCount >= maxVisibleChars) {
+      wasTruncated = true
       break
     }
 
@@ -64,5 +66,5 @@ export function truncateHtml(html: string, maxVisibleChars: number): string {
     visibleCount++
   }
 
-  return result
+  return { text: result, wasTruncated }
 }

@@ -4,7 +4,7 @@ import { ArtistListItemContainer as ArtistListItem } from "app/Components/Artist
 import { HTML } from "app/Components/HTML"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { truncateHtml, visibleHtmlTextLength } from "app/utils/truncateHtml"
+import { truncateHtml } from "app/utils/truncateHtml"
 import { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -35,8 +35,9 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
   const backgroundColor = artwork.isUnlisted ? "mono100" : "mono0"
   const textColor = artwork.isUnlisted ? "mono0" : "mono100"
 
-  const canExpand = !!text && visibleHtmlTextLength(text) > textLimit
-  const truncatedText = text ? truncateHtml(text, textLimit) : undefined
+  const { text: truncatedText, wasTruncated: canExpand } = text
+    ? truncateHtml(text, textLimit)
+    : { text: undefined, wasTruncated: false }
 
   const handleExpandPress = () => {
     if (!expanded) {
