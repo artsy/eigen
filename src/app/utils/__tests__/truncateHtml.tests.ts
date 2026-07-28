@@ -12,6 +12,14 @@ describe("visibleHtmlTextLength", () => {
   it("returns zero for an empty string", () => {
     expect(visibleHtmlTextLength("")).toEqual(0)
   })
+
+  it("counts a named entity reference as a single visible character", () => {
+    expect(visibleHtmlTextLength("Hauser &amp; Wirth")).toEqual(14)
+  })
+
+  it("counts a numeric entity reference as a single visible character", () => {
+    expect(visibleHtmlTextLength("Rock &#38; Roll")).toEqual(11)
+  })
 })
 
 describe("truncateHtml", () => {
@@ -42,5 +50,26 @@ describe("truncateHtml", () => {
 
     expect(result).toEqual('<a href="https://www.artsy.net/artist/david-hockney">Hoc')
     expect(visibleHtmlTextLength(result)).toEqual(3)
+  })
+
+  it("does not cut in the middle of an entity reference", () => {
+    const result = truncateHtml("Arts &amp; Crafts", 7)
+
+    expect(result).toEqual("Arts &amp; ")
+    expect(visibleHtmlTextLength(result)).toEqual(7)
+  })
+
+  it("treats a bare ampersand that is not part of an entity as a normal character", () => {
+    expect(truncateHtml("Fish & Chips", 6)).toEqual("Fish &")
+  })
+
+  it("stops before a new tag opens once the budget is spent, without leaving it dangling open", () => {
+    const html = "<p>abc</p><h3>Key Exhibitions</h3>"
+    expect(truncateHtml(html, 3)).toEqual("<p>abc</p>")
+  })
+
+  it("still emits closing tags for elements opened before the budget was spent", () => {
+    const html = "<p>abc</p>"
+    expect(truncateHtml(html, 3)).toEqual(html)
   })
 })
