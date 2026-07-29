@@ -233,6 +233,13 @@ export function defaultRules({
   })
 }
 
+// simple-markdown's heading rule only matches ATX headings (`### foo`) that are followed by a
+// blank line, so a heading directly above its content (no blank line) falls through to the
+// paragraph rule and renders with the literal `###` still in the text.
+function ensureBlankLineAfterHeadings(markdown: string): string {
+  return markdown.replace(/^(#{1,6} .*)\n(?!\n)/gm, "$1\n\n")
+}
+
 export function renderMarkdown(
   markdown: string,
   rules: any = defaultRules({})
@@ -240,7 +247,7 @@ export function renderMarkdown(
   const parser = SimpleMarkdown.parserFor(rules)
   const writer = SimpleMarkdown.outputFor<any, any>(rules, "react")
 
-  const ast = parser(markdown, { inline: false })
+  const ast = parser(ensureBlankLineAfterHeadings(markdown), { inline: false })
 
   return writer(ast)
 }
