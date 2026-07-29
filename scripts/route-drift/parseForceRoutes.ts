@@ -278,9 +278,16 @@ function gh(): Octokit {
   return _octokit
 }
 
-/**
- * Run an Octokit request with a couple of retries for transient network failures
- */
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+function isRateLimited(e: any): boolean {
+  return (
+    e?.response?.headers?.["x-ratelimit-remaining"] === "0" ||
+    /rate limit/i.test(String(e?.message ?? ""))
+  )
+}
+
+/** Run an Octokit request, retrying transient failures with a short backoff. */
 async function githubCall<T>(label: string, request: () => Promise<T>): Promise<T> {
   const MAX_ATTEMPTS = 3
   let lastErr: any
@@ -291,7 +298,16 @@ async function githubCall<T>(label: string, request: () => Promise<T>): Promise<
       lastErr = e
       // Client errors (4xx) are deterministic — don't waste retries on them.
       if (typeof e?.status === "number" && e.status >= 400 && e.status < 500) break
+      if (attempt < MAX_ATTEMPTS) await sleep(250 * attempt)
     }
+  }
+  if (isRateLimited(lastErr)) {
+    throw new Error(
+      `GitHub API rate limit hit for ${label}. ` +
+        (process.env.GITHUB_TOKEN
+          ? "Wait for the limit to reset."
+          : "Add GITHUB_TOKEN to .env.releases — unauthenticated requests are capped at 60/hour.")
+    )
   }
   if (lastErr?.status === 401 || lastErr?.status === 403) {
     throw new Error(
