@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Theme } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
@@ -15,6 +15,7 @@ import { WelcomeStep, WelcomeStepScreenQuery } from "./Components/WelcomeStep"
 import { NavigationStack } from "./Onboarding"
 import {
   STEP_ARTWORK_MONTAGE,
+  STEP_BACKDROPS,
   STEP_BROWSE_PROMPT,
   STEP_QUESTION,
   STEP_WELCOME,
@@ -81,23 +82,20 @@ export const Introduction: React.FC = () => {
   }
 
   return (
-    // Pinned to light theme: this intro is always black-on-white, regardless of Dark Mode.
-    <Theme theme="v3light">
-      <Flex flex={1} backgroundColor="mono100">
-        <AnimatePresence>
-          <MotiView
-            key={currentStep}
-            from={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "timing", duration: 300 }}
-            exitTransition={{ type: "timing", duration: 300 }}
-            style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-          >
-            {renderStep()}
-          </MotiView>
-        </AnimatePresence>
-      </Flex>
-    </Theme>
+    <Flex flex={1} backgroundColor={STEP_BACKDROPS[currentStep]}>
+      <AnimatePresence>
+        <MotiView
+          key={currentStep}
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ type: "timing", duration: 300 }}
+          exitTransition={{ type: "timing", duration: 300 }}
+          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          {renderStep()}
+        </MotiView>
+      </AnimatePresence>
+    </Flex>
   )
 }

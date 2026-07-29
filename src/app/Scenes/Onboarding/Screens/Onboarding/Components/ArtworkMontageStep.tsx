@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { ALWAYS_BLACK } from "app/utils/colors"
 import { useScreenDimensions } from "app/utils/hooks"
 import { MotiView } from "moti"
 import { useEffect } from "react"
@@ -56,7 +57,7 @@ export const ArtworkMontageStep: React.FC<ArtworkMontageStepProps> = ({ onNext }
   }
 
   return (
-    <Flex flex={1} backgroundColor="mono100">
+    <Flex flex={1} backgroundColor={ALWAYS_BLACK}>
       {ONBOARDING_IMAGES.map((image, index) => (
         <MotiView
           key={index}
