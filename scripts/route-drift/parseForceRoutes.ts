@@ -1,4 +1,4 @@
-import { execFileSync } from "child_process"
+import Octokit from "@octokit/rest"
 import ts from "typescript"
 
 export interface ForceRoute {
@@ -14,32 +14,58 @@ export interface ForceRoute {
   hasComponent: boolean
 }
 
-const FORCE_REPO = "artsy/force"
+const FORCE_REPO_OWNER = "artsy"
+const FORCE_REPO_NAME = "force"
 const FORCE_BRANCH = "main"
 const WEB_ORIGIN = "https://www.artsy.net"
 
 /** List every *Routes.tsx under src/Apps in force via the git tree API. */
-export function listForceRouteFiles(): string[] {
-  const out = ghApi(
-    `repos/${FORCE_REPO}/git/trees/${FORCE_BRANCH}?recursive=1`,
-    '.tree[].path | select(test("src/Apps/.*[Rr]outes\\\\.tsx$"))'
+export async function listForceRouteFiles(): Promise<string[]> {
+  if (!process.env.GITHUB_TOKEN) {
+    console.warn(
+      "⚠️  GITHUB_TOKEN not set — GitHub API requests are unauthenticated and rate-limited to\n" +
+        "   60/hour, which is not enough to fetch every force route file. Add GITHUB_TOKEN\n" +
+        "   (a token with public repo read access) to .env.releases to avoid rate-limit failures."
+    )
+  }
+
+  const { data } = await githubCall("force git tree", () =>
+    gh().git.getTree({
+      owner: FORCE_REPO_OWNER,
+      repo: FORCE_REPO_NAME,
+      tree_sha: FORCE_BRANCH,
+      recursive: "1",
+    })
   )
-  return out
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean)
+  if (data.truncated) {
+    console.warn(
+      "⚠️  force's git tree came back truncated — some route files may be missing from the report."
+    )
+  }
+  return data.tree
+    .map((entry: { path: string }) => entry.path)
+    .filter((p: string) => /src\/Apps\/.*[Rr]outes\.tsx$/.test(p))
 }
 
 /** Fetch a file's raw text from force. */
-export function fetchForceFile(path: string): string {
-  const b64 = ghApi(`repos/${FORCE_REPO}/contents/${path}?ref=${FORCE_BRANCH}`, ".content")
-  return Buffer.from(b64, "base64").toString("utf8")
+export async function fetchForceFile(path: string): Promise<string> {
+  const { data } = await githubCall(path, () =>
+    gh().repos.getContents({
+      owner: FORCE_REPO_OWNER,
+      repo: FORCE_REPO_NAME,
+      path,
+      ref: FORCE_BRANCH,
+    })
+  )
+  // A file (not a directory) response carries base64 `content`.
+  const content = (data as { content?: string }).content ?? ""
+  return Buffer.from(content, "base64").toString("utf8")
 }
 
-export function parseForceRoutes(
+export async function parseForceRoutes(
   files: string[],
-  fetch: (path: string) => string = fetchForceFile
-): { routes: ForceRoute[]; warnings: string[] } {
+  fetch: (path: string) => Promise<string> = fetchForceFile
+): Promise<{ routes: ForceRoute[]; warnings: string[] }> {
   const routes: ForceRoute[] = []
   const warnings: string[] = []
 
@@ -47,7 +73,7 @@ export function parseForceRoutes(
     const app = appNameFromPath(file)
     let code: string
     try {
-      code = fetch(file)
+      code = await fetch(file)
     } catch (e) {
       warnings.push(`Failed to fetch ${file}: ${(e as Error).message}`)
       continue
@@ -255,20 +281,45 @@ function appNameFromPath(file: string): string {
   return m ? m[1] : "Unknown"
 }
 
-function ghApi(endpoint: string, jq: string): string {
-  // Retry transient network failures — a dropped fetch would silently omit a
-  // whole app's routes and understate drift (or inflate orphans).
+/**
+ * Lazily-created Octokit client. Reads `GITHUB_TOKEN` from the environment
+ * (populated from .env.releases by generate.ts), consistent with
+ * scripts/changelog/generateChangelog.ts. The token is optional — force is a
+ * public repo, so unauthenticated works but is rate-limited to 60/hour (see
+ * listForceRouteFiles). It is created lazily rather than at module load so it
+ * picks up the token *after* generate.ts has run dotenv's config().
+ */
+let _octokit: Octokit | undefined
+function gh(): Octokit {
+  if (!_octokit) {
+    _octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+  }
+  return _octokit
+}
+
+/**
+ * Run an Octokit request with a couple of retries for transient network
+ * failures — a dropped request would silently omit a whole app's routes and
+ * understate drift (or inflate orphans). HTTP errors (401/404/…) won't fix
+ * themselves on retry, so those fail fast with a helpful message.
+ */
+async function githubCall<T>(label: string, request: () => Promise<T>): Promise<T> {
   const MAX_ATTEMPTS = 3
-  let lastErr: unknown
+  let lastErr: any
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      return execFileSync("gh", ["api", endpoint, "--jq", jq], {
-        encoding: "utf8",
-        maxBuffer: 64 * 1024 * 1024,
-      }).trimEnd()
-    } catch (e) {
+      return await request()
+    } catch (e: any) {
       lastErr = e
+      // Client errors (4xx) are deterministic — don't waste retries on them.
+      if (typeof e?.status === "number" && e.status >= 400 && e.status < 500) break
     }
+  }
+  if (lastErr?.status === 401 || lastErr?.status === 403) {
+    throw new Error(
+      `GitHub API returned ${lastErr.status} (${lastErr.message}) for ${label} — check ` +
+        "GITHUB_TOKEN in .env.releases (it may be expired or lack public-repo read access)."
+    )
   }
   throw lastErr
 }

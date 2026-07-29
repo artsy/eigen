@@ -27,8 +27,10 @@ yarn route-drift            # writes scripts/route-drift/route-drift-report.md
 yarn route-drift --strict   # additionally exits 1 if non-allowlisted drift exists (CI)
 ```
 
-Requires the GitHub CLI authenticated (`gh auth status`) — force routes are
-fetched live via `gh api` at `main`.
+Force routes are fetched live from the GitHub API at `main` (via Octokit). A
+`GITHUB_TOKEN` (a token with public repo read access) is read from
+`.env.releases` — or the environment — to avoid rate limits; unauthenticated
+requests cap at 60/hour, which isn't enough to fetch every route file.
 
 ## How it works
 

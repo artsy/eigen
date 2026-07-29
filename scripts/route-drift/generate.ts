@@ -10,12 +10,16 @@
  * Usage:  yarn route-drift            # writes report, exits 0
  *         yarn route-drift --strict   # exits 1 if non-allowlisted drift exists (for CI)
  *
- * Force routes are fetched live via `gh api` (requires `gh auth`). Deliberate
- * universal-link exclusions are read live from artsy.net's AASA file.
+ * Force routes are fetched live from the GitHub API. A `GITHUB_TOKEN` (a token
+ * with public repo read access) is read from `.env.releases` — or the
+ * environment — to avoid rate limits; unauthenticated requests cap at 60/hour,
+ * which isn't enough. Deliberate universal-link exclusions are read live from
+ * artsy.net's AASA file.
  */
 import { readFileSync, writeFileSync } from "fs"
-import { join } from "path"
+import { join, resolve } from "path"
 import { parse } from "url"
+import { config } from "dotenv"
 import { classifyURL, compileEigenRoutes } from "./match"
 import { AASAExclusions, fetchAASAExclusions } from "./parseAASA"
 import { AndroidAllowlist, parseAndroidManifest } from "./parseAndroidManifest"
@@ -26,6 +30,10 @@ import {
   listForceRouteFiles,
   parseForceRoutes,
 } from "./parseForceRoutes"
+
+// Load GITHUB_TOKEN (used for the force route fetches) from .env.releases so it
+// doesn't have to be exported manually — mirrors scripts/changelog/generateChangelog.ts.
+config({ path: resolve(__dirname, "../../.env.releases") })
 
 const REPORT_PATH = join(__dirname, "route-drift-report.md")
 const ALLOWLIST_PATH = join(__dirname, "allowlist.json")
@@ -48,7 +56,7 @@ interface ForceRow extends ForceRoute {
 
 const NON_NATIVE = new Set(["ReactWebView", "ModalWebView", "VanityURLEntity"])
 
-function main() {
+async function main() {
   const strict = process.argv.includes("--strict")
   const allowlist = loadAllowlist()
   const allowedWebview = new Set(allowlist.expectedWebview.map((e) => e.forcePath))
@@ -66,10 +74,10 @@ function main() {
   const compiled = compileEigenRoutes(eigenRoutes)
 
   // 2. force
-  console.log("Fetching force route files via gh api…")
-  const files = listForceRouteFiles()
+  console.log("Fetching force route files via the GitHub API…")
+  const files = await listForceRouteFiles()
   console.log(`  found ${files.length} *Routes.tsx files`)
-  const { routes: forceRoutes, warnings: forceWarn } = parseForceRoutes(files, fetchForceFile)
+  const { routes: forceRoutes, warnings: forceWarn } = await parseForceRoutes(files, fetchForceFile)
   console.log(`  extracted ${forceRoutes.length} canonical force route templates`)
 
   // 3. AASA — deliberate universal-link exclusions (best-effort; network)
@@ -438,4 +446,7 @@ function groupBy<T>(items: T[], key: (t: T) => string): Record<string, T[]> {
   return out
 }
 
-main()
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
