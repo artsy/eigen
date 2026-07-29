@@ -1,5 +1,3 @@
-import { execFileSync } from "child_process"
-
 /**
  * Artsy's Apple App Site Association file declares which artsy.net paths are
  * deliberately EXCLUDED from universal links (the `NOT ...` entries). A URL
@@ -12,8 +10,6 @@ import { execFileSync } from "child_process"
  * https://github.com/artsy/artsy-eigen-web-association
  */
 const DEFAULT_AASA_URL = "https://www.artsy.net/.well-known/apple-app-site-association"
-const BROWSER_UA =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 export interface AASAExclusions {
   /** Raw `NOT` patterns, e.g. "/login", "/news/*", "/identity-verification*". */
@@ -22,13 +18,13 @@ export interface AASAExclusions {
   matches: (pathname: string) => boolean
 }
 
-export function fetchAASAExclusions(url = DEFAULT_AASA_URL): AASAExclusions {
-  const raw = execFileSync("curl", ["-sfL", "-A", BROWSER_UA, url], {
-    encoding: "utf8",
-    maxBuffer: 8 * 1024 * 1024,
-  })
-  const json = JSON.parse(raw)
-  const details: any[] = json?.applinks?.details ?? []
+export async function fetchAASAExclusions(url = DEFAULT_AASA_URL): Promise<AASAExclusions> {
+  const res = await fetch(url)
+  if (!res.ok) {
+    throw new Error(`AASA fetch failed: HTTP ${res.status}`)
+  }
+  const json = await res.json()
+  const details: any[] = (json as any)?.applinks?.details ?? []
 
   const notPaths = new Set<string>()
   for (const detail of details) {

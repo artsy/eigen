@@ -81,7 +81,7 @@ async function main() {
   const aasaWarn: string[] = []
   let aasa: AASAExclusions = { patterns: [], matches: () => false }
   try {
-    aasa = fetchAASAExclusions()
+    aasa = await fetchAASAExclusions()
     console.log(`  loaded ${aasa.patterns.length} AASA universal-link exclusions`)
   } catch (e) {
     const msg = `Could not fetch AASA exclusions (skipping this layer): ${(e as Error).message}`
