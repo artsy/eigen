@@ -1,5 +1,6 @@
 import { Flex, Spinner, Text } from "@artsy/palette-mobile"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
+import { ALWAYS_BLACK, ALWAYS_WHITE } from "app/utils/colors"
 import { Suspense, useEffect } from "react"
 import { PreloadedQuery, graphql, usePreloadedQuery } from "react-relay"
 import { Logo } from "./Logo"
@@ -20,9 +21,9 @@ const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) =>
   }, [onNext])
 
   return (
-    <Flex flex={1} justifyContent="center" px={2} backgroundColor="black">
+    <Flex flex={1} justifyContent="center" px={2} backgroundColor={ALWAYS_BLACK}>
       <Logo />
-      <Text variant="xl" color="white">
+      <Text variant="xl" color={ALWAYS_WHITE}>
         Welcome{"\n"}to Artsy,{"\n"}
         {me?.name}
       </Text>
@@ -31,9 +32,9 @@ const WelcomeStepContent: React.FC<WelcomeStepProps> = ({ onNext, queryRef }) =>
 }
 
 const Placeholder: React.FC = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black">
+  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor={ALWAYS_BLACK}>
     <Logo />
-    <Spinner color="white" />
+    <Spinner color={ALWAYS_WHITE} />
   </Flex>
 )
 

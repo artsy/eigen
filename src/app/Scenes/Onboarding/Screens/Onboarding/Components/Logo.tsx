@@ -1,12 +1,13 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Box } from "@artsy/palette-mobile"
+import { ALWAYS_WHITE } from "app/utils/colors"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface LogoProps {
   fill?: string
 }
 
-export const Logo: React.FC<LogoProps> = ({ fill = "white" }) => {
+export const Logo: React.FC<LogoProps> = ({ fill = ALWAYS_WHITE }) => {
   const { top } = useSafeAreaInsets()
   return (
     <Box position="absolute" top={`${top}px`} left={0} right={0} alignItems="center">

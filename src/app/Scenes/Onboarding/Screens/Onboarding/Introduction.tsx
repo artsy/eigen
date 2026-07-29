@@ -5,6 +5,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ALWAYS_BLACK } from "app/utils/colors"
 import { AnimatePresence, MotiView } from "moti"
 import { useCallback, useEffect } from "react"
 import { useQueryLoader } from "react-relay"
@@ -85,7 +86,7 @@ export const Introduction: React.FC = () => {
   }
 
   return (
-    <Flex flex={1} backgroundColor="black">
+    <Flex flex={1} backgroundColor={ALWAYS_BLACK}>
       <AnimatePresence>
         <MotiView
           key={currentStep}
