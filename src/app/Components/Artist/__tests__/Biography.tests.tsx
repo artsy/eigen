@@ -105,7 +105,7 @@ describe("Biography", () => {
         }),
       })
 
-      expect(screen.getByText("Read More")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
     })
 
     it("does not show Read More button when text is shorter than MAX_CHARS", () => {
@@ -120,7 +120,7 @@ describe("Biography", () => {
         }),
       })
 
-      expect(screen.queryByText("Read More")).toBeNull()
+      expect(screen.queryByLabelText("Read More")).toBeNull()
     })
 
     it("shows truncated text initially when text is long", () => {
@@ -151,7 +151,7 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Read More"))
+      fireEvent.press(screen.getByLabelText("Read More"))
 
       expect(screen.getByText("Read Less")).toBeOnTheScreen()
       expect(screen.getByText(longText)).toBeOnTheScreen()
@@ -167,10 +167,10 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Read More"))
+      fireEvent.press(screen.getByLabelText("Read More"))
       fireEvent.press(screen.getByText("Read Less"))
 
-      expect(screen.getByText("Read More")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
       const truncatedText = longText.slice(0, 250)
       expect(screen.getByText(truncatedText, { exact: false })).toBeOnTheScreen()
     })
@@ -190,7 +190,7 @@ describe("Biography", () => {
         }),
       })
 
-      fireEvent.press(screen.getByText("Read More"))
+      fireEvent.press(screen.getByLabelText("Read More"))
 
       expect(screen.getByText(credit, { exact: false })).toBeOnTheScreen()
     })
@@ -205,7 +205,7 @@ describe("Biography", () => {
         }),
       })
 
-      expect(screen.getByText("Read More")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Read More")).toBeOnTheScreen()
     })
   })
 })
