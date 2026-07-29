@@ -5,7 +5,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ALWAYS_BLACK } from "app/utils/colors"
 import { AnimatePresence, MotiView } from "moti"
 import { useCallback, useEffect } from "react"
 import { useQueryLoader } from "react-relay"
@@ -16,6 +15,7 @@ import { WelcomeStep, WelcomeStepScreenQuery } from "./Components/WelcomeStep"
 import { NavigationStack } from "./Onboarding"
 import {
   STEP_ARTWORK_MONTAGE,
+  STEP_BACKDROPS,
   STEP_BROWSE_PROMPT,
   STEP_QUESTION,
   STEP_WELCOME,
@@ -82,7 +82,7 @@ export const Introduction: React.FC = () => {
   }
 
   return (
-    <Flex flex={1} backgroundColor={currentStep === STEP_BROWSE_PROMPT ? "mono0" : ALWAYS_BLACK}>
+    <Flex flex={1} backgroundColor={STEP_BACKDROPS[currentStep]}>
       <AnimatePresence>
         <MotiView
           key={currentStep}
