@@ -3,7 +3,6 @@ import { join } from "path"
 import ts from "typescript"
 
 export interface EigenRoute {
-  /** The route path template, e.g. "/fair/:fairID/artworks" */
   path: string
   /** The AppModule name this route resolves to, e.g. "Fair", "ReactWebView" */
   name: string
@@ -100,14 +99,14 @@ function parseRouteElement(el: ts.Expression): { path: string; name: string } | 
     return undefined
   }
 
-  // Form 2: webViewRoute({ path, ... }) / addWebViewRoute(...)
+  // Form 2: webViewRoute({ path, config: { alwaysPresentModally } })
   if (ts.isCallExpression(el) && ts.isIdentifier(el.expression)) {
-    const callee = el.expression.text
-    if (callee === "webViewRoute" || callee === "addWebViewRoute") {
+    if (el.expression.text === "webViewRoute") {
       const arg = el.arguments[0]
       if (arg && ts.isObjectLiteralExpression(arg)) {
         const path = getStringProp(arg, "path")
-        const modal = getBoolProp(arg, "alwaysPresentModally")
+        const config = getObjectProp(arg, "config")
+        const modal = config ? getBoolProp(config, "alwaysPresentModally") : false
         if (path) {
           return { path, name: modal ? "ModalWebView" : "ReactWebView" }
         }
@@ -126,6 +125,22 @@ function getStringProp(obj: ts.ObjectLiteralExpression, key: string): string | u
       ts.isStringLiteralLike(prop.initializer)
     ) {
       return prop.initializer.text
+    }
+  }
+  return undefined
+}
+
+function getObjectProp(
+  obj: ts.ObjectLiteralExpression,
+  key: string
+): ts.ObjectLiteralExpression | undefined {
+  for (const prop of obj.properties) {
+    if (
+      ts.isPropertyAssignment(prop) &&
+      getPropName(prop) === key &&
+      ts.isObjectLiteralExpression(prop.initializer)
+    ) {
+      return prop.initializer
     }
   }
   return undefined
