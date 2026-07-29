@@ -59,7 +59,7 @@ async function main() {
   const ignorePrefixes = allowlist.ignorePrefixes.map((e) => e.prefix)
 
   const matchesIgnorePrefix = (path: string): boolean =>
-    ignorePrefixes.some((p) => path === p || path.startsWith(p))
+    ignorePrefixes.some((p) => path === p || path.startsWith(p.replace(/\/$/, "") + "/"))
 
   const isSuppressed = (forcePath: string): boolean =>
     allowedWebview.has(forcePath) || matchesIgnorePrefix(forcePath)
