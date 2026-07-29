@@ -1,5 +1,6 @@
 import Octokit from "@octokit/rest"
 import ts from "typescript"
+import { expandOptionals, joinPaths, toSampleURL } from "./canonicalize"
 
 export interface ForceRoute {
   /** App folder name, e.g. "Fair" */
@@ -15,7 +16,6 @@ export interface ForceRoute {
 const FORCE_REPO_OWNER = "artsy"
 const FORCE_REPO_NAME = "force"
 const FORCE_BRANCH = "main"
-const WEB_ORIGIN = "https://www.artsy.net"
 
 /** List every *Routes.tsx under src/Apps in force via the git tree API. */
 export async function listForceRouteFiles(): Promise<string[]> {
@@ -154,60 +154,6 @@ function recurseChildren(obj: ts.ObjectLiteralExpression, prefix: string, ctx: W
       walkForceRoute(child, prefix, ctx)
     }
   }
-}
-
-// --- path canonicalization ---------------------------------------------------
-
-/** Join a parent prefix with a (possibly relative, possibly index "") child path. */
-function joinPaths(prefix: string, path: string): string {
-  const clean = stripRegex(path)
-  if (clean === "" || clean === "/") return prefix || "/"
-  const a = prefix.replace(/\/+$/, "")
-  const b = clean.replace(/^\/+/, "")
-  const joined = `${a}/${b}`.replace(/\/{2,}/g, "/")
-  return joined.startsWith("/") ? joined : `/${joined}`
-}
-
-/**
- * Force uses react-router path syntax with regex escape hatches, e.g.
- * "exhibitors(.*)?", "booths(.*)?". Strip regex groups down to the literal.
- */
-function stripRegex(path: string): string {
-  return path
-    .replace(/\([^)]*\)\??/g, "") // drop (.*) / (foo|bar)? groups
-    .replace(/\/{2,}/g, "/")
-}
-
-/**
- * Expand optional params `:x?` into templates.
- * A missing optional only yields a real URL when it's the LAST segment
- * ("/collect/:medium?" -> "/collect/:medium" + "/collect"). Dropping a
- * non-terminal optional produces a nonsense path ("/fair/:slug?/exhibitors"
- * -> "/fair/exhibitors"), so there we keep only the present variant.
- */
-function expandOptionals(path: string): string[] {
-  const segments = path.split("/")
-  const idx = segments.findIndex((s) => /^:[\w-]+\?$/.test(s))
-  if (idx === -1) return [path.replace(/\?/g, "")]
-
-  const isLast = idx === segments.length - 1
-  const present = [...segments]
-  present[idx] = segments[idx].replace(/\?$/, "")
-  const results = expandOptionals(present.join("/"))
-
-  if (isLast) {
-    const absent = segments.filter((_, i) => i !== idx)
-    results.push(...expandOptionals(absent.join("/") || "/"))
-  }
-  return results
-}
-
-/** Turn a canonical path template into a concrete sample URL for eigen's matcher. */
-function toSampleURL(path: string): string {
-  const concrete = path
-    .replace(/:([\w-]+)\??/g, (_, name) => `example-${name}`) // handles inline params too
-    .replace(/\*/g, "example-splat")
-  return `${WEB_ORIGIN}${concrete.startsWith("/") ? "" : "/"}${concrete}`
 }
 
 // --- AST helpers -------------------------------------------------------------

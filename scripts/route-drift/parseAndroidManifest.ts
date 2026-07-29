@@ -54,7 +54,7 @@ export function parseAndroidManifest(file = MANIFEST_FILE): AndroidAllowlist {
   return { rules, prefixes, match }
 }
 
-function matchesRule(pathname: string, rule: ManifestPathRule): boolean {
+export function matchesRule(pathname: string, rule: ManifestPathRule): boolean {
   switch (rule.kind) {
     case "path":
       return pathname === rule.value

@@ -48,7 +48,7 @@ export async function fetchAASAExclusions(url = DEFAULT_AASA_URL): Promise<AASAE
 }
 
 /** Convert an AASA path pattern into a predicate over a concrete pathname. */
-function toMatcher(pattern: string): (path: string) => boolean {
+export function toMatcher(pattern: string): (path: string) => boolean {
   if (pattern.endsWith("/*")) {
     // Apple's legacy `paths` format: `*` matches zero-or-more characters, so
     // `/news/*` excludes `/news/` and everything under it — but NOT the bare
