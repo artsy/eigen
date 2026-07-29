@@ -121,14 +121,17 @@ describe("ReadMore", () => {
 
     renderWithWrappers(<ReadMore maxChars={7} content={text} />)
 
-    // should display - first... Read more in the beginning
+    // this parses as a real markdown list, so the bullet and the truncated item content
+    // render as separate text nodes rather than one combined string
     expect(screen.queryByText(text)).toBeFalsy()
-    expect(screen.queryByText("- first... Read more")).toBeTruthy()
+    expect(screen.getByText("• ")).toBeTruthy()
+    expect(screen.getByText(/first/)).toBeTruthy()
 
     fireEvent.press(screen.getByText(/Read more/))
 
-    // after pressing read more, read more goes away and the full text is displayed
-    expect(screen.queryByText(text)).toBeTruthy()
+    // after pressing read more, read more goes away and the rest of the list items are displayed
+    expect(screen.getByText(/second/)).toBeTruthy()
+    expect(screen.getByText(/whatarethose/)).toBeTruthy()
     expect(screen.queryByText(/Read more/)).toBeFalsy()
   })
 })

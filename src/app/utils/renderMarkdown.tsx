@@ -1,4 +1,4 @@
-import { LinkText, Separator, Text, TextProps } from "@artsy/palette-mobile"
+import { Flex, LinkText, Separator, Text, TextProps } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
@@ -131,7 +131,7 @@ export function defaultRules({
           } else {
             bullet = (
               <Text variant="sm" key={state.key}>
-                -{" "}
+                {"• "}
               </Text>
             )
           }
@@ -153,7 +153,7 @@ export function defaultRules({
             </View>
           )
         })
-        return <View>{items}</View>
+        return <Flex mb={1}>{items}</Flex>
       },
     },
 

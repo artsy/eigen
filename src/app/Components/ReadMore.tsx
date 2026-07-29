@@ -6,6 +6,7 @@ import {
   Text as PaletteText,
   TextProps as PaletteTextProps,
   Color,
+  bullet,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
@@ -61,17 +62,30 @@ export const ReadMore = React.memo(
     const rules = {
       ...basicRules,
       list: {
-        ...basicRules.paragraph,
+        ...basicRules.list,
         react: (
           node: SimpleMarkdown.SingleASTNode,
           output: SimpleMarkdown.Output<React.ReactNode>,
           state: SimpleMarkdown.State
         ) => {
           return (
-            <TextComponent {...textProps} color={color} key={state.key}>
-              {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
-              {output(node.content, state)}
-            </TextComponent>
+            <Flex key={state.key} mb={1}>
+              {!isExpanded && Number(state.key) > 0 ? (
+                <TextComponent {...textProps} color={color}>{` ${emdash} `}</TextComponent>
+              ) : null}
+              {node.items.map((item: SimpleMarkdown.SingleASTNode, i: number) => (
+                <Flex key={i} flexDirection="row">
+                  <TextComponent {...textProps} color={color}>
+                    {node.ordered ? `${(node.start ?? 1) + i}. ` : `${bullet} `}
+                  </TextComponent>
+                  <Flex flexShrink={1}>
+                    <TextComponent {...textProps} color={color}>
+                      {output(item, state)}
+                    </TextComponent>
+                  </Flex>
+                </Flex>
+              ))}
+            </Flex>
           )
         },
       },
