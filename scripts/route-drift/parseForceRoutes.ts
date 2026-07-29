@@ -281,14 +281,6 @@ function appNameFromPath(file: string): string {
   return m ? m[1] : "Unknown"
 }
 
-/**
- * Lazily-created Octokit client. Reads `GITHUB_TOKEN` from the environment
- * (populated from .env.releases by generate.ts), consistent with
- * scripts/changelog/generateChangelog.ts. The token is optional — force is a
- * public repo, so unauthenticated works but is rate-limited to 60/hour (see
- * listForceRouteFiles). It is created lazily rather than at module load so it
- * picks up the token *after* generate.ts has run dotenv's config().
- */
 let _octokit: Octokit | undefined
 function gh(): Octokit {
   if (!_octokit) {
@@ -298,10 +290,7 @@ function gh(): Octokit {
 }
 
 /**
- * Run an Octokit request with a couple of retries for transient network
- * failures — a dropped request would silently omit a whole app's routes and
- * understate drift (or inflate orphans). HTTP errors (401/404/…) won't fix
- * themselves on retry, so those fail fast with a helpful message.
+ * Run an Octokit request with a couple of retries for transient network failures
  */
 async function githubCall<T>(label: string, request: () => Promise<T>): Promise<T> {
   const MAX_ATTEMPTS = 3

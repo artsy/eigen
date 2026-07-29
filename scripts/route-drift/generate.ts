@@ -10,10 +10,9 @@
  * Usage:  yarn route-drift            # writes report, exits 0
  *         yarn route-drift --strict   # exits 1 if non-allowlisted drift exists (for CI)
  *
- * Force routes are fetched live from the GitHub API. A `GITHUB_TOKEN` (a token
- * with public repo read access) is read from `.env.releases` — or the
- * environment — to avoid rate limits; unauthenticated requests cap at 60/hour,
- * which isn't enough. Deliberate universal-link exclusions are read live from
+ * Force routes are fetched live from the GitHub API.
+ *
+ * Deliberate universal-link exclusions are read live from
  * artsy.net's AASA file.
  */
 import { readFileSync, writeFileSync } from "fs"
@@ -31,8 +30,6 @@ import {
   parseForceRoutes,
 } from "./parseForceRoutes"
 
-// Load GITHUB_TOKEN (used for the force route fetches) from .env.releases so it
-// doesn't have to be exported manually — mirrors scripts/changelog/generateChangelog.ts.
 config({ path: resolve(__dirname, "../../.env.releases") })
 
 const REPORT_PATH = join(__dirname, "route-drift-report.md")
