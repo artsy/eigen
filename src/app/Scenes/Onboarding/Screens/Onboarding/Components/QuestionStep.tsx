@@ -1,4 +1,5 @@
 import { Button, Flex, Pill, Spacer, Text, Theme, useScreenDimensions } from "@artsy/palette-mobile"
+import { ALWAYS_BLACK } from "app/utils/colors"
 import { MotiView } from "moti"
 import { useState } from "react"
 import Animated, { Easing, FadeInUp } from "react-native-reanimated"
@@ -44,7 +45,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
 
   return (
     <Theme theme="v3light">
-      <Flex flex={1} backgroundColor="mono100">
+      <Flex flex={1} backgroundColor={ALWAYS_BLACK}>
         <Logo />
 
         <MotiView
