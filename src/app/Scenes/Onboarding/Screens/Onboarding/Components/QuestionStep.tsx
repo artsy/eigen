@@ -11,22 +11,22 @@ export type Experience = "experienced" | "beginner"
 const EXPERIENCE_OPTIONS: { label: string; displayLabel: string; experience: Experience }[] = [
   {
     label: "I'm an experienced collector (4+ works)",
-    displayLabel: "I'm an experienced collector (4+ works)",
+    displayLabel: "I’m an experienced collector (4+ works)",
     experience: "experienced",
   },
   {
     label: "I've started my collection (1-3 works)",
-    displayLabel: "I've started my collection (1–3 works)",
+    displayLabel: "I’ve started my collection (1–3 works)",
     experience: "experienced",
   },
   {
     label: "I'm new to collecting, but I have something in mind",
-    displayLabel: "I'm new to collecting, but I have something in mind",
+    displayLabel: "I’m new to collecting, but I have something in mind",
     experience: "beginner",
   },
   {
     label: "I'm new to collecting and ready to explore",
-    displayLabel: "I'm new to collecting and ready to explore",
+    displayLabel: "I’m new to collecting and ready to explore",
     experience: "beginner",
   },
 ]
