@@ -325,6 +325,8 @@ describe("ArtworkListsProvider", () => {
   describe("Newly created artwork list (regression: ONYX-2196)", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
+      // The form's "Save" button only renders on Android (iOS submits via the
+      // keyboard's return key), so force Android to drive submission here.
       Platform.OS = "android"
     })
 
