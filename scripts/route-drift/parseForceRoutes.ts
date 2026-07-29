@@ -227,10 +227,9 @@ function gh(): Octokit {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 function isRateLimited(e: any): boolean {
-  return (
-    e?.response?.headers?.["x-ratelimit-remaining"] === "0" ||
-    /rate limit/i.test(String(e?.message ?? ""))
-  )
+  const remaining =
+    e?.response?.headers?.["x-ratelimit-remaining"] ?? e?.headers?.["x-ratelimit-remaining"]
+  return remaining === "0" || /rate limit/i.test(String(e?.message ?? ""))
 }
 
 /** Run an Octokit request, retrying transient failures with a short backoff. */

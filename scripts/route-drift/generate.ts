@@ -183,7 +183,7 @@ async function main() {
   writeFileSync(REPORT_PATH, reportMarkdown)
 
   const nativeCount = forceRows.filter((r) => r.isNative).length
-  const aasaCount = forceRows.filter((r) => !r.isNative && r.aasaExcluded).length
+  const aasaCount = forceRows.filter((r) => !r.isNative && !r.allowlisted && r.aasaExcluded).length
   console.log("")
   console.log(`Report written to ${REPORT_PATH}`)
   console.log(
