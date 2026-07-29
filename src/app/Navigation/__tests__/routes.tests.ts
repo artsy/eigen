@@ -951,6 +951,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "red",
+            "initialTab": "Artworks",
           },
           "type": "match",
         }
@@ -960,6 +961,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "blue",
+            "initialTab": "Artworks",
           },
           "type": "match",
         }
@@ -993,6 +995,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "red",
+            "initialTab": "Exhibitors",
           },
           "type": "match",
         }
@@ -1002,6 +1005,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "blue",
+            "initialTab": "Exhibitors",
           },
           "type": "match",
         }
@@ -1014,6 +1018,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "red",
+            "initialTab": "Exhibitors",
           },
           "type": "match",
         }
@@ -1023,6 +1028,7 @@ describe("artsy.net routes", () => {
           "module": "Fair",
           "params": {
             "fairID": "blue",
+            "initialTab": "Exhibitors",
           },
           "type": "match",
         }

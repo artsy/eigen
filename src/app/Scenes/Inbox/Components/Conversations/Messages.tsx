@@ -1,6 +1,5 @@
 import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
-import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
 import { usePartnerOfferEvent } from "app/Scenes/Inbox/hooks/usePartnerOfferEvent"
@@ -17,7 +16,6 @@ import { ConversationItem, groupConversationItems } from "./utils/groupConversat
 
 interface Props {
   conversation: Messages_conversation$data
-  me: usePartnerOffer_me$key
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
   onRefresh?: () => void
@@ -32,7 +30,7 @@ type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
-  const { conversation, me, relay, onDataFetching, onRefresh } = props
+  const { conversation, relay, onDataFetching, onRefresh } = props
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
@@ -40,7 +38,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const subjectArtwork = conversation.items?.[0]?.item
   const artworkId = subjectArtwork?.__typename === "Artwork" ? subjectArtwork.internalID : null
-  const partnerOfferEvent = usePartnerOfferEvent({ me, artworkId, conversation })
+  const partnerOfferEvent = usePartnerOfferEvent({ conversation, artworkId })
 
   // Get all messages and give them a key for use with flatlist
   const allMessages = extractNodes(conversation.messagesConnection)
@@ -192,6 +190,7 @@ export default createPaginationContainer(
     conversation: graphql`
       fragment Messages_conversation on Conversation
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+        ...usePartnerOffer_conversation
         id
         internalID
         from {
@@ -200,7 +199,6 @@ export default createPaginationContainer(
         to {
           name
         }
-        ...usePartnerOfferEvent_conversation
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {

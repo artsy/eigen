@@ -425,8 +425,8 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", () => {
+      renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
 
@@ -437,20 +437,6 @@ describe("HomeViewSectionArtworks", () => {
         homeViewStoreActions.bumpLiveRefetchKey()
       })
 
-      // Nothing fires yet — the refreshed data hasn't landed.
-      expect(mockTrackEvent).not.toHaveBeenCalledWith(
-        expect.objectContaining({ action: "railViewed" })
-      )
-
-      // Once the forced refetch completes, railViewed fires for the fresh data.
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
-          })
-        )
-      })
-
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "railViewed",
         context_module: "newWorksForYouRail",
@@ -459,8 +445,7 @@ describe("HomeViewSectionArtworks", () => {
       })
     })
 
-    it("does not re-fire railViewed on refresh when the WTYL rail is off screen", () => {
-      // The refresh-driven railViewed re-fire only happens while the rail is actually on screen.
+    it("re-fires railViewed once an off-screen rail is scrolled into view after a refresh", () => {
       const { env } = renderWithRelay({
         HomeViewSectionArtworks: () => RECOMMENDED_SECTION,
       })
@@ -480,10 +465,17 @@ describe("HomeViewSectionArtworks", () => {
         )
       })
 
-      // railViewed should not fire because the rail is off screen.
+      // Off screen at refresh time — nothing fires yet.
       expect(mockTrackEvent).not.toHaveBeenCalledWith(
         expect.objectContaining({ action: "railViewed" })
       )
+
+      // Scrolled into view afterwards — the pending refresh re-fires railViewed.
+      act(() => {
+        homeViewStoreActions.setViewableSections(["home-view-section-recommended-artworks"])
+      })
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(expect.objectContaining({ action: "railViewed" }))
     })
 
     it("re-fires railViewed on every refresh while the rail is in view", () => {
@@ -655,8 +647,8 @@ describe("HomeViewSectionArtworks", () => {
       setLiveSectionIDs([])
     })
 
-    it("re-fires railViewed only after the live refresh completes", () => {
-      const { env } = renderWithRelay({
+    it("re-fires railViewed as soon as the rail is refreshed", () => {
+      renderWithRelay({
         HomeViewSectionArtworks: () => NWFY_SECTION,
       })
 
@@ -665,19 +657,6 @@ describe("HomeViewSectionArtworks", () => {
 
       act(() => {
         homeViewStoreActions.bumpLiveRefetchKey()
-      })
-
-      // Nothing fires yet — the refreshed data hasn't landed.
-      expect(mockTrackEvent).not.toHaveBeenCalledWith(
-        expect.objectContaining({ action: "railViewed" })
-      )
-
-      act(() => {
-        env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            HomeViewSectionArtworks: () => NWFY_SECTION,
-          })
-        )
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith({

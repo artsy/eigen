@@ -16,7 +16,9 @@ import { getVersionFromBranch } from "../version"
 const RC_BRANCH = "rc-v9.12.0"
 // 2026-08-13 so the title stamps a known date.
 const NOW = DateTime.fromISO("2026-08-13T10:00:00")
-const mockFetch = jest.fn().mockResolvedValue({ ok: true })
+const mockFetch = jest
+  .fn()
+  .mockResolvedValue({ ok: true, json: async () => ({ ok: true, ts: "1000.1" }) })
 
 describe("getVersionFromBranch", () => {
   it("parses the version out of an rc-v branch", () => {
@@ -62,7 +64,8 @@ describe("createQaDocument", () => {
     jest.spyOn(console, "log").mockImplementation(() => {})
     jest.spyOn(console, "warn").mockImplementation(() => {})
     jest.spyOn(console, "error").mockImplementation(() => {})
-    process.env.SLACK_URL = "https://hooks.slack.com/services/TEST"
+    process.env.SLACK_TOKEN = "xoxb-test-token"
+    process.env.SLACK_CHANNEL = "C12345"
     delete process.env.IOS_BUILD
     delete process.env.ANDROID_BUILD
     delete process.env.PR_BODY
@@ -73,7 +76,8 @@ describe("createQaDocument", () => {
 
   afterEach(() => {
     jest.restoreAllMocks()
-    delete process.env.SLACK_URL
+    delete process.env.SLACK_TOKEN
+    delete process.env.SLACK_CHANNEL
     delete process.env.IOS_BUILD
     delete process.env.ANDROID_BUILD
     delete process.env.PR_BODY
@@ -90,10 +94,12 @@ describe("createQaDocument", () => {
       changelog: undefined,
     })
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://hooks.slack.com/services/TEST",
+      "https://slack.com/api/chat.postMessage",
       expect.objectContaining({
         method: "POST",
+        headers: expect.objectContaining({ Authorization: "Bearer xoxb-test-token" }),
         body: JSON.stringify({
+          channel: "C12345",
           text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/new-qa-page",
         }),
       })
@@ -107,9 +113,10 @@ describe("createQaDocument", () => {
 
     expect(duplicateTemplate).not.toHaveBeenCalled()
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://hooks.slack.com/services/TEST",
+      "https://slack.com/api/chat.postMessage",
       expect.objectContaining({
         body: JSON.stringify({
+          channel: "C12345",
           text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/existing-qa-page",
         }),
       })
@@ -148,24 +155,43 @@ describe("createQaDocument", () => {
     )
   })
 
-  it("includes the changelog in the Slack message when present", async () => {
+  it("posts the changelog as a threaded reply under the main message", async () => {
     process.env.PR_BODY =
       "## Release Candidate\n\n## Changelog\n\n### Dev changes\n- did a thing (#1)\n\n#nochangelog"
 
     await createQaDocument(RC_BRANCH, NOW)
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      "https://hooks.slack.com/services/TEST",
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      1,
+      "https://slack.com/api/chat.postMessage",
       expect.objectContaining({
         body: JSON.stringify({
-          text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/new-qa-page\n\n*Changelog*\n### Dev changes\n- did a thing (#1)",
+          channel: "C12345",
+          text: ":notion: The mobile QA document for v9.12.0 is available here: https://notion.so/new-qa-page",
+        }),
+      })
+    )
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      "https://slack.com/api/chat.postMessage",
+      expect.objectContaining({
+        body: JSON.stringify({
+          channel: "C12345",
+          text: "*Changelog*\n### Dev changes\n- did a thing (#1)",
+          thread_ts: "1000.1",
         }),
       })
     )
   })
 
-  it("skips the Slack post (without throwing) when SLACK_URL is not set", async () => {
-    delete process.env.SLACK_URL
+  it("does not post a second Slack message when there is no changelog", async () => {
+    await createQaDocument(RC_BRANCH, NOW)
+
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+  })
+
+  it("skips the Slack post (without throwing) when SLACK_TOKEN is not set", async () => {
+    delete process.env.SLACK_TOKEN
 
     await createQaDocument(RC_BRANCH, NOW)
 
@@ -177,7 +203,12 @@ describe("createQaDocument", () => {
     // The document was already created; a Slack outage must not turn the run red.
     ;(global as any).fetch = jest
       .fn()
-      .mockResolvedValue({ ok: false, status: 500, statusText: "Server Error" })
+      .mockResolvedValue({
+        ok: false,
+        status: 500,
+        statusText: "Server Error",
+        json: async () => ({}),
+      })
     await expect(createQaDocument(RC_BRANCH, NOW)).resolves.toBeUndefined()
     expect(duplicateTemplate).toHaveBeenCalled()
 

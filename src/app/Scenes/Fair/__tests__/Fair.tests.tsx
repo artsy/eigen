@@ -63,6 +63,61 @@ describe("Fair", () => {
     expect(screen.getByText("Artworks")).toBeOnTheScreen()
   })
 
+  it("defaults to the Overview tab", () => {
+    TabsWithHeader.mockImplementation((props) => {
+      return <Text>{props.initialTabName}</Text>
+    })
+    renderWithRelay()
+
+    expect(screen.getByText("Overview")).toBeOnTheScreen()
+  })
+
+  it("opens the tab specified by initialTab", () => {
+    TabsWithHeader.mockImplementation((props) => {
+      return <Text>{props.initialTabName}</Text>
+    })
+
+    const { renderWithRelay: renderWithInitialTab } = setupTestWrapper<FairTestsQuery>({
+      Component: ({ fair }) => <Fair fair={fair} initialTab="Artworks" />,
+      query: graphql`
+        query FairTestsArtworksTabQuery($fairID: String!) @relay_test_operation {
+          fair(id: $fairID) @required(action: NONE) {
+            ...Fair_fair
+          }
+        }
+      `,
+    })
+
+    renderWithInitialTab()
+
+    expect(screen.getByText("Artworks")).toBeOnTheScreen()
+  })
+
+  it("falls back to Overview when Exhibitors is requested but the fair has none", () => {
+    TabsWithHeader.mockImplementation((props) => {
+      return <Text>{props.initialTabName}</Text>
+    })
+
+    const { renderWithRelay: renderWithInitialTab } = setupTestWrapper<FairTestsQuery>({
+      Component: ({ fair }) => <Fair fair={fair} initialTab="Exhibitors" />,
+      query: graphql`
+        query FairTestsExhibitorsTabQuery($fairID: String!) @relay_test_operation {
+          fair(id: $fairID) @required(action: NONE) {
+            ...Fair_fair
+          }
+        }
+      `,
+    })
+
+    renderWithInitialTab({
+      Fair: () => ({
+        _exhibitors: { totalCount: 0 },
+      }),
+    })
+
+    expect(screen.getByText("Overview")).toBeOnTheScreen()
+  })
+
   it("tracks tap navigating to the exhibitors tab", () => {
     TabsWithHeader.mockImplementation((props) => {
       props.onTabChange?.({ tabName: "Exhibitors" })

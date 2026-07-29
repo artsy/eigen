@@ -10,6 +10,18 @@ If things are not going right some of the things you can try are
 - `open ios/Artsy.xcworkspace` -> Product -> Clean Build Folder (shift + command + K) **then** build the app again
 - `yarn doctor`
 
+## Clean / repair scripts
+
+Instead of running the manual steps above one by one, these scripts (in `scripts/utils/`) bundle them together:
+
+- `yarn clean` — Wipes caches and build artifacts (Gradle build dirs, watchman, Metro/haste temp dirs, CocoaPods cache, Xcode DerivedData, `.vendor` gems) and deletes/reinstalls bare `node_modules`. Does **not** run `setup:artsy` or `install:all` — you'll still need those to get back to a fully working state.
+- `yarn clean:light` — Same as `yarn clean` but skips the slower native-side steps (Gradle clean, watchman reset, Xcode DerivedData, gems). Use this for a quick JS-only cache/dependency reset.
+- `yarn repair` — The full fix-it workflow: `yarn clean && yarn setup:artsy && yarn install:all`. Use this when you're experiencing build failures or an unknown/corrupted environment state.
+- `yarn repair:light` — Same as `yarn repair` but uses `yarn clean:light`, so it skips the native-side cleanup. Faster, good first thing to try before reaching for the full `yarn repair`.
+- `yarn flip-table-extreme` — The nuclear option. Only reach for this if `yarn repair` didn't fix it (deep caching issues, native dependency conflicts, Relay/GraphQL codegen issues, or after using a locally-linked `palette-mobile`).
+
+**`yarn ios` isn't pulling the build from S3** — try `yarn repair:light` first. It clears the local build cache (among other things) and reinstalls, which resolves most cases where a stale local/dependency state is preventing the S3 cache lookup from matching.
+
 Still nothing?
 
 - reinstall eigen

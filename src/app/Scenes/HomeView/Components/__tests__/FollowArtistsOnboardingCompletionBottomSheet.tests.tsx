@@ -4,6 +4,7 @@ import { FollowArtistsOnboardingCompletionBottomSheet } from "app/Scenes/HomeVie
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import PagerView from "react-native-pager-view"
 
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({
@@ -176,18 +177,21 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
     it("dismisses and resets global state when View For You is pressed", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
 
       await screen.findByText("Your followed artists are saved to Favorites.")
 
-      const viewForYouButton = screen.queryByText("View For You")
+      // Navigate to page 1 to show "View For You" button
+      const pagerView = UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
 
-      if (viewForYouButton) {
-        fireEvent.press(viewForYouButton)
+      const viewForYouButton = await screen.findByText("View For You")
+      fireEvent.press(viewForYouButton)
 
-        const state = __globalStoreTestUtils__!.getCurrentState()
-        expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
-      }
+      const state = __globalStoreTestUtils__!.getCurrentState()
+      expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
     })
 
     it("clears followedOnboardingArtists once the sheet is dismissed", async () => {
@@ -211,6 +215,57 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       expect(
         __globalStoreTestUtils__?.getCurrentState().onboarding.followedOnboardingArtists
       ).toEqual([])
+    })
+  })
+
+  describe("Tap to progress behavior", () => {
+    it("advances from page 0 to page 1 when tapping anywhere on the sheet", async () => {
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+      expect(screen.getByText("Next")).toBeOnTheScreen()
+
+      // Get PagerView and spy on setPage
+      const pagerView = UNSAFE_getByType(PagerView)
+      const setPageSpy = jest.spyOn(pagerView.props.ref.current, "setPage")
+
+      // Simulate tap using gesture handler test utils
+      fireGestureHandler(getByGestureTestId("tap-to-progress"))
+
+      // Verify tap called setPage(1) and did not dismiss
+      expect(setPageSpy).toHaveBeenCalledWith(1)
+      expect(
+        __globalStoreTestUtils__!.getCurrentState().onboarding.showFollowedArtistSummaryBottomSheet
+      ).toBe(true)
+    })
+
+    it("dismisses the sheet when tapping anywhere on page 1", async () => {
+      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+
+      const { UNSAFE_getByType } = renderWithWrappers(
+        <FollowArtistsOnboardingCompletionBottomSheet />
+      )
+
+      await screen.findByText("Your followed artists are saved to Favorites.")
+
+      // Navigate to page 1
+      const pagerView = UNSAFE_getByType(PagerView)
+      pagerView.props.onPageScroll({ nativeEvent: { position: 1 } })
+
+      // Should show "View For You" button on page 1
+      expect(await screen.findByText("View For You")).toBeOnTheScreen()
+
+      // Simulate tap gesture
+      fireGestureHandler(getByGestureTestId("tap-to-progress"))
+
+      // Should dismiss and reset state
+      const state = __globalStoreTestUtils__!.getCurrentState()
+      expect(state.onboarding.showFollowedArtistSummaryBottomSheet).toBe(false)
+      expect(state.onboarding.followedOnboardingArtists).toEqual([])
     })
   })
 })

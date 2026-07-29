@@ -311,6 +311,36 @@ def format_build_number(build_number)
   detruncated_components.join('.')
 end
 
+def testflight_build_already_shipped?(bundle_version)
+  # Compares against the latest build number App Store Connect has already accepted for this
+  # app. Two beta triggers close together compute the same time-based bundle_version (hourly
+  # granularity), so this catches the collision before we spend ~30-60 min building for nothing
+  # (and, more importantly, before Sentry sourcemaps get uploaded under a release name that a
+  # prior successful run already owns).
+  api_key = generate_app_store_connect_api_key
+  latest_build_number = latest_testflight_build_number(api_key: api_key)
+  format_build_number(latest_build_number.to_s) == bundle_version
+end
+
+def play_store_version_already_shipped?(version_code, track: 'alpha')
+  # Same idea as testflight_build_already_shipped? above, but for the Play Store alpha track.
+  # version_code is normally current-max + 1 (see set_build_version_android), so this only
+  # trips when a concurrent run already claimed that version_code (or a later one) first.
+  current_max_version_code = google_play_track_version_codes(track: track).first
+  version_code.to_i <= current_max_version_code.to_i
+end
+
+def firebase_build_already_shipped?(app_id, build_version)
+  # Firebase App Distribution has no built-in duplicate-version protection (unlike TestFlight/
+  # Play Store), so without this check a same-hour re-trigger would happily re-upload and
+  # re-distribute the exact same build. buildVersion is CFBundleVersion on iOS / versionCode on
+  # Android, matching what we pass in as build_version here.
+  latest_release = firebase_app_distribution_get_latest_release(app: app_id)
+  return false if latest_release.nil?
+
+  latest_release[:buildVersion].to_s == build_version.to_s
+end
+
 def git_tag_commit_message(tag)
   # Returns the subject line of the commit the tag points to, or nil if the tag doesn't exist.
   msg = `git log -1 --format='%s' "#{tag}^{}" 2>/dev/null`.chomp

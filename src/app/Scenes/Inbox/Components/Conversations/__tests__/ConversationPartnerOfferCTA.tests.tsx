@@ -11,11 +11,10 @@ const futureISO = (minutes = 60) => new Date(Date.now() + minutes * 60 * 1000).t
 const pastISO = () => new Date(Date.now() - 60 * 60 * 1000).toISOString()
 
 const { renderWithRelay } = setupTestWrapper<ConversationPartnerOfferCTA_Test_Query>({
-  Component: ({ me }) => <ConversationPartnerOfferCTA conversation={me!.conversation!} me={me!} />,
+  Component: ({ me }) => <ConversationPartnerOfferCTA conversation={me!.conversation!} />,
   query: graphql`
     query ConversationPartnerOfferCTA_Test_Query($conversationID: String!) @relay_test_operation {
       me {
-        ...usePartnerOffer_me
         conversation(id: $conversationID) {
           ...ConversationPartnerOfferCTA_conversation
         }
@@ -41,9 +40,7 @@ const offerResolvers = (
         },
       },
     ],
-  }),
-  Me: () => ({
-    partnerOffersConnection: {
+    collectorPartnerOffersConnection: {
       edges: [
         {
           node: {
@@ -90,8 +87,8 @@ describe("ConversationPartnerOfferCTA", () => {
     renderWithRelay({
       Conversation: () => ({
         items: [{ item: { __typename: "Artwork", internalID: "artwork-id", href: "/foo" } }],
+        collectorPartnerOffersConnection: { edges: [] },
       }),
-      Me: () => ({ partnerOffersConnection: { edges: [] } }),
     })
 
     expect(screen.queryByTestId("partnerOfferActionLink")).toBeNull()

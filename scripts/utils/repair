@@ -20,13 +20,19 @@ set -euxo pipefail
 #
 # For even more aggressive cleanup (global caches, relay, etc), use:
 # yarn flip_table_extreme
-
+#
+# Pass --light (or use `yarn repair:light`) to run the lighter `yarn clean
+# --light` instead, skipping the slower native-side cleanup steps.
 
 echo '🔧 Starting full environment repair...'
 echo ''
 
 echo '📦 Step 1/3: Cleaning all dependencies, caches, and build artifacts'
-yarn clean
+if [ "${1:-}" = "--light" ]; then
+	yarn clean --light
+else
+	yarn clean
+fi
 
 echo '🎨 Step 2/4: Yarn install' # needed for yarn 4
 yarn

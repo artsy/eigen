@@ -144,8 +144,11 @@ describe("partner offer banner priority", () => {
   const futureISO = () => new Date(Date.now() + 60 * 60 * 1000).toISOString()
 
   const offerResolvers = (activeOrderEdges: any[]) => ({
-    Me: () => ({
-      partnerOffersConnection: {
+    Conversation: () => ({
+      internalID: "conversation-id",
+      items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
+      activeOrders: { edges: activeOrderEdges },
+      collectorPartnerOffersConnection: {
         edges: [
           {
             node: {
@@ -159,11 +162,6 @@ describe("partner offer banner priority", () => {
           },
         ],
       },
-    }),
-    Conversation: () => ({
-      internalID: "conversation-id",
-      items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
-      activeOrders: { edges: activeOrderEdges },
     }),
     // Both `items.item` and `liveArtwork` resolve to the artwork the offer targets.
     Artwork: () => ({

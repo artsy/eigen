@@ -158,7 +158,6 @@ export const Conversation: React.FC<Props> = ({
     >
       <Composer
         conversation={conversation}
-        me={me}
         disabled={sendingMessage || !isConnected}
         // @ts-expect-error REACT_18_UPGRADE
         value={failedMessageText}
@@ -185,7 +184,6 @@ export const Conversation: React.FC<Props> = ({
           <Messages
             componentRef={(messages) => (messagesRef.current = messages)}
             conversation={conversation}
-            me={me}
             onRefresh={() => {
               relay.refetch(
                 { conversationID: conversation?.internalID },
@@ -210,8 +208,6 @@ export const ConversationFragmentContainer = createRefetchContainer(
   {
     me: graphql`
       fragment Conversation_me on Me {
-        ...usePartnerOffer_me
-
         conversation(id: $conversationID) {
           ...Composer_conversation
           ...Messages_conversation

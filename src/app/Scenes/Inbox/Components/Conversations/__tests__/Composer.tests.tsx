@@ -16,13 +16,10 @@ const { renderWithRelay } = setupTestWrapper<
   ComposerTestsQuery,
   { disabled?: boolean; value?: string; onSubmit?: (text: string) => void }
 >({
-  Component: ({ me, ...props }) => (
-    <Composer conversation={me!.conversation!} me={me!} {...props} />
-  ),
+  Component: ({ me, ...props }) => <Composer conversation={me!.conversation!} {...props} />,
   query: graphql`
     query ComposerTestsQuery @relay_test_operation {
       me {
-        ...usePartnerOffer_me
         conversation(id: "whatever") {
           ...Composer_conversation
         }

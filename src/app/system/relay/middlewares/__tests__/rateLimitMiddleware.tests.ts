@@ -100,4 +100,48 @@ describe("rateLimitMiddleware", () => {
 
     Date.now = now
   })
+
+  it("resets gradually under sustained traffic that never has a gap >= interval", async () => {
+    // Regression test: this scenario used to break the middleware, because resetting was
+    // previously based on the gap between consecutive requests rather than a sliding window.
+    // Requests arriving every 300ms (always < the 1000ms interval) meant the counter would
+    // climb indefinitely once traffic stayed continuous, causing recurring bursts of thrown
+    // errors instead of the window correctly expiring on schedule.
+    const now = Date.now
+    const logger = jest.fn()
+    const middleware = rateLimitMiddleware({ logger, limit: 3, interval: 1000 })
+
+    const timestamps = [0, 300, 600, 900, 1200]
+    const results: Array<"ok" | "throw"> = []
+
+    for (const timestamp of timestamps) {
+      Date.now = jest.fn(() => timestamp)
+
+      try {
+        await middleware(next)(request)
+        results.push("ok")
+      } catch {
+        results.push("throw")
+      }
+    }
+
+    // 0, 300, 600 fill the window (limit 3); 900 is still within 1000ms of t=0 so it throws;
+    // by 1200 the window starting at t=0 has fully expired, so the request succeeds again.
+    expect(results).toEqual(["ok", "ok", "ok", "throw", "ok"])
+
+    Date.now = now
+  })
+
+  it("respects the default limit/interval when constructed with no options", async () => {
+    const middleware = rateLimitMiddleware()
+
+    const requests = Array.from({ length: 101 }, async () => middleware(next)(request))
+    const results = await Promise.allSettled(requests)
+
+    const fulfilled = results.filter((result) => result.status === "fulfilled")
+    const rejected = results.filter((result) => result.status === "rejected")
+
+    expect(fulfilled).toHaveLength(100)
+    expect(rejected).toHaveLength(1)
+  })
 })

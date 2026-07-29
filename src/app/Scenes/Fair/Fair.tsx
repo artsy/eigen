@@ -34,9 +34,10 @@ import { FairHeader } from "./Components/FairHeader"
 
 interface FairProps {
   fair: Fair_fair$key
+  initialTab?: string
 }
 
-export const Fair: React.FC<FairProps> = ({ fair }) => {
+export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => {
   const data = useFragment(fragment, fair)
   const tracking = useTracking()
 
@@ -93,6 +94,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const hasExhibitors = !!data._exhibitors?.totalCount
 
+  // Guard against deep-linking to the Exhibitors tab when it isn't rendered
+  const resolvedInitialTab = initialTab === "Exhibitors" && !hasExhibitors ? "Overview" : initialTab
+
   return (
     <ArtworkFiltersStoreProvider>
       <ProvideScreenTracking
@@ -107,7 +111,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           pagerProps={{
             scrollEnabled: false,
           }}
-          initialTabName="Overview"
+          initialTabName={resolvedInitialTab}
           title={`${data.name}`}
           showLargeHeaderText={false}
           BelowTitleHeaderComponent={renderBelowHeaderComponent}
@@ -177,9 +181,10 @@ export const FairScreenQuery = graphql`
 
 interface FairQueryRendererProps {
   fairID: string
+  initialTab?: string
 }
 
-const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
+const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID, initialTab }) => {
   const data = useLazyLoadQuery<FairQuery>(
     FairScreenQuery,
     { fairID },
@@ -194,12 +199,12 @@ const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
     return null
   }
 
-  return <Fair fair={data.fair} />
+  return <Fair fair={data.fair} initialTab={initialTab} />
 }
 
-export const FairScreen: React.FC<FairQueryRendererProps> = ({ fairID }) => (
+export const FairScreen: React.FC<FairQueryRendererProps> = ({ fairID, initialTab }) => (
   <Suspense fallback={<FairPlaceholder />}>
-    <FairQueryRenderer fairID={fairID} />
+    <FairQueryRenderer fairID={fairID} initialTab={initialTab} />
   </Suspense>
 )
 

@@ -1,20 +1,20 @@
 import { ConversationPartnerOfferCTA_partnerOffers$key } from "__generated__/ConversationPartnerOfferCTA_partnerOffers.graphql"
-import { usePartnerOffer_me$key } from "__generated__/usePartnerOffer_me.graphql"
+import { usePartnerOffer_conversation$key } from "__generated__/usePartnerOffer_conversation.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
 interface UsePartnerOfferProps {
-  me: usePartnerOffer_me$key
+  conversation: usePartnerOffer_conversation$key
   artworkId?: string | null
 }
 
-export const usePartnerOffer = ({ me, artworkId }: UsePartnerOfferProps) => {
-  const data = useFragment(fragment, me)
+export const usePartnerOffer = ({ conversation, artworkId }: UsePartnerOfferProps) => {
+  const data = useFragment(fragment, conversation)
   const isPartnerOfferConvoEnabled = useFeatureFlag("AREnableConversationPartnerOffers")
 
-  const partnerOffers = extractNodes(data?.partnerOffersConnection)
+  const partnerOffers = extractNodes(data?.collectorPartnerOffersConnection)
   const partnerOffer = partnerOffers.find((p) => p.artworkId === artworkId) ?? undefined
 
   return {
@@ -25,8 +25,8 @@ export const usePartnerOffer = ({ me, artworkId }: UsePartnerOfferProps) => {
 }
 
 const fragment = graphql`
-  fragment usePartnerOffer_me on Me {
-    partnerOffersConnection(first: 100, offerType: [PERSONALIZED]) {
+  fragment usePartnerOffer_conversation on Conversation {
+    collectorPartnerOffersConnection(first: 10, offerType: [PERSONALIZED]) {
       edges {
         node {
           ...ConversationPartnerOfferCTA_partnerOffers

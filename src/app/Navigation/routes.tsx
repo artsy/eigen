@@ -875,6 +875,10 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [FairScreenQuery],
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Exhibitors",
+    }),
   },
   {
     path: "/fair/:fairID/artworks",
@@ -886,6 +890,10 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [FairScreenQuery],
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Artworks",
+    }),
   },
   {
     path: "/fair/:fairID/exhibitors",
@@ -897,6 +905,10 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [FairScreenQuery],
+    injectParams: (params) => ({
+      ...params,
+      initialTab: "Exhibitors",
+    }),
   },
   {
     path: "/fair/:fairID/followedArtists",

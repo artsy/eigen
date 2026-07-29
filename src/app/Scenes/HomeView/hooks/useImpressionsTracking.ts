@@ -24,6 +24,7 @@ export const useItemsImpressionsTracking = ({
   // Use different state management for test vs production
   const renderedItems = useSharedValue<Array<TrackableItem>>([])
   const [testRenderedItems, setTestRenderedItems] = useState<Array<TrackableItem>>([])
+  const [key, setKey] = useState<number>(0)
 
   const trackedItems = useRef<Set<string>>(new Set()).current
 
@@ -106,18 +107,20 @@ export const useItemsImpressionsTracking = ({
         runOnJS(trackItems)(currentItems)
       }
     },
-    [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
+    [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule, key]
   )
 
   // Clears the per-item "already tracked" guard so itemViewed events become
   // eligible to fire again, e.g. after a forced data refresh of the rail.
   const resetTracking = useCallback(() => {
     trackedItems.clear()
-  }, [trackedItems])
+    setKey(key + 1)
+  }, [trackedItems, key])
 
   return {
     onViewableItemsChanged,
-    viewabilityConfig,
     resetTracking,
+    trackingKey: key,
+    viewabilityConfig,
   }
 }

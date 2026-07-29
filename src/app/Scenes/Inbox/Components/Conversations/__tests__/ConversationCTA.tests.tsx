@@ -14,11 +14,10 @@ import { ComponentType } from "react"
 import { graphql } from "react-relay"
 
 const { renderWithRelay } = setupTestWrapper<ConversationCTATestsQuery>({
-  Component: ({ me }) => <ConversationCTA show conversation={me!.conversation!} me={me!} />,
+  Component: ({ me }) => <ConversationCTA show conversation={me!.conversation!} />,
   query: graphql`
     query ConversationCTATestsQuery($conversationID: String!) @relay_test_operation {
       me {
-        ...usePartnerOffer_me
         conversation(id: $conversationID) {
           ...ConversationCTA_conversation
         }
@@ -102,12 +101,7 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
       Conversation: () => ({
         items: [{ item: { __typename: "Artwork" }, liveArtwork: { __typename: "Artwork" } }],
         activeOrders: { edges: [] },
-      }),
-      // Ensures both `items.item` and `liveArtwork` resolve to the same artwork id
-      // that the offer below references.
-      Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
-      Me: () => ({
-        partnerOffersConnection: {
+        collectorPartnerOffersConnection: {
           edges: [
             {
               node: {
@@ -121,6 +115,9 @@ describe("conversation about an artwork with inquiry checkout enabled", () => {
           ],
         },
       }),
+      // Ensures both `items.item` and `liveArtwork` resolve to the same artwork id
+      // that the offer below references.
+      Artwork: () => ({ internalID: "123", href: "/artwork/foo", isOfferableFromInquiry: true }),
     }
 
     it("replaces the inquiry buttons with the offer banner when the flag is on", () => {
