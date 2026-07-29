@@ -310,7 +310,7 @@ const HomeViewScreenComponent: React.FC = () => {
     <HomeViewStoreProvider>
       <Flex
         pt={4}
-        backgroundColor="green10"
+        backgroundColor="green100"
         height={120}
         justifyContent="center"
         alignItems="center"
