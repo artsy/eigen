@@ -19,7 +19,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { join, resolve } from "path"
 import { parse } from "url"
 import { config } from "dotenv"
-import { classifyURL, compileEigenRoutes } from "./match"
+import { classifyURL, compileEigenRoutes, NON_NATIVE_MODULES } from "./match"
 import { AASAExclusions, fetchAASAExclusions } from "./parseAASA"
 import { AndroidAllowlist, parseAndroidManifest } from "./parseAndroidManifest"
 import { EigenRoute, parseEigenRoutes } from "./parseEigenRoutes"
@@ -50,8 +50,6 @@ interface ForceRow extends ForceRoute {
   /** Matched an ignore-prefix (dev tooling) — hidden from the report entirely. */
   ignored: boolean
 }
-
-const NON_NATIVE = new Set(["ReactWebView", "ModalWebView", "VanityURLEntity"])
 
 async function main() {
   const strict = process.argv.includes("--strict")
@@ -137,7 +135,7 @@ async function main() {
   // Check B — eigen native screens NOT reachable via an Android App Link (no
   // matching manifest rule). Parallel to the iOS 🔀 check.
   const nativeNotInManifest = eigenRoutes
-    .filter((r) => !NON_NATIVE.has(r.name))
+    .filter((r) => !NON_NATIVE_MODULES.has(r.name))
     .filter((r) => r.path !== "/" && !r.path.includes("*"))
     // Leading-param routes (e.g. "/:profile_id_ignored/artist/:artistID", a legacy
     // alias) have no static prefix, so Android can't allowlist them — not actionable.
@@ -163,7 +161,7 @@ async function main() {
   // 5. reverse: eigen native routes with no force counterpart
   const forceNormalized = new Set(forceRoutes.map((r) => normalize(r.forcePath)))
   const orphans = eigenRoutes
-    .filter((r) => !NON_NATIVE.has(r.name))
+    .filter((r) => !NON_NATIVE_MODULES.has(r.name))
     .filter((r) => !r.path.includes("*")) // wildcards can't be point-compared
     .filter((r) => !forceNormalized.has(normalize(r.path)))
     .filter((r) => !allowedOrphans.has(r.path))
