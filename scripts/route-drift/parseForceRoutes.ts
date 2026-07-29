@@ -10,8 +10,6 @@ export interface ForceRoute {
   forcePath: string
   /** Concrete sample URL with params substituted, for feeding eigen's matcher */
   sampleURL: string
-  /** Whether the route object declares a component/render (navigable) */
-  hasComponent: boolean
 }
 
 const FORCE_REPO_OWNER = "artsy"
@@ -88,12 +86,18 @@ export async function parseForceRoutes(
         ts.ScriptKind.TSX
       )
       const roots = findForceRouteArrays(source)
+      const before = routes.length
       for (const arr of roots) {
         for (const el of arr.elements) {
           if (ts.isObjectLiteralExpression(el)) {
             walkForceRoute(el, "", { app, file, routes, warnings })
           }
         }
+      }
+      if (routes.length === before) {
+        warnings.push(
+          `No route arrays extracted from ${file} — check for an unsupported initializer (as const / satisfies).`
+        )
       }
     } catch (e) {
       warnings.push(`Failed to parse ${file}: ${(e as Error).message}`)
@@ -128,7 +132,6 @@ function walkForceRoute(obj: ts.ObjectLiteralExpression, prefix: string, ctx: Wa
   }
 
   const full = joinPaths(prefix, rawPath)
-  const hasComponent = objHasAny(obj, ["getComponent", "Component", "render", "getElement"])
 
   // Emit the route (expanding optional params into with/without variants)
   for (const canonical of expandOptionals(full)) {
@@ -137,7 +140,6 @@ function walkForceRoute(obj: ts.ObjectLiteralExpression, prefix: string, ctx: Wa
       file: ctx.file,
       forcePath: canonical,
       sampleURL: toSampleURL(canonical),
-      hasComponent,
     })
   }
 
@@ -256,19 +258,6 @@ function getArrayProp(
     }
   }
   return undefined
-}
-
-function objHasAny(obj: ts.ObjectLiteralExpression, keys: string[]): boolean {
-  return obj.properties.some((prop) => {
-    const name =
-      (ts.isPropertyAssignment(prop) ||
-        ts.isMethodDeclaration(prop) ||
-        ts.isShorthandPropertyAssignment(prop)) &&
-      prop.name
-        ? propName(prop.name)
-        : undefined
-    return name !== undefined && keys.includes(name)
-  })
 }
 
 function propName(name: ts.PropertyName): string | undefined {
