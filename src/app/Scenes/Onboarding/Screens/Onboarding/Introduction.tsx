@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Theme } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
@@ -69,11 +69,7 @@ export const Introduction: React.FC = () => {
   const renderStep = () => {
     switch (currentStep) {
       case STEP_QUESTION:
-        return (
-          <Theme theme="v3light">
-            <QuestionStep onSelect={handleSelectExperience} />
-          </Theme>
-        )
+        return <QuestionStep onSelect={handleSelectExperience} />
       case STEP_BROWSE_PROMPT:
         return <BrowsePromptStep onNext={next} onSkip={handleSkipToHome} />
       case STEP_ARTWORK_MONTAGE:
