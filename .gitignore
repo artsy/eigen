@@ -10,6 +10,7 @@
 .build
 .clang-format
 .claude/settings.local.json
+.claude/projects/
 .idea/
 .pt
 .recordingSnapshots
