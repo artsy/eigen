@@ -1,6 +1,6 @@
 import { parse } from "url"
-import { EigenRoute } from "./parseEigenRoutes"
 import { RouteMatcher } from "../../src/app/system/navigation/utils/RouteMatcher"
+import type { EigenRoute } from "./parseEigenRoutes"
 
 /** Module names that mean "not handled natively — opens a webview / vanity resolver". */
 export const NON_NATIVE_MODULES = new Set(["ReactWebView", "ModalWebView", "VanityURLEntity"])
