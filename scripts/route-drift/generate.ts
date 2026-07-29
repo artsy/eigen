@@ -84,7 +84,9 @@ async function main() {
     aasa = fetchAASAExclusions()
     console.log(`  loaded ${aasa.patterns.length} AASA universal-link exclusions`)
   } catch (e) {
-    aasaWarn.push(`Could not fetch AASA exclusions (skipping this layer): ${(e as Error).message}`)
+    const msg = `Could not fetch AASA exclusions (skipping this layer): ${(e as Error).message}`
+    aasaWarn.push(msg)
+    console.warn(`⚠️  ${msg}`)
   }
 
   // 3b. Android App Links allowlist (local AndroidManifest.xml)
@@ -94,9 +96,24 @@ async function main() {
     android = parseAndroidManifest()
     console.log(`  loaded ${android.prefixes.length} Android manifest path rules`)
   } catch (e) {
-    manifestWarn.push(
-      `Could not parse AndroidManifest.xml (skipping Android checks): ${(e as Error).message}`
+    const msg = `Could not parse AndroidManifest.xml (skipping Android checks): ${
+      (e as Error).message
+    }`
+    manifestWarn.push(msg)
+    console.warn(`⚠️  ${msg}`)
+  }
+
+  // A missing layer silently inverts the report: without AASA, every deliberately
+  // excluded route becomes "actionable drift"; without the manifest, every native
+  // route looks "missing from the Android allowlist". In --strict/CI that would
+  // fail the build for the wrong reason, with the real cause buried in the
+  // (gitignored) report — so fail loudly and immediately instead.
+  if (strict && (aasaWarn.length > 0 || manifestWarn.length > 0)) {
+    console.error(
+      "\n✗ strict mode: required layer(s) unavailable — refusing to emit a misleading report:\n" +
+        [...aasaWarn, ...manifestWarn].map((w) => `  - ${w}`).join("\n")
     )
+    process.exit(1)
   }
 
   // Check A — cross-platform inconsistency: paths the Android manifest INCLUDES

@@ -54,8 +54,13 @@ export function fetchAASAExclusions(url = DEFAULT_AASA_URL): AASAExclusions {
 /** Convert an AASA path pattern into a predicate over a concrete pathname. */
 function toMatcher(pattern: string): (path: string) => boolean {
   if (pattern.endsWith("/*")) {
-    const base = pattern.slice(0, -2) // "/news/*" -> under "/news/"
-    return (p) => p === base || p.startsWith(base + "/")
+    // Apple's legacy `paths` format: `*` matches zero-or-more characters, so
+    // `/news/*` excludes `/news/` and everything under it — but NOT the bare
+    // `/news`, which stays deep-linkable unless it has its own exact `NOT` entry
+    // (artsy's list has both `/news` and `/news/*`). Match the prefix *including*
+    // the trailing slash so the bare path is left alone.
+    const base = pattern.slice(0, -1) // "/news/*" -> prefix "/news/"
+    return (p) => p.startsWith(base)
   }
   if (pattern.endsWith("*")) {
     const base = pattern.slice(0, -1) // "/gender-equality*" -> prefix "/gender-equality"
