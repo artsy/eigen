@@ -17,10 +17,10 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext, onSk
   const { bottom } = useSafeAreaInsets()
 
   return (
-    <Flex flex={1} px={2} backgroundColor="mono100">
-      <Logo />
+    <Flex flex={1} px={2} backgroundColor="mono0">
+      <Logo fill="mono100" />
       <Flex flex={1} justifyContent="center">
-        <Text variant="xl" color="mono0">
+        <Text variant="xl" color="mono100">
           We’ll show you a selection of art. To get started, save 5 that speak to you.
         </Text>
       </Flex>
@@ -31,10 +31,10 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext, onSk
           .delay(BUTTONS_ENTERING_DELAY)
           .easing(Easing.out(Easing.quad))}
       >
-        <Button variant="fillLight" block onPress={onNext}>
+        <Button variant="fillDark" block onPress={onNext}>
           Start browsing
         </Button>
-        <Button variant="fillDark" block onPress={onSkip}>
+        <Button variant="fillLight" block onPress={onSkip}>
           Skip to Home
         </Button>
       </AnimatedFlex>

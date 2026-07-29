@@ -1,6 +1,7 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Screens/Auth/AuthContext"
+import { ALWAYS_BLACK, ALWAYS_WHITE } from "app/utils/colors"
 import { MotiView } from "moti"
 import React from "react"
 import { Image } from "react-native"
@@ -14,12 +15,11 @@ export const AuthBackground: React.FC = () => {
   const safeArea = useSafeAreaInsets()
 
   return (
-    // Setting the background to black in dark and light mode.
-    <Flex backgroundColor="black" height="100%" pt="-200px" pb="-200px">
+    <Flex backgroundColor={ALWAYS_BLACK} height="100%" pt="-200px" pb="-200px">
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
-        <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill="white" />
+        <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill={ALWAYS_WHITE} />
       </Flex>
 
       <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
@@ -48,21 +48,11 @@ export const AuthBackground: React.FC = () => {
           }}
         >
           <Flex maxWidth={isTablet() ? 600 : undefined} gap={isTablet() ? 2 : 1}>
-            <Text
-              variant={isTablet() ? "xxl" : "xl"}
-              // We want to show this text in white regardless of the theme to make sure it can be read clearly
-              color="white"
-              selectable={false}
-            >
+            <Text variant={isTablet() ? "xxl" : "xl"} color={ALWAYS_WHITE} selectable={false}>
               Discover and Buy Art That Moves You
             </Text>
 
-            <Text
-              variant={isTablet() ? "lg" : "sm"}
-              // We want to show this text in white regardless of the theme to make sure it can be read clearly
-              color="white"
-              selectable={false}
-            >
+            <Text variant={isTablet() ? "lg" : "sm"} color={ALWAYS_WHITE} selectable={false}>
               Your personalized guide to fresh artworks and the latest stories—and the easiest way
               to buy art you love.
             </Text>
