@@ -86,7 +86,7 @@ export const Introduction: React.FC = () => {
   }
 
   return (
-    <Flex flex={1} backgroundColor={ALWAYS_BLACK}>
+    <Flex flex={1} backgroundColor={currentStep === STEP_BROWSE_PROMPT ? "mono0" : ALWAYS_BLACK}>
       <AnimatePresence>
         <MotiView
           key={currentStep}

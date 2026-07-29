@@ -1,10 +1,10 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
-import { Box } from "@artsy/palette-mobile"
+import { Box, Color } from "@artsy/palette-mobile"
 import { ALWAYS_WHITE } from "app/utils/colors"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface LogoProps {
-  fill?: string
+  fill?: Color
 }
 
 export const Logo: React.FC<LogoProps> = ({ fill = ALWAYS_WHITE }) => {
