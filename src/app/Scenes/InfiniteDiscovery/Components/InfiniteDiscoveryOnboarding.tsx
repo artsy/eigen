@@ -190,10 +190,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                 <Flex flex={1} px={2}>
                   {isNewUserOnboardingSession ? (
                     <>
-                      <Text variant="lg-display" numberOfLines={1} adjustsFontSizeToFit>
-                        Swipe to see the next artwork.
-                      </Text>
-                      <Text variant="lg-display" numberOfLines={1} adjustsFontSizeToFit>
+                      <Text variant="md">Swipe to see the next artwork.</Text>
+                      <Text variant="md" mt={-0.5}>
                         Tap the heart to save it.
                       </Text>
                     </>

@@ -7,11 +7,27 @@ import { Logo } from "./Logo"
 
 export type Experience = "experienced" | "beginner"
 
-const EXPERIENCE_OPTIONS: { label: string; experience: Experience }[] = [
-  { label: "I’m an experienced collector (4+ works)", experience: "experienced" },
-  { label: "I’ve started my collection (1-3 works)", experience: "experienced" },
-  { label: "I’m new to collecting, but I have something in mind", experience: "beginner" },
-  { label: "I’m new to collecting and ready to explore", experience: "beginner" },
+const EXPERIENCE_OPTIONS: { label: string; displayLabel: string; experience: Experience }[] = [
+  {
+    label: "I'm an experienced collector (4+ works)",
+    displayLabel: "I'm an experienced collector (4+ works)",
+    experience: "experienced",
+  },
+  {
+    label: "I've started my collection (1-3 works)",
+    displayLabel: "I've started my collection (1–3 works)",
+    experience: "experienced",
+  },
+  {
+    label: "I'm new to collecting, but I have something in mind",
+    displayLabel: "I'm new to collecting, but I have something in mind",
+    experience: "beginner",
+  },
+  {
+    label: "I'm new to collecting and ready to explore",
+    displayLabel: "I'm new to collecting and ready to explore",
+    experience: "beginner",
+  },
 ]
 
 const HORIZONTAL_MARGIN = 20
@@ -93,7 +109,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
           }}
         >
           <Flex flex={1} justifyContent="center">
-            {EXPERIENCE_OPTIONS.map(({ label }) => {
+            {EXPERIENCE_OPTIONS.map(({ label, displayLabel }) => {
               const isSelected = selectedLabel === label
               return (
                 <Flex key={label} alignSelf="flex-start">
@@ -104,7 +120,7 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
                     onPress={() => setSelectedLabel(label)}
                   >
                     <Text variant="xs" color="mono0" textAlign="center">
-                      {label}
+                      {displayLabel}
                     </Text>
                   </Pill>
                   <Spacer y={2} />
