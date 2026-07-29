@@ -374,7 +374,10 @@ jobs:
             fi
       - run:
           name: Danger
-          command: yarn danger ci --verbose
+          # danger transpiles dangerfile.ts via the legacy ts.transpileModule
+          # API, which typescript@7 no longer exposes; preload a TS 5 shim so
+          # danger keeps working (see scripts/typescript5-shim.js).
+          command: NODE_OPTIONS="--require ./scripts/typescript5-shim.js" yarn danger ci --verbose
 
   check-flags:
     environment:
