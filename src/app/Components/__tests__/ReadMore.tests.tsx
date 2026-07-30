@@ -116,6 +116,19 @@ describe("ReadMore", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
+  it("renders ordered list numbering, including a custom start number", () => {
+    const content = "42. An item\n42. Another item\n42. Yet another item\n"
+
+    renderWithWrappers(<ReadMore maxChars={10000} content={content} />)
+
+    expect(screen.getByText("42.")).toBeTruthy()
+    expect(screen.getByText("43.")).toBeTruthy()
+    expect(screen.getByText("44.")).toBeTruthy()
+    expect(screen.getByText("An item")).toBeTruthy()
+    expect(screen.getByText("Another item")).toBeTruthy()
+    expect(screen.getByText("Yet another item")).toBeTruthy()
+  })
+
   it("doesn't break when it gets a text with dashes and special characters", () => {
     const text = "- first \n- second \n- third \n * star \n & another one \n ' whatarethose"
 

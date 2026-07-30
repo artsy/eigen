@@ -27,6 +27,16 @@ describe("renderMarkdown", () => {
     expect(screen.getByText("This is a second paragraph")).toBeTruthy()
   })
 
+  it("renders an ATX (###-style) heading even without a trailing blank line", () => {
+    const componentList = renderMarkdown("### Heading\nBody text") as any
+
+    renderWithWrappers(<Flex>{componentList}</Flex>)
+
+    expect(screen.getByText("Heading")).toBeTruthy()
+    expect(screen.getByText("Body text")).toBeTruthy()
+    expect(screen.queryByText(/###/)).toBeNull()
+  })
+
   it("returns markdown for multiple paragraphs and links", () => {
     const componentList = renderMarkdown(
       "This is a [first](/artist/first) paragraph\n\nAnd that is a [second](/gene/second) paragraph"
