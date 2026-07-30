@@ -86,7 +86,11 @@ export async function parseForceRoutes(
         ts.ScriptKind.TSX
       )
       const roots = findForceRouteArrays(source)
-      const before = routes.length
+      if (roots.length === 0) {
+        warnings.push(
+          `No route arrays found in ${file} — check for an unsupported initializer (as const / satisfies).`
+        )
+      }
       for (const arr of roots) {
         for (const el of arr.elements) {
           if (ts.isObjectLiteralExpression(el)) {
@@ -97,11 +101,6 @@ export async function parseForceRoutes(
             )
           }
         }
-      }
-      if (routes.length === before) {
-        warnings.push(
-          `No route arrays extracted from ${file} — check for an unsupported initializer (as const / satisfies).`
-        )
       }
     } catch (e) {
       warnings.push(`Failed to parse ${file}: ${(e as Error).message}`)
