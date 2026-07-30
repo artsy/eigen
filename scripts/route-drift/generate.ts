@@ -132,7 +132,10 @@ async function main() {
     // alias) have no static prefix, so Android can't allowlist them — not actionable.
     .filter((r) => !r.path.startsWith("/:"))
     .filter((r) => !matchesIgnorePrefix(r.path))
-    .filter((r) => !android.match(toConcretePath(r.path)))
+    // Deliberately excluded from iOS universal links → Android omitting it is
+    // agreement, not drift. Surfacing it here would contradict Check A.
+    .filter((r) => !aasa.matches(concretePath(r.path)))
+    .filter((r) => !android.match(concretePath(r.path)))
 
   // 4. forward: classify every force route through eigen's matcher
   const forceRows: ForceRow[] = forceRoutes.map((r) => {
