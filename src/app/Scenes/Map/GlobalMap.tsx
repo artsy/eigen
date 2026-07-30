@@ -116,10 +116,12 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
 
     const onPressUserPositionButton = () => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const { lat, lng } = userLocation
+      if (!isValidLatLng(userLocation)) {
+        return
+      }
+
       cameraRef.current?.setCamera({
-        centerCoordinate: [lng, lat],
+        centerCoordinate: [userLocation.lng, userLocation.lat],
         zoomLevel: DefaultZoomLevel,
         animationDuration: 500,
       })
@@ -146,7 +148,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
                 isLoading={!viewer.city}
                 onPress={onPressCitySwitcherButton}
               />
-              {!!userLocation && (
+              {!!isValidLatLng(userLocation) && (
                 <Box style={{ marginLeft: 10 }}>
                   <UserPositionButton
                     highlight={userLocation === currentLocation}
@@ -337,11 +339,16 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const onUserLocationUpdate = (location: MapboxGL.Location) => {
-    if (!location || !location.coords) {
+    const coords = location?.coords
+
+    // The native side sends updates with an empty `coords` object before the first location fix
+    // lands (and for heading-only updates), which would otherwise leave us with a location made of
+    // `undefined`s and crash the camera.
+    if (typeof coords?.latitude !== "number" || typeof coords?.longitude !== "number") {
       return
     }
 
-    setUserLocation(longCoordsToLocation(location.coords))
+    setUserLocation(longCoordsToLocation(coords))
   }
 
   const onRegionIsChanging = async () => {
@@ -588,6 +595,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
 /** Makes sure we're consistently using { lat, lng } internally */
 const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
   return { lat: coords.latitude, lng: coords.longitude }
+}
+
+/**
+ * `city.coordinates` is nullable in the schema and location updates can arrive without coordinates,
+ * so make sure we actually have numbers before handing them over to the map.
+ */
+const isValidLatLng = (location: any): location is { lat: number; lng: number } => {
+  return typeof location?.lat === "number" && typeof location?.lng === "number"
 }
 
 const tracks = {
