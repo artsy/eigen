@@ -112,7 +112,7 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated",
     "shell-quote": "Pinned to 1.9.0 to fix GHSA-w7jw-789q-3m8p (critical) and GHSA-395f-4hp3-45gv (ReDoS). @segment/sovran-react-native exact-pins the vulnerable 1.8.0 with no fixed release; remove this once Segment bumps it upstream.",
     "postcss": "Pinned to fix GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849 (path traversal / arbitrary file disclosure via sourceMappingURL). expo (via @expo/metro-config@55.0.21) exact-pins postcss@~8.4.32, and styled-components@6.1.19 exact-pins postcss@8.4.49, neither of which is patched; remove this once expo/styled-components bump their postcss dependency upstream.",
-    "fast-xml-parser": "Bumped from 5.3.7 to 5.5.6 to additionally fix GHSA-8gc5-j5rx-235r (numeric entity expansion bypassing entity expansion limits); see comment history for the original CVE this resolution addressed.",
+    "fast-xml-parser": "Bumped from 5.5.6 to 5.10.1 to additionally fix GHSA-gh4j-gqv2-49f6 (XMLBuilder comment/CDATA injection via unescaped delimiters) and GHSA-jp2q-39xq-3w4g (entity expansion limit bypassed when set to zero); see comment history for the original CVEs this resolution addressed. @react-native-community/cli-config-android and cli-platform-apple both request ^4.4.1, which has no patched release for GHSA-gh4j-gqv2-49f6; remove this once the RN CLI moves to fast-xml-parser 5.x.",
     "sharp": "Pinned to 0.35.0 to fix GHSA-f88m-g3jw-g9cj. react-native-bootsplash@7.1.0 exact-caret-pins sharp@^0.34.5 (excludes 0.35.0); remove this once react-native-bootsplash is bumped to 7.3.2+ (which requires sharp@^0.35.2).",
     "tmp": "Pinned to 0.2.7 to fix GHSA-ph9p-34f9-6g65 (arbitrary file/directory write via symlink). @artsy/update-repo@0.8.2 (latest) exact-pins tmp@^0.1.0 with no patched release on that line; remove this once @artsy/update-repo bumps its tmp dependency upstream."
   },
@@ -285,7 +285,6 @@
     "@typescript-eslint/parser": "5.57.0",
     "@typescript-eslint/utils": "5.51.0",
     "argparse": "2.0.1",
-    "awesome-typescript-loader": "3.4.1",
     "babel-loader": "8.2.3",
     "babel-plugin-import-graphql": "2.8.1",
     "babel-plugin-module-resolver": "4.1.0",
@@ -354,7 +353,7 @@
     "braces": "3.0.3",
     "shell-quote": "1.9.0",
     "@jest/fake-timers@npm:^29.7.0": "patch:@jest/fake-timers@npm%3A29.7.0#~/.yarn/patches/@jest-fake-timers-npm-29.7.0-e4174d1b56.patch",
-    "fast-xml-parser": "5.5.6",
+    "fast-xml-parser": "5.10.1",
     "postcss": "8.5.23",
     "sharp": "0.35.0",
     "tmp": "0.2.7"
