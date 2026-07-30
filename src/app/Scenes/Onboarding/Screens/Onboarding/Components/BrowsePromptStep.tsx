@@ -5,8 +5,8 @@ import { Logo } from "./Logo"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
-const BUTTONS_ENTERING_DURATION = 500
-const BUTTONS_ENTERING_DELAY = 300
+const ENTERING_DURATION = 500
+const ENTERING_DELAY = 300
 
 interface BrowsePromptStepProps {
   onNext: () => void
@@ -15,8 +15,8 @@ interface BrowsePromptStepProps {
 export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext }) => {
   const { bottom } = useSafeAreaInsets()
 
-  const enteringAnim = FadeInRight.duration(BUTTONS_ENTERING_DURATION)
-    .delay(BUTTONS_ENTERING_DELAY)
+  const enteringAnim = FadeInRight.duration(ENTERING_DURATION)
+    .delay(ENTERING_DELAY)
     .easing(Easing.out(Easing.quad))
 
   return (
