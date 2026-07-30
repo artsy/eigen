@@ -204,15 +204,24 @@ function normalize(path: string): string {
 }
 
 function loadAllowlist(): Allowlist {
+  const empty: Allowlist = { ignorePrefixes: [], expectedWebview: [], expectedOrphans: [] }
+  let text: string
   try {
-    const raw = JSON.parse(readFileSync(ALLOWLIST_PATH, "utf8"))
-    return {
-      ignorePrefixes: raw.ignorePrefixes ?? [],
-      expectedWebview: raw.expectedWebview ?? [],
-      expectedOrphans: raw.expectedOrphans ?? [],
-    }
+    text = readFileSync(ALLOWLIST_PATH, "utf8")
   } catch {
-    return { ignorePrefixes: [], expectedWebview: [], expectedOrphans: [] }
+    console.warn(`⚠️  No allowlist at ${ALLOWLIST_PATH} — running without suppressions.`)
+    return empty
+  }
+  let raw: any
+  try {
+    raw = JSON.parse(text)
+  } catch (e) {
+    throw new Error(`allowlist.json is not valid JSON: ${(e as Error).message}`)
+  }
+  return {
+    ignorePrefixes: raw.ignorePrefixes ?? [],
+    expectedWebview: raw.expectedWebview ?? [],
+    expectedOrphans: raw.expectedOrphans ?? [],
   }
 }
 
