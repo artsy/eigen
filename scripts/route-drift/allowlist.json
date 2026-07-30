@@ -11,10 +11,6 @@
     {
       "prefix": "/html",
       "reason": "HTMLTest — internal kitchen-sink screen for the HTML component; no web page."
-    },
-    {
-      "prefix": "/games",
-      "reason": "Games (Hammer Price) — web-only surface, not handled natively in the app."
     }
   ],
   "expectedWebview": [],
