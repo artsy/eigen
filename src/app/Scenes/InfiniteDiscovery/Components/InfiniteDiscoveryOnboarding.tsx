@@ -189,17 +189,17 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
                 <Flex flex={1} px={2}>
                   {isNewUserOnboardingSession ? (
-                    <Text variant="md">
-                      Swipe to see the next artwork.{"\n"}Tap the heart to save it.
+                    <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
+                      Swipe to see the next artwork. Tap the heart to save it.
                     </Text>
                   ) : (
-                    <Text variant="md" numberOfLines={2} adjustsFontSizeToFit>
+                    <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
                       Start{" "}
-                      <Text variant="md" fontWeight="500">
+                      <Text variant="lg-display" fontWeight="500">
                         swiping
                       </Text>{" "}
                       to discover art, and{" "}
-                      <Text variant="md" fontWeight="500">
+                      <Text variant="lg-display" fontWeight="500">
                         save
                       </Text>{" "}
                       the works you love.
