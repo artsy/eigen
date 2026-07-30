@@ -16,6 +16,9 @@ describe("matchesRule", () => {
     // pathPattern: Android glob (. = any char, * = zero-or-more of preceding)
     [{ kind: "pathPattern" as const, value: "/a/.*" }, "/a/xyz", true],
     [{ kind: "pathPattern" as const, value: "/a/.*" }, "/b", false],
+    // advanced-glob escape: `\.` is a literal dot, not "backslash + any char"
+    [{ kind: "pathAdvancedPattern" as const, value: "/a\\.pdf" }, "/a.pdf", true],
+    [{ kind: "pathAdvancedPattern" as const, value: "/a\\.pdf" }, "/axpdf", false],
   ])("matchesRule(%p, %p) === %p", (rule, pathname, expected) => {
     expect(matchesRule(pathname, rule)).toEqual(expected)
   })

@@ -79,12 +79,15 @@ export function matchesRule(pathname: string, rule: ManifestPathRule): boolean {
  * safety net rather than a hot path.
  */
 function androidPatternToRegExp(pattern: string): RegExp {
+  const escapeLiteral = (ch: string) => ch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
   let out = ""
   for (let i = 0; i < pattern.length; i++) {
     const c = pattern[i]
-    if (c === ".") out += "."
-    else if (c === "*") out += "*"
-    else out += c.replace(/[\\^$+?()[\]{}|]/g, "\\$&")
+    if (c === "\\")
+      out += escapeLiteral(pattern[++i] ?? "") // advanced-glob escape: next char is literal
+    else if (c === ".") out += "." // any char
+    else if (c === "*") out += "*" // zero-or-more of preceding
+    else out += escapeLiteral(c)
   }
   return new RegExp(`^${out}$`)
 }
