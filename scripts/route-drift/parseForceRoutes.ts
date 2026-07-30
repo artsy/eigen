@@ -91,6 +91,10 @@ export async function parseForceRoutes(
         for (const el of arr.elements) {
           if (ts.isObjectLiteralExpression(el)) {
             walkForceRoute(el, "", { app, file, routes, warnings })
+          } else if (ts.isSpreadElement(el)) {
+            warnings.push(
+              `Spread element in a route array in ${file} — spread routes are parsed unprefixed.`
+            )
           }
         }
       }
@@ -126,7 +130,15 @@ interface WalkCtx {
 function walkForceRoute(obj: ts.ObjectLiteralExpression, prefix: string, ctx: WalkCtx) {
   const rawPath = getStringProp(obj, "path")
   if (rawPath === undefined) {
-    // Layout wrapper without its own path — still recurse into children
+    // A `path` that's present but not a string literal (variable / template) can't
+    // be resolved statically; recursing would give children a truncated prefix.
+    if (hasProp(obj, "path")) {
+      ctx.warnings.push(
+        `Non-literal \`path\` in ${ctx.file} — skipping this route and its children.`
+      )
+      return
+    }
+    // No `path` at all — a layout wrapper; recurse into children.
     recurseChildren(obj, prefix, ctx)
     return
   }
@@ -152,6 +164,12 @@ function recurseChildren(obj: ts.ObjectLiteralExpression, prefix: string, ctx: W
   for (const child of children.elements) {
     if (ts.isObjectLiteralExpression(child)) {
       walkForceRoute(child, prefix, ctx)
+    } else if (ts.isSpreadElement(child)) {
+      ctx.warnings.push(
+        `Spread element in \`children\` under "${prefix || "/"}" in ${
+          ctx.file
+        } — those routes won't inherit the prefix.`
+      )
     }
   }
 }
@@ -209,6 +227,10 @@ function getArrayProp(
 function propName(name: ts.PropertyName): string | undefined {
   if (ts.isIdentifier(name) || ts.isStringLiteralLike(name)) return name.text
   return undefined
+}
+
+function hasProp(obj: ts.ObjectLiteralExpression, key: string): boolean {
+  return obj.properties.some((p) => ts.isPropertyAssignment(p) && propName(p.name) === key)
 }
 
 function appNameFromPath(file: string): string {
