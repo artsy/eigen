@@ -1,9 +1,10 @@
-import { Button, Flex, Pill, Spacer, Text, Theme, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, Theme, useScreenDimensions } from "@artsy/palette-mobile"
 import { ALWAYS_BLACK } from "app/utils/colors"
 import { MotiView } from "moti"
 import { useState } from "react"
 import Animated, { Easing, FadeInUp } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { AnswerOptionPill } from "./AnswerOptionPill"
 import { Logo } from "./Logo"
 
 export type Experience = "experienced" | "beginner"
@@ -111,16 +112,11 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
                 const isSelected = selectedLabel === label
                 return (
                   <Flex key={label} alignSelf="flex-start">
-                    <Pill
-                      variant="onboarding"
+                    <AnswerOptionPill
+                      label={label}
                       selected={isSelected}
-                      alignSelf="flex-start"
                       onPress={() => setSelectedLabel(label)}
-                    >
-                      <Text variant="xs" color="mono0" textAlign="center">
-                        {label}
-                      </Text>
-                    </Pill>
+                    />
                     <Spacer y={2} />
                   </Flex>
                 )
