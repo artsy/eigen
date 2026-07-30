@@ -107,12 +107,16 @@ async function main() {
 
   // Check A — cross-platform inconsistency: paths the Android manifest INCLUDES
   // that iOS AASA deliberately EXCLUDES (e.g. /news). Android prefix matching is
-  // not segment-aware, so overlap = either string is a prefix of the other.
+  // not segment-aware, so overlap is prefix-based — but wildcard-aware (below).
   const conflictMap = new Map<string, Set<string>>()
   for (const pattern of aasa.patterns) {
+    const isWildcard = pattern.endsWith("*")
     const base = pattern.replace(/\/\*$/, "").replace(/\*$/, "")
     for (const prefix of android.prefixes) {
-      if (base === prefix || base.startsWith(prefix) || prefix.startsWith(base)) {
+      // base.startsWith(prefix): the excluded path falls under an Android prefix.
+      // prefix.startsWith(base): only sound for wildcard exclusions — an exact
+      // `/news` must not "conflict" with a longer prefix like `/newsletter`.
+      if (base.startsWith(prefix) || (isWildcard && prefix.startsWith(base))) {
         const patterns = conflictMap.get(prefix) ?? new Set<string>()
         patterns.add(pattern)
         conflictMap.set(prefix, patterns)
