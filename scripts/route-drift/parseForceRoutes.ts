@@ -129,11 +129,18 @@ interface WalkCtx {
 function walkForceRoute(obj: ts.ObjectLiteralExpression, prefix: string, ctx: WalkCtx) {
   const rawPath = getStringProp(obj, "path")
   if (rawPath === undefined) {
-    // A `path` that's present but not a string literal (variable / template) can't
-    // be resolved statically; recursing would give children a truncated prefix.
-    if (hasProp(obj, "path")) {
+    // Can't resolve the path statically — a non-literal/shorthand `path`, or a
+    // spread that might carry one. Recursing would truncate children's prefix.
+    const unresolvable =
+      hasProp(obj, "path") ||
+      obj.properties.some(
+        (p) =>
+          ts.isSpreadAssignment(p) ||
+          (ts.isShorthandPropertyAssignment(p) && p.name.text === "path")
+      )
+    if (unresolvable) {
       ctx.warnings.push(
-        `Non-literal \`path\` in ${ctx.file} — skipping this route and its children.`
+        `Unresolvable route object in ${ctx.file} (spread or non-literal/shorthand path) — skipping this route and its children.`
       )
       return
     }

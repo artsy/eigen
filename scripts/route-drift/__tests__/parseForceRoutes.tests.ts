@@ -32,6 +32,14 @@ const FIXTURES = [
     src: `const aRoutes = [{ path: PATH_VAR, children: [{ path: "child" }] }]`,
   },
   {
+    name: "shorthandPath",
+    src: `const aRoutes = [{ path, children: [{ path: "child" }] }]`,
+  },
+  {
+    name: "spreadObject",
+    src: `const aRoutes = [{ ...baseRoute, children: [{ path: "child" }] }]`,
+  },
+  {
     name: "spreadChildren",
     src: `const aRoutes = [{ path: "/fair/:slug", children: [{ path: "a" }, ...more] }]`,
   },
@@ -76,7 +84,23 @@ describe("parseForceRoutes (fixtures via tsx)", () => {
 
   it("skips a non-literal path (and its children) with a warning", () => {
     expect(byName.nonLiteralPath.forcePaths).toEqual([])
-    expect(byName.nonLiteralPath.warnings).toEqual([expect.stringContaining("Non-literal `path`")])
+    expect(byName.nonLiteralPath.warnings).toEqual([
+      expect.stringContaining("Unresolvable route object"),
+    ])
+  })
+
+  it("skips a shorthand `path` route (and its children) with a warning", () => {
+    expect(byName.shorthandPath.forcePaths).toEqual([])
+    expect(byName.shorthandPath.warnings).toEqual([
+      expect.stringContaining("Unresolvable route object"),
+    ])
+  })
+
+  it("skips a spread route object (and its children) with a warning", () => {
+    expect(byName.spreadObject.forcePaths).toEqual([])
+    expect(byName.spreadObject.warnings).toEqual([
+      expect.stringContaining("Unresolvable route object"),
+    ])
   })
 
   it("warns on a spread element inside children", () => {
