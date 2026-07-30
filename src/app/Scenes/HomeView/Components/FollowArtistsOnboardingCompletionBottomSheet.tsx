@@ -159,7 +159,7 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
                   textAlign="center"
                   style={{ width: 350, paddingHorizontal: 10 }}
                 >
-                  Find them any time in the Favorites tab at the bottom of your screen.
+                  Find them anytime in the Favorites tab at the bottom of your screen.
                 </Text>
 
                 <Spacer y={2} />
@@ -177,7 +177,7 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
                 <Spacer y={2} />
 
                 <Text variant="sm-display" weight="medium" textAlign="center">
-                  We'll let you know when new works arrive.
+                  We’ll let you know when new works arrive.
                 </Text>
 
                 <Spacer y={1} />
@@ -188,7 +188,7 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
                   textAlign="center"
                   style={{ width: 350, paddingHorizontal: 10 }}
                 >
-                  When there's a new work by an artist you follow, you'll see a notification at the
+                  When there’s a new work by an artist you follow, you’ll see a notification at the
                   top of your For You page.
                 </Text>
 

@@ -49,7 +49,7 @@ export const AuthBackground: React.FC = () => {
         >
           <Flex maxWidth={isTablet() ? 600 : undefined} gap={isTablet() ? 2 : 1}>
             <Text variant={isTablet() ? "xxl" : "xl"} color={ALWAYS_WHITE} selectable={false}>
-              Discover and Buy Art that Moves You
+              Discover and Buy Art That Moves You
             </Text>
 
             <Text variant={isTablet() ? "lg" : "sm"} color={ALWAYS_WHITE} selectable={false}>

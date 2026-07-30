@@ -135,7 +135,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
         await screen.findByText("Your followed artists are saved to Favorites.")
       ).toBeOnTheScreen()
       expect(
-        screen.getByText("Find them any time in the Favorites tab at the bottom of your screen.")
+        screen.getByText("Find them anytime in the Favorites tab at the bottom of your screen.")
       ).toBeOnTheScreen()
     })
 
@@ -144,10 +144,10 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
 
       renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
 
-      expect(await screen.findByText("We'll let you know when new works arrive.")).toBeOnTheScreen()
+      expect(await screen.findByText("We’ll let you know when new works arrive.")).toBeOnTheScreen()
       expect(
         screen.getByText(
-          /When there's a new work by an artist you follow, you'll see a notification/
+          /When there’s a new work by an artist you follow, you’ll see a notification/
         )
       ).toBeOnTheScreen()
     })

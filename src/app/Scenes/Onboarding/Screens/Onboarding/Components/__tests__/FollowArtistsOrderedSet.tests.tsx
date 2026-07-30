@@ -40,7 +40,7 @@ describe("FollowArtistsOrderedSet", () => {
     })
   })
 
-  describe("the 'Leading artists on Artsy' section", () => {
+  describe("the 'Popular on Artsy' section", () => {
     it("shows the heading and separator when there are followed artists and artists left to follow", async () => {
       renderWithRelay(
         {
@@ -57,7 +57,7 @@ describe("FollowArtistsOrderedSet", () => {
         screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
       )
 
-      expect(screen.getByText("Leading artists on Artsy")).toBeOnTheScreen()
+      expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.UNSAFE_queryAllByType(Separator)).toHaveLength(1)
     })
 
@@ -77,7 +77,7 @@ describe("FollowArtistsOrderedSet", () => {
         screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
       )
 
-      expect(screen.getByText("Leading artists on Artsy")).toBeOnTheScreen()
+      expect(screen.getByText("Popular on Artsy")).toBeOnTheScreen()
       expect(screen.UNSAFE_queryAllByType(Separator)).toHaveLength(0)
     })
 
@@ -97,7 +97,7 @@ describe("FollowArtistsOrderedSet", () => {
         screen.queryByTestId("FollowArtistsOrderedSetPlaceholder")
       )
 
-      expect(screen.queryByText("Leading artists on Artsy")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Popular on Artsy")).not.toBeOnTheScreen()
       expect(screen.UNSAFE_queryAllByType(Separator)).toHaveLength(0)
     })
   })

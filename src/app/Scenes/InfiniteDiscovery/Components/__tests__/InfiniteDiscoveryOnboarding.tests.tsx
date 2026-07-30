@@ -51,9 +51,8 @@ describe("InfiniteDiscoveryOnboarding", () => {
         jest.runAllTimers()
       })
 
-      expect(
-        screen.getByText("Swipe to see the next artwork, tap the heart to save it.")
-      ).toBeOnTheScreen()
+      expect(screen.getByText(/Swipe to see the next artwork/)).toBeOnTheScreen()
+      expect(screen.getByText(/Tap the heart to save it/)).toBeOnTheScreen()
     })
   })
 

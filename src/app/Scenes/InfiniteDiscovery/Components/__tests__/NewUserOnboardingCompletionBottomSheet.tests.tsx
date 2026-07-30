@@ -22,18 +22,20 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
-    expect(screen.getByText("Continue Browsing")).toBeOnTheScreen()
-    expect(screen.getByText("Go to home")).toBeOnTheScreen()
+    expect(
+      screen.getByText("First five saved: We’re beginning to understand your taste.")
+    ).toBeOnTheScreen()
+    expect(screen.getByText("See More Works")).toBeOnTheScreen()
+    expect(screen.getByText("Take Me Home")).toBeOnTheScreen()
   })
 
-  it('"Continue Browsing" hides the sheet and keeps onboarding incomplete', () => {
+  it('"See More Works" hides the sheet and keeps onboarding incomplete', () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Continue Browsing"))
+    fireEvent.press(screen.getByText("See More Works"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(
@@ -42,13 +44,13 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("incomplete")
   })
 
-  it('"Go to home" hides the sheet and completes onboarding', () => {
+  it('"Take Me Home" hides the sheet and completes onboarding', () => {
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(
@@ -57,7 +59,7 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("complete")
   })
 
-  it('"Go to home" defers Home tooltips to the next session when at least one artwork was saved', () => {
+  it('"Take Me Home" defers Home tooltips to the next session when at least one artwork was saved', () => {
     GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     SAVED_ARTWORKS.forEach((artwork) => {
@@ -67,20 +69,20 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(true)
   })
 
-  it('"Go to home" does not defer Home tooltips when no artworks were saved', () => {
+  it('"Take Me Home" does not defer Home tooltips when no artworks were saved', () => {
     GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    fireEvent.press(screen.getByText("Go to home"))
+    fireEvent.press(screen.getByText("Take Me Home"))
 
     const state = __globalStoreTestUtils__?.getCurrentState()
     expect(state?.progressiveOnboarding.sessionState.deferHomeTooltipsThisSession).toBe(false)
@@ -94,6 +96,8 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
 
     renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
 
-    expect(screen.getByText("Five works is all it takes to start.")).toBeOnTheScreen()
+    expect(
+      screen.getByText("First five saved: We’re beginning to understand your taste.")
+    ).toBeOnTheScreen()
   })
 })

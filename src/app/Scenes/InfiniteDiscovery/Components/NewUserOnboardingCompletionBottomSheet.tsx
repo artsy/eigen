@@ -115,14 +115,12 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
           <Spacer y={2} />
 
           <Flex gap={1} alignItems="center">
-            <Text variant="lg-display" textAlign="center">
-              Five works is all it takes to start.
+            <Text variant="lg-display" textAlign="center" weight="medium">
+              First five saved: We’re beginning to understand your taste.
             </Text>
-            <Text variant="sm" textAlign="center">
-              We're beginning to see what moves you.
-            </Text>
+
             <Text variant="xs" textAlign="center">
-              Visit your For You page, or stay and keep exploring.
+              Go to Home or keep exploring works.
             </Text>
           </Flex>
 
@@ -130,11 +128,11 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
 
           <Flex gap={1}>
             <Button block variant="outline" onPress={handleContinueBrowsing}>
-              Continue Browsing
+              See More Works
             </Button>
 
             <Button block variant="fillDark" onPress={handleTakeMeHome}>
-              Go to home
+              Take Me Home
             </Button>
           </Flex>
         </Flex>
