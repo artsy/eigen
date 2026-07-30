@@ -158,7 +158,7 @@ export const DevTools: React.FC<{}> = () => {
                 )
                 return
               }
-              const x = "maaybe this will show now?"
+              ;("maaybe this will show now?")
               throw Error("Sentry test error")
             }}
           />

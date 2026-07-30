@@ -310,12 +310,12 @@ const HomeViewScreenComponent: React.FC = () => {
     <HomeViewStoreProvider>
       <Flex
         pt={4}
-        backgroundColor="green100"
+        backgroundColor="blue150"
         height={120}
         justifyContent="center"
         alignItems="center"
       >
-        <Text>Expo is updating</Text>
+        <Text color="white">Expo is updating</Text>
       </Flex>
       <RetryErrorBoundary trackErrorBoundary={false}>
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
