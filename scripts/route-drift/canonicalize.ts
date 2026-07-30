@@ -48,10 +48,15 @@ export function expandOptionals(path: string): string[] {
   return results
 }
 
-/** Turn a canonical path template into a concrete sample URL for eigen's matcher. */
-export function toSampleURL(path: string): string {
-  const concrete = path
+/** Substitute `:param` / `*` segments with concrete placeholders. */
+export function toConcretePath(path: string): string {
+  return path
     .replace(/:([\w-]+)\??/g, (_, name) => `example-${name}`) // handles inline params too
     .replace(/\*/g, "example-splat")
+}
+
+/** Turn a canonical path template into a concrete sample URL for eigen's matcher. */
+export function toSampleURL(path: string): string {
+  const concrete = toConcretePath(path)
   return `${WEB_ORIGIN}${concrete.startsWith("/") ? "" : "/"}${concrete}`
 }

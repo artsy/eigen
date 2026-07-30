@@ -18,6 +18,7 @@ import { readFileSync, writeFileSync } from "fs"
 import { join, resolve } from "path"
 import { parse } from "url"
 import { config } from "dotenv"
+import { toConcretePath } from "./canonicalize"
 import { classifyURL, compileEigenRoutes, NON_NATIVE_MODULES } from "./match"
 import { AASAExclusions, fetchAASAExclusions } from "./parseAASA"
 import { AndroidAllowlist, parseAndroidManifest } from "./parseAndroidManifest"
@@ -131,7 +132,7 @@ async function main() {
     // alias) have no static prefix, so Android can't allowlist them — not actionable.
     .filter((r) => !r.path.startsWith("/:"))
     .filter((r) => !matchesIgnorePrefix(r.path))
-    .filter((r) => !android.match(concretePath(r.path)))
+    .filter((r) => !android.match(toConcretePath(r.path)))
 
   // 4. forward: classify every force route through eigen's matcher
   const forceRows: ForceRow[] = forceRoutes.map((r) => {
@@ -185,11 +186,6 @@ async function main() {
   console.log(
     `Android: ${androidConflicts.length} manifest↔AASA conflicts, ${nativeNotInManifest.length} native routes missing from manifest`
   )
-}
-
-/** Replace `:param` segments with a placeholder so a route path can be matched. */
-function concretePath(path: string): string {
-  return path.replace(/:([\w-]+)/g, "x")
 }
 
 /** Positional param normalization: :slug / :fairID / :id all collapse to `*`. */
