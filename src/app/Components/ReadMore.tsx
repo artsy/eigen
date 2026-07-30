@@ -71,7 +71,7 @@ export const ReadMore = React.memo(
           return (
             <Flex key={state.key} mb={1}>
               {node.items.map((item: SimpleMarkdown.SingleASTNode, i: number) => (
-                <Flex key={i} flexDirection="row">
+                <Flex key={i} flexDirection="row" alignItems="flex-start">
                   <TextComponent {...textProps} color={color}>
                     {node.ordered ? `${(node.start ?? 1) + i}. ` : `${bullet} `}
                   </TextComponent>
