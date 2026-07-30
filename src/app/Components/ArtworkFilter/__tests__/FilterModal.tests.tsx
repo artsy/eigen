@@ -245,10 +245,10 @@ describe("Filter modal states", () => {
     expect(screen.getByText("Medium • 1")).toBeTruthy()
   })
 
-  it("displays the filter screen apply button correctly when no filters are selected", () => {
+  it("displays the filter screen apply button as enabled when no filters are selected", () => {
     renderWithWrappers(<MockFilterModalNavigator />)
 
-    expect(screen.getByText("Show Results")).toBeDisabled()
+    expect(screen.getByText("Show Results")).not.toBeDisabled()
   })
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
@@ -379,12 +379,11 @@ describe("Clearing filters", () => {
 
     renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(screen.getByText("Show Results")).toBeDisabled()
-
     fireEvent.press(screen.getByText("Clear All"))
 
     expect(screen.getByText("Sort By")).toBeTruthy()
     expect(screen.getByText("Rarity")).toBeTruthy()
+    expect(screen.getByText("Show Results")).not.toBeDisabled()
   })
 })
 

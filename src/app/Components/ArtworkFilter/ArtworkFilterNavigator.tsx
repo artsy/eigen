@@ -130,9 +130,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
@@ -206,10 +203,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       ...(artworkQuery && { query: artworkQuery }),
     })
   }
-
-  const isApplyButtonEnabled =
-    selectedFiltersState.length > 0 ||
-    (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
   const handleApplyPress = () => {
     const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
@@ -435,7 +428,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               </Stack.Navigator>
 
               <ArtworkFilterApplyButton
-                disabled={!isApplyButtonEnabled}
+                disabled={false}
                 onPress={handleApplyPress}
                 onCreateAlertPress={handleCreateAlertPress}
                 shouldShowCreateAlertButton={shouldShowCreateAlertButton}
