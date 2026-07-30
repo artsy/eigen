@@ -230,16 +230,6 @@ Fatal crash (EIGEN-AZB4) on New Architecture where iOS requests a `UITargetedPre
 
 See: https://github.com/dominicstop/react-native-ios-context-menu/issues/103
 
-## Patch for Segment
-
-#### When can we remove this:
-
-This gets merged: https://github.com/segmentio/analytics-react-native/pull/1146
-
-#### Explanation/Context:
-
-React Native's New Architecture replaces ReactNativeHost with a newer system (reactHost). However, the latter is still being used inside analytics-react-native.
-
 ## Braze prebuilt-static podspecs in Podfile
 
 #### When can we remove this:
