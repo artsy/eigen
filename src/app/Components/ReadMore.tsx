@@ -70,9 +70,6 @@ export const ReadMore = React.memo(
         ) => {
           return (
             <Flex key={state.key} mb={1}>
-              {!isExpanded && Number(state.key) > 0 ? (
-                <TextComponent {...textProps} color={color}>{` ${emdash} `}</TextComponent>
-              ) : null}
               {node.items.map((item: SimpleMarkdown.SingleASTNode, i: number) => (
                 <Flex key={i} flexDirection="row">
                   <TextComponent {...textProps} color={color}>
