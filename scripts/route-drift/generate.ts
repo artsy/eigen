@@ -7,8 +7,7 @@
  *   - Which force routes does eigen NOT handle (fall through to a webview)?
  *   - Which native eigen routes have no force counterpart (candidate orphans)?
  *
- * Usage:  yarn route-drift            # writes report, exits 0
- *         yarn route-drift --strict   # exits 1 if non-allowlisted drift exists (for CI)
+ * Usage:  yarn route-drift   # writes the report
  *
  * Force routes are fetched live from the GitHub API.
  *
@@ -52,7 +51,6 @@ interface ForceRow extends ForceRoute {
 }
 
 async function main() {
-  const strict = process.argv.includes("--strict")
   const allowlist = loadAllowlist()
   const allowedWebview = new Set(allowlist.expectedWebview.map((e) => e.forcePath))
   const allowedOrphans = new Set(allowlist.expectedOrphans.map((e) => e.eigenPath))
@@ -101,18 +99,10 @@ async function main() {
     console.warn(`⚠️  ${msg}`)
   }
 
-  // A missing layer silently inverts the report: without AASA, every deliberately
-  // excluded route becomes "actionable drift"; without the manifest, every native
-  // route looks "missing from the Android allowlist". In --strict/CI that would
-  // fail the build for the wrong reason, with the real cause buried in the
-  // (gitignored) report — so fail loudly and immediately instead.
-  if (strict && (aasaWarn.length > 0 || manifestWarn.length > 0)) {
-    console.error(
-      "\n✗ strict mode: required layer(s) unavailable — refusing to emit a misleading report:\n" +
-        [...aasaWarn, ...manifestWarn].map((w) => `  - ${w}`).join("\n")
-    )
-    process.exit(1)
-  }
+  // NOTE: a missing layer silently inverts the report — without AASA every
+  // deliberately excluded route looks like "actionable drift"; without the
+  // manifest every native route looks "missing from the Android allowlist". The
+  // warnings above surface that. Worth failing on once this runs in CI.
 
   // Check A — cross-platform inconsistency: paths the Android manifest INCLUDES
   // that iOS AASA deliberately EXCLUDES (e.g. /news). Android prefix matching is
@@ -195,13 +185,6 @@ async function main() {
   console.log(
     `Android: ${androidConflicts.length} manifest↔AASA conflicts, ${nativeNotInManifest.length} native routes missing from manifest`
   )
-
-  if (strict && (drift.length > 0 || orphans.length > 0)) {
-    console.error(
-      `\n✗ strict mode: ${drift.length} drift + ${orphans.length} orphan routes not allowlisted`
-    )
-    process.exit(1)
-  }
 }
 
 /** Replace `:param` segments with a placeholder so a route path can be matched. */

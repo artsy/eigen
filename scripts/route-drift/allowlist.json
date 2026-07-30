@@ -1,5 +1,5 @@
 {
-  "_comment": "Intentional divergences between eigen routes.tsx and artsy/force. Entries here are suppressed from the drift report's actionable section and from `yarn route-drift --strict`. Add a `reason` so the next person understands why. `ignorePrefixes` suppresses any force path starting with the prefix (good for whole families like dev tooling); `expectedWebview` is keyed by exact force path; `expectedOrphans` by exact eigen path.",
+  "_comment": "Intentional divergences between eigen routes.tsx and artsy/force. Entries here are suppressed from the drift report's actionable section. Add a `reason` so the next person understands why. `ignorePrefixes` suppresses any force path starting with the prefix (good for whole families like dev tooling); `expectedWebview` is keyed by exact force path; `expectedOrphans` by exact eigen path.",
   "ignorePrefixes": [
     {
       "prefix": "/admin",

@@ -23,8 +23,7 @@ This tool generates a report answering:
 ## Usage
 
 ```sh
-yarn route-drift            # writes scripts/route-drift/route-drift-report.md
-yarn route-drift --strict   # additionally exits 1 if non-allowlisted drift exists (CI)
+yarn route-drift   # writes scripts/route-drift/route-drift-report.md
 ```
 
 Force routes are fetched live from the GitHub API at `main` (via Octokit). A
@@ -68,8 +67,7 @@ _not_ suppressed by the allowlist / ignore-prefixes, and _not_ AASA-excluded.
 ## Allowlist
 
 Intentional divergences go in [`allowlist.json`](./allowlist.json) with a
-`reason`, and are suppressed from the report's actionable sections (and from
-`--strict` failures).
+`reason`, and are suppressed from the report's actionable sections.
 
 ## Maintaining the AASA exclusion list (rubric)
 
