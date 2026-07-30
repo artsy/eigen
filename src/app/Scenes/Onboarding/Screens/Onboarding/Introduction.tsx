@@ -1,10 +1,8 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { WelcomeStepQuery } from "__generated__/WelcomeStepQuery.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
-import { GlobalStore } from "app/store/GlobalStore"
 import { AnimatePresence, MotiView } from "moti"
 import { useCallback, useEffect } from "react"
 import { useQueryLoader } from "react-relay"
@@ -26,12 +24,7 @@ export const Introduction: React.FC = () => {
   const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
-  const {
-    trackStartedOnboarding,
-    trackCompletedOnboarding,
-    trackAnsweredExperienceQuestion,
-    trackTappedSkip,
-  } = useOnboardingTracking()
+  const { trackStartedOnboarding, trackAnsweredExperienceQuestion } = useOnboardingTracking()
 
   useEffect(() => {
     loadWelcomeQuery({}, { fetchPolicy: "network-only" })
@@ -53,12 +46,6 @@ export const Introduction: React.FC = () => {
     [replace]
   )
 
-  const handleSkipToHome = useCallback(() => {
-    trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
-    trackCompletedOnboarding()
-    GlobalStore.actions.onboarding.setOnboardingState("complete")
-  }, [trackCompletedOnboarding, trackTappedSkip])
-
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })
 
   const handleSelectExperience = (experience: Experience, label: string) => {
@@ -71,7 +58,7 @@ export const Introduction: React.FC = () => {
       case STEP_QUESTION:
         return <QuestionStep onSelect={handleSelectExperience} />
       case STEP_BROWSE_PROMPT:
-        return <BrowsePromptStep onNext={next} onSkip={handleSkipToHome} />
+        return <BrowsePromptStep onNext={next} />
       case STEP_ARTWORK_MONTAGE:
         return <ArtworkMontageStep onNext={next} />
       case STEP_WELCOME:

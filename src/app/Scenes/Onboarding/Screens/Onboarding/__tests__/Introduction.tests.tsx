@@ -1,7 +1,6 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockReplace } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -27,11 +26,8 @@ jest.mock("../Components/QuestionStep", () => {
 jest.mock("../Components/BrowsePromptStep", () => {
   const { Text } = require("react-native")
   return {
-    BrowsePromptStep: ({ onNext, onSkip }: { onNext: () => void; onSkip: () => void }) => (
-      <>
-        <Text onPress={onNext}>Browse next</Text>
-        <Text onPress={onSkip}>Browse skip</Text>
-      </>
+    BrowsePromptStep: ({ onNext }: { onNext: () => void }) => (
+      <Text onPress={onNext}>Browse next</Text>
     ),
   }
 })
@@ -118,35 +114,6 @@ describe("Introduction", () => {
 
       fireEvent.press(screen.getByText("Browse next"))
       expect(mockReplace).toHaveBeenCalledWith("InfiniteDiscovery")
-    })
-
-    it("completes onboarding when skipping from BrowsePromptStep", () => {
-      renderWithWrappers(<Introduction />)
-
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-      fireEvent.press(screen.getByText("Select beginner"))
-      fireEvent.press(screen.getByText("Browse skip"))
-
-      const state = __globalStoreTestUtils__?.getCurrentState()
-      expect(state?.onboarding.onboardingState).toBe("complete")
-      expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
-    })
-
-    it("tracks the skip tap when skipping from BrowsePromptStep", () => {
-      renderWithWrappers(<Introduction />)
-
-      fireEvent.press(screen.getByText("Montage next"))
-      fireEvent.press(screen.getByText("Welcome next"))
-      fireEvent.press(screen.getByText("Select beginner"))
-      fireEvent.press(screen.getByText("Browse skip"))
-
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        action: ActionType.tappedSkip,
-        context_module: ContextModule.onboardingFlow,
-        context_screen_owner_type: OwnerType.onboarding,
-        subject: "Skip",
-      })
     })
   })
 })
