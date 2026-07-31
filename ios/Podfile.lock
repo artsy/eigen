@@ -2858,7 +2858,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-view-shot (4.0.3):
+  - react-native-view-shot (5.1.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -5082,7 +5082,7 @@ SPEC CHECKSUMS:
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: c00143b4823773bba23f2f19f85663ae89ceb460
   react-native-shake: a701ed43830d9d7940893f4f7b837970d322ae63
-  react-native-view-shot: 6c008e58f4720de58370848201c5d4a082c6d4ca
+  react-native-view-shot: 39463aa6cfaeab0a3533cc63f869d52d025ef2ff
   react-native-webview: 654f794a7686b47491cf43aa67f7f428bea00eed
   React-NativeModulesApple: 70b1879ac2b642ef784fb6d43360c40803b0a142
   React-networking: 49160c13f35f3eb93791d062c330caea323bde87
