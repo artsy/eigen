@@ -112,14 +112,13 @@ export const QuestionStep: React.FC<QuestionStepProps> = ({ onSelect }) => {
                 return (
                   <Flex key={label} alignSelf="flex-start">
                     <Pill
-                      variant="onboarding"
+                      variant="option"
                       selected={isSelected}
                       alignSelf="flex-start"
+                      color="mono0"
                       onPress={() => setSelectedLabel(label)}
                     >
-                      <Text variant="xs" color="mono0" textAlign="center">
-                        {label}
-                      </Text>
+                      {label}
                     </Pill>
                     <Spacer y={2} />
                   </Flex>
