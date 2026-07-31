@@ -380,6 +380,7 @@ describe("Clearing filters", () => {
 describe("Applying filters via Show Results", () => {
   beforeEach(() => {
     exitModalMock.mockClear()
+    closeModalMock.mockClear()
     mockTrackEvent.mockClear()
   })
 
@@ -412,6 +413,7 @@ describe("Applying filters via Show Results", () => {
     fireEvent.press(screen.getByText("Show Results"))
 
     expect(exitModalMock).toHaveBeenCalled()
+    expect(closeModalMock).not.toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
     )
