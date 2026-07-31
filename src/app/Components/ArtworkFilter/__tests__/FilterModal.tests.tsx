@@ -397,6 +397,42 @@ describe("Clearing filters", () => {
       expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
     )
   })
+
+  // counterpart to the no-op case above: with staged filters the same tap
+  // must go through the full apply path instead of the early return
+  it("applies filters and tracks the change when Show Results is pressed with staged filters", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Works on Paper",
+          paramName: FilterParamName.medium,
+          paramValue: "work-on-paper",
+        },
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      showFilterArtworksModal: false,
+      sizeMetric: "cm",
+    }
+
+    exitModalMock.mockClear()
+
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
+
+    fireEvent.press(screen.getByText("Show Results"))
+
+    expect(exitModalMock).toHaveBeenCalled()
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
+    )
+  })
 })
 
 describe("Applying filters on Artworks", () => {
