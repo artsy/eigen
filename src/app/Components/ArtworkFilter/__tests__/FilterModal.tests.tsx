@@ -26,7 +26,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
 const exitModalMock = jest.fn()
-const trackEvent = jest.fn()
 
 const mockAggregations: Aggregations = [
   {
@@ -341,7 +340,7 @@ describe("Clearing filters", () => {
     expect(screen.queryByText("• 1")).toBeFalsy()
   })
 
-  it("exits the modal when clear all button is pressed", () => {
+  it("closes the modal without applying when Show Results is pressed after clear all", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
@@ -376,9 +375,16 @@ describe("Clearing filters", () => {
       expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
     )
   })
+})
 
-  // counterpart to the no-op case above: with staged filters the same tap
-  // must go through the full apply path instead of the early return
+describe("Applying filters via Show Results", () => {
+  beforeEach(() => {
+    exitModalMock.mockClear()
+    mockTrackEvent.mockClear()
+  })
+
+  // counterpart to the no-op dismissal above: with staged filters the same
+  // tap must go through the full apply path instead of the early return
   it("applies filters and tracks the change when Show Results is pressed with staged filters", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
@@ -498,69 +504,6 @@ describe("Applying filters on Artworks", () => {
         "sort": null,
       }
     `)
-  })
-
-  it.skip("tracks changes in the filter state when a filter is applied", async () => {
-    const injectedState: ArtworkFiltersState = {
-      selectedFilters: [
-        {
-          displayText: "Works on Paper",
-          paramName: FilterParamName.medium,
-          paramValue: "work-on-paper",
-        },
-      ],
-      appliedFilters: [
-        {
-          displayText: "Recently Added",
-          paramName: FilterParamName.sort,
-          paramValue: "-decayed_merch",
-        },
-      ],
-      previouslyAppliedFilters: [
-        {
-          displayText: "Recently Added",
-          paramName: FilterParamName.sort,
-          paramValue: "-decayed_merch",
-        },
-      ],
-      applyFilters: true,
-      aggregations: mockAggregations,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-      showFilterArtworksModal: false,
-      sizeMetric: "cm",
-    }
-
-    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
-
-    resolveMostRecentRelayOperation(env)
-
-    fireEvent.press(screen.getByText("Show Results"))
-
-    expect(trackEvent).toHaveBeenCalledWith({
-      action_type: "commercialFilterParamsChanged",
-      changed: JSON.stringify({
-        medium: "work-on-paper",
-      }),
-      context_screen: "Artist",
-      context_screen_owner_id: "abc123",
-      context_screen_owner_slug: "some-artist",
-      context_screen_owner_type: "Artist",
-      current: JSON.stringify({
-        acquireable: false,
-        atAuction: false,
-        estimateRange: "",
-        includeArtworksByFollowedArtists: false,
-        inquireableOnly: false,
-        medium: "*",
-        offerable: false,
-        priceRange: "*-*",
-        sort: "-decayed_merch",
-      }),
-    })
   })
 })
 
