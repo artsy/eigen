@@ -6,6 +6,12 @@ on:
 
 jobs:
   claude-review:
-    uses: artsy/duchamp/.github/workflows/claude-review.yml@main
+    # TEMPORARY: pinned to the trial branch instead of @main so this repo can
+    # try compare-two-pass-review before artsy/duchamp#110 merges. Once #110
+    # merges, revert this to `@main` and drop the `with:` block (or keep
+    # compare-two-pass-review: true if the trial goes well).
+    uses: artsy/duchamp/.github/workflows/claude-review.yml@claude/model-performance-comparison-n1wew6
     secrets:
       anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+    with:
+      compare-two-pass-review: true
