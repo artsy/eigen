@@ -2047,7 +2047,7 @@ type ArticleFeaturedArtistNotificationItem {
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 }
 
-union ArticleHero = ArticleFeatureSection
+union ArticleHero = ArticleFeatureSection | ArticleImageSection
 
 type ArticleImageSection {
   caption: String
