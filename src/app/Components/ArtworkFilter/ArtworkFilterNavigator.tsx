@@ -433,7 +433,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               </Stack.Navigator>
 
               <ArtworkFilterApplyButton
-                disabled={false}
                 onPress={handleApplyPress}
                 onCreateAlertPress={handleCreateAlertPress}
                 shouldShowCreateAlertButton={shouldShowCreateAlertButton}

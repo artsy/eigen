@@ -43,7 +43,6 @@ export const MediumOptions: React.FC<MediumOptionsScreenProps> = ({ navigation }
       />
 
       <ArtworkFilterApplyButton
-        disabled={false}
         onPress={navigation.goBack}
         buttonText="Apply"
         pb={2}

@@ -17,7 +17,7 @@ import { ResponsiveValue } from "styled-system"
 
 export interface ArtworkFilterApplyButtonProps {
   buttonText?: string
-  disabled: boolean
+  disabled?: boolean
   onCreateAlertPress?: () => void
   onPress: () => void
   shouldShowCreateAlertButton?: boolean
@@ -63,7 +63,7 @@ const InnerButton: React.FC<Button> = (props) => {
 export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> = (props) => {
   const {
     buttonText,
-    disabled,
+    disabled = false,
     shouldShowCreateAlertButton,
     onCreateAlertPress,
     onPress,

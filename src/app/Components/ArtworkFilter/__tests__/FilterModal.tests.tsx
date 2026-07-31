@@ -18,6 +18,7 @@ import {
   MockFilterScreen,
 } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -390,6 +391,11 @@ describe("Clearing filters", () => {
     fireEvent.press(screen.getByText("Show Results"))
 
     expect(exitModalMock).toHaveBeenCalled()
+    // exitModal is also called when filters are applied, so additionally assert
+    // the tap was treated as a no-op: no filter-change event may be emitted
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
+    )
   })
 })
 
