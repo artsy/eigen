@@ -10,6 +10,13 @@
     "noFallthroughCasesInSwitch": true, // avoid accidental fallthrough.
     "noUnusedLocals": true, // what it says.
     "noUnusedParameters": true, // what it says.
+    "paths": {
+      // react-native-view-shot's `exports` map points the "react-native" condition at its raw
+      // `src/index.tsx`, so tsc type-checks the library source (skipLibCheck only covers `.d.ts`)
+      // and our noUnusedLocals flags its unused imports. Point tsc at the shipped declarations
+      // instead; Metro still bundles the react-native source. Remove once upstream is clean.
+      "react-native-view-shot": ["../node_modules/react-native-view-shot/lib/index.d.ts"]
+    },
     "skipLibCheck": true, // temporary disable typechecking node_modules to use Charts lib. Victory is actively migrating to TS and the types for now are a mess.
     "types": ["jest"]
   },

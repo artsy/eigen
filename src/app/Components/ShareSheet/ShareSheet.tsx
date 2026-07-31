@@ -30,7 +30,7 @@ import { useRef, useState } from "react"
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import Keys from "react-native-keys"
 import Share, { Social } from "react-native-share"
-import ViewShot from "react-native-view-shot"
+import { ViewShotRef } from "react-native-view-shot"
 import { useTracking } from "react-tracking"
 
 export const ShareSheet = () => {
@@ -38,7 +38,7 @@ export const ShareSheet = () => {
   const isArtwork = data?.type === "artwork"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const toast = useToast()
-  const shotRef = useRef<ViewShot>(null)
+  const shotRef = useRef<ViewShotRef>(null)
   const [isImageReady, setIsImageReady] = useState(false)
   const showInstagramStoriesItem =
     useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"

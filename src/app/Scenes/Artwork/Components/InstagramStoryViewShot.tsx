@@ -5,7 +5,7 @@ import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
 import React, { Ref } from "react"
-import ViewShot from "react-native-view-shot"
+import ViewShot, { ViewShotRef } from "react-native-view-shot"
 
 /**
  * This component is used to generate an image to share in Instagram Stories.
@@ -20,7 +20,7 @@ const InstagramStoryBackgroundDimensions = {
 const BottomLabelHeight = 350 // in pixels, before we scale it
 
 export interface InstagramStoryViewShotProps {
-  shotRef?: Ref<ViewShot>
+  shotRef?: Ref<ViewShotRef>
   href: string
   artist: string
   title?: string
