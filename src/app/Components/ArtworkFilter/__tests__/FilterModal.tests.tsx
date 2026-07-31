@@ -377,6 +377,8 @@ describe("Clearing filters", () => {
       sizeMetric: "cm",
     }
 
+    exitModalMock.mockClear()
+
     renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
     fireEvent.press(screen.getByText("Clear All"))
@@ -384,6 +386,10 @@ describe("Clearing filters", () => {
     expect(screen.getByText("Sort By")).toBeTruthy()
     expect(screen.getByText("Rarity")).toBeTruthy()
     expect(screen.getByText("Show Results")).not.toBeDisabled()
+
+    fireEvent.press(screen.getByText("Show Results"))
+
+    expect(exitModalMock).toHaveBeenCalled()
   })
 })
 

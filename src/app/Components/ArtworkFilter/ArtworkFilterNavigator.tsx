@@ -205,6 +205,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const handleApplyPress = () => {
+    if (selectedFiltersState.length === 0) {
+      exitModal?.()
+      return
+    }
+
     const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
     // TODO: Update to use cohesion
     switch (mode) {
