@@ -205,8 +205,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const handleApplyPress = () => {
+    // nothing staged to apply: treat the tap as a dismissal, reusing the same
+    // path as closing the panel — unlike exitModal, this lets consumers that
+    // only track dismissals (not applies) see this one.
     if (selectedFiltersState.length === 0) {
-      exitModal?.()
+      handleClosingModal()
       return
     }
 

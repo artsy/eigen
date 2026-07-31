@@ -17,7 +17,6 @@ import { ResponsiveValue } from "styled-system"
 
 export interface ArtworkFilterApplyButtonProps {
   buttonText?: string
-  disabled?: boolean
   onCreateAlertPress?: () => void
   onPress: () => void
   shouldShowCreateAlertButton?: boolean
@@ -27,13 +26,12 @@ export interface ArtworkFilterApplyButtonProps {
 
 interface Button {
   label: string
-  disabled?: boolean
   icon?: React.ReactNode
   onPress: () => void
 }
 
 const InnerButton: React.FC<Button> = (props) => {
-  const { label, disabled, icon, onPress } = props
+  const { label, icon, onPress } = props
   const [isPressed, setIsPressed] = useState(false)
 
   return (
@@ -42,8 +40,7 @@ const InnerButton: React.FC<Button> = (props) => {
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       onPress={onPress}
-      disabled={disabled}
-      style={{ flex: 1, opacity: disabled ? 0.4 : 1 }}
+      style={{ flex: 1 }}
     >
       <Box flex={1} flexDirection="row" alignItems="center" justifyContent="center">
         {icon}
@@ -63,7 +60,6 @@ const InnerButton: React.FC<Button> = (props) => {
 export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> = (props) => {
   const {
     buttonText,
-    disabled = false,
     shouldShowCreateAlertButton,
     onCreateAlertPress,
     onPress,
@@ -125,7 +121,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                 <Box width="1" height={20} backgroundColor="mono0" mx={1} />
               </>
             )}
-            <InnerButton disabled={disabled} label="Show Results" onPress={onPress} />
+            <InnerButton label="Show Results" onPress={onPress} />
           </Box>
         </Box>
       </SafeAreaView>
@@ -137,7 +133,6 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
       <Separator my={0} />
       <Box p={2} pb={pb}>
         <Button
-          disabled={disabled}
           onPress={onPress}
           block
           width={100}

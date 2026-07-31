@@ -246,33 +246,6 @@ describe("Filter modal states", () => {
     expect(screen.getByText("Medium • 1")).toBeTruthy()
   })
 
-  it("displays the filter screen apply button as enabled when no filters are selected", () => {
-    renderWithWrappers(<MockFilterModalNavigator />)
-
-    expect(screen.getByText("Show Results")).not.toBeDisabled()
-  })
-
-  it("displays the filter screen apply button correctly when filters are selected", () => {
-    const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: mockAggregations,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-      showFilterArtworksModal: false,
-      sizeMetric: "cm",
-    }
-
-    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
-
-    expect(screen.getByText("Show Results")).not.toBeDisabled()
-  })
-
   it("does not display default filters numbers on the Filter modal", () => {
     renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
@@ -327,6 +300,14 @@ describe("Filter modal states", () => {
 })
 
 describe("Clearing filters", () => {
+  beforeEach(() => {
+    exitModalMock.mockClear()
+    closeModalMock.mockClear()
+    // the global clearing in setupJest is skipped when ALLOW_CONSOLE_LOGS=true,
+    // so clear explicitly to keep the tracking assertions below reliable
+    mockTrackEvent.mockClear()
+  })
+
   it("allows users to clear all filters when selecting clear all", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
@@ -378,21 +359,19 @@ describe("Clearing filters", () => {
       sizeMetric: "cm",
     }
 
-    exitModalMock.mockClear()
-
     renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
     fireEvent.press(screen.getByText("Clear All"))
 
     expect(screen.getByText("Sort By")).toBeTruthy()
     expect(screen.getByText("Rarity")).toBeTruthy()
-    expect(screen.getByText("Show Results")).not.toBeDisabled()
 
     fireEvent.press(screen.getByText("Show Results"))
 
-    expect(exitModalMock).toHaveBeenCalled()
-    // exitModal is also called when filters are applied, so additionally assert
-    // the tap was treated as a no-op: no filter-change event may be emitted
+    // the tap is a dismissal, not an apply: closeModal (which consumers may
+    // track as a close) rather than exitModal, and no filter-change event
+    expect(closeModalMock).toHaveBeenCalled()
+    expect(exitModalMock).not.toHaveBeenCalled()
     expect(mockTrackEvent).not.toHaveBeenCalledWith(
       expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
     )
@@ -421,8 +400,6 @@ describe("Clearing filters", () => {
       showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
-
-    exitModalMock.mockClear()
 
     renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
