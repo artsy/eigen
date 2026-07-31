@@ -47,10 +47,10 @@ export interface RegistrationProps
 }
 
 interface RegistrationState {
-  billingAddress?: Address
+  billingAddress?: Address | null
   phoneNumber?: string
-  creditCardFormParams?: PaymentCardTextFieldParams
-  creditCardToken?: Token.Result
+  creditCardFormParams?: PaymentCardTextFieldParams | null
+  creditCardToken?: Token.Result | null
   conditionsOfSaleChecked: boolean
   isLoading: boolean
   missingInformation: "payment" | "phone" | null
@@ -82,11 +82,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
 
     this.state = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       billingAddress: null,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardToken: null,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
       missingInformation,
@@ -351,7 +348,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     navigation?.navigate("RegistrationResult", {
       status,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
     })
 
@@ -437,27 +433,21 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         {this.renderRequiredInfoForm()}
         <Flex px={2}>
           {this.renderRequiredInfoHint()}
-          {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            !!bidderNeedsIdentityVerification({ sale, user: me }) && (
-              <>
-                <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
-                <Hint>
-                  After you register, you’ll receive an email with a link to complete identity
-                  verification.
-                </Hint>
-              </>
-            )
-          }
-          {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            !missingInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+          {!!bidderNeedsIdentityVerification({ sale, user: me }) && (
+            <>
+              <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
               <Hint>
-                To complete your registration, please confirm that you agree to the Conditions of
-                Sale.
+                After you register, you’ll receive an email with a link to complete identity
+                verification.
               </Hint>
-            )
-          }
+            </>
+          )}
+          {!missingInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+            <Hint>
+              To complete your registration, please confirm that you agree to the Conditions of
+              Sale.
+            </Hint>
+          )}
           <Modal
             visible={this.state.errorModalVisible}
             headerText="An error occurred"

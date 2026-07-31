@@ -1,9 +1,12 @@
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
+import { compact } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -19,11 +22,11 @@ const track: Track<FeaturedArtistsProps, {}> = _track
 @track()
 export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   getFeaturedArtistEntityCollection = (
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    artists: FeaturedArtists_collection$data["artworksConnection"]["merchandisableArtists"]
+    artists: NonNullable<
+      FeaturedArtists_collection$data["artworksConnection"]
+    >["merchandisableArtists"]
   ) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return artists.map((artist) => {
+    return compact(artists).map((artist) => {
       return (
         <Box width="100%" key={artist.internalID} pb={2}>
           <ArtistListItem artist={artist} contextModule={ContextModules.FeaturedArtists} />
@@ -38,13 +41,13 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     const artistIDs = this.props.collection?.query?.artistIDs || []
 
     if (artistIDs.length > 0) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return allArtists.filter((artist) => artistIDs.includes(artist.internalID))
+      return allArtists.filter((artist) => artist && artistIDs.includes(artist.internalID))
     }
 
     if (featuredArtistExclusionIds.length > 0) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
+      return allArtists.filter(
+        (artist) => artist && !featuredArtistExclusionIds.includes(artist.internalID)
+      )
     }
     return allArtists
   }
@@ -72,8 +75,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
               accessibilityLabel="View all featured artists"
               onPress={() => {
                 navigate(`/collection/${this.props.collection.slug}/artists`)
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                tracking.trackEvent({
+                tracking?.trackEvent({
                   action_type: Schema.ActionTypes.Tap,
                   action_name: Schema.ActionNames.ViewMore,
                   context_screen: Schema.PageNames.Collection,

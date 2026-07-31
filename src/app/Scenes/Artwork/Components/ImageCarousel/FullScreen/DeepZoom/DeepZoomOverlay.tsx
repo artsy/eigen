@@ -32,12 +32,9 @@ export interface DeepZoomOverlayProps {
  * which is used to provide the pinch-to-zoom and panning gestures which manipulate this overlay's state.
  */
 export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
-  image: {
-    deepZoom: {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      image: { format, size: fullImageSize, tileSize, url },
-    },
-  },
+  // The caller (ImageZoomView) only renders this component when `image.deepZoom` is present,
+  // but that guard doesn't narrow the nested `.image` field, so it's asserted here.
+  image,
   width,
   height,
   viewPortChanges,
@@ -46,6 +43,19 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   $contentOffsetY,
   triggerScrollEvent,
 }) => {
+  // These are always fully populated whenever `image.deepZoom` is present (guaranteed by the
+  // caller's guard), but the generated Relay type marks every level of this nesting as nullable.
+  const {
+    format,
+    size: fullImageSize,
+    tileSize,
+    url,
+  } = image.deepZoom?.image as {
+    format: string
+    size: { width: number; height: number }
+    tileSize: number
+    url: string
+  }
   const screenDimensions = useScreenDimensions()
   const pyramid = useMemo(() => new DeepZoomPyramid(), [])
   // get first viewport update after mounting to start showing tiles

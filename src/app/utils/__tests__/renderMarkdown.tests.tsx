@@ -7,6 +7,7 @@ import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import React from "react"
+import { Output, ReactElements, SingleASTNode, State } from "simple-markdown"
 
 describe("renderMarkdown", () => {
   it("returns empty text for a simple string", () => {
@@ -59,8 +60,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        react: (node, output, state) => {
+        react: (node: SingleASTNode, output: Output<ReactElements>, state: State) => {
           return (
             <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}
@@ -86,8 +86,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        react: (node, output, state) => {
+        react: (node: SingleASTNode, output: Output<ReactElements>, state: State) => {
           return (
             <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}
@@ -116,8 +115,7 @@ describe("renderMarkdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        react: (node, output, state) => {
+        react: (node: SingleASTNode, output: Output<ReactElements>, state: State) => {
           return (
             <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}

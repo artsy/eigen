@@ -67,12 +67,8 @@ export const uploadFileToS3 = ({
         : file?.item,
     }
 
-    for (const key in data) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (data.hasOwnProperty(key)) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        formData.append(key, data[key])
-      }
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value)
     }
 
     // Fetch didn't seem to work, so I had to move to a lower
@@ -80,11 +76,9 @@ export const uploadFileToS3 = ({
     //
     // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    request.onload = (e) => {
+    request.onload = () => {
       if (
-        e.target.status.toString() ===
-        assetCredentials.policyDocument.conditions.successActionStatus
+        request.status.toString() === assetCredentials.policyDocument.conditions.successActionStatus
       ) {
         resolve({
           key,

@@ -3,6 +3,7 @@ import { Button, ButtonProps } from "@artsy/palette-mobile"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 
 import React, { useState } from "react"
@@ -31,8 +32,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
   const tracking = useTracking()
   const analytics = useAnalyticsContext()
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const onMutationError = (error) => {
+  const onMutationError = (error: unknown) => {
     Alert.alert(
       "Sorry, we couldn't process the request.",
       "Please try again or contact orders@artsy.net for help.",
@@ -104,10 +104,10 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
         onCompleted: (data) => {
           setIsCommittingCreateOfferOrderMutation(false)
 
-          const {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            commerceCreateOfferOrderWithArtwork: { orderOrError },
-          } = data
+          const orderOrError = data.commerceCreateOfferOrderWithArtwork?.orderOrError
+          if (!orderOrError) {
+            return
+          }
           if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
             onMutationError(orderOrError.error)
           } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {

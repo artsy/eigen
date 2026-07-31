@@ -7,7 +7,7 @@ import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { useIsMounted } from "./useIsMounted"
 
 export class DeepZoomTileID {
-  static _cache = {}
+  static _cache: Record<string, DeepZoomTileID> = {}
   static create(level: number, row: number, col: number) {
     return new DeepZoomTileID(level, row, col).intern()
   }
@@ -25,12 +25,10 @@ export class DeepZoomTileID {
     return this.id
   }
   private intern() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const result = DeepZoomTileID._cache[this.toString()]
     if (result) {
       return result
     }
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     DeepZoomTileID._cache[this.toString()] = this
     return this
   }
@@ -90,6 +88,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
 
   if (VISUAL_DEBUG_MODE) {
     // need to fake the load delay of images
+    // eslint-disable-next-line react-hooks/rules-of-hooks -- VISUAL_DEBUG_MODE is a module-level constant, so this condition never changes across renders of a given instance
     useEffect(() => {
       if (showing) {
         setTimeout(onLoad, 400)
@@ -118,6 +117,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
     )
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- VISUAL_DEBUG_MODE is a module-level constant, so this condition never changes across renders of a given instance
   const opacity = useSpringValue(loaded ? 1 : 0)
 
   return !showing ? null : (

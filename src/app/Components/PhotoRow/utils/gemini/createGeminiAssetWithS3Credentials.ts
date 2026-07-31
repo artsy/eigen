@@ -30,8 +30,12 @@ export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAs
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          resolve(response.createGeminiEntryForAsset.asset.token)
+          const token = response.createGeminiEntryForAsset?.asset?.token
+          if (!token) {
+            reject(new Error("No asset token was returned"))
+          } else {
+            resolve(token)
+          }
         }
       },
     })

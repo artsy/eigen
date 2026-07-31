@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react-native"
 import {
   ImageCarouselContext,
+  ImageCarouselImage,
   useNewImageCarouselContext,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -35,7 +36,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
     },
-  ],
+  ] as ImageCarouselImage[],
 }
 
 describe("image carousel context", () => {

@@ -9,6 +9,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { ComponentProps } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -92,12 +93,12 @@ describe("Featured Collections Rail", () => {
   })
 
   describe("Featured Collections Rail", () => {
-    let props: any /* STRICTNESS_MIGRATION */
+    let props: ComponentProps<typeof FeaturedCollectionsRail>
     beforeEach(() => {
       props = {
         collectionGroup: FeaturedCollectionsFixture?.marketingCollection?.linkedCollections[0],
         collection: FeaturedCollectionsFixture?.marketingCollection,
-      }
+      } as unknown as ComponentProps<typeof FeaturedCollectionsRail>
     })
 
     it("renders three collections in the Featured Collections Series", () => {

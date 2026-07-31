@@ -53,14 +53,14 @@ export type FullScreenState =
 
 export interface ImageCarouselContext {
   dispatch(action: ImageCarouselAction): void
-  embeddedFlatListRef: React.RefObject<FlatList<any>>
+  embeddedFlatListRef: React.RefObject<FlatList<any> | null>
   embeddedImageRefs: View[]
   fullScreenState: GlobalState<FullScreenState>
   imageIndex: GlobalState<number>
-  images: ImageDescriptor[]
+  images: ImageCarouselImage[]
   isZoomedCompletelyOut: GlobalState<boolean>
   lastImageIndex: GlobalState<number>
-  media: ImageCarouselImage[] & ImageCarouselVideo[]
+  media: ImageCarouselMedia[]
   setVideoAsCover?: boolean
   videos?: ImageCarouselVideo[]
   xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
@@ -74,7 +74,7 @@ export function useNewImageCarouselContext({
 }: Pick<ImageCarouselContext, "images" | "setVideoAsCover" | "videos"> & {
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
-  const embeddedImageRefs = useMemo(() => [], [])
+  const embeddedImageRefs = useMemo<View[]>(() => [], [])
   const embeddedFlatListRef = useRef<FlatList<any>>(null)
   const xScrollOffsetAnimatedValue = useRef<Animated.Value>(new Animated.Value(0))
   const [imageIndex, setImageIndex] = useGlobalState(0)
@@ -85,7 +85,6 @@ export function useNewImageCarouselContext({
 
   const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return useMemo(
     () => ({
       imageIndex,

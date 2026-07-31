@@ -1,6 +1,7 @@
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { InquiryMakeOfferButton_artwork$data } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Alert } from "react-native"
@@ -28,8 +29,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
     orderUrl: null,
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onMutationError(error) {
+  onMutationError(_error: unknown) {
     Alert.alert(
       "Sorry, we couldn't process the request.",
       "Please try again or contact orders@artsy.net for help.",
@@ -93,10 +93,10 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
           },
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
-              const {
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                createInquiryOfferOrder: { orderOrError },
-              } = data
+              const orderOrError = data.createInquiryOfferOrder?.orderOrError
+              if (!orderOrError) {
+                return
+              }
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {

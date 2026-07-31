@@ -48,8 +48,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
         keyExtractor={(_item, index) => String(index)}
         renderItem={({ item }) => {
           return (
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            <Box width="100%" key={item.internalID} pb={20}>
+            <Box width="100%" key={item.internalID} pb="20px">
               <ArtistListItem artist={item} />
             </Box>
           )

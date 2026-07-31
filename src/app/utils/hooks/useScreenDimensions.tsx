@@ -18,10 +18,6 @@ export interface ScreenDimensionsWithSafeAreas extends ScreenDimensions {
   safeAreaInsets: SafeAreaInsets
 }
 
-export const ScreenDimensionsContext = createContext<ScreenDimensionsWithSafeAreas>(
-  null as any /* STRICTNESS_MIGRATION */
-)
-
 function getCurrentDimensions(): ScreenDimensions {
   const { width, height } = Dimensions.get("window")
   return {
@@ -34,6 +30,11 @@ function getCurrentDimensions(): ScreenDimensions {
     },
   }
 }
+
+export const ScreenDimensionsContext = createContext<ScreenDimensionsWithSafeAreas>({
+  ...getCurrentDimensions(),
+  safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
+})
 
 export const ProvideScreenDimensions: React.FC<React.PropsWithChildren> = ({ children }) => {
   const safeAreaInsets = useSafeAreaInsets()

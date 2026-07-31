@@ -4,7 +4,7 @@ import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {
   label?: string
-  date?: string
+  date?: string | null
   hasStarted?: boolean
   state: string
   biddingEndAt?: string
