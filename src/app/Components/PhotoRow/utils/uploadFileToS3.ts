@@ -67,8 +67,12 @@ export const uploadFileToS3 = ({
         : file?.item,
     }
 
-    for (const [key, value] of Object.entries(data)) {
-      formData.append(key, value)
+    for (const key in data) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (data.hasOwnProperty(key)) {
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        formData.append(key, data[key])
+      }
     }
 
     // Fetch didn't seem to work, so I had to move to a lower

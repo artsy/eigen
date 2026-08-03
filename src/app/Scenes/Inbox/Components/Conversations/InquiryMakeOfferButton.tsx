@@ -93,10 +93,10 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
           },
           onCompleted: (data) => {
             this.setState({ isCommittingCreateOfferOrderMutation: false }, () => {
-              const orderOrError = data.createInquiryOfferOrder?.orderOrError
-              if (!orderOrError) {
-                return
-              }
+              const {
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                createInquiryOfferOrder: { orderOrError },
+              } = data
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {

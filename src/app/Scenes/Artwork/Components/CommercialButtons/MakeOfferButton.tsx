@@ -104,10 +104,10 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
         onCompleted: (data) => {
           setIsCommittingCreateOfferOrderMutation(false)
 
-          const orderOrError = data.commerceCreateOfferOrderWithArtwork?.orderOrError
-          if (!orderOrError) {
-            return
-          }
+          const {
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            commerceCreateOfferOrderWithArtwork: { orderOrError },
+          } = data
           if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
             onMutationError(orderOrError.error)
           } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
