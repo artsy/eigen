@@ -425,7 +425,7 @@ export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererPr
     auctionResultInternalID,
   })
 
-  if (!data?.auctionResult) {
+  if (!data?.auctionResult || !data?.auctionResult.artist) {
     return (
       <Flex>
         <Text>Wrong link</Text>
