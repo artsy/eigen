@@ -33,7 +33,7 @@ export const BrowsePromptStep: React.FC<BrowsePromptStepProps> = ({ onNext }) =>
           </Text>
         </AnimatedFlex>
       </Flex>
-      <AnimatedFlex pb={`${bottom}px`} gap={1} entering={enteringAnim}>
+      <AnimatedFlex pb={`${bottom}px`} mb={4} gap={1} entering={enteringAnim}>
         <Button variant="fillDark" block onPress={onNext}>
           Start Swiping
         </Button>
