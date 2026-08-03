@@ -203,6 +203,115 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes artwork URLs with a trailing optional segment to Artwork", () => {
+    expect(matchRoute("/artwork/josef-albers-homage-to-the-square/foo")).toMatchInlineSnapshot(`
+      {
+        "module": "Artwork",
+        "params": {
+          "artworkID": "josef-albers-homage-to-the-square",
+          "optional": "foo",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("keeps specific artwork sub-routes ahead of the optional-segment alias", () => {
+    expect(matchRoute("/artwork/josef-albers-homage-to-the-square/medium")).toMatchInlineSnapshot(`
+      {
+        "module": "ArtworkMedium",
+        "params": {
+          "artworkID": "josef-albers-homage-to-the-square",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/artwork/josef-albers-homage-to-the-square/browse-similar-works"))
+      .toMatchInlineSnapshot(`
+      {
+        "module": "BrowseSimilarWorks",
+        "params": {
+          "artworkID": "josef-albers-homage-to-the-square",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes article URLs prefixed with an ignorable segment to Article", () => {
+    expect(matchRoute("/some-profile/article/the-art-of-collecting")).toMatchInlineSnapshot(`
+      {
+        "module": "Article",
+        "params": {
+          "articleID": "the-art-of-collecting",
+          "ignore": "some-profile",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes a news item to the Article screen", () => {
+    expect(matchRoute("/news/the-latest-art-news")).toMatchInlineSnapshot(`
+      {
+        "module": "Article",
+        "params": {
+          "articleID": "the-latest-art-news",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes a post to the Article screen", () => {
+    expect(matchRoute("/post/the-art-of-collecting")).toMatchInlineSnapshot(`
+      {
+        "module": "Article",
+        "params": {
+          "articleID": "the-art-of-collecting",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes a series item to the Article screen", () => {
+    expect(matchRoute("/series/the-story-of-abstraction")).toMatchInlineSnapshot(`
+      {
+        "module": "Article",
+        "params": {
+          "articleID": "the-story-of-abstraction",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes a series item with an ignorable segment to the Article screen", () => {
+    expect(matchRoute("/series/some-vanity/the-story-of-abstraction")).toMatchInlineSnapshot(`
+      {
+        "module": "Article",
+        "params": {
+          "articleID": "the-story-of-abstraction",
+          "ignore": "some-vanity",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes a standalone auction result to the AuctionResult screen", () => {
+    expect(matchRoute("/auction-result/12345")).toMatchInlineSnapshot(`
+      {
+        "module": "AuctionResult",
+        "params": {
+          "auctionResultInternalID": "12345",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes Artist auction results to artist insights", () => {
     expect(matchRoute("/artist/banksy/auction-results")).toMatchInlineSnapshot(`
       {

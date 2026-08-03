@@ -425,6 +425,54 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    // Alias for article URLs prefixed with an ignorable vanity/profile segment
+    path: "/:ignore/article/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // A post is just an article; force redirects /post/:id to the article page
+    path: "/post/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // A series item is just an article; force redirects /series/:id to the article page.
+    path: "/series/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
+    // /series/:ignore/:articleID — same as above but with an ignorable vanity segment
+    path: "/series/:ignore/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
+  },
+  {
     path: "/articles",
     name: "Articles",
     Component: ArticlesScreen,
@@ -482,6 +530,13 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
+    name: "AuctionResult",
+    Component: AuctionResultQueryRenderer,
+    queries: [AuctionResultScreenQuery],
+  },
+  {
+    // Standalone auction result page (force redirects here).
+    path: "/auction-result/:auctionResultInternalID",
     name: "AuctionResult",
     Component: AuctionResultQueryRenderer,
     queries: [AuctionResultScreenQuery],
@@ -623,6 +678,19 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [BrowseSimilarWorksScreenQuery],
+  },
+  {
+    // Alias for artwork URLs with a trailing segment (e.g. /artwork/:artworkID/:optional).
+    // MUST stay below
+    // the more specific /artwork/:artworkID/medium and /browse-similar-works routes, since
+    // matching is first-match-wins and this pattern would otherwise shadow them.
+    path: "/artwork/:artworkID/:optional",
+    name: "Artwork",
+    Component: ArtworkScreen,
+    options: {
+      hidesBottomTabs: true,
+    },
+    queries: [ArtworkScreenQuery],
   },
   {
     path: "/auction-registration/:saleID",
@@ -1368,6 +1436,18 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [NewsScreenQuery],
+  },
+  {
+    // A news item is just an article; force redirects /news/:id to the article page
+    path: "/news/:articleID",
+    name: "Article",
+    Component: ArticleScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [articleScreenQuery],
   },
   {
     path: "/new-for-you",
