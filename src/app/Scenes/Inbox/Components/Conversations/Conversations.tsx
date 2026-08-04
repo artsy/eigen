@@ -8,10 +8,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useConversationsWebsocket } from "app/utils/Websockets/conversations/useConversationsWebsocket"
 import { extractNodes } from "app/utils/extractNodes"
+import { useIsFocusedInTab } from "app/utils/hooks/useIsFocusedInTab"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ActivityIndicator, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -38,6 +39,8 @@ export const Conversations: React.FC<Props> = (props) => {
   const { trackEvent } = useTracking()
 
   const { relay, isActiveTab } = props
+  const isFocusedInInboxTab = useIsFocusedInTab("inbox")
+  const pendingRefresh = useRef(false)
 
   const fetchData = () => {
     if (relay.hasMore() && !relay.isLoading()) {
@@ -53,18 +56,25 @@ export const Conversations: React.FC<Props> = (props) => {
   }
 
   const refreshConversations = (withSpinner = false) => {
-    if (!relay.isLoading()) {
-      if (withSpinner) {
-        setIsFetching(true)
-      }
-      relay.refetchConnection(PAGE_SIZE, (error) => {
-        if (error) {
-          console.error("Conversations/index.tsx #refreshConversations", error.message)
-          // FIXME: Handle error
-        }
-        setIsFetching(false)
-      })
+    if (relay.isLoading()) {
+      pendingRefresh.current = true
+      return
     }
+
+    if (withSpinner) {
+      setIsFetching(true)
+    }
+    relay.refetchConnection(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error("Conversations/index.tsx #refreshConversations", error.message)
+        // FIXME: Handle error
+      }
+      setIsFetching(false)
+      if (pendingRefresh.current) {
+        pendingRefresh.current = false
+        refreshConversations()
+      }
+    })
   }
 
   const handleSelectConversation = (item: Item) => {
@@ -90,18 +100,17 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }, [isActiveTab])
 
+  const refreshInbox = () => {
+    refreshConversations()
+    GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+  }
+
   useConversationsWebsocket({
     subscriptionKey: "inbox",
-    enabled: isActiveTab,
-    onEvent: () => {
-      refreshConversations()
-      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-    },
+    enabled: isActiveTab && isFocusedInInboxTab,
+    onEvent: refreshInbox,
     // Catch up on anything broadcast while the socket was down.
-    onConnected: () => {
-      refreshConversations()
-      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-    },
+    onConnected: refreshInbox,
   })
 
   const conversations = extractNodes(props.me?.conversations)
