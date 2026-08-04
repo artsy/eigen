@@ -25,8 +25,9 @@ interface UseConversationsWebsocketParams {
   onEvent: (event: ConversationsWebsocketEvent) => void
   /**
    * Called when the socket reconnects after a drop (network loss, app
-   * backgrounded). Anything broadcast while the socket was down is lost, so
-   * consumers should refetch here. Not called on the initial connection.
+   * backgrounded) or when the hook resubscribes after `enabled` was toggled
+   * off. Anything broadcast in the meantime is lost, so consumers should
+   * refetch here. Not called on the very first connection.
    */
   onConnected?: () => void
 }
@@ -53,6 +54,13 @@ export const useConversationsWebsocket = ({
   const onConnectedRef = useRef(onConnected)
   onConnectedRef.current = onConnected
 
+  // Lives outside the effect so it survives resubscribes (e.g. `enabled`
+  // toggling with screen focus). Only the very first connection is treated
+  // as "initial"; a resubscribe's first `connected` fires `onConnected`,
+  // which is exactly the catch-up refetch the consumer wants after having
+  // been unsubscribed.
+  const hasConnectedOnce = useRef(false)
+
   useEffect(() => {
     if (!isFeatureEnabled || !enabled || !cable || !channelsHolder || !userAccessToken) {
       return
@@ -78,22 +86,27 @@ export const useConversationsWebsocket = ({
     }
 
     // "connected" also fires when the subscription is first confirmed;
-    // consumers fetch on mount already, so only surface re-connects.
-    let hasConnectedOnce = false
+    // consumers fetch on mount already, so skip that one.
     const handleConnected = () => {
-      if (!hasConnectedOnce) {
-        hasConnectedOnce = true
+      if (!hasConnectedOnce.current) {
+        hasConnectedOnce.current = true
         return
       }
       onConnectedRef.current?.()
     }
 
+    const handleRejected = () => {
+      console.warn(`useConversationsWebsocket: subscription rejected for ${channelKey}`)
+    }
+
     channel.on("received", handleReceived)
     channel.on("connected", handleConnected)
+    channel.on("rejected", handleRejected)
 
     return () => {
       channel.removeListener("received", handleReceived)
       channel.removeListener("connected", handleConnected)
+      channel.removeListener("rejected", handleRejected)
       channel.unsubscribe()
       delete channelsHolder.channels[channelKey]
     }

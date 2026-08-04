@@ -42,6 +42,16 @@ export const Conversations: React.FC<Props> = (props) => {
   const isFocusedInInboxTab = useIsFocusedInTab("inbox")
   const pendingRefresh = useRef(false)
 
+  const conversations = extractNodes(props.me?.conversations)
+
+  // Retry a refresh that was skipped because a request was in flight.
+  const drainPendingRefresh = () => {
+    if (pendingRefresh.current) {
+      pendingRefresh.current = false
+      refreshConversations()
+    }
+  }
+
   const fetchData = () => {
     if (relay.hasMore() && !relay.isLoading()) {
       setIsLoading(true)
@@ -51,6 +61,7 @@ export const Conversations: React.FC<Props> = (props) => {
           // FIXME: Handle error
         }
         setIsLoading(false)
+        drainPendingRefresh()
       })
     }
   }
@@ -64,16 +75,15 @@ export const Conversations: React.FC<Props> = (props) => {
     if (withSpinner) {
       setIsFetching(true)
     }
-    relay.refetchConnection(PAGE_SIZE, (error) => {
+    // Refetch what's currently loaded so a paginated list isn't truncated
+    // back to the first page.
+    relay.refetchConnection(Math.max(PAGE_SIZE, conversations.length), (error) => {
       if (error) {
         console.error("Conversations/index.tsx #refreshConversations", error.message)
         // FIXME: Handle error
       }
       setIsFetching(false)
-      if (pendingRefresh.current) {
-        pendingRefresh.current = false
-        refreshConversations()
-      }
+      drainPendingRefresh()
     })
   }
 
@@ -112,8 +122,6 @@ export const Conversations: React.FC<Props> = (props) => {
     // Catch up on anything broadcast while the socket was down.
     onConnected: refreshInbox,
   })
-
-  const conversations = extractNodes(props.me?.conversations)
 
   const unreadCount = props.me?.conversations?.totalUnreadCount
   const unreadCounter = unreadCount ? `(${unreadCount})` : null
