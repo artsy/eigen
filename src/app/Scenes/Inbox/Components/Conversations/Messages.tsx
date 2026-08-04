@@ -1,7 +1,6 @@
 import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
-import { PAGE_SIZE } from "app/Components/constants"
 import { usePartnerOfferEvent } from "app/Scenes/Inbox/hooks/usePartnerOfferEvent"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -24,6 +23,8 @@ interface Props {
 const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
+
+const MESSAGES_PAGE_SIZE = 20
 
 type Order = ExtractNodeType<Messages_conversation$data["orderConnection"]>
 type OrderEvent = Order["orderHistory"][number]
@@ -106,7 +107,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     }
 
     updateState(true)
-    relay.loadMore(PAGE_SIZE, (error) => {
+    relay.loadMore(MESSAGES_PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -160,7 +161,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         renderItem={({ item, index }) => {
           return (
             <MessageGroup
-              isLastMessage={index === messages.length - 1}
+              // Only the true start of the thread (nothing older left to
+              // load) shows the artwork/show preview above it.
+              isLastMessage={index === messages.length - 1 && !relay.hasMore()}
               group={item}
               conversationId={conversation?.internalID ?? ""}
               subjectItem={conversation.items?.[0]?.item}
@@ -191,7 +194,7 @@ export default createPaginationContainer(
   {
     conversation: graphql`
       fragment Messages_conversation on Conversation
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, after: { type: "String" }) {
         ...usePartnerOffer_conversation
         id
         internalID
