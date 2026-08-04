@@ -113,6 +113,21 @@ describe("useConversationsWebsocket", () => {
     expect(onConnected).toHaveBeenCalledTimes(1)
   })
 
+  it("invokes onConnected on the first connection after a resubscribe", () => {
+    const onConnected = jest.fn()
+    const { rerender } = renderTheHook({ subscriptionKey: "inbox", onConnected })
+
+    // Initial connection is skipped — the consumer fetches on mount.
+    channelListeners.connected()
+    expect(onConnected).not.toHaveBeenCalled()
+
+    // Resubscribing (e.g. `enabled` toggled with screen focus) should
+    // surface the new subscription's first `connected` as a catch-up.
+    rerender({ subscriptionKey: "conversation:123" })
+    channelListeners.connected()
+    expect(onConnected).toHaveBeenCalledTimes(1)
+  })
+
   it("unsubscribes from the channel on unmount", () => {
     const { unmount } = renderTheHook()
 

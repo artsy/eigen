@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
 import { BackButton, Screen, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
+import { useIsFocused } from "@react-navigation/native"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
@@ -73,14 +74,19 @@ export const Conversation: React.FC<Props> = ({
   }, [refetch])
 
   const conversationID = me.conversation?.internalID
+  const isFocused = useIsFocused()
 
   useConversationsWebsocket({
     subscriptionKey: `conversation:${conversationID}`,
-    enabled: !!conversationID,
+    // Only refetch while the screen is visible: a refetch while hidden would
+    // mark the incoming message as read before the user ever saw it.
+    enabled: !!conversationID && isFocused,
     onEvent: (event) => {
+      // The badge counts all conversations, and the inbox subscription is
+      // torn down while this screen is on top, so always refresh it.
+      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       if (event.conversation_id === conversationID) {
         refetch()
-        GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       }
     },
     // Catch up on anything broadcast while the socket was down.
