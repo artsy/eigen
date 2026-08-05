@@ -30,16 +30,17 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
       {
         text: "Log Out & Switch",
         style: "destructive",
-        onPress: () => {
+        onPress: async () => {
           GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
+          // Sign out (and let its cascading state reset settle) before switching environments, so
+          // the app doesn't remount against a stale, mid-sign-out auth state.
+          if (!!globalStoreInstance().getState().auth.userID) {
+            await GlobalStore.actions.auth.signOut()
+          }
           GlobalStore.actions.devicePrefs.environment.setEnv(newEnv)
           setShowCustomURLOptions(false)
-          onClose()
-          // No need to sign out if the user is already logged out
-          if (!!globalStoreInstance().getState().auth.userID) {
-            GlobalStore.actions.auth.signOut()
-          }
           _globalCacheRef?.clear()
+          onClose()
         },
       },
     ])
