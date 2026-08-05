@@ -135,16 +135,17 @@ function envMenuOption(
   }
   return {
     text,
-    onPress() {
+    async onPress() {
       GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
       if (env !== currentEnv) {
-        GlobalStore.actions.devicePrefs.environment.setEnv(env)
-        onClose()
-        // No need to sign out if the user is already logged out
+        // Sign out (and let its cascading state reset settle) before switching environments, so
+        // the app doesn't remount against a stale, mid-sign-out auth state.
         if (!!globalStoreInstance().getState().auth.userID) {
-          GlobalStore.actions.auth.signOut()
+          await GlobalStore.actions.auth.signOut()
         }
+        GlobalStore.actions.devicePrefs.environment.setEnv(env)
         resetRelayEnvironment()
+        onClose()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }
