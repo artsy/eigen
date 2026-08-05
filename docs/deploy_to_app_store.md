@@ -13,7 +13,7 @@ QA happens against the release-candidate beta, in the Mobile App QA document tha
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - The release notes are gathered in a #practice-mobile thread the day before code freeze; ask there for a final copy if anything is unclear.
    - Commit and push to `rc-vX.Y.Z`.
-3. Run `./scripts/deploys/promote-beta-to-submission-ios`. This submits the **most recent iOS beta** for App Store review — so make sure the most recent beta is the one you QA'd, i.e. that nobody deployed a beta off `main` after the release candidate was built. Check with `./scripts/deploys/latest-betas` if you're unsure.
+3. Run `./scripts/deploys/promote-beta-to-submission-ios`. This lists the last 20 TestFlight builds and prompts you to pick one — choose the iOS build number recorded in the QA document for this release, then confirm.
    - Fastlane tags the submission (`ios-<version>-<build>-submission`) and pushes the tag as part of this lane.
    - Once the release has shipped, open a PR from `rc-vX.Y.Z` into `main` so the release-notes change (and any fixes authored on the RC branch) make it back.
 
