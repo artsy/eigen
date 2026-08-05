@@ -4,7 +4,7 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore, globalStoreInstance } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
-import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
+import { resetRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { capitalize, compact } from "lodash"
 import { useState } from "react"
 import { Alert, AlertButton, Platform, TouchableHighlight } from "react-native"
@@ -144,7 +144,7 @@ function envMenuOption(
         if (!!globalStoreInstance().getState().auth.userID) {
           GlobalStore.actions.auth.signOut()
         }
-        _globalCacheRef?.clear()
+        resetRelayEnvironment()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }

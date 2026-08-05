@@ -102,7 +102,14 @@ const KeyboardControllerProvider = (props: { children?: React.ReactNode }) => (
 
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {
   const Provider = RelayEnvironmentProvider as React.ComponentType<any>
-  return <Provider environment={getRelayEnvironment()}>{props.children}</Provider>
+  // remounts the subtree (and its Relay hooks/Suspense state) whenever the environment is reset,
+  // e.g. when switching between staging/production in the dev menu
+  const env = GlobalStore.useAppState((store) => store.devicePrefs.environment.env)
+  return (
+    <Provider key={env} environment={getRelayEnvironment()}>
+      {props.children}
+    </Provider>
+  )
 }
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (
