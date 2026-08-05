@@ -1,4 +1,4 @@
-import Octokit from "@octokit/rest"
+import { Octokit } from "@octokit/rest"
 import ts from "typescript"
 import { expandOptionals, joinPaths, toSampleURL } from "./canonicalize"
 
@@ -40,15 +40,19 @@ export async function listForceRouteFiles(): Promise<string[]> {
       "⚠️  force's git tree came back truncated — some route files may be missing from the report."
     )
   }
-  return data.tree
-    .map((entry: { path: string }) => entry.path)
-    .filter((p: string) => /src\/Apps\/.*[Rr]outes\.tsx$/.test(p))
+  return (
+    data.tree
+      // `path` is optional in the tree schema; entries without one can't be route
+      // files, and "" never matches the regex below.
+      .map((entry) => entry.path ?? "")
+      .filter((p) => /src\/Apps\/.*[Rr]outes\.tsx$/.test(p))
+  )
 }
 
 /** Fetch a file's raw text from force. */
 export async function fetchForceFile(path: string): Promise<string> {
   const { data } = await githubCall(path, () =>
-    gh().repos.getContents({
+    gh().repos.getContent({
       owner: FORCE_REPO_OWNER,
       repo: FORCE_REPO_NAME,
       path,

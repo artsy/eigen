@@ -115,7 +115,8 @@
     "postcss": "Pinned to fix GHSA-6g55-p6wh-862q and GHSA-r28c-9q8g-f849 (path traversal / arbitrary file disclosure via sourceMappingURL). expo (via @expo/metro-config@55.0.21) exact-pins postcss@~8.4.32, and styled-components@6.1.19 exact-pins postcss@8.4.49, neither of which is patched; remove this once expo/styled-components bump their postcss dependency upstream.",
     "fast-xml-parser": "Bumped from 5.5.6 to 5.10.1 to additionally fix GHSA-gh4j-gqv2-49f6 (XMLBuilder comment/CDATA injection via unescaped delimiters) and GHSA-jp2q-39xq-3w4g (entity expansion limit bypassed when set to zero); see comment history for the original CVEs this resolution addressed. @react-native-community/cli-config-android and cli-platform-apple both request ^4.4.1, which has no patched release for GHSA-gh4j-gqv2-49f6; remove this once the RN CLI moves to fast-xml-parser 5.x.",
     "sharp": "Pinned to 0.35.0 to fix GHSA-f88m-g3jw-g9cj. react-native-bootsplash@7.1.0 exact-caret-pins sharp@^0.34.5 (excludes 0.35.0); remove this once react-native-bootsplash is bumped to 7.3.2+ (which requires sharp@^0.35.2).",
-    "tmp": "Pinned to 0.2.7 to fix GHSA-ph9p-34f9-6g65 (arbitrary file/directory write via symlink). @artsy/update-repo@0.8.2 (latest) exact-pins tmp@^0.1.0 with no patched release on that line; remove this once @artsy/update-repo bumps its tmp dependency upstream."
+    "tmp": "Pinned to 0.2.7 to fix GHSA-ph9p-34f9-6g65 (arbitrary file/directory write via symlink). @artsy/update-repo@0.8.2 (latest) exact-pins tmp@^0.1.0 with no patched release on that line; remove this once @artsy/update-repo bumps its tmp dependency upstream.",
+    "@octokit/rest": "Bumped from 16.34.1 to 20.1.2 to drop the vulnerable @octokit/request 5.x / request-error 1.x-2.x / plugin-paginate-rest 2.x sub-deps behind the ReDoS advisories GHSA (alerts 185/186/187). Stay on 20.x: v21+ is ESM-only, which breaks the CJS assumptions in scripts/. A residual vulnerable chain remains via @artsy/update-repo@0.8.2 (latest) -> @octokit/rest@17.2.0, used only by scripts/update-metaphysics.js (dev tooling, never bundled); it can't be fixed with a resolution because the patched versions are majors ahead and would break @octokit/core@2.4.3. Remove this note once @artsy/update-repo bumps its octokit upstream."
   },
   "dependencies": {
     "@artsy/changelog": "0.1.0",
@@ -240,7 +241,7 @@
     "@babel/preset-react": "7.18.6",
     "@babel/preset-typescript": "7.18.6",
     "@babel/runtime": "7.26.10",
-    "@octokit/rest": "16.34.1",
+    "@octokit/rest": "20.1.2",
     "@react-native-community/cli": "20.0.0",
     "@react-native-community/cli-platform-android": "20.0.0",
     "@react-native-community/cli-platform-ios": "20.0.0",
@@ -294,7 +295,7 @@
     "babel-plugin-transform-remove-console": "6.9.4",
     "chalk": "2.4.2",
     "concurrently": "7.0.0",
-    "danger": "11.2.3",
+    "danger": "13.0.10",
     "dedent": "0.7.0",
     "dotenv": "8.2.0",
     "eslint": "8.32.0",

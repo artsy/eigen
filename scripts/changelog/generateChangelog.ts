@@ -6,7 +6,7 @@
 import { execSync } from "child_process"
 import { resolve } from "path"
 import { changelogTemplateSections, parsePRDescription } from "@artsy/changelog"
-import Octokit, { PullsGetResponse } from "@octokit/rest"
+import { Octokit, type RestEndpointMethodTypes } from "@octokit/rest"
 import chalk from "chalk"
 import { config } from "dotenv"
 import prompts from "prompts"
@@ -16,6 +16,8 @@ import yargs from "yargs/yargs"
 config({ path: resolve(__dirname, "../../.env.releases") })
 
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+
+type PullRequest = RestEndpointMethodTypes["pulls"]["get"]["response"]["data"]
 
 type Platform = "ios" | "android"
 
@@ -95,7 +97,7 @@ async function promptForPlatform(): Promise<Platform> {
   return response.value
 }
 
-async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetResponse[]> {
+async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullRequest[]> {
   const compare = await octokit.repos.compareCommits({
     owner: "artsy",
     repo: "eigen",
@@ -103,7 +105,7 @@ async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetRe
     head: tag2,
   })
 
-  const prs: PullsGetResponse[] = []
+  const prs: PullRequest[] = []
   for (const commit of compare.data.commits) {
     const match =
       commit.commit.message.match(/\(#(\d+)\)/m) ||
@@ -121,12 +123,14 @@ async function getPrsBetweenTags(tag1: string, tag2: string): Promise<PullsGetRe
   return prs
 }
 
-async function getChangelogFromPrs(prs: PullsGetResponse[]) {
+async function getChangelogFromPrs(prs: PullRequest[]) {
   let changelog = ""
-  const prsWithoutChangelog: PullsGetResponse[] = []
-  const prsWithNoChangelog: PullsGetResponse[] = []
+  const prsWithoutChangelog: PullRequest[] = []
+  const prsWithNoChangelog: PullRequest[] = []
   for (const pr of prs) {
-    const result = parsePRDescription(pr.body)
+    // v20's types are honest that a PR body can be absent; an empty description
+    // parses as an error, which is the "missing changelog" bucket we want anyway.
+    const result = parsePRDescription(pr.body ?? "")
 
     if (result.type === "no_changes") {
       prsWithNoChangelog.push(pr)
