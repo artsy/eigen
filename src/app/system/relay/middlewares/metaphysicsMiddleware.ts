@@ -17,12 +17,10 @@ import { Middleware, urlMiddleware } from "react-relay-network-modern"
  * sends about API requests it makes for you, and logs it out during dev
  * time into your console at the same places as the relay queries.
  */
-export function metaphysicsExtensionsLoggerMiddleware() {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+export function metaphysicsExtensionsLoggerMiddleware(): Middleware {
   return (next) => (req) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return next(req).then((res) => {
-      const requests = res.json.extensions?.requests
+      const requests = (res.json as { extensions?: { requests?: any } })?.extensions?.requests
 
       if (requests && console.groupCollapsed) {
         // See: https://github.com/artsy/metaphysics/blob/main/src/app/loaders/api/extensionsLogger.ts

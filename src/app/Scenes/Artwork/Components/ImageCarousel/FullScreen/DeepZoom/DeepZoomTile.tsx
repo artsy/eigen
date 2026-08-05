@@ -7,7 +7,7 @@ import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { useIsMounted } from "./useIsMounted"
 
 export class DeepZoomTileID {
-  static _cache = {}
+  static _cache: Record<string, DeepZoomTileID> = {}
   static create(level: number, row: number, col: number) {
     return new DeepZoomTileID(level, row, col).intern()
   }
@@ -25,12 +25,10 @@ export class DeepZoomTileID {
     return this.id
   }
   private intern() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const result = DeepZoomTileID._cache[this.toString()]
     if (result) {
       return result
     }
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     DeepZoomTileID._cache[this.toString()] = this
     return this
   }
@@ -61,6 +59,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
   const color = useColor()
   const [showing, setShowing] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const opacity = useSpringValue(loaded ? 1 : 0)
   const isMounted = useIsMounted()
   const onLoad = useCallback(() => {
     if (!isMounted()) {
@@ -88,14 +87,14 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
     }
   }, [])
 
-  if (VISUAL_DEBUG_MODE) {
-    // need to fake the load delay of images
-    useEffect(() => {
-      if (showing) {
-        setTimeout(onLoad, 400)
-      }
-    }, [showing])
+  // need to fake the load delay of images in visual debug mode
+  useEffect(() => {
+    if (VISUAL_DEBUG_MODE && showing) {
+      setTimeout(onLoad, 400)
+    }
+  }, [showing, onLoad])
 
+  if (VISUAL_DEBUG_MODE) {
     const borderWidth = Math.pow(2, Math.max(id.level, 9) - 9)
 
     return (
@@ -117,8 +116,6 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
       />
     )
   }
-
-  const opacity = useSpringValue(loaded ? 1 : 0)
 
   return !showing ? null : (
     <Animated.View

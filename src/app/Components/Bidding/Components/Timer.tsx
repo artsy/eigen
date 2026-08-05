@@ -207,12 +207,12 @@ export const Timer: React.FC<Props> = (props) => {
         onCurrentTickerState={() => {
           const state = currentTimerState(props)
           const { label, date } = relevantStateData(state, props)
-          return { label, date, state } as any // STRICTNESS_MIGRATION
+          return { label, date, state }
         }}
         onNextTickerState={({ state }) => {
           const nextState = nextTimerState(state as AuctionTimerState, props)
           const { label, date } = relevantStateData(nextState, props)
-          return { state: nextState, label, date } as any // STRICTNESS_MIGRATION
+          return { state: nextState, label, date }
         }}
       />
     </TimeOffsetProviderWrapper>

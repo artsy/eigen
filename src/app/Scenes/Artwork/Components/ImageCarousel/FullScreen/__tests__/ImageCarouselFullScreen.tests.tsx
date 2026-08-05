@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { ImageCarouselFullScreen } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen"
 import {
   ImageCarouselContext,
+  ImageCarouselImage,
   useNewImageCarouselContext,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -34,7 +35,7 @@ describe("ImageCarouselFullScreen", () => {
           },
           deepZoom: { image: { size: { width: 5, height: 5 } } as any },
         },
-      ],
+      ] as ImageCarouselImage[],
     })
     return (
       <ImageCarouselContext.Provider value={value}>

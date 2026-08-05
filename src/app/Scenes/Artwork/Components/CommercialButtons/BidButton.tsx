@@ -4,9 +4,11 @@ import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
+import { compact } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,14 +23,14 @@ export interface BidButtonProps {
   variant?: ButtonProps["variant"]
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const watchOnly = (sale) =>
-  sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getMyLotStanding = (artwork) =>
+const watchOnly = (sale: BidButton_artwork$data["sale"]) =>
+  !!sale?.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
+
+const getMyLotStanding = (artwork: BidButton_artwork$data) =>
   artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
+
+const getHasBid = (myLotStanding: ReturnType<typeof getMyLotStanding>) =>
+  !!(myLotStanding && myLotStanding.mostRecentBid)
 
 const IdentityVerificationRequiredMessage: React.FC<TextProps> = ({
   onPress,
@@ -118,8 +120,7 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
   }
 
   const renderIsPreview = (
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    registrationStatus: BidButton_artwork$data["sale"]["registrationStatus"],
+    registrationStatus: NonNullable<BidButton_artwork$data["sale"]>["registrationStatus"],
     needsIdentityVerification: boolean
   ) => {
     return (
@@ -184,19 +185,20 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
   }
 
   const { sale, saleArtwork } = artwork
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+
+  if (!sale) {
+    return null
+  }
+
   const { registrationStatus } = sale
 
-  // TODO: Do we need a nil check against +sale+?
-  if (sale?.isClosed) {
+  if (sale.isClosed) {
     return null
   }
 
   const qualifiedForBidding = registrationStatus?.qualifiedForBidding
   const needsIdentityVerification = bidderNeedsIdentityVerification({
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     sale,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     user: me,
     bidder: registrationStatus,
   })
@@ -221,7 +223,6 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
         </Button>
       </>
     )
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
     return (
       <Button width={100} block size="large" variant={variant} disabled>
@@ -245,11 +246,9 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
       </>
     )
   } else {
-    const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const increments = saleArtwork.increments.filter(
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      (increment) => increment.cents > (myLastMaxBid || 0)
+    const myLastMaxBid = hasBid && myLotStanding && myLotStanding.mostRecentBid?.maxBid?.cents
+    const increments = compact(saleArtwork?.increments ?? []).filter(
+      (increment) => (increment.cents ?? 0) > (myLastMaxBid || 0)
     )
     const firstIncrement = increments && increments.length && increments[0]
     const incrementCents = firstIncrement && firstIncrement.cents

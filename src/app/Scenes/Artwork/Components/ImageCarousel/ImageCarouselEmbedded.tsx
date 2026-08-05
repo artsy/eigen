@@ -51,7 +51,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     imageIndex,
   } = useContext(ImageCarouselContext)
 
-  const measurements = getMeasurements({ media, boundingBox: embeddedCardBoundingBox })
+  const measurements = getMeasurements({
+    media: media.map((m) => ({ width: m.width ?? 0, height: m.height ?? 0 })),
+    boundingBox: embeddedCardBoundingBox,
+  })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
   const scrollEnabled = media.length > 1

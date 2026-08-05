@@ -13,9 +13,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
+import { Disposable, MutationConfig, MutationParameters } from "relay-runtime"
 
-const commitMutationMock = (fn?: typeof relay.commitMutation) =>
-  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+const commitMutationMock = (
+  fn?: (environment: any, config: MutationConfig<MutationParameters>) => Disposable | null
+) => jest.fn(fn)
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -150,18 +152,14 @@ describe("when the sale requires identity verification", () => {
 describe("when pressing register button", () => {
   it("when a credit card needs to be added, it commits two mutations on button press", async () => {
     relay.commitMutation = commitMutationMock()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        onCompleted?.(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted?.(mockRequestResponses.creatingCreditCardSuccess, null)
         return null
       })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted?.(mockRequestResponses.qualifiedBidder, null)
         return null
@@ -280,10 +278,8 @@ describe("when pressing register button", () => {
   it("displays the default error message if there are unhandled errors from the updateUserProfile mutation", async () => {
     const errors = [{ message: "malformed error" }]
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({}, errors)
+      onCompleted?.({}, errors)
       return null
     }) as any
 
@@ -323,10 +319,8 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a updateUserProfile failure", async () => {
     const errors = [{ message: "There was an error with your request" }]
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({}, errors)
+      onCompleted?.({}, errors)
       return null
     }) as any
 
@@ -405,13 +399,10 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        onCompleted?.(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted?.(mockRequestResponses.creatingCreditCardError, null)
         return null
@@ -444,13 +435,10 @@ describe("when pressing register button", () => {
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        onCompleted?.(mockRequestResponses.updateMyUserProfile, null)
         return null
       })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted?.({}, errors)
         return null
@@ -489,13 +477,10 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
+        onCompleted?.(mockRequestResponses.creatingCreditCardSuccess, null)
         return null
       })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onError }) => {
         onError?.(new TypeError("Network request failed"))
         return null
@@ -561,10 +546,8 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a network failure", async () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onError }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onError(new TypeError("Network request failed"))
+      onError?.(new TypeError("Network request failed"))
       return null
     }) as any
 
@@ -593,10 +576,8 @@ describe("when pressing register button", () => {
   })
 
   it("displays the pending result when the bidder is not qualified_for_bidding", async () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
+      onCompleted?.({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
       return null
     }) as any
 
@@ -629,10 +610,8 @@ describe("when pressing register button", () => {
         requireIdentityVerification: true,
       },
     }
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
+      onCompleted?.({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
       return null
     }) as any
 
@@ -651,10 +630,8 @@ describe("when pressing register button", () => {
   })
 
   it("displays the completed result when the bidder is qualified_for_bidding", async () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
+      onCompleted?.({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
       return null
     }) as any
 
@@ -687,10 +664,8 @@ describe("when pressing register button", () => {
       },
     }
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
+      onCompleted?.({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
       return null
     }) as any
 

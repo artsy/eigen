@@ -3,7 +3,7 @@ import React from "react"
 import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
 
 interface Props {
-  startAt?: string
+  startAt?: string | null
   timeOffsetInMilliseconds?: number
   children: React.ReactElement<any>
   onDurationEnd?: () => void

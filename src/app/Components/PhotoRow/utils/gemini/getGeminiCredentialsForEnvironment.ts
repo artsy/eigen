@@ -5,9 +5,11 @@ import {
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export type AssetCredentials =
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  getGeminiCredentialsForEnvironmentMutation["response"]["requestCredentialsForAssetUpload"]["asset"]
+export type AssetCredentials = NonNullable<
+  NonNullable<
+    getGeminiCredentialsForEnvironmentMutation["response"]["requestCredentialsForAssetUpload"]
+  >["asset"]
+>
 
 export const getGeminiCredentialsForEnvironment = (
   input: RequestCredentialsForAssetUploadInput
@@ -47,8 +49,12 @@ export const getGeminiCredentialsForEnvironment = (
         if (errors && errors.length > 0) {
           reject(new Error(JSON.stringify(errors)))
         } else {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          resolve(response.requestCredentialsForAssetUpload.asset)
+          const asset = response.requestCredentialsForAssetUpload?.asset
+          if (!asset) {
+            reject(new Error("No asset credentials were returned"))
+          } else {
+            resolve(asset)
+          }
         }
       },
     })

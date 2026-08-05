@@ -1,13 +1,13 @@
 interface IdentityVerificationRequireable {
-  requireIdentityVerification: boolean
+  requireIdentityVerification: boolean | null | undefined
 }
 
 interface IdentityVerifiable {
-  isIdentityVerified: boolean
+  isIdentityVerified: boolean | null | undefined
 }
 
 interface Bidder {
-  qualifiedForBidding: boolean
+  qualifiedForBidding: boolean | null | undefined
 }
 
 /**
@@ -25,10 +25,12 @@ export const bidderNeedsIdentityVerification = ({
   bidder,
 }: {
   sale: IdentityVerificationRequireable
-  user?: IdentityVerifiable
-  bidder?: Bidder
+  user?: IdentityVerifiable | null
+  bidder?: Bidder | null
 }) => {
-  return (
-    !bidder?.qualifiedForBidding && sale.requireIdentityVerification && !user?.isIdentityVerified
+  return !!(
+    !bidder?.qualifiedForBidding &&
+    sale.requireIdentityVerification &&
+    !user?.isIdentityVerified
   )
 }

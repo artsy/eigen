@@ -45,7 +45,7 @@ export const ImageCarouselFullScreen = () => {
     [screenDimensions]
   )
 
-  const zoomViewRefs: ImageZoomView[] = useMemo(() => [], [])
+  const zoomViewRefs: Array<ImageZoomView | null> = useMemo(() => [], [])
 
   const mainOpacity = useAnimatedValue(1)
 
@@ -63,9 +63,7 @@ export const ImageCarouselFullScreen = () => {
         // reset zoom after opacity reaches 0 so the snap is invisible,
         // but before FULL_SCREEN_FINISHED_EXITING so refs are still valid
         for (let i = 0; i < media.length; i++) {
-          if (zoomViewRefs[i]) {
-            zoomViewRefs[i].syncResetZoom()
-          }
+          zoomViewRefs[i]?.syncResetZoom()
         }
         setTimeout(() => dispatch({ type: "FULL_SCREEN_FINISHED_EXITING" }), 16)
       })
@@ -113,8 +111,8 @@ export const ImageCarouselFullScreen = () => {
             onMomentumScrollEnd={() => {
               // reset the zooms of all non-visible zoom views when the horizontal carousel comes to a stop
               for (let i = 0; i < media.length; i++) {
-                if (i !== imageIndex.current && zoomViewRefs[i]) {
-                  zoomViewRefs[i].resetZoom()
+                if (i !== imageIndex.current) {
+                  zoomViewRefs[i]?.resetZoom()
                 }
               }
             }}
@@ -133,7 +131,6 @@ export const ImageCarouselFullScreen = () => {
                   image={item}
                   index={index}
                   ref={(ref) => {
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     zoomViewRefs[index] = ref
                   }}
                 />

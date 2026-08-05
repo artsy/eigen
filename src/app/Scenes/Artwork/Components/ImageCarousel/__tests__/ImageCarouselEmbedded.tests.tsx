@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ImageCarouselContext,
+  ImageCarouselImage,
   useNewImageCarouselContext,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselEmbedded } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded"
@@ -36,7 +37,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
     },
-  ],
+  ] as ImageCarouselImage[],
 }
 
 type ContextInit = typeof contextMock
@@ -97,7 +98,7 @@ describe("ImageCarouselEmbedded", () => {
           },
           width: 40,
         },
-      ],
+      ] as ImageCarouselImage[],
     }
 
     renderWithWrappers(<TestWrapper contextInit={contextInit} />)

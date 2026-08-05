@@ -5,16 +5,17 @@ import { CollectionArtistSeriesRail } from "app/Scenes/Collection/Components/Col
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { ComponentProps } from "react"
 
 describe("Artist Series Rail", () => {
   describe("Trending Artists Rail", () => {
-    let props: any /* STRICTNESS_MIGRATION */
+    let props: ComponentProps<typeof CollectionArtistSeriesRail>
     beforeEach(() => {
       props = {
         collectionGroup:
           CollectionHubRailsArtistSeriesFixture?.marketingCollection?.linkedCollections[0],
         collection: CollectionHubRailsArtistSeriesFixture?.marketingCollection,
-      }
+      } as unknown as ComponentProps<typeof CollectionArtistSeriesRail>
     })
 
     it("renders without throwing an error", () => {

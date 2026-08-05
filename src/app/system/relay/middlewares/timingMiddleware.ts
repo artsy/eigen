@@ -1,11 +1,11 @@
+import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { volleyClient } from "app/utils/volleyClient"
+import { Middleware } from "react-relay-network-modern"
 
-export function timingMiddleware() {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+export function timingMiddleware(): Middleware {
   return (next) => (req) => {
     const startTime = Date.now()
-    const operation = req.operation.name || "UnknownOperation"
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const operation = (req as GraphQLRequest).operation.name || "UnknownOperation"
     return next(req).then((res) => {
       const duration = Date.now() - startTime
       volleyClient.send({

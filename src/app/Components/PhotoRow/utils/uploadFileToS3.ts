@@ -80,11 +80,9 @@ export const uploadFileToS3 = ({
     //
     // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    request.onload = (e) => {
+    request.onload = () => {
       if (
-        e.target.status.toString() ===
-        assetCredentials.policyDocument.conditions.successActionStatus
+        request.status.toString() === assetCredentials.policyDocument.conditions.successActionStatus
       ) {
         resolve({
           key,

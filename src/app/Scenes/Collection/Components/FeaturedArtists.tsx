@@ -1,6 +1,8 @@
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
@@ -72,8 +74,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
               accessibilityLabel="View all featured artists"
               onPress={() => {
                 navigate(`/collection/${this.props.collection.slug}/artists`)
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                tracking.trackEvent({
+                tracking?.trackEvent({
                   action_type: Schema.ActionTypes.Tap,
                   action_name: Schema.ActionNames.ViewMore,
                   context_screen: Schema.PageNames.Collection,
