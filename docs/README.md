@@ -38,7 +38,7 @@
 - [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 - [Pull Request template](pull_request_template.md)
 - [Routing](routing.md)
-- [Introduction to animations in Eigen](intro_animations_in_eigen)
+- [Introduction to animations in Eigen](intro_animations_in_eigen.md)
 
 ### Beta
 
@@ -48,12 +48,14 @@
 
 ### Deployment
 
+- [**Release Captain Tasks (Notion) 🔐**](https://www.notion.so/artsy/Release-Captain-Tasks-7ca3e6f5d16e41079a1fb1b1706bd018) — the end-to-end release runbook; start here if you're the captain
+- [Release candidate code freeze](release_candidate_code_freeze.md) — how the RC branch and the code freeze work
 - [App Store Deployment](deploy_to_app_store.md)
 - [Play Store Deployment](deploy_to_play_store.md)
 - [Deploy a hot fix](deploy_a_hotfix.md)
 - [Beta Deployment](deploy_to_beta.md)
+- [Deploy to Expo Updates](deploy_to_expo_updates.md)
 - [Certificates & Code Signing](certs.md)
-- [release candidate code freeze](release_candidate_code_freeze.md)
 
 ### Measuring Performance
 
