@@ -30,16 +30,12 @@ export function sendConversationMessage(
     const mutationPayload = store.getRootField("sendConversationMessage")
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
-    if (!conversationStore || !newMessageEdge) {
-      return
-    }
     const connection = ConnectionHandler.getConnection(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       conversationStore,
       "Messages_messagesConnection"
     )
-    if (!connection) {
-      return
-    }
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
   return commitMutation<SendConversationMessageMutation>(environment, {

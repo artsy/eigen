@@ -59,6 +59,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
   const color = useColor()
   const [showing, setShowing] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const opacity = useSpringValue(loaded ? 1 : 0)
   const isMounted = useIsMounted()
   const onLoad = useCallback(() => {
     if (!isMounted()) {
@@ -86,15 +87,14 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
     }
   }, [])
 
-  if (VISUAL_DEBUG_MODE) {
-    // need to fake the load delay of images
-    // eslint-disable-next-line react-hooks/rules-of-hooks -- VISUAL_DEBUG_MODE is a module-level constant, so this condition never changes across renders of a given instance
-    useEffect(() => {
-      if (showing) {
-        setTimeout(onLoad, 400)
-      }
-    }, [showing])
+  // need to fake the load delay of images in visual debug mode
+  useEffect(() => {
+    if (VISUAL_DEBUG_MODE && showing) {
+      setTimeout(onLoad, 400)
+    }
+  }, [showing, onLoad])
 
+  if (VISUAL_DEBUG_MODE) {
     const borderWidth = Math.pow(2, Math.max(id.level, 9) - 9)
 
     return (
@@ -116,9 +116,6 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
       />
     )
   }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- VISUAL_DEBUG_MODE is a module-level constant, so this condition never changes across renders of a given instance
-  const opacity = useSpringValue(loaded ? 1 : 0)
 
   return !showing ? null : (
     <Animated.View

@@ -259,7 +259,8 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
         size="large"
         variant={variant}
         block
-        onPress={() => incrementCents != null && redirectToBid(incrementCents)}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        onPress={() => redirectToBid(incrementCents)}
         haptic
       >
         {hasBid ? "Increase max bid" : "Bid"}
