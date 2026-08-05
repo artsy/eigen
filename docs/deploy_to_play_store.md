@@ -13,7 +13,7 @@ QA happens against the release-candidate beta, in the Mobile App QA document tha
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
    - The release notes are gathered in a #practice-mobile thread the day before code freeze; ask there for a final copy if anything is unclear.
    - Commit and push to the release-candidate branch.
-1. Run `./scripts/deploys/promote-beta-to-submission-android`. This submits the **most recent Android beta** for Play Store review — so make sure the most recent beta is the one you QA'd, i.e. that nobody deployed a beta off `main` after the release candidate was built. Check with `./scripts/deploys/latest-betas` if you're unsure. Fastlane tags the submission (`android-<version>-<code>-submission`) and pushes the tag as part of this lane.
+1. Run `./scripts/deploys/promote-beta-to-submission-android`. This lists the last 20 Android builds and prompts you to pick one — choose the Android version code recorded in the QA document for this release, then confirm. Fastlane tags the submission (`android-<version>-<code>-submission`) and pushes the tag as part of this lane.
 1. Warning: the Android app will be released automatically once reviewed by Google. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
 ## Check on Play Store Release
