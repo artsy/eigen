@@ -46,7 +46,6 @@ export type FeatureName = keyof typeof features
 export const features = {
   ARDarkModeSupport: {
     readyForRelease: true,
-    showInDevMenu: true,
     description: "Support dark mode",
     echoFlagKey: "ARDarkModeSupport",
   },
@@ -95,38 +94,32 @@ export const features = {
   AREnableExpiredPartnerOffers: {
     description: "Enable expired partner offers handling",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableExpiredPartnerOffers",
   },
   AREnableProgressiveOnboardingAlerts: {
     description: "Enable progressive onboarding alerts",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
   },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableArtworkListOfferability",
   },
 
   AREnableAlertBottomSheet: {
     description: "Enable tapping on alerts to show bottom sheet",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableCollectionsWithoutHeaderImage",
   },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnablePaymentFailureBanner",
   },
   AREnableViewPortPrefetching: {
@@ -138,30 +131,25 @@ export const features = {
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
   ARShowOnboardingPriceRangeScreen: {
     readyForRelease: true,
-    showInDevMenu: true,
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
-    showInDevMenu: true,
     description: "Enable Redirecting feature pages with video to webviews",
     echoFlagKey: "AREnableRedirectForVideoFeatureType",
   },
   AREnableFeatureVideoPhase2Type: {
     readyForRelease: true,
-    showInDevMenu: true,
     description: "Enable feature videos phase 2, falls back to webview if disabled",
     echoFlagKey: "AREnableFeatureVideoPhase2Type",
   },
   AREnableExpandedCityGuide: {
     readyForRelease: true,
-    showInDevMenu: true,
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
   },

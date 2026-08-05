@@ -1,6 +1,7 @@
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
-import { Action, action, Computed, computed } from "easy-peasy"
-import { DevToggleName, devToggles, FeatureName, features } from "./features"
+import { EchoModel } from "app/store/config/EchoModel"
+import { Action, action, Computed, computed, FilterActionTypes, StateMapper } from "easy-peasy"
+import { DevToggleName, devToggles, FeatureDescriptor, FeatureName, features } from "./features"
 
 export type FeatureMap = { [k in FeatureName]: boolean }
 export type DevToggleMap = { [k in DevToggleName]: boolean }
@@ -15,6 +16,9 @@ export interface FeaturesModel {
 
   // user features
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
+
+  // the value a feature would have if no local override were set
+  defaultFlags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
 
   // only for devs
   devToggles: Computed<FeaturesModel, DevToggleMap, GlobalStoreModel>
@@ -39,18 +43,17 @@ export const getFeaturesModel = (): FeaturesModel => ({
       if (state.localOverrides[key as FeatureName] != null) {
         // If there's a local override, it takes precedence
         result[key] = state.localOverrides[key as FeatureName]
-      } else if (feature.readyForRelease) {
-        // If the feature is ready for release, the echo flag takes precedence
-        const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
-
-        if (feature.echoFlagKey && !echoFlag && __DEV__) {
-          console.error("No echo flag found for feature", key)
-        }
-        result[key] = echoFlag?.value ?? true
       } else {
-        // If the feature is not ready for release, uh, don't show it
-        result[key] = false
+        result[key] = getDefaultFlagValue(feature, key, echo)
       }
+    }
+    return result
+  }),
+
+  defaultFlags: computed([(_, store) => store.artsyPrefs.echo], (echo) => {
+    const result = {} as any
+    for (const [key, feature] of Object.entries(features)) {
+      result[key] = getDefaultFlagValue(feature, key, echo)
     }
     return result
   }),
@@ -63,3 +66,22 @@ export const getFeaturesModel = (): FeaturesModel => ({
     return result
   }),
 })
+
+const getDefaultFlagValue = (
+  feature: FeatureDescriptor,
+  key: string,
+  echo: StateMapper<FilterActionTypes<EchoModel>>
+) => {
+  if (!feature.readyForRelease) {
+    // If the feature is not ready for release, uh, don't show it
+    return false
+  }
+
+  // If the feature is ready for release, the echo flag takes precedence
+  const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
+
+  if (feature.echoFlagKey && !echoFlag && __DEV__) {
+    console.error("No echo flag found for feature", key)
+  }
+  return echoFlag?.value ?? true
+}
