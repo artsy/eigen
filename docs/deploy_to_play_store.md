@@ -4,7 +4,7 @@ Play Store builds have to go through the beta process first. [Check out the beta
 
 ## Test the Beta
 
-QA happens against the release-candidate beta, in the Mobile App QA document that CI creates for each release. The full runbook is [Release Captain Tasks 🔐](https://www.notion.so/artsy/Release-Captain-Tasks-7ca3e6f5d16e41079a1fb1b1706bd018); see also [release candidate code freeze](release_candidate_code_freeze.md) for the branch mechanics.
+QA happens against the release-candidate beta, in the Mobile App QA document that CI creates for each release. The full runbook is [Release Captain Tasks 🔐](https://app.notion.com/p/artsy/Release-Captain-Tasks-3b3cab0764a08079bba8ffd86843072a); see also [release candidate code freeze](release_candidate_code_freeze.md) for the branch mechanics.
 
 ## Ship a Final Version
 

@@ -7,7 +7,7 @@ release on a dedicated release-candidate branch, QA the build from that branch, 
 the launch-blocking fixes into it.
 
 This is the branch mechanics only. The captain's process — QA, triage, Applause, submission — is in
-[Release Captain Tasks 🔐](https://www.notion.so/artsy/Release-Captain-Tasks-7ca3e6f5d16e41079a1fb1b1706bd018).
+[Release Captain Tasks 🔐](https://app.notion.com/p/artsy/Release-Captain-Tasks-3b3cab0764a08079bba8ffd86843072a).
 
 # The branch is created for you
 
