@@ -23,6 +23,7 @@ export const useInfiniteDiscoveryTracking = () => {
     displayedNewArtwork: (artworkId: string, artworkSlug: string) => {
       trackEvent({
         action: ActionType.screen,
+        context_module: getContextModule(ContextModule.infiniteDiscovery),
         context_screen_owner_id: artworkId,
         context_screen_owner_slug: artworkSlug,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
