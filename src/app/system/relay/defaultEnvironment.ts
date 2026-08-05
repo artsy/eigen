@@ -60,13 +60,27 @@ const network = new RelayNetworkLayer(
     noThrow: true,
   }
 )
-const store = new Store(new RecordSource(), { gcReleaseBufferSize: 100 })
-const defaultEnvironment = new Environment({ network, store })
+const createStore = () => new Store(new RecordSource(), { gcReleaseBufferSize: 100 })
+
+let defaultEnvironment = new Environment({ network, store: createStore() })
 
 /**
  * If you're in a test file, make sure to use `getMockRelayEnvironment` instead.
  */
 export const getRelayEnvironment = () => defaultEnvironment as IEnvironment
+
+/**
+ * Throws away every normalized record the app has fetched so far, along with the network
+ * response cache, and starts the default Relay environment over with an empty store.
+ *
+ * Needed when the data underneath an existing record ID can change out from under us in a way
+ * Relay can't detect on its own -- e.g. switching between staging/production in the dev menu,
+ * where the same global ID can point to a completely different underlying object.
+ */
+export const resetRelayEnvironment = () => {
+  _globalCacheRef?.clear()
+  defaultEnvironment = new Environment({ network, store: createStore() })
+}
 
 // We could get rid of this, if we could type `getRelayEnvironment`
 // to be a func that returns `Environment` for regular code and
