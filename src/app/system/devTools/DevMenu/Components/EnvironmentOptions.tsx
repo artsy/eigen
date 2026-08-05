@@ -1,23 +1,49 @@
-import { ChevronSmallRightIcon } from "@artsy/icons/native"
-import { Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallDownIcon, ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Flex, Pill, Separator, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore, globalStoreInstance } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
-import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
-import { capitalize, compact } from "lodash"
+import { capitalize } from "lodash"
 import { useState } from "react"
-import { Alert, AlertButton, Platform, TouchableHighlight } from "react-native"
+import { Alert, Platform, TouchableHighlight } from "react-native"
+
+type Environment = "staging" | "production"
+
+const ENVIRONMENTS: Environment[] = ["staging", "production"]
 
 export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
   const { env, localOverrides, strings } = GlobalStore.useAppState(
     (store) => store.devicePrefs.environment
   )
-  // show custom url options if there are already local overrides in effect, or if the user has tapped the option
-  // to set custom overrides during the lifetime of this component
-  const [showCustomURLOptions, setShowCustomURLOptions] = useState(false)
-  Object.keys(localOverrides).length > 0
+  const hasLocalOverrides = Object.entries(localOverrides).some(
+    ([key, value]) => value !== environment[key as EnvironmentKey].presets[env]
+  )
+  // show custom url options if there are already local overrides in effect, or if the user has tapped
+  // the option to set custom overrides during the lifetime of this component
+  const [showCustomURLOptions, setShowCustomURLOptions] = useState(hasLocalOverrides)
+
+  const switchEnvironment = (newEnv: Environment) => {
+    Alert.alert(`Log out and switch to '${capitalize(newEnv)}'?`, undefined, [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Log Out & Switch",
+        style: "destructive",
+        onPress: () => {
+          GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
+          GlobalStore.actions.devicePrefs.environment.setEnv(newEnv)
+          setShowCustomURLOptions(false)
+          onClose()
+          // No need to sign out if the user is already logged out
+          if (!!globalStoreInstance().getState().auth.userID) {
+            GlobalStore.actions.auth.signOut()
+          }
+          _globalCacheRef?.clear()
+        },
+      },
+    ])
+  }
 
   return (
     <>
@@ -26,32 +52,70 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
       </Flex>
       <Spacer y={0.5} />
 
-      <DevMenuButtonItem
-        title="Environment"
-        value={showCustomURLOptions ? `Custom (${capitalize(env)})` : capitalize(env)}
-        direction="down"
-        onPress={() => {
-          Alert.alert(
-            "Environment",
-            undefined,
-            compact([
-              envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
-              envMenuOption(
-                "production",
-                env,
-                showCustomURLOptions,
-                setShowCustomURLOptions,
-                onClose
-              ),
-              {
-                text: "Cancel",
-                style: "destructive",
-              },
-            ]),
-            { cancelable: true }
-          )
-        }}
-      />
+      <Flex mx={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Text variant="sm-display" color="mono100">
+          Environment
+        </Text>
+
+        <Flex flexDirection="row">
+          {ENVIRONMENTS.map((option) => (
+            <Pill
+              key={option}
+              variant="default"
+              ml={0.5}
+              selected={env === option}
+              onPress={() => {
+                if (option !== env) {
+                  switchEnvironment(option)
+                }
+              }}
+            >
+              {capitalize(option)}
+            </Pill>
+          ))}
+        </Flex>
+      </Flex>
+
+      {!!ArtsyNativeModule.isBetaOrDev && (
+        <>
+          <Spacer y={0.5} />
+
+          <Flex mx={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+            <Touchable
+              accessibilityRole="button"
+              onPress={() => setShowCustomURLOptions(!showCustomURLOptions)}
+            >
+              <Flex flexDirection="row" alignItems="center">
+                <Text
+                  variant="xs"
+                  color={showCustomURLOptions ? "blue100" : "mono60"}
+                  underline={showCustomURLOptions}
+                >
+                  {showCustomURLOptions ? "Hide Custom URLs" : "Tap to Customize URLs"}
+                </Text>
+
+                {showCustomURLOptions ? (
+                  <ChevronSmallDownIcon fill="blue100" ml="2px" />
+                ) : (
+                  <ChevronSmallRightIcon fill="mono60" ml="2px" />
+                )}
+              </Flex>
+            </Touchable>
+
+            {!!hasLocalOverrides && (
+              <Pill
+                variant="default"
+                onPress={() => {
+                  GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
+                }}
+              >
+                Reset to default
+              </Pill>
+            )}
+          </Flex>
+        </>
+      )}
+
       {Platform.OS === "android" && !!showCustomURLOptions && (
         <Flex px={2}>
           <Text color="red100" variant="xs">
@@ -69,6 +133,10 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
       )}
       {!!showCustomURLOptions &&
         Object.entries(environment).map(([key, { description, presets }]) => {
+          const defaultValue = presets[env]
+          const currentValue = strings[key as EnvironmentKey]
+          const isOverriddenFromDefault = currentValue !== defaultValue
+
           return (
             <TouchableHighlight
               accessibilityRole="button"
@@ -77,7 +145,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
               onPress={() => {
                 Alert.alert(
                   description,
-                  undefined,
+                  `Default: ${defaultValue}`,
                   Object.entries(presets).map(([name, value]) => ({
                     text: name,
                     onPress: () => {
@@ -103,7 +171,13 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
+                    <Text
+                      variant="sm-display"
+                      color={isOverriddenFromDefault ? "blue100" : "mono100"}
+                      fontWeight={isOverriddenFromDefault ? "bold" : "normal"}
+                    >
+                      {currentValue}
+                    </Text>
                   </Flex>
                 </Flex>
                 <ChevronSmallRightIcon fill="mono60" />
@@ -113,41 +187,4 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
         })}
     </>
   )
-}
-
-function envMenuOption(
-  env: "staging" | "production",
-  currentEnv: "staging" | "production",
-  showCustomURLOptions: boolean,
-  setShowCustomURLOptions: (newValue: boolean) => void,
-  onClose: () => void
-): AlertButton | null {
-  let text = `Log out and switch to '${capitalize(env)}'`
-  if (currentEnv === env) {
-    if (!ArtsyNativeModule.isBetaOrDev) {
-      return null
-    }
-    if (showCustomURLOptions) {
-      text = `Reset all to '${capitalize(env)}'`
-    } else {
-      text = `Customize '${capitalize(env)}'`
-    }
-  }
-  return {
-    text,
-    onPress() {
-      GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
-      if (env !== currentEnv) {
-        GlobalStore.actions.devicePrefs.environment.setEnv(env)
-        onClose()
-        // No need to sign out if the user is already logged out
-        if (!!globalStoreInstance().getState().auth.userID) {
-          GlobalStore.actions.auth.signOut()
-        }
-        _globalCacheRef?.clear()
-      } else {
-        setShowCustomURLOptions(!showCustomURLOptions)
-      }
-    },
-  }
 }
