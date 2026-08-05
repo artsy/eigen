@@ -4760,6 +4760,28 @@ type ArtworkError {
   requestError: RequestError
 }
 
+type ArtworkFieldVisibility {
+  artistName: Boolean
+  artworkTitle: Boolean
+  availability: Boolean
+  dimensions: Boolean
+  editionInfo: Boolean
+  medium: Boolean
+  price: Boolean
+  year: Boolean
+}
+
+input ArtworkFieldVisibilityInput {
+  artistName: Boolean
+  artworkTitle: Boolean
+  availability: Boolean
+  dimensions: Boolean
+  editionInfo: Boolean
+  medium: Boolean
+  price: Boolean
+  year: Boolean
+}
+
 union ArtworkFigures = Image | Video
 
 union ArtworkFilterFacet = Gene | Tag
@@ -6790,6 +6812,41 @@ type AuctionsUser implements AuctionsNode {
   The user's id
   """
   userId: ID!
+}
+
+type AuthenticatePrivateViewingRoomFailure {
+  mutationError: GravityMutationError
+}
+
+input AuthenticatePrivateViewingRoomMutationInput {
+  clientMutationId: String
+
+  """
+  The room's password.
+  """
+  password: String!
+
+  """
+  The slug of the private viewing room.
+  """
+  slug: String!
+}
+
+type AuthenticatePrivateViewingRoomMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the private viewing room's contents. On error: the error that occurred (e.g. an incorrect password).
+  """
+  privateViewingRoomOrError: AuthenticatePrivateViewingRoomResponseOrError
+}
+
+union AuthenticatePrivateViewingRoomResponseOrError =
+    AuthenticatePrivateViewingRoomFailure
+  | AuthenticatePrivateViewingRoomSuccess
+
+type AuthenticatePrivateViewingRoomSuccess {
+  privateViewingRoom: PrivateViewingRoomContents
 }
 
 enum AuthenticationProvider {
@@ -15275,7 +15332,7 @@ input CreatePartnerListMutationInput {
   fairID: String
 
   """
-  The type of list (show, fair, or other).
+  The type of list (show, fair, private_viewing_room, or other).
   """
   listType: PartnerListTypeEnum
 
@@ -24939,6 +24996,13 @@ type Mutation {
   ): AssignArtistToPartnerMutationPayload
 
   """
+  Authenticates against a password-protected private viewing room, returning its contents on success.
+  """
+  authenticatePrivateViewingRoom(
+    input: AuthenticatePrivateViewingRoomMutationInput!
+  ): AuthenticatePrivateViewingRoomMutationPayload
+
+  """
   Initiate the Instagram OAuth flow and return the authorization URL
   """
   authorizeInstagramAccount(
@@ -25991,6 +26055,13 @@ type Mutation {
   Publish a draft navigation version. Accepts either a groupID (for backward compatibility) or versionID (preferred for admin workflows).
   """
   publishNavigationDraft(input: PublishNavigationDraftInput!): PublishNavigationDraftPayload
+
+  """
+  Publishes (or updates and republishes) a private viewing room for a partner list.
+  """
+  publishPartnerListPublication(
+    input: PublishPartnerListPublicationMutationInput!
+  ): PublishPartnerListPublicationMutationPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
 
   """
@@ -26211,6 +26282,13 @@ type Mutation {
   unlinkAuthentication(
     input: UnlinkAuthenticationMutationInput!
   ): UnlinkAuthenticationMutationPayload
+
+  """
+  Unpublishes a partner list's private viewing room. Does not delete the publication.
+  """
+  unpublishPartnerListPublication(
+    input: UnpublishPartnerListPublicationMutationInput!
+  ): UnpublishPartnerListPublicationMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
 
   """
@@ -29770,6 +29848,11 @@ type PartnerList {
   listType: PartnerListTypeEnum!
   name: String!
   partnerShowID: String
+
+  """
+  The private viewing room publication for this list, if one exists (only applies to private_viewing_room lists). Not resolvable through partnerListsConnection.
+  """
+  publication: PartnerListPublication
   startAt(
     format: String
 
@@ -29853,9 +29936,71 @@ type PartnerListEdge {
   node: PartnerList
 }
 
+type PartnerListPublication {
+  applyBrand: Boolean
+
+  """
+  Per-field visibility toggles for artworks in the room. Any key the gallery hasn't set is null.
+  """
+  artworkFieldVisibility: ArtworkFieldVisibility
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  description: String
+
+  """
+  Public-facing path for this private viewing room.
+  """
+  href: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  lastPublishedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  partnerListID: String
+  passwordProtected: Boolean
+  published: Boolean
+  publishedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  slug: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
 enum PartnerListTypeEnum {
   FAIR
   OTHER
+  PRIVATE_VIEWING_ROOM
   SHOW
 }
 
@@ -30671,6 +30816,46 @@ Pricing breakdown line
 """
 union PricingBreakdownLineUnion = ShippingLine | SubtotalLine | TaxLine | TotalLine
 
+type PrivateViewingRoom {
+  applyBrand: Boolean
+  artworks: [PrivateViewingRoomArtwork!]
+  brandKit: BrandKit
+  description: String
+  galleryName: String
+
+  """
+  Whether this room requires a password to view.
+  """
+  passwordRequired: Boolean!
+}
+
+type PrivateViewingRoomArtwork {
+  artistName: String
+  artworkID: String
+  artworkTitle: String
+  availability: String
+  dimensions: String
+  editionInfo: String
+  imageURL: String
+  medium: String
+
+  """
+  The pinned price as a formatted Money object. Null when there's no pinned price or currency (resolveMinorAndCurrencyFieldsToMoney returns null rather than throwing).
+  """
+  price: Money
+  priceCents: Int
+  priceCurrency: String
+  year: String
+}
+
+type PrivateViewingRoomContents {
+  applyBrand: Boolean
+  artworks: [PrivateViewingRoomArtwork!]
+  brandKit: BrandKit
+  description: String
+  galleryName: String
+}
+
 type Profile {
   bio: String
   cached: Int
@@ -30778,6 +30963,55 @@ union PublishNavigationDraftResponseOrError =
 
 type PublishNavigationDraftSuccess {
   navigationVersion: NavigationVersion!
+}
+
+type PublishPartnerListPublicationFailure {
+  mutationError: GravityMutationError
+}
+
+input PublishPartnerListPublicationMutationInput {
+  """
+  Whether to apply the gallery's brand kit to the room.
+  """
+  applyBrand: Boolean
+
+  """
+  Per-field visibility toggles for artworks in the room.
+  """
+  artworkFieldVisibility: ArtworkFieldVisibilityInput
+  clientMutationId: String
+
+  """
+  Plain-text description shown on the published room.
+  """
+  description: String
+
+  """
+  The ID of the partner list to publish as a viewing room.
+  """
+  partnerListID: String!
+
+  """
+  Password to gate the room. Pass an empty string to clear a previously set password.
+  """
+  password: String
+}
+
+type PublishPartnerListPublicationMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the published partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: PublishPartnerListPublicationResponseOrError
+}
+
+union PublishPartnerListPublicationResponseOrError =
+    PublishPartnerListPublicationFailure
+  | PublishPartnerListPublicationSuccess
+
+type PublishPartnerListPublicationSuccess {
+  partnerListPublication: PartnerListPublication
 }
 
 type PublishViewingRoomFailure {
@@ -32818,6 +33052,11 @@ type Query {
     """
     sort: PriceInsightSort
   ): PriceInsightConnection
+
+  """
+  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a password is required; artwork/gallery data is omitted until authenticated via the authenticatePrivateViewingRoom mutation.
+  """
+  privateViewingRoom(slug: String!): PrivateViewingRoom
 
   """
   A Profile
@@ -36890,6 +37129,36 @@ type UnlinkAuthenticationMutationPayload {
   me: Me!
 }
 
+type UnpublishPartnerListPublicationFailure {
+  mutationError: GravityMutationError
+}
+
+input UnpublishPartnerListPublicationMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the partner list to unpublish.
+  """
+  partnerListID: String!
+}
+
+type UnpublishPartnerListPublicationMutationPayload {
+  clientMutationId: String
+
+  """
+  On success: the unpublished partner list publication. On error: the error that occurred.
+  """
+  partnerListPublicationOrError: UnpublishPartnerListPublicationResponseOrError
+}
+
+union UnpublishPartnerListPublicationResponseOrError =
+    UnpublishPartnerListPublicationFailure
+  | UnpublishPartnerListPublicationSuccess
+
+type UnpublishPartnerListPublicationSuccess {
+  partnerListPublication: PartnerListPublication
+}
+
 type UnpublishViewingRoomFailure {
   mutationError: GravityMutationError
 }
@@ -38656,7 +38925,7 @@ input UpdatePartnerListMutationInput {
   id: String!
 
   """
-  The type of list (show, fair, or other).
+  The type of list (show, fair, private_viewing_room, or other).
   """
   listType: PartnerListTypeEnum
 
@@ -42233,6 +42502,11 @@ type Viewer {
     """
     attributes: PreviewSavedSearchAttributes
   ): PreviewSavedSearch
+
+  """
+  Find a private viewing room by slug. Returns null for an unknown/unpublished slug. Returns whether a password is required; artwork/gallery data is omitted until authenticated via the authenticatePrivateViewingRoom mutation.
+  """
+  privateViewingRoom(slug: String!): PrivateViewingRoom
 
   """
   A Profile
