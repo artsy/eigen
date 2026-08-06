@@ -158,7 +158,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             artist={artwork.artists?.[0]!}
             avatarSize="xxs"
             includeTombstone={false}
-            contextModule={ContextModule.infiniteDiscoveryArtworkCard}
+            contextModule={
+              isNewUserOnboardingSession
+                ? ContextModule.onboardingFlow
+                : ContextModule.infiniteDiscoveryArtworkCard
+            }
             contextScreenOwnerId={artwork.internalID}
             contextScreenOwnerSlug={artwork.slug}
             disableNavigation={isNewUserOnboardingSession}
