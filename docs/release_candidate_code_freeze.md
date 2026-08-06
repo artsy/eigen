@@ -1,59 +1,70 @@
 # Release candidate code freeze
 
-Due to the risky nature of mobile app releases we do a fair bit of QA on our builds before submitting them to the app store. With many developers contributing to Eigen this can present a problem. If we find a bug that needs to be fixed before launch chances are while we are fixing it other code will get into the main branch besides the bug fix. If we create a new release candidate from the main branch this code also presents a risk and to be thorough we really should kick off the QA process again. This can create a constant moving target issue and cause delayed releases and take up a fair amount of engineering time. We could pause PR merging until the bug(s) are fixed but this would be needlessly disruptive to teams contributing to Eigen. What we can do instead is utilize git tags to have a pseudo code freeze on the release candidate.
+Mobile releases are risky, so we QA a build before submitting it to the stores. With many people
+contributing to eigen, `main` keeps moving while we QA — so if we cut a fresh build from `main` every
+time a bug fix lands, we would have to restart QA against new, untested code. Instead we freeze the
+release on a dedicated release-candidate branch, QA the build from that branch, and cherry-pick only
+the launch-blocking fixes into it.
+
+This is the branch mechanics only. The captain's process — QA, triage, Applause, submission — is in
+[Release Captain Tasks 🔐](https://app.notion.com/p/artsy/Release-Captain-Tasks-3b3cab0764a08079bba8ffd86843072a).
+
+# The branch is created for you
+
+On code-freeze day the [release-lookout](https://github.com/artsy/release-lookout) bot cuts
+`rc-v<version>` from `main` and opens a `chore(release): v<version> RC` PR, labelled "Do not merge".
+That PR is the code freeze: the branch does not move except for cherry-picks, so the build we QA is
+the build we submit. Opening it also triggers
+[`rc-release-automation.yml`](../.github/workflows/rc-release-automation.yml), which builds the betas
+off the RC branch.
+
+Don't create the branch by hand unless the bot failed — the automation keys off the `rc-v` prefix.
 
 # Happy Path - No Launch Blocking Bugs Found
 
-If there are no launch blocking bugs found during QA this means the release candidate is set to be submitted to the app store and google play store.
-In the QA scripts for this release candidate you can find the version and build numbers for both the Android and iOS versions of the release candidate.
-Run our fastlane script to promote these _exact_ versions to the stores
+Submit the exact betas that were QA'd, from the release candidate branch:
 
-`TODO: Add fastlane script example when ready`
+```sh
+./scripts/deploys/promote-beta-to-submission-ios
+./scripts/deploys/promote-beta-to-submission-android
+```
+
+Fastlane creates and pushes the submission tags as part of these lanes.
 
 # Unhappy Path - Launch Blockers found during QA
 
-Follow our instructions LINK INSTRUCTIONS for assigning DRIs to the launch blockers and wait for PRs to come in.
+## Cherry pick the squashed merge commits for the bug fix(es) onto the release candidate branch
 
-## Check out the tag corresponding with the release candidate version number
+There is no second branch and no new PR — the fixes go onto the branch that is already frozen.
 
-Whenever we create a beta we create a corresponding git tag as part of the submission that will correspond to the build number of the submission and marks the state in the repo when the beta was submitted. For our example let's say our release candidate build is 6.4.4 (2020.5.11.15)
-We will want to checkout the tag 6.4.4-2020.5.11.15:
+```sh
+git fetch origin && git checkout rc-v<version>
+git cherry-pick <fix-commit>
+git push
+```
 
-`git checkout 6.4.4-2020.5.11.15`
+## Create new betas from the release candidate branch
 
-## Create and checkout a branch for the new release candidate
-
-`git checkout -b brian/6.4.4-release-candidate`
-
-## Cherry pick the squashed merge commits for the bug fix(es) into your branch
-
-`git cherry-pick <fix-commit>`
-
-Push up the branch for posterity:
-
-`git push`
-
-## Create new betas from your branch
-
-Communicate with other devs that a release candidate will be deployed and they should hold off on deploying betas until a build is submitted for review.
+Communicate with other devs that a release candidate will be deployed and they should hold off on
+deploying betas until a build is submitted for review.
 
 `./scripts/deploys/deploy-beta-both`
 
 ## Do bug fix QA and some smoketests and release to the app store
 
-Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md) and [deploying to play store](https://github.com/artsy/eigen/blob/main/docs/deploy_to_play_store.md).
+Follow the instructions for [deploying to app store](deploy_to_app_store.md) and
+[deploying to play store](deploy_to_play_store.md).
 
 Make sure to QA the bug fix changes and test any code paths that may have been affected.
 
 ## Possibly bring back the fixes to main
 
-The changes on the release-candidate branch might be cherry-picks only, or it might be new code. Considering the release notes files are probably changed in that branch as well, it makes sense to make a PR from that release-candidate branch to main, in order to get all the changes back to main.
+The changes on the release-candidate branch might be cherry-picks only, or it might be new code.
+Considering the release notes files are probably changed in that branch as well, it makes sense to
+make a PR from that release-candidate branch to main, in order to get all the changes back to main.
+This is a _different_ PR from the bot's "Do not merge" one, which stays open for tracking only.
 
 ## Slack thread for reference
 
 Here is a thread from a previous time we did this:
 [Slack Thread 🔐](https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500)
-
-## Example PR
-
-https://github.com/artsy/eigen/pull/5365
