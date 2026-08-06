@@ -610,7 +610,10 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  expo_command = "./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  # eas-cli >= 18.0.5 prompts for `--environment` on SDK 55+ unless CI/EAS_BUILD is set.
+  # This lane is usually run locally, and passing `--environment` would also pull server-side
+  # env vars into the bundle and force a cache clear, so opt out of the check instead.
+  expo_command = "EAS_UPDATE_SKIP_ENVIRONMENT_CHECK=1 ./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --rollout-percentage=#{rollout_percentage}"

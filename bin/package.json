@@ -2,18 +2,12 @@
   "name": "eigen-bin",
   "private": true,
   "dependenciesComments": {
-    "form-data": "Pinned to fix GHSA-hmw2-7cc7-3qxx (CRLF injection). eas-cli exact-pins the vulnerable form-data@4.0.0 with no fixed release; remove this once eas-cli bumps it upstream.",
-    "minimatch": "Pinned to fix GHSA-7r86-cg39-jmmj (ReDoS). eas-cli exact-pins the vulnerable minimatch@5.1.2 with no fixed release; remove this once eas-cli bumps it upstream.",
-    "tar": "Pinned to fix multiple node-tar advisories (GHSA-9ppj-qmqm-q256, GHSA-qffp-2rhf-9h96, GHSA-83g3-92jg-28cx, GHSA-34x7-hfp2-rc4v, GHSA-r6q2-hw4h-h46w, GHSA-8qq5-rm4j-mr97). eas-cli exact-pins the vulnerable tar@6.2.1, which has no patched release on the 6.x line; remove this once eas-cli bumps past its exact pin (eas-cli@19+ already depends on tar 7.x).",
-    "@xmldom/xmldom": "Pinned to fix multiple xmldom advisories (GHSA-wh4c-j3r5-mjhp, GHSA-x6wf-f3px-wcqx, GHSA-f6ww-3ggp-fr8h, GHSA-j759-j44w-7fr8, GHSA-2v35-w6hq-6mfw). @expo/plist depends on the vulnerable @xmldom/xmldom@~0.7.7, which has no patched release on the 0.7.x line; remove this once @expo/plist bumps past 0.7.x."
+    "minimatch": "Pinned to fix GHSA-7r86-cg39-jmmj (ReDoS). eas-cli exact-pins the vulnerable minimatch@5.1.2 with no fixed release; remove this once eas-cli bumps it upstream."
   },
   "devDependencies": {
-    "eas-cli": "16.9.0"
+    "eas-cli": "21.5.0"
   },
   "resolutions": {
-    "form-data": "4.0.6",
-    "minimatch@npm:5.1.2": "5.1.8",
-    "tar@npm:6.2.1": "7.5.22",
-    "@xmldom/xmldom@npm:~0.7.7": "0.8.13"
+    "minimatch@npm:5.1.2": "5.1.8"
   }
 }
