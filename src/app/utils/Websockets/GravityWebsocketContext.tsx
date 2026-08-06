@@ -27,22 +27,24 @@ export const GravityWebsocketContextProvider: React.FC<React.PropsWithChildren> 
     ? Keys.secureFor("GRAVITY_STAGING_WEBSOCKET_URL")
     : Keys.secureFor("GRAVITY_WEBSOCKET_URL")
 
+  // Keyed on `wssUrl` so switching environment tears down the old consumer and
+  // connects to the new host. Cleanup closes over the cable created in this
+  // run rather than reading it back from state, which would be stale.
   useEffect(() => {
-    if (!actionCable) {
-      const cable = ActionCable.createConsumer(wssUrl)
-      setChannelsHolder(new Cable({}))
-      setActionCable(cable)
-      if (__DEV__) {
-        ActionCable.startDebugging()
-      }
+    const cable = ActionCable.createConsumer(wssUrl)
+    setActionCable(cable)
+    setChannelsHolder(new Cable({}))
+    if (__DEV__) {
+      ActionCable.startDebugging()
     }
+
     return () => {
-      actionCable?.disconnect()
+      cable.disconnect()
       if (__DEV__) {
         ActionCable.stopDebugging()
       }
     }
-  }, [isStaging])
+  }, [wssUrl])
 
   return (
     <WebsocketContext.Provider value={{ cable: actionCable, channelsHolder }}>
