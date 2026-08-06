@@ -43,14 +43,17 @@ interface LegacyNativeModules {
     getConstants(): NativeState
     postNotificationName(type: string, data: object): void
     didFinishBootstrapping(): void
+    // Merged into native's react state, so callers can send a subset of the keys.
     reactStateUpdated(state: {
-      gravityURL: string
-      metaphysicsURL: string
-      predictionURL: string
-      webURL: string
-      causalityURL: string
-      env: string
-      userIsDev: boolean
+      gravityURL?: string
+      metaphysicsURL?: string
+      predictionURL?: string
+      webURL?: string
+      causalityURL?: string
+      env?: string
+      userIsDev?: boolean
+      /** internalID of the conversation currently on screen, "" when none */
+      visibleConversationID?: string
     }): void
   }
   ARPHPhotoPickerModule: {

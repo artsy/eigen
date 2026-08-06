@@ -15,6 +15,7 @@ import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Screens/Onboardi
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
+import { conversationIDFromRoute } from "app/system/notifications/visibleConversation"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
@@ -97,6 +98,13 @@ export const Navigation = () => {
           if (currentRoute && Platform.OS === "ios") {
             LegacyNativeModules.ARTDeeplinkTimeoutModule.invalidateDeeplinkTimeout()
           }
+
+          // Let native know which conversation is on screen so an incoming push
+          // for it doesn't interrupt the user reading it. Empty means none.
+          // Android reads the route directly when the notification arrives.
+          LegacyNativeModules.ARNotificationsManager.reactStateUpdated({
+            visibleConversationID: conversationIDFromRoute(currentRoute),
+          })
 
           addBreadcrumb({
             message: `navigated to ${currentRoute?.name}`,

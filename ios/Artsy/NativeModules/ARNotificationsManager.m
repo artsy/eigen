@@ -27,6 +27,7 @@
 + (NSString *)causalityURL { return @"causalityURL"; };
 + (NSString *)env { return @"env"; };
 + (NSString *)userIsDev { return @"userIsDev"; }
++ (NSString *)visibleConversationID { return @"visibleConversationID"; }
 @end
 
 // event keys
