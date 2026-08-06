@@ -154,9 +154,10 @@ export const features = {
     echoFlagKey: "AREnableExpandedCityGuide",
   },
   AREnableExperienceBasedOnboarding: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable experience-based onboarding",
     showInDevMenu: true,
+    echoFlagKey: "AREnableExperienceBasedOnboarding",
   },
   AREnableConversationPartnerOffers: {
     readyForRelease: true,
