@@ -4764,8 +4764,10 @@ type ArtworkFieldVisibility {
   artistName: Boolean
   artworkTitle: Boolean
   availability: Boolean
+  certificateOfAuthenticity: Boolean
   dimensions: Boolean
   editionInfo: Boolean
+  location: Boolean
   medium: Boolean
   price: Boolean
   year: Boolean
@@ -4775,8 +4777,10 @@ input ArtworkFieldVisibilityInput {
   artistName: Boolean
   artworkTitle: Boolean
   availability: Boolean
+  certificateOfAuthenticity: Boolean
   dimensions: Boolean
   editionInfo: Boolean
+  location: Boolean
   medium: Boolean
   price: Boolean
   year: Boolean
@@ -29954,6 +29958,11 @@ type PartnerListPublication {
   description: String
 
   """
+  Optional heading shown on the published room.
+  """
+  heading: String
+
+  """
   Public-facing path for this private viewing room.
   """
   href: String
@@ -29991,6 +30000,11 @@ type PartnerListPublication {
     """
     timezone: String
   ): String
+
+  """
+  Whether the gallery name is shown on the public page.
+  """
+  showGalleryName: Boolean
   slug: String
   updatedAt(
     format: String
@@ -30826,7 +30840,12 @@ type PrivateViewingRoom {
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
   description: String
+
+  """
+  The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
+  """
   galleryName: String
+  heading: String
 
   """
   Whether this room requires a passcode to view.
@@ -30839,9 +30858,16 @@ type PrivateViewingRoomArtwork {
   artworkID: String
   artworkTitle: String
   availability: String
+  coaByAuthenticatingBody: Boolean
+  coaByGallery: Boolean
   dimensions: String
   editionInfo: String
   imageURL: String
+
+  """
+  The artwork's public location (city/state/country/postal code), pinned as of the room's last publish.
+  """
+  location: String
   medium: String
 
   """
@@ -30858,7 +30884,12 @@ type PrivateViewingRoomContents {
   artworks: [PrivateViewingRoomArtwork!]
   brandKit: BrandKit
   description: String
+
+  """
+  The gallery's name, omitted when the gallery has chosen to hide it (show_gallery_name).
+  """
   galleryName: String
+  heading: String
 }
 
 type Profile {
@@ -30992,6 +31023,11 @@ input PublishPartnerListPublicationMutationInput {
   description: String
 
   """
+  Optional heading shown on the published room.
+  """
+  heading: String
+
+  """
   The ID of the partner list to publish as a viewing room.
   """
   partnerListID: String!
@@ -31000,6 +31036,11 @@ input PublishPartnerListPublicationMutationInput {
   Passcode to gate the room. Pass an empty string to clear a previously set passcode.
   """
   passcode: String
+
+  """
+  Whether to show the gallery name on the public page.
+  """
+  showGalleryName: Boolean
 }
 
 type PublishPartnerListPublicationMutationPayload {
