@@ -27,7 +27,7 @@ It is used like other tools such as Cypress, Appium, and Detox in order to run t
 1. `yarn maestro:ios:release:install`
 
 1. set the ENV vars `export MAESTRO_APP_ID=app_id` `export MAESTRO_TEST_EMAIL=email@email.com` `export MAESTRO_TEST_PASSWORD=password`
-1. run the test that you want to run `maestro test e2e/config.yml`
+1. run all flows with `maestro test e2e/` (reads `e2e/config.yml`), or a single flow with `maestro test e2e/flows/login.yml`
 
 ### Android
 
@@ -36,4 +36,4 @@ It is used like other tools such as Cypress, Appium, and Detox in order to run t
 1. `yarn maestro:android:release:install`
 
 1. set the ENV vars `export MAESTRO_APP_ID=app_id` `export MAESTRO_TEST_EMAIL=email@email.com` `export MAESTRO_TEST_PASSWORD=password`
-1. run the test that you want to run `maestro test e2e/flows/onboarding/signup.yml/config.yml`
+1. run all flows with `maestro test e2e/` (reads `e2e/config.yml`), or a single flow with `maestro test e2e/flows/signup.yml`
