@@ -166,9 +166,9 @@ export const features = {
     echoFlagKey: "AREnableConversationPartnerOffers",
   },
   AREnableConversationsRealtime: {
+    showInDevMenu: true,
     readyForRelease: true,
     description: "Update conversations in real time over websockets",
-    showInDevMenu: true,
     echoFlagKey: "AREnableConversationsRealtime",
   },
 } satisfies { [key: string]: FeatureDescriptor }
