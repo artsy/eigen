@@ -53,6 +53,7 @@ const FollowArtistsOrderedSet: React.FC<FollowArtistsOrderedSetProps> = ({
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
       ListHeaderComponent={
         <>
