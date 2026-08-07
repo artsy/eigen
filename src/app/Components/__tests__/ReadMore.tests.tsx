@@ -116,19 +116,35 @@ describe("ReadMore", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
+  it("renders ordered list numbering, including a custom start number", () => {
+    const content = "42. An item\n42. Another item\n42. Yet another item\n"
+
+    renderWithWrappers(<ReadMore maxChars={10000} content={content} />)
+
+    expect(screen.getByText("42.")).toBeTruthy()
+    expect(screen.getByText("43.")).toBeTruthy()
+    expect(screen.getByText("44.")).toBeTruthy()
+    expect(screen.getByText("An item")).toBeTruthy()
+    expect(screen.getByText("Another item")).toBeTruthy()
+    expect(screen.getByText("Yet another item")).toBeTruthy()
+  })
+
   it("doesn't break when it gets a text with dashes and special characters", () => {
     const text = "- first \n- second \n- third \n * star \n & another one \n ' whatarethose"
 
     renderWithWrappers(<ReadMore maxChars={7} content={text} />)
 
-    // should display - first... Read more in the beginning
+    // this parses as a real markdown list, so the bullet and the truncated item content
+    // render as separate text nodes rather than one combined string
     expect(screen.queryByText(text)).toBeFalsy()
-    expect(screen.queryByText("- first... Read more")).toBeTruthy()
+    expect(screen.getByText("• ")).toBeTruthy()
+    expect(screen.getByText(/first/)).toBeTruthy()
 
     fireEvent.press(screen.getByText(/Read more/))
 
-    // after pressing read more, read more goes away and the full text is displayed
-    expect(screen.queryByText(text)).toBeTruthy()
+    // after pressing read more, read more goes away and the rest of the list items are displayed
+    expect(screen.getByText(/second/)).toBeTruthy()
+    expect(screen.getByText(/whatarethose/)).toBeTruthy()
     expect(screen.queryByText(/Read more/)).toBeFalsy()
   })
 })
