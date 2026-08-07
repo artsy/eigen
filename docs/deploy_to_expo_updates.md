@@ -15,7 +15,10 @@ yarn setup:releases
 
 You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
 
-`./bin/node_modules/.bin/eas login`
+`./bin/node_modules/.bin/eas login --no-browser`
+
+> `--no-browser` keeps the username/password prompt. Without it, eas-cli opens a browser and logs
+> you in as whichever account that browser session is already signed into.
 
 ### Deploying
 
