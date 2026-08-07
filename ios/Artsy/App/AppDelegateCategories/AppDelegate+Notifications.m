@@ -127,6 +127,28 @@
     [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
 }
 
+// Pulls the conversation id out of a notification's deep link, matching both
+// /conversation/:id (and /conversation/:id/details) and /user/conversations/:id.
+// Returns nil for any URL that doesn't point at a conversation.
+- (NSString *)conversationIDFromURLString:(NSString *)urlString
+{
+    if (![urlString isKindOfClass:NSString.class] || urlString.length == 0) {
+        return nil;
+    }
+
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSArray<NSString *> *pathComponents = url ? url.pathComponents : urlString.pathComponents;
+
+    for (NSUInteger index = 0; index + 1 < pathComponents.count; index++) {
+        NSString *component = pathComponents[index];
+        if ([component isEqualToString:@"conversation"] || [component isEqualToString:@"conversations"]) {
+            return pathComponents[index + 1];
+        }
+    }
+
+    return nil;
+}
+
 // Handle the notification view on when the app is in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
 
@@ -143,6 +165,20 @@
     // Forward to React Native
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
     [[[AREmission sharedInstance] notificationsManagerModule] notificationReceivedWithPayload:normalizedInfo];
+
+    // Don't interrupt someone who is already reading the conversation the
+    // message belongs to. React keeps `visibleConversationID` up to date as the
+    // user navigates; it's empty whenever no conversation is on screen.
+    NSString *notificationConversationID = [self conversationIDFromURLString:normalizedInfo[@"url"]];
+
+    if (notificationConversationID != nil) {
+        NSString *visibleConversationID = [[AREmission sharedInstance] reactStateStringForKey:[ARReactStateKey visibleConversationID]];
+
+        if ([notificationConversationID isEqualToString:visibleConversationID]) {
+            completionHandler(UNNotificationPresentationOptionNone);
+            return;
+        }
+    }
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
 }

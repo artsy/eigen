@@ -1,6 +1,11 @@
 import notifee, { AuthorizationStatus, Event, EventType } from "@notifee/react-native"
 import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging"
+import { internal_navigationRef } from "app/Navigation/Navigation"
 import { PushNotification } from "app/system/notifications/usePushNotifications"
+import {
+  conversationIDFromRoute,
+  conversationIDFromURL,
+} from "app/system/notifications/visibleConversation"
 // eslint-disable-next-line no-restricted-imports
 import { useEffect } from "react"
 import { Platform } from "react-native"
@@ -25,6 +30,18 @@ export const useAndroidListenToPushNotifications = ({
         const settings = await notifee.getNotificationSettings()
 
         if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
+          return
+        }
+
+        // Don't interrupt someone who is already reading the conversation the
+        // message belongs to — the open thread updates itself over the websocket.
+        const notificationConversationID = conversationIDFromURL(message.data?.url as string)
+
+        if (
+          notificationConversationID &&
+          notificationConversationID ===
+            conversationIDFromRoute(internal_navigationRef.current?.getCurrentRoute())
+        ) {
           return
         }
 
