@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { InfoIcon } from "@artsy/icons/native"
 import { BackButton, Screen, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
+import { useIsFocused } from "@react-navigation/native"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
@@ -16,6 +17,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useConversationsWebsocket } from "app/utils/Websockets/conversations/useConversationsWebsocket"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -44,7 +46,7 @@ export const Conversation: React.FC<Props> = ({
 }) => {
   const [sendingMessage, setSendingMessage] = useState(false)
   const [isConnected, setIsConnected] = useState(true)
-  const [markedMessageAsRead, setMarkedMessageAsRead] = useState(false)
+  const [lastMarkedMessageID, setLastMarkedMessageID] = useState<string | null>(null)
   const [failedMessageText, setFailedMessageText] = useState<string | null>(null)
 
   const messagesRef = useRef<any>(null)
@@ -71,24 +73,47 @@ export const Conversation: React.FC<Props> = ({
     refetch()
   }, [refetch])
 
+  const conversationID = me.conversation?.internalID
+  const isFocused = useIsFocused()
+
+  useConversationsWebsocket({
+    subscriptionKey: `conversation:${conversationID}`,
+    // Only refetch while the screen is visible: a refetch while hidden would
+    // mark the incoming message as read before the user ever saw it.
+    enabled: !!conversationID && isFocused,
+    onEvent: (event) => {
+      // The badge counts all conversations, and the inbox subscription is
+      // torn down while this screen is on top, so always refresh it.
+      GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
+      if (event.conversation_id === conversationID) {
+        refetch()
+      }
+    },
+    // Catch up on anything broadcast while the socket was down.
+    onConnected: refetch,
+  })
+
   const maybeMarkLastMessageAsRead = React.useCallback(() => {
     const conversation = me.conversation
-    if (conversation?.unread && !markedMessageAsRead && conversation.lastMessageID) {
+    const lastMessageID = conversation?.lastMessageID
+    // Track the id (not a boolean) so messages arriving while the
+    // conversation is open still get marked as read.
+    if (conversation?.unread && lastMessageID && lastMessageID !== lastMarkedMessageID) {
       updateConversation(
         conversation as any,
-        conversation.lastMessageID,
+        lastMessageID,
         (_response) => {
-          setMarkedMessageAsRead(true)
+          setLastMarkedMessageID(lastMessageID)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         (error) => {
           console.warn(error)
-          setMarkedMessageAsRead(true)
+          setLastMarkedMessageID(lastMessageID)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }
-  }, [me.conversation, markedMessageAsRead])
+  }, [me.conversation, lastMarkedMessageID])
 
   const messageSuccessfullySent = (text: string) => {
     tracking.trackEvent({

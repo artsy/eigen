@@ -20,6 +20,7 @@
 + (NSString *)causalityURL;
 + (NSString *)env;
 + (NSString *)userIsDev;
++ (NSString *)visibleConversationID;
 @end
 
 @interface ARNotificationsManager : RCTEventEmitter <RCTBridgeModule>

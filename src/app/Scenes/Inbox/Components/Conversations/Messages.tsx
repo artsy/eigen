@@ -1,18 +1,17 @@
 import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
-import { PAGE_SIZE } from "app/Components/constants"
 import { usePartnerOfferEvent } from "app/Scenes/Inbox/hooks/usePartnerOfferEvent"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { MessageGroup } from "./MessageGroup"
-import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
+import { groupConversationItems } from "./utils/groupConversationItems"
 
 interface Props {
   conversation: Messages_conversation$data
@@ -25,6 +24,8 @@ const LoadingIndicator = styled.ActivityIndicator`
   margin-top: 40px;
 `
 
+const MESSAGES_PAGE_SIZE = 20
+
 type Order = ExtractNodeType<Messages_conversation$data["orderConnection"]>
 type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
@@ -34,60 +35,62 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const [fetchingMoreData, setFetchingMoreData] = useState(false)
   const [reloadingData, setReloadingData] = useState(false)
-  const [messages, setMessages] = useState<ConversationItem[][]>([])
 
   const subjectArtwork = conversation.items?.[0]?.item
   const artworkId = subjectArtwork?.__typename === "Artwork" ? subjectArtwork.internalID : null
   const partnerOfferEvent = usePartnerOfferEvent({ conversation, artworkId })
 
   // Get all messages and give them a key for use with flatlist
-  const allMessages = extractNodes(conversation.messagesConnection)
-    .filter((node) => {
-      if (node.isFirstMessage) {
-        return true
+  const allMessages = useMemo(
+    () =>
+      extractNodes(conversation.messagesConnection)
+        .filter((node) => {
+          if (node.isFirstMessage) {
+            return true
+          }
+          return node.body?.length || node.attachments?.length
+        })
+        .map((node) => {
+          return { key: node.id, ...node }
+        }),
+    [conversation.messagesConnection]
+  )
+
+  const orderEventsWithoutFailedPayment = useMemo(() => {
+    // flatmap all orders' events and give them a synthetic `key` for use with flatlist
+    const allOrderEvents = extractNodes(conversation?.orderConnection)
+      .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
+      .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
+
+    return allOrderEvents.filter((event, index) => {
+      if (
+        !(
+          event.state === "APPROVED" &&
+          allOrderEvents[index + 1] &&
+          allOrderEvents[index + 1].state === "SUBMITTED"
+        )
+      ) {
+        return event
       }
-      return node.body?.length || node.attachments?.length
     })
-    .map((node) => {
-      return { key: node.id, ...node }
-    })
+  }, [conversation?.orderConnection])
 
-  // flatmap all orders' events and give them a synthetic `key` for use with flatlist
-  const allOrderEvents = extractNodes(conversation?.orderConnection)
-    .reduce<OrderEvent[]>((prev, order) => prev.concat(order.orderHistory), [])
-    .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
-
-  const orderEventsWithoutFailedPayment = allOrderEvents.filter((event, index) => {
-    if (
-      !(
-        event.state === "APPROVED" &&
-        allOrderEvents[index + 1] &&
-        allOrderEvents[index + 1].state === "SUBMITTED"
-      )
-    ) {
-      return event
-    }
-  })
-
-  // Combine and group events/messages
-  useEffect(() => {
-    const sortedMessages = sortBy(
-      [
-        ...orderEventsWithoutFailedPayment,
-        ...allMessages,
-        ...(partnerOfferEvent ? [partnerOfferEvent] : []),
-      ],
-      (message) => DateTime.fromISO(message.createdAt ?? "")
-    )
-    const groupedMessages = groupConversationItems(sortedMessages)
-
-    setMessages(groupedMessages)
-  }, [
-    allOrderEvents.length,
-    allMessages.length,
-    partnerOfferEvent?.createdAt,
-    partnerOfferEvent?.isPurchased,
-  ])
+  // Combine and group events/messages, keeping the array identity stable so
+  // the FlatList `data` prop doesn't churn on unrelated re-renders
+  const messages = useMemo(
+    () =>
+      groupConversationItems(
+        sortBy(
+          [
+            ...orderEventsWithoutFailedPayment,
+            ...allMessages,
+            ...(partnerOfferEvent ? [partnerOfferEvent] : []),
+          ],
+          (message) => DateTime.fromISO(message.createdAt ?? "")
+        )
+      ),
+    [orderEventsWithoutFailedPayment, allMessages, partnerOfferEvent]
+  )
 
   const flatList = useRef<FlatList>(null)
 
@@ -104,7 +107,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     }
 
     updateState(true)
-    relay.loadMore(PAGE_SIZE, (error) => {
+    relay.loadMore(MESSAGES_PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("Messages.tsx", error.message)
@@ -158,7 +161,9 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         renderItem={({ item, index }) => {
           return (
             <MessageGroup
-              isLastMessage={index === messages.length - 1}
+              // Only the true start of the thread (nothing older left to
+              // load) shows the artwork/show preview above it.
+              isLastMessage={index === messages.length - 1 && !relay.hasMore()}
               group={item}
               conversationId={conversation?.internalID ?? ""}
               subjectItem={conversation.items?.[0]?.item}
@@ -189,7 +194,7 @@ export default createPaginationContainer(
   {
     conversation: graphql`
       fragment Messages_conversation on Conversation
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, after: { type: "String" }) {
         ...usePartnerOffer_conversation
         id
         internalID
