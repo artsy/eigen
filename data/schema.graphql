@@ -4766,7 +4766,10 @@ type ArtworkFieldVisibility {
   availability: Boolean
   certificateOfAuthenticity: Boolean
   dimensions: Boolean
-  editionInfo: Boolean
+  editionAvailability: Boolean
+  editionInventoryCount: Boolean
+  editionPrice: Boolean
+  editionSize: Boolean
   location: Boolean
   medium: Boolean
   price: Boolean
@@ -4779,7 +4782,10 @@ input ArtworkFieldVisibilityInput {
   availability: Boolean
   certificateOfAuthenticity: Boolean
   dimensions: Boolean
-  editionInfo: Boolean
+  editionAvailability: Boolean
+  editionInventoryCount: Boolean
+  editionPrice: Boolean
+  editionSize: Boolean
   location: Boolean
   medium: Boolean
   price: Boolean
@@ -30861,7 +30867,11 @@ type PrivateViewingRoomArtwork {
   coaByAuthenticatingBody: Boolean
   coaByGallery: Boolean
   dimensions: String
-  editionInfo: String
+
+  """
+  One entry per edition set on this artwork, each independently visibility-gated. Null/empty when the artwork has no edition sets.
+  """
+  editionInfo: [PrivateViewingRoomArtworkEditionInfo!]
   imageURL: String
 
   """
@@ -30877,6 +30887,20 @@ type PrivateViewingRoomArtwork {
   priceCents: Int
   priceCurrency: String
   year: String
+}
+
+type PrivateViewingRoomArtworkEditionInfo {
+  availability: String
+  editionSetID: String!
+  editionSize: String
+  inventoryCount: Int
+
+  """
+  The pinned price for this edition set as a formatted Money object. Null when there's no pinned price or currency (resolveMinorAndCurrencyFieldsToMoney returns null rather than throwing).
+  """
+  price: Money
+  priceCents: Int
+  priceCurrency: String
 }
 
 type PrivateViewingRoomContents {
