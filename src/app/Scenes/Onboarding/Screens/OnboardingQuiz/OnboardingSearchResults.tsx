@@ -56,6 +56,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
       data={searchResults}
       contentContainerStyle={{
         paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
