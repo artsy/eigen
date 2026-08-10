@@ -6,6 +6,7 @@ desc "Updates the version string in app.json"
 lane :update_version_string do |options|
   new_version = options[:version] || prompt(text: "What is the new human-readable release version?")
   $APP_JSON['version'] = new_version
+  $APP_JSON['expo']['runtimeVersion'] = new_version
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
 

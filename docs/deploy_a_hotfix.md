@@ -6,8 +6,7 @@ There are 2 methods of deploying hot fixes depending on the issue:
 
 1. **Expo Updates (js) Releases**: If the issue only affects javascript code we can deploy a hotfix with Expo updates and users will get the update automatically on the next run of the app.
 
-> [!IMPORTANT]
-> **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
+> [!IMPORTANT] > **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
 
 2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
 
@@ -100,6 +99,10 @@ Let `#practice-mobile` know you will be deploying a hotfix and to hold off deplo
 
 Run the script to deploy the hotfix to the canary channel:
 `./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description'`
+
+By default this deploys to both platforms. Pass `--platform ios` or `--platform android` to target just one, e.g. if the fix is platform-specific:
+
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --platform ios`
 
 ## Test your update in the firebase equivalent of the production app
 
