@@ -168,8 +168,13 @@ lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
   tag = options[:tag].strip
+  message = options[:message]
   `git tag -d "#{tag}"`
-  add_git_tag tag: tag
+  if message
+    add_git_tag(tag: tag, message: message)
+  else
+    add_git_tag(tag: tag)
+  end
   `git remote add http https://github.com/artsy/eigen.git || true`
   # use no-verify to skip the pre-push hook
   `git push http #{tag} -f --no-verify`
