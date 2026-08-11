@@ -14,11 +14,8 @@
         }
       }
     },
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "runtimeVersion": "90e95d0b1d4863f68d052b0ad4d45647d86c8a6b",
+    "platforms": ["ios", "android"],
+    "runtimeVersion": "73ba989240a6ab9c2e23247eeb8f3c638130f6cf",
     "owner": "artsy_org",
     "extra": {
       "eas": {
