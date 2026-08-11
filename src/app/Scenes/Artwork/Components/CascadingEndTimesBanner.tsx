@@ -1,6 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { Text as RNText } from "react-native"
 
 interface CascadingEndTimesBannerProps {
   cascadingEndTimeInterval: number
@@ -22,11 +21,11 @@ export const CascadingEndTimesBanner: React.FC<CascadingEndTimesBannerProps> = (
         {canBeExtended
           ? "Closing times may be extended due to last-minute competitive bidding. "
           : `Lots will close at ${cascadingEndTimeInterval}-minute intervals. `}
-
-        <RouterLink to={CASCADING_AUCTION_HELP_ARTICLE_LINK} hasChildTouchable>
-          <RNText style={{ textDecorationLine: "underline" }}>
+        {/* External link — prefetch disabled so the text renders properly inline */}
+        <RouterLink to={CASCADING_AUCTION_HELP_ARTICLE_LINK} disablePrefetch hasChildTouchable>
+          <Text style={{ textDecorationLine: "underline" }} color="mono0">
             Learn more about cascading end times
-          </RNText>
+          </Text>
         </RouterLink>
       </Text>
     </Flex>
