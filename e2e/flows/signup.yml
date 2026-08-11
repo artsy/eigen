@@ -24,5 +24,7 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - assertVisible: "Ready to find art you love?"
 - tapOn: "Skip.*"
-- assertVisible:
-    id: "search-button"
+- extendedWaitUntil:
+    visible:
+      id: "search-button"
+    timeout: 30000
