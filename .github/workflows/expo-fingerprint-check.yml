@@ -148,7 +148,9 @@ jobs:
           fi
 
       - name: Upload new fingerprint to S3
-        if: steps.compare.outputs.changed == 'true' && (steps.check-s3-cache.outputs.needs_ios_build == 'true' || steps.check-s3-cache.outputs.needs_android_build == 'true')
+        # Independent of needs_*_build on purpose — this file also gates OTA publishes, so it must
+        # track main's fingerprint whenever it changes, not just when a rebuild happens.
+        if: steps.compare.outputs.changed == 'true'
         run: |
           echo "📤 Uploading new fingerprint to S3..."
           echo "${{ steps.generate-fingerprint.outputs.fingerprint }}" > latest.txt
