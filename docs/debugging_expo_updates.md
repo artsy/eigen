@@ -1,6 +1,6 @@
 # Debugging Expo Updates (Devs)
 
-The most common problem is fetching an update and it does not run or crashes on launch. This likely means the native code in the beta is different and is incompatible with the code that your update needs to run on.
+The most common problem is your native code being incompatible with the build you're deploying to. The deploy script catches this up front by comparing fingerprints and refusing to publish (see [Deploying to Expo Updates](deploy_to_expo_updates.md#how-updates-are-matched-to-builds)); if it slips through, the update fetches but crashes on launch.
 
 **Note:** Native code includes not just our native code but any native code in dependencies our app relies on.
 
@@ -45,6 +45,12 @@ Deploy an update using these [instructions](./deploy_to_expo_updates.md) and pul
 The QA configuration is a release configuration, code is optimized so debugging doesn't work properly, you can change the optimization level to None in build settings if you need this.
 
 ### Known gotchas
+
+#### Deploy blocked with "Native code has drifted"
+
+Expected, not a bug — your branch's native code doesn't match the build the update would land on, and publishing anyway would crash it on launch. Rebase or deploy a new beta depending on which side is stale, per [Debugging Expo Updates (Devs)](#debugging-expo-updates-devs) above.
+
+If you're deploying from a branch that isn't based on current main — a hotfix branch cut from a release tag, say — then the default comparison against the latest beta is the wrong one. Use `--check-against-version` to compare against the shipped build for the current app version instead.
 
 #### Code changes not auto refreshing app
 
