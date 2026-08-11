@@ -1,5 +1,6 @@
 package net.artsy.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -36,6 +37,18 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "ArtsyNativeModule";
+    }
+
+    // Backgrounds the app (returns to the launcher) without finishing the activity,
+    // mirroring Android's default "back at the root" behavior. Used to intercept the
+    // hardware back button on screens where JS handles back but still wants the
+    // standard background behavior in some states.
+    @ReactMethod
+    public void moveTaskToBack() {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            activity.moveTaskToBack(true);
+        }
     }
 
     @Override
