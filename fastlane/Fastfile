@@ -259,25 +259,12 @@ lane :promote_beta_ios do
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
 
-  `git fetch --tags 2>/dev/null`
-  ship_tags = `git tag -l 'ios-*-#{formatted_build_number}'`.split("\n")
-  promoted_fingerprint = nil
-  if ship_tags.length == 1
-    tag_message = `git for-each-ref refs/tags/#{ship_tags.first} --format='%(contents)'`.strip
-    promoted_fingerprint = tag_message.sub('fingerprint:', '').strip if tag_message.start_with?('fingerprint:')
+  promoted_fingerprint = resolve_promoted_fingerprint(platform: 'ios', build_number: formatted_build_number)
+  if promoted_fingerprint
+    sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{next_app_store_version}.txt")
+  else
+    UI.important("Skipping the fingerprint upload for #{next_app_store_version} — fix this manually before publishing any Expo Update for this version.")
   end
-
-  if promoted_fingerprint.nil? || promoted_fingerprint.empty?
-    UI.important("⚠️ Could not find a fingerprint tag for build #{formatted_build_number} (found #{ship_tags.length} matching tag(s)).")
-    if UI.confirm("Is your current local checkout the exact release-candidate commit for this build? Only confirm if you're certain — this computes the fingerprint from whatever's currently checked out, as a fallback.")
-      promoted_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
-      UI.important("Computed fallback fingerprint from current checkout: #{promoted_fingerprint}")
-    else
-      UI.user_error!("Cannot determine the fingerprint for build #{formatted_build_number}. Aborting promotion.")
-    end
-  end
-
-  sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{next_app_store_version}.txt")
 
   sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
 
@@ -455,25 +442,12 @@ lane :promote_beta_android do
   vname, vcode = set_build_version_android(version_code: selected_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 
-  `git fetch --tags 2>/dev/null`
-  ship_tags = `git tag -l 'android-*-#{vcode}'`.split("\n")
-  promoted_fingerprint = nil
-  if ship_tags.length == 1
-    tag_message = `git for-each-ref refs/tags/#{ship_tags.first} --format='%(contents)'`.strip
-    promoted_fingerprint = tag_message.sub('fingerprint:', '').strip if tag_message.start_with?('fingerprint:')
+  promoted_fingerprint = resolve_promoted_fingerprint(platform: 'android', build_number: vcode)
+  if promoted_fingerprint
+    sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{vname}.txt")
+  else
+    UI.important("Skipping the fingerprint upload for #{vname} — fix this manually before publishing any Expo Update for this version.")
   end
-
-  if promoted_fingerprint.nil? || promoted_fingerprint.empty?
-    UI.important("⚠️ Could not find a fingerprint tag for build #{vcode} (found #{ship_tags.length} matching tag(s)).")
-    if UI.confirm("Is your current local checkout the exact release-candidate commit for this build? Only confirm if you're certain — this computes the fingerprint from whatever's currently checked out, as a fallback.")
-      promoted_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
-      UI.important("Computed fallback fingerprint from current checkout: #{promoted_fingerprint}")
-    else
-      UI.user_error!("Cannot determine the fingerprint for build #{vcode}. Aborting promotion.")
-    end
-  end
-
-  sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{vname}.txt")
 
   sentry_slack_android(build_number: vcode, version: vname)
 end
