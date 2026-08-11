@@ -4,10 +4,11 @@ Occasionally a bug is found in a live release that requires a quick mitigation. 
 
 There are 2 methods of deploying hot fixes depending on the issue:
 
-1. **Expo Updates (js) Releases**: If the issue only affects javascript code we can deploy a hotfix with Expo updates and users will get the update automatically on the next run of the app.
+1. **Expo Updates (js) Releases**: If the issue only affects javascript code we can deploy a hotfix with Expo updates and users will get the update automatically on the next run of the app. This is the faster path — use it whenever the fix is JS-only.
 
 > [!IMPORTANT]
-> **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
+>
+> > **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
 
 2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
 
@@ -98,18 +99,21 @@ You will need to be logged in to the `artsy_mobile` account, credentials in 1pas
 
 Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
 
+Since the canary channel checks for `main`'s native code fingerprint, we would need to pass `--check-against-version` to check the shipped version's fingerprint.
+
 Run the script to deploy the hotfix to the canary channel:
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description'`
+
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --check-against-version`
 
 By default this deploys to both platforms. Pass `--platform ios` or `--platform android` to target just one, e.g. if the fix is platform-specific:
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --platform ios`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --check-against-version --platform ios`
 
 ## Test your update in the firebase equivalent of the production app
 
 Find and download the equivalent build in firebase app tester to the production app, it should have the same build number as the latest submissions found in step 1.
 
-Enable the dev menu and download the expo updates bundle from the staging deployment.
+Enable the dev menu and download the expo-updates bundle from the canary channel.
 Test that the fix is working as intended and do some basic QA to make sure the app is functioning correctly.
 
 ## Deploy the update to production
@@ -121,7 +125,7 @@ Make sure to monitor the app as it rolls out to users.
 
 `./scripts/deploys/expo-updates/deploy-to-production <rollout_percentage>`
 
-For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
+For example if you wanted to rollout to 50% of users you would pass `50` for `rollout_percentage`. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
 
 ### Update rollout
@@ -130,7 +134,7 @@ If all looks good with the fix you can update the rollout to all users:
 
 `./scripts/deploys/expo-updates/update-rollout`
 
-This will start an interactive dialog where you can choose the release you want to update the rollout for. Remember to update for both iOS and Android!
+This will start an interactive dialog where you can choose the release you want to update the rollout for.
 
 </details>
 
