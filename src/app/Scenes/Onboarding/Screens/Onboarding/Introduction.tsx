@@ -21,7 +21,7 @@ import {
 } from "./config"
 
 export const Introduction: React.FC = () => {
-  const { replace } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
+  const { replace, navigate } = useNavigation<NativeStackNavigationProp<NavigationStack>>()
   const [welcomeQueryRef, loadWelcomeQuery] =
     useQueryLoader<WelcomeStepQuery>(WelcomeStepScreenQuery)
   const { trackStartedOnboarding, trackAnsweredExperienceQuestion } = useOnboardingTracking()
@@ -38,12 +38,14 @@ export const Introduction: React.FC = () => {
   const handleDone = useCallback(
     (experience: Experience) => {
       if (experience === "beginner") {
-        replace("InfiniteDiscovery")
+        // push not replace so back events are not swallowed
+        // prevent go back in the components themselves
+        navigate("InfiniteDiscovery")
       } else {
         replace("FollowArtists")
       }
     },
-    [replace]
+    [replace, navigate]
   )
 
   const { currentStep, next, selectExperience } = useConfig({ onDone: handleDone })

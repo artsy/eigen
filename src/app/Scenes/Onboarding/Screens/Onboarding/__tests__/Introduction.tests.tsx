@@ -2,7 +2,7 @@ import { ActionType, ContextModule } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Introduction } from "app/Scenes/Onboarding/Screens/Onboarding/Introduction"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { mockReplace } from "app/utils/tests/navigationMocks"
+import { mockNavigate, mockReplace } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("../Components/QuestionStep", () => {
@@ -113,7 +113,7 @@ describe("Introduction", () => {
       expect(screen.getByText("Browse next")).toBeOnTheScreen()
 
       fireEvent.press(screen.getByText("Browse next"))
-      expect(mockReplace).toHaveBeenCalledWith("InfiniteDiscovery")
+      expect(mockNavigate).toHaveBeenCalledWith("InfiniteDiscovery")
     })
   })
 })

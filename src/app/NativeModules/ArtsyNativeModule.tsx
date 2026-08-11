@@ -17,4 +17,12 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? NativeModules.ArtsyNativeModule.isBetaOrDev
       : (NativeModules.ArtsyNativeModule.getConstants().isBeta as boolean) || __DEV__,
+  /**
+   * Backgrounds the app (Android only). No-op on iOS, which has no hardware back button.
+   */
+  moveTaskToBack: () => {
+    if (Platform.OS === "android") {
+      NativeModules.ArtsyNativeModule.moveTaskToBack()
+    }
+  },
 }
