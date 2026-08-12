@@ -569,6 +569,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
                   filterID={cityTabs[activeIndex].id}
                   featureCollections={featureCollections}
                   onPress={(e) => handleFeaturePress(e)}
+                  activeClusterId={
+                    activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
+                  }
                 />
               )}
             </>
