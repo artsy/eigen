@@ -29860,9 +29860,19 @@ type PartnerList {
   partnerShowID: String
 
   """
+  Whether this list's private viewing room publication is gated by a passcode. Null if no publication exists yet.
+  """
+  passcodeProtected: Boolean
+
+  """
   The private viewing room publication for this list, if one exists (only applies to private_viewing_room lists). Not resolvable through partnerListsConnection.
   """
   publication: PartnerListPublication
+
+  """
+  Whether this list's private viewing room publication is live. Null if no publication exists yet.
+  """
+  published: Boolean
   startAt(
     format: String
 
@@ -29953,6 +29963,11 @@ type PartnerListPublication {
   Per-field visibility toggles for artworks in the room. Any key the gallery hasn't set is null.
   """
   artworkFieldVisibility: ArtworkFieldVisibility
+
+  """
+  Number of artworks currently snapshotted into this publication.
+  """
+  artworksCount: Int!
   createdAt(
     format: String
 
