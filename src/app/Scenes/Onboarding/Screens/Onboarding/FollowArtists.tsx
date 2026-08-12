@@ -91,12 +91,12 @@ export const FollowArtists: React.FC = () => {
       </Flex>
 
       <Screen.Body disableKeyboardAvoidance>
-        <Box mt={3}>
+        <Box mt={0.5}>
           <Text variant="md">
             What art are you drawn to? Follow {MIN_FOLLOWED} or more artists to get started.
           </Text>
         </Box>
-        <Spacer y={1} />
+        <Spacer y={2} />
         <Flex backgroundColor="mono0" flex={1}>
           <Flex flexDirection="row" alignItems="center" gap={1}>
             <Flex flex={1}>
