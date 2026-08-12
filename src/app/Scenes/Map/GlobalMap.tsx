@@ -5,7 +5,6 @@ import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
-import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
@@ -24,7 +23,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
-import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
+import Supercluster from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
@@ -91,11 +90,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [featureCollections, setFeatureCollections] = useState<
     { [key in BucketKey]: FilterData } | {}
   >({})
-  const [mapLoaded, setMapLoaded] = useState(false)
   const [isSavingShow, setIsSavingShow] = useState(false)
-  const [nearestFeature, setNearestFeature] = useState<
-    PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
-  >(null)
+  const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
@@ -366,15 +362,15 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }
 
-  const onDidFinishRenderingMapFully = () => {
-    setMapLoaded(true)
-  }
-
   const onPressMap = () => {
     if (!isSavingShow) {
       setActiveShows([])
       setActivePin(null)
     }
+  }
+
+  const onDidFinishLoadingMap = () => {
+    setMapLoaded(true)
   }
 
   const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
@@ -456,7 +452,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
       const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
-      setNearestFeature(nearestFeature)
     }
 
     setActiveShows(activeShows)
@@ -524,7 +519,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           style={{ width: "100%", height: "100%" }}
           {...mapProps}
           onCameraChanged={onRegionIsChanging}
-          onDidFinishLoadingMap={onDidFinishRenderingMapFully}
+          onDidFinishLoadingMap={onDidFinishLoadingMap}
           attributionEnabled
           logoEnabled
           attributionPosition={{
@@ -557,18 +552,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
           <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
           {!!city && (
             <>
-              {!!mapLoaded && !!activeShows && !!activePin && (
-                <SelectedPin
-                  activePin={activePin}
-                  nearestFeature={nearestFeature}
-                  activeShows={activeShows}
-                />
-              )}
-              {!!featureCollections && (
+              {!!featureCollections && !!mapLoaded && (
                 <PinsShapeLayer
                   filterID={cityTabs[activeIndex].id}
                   featureCollections={featureCollections}
                   onPress={(e) => handleFeaturePress(e)}
+                  activePinSlug={
+                    activePin?.properties?.cluster ? null : activePin?.properties?.slug
+                  }
                   activeClusterId={
                     activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
                   }

@@ -1,24 +1,29 @@
 import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
 import { BucketKey } from "app/Scenes/Map/bucketCityResults"
 import { FilterData } from "app/Scenes/Map/types"
-import { memo, useEffect, useRef } from "react"
-import { Animated, StyleProp } from "react-native"
+import { memo } from "react"
+import { StyleProp } from "react-native"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
   onPress?: (event: any) => void
   duration?: number
   filterID: string
+  activePinSlug?: string | null
   activeClusterId?: number | null
 }
 
 export const PinsShapeLayer: React.FC<Props> = memo(
-  ({ featureCollections, onPress, filterID, activeClusterId }) => {
-    const pinOpacity = useRef(new Animated.Value(0)).current
-    const clusterOpacity = useRef(new Animated.Value(0)).current
-
+  ({ featureCollections, onPress, filterID, activePinSlug, activeClusterId }) => {
     const singleShowStyle: StyleProp<SymbolLayerStyle> = {
-      iconImage: ["get", "icon"],
+      iconImage: activePinSlug
+        ? [
+            "case",
+            ["==", ["get", "slug"], activePinSlug],
+            ["concat", ["get", "icon"], "-selected"],
+            ["get", "icon"],
+          ]
+        : ["get", "icon"],
       iconSize: 0.8,
     }
 
@@ -48,17 +53,6 @@ export const PinsShapeLayer: React.FC<Props> = memo(
       textPitchAlignment: "map",
     }
 
-    useEffect(() => {
-      fadeInAnimations()
-    }, [])
-
-    const fadeInAnimations = () => {
-      requestAnimationFrame(() => {
-        pinOpacity.setValue(1)
-        clusterOpacity.setValue(1)
-      })
-    }
-
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
@@ -73,14 +67,14 @@ export const PinsShapeLayer: React.FC<Props> = memo(
         <MapboxGL.Animated.SymbolLayer
           id="singleShow"
           filter={["!", ["has", "point_count"]]}
-          style={[singleShowStyle, { iconOpacity: pinOpacity }]}
+          style={[singleShowStyle]}
         />
         <MapboxGL.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
         <MapboxGL.Animated.CircleLayer
           id="clusteredPoints"
           belowLayerID="pointCount"
           filter={["has", "point_count"]}
-          style={[clusteredPointsStyle, { circleOpacity: clusterOpacity }]}
+          style={[clusteredPointsStyle]}
         />
       </MapboxGL.Animated.ShapeSource>
     )
