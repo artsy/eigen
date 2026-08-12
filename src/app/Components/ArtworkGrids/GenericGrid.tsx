@@ -77,7 +77,7 @@ export const GenericGrid: React.FC<Props & PropsForArtwork> = ({
   )
 }
 
-const genericGridFragment = graphql`
+export const genericGridFragment = graphql`
   fragment GenericGrid_artworks on Artwork @relay(plural: true) {
     id
     internalID
@@ -92,15 +92,19 @@ const genericGridFragment = graphql`
 
 export default GenericGrid
 
-export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) => {
+export const GenericGridPlaceholder: React.FC<{ width: number; numRows?: number }> = ({
+  width,
+  numRows,
+}) => {
   const numColumns = isTablet() ? 3 : 2
   const rng = new RandomNumberGenerator(3432)
+  const rowCount = numRows ?? (isTablet() ? 10 : 5)
 
   return (
     <Stack horizontal>
       {times(numColumns).map((i) => (
         <Stack key={i} spacing={4} width={(width + 20) / numColumns - 20}>
-          {times(isTablet() ? 10 : 5).map((j) => (
+          {times(rowCount).map((j) => (
             <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
           ))}
         </Stack>
