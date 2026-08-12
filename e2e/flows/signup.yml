@@ -22,7 +22,4 @@ appId: ${MAESTRO_APP_ID}
     commands:
       - tapOn: Accept terms and privacy policy checkbox
 - tapOn: "Continue.*"
-- assertVisible: "Ready to find art you love?"
-- tapOn: "Skip.*"
-- assertVisible:
-    id: "search-button"
+- assertVisible: "Where are you in your art collecting journey?"
