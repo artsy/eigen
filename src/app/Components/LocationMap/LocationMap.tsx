@@ -7,7 +7,7 @@ import { LocationMap_location$data } from "__generated__/LocationMap_location.gr
 import { Pin } from "app/Components/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
 import { __unsafe__useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
-import { Linking, TouchableOpacity } from "react-native"
+import { Linking, TouchableOpacity, View } from "react-native"
 import Keys from "react-native-keys"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -244,7 +244,9 @@ export const LocationMap: React.FC<Props> = (props) => {
         >
           <MapboxGL.Camera centerCoordinate={[lng, lat]} zoomLevel={14} />
           <MapboxGL.PointAnnotation id={internalID} coordinate={[lng, lat]}>
-            <Pin />
+            <View collapsable={false}>
+              <Pin />
+            </View>
           </MapboxGL.PointAnnotation>
         </MapboxGL.MapView>
         {renderAddress()}
