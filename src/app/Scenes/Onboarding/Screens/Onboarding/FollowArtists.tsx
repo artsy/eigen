@@ -91,8 +91,8 @@ export const FollowArtists: React.FC = () => {
       </Flex>
 
       <Screen.Body disableKeyboardAvoidance>
-        <Box mt={2}>
-          <Text variant="lg-display">
+        <Box mt={0.5}>
+          <Text variant="md">
             What art are you drawn to? Follow {MIN_FOLLOWED} or more artists to get started.
           </Text>
         </Box>
