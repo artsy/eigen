@@ -13,10 +13,6 @@ runs:
         java-version: "17"
         cache: "gradle"
 
-    - name: Install ninja
-      run: sudo apt-get update && sudo apt-get install ninja-build
-      shell: bash
-
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v5
 
