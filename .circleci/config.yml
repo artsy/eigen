@@ -165,9 +165,6 @@ commands:
     steps:
       - android/change_java_version:
           java_version: 17
-      - run:
-          name: Install ninja
-          command: sudo apt-get install ninja-build
       - checkout
       - generate-checksums
       - restore_cache:
