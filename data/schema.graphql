@@ -33376,6 +33376,7 @@ type Query {
     """
     visibleToPublic: Boolean
   ): SearchableConnection
+  searchDropdown: SearchDropdown!
 
   """
   A ShippingPreset
@@ -35321,6 +35322,10 @@ type SearchCriteriaLabel {
   value: String!
 }
 
+type SearchDropdown {
+  trending(period: TrendingSearchPeriod = ONE_DAY): TrendingSearches!
+}
+
 enum SearchEntity {
   ARTICLE
   ARTIST
@@ -37158,6 +37163,48 @@ union TransferMyCollectionSuccessOrErrorsUnion = Errors | TransferMyCollectionSu
 
 type TrendingArtists {
   artists: [Artist]
+}
+
+type TrendingSearchArtist {
+  artist: Artist
+  internalID: String!
+  rank: Int!
+}
+
+type TrendingSearchArtwork {
+  artwork: Artwork
+  internalID: String!
+  rank: Int!
+}
+
+"""
+The rolling window a trending ranking was computed over.
+"""
+enum TrendingSearchPeriod {
+  ONE_DAY
+  SEVEN_DAYS
+  THIRTY_DAYS
+}
+
+"""
+Trending artists and artworks over a rolling window.
+"""
+type TrendingSearches {
+  artists(
+    """
+    Limits the number of results returned.
+    """
+    first: Int
+  ): [TrendingSearchArtist!]
+  artworks(
+    """
+    Limits the number of results returned.
+    """
+    first: Int
+  ): [TrendingSearchArtwork!]
+  asOf: String!
+  label: String!
+  period: TrendingSearchPeriod!
 }
 
 enum TriggerCampaignID {
@@ -42826,6 +42873,7 @@ type Viewer {
     """
     visibleToPublic: Boolean
   ): SearchableConnection
+  searchDropdown: SearchDropdown!
 
   """
   A ShippingPreset
