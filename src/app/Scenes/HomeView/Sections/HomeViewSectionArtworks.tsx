@@ -7,11 +7,13 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { HomeViewSectionArtworksQuery } from "__generated__/HomeViewSectionArtworksQuery.graphql"
 import { HomeViewSectionArtworks_section$key } from "__generated__/HomeViewSectionArtworks_section.graphql"
+import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
@@ -31,6 +33,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
+import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useEffect, useState } from "react"
@@ -42,6 +45,8 @@ interface HomeViewSectionArtworksProps extends FlexProps {
 }
 
 const GRID_MAX_ARTWORKS_COUNT = 4
+// Matches the height of the palette Button rendered below the grid.
+const VIEW_MORE_BUTTON_HEIGHT = 50
 
 export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = ({
   section: sectionProp,
@@ -267,8 +272,14 @@ const homeViewSectionArtworksQuery = graphql`
   }
 `
 
-export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
+export const HomeViewSectionArtworksPlaceholder: React.FC<
+  FlexProps & { shouldShowInGrid?: boolean }
+> = ({ shouldShowInGrid, ...flexProps }) => {
   const randomValue = useMemoizedRandom()
+
+  if (shouldShowInGrid) {
+    return <HomeViewSectionArtworksGridPlaceholder {...flexProps} />
+  }
 
   return (
     <Skeleton>
@@ -304,9 +315,41 @@ export const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProp
   )
 }
 
+// Mirrors what HomeViewSectionArtworksGrid renders: a capped masonry grid followed by the
+// "View More" button, so grid sections don't flash a rail-shaped skeleton first.
+const HomeViewSectionArtworksGridPlaceholder: React.FC<FlexProps> = (flexProps) => {
+  const { width } = useScreenDimensions()
+
+  return (
+    <Skeleton>
+      <Flex {...flexProps}>
+        <Flex mx={2}>
+          <SkeletonText variant="sm-display">Artworks Grid</SkeletonText>
+          <Spacer y={2} />
+        </Flex>
+
+        <Flex mx={2} flexDirection="row">
+          <GenericGridPlaceholder
+            width={width - 40}
+            numRows={GRID_MAX_ARTWORKS_COUNT / NUM_COLUMNS_MASONRY}
+          />
+        </Flex>
+
+        <Spacer y={2} />
+
+        <Flex mx={2}>
+          <SkeletonBox height={VIEW_MORE_BUTTON_HEIGHT} width="100%" />
+        </Flex>
+      </Flex>
+    </Skeleton>
+  )
+}
+
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+    // `shouldShowInGrid` is only consumed by the loading fallback, so it is dropped here rather
+    // than forwarded on to the section.
+    Component: ({ sectionID, index, refetchKey, shouldShowInGrid: _, ...flexProps }) => {
       const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
       const liveSectionIDs = useLiveHomeViewSectionIDs()
 
