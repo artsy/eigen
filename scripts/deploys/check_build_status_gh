@@ -5,35 +5,22 @@ set -euo pipefail
 # Usage: ./check_build_status_gh <platform>
 # Example: ./check_build_status_gh ios
 #
-# Guards against two betas landing in the same build number.
+# Blocks two betas of the same platform landing in the same build number.
 #
-# Beta build numbers are an hour bucket: iOS stamps CFBundleVersion as
-# %Y.%m.%d.%H (Fastfile `set_build_version_ios`) and Android stamps versionCode
-# as %Y%m%d%H (`get_next_android_build_version`). The Sentry release is derived
-# from it — `ios-<version>-<build>` / `android-<version>-<code>` — so two betas
-# of the same platform in the same UTC hour share one Sentry release and the
-# second build's sourcemap upload overwrites the first's.
+# Build numbers are a UTC hour bucket (Fastfile stamps iOS `%Y.%m.%d.%H`,
+# Android `%Y%m%d%H`) and the Sentry release is derived from them, so same-hour
+# betas share a release and the second sourcemap upload overwrites the first's.
+# One per platform per hour bucket, not one per 60 minutes: 07:58 then 08:02 is
+# fine, 07:05 then 07:58 is not.
 #
-# So the limit is one beta per platform per UTC hour, NOT one per 60 minutes:
-# 07:58 then 08:02 is fine (different buckets), 07:05 then 07:58 is not.
+# Checks, per platform (release names are platform-prefixed, so iOS and Android
+# can't collide): (1) does the tag fastlane is about to push already exist, and
+# (2) is a beta running right now, having not yet stamped its build number.
+# fastlane's own check only sees builds that finished shipping, so two runs
+# started in the same hour both pass it before either uploads.
 #
-# Two things are checked, both scoped to the platform being deployed (the Sentry
-# release name is platform-prefixed, so iOS and Android cannot collide):
-#
-#   1. Does the tag this build will push already exist? fastlane pushes
-#      `<platform>-<version>-<build>`, so an existing tag is an exact, unambiguous
-#      "this hour is taken".
-#   2. Is a beta for this platform currently running? It has not stamped its
-#      build number yet, so it may well land in this same bucket.
-#
-# fastlane has its own same-hour check (`testflight_build_already_shipped?` /
-# `firebase_build_already_shipped?`) but it only sees builds that already
-# finished shipping — two runs started in the same hour both pass it before
-# either uploads. This catches it up front instead.
-#
-# If the conflict is a release candidate (its commit is the tip of an `rc-v*`
-# branch) overriding would corrupt the build about to ship, so a plain "y" is
-# not accepted — it takes typing `override-rc`.
+# Overriding an `rc-v*` tip would corrupt the build about to ship, so that case
+# refuses a plain "y" and requires typing `override-rc`.
 
 source .env.releases
 
@@ -46,7 +33,7 @@ fi
 
 APP_VERSION=$(jq -r '.version' app.json)
 
-# Must match the stamping in fastlane/Fastfile. UTC, because CI runners are UTC.
+# Must match fastlane/Fastfile's stamping. UTC, because CI runners are UTC.
 case "$PLATFORM" in
 ios)
   BUILD_NUMBER=$(date -u +%Y.%m.%d.%H)
@@ -70,8 +57,8 @@ if [ -z "${GITHUB_TOKEN:-}" ]; then
   exit 1
 fi
 
-# Release-candidate commits: rc-release-automation force-pushes an `rc-v*` tip to
-# the beta branches, so an RC beta's commit is the tip of an rc-v* branch.
+# rc-release-automation pushes an `rc-v*` tip to the beta branches, so an RC
+# beta's commit is the tip of an rc-v* branch.
 rc_shas=$(git ls-remote --heads origin 'refs/heads/rc-v*' | awk '{print $1}')
 is_rc_sha() { [ -n "$1" ] && grep -qx "$1" <<<"$rc_shas"; }
 
@@ -84,8 +71,7 @@ gh_api() {
     "https://api.github.com/repos/artsy/eigen/$1"
 }
 
-# Beta commits live on the beta branches and are often not in the local clone,
-# so fall back to the API for the commit subject.
+# Beta commits are often not in the local clone, so fall back to the API.
 commit_subject() {
   git log -1 --format=%s "$1" 2>/dev/null ||
     gh_api "commits/$1" | jq -r '.commit.message // ""' | head -1
@@ -95,14 +81,13 @@ conflicts=""
 rc_conflict=false
 
 # --- 1. has this hour's build number already been used? -----------------------
-# These are annotated tags, so `refs/tags/X` is the tag object and `refs/tags/X^{}`
-# is the commit it points at. We want the commit: the tag object's SHA is not a
-# commit at all, so it would never match an rc-v tip (and has no commit message).
-# The trailing `*` is what makes ls-remote emit the `^{}` line.
+# These tags are annotated, so we want `refs/tags/X^{}` (the commit) and not
+# `refs/tags/X` (the tag object, which can never match an rc-v tip). The
+# trailing `*` is what makes ls-remote emit the `^{}` line at all.
 tag_refs=$(git ls-remote --tags origin "refs/tags/${EXPECTED_TAG}*")
 existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}^{}" '$2 == ref {print $1}' <<<"$tag_refs")
 if [ -z "$existing_tag_sha" ]; then
-  # Lightweight tag: the ref already points straight at the commit.
+  # Lightweight tag: the ref points straight at the commit.
   existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}" '$2 == ref {print $1}' <<<"$tag_refs")
 fi
 
@@ -118,7 +103,7 @@ if [ -n "$existing_tag_sha" ]; then
 fi
 
 # --- 2. is a beta for this platform running right now? ------------------------
-# It has not stamped its build number yet, so it may land in this same bucket.
+# It hasn't stamped its build number yet, so it may land in this same bucket.
 for WORKFLOW_FILE in "${WORKFLOW_FILES[@]}"; do
   response=$(gh_api "actions/workflows/$WORKFLOW_FILE/runs?status=in_progress&per_page=10")
 
@@ -147,8 +132,8 @@ for WORKFLOW_FILE in "${WORKFLOW_FILES[@]}"; do
 done
 
 # --- 3. near the top of the hour? --------------------------------------------
-# The build number is stamped when the fastlane step runs, several minutes after
-# the trigger, so a late-in-the-hour trigger can land in either bucket.
+# The stamp happens minutes after the trigger, so a late trigger can land in
+# either bucket.
 minute=$(date -u +%-M)
 if [ "$minute" -ge 50 ]; then
   next_hour=$(date -u -v+1H +%H 2>/dev/null || date -u -d '+1 hour' +%H)
