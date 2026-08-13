@@ -1,74 +1,198 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# check_build_status_gh.sh
-# Usage: ./check_build_status_gh.sh <platform>
-# Example: ./check_build_status_gh.sh ios
+# check_build_status_gh
+# Usage: ./check_build_status_gh <platform>
+# Example: ./check_build_status_gh ios
+#
+# Guards against two betas landing in the same build number.
+#
+# Beta build numbers are an hour bucket: iOS stamps CFBundleVersion as
+# %Y.%m.%d.%H (Fastfile `set_build_version_ios`) and Android stamps versionCode
+# as %Y%m%d%H (`get_next_android_build_version`). The Sentry release is derived
+# from it — `ios-<version>-<build>` / `android-<version>-<code>` — so two betas
+# of the same platform in the same UTC hour share one Sentry release and the
+# second build's sourcemap upload overwrites the first's.
+#
+# So the limit is one beta per platform per UTC hour, NOT one per 60 minutes:
+# 07:58 then 08:02 is fine (different buckets), 07:05 then 07:58 is not.
+#
+# Two things are checked, both scoped to the platform being deployed (the Sentry
+# release name is platform-prefixed, so iOS and Android cannot collide):
+#
+#   1. Does the tag this build will push already exist? fastlane pushes
+#      `<platform>-<version>-<build>`, so an existing tag is an exact, unambiguous
+#      "this hour is taken".
+#   2. Is a beta for this platform currently running? It has not stamped its
+#      build number yet, so it may well land in this same bucket.
+#
+# fastlane has its own same-hour check (`testflight_build_already_shipped?` /
+# `firebase_build_already_shipped?`) but it only sees builds that already
+# finished shipping — two runs started in the same hour both pass it before
+# either uploads. This catches it up front instead.
+#
+# If the conflict is a release candidate (its commit is the tip of an `rc-v*`
+# branch) overriding would corrupt the build about to ship, so a plain "y" is
+# not accepted — it takes typing `override-rc`.
 
 source .env.releases
 
-PLATFORM=$1
+PLATFORM="${1:-}"
 
 if [ -z "$PLATFORM" ]; then
   echo "Platform argument is required (e.g., ios or android)."
   exit 1
 fi
 
-if [ "$PLATFORM" = "ios" ]; then
+APP_VERSION=$(jq -r '.version' app.json)
+
+# Must match the stamping in fastlane/Fastfile. UTC, because CI runners are UTC.
+case "$PLATFORM" in
+ios)
+  BUILD_NUMBER=$(date -u +%Y.%m.%d.%H)
   WORKFLOW_FILES=("build-deploy-ios-testflight.yml" "build-deploy-ios-firebase.yml")
-elif [ "$PLATFORM" = "android" ]; then
+  ;;
+android)
+  BUILD_NUMBER=$(date -u +%Y%m%d%H)
   WORKFLOW_FILES=("build-deploy-android-playstore.yml" "build-deploy-android-firebase.yml")
-else
+  ;;
+*)
   echo "Unsupported platform: $PLATFORM. Supported platforms are ios and android."
   exit 1
-fi
+  ;;
+esac
 
-# Check if GITHUB_TOKEN is set
+EXPECTED_TAG="${PLATFORM}-${APP_VERSION}-${BUILD_NUMBER}"
+
 if [ -z "${GITHUB_TOKEN:-}" ]; then
   echo "Error: GITHUB_TOKEN could not be found."
   echo "Please run 'yarn setup:releases' to set up the environment variables."
   exit 1
 fi
 
-echo "Checking if there is a $PLATFORM build in progress..."
+# Release-candidate commits: rc-release-automation force-pushes an `rc-v*` tip to
+# the beta branches, so an RC beta's commit is the tip of an rc-v* branch.
+rc_shas=$(git ls-remote --heads origin 'refs/heads/rc-v*' | awk '{print $1}')
+is_rc_sha() { [ -n "$1" ] && grep -qx "$1" <<<"$rc_shas"; }
 
-total_running_runs=0
+echo "Checking for another $PLATFORM beta in UTC hour ${BUILD_NUMBER} (build ${EXPECTED_TAG})..."
 
-# Check each workflow for the platform using the filename directly (avoids pagination issues with name lookup)
-for WORKFLOW_FILE in "${WORKFLOW_FILES[@]}"; do
-  echo "Checking workflow: $WORKFLOW_FILE"
-
-  # Check for running workflow runs using the workflow filename directly
-  response=$(curl -s \
+gh_api() {
+  curl -s \
     -H "Authorization: Bearer $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/artsy/eigen/actions/workflows/$WORKFLOW_FILE/runs?status=in_progress&per_page=1")
+    "https://api.github.com/repos/artsy/eigen/$1"
+}
 
-  if echo "$response" | jq -e '.message' > /dev/null 2>&1; then
+# Beta commits live on the beta branches and are often not in the local clone,
+# so fall back to the API for the commit subject.
+commit_subject() {
+  git log -1 --format=%s "$1" 2>/dev/null ||
+    gh_api "commits/$1" | jq -r '.commit.message // ""' | head -1
+}
+
+conflicts=""
+rc_conflict=false
+
+# --- 1. has this hour's build number already been used? -----------------------
+# These are annotated tags, so `refs/tags/X` is the tag object and `refs/tags/X^{}`
+# is the commit it points at. We want the commit: the tag object's SHA is not a
+# commit at all, so it would never match an rc-v tip (and has no commit message).
+# The trailing `*` is what makes ls-remote emit the `^{}` line.
+tag_refs=$(git ls-remote --tags origin "refs/tags/${EXPECTED_TAG}*")
+existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}^{}" '$2 == ref {print $1}' <<<"$tag_refs")
+if [ -z "$existing_tag_sha" ]; then
+  # Lightweight tag: the ref already points straight at the commit.
+  existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}" '$2 == ref {print $1}' <<<"$tag_refs")
+fi
+
+if [ -n "$existing_tag_sha" ]; then
+  marker=""
+  if is_rc_sha "$existing_tag_sha"; then
+    marker="  🚨 RELEASE CANDIDATE"
+    rc_conflict=true
+  fi
+  subject=$(commit_subject "$existing_tag_sha")
+  conflicts+="  - build ${BUILD_NUMBER} is already taken — tag ${EXPECTED_TAG}${marker}"$'\n'
+  conflicts+="      ${existing_tag_sha:0:8} — ${subject}"$'\n'
+fi
+
+# --- 2. is a beta for this platform running right now? ------------------------
+# It has not stamped its build number yet, so it may land in this same bucket.
+for WORKFLOW_FILE in "${WORKFLOW_FILES[@]}"; do
+  response=$(gh_api "actions/workflows/$WORKFLOW_FILE/runs?status=in_progress&per_page=10")
+
+  if echo "$response" | jq -e '.message' >/dev/null 2>&1; then
     error_message=$(echo "$response" | jq -r '.message')
     echo "Error: GitHub API returned an error for '$WORKFLOW_FILE': $error_message"
     echo "Please run 'yarn setup:releases' to refresh your credentials."
     exit 1
   fi
 
-  running_runs=$(echo "$response" | jq -r '(.total_count // 0)')
+  matches=$(echo "$response" | jq -r \
+    '.workflow_runs[] | [.head_sha, .name, .display_title, .html_url] | @tsv')
 
-  if [ "$running_runs" -gt 0 ]; then
-    echo "Found $running_runs running build(s) for '$WORKFLOW_FILE'"
-    total_running_runs=$((total_running_runs + running_runs))
-  fi
+  [ -z "$matches" ] && continue
+
+  while IFS=$'\t' read -r sha name title url; do
+    [ -z "$sha" ] && continue
+    marker=""
+    if is_rc_sha "$sha"; then
+      marker="  🚨 RELEASE CANDIDATE"
+      rc_conflict=true
+    fi
+    conflicts+="  - running now — ${name} — ${sha:0:8} — ${title}${marker}"$'\n'
+    conflicts+="      ${url}"$'\n'
+  done <<<"$matches"
 done
 
-if [ "$total_running_runs" -gt 0 ]; then
-    echo "Another $PLATFORM build is running ($total_running_runs total)."
-    read -p "There is a build currently running. Are you sure you want to overwrite it? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo "Proceeding with creating the $PLATFORM beta..."
-    else
-        echo "Aborting..."
-        exit 1
-    fi
+# --- 3. near the top of the hour? --------------------------------------------
+# The build number is stamped when the fastlane step runs, several minutes after
+# the trigger, so a late-in-the-hour trigger can land in either bucket.
+minute=$(date -u +%-M)
+if [ "$minute" -ge 50 ]; then
+  next_hour=$(date -u -v+1H +%H 2>/dev/null || date -u -d '+1 hour' +%H)
+  echo
+  echo "⏰ Heads up: it is $(date -u +%H:%M) UTC, so this build may stamp hour"
+  echo "   $(date -u +%H) or hour ${next_hour} depending on when the build step runs."
+  echo "   Waiting until the top of the hour makes the build number predictable."
+fi
+
+if [ -z "$conflicts" ]; then
+  echo "Build ${BUILD_NUMBER} is free and no $PLATFORM beta is running. Proceeding with creating the $PLATFORM beta..."
+  exit 0
+fi
+
+echo
+echo "⚠️  Conflicting $PLATFORM beta for UTC hour ${BUILD_NUMBER}:"
+echo
+printf '%s' "$conflicts"
+echo
+echo "Betas of the same platform in the same UTC hour share build number ${BUILD_NUMBER},"
+echo "so they share one Sentry release and the second upload overwrites the first's"
+echo "sourcemaps. Waiting until the next UTC hour avoids this entirely."
+echo
+
+if [ "$rc_conflict" = true ]; then
+  echo "🚨 The conflict is a RELEASE CANDIDATE — DO NOT override."
+  echo "   Overriding will corrupt the build that is about to ship. Wait for the RC"
+  echo "   builds to finish and check with the release owner first."
+  echo
+  read -r -p "   If you are certain, type 'override-rc' to continue (anything else aborts): " REPLY
+  echo
+  if [ "$REPLY" = "override-rc" ]; then
+    echo "Overriding a release candidate on purpose. Proceeding with the $PLATFORM beta..."
+    exit 0
+  fi
+  echo "Aborting..."
+  exit 1
+fi
+
+read -r -p "Are you sure you want to deploy anyway? (y/n) " -n 1
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo "Proceeding with creating the $PLATFORM beta..."
 else
-    echo "No other $PLATFORM build running. Proceeding with creating the beta..."
+  echo "Aborting..."
+  exit 1
 fi
