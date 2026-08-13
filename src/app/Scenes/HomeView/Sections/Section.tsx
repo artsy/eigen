@@ -55,7 +55,14 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
     case "HomeViewSectionActivity":
       return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtworks":
-      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <HomeViewSectionArtworksQueryRenderer
+          sectionID={section.internalID}
+          // Lets the loading fallback match the layout the section will render in
+          shouldShowInGrid={section.component?.type === "ArtworksGrid"}
+          {...rest}
+        />
+      )
     case "HomeViewSectionCard":
       return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards": {
