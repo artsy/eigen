@@ -14947,7 +14947,7 @@ type CreateMailchimpCampaignFailure {
 
 input CreateMailchimpCampaignInput {
   """
-  Artwork IDs to associate with the campaign for tracking (mutually exclusive with partnerShowId)
+  Artwork IDs to associate with the campaign for tracking
   """
   artworkIds: [String!]
   clientMutationId: String
@@ -14966,11 +14966,6 @@ input CreateMailchimpCampaignInput {
   The internal ID of the Mailchimp account to use
   """
   mailchimpAccountId: String!
-
-  """
-  Partner show ID to associate with the campaign for tracking (mutually exclusive with artworkIds)
-  """
-  partnerShowId: String
 
   """
   The email preview text
@@ -22973,11 +22968,6 @@ type MailchimpCampaign {
   """
   mailchimpUrl: String
   partnerId: String
-
-  """
-  The partner show associated with this campaign, if any
-  """
-  partnerShowId: String
 
   """
   The email preview text
