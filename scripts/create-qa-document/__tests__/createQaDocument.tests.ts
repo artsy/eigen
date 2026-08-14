@@ -7,7 +7,7 @@ jest.mock("../duplicateNotionTemplate", () => ({
   findExistingCopy: jest.fn(),
 }))
 
-import { extractChangelogFromPrBody } from "../changelog"
+import { extractChangelogFromPrBody, extractContributorsFromChangelog } from "../changelog"
 import { QA_DESTINATION_URL, QA_TEMPLATE_URL } from "../constants"
 import { createQaDocument } from "../createQaDocument"
 import { duplicateTemplate, findExistingCopy } from "../duplicateNotionTemplate"
@@ -55,6 +55,42 @@ describe("extractChangelogFromPrBody", () => {
   it("returns null when there is no changelog section", () => {
     expect(extractChangelogFromPrBody("just a normal PR body")).toBeNull()
     expect(extractChangelogFromPrBody("")).toBeNull()
+  })
+})
+
+describe("extractContributorsFromChangelog", () => {
+  it("collects the handles, de-duplicated, in first-appearance order", () => {
+    const changelog = [
+      "### Cross-platform user-facing changes",
+      "- fix milliseconds showing in timers — MrSltun (#13830)",
+      "- copy update on edit profile — gkartalis (#13832)",
+      "",
+      "### Dev changes",
+      "- fixes form data vulnerability — gkartalis (#13828)",
+      "- copy updates — JanaeHijaz (#13843)",
+    ].join("\n")
+
+    expect(extractContributorsFromChangelog(changelog)).toEqual([
+      "MrSltun",
+      "gkartalis",
+      "JanaeHijaz",
+    ])
+  })
+
+  it("takes the separator dash, not a dash inside the description", () => {
+    const changelog =
+      "- add missing alias routes, route matching minor speedup - brian — brainbicycle (#13868)"
+
+    expect(extractContributorsFromChangelog(changelog)).toEqual(["brainbicycle"])
+  })
+
+  it("skips lines that aren't changelog entries", () => {
+    const changelog = ["### Dev changes", "", "some hand-written note", "- no handle here"].join(
+      "\n"
+    )
+
+    expect(extractContributorsFromChangelog(changelog)).toEqual([])
+    expect(extractContributorsFromChangelog("")).toEqual([])
   })
 })
 
@@ -155,6 +191,25 @@ describe("createQaDocument", () => {
     )
   })
 
+  it("appends the contributor handles to the threaded changelog reply", async () => {
+    process.env.PR_BODY =
+      "## Release Candidate\n\n## Changelog\n\n### Dev changes\n- did a thing — gkartalis (#1)\n- did another — iskounen (#2)\n\n#nochangelog"
+
+    await createQaDocument(RC_BRANCH, NOW)
+
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      "https://slack.com/api/chat.postMessage",
+      expect.objectContaining({
+        body: JSON.stringify({
+          channel: "C12345",
+          text: "*Changelog*\n### Dev changes\n- did a thing — gkartalis (#1)\n- did another — iskounen (#2)\n\n*Contributors:* gkartalis, iskounen",
+          thread_ts: "1000.1",
+        }),
+      })
+    )
+  })
+
   it("posts the changelog as a threaded reply under the main message", async () => {
     process.env.PR_BODY =
       "## Release Candidate\n\n## Changelog\n\n### Dev changes\n- did a thing (#1)\n\n#nochangelog"
@@ -201,14 +256,12 @@ describe("createQaDocument", () => {
 
   it("does not fail the run when the Slack post errors (doc is the deliverable)", async () => {
     // The document was already created; a Slack outage must not turn the run red.
-    ;(global as any).fetch = jest
-      .fn()
-      .mockResolvedValue({
-        ok: false,
-        status: 500,
-        statusText: "Server Error",
-        json: async () => ({}),
-      })
+    ;(global as any).fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: "Server Error",
+      json: async () => ({}),
+    })
     await expect(createQaDocument(RC_BRANCH, NOW)).resolves.toBeUndefined()
     expect(duplicateTemplate).toHaveBeenCalled()
 
