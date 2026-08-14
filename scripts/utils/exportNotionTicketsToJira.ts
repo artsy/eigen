@@ -26,8 +26,6 @@ const NOTION_API_TOKEN = process.env.NOTION_API_TOKEN
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL
 const JIRA_EMAIL = process.env.JIRA_EMAIL
 const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN
-// Posted by the release-lookout Slack bot, the same app the other release
-// scripts use. Both come from .env.releases.
 const SLACK_TOKEN = process.env.SLACK_TOKEN
 const SLACK_CHANNEL = process.env.SLACK_CHANNEL
 
