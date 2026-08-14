@@ -38,7 +38,7 @@ const AuctionResultListItem: React.FC<Props> = memo(
   }) => {
     const tracking = useTracking()
     const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
-    const [imageUrl, setImageUrl] = useState(auctionResult.images?.thumbnail?.url)
+    const [imageUrl, setImageUrl] = useState(auctionResult.images?.thumbnail?.url ?? undefined)
     const [triedFallback, setTriedFallback] = useState(false)
 
     const QAInfo: React.FC = () => (
