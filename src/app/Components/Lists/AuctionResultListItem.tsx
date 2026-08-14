@@ -38,6 +38,8 @@ const AuctionResultListItem: React.FC<Props> = memo(
   }) => {
     const tracking = useTracking()
     const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
+    const [imageUrl, setImageUrl] = useState(auctionResult.images?.thumbnail?.url)
+    const [triedFallback, setTriedFallback] = useState(false)
 
     const QAInfo: React.FC = () => (
       <QAInfoManualPanel position="absolute" top={0} left={95}>
@@ -96,14 +98,25 @@ const AuctionResultListItem: React.FC<Props> = memo(
                   width: 100,
                 }}
                 source={{
-                  uri: auctionResult.images.thumbnail.url,
+                  uri: imageUrl,
                 }}
                 onError={() => {
-                  addBreadcrumb({
-                    message: `Failed to load auction result image for id: ${auctionResult.internalID}`,
-                    level: "info",
-                  })
-                  setCouldNotLoadImage(true)
+                  //if .jpg failed, try .png
+                  if (!triedFallback && imageUrl?.endsWith(".jpg")) {
+                    const pngUrl = imageUrl.replace(".jpg", ".png")
+                    addBreadcrumb({
+                      message: `Failed to load .jpg, trying .png fallback for id: ${auctionResult.internalID}`,
+                      level: "info",
+                    })
+                    setImageUrl(pngUrl)
+                    setTriedFallback(true)
+                  } else {
+                    addBreadcrumb({
+                      message: `Failed to load auction result image for id: ${auctionResult.internalID}`,
+                      level: "info",
+                    })
+                    setCouldNotLoadImage(true)
+                  }
                 }}
                 resizeMode={FastImage.resizeMode.cover}
               />
