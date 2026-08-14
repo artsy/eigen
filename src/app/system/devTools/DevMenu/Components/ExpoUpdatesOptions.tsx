@@ -12,7 +12,7 @@ import { Expandable } from "app/Components/Expandable"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import * as Updates from "expo-updates"
 import { useEffect, useState } from "react"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert } from "react-native"
 
 type ExpoDeployment = "Canary" | "Staging" | "Production"
 
@@ -29,6 +29,15 @@ const channelToDeployment: Record<string, ExpoDeployment> = Object.fromEntries(
   ])
 )
 
+const isErrorWithMessage = (error: unknown): error is { message: string } => {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as any).message === "string"
+  )
+}
+
 export const ExpoUpdatesOptions = () => {
   const [selectedDeployment, setSelectedDeployment] = useState<ExpoDeployment>("Staging")
   const [updateMetadata, setUpdateMetadata] = useState<any>(null)
@@ -36,6 +45,9 @@ export const ExpoUpdatesOptions = () => {
   const [loadStatus, setLoadStatus] = useState("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loadProgress, setLoadProgress] = useState(0)
+
+  const updatesEnabled = Updates.isEnabled
+  const channelSwitchingAllowed = updatesEnabled && ArtsyNativeModule.isBetaOrDev
 
   const fetchUpdateMetadata = async () => {
     try {
@@ -70,12 +82,36 @@ export const ExpoUpdatesOptions = () => {
     Emergency Launch: ${updateMetadata?.isEmergencyLaunch ? "Yes" : "No"}
   `
 
-  const isErrorWithMessage = (error: unknown): error is { message: string } => {
-    return (
-      typeof error === "object" &&
-      error !== null &&
-      "message" in error &&
-      typeof (error as any).message === "string"
+  const handleSelectDeployment = (deployment: ExpoDeployment) => {
+    setErrorMessage(null)
+    const channelName = expoDeploymentChannels[deployment]
+
+    try {
+      Updates.setUpdateRequestHeadersOverride({ "expo-channel-name": channelName })
+    } catch (error) {
+      setErrorMessage(
+        isErrorWithMessage(error) ? error.message : `Could not switch to ${channelName}: ${error}`
+      )
+      return
+    }
+
+    setSelectedDeployment(deployment)
+
+    Alert.alert(
+      "Deployment Channel Changed",
+      "Quit and restart the app to apply the new deployment channel.",
+      [
+        {
+          text: "I will crash now!",
+          style: "destructive",
+          onPress: () => {
+            if (!__DEV__) {
+              // Crash the app to force a restart
+              Sentry.nativeCrash()
+            }
+          },
+        },
+      ]
     )
   }
 
@@ -94,7 +130,14 @@ export const ExpoUpdatesOptions = () => {
         await Updates.reloadAsync()
       } else {
         if (update.reason) {
-          setErrorMessage(`Update check failed: ${update.reason}`)
+          if (
+            update.reason ===
+            Updates.UpdateCheckResultNotAvailableReason.NO_UPDATE_AVAILABLE_ON_SERVER
+          ) {
+            setErrorMessage("No new update available.")
+          } else {
+            setErrorMessage(`Update check failed: ${update.reason}`)
+          }
         } else {
           setErrorMessage("No new update available.")
         }
@@ -126,6 +169,17 @@ export const ExpoUpdatesOptions = () => {
     <Flex mx={2}>
       <Expandable label="Expo Updates" expanded={false}>
         <Flex my={2}>
+          {!updatesEnabled && (
+            <>
+              <Message
+                title="Expo Updates disabled"
+                text="This build has expo-updates disabled (local Debug builds always do), so the channel cannot be changed. Please use a TestFlight or Firebase beta."
+                variant="warning"
+              />
+              <Spacer y={2} />
+            </>
+          )}
+
           {!!updateMetadata && (
             <>
               <Message title="Active Release" text={activeReleaseText} variant="info" />
@@ -133,48 +187,29 @@ export const ExpoUpdatesOptions = () => {
             </>
           )}
 
+          {!!updatesEnabled && !channelSwitchingAllowed && (
+            <>
+              <Message
+                title="Channel switching unavailable"
+                text="Channel switching is only available in dev or beta builds."
+                variant="error"
+              />
+              <Spacer y={2} />
+            </>
+          )}
+
           {Object.keys(expoDeploymentChannels).map((deployment) => (
-            <TouchableOpacity
-              accessibilityRole="button"
+            <RadioButton
               key={deployment}
-              onPress={() => {
-                if (!ArtsyNativeModule.isBetaOrDev) {
-                  Alert.alert("Updates can only be changed in beta or dev mode.")
-                  return
-                }
-
-                setSelectedDeployment(deployment as ExpoDeployment)
-                const channelName = expoDeploymentChannels[deployment as ExpoDeployment]
-                Updates.setUpdateURLAndRequestHeadersOverride({
-                  updateUrl: "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668",
-                  requestHeaders: {
-                    "expo-channel-name": channelName,
-                  },
-                })
-
-                Alert.alert(
-                  "Deployment Changed",
-                  "Quit and restart the app to apply the new deployment.",
-                  [
-                    {
-                      text: "I will crash now!",
-                      style: "destructive",
-                      onPress: () => {
-                        if (!__DEV__) {
-                          // Crash the app to force a restart
-                          Sentry.nativeCrash()
-                        }
-                      },
-                    },
-                  ]
-                )
-              }}
-            >
-              <Flex flexDirection="row" alignItems="center">
-                <RadioButton selected={deployment === selectedDeployment} />
-                <Text>{deployment}</Text>
-              </Flex>
-            </TouchableOpacity>
+              testID={`expo-deployment-${deployment}`}
+              accessibilityLabel={deployment}
+              accessibilityState={{ checked: deployment === selectedDeployment }}
+              text={deployment}
+              selected={deployment === selectedDeployment}
+              disabled={!channelSwitchingAllowed}
+              onPress={() => handleSelectDeployment(deployment as ExpoDeployment)}
+              mb={1}
+            />
           ))}
 
           {loadProgress > 0 && (
@@ -192,7 +227,7 @@ export const ExpoUpdatesOptions = () => {
 
           <Spacer y={2} />
 
-          <Button block loading={loading} onPress={fetchAndApplyUpdate}>
+          <Button block loading={loading} disabled={!updatesEnabled} onPress={fetchAndApplyUpdate}>
             Fetch and Run Deployment
           </Button>
         </Flex>
