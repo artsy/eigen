@@ -4,7 +4,7 @@ import { DateTime } from "luxon"
 
 config({ path: resolve(__dirname, "../../.env.releases") })
 
-import { extractChangelogFromPrBody } from "./changelog"
+import { extractChangelogFromPrBody, extractContributorsFromChangelog } from "./changelog"
 import { QA_DESTINATION_URL, QA_TEMPLATE_URL } from "./constants"
 import { duplicateTemplate, findExistingCopy } from "./duplicateNotionTemplate"
 import { fetchWithTimeout } from "./notion"
@@ -98,9 +98,16 @@ export const createQaDocument = async (
   )
 
   // Changelog goes as a threaded reply under the main announcement, rather than
-  // in the same message, so the channel stays scannable when it's long.
+  // in the same message, so the channel stays scannable when it's long. The
+  // contributor handles are appended so the captain can see who to pull into
+  // Recent Changes QA without reading every entry; plain handles, not Slack
+  // mentions, since GitHub and Slack handles don't necessarily match.
   if (changelog) {
-    await postToSlack(`*Changelog*\n${changelog}`, parentTs)
+    const contributors = extractContributorsFromChangelog(changelog)
+    const contributorsLine = contributors.length
+      ? `\n\n*Contributors:* ${contributors.join(", ")}`
+      : ""
+    await postToSlack(`*Changelog*\n${changelog}${contributorsLine}`, parentTs)
   }
 }
 
