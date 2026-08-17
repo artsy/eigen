@@ -96,6 +96,7 @@ commits.txt
 # native code hash
 file_hashes.txt
 native-hash.txt
+reference-fingerprint.txt
 
 .manifests
 

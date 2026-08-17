@@ -73,7 +73,6 @@ else
   # reset changes made to app.json
   git checkout app.json
   git checkout dist/.gitkeep
-  git checkout reference-fingerprint.txt
 fi
 
 echo "Release to $deployment deployment successful."
