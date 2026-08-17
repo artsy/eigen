@@ -1,14 +1,17 @@
 name: iOS Expo Cache Build
 
 on:
-  workflow_run:
-    workflows: ["Expo Fingerprint Check"]
-    types: [completed]
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  # workflow_run:
+  #   workflows: ["Expo Fingerprint Check"]
+  #   types: [completed]
+  # workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/idb-fix
 
 jobs:
   check-build-needed:
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     outputs:
       needs_build: ${{ steps.check-build.outputs.needs_build }}
@@ -66,12 +69,6 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
-
-      - name: Install Facebook IDB
-        run: |
-          brew tap facebook/fb
-          brew trust --formula facebook/fb/idb-companion
-          brew install idb-companion
 
       - name: Create and boot iPhone 17 Pro iOS 26.2 simulator
         run: |
