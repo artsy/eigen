@@ -119,7 +119,7 @@
   },
   "dependencies": {
     "@artsy/changelog": "0.1.0",
-    "@artsy/cohesion": "4.391.0",
+    "@artsy/cohesion": "4.392.0",
     "@artsy/icons": "3.74.0",
     "@artsy/palette-mobile": "24.9.0",
     "@artsy/to-title-case": "1.2.0",
