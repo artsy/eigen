@@ -17,23 +17,23 @@ jobs:
       needs_build: ${{ steps.check-build.outputs.needs_build }}
 
     steps:
-      - name: Download needs_ios_build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: needs_ios_build
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
+      # - name: Download needs_ios_build artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: needs_ios_build
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     run-id: ${{ github.event.workflow_run.id }}
 
-      - name: Check if build is needed
-        id: check-build
-        run: |
-          NEEDS_BUILD=$(cat needs_ios_build.txt)
-          echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-          echo "iOS build needed: $NEEDS_BUILD"
+      # - name: Check if build is needed
+      #   id: check-build
+      #   run: |
+      #     NEEDS_BUILD=$(cat needs_ios_build.txt)
+      #     echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+      #     echo "iOS build needed: $NEEDS_BUILD"
 
   ios-expo-cache-build:
-    needs: check-build-needed
-    if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
+    # needs: check-build-needed
+    # if: ${{ needs.check-build-needed.outputs.needs_build == 'true' }}
     runs-on: macos-26
     timeout-minutes: 90
     env:
