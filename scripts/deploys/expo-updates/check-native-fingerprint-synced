@@ -1,0 +1,41 @@
+#!/bin/bash
+set -euxo pipefail
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  echo "Usage: $0 <canary|staging|production> [--check-against-version]"
+  exit 1
+fi
+
+deployment=$1
+check_against_version=false
+if [ "${2:-}" = "--check-against-version" ]; then
+  check_against_version=true
+fi
+
+if [ "$deployment" = "production" ] || [ "$check_against_version" = true ]; then
+  version=$(jq -r '.version' app.json)
+  reference_path="s3://mobile-cached-builds/eigen-expo-fingerprint/${version}.txt"
+  reference_label="the shipped build for version ${version}"
+else
+  reference_path="s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt"
+  reference_label="the latest beta build"
+fi
+
+current_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
+
+if ! aws s3 cp "$reference_path" ./reference-fingerprint.txt > /dev/null; then
+  echo "❌ No fingerprint record found at $reference_path — cannot verify native compatibility against $reference_label." >&2
+  exit 1
+fi
+
+reference_fingerprint=$(cat ./reference-fingerprint.txt)
+
+if [ "$current_fingerprint" != "$reference_fingerprint" ]; then
+  echo "❌ Native code has drifted from $reference_label." >&2
+  echo "   Current fingerprint:   $current_fingerprint" >&2
+  echo "   Reference fingerprint: $reference_fingerprint" >&2
+  echo "   Per process, native changes require a new native beta build — do not publish this as an Expo Update." >&2
+  exit 1
+fi
+
+echo "✅ Native fingerprint matches $reference_label ($current_fingerprint). Safe to publish via Expo Updates."

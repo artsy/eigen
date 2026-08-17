@@ -1,10 +1,29 @@
 #!/bin/bash
 set -euxo pipefail
 
+platform="all"
+check_against_version=false
+positional_args=()
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --platform=*) platform="${1#--platform=}"; shift ;;
+    --platform) platform="${2:-}"; shift 2 ;;
+    --check-against-version) check_against_version=true; shift ;;
+    *) positional_args+=("$1"); shift ;;
+  esac
+done
+
+set -- "${positional_args[@]}"
+
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
-  echo "Usage: $0 <deployment> [description] [rollout_percentage]"
+  echo "Usage: $0 <deployment> [description] [rollout_percentage] [--platform ios|android|all] [--check-against-version]"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
   echo "Rollout percentage is optional (integer from 0 to 100)."
+  echo "Platform is optional ('ios', 'android' or 'all'). Defaults to 'all'."
+  echo "--check-against-version checks against this version's own shipped fingerprint instead of"
+  echo "the latest beta's — useful for hotfix branches, which are cut from an old release rather"
+  echo "than main. No-op for 'production', which already checks against its own version by default."
   exit 1
 fi
 
@@ -14,6 +33,22 @@ if [ "$deployment" != "canary" ] && [ "$deployment" != "staging" ] && [ "$deploy
   echo "Invalid deployment option: $deployment"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
   exit 1
+fi
+
+if [ "$platform" != "ios" ] && [ "$platform" != "android" ] && [ "$platform" != "all" ]; then
+  echo "Invalid platform option: $platform"
+  echo "Platform must be either 'ios', 'android' or 'all'."
+  exit 1
+fi
+
+if [ "$check_against_version" = true ]; then
+  # For hotfix branches cut from an old release: check against this version's own shipped
+  # fingerprint instead of the latest beta's, since that's the comparison that actually matters.
+  ./scripts/deploys/expo-updates/check-native-fingerprint-synced "$deployment" --check-against-version
+else
+  # Block the publish if native code has drifted since the relevant reference build —
+  # an Expo Update built from a drifted native surface can crash a shipped binary on launch.
+  ./scripts/deploys/expo-updates/check-native-fingerprint-synced "$deployment"
 fi
 
 # Get the description from the command-line argument if provided, otherwise use the last commit hash and description
@@ -32,11 +67,9 @@ if [ -n "${3:-}" ]; then
 fi
 
 if [ -n "$rollout" ]; then
-  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios "$rollout"
-  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android "$rollout"
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:$platform "$rollout"
 else
-  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios
-  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:$platform
   # reset changes made to app.json
   git checkout app.json
   git checkout dist/.gitkeep

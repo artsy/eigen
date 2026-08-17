@@ -6,6 +6,7 @@ desc "Updates the version string in app.json"
 lane :update_version_string do |options|
   new_version = options[:version] || prompt(text: "What is the new human-readable release version?")
   $APP_JSON['version'] = new_version
+  $APP_JSON['expo']['runtimeVersion'] = new_version
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
 
@@ -167,8 +168,13 @@ lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
   tag = options[:tag].strip
+  message = options[:message]
   `git tag -d "#{tag}"`
-  add_git_tag tag: tag
+  if message
+    add_git_tag(tag: tag, message: message)
+  else
+    add_git_tag(tag: tag)
+  end
   `git remote add http https://github.com/artsy/eigen.git || true`
   # use no-verify to skip the pre-push hook
   `git push http #{tag} -f --no-verify`
@@ -345,6 +351,31 @@ def git_tag_commit_message(tag)
   # Returns the subject line of the commit the tag points to, or nil if the tag doesn't exist.
   msg = `git log -1 --format='%s' "#{tag}^{}" 2>/dev/null`.chomp
   msg.empty? ? nil : msg
+end
+
+def resolve_promoted_fingerprint(platform:, build_number:)
+  # Looks up the ship-time tag for the exact build being promoted (ios-*-<build_number> /
+  # android-*-<build_number>) and reads back the fingerprint from its annotation message.
+  # Falls back to an interactive confirm-and-recompute if the tag can't be found unambiguously.
+  `git fetch --tags 2>/dev/null`
+  ship_tags = `git tag -l '#{platform}-*-#{build_number}'`.split("\n")
+  promoted_fingerprint = nil
+  if ship_tags.length == 1
+    tag_message = `git for-each-ref refs/tags/#{ship_tags.first} --format='%(contents)'`.strip
+    promoted_fingerprint = tag_message.sub('fingerprint:', '').strip if tag_message.start_with?('fingerprint:')
+  end
+
+  if promoted_fingerprint.nil? || promoted_fingerprint.empty?
+    UI.important("⚠️ Could not find a fingerprint tag for build #{build_number} (found #{ship_tags.length} matching tag(s)).")
+    if UI.confirm("Is your current local checkout the exact release-candidate commit for this build? Only confirm if you're certain — this computes the fingerprint from whatever's currently checked out, as a fallback.")
+      promoted_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
+      UI.important("Computed fallback fingerprint from current checkout: #{promoted_fingerprint}")
+    else
+      UI.error("Could not determine the fingerprint for build #{build_number}. The Expo Updates gate for this version will be unusable until s3://mobile-cached-builds/eigen-expo-fingerprint/<version>.txt is set manually.")
+    end
+  end
+
+  promoted_fingerprint
 end
 
 def should_silence_beta_failure?

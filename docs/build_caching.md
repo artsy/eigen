@@ -123,7 +123,12 @@ Runs on every push to `main`. It:
 3. Compares the two — if they match, no builds are needed
 4. If they differ, checks S3 for existing cached builds for each platform (in case the fingerprint changed but a build was already uploaded for it)
 5. Outputs `needs_ios_build` and `needs_android_build` flags as artifacts for downstream workflows
-6. Saves the new fingerprint to S3 if builds are needed
+6. Saves the new fingerprint to S3 whenever it changed — regardless of whether a build was needed
+
+> `latest.txt` is also the reference the Expo Updates deploy gate compares against (see
+> [Deploying to Expo Updates](deploy_to_expo_updates.md#how-updates-are-matched-to-builds)), so it has
+> to track main's fingerprint even when a cache hit means no rebuild happens. Otherwise it goes stale
+> and starts blocking legitimate updates.
 
 ### 2. `ios-expo-build` ([.github/workflows/ios-expo-build.yml](../.github/workflows/ios-expo-build.yml))
 

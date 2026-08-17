@@ -81,7 +81,8 @@ lane :ship_beta_ios do |options|
 
   # Builds the app
   sync_signing_ios(deployment_target: deployment_target)
-  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
+  current_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
+  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}", message: "fingerprint:#{current_fingerprint}")
 
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
@@ -258,6 +259,13 @@ lane :promote_beta_ios do
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
 
+  promoted_fingerprint = resolve_promoted_fingerprint(platform: 'ios', build_number: formatted_build_number)
+  if promoted_fingerprint
+    sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{next_app_store_version}.txt")
+  else
+    UI.important("Skipping the fingerprint upload for #{next_app_store_version} — fix this manually before publishing any Expo Update for this version.")
+  end
+
   sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
 
   UI.success('All done!')
@@ -357,7 +365,8 @@ lane :ship_beta_android do |options|
   end
 
   set_git_properties_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}")
+  current_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
+  tag_and_push(tag: "android-#{vname}-#{vcode}", message: "fingerprint:#{current_fingerprint}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   if deployment_target == 'firebase'
@@ -432,6 +441,14 @@ lane :promote_beta_android do
 
   vname, vcode = set_build_version_android(version_code: selected_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+
+  promoted_fingerprint = resolve_promoted_fingerprint(platform: 'android', build_number: vcode)
+  if promoted_fingerprint
+    sh("echo '#{promoted_fingerprint}' | aws s3 cp - s3://mobile-cached-builds/eigen-expo-fingerprint/#{vname}.txt")
+  else
+    UI.important("Skipping the fingerprint upload for #{vname} — fix this manually before publishing any Expo Update for this version.")
+  end
+
   sentry_slack_android(build_number: vcode, version: vname)
 end
 
@@ -624,13 +641,20 @@ lane :deploy_to_expo_updates do |options|
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
 
-  # Export environment variables for Sentry sourcemap upload
-  ENV['SENTRY_RELEASE'] = "#{platform}-#{release_name_base}"
+  # `--platform all` publishes both platforms in one eas update call, so the
+  # dist/ export contains both platforms' bundles. Loop the Sentry upload and
+  # git tag per platform so releases/tags stay platform-scoped, matching
+  # eigenSentryReleaseName()'s "<ios|android>-<release>" format at runtime.
+  # For a single-platform publish (platform:ios or platform:android) this loop
+  # just runs once.
+  platforms_to_tag = platform == 'all' ? ['ios', 'android'] : [platform]
 
-  puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}"
-  sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
-
-  tag_and_push(tag: "#{platform}-#{release_name_base}")
+  platforms_to_tag.each do |p|
+    ENV['SENTRY_RELEASE'] = "#{p}-#{release_name_base}"
+    puts "🔧 Uploading sourcemaps to Sentry with release: #{p}-#{release_name_base}"
+    sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
+    tag_and_push(tag: "#{p}-#{release_name_base}")
+  end
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
   puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
