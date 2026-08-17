@@ -5,20 +5,7 @@ It is used like other tools such as Cypress, Appium, and Detox in order to run t
 
 ## Steps to run
 
-1. install maestro by following the instructions [here](https://maestro.mobile.dev/getting-started/installing-maestro)
-
-   - Using Curl
-
-   ```bash
-      curl -Ls "https://get.maestro.mobile.dev" | bash
-   ```
-
-   - Using Homebrew
-
-   ```bash
-    brew tap facebook/fb
-    brew install facebook/fb/idb-companion
-   ```
+1. install maestro by following the instructions [here](https://docs.maestro.dev/maestro-cli/how-to-install-maestro-cli)
 
 ### iOS
 
