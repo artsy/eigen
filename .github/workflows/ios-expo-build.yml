@@ -10,26 +10,26 @@ on:
       - gkartalis/idb-fix
 
 jobs:
-  check-build-needed:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
-    outputs:
-      needs_build: ${{ steps.check-build.outputs.needs_build }}
+  # check-build-needed:
+  #   # if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     needs_build: ${{ steps.check-build.outputs.needs_build }}
 
-    steps:
-      # - name: Download needs_ios_build artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: needs_ios_build
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     run-id: ${{ github.event.workflow_run.id }}
+  #   steps:
+  #     # - name: Download needs_ios_build artifact
+  #     #   uses: actions/download-artifact@v4
+  #     #   with:
+  #     #     name: needs_ios_build
+  #     #     github-token: ${{ secrets.GITHUB_TOKEN }}
+  #     #     run-id: ${{ github.event.workflow_run.id }}
 
-      # - name: Check if build is needed
-      #   id: check-build
-      #   run: |
-      #     NEEDS_BUILD=$(cat needs_ios_build.txt)
-      #     echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
-      #     echo "iOS build needed: $NEEDS_BUILD"
+  #     # - name: Check if build is needed
+  #     #   id: check-build
+  #     #   run: |
+  #     #     NEEDS_BUILD=$(cat needs_ios_build.txt)
+  #     #     echo "needs_build=$NEEDS_BUILD" >> $GITHUB_OUTPUT
+  #     #     echo "iOS build needed: $NEEDS_BUILD"
 
   ios-expo-cache-build:
     # needs: check-build-needed
