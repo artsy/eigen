@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Prints the fingerprint that CI last cached a native build for (without downloading a local copy).
+# Use this to check the remote value of the latest fingerprint.
+aws s3 cp s3://mobile-cached-builds/eigen-expo-fingerprint/latest.txt -
