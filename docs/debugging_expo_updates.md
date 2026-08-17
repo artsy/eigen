@@ -64,3 +64,15 @@ Expo updates has a bunch of native code checks to see if the local code is newer
 
 In dev mode there are assertions for valid state transitions that fail after switching channels, this may be a bug worth investigating and possibly PR back to expo?
 To get arround it you can comment out the assertions in the transition function in UpdatesStateMachine.swift when debugging in dev.
+
+#### Android NPE from `setUpdateRequestHeadersOverride` (`beta` build type)
+
+`android/app/build.gradle`'s `beta` build type must keep `expoUpdatesDisableAntibrickingMeasures: "false"`.
+`getUpdateUrl()` in expo-updates 55.0.22's Android `UpdatesConfiguration.kt` has a bug: when that flag
+is `true`, `configOverride?.let { return it.updateUrl }` returns unconditionally as soon as an override
+object exists — even if `it.updateUrl` is itself `null`, which it always is for a headers-only override
+like `setUpdateRequestHeadersOverride` (the only API the dev-menu channel switcher uses). That `null`
+gets force-unwrapped one line later and throws a `NullPointerException`. iOS's equivalent doesn't have
+this bug — it uses `if let updateUrl = configOverride?.updateUrl` there, which correctly falls back to
+the embedded URL when the override didn't set one. If a future expo-updates upgrade fixes this
+upstream, this flag is safe to flip back — we don't call the URL-override API that needs it anyway.

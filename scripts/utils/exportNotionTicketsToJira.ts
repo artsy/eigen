@@ -26,7 +26,8 @@ const NOTION_API_TOKEN = process.env.NOTION_API_TOKEN
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL
 const JIRA_EMAIL = process.env.JIRA_EMAIL
 const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN
-const SLACK_URL = process.env.SLACK_URL
+const SLACK_TOKEN = process.env.SLACK_TOKEN
+const SLACK_CHANNEL = process.env.SLACK_CHANNEL
 
 if (!NOTION_API_TOKEN) {
   console.error(chalk.bold.red("Missing NOTION_API_TOKEN in environment variables."))
@@ -236,17 +237,27 @@ function promptConfirm(question: string): Promise<boolean> {
 }
 
 async function sendSlackMessage(text: string) {
-  if (!SLACK_URL) {
-    console.error(chalk.bold.red("Missing SLACK_URL in environment variables."))
+  if (!SLACK_TOKEN || !SLACK_CHANNEL) {
+    console.error(chalk.bold.red("Missing SLACK_TOKEN or SLACK_CHANNEL in environment variables."))
     return
   }
-  const response = await fetch(SLACK_URL, {
+  const response = await fetch("https://slack.com/api/chat.postMessage", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${SLACK_TOKEN}`,
+    },
+    body: JSON.stringify({ channel: SLACK_CHANNEL, text }),
   })
-  if (!response.ok) {
-    throw new Error(`Failed to send Slack message: ${response.status} ${response.statusText}`)
+  // chat.postMessage reports its own failures (bad token, not_in_channel...) in
+  // the body with a 200, so the response status alone isn't enough here.
+  const body = await response.json().catch(() => null)
+  if (!response.ok || !body?.ok) {
+    throw new Error(
+      `Failed to send Slack message: ${response.status} ${response.statusText} ${
+        body?.error ?? ""
+      }`.trim()
+    )
   }
   console.log(chalk.bold.green("Successfully sent Slack message"))
 }

@@ -14,7 +14,10 @@
         }
       }
     },
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "runtimeVersion": "9.16.0",
     "owner": "artsy_org",
     "extra": {
