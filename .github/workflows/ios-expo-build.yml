@@ -66,6 +66,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "zulu"
+
       - name: Create and boot iPhone 17 Pro iOS 26.2 simulator
         run: |
           echo "📱 Creating iPhone 17 Pro simulator with iOS 26.2..."
