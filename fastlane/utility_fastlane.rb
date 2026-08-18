@@ -400,7 +400,6 @@ def should_silence_beta_failure?
   # Set this var in circleci if you want to silence beta failure alerts for a while
   # E.g. you are working on a ci change
   # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
-  return true
   silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
   return false unless silence_beta_failures_until
 
