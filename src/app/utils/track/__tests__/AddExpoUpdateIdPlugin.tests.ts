@@ -22,7 +22,7 @@ describe("AddExpoUpdateIdPlugin", () => {
 
     const result = await plugin.execute(event as any)
 
-    expect(result?.context?.app).toEqual({ updateId: "aaaa-bbbb-cccc" })
+    expect(result?.context?.app).toEqual({ expoUpdateId: "aaaa-bbbb-cccc" })
   })
 
   it("does not add an update id when running the embedded bundle", async () => {
@@ -42,7 +42,7 @@ describe("AddExpoUpdateIdPlugin", () => {
     expect(result?.context?.app).toEqual({
       name: "eigen",
       version: "9.16.0",
-      updateId: "aaaa-bbbb-cccc",
+      expoUpdateId: "aaaa-bbbb-cccc",
     })
   })
 
@@ -51,7 +51,7 @@ describe("AddExpoUpdateIdPlugin", () => {
 
     const result = await plugin.execute(event as any)
 
-    expect(result?.context?.app).toEqual({ updateId: "aaaa-bbbb-cccc" })
+    expect(result?.context?.app).toEqual({ expoUpdateId: "aaaa-bbbb-cccc" })
   })
 })
 
