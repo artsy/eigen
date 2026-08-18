@@ -49,9 +49,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/palette-mobile@npm:24.9.0":
-  version: 24.9.0
-  resolution: "@artsy/palette-mobile@npm:24.9.0"
+"@artsy/palette-mobile@npm:24.10.0":
+  version: 24.10.0
+  resolution: "@artsy/palette-mobile@npm:24.10.0"
   dependencies:
     "@artsy/palette-tokens": "npm:7.0.0"
     "@react-spring/native": "npm:10.0.3"
@@ -72,7 +72,7 @@ __metadata:
     react-native-svg: "*"
     react-native-worklets: "*"
     styled-components: ">= 5"
-  checksum: 10c0/c223fcbce9696e42eb0cbf0913e856dcd2675c510aa3997fbe4276ba3c6e043ae10f71d11f5896a3285bfe8c3cbb99094430aad079a7239600e739f545a512ff
+  checksum: 10c0/c7fe8409639f7dff80ffce602a07f937ce582db037fb6c6de59009c6344c5f08c5e9084b738c3d5b1a2c1f4edf28020966dfea6bb0312300466550dffee8c72d
   languageName: node
   linkType: hard
 
@@ -13589,7 +13589,7 @@ __metadata:
     "@artsy/changelog": "npm:0.1.0"
     "@artsy/cohesion": "npm:4.392.0"
     "@artsy/icons": "npm:3.74.0"
-    "@artsy/palette-mobile": "npm:24.9.0"
+    "@artsy/palette-mobile": "npm:24.10.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.8.2"
     "@babel/core": "npm:7.26.0"
