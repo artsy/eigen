@@ -127,6 +127,8 @@ jest.mock("expo-updates", () => {
     fetchUpdateAsync: jest.fn(),
     checkForUpdateAsync: jest.fn(),
     reloadAsync: jest.fn(),
+    isEnabled: true,
+    isEmbeddedLaunch: false,
     channel: "channel",
     runtimeVersion: "runtimeVersion",
     updateId: "updateId",
@@ -392,6 +394,8 @@ jest.mock("@segment/analytics-react-native", () => ({
   setup: () => null,
   identify: () => null,
   reset: () => null,
+  Plugin: class Plugin {},
+  PluginType: { enrichment: "enrichment" },
 }))
 
 jest.mock("@segment/analytics-react-native-plugin-braze", () => ({}))
