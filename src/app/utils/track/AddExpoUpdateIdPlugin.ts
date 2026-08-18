@@ -10,7 +10,7 @@ export class AddExpoUpdateIdPlugin extends Plugin {
     }
 
     event.context = event.context || {}
-    const app = { ...(event.context.app || {}), updateId: Updates.updateId }
+    const app = { ...(event.context.app || {}), expoUpdateId: Updates.updateId }
     event.context.app = app
 
     return event
