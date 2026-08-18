@@ -57,6 +57,7 @@ const config = {
     // Node modules
     "node_modules/react-native-keys/**/*",
     "**/node_modules/react-native-keys/**/*",
+    "node_modules/react-native-permissions/RNPermissions.podspec",
   ],
 }
 module.exports = config
