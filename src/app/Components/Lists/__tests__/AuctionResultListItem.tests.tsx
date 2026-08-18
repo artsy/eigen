@@ -1,5 +1,5 @@
 /* eslint-disable testing-library/await-async-queries, testing-library/no-node-access */
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -246,5 +246,93 @@ describe("AuctionResults", () => {
 
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).not.toHaveBeenCalled()
+  })
+
+  describe("Image fallback behavior", () => {
+    it("falls back to .png when .jpg image fails to load", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({
+          auctionResultsConnection: {
+            edges: [
+              {
+                node: {
+                  id: "an-id",
+                  internalID: "internal-id",
+                  images: {
+                    thumbnail: {
+                      url: "https://d2v80f5yrouhh2.cloudfront.net/test/thumbnail.jpg",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      const FastImage = require("@d11/react-native-fast-image").default
+      const fastImage = tree.findAllByType(FastImage)[0]
+
+      // Verify initial URL is .jpg
+      expect(fastImage.props.source.uri).toBe(
+        "https://d2v80f5yrouhh2.cloudfront.net/test/thumbnail.jpg"
+      )
+
+      // Simulate image load failure
+      act(() => {
+        fastImage.props.onError()
+      })
+
+      // Should now try .png
+      const updatedFastImage = tree.findAllByType(FastImage)[0]
+      expect(updatedFastImage.props.source.uri).toBe(
+        "https://d2v80f5yrouhh2.cloudfront.net/test/thumbnail.png"
+      )
+    })
+
+    it("shows NoArtIcon when both .jpg and .png fail to load", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({
+          auctionResultsConnection: {
+            edges: [
+              {
+                node: {
+                  id: "an-id",
+                  internalID: "internal-id",
+                  images: {
+                    thumbnail: {
+                      url: "https://d2v80f5yrouhh2.cloudfront.net/test/thumbnail.jpg",
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      const FastImage = require("@d11/react-native-fast-image").default
+      const NoArtIcon = require("@artsy/icons/native").NoArtIcon
+      const fastImage = tree.findAllByType(FastImage)[0]
+
+      // First failure (.jpg -> .png)
+      act(() => {
+        fastImage.props.onError()
+      })
+
+      // Get the newly rendered FastImage
+      const updatedFastImage = tree.findAllByType(FastImage)[0]
+
+      // Second failure (.png -> NoArtIcon)
+      act(() => {
+        updatedFastImage.props.onError()
+      })
+
+      // Should show NoArtIcon
+      const noArtIcon = tree.findAllByType(NoArtIcon)
+      expect(noArtIcon.length).toBe(1)
+    })
   })
 })
