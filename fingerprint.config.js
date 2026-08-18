@@ -1,6 +1,10 @@
 /** @type {import('@expo/fingerprint').Config} */
 const config = {
-  sourceSkips: ["ExpoConfigRuntimeVersionIfString", "ExpoConfigVersions"],
+  sourceSkips: [
+    "ExpoConfigRuntimeVersionIfString",
+    "ExpoConfigVersions",
+    "PackageJsonAndroidAndIosScriptsIfNotContainRun",
+  ],
   ignorePaths: [
     // Android build artifacts (everywhere including inside node_modules)
     "**/android/build/**/*",
