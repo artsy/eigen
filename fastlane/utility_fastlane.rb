@@ -353,6 +353,19 @@ def git_tag_commit_message(tag)
   msg.empty? ? nil : msg
 end
 
+def current_expo_fingerprint
+  output = sh("bash -c \
+              \"pushd ../ > /dev/null && \
+              set -o pipefail && \
+              npx @expo/fingerprint fingerprint:generate | jq -r '.hash' && \
+              popd > /dev/null\"
+              ")
+
+  hash = output.to_s.lines.map(&:strip).find { |line| line.match?(/\A[0-9a-f]{40}\z/) } # sha1 hex
+  UI.user_error!("Could not parse a fingerprint hash from output:\n#{output}") unless hash
+  hash
+end
+
 def resolve_promoted_fingerprint(platform:, build_number:)
   # Looks up the ship-time tag for the exact build being promoted (ios-*-<build_number> /
   # android-*-<build_number>) and reads back the fingerprint from its annotation message.
@@ -362,13 +375,18 @@ def resolve_promoted_fingerprint(platform:, build_number:)
   promoted_fingerprint = nil
   if ship_tags.length == 1
     tag_message = `git for-each-ref refs/tags/#{ship_tags.first} --format='%(contents)'`.strip
-    promoted_fingerprint = tag_message.sub('fingerprint:', '').strip if tag_message.start_with?('fingerprint:')
+    if tag_message.start_with?('fingerprint:')
+      candidate = tag_message.sub('fingerprint:', '').strip
+      # Rejects malformed annotations (e.g. an error message baked in by a past bug) rather than
+      # treating them as a real fingerprint.
+      promoted_fingerprint = candidate if candidate.match?(/\A[0-9a-f]{40}\z/) # sha1 hex
+    end
   end
 
   if promoted_fingerprint.nil? || promoted_fingerprint.empty?
     UI.important("⚠️ Could not find a fingerprint tag for build #{build_number} (found #{ship_tags.length} matching tag(s)).")
     if UI.confirm("Is your current local checkout the exact release-candidate commit for this build? Only confirm if you're certain — this computes the fingerprint from whatever's currently checked out, as a fallback.")
-      promoted_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
+      promoted_fingerprint = current_expo_fingerprint
       UI.important("Computed fallback fingerprint from current checkout: #{promoted_fingerprint}")
     else
       UI.error("Could not determine the fingerprint for build #{build_number}. The Expo Updates gate for this version will be unusable until s3://mobile-cached-builds/eigen-expo-fingerprint/<version>.txt is set manually.")
