@@ -65,6 +65,7 @@ end
 desc 'Ships iOS beta to TestFlight or Firebase'
 lane :ship_beta_ios do |options|
   deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
+  current_fingerprint = current_expo_fingerprint
 
   bundle_version = set_build_version_ios
   set_git_properties_ios
@@ -81,7 +82,6 @@ lane :ship_beta_ios do |options|
 
   # Builds the app
   sync_signing_ios(deployment_target: deployment_target)
-  current_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}", message: "fingerprint:#{current_fingerprint}")
 
   # Add badge if firebase deployment
@@ -350,6 +350,8 @@ lane :ship_beta_android do |options|
   version_code = options[:version_code]
   sh('yarn relay')
 
+  current_fingerprint = current_expo_fingerprint
+
   if version_code.nil? || version_code.empty?
     vname, vcode = set_build_version_android
   else
@@ -365,7 +367,6 @@ lane :ship_beta_android do |options|
   end
 
   set_git_properties_android
-  current_fingerprint = sh("npx @expo/fingerprint fingerprint:generate | jq -r '.hash'").strip
   tag_and_push(tag: "android-#{vname}-#{vcode}", message: "fingerprint:#{current_fingerprint}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
