@@ -49,6 +49,8 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
           width={width - borderWidth * 2}
           height={height - borderWidth * 2}
           blurhash={blurhash ?? undefined}
+          // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+          blurhashDecodeAsync={false}
         />
       </View>
     </View>

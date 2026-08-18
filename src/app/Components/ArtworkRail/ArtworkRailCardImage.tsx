@@ -69,6 +69,8 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           height={displayImageHeight}
           aspectRatio={image.aspectRatio}
           blurhash={image.blurhash}
+          // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+          blurhashDecodeAsync={false}
           resizeMode="cover"
           testID="artwork-rail-card-image"
         />

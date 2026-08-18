@@ -128,6 +128,8 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
                 src={data.image.url}
                 aspectRatio={data.image.aspectRatio}
                 blurhash={data.image.blurhash}
+                // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+                blurhashDecodeAsync={false}
               />
             </RouterLink>
           )}

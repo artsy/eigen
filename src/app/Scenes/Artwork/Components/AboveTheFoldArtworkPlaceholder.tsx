@@ -51,7 +51,12 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
     <Flex flex={1} pt={2}>
       {/* Artwork thumbnail */}
       <Flex mx="auto" py={2} height={CARD_HEIGHT} justifyContent="center">
-        <ImageSkeleton dimensions={{ width, height }} blurhash={blurhash} />
+        <ImageSkeleton
+          dimensions={{ width, height }}
+          blurhash={blurhash}
+          // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+          blurhashDecodeAsync={false}
+        />
       </Flex>
 
       <Spacer y={4} />

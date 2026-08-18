@@ -33,6 +33,8 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
         <View style={[{ width, height }, props.style]} ref={ref}>
           <Image
             blurhash={blurhash}
+            // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+            blurhashDecodeAsync={false}
             src={imageURL}
             performResize={false}
             aspectRatio={width / height}

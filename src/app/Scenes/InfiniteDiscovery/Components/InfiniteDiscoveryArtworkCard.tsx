@@ -224,6 +224,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                     width={size.width}
                     height={size.height}
                     blurhash={item?.blurhash}
+                    // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+                    blurhashDecodeAsync={false}
                   />
                 </Flex>
               )

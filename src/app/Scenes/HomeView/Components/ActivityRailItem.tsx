@@ -61,6 +61,8 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = memo((props) =>
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               blurhash={image.blurhash}
+              // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
+              blurhashDecodeAsync={false}
             />
           )}
         </Flex>
