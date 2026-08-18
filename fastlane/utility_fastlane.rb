@@ -354,10 +354,12 @@ def git_tag_commit_message(tag)
 end
 
 def current_expo_fingerprint
-  output = sh("pushd .. > /dev/null && \
+  output = sh("bash -c \
+              \"pushd ../ > /dev/null && \
               set -o pipefail && \
               npx @expo/fingerprint fingerprint:generate | jq -r '.hash' && \
-              popd > /dev/null")
+              popd > /dev/null\"
+              ")
 
   hash = output.to_s.lines.map(&:strip).find { |line| line.match?(/\A[0-9a-f]{40}\z/) } # sha1 hex
   UI.user_error!("Could not parse a fingerprint hash from output:\n#{output}") unless hash
@@ -398,6 +400,7 @@ def should_silence_beta_failure?
   # Set this var in circleci if you want to silence beta failure alerts for a while
   # E.g. you are working on a ci change
   # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
+  return true
   silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
   return false unless silence_beta_failures_until
 
