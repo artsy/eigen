@@ -35313,7 +35313,7 @@ type SearchCriteriaLabel {
 }
 
 type SearchDropdown {
-  trending(period: TrendingSearchPeriod = ONE_DAY): TrendingSearches!
+  trending(period: TrendingSearchPeriod = ONE_DAY): TrendingSearches
 }
 
 enum SearchEntity {
@@ -37192,7 +37192,6 @@ type TrendingSearches {
     """
     first: Int
   ): [TrendingSearchArtwork!]
-  asOf: String!
   label: String!
   period: TrendingSearchPeriod!
 }
