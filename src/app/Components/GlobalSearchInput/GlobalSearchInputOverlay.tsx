@@ -11,8 +11,10 @@ import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
+import { TrendingSearches } from "app/Scenes/Search/TrendingSearches/TrendingSearches"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
@@ -47,6 +49,26 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
   } = useSearch({ query })
 
   const recentSearches = useRecentSearches()
+  const showTrendingSearches = useFeatureFlag("AREnableTrendingSearchesInSearchModal")
+
+  const renderIdleState = () => {
+    if (showTrendingSearches) {
+      return <TrendingSearches />
+    }
+
+    return (
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          paddingHorizontal: space(2),
+          paddingBottom: space(6),
+        }}
+      >
+        {recentSearches.length ? <RecentSearches /> : <GlobalSearchInputOverlayEmptyState />}
+      </ScrollView>
+    )
+  }
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -71,16 +93,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
           />
         </>
       ) : (
-        <ScrollView
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{
-            paddingHorizontal: space(2),
-            paddingBottom: space(6),
-          }}
-        >
-          {recentSearches.length ? <RecentSearches /> : <GlobalSearchInputOverlayEmptyState />}
-        </ScrollView>
+        renderIdleState()
       )}
     </SearchContext.Provider>
   )

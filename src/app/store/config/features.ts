@@ -171,6 +171,12 @@ export const features = {
     description: "Update conversations in real time over websockets",
     echoFlagKey: "AREnableConversationsRealtime",
   },
+  AREnableTrendingSearchesInSearchModal: {
+    description: "Show trending artists and artworks in the search overlay",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableTrendingSearchesInSearchModal",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
