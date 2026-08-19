@@ -14137,6 +14137,34 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtnetImportFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtnetImportMutationInput {
+  clientMutationId: String
+
+  """
+  The ID of the partner whose Artnet inventory to import.
+  """
+  partnerID: String!
+}
+
+type CreateArtnetImportMutationPayload {
+  """
+  On success: the queued import details. On error: the error that occurred.
+  """
+  artnetImportOrError: CreateArtnetImportResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtnetImportResponseOrError = CreateArtnetImportFailure | CreateArtnetImportSuccess
+
+type CreateArtnetImportSuccess {
+  artnetImportID: String
+  queued: Boolean
+}
+
 type CreateArtworkFailure {
   mutationError: GravityMutationError
 }
@@ -25378,6 +25406,11 @@ type Mutation {
   Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
   """
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
+
+  """
+  Kicks off a background job to pull a gallery's Artnet inventory and create corresponding Artsy artwork records.
+  """
+  createArtnetImport(input: CreateArtnetImportMutationInput!): CreateArtnetImportMutationPayload
 
   """
   Creates a new artwork, optionally with associated images.
