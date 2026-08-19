@@ -1,4 +1,5 @@
 import { Image } from "@artsy/palette-mobile"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import React from "react"
 import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
@@ -33,8 +34,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
         <View style={[{ width, height }, props.style]} ref={ref}>
           <Image
             blurhash={blurhash}
-            // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
-            blurhashDecodeAsync={false}
+            blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
             src={imageURL}
             performResize={false}
             aspectRatio={width / height}

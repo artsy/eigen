@@ -13,6 +13,7 @@ import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBad
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -61,8 +62,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = memo((props) =>
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               blurhash={image.blurhash}
-              // decodeAsync off: EIGEN-AZBJ crash, will re-evaluate if still needed
-              blurhashDecodeAsync={false}
+              blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
             />
           )}
         </Flex>
