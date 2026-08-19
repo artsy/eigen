@@ -4,6 +4,8 @@ import { FilterData } from "app/Scenes/Map/types"
 import { memo } from "react"
 import { StyleProp } from "react-native"
 
+const SELECTED_CLUSTER_COLOR = "#6E1EFF"
+
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
   onPress?: (event: any) => void
@@ -32,7 +34,12 @@ export const PinsShapeLayer: React.FC<Props> = memo(
       // Recolor the tapped cluster's own circle instead of drawing a highlight on top of it.
       circleColor:
         activeClusterId != null
-          ? ["case", ["==", ["get", "cluster_id"], activeClusterId], "#6E1EFF", "black"]
+          ? [
+              "case",
+              ["==", ["get", "cluster_id"], activeClusterId],
+              SELECTED_CLUSTER_COLOR,
+              "black",
+            ]
           : "black",
 
       // prettier-ignore
