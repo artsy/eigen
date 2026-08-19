@@ -38438,6 +38438,11 @@ type UpdateMyPasswordMutationPayload {
 
 input UpdateMyProfileInput {
   """
+  Whether the user consents to receiving marketing emails from Artsy. Sets agreed_to_receive_emails_at in Gravity (idempotent; never cleared).
+  """
+  agreedToReceiveEmails: Boolean
+
+  """
   Number of artworks purchased per year.
   """
   artworksPerYear: String
