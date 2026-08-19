@@ -169,7 +169,7 @@ android {
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
                 expoUpdatesCheckOnLaunch: "ALWAYS",
-                expoUpdatesChannel: "production",
+                expoUpdatesChannel: "staging",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "false"
             ]
