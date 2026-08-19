@@ -11,7 +11,7 @@
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
-		<string>production</string>
+		<string>staging</string>
 	</dict>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>replaced-at-build-time</string>
