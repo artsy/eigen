@@ -20000,16 +20000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:3.3.8":
-  version: 3.3.8
-  resolution: "nanoid@npm:3.3.8"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: 10c0/4b1bb29f6cfebf3be3bc4ad1f1296fb0a10a3043a79f34fbffe75d1621b4318319211cd420549459018ea3592f0d2f159247a6f874911d6d26eaaadda2478120
-  languageName: node
-  linkType: hard
-
-"nanoid@npm:^3.3.1, nanoid@npm:^3.3.11, nanoid@npm:^3.3.16":
+"nanoid@npm:3.3.18":
   version: 3.3.18
   resolution: "nanoid@npm:3.3.18"
   bin:
