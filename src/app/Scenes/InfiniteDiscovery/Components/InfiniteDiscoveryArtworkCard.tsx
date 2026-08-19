@@ -9,6 +9,7 @@ import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/Paginati
 import { useInfiniteDiscoveryCardSave } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryCardSave"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
@@ -224,6 +225,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                     width={size.width}
                     height={size.height}
                     blurhash={item?.blurhash}
+                    blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
                   />
                 </Flex>
               )

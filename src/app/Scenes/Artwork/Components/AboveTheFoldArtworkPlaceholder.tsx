@@ -1,6 +1,7 @@
 import { Flex, ImageSkeleton, Join, Spacer } from "@artsy/palette-mobile"
 import { CARD_HEIGHT } from "app/Scenes/Artwork/Components/ArtworkHeader"
 import { useImagePlaceholder } from "app/Scenes/Artwork/helpers"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import { useMemo } from "react"
@@ -51,7 +52,11 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
     <Flex flex={1} pt={2}>
       {/* Artwork thumbnail */}
       <Flex mx="auto" py={2} height={CARD_HEIGHT} justifyContent="center">
-        <ImageSkeleton dimensions={{ width, height }} blurhash={blurhash} />
+        <ImageSkeleton
+          dimensions={{ width, height }}
+          blurhash={blurhash}
+          blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
+        />
       </Flex>
 
       <Spacer y={4} />

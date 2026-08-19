@@ -1,4 +1,5 @@
 import { Image, useColor } from "@artsy/palette-mobile"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { StyleProp, View, ViewStyle } from "react-native"
 
 interface ArtworkThumbnailProps {
@@ -49,6 +50,7 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
           width={width - borderWidth * 2}
           height={height - borderWidth * 2}
           blurhash={blurhash ?? undefined}
+          blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
         />
       </View>
     </View>

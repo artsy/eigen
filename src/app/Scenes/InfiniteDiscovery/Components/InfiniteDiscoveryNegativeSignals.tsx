@@ -19,6 +19,7 @@ import { useExcludeArtistFromDiscovery } from "app/Scenes/InfiniteDiscovery/hook
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { FC } from "react"
 import { Alert } from "react-native"
 import RNShare from "react-native-share"
@@ -128,6 +129,7 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
                 src={data.image.url}
                 aspectRatio={data.image.aspectRatio}
                 blurhash={data.image.blurhash}
+                blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
               />
             </RouterLink>
           )}

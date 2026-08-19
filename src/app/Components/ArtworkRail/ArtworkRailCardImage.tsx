@@ -1,5 +1,6 @@
 import { Image, Flex } from "@artsy/palette-mobile"
 import { ArtworkRailCardImage_artwork$key } from "__generated__/ArtworkRailCardImage_artwork.graphql"
+import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { graphql, useFragment } from "react-relay"
 
 export interface ArtworkRailCardImageProps {
@@ -69,6 +70,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           height={displayImageHeight}
           aspectRatio={image.aspectRatio}
           blurhash={image.blurhash}
+          blurhashDecodeAsync={BLURHASH_DECODE_ASYNC}
           resizeMode="cover"
           testID="artwork-rail-card-image"
         />
