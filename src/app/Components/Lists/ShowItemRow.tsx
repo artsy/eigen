@@ -8,6 +8,7 @@ import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { Schema } from "app/utils/track"
 import { debounce } from "lodash"
@@ -36,6 +37,7 @@ export const ShowItemRow: React.FC<Props> = ({
   const show = useFragment(showFragment, showProp)
   const [isFollowedSaving, setIsFollowedSaving] = useState(false)
   const { trackEvent } = useTracking()
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
 
   const handleTap = debounce((_slug: string, _internalID: string) => {
     const href = hrefForPartialShow(show)
@@ -158,9 +160,15 @@ export const ShowItemRow: React.FC<Props> = ({
                 size="small"
                 onPress={handleSave}
                 loading={isFollowedSaving}
-                longestText="Saved"
+                longestText={enableFollowShowsAndFairs ? "Followed" : "Saved"}
               >
-                {show.is_followed ? "Followed" : "Follow"}
+                {enableFollowShowsAndFairs
+                  ? show.is_followed
+                    ? "Followed"
+                    : "Follow"
+                  : show.is_followed
+                    ? "Saved"
+                    : "Save"}
               </Button>
             )}
           </Flex>

@@ -35,8 +35,8 @@ interface CardWithMetaDataProps {
   tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
   testId?: string
-  // Rendered as an overlay in the top-right corner of the image, outside the card's
-  // RouterLink so it can be pressed independently (e.g. a follow/save button).
+  // Rendered beside the title block, outside the card's RouterLink so it can be
+  // pressed independently (e.g. a follow/save button).
   actionElement?: React.ReactNode
 }
 
