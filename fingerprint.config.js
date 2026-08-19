@@ -58,6 +58,9 @@ const config = {
     "node_modules/react-native-keys/**/*",
     "**/node_modules/react-native-keys/**/*",
     "node_modules/react-native-permissions/RNPermissions.podspec",
+
+    // Echo flags file
+    "**/ios/Artsy/App/EchoNew.json",
   ],
 }
 module.exports = config
