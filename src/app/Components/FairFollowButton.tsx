@@ -1,4 +1,4 @@
-import { FollowButton } from "@artsy/palette-mobile"
+import { Button } from "@artsy/palette-mobile"
 import { FairFollowButton_fair$key } from "__generated__/FairFollowButton_fair.graphql"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -33,12 +33,15 @@ export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair }) => {
   }
 
   return (
-    <FollowButton
-      isFollowed={!!data.profile.isFollowed}
+    <Button
+      variant={data.profile.isFollowed ? "outline" : "fillDark"}
+      size="small"
       onPress={handlePress}
       loading={isInFlight}
-      followText={data.profile.isFollowed ? "Saved" : "Save"}
-    />
+      longestText="Saved"
+    >
+      {data.profile.isFollowed ? "Saved" : "Save"}
+    </Button>
   )
 }
 

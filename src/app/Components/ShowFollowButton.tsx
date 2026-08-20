@@ -1,4 +1,4 @@
-import { BoxProps, FollowButton } from "@artsy/palette-mobile"
+import { BoxProps, Button } from "@artsy/palette-mobile"
 import { ShowFollowButtonMutation } from "__generated__/ShowFollowButtonMutation.graphql"
 import {
   ShowFollowButton_show$data,
@@ -83,13 +83,16 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
   }
 
   return (
-    <FollowButton
-      isFollowed={!!show.isFollowed}
+    <Button
+      variant={show.isFollowed ? "outline" : "fillDark"}
       onPress={handlePress}
       loading={isFollowedSaving}
-      followText={show.isFollowed ? "Saved" : "Save"}
+      longestText="Saved"
       {...boxProps}
-    />
+      size="small"
+    >
+      {show.isFollowed ? "Saved" : "Save"}
+    </Button>
   )
 }
 

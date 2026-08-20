@@ -4,7 +4,6 @@ import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
-import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -51,8 +50,6 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} mt={2} /> },
-
-    { key: "follow-show", element: <ShowFollowButton show={show} mx={2} mt={1} /> },
 
     ...(Boolean(show.images?.length)
       ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }]
@@ -135,7 +132,6 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       internalID
       slug
       isActive
-      ...ShowFollowButton_show
       ...ShowHeader_show
       ...ShowInstallShots_show
       ...ShowInfo_show
@@ -152,7 +148,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
 })
 
 export const ShowScreenQuery = graphql`
-  query ShowQuery($showID: String!) @cacheable {
+  query ShowQuery($showID: String!) {
     show(id: $showID) @principalField {
       ...Show_show
     }
