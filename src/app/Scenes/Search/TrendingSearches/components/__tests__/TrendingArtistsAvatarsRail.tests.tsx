@@ -5,6 +5,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const artist = (id: string, name: string): TrendingArtist => ({
   internalID: id,
+  slug: id,
   name,
   href: `/artist/${id}`,
   coverArtwork: {

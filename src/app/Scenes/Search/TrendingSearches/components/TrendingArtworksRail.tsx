@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$key } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
@@ -15,7 +16,12 @@ export const TrendingArtworksRail: React.FC<TrendingArtworksRailProps> = ({
   return (
     <Flex>
       <TrendingSectionHeader title={title} />
-      <ArtworkRail artworks={artworks} showSaveIcon />
+      <ArtworkRail
+        artworks={artworks}
+        showSaveIcon
+        contextModule={ContextModule.trendingArtworksRail}
+        contextScreenOwnerType={OwnerType.search}
+      />
     </Flex>
   )
 }

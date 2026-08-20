@@ -1,5 +1,7 @@
+import { ActionType, ContextModule, OwnerType, type RailViewed } from "@artsy/cohesion"
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
+import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { RecentSearchesPillsRail } from "app/Scenes/Search/TrendingSearches/components/RecentSearchesPillsRail"
 import { TrendingArtistsAvatarsRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtistsAvatarsRail"
 import { TrendingArtworksRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtworksRail"
@@ -10,8 +12,9 @@ import {
 } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
+import { useTracking } from "react-tracking"
 
 export const TrendingSearches: React.FC = () => {
   const tabBarHeight = useBottomTabBarHeight()
@@ -34,6 +37,30 @@ export const TrendingSearches: React.FC = () => {
 const TrendingContent: React.FC = () => {
   const [period, setPeriod] = useState<TrendingPeriod>("ONE_DAY")
   const { artists, artworks } = useTrendingSearches(period)
+  const recentSearches = useRecentSearches()
+  const { trackEvent } = useTracking()
+
+  useEffect(() => {
+    const trackRailViewed = (contextModule: ContextModule) => {
+      const event: RailViewed = {
+        action: ActionType.railViewed,
+        context_module: contextModule,
+        context_screen: OwnerType.search,
+      }
+      trackEvent(event)
+    }
+
+    if (recentSearches.length > 0) {
+      trackRailViewed(ContextModule.recentSearchesRail)
+    }
+    if (artists.length > 0) {
+      trackRailViewed(ContextModule.trendingArtistsRail)
+    }
+    if (artworks.length > 0) {
+      trackRailViewed(ContextModule.trendingArtworksRail)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Flex>

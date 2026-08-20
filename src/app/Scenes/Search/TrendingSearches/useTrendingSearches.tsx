@@ -14,6 +14,7 @@ export const trendingSearchesQuery = graphql`
             rank
             artist {
               internalID
+              slug
               name
               href
               coverArtwork {
