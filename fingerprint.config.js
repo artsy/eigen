@@ -58,6 +58,7 @@ const config = {
     "node_modules/react-native-keys/**/*",
     "**/node_modules/react-native-keys/**/*",
     "node_modules/react-native-permissions/RNPermissions.podspec",
+    "node_modules/@sentry/react-native/android/expo-handler/build/",
 
     // Echo flags file
     "**/ios/Artsy/App/EchoNew.json",
