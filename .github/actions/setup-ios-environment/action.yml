@@ -7,9 +7,11 @@ runs:
       run: brew bundle
       shell: bash
 
-    # Exact-match only: a restored Pods/ that was resolved against a different Podfile.lock
-    # causes `pod install` to reconcile against stale state instead of installing clean, which
-    # can produce a Podfile.lock that differs from a fresh/local install (fingerprint drift).
+    # Exact-match only, no restore-keys. A prefix fallback restores a Pods/ resolved against a
+    # different Podfile.lock, so `pod install` reconciles stale state and rewrites the lockfile
+    # — and that rewritten state then gets saved under the *exact* key, poisoning it so every
+    # later exact-key hit reproduces the drift. Requiring an exact match (and installing clean
+    # otherwise) is what stops a poisoned entry from being created in the first place.
     - name: Cache Pods (exact match only)
       id: cache-pods
       uses: actions/cache@v4
