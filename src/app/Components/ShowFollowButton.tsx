@@ -87,6 +87,7 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
       isFollowed={!!show.isFollowed}
       onPress={handlePress}
       loading={isFollowedSaving}
+      followText={show.isFollowed ? "Saved" : "Save"}
       {...boxProps}
     />
   )

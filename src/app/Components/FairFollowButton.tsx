@@ -37,6 +37,7 @@ export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair }) => {
       isFollowed={!!data.profile.isFollowed}
       onPress={handlePress}
       loading={isInFlight}
+      followText={data.profile.isFollowed ? "Saved" : "Save"}
     />
   )
 }
