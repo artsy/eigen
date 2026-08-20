@@ -13,6 +13,10 @@ export const TrendingArtworksRail: React.FC<TrendingArtworksRailProps> = ({
   artworks,
   title = "Trending Artworks",
 }) => {
+  if (!artworks.length) {
+    return null
+  }
+
   return (
     <Flex>
       <TrendingSectionHeader title={title} />

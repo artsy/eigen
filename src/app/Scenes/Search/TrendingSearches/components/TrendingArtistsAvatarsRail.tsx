@@ -2,13 +2,11 @@ import { ActionType, ContextModule, OwnerType, type TappedArtistGroup } from "@a
 import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { TrendingSectionHeader } from "app/Scenes/Search/TrendingSearches/components/TrendingSectionHeader"
+import { AVATAR_ITEM_WIDTH, AVATAR_SIZE } from "app/Scenes/Search/TrendingSearches/constants"
 import { TrendingArtist } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
-
-const AVATAR_SIZE = 68
-const ITEM_WIDTH = 80
 
 interface TrendingArtistsAvatarsRailProps {
   artists: TrendingArtist[]
@@ -54,7 +52,7 @@ export const TrendingArtistsAvatarsRail: React.FC<TrendingArtistsAvatarsRailProp
         renderItem={({ item: artist, index }) => (
           <RouterLink
             to={artist.href}
-            style={{ width: ITEM_WIDTH }}
+            style={{ width: AVATAR_ITEM_WIDTH }}
             onPress={() => handleArtistPress(artist, index)}
           >
             <Flex alignItems="center">

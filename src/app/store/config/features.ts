@@ -173,7 +173,7 @@ export const features = {
   },
   AREnableTrendingSearchesInSearchModal: {
     description: "Show trending artists and artworks in the search overlay",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableTrendingSearchesInSearchModal",
   },

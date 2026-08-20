@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, type RailViewed } from "@artsy/cohesion"
 import { CloseIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
@@ -8,7 +9,7 @@ import { TrendingSectionHeader } from "app/Scenes/Search/TrendingSearches/compon
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -18,8 +19,21 @@ const PILL_MAX_WIDTH = 220
 export const RecentSearchesPillsRail: React.FC = () => {
   const space = useSpace()
   const recentSearches = useRecentSearches()
+  const { trackEvent } = useTracking()
+  const hasRecentSearches = recentSearches.length > 0
 
-  if (!recentSearches.length) {
+  useEffect(() => {
+    if (!hasRecentSearches) return
+    const event: RailViewed = {
+      action: ActionType.railViewed,
+      context_module: ContextModule.recentSearchesRail,
+      context_screen: OwnerType.search,
+    }
+    trackEvent(event)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  if (!hasRecentSearches) {
     return null
   }
 

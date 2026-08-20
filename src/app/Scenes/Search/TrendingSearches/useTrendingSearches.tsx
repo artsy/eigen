@@ -9,9 +9,7 @@ export const trendingSearchesQuery = graphql`
     viewer {
       searchDropdown {
         trending(period: $period) {
-          label
           artists(first: 7) {
-            rank
             artist {
               internalID
               slug
@@ -26,7 +24,6 @@ export const trendingSearchesQuery = graphql`
             }
           }
           artworks(first: 10) {
-            rank
             artwork {
               internalID
               slug
