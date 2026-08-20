@@ -11,7 +11,7 @@ import {
   Tabs,
   Text,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
+import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
 import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
@@ -62,7 +62,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   }
 
   return (
-    <BottomSheetScrollView>
+    <Tabs.ScrollView contentContainerStyle={{ marginHorizontal: 0 }}>
       <AnalyticsContextProvider
         contextModule={ContextModule.infiniteDiscoveryDrawer}
         contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
@@ -70,7 +70,6 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         contextScreenOwnerSlug={data.slug}
       >
         <Flex flex={1} px={2} gap={2}>
-          <Spacer y={4} />
           <Flex gap={1} pt={1}>
             <InfiniteDiscoveryCollectorSignal artwork={data} />
 
@@ -180,7 +179,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         <Spacer y={12} />
         <Spacer y={6} />
       </AnalyticsContextProvider>
-    </BottomSheetScrollView>
+    </Tabs.ScrollView>
   )
 }
 
@@ -260,10 +259,9 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
 
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
   return (
-    <BottomSheetScrollView scrollEnabled={false}>
+    <Tabs.ScrollView scrollEnabled={false} contentContainerStyle={{ marginHorizontal: 0 }}>
       <Skeleton>
         <Flex gap={2} px={2} flex={1}>
-          <Spacer y={4} />
           <Flex gap={1} pt={1}>
             <Flex flexDirection="row" gap={0.5} alignItems="center">
               <SkeletonBox size={18} />
@@ -319,6 +317,6 @@ export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
           </Flex>
         </Flex>
       </Skeleton>
-    </BottomSheetScrollView>
+    </Tabs.ScrollView>
   )
 }

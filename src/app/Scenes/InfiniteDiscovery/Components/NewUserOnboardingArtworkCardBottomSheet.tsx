@@ -63,10 +63,15 @@ export const NewUserOnboardingArtworkCardBottomSheet: FC<
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      enableDynamicSizing={true}
+      // Fixed detents rather than dynamic sizing, matching ArtworkCardBottomSheet. This sheet is
+      // not remounted between artworks, so with `enableDynamicSizing` the content-sized detent was
+      // recomputed on every swipe while the sheet stayed put. Once the sheet's position no longer
+      // matched the recomputed one, gorhom stopped considering it EXTENDED and locked its
+      // scrollable, which fires a corrective scrollTo on every scroll event and can recurse until
+      // the native stack overflows (EIGEN-AZKQ).
+      enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[bottom + 60]}
-      maxDynamicContentSize={height * 0.88}
+      snapPoints={[bottom + 60, height * 0.88]}
       index={0}
       backdropComponent={renderBackdrop}
       backgroundStyle={{ backgroundColor: color("mono0") }}
