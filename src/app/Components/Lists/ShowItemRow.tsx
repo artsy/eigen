@@ -8,6 +8,7 @@ import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
 import { hrefForPartialShow } from "app/utils/router"
 import { Schema } from "app/utils/track"
 import { debounce } from "lodash"
@@ -82,13 +83,7 @@ export const ShowItemRow: React.FC<Props> = ({
           },
         },
         updater: (store) => {
-          const show = store?.get(nodeID)
-          if (show) {
-            show.setValue(!isShowFollowed, "is_followed")
-            // Keep ShowFollowButton's unaliased `isFollowed` key in sync so any
-            // already-mounted surface using it doesn't show stale state until a refetch.
-            show.setValue(!isShowFollowed, "isFollowed")
-          }
+          setShowFollowed(store, nodeID, !isShowFollowed)
         },
       })
     }

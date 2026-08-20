@@ -6,6 +6,7 @@ import {
 } from "__generated__/ShowFollowButton_show.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
 import { Schema } from "app/utils/track"
 import { FC, useState } from "react"
 import { commitMutation, graphql, useFragment } from "react-relay"
@@ -73,13 +74,7 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
           },
         },
         updater: (store) => {
-          const showRecord = store?.get(nodeID)
-          if (showRecord) {
-            showRecord.setValue(!isShowFollowed, "isFollowed")
-            // Keep ShowItemRow's aliased `is_followed` key in sync so Favorites/Map/City
-            // surfaces don't show stale follow state until a network refetch.
-            showRecord.setValue(!isShowFollowed, "is_followed")
-          }
+          setShowFollowed(store, nodeID, !isShowFollowed)
         },
       })
     }
