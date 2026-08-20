@@ -2699,6 +2699,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   ): [ArtistInsight!]!
 
   """
+  Artist's Instagram handle, without a leading @
+  """
+  instagramHandle: String
+
+  """
   Instagram media for display on an artist page.
   """
   instagramMedia(
@@ -37383,6 +37388,11 @@ input UpdateArtistMutationInput {
   groupIndicator: ArtistGroupIndicator
   hometown: String
   id: String!
+
+  """
+  Artist's Instagram handle. A leading @ or a profile URL is accepted.
+  """
+  instagramHandle: String
   last: String
   location: String
   middle: String
