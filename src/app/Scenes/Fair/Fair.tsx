@@ -177,7 +177,7 @@ const fragment = graphql`
 `
 
 export const FairScreenQuery = graphql`
-  query FairQuery($fairID: String!) @cacheable {
+  query FairQuery($fairID: String!) {
     fair(id: $fairID) @required(action: THROW) {
       ...Fair_fair
     }
