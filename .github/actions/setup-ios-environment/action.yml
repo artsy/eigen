@@ -44,33 +44,25 @@ runs:
       run: yarn pod-install
       shell: bash
 
-    # TEMP (fingerprint drift debugging): `pod install` should leave the committed
-    # Podfile.lock untouched. CI's fingerprint disagrees with the committed file's sha1,
-    # so capture whether pod install rewrote it and exactly how. The cache-hit value tells
-    # us whether drift correlates with a cache miss (stale-Pods reconciliation) or happens
-    # on hits too (environmental). Remove once the drift is understood.
-    - name: Report Podfile.lock drift
+    # `pod install` must leave the committed Podfile.lock untouched. If it rewrites it, the
+    # Expo fingerprint (which hashes the file) diverges from the committed one, so cached
+    # native builds get invalidated — and the drifted Pods/ is then saved under the exact
+    # cache key, poisoning it so every later exact-key hit reproduces the drift. That went
+    # unnoticed for three weeks; fail loudly here instead, before the cache is written.
+    - name: Verify pod install did not modify Podfile.lock
       shell: bash
       run: |
         echo "Pods cache-hit: '${{ steps.cache-pods.outputs.cache-hit }}'"
+        if git diff --quiet -- ios/Podfile.lock; then
+          echo "✅ ios/Podfile.lock unchanged ($(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1))"
+          exit 0
+        fi
+        echo "::error::pod install modified ios/Podfile.lock. Run 'yarn pod-install' locally and commit the result."
         echo "committed sha1: $(git show HEAD:ios/Podfile.lock | shasum -a 1 | cut -d' ' -f1)"
         echo "on-disk   sha1: $(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1)"
-        if git diff --quiet -- ios/Podfile.lock; then
-          echo "✅ pod install did not modify ios/Podfile.lock"
-        else
-          echo "⚠️ pod install modified ios/Podfile.lock — diff (committed -> after install):"
-          git --no-pager diff -- ios/Podfile.lock
-        fi
-
-    - name: Upload Podfile.lock for comparison
-      shell: bash
-      run: |
-        DEST="s3://mobile-cached-builds/eigen-podfile-lock-debug/${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}"
-        git --no-pager diff -- ios/Podfile.lock > podfile-lock.diff || true
-        aws s3 cp ios/Podfile.lock "$DEST/Podfile.lock" || echo "skipped (no aws creds?)"
-        aws s3 cp podfile-lock.diff "$DEST/Podfile.lock.diff" || echo "skipped (no aws creds?)"
-        rm -f podfile-lock.diff
-        echo "Destination: $DEST"
+        echo "diff (committed -> after install):"
+        git --no-pager diff -- ios/Podfile.lock
+        exit 1
 
     - name: Select Xcode version
       run: |
