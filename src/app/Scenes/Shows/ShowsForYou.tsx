@@ -138,7 +138,7 @@ export const ShowsForYouScreenQuery = graphql`
     $after: String
     $near: Near
     $includeShowsNearIpBasedLocation: Boolean
-  ) @cacheable {
+  ) {
     me {
       ...ShowsForYou_showsConnection
         @arguments(
