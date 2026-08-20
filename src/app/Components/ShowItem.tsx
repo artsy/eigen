@@ -2,6 +2,7 @@ import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
 import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
 import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,6 +19,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({
   shouldHideFollowButton = false,
   show,
 }) => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const data = useFragment(showGraphql, show)
 
   if (!data) {
@@ -55,7 +57,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({
           </RouterLink>
         </Flex>
 
-        {!shouldHideFollowButton && (
+        {!shouldHideFollowButton && !!enableFollowShowsAndFairs && (
           <Flex ml={0.5}>
             <ShowFollowButton show={data} />
           </Flex>
