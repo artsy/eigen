@@ -7,16 +7,30 @@ runs:
       run: brew bundle
       shell: bash
 
-    - name: Cache cocoapods
+    # Exact-match only: a restored Pods/ that was resolved against a different Podfile.lock
+    # causes `pod install` to reconcile against stale state instead of installing clean, which
+    # can produce a Podfile.lock that differs from a fresh/local install (fingerprint drift).
+    - name: Cache Pods (exact match only)
       id: cache-pods
       uses: actions/cache@v4
       with:
-        path: |
-          ios/Pods
-          ~/Library/Caches/CocoaPods
+        path: ios/Pods
         key: pods-v3-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+
+    - name: Clean Pods on cache miss
+      if: steps.cache-pods.outputs.cache-hit != 'true'
+      run: rm -rf ios/Pods
+      shell: bash
+
+    # Just downloaded spec files, not resolved install state, so a stale prefix match here is safe
+    # and speeds up cold `pod install` runs without affecting the resulting Podfile.lock.
+    - name: Cache CocoaPods spec repo
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Caches/CocoaPods
+        key: cocoapods-specs-v1-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
         restore-keys: |
-          pods-v3-${{ runner.os }}-
+          cocoapods-specs-v1-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts
