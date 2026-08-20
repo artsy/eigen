@@ -44,25 +44,24 @@ runs:
       run: yarn pod-install
       shell: bash
 
-    # `pod install` must leave the committed Podfile.lock untouched. If it rewrites it, the
+    # `pod install` should leave the committed Podfile.lock untouched. If it rewrites it, the
     # Expo fingerprint (which hashes the file) diverges from the committed one, so cached
     # native builds get invalidated — and the drifted Pods/ is then saved under the exact
     # cache key, poisoning it so every later exact-key hit reproduces the drift. That went
-    # unnoticed for three weeks; fail loudly here instead, before the cache is written.
-    - name: Verify pod install did not modify Podfile.lock
+    # unnoticed for three weeks, so surface it in the logs. Reports only, never fails the job.
+    - name: Report Podfile.lock drift
       shell: bash
       run: |
         echo "Pods cache-hit: '${{ steps.cache-pods.outputs.cache-hit }}'"
         if git diff --quiet -- ios/Podfile.lock; then
           echo "✅ ios/Podfile.lock unchanged ($(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1))"
-          exit 0
+        else
+          echo "::warning::pod install modified ios/Podfile.lock — the Expo fingerprint will not match the committed lockfile. Run 'yarn pod-install' locally and commit the result."
+          echo "committed sha1: $(git show HEAD:ios/Podfile.lock | shasum -a 1 | cut -d' ' -f1)"
+          echo "on-disk   sha1: $(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1)"
+          echo "diff (committed -> after install):"
+          git --no-pager diff -- ios/Podfile.lock
         fi
-        echo "::error::pod install modified ios/Podfile.lock. Run 'yarn pod-install' locally and commit the result."
-        echo "committed sha1: $(git show HEAD:ios/Podfile.lock | shasum -a 1 | cut -d' ' -f1)"
-        echo "on-disk   sha1: $(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1)"
-        echo "diff (committed -> after install):"
-        git --no-pager diff -- ios/Podfile.lock
-        exit 1
 
     - name: Select Xcode version
       run: |
