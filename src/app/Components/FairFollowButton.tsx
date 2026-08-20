@@ -21,6 +21,9 @@ export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair }) => {
     id: data?.profile?.id ?? "",
     internalID: data?.profile?.internalID ?? "",
     isFollowed: !!data?.profile?.isFollowed,
+    onError: () => {
+      console.error("FairFollowButton: followProfile mutation failed")
+    },
   })
 
   if (!enableFollowShowsAndFairs || !data?.profile) {

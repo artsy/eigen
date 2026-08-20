@@ -113,6 +113,6 @@ const tracks = {
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: show.internalID,
       owner_slug: show.slug,
-    } as any
+    }
   },
 }
