@@ -74,7 +74,7 @@ export const ShowItemRow: React.FC<Props> = ({
         optimisticResponse: {
           followShow: {
             show: {
-              id: showID,
+              id: nodeID,
               slug: showSlug,
               internalID: showID,
               is_followed: !isShowFollowed,
