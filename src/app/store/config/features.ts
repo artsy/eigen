@@ -179,7 +179,7 @@ export const features = {
   },
   AREnableFollowShowsAndFairs: {
     description: "Enable following Shows & Fairs (screen buttons + Favorites Fairs tab)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableFollowShowsAndFairs",
   },
