@@ -75,7 +75,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const hideButtons = new Animated.Value(0)
-  let currentZoom = useRef(DefaultZoomLevel).current
+  const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
 
@@ -353,13 +353,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
     const zoom = Math.ceil((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
 
-    if (currentZoom !== zoom) {
+    if (currentZoomRef.current !== zoom) {
       setActivePin(null)
     }
 
-    if (!currentZoom) {
-      currentZoom = zoom
-    }
+    currentZoomRef.current = zoom
   }
 
   const onPressMap = () => {
