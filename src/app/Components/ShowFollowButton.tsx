@@ -76,6 +76,9 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ..
           const showRecord = store?.get(nodeID)
           if (showRecord) {
             showRecord.setValue(!isShowFollowed, "isFollowed")
+            // Keep ShowItemRow's aliased `is_followed` key in sync so Favorites/Map/City
+            // surfaces don't show stale follow state until a network refetch.
+            showRecord.setValue(!isShowFollowed, "is_followed")
           }
         },
       })
