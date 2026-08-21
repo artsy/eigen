@@ -24,7 +24,8 @@ export const ICON_HIT_SLOP = {
 export const BOX_SHADOW = {
   shadowColor: THEMES.v3light.colors.mono100,
   shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
+  shadowOpacity: 0.2,
+  shadowRadius: 1.41,
   elevation: 2,
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
