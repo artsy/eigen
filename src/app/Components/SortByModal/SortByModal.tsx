@@ -23,6 +23,7 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
 
   return (
     <AutomountedBottomSheetModal
+      sentryName="SortByModal"
       visible={visible}
       snapPoints={SNAP_POINTS}
       enableDynamicSizing

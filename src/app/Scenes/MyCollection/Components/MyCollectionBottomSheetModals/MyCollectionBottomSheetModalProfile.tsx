@@ -17,6 +17,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
 
   return (
     <AutomountedBottomSheetModal
+      sentryName="MyCollectionBottomSheetModalProfile"
       visible={isVisible}
       snapPoints={SNAP_POINTS}
       enableDynamicSizing
