@@ -7,14 +7,8 @@ import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  convertCityToGeoJSON,
-  fairToGeoCityFairs,
-  showsToGeoCityShow,
-} from "app/utils/convertCityToGeoJSON"
-import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { isEqual, uniq } from "lodash"
+import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Platform } from "react-native"
@@ -23,7 +17,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
-import Supercluster from "supercluster"
 import { GlobalMapHeader } from "./Components/GlobalMapHeader"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
@@ -34,7 +27,12 @@ import {
   BucketResults,
   emptyBucketResults,
 } from "./bucketCityResults"
+import { buildFeatureCollections } from "./helpers/buildFeatureCollections"
+import { extractShowAndFairMaps } from "./helpers/extractShowAndFairMaps"
+import { getFeatureCollectionForTab } from "./helpers/getFeatureCollectionForTab"
+import { getNearestPointToLatLongInCollection } from "./helpers/getNearestPointToLatLongInCollection"
 import { isValidLatLng } from "./helpers/isValidLatLng"
+import { DefaultZoomLevel, MaxZoomLevel, MinZoomLevel } from "./mapZoomLevels"
 import { Fair, FilterData, Show } from "./types"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
@@ -50,10 +48,6 @@ interface Props {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
-
-const DefaultZoomLevel = 11
-const MinZoomLevel = 9
-const MaxZoomLevel = 17.5
 
 const SHOW_CARD_HEIGHT = 150
 
@@ -178,32 +172,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const updateClusterMap = (newBucketResults: BucketResults) => {
-    const newFeatureCollections = {}
-    cityTabs.forEach((tab) => {
-      const newShows = tab.getShows(newBucketResults)
-      const newFairs = tab.getFairs(newBucketResults)
-      const showData = showsToGeoCityShow(newShows)
-      const fairData = fairToGeoCityFairs(newFairs)
-      const data = showData.concat(fairData as any as Show[])
-      const geoJSONFeature = convertCityToGeoJSON(data)
-
-      const clusterEngine = new Supercluster({
-        radius: 50,
-        minZoom: Math.floor(MinZoomLevel),
-        maxZoom: Math.floor(MaxZoomLevel),
-      })
-
-      clusterEngine.load(geoJSONFeature.features as any)
-
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      newFeatureCollections[tab.id] = {
-        featureCollection: geoJSONFeature,
-        filter: tab.id,
-        clusterEngine,
-      }
-    })
-
-    setFeatureCollections(newFeatureCollections)
+    setFeatureCollections(buildFeatureCollections(newBucketResults))
   }
 
   const emitFilteredBucketResults = (newBucketResults: BucketResults) => {
@@ -229,31 +198,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
       return
     }
 
-    const { city } = viewer
-    if (city) {
-      const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
-      const shows = extractNodes(city.shows)
-      const concatedShows = uniq(shows.concat(savedUpcomingShows as any))
-
-      concatedShows.forEach((node) => {
-        if (!node || !node.location || !node.location.coordinates) {
-          return null
-        }
-
-        showsRef.current[node.slug] = node
-      })
-
-      extractNodes(city.fairs).forEach((node) => {
-        if (!node || !node.location || !node.location.coordinates) {
-          return null
-        }
-
-        fairsRef.current[node.slug] = {
-          ...node,
-          type: "Fair",
-        }
-      })
-    }
+    const { shows, fairs } = extractShowAndFairMaps(viewer.city)
+    showsRef.current = { ...showsRef.current, ...shows }
+    fairsRef.current = { ...fairsRef.current, ...fairs }
   }
 
   const renderShowCard = () => {
@@ -332,12 +279,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
-  const currentFeatureCollection = (): FilterData => {
-    const filterID = cityTabs[activeIndex].id
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return featureCollections[filterID]
-  }
-
   const { city } = viewer
   const centerLat = city?.coordinates?.lat || 0
   const centerLng = city?.coordinates?.lng || 0
@@ -400,7 +341,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const clusterEngine = currentFeatureCollection().clusterEngine
+      const clusterEngine = getFeatureCollectionForTab(
+        activeIndex,
+        featureCollections
+      ).clusterEngine
       const visibleFeatures = clusterEngine.getClusters(
         [westLng, southLat, eastLng, northLat],
         zoom
@@ -408,40 +352,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
       const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
 
       const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
-      activeShows = points.map((a) => a.properties) as any
+      activeShows = points.map((a: any) => a.properties) as any
     }
 
     setActiveShows(activeShows)
     setActivePin(event.features[0])
-  }
-
-  const getNearestPointToLatLongInCollection = (
-    values: { lat: number; lng: number },
-    features: any[]
-  ) => {
-    // https://stackoverflow.com/a/21623206
-    function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
-      const p = 0.017453292519943295 // Math.PI / 180
-      const c = Math.cos
-      const a =
-        0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
-
-      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
-    }
-
-    const distances = features
-      .map((feature) => {
-        const [featureLat, featureLng] = feature.geometry.coordinates
-        return {
-          ...feature,
-          distance: distance(values.lat, values.lng, featureLat, featureLng),
-        }
-      })
-      .sort((a, b) => a.distance - b.distance)
-
-    return distances[0]
   }
 
   const updateDrawerPosition = (position: DrawerPosition) => {
