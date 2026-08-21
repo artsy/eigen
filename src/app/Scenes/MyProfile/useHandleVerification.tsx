@@ -5,7 +5,7 @@ import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"
 
 const VERIFICATION_BANNER_TIMEOUT = 6000
-const ID_VERIFICATION_BLOCKING_STATES = ["passed", "failed", "watchlist_hit"]
+const ID_VERIFICATION_BLOCKING_STATES = ["passed", "failed", "watchlist_hit", "expired"]
 
 export const useHandleEmailVerification = () => {
   const [showVerificationBanner, setShowVerificationBanner] = useState(false)
