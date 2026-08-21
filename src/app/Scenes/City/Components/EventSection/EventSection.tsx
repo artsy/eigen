@@ -3,10 +3,11 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { Event } from "app/Scenes/City/Components/Event/Event"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { Show } from "app/utils/cityGuide/types"
 
 export interface Props {
   title: string
-  data: any
+  data: Show[]
   section: string
   citySlug: string
 }
@@ -17,11 +18,9 @@ export const EventSection: React.FC<Props> = ({ title, data, section, citySlug }
   }
 
   const eligibleForBrick = data.filter(
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    (s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url
+    (show) => !show.isStubShow && !!show.cover_image && !!show.cover_image.url
   )
   const finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const eventBricks = finalShowsForPreviewBricks.map((event) => (
     <Box key={event.id}>
       <Event event={event} />
