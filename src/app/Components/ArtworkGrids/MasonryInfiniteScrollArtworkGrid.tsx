@@ -28,6 +28,8 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   /** Do not show add to artworks list prompt */
   disableArtworksListPrompt?: boolean
   disableProgressiveOnboarding?: boolean
+  /** See `ArtworkGridItem`'s `disableNavigation` doc comment. */
+  disableNavigation?: boolean
   hasMore?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
   hideCuratorsPick?: boolean
@@ -67,6 +69,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerType,
   disableArtworksListPrompt,
   disableProgressiveOnboarding,
+  disableNavigation,
   hasMore,
   hideCreateAlertOnArtworkPreview,
   hideCuratorsPick,
@@ -134,6 +137,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideSaveIcon={hideSaveIcon}
         disableArtworksListPrompt={disableArtworksListPrompt}
         disableProgressiveOnboarding={disableProgressiveOnboarding}
+        disableNavigation={disableNavigation}
         hideIncreasedInterestSignal={hideIncreasedInterest}
         hideCuratorsPickSignal={hideCuratorsPick}
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
@@ -163,6 +167,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       hideSaveIcon,
       disableArtworksListPrompt,
       disableProgressiveOnboarding,
+      disableNavigation,
       hideIncreasedInterest,
       hideCuratorsPick,
       hideCreateAlertOnArtworkPreview,

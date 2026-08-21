@@ -13711,6 +13711,7 @@ __metadata:
     expo: "npm:55.0.24"
     expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:55.0.14"
+    expo-image-manipulator: "npm:~55.0.20"
     expo-navigation-bar: "npm:55.0.13"
     expo-updates: "patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch"
     formik: "npm:2.2.9"
@@ -13765,6 +13766,8 @@ __metadata:
     react-native-launch-arguments: "git+https://github.com/artsy/react-native-launch-arguments.git#v4.1.0-new-architecture-2"
     react-native-linear-gradient: "npm:2.8.3"
     react-native-localize: "npm:3.5.2"
+    react-native-nitro-image: "npm:0.15.1"
+    react-native-nitro-modules: "npm:0.36.5"
     react-native-pager-view: "npm:8.0.2"
     react-native-performance: "npm:5.1.4"
     react-native-permissions: "npm:5.4.4"
@@ -13779,6 +13782,7 @@ __metadata:
     react-native-url-polyfill: "npm:2.0.0"
     react-native-view-shot: "npm:5.1.1"
     react-native-vimeo-iframe: "npm:1.2.1"
+    react-native-vision-camera: "npm:5.2.2"
     react-native-webview: "npm:13.16.0"
     react-native-worklets: "npm:0.8.3"
     react-native-youtube-iframe: "npm:2.4.1"
@@ -15081,6 +15085,26 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/2691c5c09d6302b2bb58bf4ec4cec398d7b4dc99711eae329e4ef0c3d6e11d93e90e60ef920665f42ee35c0861c7ad7dcd7166d73b03bb26aeeafd94f400f5d3
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~55.0.1":
+  version: 55.0.1
+  resolution: "expo-image-loader@npm:55.0.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/a596d36bc95f1fedf63805122e21a36aee859d79f1f6726aa256b24908ba0ace8c413556fbe2a824e845f29375072d8d6144c6a6cfbc30b314a42fa88c68f686
+  languageName: node
+  linkType: hard
+
+"expo-image-manipulator@npm:~55.0.20":
+  version: 55.0.20
+  resolution: "expo-image-manipulator@npm:55.0.20"
+  dependencies:
+    expo-image-loader: "npm:~55.0.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 10c0/e580bac7ae940c25f166163ac279764b76b19319ddcc2401149b4f9ad1e7dbf88d58c8031a6592c47acdf274c31f105378c2ef1275430006709a3df6bbddf119
   languageName: node
   linkType: hard
 
@@ -21831,6 +21855,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-nitro-image@npm:0.15.1":
+  version: 0.15.1
+  resolution: "react-native-nitro-image@npm:0.15.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-nitro-modules: "*"
+  checksum: 10c0/c8599543167ce1f53c838c2ec4a38923b617945d6dbea9717383a21688fa30d409f91a03a4d2645efa2fcd3523a4f06bdc97484507e99ebf10ac7236da55d735
+  languageName: node
+  linkType: hard
+
+"react-native-nitro-modules@npm:0.36.5":
+  version: 0.36.5
+  resolution: "react-native-nitro-modules@npm:0.36.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/c7b2133f924967b68c0f0f678b5a5dce1a784a7e22f57ebf203ef5803a5c9c745b6d4dda8c9bcedd13f7c5ca53a8707784e98572a2ca8a864fe0b905163a34b5
+  languageName: node
+  linkType: hard
+
 "react-native-pager-view@npm:8.0.2":
   version: 8.0.2
   resolution: "react-native-pager-view@npm:8.0.2"
@@ -22028,6 +22073,18 @@ __metadata:
     react-native: "*"
     react-native-webview: "*"
   checksum: 10c0/1ef91508bd6d94d7d85b401bf11a0a858fa2dd486600950abc29e1c07f358924926fe31665f424128687f37efafd7167ac5a8e682728eb6322b007ff29c63dbf
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:5.2.2":
+  version: 5.2.2
+  resolution: "react-native-vision-camera@npm:5.2.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-nitro-image: "*"
+    react-native-nitro-modules: "*"
+  checksum: 10c0/acbdac2b54ac4f917dc7ada94455be3ff92a99c5799e6fd0043539e89cdabaed41d0f76913a26987d43fbb36b4d25f702de8d33dc6beadf025fdcf58c8e434c4
   languageName: node
   linkType: hard
 
