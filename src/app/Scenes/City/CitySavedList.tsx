@@ -1,124 +1,113 @@
+import { Flex, Spinner } from "@artsy/palette-mobile"
+import { CitySavedListPaginationQuery } from "__generated__/CitySavedListPaginationQuery.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
-import { CitySavedList_city$data } from "__generated__/CitySavedList_city.graphql"
-import { CitySavedList_me$data } from "__generated__/CitySavedList_me.graphql"
+import { CitySavedList_me$key } from "__generated__/CitySavedList_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { Show } from "app/utils/cityGuide/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Schema, screenTrack } from "app/utils/track"
-import React from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { Schema } from "app/utils/track"
+import { useCallback, useEffect, useState } from "react"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { EventList } from "./Components/EventList"
 
 interface Props {
-  me: CitySavedList_me$data
-  city: CitySavedList_city$data
-  relay: RelayPaginationProp
+  me: CitySavedList_me$key
+  cityName: string
   citySlug: string
 }
 
-interface State {
-  fetchingNextPage: boolean
-}
+const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug }) => {
+  const [fetchingNextPage, setFetchingNextPage] = useState(false)
+  const { trackEvent } = useTracking()
 
-@screenTrack((props: Props) => ({
-  context_screen: Schema.PageNames.CityGuideSavedList,
-  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.citySlug,
-  context_screen_owner_id: props.citySlug,
-}))
-class CitySavedList extends React.Component<Props, State> {
-  state = {
-    fetchingNextPage: false,
-  }
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
+    CitySavedListPaginationQuery,
+    CitySavedList_me$key
+  >(citySavedListFragment, me)
 
-  fetchData = () => {
-    const { relay } = this.props
+  useEffect(() => {
+    trackEvent(tracks.trackScreen(citySlug))
+  }, [trackEvent, citySlug])
 
-    if (!relay.hasMore() || relay.isLoading()) {
+  const fetchData = useCallback(() => {
+    if (!hasNext || isLoadingNext) {
       return
     }
-    this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, (error) => {
-      if (error) {
-        console.error("CitySectionList.tsx #fetchData", error.message)
-        // FIXME: Handle error
-      }
-      this.setState({ fetchingNextPage: false })
-    })
-  }
 
-  // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
-  render() {
-    const { fetchingNextPage } = this.state
-    return (
-      <EventList
-        header="Saved shows"
-        cityName={this.props.city.name}
-        bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
-        type="saved"
-        onScroll={isCloseToBottom(this.fetchData) as any}
-        fetchingNextPage={fetchingNextPage}
-      />
-    )
-  }
+    setFetchingNextPage(true)
+    loadNext(PAGE_SIZE, {
+      onComplete: (error) => {
+        if (error) {
+          console.error("CitySavedList.tsx #fetchData", error.message)
+        }
+        setFetchingNextPage(false)
+      },
+    })
+  }, [hasNext, isLoadingNext, loadNext])
+
+  const shows = extractNodes(data.followsAndSaves?.shows) as unknown as Show[]
+
+  return (
+    <EventList
+      header="Saved shows"
+      cityName={cityName}
+      bucket={shows}
+      type="saved"
+      onScroll={isCloseToBottom(fetchData)}
+      fetchingNextPage={fetchingNextPage}
+    />
+  )
 }
 
-export const CitySavedListContainer = createPaginationContainer(
-  CitySavedList,
-  {
-    city: graphql`
-      fragment CitySavedList_city on City {
-        name
-      }
-    `,
-    me: graphql`
-      fragment CitySavedList_me on Me
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
-        cursor: { type: "String", defaultValue: "" }
-      ) {
-        followsAndSaves {
-          shows: showsConnection(
-            first: $count
-            status: RUNNING_AND_UPCOMING
-            city: $citySlug
-            after: $cursor
-          ) @connection(key: "CitySavedList_shows") {
-            edges {
-              node {
-                slug
-                internalID
-                id
+const citySavedListFragment = graphql`
+  fragment CitySavedList_me on Me
+  @refetchable(queryName: "CitySavedListPaginationQuery")
+  @argumentDefinitions(
+    citySlug: { type: "String!" }
+    count: { type: "Int", defaultValue: 20 }
+    cursor: { type: "String", defaultValue: "" }
+  ) {
+    followsAndSaves {
+      shows: showsConnection(
+        first: $count
+        status: RUNNING_AND_UPCOMING
+        city: $citySlug
+        after: $cursor
+      ) @connection(key: "CitySavedList_shows") {
+        edges {
+          node {
+            slug
+            internalID
+            id
+            name
+            isStubShow
+            status
+            href
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod(format: SHORT)
+            cover_image: coverImage {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            type
+            start_at: startAt
+            end_at: endAt
+            partner {
+              ... on Partner {
                 name
-                isStubShow
-                status
-                href
-                is_followed: isFollowed
-                isStubShow
-                exhibition_period: exhibitionPeriod(format: SHORT)
-                cover_image: coverImage {
-                  url
-                }
-                location {
-                  coordinates {
-                    lat
-                    lng
-                  }
-                }
                 type
-                start_at: startAt
-                end_at: endAt
-                partner {
-                  ... on Partner {
-                    name
-                    type
-                    profile {
-                      image {
-                        url(version: "square")
-                      }
-                    }
+                profile {
+                  image {
+                    url(version: "square")
                   }
                 }
               }
@@ -126,54 +115,57 @@ export const CitySavedListContainer = createPaginationContainer(
           }
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props.me && props.me.followsAndSaves && props.me.followsAndSaves.shows
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        citySlug: props.citySlug,
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
-    },
-    query: graphql`
-      query CitySavedListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        me {
-          ...CitySavedList_me @arguments(count: $count, cursor: $cursor)
-        }
-        city(slug: $citySlug) {
-          ...CitySavedList_city
-        }
-      }
-    `,
-  }
-)
-
-interface CitySavedListProps {
-  citySlug: string
-}
-export const CitySavedListScreenQuery = graphql`
-  query CitySavedListQuery($citySlug: String!) {
-    me {
-      ...CitySavedList_me
-    }
-    city(slug: $citySlug) {
-      ...CitySavedList_city
     }
   }
 `
 
-export const CitySavedListQueryRenderer: React.FC<CitySavedListProps> = ({ citySlug }) => {
-  return (
-    <QueryRenderer<CitySavedListQuery>
-      environment={getRelayEnvironment()}
-      query={CitySavedListScreenQuery}
-      variables={{ citySlug }}
-      render={renderWithLoadProgress(CitySavedListContainer)}
+interface CitySavedListProps {
+  citySlug: string
+}
+
+export const CitySavedListScreenQuery = graphql`
+  query CitySavedListQuery($citySlug: String!) {
+    me {
+      ...CitySavedList_me @arguments(citySlug: $citySlug)
+    }
+    city(slug: $citySlug) {
+      name
+    }
+  }
+`
+
+export const CitySavedListQueryRenderer: React.FC<CitySavedListProps> = withSuspense({
+  Component: ({ citySlug }) => {
+    const data = useLazyLoadQuery<CitySavedListQuery>(CitySavedListScreenQuery, { citySlug })
+
+    if (!data.me || !data.city) {
+      return null
+    }
+
+    return <CitySavedList me={data.me} cityName={data.city.name ?? ""} citySlug={citySlug} />
+  },
+  ErrorFallback: (fallbackProps) => (
+    <LoadFailureView
+      onRetry={fallbackProps.resetErrorBoundary}
+      useSafeArea={false}
+      showCloseButton
+      error={fallbackProps.error}
+      showBackButton
+      trackErrorBoundary={false}
     />
-  )
+  ),
+  LoadingFallback: () => (
+    <Flex flex={1} alignItems="center" justifyContent="center" testID="placeholder">
+      <Spinner />
+    </Flex>
+  ),
+})
+
+const tracks = {
+  trackScreen: (citySlug: string) => ({
+    context_screen: Schema.PageNames.CityGuideSavedList,
+    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+    context_screen_owner_slug: citySlug,
+    context_screen_owner_id: citySlug,
+  }),
 }
