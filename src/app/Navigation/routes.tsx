@@ -1,4 +1,4 @@
-import { BackButton, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { artistArtworksQuery } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
@@ -10,7 +10,6 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
-import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
 import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
@@ -246,7 +245,6 @@ import {
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
-import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
 import { Platform } from "react-native"
@@ -1113,27 +1111,8 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerTransparent: true,
         headerShadowVisible: false,
-        headerLeft: () => {
-          return (
-            <Flex
-              borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
-              backgroundColor="mono0"
-              width={BACK_BUTTON_SIZE_SIZE}
-              height={BACK_BUTTON_SIZE_SIZE}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <BackButton
-                style={{
-                  top: 0,
-                  left: 0,
-                }}
-                onPress={() => {
-                  goBack()
-                }}
-              />
-            </Flex>
-          )
+        header: () => {
+          return null
         },
       },
     },

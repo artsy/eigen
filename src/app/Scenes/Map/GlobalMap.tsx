@@ -1,34 +1,24 @@
-import { Box, Flex, useColor, useSpace } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
+import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
-import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  convertCityToGeoJSON,
-  fairToGeoCityFairs,
-  showsToGeoCityShow,
-} from "app/utils/convertCityToGeoJSON"
-import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { isEqual, uniq } from "lodash"
+import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Platform } from "react-native"
+import { Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
-import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
-import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { GlobalMapHeader } from "./Components/GlobalMapHeader"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
-import { ShowCard } from "./Components/ShowCard"
-import { UserPositionButton } from "./Components/UserPositionButton"
+import { SHOW_CARD_HEIGHT, ShowCardOverlay } from "./Components/ShowCardOverlay"
 import { EventEmitter } from "./EventEmitter"
 import {
   bucketCityResults,
@@ -36,6 +26,12 @@ import {
   BucketResults,
   emptyBucketResults,
 } from "./bucketCityResults"
+import { buildFeatureCollections } from "./helpers/buildFeatureCollections"
+import { extractShowAndFairMaps } from "./helpers/extractShowAndFairMaps"
+import { getFeatureCollectionForTab } from "./helpers/getFeatureCollectionForTab"
+import { getNearestPointToLatLongInCollection } from "./helpers/getNearestPointToLatLongInCollection"
+import { isValidLatLng } from "./helpers/isValidLatLng"
+import { DefaultZoomLevel, MaxZoomLevel, MinZoomLevel } from "./mapZoomLevels"
 import { Fair, FilterData, Show } from "./types"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
@@ -51,12 +47,6 @@ interface Props {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
-
-const DefaultZoomLevel = 11
-const MinZoomLevel = 9
-const MaxZoomLevel = 17.5
-
-const SHOW_CARD_HEIGHT = 150
 
 export enum DrawerPosition {
   open = "open",
@@ -75,8 +65,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
-  const hideButtons = new Animated.Value(0)
-  let currentZoom = useRef(DefaultZoomLevel).current
+  const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
 
@@ -91,87 +80,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [featureCollections, setFeatureCollections] = useState<
     { [key in BucketKey]: FilterData } | {}
   >({})
-  const [mapLoaded, setMapLoaded] = useState(false)
   const [isSavingShow, setIsSavingShow] = useState(false)
-  const [nearestFeature, setNearestFeature] = useState<
-    PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
-  >(null)
+  const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
-
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    const onPressCitySwitcherButton = () => {
-      if (!showCityPicker) {
-        // Show the city picker
-        setShowCityPicker(true)
-        setActiveShows([])
-        setActivePin(null)
-      } else {
-        // Hide the city picker
-        setShowCityPicker(false)
-      }
-    }
-
-    const onPressUserPositionButton = () => {
-      if (!isValidLatLng(userLocation)) {
-        return
-      }
-
-      cameraRef.current?.setCamera({
-        centerCoordinate: [userLocation.lng, userLocation.lat],
-        zoomLevel: DefaultZoomLevel,
-        animationDuration: 500,
-      })
-    }
-
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  translateY: hideButtons.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -(safeAreaInsets.top + 12 + 50)],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
-              <CitySwitcherButton
-                city={viewer.city}
-                isLoading={!viewer.city}
-                onPress={onPressCitySwitcherButton}
-              />
-              {!!isValidLatLng(userLocation) && (
-                <Box style={{ marginLeft: 10 }}>
-                  <UserPositionButton
-                    highlight={userLocation === currentLocation}
-                    onPress={onPressUserPositionButton}
-                  />
-                </Box>
-              )}
-            </Flex>
-          </Animated.View>
-        )
-      },
-      headerShadowVisible: false,
-    })
-  }, [
-    navigation,
-    viewer,
-    userLocation,
-    showCityPicker,
-    activePin,
-    hideButtons,
-    safeAreaInsets.top,
-    currentLocation,
-  ])
 
   useEffect(() => {
     updateShowIdMap()
@@ -212,6 +125,30 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }, [props, viewer])
 
+  const onPressCitySwitcherButton = () => {
+    if (!showCityPicker) {
+      // Show the city picker
+      setShowCityPicker(true)
+      setActiveShows([])
+      setActivePin(null)
+    } else {
+      // Hide the city picker
+      setShowCityPicker(false)
+    }
+  }
+
+  const onPressUserPositionButton = () => {
+    if (!isValidLatLng(userLocation)) {
+      return
+    }
+
+    cameraRef.current?.setCamera({
+      centerCoordinate: [userLocation.lng, userLocation.lat],
+      zoomLevel: DefaultZoomLevel,
+      animationDuration: 500,
+    })
+  }
+
   const handleFilterChange = (activeIndex: number) => {
     setActiveIndex(activeIndex)
     setActivePin(null)
@@ -223,32 +160,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const updateClusterMap = (newBucketResults: BucketResults) => {
-    const newFeatureCollections = {}
-    cityTabs.forEach((tab) => {
-      const newShows = tab.getShows(newBucketResults)
-      const newFairs = tab.getFairs(newBucketResults)
-      const showData = showsToGeoCityShow(newShows)
-      const fairData = fairToGeoCityFairs(newFairs)
-      const data = showData.concat(fairData as any as Show[])
-      const geoJSONFeature = convertCityToGeoJSON(data)
-
-      const clusterEngine = new Supercluster({
-        radius: 50,
-        minZoom: Math.floor(MinZoomLevel),
-        maxZoom: Math.floor(MaxZoomLevel),
-      })
-
-      clusterEngine.load(geoJSONFeature.features as any)
-
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      newFeatureCollections[tab.id] = {
-        featureCollection: geoJSONFeature,
-        filter: tab.id,
-        clusterEngine,
-      }
-    })
-
-    setFeatureCollections(newFeatureCollections)
+    setFeatureCollections(buildFeatureCollections(newBucketResults))
   }
 
   const emitFilteredBucketResults = (newBucketResults: BucketResults) => {
@@ -274,68 +186,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
       return
     }
 
-    const { city } = viewer
-    if (city) {
-      const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
-      const shows = extractNodes(city.shows)
-      const concatedShows = uniq(shows.concat(savedUpcomingShows as any))
-
-      concatedShows.forEach((node) => {
-        if (!node || !node.location || !node.location.coordinates) {
-          return null
-        }
-
-        showsRef.current[node.slug] = node
-      })
-
-      extractNodes(city.fairs).forEach((node) => {
-        if (!node || !node.location || !node.location.coordinates) {
-          return null
-        }
-
-        fairsRef.current[node.slug] = {
-          ...node,
-          type: "Fair",
-        }
-      })
-    }
-  }
-
-  const renderShowCard = () => {
-    const hasShows = activeShows.length > 0
-
-    // We need to update activeShows in case of a mutation (save show)
-    const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
-      if (item.type === "Show") {
-        return showsRef.current[item.slug]
-      } else if (item.type === "Fair") {
-        return fairsRef.current[item.slug]
-      }
-      return item
-    })
-
-    return (
-      <Flex
-        style={{
-          left: 0,
-          right: 0,
-          position: "absolute",
-          height: SHOW_CARD_HEIGHT,
-        }}
-      >
-        {!!hasShows && (
-          <ShowCard
-            shows={updatedShows}
-            onSaveStarted={() => {
-              setIsSavingShow(true)
-            }}
-            onSaveEnded={() => {
-              setIsSavingShow(false)
-            }}
-          />
-        )}
-      </Flex>
-    )
+    const { shows, fairs } = extractShowAndFairMaps(viewer.city)
+    showsRef.current = { ...showsRef.current, ...shows }
+    fairsRef.current = { ...fairsRef.current, ...fairs }
   }
 
   const onUserLocationUpdate = (location: MapboxGL.Location) => {
@@ -357,17 +210,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
     const zoom = Math.ceil((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
 
-    if (currentZoom !== zoom) {
+    if (currentZoomRef.current !== zoom) {
       setActivePin(null)
     }
 
-    if (!currentZoom) {
-      currentZoom = zoom
-    }
-  }
-
-  const onDidFinishRenderingMapFully = () => {
-    setMapLoaded(true)
+    currentZoomRef.current = zoom
   }
 
   const onPressMap = () => {
@@ -377,13 +224,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }
 
-  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
-
-  const currentFeatureCollection = (): FilterData => {
-    const filterID = cityTabs[activeIndex].id
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return featureCollections[filterID]
+  const onDidFinishLoadingMap = () => {
+    setMapLoaded(true)
   }
+
+  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
   const { city } = viewer
   const centerLat = city?.coordinates?.lat || 0
@@ -447,7 +292,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const clusterEngine = currentFeatureCollection().clusterEngine
+      const clusterEngine = getFeatureCollectionForTab(
+        activeIndex,
+        featureCollections
+      ).clusterEngine
       const visibleFeatures = clusterEngine.getClusters(
         [westLng, southLat, eastLng, northLat],
         zoom
@@ -455,41 +303,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
       const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
 
       const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
-      activeShows = points.map((a) => a.properties) as any
-      setNearestFeature(nearestFeature)
+      activeShows = points.map((a: any) => a.properties) as any
     }
 
     setActiveShows(activeShows)
     setActivePin(event.features[0])
-  }
-
-  const getNearestPointToLatLongInCollection = (
-    values: { lat: number; lng: number },
-    features: any[]
-  ) => {
-    // https://stackoverflow.com/a/21623206
-    function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
-      const p = 0.017453292519943295 // Math.PI / 180
-      const c = Math.cos
-      const a =
-        0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
-
-      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
-    }
-
-    const distances = features
-      .map((feature) => {
-        const [featureLat, featureLng] = feature.geometry.coordinates
-        return {
-          ...feature,
-          distance: distance(values.lat, values.lng, featureLat, featureLng),
-        }
-      })
-      .sort((a, b) => a.distance - b.distance)
-
-    return distances[0]
   }
 
   const updateDrawerPosition = (position: DrawerPosition) => {
@@ -512,6 +330,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
+      <GlobalMapHeader
+        safeAreaInsetTop={safeAreaInsets.top}
+        city={viewer.city}
+        userLocation={userLocation}
+        currentLocation={currentLocation}
+        onPressCitySwitcherButton={onPressCitySwitcherButton}
+        onPressUserPositionButton={onPressUserPositionButton}
+      />
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
@@ -524,7 +350,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           style={{ width: "100%", height: "100%" }}
           {...mapProps}
           onCameraChanged={onRegionIsChanging}
-          onDidFinishLoadingMap={onDidFinishRenderingMapFully}
+          onDidFinishLoadingMap={onDidFinishLoadingMap}
           attributionEnabled
           logoEnabled
           attributionPosition={{
@@ -536,15 +362,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
             left: space(2),
           }}
           onPress={onPressMap}
-          scaleBarPosition={
-            Platform.OS === "android"
-              ? {
-                  top: safeAreaInsets.top + space(6),
-                  left: space(2),
-                }
-              : // The default position is fine on iOS // no need to override it
-                undefined
-          }
+          scaleBarPosition={{
+            top: Platform.OS === "ios" ? safeAreaInsets.top : safeAreaInsets.top + 40,
+            left: space(2),
+          }}
         >
           <MapboxGL.Camera
             ref={cameraRef}
@@ -557,18 +378,17 @@ export const GlobalMap: React.FC<Props> = (props) => {
           <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
           {!!city && (
             <>
-              {!!mapLoaded && !!activeShows && !!activePin && (
-                <SelectedPin
-                  activePin={activePin}
-                  nearestFeature={nearestFeature}
-                  activeShows={activeShows}
-                />
-              )}
-              {!!featureCollections && (
+              {!!featureCollections && !!mapLoaded && (
                 <PinsShapeLayer
                   filterID={cityTabs[activeIndex].id}
                   featureCollections={featureCollections}
                   onPress={(e) => handleFeaturePress(e)}
+                  activePinSlug={
+                    activePin?.properties?.cluster ? null : activePin?.properties?.slug
+                  }
+                  activeClusterId={
+                    activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
+                  }
                 />
               )}
             </>
@@ -583,7 +403,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
             height={SHOW_CARD_HEIGHT}
             justifyContent="flex-end"
           >
-            {renderShowCard()}
+            <ShowCardOverlay
+              activeShows={activeShows}
+              showsRef={showsRef}
+              fairsRef={fairsRef}
+              onSaveStarted={() => setIsSavingShow(true)}
+              onSaveEnded={() => setIsSavingShow(false)}
+            />
           </Flex>
         )}
         <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
@@ -595,14 +421,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 /** Makes sure we're consistently using { lat, lng } internally */
 const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
   return { lat: coords.latitude, lng: coords.longitude }
-}
-
-/**
- * `city.coordinates` is nullable in the schema and location updates can arrive without coordinates,
- * so make sure we actually have numbers before handing them over to the map.
- */
-const isValidLatLng = (location: any): location is { lat: number; lng: number } => {
-  return typeof location?.lat === "number" && typeof location?.lng === "number"
 }
 
 const tracks = {

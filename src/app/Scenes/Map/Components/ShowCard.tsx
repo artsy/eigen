@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@artsy/palette-mobile"
-import { themeGet } from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
@@ -15,7 +14,6 @@ import {
   NativeSyntheticEvent,
   TouchableOpacity,
 } from "react-native"
-import styled from "styled-components/native"
 
 const shadowDetails: any = {
   shadowRadius: 4,
@@ -25,11 +23,10 @@ const shadowDetails: any = {
   elevation: 2,
 }
 
-const Background = styled(Box)`
-  background: ${themeGet("colors.mono0")};
-  height: 82px;
-  border-radius: 2px;
-`
+const CARD_HEIGHT = 82
+const CARD_BORDER_RADIUS = 2
+const PAGE_INDICATOR_BORDER_RADIUS = 10
+const PAGE_INDICATOR_OFFSET = 15
 
 interface ShowCardProps {
   shows: Array<Show | Fair>
@@ -41,14 +38,6 @@ interface ShowCardState {
   currentPage: number
   isSaving: boolean
 }
-
-const PageIndicator = styled(Box)`
-  border-radius: ${themeGet("space.1")};
-  background: ${themeGet("colors.mono0")};
-  margin-left: 15px;
-  margin-right: auto;
-  margin-top: -15px;
-`
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -86,10 +75,18 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderItem = ({ item }, noWidth = false) => {
-    const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
+    const props: any = noWidth ? { mr: 1 } : { width: this.cardWidth }
 
     return (
-      <Background ml={1} p={1} style={shadowDetails} {...props}>
+      <Box
+        ml={1}
+        p={1}
+        backgroundColor="mono0"
+        height={CARD_HEIGHT}
+        borderRadius={CARD_BORDER_RADIUS}
+        style={shadowDetails}
+        {...props}
+      >
         <TouchableOpacity accessibilityRole="button" onPress={this.handleTap.bind(this, item)}>
           {item.type === "Show" ? (
             <ShowItemRow
@@ -102,7 +99,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
             <TabFairItemRow item={item} />
           )}
         </TouchableOpacity>
-      </Background>
+      </Box>
     )
   }
 
@@ -156,13 +153,25 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       <ThemeAwareClassTheme>
         {({ space }) => (
           <Flex>
-            <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
+            <Box
+              borderRadius={PAGE_INDICATOR_BORDER_RADIUS}
+              backgroundColor="mono0"
+              style={{
+                ...shadowDetails,
+                marginLeft: PAGE_INDICATOR_OFFSET,
+                marginRight: "auto",
+                marginTop: -PAGE_INDICATOR_OFFSET,
+              }}
+              mx={1}
+              px={0.5}
+              my={0.5}
+            >
               <Text
                 variant="xs"
                 weight="medium"
                 px={0.5}
               >{`${currentPage} of ${shows.length}`}</Text>
-            </PageIndicator>
+            </Box>
             <FlatList
               ref={(c) => (this.list = c as any)}
               data={shows}

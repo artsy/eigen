@@ -5,16 +5,14 @@ import { CityView, CityViewProps } from "app/Scenes/City/City"
 import { CityBottomSheetBackdrop } from "app/Scenes/City/Components/CityBottomSheetBackdrop"
 import { DrawerPosition } from "app/Scenes/Map/GlobalMap"
 import { useEffect, useRef } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface CityBottomSheetProps extends CityViewProps {
   drawerPosition: DrawerPosition
 }
 
-const BORDER_RADIUS = 10
+const BORDER_RADIUS = 20
 
 export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) => {
-  const { bottom } = useSafeAreaInsets()
   const { height } = useScreenDimensions()
   const color = useColor()
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -43,7 +41,7 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
       ref={bottomSheetRef}
       enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[bottom || 30, height * 0.75]}
+      snapPoints={[30, height * 0.75]}
       index={-1}
       handleIndicatorStyle={{
         ...defaultIndicatorHandleStyle(color),
@@ -56,6 +54,10 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
         borderTopRightRadius: BORDER_RADIUS,
         borderTopWidth: 1,
         borderTopColor: color("mono10"),
+        shadowColor: color("mono100"),
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 1.41,
       }}
       backdropComponent={renderBackdrop}
     >
