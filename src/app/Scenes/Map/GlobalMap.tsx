@@ -6,6 +6,14 @@ import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
+import { EventEmitter } from "app/utils/cityGuide/EventEmitter"
+import {
+  bucketCityResults,
+  BucketKey,
+  BucketResults,
+  emptyBucketResults,
+} from "app/utils/cityGuide/bucketCityResults"
+import { DrawerPosition, Fair, FilterData, Show } from "app/utils/cityGuide/types"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
@@ -19,20 +27,12 @@ import usePrevious from "react-use/lib/usePrevious"
 import { GlobalMapHeader } from "./Components/GlobalMapHeader"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { SHOW_CARD_HEIGHT, ShowCardOverlay } from "./Components/ShowCardOverlay"
-import { EventEmitter } from "./EventEmitter"
-import {
-  bucketCityResults,
-  BucketKey,
-  BucketResults,
-  emptyBucketResults,
-} from "./bucketCityResults"
 import { buildFeatureCollections } from "./helpers/buildFeatureCollections"
 import { extractShowAndFairMaps } from "./helpers/extractShowAndFairMaps"
 import { getFeatureCollectionForTab } from "./helpers/getFeatureCollectionForTab"
 import { getNearestPointToLatLongInCollection } from "./helpers/getNearestPointToLatLongInCollection"
 import { isValidLatLng } from "./helpers/isValidLatLng"
 import { DefaultZoomLevel, MaxZoomLevel, MinZoomLevel } from "./mapZoomLevels"
-import { Fair, FilterData, Show } from "./types"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
@@ -47,13 +47,6 @@ interface Props {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
-
-export enum DrawerPosition {
-  open = "open",
-  closed = "closed",
-  collapsed = "collapsed",
-  partiallyRevealed = "partiallyRevealed",
-}
 
 export const GlobalMap: React.FC<Props> = (props) => {
   const color = useColor()

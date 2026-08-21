@@ -3,7 +3,7 @@ import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { CityView, CityViewProps } from "app/Scenes/City/City"
 import { CityBottomSheetBackdrop } from "app/Scenes/City/Components/CityBottomSheetBackdrop"
-import { DrawerPosition } from "app/Scenes/Map/GlobalMap"
+import { DrawerPosition } from "app/utils/cityGuide/types"
 import { useEffect, useRef } from "react"
 
 interface CityBottomSheetProps extends CityViewProps {

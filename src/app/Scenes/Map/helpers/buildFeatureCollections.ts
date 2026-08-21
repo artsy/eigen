@@ -1,7 +1,7 @@
 import { cityTabs } from "app/Scenes/City/cityTabs"
-import { BucketKey, BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { MaxZoomLevel, MinZoomLevel } from "app/Scenes/Map/mapZoomLevels"
-import { FilterData, Show } from "app/Scenes/Map/types"
+import { BucketKey, BucketResults } from "app/utils/cityGuide/bucketCityResults"
+import { FilterData, Show } from "app/utils/cityGuide/types"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,

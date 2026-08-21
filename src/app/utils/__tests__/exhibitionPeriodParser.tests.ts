@@ -1,4 +1,4 @@
-import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
+import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
 
 describe("exhibitionDates", () => {
   it("returns the date range for an exhibition ending within 2 years", () => {

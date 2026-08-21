@@ -1,6 +1,6 @@
 import { cityTabs } from "app/Scenes/City/cityTabs"
-import { BucketKey } from "app/Scenes/Map/bucketCityResults"
-import { FilterData } from "app/Scenes/Map/types"
+import { BucketKey } from "app/utils/cityGuide/bucketCityResults"
+import { FilterData } from "app/utils/cityGuide/types"
 
 export const getFeatureCollectionForTab = (
   activeIndex: number,

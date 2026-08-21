@@ -4,10 +4,10 @@ import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
-import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
 import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
 import { hrefForPartialShow } from "app/utils/router"
 import { Schema } from "app/utils/track"
@@ -137,7 +137,7 @@ export const ShowItemRow: React.FC<Props> = ({
                   {show.name}
                 </Text>
               )}
-              {!!(show.exhibition_period && show.status) && (
+              {!!(show.exhibition_period && show.status && show.end_at) && (
                 <Text
                   variant="sm"
                   lineHeight="20px"
@@ -147,7 +147,7 @@ export const ShowItemRow: React.FC<Props> = ({
                 >
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : exhibitionDates(show.exhibition_period, show.end_at!)}
+                    : exhibitionDates(show.exhibition_period, show.end_at)}
                 </Text>
               )}
             </Flex>

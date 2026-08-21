@@ -1,6 +1,12 @@
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import Supercluster from "supercluster"
-import { BucketKey, BucketResults } from "./bucketCityResults"
+import type { BucketKey, BucketResults } from "./bucketCityResults"
+
+/**
+ * Types and helpers shared by the `Map` and `City` scenes (the "city guide" feature).
+ * Kept here (rather than in either scene) per our convention of extracting cross-scene
+ * code to `app/utils` instead of importing scene-to-scene.
+ */
 
 export interface Coordinates {
   lat: number
@@ -45,4 +51,12 @@ export interface FilterData {
   filter: string
   featureCollection: GeoJSON.FeatureCollection
   clusterEngine: Supercluster
+}
+
+/** Position of the City Guide bottom sheet drawer, shared between `GlobalMap` and `CityBottomSheet`. */
+export enum DrawerPosition {
+  open = "open",
+  closed = "closed",
+  collapsed = "collapsed",
+  partiallyRevealed = "partiallyRevealed",
 }

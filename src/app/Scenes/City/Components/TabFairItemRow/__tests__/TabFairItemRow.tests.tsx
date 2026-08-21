@@ -1,5 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
-import { Fair } from "app/Scenes/Map/types"
+import { Fair } from "app/utils/cityGuide/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 // @TODO: We are already stubbing Fair data for tests in src/app/Scenes/Fair/__fixtures__/index.ts; can we modularize this test by importing that fixture?
@@ -22,8 +23,8 @@ const fairData = {
 
 describe("TabFairItemRow", () => {
   it("renders Fair properly", () => {
-    const { queryByText } = renderWithWrappers(<TabFairItemRow item={fairData} />)
+    renderWithWrappers(<TabFairItemRow item={fairData} />)
 
-    expect(queryByText("TEFAF New York Spring 2019")).toBeTruthy()
+    expect(screen.getByText("TEFAF New York Spring 2019")).toBeTruthy()
   })
 })

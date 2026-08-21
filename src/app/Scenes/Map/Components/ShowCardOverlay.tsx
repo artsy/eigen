@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ShowCard } from "app/Scenes/Map/Components/ShowCard"
-import { Fair, Show } from "app/Scenes/Map/types"
+import { Fair, Show } from "app/utils/cityGuide/types"
 import { RefObject } from "react"
 
 export const SHOW_CARD_HEIGHT = 150

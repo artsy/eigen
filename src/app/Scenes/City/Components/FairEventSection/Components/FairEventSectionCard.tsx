@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
-import { Fair } from "app/Scenes/Map/types"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { Fair } from "app/utils/cityGuide/types"
 import { Component } from "react"
 import { Dimensions } from "react-native"
 

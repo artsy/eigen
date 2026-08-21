@@ -1,9 +1,9 @@
 import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { Fair } from "app/Scenes/Map/types"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { Fair } from "app/utils/cityGuide/types"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 

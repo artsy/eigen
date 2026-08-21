@@ -1,6 +1,6 @@
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { getFeatureCollectionForTab } from "app/Scenes/Map/helpers/getFeatureCollectionForTab"
-import { FilterData } from "app/Scenes/Map/types"
+import { FilterData } from "app/utils/cityGuide/types"
 
 describe(getFeatureCollectionForTab, () => {
   it("returns the feature collection matching the active tab", () => {

@@ -1,6 +1,6 @@
 import { cityTabs } from "app/Scenes/City/cityTabs"
-import { emptyBucketResults } from "app/Scenes/Map/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/Map/helpers/buildFeatureCollections"
+import { emptyBucketResults } from "app/utils/cityGuide/bucketCityResults"
 
 describe(buildFeatureCollections, () => {
   it("builds an empty feature collection per tab when there are no results", () => {

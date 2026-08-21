@@ -1,5 +1,5 @@
-import { bucketCityResults } from "app/Scenes/Map/bucketCityResults"
 import { CityFixture } from "app/__fixtures__/CityFixture"
+import { bucketCityResults } from "app/utils/cityGuide/bucketCityResults"
 import { uniq } from "lodash"
 
 // The stubbed data needs re-creating
