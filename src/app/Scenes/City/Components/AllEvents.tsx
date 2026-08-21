@@ -2,8 +2,7 @@ import { Box, Separator, Spacer, Tabs, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
 import { BucketResults } from "app/utils/cityGuide/bucketCityResults"
-import { isEqual } from "lodash"
-import React, { Fragment } from "react"
+import { Fragment, useMemo } from "react"
 import { Platform, ViewProps } from "react-native"
 import { FairEventSection } from "./FairEventSection/FairEventSection"
 import { SavedEventSection } from "./SavedEventSection/SavedEventSection"
@@ -14,107 +13,79 @@ interface Props extends ViewProps {
   citySlug: string
 }
 
-interface State {
-  sections: Array<{
-    type: string
-    data?: any
-  }>
+interface Section {
+  type: string
+  data?: any
 }
 
-export class AllEvents extends React.Component<Props, State> {
-  state = {
-    sections: [],
-  }
+const buildSections = (buckets: BucketResults, cityName: string): Section[] => {
+  const sections: Section[] = []
 
-  componentDidMount() {
-    this.updateSections(this.props)
-  }
+  sections.push({
+    type: "header",
+    data: `${cityName} City Guide`,
+  })
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const shouldUpdate = this.shouldUpdate(nextProps)
-
-    if (shouldUpdate) {
-      this.updateSections(nextProps)
-    }
-  }
-
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
-    return this.shouldUpdate(nextProps) || this.state.sections.length !== nextState.sections.length
-  }
-
-  shouldUpdate(otherProps: Props): boolean {
-    const showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
-      .map((key) => {
-        return !isEqual(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          this.props.buckets[key].map((g) => g.is_followed),
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          otherProps.buckets[key].map((g) => g.is_followed)
-        )
-      })
-      .some((a) => a)
-
-    return showsUpdated
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateSections = (props) => {
-    const { buckets, cityName } = props
-    const sections = []
-
+  if (buckets.saved) {
     sections.push({
-      type: "header",
-      data: `${cityName} City Guide`,
+      type: "saved",
+      data: buckets.saved,
     })
-
-    if (buckets.saved) {
-      sections.push({
-        type: "saved",
-        data: buckets.saved,
-      })
-    }
-
-    if (buckets.fairs && buckets.fairs.length) {
-      sections.push({
-        type: "fairs",
-        data: buckets.fairs,
-      })
-    }
-
-    if (buckets.galleries && buckets.galleries.length) {
-      sections.push({
-        type: "galleries",
-        data: buckets.galleries,
-      })
-    }
-
-    if (buckets.museums && buckets.museums.length) {
-      sections.push({
-        type: "museums",
-        data: buckets.museums,
-      })
-    }
-
-    if (buckets.closing && buckets.closing.length) {
-      sections.push({
-        type: "closing",
-        data: buckets.closing,
-      })
-    }
-
-    if (buckets.opening && buckets.opening.length) {
-      sections.push({
-        type: "opening",
-        data: buckets.opening,
-      })
-    }
-
-    this.setState({ sections })
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  renderItemSeparator = ({ leadingItem }) => {
+  if (buckets.fairs && buckets.fairs.length) {
+    sections.push({
+      type: "fairs",
+      data: buckets.fairs,
+    })
+  }
+
+  if (buckets.galleries && buckets.galleries.length) {
+    sections.push({
+      type: "galleries",
+      data: buckets.galleries,
+    })
+  }
+
+  if (buckets.museums && buckets.museums.length) {
+    sections.push({
+      type: "museums",
+      data: buckets.museums,
+    })
+  }
+
+  if (buckets.closing && buckets.closing.length) {
+    sections.push({
+      type: "closing",
+      data: buckets.closing,
+    })
+  }
+
+  if (buckets.opening && buckets.opening.length) {
+    sections.push({
+      type: "opening",
+      data: buckets.opening,
+    })
+  }
+
+  return sections
+}
+
+// @TODO: Implement test for the AllEvents component https://artsyproduct.atlassian.net/browse/LD-562
+export const AllEvents: React.FC<Props> = ({ buckets, cityName, citySlug }) => {
+  // Only recompute sections when a show's saved state changes, mirroring the previous
+  // shouldComponentUpdate gating that avoided re-deriving sections on every bucket reference change.
+  const followedSignature = ["saved", "closing", "museums", "opening", "closing"]
+    .map((key) => JSON.stringify((buckets as any)[key]?.map((g: any) => g.is_followed)))
+    .join("|")
+
+  const sections = useMemo(
+    () => buildSections(buckets, cityName),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [followedSignature, cityName]
+  )
+
+  const renderItemSeparator = ({ leadingItem }: { leadingItem: Section }) => {
     if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
       return (
         <Box py={1}>
@@ -126,8 +97,7 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
-  renderItem = ({ item: { data, type } }: { item: State["sections"][0] }) => {
-    const { citySlug } = this.props
+  const renderItem = ({ item: { data, type } }: { item: Section }) => {
     switch (type) {
       case "fairs":
         return <FairEventSection citySlug={citySlug} data={data} />
@@ -156,25 +126,19 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
-  // @TODO: Implement test for the AllEvents component https://artsyproduct.atlassian.net/browse/LD-562
-  render() {
-    const { sections } = this.state
+  // We need to wrap the flatlist with a BottomSheetScrollView on Android to allow scrolling
+  // On iOS it's not required because the bottom sheet is scrollable by default
+  const Wrapper = Platform.OS === "android" ? BottomSheetScrollView : Fragment
 
-    // We need to wrap the flatlist with a BottomSheetScrollView on Android to allow scrolling
-    // On iOS it's not required because the bottom sheet is scrollable by default
-    const Wrapper = Platform.OS === "android" ? BottomSheetScrollView : Fragment
-
-    return (
-      <Wrapper>
-        <Tabs.FlatList
-          data={sections}
-          ItemSeparatorComponent={this.renderItemSeparator}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          keyExtractor={(item) => item.type}
-          renderItem={(item) => this.renderItem(item)}
-          ListFooterComponent={() => <Spacer y={4} />}
-        />
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <Tabs.FlatList
+        data={sections}
+        ItemSeparatorComponent={renderItemSeparator}
+        keyExtractor={(item) => item.type}
+        renderItem={(item) => renderItem(item)}
+        ListFooterComponent={() => <Spacer y={4} />}
+      />
+    </Wrapper>
+  )
 }
