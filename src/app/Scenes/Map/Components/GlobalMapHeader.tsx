@@ -30,8 +30,8 @@ export const GlobalMapHeader: React.FC<Props> = ({
     <Flex
       style={{
         top: safeAreaInsetTop,
-        // position: "absolute",
-        // zIndex: 1000,
+        position: "absolute",
+        zIndex: 1000,
         width: "100%",
       }}
       px={2}
