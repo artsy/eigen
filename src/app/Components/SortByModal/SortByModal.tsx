@@ -1,7 +1,6 @@
 import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export interface SortOption {
@@ -24,7 +23,6 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
   return (
     <AutomountedBottomSheetModal
       visible={visible}
-      snapPoints={SNAP_POINTS}
       enableDynamicSizing
       onDismiss={() => {
         onModalFinishedClosing()
