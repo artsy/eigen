@@ -3,17 +3,15 @@ import { EventMutation } from "__generated__/EventMutation.graphql"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "app/Scenes/Map/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { track as _track, Schema, Track } from "app/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql } from "react-relay"
-import styled from "styled-components/native"
 
-const TextContainer = styled(Box)`
-  width: 200;
-`
+const TEXT_CONTAINER_WIDTH = 200
 
 interface Props {
   event: Show
@@ -138,7 +136,7 @@ export class Event extends React.Component<Props, State> {
                 </Box>
               )}
               <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-                <TextContainer mb={2}>
+                <Box width={TEXT_CONTAINER_WIDTH} mb={2}>
                   <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                     {partnerName}
                   </Text>
@@ -150,7 +148,7 @@ export class Event extends React.Component<Props, State> {
                       {exhibitionDates(exhibition_period, end_at)}
                     </Text>
                   )}
-                </TextContainer>
+                </Box>
                 <Button
                   variant={is_followed ? "outline" : "fillDark"}
                   loading={isFollowedSaving}

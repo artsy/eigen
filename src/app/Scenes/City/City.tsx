@@ -1,6 +1,5 @@
-import { Tabs } from "@artsy/palette-mobile"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
-import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "app/Scenes/Map/EventEmitter"
 import { BucketKey, BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { MapTab } from "app/Scenes/Map/types"
@@ -8,7 +7,6 @@ import { Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
 import { RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
 import { cityTabs } from "./cityTabs"
@@ -90,11 +88,7 @@ export const CityView: React.FC<CityViewProps> = () => {
 
   if (buckets) {
     return (
-      <Container
-        style={{
-          flex: 1,
-        }}
-      >
+      <Flex flex={1}>
         <TabsContainer
           onTabChange={(tab) => {
             setSelectedTab(Number(tab.index))
@@ -128,16 +122,12 @@ export const CityView: React.FC<CityViewProps> = () => {
             )
           })}
         </TabsContainer>
-      </Container>
+      </Flex>
     )
   }
 
   return null
 }
-
-const Container = styled.View`
-  background-color: ${themeGet("colors.background")};
-`
 
 const tracks = {
   trackTab: (filter: string) => {

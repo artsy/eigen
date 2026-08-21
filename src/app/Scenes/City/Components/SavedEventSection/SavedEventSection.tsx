@@ -1,13 +1,12 @@
 import { Flex, Box, Text } from "@artsy/palette-mobile"
-import { themeGet } from "@styled-system/theme-get"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import PinSavedOff from "app/Components/Icons/PinSavedOff"
 import PinSavedOn from "app/Components/Icons/PinSavedOn"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
 
 export interface Props {
   data: any
@@ -59,15 +58,11 @@ export class SavedEventSection extends Component<any> {
     return (
       <>
         <Box my={2}>
-          <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
+          <Box p={1} borderRadius={2} borderWidth={1} borderColor="mono30">
+            {hasSaves ? hasSavesComponent : hasNoSavesComponent}
+          </Box>
         </Box>
       </>
     )
   }
 }
-
-const SavedBox = styled(Box)`
-  border-radius: 2px;
-  border-width: 1px;
-  border-color: ${themeGet("colors.mono30")};
-`

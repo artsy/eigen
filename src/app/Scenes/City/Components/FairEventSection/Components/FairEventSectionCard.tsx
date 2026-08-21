@@ -1,10 +1,15 @@
 import { Box, Flex, Image, Text } from "@artsy/palette-mobile"
-import { themeGet } from "@styled-system/theme-get"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Fair } from "app/Scenes/Map/types"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Component } from "react"
 import { Dimensions } from "react-native"
-import styled from "styled-components/native"
+
+const CARD_WIDTH_OFFSET = 50
+const CARD_HEIGHT = 310
+const LOGO_SIZE = 100
+const LOGO_MARGIN_BOTTOM = 10
+const OVERLAY_COLOR = "rgba(0, 0, 0, 0.3)"
 
 interface Props {
   fair: Fair
@@ -17,61 +22,68 @@ export class FairEventSectionCard extends Component<Props> {
       fair: { image, name, profile, exhibition_period },
     } = this.props
 
-    const width = Dimensions.get("window").width / 2 + 50
+    const width = Dimensions.get("window").width / 2 + CARD_WIDTH_OFFSET
 
     return (
-      <RouterLink to={`/fair/${this.props.fair.slug}`}>
-        <Container>
-          {!!image?.url && (
-            <BackgroundImage src={image.url} height={310} width={width} zIndex={1} />
-          )}
-          <Overlay zIndex={2} />
-          <Flex flexDirection="column" px={2} style={{ position: "absolute" }} zIndex={3}>
-            {!!profile?.icon?.url ? (
-              <Logo src={profile?.icon?.url} width={100} height={100} />
-            ) : null}
-          </Flex>
-          <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
-            <Flex flexDirection="column" flexGrow={1}>
-              <Text variant="sm" weight="medium" color="mono0">
-                {name}
-              </Text>
-              {!!exhibition_period && (
-                <Text variant="sm" color="mono0">
-                  {exhibition_period}
-                </Text>
+      <ThemeAwareClassTheme>
+        {({ color }) => (
+          <RouterLink to={`/fair/${this.props.fair.slug}`}>
+            <Box
+              width={width}
+              height={CARD_HEIGHT}
+              overflow="hidden"
+              backgroundColor="mono60"
+              style={{ position: "relative" }}
+            >
+              {!!image?.url && (
+                <Image
+                  src={image.url}
+                  height={CARD_HEIGHT}
+                  width={width}
+                  style={{ backgroundColor: color("mono60") }}
+                />
               )}
-            </Flex>
-          </Box>
-        </Container>
-      </RouterLink>
+              {/* Set background color of overlay based on logo color */}
+              <Flex
+                zIndex={2}
+                style={{
+                  backgroundColor: OVERLAY_COLOR,
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                }}
+              />
+              <Flex flexDirection="column" px={2} style={{ position: "absolute" }} zIndex={3}>
+                {!!profile?.icon?.url ? (
+                  <Image
+                    src={profile?.icon?.url}
+                    width={LOGO_SIZE}
+                    height={LOGO_SIZE}
+                    tintColor="white"
+                    style={{
+                      backgroundColor: "transparent",
+                      marginBottom: LOGO_MARGIN_BOTTOM,
+                      position: "absolute",
+                    }}
+                  />
+                ) : null}
+              </Flex>
+              <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
+                <Flex flexDirection="column" flexGrow={1}>
+                  <Text variant="sm" weight="medium" color="mono0">
+                    {name}
+                  </Text>
+                  {!!exhibition_period && (
+                    <Text variant="sm" color="mono0">
+                      {exhibition_period}
+                    </Text>
+                  )}
+                </Flex>
+              </Box>
+            </Box>
+          </RouterLink>
+        )}
+      </ThemeAwareClassTheme>
     )
   }
 }
-
-const BackgroundImage = styled(Image)`
-  background: ${themeGet("colors.mono60")};
-`
-
-const Container = styled(Box)`
-  width: ${Dimensions.get("window").width / 2 + 50}px;
-  height: 310px;
-  position: relative;
-  overflow: hidden;
-  background: ${themeGet("colors.mono60")};
-`
-
-// Set background color of overlay based on logo color
-const Overlay = styled.View`
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-`
-
-const Logo = styled(Image)`
-  background-color: transparent;
-  margin-bottom: ${themeGet("space.1")};
-  position: absolute;
-  tint-color: white;
-`

@@ -2,10 +2,13 @@ import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { Fair } from "app/Scenes/Map/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
+
+const FAIR_IMAGE_SIZE = 58
+const FAIR_IMAGE_BORDER_RADIUS = 30
 
 export interface Props {
   item: Fair
@@ -29,9 +32,17 @@ export class TabFairItemRow extends React.Component<Props> {
               onPress={() => this.handleTap(item)}
             >
               <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={1}>
-                <RoundedImageWrapper>
-                  <ImageWithFallback height={58} width={58} src={fairImage} />
-                </RoundedImageWrapper>
+                <Box
+                  width={FAIR_IMAGE_SIZE}
+                  borderRadius={FAIR_IMAGE_BORDER_RADIUS}
+                  overflow="hidden"
+                >
+                  <ImageWithFallback
+                    height={FAIR_IMAGE_SIZE}
+                    width={FAIR_IMAGE_SIZE}
+                    src={fairImage}
+                  />
+                </Box>
                 <Box width={boxWidth} pl={1}>
                   {!!item.name && (
                     <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
@@ -59,9 +70,3 @@ export class TabFairItemRow extends React.Component<Props> {
     )
   }
 }
-
-const RoundedImageWrapper = styled(Box)`
-  width: 58px;
-  border-radius: 30px;
-  overflow: hidden;
-`

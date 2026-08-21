@@ -1,17 +1,11 @@
 import { Box, Text } from "@artsy/palette-mobile"
-import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
 import { FlatList } from "react-native"
-import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
-
-const FairSectionBackground = styled(Box)`
-  background: ${themeGet("colors.mono100")};
-  margin-bottom: ${themeGet("space.1")};
-`
 
 interface Props {
   citySlug: string
@@ -40,7 +34,7 @@ export class FairEventSection extends Component<Props> {
     return (
       <ThemeAwareClassTheme>
         {({ space }) => (
-          <FairSectionBackground>
+          <Box backgroundColor="mono100" mb={1}>
             <Box mt={4}>
               <Text variant="lg-display" color="mono0">
                 Fairs
@@ -62,7 +56,7 @@ export class FairEventSection extends Component<Props> {
                 />
               </Box>
             )}
-          </FairSectionBackground>
+          </Box>
         )}
       </ThemeAwareClassTheme>
     )
