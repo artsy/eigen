@@ -62,6 +62,12 @@ export const DevTools: React.FC<{}> = () => {
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
+          <DevMenuButtonItem
+            title="Open Artsy Lens"
+            onPress={() => {
+              dismissModal(() => navigate("/lens"))
+            }}
+          />
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex>
               <MenuItem title="Migration version" />
