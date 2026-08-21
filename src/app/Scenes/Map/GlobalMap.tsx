@@ -11,7 +11,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Platform } from "react-native"
+import { Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -68,7 +68,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
-  const hideButtons = new Animated.Value(0)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -381,7 +380,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
     >
       <GlobalMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        hideButtons={hideButtons}
         city={viewer.city}
         userLocation={userLocation}
         currentLocation={currentLocation}

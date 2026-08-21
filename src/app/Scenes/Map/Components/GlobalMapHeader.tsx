@@ -5,11 +5,9 @@ import { CitySwitcherButton } from "app/Scenes/Map/Components/CitySwitcherButton
 import { UserPositionButton } from "app/Scenes/Map/Components/UserPositionButton"
 import { isValidLatLng } from "app/Scenes/Map/helpers/isValidLatLng"
 import { goBack } from "app/system/navigation/navigate"
-import { Animated } from "react-native"
 
 interface Props {
   safeAreaInsetTop: number
-  hideButtons: Animated.Value
   city: GlobalMap_viewer$data["city"]
   userLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
   currentLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
@@ -19,7 +17,6 @@ interface Props {
 
 export const GlobalMapHeader: React.FC<Props> = ({
   safeAreaInsetTop,
-  hideButtons,
   city,
   userLocation,
   currentLocation,
@@ -58,30 +55,17 @@ export const GlobalMapHeader: React.FC<Props> = ({
           }}
         />
       </Flex>
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateY: hideButtons.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -(safeAreaInsetTop + 12 + 50)],
-              }),
-            },
-          ],
-        }}
-      >
-        <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
-          <CitySwitcherButton city={city} isLoading={!city} onPress={onPressCitySwitcherButton} />
-          {!!isValidLatLng(userLocation) && (
-            <Box style={{ marginLeft: 10 }}>
-              <UserPositionButton
-                highlight={userLocation === currentLocation}
-                onPress={onPressUserPositionButton}
-              />
-            </Box>
-          )}
-        </Flex>
-      </Animated.View>
+      <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
+        <CitySwitcherButton city={city} isLoading={!city} onPress={onPressCitySwitcherButton} />
+        {!!isValidLatLng(userLocation) && (
+          <Box style={{ marginLeft: 10 }}>
+            <UserPositionButton
+              highlight={userLocation === currentLocation}
+              onPress={onPressUserPositionButton}
+            />
+          </Box>
+        )}
+      </Flex>
     </Flex>
   )
 }
