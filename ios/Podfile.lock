@@ -161,6 +161,9 @@ PODS:
     - ExpoModulesCore
   - ExpoFont (55.0.7):
     - ExpoModulesCore
+  - ExpoImageManipulator (55.0.20):
+    - ExpoModulesCore
+    - SDWebImageWebPCoder
   - ExpoKeepAwake (55.0.8):
     - ExpoModulesCore
   - ExpoLogBox (55.0.12):
@@ -393,6 +396,65 @@ PODS:
   - Nimble-Snapshots/Core (9.8.0):
     - iOSSnapshotTestCase (~> 8.0)
     - Nimble (~> 13.0)
+  - NitroImage (0.15.1):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - NitroModules
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
+  - NitroModules (0.36.5):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - ObjectiveSugar (1.1.0)
   - OCMock (3.9.4)
   - OHHTTPStubs (3.1.2)
@@ -4354,6 +4416,37 @@ PODS:
   - TOCropViewController (2.8.0)
   - Turf (4.0.0)
   - UICKeyChainStore (2.2.1)
+  - VisionCamera (5.2.2):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - NitroImage
+    - NitroModules
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (0.0.0)
@@ -4382,6 +4475,7 @@ DEPENDENCIES:
   - "ExpoDomWebView (from `../node_modules/@expo/dom-webview/ios`)"
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
+  - ExpoImageManipulator (from `../node_modules/expo-image-manipulator/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - "ExpoLogBox (from `../node_modules/@expo/log-box`)"
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
@@ -4410,6 +4504,8 @@ DEPENDENCIES:
   - nanopb
   - Nimble (~> 13.0)
   - Nimble-Snapshots (= 9.8.0)
+  - NitroImage (from `../node_modules/react-native-nitro-image`)
+  - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs (= 3.1.2)
@@ -4541,6 +4637,7 @@ DEPENDENCIES:
   - SwiftyJSON (= 5.0.2)
   - Then (= 2.3.0)
   - UICKeyChainStore
+  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -4666,6 +4763,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
     :path: "../node_modules/expo-font/ios"
+  ExpoImageManipulator:
+    :path: "../node_modules/expo-image-manipulator/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLogBox:
@@ -4694,6 +4793,10 @@ EXTERNAL SOURCES:
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/artsy/Interstellar.git
+  NitroImage:
+    :path: "../node_modules/react-native-nitro-image"
+  NitroModules:
+    :path: "../node_modules/react-native-nitro-modules"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -4930,6 +5033,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@segment/sovran-react-native"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
+  VisionCamera:
+    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -4971,6 +5076,7 @@ SPEC CHECKSUMS:
   ExpoDomWebView: b2e9d601f9cb77d3c97da73234e175b64be91928
   ExpoFileSystem: 5d01aa6678ccde01172351aad5720ee16845ae82
   ExpoFont: a95606f106a6394df8edf6d0d87aab9020af5ad4
+  ExpoImageManipulator: 73ab3187df7c59fc96cf17cf9e547e514a26803d
   ExpoKeepAwake: d0eb7a0719500d2a43fbf29b6f79e84d70c75ebf
   ExpoLogBox: a678d36477ab9544fe63e0b5328a0716539b6774
   ExpoModulesCore: cc07ebf5b947a239f1669cb5856d905cb2b093f7
@@ -5018,6 +5124,8 @@ SPEC CHECKSUMS:
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   Nimble: 84982ec98b5dfc0ffe9ae2ed4c0b2fc57807c2d5
   Nimble-Snapshots: 240ea76ee8e52dfc1387b8d0d9bf1db3420cabbd
+  NitroImage: 1030847adcaad2f2fe74ea8c0b97e31c0bad2313
+  NitroModules: ab089a25876d6510138cc21fbf2e36e872f7d607
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
@@ -5168,6 +5276,7 @@ SPEC CHECKSUMS:
   TOCropViewController: 797deaf39c90e6e9ddd848d88817f6b9a8a09888
   Turf: c9eb11a65d96af58cac523460fd40fec5061b081
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
+  VisionCamera: 3b4ad46ae909ea868d3822963e4ac9f807f3d29f
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: cf2a67aa1c8a225f0cb98a5f531d6f305d3f12e5
 

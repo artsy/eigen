@@ -137,6 +137,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { Lens } from "app/Scenes/Lens/Lens"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -886,6 +887,16 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ConversationDetailsScreenQuery],
+  },
+  {
+    path: "/lens",
+    name: "Lens",
+    Component: Lens,
+    options: {
+      alwaysPresentModally: true,
+      hidesBottomTabs: true,
+      screenOptions: { headerShown: false, gestureEnabled: false, animation: "fade" },
+    },
   },
   {
     path: "/dev-menu",

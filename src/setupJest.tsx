@@ -336,6 +336,51 @@ jest.mock("react-native-image-crop-picker", () => ({
   clean: jest.fn(),
 }))
 
+// The deleted 2022 ReverseImage camera scene mocked this as `jest.mock("react-native-vision-camera", () => {})`.
+// This version returns working defaults (permission denied, no device) so components using it can render
+// without crashing; tests that need other states override these with jest.mocked(...).mockReturnValue(...).
+jest.mock("react-native-vision-camera", () => ({
+  Camera: "Camera",
+  useCameraPermission: jest.fn(() => ({
+    hasPermission: false,
+    canRequestPermission: true,
+    requestPermission: jest.fn(),
+  })),
+  useCameraDevice: jest.fn(() => undefined),
+  usePhotoOutput: jest.fn(() => ({
+    capturePhoto: jest.fn(),
+    capturePhotoToFile: jest.fn(),
+  })),
+}))
+
+// Used by the Lens capture-crop step (Scenes/Lens/utils/cropToViewfinder.ts). A working chainable
+// default (manipulate -> crop -> renderAsync -> saveAsync) so anything that imports it -- even
+// transitively, e.g. via routes.tsx pulling in every registered scene -- can render in tests
+// without crashing; tests that care about crop behavior mock `cropToViewfinder` itself instead.
+jest.mock("expo-image-manipulator", () => {
+  const context: any = {
+    crop: jest.fn(() => context),
+    resize: jest.fn(() => context),
+    rotate: jest.fn(() => context),
+    flip: jest.fn(() => context),
+    reset: jest.fn(() => context),
+    renderAsync: jest.fn(() =>
+      Promise.resolve({
+        width: 0,
+        height: 0,
+        saveAsync: jest.fn(() =>
+          Promise.resolve({ uri: "file:///mock-cropped.jpg", width: 0, height: 0 })
+        ),
+      })
+    ),
+  }
+
+  return {
+    ImageManipulator: { manipulate: jest.fn(() => context) },
+    SaveFormat: { JPEG: "jpeg", PNG: "png", WEBP: "webp" },
+  }
+})
+
 jest.mock("react-native-keys", () => {
   interface MockConfig {
     secureFor: (key: keyof typeof secrets) => string
