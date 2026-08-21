@@ -19,7 +19,7 @@ import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import { GlobalMapHeader } from "./Components/GlobalMapHeader"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
-import { ShowCard } from "./Components/ShowCard"
+import { SHOW_CARD_HEIGHT, ShowCardOverlay } from "./Components/ShowCardOverlay"
 import { EventEmitter } from "./EventEmitter"
 import {
   bucketCityResults,
@@ -48,8 +48,6 @@ interface Props {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
-
-const SHOW_CARD_HEIGHT = 150
 
 export enum DrawerPosition {
   open = "open",
@@ -200,43 +198,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
     const { shows, fairs } = extractShowAndFairMaps(viewer.city)
     showsRef.current = { ...showsRef.current, ...shows }
     fairsRef.current = { ...fairsRef.current, ...fairs }
-  }
-
-  const renderShowCard = () => {
-    const hasShows = activeShows.length > 0
-
-    // We need to update activeShows in case of a mutation (save show)
-    const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
-      if (item.type === "Show") {
-        return showsRef.current[item.slug]
-      } else if (item.type === "Fair") {
-        return fairsRef.current[item.slug]
-      }
-      return item
-    })
-
-    return (
-      <Flex
-        style={{
-          left: 0,
-          right: 0,
-          position: "absolute",
-          height: SHOW_CARD_HEIGHT,
-        }}
-      >
-        {!!hasShows && (
-          <ShowCard
-            shows={updatedShows}
-            onSaveStarted={() => {
-              setIsSavingShow(true)
-            }}
-            onSaveEnded={() => {
-              setIsSavingShow(false)
-            }}
-          />
-        )}
-      </Flex>
-    )
   }
 
   const onUserLocationUpdate = (location: MapboxGL.Location) => {
@@ -456,7 +417,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
             height={SHOW_CARD_HEIGHT}
             justifyContent="flex-end"
           >
-            {renderShowCard()}
+            <ShowCardOverlay
+              activeShows={activeShows}
+              showsRef={showsRef}
+              fairsRef={fairsRef}
+              onSaveStarted={() => setIsSavingShow(true)}
+              onSaveEnded={() => setIsSavingShow(false)}
+            />
           </Flex>
         )}
         <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
