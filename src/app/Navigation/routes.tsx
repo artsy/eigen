@@ -1111,8 +1111,9 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerTransparent: true,
         headerShadowVisible: false,
-        header: () => {
-          // This is needed to make sure we don't intercept any clicks here accidentally
+        headerLeft: () => {
+          // Mapbox kilometers legend takes into account the existing of a left component
+          // If we don't show this as empty, the legend will be covered by the back button
           return <Flex pointerEvents="none" />
         },
       },
