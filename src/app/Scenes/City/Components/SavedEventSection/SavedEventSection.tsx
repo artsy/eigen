@@ -4,10 +4,11 @@ import PinSavedOff from "app/Components/Icons/PinSavedOff"
 import PinSavedOn from "app/Components/Icons/PinSavedOn"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { Show } from "app/utils/cityGuide/types"
 import { TouchableWithoutFeedback } from "react-native"
 
 export interface Props {
-  data: any
+  data: Show[]
   citySlug: string
 }
 

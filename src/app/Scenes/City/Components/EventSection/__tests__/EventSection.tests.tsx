@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
+import { Show } from "app/utils/cityGuide/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const data = [
@@ -16,7 +17,7 @@ const data = [
       name: "Pacita Abad Art Estate",
     },
   },
-]
+] as any as Show[]
 
 describe("CityEvent", () => {
   it("renders properly", () => {
