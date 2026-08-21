@@ -362,15 +362,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
             left: space(2),
           }}
           onPress={onPressMap}
-          scaleBarPosition={
-            Platform.OS === "android"
-              ? {
-                  top: safeAreaInsets.top + space(6),
-                  left: space(2),
-                }
-              : // The default position is fine on iOS // no need to override it
-                undefined
-          }
+          scaleBarPosition={{
+            top: Platform.OS === "ios" ? safeAreaInsets.top : safeAreaInsets.top + 40,
+            left: space(2),
+          }}
         >
           <MapboxGL.Camera
             ref={cameraRef}
