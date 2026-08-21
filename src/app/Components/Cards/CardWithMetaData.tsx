@@ -35,10 +35,14 @@ interface CardWithMetaDataProps {
   tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
   testId?: string
+  // Rendered beside the title block, outside the card's RouterLink so it can be
+  // pressed independently (e.g. a follow/save button).
+  actionElement?: React.ReactNode
 }
 
 export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
-  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent } = props
+  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent, actionElement } =
+    props
   const numColumns = useNumColumns()
 
   const { space } = useTheme()
@@ -70,26 +74,33 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
           ) : (
             <Box height={CARD_IMAGE_HEIGHT} width={CARD_IMAGE_WIDTH} />
           )}
-
-          <Spacer y={1} />
-
-          {!!title && (
-            <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
-              {title}
-            </Text>
-          )}
-          {!!subtitle && (
-            <Text color="mono60" variant="xs">
-              {subtitle}
-            </Text>
-          )}
-          {!!tag && (
-            <Text color="mono100" variant="xs">
-              {tag}
-            </Text>
-          )}
         </Flex>
       </RouterLink>
+
+      <Spacer y={1} />
+
+      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between">
+        <Flex flex={1}>
+          <RouterLink onPress={onPress} to={href}>
+            {!!title && (
+              <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
+                {title}
+              </Text>
+            )}
+            {!!subtitle && (
+              <Text color="mono60" variant="xs">
+                {subtitle}
+              </Text>
+            )}
+            {!!tag && (
+              <Text color="mono100" variant="xs">
+                {tag}
+              </Text>
+            )}
+          </RouterLink>
+        </Flex>
+        {!!actionElement && <Flex ml={1}>{actionElement}</Flex>}
+      </Flex>
     </Flex>
   )
 }

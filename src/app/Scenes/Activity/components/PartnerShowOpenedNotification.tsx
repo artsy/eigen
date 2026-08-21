@@ -55,7 +55,12 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
 
           <Flex flexDirection="column" alignItems="center">
             {shows.map((show) => (
-              <ShowItem displayViewShowButton show={show} key={show.internalID} />
+              <ShowItem
+                displayViewShowButton
+                shouldHideFollowButton
+                show={show}
+                key={show.internalID}
+              />
             ))}
           </Flex>
         </Flex>

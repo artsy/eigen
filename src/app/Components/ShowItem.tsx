@@ -1,6 +1,8 @@
-import { Button, Image, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Text } from "@artsy/palette-mobile"
 import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { graphql, useFragment } from "react-relay"
 
@@ -8,10 +10,16 @@ const DEFAULT_CELL_WIDTH = 335
 
 interface ShowItemProps {
   displayViewShowButton?: boolean
+  shouldHideFollowButton?: boolean
   show: ShowItem_show$key
 }
 
-export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = false, show }) => {
+export const ShowItem: React.FC<ShowItemProps> = ({
+  displayViewShowButton = false,
+  shouldHideFollowButton = false,
+  show,
+}) => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const data = useFragment(showGraphql, show)
 
   if (!data) {
@@ -25,36 +33,49 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
   })
 
   return (
-    <RouterLink to={href} style={{ width: DEFAULT_CELL_WIDTH }} testID="show-item-visit-show-link">
-      <Image
-        testID="show-cover"
-        src={data.coverImage?.url ?? ""}
-        blurhash={data.coverImage?.blurhash}
-        aspectRatio={1.3}
-        width={DEFAULT_CELL_WIDTH}
-      />
+    <Flex style={{ width: DEFAULT_CELL_WIDTH }}>
+      <RouterLink to={href} testID="show-item-visit-show-link">
+        <Image
+          testID="show-cover"
+          src={data.coverImage?.url ?? ""}
+          blurhash={data.coverImage?.blurhash}
+          aspectRatio={1.3}
+          width={DEFAULT_CELL_WIDTH}
+        />
+      </RouterLink>
 
-      <Text variant="lg-display" mt={1}>
-        {data.name}
-      </Text>
-      <Text variant="sm-display">{data.partner?.name}</Text>
-      {!!data.exhibitionPeriod && (
-        <Text variant="sm-display" color="mono60">
-          {data.exhibitionPeriod}
-        </Text>
-      )}
+      <Flex flexDirection="row" alignItems="flex-start" justifyContent="space-between" mt={1}>
+        <Flex flex={1}>
+          <RouterLink to={href}>
+            <Text variant="lg-display">{data.name}</Text>
+            <Text variant="sm-display">{data.partner?.name}</Text>
+            {!!data.exhibitionPeriod && (
+              <Text variant="sm-display" color="mono60">
+                {data.exhibitionPeriod}
+              </Text>
+            )}
+          </RouterLink>
+        </Flex>
+
+        {!shouldHideFollowButton && !!enableFollowShowsAndFairs && (
+          <Flex ml={0.5}>
+            <ShowFollowButton show={data} />
+          </Flex>
+        )}
+      </Flex>
 
       {!!displayViewShowButton && (
         <RouterLink hasChildTouchable to={href}>
           <Button my={2}>View Show</Button>
         </RouterLink>
       )}
-    </RouterLink>
+    </Flex>
   )
 }
 
 const showGraphql = graphql`
   fragment ShowItem_show on Show {
+    ...ShowFollowButton_show
     slug
     href
     name

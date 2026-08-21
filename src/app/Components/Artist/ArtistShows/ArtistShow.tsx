@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
 import { ArtistShow_show$data, ArtistShow_show$key } from "__generated__/ArtistShow_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { hrefForPartialShow } from "app/utils/router"
 import { View, ViewStyle } from "react-native"
@@ -35,8 +36,13 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
   const imageURL = image && image.url
 
   return (
-    <RouterLink haptic onPress={handleTap} to={hrefForPartialShow(data)}>
-      <View style={[styles?.container]}>
+    <View style={[styles?.container]}>
+      <RouterLink
+        haptic
+        onPress={handleTap}
+        to={hrefForPartialShow(data)}
+        style={{ flexDirection: "row", alignItems: "center", flex: 1 }}
+      >
         <View style={[styles?.imageMargin]}>
           <ImageWithFallback
             src={imageURL}
@@ -50,13 +56,16 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
         <View style={{ flex: 1 }}>
           <Metadata show={data} style={!!styles && styles.metadata} />
         </View>
-      </View>
-    </RouterLink>
+      </RouterLink>
+
+      <ShowFollowButton show={data} />
+    </View>
   )
 }
 
 const query = graphql`
   fragment ArtistShow_show on Show {
+    ...ShowFollowButton_show
     internalID
     slug
     href

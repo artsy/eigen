@@ -2,8 +2,10 @@ import { bullet, useTheme } from "@artsy/palette-mobile"
 import { FairCard_fair$data, FairCard_fair$key } from "__generated__/FairCard_fair.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardWithMetaData, useNumColumns } from "app/Components/Cards/CardWithMetaData"
+import { FairFollowButton } from "app/Components/FairFollowButton"
 import { MultipleImageLayout } from "app/Components/MultipleImageLayout"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact, concat, take } from "lodash"
 import { FC, memo } from "react"
 import { useWindowDimensions } from "react-native"
@@ -16,6 +18,7 @@ interface FairCardProps {
 }
 
 export const FairCard: FC<FairCardProps> = memo(({ fair: fairFragment, onPress, isFluid }) => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const fair = useFragment(fragment, fairFragment)
 
   const numColumns = useNumColumns()
@@ -59,12 +62,14 @@ export const FairCard: FC<FairCardProps> = memo(({ fair: fairFragment, onPress, 
       onPress={() => {
         onPress?.(fair)
       }}
+      actionElement={enableFollowShowsAndFairs ? <FairFollowButton fair={fair} /> : undefined}
     />
   )
 })
 
 const fragment = graphql`
   fragment FairCard_fair on Fair {
+    ...FairFollowButton_fair
     internalID
     slug
     profile {

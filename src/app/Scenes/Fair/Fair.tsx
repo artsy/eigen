@@ -11,6 +11,7 @@ import {
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { FairFollowButton } from "app/Components/FairFollowButton"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
@@ -121,15 +122,18 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
             onBack: goBack,
             hideTitle: true,
             rightElements: (
-              <TouchableOpacity
-                accessibilityRole="button"
-                accessibilityLabel="Share Fair"
-                onPress={() => {
-                  handleSharePress()
-                }}
-              >
-                <ShareIcon width={24} height={24} />
-              </TouchableOpacity>
+              <Flex flexDirection="row" alignItems="center" gap={1}>
+                <FairFollowButton fair={data} />
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  accessibilityLabel="Share Fair"
+                  onPress={() => {
+                    handleSharePress()
+                  }}
+                >
+                  <ShareIcon width={24} height={24} />
+                </TouchableOpacity>
+              </Flex>
             ),
           }}
         >
@@ -161,6 +165,7 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
 const fragment = graphql`
   fragment Fair_fair on Fair {
     ...FairHeader_fair
+    ...FairFollowButton_fair
     internalID
     slug
     name
@@ -172,7 +177,7 @@ const fragment = graphql`
 `
 
 export const FairScreenQuery = graphql`
-  query FairQuery($fairID: String!) @cacheable {
+  query FairQuery($fairID: String!) {
     fair(id: $fairID) @required(action: THROW) {
       ...Fair_fair
     }

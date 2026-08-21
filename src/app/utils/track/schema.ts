@@ -273,6 +273,8 @@ export enum ActionNames {
   AllBoothWorks = "allBoothWorks",
   BuyTickets = "buyTickets",
   FairSite = "fairSite",
+  FollowFair = "followFair",
+  UnfollowFair = "unfollowFair",
   FilterMedium = "filterMedium",
   FilterPrice = "filterPrice",
   GalleryFollow = "galleryFollow",

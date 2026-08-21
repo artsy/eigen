@@ -1,6 +1,8 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import { memo } from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"
@@ -13,6 +15,7 @@ interface ShowCardProps extends ViewProps {
 }
 
 export const ShowCard: React.FC<ShowCardProps> = memo(({ show, isFluid, onPress }) => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const imageURL = show.metaImage?.url
 
   const showCity = getShowCity({
@@ -35,6 +38,7 @@ export const ShowCard: React.FC<ShowCardProps> = memo(({ show, isFluid, onPress 
       subtitle={show.partner?.name}
       tag={formattedCityAndDate}
       onPress={onPress}
+      actionElement={enableFollowShowsAndFairs ? <ShowFollowButton show={show} /> : undefined}
     />
   )
 })
@@ -78,6 +82,7 @@ export const getShowCity = ({
 export const ShowCardContainer = createFragmentContainer(ShowCard, {
   show: graphql`
     fragment ShowCard_show on Show {
+      ...ShowFollowButton_show
       name
       formattedStartAt: startAt(format: "MMM D")
       formattedEndAt: endAt(format: "MMM D")

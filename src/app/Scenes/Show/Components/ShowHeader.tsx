@@ -1,5 +1,7 @@
-import { Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { Box, BoxProps, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
@@ -10,6 +12,7 @@ export interface ShowHeaderProps extends BoxProps {
 }
 
 export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
+  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const [currentTime, setCurrentTime] = useState(DateTime.local().toString())
 
   const { formattedTime } = useEventTiming({
@@ -38,7 +41,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
         {show.formattedStartAt} – {show.formattedEndAt}
       </Text>
 
-      {!!show.startAt && !!show.endAt && (
+      {!!show.startAt && !!show.endAt && formattedTime !== null && (
         <Text variant="sm" color="mono60">
           {formattedTime}
         </Text>
@@ -48,6 +51,14 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
         <Text variant="sm" color="mono60" mt={1}>
           {show.partner.name}
         </Text>
+      )}
+
+      {!!enableFollowShowsAndFairs && (
+        <>
+          <Spacer y={1} />
+
+          <ShowFollowButton show={show} />
+        </>
       )}
     </Box>
   )
@@ -69,6 +80,7 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
           name
         }
       }
+      ...ShowFollowButton_show
     }
   `,
 })

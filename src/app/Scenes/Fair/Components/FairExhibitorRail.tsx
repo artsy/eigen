@@ -7,6 +7,7 @@ import {
 } from "__generated__/FairExhibitorRail_show.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ShowFollowButton } from "app/Components/ShowFollowButton"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -36,17 +37,22 @@ export const FairExhibitorRail: React.FC<FairExhibitorRailProps> = memo(({ show:
 
   return (
     <>
-      <Flex px={2}>
-        <SectionTitle
-          title={partnerName}
-          subtitle={`${count} works`}
-          href={viewAllUrl}
-          onPress={() => {
-            if (!viewAllUrl) return
+      <Flex px={2} mb={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Flex flex={1}>
+          <SectionTitle
+            title={partnerName}
+            subtitle={`${count} works`}
+            href={viewAllUrl}
+            onPress={() => {
+              if (!viewAllUrl) return
 
-            trackEvent(tracks.tappedShow(show))
-          }}
-        />
+              trackEvent(tracks.tappedShow(show))
+            }}
+            mb={0}
+          />
+        </Flex>
+
+        <ShowFollowButton show={show} ml={1} />
       </Flex>
       <ArtworkRail
         artworks={artworks}
@@ -75,6 +81,7 @@ export const FairExhibitorRail: React.FC<FairExhibitorRailProps> = memo(({ show:
 
 const fairExhibitorRailFragment = graphql`
   fragment FairExhibitorRail_show on Show {
+    ...ShowFollowButton_show
     internalID
     slug
     href

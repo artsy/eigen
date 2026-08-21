@@ -148,7 +148,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
 })
 
 export const ShowScreenQuery = graphql`
-  query ShowQuery($showID: String!) @cacheable {
+  query ShowQuery($showID: String!) {
     show(id: $showID) @principalField {
       ...Show_show
     }
