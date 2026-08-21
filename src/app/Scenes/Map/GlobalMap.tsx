@@ -1,5 +1,4 @@
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
@@ -86,14 +85,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
-
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerShadowVisible: false,
-    })
-  }, [navigation])
 
   useEffect(() => {
     updateShowIdMap()
