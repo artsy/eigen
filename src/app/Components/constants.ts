@@ -1,3 +1,4 @@
+import { THEMES } from "@artsy/palette-mobile/dist/tokens"
 import { PixelRatio } from "react-native"
 
 export const PAGE_SIZE = 10
@@ -18,6 +19,13 @@ export const ICON_HIT_SLOP = {
   right: 6,
   bottom: 8,
   left: 8,
+}
+
+export const BOX_SHADOW = {
+  shadowColor: THEMES.v3light.colors.mono100,
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.1,
+  elevation: 2,
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
 export const SCROLLVIEW_PADDING_BOTTOM_OFFSET = 80
