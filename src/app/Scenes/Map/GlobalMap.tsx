@@ -1,4 +1,4 @@
-import { Box, Flex, useColor, useSpace } from "@artsy/palette-mobile"
+import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
@@ -24,10 +24,9 @@ import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import Supercluster from "supercluster"
-import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { GlobalMapHeader } from "./Components/GlobalMapHeader"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
-import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import {
   bucketCityResults,
@@ -35,6 +34,7 @@ import {
   BucketResults,
   emptyBucketResults,
 } from "./bucketCityResults"
+import { isValidLatLng } from "./helpers/isValidLatLng"
 import { Fair, FilterData, Show } from "./types"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
@@ -99,75 +99,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const navigation = useNavigation()
 
   useEffect(() => {
-    const onPressCitySwitcherButton = () => {
-      if (!showCityPicker) {
-        // Show the city picker
-        setShowCityPicker(true)
-        setActiveShows([])
-        setActivePin(null)
-      } else {
-        // Hide the city picker
-        setShowCityPicker(false)
-      }
-    }
-
-    const onPressUserPositionButton = () => {
-      if (!isValidLatLng(userLocation)) {
-        return
-      }
-
-      cameraRef.current?.setCamera({
-        centerCoordinate: [userLocation.lng, userLocation.lat],
-        zoomLevel: DefaultZoomLevel,
-        animationDuration: 500,
-      })
-    }
-
     navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  translateY: hideButtons.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -(safeAreaInsets.top + 12 + 50)],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
-              <CitySwitcherButton
-                city={viewer.city}
-                isLoading={!viewer.city}
-                onPress={onPressCitySwitcherButton}
-              />
-              {!!isValidLatLng(userLocation) && (
-                <Box style={{ marginLeft: 10 }}>
-                  <UserPositionButton
-                    highlight={userLocation === currentLocation}
-                    onPress={onPressUserPositionButton}
-                  />
-                </Box>
-              )}
-            </Flex>
-          </Animated.View>
-        )
-      },
       headerShadowVisible: false,
     })
-  }, [
-    navigation,
-    viewer,
-    userLocation,
-    showCityPicker,
-    activePin,
-    hideButtons,
-    safeAreaInsets.top,
-    currentLocation,
-  ])
+  }, [navigation])
 
   useEffect(() => {
     updateShowIdMap()
@@ -207,6 +142,30 @@ export const GlobalMap: React.FC<Props> = (props) => {
       updateClusterMap(newBucketResults)
     }
   }, [props, viewer])
+
+  const onPressCitySwitcherButton = () => {
+    if (!showCityPicker) {
+      // Show the city picker
+      setShowCityPicker(true)
+      setActiveShows([])
+      setActivePin(null)
+    } else {
+      // Hide the city picker
+      setShowCityPicker(false)
+    }
+  }
+
+  const onPressUserPositionButton = () => {
+    if (!isValidLatLng(userLocation)) {
+      return
+    }
+
+    cameraRef.current?.setCamera({
+      centerCoordinate: [userLocation.lng, userLocation.lat],
+      zoomLevel: DefaultZoomLevel,
+      animationDuration: 500,
+    })
+  }
 
   const handleFilterChange = (activeIndex: number) => {
     setActiveIndex(activeIndex)
@@ -505,6 +464,15 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
+      <GlobalMapHeader
+        safeAreaInsetTop={safeAreaInsets.top}
+        hideButtons={hideButtons}
+        city={viewer.city}
+        userLocation={userLocation}
+        currentLocation={currentLocation}
+        onPressCitySwitcherButton={onPressCitySwitcherButton}
+        onPressUserPositionButton={onPressUserPositionButton}
+      />
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
@@ -587,14 +555,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 /** Makes sure we're consistently using { lat, lng } internally */
 const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
   return { lat: coords.latitude, lng: coords.longitude }
-}
-
-/**
- * `city.coordinates` is nullable in the schema and location updates can arrive without coordinates,
- * so make sure we actually have numbers before handing them over to the map.
- */
-const isValidLatLng = (location: any): location is { lat: number; lng: number } => {
-  return typeof location?.lat === "number" && typeof location?.lng === "number"
 }
 
 const tracks = {
