@@ -1,32 +1,36 @@
 import { Box, Text, useSpace } from "@artsy/palette-mobile"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { FlatList } from "react-native"
+import { Fair } from "app/utils/cityGuide/types"
+import { memo, useCallback, useMemo } from "react"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 interface Props {
   citySlug: string
-  // Likely Fair[]
-  data: any[]
+  data: Fair[]
 }
 
-export const FairEventSection: React.FC<Props> = ({ citySlug, data }) => {
+export const FairEventSection: React.FC<Props> = memo(({ citySlug, data }) => {
   const space = useSpace()
 
-  const viewAllPressed = () => {
+  const viewAllPressed = useCallback(() => {
     navigate(`/city-fair/${citySlug}`)
-  }
+  }, [citySlug])
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const renderItem = ({ item }) => {
-    const fair = item
-    return (
+  const fairsWithImages = useMemo(() => data.filter((fair) => Boolean(fair.image)), [data])
+
+  const renderItem: ListRenderItem<Fair> = useCallback(
+    ({ item }) => (
       <Box pr={1}>
-        <FairEventSectionCard fair={fair} />
+        <FairEventSectionCard fair={item} />
       </Box>
-    )
-  }
+    ),
+    []
+  )
+
+  const keyExtractor = useCallback((item: Fair) => item.id, [])
 
   return (
     <Box backgroundColor="mono100" mb={1}>
@@ -35,17 +39,17 @@ export const FairEventSection: React.FC<Props> = ({ citySlug, data }) => {
           Fairs
         </Text>
       </Box>
-      <FlatList
-        data={data.filter((fair) => Boolean(fair.image))}
+      <FlashList
+        data={fairsWithImages}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
         contentContainerStyle={{ paddingVertical: space(2) }}
         horizontal
       />
       {data.length > 2 && (
         <Box mb={4}>
           <CaretButton
-            onPress={() => viewAllPressed()}
+            onPress={viewAllPressed}
             text={`View all ${data.length} fairs`}
             textColor="mono0"
           />
@@ -53,4 +57,4 @@ export const FairEventSection: React.FC<Props> = ({ citySlug, data }) => {
       )}
     </Box>
   )
-}
+})
