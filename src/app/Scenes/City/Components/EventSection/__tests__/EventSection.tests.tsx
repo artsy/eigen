@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -19,10 +20,10 @@ const data = [
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappers(
+    renderWithWrappers(
       <EventSection title="Gallery shows" section="galleries" citySlug="new-york" data={data} />
     )
 
-    expect(queryByText("Gallery shows")).toBeTruthy()
+    expect(screen.getByText("Gallery shows")).toBeTruthy()
   })
 })

@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FairEventSection } from "app/Scenes/City/Components/FairEventSection/FairEventSection"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -17,10 +18,8 @@ const data = [
 
 describe("FairEventSection", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappers(
-      <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
-    )
+    renderWithWrappers(<FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />)
 
-    expect(queryByText("TEFAF New York Fall 2019")).toBeTruthy()
+    expect(screen.getByText("TEFAF New York Fall 2019")).toBeTruthy()
   })
 })
