@@ -7,16 +7,28 @@ runs:
       run: brew bundle
       shell: bash
 
-    - name: Cache cocoapods
+    # Exact-match only, no restore-keys. A prefix fallback restores a Pods/ resolved against a
+    # different Podfile.lock, so `pod install` reconciles stale state and rewrites the lockfile
+    # — and that rewritten state then gets saved under the *exact* key, poisoning it so every
+    # later exact-key hit reproduces the drift. Requiring an exact match is what stops a poisoned
+    # entry from being created: with no restore-keys a miss restores nothing, and every runner we
+    # use (GitHub-hosted and Blacksmith alike) is ephemeral, so `pod install` starts from no Pods/.
+    - name: Cache Pods (exact match only)
       id: cache-pods
       uses: actions/cache@v4
       with:
-        path: |
-          ios/Pods
-          ~/Library/Caches/CocoaPods
+        path: ios/Pods
         key: pods-v3-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+
+    # Just downloaded spec files, not resolved install state, so a stale prefix match here is safe
+    # and speeds up cold `pod install` runs without affecting the resulting Podfile.lock.
+    - name: Cache CocoaPods spec repo
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Caches/CocoaPods
+        key: cocoapods-specs-v1-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
         restore-keys: |
-          pods-v3-${{ runner.os }}-
+          cocoapods-specs-v1-${{ runner.os }}-
 
     - name: Download fonts from s3
       run: ./scripts/setup/download-fonts
@@ -29,6 +41,25 @@ runs:
     - name: Install CocoaPods
       run: yarn pod-install
       shell: bash
+
+    # `pod install` should leave the committed Podfile.lock untouched. If it rewrites it, the
+    # Expo fingerprint (which hashes the file) diverges from the committed one, so cached
+    # native builds get invalidated — and the drifted Pods/ is then saved under the exact
+    # cache key, poisoning it so every later exact-key hit reproduces the drift. That went
+    # unnoticed for three weeks, so surface it in the logs. Reports only, never fails the job.
+    - name: Report Podfile.lock drift
+      shell: bash
+      run: |
+        echo "Pods cache-hit: '${{ steps.cache-pods.outputs.cache-hit }}'"
+        if git diff --quiet -- ios/Podfile.lock; then
+          echo "✅ ios/Podfile.lock unchanged ($(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1))"
+        else
+          echo "::warning::pod install modified ios/Podfile.lock — the Expo fingerprint will not match the committed lockfile. Run 'yarn pod-install' locally and commit the result."
+          echo "committed sha1: $(git show HEAD:ios/Podfile.lock | shasum -a 1 | cut -d' ' -f1)"
+          echo "on-disk   sha1: $(shasum -a 1 ios/Podfile.lock | cut -d' ' -f1)"
+          echo "diff (committed -> after install):"
+          git --no-pager diff -- ios/Podfile.lock
+        fi
 
     - name: Select Xcode version
       run: |
