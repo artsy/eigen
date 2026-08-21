@@ -10,19 +10,15 @@ runs:
     # Exact-match only, no restore-keys. A prefix fallback restores a Pods/ resolved against a
     # different Podfile.lock, so `pod install` reconciles stale state and rewrites the lockfile
     # — and that rewritten state then gets saved under the *exact* key, poisoning it so every
-    # later exact-key hit reproduces the drift. Requiring an exact match (and installing clean
-    # otherwise) is what stops a poisoned entry from being created in the first place.
+    # later exact-key hit reproduces the drift. Requiring an exact match is what stops a poisoned
+    # entry from being created: with no restore-keys a miss restores nothing, and every runner we
+    # use (GitHub-hosted and Blacksmith alike) is ephemeral, so `pod install` starts from no Pods/.
     - name: Cache Pods (exact match only)
       id: cache-pods
       uses: actions/cache@v4
       with:
         path: ios/Pods
         key: pods-v3-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
-
-    - name: Clean Pods on cache miss
-      if: steps.cache-pods.outputs.cache-hit != 'true'
-      run: rm -rf ios/Pods
-      shell: bash
 
     # Just downloaded spec files, not resolved install state, so a stale prefix match here is safe
     # and speeds up cold `pod install` runs without affecting the resulting Podfile.lock.
