@@ -24,9 +24,8 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { FC, Suspense, useState } from "react"
+import { FC, Suspense, useRef, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import usePrevious from "react-use/lib/usePrevious"
 
 interface ArtworkListScreenProps {
   listID: string
@@ -44,7 +43,12 @@ export const artworkListVariables = { count: PAGE_SIZE, sort: DEFAULT_SORT_OPTIO
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState(DEFAULT_SORT_OPTION)
-  const prevSelectedSortValue = usePrevious(selectedSortValue)
+  // The sort modal reports its dismissal asynchronously, once its closing animation has finished,
+  // so `handleSortByModalClosed` cannot rely on the `selectedSortValue` state closure: by then it
+  // may be reading a value from a stale render. These refs track the sort the user actually picked
+  // and the one we last fetched, so we always compare and refetch the current values.
+  const selectedSortValueRef = useRef(DEFAULT_SORT_OPTION)
+  const lastFetchedSortValueRef = useRef(DEFAULT_SORT_OPTION)
 
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
     ArtworkListScreenQuery,
@@ -65,11 +69,16 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const handleSortByModalClosed = () => {
     setSortModalVisible(false)
 
-    if (selectedSortValue === prevSelectedSortValue) {
+    const newSortValue = selectedSortValueRef.current
+
+    if (newSortValue === lastFetchedSortValueRef.current) {
       return
     }
+
+    lastFetchedSortValueRef.current = newSortValue
+
     refetch(
-      { sort: selectedSortValue },
+      { sort: newSortValue },
       {
         fetchPolicy: "store-and-network",
       }
@@ -81,6 +90,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   }
 
   const handleSelectOption = (option: SortOption) => {
+    selectedSortValueRef.current = option.value as CollectionArtworkSorts
     setSelectedSortValue(option.value as CollectionArtworkSorts)
     closeSortModal()
   }
