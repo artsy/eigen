@@ -102,7 +102,7 @@ export const CityView: React.FC<CityViewProps> = () => {
                     cityName={cityName}
                     citySlug={citySlug}
                     key={cityName}
-                    buckets={buckets as any /* STRICTNESS_MIGRATION */}
+                    buckets={buckets}
                   />
                 </Tabs.Tab>
               )
@@ -111,7 +111,6 @@ export const CityView: React.FC<CityViewProps> = () => {
               <Tabs.Tab name={tab.id} label={tab.text} key={tab.id}>
                 <EventList
                   key={cityName + tab.id}
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   bucket={buckets[tab.id]}
                   type={tab.id}
                   cityName={cityName}
