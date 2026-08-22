@@ -5,7 +5,7 @@ import { useLocation } from "app/utils/hooks/useLocation"
 import expandedCities from "../../../../../data/cityDataSortedByDisplayPreference-expanded.json"
 import originalCities from "../../../../../data/cityDataSortedByDisplayPreference.json"
 
-export const useInitialLocation = () => {
+export const useInitialLocation = (preselectedCitySlug?: string) => {
   const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
   const cities = enabledExpandedList ? expandedCities : originalCities
 
@@ -14,6 +14,10 @@ export const useInitialLocation = () => {
   )
 
   const { location } = useLocation()
+
+  if (preselectedCitySlug && cities.some((city) => city.slug === preselectedCitySlug)) {
+    return preselectedCitySlug
+  }
 
   let initialCitySlug = "new-york-ny-usa"
 
