@@ -6,7 +6,7 @@ import Spinner from "app/Components/Spinner"
 import { navigate } from "app/system/navigation/navigate"
 import { MapTab, Show } from "app/utils/cityGuide/types"
 import { isEqual } from "lodash"
-import React from "react"
+import { Fragment, memo } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { TabFairItemRow } from "./TabFairItemRow/TabFairItemRow"
 
@@ -34,121 +34,114 @@ interface Props {
 }
 
 // @TODO: Implement test for the EventList component https://artsyproduct.atlassian.net/browse/LD-562
-export class EventList extends React.Component<Props> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  renderItem = (item) => {
-    const { type } = this.props
-    return (
-      <Box height={RowHeight} py={2}>
-        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} />}
-      </Box>
-    )
-  }
-
-  renderFooter = () => {
-    const { bucket, fetchingNextPage, renderedInTab } = this.props
-    if (fetchingNextPage) {
-      return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-    }
-
-    if (renderedInTab && bucket.length > MaxRowCount) {
+export const EventList: React.FC<Props> = memo(
+  ({ bucket, type, citySlug, cityName, header, onScroll, fetchingNextPage, renderedInTab }) => {
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const renderItem = (item) => {
       return (
-        <>
-          <Separator />
-          <Box mt={2} mb={4}>
-            <CaretButton
-              onPress={() => this.viewAllPressed()}
-              text={`View all ${bucket.length} shows`}
-            />
-          </Box>
-        </>
+        <Box height={RowHeight} py={2}>
+          {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} />}
+        </Box>
       )
     }
 
-    return null
-  }
+    const viewAllPressed = () => {
+      navigate(`/city/${citySlug}/${type}`)
+    }
 
-  shouldComponentUpdate(nextProps: Props) {
+    const renderFooter = () => {
+      if (fetchingNextPage) {
+        return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+      }
+
+      if (renderedInTab && bucket.length > MaxRowCount) {
+        return (
+          <>
+            <Separator />
+            <Box mt={2} mb={4}>
+              <CaretButton
+                onPress={() => viewAllPressed()}
+                text={`View all ${bucket.length} shows`}
+              />
+            </Box>
+          </>
+        )
+      }
+
+      return null
+    }
+
+    const hasEventsComponent = () => {
+      const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
+      return (
+        <EventFlatList
+          ListHeaderComponent={() => {
+            if (!!header) {
+              return (
+                <Box mb={2}>
+                  <Text variant="lg-display">{header}</Text>
+                </Box>
+              )
+            } else {
+              return null
+            }
+          }}
+          data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
+          ItemSeparatorComponent={() => <Separator />}
+          ListFooterComponent={renderFooter()}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => renderItem(item)}
+          onScroll={onScroll}
+          windowSize={50}
+          contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
+          getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
+        />
+      )
+    }
+
+    const hasNoEventsComponent = () => {
+      const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : Fragment
+
+      switch (type) {
+        case "saved":
+          return (
+            <EmptyStateContainer>
+              <Box py={2}>
+                <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+              </Box>
+            </EmptyStateContainer>
+          )
+        case "fairs":
+          return (
+            <EmptyStateContainer>
+              <Box py={2}>
+                <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+              </Box>
+            </EmptyStateContainer>
+          )
+        default:
+          return (
+            <EmptyStateContainer>
+              <Box py={2}>
+                <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+              </Box>
+            </EmptyStateContainer>
+          )
+      }
+    }
+
+    const hasEvents = bucket.length > 0
+    return hasEvents ? hasEventsComponent() : hasNoEventsComponent()
+  },
+  (prevProps, nextProps) => {
     return (
-      !isEqual(this.props.fetchingNextPage, nextProps.fetchingNextPage) ||
-      !isEqual(this.props.type, nextProps.type) ||
-      this.props.bucket.length !== nextProps.bucket.length ||
-      !isEqual(
-        this.props.bucket.map((g) => g.is_followed),
+      isEqual(prevProps.fetchingNextPage, nextProps.fetchingNextPage) &&
+      isEqual(prevProps.type, nextProps.type) &&
+      prevProps.bucket.length === nextProps.bucket.length &&
+      isEqual(
+        prevProps.bucket.map((g) => g.is_followed),
         nextProps.bucket.map((g) => g.is_followed)
       )
     )
   }
-
-  viewAllPressed() {
-    const { citySlug, type } = this.props
-    navigate(`/city/${citySlug}/${type}`)
-  }
-
-  hasEventsComponent = () => {
-    const { bucket, onScroll, header, renderedInTab } = this.props
-    const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
-    return (
-      <EventFlatList
-        ListHeaderComponent={() => {
-          if (!!header) {
-            return (
-              <Box mb={2}>
-                <Text variant="lg-display">{header}</Text>
-              </Box>
-            )
-          } else {
-            return null
-          }
-        }}
-        data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
-        ItemSeparatorComponent={() => <Separator />}
-        ListFooterComponent={this.renderFooter()}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => this.renderItem(item)}
-        onScroll={onScroll}
-        windowSize={50}
-        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
-        getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
-      />
-    )
-  }
-
-  hasNoEventsComponent = () => {
-    const { type, cityName, renderedInTab } = this.props
-    const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : React.Fragment
-
-    switch (type) {
-      case "saved":
-        return (
-          <EmptyStateContainer>
-            <Box py={2}>
-              <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
-            </Box>
-          </EmptyStateContainer>
-        )
-      case "fairs":
-        return (
-          <EmptyStateContainer>
-            <Box py={2}>
-              <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
-            </Box>
-          </EmptyStateContainer>
-        )
-      default:
-        return (
-          <EmptyStateContainer>
-            <Box py={2}>
-              <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
-            </Box>
-          </EmptyStateContainer>
-        )
-    }
-  }
-
-  render() {
-    const { bucket } = this.props
-    const hasEvents = bucket.length > 0
-    return hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()
-  }
-}
+)
