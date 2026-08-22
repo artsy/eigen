@@ -659,11 +659,57 @@ jest.mock("app/system/navigation/useReloadedDevNavigationState", () => ({
 
 jest.mock("@gorhom/bottom-sheet", () => {
   const { View } = require("react-native")
+  const bottomSheetMock = require("@gorhom/bottom-sheet/mock")
+
+  /**
+   * The bundled mock's `BottomSheetModal` stubs out `present`/`dismiss` entirely, so it never
+   * invokes the `onAnimate`/`onDismiss` callbacks that the real component fires. That makes any
+   * logic hanging off those props unreachable from tests. Mirror the real component instead:
+   *
+   * - `present()` reports the presentation through `onAnimate`.
+   * - dismissing reports it through `onDismiss`, but only *once* and only if the sheet was
+   *   actually presented (the real one early-exits when it is already closed).
+   * - `onDismiss` fires asynchronously, because the real sheet only reports a dismissal once its
+   *   closing animation has finished — i.e. a tick after whatever triggered the close. Callbacks
+   *   that read component state therefore see it already committed, and tests that depend on
+   *   this ordering stay honest.
+   */
+  class BottomSheetModal extends bottomSheetMock.BottomSheetModal {
+    isPresented = false
+
+    present(data: unknown) {
+      if (this.isPresented) {
+        return
+      }
+      this.isPresented = true
+      super.present(data)
+      this.props.onAnimate?.(-1, 0)
+    }
+
+    dismiss() {
+      if (!this.isPresented) {
+        return
+      }
+      this.isPresented = false
+      super.dismiss()
+      Promise.resolve().then(() => this.props.onDismiss?.())
+    }
+
+    close() {
+      this.dismiss()
+    }
+
+    forceClose() {
+      this.dismiss()
+    }
+  }
+
   return {
     __esModule: true,
     SCROLLABLE_TYPE: {},
     createBottomSheetScrollableComponent: jest.fn().mockReturnValue(View),
-    ...require("@gorhom/bottom-sheet/mock"),
+    ...bottomSheetMock,
+    BottomSheetModal,
   }
 })
 
