@@ -1,5 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import { Event } from "app/Scenes/City/Components/Event/Event"
-import { Show } from "app/Scenes/Map/types"
+import { Show } from "app/utils/cityGuide/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const eventData = {
@@ -21,8 +22,8 @@ const eventData = {
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappers(<Event event={eventData} />)
+    renderWithWrappers(<Event event={eventData} />)
 
-    expect(queryByText("Pacita Abad Art Estate")).toBeTruthy()
+    expect(screen.getByText("Pacita Abad Art Estate")).toBeTruthy()
   })
 })

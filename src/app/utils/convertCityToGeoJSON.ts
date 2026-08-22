@@ -1,4 +1,4 @@
-import { Fair, Show } from "app/Scenes/Map/types"
+import { Fair, Show } from "app/utils/cityGuide/types"
 
 // Here is a sample GeoJSON document
 // {

@@ -1,6 +1,6 @@
 import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
-import { BucketKey } from "app/Scenes/Map/bucketCityResults"
-import { FilterData } from "app/Scenes/Map/types"
+import { BucketKey } from "app/utils/cityGuide/bucketCityResults"
+import { FilterData } from "app/utils/cityGuide/types"
 import { memo } from "react"
 import { StyleProp } from "react-native"
 

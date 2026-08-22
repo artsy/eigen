@@ -2,9 +2,9 @@ import { Box, Flex, Text } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
-import { Fair, Show } from "app/Scenes/Map/types"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { Fair, Show } from "app/utils/cityGuide/types"
 import { isEqual } from "lodash"
 import { Component } from "react"
 import {

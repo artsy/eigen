@@ -1,5 +1,5 @@
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
-import { Fair, Show } from "app/Scenes/Map/types"
+import { Fair, Show } from "app/utils/cityGuide/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { uniq } from "lodash"
 

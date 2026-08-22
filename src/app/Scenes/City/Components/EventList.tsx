@@ -2,8 +2,9 @@ import { Box, Separator, SimpleMessage, Tabs, Text } from "@artsy/palette-mobile
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
-import { MapTab, Show } from "app/Scenes/Map/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { MapTab, Show } from "app/utils/cityGuide/types"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"

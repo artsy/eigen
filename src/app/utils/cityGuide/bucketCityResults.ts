@@ -1,8 +1,20 @@
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { sortBy, uniq } from "lodash"
 import { DateTime } from "luxon"
+import type { Fair, Show } from "./types"
 
-export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
+export interface BucketResults {
+  saved: Show[]
+  fairs: Fair[]
+  galleries: Show[]
+  museums: Show[]
+  closing: Show[]
+  opening: Show[]
+}
+
+export type BucketKey = keyof BucketResults
+
+export const bucketCityResults = (viewer: GlobalMap_viewer$data): BucketResults => {
   // The saved shows needs to be sorted by end_date_asc
   const now = DateTime.now()
   const oneWeekFromNow = DateTime.now().plus({ days: 7 })
@@ -57,6 +69,9 @@ export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
     return DateTime.fromISO(event.end_at).toMillis()
   })
 
+  // Note: the individual `@ts-expect-error`s above are pre-existing legacy debt around
+  // `viewer.city` nullability; we assert the overall shape here so consumers get a reliable
+  // `BucketResults` contract instead of the `any` this function previously returned.
   return {
     saved,
     fairs,
@@ -64,11 +79,8 @@ export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
     museums,
     closing,
     opening,
-  }
+  } as BucketResults
 }
-
-export type BucketKey = keyof ReturnType<typeof bucketCityResults>
-export type BucketResults = ReturnType<typeof bucketCityResults>
 
 export const emptyBucketResults: BucketResults = {
   saved: [],
