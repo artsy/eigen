@@ -147,7 +147,7 @@ export const ShowItemRow: React.FC<Props> = ({
                 >
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : !!show.end_at && exhibitionDates(show.exhibition_period, show.end_at)}
+                    : exhibitionDates(show.exhibition_period, show.end_at ?? "")}
                 </Text>
               )}
             </Flex>
