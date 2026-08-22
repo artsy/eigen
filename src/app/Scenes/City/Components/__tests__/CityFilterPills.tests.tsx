@@ -1,0 +1,23 @@
+import { fireEvent, screen } from "@testing-library/react-native"
+import { CityFilterPills } from "app/Scenes/City/Components/CityFilterPills"
+import { cityTabs } from "app/Scenes/City/cityTabs"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+
+describe("CityFilterPills", () => {
+  it("renders a pill for every city tab", () => {
+    renderWithWrappers(<CityFilterPills selectedTabId="all" onSelectTab={jest.fn()} />)
+
+    cityTabs.forEach((tab) => {
+      expect(screen.getByText(tab.text)).toBeOnTheScreen()
+    })
+  })
+
+  it("calls onSelectTab with the pressed tab", () => {
+    const onSelectTab = jest.fn()
+    renderWithWrappers(<CityFilterPills selectedTabId="all" onSelectTab={onSelectTab} />)
+
+    fireEvent.press(screen.getByText("Museums"))
+
+    expect(onSelectTab).toHaveBeenCalledWith(cityTabs.find((tab) => tab.id === "museums"))
+  })
+})
