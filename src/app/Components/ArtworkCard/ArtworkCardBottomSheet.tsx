@@ -8,6 +8,7 @@ import {
   ArtworkCardBottomSheetTabs,
   ArtworkCardBottomSheetTabsSkeleton,
 } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
+import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBottomSheetTag"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -32,6 +33,8 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
   const [footerVisible, setFooterVisible] = useState(true)
   const color = useColor()
   const { trackEvent } = useTracking()
+
+  useSentryBottomSheetTag("ArtworkCardBottomSheet", isExpanded)
 
   useEffect(() => {
     setFooterVisible(true)
