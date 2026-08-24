@@ -77,6 +77,7 @@ export const Inbox: React.FC<Props> = memo(({ me, relay: _relay, isVisible: _isV
     <TabsContainer
       initialTabName={initialPageName}
       onTabChange={({ tabName }) => handleNavigationTab(tabName)}
+      lazy
     >
       <Tabs.Tab name="bids" label="Bids">
         <MyBidsContainer isActiveTab={activeTab === Tab.bids} me={me} />
