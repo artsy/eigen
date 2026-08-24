@@ -46,7 +46,19 @@
         [stackView addSubview:buttonContainer withTopMargin:@"20" sideMargin:@"0"];
 
         [self addSubview:stackView];
-        [stackView alignCenterWithView:self];
+
+        // FLKAutoLayout sets this for us, native anchors do not. We need native anchors here because
+        // alignCenterWithView: only takes a UIView, and safeAreaLayoutGuide is a UILayoutGuide.
+        stackView.translatesAutoresizingMaskIntoConstraints = NO;
+
+        UILayoutGuide *safeAreaLayoutGuide = self.safeAreaLayoutGuide;
+        [NSLayoutConstraint activateConstraints:@[
+            [stackView.centerXAnchor constraintEqualToAnchor:safeAreaLayoutGuide.centerXAnchor],
+            [stackView.centerYAnchor constraintEqualToAnchor:safeAreaLayoutGuide.centerYAnchor],
+            // Keep the title and subtitle clear of the rounded corners and sensor housing in landscape.
+            [stackView.leadingAnchor constraintGreaterThanOrEqualToAnchor:safeAreaLayoutGuide.leadingAnchor constant:20],
+            [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:safeAreaLayoutGuide.trailingAnchor constant:-20],
+        ]];
     }
     return self;
 }
