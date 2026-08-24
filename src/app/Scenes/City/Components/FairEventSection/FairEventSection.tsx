@@ -1,8 +1,7 @@
-import { Box, Text, useSpace } from "@artsy/palette-mobile"
+import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { FlatList } from "react-native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 interface Props {
@@ -12,21 +11,11 @@ interface Props {
 }
 
 export const FairEventSection: React.FC<Props> = ({ citySlug, data }) => {
-  const space = useSpace()
-
   const viewAllPressed = () => {
     navigate(`/city-fair/${citySlug}`)
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const renderItem = ({ item }) => {
-    const fair = item
-    return (
-      <Box pr={1}>
-        <FairEventSectionCard fair={fair} />
-      </Box>
-    )
-  }
+  const fairsWithImage = data.filter((fair) => Boolean(fair.image))
 
   return (
     <Box backgroundColor="mono100" mb={1}>
@@ -35,13 +24,13 @@ export const FairEventSection: React.FC<Props> = ({ citySlug, data }) => {
           Fairs
         </Text>
       </Box>
-      <FlatList
-        data={data.filter((fair) => Boolean(fair.image))}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingVertical: space(2) }}
-        horizontal
-      />
+
+      {fairsWithImage.map((fair) => (
+        <Box key={fair.id} pr={1}>
+          <FairEventSectionCard fair={fair} />
+        </Box>
+      ))}
+
       {data.length > 2 && (
         <Box mb={4}>
           <CaretButton
