@@ -3,12 +3,11 @@ import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { MapTab } from "app/utils/cityGuide/types"
 import { FC, useEffect } from "react"
-import { ScrollView, ViewProps } from "react-native"
+import { ScrollView } from "react-native"
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
-  useAnimatedProps,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
