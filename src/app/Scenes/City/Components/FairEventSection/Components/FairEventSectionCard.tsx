@@ -1,6 +1,6 @@
 import { Box, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
-import { Fair } from "app/utils/cityGuide/types"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { Fair } from "app/utils/cityGuide/types"
 import { Dimensions } from "react-native"
 
 const CARD_WIDTH_OFFSET = 50

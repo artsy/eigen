@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { EventMutation } from "__generated__/EventMutation.graphql"
-import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
-import { Show } from "app/utils/cityGuide/types"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { Show } from "app/utils/cityGuide/types"
+import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"

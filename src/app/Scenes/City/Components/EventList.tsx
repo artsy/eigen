@@ -5,7 +5,6 @@ import Spinner from "app/Components/Spinner"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { MapTab, Show } from "app/utils/cityGuide/types"
-import { isEqual } from "lodash"
 import { Fragment, memo } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { TabFairItemRow } from "./TabFairItemRow/TabFairItemRow"
@@ -71,7 +70,9 @@ export const EventList: React.FC<Props> = memo(
       return null
     }
 
-    const hasEventsComponent = () => {
+    const hasEvents = bucket.length > 0
+
+    if (hasEvents) {
       const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
       return (
         <EventFlatList
@@ -99,49 +100,34 @@ export const EventList: React.FC<Props> = memo(
       )
     }
 
-    const hasNoEventsComponent = () => {
-      const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : Fragment
+    // Has No Events
+    const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : Fragment
 
-      switch (type) {
-        case "saved":
-          return (
-            <EmptyStateContainer>
-              <Box py={2}>
-                <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
-              </Box>
-            </EmptyStateContainer>
-          )
-        case "fairs":
-          return (
-            <EmptyStateContainer>
-              <Box py={2}>
-                <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
-              </Box>
-            </EmptyStateContainer>
-          )
-        default:
-          return (
-            <EmptyStateContainer>
-              <Box py={2}>
-                <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
-              </Box>
-            </EmptyStateContainer>
-          )
-      }
+    switch (type) {
+      case "saved":
+        return (
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
+        )
+      case "fairs":
+        return (
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
+        )
+      default:
+        return (
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
+        )
     }
-
-    const hasEvents = bucket.length > 0
-    return hasEvents ? hasEventsComponent() : hasNoEventsComponent()
-  },
-  (prevProps, nextProps) => {
-    return (
-      isEqual(prevProps.fetchingNextPage, nextProps.fetchingNextPage) &&
-      isEqual(prevProps.type, nextProps.type) &&
-      prevProps.bucket.length === nextProps.bucket.length &&
-      isEqual(
-        prevProps.bucket.map((g) => g.is_followed),
-        nextProps.bucket.map((g) => g.is_followed)
-      )
-    )
   }
 )
