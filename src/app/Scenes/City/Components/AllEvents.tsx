@@ -2,7 +2,7 @@ import { Box, Separator, Spacer, Tabs, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
 import { BucketResults } from "app/utils/cityGuide/bucketCityResults"
-import { Fragment, useMemo } from "react"
+import { Fragment, useCallback, useMemo } from "react"
 import { Platform, ViewProps } from "react-native"
 import { FairEventSection } from "./FairEventSection/FairEventSection"
 import { SavedEventSection } from "./SavedEventSection/SavedEventSection"
@@ -88,7 +88,7 @@ export const AllEvents: React.FC<Props> = ({ buckets, cityName, citySlug }) => {
   const renderItemSeparator = ({ leadingItem }: { leadingItem: Section }) => {
     if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
       return (
-        <Box py={1}>
+        <Box mx={-2}>
           <Separator />
         </Box>
       )
@@ -97,34 +97,42 @@ export const AllEvents: React.FC<Props> = ({ buckets, cityName, citySlug }) => {
     }
   }
 
-  const renderItem = ({ item: { data, type } }: { item: Section }) => {
-    switch (type) {
-      case "fairs":
-        return <FairEventSection citySlug={citySlug} data={data} />
-      case "galleries":
-        return (
-          <EventSection title="Gallery shows" data={data} section="galleries" citySlug={citySlug} />
-        )
-      case "museums":
-        return (
-          <EventSection title="Museum shows" data={data} section="museums" citySlug={citySlug} />
-        )
-      case "opening":
-        return (
-          <EventSection title="Opening soon" data={data} section="opening" citySlug={citySlug} />
-        )
-      case "closing":
-        return (
-          <EventSection title="Closing soon" data={data} section="closing" citySlug={citySlug} />
-        )
-      case "saved":
-        return <SavedEventSection data={data} citySlug={citySlug} />
-      case "header":
-        return <Box pt={4}>{!!data && <Text variant="lg-display">{data}</Text>}</Box>
-      default:
-        return null
-    }
-  }
+  const renderItem = useCallback(
+    ({ item: { data, type } }: { item: Section }) => {
+      switch (type) {
+        case "fairs":
+          return <FairEventSection citySlug={citySlug} data={data} />
+        case "galleries":
+          return (
+            <EventSection
+              title="Gallery shows"
+              data={data}
+              section="galleries"
+              citySlug={citySlug}
+            />
+          )
+        case "museums":
+          return (
+            <EventSection title="Museum shows" data={data} section="museums" citySlug={citySlug} />
+          )
+        case "opening":
+          return (
+            <EventSection title="Opening soon" data={data} section="opening" citySlug={citySlug} />
+          )
+        case "closing":
+          return (
+            <EventSection title="Closing soon" data={data} section="closing" citySlug={citySlug} />
+          )
+        case "saved":
+          return <SavedEventSection data={data} citySlug={citySlug} />
+        case "header":
+          return <Box pt={2}>{!!data && <Text variant="lg-display">{data}</Text>}</Box>
+        default:
+          return null
+      }
+    },
+    [citySlug]
+  )
 
   // We need to wrap the flatlist with a BottomSheetScrollView on Android to allow scrolling
   // On iOS it's not required because the bottom sheet is scrollable by default
