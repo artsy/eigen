@@ -1,7 +1,6 @@
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
-import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { CityFilterPills } from "app/Scenes/City/Components/CityFilterPills"
@@ -22,6 +21,7 @@ import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
+import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -80,6 +80,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
+  const bottomSheetAnimatedIndex = useSharedValue(-1)
 
   useEffect(() => {
     updateShowIdMap()
@@ -343,19 +344,12 @@ export const GlobalMap: React.FC<Props> = (props) => {
         onPressCitySwitcherButton={onPressCitySwitcherButton}
         onPressUserPositionButton={onPressUserPositionButton}
       />
-      <Flex
-        style={{
-          top: safeAreaInsets.top + BACK_BUTTON_SIZE_SIZE + space(1),
-          position: "absolute",
-          zIndex: 1000,
-          width: "100%",
-        }}
-      >
-        <CityFilterPills
-          selectedTabId={cityTabs[activeIndex].id}
-          onSelectTab={handleSelectMapFilterPill}
-        />
-      </Flex>
+      <CityFilterPills
+        selectedTabId={cityTabs[activeIndex].id}
+        onSelectTab={handleSelectMapFilterPill}
+        bottomSheetAnimatedIndex={bottomSheetAnimatedIndex}
+      />
+
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
@@ -430,7 +424,12 @@ export const GlobalMap: React.FC<Props> = (props) => {
             />
           </Flex>
         )}
-        <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
+        <CityBottomSheet
+          drawerPosition={drawerPosition}
+          citySlug={viewer.city?.slug || ""}
+          updateDrawerPosition={updateDrawerPosition}
+          bottomSheetAnimatedIndex={bottomSheetAnimatedIndex}
+        />
       </Flex>
     </ProvideScreenTracking>
   )
