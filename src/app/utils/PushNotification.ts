@@ -45,7 +45,7 @@ export const saveToken = async (token: string) => {
   const body = JSON.stringify({
     name,
     token,
-    app_id: "net.artsy.artsy",
+    app_id: DeviceInfo.getBundleId(),
     platform: Platform.OS,
     production,
   })
