@@ -1,4 +1,4 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Join, Separator, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { Event } from "app/Scenes/City/Components/Event/Event"
 // eslint-disable-next-line no-restricted-imports
@@ -32,7 +32,9 @@ export const EventSection: React.FC<Props> = ({ title, data, section, citySlug }
       <Box my={2}>
         <Text variant="lg-display">{title}</Text>
       </Box>
-      {eventBricks}
+
+      <Join separator={<Separator mb={2} />}>{eventBricks}</Join>
+
       {data.length > 2 && (
         <Box mb={2}>
           <CaretButton onPress={() => viewAllPressed()} text={`View all ${data.length} shows`} />
