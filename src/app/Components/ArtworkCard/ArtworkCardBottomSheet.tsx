@@ -7,9 +7,11 @@ import { ArtworkCardBottomSheetHandle } from "app/Components/ArtworkCard/Artwork
 import {
   ArtworkCardBottomSheetTabs,
   ArtworkCardBottomSheetTabsSkeleton,
+  TABS,
 } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
+import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -29,16 +31,18 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { bottom } = useSafeAreaInsets()
-  const [footerVisible, setFooterVisible] = useState(true)
+  const [activeTabName, setActiveTabName] = useState(TABS[0].name)
   const color = useColor()
   const { trackEvent } = useTracking()
 
   useEffect(() => {
-    setFooterVisible(true)
-  }, [artworkID])
+    if (isExpanded) {
+      setActiveTabName(TABS[0].name)
+    }
+  }, [isExpanded])
 
-  const handleOnTabChange = () => {
-    setFooterVisible((prev) => !prev)
+  const handleOnTabChange = (data: IndexChangeEventData) => {
+    setActiveTabName(data.tabName)
   }
 
   return (
@@ -58,7 +62,7 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
         }}
         handleComponent={ArtworkCardBottomSheetHandle}
         footerComponent={(props) => {
-          if (!footerVisible) {
+          if (activeTabName !== TABS[0].name) {
             return null
           }
 
