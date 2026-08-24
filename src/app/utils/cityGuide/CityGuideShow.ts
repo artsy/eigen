@@ -19,10 +19,15 @@ export const cityGuideShowFragment = graphql`
     status
     href
     type
+    counts {
+      artworks
+    }
     is_followed: isFollowed
     exhibition_period: exhibitionPeriod(format: SHORT)
     cover_image: coverImage {
       url
+      blurhash
+      aspectRatio
     }
     location {
       coordinates {

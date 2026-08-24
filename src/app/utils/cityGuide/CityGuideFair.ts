@@ -23,6 +23,8 @@ export const cityGuideFairFragment = graphql`
       image_url: imageURL
       aspect_ratio: aspectRatio
       url
+      blurhash
+      aspectRatio
     }
     profile {
       icon {
