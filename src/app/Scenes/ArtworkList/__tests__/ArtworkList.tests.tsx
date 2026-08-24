@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkList_Test_Query } from "__generated__/ArtworkList_Test_Query.graphql"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -43,6 +43,78 @@ describe("ArtworkList", () => {
 
     expect(screen.getByText("Artwork Title 1")).toBeOnTheScreen()
     expect(screen.getByText("Artwork Title 2")).toBeOnTheScreen()
+  })
+
+  /**
+   * These cover the wiring only: picking an option dismisses the sheet, and the dismissal
+   * refetches with the picked sort (or doesn't, when nothing changed).
+   *
+   * They deliberately do NOT guard against the stale-closure bug this wiring once had, and they
+   * pass against that buggy implementation. Reproducing it needs a parent re-render to land
+   * between the selection and the sheet's dismissal — production gets that for free during the
+   * close animation, but a test would have to force it, which the current mock can't do with a
+   * microtask. Don't mistake these for that regression guard.
+   */
+  describe("changing the sort option", () => {
+    /**
+     * Opens the sort sheet and picks an option. The sheet reports its dismissal asynchronously
+     * (see the `@gorhom/bottom-sheet` mock in `setupJest`), which is what triggers the refetch,
+     * so callers need to await the resulting operation.
+     */
+    const selectSortOption = (optionText: string) => {
+      fireEvent.press(screen.getByText("Sort"))
+      fireEvent.press(screen.getByText(optionText))
+    }
+
+    it("refetches with the picked sort value when the sheet is dismissed", async () => {
+      const { env, mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({ Me: () => me })
+
+      selectSortOption("First Added")
+
+      await waitFor(() => {
+        expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_ASC")
+      })
+    })
+
+    it("refetches again when the sort value is changed a second time", async () => {
+      const { env, mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({ Me: () => me })
+
+      selectSortOption("First Added")
+
+      await waitFor(() => {
+        expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_ASC")
+      })
+
+      mockResolveLastOperation({ Me: () => me })
+
+      selectSortOption("Recently Added")
+
+      await waitFor(() => {
+        expect(env.mock.getMostRecentOperation().request.variables.sort).toBe("SAVED_AT_DESC")
+      })
+    })
+
+    it("does not refetch when re-selecting the already-selected sort value", async () => {
+      const { env, mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({ Me: () => me })
+
+      const operationCountBefore = env.mock.getAllOperations().length
+
+      // "Recently Added" (SAVED_AT_DESC) is already the selected value
+      selectSortOption("Recently Added")
+
+      // Give the sheet's asynchronous dismissal a chance to trigger a refetch it shouldn't
+      await waitFor(() => {
+        expect(screen.getByText("Recently Added")).toBeOnTheScreen()
+      })
+
+      expect(env.mock.getAllOperations()).toHaveLength(operationCountBefore)
+    })
   })
 
   describe("Contextual menu button", () => {
