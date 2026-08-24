@@ -1,186 +1,164 @@
-import { Box, Text, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, Spinner, Text } from "@artsy/palette-mobile"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
+import { CityFairListPaginationQuery } from "__generated__/CityFairListPaginationQuery.graphql"
 import { CityFairListQuery } from "__generated__/CityFairListQuery.graphql"
-import { CityFairList_city$data } from "__generated__/CityFairList_city.graphql"
-import Spinner from "app/Components/Spinner"
+import { CityFairList_viewer$key } from "__generated__/CityFairList_viewer.graphql"
+import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
+import { cityGuideFairFragment } from "app/utils/cityGuide/CityGuideFair"
+import { Fair } from "app/utils/cityGuide/types"
+import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Schema, screenTrack } from "app/utils/track"
-import React from "react"
-import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { TabFairItemRow } from "./Components/TabFairItemRow/TabFairItemRow"
+import { Schema } from "app/utils/track"
+import { useCallback, useEffect, useState } from "react"
+import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
-interface Props extends Pick<CityFairListQuery["variables"], "citySlug"> {
-  city: CityFairList_city$data
-  relay: RelayPaginationProp
-}
-
-interface State {
-  fetchingNextPage: boolean
-}
-
-@screenTrack((props: Props) => ({
-  context_screen: Schema.PageNames.CityGuideFairsList,
-  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.city.slug,
-  context_screen_owner_id: props.city.slug,
-}))
-class CityFairList extends React.Component<Props, State> {
-  state = {
-    fetchingNextPage: false,
-  }
-
-  fetchData = () => {
-    const { relay } = this.props
-
-    if (!relay.hasMore() || relay.isLoading()) {
-      return
-    }
-    this.setState({ fetchingNextPage: true })
-    relay.loadMore(PAGE_SIZE, (error) => {
-      if (error) {
-        console.error("CityFairList.tsx #fetchData", error.message)
-        // FIXME: Handle error
-      }
-      this.setState({ fetchingNextPage: false })
-    })
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  renderItem = (item) => {
-    return (
-      <Box py={2}>
-        <TabFairItemRow item={item.node} />
-      </Box>
-    )
-  }
-
-  // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
-  render() {
-    const {
-      city: {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        fairs: { edges },
-      },
-    } = this.props
-    const { fetchingNextPage } = this.state
-    return (
-      <Box mx={2}>
-        <FlatList
-          ListHeaderComponent={() => {
-            return (
-              <Box pt={6} mt={4} mb={2}>
-                <Text variant="lg-display">Fairs</Text>
-              </Box>
-            )
-          }}
-          data={edges}
-          ItemSeparatorComponent={() => <Separator />}
-          keyExtractor={(item) => item.node.internalID}
-          renderItem={({ item }) => this.renderItem(item)}
-          onScroll={isCloseToBottom(this.fetchData)}
-          ListFooterComponent={() =>
-            !!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-          }
-        />
-      </Box>
-    )
-  }
-}
-
-export const CityFairListContainer = createPaginationContainer(
-  CityFairList,
-  {
-    city: graphql`
-      fragment CityFairList_city on City
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
-        cursor: { type: "String", defaultValue: "" }
-      ) {
-        slug
-        fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
-          @connection(key: "CityFairList_fairs") {
-          edges {
-            node {
-              internalID
-              name
-              exhibition_period: exhibitionPeriod(format: SHORT)
-              counts {
-                partners
-              }
-              location {
-                coordinates {
-                  lat
-                  lng
-                }
-              }
-              image {
-                image_url: imageURL
-                aspect_ratio: aspectRatio
-                url
-              }
-              profile {
-                icon {
-                  internalID
-                  href
-                  height
-                  width
-                  url(version: "square140")
-                }
-                id
-                slug
-                name
-              }
-              start_at: startAt
-              end_at: endAt
-            }
-          }
-        }
-      }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props.city && props.city.fairs
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        citySlug: props.citySlug,
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
-    },
-    query: graphql`
-      query CityFairListPaginationQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        city(slug: $citySlug) {
-          ...CityFairList_city @arguments(count: $count, cursor: $cursor)
-        }
-      }
-    `,
-  }
-)
-
-interface CityFairListProps {
+interface Props {
+  viewer: CityFairList_viewer$key
   citySlug: string
 }
-export const CityFairListScreenQuery = graphql`
-  query CityFairListQuery($citySlug: String!) {
+
+const CityFairList: React.FC<Props> = ({ viewer, citySlug }) => {
+  const [fetchingNextPage, setFetchingNextPage] = useState(false)
+  const { trackEvent } = useTracking()
+
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
+    CityFairListPaginationQuery,
+    CityFairList_viewer$key
+  >(cityFairListFragment, viewer)
+
+  useEffect(() => {
+    trackEvent(tracks.trackScreen(citySlug))
+  }, [trackEvent, citySlug])
+
+  const fetchData = useCallback(() => {
+    if (!hasNext || isLoadingNext) {
+      return
+    }
+
+    setFetchingNextPage(true)
+    loadNext(PAGE_SIZE, {
+      onComplete: (error) => {
+        if (error) {
+          console.error("CityFairList.tsx #fetchData", error.message)
+        }
+        setFetchingNextPage(false)
+      },
+    })
+  }, [hasNext, isLoadingNext, loadNext])
+
+  const fairRefs: CityGuideFair_fair$key = extractNodes(data.city?.fairs)
+  const fairs = useFragment(cityGuideFairFragment, fairRefs)
+
+  const renderItem: ListRenderItem<Fair> = useCallback(
+    ({ item }) => (
+      <Box py={2}>
+        <TabFairItemRow item={item} />
+      </Box>
+    ),
+    []
+  )
+
+  const keyExtractor = useCallback((item: Fair) => item.internalID, [])
+
+  const renderListHeader = useCallback(
+    () => (
+      <Box pt={6} mt={4} mb={2}>
+        <Text variant="lg-display">Fairs</Text>
+      </Box>
+    ),
+    []
+  )
+
+  const renderListFooter = useCallback(
+    () => (fetchingNextPage ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null),
+    [fetchingNextPage]
+  )
+
+  return (
+    <Box mx={2} flex={1}>
+      <FlashList
+        data={fairs}
+        ListHeaderComponent={renderListHeader}
+        ItemSeparatorComponent={Separator}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onScroll={isCloseToBottom(fetchData)}
+        ListFooterComponent={renderListFooter}
+      />
+    </Box>
+  )
+}
+
+const cityFairListFragment = graphql`
+  fragment CityFairList_viewer on Viewer
+  @refetchable(queryName: "CityFairListPaginationQuery")
+  @argumentDefinitions(
+    citySlug: { type: "String!" }
+    count: { type: "Int", defaultValue: 20 }
+    cursor: { type: "String", defaultValue: "" }
+  ) {
     city(slug: $citySlug) {
-      ...CityFairList_city
+      fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
+        @connection(key: "CityFairList_fairs") {
+        edges {
+          node {
+            ...CityGuideFair_fair
+          }
+        }
+      }
     }
   }
 `
 
-export const CityFairListQueryRenderer: React.FC<CityFairListProps> = ({ citySlug }) => {
-  return (
-    <QueryRenderer<CityFairListQuery>
-      environment={getRelayEnvironment()}
-      query={CityFairListScreenQuery}
-      variables={{ citySlug }}
-      render={renderWithLoadProgress(CityFairListContainer)}
+interface CityFairListProps {
+  citySlug: string
+}
+
+export const CityFairListScreenQuery = graphql`
+  query CityFairListQuery($citySlug: String!) {
+    viewer {
+      ...CityFairList_viewer @arguments(citySlug: $citySlug)
+    }
+  }
+`
+
+export const CityFairListQueryRenderer: React.FC<CityFairListProps> = withSuspense({
+  Component: ({ citySlug }) => {
+    const data = useLazyLoadQuery<CityFairListQuery>(CityFairListScreenQuery, { citySlug })
+
+    if (!data.viewer) {
+      return null
+    }
+
+    return <CityFairList viewer={data.viewer} citySlug={citySlug} />
+  },
+  ErrorFallback: (fallbackProps) => (
+    <LoadFailureView
+      onRetry={fallbackProps.resetErrorBoundary}
+      useSafeArea={false}
+      showCloseButton
+      error={fallbackProps.error}
+      showBackButton
+      trackErrorBoundary={false}
     />
-  )
+  ),
+  LoadingFallback: () => (
+    <Flex flex={1} alignItems="center" justifyContent="center" testID="placeholder">
+      <Spinner />
+    </Flex>
+  ),
+})
+
+const tracks = {
+  trackScreen: (citySlug: string) => ({
+    context_screen: Schema.PageNames.CityGuideFairsList,
+    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+    context_screen_owner_slug: citySlug,
+    context_screen_owner_id: citySlug,
+  }),
 }

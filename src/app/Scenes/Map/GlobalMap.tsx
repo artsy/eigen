@@ -1,11 +1,15 @@
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
+import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
+import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
+import { cityGuideFairFragment } from "app/utils/cityGuide/CityGuideFair"
+import { cityGuideShowFragment } from "app/utils/cityGuide/CityGuideShow"
 import { EventEmitter } from "app/utils/cityGuide/EventEmitter"
 import {
   bucketCityResults,
@@ -14,6 +18,7 @@ import {
   emptyBucketResults,
 } from "app/utils/cityGuide/bucketCityResults"
 import { DrawerPosition, Fair, FilterData, Show } from "app/utils/cityGuide/types"
+import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
@@ -21,7 +26,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useRefetchableFragment } from "react-relay"
+import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import { GlobalMapHeader } from "./Components/GlobalMapHeader"
@@ -55,6 +60,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const [viewer, refetch] = useRefetchableFragment(globalMapFragment, props.viewer)
   const { trackEvent } = useTracking()
+
+  const showRefs: CityGuideShow_show$key = extractNodes(viewer.city?.shows)
+  const upcomingShowRefs: CityGuideShow_show$key = extractNodes(viewer.city?.upcomingShows)
+  const fairRefs: CityGuideFair_fair$key = extractNodes(viewer.city?.fairs)
+  const shows = useFragment(cityGuideShowFragment, showRefs)
+  const upcomingShows = useFragment(cityGuideShowFragment, upcomingShowRefs)
+  const fairs = useFragment(cityGuideFairFragment, fairRefs)
 
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
@@ -109,7 +121,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   useEffect(() => {
     if (viewer) {
       // TODO: This is currently really inefficient.
-      const newBucketResults = bucketCityResults(viewer)
+      const newBucketResults = bucketCityResults(shows, upcomingShows, fairs)
 
       setBucketResults(newBucketResults)
       emitFilteredBucketResults(newBucketResults)
@@ -179,9 +191,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
       return
     }
 
-    const { shows, fairs } = extractShowAndFairMaps(viewer.city)
-    showsRef.current = { ...showsRef.current, ...shows }
-    fairsRef.current = { ...fairsRef.current, ...fairs }
+    const { shows: showsById, fairs: fairsById } = extractShowAndFairMaps(
+      shows,
+      upcomingShows,
+      fairs
+    )
+    showsRef.current = { ...showsRef.current, ...showsById }
+    fairsRef.current = { ...fairsRef.current, ...fairsById }
   }
 
   const onUserLocationUpdate = (location: MapboxGL.Location) => {
@@ -452,38 +468,7 @@ const globalMapFragment = graphql`
       ) {
         edges {
           node {
-            slug
-            internalID
-            id
-            isStubShow
-            name
-            status
-            href
-            is_followed: isFollowed
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            cover_image: coverImage {
-              url
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            type
-            start_at: startAt
-            end_at: endAt
-            partner {
-              ... on Partner {
-                name
-                type
-                profile {
-                  image {
-                    url(version: "square")
-                  }
-                }
-              }
-            }
+            ...CityGuideShow_show
           }
         }
       }
@@ -495,77 +480,14 @@ const globalMapFragment = graphql`
       ) {
         edges {
           node {
-            ...ShowItemRow_show
-            slug
-            internalID
-            id
-            isStubShow
-            name
-            status
-            href
-            is_followed: isFollowed
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            cover_image: coverImage {
-              url
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            type
-            start_at: startAt
-            end_at: endAt
-            partner {
-              ... on Partner {
-                name
-                type
-                profile {
-                  image {
-                    url(version: "square")
-                  }
-                }
-              }
-            }
+            ...CityGuideShow_show
           }
         }
       }
       fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
         edges {
           node {
-            id
-            slug
-            name
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            counts {
-              partners
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            image {
-              image_url: imageURL
-              aspect_ratio: aspectRatio
-              url
-            }
-            profile {
-              icon {
-                internalID
-                href
-                height
-                width
-                url(version: "square140")
-              }
-              id
-              slug
-              name
-            }
-            start_at: startAt
-            end_at: endAt
+            ...CityGuideFair_fair
           }
         }
       }
