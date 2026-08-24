@@ -2,7 +2,6 @@ import { Box, Button, Flex, Image, Text, Touchable, useColor } from "@artsy/pale
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -101,70 +100,66 @@ export const ShowItemRow: React.FC<Props> = ({
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
     return (
-      <ThemeAwareClassTheme>
-        {({ color }) => (
-          <Flex flexDirection="row" alignItems="center">
-            {!imageURL ? (
-              <DefaultImageContainer p="15px">
-                <Pin color={color("mono0")} pinHeight={30} pinWidth={30} />
-              </DefaultImageContainer>
-            ) : (
-              <DefaultImageContainer>
-                <Image width={62} height={62} src={imageURL} />
-              </DefaultImageContainer>
-            )}
-            <Flex flexDirection="column" flexGrow={1} width={165} mr={1}>
-              {!!(show.partner && show.partner.name) && (
-                <Text
-                  variant="sm"
-                  lineHeight="20px"
-                  color="mono100"
-                  weight="medium"
-                  numberOfLines={1}
-                  ml="15px"
-                >
-                  {show.partner.name}
-                </Text>
-              )}
-              {!!show.name && (
-                <Text
-                  variant="sm"
-                  lineHeight="20px"
-                  color={color("mono60")}
-                  ml="15px"
-                  numberOfLines={1}
-                >
-                  {show.name}
-                </Text>
-              )}
-              {!!(show.exhibition_period && show.status) && (
-                <Text
-                  variant="sm"
-                  lineHeight="20px"
-                  color={color("mono60")}
-                  ml="15px"
-                  numberOfLines={1}
-                >
-                  {show.status.includes("closed")
-                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : exhibitionDates(show.exhibition_period, show.end_at ?? "")}
-                </Text>
-              )}
-            </Flex>
-            {!shouldHideSaveButton && (
-              <Button
-                variant={show.is_followed ? "outline" : "fillDark"}
-                size="small"
-                onPress={handleSave}
-                loading={isFollowedSaving}
-                longestText="Saved"
-              >
-                {show.is_followed ? "Saved" : "Save"}
-              </Button>
-            )}
-          </Flex>
+      <Flex flexDirection="row" alignItems="center">
+        {!imageURL ? (
+          <DefaultImageContainer p="15px">
+            <Pin color={color("mono0")} pinHeight={30} pinWidth={30} />
+          </DefaultImageContainer>
+        ) : (
+          <DefaultImageContainer>
+            <Image width={62} height={62} src={imageURL} />
+          </DefaultImageContainer>
         )}
-      </ThemeAwareClassTheme>
+        <Flex flexDirection="column" flexGrow={1} width={165} mr={1}>
+          {!!(show.partner && show.partner.name) && (
+            <Text
+              variant="sm"
+              lineHeight="20px"
+              color="mono100"
+              weight="medium"
+              numberOfLines={1}
+              ml="15px"
+            >
+              {show.partner.name}
+            </Text>
+          )}
+          {!!show.name && (
+            <Text
+              variant="sm"
+              lineHeight="20px"
+              color={color("mono60")}
+              ml="15px"
+              numberOfLines={1}
+            >
+              {show.name}
+            </Text>
+          )}
+          {!!(show.exhibition_period && show.status) && (
+            <Text
+              variant="sm"
+              lineHeight="20px"
+              color={color("mono60")}
+              ml="15px"
+              numberOfLines={1}
+            >
+              {show.status.includes("closed")
+                ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                : exhibitionDates(show.exhibition_period, show.end_at ?? "")}
+            </Text>
+          )}
+        </Flex>
+        {!shouldHideSaveButton && (
+          <Button
+            variant={show.is_followed ? "outline" : "fillDark"}
+            size="small"
+            onPress={handleSave}
+            loading={isFollowedSaving}
+            longestText="Saved"
+          >
+            {show.is_followed ? "Saved" : "Save"}
+          </Button>
+        )}
+      </Flex>
     )
   }
 

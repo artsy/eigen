@@ -5,8 +5,7 @@ import Spinner from "app/Components/Spinner"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { MapTab, Show } from "app/utils/cityGuide/types"
-import { isEqual } from "lodash"
-import React from "react"
+import { Fragment, memo } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { TabFairItemRow } from "./TabFairItemRow/TabFairItemRow"
 
@@ -34,89 +33,75 @@ interface Props {
 }
 
 // @TODO: Implement test for the EventList component https://artsyproduct.atlassian.net/browse/LD-562
-export class EventList extends React.Component<Props> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  renderItem = (item) => {
-    const { type } = this.props
-    return (
-      <Box height={RowHeight} py={2}>
-        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} />}
-      </Box>
-    )
-  }
-
-  renderFooter = () => {
-    const { bucket, fetchingNextPage, renderedInTab } = this.props
-    if (fetchingNextPage) {
-      return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-    }
-
-    if (renderedInTab && bucket.length > MaxRowCount) {
+export const EventList: React.FC<Props> = memo(
+  ({ bucket, type, citySlug, cityName, header, onScroll, fetchingNextPage, renderedInTab }) => {
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const renderItem = (item) => {
       return (
-        <>
-          <Separator />
-          <Box mt={2} mb={4}>
-            <CaretButton
-              onPress={() => this.viewAllPressed()}
-              text={`View all ${bucket.length} shows`}
-            />
-          </Box>
-        </>
+        <Box height={RowHeight} py={2}>
+          {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} />}
+        </Box>
       )
     }
 
-    return null
-  }
+    const viewAllPressed = () => {
+      navigate(`/city/${citySlug}/${type}`)
+    }
 
-  shouldComponentUpdate(nextProps: Props) {
-    return (
-      !isEqual(this.props.fetchingNextPage, nextProps.fetchingNextPage) ||
-      !isEqual(this.props.type, nextProps.type) ||
-      this.props.bucket.length !== nextProps.bucket.length ||
-      !isEqual(
-        this.props.bucket.map((g) => g.is_followed),
-        nextProps.bucket.map((g) => g.is_followed)
+    const renderFooter = () => {
+      if (fetchingNextPage) {
+        return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+      }
+
+      if (renderedInTab && bucket.length > MaxRowCount) {
+        return (
+          <>
+            <Separator />
+            <Box mt={2} mb={4}>
+              <CaretButton
+                onPress={() => viewAllPressed()}
+                text={`View all ${bucket.length} shows`}
+              />
+            </Box>
+          </>
+        )
+      }
+
+      return null
+    }
+
+    const hasEvents = bucket.length > 0
+
+    if (hasEvents) {
+      const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
+      return (
+        <EventFlatList
+          ListHeaderComponent={() => {
+            if (!!header) {
+              return (
+                <Box mb={2}>
+                  <Text variant="lg-display">{header}</Text>
+                </Box>
+              )
+            } else {
+              return null
+            }
+          }}
+          data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
+          ItemSeparatorComponent={() => <Separator />}
+          ListFooterComponent={renderFooter()}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }) => renderItem(item)}
+          onScroll={onScroll}
+          windowSize={50}
+          contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
+          getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
+        />
       )
-    )
-  }
+    }
 
-  viewAllPressed() {
-    const { citySlug, type } = this.props
-    navigate(`/city/${citySlug}/${type}`)
-  }
-
-  hasEventsComponent = () => {
-    const { bucket, onScroll, header, renderedInTab } = this.props
-    const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
-    return (
-      <EventFlatList
-        ListHeaderComponent={() => {
-          if (!!header) {
-            return (
-              <Box mb={2}>
-                <Text variant="lg-display">{header}</Text>
-              </Box>
-            )
-          } else {
-            return null
-          }
-        }}
-        data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
-        ItemSeparatorComponent={() => <Separator />}
-        ListFooterComponent={this.renderFooter()}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => this.renderItem(item)}
-        onScroll={onScroll}
-        windowSize={50}
-        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
-        getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
-      />
-    )
-  }
-
-  hasNoEventsComponent = () => {
-    const { type, cityName, renderedInTab } = this.props
-    const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : React.Fragment
+    // Has No Events
+    const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : Fragment
 
     switch (type) {
       case "saved":
@@ -145,10 +130,4 @@ export class EventList extends React.Component<Props> {
         )
     }
   }
-
-  render() {
-    const { bucket } = this.props
-    const hasEvents = bucket.length > 0
-    return hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()
-  }
-}
+)
