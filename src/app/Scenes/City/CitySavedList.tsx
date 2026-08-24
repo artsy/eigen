@@ -1,16 +1,17 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
+import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { CitySavedListPaginationQuery } from "__generated__/CitySavedListPaginationQuery.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { CitySavedList_me$key } from "__generated__/CitySavedList_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { Show } from "app/utils/cityGuide/types"
+import { cityGuideShowFragment } from "app/utils/cityGuide/CityGuideShow"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Schema } from "app/utils/track"
 import { useCallback, useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { EventList } from "./Components/EventList"
 
@@ -49,13 +50,14 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug }) => {
     })
   }, [hasNext, isLoadingNext, loadNext])
 
-  const shows = extractNodes(data.followsAndSaves?.shows) as unknown as Show[]
+  const showRefs: CityGuideShow_show$key = extractNodes(data.followsAndSaves?.shows)
+  const shows = useFragment(cityGuideShowFragment, showRefs)
 
   return (
     <EventList
       header="Saved shows"
       cityName={cityName}
-      bucket={shows}
+      bucket={[...shows]}
       type="saved"
       onScroll={isCloseToBottom(fetchData)}
       fetchingNextPage={fetchingNextPage}
@@ -80,38 +82,7 @@ const citySavedListFragment = graphql`
       ) @connection(key: "CitySavedList_shows") {
         edges {
           node {
-            slug
-            internalID
-            id
-            name
-            isStubShow
-            status
-            href
-            is_followed: isFollowed
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            cover_image: coverImage {
-              url
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            type
-            start_at: startAt
-            end_at: endAt
-            partner {
-              ... on Partner {
-                name
-                type
-                profile {
-                  image {
-                    url(version: "square")
-                  }
-                }
-              }
-            }
+            ...CityGuideShow_show
           }
         }
       }

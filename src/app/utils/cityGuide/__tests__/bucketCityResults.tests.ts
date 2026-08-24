@@ -5,7 +5,11 @@ import { uniq } from "lodash"
 // The stubbed data needs re-creating
 //
 describe.skip(bucketCityResults, () => {
-  const results = bucketCityResults({ city: CityFixture } as any)
+  const results = bucketCityResults(
+    CityFixture.shows.edges.map((e: any) => e.node),
+    CityFixture.upcomingShows.edges.map((e: any) => e.node),
+    CityFixture.fairs.edges.map((e: any) => e.node)
+  )
 
   it("doesn't yet support saved results", () => {
     expect(results.saved).toEqual([])

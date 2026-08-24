@@ -3,16 +3,18 @@ import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { CityFairListPaginationQuery } from "__generated__/CityFairListPaginationQuery.graphql"
 import { CityFairListQuery } from "__generated__/CityFairListQuery.graphql"
 import { CityFairList_viewer$key } from "__generated__/CityFairList_viewer.graphql"
+import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
+import { cityGuideFairFragment } from "app/utils/cityGuide/CityGuideFair"
 import { Fair } from "app/utils/cityGuide/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Schema } from "app/utils/track"
 import { useCallback, useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
@@ -49,18 +51,19 @@ const CityFairList: React.FC<Props> = ({ viewer, citySlug }) => {
     })
   }, [hasNext, isLoadingNext, loadNext])
 
-  const fairs = extractNodes(data.city?.fairs)
+  const fairRefs: CityGuideFair_fair$key = extractNodes(data.city?.fairs)
+  const fairs = useFragment(cityGuideFairFragment, fairRefs)
 
-  const renderItem: ListRenderItem<(typeof fairs)[number]> = useCallback(
+  const renderItem: ListRenderItem<Fair> = useCallback(
     ({ item }) => (
       <Box py={2}>
-        <TabFairItemRow item={item as unknown as Fair} />
+        <TabFairItemRow item={item} />
       </Box>
     ),
     []
   )
 
-  const keyExtractor = useCallback((item: (typeof fairs)[number]) => item.internalID, [])
+  const keyExtractor = useCallback((item: Fair) => item.internalID, [])
 
   const renderListHeader = useCallback(
     () => (
@@ -104,38 +107,7 @@ const cityFairListFragment = graphql`
         @connection(key: "CityFairList_fairs") {
         edges {
           node {
-            internalID
-            slug
-            name
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            counts {
-              partners
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            image {
-              image_url: imageURL
-              aspect_ratio: aspectRatio
-              url
-            }
-            profile {
-              icon {
-                internalID
-                href
-                height
-                width
-                url(version: "square140")
-              }
-              id
-              slug
-              name
-            }
-            start_at: startAt
-            end_at: endAt
+            ...CityGuideFair_fair
           }
         }
       }

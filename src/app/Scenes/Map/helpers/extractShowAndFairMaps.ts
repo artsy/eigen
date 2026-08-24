@@ -1,40 +1,35 @@
-import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { Fair, Show } from "app/utils/cityGuide/types"
-import { extractNodes } from "app/utils/extractNodes"
 import { uniq } from "lodash"
 
 export const extractShowAndFairMaps = (
-  city: GlobalMap_viewer$data["city"]
+  shows: readonly Show[],
+  upcomingShows: readonly Show[],
+  fairs: readonly Fair[]
 ): { shows: { [key: string]: Show }; fairs: { [key: string]: Fair } } => {
-  const shows: { [key: string]: Show } = {}
-  const fairs: { [key: string]: Fair } = {}
+  const showsMap: { [key: string]: Show } = {}
+  const fairsMap: { [key: string]: Fair } = {}
 
-  if (!city) {
-    return { shows, fairs }
-  }
-
-  const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
-  const cityShows = extractNodes(city.shows)
-  const concatedShows = uniq(cityShows.concat(savedUpcomingShows as any))
+  const savedUpcomingShows = upcomingShows.filter((node) => node.is_followed)
+  const concatedShows = uniq(shows.concat(savedUpcomingShows))
 
   concatedShows.forEach((node) => {
-    if (!node || !node.location || !node.location.coordinates) {
+    if (!node.location?.coordinates) {
       return
     }
 
-    shows[node.slug] = node
+    showsMap[node.slug] = node
   })
 
-  extractNodes(city.fairs).forEach((node) => {
-    if (!node || !node.location || !node.location.coordinates) {
+  fairs.forEach((node) => {
+    if (!node.location?.coordinates) {
       return
     }
 
-    fairs[node.slug] = {
+    fairsMap[node.slug] = {
       ...node,
       type: "Fair",
     }
   })
 
-  return { shows, fairs }
+  return { shows: showsMap, fairs: fairsMap }
 }
