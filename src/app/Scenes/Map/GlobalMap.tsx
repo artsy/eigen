@@ -348,6 +348,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         selectedTabId={cityTabs[activeIndex].id}
         onSelectTab={handleSelectMapFilterPill}
         bottomSheetAnimatedIndex={bottomSheetAnimatedIndex}
+        bucketResults={bucketResults}
       />
 
       {/* TODO: think of a better way to animate the appearance of the city picker */}

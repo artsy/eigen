@@ -1,8 +1,9 @@
 import { Pill, useSpace } from "@artsy/palette-mobile"
 import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { cityTabs } from "app/Scenes/City/cityTabs"
+import { BucketResults } from "app/utils/cityGuide/bucketCityResults"
 import { MapTab } from "app/utils/cityGuide/types"
-import { FC, useEffect } from "react"
+import { FC, useEffect, useMemo } from "react"
 import { ScrollView } from "react-native"
 import Animated, {
   Extrapolation,
@@ -19,15 +20,37 @@ interface CityFilterPillsProps {
   onSelectTab: (tab: MapTab) => void
   /** Live index of the City bottom sheet (-1 closed, 0 collapsed, 1 open) used to fade the pills as it's dragged. */
   bottomSheetAnimatedIndex: SharedValue<number>
+  /** Used to figure out which tabs have results, so empty ones can be deprioritized. */
+  bucketResults: BucketResults
 }
+
+const tabHasResults = (tab: MapTab, bucketResults: BucketResults) =>
+  tab.getShows(bucketResults).length > 0 || tab.getFairs(bucketResults).length > 0
 
 export const CityFilterPills: FC<CityFilterPillsProps> = ({
   selectedTabId,
   onSelectTab,
   bottomSheetAnimatedIndex,
+  bucketResults,
 }) => {
   const space = useSpace()
   const safeAreaInsets = useSafeAreaInsets()
+
+  // Tabs with results lead the list; empty ones are pushed to the end and shown disabled.
+  const orderedTabs = useMemo(() => {
+    const withResults: MapTab[] = []
+    const withoutResults: MapTab[] = []
+
+    cityTabs.forEach((tab) => {
+      if (tabHasResults(tab, bucketResults)) {
+        withResults.push(tab)
+      } else {
+        withoutResults.push(tab)
+      }
+    })
+
+    return [...withResults, ...withoutResults]
+  }, [bucketResults])
 
   const mountOpacity = useSharedValue(0)
 
@@ -61,17 +84,20 @@ export const CityFilterPills: FC<CityFilterPillsProps> = ({
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: space(2) }}
       >
-        {cityTabs.map((tab) => {
+        {orderedTabs.map((tab) => {
           const selected = tab.id === selectedTabId
+          const disabled = !tabHasResults(tab, bucketResults)
 
           return (
             <Pill
               key={tab.id}
+              testID={`city-filter-pill-${tab.id}`}
               mr={0.5}
               variant="link"
               selected={selected}
-              accessibilityState={{ selected }}
-              onPress={() => onSelectTab(tab)}
+              disabled={disabled}
+              accessibilityState={{ selected, disabled }}
+              onPress={disabled ? undefined : () => onSelectTab(tab)}
             >
               {tab.text}
             </Pill>
