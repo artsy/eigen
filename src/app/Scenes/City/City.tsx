@@ -1,4 +1,4 @@
-import { Flex, Spacer, Tabs } from "@artsy/palette-mobile"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { EventEmitter } from "app/utils/cityGuide/EventEmitter"
 import { BucketKey, BucketResults } from "app/utils/cityGuide/bucketCityResults"
@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react"
 import { RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { AllEvents } from "./Components/AllEvents"
-import { CityFilterPills } from "./Components/CityFilterPills"
 import { EventList } from "./Components/EventList"
 import { cityTabs } from "./cityTabs"
 
@@ -22,7 +21,6 @@ export const CityView: React.FC<CityViewProps> = () => {
   const [filter, setFilter] = useState(cityTabs[0])
   const [cityName, setCityName] = useState("")
   const [citySlug, setCitySlug] = useState("")
-  const [selectedMapFilterId, setSelectedMapFilterId] = useState<MapTab["id"]>(cityTabs[0].id)
 
   const { trackEvent } = useTracking()
 
@@ -54,17 +52,6 @@ export const CityView: React.FC<CityViewProps> = () => {
   }, [])
 
   const setSelectedTab = (index: number) => {
-    EventEmitter.dispatch("filters:change", index)
-  }
-
-  const handleSelectMapFilterPill = (tab: MapTab) => {
-    const index = cityTabs.findIndex((cityTab) => cityTab.id === tab.id)
-
-    if (index === -1) {
-      return
-    }
-
-    setSelectedMapFilterId(tab.id)
     EventEmitter.dispatch("filters:change", index)
   }
 
@@ -102,13 +89,6 @@ export const CityView: React.FC<CityViewProps> = () => {
   if (buckets) {
     return (
       <Flex flex={1}>
-        <CityFilterPills
-          selectedTabId={selectedMapFilterId}
-          onSelectTab={handleSelectMapFilterPill}
-        />
-
-        <Spacer y={1} />
-
         <TabsContainer
           onTabChange={(tab) => {
             setSelectedTab(Number(tab.index))

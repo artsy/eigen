@@ -1,8 +1,10 @@
 import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
+import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
+import { CityFilterPills } from "app/Scenes/City/Components/CityFilterPills"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -13,7 +15,7 @@ import {
   BucketResults,
   emptyBucketResults,
 } from "app/utils/cityGuide/bucketCityResults"
-import { DrawerPosition, Fair, FilterData, Show } from "app/utils/cityGuide/types"
+import { DrawerPosition, Fair, FilterData, MapTab, Show } from "app/utils/cityGuide/types"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
@@ -146,6 +148,16 @@ export const GlobalMap: React.FC<Props> = (props) => {
     setActiveIndex(activeIndex)
     setActivePin(null)
     setActiveShows([])
+  }
+
+  const handleSelectMapFilterPill = (tab: MapTab) => {
+    const index = cityTabs.findIndex((cityTab) => cityTab.id === tab.id)
+
+    if (index === -1) {
+      return
+    }
+
+    handleFilterChange(index)
   }
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
@@ -331,6 +343,19 @@ export const GlobalMap: React.FC<Props> = (props) => {
         onPressCitySwitcherButton={onPressCitySwitcherButton}
         onPressUserPositionButton={onPressUserPositionButton}
       />
+      <Flex
+        style={{
+          top: safeAreaInsets.top + BACK_BUTTON_SIZE_SIZE + space(1),
+          position: "absolute",
+          zIndex: 1000,
+          width: "100%",
+        }}
+      >
+        <CityFilterPills
+          selectedTabId={cityTabs[activeIndex].id}
+          onSelectTab={handleSelectMapFilterPill}
+        />
+      </Flex>
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
