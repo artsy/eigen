@@ -49,7 +49,7 @@ By default an update goes out to both platforms. Pass `--platform ios` or `--pla
 
 #### Diagram
 
-```
+```mermaid
 flowchart TD
   A["Running deploy-to-expo-updates"] --> B{"Which reference \n fingerprint to use?"}
   B -->|"channel=canary OR staging"| C["latest.txt \n\n fingerprint of `main`"]
@@ -86,7 +86,7 @@ If native code has drifted you'll see `❌ Native code has drifted from ...` and
 
 #### Diagram
 
-```
+```mermaid
 flowchart TD
   subgraph MAIN["On every push to `main`"]
     M["Generate fingerprint"] --> N{"differs from \n `latest.txt`?"}
@@ -105,13 +105,13 @@ flowchart TD
   end
 
   S -.->|"the tag is the record of\nwhat each binary was built from"| T
-  Q ==>|"read by channel=canary OR channel=staging"| GATE["How updates are matched to builds"]
-  V ==>|"read by channel=production OR with `--check-against-version`"| GATE
+  Q ==>|"read by `channel=canary` OR `channel=staging`"| CHECK["How updates are matched to builds"]
+  V ==>|"read by `channel=production` OR with `--check-against-version`"| CHECK
 
   classDef ref fill:#e2eeee,stroke:#0e6e73,color:#0d3a3c;
-  classDef gate fill:#fff3d9,stroke:#8a5b00,color:#553800;
+  classDef check fill:#fff3d9,stroke:#8a5b00,color:#553800;
   class Q,V ref;
-  class GATE gate;
+  class CHECK check;
 ```
 
 We have two types of fingerprints that we keep track of in S3, `latest.txt` and `{version}.txt`
