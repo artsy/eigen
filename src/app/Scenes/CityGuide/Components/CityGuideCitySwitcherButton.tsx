@@ -5,18 +5,13 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   onPress?: () => void
-  cityName: string
-  isLoading: boolean
+  cityName?: string
 }
 
 const ICON_SIZE = 18
 
-export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, isLoading, onPress }) => {
+export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress }) => {
   const enableCityGuideList = useFeatureFlag("AREnableGlobalMapList")
-
-  if (!cityName && !isLoading) {
-    return null
-  }
 
   return (
     <Button

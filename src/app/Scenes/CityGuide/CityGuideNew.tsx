@@ -12,7 +12,7 @@ export const CityGuideNew: React.FC = () => {
       <Screen.AnimatedHeader
         title="London"
         rightElements={
-          <CityGuideCitySwitcherButton cityName="Berlin" isLoading={false} onPress={() => {}} />
+          <CityGuideCitySwitcherButton cityName="Berlin" onPress={() => {}} />
         }
         onBack={goBack}
         hideTitle

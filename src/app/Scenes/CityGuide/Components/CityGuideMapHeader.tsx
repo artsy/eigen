@@ -7,12 +7,11 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   safeAreaInsetTop: number
-  cityName: string
+  cityName?: string
   userLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
   currentLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
   onPressCitySwitcherButton?: () => void
   onPressUserPositionButton?: () => void
-  isListView?: boolean
 }
 
 export const CityGuideMapHeader: React.FC<Props> = ({
@@ -49,11 +48,7 @@ export const CityGuideMapHeader: React.FC<Props> = ({
         }}
       />
       <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
-        <CityGuideCitySwitcherButton
-          cityName={cityName}
-          isLoading={!cityName}
-          onPress={onPressCitySwitcherButton}
-        />
+        <CityGuideCitySwitcherButton cityName={cityName} onPress={onPressCitySwitcherButton} />
 
         {!showGlobalMapList && !!isValidLatLng(userLocation) && (
           <Box style={{ marginLeft: 10 }}>

@@ -36,7 +36,7 @@ export const CityGuideFairs = () => {
   )
 }
 
-const CityGuideShows = () => {
+export const CityGuideShows = () => {
   return (
     <Flex px={2}>
       <SectionTitle title="Current Shows" onPress={() => {}} />
