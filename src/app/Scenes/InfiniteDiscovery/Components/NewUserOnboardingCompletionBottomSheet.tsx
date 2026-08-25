@@ -8,6 +8,7 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { MotiView } from "moti"
 import { useCallback } from "react"
 import { View } from "react-native"
 
@@ -16,6 +17,7 @@ const CARD_WIDTH = 85
 const CARD_HEIGHT = 106
 const SPREAD_ANGLE = 56
 const ARC_RADIUS = 260
+const FAN_OUT_DELAY = 1000
 
 const CARD_COUNT = 5
 const toRad = (deg: number) => (deg * Math.PI) / 180
@@ -28,6 +30,7 @@ const FAN_CONFIGS = Array.from({ length: CARD_COUNT }, (_, i) => {
     rotate: `${angle.toFixed(2)}deg`,
   }
 })
+const FAN_MIDDLE_CARD_CONFIG = FAN_CONFIGS[Math.floor(CARD_COUNT / 2)]
 
 const FAN_CONTAINER_HEIGHT = ARC_RADIUS * (1 - Math.cos(toRad(SPREAD_ANGLE / 2))) + CARD_HEIGHT + 10
 
@@ -95,19 +98,36 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
             {savedArtworks.map((artwork, index) => {
               const config = FAN_CONFIGS[index]
               return (
-                <ArtworkThumbnail
+                // `style` sets the card's final fanned-out position; `from`/`animate` offset it
+                // back to the middle card's position and animate that offset down to zero, so
+                // the card appears to travel from the middle of the fan out to its final spot.
+                <MotiView
                   key={artwork.internalID}
-                  imageUrl={artwork.url}
-                  blurhash={artwork.blurhash}
-                  width={CARD_WIDTH * scale}
-                  height={CARD_HEIGHT * scale}
-                  rotate={config.rotate}
+                  from={{
+                    transform: [
+                      { translateX: (FAN_MIDDLE_CARD_CONFIG.left - config.left) * scale },
+                      { translateY: (FAN_MIDDLE_CARD_CONFIG.top - config.top) * scale },
+                    ],
+                  }}
+                  animate={{ transform: [{ translateX: 0 }, { translateY: 0 }] }}
+                  transition={{
+                    type: "spring",
+                    delay: FAN_OUT_DELAY,
+                  }}
                   style={{
                     position: "absolute",
                     left: config.left * scale,
                     top: config.top * scale,
                   }}
-                />
+                >
+                  <ArtworkThumbnail
+                    imageUrl={artwork.url}
+                    blurhash={artwork.blurhash}
+                    width={CARD_WIDTH * scale}
+                    height={CARD_HEIGHT * scale}
+                    rotate={config.rotate}
+                  />
+                </MotiView>
               )
             })}
           </View>
