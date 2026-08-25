@@ -175,8 +175,11 @@ class LiveAuctionViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), for: .touchUpInside)
 
         offlineView.addSubview(closeButton)
-        closeButton.alignTrailingEdge(withView: offlineView, predicate: "-20")
-        closeButton.alignTopEdge(withView: offlineView, predicate: "20")
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: offlineView.safeAreaLayoutGuide.topAnchor, constant: 20),
+            closeButton.trailingAnchor.constraint(equalTo: offlineView.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+        ])
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 

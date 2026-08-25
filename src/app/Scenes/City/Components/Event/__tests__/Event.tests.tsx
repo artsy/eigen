@@ -1,16 +1,13 @@
 import { screen } from "@testing-library/react-native"
 import { Event } from "app/Scenes/City/Components/Event/Event"
 import { Show } from "app/utils/cityGuide/types"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 const eventData = {
   name: "PALAY, Trapunto Murals by Pacita Abad",
   id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",
   internalID: "1234567",
-  gravityID: "pacita-abad-art-estate-palay-trapunto-murals-by-pacita-abad",
-  cover_image: {
-    url: "",
-  },
+  slug: "pacita-abad-art-estate-palay-trapunto-murals-by-pacita-abad",
   is_followed: true,
   end_at: "2001-12-15T12:00:00+00:00",
   start_at: "2001-11-12T12:00:00+00:00",
@@ -20,10 +17,35 @@ const eventData = {
   },
 } as any as Show
 
-describe("CityEvent", () => {
+describe("Event", () => {
+  const { renderWithRelay } = setupTestWrapper({
+    Component: Event,
+  })
+
   it("renders properly", () => {
-    renderWithWrappers(<Event event={eventData} />)
+    renderWithRelay({}, { event: eventData })
 
     expect(screen.getByText("Pacita Abad Art Estate")).toBeTruthy()
+  })
+
+  it("renders a rail of artworks from the show", async () => {
+    renderWithRelay(
+      {
+        Show: () => ({
+          artworksConnection: {
+            edges: [
+              {
+                node: {
+                  artistNames: "Pacita Abad",
+                },
+              },
+            ],
+          },
+        }),
+      },
+      { event: eventData }
+    )
+
+    expect(await screen.findByText("Pacita Abad")).toBeTruthy()
   })
 })

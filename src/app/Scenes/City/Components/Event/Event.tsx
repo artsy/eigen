@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { EventMutation } from "__generated__/EventMutation.graphql"
+import { EventArtworkRailQueryRenderer } from "app/Scenes/City/Components/Event/EventArtworkRail"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Show } from "app/utils/cityGuide/types"
@@ -17,9 +18,8 @@ interface Props {
 }
 
 export const Event: React.FC<Props> = ({ event }) => {
-  const { name, exhibition_period, partner, cover_image, is_followed, end_at } = event
+  const { name, exhibition_period, partner, is_followed, end_at } = event
   const partnerName = partner?.name
-  const url = cover_image ? cover_image.url : null
   const color = useColor()
   const { trackEvent } = useTracking()
   const [isFollowedSaving, setIsFollowedSaving] = useState(false)
@@ -69,11 +69,6 @@ export const Event: React.FC<Props> = ({ event }) => {
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={handleTap}>
       <Box mb={2}>
-        {!!url && (
-          <Box mb={2} justifyContent="center" overflow="hidden">
-            <Image src={url} height={145} />
-          </Box>
-        )}
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           <Box width={TEXT_CONTAINER_WIDTH} mb={2}>
             <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
@@ -98,6 +93,14 @@ export const Event: React.FC<Props> = ({ event }) => {
             {is_followed ? "Saved" : "Save"}
           </Button>
         </Flex>
+
+        <Box mb={2} mx={-2}>
+          <EventArtworkRailQueryRenderer showID={event.internalID} />
+        </Box>
+
+        <Button variant="fillGray" onPress={handleTap} block size="small">
+          Read More
+        </Button>
       </Box>
     </TouchableWithoutFeedback>
   )

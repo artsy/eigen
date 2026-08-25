@@ -93,6 +93,7 @@ export const CityView: React.FC<CityViewProps> = () => {
           onTabChange={(tab) => {
             setSelectedTab(Number(tab.index))
           }}
+          lazy
         >
           {cityTabs.map((tab) => {
             if (tab.id === "all") {
