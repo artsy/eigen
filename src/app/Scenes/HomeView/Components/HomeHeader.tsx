@@ -7,7 +7,9 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { ActivityIndicator } from "./ActivityIndicator"
 
-export const HomeHeader: React.FC = memo(() => {
+export const HomeHeader: React.FC<{
+  onSearchOverlayVisibilityChange?: (isVisible: boolean) => void
+}> = memo(({ onSearchOverlayVisibilityChange }) => {
   const showPaymentFailureBanner = useFeatureFlag("AREnablePaymentFailureBanner")
   const hasUnseenNotifications = GlobalStore.useAppState(
     (state) => state.bottomTabs.hasUnseenNotifications
@@ -19,7 +21,10 @@ export const HomeHeader: React.FC = memo(() => {
       <Flex pb={1} pt={2}>
         <Flex flexDirection="row" px={2} gap={1} justifyContent="space-around" alignItems="center">
           <Flex flex={1}>
-            <GlobalSearchInput ownerType={OwnerType.home} />
+            <GlobalSearchInput
+              ownerType={OwnerType.home}
+              onOverlayVisibilityChange={onSearchOverlayVisibilityChange}
+            />
           </Flex>
           <Flex alignItems="flex-end">
             <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />

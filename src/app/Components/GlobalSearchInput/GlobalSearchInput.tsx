@@ -4,20 +4,33 @@ import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/Globa
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
-import { forwardRef, Fragment, useImperativeHandle, useState } from "react"
+import { forwardRef, Fragment, useEffect, useImperativeHandle, useState } from "react"
 import { useTracking } from "react-tracking"
 
 export type GlobalSearchInput = {
   focus: () => void
 }
 
-export const GlobalSearchInput = forwardRef<GlobalSearchInput, { ownerType: OwnerType }>(
-  ({ ownerType }, ref) => {
+interface GlobalSearchInputProps {
+  ownerType: OwnerType
+  onOverlayVisibilityChange?: (isVisible: boolean) => void
+}
+
+export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInputProps>(
+  ({ ownerType, onOverlayVisibilityChange }, ref) => {
     const [isVisible, setIsVisible] = useState(false)
 
     const debouncedIsVisible = useDebouncedValue({ value: isVisible })
 
     const tracking = useTracking()
+
+    useEffect(() => {
+      onOverlayVisibilityChange?.(isVisible)
+    }, [isVisible, onOverlayVisibilityChange])
+
+    useEffect(() => {
+      return () => onOverlayVisibilityChange?.(false)
+    }, [onOverlayVisibilityChange])
 
     useDismissSearchOverlayOnTabBarPress({ isVisible, ownerType, setIsVisible })
 
