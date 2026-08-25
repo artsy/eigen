@@ -1,6 +1,6 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
-import { MapRenderer } from "app/Scenes/Map/MapRenderer"
-import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
+import { CityGuideMapQueryRenderer } from "app/Scenes/CityGuide/Components/CityGuideMapQueryRenderer"
+import { cityNearLocation } from "app/Scenes/CityGuide/utils/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useLocation } from "app/utils/hooks/useLocation"
 import { useEffect } from "react"
@@ -28,5 +28,5 @@ export const CityGuideView: React.FC = () => {
     )
   }
 
-  return <MapRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
+  return <CityGuideMapQueryRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
 }
