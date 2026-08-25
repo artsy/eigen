@@ -1,4 +1,4 @@
-import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
+import { cityNearLocation } from "app/Scenes/CityGuide/utils/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLocation } from "app/utils/hooks/useLocation"

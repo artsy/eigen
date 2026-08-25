@@ -82,13 +82,13 @@ import {
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
 import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOverview"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
-import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
+import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
+import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/CityGuide/Screens/CityFairList"
+import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/CityGuide/Screens/CitySavedList"
 import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
-} from "app/Scenes/City/CitySectionList"
-import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
+} from "app/Scenes/CityGuide/Screens/CitySectionList"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
