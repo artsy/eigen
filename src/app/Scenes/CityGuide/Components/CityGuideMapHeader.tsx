@@ -5,6 +5,7 @@ import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/Cit
 import { CityGuideUserPositionButton } from "app/Scenes/CityGuide/Components/CityGuideUserPositionButton"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   safeAreaInsetTop: number
@@ -23,6 +24,8 @@ export const CityGuideMapHeader: React.FC<Props> = ({
   onPressCitySwitcherButton,
   onPressUserPositionButton,
 }) => {
+  const showGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
+
   return (
     <Flex
       style={{
@@ -56,8 +59,12 @@ export const CityGuideMapHeader: React.FC<Props> = ({
         />
       </Flex>
       <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
-        <CityGuideCitySwitcherButton city={city} isLoading={!city} onPress={onPressCitySwitcherButton} />
-        {!!isValidLatLng(userLocation) && (
+        <CityGuideCitySwitcherButton
+          city={city}
+          isLoading={!city}
+          onPress={onPressCitySwitcherButton}
+        />
+        {!showGlobalMapList && !!isValidLatLng(userLocation) && (
           <Box style={{ marginLeft: 10 }}>
             <CityGuideUserPositionButton
               highlight={userLocation === currentLocation}
