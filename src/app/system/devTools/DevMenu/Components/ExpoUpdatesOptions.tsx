@@ -173,7 +173,7 @@ export const ExpoUpdatesOptions = () => {
             <>
               <Message
                 title="Expo Updates disabled"
-                text="This build has expo-updates disabled (local Debug builds always do), so the channel cannot be changed. Please use a TestFlight or Firebase beta."
+                text="This build has expo-updates disabled (local Debug builds always do), so the channel cannot be changed. Please use a Firebase beta."
                 variant="warning"
               />
               <Spacer y={2} />
