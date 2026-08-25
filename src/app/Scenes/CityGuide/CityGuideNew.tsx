@@ -2,9 +2,11 @@ import { Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
+import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideMetaData } from "app/Scenes/CityGuide/Components/CityGuideMetaData"
+import { goBack } from "app/system/navigation/navigate"
 
-export const CityGuide: React.FC = () => {
+export const CityGuideNew: React.FC = () => {
   return (
     <Screen>
       <Screen.AnimatedHeader
@@ -12,6 +14,7 @@ export const CityGuide: React.FC = () => {
         rightElements={
           <CityGuideCitySwitcherButton cityName="Berlin" isLoading={false} onPress={() => {}} />
         }
+        onBack={goBack}
         hideTitle
       />
 
@@ -25,6 +28,8 @@ export const CityGuide: React.FC = () => {
             <CityGuideEvents />
           </Join>
         </Screen.ScrollView>
+
+        <CityGuideFloatingMapButton />
       </Screen.Body>
     </Screen>
   )

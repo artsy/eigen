@@ -1,7 +1,7 @@
-import { ChevronDownIcon, DownloadIcon } from "@artsy/icons/native"
-import { Box, Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import ChevronIcon from "app/Components/Icons/ChevronIcon"
+import { ChevronDownIcon } from "@artsy/icons/native"
+import { Button } from "@artsy/palette-mobile"
 import Spinner from "app/Components/Spinner"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   onPress?: () => void
@@ -12,6 +12,8 @@ interface Props {
 const ICON_SIZE = 18
 
 export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, isLoading, onPress }) => {
+  const enableCityGuideList = useFeatureFlag("AREnableGlobalMapList")
+
   if (!cityName && !isLoading) {
     return null
   }
@@ -23,6 +25,7 @@ export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, isLoadi
       size="small"
       iconPosition="right"
       icon={<ChevronDownIcon color="mono100" width={ICON_SIZE} height={ICON_SIZE} />}
+      transparent={enableCityGuideList}
     >
       {cityName ? (
         cityName

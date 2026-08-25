@@ -1,7 +1,7 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { pluralize } from "app/utils/pluralize"
-import { Alert, Image as RNImage } from "react-native"
+import { Image as RNImage } from "react-native"
 
 const IMAGE_SIZE = 44
 
