@@ -11,6 +11,7 @@ jest.mock("@sentry/react-native", () => ({
 jest.mock("react-native-device-info", () => ({
   getDeviceId: jest.fn(),
   getDeviceNameSync: jest.fn(),
+  getBundleId: jest.fn(),
 }))
 
 jest.mock("app/store/GlobalStore", () => ({
@@ -28,6 +29,7 @@ describe("PushNotification", () => {
   const mockUnsafe__getEnvironment = unsafe__getEnvironment as jest.Mock
   const mockGetDeviceId = DeviceInfo.getDeviceId as jest.Mock
   const mockGetDeviceNameSync = DeviceInfo.getDeviceNameSync as jest.Mock
+  const mockGetBundleId = DeviceInfo.getBundleId as jest.Mock
   const mockFetch = fetch as jest.Mock
 
   beforeEach(() => {
@@ -45,6 +47,7 @@ describe("PushNotification", () => {
     })
     mockGetDeviceId.mockReturnValue("mock-device-id")
     mockGetDeviceNameSync.mockReturnValue("Mock Device")
+    mockGetBundleId.mockReturnValue("net.artsy.artsy")
   })
 
   describe("saveToken", () => {
@@ -81,6 +84,42 @@ describe("PushNotification", () => {
             "X-ACCESS-TOKEN": "mock-auth-token",
             "User-Agent": "mock-user-agent",
           },
+        })
+      )
+    })
+
+    it("registers iOS under the running build's real bundle id", async () => {
+      Platform.OS = "ios"
+      const mockToken = "qa-build-token"
+      mockGetBundleId.mockReturnValue("net.artsy.qa")
+
+      mockFetch.mockResolvedValue({
+        json: jest.fn().mockResolvedValue({ status: 200 }),
+      })
+
+      await saveToken(mockToken)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.stringContaining('"app_id":"net.artsy.qa"'),
+        })
+      )
+    })
+
+    it("registers Android under net.artsy.artsy so Pulse can find the device", async () => {
+      Platform.OS = "android"
+      const mockToken = "android-token"
+      mockGetBundleId.mockReturnValue("net.artsy.app")
+
+      mockFetch.mockResolvedValue({
+        json: jest.fn().mockResolvedValue({ status: 200 }),
+      })
+
+      await saveToken(mockToken)
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.stringContaining('"app_id":"net.artsy.artsy"'),
         })
       )
     })

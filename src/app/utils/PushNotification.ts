@@ -45,7 +45,9 @@ export const saveToken = async (token: string) => {
   const body = JSON.stringify({
     name,
     token,
-    app_id: "net.artsy.artsy",
+    // iOS: real bundle id, required to match the APNs topic. Android: FCM ignores it, so keep the
+    // hardcoded id Pulse looks devices up by (real id is net.artsy.app, which Pulse wouldn't find).
+    app_id: Platform.OS === "ios" ? DeviceInfo.getBundleId() : "net.artsy.artsy",
     platform: Platform.OS,
     production,
   })
