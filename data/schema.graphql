@@ -28230,22 +28230,12 @@ type Partner implements Node {
     """
     includeUnpublished: Boolean
     last: Int
-
-    """
-    Return artworks that are missing priority metadata
-    """
-    missingPriorityMetadata: Boolean
     page: Int
 
     """
     Only return artworks that are partner-offerable
     """
     partnerOfferable: Boolean
-
-    """
-    Return artworks published less than x seconds ago.
-    """
-    publishedWithin: Int
 
     """
     Only allowed for authorized admin/partner requests. When false fetch :all properties on an artwork, when true or not present fetch artwork :short properties
