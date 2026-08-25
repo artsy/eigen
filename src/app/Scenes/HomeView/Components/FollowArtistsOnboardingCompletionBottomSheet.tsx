@@ -8,10 +8,14 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { MotiView } from "moti"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform, Pressable, StyleSheet } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
+
+const AVATAR_FAN_OUT_START_POSITIONS = [40, 0, -40]
+const AVATAR_FAN_OUT_ANIMATION_DELAY = 1000
 
 export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const showFollowedArtistSummaryBottomSheet = GlobalStore.useAppState(
@@ -110,27 +114,36 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
 
             <Flex flexDirection="row" justifyContent="center" alignItems="center">
               {followedOnboardingArtists.slice(-3).map((artist, index) => (
-                <Flex
+                <MotiView
                   key={artist.internalID}
-                  backgroundColor="mono0"
-                  borderRadius={35}
-                  style={{
-                    marginLeft: index > 0 ? -10 : 0,
-                    zIndex: index,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.08,
-                    shadowRadius: 4,
-                    elevation: 2,
+                  from={{ translateX: AVATAR_FAN_OUT_START_POSITIONS[index] ?? 0 }}
+                  animate={{ translateX: 0 }}
+                  transition={{
+                    type: "spring",
+                    delay: AVATAR_FAN_OUT_ANIMATION_DELAY,
                   }}
                 >
-                  <Avatar
-                    src={artist.imageUrl ?? undefined}
-                    blurhash={artist.blurhash}
-                    initials={artist.initials ?? undefined}
-                    size="sm"
-                  />
-                </Flex>
+                  <Flex
+                    backgroundColor="mono0"
+                    borderRadius={35}
+                    style={{
+                      marginLeft: index > 0 ? -10 : 0,
+                      zIndex: index,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.08,
+                      shadowRadius: 4,
+                      elevation: 2,
+                    }}
+                  >
+                    <Avatar
+                      src={artist.imageUrl ?? undefined}
+                      blurhash={artist.blurhash}
+                      initials={artist.initials ?? undefined}
+                      size="sm"
+                    />
+                  </Flex>
+                </MotiView>
               ))}
             </Flex>
 
