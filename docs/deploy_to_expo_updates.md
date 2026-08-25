@@ -82,7 +82,7 @@ If native code has drifted you'll see `❌ Native code has drifted from ...` and
 
 `--check-against-version` switches canary/staging to compare against the current app version's shipped fingerprint instead of the latest beta's. Use it when you're deploying from a branch that isn't based on current main — a hotfix branch cut from an old release tag, for example. It's a no-op for production, which already does this.
 
-### Where does the reference fingerprint comes from?
+### Where does the reference fingerprint come from?
 
 #### Diagram
 
@@ -96,7 +96,7 @@ flowchart TD
   end
 
   subgraph BETA["On every beta"]
-    R["Compute fingerprint \n before building"] --> S["git tag ios-9.16.0-2408\nfingerprint:&lt;sha1&gt;"]
+    R["Compute fingerprint \n before building"] --> S["git tag ios-9.16.0-xxxx\nfingerprint:&lt;sha1&gt;"]
   end
 
   subgraph STORE["On store submission"]
@@ -119,9 +119,8 @@ We have two types of fingerprints that we keep track of in S3, `latest.txt` and 
 - `latest.txt` reflects the fingerprint of `main`, and is rewritten whenever `main`'s native code changes — independently of whether a rebuild was actually needed.
 - `{version}.txt` tracks what has been shipped with that version number.
 
-Since we can't calculate the fingerprint on submission time, we do the calculation at beta building time, and store that fingerprint with the build tag on GitHub (example)
-At the time of shipping
-Since a fingerprint can't be computed at submission time, so it's recovered from the annotated ship tag written when that beta was built.
+Since we can't calculate the fingerprint on submission time, we do the calculation at beta building time, and store that fingerprint with the build tag on GitHub ([example](https://github.com/artsy/eigen/releases/tag/ios-9.16.0-2026.08.25.14))
+At the time of submitting to the store, we just read the fingerprint from the tag, and add it to a new file named by the version (e.g. `9.16.0.txt`) and upload that to S3
 
 ### Using in app
 
