@@ -8,6 +8,8 @@ interface Props {
   highlight?: boolean
 }
 
+const HEIGHT = 30
+
 export const CityGuideUserPositionButton: React.FC<Props> = ({ highlight, onPress }) => {
   return (
     <TouchableOpacity accessibilityRole="button" onPress={onPress}>
@@ -17,9 +19,9 @@ export const CityGuideUserPositionButton: React.FC<Props> = ({ highlight, onPres
         alignContent="center"
         alignSelf="flex-end"
         backgroundColor="mono0"
-        height={40}
-        width={40}
-        borderRadius={20}
+        height={HEIGHT}
+        width={HEIGHT}
+        borderRadius={HEIGHT / 2}
         style={BOX_SHADOW}
       >
         <Box style={{ marginLeft: "auto", marginRight: "auto" }}>
