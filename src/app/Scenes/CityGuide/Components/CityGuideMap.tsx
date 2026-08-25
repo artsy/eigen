@@ -341,7 +341,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        city={viewer.city}
+        cityName={viewer.city?.name || "Loading..."}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}

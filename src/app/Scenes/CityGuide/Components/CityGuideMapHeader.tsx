@@ -1,5 +1,4 @@
 import { BackButton, Box, Flex } from "@artsy/palette-mobile"
-import { CityGuideMap_viewer$data } from "__generated__/CityGuideMap_viewer.graphql"
 import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideUserPositionButton } from "app/Scenes/CityGuide/Components/CityGuideUserPositionButton"
@@ -9,16 +8,17 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   safeAreaInsetTop: number
-  city: CityGuideMap_viewer$data["city"]
+  cityName: string
   userLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
   currentLocation?: { lat: number | null | undefined; lng: number | null | undefined } | null
-  onPressCitySwitcherButton: () => void
-  onPressUserPositionButton: () => void
+  onPressCitySwitcherButton?: () => void
+  onPressUserPositionButton?: () => void
+  isListView?: boolean
 }
 
 export const CityGuideMapHeader: React.FC<Props> = ({
   safeAreaInsetTop,
-  city,
+  cityName,
   userLocation,
   currentLocation,
   onPressCitySwitcherButton,
@@ -60,10 +60,11 @@ export const CityGuideMapHeader: React.FC<Props> = ({
       </Flex>
       <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
         <CityGuideCitySwitcherButton
-          city={city}
-          isLoading={!city}
+          cityName={cityName}
+          isLoading={!cityName}
           onPress={onPressCitySwitcherButton}
         />
+
         {!showGlobalMapList && !!isValidLatLng(userLocation) && (
           <Box style={{ marginLeft: 10 }}>
             <CityGuideUserPositionButton
