@@ -11,6 +11,7 @@ import {
   TrendingPeriod,
   useTrendingSearches,
 } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { startTransition, useEffect, useState } from "react"
@@ -19,6 +20,7 @@ import { useTracking } from "react-tracking"
 
 export const TrendingSearches: React.FC = () => {
   const tabBarHeight = useBottomTabBarHeight()
+  const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
   const [period, setPeriod] = useState<TrendingPeriod>("ONE_DAY")
 
   const handlePeriodChange = (next: TrendingPeriod) => {
@@ -30,7 +32,9 @@ export const TrendingSearches: React.FC = () => {
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
+      contentContainerStyle={{
+        paddingBottom: tabBarHeight + 24 + (enableArtsyLens ? SEARCH_BY_PHOTO_BUTTON_SPACE : 0),
+      }}
     >
       <Join separator={<Spacer y={2} />}>
         <RecentSearchesPillsRail />
@@ -83,6 +87,10 @@ const TrendingSection = withSuspense({
 const AVATAR_ITEM_COUNT = 4
 const RAIL_CARD_WIDTH = 240
 const RAIL_CARD_COUNT = 3
+
+// Height reserved for the "Search by photo" sticky button in the search overlay -- see
+// `GlobalSearchInputOverlay.tsx`. Includes the 50pt button height + 8pt `pb={1}` breathing space.
+const SEARCH_BY_PHOTO_BUTTON_SPACE = 58
 
 const TrendingPlaceholder: React.FC = () => (
   <Skeleton>

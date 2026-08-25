@@ -24,6 +24,9 @@ export const experiments = {
     description: "Enable live-refreshing the Home screen New Works for You rail in eigen",
     variantSuggestions: ["control", "experiment"],
   },
+  "onyx_artsy-lens": {
+    description: "Enable Artsy Lens (reverse-image-search camera) entry points",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

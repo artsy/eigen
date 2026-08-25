@@ -1,8 +1,10 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { PhotographIcon } from "@artsy/icons/native"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
 import { ICON_HIT_SLOP } from "app/Components/constants"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { forwardRef, Fragment, useEffect, useImperativeHandle, useState } from "react"
 import { useTracking } from "react-tracking"
@@ -23,6 +25,7 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
     const debouncedIsVisible = useDebouncedValue({ value: isVisible })
 
     const tracking = useTracking()
+    const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
 
     useEffect(() => {
       onOverlayVisibilityChange?.(isVisible)
@@ -67,6 +70,18 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
               numberOfLines={1}
               multiline={false}
             />
+            {!!enableArtsyLens && (
+              <Flex
+                position="absolute"
+                right={16}
+                top={0}
+                bottom={0}
+                justifyContent="center"
+                testID="search-input-camera-icon"
+              >
+                <PhotographIcon width={20} height={20} fill="mono100" />
+              </Flex>
+            )}
           </Flex>
         </Touchable>
         <GlobalSearchInputOverlay

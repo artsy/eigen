@@ -132,7 +132,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Find out how an artwork would look on your wall, upload photos of artworks you own, or add a profile picture.</string>
+	<string>Find out how an artwork would look on your wall, upload photos of artworks you own, add a profile picture, or take a photo to find similar artworks on Artsy.</string>
 	<key>NSDocumentsUsageDescription</key>
 	<string>In order to add additional documents to your submission, we need access to your documents to pick files.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
