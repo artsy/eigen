@@ -175,8 +175,6 @@ class LiveAuctionViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), for: .touchUpInside)
 
         offlineView.addSubview(closeButton)
-        // Pin to the safe area (not the raw edges) so the button clears the notch/Dynamic Island
-        // and the sensor housing in landscape.
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: offlineView.safeAreaLayoutGuide.topAnchor, constant: 20),
