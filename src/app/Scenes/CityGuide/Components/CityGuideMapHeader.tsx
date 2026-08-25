@@ -1,5 +1,4 @@
-import { BackButton, Box, Flex } from "@artsy/palette-mobile"
-import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
+import { BackButtonWithBackground, Box, Flex } from "@artsy/palette-mobile"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideUserPositionButton } from "app/Scenes/CityGuide/Components/CityGuideUserPositionButton"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
@@ -40,24 +39,15 @@ export const CityGuideMapHeader: React.FC<Props> = ({
       alignContent="space-between"
       justifyContent="space-between"
     >
-      <Flex
-        borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
-        backgroundColor="mono0"
-        width={BACK_BUTTON_SIZE_SIZE}
-        height={BACK_BUTTON_SIZE_SIZE}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <BackButton
-          style={{
-            top: 0,
-            left: 0,
-          }}
-          onPress={() => {
-            goBack()
-          }}
-        />
-      </Flex>
+      <BackButtonWithBackground
+        style={{
+          top: 0,
+          left: 0,
+        }}
+        onPress={() => {
+          goBack()
+        }}
+      />
       <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
         <CityGuideCitySwitcherButton
           cityName={cityName}

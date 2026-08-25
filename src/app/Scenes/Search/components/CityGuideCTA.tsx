@@ -1,15 +1,18 @@
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Image } from "react-native"
 
 export const CityGuideCTA: React.FC = () => {
+  const enableCityGuideList = useFeatureFlag("AREnableGlobalMapList")
   const cityGuideMapImage = require("images/city-guide-bg.webp")
+
   const color = useColor()
   return (
     <Flex>
       <SectionTitle title="Explore art on view" />
-      <RouterLink to="/local-discovery">
+      <RouterLink to={enableCityGuideList ? "/city-guide" : "/local-discovery"}>
         <Flex
           style={{
             borderWidth: 1,
