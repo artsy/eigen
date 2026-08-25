@@ -908,6 +908,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to LocalDiscovery with a preselected city slug", () => {
+    expect(matchRoute("/local-discovery?citySlug=london-united-kingdom")).toMatchInlineSnapshot(`
+      {
+        "module": "LocalDiscovery",
+        "params": {
+          "citySlug": "london-united-kingdom",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to PrivacyRequest", () => {
     expect(matchRoute("/privacy-request")).toMatchInlineSnapshot(`
       {
