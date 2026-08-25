@@ -65,10 +65,12 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
       zIndex={1000}
       style={{
         marginTop: insets.top + space(6),
+        height: "80%",
+        width: "70%",
       }}
       backgroundColor="mono0"
       borderRadius={BORDER_RADIUS}
-      maxHeight="80%"
+      maxHeight="70%"
       minWidth="90%"
       alignSelf="center"
     >
