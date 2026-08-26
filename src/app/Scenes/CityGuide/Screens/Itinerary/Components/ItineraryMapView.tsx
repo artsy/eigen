@@ -23,6 +23,8 @@ const SINGLE_STOP_ZOOM = 14
 const SCALE_BAR_GAP = 8
 /** Clears the floating list/map toggle, which sits ~10pt off the bottom. */
 const PREVIEW_BOTTOM_OFFSET = 70
+/** Close enough to separate two stops sharing one venue. */
+const CLUSTER_EXPAND_ZOOM = 17
 
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
@@ -71,13 +73,13 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
       bounds: {
         ne: [maxLng, maxLat] as [number, number],
         sw: [minLng, minLat] as [number, number],
-        paddingTop: BOUNDS_PADDING,
+        paddingTop: BOUNDS_PADDING + overlayHeight,
         paddingBottom: BOUNDS_PADDING,
         paddingLeft: BOUNDS_PADDING,
         paddingRight: BOUNDS_PADDING,
       },
     }
-  }, [visible])
+  }, [visible, overlayHeight])
 
   // The very first frame comes from defaultSettings, not from the effect below: on mount
   // the camera ref is not attached yet, so an imperative setCamera silently no-ops and the
@@ -120,6 +122,13 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
           collection={collection}
           selectedStopId={selectedStopId}
           onSelectStop={setSelectedStopId}
+          onSelectCluster={(centerCoordinate) => {
+            cameraRef.current?.setCamera({
+              centerCoordinate,
+              zoomLevel: CLUSTER_EXPAND_ZOOM,
+              animationDuration: 400,
+            })
+          }}
         />
       </MapboxGL.MapView>
 
