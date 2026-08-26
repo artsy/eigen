@@ -42,8 +42,20 @@ Deviations from the plan as written, all recorded in the commits:
 - `--findRelatedTests` is banned in this repo; see Global Constraints.
 - Task 9's Android manifest step landed early, ahead of the rest of the task.
 
-**Not yet done:** the manual simulator pass in the Verification section below. Nothing here has been
-run on a device.
+**Device pass done.** Six issues found in the simulator and fixed on top of the eleven tasks:
+
+| Issue                                                        | Cause                                                                                        | Commit                     |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------- |
+| Map opened on the world view, framed only after a filter tap | camera ref not attached on mount, so the imperative `setCamera` no-opped                     | `61a1a4a7b3`               |
+| Filter pills see-through over the map                        | palette's default `Pill` state declares no `background-color`                                | `61a1a4a7b3`               |
+| "All" kept showing only the last selected section            | rnmapbox maps an undefined layer filter to `[]`, not to a reset, so the native filter sticks | `a0489b5c29`               |
+| Filtered pins numbered 4, 5 instead of 1, 2                  | converter numbered from the whole itinerary                                                  | `a0489b5c29`               |
+| One stop zoomed onto a rooftop                               | a single stop gives a zero-size bounding box                                                 | `a0489b5c29`               |
+| Scale bar behind the pills; back button jumped between views | scale bar unpositioned; header vs floating button used different offsets                     | `b34fd8b0a6`, `cef0cd7a53` |
+
+Two of those could not have been caught by tests: `MapView` mocks to `() => null`, so pins, camera and
+overlay never render under Jest. The pin-renumbering fix was moved into the pure converter precisely so
+it _could_ be tested.
 
 ## Global Constraints
 
