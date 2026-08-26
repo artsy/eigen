@@ -13,12 +13,7 @@ import {
 } from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
-import {
-  bucketCityResults,
-  BucketKey,
-  BucketResults,
-  emptyBucketResults,
-} from "app/Scenes/CityGuide/utils/bucketCityResults"
+import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeatureCollections"
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
@@ -32,20 +27,18 @@ import {
   MinZoomLevel,
 } from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
-import { DrawerPosition, Fair, FilterData, Show } from "app/Scenes/CityGuide/utils/types"
+import { DrawerPosition, Fair, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import usePrevious from "react-use/lib/usePrevious"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
@@ -87,12 +80,14 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const currentLocation = viewer.city?.coordinates
   const [userLocation, setUserLocation] = useState(currentLocation)
 
-  const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
-  const previousBucketResults = usePrevious(bucketResults)
+  // Derived from the fragment data rather than held in state, so that a show being saved anywhere
+  // else in the app re-buckets the results and repaints its pin with the saved variant.
+  const bucketResults = useMemo(
+    () => bucketCityResults(shows, upcomingShows, fairs),
+    [shows, upcomingShows, fairs]
+  )
+  const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
 
-  const [featureCollections, setFeatureCollections] = useState<
-    { [key in BucketKey]: FilterData } | {}
-  >({})
   const [isSavingShow, setIsSavingShow] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
@@ -102,7 +97,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const enableGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
 
   useEffect(() => {
-    updateShowIdMap()
     EventEmitter.subscribe("filters:change", handleFilterChange)
     return () => {
       EventEmitter.unsubscribe("filters:change", handleFilterChange)
@@ -110,35 +104,9 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!bucketResults) return
-
-    if (previousBucketResults) {
-      const prevFollowed = previousBucketResults.saved?.map((g) => g?.is_followed)
-      const currentFollowed = bucketResults.saved?.map((g) => g?.is_followed)
-
-      const shouldUpdate = !isEqual(prevFollowed, currentFollowed)
-
-      if (shouldUpdate) {
-        updateClusterMap(bucketResults)
-      }
-    }
-  }, [bucketResults])
-
-  useEffect(() => {
     updateShowIdMap()
-  }, [viewer])
-
-  useEffect(() => {
-    if (viewer) {
-      // TODO: This is currently really inefficient.
-      const newBucketResults = bucketCityResults(shows, upcomingShows, fairs)
-
-      setBucketResults(newBucketResults)
-      emitFilteredBucketResults(newBucketResults)
-      updateShowIdMap()
-      updateClusterMap(newBucketResults)
-    }
-  }, [props, viewer])
+    emitFilteredBucketResults(bucketResults)
+  }, [bucketResults])
 
   const onPressCitySwitcherButton = () => {
     if (!showCityPicker) {
@@ -172,10 +140,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
     trackEvent(tracks.trackPinTap(actionName, show, type))
-  }
-
-  const updateClusterMap = (newBucketResults: BucketResults) => {
-    setFeatureCollections(buildFeatureCollections(newBucketResults))
   }
 
   const emitFilteredBucketResults = (newBucketResults: BucketResults) => {
