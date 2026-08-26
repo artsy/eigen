@@ -1,6 +1,7 @@
 import { Flex, Pill } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { ItineraryMapPins } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPins"
+import { ItineraryMapPreview } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPreview"
 import {
   flattenItineraryStops,
   itineraryStopsToGeoJSON,
@@ -20,11 +21,14 @@ const MIN_BOUNDS_SPAN = 0.002
 const SINGLE_STOP_ZOOM = 14
 /** Breathing room between the pill overlay and the scale bar below it. */
 const SCALE_BAR_GAP = 8
+/** Clears the floating list/map toggle, which sits ~10pt off the bottom. */
+const PREVIEW_BOTTOM_OFFSET = 70
 
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
   const [overlayHeight, setOverlayHeight] = useState(0)
+  const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const { top } = useSafeAreaInsets()
 
@@ -41,6 +45,8 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
   // Built from the visible stops only, never filtered at the layer. The converter numbers
   // by position, so a filtered section renumbers from 1.
   const collection = useMemo(() => itineraryStopsToGeoJSON(visible), [visible])
+
+  const selectedStop = visible.find((f) => f.stop.id === selectedStopId)?.stop
 
   const cameraStop = useMemo(() => {
     if (!visible.length) return undefined
@@ -110,7 +116,11 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
           defaultSettings={initialCameraStop}
         />
 
-        <ItineraryMapPins collection={collection} />
+        <ItineraryMapPins
+          collection={collection}
+          selectedStopId={selectedStopId}
+          onSelectStop={setSelectedStopId}
+        />
       </MapboxGL.MapView>
 
       <Flex
@@ -145,6 +155,17 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
           </Flex>
         </ScrollView>
       </Flex>
+
+      {/*
+        Sits above the list/map toggle, which the screen renders at bottom -50 with a
+        -60 translate. selectedStop comes from the visible set, so switching filters
+        away from the selected pin drops its card too.
+      */}
+      {!!selectedStop && (
+        <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
+          <ItineraryMapPreview stop={selectedStop} />
+        </Flex>
+      )}
     </Flex>
   )
 }

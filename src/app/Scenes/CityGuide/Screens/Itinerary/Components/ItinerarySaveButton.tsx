@@ -1,4 +1,4 @@
-import { AddIcon, CheckmarkIcon } from "@artsy/icons/native"
+import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Flex } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 
@@ -36,7 +36,11 @@ export const ItinerarySaveButton: React.FC<Props> = ({
             height={ICON_SIZE}
           />
         ) : (
-          <AddIcon testID="itinerary-save-button-add-icon" width={ICON_SIZE} height={ICON_SIZE} />
+          <AddStrokeIcon
+            testID="itinerary-save-button-add-icon"
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+          />
         )}
       </Flex>
     </TouchableOpacity>

@@ -2,13 +2,9 @@ import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
 import { ItineraryFeatureCollection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
 import { StyleProp } from "react-native"
 
-const circleStyle: StyleProp<CircleLayerStyle> = {
-  circleRadius: 14,
-  circleColor: "black",
-  circleStrokeWidth: 2,
-  circleStrokeColor: "white",
-  circlePitchAlignment: "map",
-}
+/** Same highlight the City Guide map uses for a tapped pin (CityGuideMapPins.tsx:8). */
+const SELECTED_PIN_COLOR = "#6E1EFF"
+const PIN_COLOR = "black"
 
 const numberStyle: StyleProp<SymbolLayerStyle> = {
   textField: ["get", "number"],
@@ -23,6 +19,8 @@ const numberStyle: StyleProp<SymbolLayerStyle> = {
 interface Props {
   /** Already filtered to the stops that should be visible. */
   collection: ItineraryFeatureCollection
+  selectedStopId: string | null
+  onSelectStop: (stopId: string) => void
 }
 
 /**
@@ -33,9 +31,31 @@ interface Props {
  * that section. Filtering the collection instead is unambiguous, and rebuilding a
  * shape source of 5-15 points costs nothing.
  */
-export const ItineraryMapPins: React.FC<Props> = ({ collection }) => {
+export const ItineraryMapPins: React.FC<Props> = ({ collection, selectedStopId, onSelectStop }) => {
+  const circleStyle: StyleProp<CircleLayerStyle> = {
+    circleRadius: 14,
+    // Recolour the tapped pin itself rather than drawing a highlight over it, matching
+    // how the City Guide map treats its selected cluster.
+    circleColor: selectedStopId
+      ? ["case", ["==", ["get", "id"], selectedStopId], SELECTED_PIN_COLOR, PIN_COLOR]
+      : PIN_COLOR,
+    circleStrokeWidth: 2,
+    circleStrokeColor: "white",
+    circlePitchAlignment: "map",
+  }
+
   return (
-    <MapboxGL.ShapeSource id="itineraryStops" shape={collection as any}>
+    <MapboxGL.ShapeSource
+      id="itineraryStops"
+      shape={collection as any}
+      onPress={(event) => {
+        const stopId = event?.features?.[0]?.properties?.id
+
+        if (stopId) {
+          onSelectStop(stopId)
+        }
+      }}
+    >
       <MapboxGL.CircleLayer id="stopCircles" style={circleStyle} />
       <MapboxGL.SymbolLayer id="stopNumbers" aboveLayerID="stopCircles" style={numberStyle} />
     </MapboxGL.ShapeSource>
