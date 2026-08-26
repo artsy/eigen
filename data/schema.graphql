@@ -31,6 +31,63 @@ type AI {
   ): AIPromptTemplateConnection
 }
 
+union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
+
+input AIAgentMessageInput {
+  content: String!
+  role: AIAgentRole!
+}
+
+enum AIAgentRole {
+  ASSISTANT
+  USER
+}
+
+type AIAgentTextDelta {
+  text: String!
+}
+
+type AIAgentToolCall {
+  """
+  Human-readable label, e.g. "Searching artists…".
+  """
+  summary: String
+  toolName: String!
+}
+
+type AIAgentToolResult {
+  ok: Boolean!
+  summary: String
+  toolName: String!
+}
+
+type AIAgentTurnComplete {
+  """
+  Artworks referenced in the answer, for rendering as cards.
+  """
+  artworks: [Artwork!]
+  message: String
+  stopReason: String!
+  toolCallCount: Int!
+}
+
+input AIAgentTurnInput {
+  """
+  Client-generated; identifies which conversation a turn belongs to.
+  """
+  conversationID: String!
+
+  """
+  Prior turns, owned and replayed by the client.
+  """
+  history: [AIAgentMessageInput!]
+
+  """
+  The new user message.
+  """
+  message: String!
+}
+
 type AIPromptTemplate {
   """
   A globally unique ID.
@@ -36694,6 +36751,10 @@ type SubmittedPriceEstimateParams {
   Phone number of the requester
   """
   requesterPhoneNumber: String
+}
+
+type Subscription {
+  aiAgentTurn(input: AIAgentTurnInput!): AIAgentEvent
 }
 
 """
