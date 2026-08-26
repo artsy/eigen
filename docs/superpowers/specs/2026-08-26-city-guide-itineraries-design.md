@@ -1,7 +1,7 @@
 # City Guide Itineraries — Design
 
 **Date:** 2026-08-26
-**Revision:** v2. Supersedes v1 (commit `c441d255a5`) after two review rounds.
+**Revision:** v2.1. Supersedes v1 (commit `c441d255a5`) after three review rounds.
 **Status:** Draft for review
 **Scope:** Sub-project 1 of the City Guide increment
 
@@ -135,28 +135,66 @@ passed down, so list and map cannot disagree.
 formats from the structured fields. They exist so sorting and timezone-aware behaviour do not require a
 schema change later.
 
-### Open question: how stops resolve, one query or many
+### How stops resolve: settled against Metaphysics and Gravity
 
-By-slug resolution of a single entity is proven in the repo. `Show.tsx:152` runs `show(id: $showID)`
-where the route param is a slug — `CityGuideEvent.tsx:29` navigates to `/show/${event.slug}` — and
-`PartnerLocations.tests.tsx:24` queries `partner(id: "gagosian")`.
+v2 originally left this open. It is now closed by reading the servers directly.
 
-Batch resolution is not proven. `Query.showsConnection(ids: [String])` exists
-(`data/schema.graphql:33440`) but its `ids` argument is undocumented as to slug support, nothing in the
-app uses it, and connection results carry no ordering guarantee matching the input.
+**Single-entity by slug works.** `Query.show(id:)` resolves through `showLoader` to Gravity's
+`shows_endpoint.rb:15` — `PartnerShow.find(params[:id])` — and `PartnerShow` includes `Mongoid::Slug`,
+which overrides `find` to accept slugs. `Query.partner(id:)` is explicitly slug-aware in Metaphysics
+(`partner/partner.ts:1768`: `const isSlug = !/[0-9a-f]{24}/.test(id)`) and Gravity's `Partner` also
+includes `Mongoid::Slug`.
 
-**Recommended for this pass:** each `ItineraryStopRow` resolves its own `saveTarget` with a small
-`useLazyLoadQuery`, wrapped in Suspense. For 5-15 stops that is 5-15 small parallel queries. Relay
-dedupes repeated slugs through the store.
+**Batching by slug does not work.** `Query.showsConnection(ids:)` passes `ids` straight through as
+Gravity's `id` param, and `shows_endpoint.rb:155` does `shows.in(_id: params[:id])` — a raw Mongo match
+on the BSON `_id`. No slug support, unknown entries dropped silently, and results ordered by
+`-created_at`, not input order. `partnersConnection(ids:)` behaves the same way and is unsorted.
 
-**The cost, stated plainly:** this is more requests than the screen deserves, and it is the weakest part
-of v2. It is accepted because it is provably correct with the schema as it exists, it needs no invented
-identifiers, and it disappears entirely when the real itinerary API returns entities inline — at which
-point stops become fragment spreads and the per-row queries are deleted.
+The one genuine batch-by-slug is `Query.profilesConnection(ids:)`, whose Gravity endpoint
+(`profiles_endpoint.rb:20`) uses `Mongoid::Slug`'s patched `Criteria#find`. It returns unordered and
+_raises_ on a missing slug, so it is only usable when every slug is guaranteed valid. Not worth it for
+the mixed show-and-gallery list here.
 
-**For the API design session:** the itinerary query should return each stop's entity inline, making this
-question moot. If an interim batch is wanted first, confirm whether `showsConnection(ids:)` accepts
-slugs and whether result order can be relied on.
+**Decision: one small query per stop**, issued by the stop's save control, each wrapped in its own
+Suspense boundary and error boundary so a slow or 404 lookup degrades that one control rather than the
+screen. For 5-15 stops that is 5-15 parallel queries behind auth — the whole route table sits inside
+`AuthenticatedRoutes` (`Navigation.tsx:130-131`), so there is no signed-out case to handle.
+
+The alternative considered and rejected: one query with aliased fields (`s0: show(id: …)`,
+`s1: show(id: …)`). It is a single round trip and preserves order, but Relay requires static queries, so
+the alias count must be fixed at compile time while stop counts vary per itinerary. Making that work
+needs `@include(if:)` gymnastics over a max arity, which is more machinery than temporary scaffolding
+earns. Revisit only if the request count proves to be a real problem before the API lands.
+
+**`includeAllShows` matters here.** `Query.show` declares `includeAllShows: Boolean = false` —
+"Include shows that are no longer running/active". Left at the default, a mock built from currently
+running London shows silently loses its save controls as those shows close. Pass `includeAllShows: true`.
+
+### Notes for the backend API design session
+
+Findings from reading Metaphysics and Gravity that should shape the real itinerary API:
+
+- **`OrderedSet` already models almost exactly this shape, with no new backend types.** Metaphysics
+  exposes `orderedSet`, `orderedSets(key: String!)`, and `orderedSetsConnection`, and the
+  `OrderedSetItem` union (`src/schema/v2/item.ts:13-24`) already includes **`ShowType`** (Gravity
+  `item_type: "PartnerShow"`) and **`ProfileType`** — the two entity types a stop needs. A set carries
+  `key`, `name`, `description`, `layout`, `published`, and ordered items, which covers itinerary and
+  section identity, title, and the ordered stop list. Gravity has create/add/delete mutations already.
+- **The gap is exactly two per-stop fields:** `displayTime` and `note`. `OrderedSetItem` carries no
+  per-item metadata. That is the specific thing the API design has to solve, not the whole model.
+- **There is no `City` model in Gravity.** Cities are a static JSON file inside Metaphysics
+  (`src/schema/v2/city/cityDataSortedByDisplayPreference.json`), the same list Eigen duplicates locally.
+  So `citySlug` has no backend entity to attach an itinerary to; an `orderedSets(key:)` convention is the
+  natural join.
+- **Editorial content lives in Positron** (`article`, `articlesConnection` root fields). If itineraries
+  are authored by writers, that is the other candidate home. A product question, not a technical one.
+- **Gallery save targets should reference the Profile, not the Partner.** `Partner.profile` is nullable
+  (`data/schema.graphql`), and `FollowProfileInput.profileID` wants `Profile.internalID`. A partner slug
+  whose partner has no profile silently yields no save control, indistinguishable from a failure. The API
+  should either return the profile directly or guarantee the target resolves to a followable entity.
+- **Stops deliberately carry their own `title`, `imageUrl`, and `coordinates`** even though the resolved
+  entity also has them. This is editorial curation — the guide may want its own framing, and non-Artsy
+  stops have no entity at all. The backend should not "helpfully" derive them.
 
 ## Screens and components
 
@@ -199,11 +237,18 @@ sibling `followProfile` is already extracted as `src/app/utils/mutations/useFoll
   (`CityGuideShow_show.graphql.ts:23`) and a narrower parameter does not compile under `strict`.
 - **Keep the save button scene-local** as `ItinerarySaveButton`. One consumer, itinerary-specific
   semantics. Extract when a second real consumer exists.
-- **Migrate `CityGuideEvent.tsx` onto the hook.** Its current updater writes the `is_followed` alias
-  key, which Relay never reads — the button works only because its `optimisticResponse` is
-  payload-shaped. The migration deletes that dead code.
+- **Migrate `CityGuideEvent.tsx` onto the hook.** This is a bug fix, not a tidy-up. Both of its
+  optimistic paths are broken today. The `updater` writes the `is_followed` alias key, which Relay never
+  reads, because records key on the schema field name. And the `optimisticResponse` omits `id` — the
+  Relay compiler adds `id` to the normalization AST (`CityGuideEventMutation.graphql.ts:138`), so
+  without it the optimistic payload cannot merge into the existing Show record either. The button
+  therefore flips only after the network returns. The new hook selects `id`, supplies it in the
+  optimistic response, and updates through `setShowFollowed`.
 
-Galleries use `useFollowProfile` unchanged, passing the resolved `Partner.profile` fields.
+Galleries use `useFollowProfile`, passing the resolved `Partner.profile` fields. That hook currently
+declares `isFollowed: boolean | null`; widen it to `boolean | null | undefined` to match `useFollowShow`,
+because the generated query type makes `profile?.isFollowed` optional and the hook is necessarily called
+before any null guard.
 
 ## Reuse
 
@@ -213,8 +258,11 @@ Galleries use `useFollowProfile` unchanged, passing the resolved `Partner.profil
   `RouterLink` is idiomatic and enables prefetching.
 - A `Screen.ScrollView` for the list. FlashList is the rule for virtualized lists; 5-15 statically
   mapped rows are not one, and the parent `CityGuideNew.tsx:40-55` already renders mapped rows this way.
-- `app/utils/hooks/withSuspense` for the loading and error fallbacks. Unlike v1, this is now load-bearing:
-  the screen issues a real Relay query.
+- A `Suspense` boundary **and** an error boundary around each stop's save control, not around the
+  screen. This is load-bearing and must be written, not assumed: the app's only ambient boundary is the
+  `RetryErrorBoundary` at `Navigation/AuthenticatedRoutes/ScreenWrapper.tsx:51`, which has no `Suspense`,
+  so an uncontained suspending child renders the whole screen's retry state. Containment per control is
+  what makes "a slow or failing lookup degrades one control" true rather than aspirational.
 - **Not** `CityGuideMapPins.tsx`. Roughly 75 of its 94 lines are clustering- or sprite-specific, and it
   hardwires the bucket/tab data shape. v1 required extending it; v2 does not. A separate
   `ItineraryMapPins` is smaller and clearer.

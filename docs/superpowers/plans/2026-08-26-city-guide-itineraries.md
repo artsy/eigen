@@ -2,7 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Revision:** v2. Supersedes v1 (commit `5ba2d39e81`) after two review rounds. Eleven tasks, not ten.
+**Revision:** v2.1. Supersedes v1 (commit `5ba2d39e81`) after three review rounds. Eleven tasks, not ten.
+
+v2.1 folds in a third review plus findings from reading Metaphysics and Gravity directly. The design did
+not change; the plan did. Four defects would have broken it on a cold run: no Suspense or error boundary
+around the per-stop queries, tests that crash `setupTestWrapper` by rendering no query, curated rows that
+were not actually pressable, and a `to`-prop assertion that can never hold. Plus `includeAllShows`,
+a `useFollowProfile` type widening, the wrong gradient package, and per-city row filtering.
 
 **Goal:** Add read-only viewing of curated city itineraries to the City Guide, with a real save action on each stop.
 
@@ -21,6 +27,9 @@
   yarn test --findRelatedTests <changed-files>
   yarn lint <changed-files>
   ```
+  `passWithNoTests` is not set in `jest.config.js` or `package.json`, so `--findRelatedTests` over files
+  with no related test yet (Tasks 1 and 4) can exit non-zero. Append `--passWithNoTests` in those two
+  cases; a spurious failure there is noise, not signal.
 - Run `yarn relay` after any change to a `graphql` tagged template.
 - No `index.ts(x)` files. No cross-scene imports — shared code goes in `src/app/Components/` or `src/app/utils/`.
 - Components and component folders are PascalCase; `hooks`, `utils`, `mutations` folders are camelCase. Tests live in a sibling `__tests__/` and end in `.tests.ts(x)`.
@@ -55,7 +64,11 @@ export interface ItineraryStop {
   title: string
   /** Backend-formatted for display. e.g. "11am-4pm" */
   displayTime: string
-  /** Optional structured schedule. Display always comes from displayTime. */
+  /**
+   * Reserved, unused in this pass. ISO 8601. Carried so sorting and timezone-aware
+   * behaviour do not need a schema change later. Never format from these — display
+   * always comes from displayTime.
+   */
   startAt?: string
   endAt?: string
   /** Freeform. May hold emoji ("🥂 🧀") or a short caption. */
@@ -435,6 +448,11 @@ const wrapper = ({ children }: any) => (
 )
 
 describe("useFollowShow", () => {
+  // The environment is module-level and shared across tests, as in useSendInquiry.tests.tsx:41.
+  afterEach(() => {
+    env.mockClear()
+  })
+
   it("sends unfollow false when the show is not followed", () => {
     const { result } = renderHook(
       () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: false }),
@@ -735,7 +753,15 @@ Expected: `LocationMap` and `PartnerLocations` tests still pass. Check both maps
 import { screen } from "@testing-library/react-native"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+
+// Harness rule for every test in this plan: `renderWithRelay` unconditionally calls
+// env.mock.resolveMostRecentOperation (setupTestWrapper.tsx:117), and relay-test-utils
+// throws "There are no pending operations in the list" when nothing is pending
+// (RelayModernMockEnvironment.js:220). So use setupTestWrapper ONLY when the render
+// actually issues a query — i.e. when a stop has a non-null saveTarget. Otherwise use
+// renderWithWrappers.
 
 const savedStop: ItineraryStop = {
   id: "stop-2",
@@ -768,14 +794,15 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("🥂 🧀")).toBeTruthy()
   })
 
+  // No saveTarget means no query, so these two must not go through renderWithRelay.
   it("omits the note when the stop has none", () => {
-    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
+    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} />)
 
     expect(screen.queryByText("🥂 🧀")).toBeNull()
   })
 
   it("renders no save control when the stop has no save target", () => {
-    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
+    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} />)
 
     expect(screen.queryByTestId("itinerary-save-button")).toBeNull()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -848,12 +875,29 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number }) => {
       </Flex>
 
       {!!stop.saveTarget && (
-        <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
+        // Containment is mandatory, not decorative. The app's only ambient boundary is the
+        // RetryErrorBoundary at Navigation/AuthenticatedRoutes/ScreenWrapper.tsx:51, which has
+        // no Suspense — an uncontained suspending child blanks the whole screen into its retry
+        // state. Both boundaries render null so one slow or 404 lookup costs one control.
+        <ErrorBoundary fallbackRender={() => null}>
+          <Suspense fallback={null}>
+            <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </Flex>
   )
 }
 ```
+
+Add to the imports:
+
+```tsx
+import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
+```
+
+`react-error-boundary` is already a dependency — `app/utils/hooks/withSuspense.tsx` imports `ErrorBoundary` and `FallbackProps` from it. `withSuspense` itself is not used here because it wraps a component definition, while this needs a boundary around one conditional child.
 
 - [ ] **Step 4: Write the save control**
 
@@ -951,8 +995,11 @@ const PartnerSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slu
 }
 
 const ShowQuery = graphql`
+  # includeAllShows: true is required, not optional. It defaults to false — "Include shows
+  # that are no longer running/active" — so without it a mock built from currently running
+  # shows silently loses its save controls as those shows close.
   query ItineraryStopSaveControlShowQuery($slug: String!) {
-    show(id: $slug) {
+    show(id: $slug, includeAllShows: true) {
       id
       internalID
       isFollowed
@@ -974,6 +1021,19 @@ const PartnerQuery = graphql`
 ```
 
 Replace the `useLazyLoadQuery<any>` type arguments with the generated query types after `yarn relay`. Partner-branch tracking is omitted deliberately: `Schema.ActionNames` has no gallery-follow entry, and adding one belongs to the save sub-project.
+
+**Before replacing `<any>`, widen `useFollowProfile`.** It declares `isFollowed: boolean | null`
+(`src/app/utils/mutations/useFollowProfile.ts:6`), but the generated type makes
+`data?.partner?.profile?.isFollowed` be `boolean | null | undefined`, and the hook is necessarily
+called before the `if (!profile) return null` guard. Under `strict` that will not compile the moment
+the real type replaces `any`. Change that one line to match `useFollowShow`:
+
+```ts
+isFollowed: boolean | null | undefined
+```
+
+This is the same widening BLOCK-03 forced on `useFollowShow`; the sibling was missed. Commit it with
+this task and re-run the existing consumers' tests (`PartnerFollowButton`, `FairFollowButton`).
 
 - [ ] **Step 5: Compile Relay and run the tests**
 
@@ -1015,8 +1075,10 @@ git commit -m "feat(city-guide): add ItineraryStopRow with real entity save"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
+// Both fixture stops have saveTarget: null, so no query fires and setupTestWrapper
+// would throw. See the harness rule in the ItineraryStopRow test.
 const section: ItinerarySection = {
   id: "day-1",
   title: "Day 1 — Easing in",
@@ -1041,10 +1103,8 @@ const section: ItinerarySection = {
 }
 
 describe("ItinerarySectionRow", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: ItinerarySectionRow })
-
   it("renders the title and its stops expanded by default", () => {
-    renderWithRelay({}, { section, startNumber: 1 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={1} />)
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -1052,14 +1112,14 @@ describe("ItinerarySectionRow", () => {
   })
 
   it("numbers stops from startNumber", () => {
-    renderWithRelay({}, { section, startNumber: 4 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={4} />)
 
     expect(screen.getByText("4")).toBeTruthy()
     expect(screen.getByText("5")).toBeTruthy()
   })
 
   it("hides the stops when the header is tapped", () => {
-    renderWithRelay({}, { section, startNumber: 1 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={1} />)
 
     fireEvent.press(screen.getByTestId("itinerary-section-header"))
 
@@ -1181,17 +1241,16 @@ describe("ItineraryHeader", () => {
 
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Find the gradient component**
+- [ ] **Step 3: Write the implementation**
 
-Run: `grep -rn "LinearGradient" src/app --include='*.tsx' | head -5`
-Use whichever gradient component the repo already imports. Do not add a dependency. If nothing exists, use a semi-transparent `Flex` with `backgroundColor="rgba(0,0,0,0.4)"` instead and keep the same `testID`.
-
-- [ ] **Step 4: Write the implementation**
+The repo has `react-native-linear-gradient` 2.8.3 (`package.json:199`) with a **default** export, used
+at `HomeViewSectionCard.tsx:25`, `ViewingRoomHeader.tsx:8`, and `MyCollectionArtworkDemandIndex.tsx:9`.
+`expo-linear-gradient` is not a dependency — do not import it and do not add it.
 
 ```tsx
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { LinearGradient } from "expo-linear-gradient"
+import LinearGradient from "react-native-linear-gradient"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
 
@@ -1237,11 +1296,11 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
 }
 ```
 
-- [ ] **Step 5: Run to verify it passes**
+- [ ] **Step 4: Run to verify it passes**
 
 Expected: PASS, 2 tests.
 
-- [ ] **Step 6: Verify and commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
 yarn tsc
@@ -1271,8 +1330,14 @@ The screen computes each section's `startNumber` from running stop counts — th
 ```tsx
 import { screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
+// "chill-vibes-only" has four saveable stops, so four queries fire. renderWithRelay
+// resolves one; the other three stay suspended, but each is contained by its own
+// Suspense fallback={null} (Task 5), so they render as nothing rather than blanking
+// the tree. Assertions below therefore target the screen chrome, never a save icon.
+// The unavailable-state tests issue no query at all and must use renderWithWrappers.
 describe("ItineraryScreen", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: ItineraryScreen })
 
@@ -1293,14 +1358,14 @@ describe("ItineraryScreen", () => {
   })
 
   it("renders the unavailable state for an unknown itinerary", () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "nope" })
+    renderWithWrappers(<ItineraryScreen citySlug="london-united-kingdom" itineraryId="nope" />)
 
     expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
   })
 
   it("does not render another city's itinerary", () => {
-    renderWithRelay({}, { citySlug: "paris-france", itineraryId: "chill-vibes-only" })
+    renderWithWrappers(<ItineraryScreen citySlug="paris-france" itineraryId="chill-vibes-only" />)
 
     expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
   })
@@ -1421,15 +1486,34 @@ describe("CityGuideCuratedLists", () => {
     expect(screen.getAllByTestId("curated-list-row")).toHaveLength(3)
   })
 
-  it("links each row to its itinerary", () => {
+  it("navigates to the itinerary when a row is tapped", () => {
     renderWithWrappers(<CityGuideCuratedLists citySlug="london-united-kingdom" />)
 
-    const rows = screen.getAllByTestId("curated-list-row")
+    fireEvent.press(screen.getAllByTestId("curated-list-row")[0])
 
-    expect(rows[0].props.to).toEqual("/city-guide/london-united-kingdom/itinerary/chill-vibes-only")
+    expect(navigate).toHaveBeenCalledWith(
+      "/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
+    )
+  })
+
+  it("renders nothing for a city with no itineraries", () => {
+    renderWithWrappers(<CityGuideCuratedLists citySlug="paris-france" />)
+
+    expect(screen.queryAllByTestId("curated-list-row")).toHaveLength(0)
   })
 })
 ```
+
+Imports for this file:
+
+```tsx
+import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+```
+
+Assert navigation behaviourally, never on a `to` prop: `RouterLink` destructures `to` out of props (`RouterLink.tsx:29-38`) and never places it on a rendered element, so `rows[0].props.to` is `undefined` in every configuration. `navigate` is already mocked in the global test setup; if the assertion finds no mock, add `jest.mock("app/system/navigation/navigate", () => ({ navigate: jest.fn() }))` at the top of the file.
 
 Add to `src/app/Navigation/__tests__/routes.tests.ts` (FIX-09) — no snapshot iterates the route table, so without this, adding a route proves nothing:
 
@@ -1464,6 +1548,7 @@ Uses `RouterLink`, not `navigate` (FIX-11). Each `itineraryId` matches a real `M
 
 ```tsx
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
@@ -1472,10 +1557,13 @@ const IMAGE_SIZE = 80
 
 const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string }) => {
   return (
+    // No `hasChildTouchable`: that mode makes RouterLink render nothing itself and clone
+    // onPress onto its child (RouterLink.tsx:92-99). The child here is a styled View, which
+    // ignores onPress, so the row would not be pressable at all. Without the prop,
+    // RouterLink renders its own Touchable (RouterLink.tsx:103) and carries the testID.
     <RouterLink
       testID="curated-list-row"
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
-      hasChildTouchable
     >
       <Flex flexDirection="row" gap={1}>
         <RNImage
@@ -1498,10 +1586,19 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
 }
 
 export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
+  // The mock rows are a static constant but itineraries are per-city, so an unfiltered
+  // list gives every non-London city three rows that all dead-end into the unavailable
+  // state. Filter to rows that actually resolve, and render nothing when none do.
+  const rows = data.filter((item) => !!getMockItinerary(citySlug, item.itineraryId))
+
+  if (!rows.length) {
+    return null
+  }
+
   return (
     <Flex px={2}>
       <Join separator={<Spacer y={2} />}>
-        {data.map((item) => (
+        {rows.map((item) => (
           <ListItem key={item.id} item={item} citySlug={citySlug} />
         ))}
       </Join>
@@ -1564,9 +1661,23 @@ Add after the `/city-guide` block ending at line 1141:
   },
 ```
 
-- [ ] **Step 5: Add the Android deep link**
+- [ ] **Step 5: Android deep link — needs a decision before you add it**
 
-`/city-guide` has no manifest entry today; `pathPrefix` covers the sub-route. The list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`, `:142-144` (CLAIM-06) — but the logical position is between `:103 /categories` and `:104 /collect`:
+**Do not add this without sign-off.** `pathPrefix` is a prefix, so `<data android:pathPrefix="/city-guide"/>`
+exposes not just the itinerary route but the base `/city-guide` screen — the hardcoded-mock placeholder
+with `picsum.photos` images that this spec flags as an ungated pre-existing problem. Adding it makes that
+placeholder reachable from any artsy.net link on Android, widening exposure of something we already
+consider a problem.
+
+Options, in order of preference:
+
+1. **Defer.** Skip the manifest entry for now. iOS deep linking and in-app navigation both work through
+   the route table, so the feature is fully demonstrable without it. Revisit when the base screen is
+   gated or real.
+2. Add it with explicit product sign-off, recorded in the PR description.
+
+If you take option 2, note the list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`,
+`:142-144` — but the logical position is between `:103 /categories` and `:104 /collect`:
 
 ```xml
         <data android:pathPrefix="/city-guide"/>
@@ -2035,4 +2146,7 @@ After the final task:
 - [ ] Collapse and expand a section.
 - [ ] Tap "Map": pins 1-5 appear framed within the viewport. Tap "Day 2 — London Frieze": only pins 4 and 5 remain and the camera refits. Tap "List" to return.
 - [ ] Navigate to `/city-guide/paris-france/itinerary/chill-vibes-only`: the unavailable state renders, not the London itinerary.
+- [ ] Switch the city picker to a city with no mock itineraries: the curated list section renders nothing rather than three dead rows.
+- [ ] Put the device in airplane mode and open an itinerary: the rows still render with their titles, times, and numbers, and only the save controls are missing. The screen must not show a full-page retry state — that would mean the per-control boundaries are not containing the failure.
+- [ ] Point one mock stop at a deliberately bogus slug: that one control is absent, every other stop still works.
 - [ ] The City Guide map, Partner map, and artwork location map all still render after the Mapbox extraction.
