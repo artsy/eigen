@@ -1661,27 +1661,18 @@ Add after the `/city-guide` block ending at line 1141:
   },
 ```
 
-- [ ] **Step 5: Android deep link — needs a decision before you add it**
+- [x] **Step 5: Android deep link — done, decision taken**
 
-**Do not add this without sign-off.** `pathPrefix` is a prefix, so `<data android:pathPrefix="/city-guide"/>`
-exposes not just the itinerary route but the base `/city-guide` screen — the hardcoded-mock placeholder
-with `picsum.photos` images that this spec flags as an ungated pre-existing problem. Adding it makes that
-placeholder reachable from any artsy.net link on Android, widening exposure of something we already
-consider a problem.
-
-Options, in order of preference:
-
-1. **Defer.** Skip the manifest entry for now. iOS deep linking and in-app navigation both work through
-   the route table, so the feature is fully demonstrable without it. Revisit when the base screen is
-   gated or real.
-2. Add it with explicit product sign-off, recorded in the PR description.
-
-If you take option 2, note the list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`,
-`:142-144` — but the logical position is between `:103 /categories` and `:104 /collect`:
+Already applied to `android/app/src/main/AndroidManifest.xml:104`, between `/categories` and `/collect`:
 
 ```xml
         <data android:pathPrefix="/city-guide"/>
 ```
+
+The decision was made knowingly: `pathPrefix` is a prefix, so this also exposes the base `/city-guide`
+screen — the hardcoded-mock placeholder — to artsy.net links on Android. The product owner signed off.
+Note it in the PR description. (The surrounding list is not alphabetically sorted; breaks exist at
+`:92-93`, `:109-110`, `:142-144`. This entry is in the alphabetically correct place regardless.)
 
 - [ ] **Step 6: Run to verify the tests pass**
 
