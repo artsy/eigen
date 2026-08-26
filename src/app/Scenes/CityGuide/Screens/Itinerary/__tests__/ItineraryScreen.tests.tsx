@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -38,5 +38,32 @@ describe("ItineraryScreen", () => {
     renderWithWrappers(<ItineraryScreen citySlug="paris-france" itineraryId="chill-vibes-only" />)
 
     expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
+  })
+
+  it("switches to the map view and back", () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+
+    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
+
+    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+
+    // MapView mocks to null, so its children never mount. Assert on the chrome
+    // outside the map: the list is gone and the filter pills are up.
+    expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
+    expect(screen.getByText("All")).toBeTruthy()
+    expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
+
+    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+
+    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
+  })
+
+  it("filters the map to one section when its pill is tapped", () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+
+    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+    fireEvent.press(screen.getByText("Day 2 — London Frieze"))
+
+    expect(screen.getByTestId("itinerary-map-stop-count")).toHaveTextContent("2 stops")
   })
 })
