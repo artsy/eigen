@@ -3,7 +3,7 @@ import { useMutation, graphql } from "react-relay"
 export interface FollowProfileOptions {
   id: string
   internalID: string
-  isFollowed: boolean | null
+  isFollowed: boolean | null | undefined
   onCompleted?: (isFollowed: boolean) => void
   onError?: () => void
 }
