@@ -9,6 +9,7 @@ import {
   ArtworkCardBottomSheetTabsSkeleton,
   TABS,
 } from "app/Components/ArtworkCard/ArtworkCardBottomSheetTabs"
+import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBottomSheetTag"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
@@ -34,6 +35,8 @@ export const ArtworkCardBottomSheet: FC<ArtworkCardBottomSheetProps> = ({
   const [activeTabName, setActiveTabName] = useState(TABS[0].name)
   const color = useColor()
   const { trackEvent } = useTracking()
+
+  useSentryBottomSheetTag("ArtworkCardBottomSheet", isExpanded)
 
   useEffect(() => {
     if (isExpanded) {

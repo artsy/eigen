@@ -275,6 +275,8 @@ jest.mock("@sentry/react-native", () => ({
   captureException: jest.fn(),
   init() {},
   setUser() {},
+  setTag: jest.fn(),
+  setContext: jest.fn(),
   addBreadcrumb() {},
   withScope() {},
   Severity: "info",

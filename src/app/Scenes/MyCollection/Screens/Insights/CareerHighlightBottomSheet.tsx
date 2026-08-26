@@ -2,6 +2,7 @@ import { BoxProps, Flex } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
+import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBottomSheetTag"
 import { delay } from "app/utils/delay"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
@@ -110,6 +111,12 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   const flatListData = useMemo(
     () => dataForFlatlist(),
     [JSON.stringify(data.analyticsArtistSparklines)]
+  )
+
+  // This sheet only renders while a highlight is selected, so being mounted means being open.
+  useSentryBottomSheetTag(
+    "CareerHighlightBottomSheet",
+    !!flatListData.length && selectedXAxisHighlight !== null
   )
 
   if (!flatListData.length || selectedXAxisHighlight === null) {

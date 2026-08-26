@@ -102,6 +102,7 @@ export const FollowsTab = () => {
       {followOption === "fairs" && <FollowedFairsQueryRenderer />}
 
       <AutomountedBottomSheetModal
+        sentryName="FollowsTab"
         visible={showFollowsBottomSheet}
         snapPoints={SNAP_POINTS}
         enableDynamicSizing
