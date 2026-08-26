@@ -1,5 +1,9 @@
 /** How a stop resolves to a saveable Artsy entity. null for a non-Artsy editorial place. */
-export type ItinerarySaveTarget = { type: "SHOW"; slug: string } | { type: "PARTNER"; slug: string }
+export type ItinerarySaveTarget =
+  | { type: "SHOW"; slug: string }
+  /** Galleries and museums alike — both are Partners in Artsy's model. */
+  | { type: "PARTNER"; slug: string }
+  | { type: "FAIR"; slug: string }
 
 export interface ItineraryStop {
   id: string
