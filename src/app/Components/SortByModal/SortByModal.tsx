@@ -22,6 +22,7 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
 
   return (
     <AutomountedBottomSheetModal
+      sentryName="SortByModal"
       visible={visible}
       enableDynamicSizing
       onDismiss={() => {

@@ -120,6 +120,7 @@ export const FavoritesLearnMore = () => {
       </Touchable>
 
       <AutomountedBottomSheetModal
+        sentryName="FavoritesLearnMore"
         visible={showBottomSheet}
         snapPoints={SNAP_POINTS}
         enableDynamicSizing

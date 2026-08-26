@@ -114,7 +114,12 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   }
 
   return (
-    <AutomountedBottomSheetModal visible={visible} onDismiss={handleDismiss} enableDynamicSizing>
+    <AutomountedBottomSheetModal
+      sentryName="MyProfileEditModal"
+      visible={visible}
+      onDismiss={handleDismiss}
+      enableDynamicSizing
+    >
       <BottomSheetKeyboardAwareScrollView keyboardShouldPersistTaps="always">
         <Box p={2}>
           <Text>{message}</Text>

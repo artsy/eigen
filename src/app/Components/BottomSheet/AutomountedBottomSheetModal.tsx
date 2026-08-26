@@ -6,23 +6,33 @@ import {
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
+import { useSentryBottomSheetTag } from "app/system/errorReporting/useSentryBottomSheetTag"
 import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { BackHandler } from "react-native"
 
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
   closeOnBackdropClick?: boolean
+  /**
+   * Name reported to Sentry as the `bottom_sheet` tag while this sheet is open, so crashes
+   * inside it can be attributed to a specific sheet rather than just a route.
+   */
+  sentryName?: string
 }
 
 export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> = ({
   visible,
   closeOnBackdropClick = true,
+  sentryName,
   ...rest
 }) => {
   const color = useColor()
   const ref = useRef<BottomSheetModal>(null)
   const [modalIsPresented, setModalIsPresented] = useState(false)
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
+
+  // gorhom's own `name` prop is a good enough identifier when a caller already passes one.
+  useSentryBottomSheetTag(sentryName ?? rest.name, visible)
 
   // dismiss modal on back button press on Android
   const androidBackHandler = useCallback(() => {

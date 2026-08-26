@@ -13,6 +13,7 @@ import {
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Screens/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
+import { setSentryRouteTag } from "app/system/errorReporting/sentryTags"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { conversationIDFromRoute } from "app/system/notifications/visibleConversation"
@@ -75,8 +76,11 @@ export const Navigation = () => {
           setNavigationReady({ isNavigationReady: true })
           LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
 
+          const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
+
+          setSentryRouteTag(initialRouteName)
+
           if (trackSiftAndroid) {
-            const initialRouteName = internal_navigationRef?.current?.getCurrentRoute()?.name
             SiftReactNative.setPageName(`screen_${initialRouteName}`)
             SiftReactNative.upload()
           }
@@ -105,6 +109,10 @@ export const Navigation = () => {
           LegacyNativeModules.ARNotificationsManager.reactStateUpdated({
             visibleConversationID: conversationIDFromRoute(currentRoute),
           })
+
+          // Breadcrumbs aren't searchable, so also tag the route: this is what lets us
+          // group a crash by screen in Sentry, including native crashes.
+          setSentryRouteTag(currentRoute?.name)
 
           addBreadcrumb({
             message: `navigated to ${currentRoute?.name}`,
