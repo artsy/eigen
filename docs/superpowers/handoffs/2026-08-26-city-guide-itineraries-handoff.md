@@ -1,8 +1,8 @@
-# City Guide Itineraries — Review Handoff (v2)
+# City Guide Itineraries — Review Handoff (v2.1)
 
 **Repo:** `artsy/eigen`, branch `city-guide-itineraries-docs`
 **Date:** 2026-08-26
-**Status:** Spec v2 and plan v2, revised after two review rounds. Not yet implemented.
+**Status:** Spec v2.1 and plan v2.1, revised after three review rounds. Not yet implemented.
 
 ## What this document is
 
@@ -57,8 +57,10 @@ persists — while the itinerary grouping stays mock pending the API.
    an error here propagates into the API. This is the highest-value thing to attack.
 2. **Is the mock-structure / real-entities split sound?** It resolves the two blocking findings, but
    it is a new idea that has not itself been reviewed.
-3. **The known weak point:** one query per stop. See the spec's "Open question" section, which states
-   the cost openly rather than hiding it.
+3. **One query per stop.** v2 left this open; v2.1 settles it against Metaphysics and Gravity — see the
+   spec's "How stops resolve" section. Batching by slug is impossible (Gravity matches on BSON `_id`),
+   the aliased-single-query alternative fights Relay's static-query requirement, so per-stop with real
+   containment is the accepted answer. Attack that reasoning if it does not hold.
 4. **Is the plan executable cold?** Eleven tasks, each with real code and real commands. Flag any step
    that is underspecified, any test that is not genuinely red first, and any type mismatch between
    tasks.
@@ -113,10 +115,15 @@ Relay. `/city-guide` → `CityGuideNew.tsx` is this month's rebuild, rendering h
 `followProfile` is already extracted as `src/app/utils/mutations/useFollowProfile.ts`. Task 3 extracts
 `useFollowShow` and migrates one of the three; the other two are a deliberate follow-up.
 
-Related live defect found during review: `CityGuideEvent.tsx:62-65`'s optimistic updater writes the
-`is_followed` alias key, which Relay never reads, because records key on the schema field name. The
-button works only because its `optimisticResponse` is payload-shaped. It is dead code, not a
-user-visible bug, and Task 3 deletes it.
+Related live defect found during review: `CityGuideEvent`'s optimistic update is broken on both paths.
+Its `updater` (`:62-65`) writes the `is_followed` alias key, which Relay never reads because records key
+on the schema field name. And its `optimisticResponse` (`:53-61`) omits `id` — the Relay compiler adds
+`id` to the normalization AST (`CityGuideEventMutation.graphql.ts:138`), so without it the optimistic
+payload cannot merge into the existing Show record either. The button therefore flips only after the
+network returns. Task 3's migration is a genuine bug fix, not a tidy-up.
+
+(An earlier review round claimed the button "works only because its optimisticResponse is
+payload-shaped". That was wrong, and is corrected here.)
 
 **Mapbox.** `@rnmapbox/maps` 10.3.1. `CityGuideMap.tsx:41,53` both calls `setAccessToken` and exports
 `ArtsyMapStyleURL`, and `PartnerMap.tsx:8` and `LocationMap.tsx:8` import that constant cross-scene
@@ -132,10 +139,28 @@ component with no query, because it resolves an operation unconditionally
 `src/app/utils/mutations/` has no tests today. `detect-secrets` rejects base64 strings of Relay-node-id
 length, so mock ids stay readable.
 
+## What the servers say
+
+Reading Metaphysics and Gravity directly settled the open question and turned up prior art:
+
+- **Batching by slug is impossible today.** `showsConnection(ids:)` passes through to Gravity's
+  `shows_endpoint.rb:155` — `shows.in(_id: params[:id])` — a raw Mongo match on BSON `_id`. Unknown
+  entries drop silently and results come back `-created_at`, not input order. `partnersConnection(ids:)`
+  is the same and unsorted. Only `profilesConnection(ids:)` genuinely takes slugs, and it raises on a
+  missing one.
+- **Single-entity by slug works,** because `PartnerShow` and `Partner` both include `Mongoid::Slug`.
+- **`OrderedSet` already models an itinerary almost exactly, with no new backend types.** The
+  `OrderedSetItem` union (`metaphysics/src/schema/v2/item.ts:13-24`) already includes `ShowType` and
+  `ProfileType`. A set carries `key`, `name`, `description`, and ordered items. The gap is exactly two
+  per-stop fields: `displayTime` and `note`.
+- **There is no `City` model in Gravity.** Cities are a static JSON file inside Metaphysics.
+- **`Query.show` defaults `includeAllShows: false`,** so a mock built from running shows loses its save
+  controls as those shows close. v2.1 passes `true`.
+
 ## Known gaps, stated plainly
 
-- **One Relay query per stop.** The weakest part of v2. Deliberate, documented in the spec, and
-  disappears when the API returns entities inline.
+- **One Relay query per stop.** Now a settled decision rather than an open question, with the
+  alternatives ruled out above. Disappears when the API returns entities inline.
 - **Mock slugs must be sourced and verified by hand** (Task 1, Step 2). They are durable — slugs for
   closed shows keep resolving — but not permanent.
 - **"Add Full List"** (bulk-follow) is not built. It belongs to the save sub-project.
@@ -146,12 +171,12 @@ length, so mock ids stay readable.
 
 ---
 
-# Part 1 — Spec (v2)
+# Part 1 — Spec (v2.1)
 
 _Verbatim from `docs/superpowers/specs/2026-08-26-city-guide-itineraries-design.md`._
 
 **Date:** 2026-08-26
-**Revision:** v2. Supersedes v1 (commit `c441d255a5`) after two review rounds.
+**Revision:** v2.1. Supersedes v1 (commit `c441d255a5`) after three review rounds.
 **Status:** Draft for review
 **Scope:** Sub-project 1 of the City Guide increment
 
@@ -285,28 +310,66 @@ passed down, so list and map cannot disagree.
 formats from the structured fields. They exist so sorting and timezone-aware behaviour do not require a
 schema change later.
 
-### Open question: how stops resolve, one query or many
+### How stops resolve: settled against Metaphysics and Gravity
 
-By-slug resolution of a single entity is proven in the repo. `Show.tsx:152` runs `show(id: $showID)`
-where the route param is a slug — `CityGuideEvent.tsx:29` navigates to `/show/${event.slug}` — and
-`PartnerLocations.tests.tsx:24` queries `partner(id: "gagosian")`.
+v2 originally left this open. It is now closed by reading the servers directly.
 
-Batch resolution is not proven. `Query.showsConnection(ids: [String])` exists
-(`data/schema.graphql:33440`) but its `ids` argument is undocumented as to slug support, nothing in the
-app uses it, and connection results carry no ordering guarantee matching the input.
+**Single-entity by slug works.** `Query.show(id:)` resolves through `showLoader` to Gravity's
+`shows_endpoint.rb:15` — `PartnerShow.find(params[:id])` — and `PartnerShow` includes `Mongoid::Slug`,
+which overrides `find` to accept slugs. `Query.partner(id:)` is explicitly slug-aware in Metaphysics
+(`partner/partner.ts:1768`: `const isSlug = !/[0-9a-f]{24}/.test(id)`) and Gravity's `Partner` also
+includes `Mongoid::Slug`.
 
-**Recommended for this pass:** each `ItineraryStopRow` resolves its own `saveTarget` with a small
-`useLazyLoadQuery`, wrapped in Suspense. For 5-15 stops that is 5-15 small parallel queries. Relay
-dedupes repeated slugs through the store.
+**Batching by slug does not work.** `Query.showsConnection(ids:)` passes `ids` straight through as
+Gravity's `id` param, and `shows_endpoint.rb:155` does `shows.in(_id: params[:id])` — a raw Mongo match
+on the BSON `_id`. No slug support, unknown entries dropped silently, and results ordered by
+`-created_at`, not input order. `partnersConnection(ids:)` behaves the same way and is unsorted.
 
-**The cost, stated plainly:** this is more requests than the screen deserves, and it is the weakest part
-of v2. It is accepted because it is provably correct with the schema as it exists, it needs no invented
-identifiers, and it disappears entirely when the real itinerary API returns entities inline — at which
-point stops become fragment spreads and the per-row queries are deleted.
+The one genuine batch-by-slug is `Query.profilesConnection(ids:)`, whose Gravity endpoint
+(`profiles_endpoint.rb:20`) uses `Mongoid::Slug`'s patched `Criteria#find`. It returns unordered and
+_raises_ on a missing slug, so it is only usable when every slug is guaranteed valid. Not worth it for
+the mixed show-and-gallery list here.
 
-**For the API design session:** the itinerary query should return each stop's entity inline, making this
-question moot. If an interim batch is wanted first, confirm whether `showsConnection(ids:)` accepts
-slugs and whether result order can be relied on.
+**Decision: one small query per stop**, issued by the stop's save control, each wrapped in its own
+Suspense boundary and error boundary so a slow or 404 lookup degrades that one control rather than the
+screen. For 5-15 stops that is 5-15 parallel queries behind auth — the whole route table sits inside
+`AuthenticatedRoutes` (`Navigation.tsx:130-131`), so there is no signed-out case to handle.
+
+The alternative considered and rejected: one query with aliased fields (`s0: show(id: …)`,
+`s1: show(id: …)`). It is a single round trip and preserves order, but Relay requires static queries, so
+the alias count must be fixed at compile time while stop counts vary per itinerary. Making that work
+needs `@include(if:)` gymnastics over a max arity, which is more machinery than temporary scaffolding
+earns. Revisit only if the request count proves to be a real problem before the API lands.
+
+**`includeAllShows` matters here.** `Query.show` declares `includeAllShows: Boolean = false` —
+"Include shows that are no longer running/active". Left at the default, a mock built from currently
+running London shows silently loses its save controls as those shows close. Pass `includeAllShows: true`.
+
+### Notes for the backend API design session
+
+Findings from reading Metaphysics and Gravity that should shape the real itinerary API:
+
+- **`OrderedSet` already models almost exactly this shape, with no new backend types.** Metaphysics
+  exposes `orderedSet`, `orderedSets(key: String!)`, and `orderedSetsConnection`, and the
+  `OrderedSetItem` union (`src/schema/v2/item.ts:13-24`) already includes **`ShowType`** (Gravity
+  `item_type: "PartnerShow"`) and **`ProfileType`** — the two entity types a stop needs. A set carries
+  `key`, `name`, `description`, `layout`, `published`, and ordered items, which covers itinerary and
+  section identity, title, and the ordered stop list. Gravity has create/add/delete mutations already.
+- **The gap is exactly two per-stop fields:** `displayTime` and `note`. `OrderedSetItem` carries no
+  per-item metadata. That is the specific thing the API design has to solve, not the whole model.
+- **There is no `City` model in Gravity.** Cities are a static JSON file inside Metaphysics
+  (`src/schema/v2/city/cityDataSortedByDisplayPreference.json`), the same list Eigen duplicates locally.
+  So `citySlug` has no backend entity to attach an itinerary to; an `orderedSets(key:)` convention is the
+  natural join.
+- **Editorial content lives in Positron** (`article`, `articlesConnection` root fields). If itineraries
+  are authored by writers, that is the other candidate home. A product question, not a technical one.
+- **Gallery save targets should reference the Profile, not the Partner.** `Partner.profile` is nullable
+  (`data/schema.graphql`), and `FollowProfileInput.profileID` wants `Profile.internalID`. A partner slug
+  whose partner has no profile silently yields no save control, indistinguishable from a failure. The API
+  should either return the profile directly or guarantee the target resolves to a followable entity.
+- **Stops deliberately carry their own `title`, `imageUrl`, and `coordinates`** even though the resolved
+  entity also has them. This is editorial curation — the guide may want its own framing, and non-Artsy
+  stops have no entity at all. The backend should not "helpfully" derive them.
 
 ## Screens and components
 
@@ -349,11 +412,18 @@ sibling `followProfile` is already extracted as `src/app/utils/mutations/useFoll
   (`CityGuideShow_show.graphql.ts:23`) and a narrower parameter does not compile under `strict`.
 - **Keep the save button scene-local** as `ItinerarySaveButton`. One consumer, itinerary-specific
   semantics. Extract when a second real consumer exists.
-- **Migrate `CityGuideEvent.tsx` onto the hook.** Its current updater writes the `is_followed` alias
-  key, which Relay never reads — the button works only because its `optimisticResponse` is
-  payload-shaped. The migration deletes that dead code.
+- **Migrate `CityGuideEvent.tsx` onto the hook.** This is a bug fix, not a tidy-up. Both of its
+  optimistic paths are broken today. The `updater` writes the `is_followed` alias key, which Relay never
+  reads, because records key on the schema field name. And the `optimisticResponse` omits `id` — the
+  Relay compiler adds `id` to the normalization AST (`CityGuideEventMutation.graphql.ts:138`), so
+  without it the optimistic payload cannot merge into the existing Show record either. The button
+  therefore flips only after the network returns. The new hook selects `id`, supplies it in the
+  optimistic response, and updates through `setShowFollowed`.
 
-Galleries use `useFollowProfile` unchanged, passing the resolved `Partner.profile` fields.
+Galleries use `useFollowProfile`, passing the resolved `Partner.profile` fields. That hook currently
+declares `isFollowed: boolean | null`; widen it to `boolean | null | undefined` to match `useFollowShow`,
+because the generated query type makes `profile?.isFollowed` optional and the hook is necessarily called
+before any null guard.
 
 ## Reuse
 
@@ -363,8 +433,11 @@ Galleries use `useFollowProfile` unchanged, passing the resolved `Partner.profil
   `RouterLink` is idiomatic and enables prefetching.
 - A `Screen.ScrollView` for the list. FlashList is the rule for virtualized lists; 5-15 statically
   mapped rows are not one, and the parent `CityGuideNew.tsx:40-55` already renders mapped rows this way.
-- `app/utils/hooks/withSuspense` for the loading and error fallbacks. Unlike v1, this is now load-bearing:
-  the screen issues a real Relay query.
+- A `Suspense` boundary **and** an error boundary around each stop's save control, not around the
+  screen. This is load-bearing and must be written, not assumed: the app's only ambient boundary is the
+  `RetryErrorBoundary` at `Navigation/AuthenticatedRoutes/ScreenWrapper.tsx:51`, which has no `Suspense`,
+  so an uncontained suspending child renders the whole screen's retry state. Containment per control is
+  what makes "a slow or failing lookup degrades one control" true rather than aspirational.
 - **Not** `CityGuideMapPins.tsx`. Roughly 75 of its 94 lines are clustering- or sprite-specific, and it
   hardwires the bucket/tab data shape. v1 required extending it; v2 does not. A separate
   `ItineraryMapPins` is smaller and clearer.
@@ -423,13 +496,19 @@ Per `docs/testing.md` and the existing `Components/__tests__/` files:
 
 ---
 
-# Part 2 — Implementation Plan (v2)
+# Part 2 — Implementation Plan (v2.1)
 
 _Verbatim from `docs/superpowers/plans/2026-08-26-city-guide-itineraries.md`._
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Revision:** v2. Supersedes v1 (commit `5ba2d39e81`) after two review rounds. Eleven tasks, not ten.
+**Revision:** v2.1. Supersedes v1 (commit `5ba2d39e81`) after three review rounds. Eleven tasks, not ten.
+
+v2.1 folds in a third review plus findings from reading Metaphysics and Gravity directly. The design did
+not change; the plan did. Four defects would have broken it on a cold run: no Suspense or error boundary
+around the per-stop queries, tests that crash `setupTestWrapper` by rendering no query, curated rows that
+were not actually pressable, and a `to`-prop assertion that can never hold. Plus `includeAllShows`,
+a `useFollowProfile` type widening, the wrong gradient package, and per-city row filtering.
 
 **Goal:** Add read-only viewing of curated city itineraries to the City Guide, with a real save action on each stop.
 
@@ -448,6 +527,9 @@ _Verbatim from `docs/superpowers/plans/2026-08-26-city-guide-itineraries.md`._
   yarn test --findRelatedTests <changed-files>
   yarn lint <changed-files>
   ```
+  `passWithNoTests` is not set in `jest.config.js` or `package.json`, so `--findRelatedTests` over files
+  with no related test yet (Tasks 1 and 4) can exit non-zero. Append `--passWithNoTests` in those two
+  cases; a spurious failure there is noise, not signal.
 - Run `yarn relay` after any change to a `graphql` tagged template.
 - No `index.ts(x)` files. No cross-scene imports — shared code goes in `src/app/Components/` or `src/app/utils/`.
 - Components and component folders are PascalCase; `hooks`, `utils`, `mutations` folders are camelCase. Tests live in a sibling `__tests__/` and end in `.tests.ts(x)`.
@@ -482,7 +564,11 @@ export interface ItineraryStop {
   title: string
   /** Backend-formatted for display. e.g. "11am-4pm" */
   displayTime: string
-  /** Optional structured schedule. Display always comes from displayTime. */
+  /**
+   * Reserved, unused in this pass. ISO 8601. Carried so sorting and timezone-aware
+   * behaviour do not need a schema change later. Never format from these — display
+   * always comes from displayTime.
+   */
   startAt?: string
   endAt?: string
   /** Freeform. May hold emoji ("🥂 🧀") or a short caption. */
@@ -862,6 +948,11 @@ const wrapper = ({ children }: any) => (
 )
 
 describe("useFollowShow", () => {
+  // The environment is module-level and shared across tests, as in useSendInquiry.tests.tsx:41.
+  afterEach(() => {
+    env.mockClear()
+  })
+
   it("sends unfollow false when the show is not followed", () => {
     const { result } = renderHook(
       () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: false }),
@@ -1162,7 +1253,15 @@ Expected: `LocationMap` and `PartnerLocations` tests still pass. Check both maps
 import { screen } from "@testing-library/react-native"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+
+// Harness rule for every test in this plan: `renderWithRelay` unconditionally calls
+// env.mock.resolveMostRecentOperation (setupTestWrapper.tsx:117), and relay-test-utils
+// throws "There are no pending operations in the list" when nothing is pending
+// (RelayModernMockEnvironment.js:220). So use setupTestWrapper ONLY when the render
+// actually issues a query — i.e. when a stop has a non-null saveTarget. Otherwise use
+// renderWithWrappers.
 
 const savedStop: ItineraryStop = {
   id: "stop-2",
@@ -1195,14 +1294,15 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("🥂 🧀")).toBeTruthy()
   })
 
+  // No saveTarget means no query, so these two must not go through renderWithRelay.
   it("omits the note when the stop has none", () => {
-    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
+    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} />)
 
     expect(screen.queryByText("🥂 🧀")).toBeNull()
   })
 
   it("renders no save control when the stop has no save target", () => {
-    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
+    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} />)
 
     expect(screen.queryByTestId("itinerary-save-button")).toBeNull()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -1275,12 +1375,29 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number }) => {
       </Flex>
 
       {!!stop.saveTarget && (
-        <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
+        // Containment is mandatory, not decorative. The app's only ambient boundary is the
+        // RetryErrorBoundary at Navigation/AuthenticatedRoutes/ScreenWrapper.tsx:51, which has
+        // no Suspense — an uncontained suspending child blanks the whole screen into its retry
+        // state. Both boundaries render null so one slow or 404 lookup costs one control.
+        <ErrorBoundary fallbackRender={() => null}>
+          <Suspense fallback={null}>
+            <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </Flex>
   )
 }
 ```
+
+Add to the imports:
+
+```tsx
+import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
+```
+
+`react-error-boundary` is already a dependency — `app/utils/hooks/withSuspense.tsx` imports `ErrorBoundary` and `FallbackProps` from it. `withSuspense` itself is not used here because it wraps a component definition, while this needs a boundary around one conditional child.
 
 - [ ] **Step 4: Write the save control**
 
@@ -1378,8 +1495,11 @@ const PartnerSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slu
 }
 
 const ShowQuery = graphql`
+  # includeAllShows: true is required, not optional. It defaults to false — "Include shows
+  # that are no longer running/active" — so without it a mock built from currently running
+  # shows silently loses its save controls as those shows close.
   query ItineraryStopSaveControlShowQuery($slug: String!) {
-    show(id: $slug) {
+    show(id: $slug, includeAllShows: true) {
       id
       internalID
       isFollowed
@@ -1401,6 +1521,19 @@ const PartnerQuery = graphql`
 ```
 
 Replace the `useLazyLoadQuery<any>` type arguments with the generated query types after `yarn relay`. Partner-branch tracking is omitted deliberately: `Schema.ActionNames` has no gallery-follow entry, and adding one belongs to the save sub-project.
+
+**Before replacing `<any>`, widen `useFollowProfile`.** It declares `isFollowed: boolean | null`
+(`src/app/utils/mutations/useFollowProfile.ts:6`), but the generated type makes
+`data?.partner?.profile?.isFollowed` be `boolean | null | undefined`, and the hook is necessarily
+called before the `if (!profile) return null` guard. Under `strict` that will not compile the moment
+the real type replaces `any`. Change that one line to match `useFollowShow`:
+
+```ts
+isFollowed: boolean | null | undefined
+```
+
+This is the same widening BLOCK-03 forced on `useFollowShow`; the sibling was missed. Commit it with
+this task and re-run the existing consumers' tests (`PartnerFollowButton`, `FairFollowButton`).
 
 - [ ] **Step 5: Compile Relay and run the tests**
 
@@ -1442,8 +1575,10 @@ git commit -m "feat(city-guide): add ItineraryStopRow with real entity save"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
+// Both fixture stops have saveTarget: null, so no query fires and setupTestWrapper
+// would throw. See the harness rule in the ItineraryStopRow test.
 const section: ItinerarySection = {
   id: "day-1",
   title: "Day 1 — Easing in",
@@ -1468,10 +1603,8 @@ const section: ItinerarySection = {
 }
 
 describe("ItinerarySectionRow", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: ItinerarySectionRow })
-
   it("renders the title and its stops expanded by default", () => {
-    renderWithRelay({}, { section, startNumber: 1 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={1} />)
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -1479,14 +1612,14 @@ describe("ItinerarySectionRow", () => {
   })
 
   it("numbers stops from startNumber", () => {
-    renderWithRelay({}, { section, startNumber: 4 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={4} />)
 
     expect(screen.getByText("4")).toBeTruthy()
     expect(screen.getByText("5")).toBeTruthy()
   })
 
   it("hides the stops when the header is tapped", () => {
-    renderWithRelay({}, { section, startNumber: 1 })
+    renderWithWrappers(<ItinerarySectionRow section={section} startNumber={1} />)
 
     fireEvent.press(screen.getByTestId("itinerary-section-header"))
 
@@ -1608,17 +1741,16 @@ describe("ItineraryHeader", () => {
 
 Expected: FAIL — module not found.
 
-- [ ] **Step 3: Find the gradient component**
+- [ ] **Step 3: Write the implementation**
 
-Run: `grep -rn "LinearGradient" src/app --include='*.tsx' | head -5`
-Use whichever gradient component the repo already imports. Do not add a dependency. If nothing exists, use a semi-transparent `Flex` with `backgroundColor="rgba(0,0,0,0.4)"` instead and keep the same `testID`.
-
-- [ ] **Step 4: Write the implementation**
+The repo has `react-native-linear-gradient` 2.8.3 (`package.json:199`) with a **default** export, used
+at `HomeViewSectionCard.tsx:25`, `ViewingRoomHeader.tsx:8`, and `MyCollectionArtworkDemandIndex.tsx:9`.
+`expo-linear-gradient` is not a dependency — do not import it and do not add it.
 
 ```tsx
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { LinearGradient } from "expo-linear-gradient"
+import LinearGradient from "react-native-linear-gradient"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
 
@@ -1664,11 +1796,11 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
 }
 ```
 
-- [ ] **Step 5: Run to verify it passes**
+- [ ] **Step 4: Run to verify it passes**
 
 Expected: PASS, 2 tests.
 
-- [ ] **Step 6: Verify and commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
 yarn tsc
@@ -1698,8 +1830,14 @@ The screen computes each section's `startNumber` from running stop counts — th
 ```tsx
 import { screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
+// "chill-vibes-only" has four saveable stops, so four queries fire. renderWithRelay
+// resolves one; the other three stay suspended, but each is contained by its own
+// Suspense fallback={null} (Task 5), so they render as nothing rather than blanking
+// the tree. Assertions below therefore target the screen chrome, never a save icon.
+// The unavailable-state tests issue no query at all and must use renderWithWrappers.
 describe("ItineraryScreen", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: ItineraryScreen })
 
@@ -1720,14 +1858,14 @@ describe("ItineraryScreen", () => {
   })
 
   it("renders the unavailable state for an unknown itinerary", () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "nope" })
+    renderWithWrappers(<ItineraryScreen citySlug="london-united-kingdom" itineraryId="nope" />)
 
     expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
   })
 
   it("does not render another city's itinerary", () => {
-    renderWithRelay({}, { citySlug: "paris-france", itineraryId: "chill-vibes-only" })
+    renderWithWrappers(<ItineraryScreen citySlug="paris-france" itineraryId="chill-vibes-only" />)
 
     expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
   })
@@ -1848,15 +1986,34 @@ describe("CityGuideCuratedLists", () => {
     expect(screen.getAllByTestId("curated-list-row")).toHaveLength(3)
   })
 
-  it("links each row to its itinerary", () => {
+  it("navigates to the itinerary when a row is tapped", () => {
     renderWithWrappers(<CityGuideCuratedLists citySlug="london-united-kingdom" />)
 
-    const rows = screen.getAllByTestId("curated-list-row")
+    fireEvent.press(screen.getAllByTestId("curated-list-row")[0])
 
-    expect(rows[0].props.to).toEqual("/city-guide/london-united-kingdom/itinerary/chill-vibes-only")
+    expect(navigate).toHaveBeenCalledWith(
+      "/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
+    )
+  })
+
+  it("renders nothing for a city with no itineraries", () => {
+    renderWithWrappers(<CityGuideCuratedLists citySlug="paris-france" />)
+
+    expect(screen.queryAllByTestId("curated-list-row")).toHaveLength(0)
   })
 })
 ```
+
+Imports for this file:
+
+```tsx
+import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+```
+
+Assert navigation behaviourally, never on a `to` prop: `RouterLink` destructures `to` out of props (`RouterLink.tsx:29-38`) and never places it on a rendered element, so `rows[0].props.to` is `undefined` in every configuration. `navigate` is already mocked in the global test setup; if the assertion finds no mock, add `jest.mock("app/system/navigation/navigate", () => ({ navigate: jest.fn() }))` at the top of the file.
 
 Add to `src/app/Navigation/__tests__/routes.tests.ts` (FIX-09) — no snapshot iterates the route table, so without this, adding a route proves nothing:
 
@@ -1891,6 +2048,7 @@ Uses `RouterLink`, not `navigate` (FIX-11). Each `itineraryId` matches a real `M
 
 ```tsx
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
@@ -1899,10 +2057,13 @@ const IMAGE_SIZE = 80
 
 const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string }) => {
   return (
+    // No `hasChildTouchable`: that mode makes RouterLink render nothing itself and clone
+    // onPress onto its child (RouterLink.tsx:92-99). The child here is a styled View, which
+    // ignores onPress, so the row would not be pressable at all. Without the prop,
+    // RouterLink renders its own Touchable (RouterLink.tsx:103) and carries the testID.
     <RouterLink
       testID="curated-list-row"
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
-      hasChildTouchable
     >
       <Flex flexDirection="row" gap={1}>
         <RNImage
@@ -1925,10 +2086,19 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
 }
 
 export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
+  // The mock rows are a static constant but itineraries are per-city, so an unfiltered
+  // list gives every non-London city three rows that all dead-end into the unavailable
+  // state. Filter to rows that actually resolve, and render nothing when none do.
+  const rows = data.filter((item) => !!getMockItinerary(citySlug, item.itineraryId))
+
+  if (!rows.length) {
+    return null
+  }
+
   return (
     <Flex px={2}>
       <Join separator={<Spacer y={2} />}>
-        {data.map((item) => (
+        {rows.map((item) => (
           <ListItem key={item.id} item={item} citySlug={citySlug} />
         ))}
       </Join>
@@ -1991,9 +2161,23 @@ Add after the `/city-guide` block ending at line 1141:
   },
 ```
 
-- [ ] **Step 5: Add the Android deep link**
+- [ ] **Step 5: Android deep link — needs a decision before you add it**
 
-`/city-guide` has no manifest entry today; `pathPrefix` covers the sub-route. The list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`, `:142-144` (CLAIM-06) — but the logical position is between `:103 /categories` and `:104 /collect`:
+**Do not add this without sign-off.** `pathPrefix` is a prefix, so `<data android:pathPrefix="/city-guide"/>`
+exposes not just the itinerary route but the base `/city-guide` screen — the hardcoded-mock placeholder
+with `picsum.photos` images that this spec flags as an ungated pre-existing problem. Adding it makes that
+placeholder reachable from any artsy.net link on Android, widening exposure of something we already
+consider a problem.
+
+Options, in order of preference:
+
+1. **Defer.** Skip the manifest entry for now. iOS deep linking and in-app navigation both work through
+   the route table, so the feature is fully demonstrable without it. Revisit when the base screen is
+   gated or real.
+2. Add it with explicit product sign-off, recorded in the PR description.
+
+If you take option 2, note the list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`,
+`:142-144` — but the logical position is between `:103 /categories` and `:104 /collect`:
 
 ```xml
         <data android:pathPrefix="/city-guide"/>
@@ -2462,4 +2646,7 @@ After the final task:
 - [ ] Collapse and expand a section.
 - [ ] Tap "Map": pins 1-5 appear framed within the viewport. Tap "Day 2 — London Frieze": only pins 4 and 5 remain and the camera refits. Tap "List" to return.
 - [ ] Navigate to `/city-guide/paris-france/itinerary/chill-vibes-only`: the unavailable state renders, not the London itinerary.
+- [ ] Switch the city picker to a city with no mock itineraries: the curated list section renders nothing rather than three dead rows.
+- [ ] Put the device in airplane mode and open an itinerary: the rows still render with their titles, times, and numbers, and only the save controls are missing. The screen must not show a full-page retry state — that would mean the per-control boundaries are not containing the failure.
+- [ ] Point one mock stop at a deliberately bogus slug: that one control is absent, every other stop still works.
 - [ ] The City Guide map, Partner map, and artwork location map all still render after the Mapbox extraction.
