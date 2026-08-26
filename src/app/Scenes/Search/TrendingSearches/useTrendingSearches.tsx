@@ -39,11 +39,13 @@ export const trendingSearchesQuery = graphql`
 
 export type TrendingPeriod = TrendingSearchPeriod
 
-export const useTrendingSearches = (period: TrendingPeriod) => {
+export const useTrendingSearches = (period: TrendingPeriod, retryCount = 0) => {
+  // `fetchKey` bumps allocate a fresh QueryResource cache slot on retry, sidestepping
+  // any error entry cached from a previous failed fetch for the same variables.
   const data = useLazyLoadQuery<useTrendingSearchesQuery>(
     trendingSearchesQuery,
     { period },
-    { fetchPolicy: "store-or-network" }
+    { fetchPolicy: "store-or-network", fetchKey: retryCount }
   )
 
   const trending = data.viewer?.searchDropdown.trending
