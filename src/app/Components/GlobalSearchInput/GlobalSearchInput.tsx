@@ -26,11 +26,8 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
 
     useEffect(() => {
       onOverlayVisibilityChange?.(isVisible)
-    }, [isVisible, onOverlayVisibilityChange])
-
-    useEffect(() => {
       return () => onOverlayVisibilityChange?.(false)
-    }, [onOverlayVisibilityChange])
+    }, [isVisible, onOverlayVisibilityChange])
 
     useDismissSearchOverlayOnTabBarPress({ isVisible, ownerType, setIsVisible })
 
