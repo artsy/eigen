@@ -59,3 +59,38 @@ export const itineraryStopsToGeoJSON = (
     },
   })),
 })
+
+export interface ItineraryRouteCollection {
+  type: "FeatureCollection"
+  features: {
+    type: "Feature"
+    geometry: { type: "LineString"; coordinates: [number, number][] }
+    properties: Record<string, never>
+  }[]
+}
+
+/**
+ * The path through a section's stops, in order, for drawing a route on the map. Returns
+ * no features for fewer than two stops, since a line needs two ends.
+ */
+export const itineraryStopsToRouteGeoJSON = (
+  flattened: FlattenedStop[]
+): ItineraryRouteCollection => {
+  if (flattened.length < 2) {
+    return { type: "FeatureCollection", features: [] }
+  }
+
+  return {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: flattened.map(({ stop }) => [stop.coordinates.lng, stop.coordinates.lat]),
+        },
+        properties: {},
+      },
+    ],
+  }
+}

@@ -1,6 +1,7 @@
 import {
   flattenItineraryStops,
   itineraryStopsToGeoJSON,
+  itineraryStopsToRouteGeoJSON,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
 import { MOCK_ITINERARIES } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 
@@ -48,5 +49,27 @@ describe("itineraryStopsToGeoJSON", () => {
 
   it("returns an empty collection for no stops", () => {
     expect(itineraryStopsToGeoJSON([])).toEqual({ type: "FeatureCollection", features: [] })
+  })
+})
+
+describe("itineraryStopsToRouteGeoJSON", () => {
+  it("traces one line through the stops in order", () => {
+    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
+    const dayOne = flattened.filter((f) => f.sectionId === "day-1")
+    const route = itineraryStopsToRouteGeoJSON(dayOne)
+
+    expect(route.features).toHaveLength(1)
+    expect(route.features[0].geometry.coordinates).toEqual([
+      [-0.1365, 51.5136],
+      [-0.156, 51.5185],
+      [-0.081, 51.4995],
+    ])
+  })
+
+  it("draws nothing for a single stop, which has no line to draw", () => {
+    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
+
+    expect(itineraryStopsToRouteGeoJSON(flattened.slice(0, 1)).features).toEqual([])
+    expect(itineraryStopsToRouteGeoJSON([]).features).toEqual([])
   })
 })
