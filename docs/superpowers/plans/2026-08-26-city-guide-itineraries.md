@@ -53,6 +53,14 @@ a `useFollowProfile` type widening, the wrong gradient package, and per-city row
 
 Pure data, no behaviour, so no test of its own. Tasks 5 onwards exercise it.
 
+> **Task 1 is complete.** The committed files are authoritative, not the blocks below.
+> The mock data now uses real London shows and galleries scraped from
+> `artsy.net/shows/london-united-kingdom` — real slugs, real exhibition titles, and the
+> galleries' actual coordinates — rather than the placeholder slugs and `"Museum"` /
+> `"Gallery Show"` titles these blocks show. Read
+> `src/app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries.ts` for the real
+> content. The blocks below are kept for the shape and the field-by-field rationale.
+
 - [ ] **Step 1: Write the types**
 
 ```ts
@@ -1739,7 +1747,7 @@ describe("itineraryStopsToGeoJSON", () => {
 
     expect(collection.features[1].properties).toEqual({
       id: "stop-2",
-      title: "Museum",
+      title: "Splash: Sea, Beach and Pool",
       sectionId: "day-1",
       number: "2",
     })
