@@ -1,3 +1,4 @@
+import { ItineraryStopSaveControlFairQuery } from "__generated__/ItineraryStopSaveControlFairQuery.graphql"
 import { ItineraryStopSaveControlPartnerQuery } from "__generated__/ItineraryStopSaveControlPartnerQuery.graphql"
 import { ItineraryStopSaveControlShowQuery } from "__generated__/ItineraryStopSaveControlShowQuery.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -17,6 +18,10 @@ interface Props {
 export const ItineraryStopSaveControl: React.FC<Props> = ({ saveTarget, stopTitle }) => {
   if (saveTarget.type === "SHOW") {
     return <ShowSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+  }
+
+  if (saveTarget.type === "FAIR") {
+    return <FairSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
   }
 
   return <PartnerSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
@@ -106,6 +111,43 @@ const ShowQuery = graphql`
 const PartnerQuery = graphql`
   query ItineraryStopSaveControlPartnerQuery($slug: String!) {
     partner(id: $slug) {
+      profile {
+        id
+        internalID
+        isFollowed
+      }
+    }
+  }
+`
+
+/** Fairs follow through fair.profile, the same path partners use. */
+const FairSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+  const data = useLazyLoadQuery<ItineraryStopSaveControlFairQuery>(FairQuery, { slug })
+  const showToast = useSaveToast()
+  const profile = data?.fair?.profile
+
+  const { followProfile, isInFlight } = useFollowProfile({
+    id: profile?.id ?? "",
+    internalID: profile?.internalID ?? "",
+    isFollowed: profile?.isFollowed,
+    onCompleted: showToast,
+  })
+
+  if (!profile) return null
+
+  return (
+    <ItinerarySaveButton
+      isSaved={!!profile.isFollowed}
+      isSaving={isInFlight}
+      accessibilityLabel={profile.isFollowed ? `Unfollow ${stopTitle}` : `Follow ${stopTitle}`}
+      onPress={followProfile}
+    />
+  )
+}
+
+const FairQuery = graphql`
+  query ItineraryStopSaveControlFairQuery($slug: String!) {
+    fair(id: $slug) {
       profile {
         id
         internalID
