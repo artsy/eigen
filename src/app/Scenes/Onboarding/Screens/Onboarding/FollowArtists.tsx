@@ -9,6 +9,7 @@ import {
   Spacer,
   Text,
   Touchable,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { OnboardingProgressBadge } from "app/Components/OnboardingProgressBadge/OnboardingProgressBadge"
@@ -26,12 +27,15 @@ import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useState } from "react"
 import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const MIN_FOLLOWED = 3
 const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
   const { trackCompletedOnboarding, trackTappedSkip } = useOnboardingTracking()
+  const { bottom } = useSafeAreaInsets()
+  const space = useSpace()
   const [query, setQuery] = useState("")
   const [followedArtistRefs, setFollowedArtistRefs] = useState<ArtistRef[]>([])
 
@@ -139,8 +143,8 @@ export const FollowArtists: React.FC = () => {
             />
           )}
         </Flex>
-        <KeyboardStickyView>
-          <Flex p={2} backgroundColor="mono0">
+        <KeyboardStickyView offset={{ opened: bottom - space(2) }}>
+          <Flex p={2} pb={`${bottom}px`} backgroundColor="mono0">
             <FollowArtistsContinueButton
               testID="continue-button"
               disabled={count < MIN_FOLLOWED}
