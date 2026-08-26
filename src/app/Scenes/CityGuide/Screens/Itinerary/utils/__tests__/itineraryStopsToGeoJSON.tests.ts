@@ -5,46 +5,67 @@ import {
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
 import { MOCK_ITINERARIES } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 
-describe("flattenItineraryStops", () => {
-  it("returns every stop with a continuous number and its section id", () => {
-    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
+// These assert on the shape of the transform, not on how much mock data happens to
+// exist, so counts are derived. Editing the mock should not break them — earlier
+// versions hardcoded the stop count and broke three times as the data grew.
+const ITINERARY = MOCK_ITINERARIES[0]
+const TOTAL_STOPS = ITINERARY.sections.reduce((sum, section) => sum + section.stops.length, 0)
+const FIRST_SECTION = ITINERARY.sections[0]
+const FIRST_STOP = FIRST_SECTION.stops[0]
 
-    expect(flattened.map((f) => f.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
-    expect(flattened[0].sectionId).toEqual("day-1")
-    expect(flattened[3].sectionId).toEqual("day-2")
-    expect(flattened[7].sectionId).toEqual("day-3")
+describe("flattenItineraryStops", () => {
+  it("numbers every stop continuously across sections", () => {
+    const flattened = flattenItineraryStops(ITINERARY)
+
+    expect(flattened).toHaveLength(TOTAL_STOPS)
+    expect(flattened.map((f) => f.number)).toEqual(
+      Array.from({ length: TOTAL_STOPS }, (_, i) => i + 1)
+    )
+  })
+
+  it("tags each stop with the section it came from", () => {
+    const flattened = flattenItineraryStops(ITINERARY)
+
+    // The first section's stops come first, and the following section starts after them.
+    expect(flattened[0].sectionId).toEqual(FIRST_SECTION.id)
+    expect(flattened[FIRST_SECTION.stops.length].sectionId).toEqual(ITINERARY.sections[1].id)
   })
 })
 
 describe("itineraryStopsToGeoJSON", () => {
   it("converts stops into a feature collection with lng,lat coordinates", () => {
-    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(MOCK_ITINERARIES[0]))
+    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(ITINERARY))
 
     expect(collection.type).toEqual("FeatureCollection")
-    expect(collection.features).toHaveLength(8)
-    // GeoJSON is lng first, lat second.
-    expect(collection.features[0].geometry.coordinates).toEqual([-0.1365, 51.5136])
+    expect(collection.features).toHaveLength(TOTAL_STOPS)
+    // GeoJSON is lng first, lat second — the reverse of how the stop stores them.
+    expect(collection.features[0].geometry.coordinates).toEqual([
+      FIRST_STOP.coordinates.lng,
+      FIRST_STOP.coordinates.lat,
+    ])
   })
 
   it("stamps id, title, sectionId and a string number into properties", () => {
-    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(MOCK_ITINERARIES[0]))
+    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(ITINERARY))
 
-    expect(collection.features[1].properties).toEqual({
-      id: "stop-2",
-      title: "Splash: Sea, Beach and Pool",
-      sectionId: "day-1",
-      number: "2",
+    expect(collection.features[0].properties).toEqual({
+      id: FIRST_STOP.id,
+      title: FIRST_STOP.title,
+      sectionId: FIRST_SECTION.id,
+      number: "1",
     })
   })
 
   it("numbers by position in the list given, so a filtered section restarts at 1", () => {
-    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
-    const dayTwoOnly = flattened.filter((f) => f.sectionId === "day-2")
-    const collection = itineraryStopsToGeoJSON(dayTwoOnly)
+    const lastSection = ITINERARY.sections[ITINERARY.sections.length - 1]
+    const flattened = flattenItineraryStops(ITINERARY)
+    const lastSectionOnly = flattened.filter((f) => f.sectionId === lastSection.id)
 
-    // These are stops 4 and 5 of the whole itinerary, but on their own they are 1 and 2.
-    expect(collection.features.map((f) => f.properties.number)).toEqual(["1", "2"])
-    expect(collection.features.map((f) => f.properties.id)).toEqual(["stop-4", "stop-5"])
+    // These sit late in the itinerary, but on their own they start at 1 again.
+    expect(lastSectionOnly[0].number).toBeGreaterThan(1)
+    expect(
+      itineraryStopsToGeoJSON(lastSectionOnly).features.map((f) => f.properties.number)
+    ).toEqual(lastSection.stops.map((_, i) => String(i + 1)))
   })
 
   it("returns an empty collection for no stops", () => {
@@ -54,20 +75,18 @@ describe("itineraryStopsToGeoJSON", () => {
 
 describe("itineraryStopsToRouteGeoJSON", () => {
   it("traces one line through the stops in order", () => {
-    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
-    const dayOne = flattened.filter((f) => f.sectionId === "day-1")
-    const route = itineraryStopsToRouteGeoJSON(dayOne)
+    const flattened = flattenItineraryStops(ITINERARY)
+    const firstSectionStops = flattened.filter((f) => f.sectionId === FIRST_SECTION.id)
+    const route = itineraryStopsToRouteGeoJSON(firstSectionStops)
 
     expect(route.features).toHaveLength(1)
-    expect(route.features[0].geometry.coordinates).toEqual([
-      [-0.1365, 51.5136],
-      [-0.156, 51.5185],
-      [-0.081, 51.4995],
-    ])
+    expect(route.features[0].geometry.coordinates).toEqual(
+      FIRST_SECTION.stops.map((stop) => [stop.coordinates.lng, stop.coordinates.lat])
+    )
   })
 
   it("draws nothing for a single stop, which has no line to draw", () => {
-    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
+    const flattened = flattenItineraryStops(ITINERARY)
 
     expect(itineraryStopsToRouteGeoJSON(flattened.slice(0, 1)).features).toEqual([])
     expect(itineraryStopsToRouteGeoJSON([]).features).toEqual([])

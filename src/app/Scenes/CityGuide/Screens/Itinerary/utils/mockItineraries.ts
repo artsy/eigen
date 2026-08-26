@@ -52,6 +52,15 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             coordinates: { lat: 51.4995, lng: -0.081 },
             saveTarget: { type: "SHOW", slug: "white-cube-georg-baselitz-back-again" },
           },
+          {
+            id: "stop-9",
+            title: "The Shape of Heat",
+            displayTime: "5pm-6pm",
+            imageUrl: "https://picsum.photos/id/1072/200/200.jpg",
+            // Maddox Gallery, Mayfair
+            coordinates: { lat: 51.5135, lng: -0.142 },
+            saveTarget: { type: "SHOW", slug: "maddox-gallery-the-shape-of-heat" },
+          },
         ],
       },
       {
@@ -199,6 +208,15 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             coordinates: { lat: 51.5105, lng: -0.1445 },
             saveTarget: { type: "SHOW", slug: "halcyon-pop-odyssey" },
           },
+          {
+            id: "hours-stop-13",
+            title: "The Transformation",
+            displayTime: "5pm-6pm",
+            imageUrl: "https://picsum.photos/id/1069/200/200.jpg",
+            // Lysenko, Shoreditch
+            coordinates: { lat: 51.5215, lng: -0.0795 },
+            saveTarget: { type: "SHOW", slug: "lysenko-the-transformation" },
+          },
         ],
       },
       {
@@ -236,6 +254,25 @@ export const MOCK_ITINERARIES: Itinerary[] = [
               type: "SHOW",
               slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
             },
+          },
+          {
+            id: "hours-stop-14",
+            title: "No Ruined Stones",
+            displayTime: "9pm-10pm",
+            imageUrl: "https://picsum.photos/id/1073/200/200.jpg",
+            // Cadogan Gallery, Chelsea
+            coordinates: { lat: 51.4925, lng: -0.16 },
+            saveTarget: { type: "SHOW", slug: "cadogan-gallery-no-ruined-stones-richard-hearns" },
+          },
+          {
+            id: "hours-stop-15",
+            title: "Fame, Fashion, McGee",
+            displayTime: "10pm-11pm",
+            note: "🍸",
+            imageUrl: "https://picsum.photos/id/1075/200/200.jpg",
+            // Iconic Images, Mayfair
+            coordinates: { lat: 51.5115, lng: -0.1425 },
+            saveTarget: { type: "SHOW", slug: "iconic-images-fame-fashion-mcgee" },
           },
         ],
       },
@@ -356,6 +393,25 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             coordinates: { lat: 51.5245, lng: -0.0785 },
             saveTarget: { type: "SHOW", slug: "artistellar-inner-weather" },
           },
+          {
+            id: "gems-stop-16",
+            title: "Chorus",
+            displayTime: "6pm-7pm",
+            imageUrl: "https://picsum.photos/id/1070/200/200.jpg",
+            // Rhodes, Cremer Street, Hoxton
+            coordinates: { lat: 51.5305, lng: -0.0785 },
+            saveTarget: { type: "SHOW", slug: "rhodes-chorus" },
+          },
+          {
+            id: "gems-stop-17",
+            title: "Photo London",
+            displayTime: "7pm-8pm",
+            note: "🥂",
+            imageUrl: "https://picsum.photos/id/1071/200/200.jpg",
+            // Somerset House
+            coordinates: { lat: 51.511, lng: -0.117 },
+            saveTarget: { type: "FAIR", slug: "photo-london-2026" },
+          },
         ],
       },
       {
@@ -389,6 +445,89 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Rhodes, Hoxton
             coordinates: { lat: 51.5305, lng: -0.0785 },
             saveTarget: { type: "SHOW", slug: "rhodes-you-should-smile-more" },
+          },
+          {
+            id: "gems-stop-18",
+            title: "Vestiges",
+            displayTime: "Sat, 5pm",
+            imageUrl: "https://picsum.photos/id/1076/200/200.jpg",
+            // Annely Juda Fine Art, Dering Street
+            coordinates: { lat: 51.514, lng: -0.1445 },
+            saveTarget: { type: "SHOW", slug: "annely-juda-fine-art-vestiges" },
+          },
+        ],
+      },
+      {
+        id: "late-additions",
+        title: "Late additions",
+        stops: [
+          {
+            id: "gems-stop-10",
+            title: "Learning to Fly",
+            displayTime: "Sun, 11am",
+            imageUrl: "https://picsum.photos/id/1063/200/200.jpg",
+            // Kristin Hjellegjerde Gallery, Melior Place
+            coordinates: { lat: 51.5025, lng: -0.0865 },
+            saveTarget: { type: "SHOW", slug: "kristin-hjellegjerde-gallery-learning-to-fly" },
+          },
+          {
+            id: "gems-stop-11",
+            title: "Neither Here Nor There",
+            displayTime: "Sun, 12pm",
+            imageUrl: "https://picsum.photos/id/1064/200/200.jpg",
+            // General Assembly, Hoxton
+            coordinates: { lat: 51.5265, lng: -0.0755 },
+            saveTarget: { type: "SHOW", slug: "general-assembly-neither-here-nor-there" },
+          },
+          {
+            id: "gems-stop-12",
+            title: "Jonathan Delafield Cook",
+            displayTime: "Sun, 2pm",
+            note: "☕",
+            imageUrl: "https://picsum.photos/id/1065/200/200.jpg",
+            // Purdy Hicks Gallery, Bankside
+            coordinates: { lat: 51.5065, lng: -0.0995 },
+            saveTarget: { type: "SHOW", slug: "purdy-hicks-gallery-jonathan-delafield-cook-1" },
+          },
+        ],
+      },
+      {
+        id: "one-more-thing",
+        title: "One more thing",
+        stops: [
+          {
+            id: "gems-stop-13",
+            title: "Amukela Leswi U Nga Nyikiwa Swona",
+            displayTime: "Sun, 3pm",
+            imageUrl: "https://picsum.photos/id/1066/200/200.jpg",
+            // Everard Read, Eastcastle Street
+            coordinates: { lat: 51.5175, lng: -0.1385 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "everard-read-phillemon-hlungwani-amukela-leswi-u-nga-nyikiwa-swona-accept-what-you-have-been-given",
+            },
+          },
+          {
+            id: "gems-stop-14",
+            title: "London Design Festival: Rhythm",
+            displayTime: "Sun, 4pm",
+            imageUrl: "https://picsum.photos/id/1067/200/200.jpg",
+            // Contemporary Applied Arts, Southwark Street
+            coordinates: { lat: 51.5055, lng: -0.0985 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "contemporary-applied-arts-london-design-festival-rhythm",
+            },
+          },
+          {
+            id: "gems-stop-15",
+            title: "A last look at Victoria Miro",
+            displayTime: "Sun, 5pm",
+            note: "🥂",
+            imageUrl: "https://picsum.photos/id/1068/200/200.jpg",
+            // Victoria Miro, Wharf Road, N1
+            coordinates: { lat: 51.532, lng: -0.095 },
+            saveTarget: { type: "PARTNER", slug: "victoria-miro" },
           },
         ],
       },
