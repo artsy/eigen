@@ -8,7 +8,7 @@ import {
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 configureMapbox()
@@ -99,7 +99,10 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         logoEnabled={false}
         attributionEnabled={false}
         onDidFinishLoadingMap={() => setIsMapLoaded(true)}
-        scaleBarPosition={{ top: top + overlayHeight + SCALE_BAR_GAP, left: SCALE_BAR_GAP }}
+        scaleBarPosition={{
+          top: overlayHeight + (Platform.OS === "ios" ? 0 : top),
+          left: SCALE_BAR_GAP,
+        }}
       >
         <MapboxGL.Camera
           ref={cameraRef}
@@ -115,7 +118,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         top={top}
         left={0}
         right={0}
-        pt={1}
+        style={{ paddingTop: 60 }}
         // Measured rather than hardcoded so the scale bar clears the pills on every
         // device, whatever the safe-area inset and font scale work out to.
         onLayout={(event) => setOverlayHeight(event.nativeEvent.layout.height)}

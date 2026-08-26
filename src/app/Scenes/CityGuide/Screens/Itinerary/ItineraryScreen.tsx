@@ -52,30 +52,28 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
   })
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       {/*
         The map fills the screen, so it gets a floating back button over the map rather
         than a header bar: Screen.Header paints a solid background and cannot be made
         transparent through props. Same treatment CityGuideMapHeader gives the City
         Guide's own map.
       */}
-      {!isMapView && <Screen.AnimatedHeader title={itinerary.title} onBack={goBack} hideTitle />}
+      {/* {!isMapView && <Screen.AnimatedHeader title={itinerary.title} hideLeftElements hideTitle />} */}
+
+      <Flex
+        style={{ top, position: "absolute", zIndex: 1000 }}
+        // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2}
+        // (palette Screen/Header.js:69, constants.js:5). Matching both keeps the
+        // button from jumping when you toggle between list and map.
+        height={NAVBAR_HEIGHT}
+        justifyContent="center"
+        px={2}
+      >
+        <BackButtonWithBackground onPress={goBack} />
+      </Flex>
 
       <Screen.Body fullwidth>
-        {!!isMapView && (
-          <Flex
-            style={{ top, position: "absolute", zIndex: 1000 }}
-            // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2}
-            // (palette Screen/Header.js:69, constants.js:5). Matching both keeps the
-            // button from jumping when you toggle between list and map.
-            height={NAVBAR_HEIGHT}
-            justifyContent="center"
-            px={2}
-          >
-            <BackButtonWithBackground onPress={goBack} />
-          </Flex>
-        )}
-
         {isMapView ? (
           <ItineraryMapView itinerary={itinerary} />
         ) : (
