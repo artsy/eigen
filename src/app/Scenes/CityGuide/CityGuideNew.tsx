@@ -23,7 +23,7 @@ export const CityGuideNew: React.FC = () => {
   return (
     <Screen>
       <Screen.AnimatedHeader
-        title="London"
+        title={city?.name ?? ""}
         rightElements={
           <CityGuideCitySwitcherButton
             cityName={city?.name ?? ""}
@@ -54,7 +54,7 @@ export const CityGuideNew: React.FC = () => {
           </Join>
         </Screen.ScrollView>
 
-        <CityGuideFloatingMapButton cityName={city?.name ?? ""} />
+        <CityGuideFloatingMapButton cityName={city?.name ?? ""} citySlug={city?.slug ?? ""} />
       </Screen.Body>
     </Screen>
   )

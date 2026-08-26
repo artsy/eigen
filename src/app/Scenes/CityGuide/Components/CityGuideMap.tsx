@@ -31,7 +31,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AnimatePresence } from "moti"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
@@ -305,15 +304,12 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         onPressCitySwitcherButton={onPressCitySwitcherButton}
         onPressUserPositionButton={onPressUserPositionButton}
       />
-      {/* TODO: think of a better way to animate the appearance of the city picker */}
-      <AnimatePresence>
-        <CityGuideCityPicker
-          showCityPicker={showCityPicker}
-          setShowCityPicker={setShowCityPicker}
-          selectedCity={city?.name ?? ""}
-          onSelectCity={onSelectCity}
-        />
-      </AnimatePresence>
+      <CityGuideCityPicker
+        showCityPicker={showCityPicker}
+        setShowCityPicker={setShowCityPicker}
+        selectedCity={city?.name ?? ""}
+        onSelectCity={onSelectCity}
+      />
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <MapboxGL.MapView
           ref={mapRef}

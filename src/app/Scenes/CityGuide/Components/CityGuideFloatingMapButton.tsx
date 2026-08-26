@@ -3,7 +3,13 @@ import { Button, Flex } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { MotiView } from "moti"
 
-export const CityGuideFloatingMapButton = ({ cityName }: { cityName: string }) => {
+export const CityGuideFloatingMapButton = ({
+  cityName,
+  citySlug,
+}: {
+  cityName: string
+  citySlug: string
+}) => {
   return (
     <MotiView
       from={{ opacity: 0.5, translateY: 0 }}
@@ -22,7 +28,7 @@ export const CityGuideFloatingMapButton = ({ cityName }: { cityName: string }) =
       >
         <Button
           onPress={() => {
-            navigate("/local-discovery")
+            navigate("/local-discovery?citySlug=" + citySlug)
           }}
           size="small"
         >
