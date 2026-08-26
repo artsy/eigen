@@ -1,12 +1,14 @@
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 // TODO: Replace with data from the API once the itinerary schema lands.
-// Entity slugs recorded on 2026-08-26.
-// PARTNER slugs are known-durable Artsy gallery slugs, verified by convention (stable,
-// long-lived partners), not by browsing artsy.net in this pass.
-// SHOW slugs are ephemeral and could not be verified without browsing artsy.net; they are
-// left as literal placeholders below and must be replaced with real slugs before this
-// itinerary is used for anything beyond local development.
+//
+// Every slug below is real, taken from artsy.net on 2026-08-26:
+// shows from artsy.net/shows/london-united-kingdom, partners from their show pages.
+// Coordinates are the galleries' actual London locations, so the map view is plausible.
+//
+// Show slugs keep resolving after a show closes, and the save queries pass
+// includeAllShows: true, so these stay valid. Titles are the guide author's framing and
+// deliberately need not match the entity's own name — see the spec on editorial curation.
 export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "chill-vibes-only",
@@ -33,22 +35,22 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           },
           {
             id: "stop-2",
-            title: "Museum",
+            title: "Splash: Sea, Beach and Pool",
             displayTime: "11am-4pm",
             note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1040/200/200.jpg",
-            coordinates: { lat: 51.5194, lng: -0.127 },
-            // TODO(human): replace with a verified show slug from artsy.net/show/<slug>
-            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-1" },
+            // Atlas Gallery, Marylebone
+            coordinates: { lat: 51.5185, lng: -0.156 },
+            saveTarget: { type: "SHOW", slug: "atlas-gallery-splash-sea-beach-and-pool" },
           },
           {
             id: "stop-3",
-            title: "Gallery Show",
+            title: "Georg Baselitz: Back Again",
             displayTime: "3pm-4pm",
             imageUrl: "https://picsum.photos/id/1033/200/200.jpg",
-            coordinates: { lat: 51.5074, lng: -0.1278 },
-            // TODO(human): replace with a verified show slug from artsy.net/show/<slug>
-            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-2" },
+            // White Cube Bermondsey
+            coordinates: { lat: 51.4995, lng: -0.081 },
+            saveTarget: { type: "SHOW", slug: "white-cube-georg-baselitz-back-again" },
           },
         ],
       },
@@ -58,22 +60,23 @@ export const MOCK_ITINERARIES: Itinerary[] = [
         stops: [
           {
             id: "stop-4",
-            title: "Frieze London",
+            title: "Like Music in the Blood",
             displayTime: "12pm - 1pm",
             note: "🎤",
             imageUrl: "https://picsum.photos/id/1084/200/200.jpg",
-            coordinates: { lat: 51.5122, lng: -0.1571 },
-            // TODO(human): replace with a verified show slug from artsy.net/show/<slug>
-            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-3" },
+            // Thaddaeus Ropac, Ely House, Mayfair
+            coordinates: { lat: 51.5085, lng: -0.143 },
+            saveTarget: { type: "SHOW", slug: "thaddaeus-ropac-like-music-in-the-blood" },
           },
           {
             id: "stop-5",
-            title: "Evening Reception",
+            title: "Evening reception at Victoria Miro",
             displayTime: "6pm-9pm",
             note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1074/200/200.jpg",
-            coordinates: { lat: 51.5033, lng: -0.1195 },
-            saveTarget: { type: "PARTNER", slug: "white-cube" },
+            // Victoria Miro, Wharf Road, N1
+            coordinates: { lat: 51.532, lng: -0.095 },
+            saveTarget: { type: "PARTNER", slug: "victoria-miro" },
           },
         ],
       },
@@ -94,12 +97,15 @@ export const MOCK_ITINERARIES: Itinerary[] = [
         stops: [
           {
             id: "hours-stop-1",
-            title: "Morning Gallery Visit",
+            title: "The Language of Glaze",
             displayTime: "10am-12pm",
             imageUrl: "https://picsum.photos/id/1025/200/200.jpg",
-            coordinates: { lat: 51.5155, lng: -0.1411 },
-            // TODO(human): replace with a verified show slug from artsy.net/show/<slug>
-            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-4" },
+            // Carpenters Workshop Gallery, Mayfair
+            coordinates: { lat: 51.512, lng: -0.14 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "carpenters-workshop-gallery-the-language-of-glaze",
+            },
           },
         ],
       },
@@ -120,11 +126,12 @@ export const MOCK_ITINERARIES: Itinerary[] = [
         stops: [
           {
             id: "gems-stop-1",
-            title: "Hidden Gem Gallery",
+            title: "An afternoon at White Cube",
             displayTime: "2pm-5pm",
             imageUrl: "https://picsum.photos/id/1035/200/200.jpg",
-            coordinates: { lat: 51.5098, lng: -0.1342 },
-            saveTarget: { type: "PARTNER", slug: "victoria-miro" },
+            // White Cube Bermondsey
+            coordinates: { lat: 51.4995, lng: -0.081 },
+            saveTarget: { type: "PARTNER", slug: "white-cube" },
           },
         ],
       },
@@ -132,7 +139,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
   },
 ]
 
-/** Keys on both params so /city-guide/paris/... cannot render a London itinerary (FIX-04). */
+/** Keys on both params so /city-guide/paris/... cannot render a London itinerary. */
 export const getMockItinerary = (citySlug: string, itineraryId: string): Itinerary | undefined =>
   MOCK_ITINERARIES.find(
     (itinerary) => itinerary.id === itineraryId && itinerary.citySlug === citySlug
