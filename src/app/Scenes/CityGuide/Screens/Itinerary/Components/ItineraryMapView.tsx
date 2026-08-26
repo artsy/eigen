@@ -18,6 +18,7 @@ const BOUNDS_PADDING = 60
 
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
+  const [isMapLoaded, setIsMapLoaded] = useState(false)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const { top } = useSafeAreaInsets()
 
@@ -32,25 +33,34 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
     [flattened, selectedSectionId]
   )
 
-  // Refit whenever the visible set changes, so pins are never off-screen.
-  useEffect(() => {
-    if (!visible.length) return
+  const bounds = useMemo(() => {
+    if (!visible.length) return undefined
 
     const lngs = visible.map((f) => f.stop.coordinates.lng)
     const lats = visible.map((f) => f.stop.coordinates.lat)
 
-    cameraRef.current?.setCamera({
-      bounds: {
-        ne: [Math.max(...lngs), Math.max(...lats)],
-        sw: [Math.min(...lngs), Math.min(...lats)],
-        paddingTop: BOUNDS_PADDING,
-        paddingBottom: BOUNDS_PADDING,
-        paddingLeft: BOUNDS_PADDING,
-        paddingRight: BOUNDS_PADDING,
-      },
-      animationDuration: 500,
-    })
+    return {
+      ne: [Math.max(...lngs), Math.max(...lats)] as [number, number],
+      sw: [Math.min(...lngs), Math.min(...lats)] as [number, number],
+      paddingTop: BOUNDS_PADDING,
+      paddingBottom: BOUNDS_PADDING,
+      paddingLeft: BOUNDS_PADDING,
+      paddingRight: BOUNDS_PADDING,
+    }
   }, [visible])
+
+  // The very first frame comes from defaultSettings, not from the effect below: on mount
+  // the camera ref is not attached yet, so an imperative setCamera silently no-ops and the
+  // map opens on Mapbox's default world view until something else moves it.
+  const initialBounds = useRef(bounds).current
+
+  // Refit on later changes only, and only once the map is ready — same gating as
+  // CityGuideMap.tsx:89,207,317. Without the mapLoaded gate this fires too early and is lost.
+  useEffect(() => {
+    if (!isMapLoaded || !bounds) return
+
+    cameraRef.current?.setCamera({ ...bounds, animationDuration: 500 })
+  }, [bounds, isMapLoaded])
 
   const pills = [
     { id: ALL_PILL_ID, title: "All" },
@@ -64,8 +74,13 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         styleURL={ArtsyMapStyleURL}
         logoEnabled={false}
         attributionEnabled={false}
+        onDidFinishLoadingMap={() => setIsMapLoaded(true)}
       >
-        <MapboxGL.Camera ref={cameraRef} animationMode="moveTo" />
+        <MapboxGL.Camera
+          ref={cameraRef}
+          animationMode="moveTo"
+          defaultSettings={initialBounds ? { bounds: initialBounds } : undefined}
+        />
 
         <ItineraryMapPins
           collection={collection}
@@ -76,15 +91,24 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
       <Flex position="absolute" top={top} left={0} right={0} pt={1}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Flex flexDirection="row" px={2} gap={1}>
-            {pills.map((pill) => (
-              <Pill
-                key={pill.id}
-                selected={selectedSectionId === pill.id}
-                onPress={() => setSelectedSectionId(pill.id)}
-              >
-                {pill.title}
-              </Pill>
-            ))}
+            {pills.map((pill) => {
+              const isSelected = selectedSectionId === pill.id
+
+              return (
+                <Pill
+                  key={pill.id}
+                  variant="filter"
+                  selected={isSelected}
+                  // Set explicitly: the default Pill state declares no background-color at
+                  // all, so over a map the pills would be see-through and unreadable.
+                  backgroundColor={isSelected ? "mono100" : "mono0"}
+                  color={isSelected ? "mono0" : "mono100"}
+                  onPress={() => setSelectedSectionId(pill.id)}
+                >
+                  {pill.title}
+                </Pill>
+              )
+            })}
           </Flex>
         </ScrollView>
 
