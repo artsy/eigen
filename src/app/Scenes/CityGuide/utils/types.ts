@@ -1,6 +1,5 @@
 import { CityGuideFair_fair$data } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideShow_show$data } from "__generated__/CityGuideShow_show.graphql"
-import Supercluster from "supercluster"
 import type { BucketKey, BucketResults } from "./bucketCityResults"
 
 /**
@@ -48,7 +47,6 @@ export interface RelayErrorState {
 export interface FilterData {
   filter: string
   featureCollection: GeoJSON.FeatureCollection
-  clusterEngine: Supercluster
 }
 
 /** Position of the City Guide bottom sheet drawer, shared between `CityGuideMap` and `CityGuideBottomSheet`. */

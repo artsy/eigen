@@ -18,8 +18,7 @@ import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeature
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
-import { getFeatureCollectionForTab } from "app/Scenes/CityGuide/utils/getFeatureCollectionForTab"
-import { getNearestPointToLatLongInCollection } from "app/Scenes/CityGuide/utils/getNearestPointToLatLongInCollection"
+import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import {
   DefaultZoomLevel,
@@ -71,6 +70,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
+  const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -225,72 +225,56 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     compassEnabled: false,
   }
 
-  /**
-   * This function is complicated, because the work we have to do is tricky.
-   * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
-   * access to the shows that the user has tapped on.
-   */
+  /** Maps a pin's (or cluster leaf's) GeoJSON properties back to the show or fair it was built from. */
+  const featurePropertiesToShow = (properties: any): Fair | Show | null => {
+    if (!properties?.slug) {
+      return null
+    }
+
+    // The live Relay records, which the cards need for fragment data and save mutations.
+    if (properties.type === "Fair") {
+      return fairsRef.current[properties.slug] ?? null
+    }
+    return showsRef.current[properties.slug] ?? null
+  }
+
   const handleFeaturePress = async (event: any) => {
-    if (!mapRef.current) {
+    const feature: any = getNearestFeatureToTap(event.features ?? [], event.coordinates)
+
+    if (!feature) {
       return
     }
-    const {
-      properties: { slug, cluster, type },
-      geometry: { coordinates },
-    } = event.features[0]
+
+    const { cluster, type, point_count: pointCount } = feature.properties
 
     updateDrawerPosition(DrawerPosition.collapsed)
 
     let activeShows: Array<Fair | Show> = []
 
-    // If the user only taps on the pin we can use the
-    // id directly to retrieve the corresponding show
-    // @TODO: Adding active Fairs to state only to handle Selecting Fairs
-    // The rest of the logic for displaying active show shows and fairs in the
-    // maps pins and cards will remain the same for now.
     if (!cluster) {
-      if (type === "Show") {
-        activeShows = [showsRef.current[slug]]
-        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
-      } else if (type === "Fair") {
-        activeShows = [fairsRef.current[slug]]
-        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
-      }
-    }
-
-    // Otherwise the logic is as follows
-    // We use our clusterEngine which is map of our clusters
-    // 1. Fetch all features (pins, clusters) based on the current map visible bounds
-    // 2. Sort them by distance to the user tap coordinates
-    // 3. Retrieve points within the cluster and map them back to shows
-    else {
-      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
-      // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await mapRef.current.getZoom())
-      const [lat, lng] = coordinates
-
-      // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await mapRef.current.getVisibleBounds()
-      const [ne, sw] = visibleBounds
-      const [eastLng, northLat] = ne
-      const [westLng, southLat] = sw
-
-      const clusterEngine = getFeatureCollectionForTab(
-        activeIndex,
-        featureCollections
-      ).clusterEngine
-      const visibleFeatures = clusterEngine.getClusters(
-        [westLng, southLat, eastLng, northLat],
-        zoom
+      const show = featurePropertiesToShow(feature.properties)
+      activeShows = show ? [show] : []
+      trackPinTap(
+        Schema.ActionNames.SingleMapPin,
+        activeShows,
+        type === "Fair" ? Schema.OwnerEntityTypes.Fair : Schema.OwnerEntityTypes.Show
       )
-      const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+    } else if (shapeSourceRef.current) {
+      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
 
-      const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
-      activeShows = points.map((a: any) => a.properties) as any
+      // Mapbox is asked which points the tapped cluster contains, so the cards always match the
+      // count drawn on the cluster.
+      const leaves = await shapeSourceRef.current.getClusterLeaves(feature, pointCount, 0)
+      const parsed = typeof leaves === "string" ? JSON.parse(leaves) : leaves
+      const leafFeatures: any[] = Array.isArray(parsed) ? parsed : parsed?.features ?? []
+
+      activeShows = leafFeatures
+        .map((leaf) => featurePropertiesToShow(leaf?.properties))
+        .filter((item): item is Fair | Show => item != null)
     }
 
     setActiveShows(activeShows)
-    setActivePin(event.features[0])
+    setActivePin(feature)
   }
 
   const updateDrawerPosition = (position: DrawerPosition) => {
@@ -369,6 +353,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
                   filterID={cityTabs[activeIndex].id}
                   featureCollections={featureCollections}
                   onPress={(e) => handleFeaturePress(e)}
+                  shapeSourceRef={shapeSourceRef}
                   activePinSlug={
                     activePin?.properties?.cluster ? null : activePin?.properties?.slug
                   }
