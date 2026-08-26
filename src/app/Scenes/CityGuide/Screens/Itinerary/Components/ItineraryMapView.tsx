@@ -97,7 +97,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
               return (
                 <Pill
                   key={pill.id}
-                  variant="filter"
+                  variant="badge"
                   selected={isSelected}
                   // Set explicitly: the default Pill state declares no background-color at
                   // all, so over a map the pills would be see-through and unreadable.
