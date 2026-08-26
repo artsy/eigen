@@ -2,27 +2,32 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add read-only viewing of curated city itineraries to the City Guide, with a save action on each stop.
+**Revision:** v2. Supersedes v1 (commit `5ba2d39e81`) after two review rounds. Eleven tasks, not ten.
 
-**Architecture:** A new `Screens/Itinerary/` directory under the existing City Guide scene. One route renders an `ItineraryScreen` that holds a list/map toggle in local state. Data comes from a typed static mock module shaped so the later swap to a Relay fragment is mechanical. Two pieces get extracted to shared locations because the sibling sub-projects need them: a `useFollowShow` mutation hook and an animated `SaveButton`.
+**Goal:** Add read-only viewing of curated city itineraries to the City Guide, with a real save action on each stop.
+
+**Architecture:** A new `Screens/Itinerary/` directory under the existing City Guide scene. One route renders an `ItineraryScreen` holding a list/map toggle in local state. The itinerary _structure_ comes from a static mock module; each stop's _entity_ is real, resolved by slug through Relay so the save fires a genuine mutation. Two pieces get extracted to shared locations because code on disk already justifies them: a `useFollowShow` mutation hook and a Mapbox config module.
 
 **Tech Stack:** React Native, TypeScript (strict), Relay, `@artsy/palette-mobile`, `@artsy/icons/native`, `react-native-reanimated`, `@rnmapbox/maps`, Jest + `@testing-library/react-native`.
 
 ## Global Constraints
 
-- Spec: `docs/superpowers/specs/2026-08-26-city-guide-itineraries-design.md`.
+- Spec: `docs/superpowers/specs/2026-08-26-city-guide-itineraries-design.md` (v2).
+- Review trail: `docs/superpowers/reviews/`. Finding ids below (BLOCK-_, FIX-_, MISS-\*) are defined there.
 - Reuse existing components, spacing, and patterns over matching Figma pixel values. The designs are not final.
-- No `index.ts(x)` files (`docs/best_practices.md`).
-- Do not import components, hooks, or utils directly from another Scene. Shared code goes in `src/app/Components/` or `src/app/utils/`.
-- Components and component folders are PascalCase; `hooks`, `utils`, `mutations` folders are camelCase.
-- Tests live in a sibling `__tests__/` folder and end in `.tests.ts(x)`.
-- Never use React Native's built-in `Keyboard` API. Not relevant here, but the ESLint rule is active.
-- `navigate` from `app/system/navigation/navigate` is behind a `no-restricted-imports` lint rule; prefer `RouterLink` or add the same `// eslint-disable-next-line no-restricted-imports` comment the neighbouring City Guide files use.
-- Reanimated is globally mocked in tests (`src/setupJest.tsx:322` maps `react-native-reanimated` to `react-native-reanimated/mock`). Assert on rendered output, never on animation values.
-- Before every commit: `yarn tsc`, `yarn test --findRelatedTests <changed-files>`, `yarn lint --fix <changed-files>`.
+- **Before every commit, run all three** (`AGENTS.md:41-51`). No task may skip these:
+  ```sh
+  yarn tsc
+  yarn test --findRelatedTests <changed-files>
+  yarn lint <changed-files>
+  ```
 - Run `yarn relay` after any change to a `graphql` tagged template.
-- Mock `entity.id` values are readable strings, not base64. Real Relay node ids are base64, but the `detect-secrets` pre-commit hook flags base64 strings of that length as high-entropy secrets and blocks the commit. Keep mock ids readable. If a base64 id is genuinely needed later, mark it with an inline `pragma: allowlist secret` comment.
-- The spec lists `app/utils/hooks/withSuspense` under reuse. It is deliberately unused in this plan: every screen here reads synchronous mock data, so there is no suspending boundary and no error to fall back from. It becomes relevant in the task that swaps the mock module for a Relay query, which belongs to a later pass.
+- No `index.ts(x)` files. No cross-scene imports — shared code goes in `src/app/Components/` or `src/app/utils/`.
+- Components and component folders are PascalCase; `hooks`, `utils`, `mutations` folders are camelCase. Tests live in a sibling `__tests__/` and end in `.tests.ts(x)`.
+- Use `RouterLink`, not `navigate`. `.eslintrc.js:145-150` permits an eslint-disable escape hatch, but `RouterLink` enables prefetching.
+- Reanimated is globally mocked (`src/setupJest.tsx:322`). Assert on rendered output, never animation values.
+- `MapView` mocks to `() => null` (`src/setupJest.tsx:295-304`), so map children never mount. Pins cannot be asserted on; the GeoJSON converter carries the map's real coverage.
+- Mock `saveTarget` values are **slugs of real Artsy entities**, never invented ids. Separately, the `detect-secrets` pre-commit hook rejects base64 strings of Relay-node-id length, so never put base64 ids in mocks.
 
 ---
 
@@ -35,39 +40,36 @@
 
 **Interfaces:**
 
-- Consumes: nothing.
-- Produces: `Itinerary`, `ItinerarySection`, `ItineraryStop` types; `MOCK_ITINERARIES: Itinerary[]`; `getMockItinerary(id: string): Itinerary | undefined`.
+- Produces: `Itinerary`, `ItinerarySection`, `ItineraryStop`, `ItinerarySaveTarget`; `MOCK_ITINERARIES: Itinerary[]`; `getMockItinerary(citySlug: string, itineraryId: string): Itinerary | undefined`.
 
-This task has no test of its own — it is pure data with no behaviour. Task 4 onwards exercises it. The one thing worth verifying is that it type-checks.
+Pure data, no behaviour, so no test of its own. Tasks 5 onwards exercise it.
 
 - [ ] **Step 1: Write the types**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes.ts`:
-
 ```ts
-export interface ItineraryStopEntity {
-  __typename: "Show" | "Partner"
-  id: string
-  slug: string
-  isFollowed: boolean
-}
+/** How a stop resolves to a saveable Artsy entity. null for a non-Artsy editorial place. */
+export type ItinerarySaveTarget = { type: "SHOW"; slug: string } | { type: "PARTNER"; slug: string }
 
 export interface ItineraryStop {
   id: string
   title: string
-  /** Display string, formatted by the backend. e.g. "6am-4pm", "12pm - 1pm" */
-  timeLabel: string
+  /** Backend-formatted for display. e.g. "11am-4pm" */
+  displayTime: string
+  /** Optional structured schedule. Display always comes from displayTime. */
+  startAt?: string
+  endAt?: string
   /** Freeform. May hold emoji ("🥂 🧀") or a short caption. */
-  description?: string
+  note?: string
   imageUrl: string
   coordinates: { lat: number; lng: number }
-  /** The number rendered in the list bullet and the map pin. */
-  order: number
-  entity: ItineraryStopEntity
+  /** null when the stop is not a saveable Artsy entity; no save control renders. */
+  saveTarget: ItinerarySaveTarget | null
 }
 
 export interface ItinerarySection {
-  /** Backend owns the grouping and naming. e.g. "Day 1 — Easing in", "Mellow morning" */
+  /** Stable identity. Used for keys, lookups, and map filters. */
+  id: string
+  /** Opaque backend-authored display string. Never used as identity. */
   title: string
   stops: ItineraryStop[]
 }
@@ -84,14 +86,21 @@ export interface Itinerary {
 }
 ```
 
-- [ ] **Step 2: Write the mock data**
+- [ ] **Step 2: Source real entity slugs**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries.ts`. Coordinates are real central London points so the map task has something plausible to render.
+`saveTarget` slugs must resolve against the real API. Get them by opening London shows and galleries in the running app or on artsy.net and taking the slug from the URL: `artsy.net/show/<slug>`, `artsy.net/partner/<slug>`.
+
+Verify each by navigating to `/show/<slug>` in the simulator before use. A slug that 404s produces a stop whose save control never resolves. Record the date checked in a comment.
+
+- [ ] **Step 3: Write the mock data**
+
+Replace each `REPLACE-ME` with a verified slug from Step 2. **All three curated rows get an itinerary** — v1 deliberately left two broken (BLOCK-06).
 
 ```ts
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 // TODO: Replace with data from the API once the itinerary schema lands.
+// Entity slugs verified against production on <DATE>.
 export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "chill-vibes-only",
@@ -104,85 +113,108 @@ export const MOCK_ITINERARIES: Itinerary[] = [
       "Our list of recommendations for the must sees to gallery and museum visits and the hidden gems in between.",
     sections: [
       {
+        id: "day-1",
         title: "Day 1 — Easing in",
         stops: [
           {
             id: "stop-1",
             title: "Coffee at London Cafe",
-            timeLabel: "10am",
+            displayTime: "10am",
             imageUrl: "https://picsum.photos/id/1060/200/200.jpg",
             coordinates: { lat: 51.5136, lng: -0.1365 },
-            order: 1,
-            entity: {
-              __typename: "Partner",
-              id: "itinerary-partner-london-cafe",
-              slug: "london-cafe",
-              isFollowed: false,
-            },
+            // Not an Artsy entity: no save control renders for this stop.
+            saveTarget: null,
           },
           {
             id: "stop-2",
             title: "Museum",
-            timeLabel: "11am-4pm",
-            description: "🥂 🧀",
+            displayTime: "11am-4pm",
+            note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1040/200/200.jpg",
             coordinates: { lat: 51.5194, lng: -0.127 },
-            order: 2,
-            entity: {
-              __typename: "Show",
-              id: "itinerary-show-museum-show",
-              slug: "museum-show",
-              isFollowed: false,
-            },
+            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-1" },
           },
           {
             id: "stop-3",
             title: "Gallery Show",
-            timeLabel: "3pm-4pm",
+            displayTime: "3pm-4pm",
             imageUrl: "https://picsum.photos/id/1033/200/200.jpg",
             coordinates: { lat: 51.5074, lng: -0.1278 },
-            order: 3,
-            entity: {
-              __typename: "Show",
-              id: "itinerary-show-gallery-show",
-              slug: "gallery-show",
-              isFollowed: false,
-            },
+            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-2" },
           },
         ],
       },
       {
+        id: "day-2",
         title: "Day 2 — London Frieze",
         stops: [
           {
             id: "stop-4",
             title: "Frieze London",
-            timeLabel: "12pm - 1pm",
-            description: "🎤",
+            displayTime: "12pm - 1pm",
+            note: "🎤",
             imageUrl: "https://picsum.photos/id/1084/200/200.jpg",
             coordinates: { lat: 51.5122, lng: -0.1571 },
-            order: 4,
-            entity: {
-              __typename: "Show",
-              id: "itinerary-show-frieze-london",
-              slug: "frieze-london",
-              isFollowed: false,
-            },
+            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-3" },
           },
           {
             id: "stop-5",
             title: "Evening Reception",
-            timeLabel: "6pm-9pm",
-            description: "🥂 🧀",
+            displayTime: "6pm-9pm",
+            note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1074/200/200.jpg",
             coordinates: { lat: 51.5033, lng: -0.1195 },
-            order: 5,
-            entity: {
-              __typename: "Partner",
-              id: "itinerary-partner-evening-reception",
-              slug: "evening-reception",
-              isFollowed: false,
-            },
+            saveTarget: { type: "PARTNER", slug: "REPLACE-ME-partner-slug-1" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "36-hours-in-london",
+    citySlug: "london-united-kingdom",
+    title: "36 Hours in London",
+    subtitle: "Top picks",
+    heroImageUrl: "https://picsum.photos/id/1016/800/600.jpg",
+    authorName: "Casey Lesser",
+    description: "A day and a half of galleries, museums, and somewhere decent for lunch.",
+    sections: [
+      {
+        id: "morning",
+        title: "Mellow morning",
+        stops: [
+          {
+            id: "hours-stop-1",
+            title: "Morning Gallery Visit",
+            displayTime: "10am-12pm",
+            imageUrl: "https://picsum.photos/id/1025/200/200.jpg",
+            coordinates: { lat: 51.5155, lng: -0.1411 },
+            saveTarget: { type: "SHOW", slug: "REPLACE-ME-show-slug-4" },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "must-sees-and-hidden-gems",
+    citySlug: "london-united-kingdom",
+    title: "Must Sees & Hidden Gems",
+    subtitle: "Top picks",
+    heroImageUrl: "https://picsum.photos/id/1024/800/600.jpg",
+    authorName: "Casey Lesser",
+    description: "The landmarks worth the queue, and the rooms nobody tells you about.",
+    sections: [
+      {
+        id: "afternoon",
+        title: "Chill afternoon",
+        stops: [
+          {
+            id: "gems-stop-1",
+            title: "Hidden Gem Gallery",
+            displayTime: "2pm-5pm",
+            imageUrl: "https://picsum.photos/id/1035/200/200.jpg",
+            coordinates: { lat: 51.5098, lng: -0.1342 },
+            saveTarget: { type: "PARTNER", slug: "REPLACE-ME-partner-slug-2" },
           },
         ],
       },
@@ -190,102 +222,99 @@ export const MOCK_ITINERARIES: Itinerary[] = [
   },
 ]
 
-export const getMockItinerary = (id: string): Itinerary | undefined =>
-  MOCK_ITINERARIES.find((itinerary) => itinerary.id === id)
+/** Keys on both params so /city-guide/paris/... cannot render a London itinerary (FIX-04). */
+export const getMockItinerary = (citySlug: string, itineraryId: string): Itinerary | undefined =>
+  MOCK_ITINERARIES.find(
+    (itinerary) => itinerary.id === itineraryId && itinerary.citySlug === citySlug
+  )
 ```
 
-- [ ] **Step 3: Type-check**
-
-Run: `yarn tsc`
-Expected: PASS, no new errors.
-
-- [ ] **Step 4: Lint**
-
-Run: `yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/utils/`
-Expected: clean.
-
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Verify and commit**
 
 ```bash
+yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries.ts
+yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/utils/
 git add src/app/Scenes/CityGuide/Screens/Itinerary/utils/
 git commit -m "feat(city-guide): add itinerary types and mock data"
 ```
 
 ---
 
-### Task 2: Shared animated SaveButton
+### Task 2: ItinerarySaveButton
 
 **Files:**
 
-- Create: `src/app/Components/SaveButton/SaveButton.tsx`
-- Test: `src/app/Components/SaveButton/__tests__/SaveButton.tests.tsx`
+- Create: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySaveButton.tsx`
+- Test: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItinerarySaveButton.tests.tsx`
 
 **Interfaces:**
 
-- Consumes: nothing.
-- Produces: `SaveButton: React.FC<SaveButtonProps>` where
-  `SaveButtonProps = { isSaved: boolean; onPress: () => void; isSaving?: boolean; accessibilityLabel?: string }`.
-  Renders a node with `testID="save-button"`; the plus icon carries `testID="save-button-add-icon"` and the tick `testID="save-button-check-icon"`.
+- Produces: `ItinerarySaveButton: React.FC<{ isSaved: boolean; onPress: () => void; isSaving?: boolean; accessibilityLabel?: string }>`. Renders `testID="itinerary-save-button"`; icons carry `testID="itinerary-save-button-add-icon"` and `"itinerary-save-button-check-icon"`.
 
-The button renders exactly one icon at a time and pops it with a spring on change. Rendering one icon rather than crossfading two keeps the assertion honest under the Reanimated jest mock, where opacity is not observable.
+Scene-local, not shared (FIX-02): one consumer, itinerary-specific semantics. Extract if a second real consumer appears.
 
 - [ ] **Step 1: Write the failing test**
 
-Create `src/app/Components/SaveButton/__tests__/SaveButton.tests.tsx`:
-
 ```tsx
 import { fireEvent, screen } from "@testing-library/react-native"
-import { SaveButton } from "app/Components/SaveButton/SaveButton"
+import { ItinerarySaveButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySaveButton"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("SaveButton", () => {
+describe("ItinerarySaveButton", () => {
   it("renders the add icon when not saved", () => {
-    renderWithWrappers(<SaveButton isSaved={false} onPress={jest.fn()} />)
+    renderWithWrappers(<ItinerarySaveButton isSaved={false} onPress={jest.fn()} />)
 
-    expect(screen.getByTestId("save-button-add-icon")).toBeTruthy()
-    expect(screen.queryByTestId("save-button-check-icon")).toBeNull()
+    expect(screen.getByTestId("itinerary-save-button-add-icon")).toBeTruthy()
+    expect(screen.queryByTestId("itinerary-save-button-check-icon")).toBeNull()
   })
 
   it("renders the check icon when saved", () => {
-    renderWithWrappers(<SaveButton isSaved onPress={jest.fn()} />)
+    renderWithWrappers(<ItinerarySaveButton isSaved onPress={jest.fn()} />)
 
-    expect(screen.getByTestId("save-button-check-icon")).toBeTruthy()
-    expect(screen.queryByTestId("save-button-add-icon")).toBeNull()
+    expect(screen.getByTestId("itinerary-save-button-check-icon")).toBeTruthy()
+    expect(screen.queryByTestId("itinerary-save-button-add-icon")).toBeNull()
   })
 
   it("calls onPress when tapped", () => {
     const onPress = jest.fn()
-    renderWithWrappers(<SaveButton isSaved={false} onPress={onPress} />)
+    renderWithWrappers(<ItinerarySaveButton isSaved={false} onPress={onPress} />)
 
-    fireEvent.press(screen.getByTestId("save-button"))
+    fireEvent.press(screen.getByTestId("itinerary-save-button"))
 
     expect(onPress).toHaveBeenCalledTimes(1)
   })
 
   it("does not call onPress while saving", () => {
     const onPress = jest.fn()
-    renderWithWrappers(<SaveButton isSaved={false} onPress={onPress} isSaving />)
+    renderWithWrappers(<ItinerarySaveButton isSaved={false} onPress={onPress} isSaving />)
 
-    fireEvent.press(screen.getByTestId("save-button"))
+    fireEvent.press(screen.getByTestId("itinerary-save-button"))
 
     expect(onPress).not.toHaveBeenCalled()
+  })
+
+  it("exposes its saved state for accessibility", () => {
+    renderWithWrappers(<ItinerarySaveButton isSaved onPress={jest.fn()} />)
+
+    expect(screen.getByTestId("itinerary-save-button").props.accessibilityState.selected).toBe(true)
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
-Run: `yarn test src/app/Components/SaveButton/__tests__/SaveButton.tests.tsx`
-Expected: FAIL — cannot resolve `app/Components/SaveButton/SaveButton`.
+Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItinerarySaveButton.tests.tsx`
+Expected: FAIL — module not found.
 
 - [ ] **Step 3: Write the implementation**
 
-Create `src/app/Components/SaveButton/SaveButton.tsx`. The `.get()` / `.set()` shared-value style matches `src/app/Components/Disappearable.tsx`.
+The `hasMountedRef` guard matters: v1 animated on first render, so every visible row popped on load (FIX-12).
 
 ```tsx
 import { AddIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Flex } from "@artsy/palette-mobile"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, {
   useAnimatedStyle,
@@ -298,23 +327,29 @@ import Animated, {
 const ICON_SIZE = 24
 const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 
-export interface SaveButtonProps {
+interface Props {
   isSaved: boolean
   onPress: () => void
   isSaving?: boolean
   accessibilityLabel?: string
 }
 
-export const SaveButton: React.FC<SaveButtonProps> = ({
+export const ItinerarySaveButton: React.FC<Props> = ({
   isSaved,
   onPress,
   isSaving = false,
   accessibilityLabel,
 }) => {
   const scale = useSharedValue(1)
+  const hasMountedRef = useRef(false)
 
   useEffect(() => {
-    // Pop the icon whenever the saved state flips, in both directions.
+    // Skip the initial render so rows do not all pop on load.
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true
+      return
+    }
+
     scale.set(() =>
       withSequence(withTiming(0.6, { duration: 80 }), withSpring(1, { damping: 6, stiffness: 220 }))
     )
@@ -324,7 +359,7 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
 
   return (
     <TouchableOpacity
-      testID="save-button"
+      testID="itinerary-save-button"
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (isSaved ? "Saved" : "Save")}
       accessibilityState={{ selected: isSaved, disabled: isSaving }}
@@ -335,9 +370,13 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
       <Flex width={ICON_SIZE} height={ICON_SIZE} alignItems="center" justifyContent="center">
         <Animated.View style={animatedStyle}>
           {isSaved ? (
-            <CheckmarkIcon testID="save-button-check-icon" width={ICON_SIZE} height={ICON_SIZE} />
+            <CheckmarkIcon
+              testID="itinerary-save-button-check-icon"
+              width={ICON_SIZE}
+              height={ICON_SIZE}
+            />
           ) : (
-            <AddIcon testID="save-button-add-icon" width={ICON_SIZE} height={ICON_SIZE} />
+            <AddIcon testID="itinerary-save-button-add-icon" width={ICON_SIZE} height={ICON_SIZE} />
           )}
         </Animated.View>
       </Flex>
@@ -346,103 +385,129 @@ export const SaveButton: React.FC<SaveButtonProps> = ({
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [ ] **Step 4: Run to verify it passes**
 
-Run: `yarn test src/app/Components/SaveButton/__tests__/SaveButton.tests.tsx`
-Expected: PASS, 4 tests.
+Expected: PASS, 5 tests.
 
-If `AddIcon` or `CheckmarkIcon` reject a `testID` prop under strict mode, wrap each in a `<Flex testID=...>` and keep the assertions unchanged.
-
-- [ ] **Step 5: Type-check and lint**
-
-Run: `yarn tsc && yarn lint --fix src/app/Components/SaveButton/`
-Expected: both clean.
-
-- [ ] **Step 6: Commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
-git add src/app/Components/SaveButton/
-git commit -m "feat: add shared animated SaveButton component"
+yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySaveButton.tsx
+yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/Components/
+git add src/app/Scenes/CityGuide/Screens/Itinerary/Components/
+git commit -m "feat(city-guide): add ItinerarySaveButton"
 ```
 
 ---
 
-### Task 3: useFollowShow hook, and migrate CityGuideEvent onto it
+### Task 3: useFollowShow, and migrate CityGuideEvent
 
 **Files:**
 
 - Create: `src/app/utils/mutations/useFollowShow.ts`
 - Test: `src/app/utils/mutations/__tests__/useFollowShow.tests.tsx`
-- Modify: `src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx` (replace lines 1-67 mutation wiring and delete the `eventMutation` block at lines 109-119)
+- Modify: `src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx`
 
 **Interfaces:**
 
-- Consumes: nothing.
-- Produces: `useFollowShow({ id, internalID, isFollowed, onCompleted, onError }: FollowShowOptions) => { followShow: () => void; isInFlight: boolean }`, where `FollowShowOptions = { id: string; internalID: string; isFollowed: boolean | null; onCompleted?: (isFollowed: boolean) => void; onError?: () => void }`. `id` is the Relay node id, `internalID` is the show's `internalID` passed to the mutation as `partnerShowID`.
+- Produces: `useFollowShow({ id, internalID, isFollowed, onCompleted, onError }) => { followShow: () => void; isInFlight: boolean }`, where `isFollowed: boolean | null | undefined`.
 
-This mirrors `src/app/utils/mutations/useFollowProfile.ts` exactly, so a reader who knows one knows the other.
+Three inline `followShow` copies exist today (`CityGuideEvent.tsx:110-111`, `ShowFollowButton.tsx:48-49`, `Lists/ShowItemRow.tsx:57-58`) and zero hooks, while `useFollowProfile.ts` is the extracted sibling. Only `CityGuideEvent` migrates here; the other two are a follow-up so this diff stays reviewable.
 
 - [ ] **Step 1: Write the failing test**
 
-Create `src/app/utils/mutations/__tests__/useFollowShow.tests.tsx`:
+`src/app/utils/mutations/` has **no tests at all**, and `setupTestWrapper` throws for a query-less component — `setupTestWrapper.tsx:114-129` resolves an operation unconditionally, and `RelayModernMockEnvironment.js:220` throws "There are no pending operations in the list" (BLOCK-04). Use the `renderHook` pattern from `src/app/Scenes/Artwork/hooks/__tests__/useSendInquiry.tests.tsx`.
 
 ```tsx
-import { screen, fireEvent } from "@testing-library/react-native"
-import { Text, TouchableOpacity } from "react-native"
+import { act, renderHook } from "@testing-library/react-native"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { useFollowShow } from "app/utils/mutations/useFollowShow"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RelayEnvironmentProvider } from "react-relay"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-const TestComponent: React.FC<{ isFollowed: boolean }> = ({ isFollowed }) => {
-  const { followShow, isInFlight } = useFollowShow({
-    id: "relay-node-id",
-    internalID: "internal-id",
-    isFollowed,
-  })
+const env = createMockEnvironment()
 
-  return (
-    <TouchableOpacity testID="follow" onPress={followShow}>
-      <Text>{isInFlight ? "in flight" : "idle"}</Text>
-    </TouchableOpacity>
-  )
-}
+const wrapper = ({ children }: any) => (
+  <RelayEnvironmentProvider environment={env}>
+    <GlobalStoreProvider>{children}</GlobalStoreProvider>
+  </RelayEnvironmentProvider>
+)
 
 describe("useFollowShow", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: TestComponent })
+  it("sends unfollow false when the show is not followed", () => {
+    const { result } = renderHook(
+      () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: false }),
+      { wrapper }
+    )
 
-  it("sends a follow mutation with unfollow false when not followed", () => {
-    const { env } = renderWithRelay({}, { isFollowed: false })
+    act(() => result.current.followShow())
 
-    fireEvent.press(screen.getByTestId("follow"))
-
-    const operation = env.mock.getMostRecentOperation()
-    expect(operation.request.variables).toEqual({
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
       input: { partnerShowID: "internal-id", unfollow: false },
     })
   })
 
-  it("sends unfollow true when already followed", () => {
-    const { env } = renderWithRelay({}, { isFollowed: true })
+  it("sends unfollow true when the show is already followed", () => {
+    const { result } = renderHook(
+      () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: true }),
+      { wrapper }
+    )
 
-    fireEvent.press(screen.getByTestId("follow"))
+    act(() => result.current.followShow())
 
-    const operation = env.mock.getMostRecentOperation()
-    expect(operation.request.variables).toEqual({
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
       input: { partnerShowID: "internal-id", unfollow: true },
     })
+  })
+
+  it("accepts an undefined isFollowed and treats it as not followed", () => {
+    const { result } = renderHook(
+      () => useFollowShow({ id: "node-id", internalID: "internal-id", isFollowed: undefined }),
+      { wrapper }
+    )
+
+    act(() => result.current.followShow())
+
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
+      input: { partnerShowID: "internal-id", unfollow: false },
+    })
+  })
+
+  it("calls onCompleted with the next followed state", () => {
+    const onCompleted = jest.fn()
+    const { result } = renderHook(
+      () =>
+        useFollowShow({
+          id: "node-id",
+          internalID: "internal-id",
+          isFollowed: false,
+          onCompleted,
+        }),
+      { wrapper }
+    )
+
+    act(() => result.current.followShow())
+    act(() => {
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
+    })
+
+    expect(onCompleted).toHaveBeenCalledWith(true)
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
 Run: `yarn test src/app/utils/mutations/__tests__/useFollowShow.tests.tsx`
-Expected: FAIL — cannot resolve `app/utils/mutations/useFollowShow`.
+Expected: FAIL — module not found.
 
 - [ ] **Step 3: Write the hook**
 
-Create `src/app/utils/mutations/useFollowShow.ts`:
+`isFollowed` is `boolean | null | undefined` because `CityGuideShow_show.graphql.ts:23` types it that way and a narrower parameter does not compile under `strict` (BLOCK-03). The optimistic update goes through `setShowFollowed`, which writes the canonical `isFollowed` key rather than the alias (FIX-03).
 
 ```ts
+import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
 import { graphql, useMutation } from "react-relay"
 
 export interface FollowShowOptions {
@@ -450,7 +515,7 @@ export interface FollowShowOptions {
   id: string
   /** The show's internalID, sent to the mutation as partnerShowID. */
   internalID: string
-  isFollowed: boolean | null
+  isFollowed: boolean | null | undefined
   onCompleted?: (isFollowed: boolean) => void
   onError?: () => void
 }
@@ -488,8 +553,7 @@ export const useFollowShow = ({
         },
       },
       optimisticUpdater: (store) => {
-        const show = store.get(id)
-        show?.setValue(nextFollowedState, "isFollowed")
+        setShowFollowed(store, id, nextFollowedState)
       },
     })
   }
@@ -510,28 +574,28 @@ const Mutation = graphql`
 `
 ```
 
-- [ ] **Step 4: Compile the Relay artifact**
-
-Run: `yarn relay`
-Expected: generates `src/__generated__/useFollowShowMutation.graphql.ts`.
-
-- [ ] **Step 5: Run the test to verify it passes**
-
-Run: `yarn test src/app/utils/mutations/__tests__/useFollowShow.tests.tsx`
-Expected: PASS, 2 tests.
-
-- [ ] **Step 6: Commit the hook**
+- [ ] **Step 4: Compile Relay and run the tests**
 
 ```bash
-git add src/app/utils/mutations/useFollowShow.ts src/app/utils/mutations/__tests__/useFollowShow.tests.tsx src/__generated__/useFollowShowMutation.graphql.ts
+yarn relay
+yarn test src/app/utils/mutations/__tests__/useFollowShow.tests.tsx
+```
+
+Expected: generates `src/__generated__/useFollowShowMutation.graphql.ts`; 4 tests pass.
+
+- [ ] **Step 5: Verify and commit the hook**
+
+```bash
+yarn tsc
+yarn test --findRelatedTests src/app/utils/mutations/useFollowShow.ts
+yarn lint --fix src/app/utils/mutations/
+git add src/app/utils/mutations/ src/__generated__/useFollowShowMutation.graphql.ts
 git commit -m "feat: add useFollowShow mutation hook"
 ```
 
-- [ ] **Step 7: Migrate CityGuideEvent onto the hook**
+- [ ] **Step 6: Migrate CityGuideEvent onto the hook**
 
-`CityGuideEvent.tsx` currently reads the show's followed state as `is_followed` (an aliased field on the legacy `Show` type in `app/Scenes/CityGuide/utils/types`), keeps its own `isFollowedSaving` state, and writes `is_followed` in its updater. The hook writes `isFollowed`, so keep the component's own updater behaviour by passing the legacy field name through `onCompleted` rather than changing the fragment.
-
-Replace the imports, the mutation state, and `handleSaveChange` in `src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx`:
+The existing updater at `CityGuideEvent.tsx:62-65` writes `store.get(nodeID).setValue(..., "is_followed")`. Relay keys records on the schema field name, not the alias, so that write lands on a key nothing reads — dead code. The button works only because its `optimisticResponse` is payload-shaped (MISS-02). This migration deletes it.
 
 ```tsx
 import { Box, Button, Flex, Text, useColor } from "@artsy/palette-mobile"
@@ -544,12 +608,6 @@ import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { Schema } from "app/utils/track"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
-
-const TEXT_CONTAINER_WIDTH = 200
-
-interface Props {
-  event: Show
-}
 
 export const CityGuideEvent: React.FC<Props> = ({ event }) => {
   const { name, exhibition_period, partner, is_followed, end_at } = event
@@ -575,128 +633,173 @@ export const CityGuideEvent: React.FC<Props> = ({ event }) => {
     trackEvent(tracks.trackSave(event))
     followShow()
   }
-  // ...render unchanged, except `loading={isInFlight}` on the Button
+  // render unchanged, except `loading={isInFlight}` on the Button
 }
 ```
 
-Then delete the `eventMutation` `graphql` block (previously lines 109-119) and the now-unused `CityGuideEventMutation` import, `useState` import, and `useMutation`/`graphql` imports from `react-relay`.
+Then delete the `eventMutation` `graphql` block, the `CityGuideEventMutation` import, the `useState` import, and `useMutation`/`graphql` from `react-relay`.
 
-- [ ] **Step 8: Recompile Relay and run the existing tests**
-
-Run: `yarn relay && yarn test src/app/Scenes/CityGuide/Components/__tests__/CityGuideEvent.tests.tsx`
-Expected: PASS — the existing two tests still pass. The deleted `CityGuideEventMutation.graphql.ts` artifact should disappear from `src/__generated__/`.
-
-The hook's `optimisticUpdater` writes the canonical `isFollowed` field, while this component reads the aliased `is_followed`. Relay aliases resolve to the same underlying field on the record, so a single `setValue(nextFollowedState, "isFollowed")` updates both readers. Verify this in the simulator: tap Save on a City Guide event and confirm the button flips to "Saved" immediately, before the network settles.
-
-If it does not flip, the alias is not resolving. Fix it in the hook rather than in the component, by writing both keys in `optimisticUpdater`:
-
-```ts
-optimisticUpdater: (store) => {
-  const show = store.get(id)
-  show?.setValue(nextFollowedState, "isFollowed")
-  show?.setValue(nextFollowedState, "is_followed")
-},
-```
-
-Note which branch you took in the commit message.
-
-- [ ] **Step 9: Type-check, lint, commit**
+- [ ] **Step 7: Verify and commit the migration**
 
 ```bash
+yarn relay
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx
 yarn lint --fix src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx
 git add -A src/app/Scenes/CityGuide/Components/CityGuideEvent.tsx src/__generated__/
-git commit -m "refactor(city-guide): move CityGuideEvent onto useFollowShow"
+git commit -m "refactor(city-guide): move CityGuideEvent onto useFollowShow
+
+Deletes an optimistic updater that wrote the is_followed alias key, which
+Relay never reads."
 ```
+
+Expected: the two existing `CityGuideEvent` tests still pass; `CityGuideEventMutation.graphql.ts` disappears from `src/__generated__/`.
+
+- [ ] **Step 8: Confirm in the simulator**
+
+Open the City Guide map, tap Save on an event, and confirm the button flips to "Saved" immediately, before the network settles.
 
 ---
 
-### Task 4: ItineraryStopRow
+### Task 4: Shared Mapbox configuration
+
+**Files:**
+
+- Create: `src/app/utils/mapbox.ts`
+- Modify: `src/app/Scenes/CityGuide/Components/CityGuideMap.tsx:41,53`
+- Modify: `src/app/Scenes/Partner/Components/PartnerMap.tsx:8,14`
+- Modify: `src/app/Components/LocationMap/LocationMap.tsx:8,15`
+
+**Interfaces:**
+
+- Produces: `ArtsyMapStyleURL: string`, `configureMapbox(): void` (idempotent).
+
+`CityGuideMap.tsx` both calls `setAccessToken` and exports `ArtsyMapStyleURL`, so importing the constant executes a screen module's token setup. `PartnerMap` and `LocationMap` already import it cross-scene against the AGENTS.md rule, and `setAccessToken` runs three times (FIX-08). This clears two existing violations rather than adding a third.
+
+No new test: a move plus an idempotence guard, covered by the existing map tests continuing to pass.
+
+- [ ] **Step 1: Create the module**
+
+```ts
+import MapboxGL from "@rnmapbox/maps"
+import Keys from "react-native-keys"
+
+export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
+
+let isConfigured = false
+
+/** Safe to call from any map module; the token is only set once. */
+export const configureMapbox = () => {
+  if (isConfigured) return
+
+  MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
+  isConfigured = true
+}
+```
+
+- [ ] **Step 2: Repoint the three consumers**
+
+In each of `CityGuideMap.tsx`, `PartnerMap.tsx`, and `LocationMap.tsx`: delete the local `setAccessToken` call and the `react-native-keys` import, add `import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"`, and call `configureMapbox()` at module top level where `setAccessToken` was. Delete the `ArtsyMapStyleURL` export from `CityGuideMap.tsx` and the cross-scene imports of it in the other two.
+
+- [ ] **Step 3: Verify and commit**
+
+```bash
+yarn tsc
+yarn test --findRelatedTests src/app/utils/mapbox.ts src/app/Components/LocationMap/LocationMap.tsx src/app/Scenes/Partner/Components/PartnerMap.tsx src/app/Scenes/CityGuide/Components/CityGuideMap.tsx
+yarn lint --fix src/app/utils/mapbox.ts src/app/Components/LocationMap/ src/app/Scenes/Partner/Components/PartnerMap.tsx src/app/Scenes/CityGuide/Components/CityGuideMap.tsx
+git add -A
+git commit -m "refactor: extract Mapbox config into a shared module"
+```
+
+Expected: `LocationMap` and `PartnerLocations` tests still pass. Check both maps still render in the simulator — a missing token shows a blank map rather than throwing, so tests alone will not catch it.
+
+---
+
+### Task 5: ItineraryStopRow and its save control
 
 **Files:**
 
 - Create: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow.tsx`
+- Create: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl.tsx`
 - Test: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryStopRow.tests.tsx`
 
 **Interfaces:**
 
-- Consumes: `ItineraryStop` from Task 1; `SaveButton` from Task 2.
-- Produces: `ItineraryStopRow: React.FC<{ stop: ItineraryStop; isSaved: boolean; onSave: () => void }>`.
+- Produces: `ItineraryStopRow: React.FC<{ stop: ItineraryStop; number: number }>`; `ItineraryStopSaveControl: React.FC<{ saveTarget: ItinerarySaveTarget; stopTitle: string }>`.
+
+`number` is passed in, derived by the screen from the flattened index — never read off the stop (FIX-05). The save control resolves its own entity by slug; see the spec's open question on one query per stop.
 
 - [ ] **Step 1: Write the failing test**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryStopRow.tests.tsx`:
-
 ```tsx
-import { fireEvent, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-const stop: ItineraryStop = {
+const savedStop: ItineraryStop = {
   id: "stop-2",
   title: "Museum",
-  timeLabel: "11am-4pm",
-  description: "🥂 🧀",
+  displayTime: "11am-4pm",
+  note: "🥂 🧀",
   imageUrl: "https://example.com/image.jpg",
   coordinates: { lat: 51.5194, lng: -0.127 },
-  order: 2,
-  entity: {
-    __typename: "Show",
-    id: "itinerary-show-museum-show",
-    slug: "museum-show",
-    isFollowed: false,
-  },
+  saveTarget: { type: "SHOW", slug: "museum-show" },
+}
+
+const unsaveableStop: ItineraryStop = {
+  id: "stop-1",
+  title: "Coffee at London Cafe",
+  displayTime: "10am",
+  imageUrl: "https://example.com/cafe.jpg",
+  coordinates: { lat: 51.5136, lng: -0.1365 },
+  saveTarget: null,
 }
 
 describe("ItineraryStopRow", () => {
-  it("renders the order, title, time label and description", () => {
-    renderWithWrappers(<ItineraryStopRow stop={stop} isSaved={false} onSave={jest.fn()} />)
+  const { renderWithRelay } = setupTestWrapper({ Component: ItineraryStopRow })
 
+  it("renders the number, title, time and note", async () => {
+    renderWithRelay({ Show: () => ({ isFollowed: false }) }, { stop: savedStop, number: 2 })
+
+    expect(await screen.findByText("Museum")).toBeTruthy()
     expect(screen.getByText("2")).toBeTruthy()
-    expect(screen.getByText("Museum")).toBeTruthy()
     expect(screen.getByText("11am-4pm")).toBeTruthy()
     expect(screen.getByText("🥂 🧀")).toBeTruthy()
   })
 
-  it("omits the description when the stop has none", () => {
-    const { description, ...withoutDescription } = stop
-    renderWithWrappers(
-      <ItineraryStopRow stop={withoutDescription} isSaved={false} onSave={jest.fn()} />
-    )
+  it("omits the note when the stop has none", () => {
+    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
 
     expect(screen.queryByText("🥂 🧀")).toBeNull()
   })
 
-  it("calls onSave when the save button is pressed", () => {
-    const onSave = jest.fn()
-    renderWithWrappers(<ItineraryStopRow stop={stop} isSaved={false} onSave={onSave} />)
+  it("renders no save control when the stop has no save target", () => {
+    renderWithRelay({}, { stop: unsaveableStop, number: 1 })
 
-    fireEvent.press(screen.getByTestId("save-button"))
-
-    expect(onSave).toHaveBeenCalledTimes(1)
+    expect(screen.queryByTestId("itinerary-save-button")).toBeNull()
+    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 
-  it("shows the check icon once saved", () => {
-    renderWithWrappers(<ItineraryStopRow stop={stop} isSaved onSave={jest.fn()} />)
+  it("reflects the resolved followed state", async () => {
+    renderWithRelay({ Show: () => ({ isFollowed: true }) }, { stop: savedStop, number: 2 })
 
-    expect(screen.getByTestId("save-button-check-icon")).toBeTruthy()
+    expect(await screen.findByTestId("itinerary-save-button-check-icon")).toBeTruthy()
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryStopRow.tests.tsx`
-Expected: FAIL — cannot resolve `ItineraryStopRow`.
+Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write the implementation**
+- [ ] **Step 3: Write the row**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow.tsx`. The `RNImage` usage and `IMAGE_SIZE` constant follow `CityGuideCuratedLists.tsx` and `CityGuideEvents.tsx`, which use plain `react-native` `Image` while the data is still mock.
+The row splits in two: a presentational shell that always renders, and a save control that suspends on its own query. Only the control suspends, so a slow or failing entity lookup never blanks the row.
 
 ```tsx
 import { Flex, Text } from "@artsy/palette-mobile"
-import { SaveButton } from "app/Components/SaveButton/SaveButton"
+import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
@@ -706,11 +809,11 @@ const BULLET_SIZE = 16
 
 interface Props {
   stop: ItineraryStop
-  isSaved: boolean
-  onSave: () => void
+  /** Derived from the flattened stop index by the screen. Never stored on the stop. */
+  number: number
 }
 
-export const ItineraryStopRow: React.FC<Props> = ({ stop, isSaved, onSave }) => {
+export const ItineraryStopRow: React.FC<Props> = ({ stop, number }) => {
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
       <Flex
@@ -722,7 +825,7 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, isSaved, onSave }) => 
         justifyContent="center"
       >
         <Text variant="xxs" color="mono0">
-          {stop.order}
+          {number}
         </Text>
       </Flex>
 
@@ -739,38 +842,161 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, isSaved, onSave }) => 
           {stop.title}
         </Text>
         <Text variant="xs" color="mono60">
-          {stop.timeLabel}
+          {stop.displayTime}
         </Text>
-        {!!stop.description && <Text variant="xs">{stop.description}</Text>}
+        {!!stop.note && <Text variant="xs">{stop.note}</Text>}
       </Flex>
 
-      <SaveButton
-        isSaved={isSaved}
-        onPress={onSave}
-        accessibilityLabel={isSaved ? `Unsave ${stop.title}` : `Save ${stop.title}`}
-      />
+      {!!stop.saveTarget && (
+        <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
+      )}
     </Flex>
   )
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [ ] **Step 4: Write the save control**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryStopRow.tests.tsx`
+Two branches, because `followShow` and `followProfile` take different identifiers. Each branch is its own component so neither calls hooks conditionally.
+
+```tsx
+import { useToast } from "app/Components/Toast/toastHook"
+import { ItinerarySaveButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySaveButton"
+import { ItinerarySaveTarget } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
+import { useFollowShow } from "app/utils/mutations/useFollowShow"
+import { Schema } from "app/utils/track"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
+
+interface Props {
+  saveTarget: ItinerarySaveTarget
+  stopTitle: string
+}
+
+export const ItineraryStopSaveControl: React.FC<Props> = ({ saveTarget, stopTitle }) => {
+  if (saveTarget.type === "SHOW") {
+    return <ShowSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+  }
+
+  return <PartnerSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+}
+
+const useSaveToast = () => {
+  const toast = useToast()
+
+  return (isNowSaved: boolean) => {
+    toast.show(isNowSaved ? "Saved to your saves" : "Removed from your saves", "bottom")
+  }
+}
+
+const ShowSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+  const data = useLazyLoadQuery<any>(ShowQuery, { slug })
+  const showToast = useSaveToast()
+  const { trackEvent } = useTracking()
+  const show = data?.show
+
+  const { followShow, isInFlight } = useFollowShow({
+    id: show?.id ?? "",
+    internalID: show?.internalID ?? "",
+    isFollowed: show?.isFollowed,
+    onCompleted: showToast,
+  })
+
+  if (!show) return null
+
+  return (
+    <ItinerarySaveButton
+      isSaved={!!show.isFollowed}
+      isSaving={isInFlight}
+      accessibilityLabel={show.isFollowed ? `Unsave ${stopTitle}` : `Save ${stopTitle}`}
+      onPress={() => {
+        trackEvent({
+          action_name: show.isFollowed
+            ? Schema.ActionNames.UnsaveShow
+            : Schema.ActionNames.SaveShow,
+          action_type: Schema.ActionTypes.Success,
+          owner_type: Schema.OwnerEntityTypes.Show,
+          owner_id: show.internalID,
+          owner_slug: slug,
+        })
+        followShow()
+      }}
+    />
+  )
+}
+
+const PartnerSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+  const data = useLazyLoadQuery<any>(PartnerQuery, { slug })
+  const showToast = useSaveToast()
+  const profile = data?.partner?.profile
+
+  const { followProfile, isInFlight } = useFollowProfile({
+    id: profile?.id ?? "",
+    internalID: profile?.internalID ?? "",
+    isFollowed: profile?.isFollowed,
+    onCompleted: showToast,
+  })
+
+  if (!profile) return null
+
+  return (
+    <ItinerarySaveButton
+      isSaved={!!profile.isFollowed}
+      isSaving={isInFlight}
+      accessibilityLabel={profile.isFollowed ? `Unfollow ${stopTitle}` : `Follow ${stopTitle}`}
+      onPress={followProfile}
+    />
+  )
+}
+
+const ShowQuery = graphql`
+  query ItineraryStopSaveControlShowQuery($slug: String!) {
+    show(id: $slug) {
+      id
+      internalID
+      isFollowed
+    }
+  }
+`
+
+const PartnerQuery = graphql`
+  query ItineraryStopSaveControlPartnerQuery($slug: String!) {
+    partner(id: $slug) {
+      profile {
+        id
+        internalID
+        isFollowed
+      }
+    }
+  }
+`
+```
+
+Replace the `useLazyLoadQuery<any>` type arguments with the generated query types after `yarn relay`. Partner-branch tracking is omitted deliberately: `Schema.ActionNames` has no gallery-follow entry, and adding one belongs to the save sub-project.
+
+- [ ] **Step 5: Compile Relay and run the tests**
+
+```bash
+yarn relay
+yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryStopRow.tests.tsx
+```
+
 Expected: PASS, 4 tests.
 
-- [ ] **Step 5: Type-check, lint, commit**
+- [ ] **Step 6: Verify and commit**
 
 ```bash
 yarn tsc
-yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/Components/
-git add src/app/Scenes/CityGuide/Screens/Itinerary/Components/
-git commit -m "feat(city-guide): add ItineraryStopRow"
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow.tsx src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl.tsx
+yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/
+git add src/app/Scenes/CityGuide/Screens/Itinerary/ src/__generated__/
+git commit -m "feat(city-guide): add ItineraryStopRow with real entity save"
 ```
 
 ---
 
-### Task 5: ItinerarySectionRow, collapsible
+### Task 6: ItinerarySectionRow
 
 **Files:**
 
@@ -779,124 +1005,93 @@ git commit -m "feat(city-guide): add ItineraryStopRow"
 
 **Interfaces:**
 
-- Consumes: `ItinerarySection` from Task 1; `ItineraryStopRow` from Task 4.
-- Produces: `ItinerarySectionRow: React.FC<{ section: ItinerarySection; savedStopIds: Set<string>; onSaveStop: (stop: ItineraryStop) => void }>`.
+- Produces: `ItinerarySectionRow: React.FC<{ section: ItinerarySection; startNumber: number }>`.
 
-Named `ItinerarySectionRow` rather than `ItinerarySection` so the component does not collide with the type of the same name from Task 1.
-
-Sections start expanded, matching the design where the first section's stops are visible on load.
+`startNumber` is the flattened index of this section's first stop, so numbering runs continuously across sections as the design shows. Named `...Row` to avoid colliding with the `ItinerarySection` type. Sections start expanded.
 
 - [ ] **Step 1: Write the failing test**
-
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItinerarySectionRow.tests.tsx`:
 
 ```tsx
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 const section: ItinerarySection = {
+  id: "day-1",
   title: "Day 1 — Easing in",
   stops: [
     {
       id: "stop-1",
       title: "Coffee at London Cafe",
-      timeLabel: "10am",
+      displayTime: "10am",
       imageUrl: "https://example.com/a.jpg",
       coordinates: { lat: 51.5136, lng: -0.1365 },
-      order: 1,
-      entity: { __typename: "Partner", id: "a", slug: "london-cafe", isFollowed: false },
+      saveTarget: null,
     },
     {
       id: "stop-2",
       title: "Museum",
-      timeLabel: "11am-4pm",
+      displayTime: "11am-4pm",
       imageUrl: "https://example.com/b.jpg",
       coordinates: { lat: 51.5194, lng: -0.127 },
-      order: 2,
-      entity: { __typename: "Show", id: "b", slug: "museum-show", isFollowed: false },
+      saveTarget: null,
     },
   ],
 }
 
 describe("ItinerarySectionRow", () => {
-  it("renders the section title and its stops expanded by default", () => {
-    renderWithWrappers(
-      <ItinerarySectionRow section={section} savedStopIds={new Set()} onSaveStop={jest.fn()} />
-    )
+  const { renderWithRelay } = setupTestWrapper({ Component: ItinerarySectionRow })
+
+  it("renders the title and its stops expanded by default", () => {
+    renderWithRelay({}, { section, startNumber: 1 })
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
     expect(screen.getByText("Museum")).toBeTruthy()
   })
 
+  it("numbers stops from startNumber", () => {
+    renderWithRelay({}, { section, startNumber: 4 })
+
+    expect(screen.getByText("4")).toBeTruthy()
+    expect(screen.getByText("5")).toBeTruthy()
+  })
+
   it("hides the stops when the header is tapped", () => {
-    renderWithWrappers(
-      <ItinerarySectionRow section={section} savedStopIds={new Set()} onSaveStop={jest.fn()} />
-    )
+    renderWithRelay({}, { section, startNumber: 1 })
 
     fireEvent.press(screen.getByTestId("itinerary-section-header"))
 
     expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
   })
-
-  it("marks a stop as saved when its id is in savedStopIds", () => {
-    renderWithWrappers(
-      <ItinerarySectionRow
-        section={section}
-        savedStopIds={new Set(["stop-1"])}
-        onSaveStop={jest.fn()}
-      />
-    )
-
-    expect(screen.getAllByTestId("save-button-check-icon")).toHaveLength(1)
-    expect(screen.getAllByTestId("save-button-add-icon")).toHaveLength(1)
-  })
-
-  it("passes the tapped stop to onSaveStop", () => {
-    const onSaveStop = jest.fn()
-    renderWithWrappers(
-      <ItinerarySectionRow section={section} savedStopIds={new Set()} onSaveStop={onSaveStop} />
-    )
-
-    fireEvent.press(screen.getAllByTestId("save-button")[0])
-
-    expect(onSaveStop).toHaveBeenCalledWith(section.stops[0])
-  })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItinerarySectionRow.tests.tsx`
-Expected: FAIL — cannot resolve `ItinerarySectionRow`.
+Expected: FAIL — module not found.
 
 - [ ] **Step 3: Write the implementation**
 
-`SectionTitle` is not used here: it title-cases its input, which would mangle "Day 1 — Easing in", and its right-hand chevron always points right rather than flipping with the collapsed state. The chevron icons come from the same `@artsy/icons/native` package `SectionTitle` itself uses.
-
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow.tsx`:
+`SectionTitle` is not reused: it title-cases its input, which would mangle "Day 1 — Easing in", and its chevron always points right rather than flipping with the collapsed state.
 
 ```tsx
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
-import {
-  ItinerarySection,
-  ItineraryStop,
-} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface Props {
   section: ItinerarySection
-  savedStopIds: Set<string>
-  onSaveStop: (stop: ItineraryStop) => void
+  /** Flattened index of this section's first stop, so numbering runs across sections. */
+  startNumber: number
 }
 
-export const ItinerarySectionRow: React.FC<Props> = ({ section, savedStopIds, onSaveStop }) => {
+export const ItinerarySectionRow: React.FC<Props> = ({ section, startNumber }) => {
   const [isExpanded, setIsExpanded] = useState(true)
 
   return (
@@ -915,13 +1110,8 @@ export const ItinerarySectionRow: React.FC<Props> = ({ section, savedStopIds, on
 
       {!!isExpanded && (
         <Join separator={<Spacer y={1} />}>
-          {section.stops.map((stop) => (
-            <ItineraryStopRow
-              key={stop.id}
-              stop={stop}
-              isSaved={savedStopIds.has(stop.id)}
-              onSave={() => onSaveStop(stop)}
-            />
+          {section.stops.map((stop, index) => (
+            <ItineraryStopRow key={stop.id} stop={stop} number={startNumber + index} />
           ))}
         </Join>
       )}
@@ -930,17 +1120,17 @@ export const ItinerarySectionRow: React.FC<Props> = ({ section, savedStopIds, on
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+If `ChevronDownIcon` / `ChevronUpIcon` are not exported, check available names with `grep -o "Chevron[A-Za-z]*Icon" node_modules/@artsy/icons/native.d.ts | sort -u` and rotate one rather than inventing an export.
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItinerarySectionRow.tests.tsx`
-Expected: PASS, 4 tests.
+- [ ] **Step 4: Run to verify it passes**
 
-If `ChevronDownIcon` / `ChevronUpIcon` are not exported from `@artsy/icons/native`, check the available names with `grep -o "Chevron[A-Za-z]*Icon" node_modules/@artsy/icons/native.d.ts | sort -u` and use the closest pair, rotating one icon rather than inventing an export.
+Expected: PASS, 3 tests.
 
-- [ ] **Step 5: Type-check, lint, commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow.tsx
 yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/Components/
 git add src/app/Scenes/CityGuide/Screens/Itinerary/Components/
 git commit -m "feat(city-guide): add collapsible ItinerarySectionRow"
@@ -948,7 +1138,7 @@ git commit -m "feat(city-guide): add collapsible ItinerarySectionRow"
 
 ---
 
-### Task 6: ItineraryHeader
+### Task 7: ItineraryHeader
 
 **Files:**
 
@@ -957,14 +1147,11 @@ git commit -m "feat(city-guide): add collapsible ItinerarySectionRow"
 
 **Interfaces:**
 
-- Consumes: `Itinerary` from Task 1.
 - Produces: `ItineraryHeader: React.FC<{ itinerary: Itinerary }>`.
 
-The "Add Full List" button in the design bulk-follows every stop. That belongs to the save sub-project, which owns bulk behaviour and its error states, so the header does not render it. Leaving it out is deliberate, not an oversight.
+The "Add Full List" button from the design is deliberately absent — bulk-follow belongs to the save sub-project. The scrim is not optional: `mono0` text over an arbitrary backend image is unreadable on a light photograph (MISS-07).
 
 - [ ] **Step 1: Write the failing test**
-
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryHeader.tests.tsx`:
 
 ```tsx
 import { screen } from "@testing-library/react-native"
@@ -979,27 +1166,32 @@ describe("ItineraryHeader", () => {
     expect(screen.getByText("Chill Vibes Only")).toBeTruthy()
     expect(screen.getByText("Top picks")).toBeTruthy()
     expect(screen.getByText("By Casey Lesser")).toBeTruthy()
-    expect(
-      screen.getByText(
-        "Our list of recommendations for the must sees to gallery and museum visits and the hidden gems in between."
-      )
-    ).toBeTruthy()
+    expect(screen.getByText(MOCK_ITINERARIES[0].description)).toBeTruthy()
+  })
+
+  it("renders a scrim behind the hero text", () => {
+    renderWithWrappers(<ItineraryHeader itinerary={MOCK_ITINERARIES[0]} />)
+
+    expect(screen.getByTestId("itinerary-hero-scrim")).toBeTruthy()
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryHeader.tests.tsx`
-Expected: FAIL — cannot resolve `ItineraryHeader`.
+Expected: FAIL — module not found.
 
-- [ ] **Step 3: Write the implementation**
+- [ ] **Step 3: Find the gradient component**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader.tsx`:
+Run: `grep -rn "LinearGradient" src/app --include='*.tsx' | head -5`
+Use whichever gradient component the repo already imports. Do not add a dependency. If nothing exists, use a semi-transparent `Flex` with `backgroundColor="rgba(0,0,0,0.4)"` instead and keep the same `testID`.
+
+- [ ] **Step 4: Write the implementation**
 
 ```tsx
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { LinearGradient } from "expo-linear-gradient"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
 
@@ -1015,6 +1207,13 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
           accessibilityIgnoresInvertColors
           style={{ position: "absolute", width: "100%", height: HERO_HEIGHT }}
         />
+
+        <LinearGradient
+          testID="itinerary-hero-scrim"
+          colors={["transparent", "rgba(0,0,0,0.7)"]}
+          style={{ position: "absolute", bottom: 0, width: "100%", height: HERO_HEIGHT / 2 }}
+        />
+
         <Flex p={2}>
           <Text variant="xl" color="mono0">
             {itinerary.title}
@@ -1038,15 +1237,15 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
 }
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [ ] **Step 5: Run to verify it passes**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/Components/__tests__/ItineraryHeader.tests.tsx`
-Expected: PASS, 1 test.
+Expected: PASS, 2 tests.
 
-- [ ] **Step 5: Type-check, lint, commit**
+- [ ] **Step 6: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader.tsx
 yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/Components/
 git add src/app/Scenes/CityGuide/Screens/Itinerary/Components/
 git commit -m "feat(city-guide): add ItineraryHeader"
@@ -1054,7 +1253,7 @@ git commit -m "feat(city-guide): add ItineraryHeader"
 
 ---
 
-### Task 7: ItineraryScreen, list view with saved state and toast
+### Task 8: ItineraryScreen list view
 
 **Files:**
 
@@ -1063,121 +1262,74 @@ git commit -m "feat(city-guide): add ItineraryHeader"
 
 **Interfaces:**
 
-- Consumes: `getMockItinerary` from Task 1; `ItineraryHeader` from Task 6; `ItinerarySectionRow` from Task 5.
-- Produces: `ItineraryScreen: React.FC<{ citySlug: string; itineraryId: string }>`. Task 9 adds the map toggle to this same component.
+- Produces: `ItineraryScreen: React.FC<{ citySlug: string; itineraryId: string }>`. Task 11 adds the map toggle to this component.
 
-Saved state lives in a local `Set<string>` of stop ids, per the spec: mock stops are not Relay records, so there is nothing for a mutation to write to. `useFollowShow` from Task 3 is deliberately not called here.
+The screen computes each section's `startNumber` from running stop counts — the single source of truth for numbering.
 
 - [ ] **Step 1: Write the failing test**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`:
-
 ```tsx
-import { fireEvent, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-
-const mockShowToast = jest.fn()
-jest.mock("app/Components/Toast/toastHook", () => ({
-  useToast: () => ({ show: mockShowToast, hide: jest.fn(), hideOldest: jest.fn() }),
-}))
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("ItineraryScreen", () => {
-  beforeEach(() => {
-    mockShowToast.mockClear()
-  })
+  const { renderWithRelay } = setupTestWrapper({ Component: ItineraryScreen })
 
-  it("renders the itinerary header and every section", () => {
-    renderWithWrappers(
-      <ItineraryScreen citySlug="london-united-kingdom" itineraryId="chill-vibes-only" />
-    )
+  it("renders the header and every section", () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
 
     expect(screen.getByText("Chill Vibes Only")).toBeTruthy()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Day 2 — London Frieze")).toBeTruthy()
   })
 
-  it("saves a stop and shows a confirmation toast", () => {
-    renderWithWrappers(
-      <ItineraryScreen citySlug="london-united-kingdom" itineraryId="chill-vibes-only" />
-    )
+  it("numbers stops continuously across sections", () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
 
-    expect(screen.queryByTestId("save-button-check-icon")).toBeNull()
-
-    fireEvent.press(screen.getAllByTestId("save-button")[0])
-
-    expect(screen.getAllByTestId("save-button-check-icon")).toHaveLength(1)
-    expect(mockShowToast).toHaveBeenCalledWith("Saved to your saves", "bottom")
+    // Day 1 holds three stops, so Day 2 starts at 4.
+    expect(screen.getByText("4")).toBeTruthy()
+    expect(screen.getByText("5")).toBeTruthy()
   })
 
-  it("unsaves a stop on a second press and toasts the removal", () => {
-    renderWithWrappers(
-      <ItineraryScreen citySlug="london-united-kingdom" itineraryId="chill-vibes-only" />
-    )
+  it("renders the unavailable state for an unknown itinerary", () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "nope" })
 
-    fireEvent.press(screen.getAllByTestId("save-button")[0])
-    fireEvent.press(screen.getAllByTestId("save-button")[0])
-
-    expect(screen.queryByTestId("save-button-check-icon")).toBeNull()
-    expect(mockShowToast).toHaveBeenLastCalledWith("Removed from your saves", "bottom")
-  })
-
-  it("renders nothing recognisable for an unknown itinerary", () => {
-    renderWithWrappers(<ItineraryScreen citySlug="london-united-kingdom" itineraryId="nope" />)
-
+    expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
+  })
+
+  it("does not render another city's itinerary", () => {
+    renderWithRelay({}, { citySlug: "paris-france", itineraryId: "chill-vibes-only" })
+
+    expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+The last test covers what v1 got wrong entirely (FIX-04).
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`
-Expected: FAIL — cannot resolve `ItineraryScreen`.
+- [ ] **Step 2: Run to verify it fails**
+
+Expected: FAIL — module not found.
 
 - [ ] **Step 3: Write the implementation**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen.tsx`:
-
 ```tsx
 import { Flex, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
-import { useToast } from "app/Components/Toast/toastHook"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
-import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { goBack } from "app/system/navigation/navigate"
-import { useState } from "react"
 
 interface Props {
   citySlug: string
   itineraryId: string
 }
 
-export const ItineraryScreen: React.FC<Props> = ({ itineraryId }) => {
+export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // TODO: Replace with a Relay query once the itinerary schema lands.
-  const itinerary = getMockItinerary(itineraryId)
-  const toast = useToast()
-
-  // Mock stops are not Relay records, so saved state is local for now. When the
-  // backend lands this is replaced by entity.isFollowed plus useFollowShow.
-  const [savedStopIds, setSavedStopIds] = useState<Set<string>>(new Set())
-
-  const handleSaveStop = (stop: ItineraryStop) => {
-    setSavedStopIds((current) => {
-      const next = new Set(current)
-
-      if (next.has(stop.id)) {
-        next.delete(stop.id)
-        toast.show("Removed from your saves", "bottom")
-      } else {
-        next.add(stop.id)
-        toast.show("Saved to your saves", "bottom")
-      }
-
-      return next
-    })
-  }
+  const itinerary = getMockItinerary(citySlug, itineraryId)
 
   if (!itinerary) {
     return (
@@ -1192,6 +1344,14 @@ export const ItineraryScreen: React.FC<Props> = ({ itineraryId }) => {
     )
   }
 
+  // Numbering runs continuously across sections, so each needs its running start.
+  let runningTotal = 0
+  const sectionStartNumbers = itinerary.sections.map((section) => {
+    const start = runningTotal + 1
+    runningTotal += section.stops.length
+    return start
+  })
+
   return (
     <Screen>
       <Screen.AnimatedHeader title={itinerary.title} onBack={goBack} hideTitle />
@@ -1202,12 +1362,11 @@ export const ItineraryScreen: React.FC<Props> = ({ itineraryId }) => {
 
           <Flex px={2} pt={2}>
             <Join separator={<Spacer y={2} />}>
-              {itinerary.sections.map((section) => (
+              {itinerary.sections.map((section, index) => (
                 <ItinerarySectionRow
-                  key={section.title}
+                  key={section.id}
                   section={section}
-                  savedStopIds={savedStopIds}
-                  onSaveStop={handleSaveStop}
+                  startNumber={sectionStartNumbers[index]}
                 />
               ))}
             </Join>
@@ -1219,19 +1378,15 @@ export const ItineraryScreen: React.FC<Props> = ({ itineraryId }) => {
 }
 ```
 
-The toast copy is deliberately the same in both directions of the toggle so the strings are easy to find and change once product confirms them.
+- [ ] **Step 4: Run to verify it passes**
 
-- [ ] **Step 4: Run the test to verify it passes**
-
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`
 Expected: PASS, 4 tests.
 
-If `Screen.AnimatedHeader` requires props beyond those used in `CityGuideNew.tsx:25-37`, copy that call site's props exactly.
-
-- [ ] **Step 5: Type-check, lint, commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen.tsx
 yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/
 git add src/app/Scenes/CityGuide/Screens/Itinerary/
 git commit -m "feat(city-guide): add ItineraryScreen list view"
@@ -1239,85 +1394,88 @@ git commit -m "feat(city-guide): add ItineraryScreen list view"
 
 ---
 
-### Task 8: Route registration and entry point
+### Task 9: Route registration and entry point
 
 **Files:**
 
-- Modify: `src/app/Navigation/routes.tsx` (import near line 85-98, route entry after the `/city-guide` block at lines 1128-1141)
+- Modify: `src/app/Navigation/routes.tsx`
 - Modify: `src/app/Scenes/CityGuide/Components/CityGuideCuratedLists.tsx`
+- Modify: `src/app/Scenes/CityGuide/CityGuideNew.tsx:51`
 - Modify: `android/app/src/main/AndroidManifest.xml`
 - Test: `src/app/Scenes/CityGuide/Components/__tests__/CityGuideCuratedLists.tests.tsx`
+- Test: `src/app/Navigation/__tests__/routes.tests.ts`
 
-**Interfaces:**
+- [ ] **Step 1: Write the failing tests**
 
-- Consumes: `ItineraryScreen` from Task 7.
-- Produces: route `/city-guide/:citySlug/itinerary/:itineraryId`, name `CityGuideItinerary`.
-
-`CityGuideCuratedLists.tsx` currently renders three hardcoded rows that navigate nowhere. This task gives them a destination and gives the file its first test.
-
-- [ ] **Step 1: Write the failing test**
-
-Create `src/app/Scenes/CityGuide/Components/__tests__/CityGuideCuratedLists.tests.tsx`:
+The row-count assertion is what makes this genuinely red — v1's text-only assertion already passed against the unmodified component (FIX-10).
 
 ```tsx
-import { fireEvent, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
-import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("app/system/navigation/navigate", () => ({ navigate: jest.fn() }))
-
 describe("CityGuideCuratedLists", () => {
-  beforeEach(() => {
-    ;(navigate as jest.Mock).mockClear()
-  })
-
-  it("renders a row per curated list", () => {
+  it("renders one pressable row per curated list", () => {
     renderWithWrappers(<CityGuideCuratedLists citySlug="london-united-kingdom" />)
 
-    expect(screen.getByText("Chill Vibes Only")).toBeTruthy()
-    expect(screen.getByText("By Casey Lesser")).toBeTruthy()
+    expect(screen.getAllByTestId("curated-list-row")).toHaveLength(3)
   })
 
-  it("navigates to the itinerary when a row is tapped", () => {
+  it("links each row to its itinerary", () => {
     renderWithWrappers(<CityGuideCuratedLists citySlug="london-united-kingdom" />)
 
-    fireEvent.press(screen.getByText("Chill Vibes Only"))
+    const rows = screen.getAllByTestId("curated-list-row")
 
-    expect(navigate).toHaveBeenCalledWith(
-      "/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
-    )
+    expect(rows[0].props.to).toEqual("/city-guide/london-united-kingdom/itinerary/chill-vibes-only")
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+Add to `src/app/Navigation/__tests__/routes.tests.ts` (FIX-09) — no snapshot iterates the route table, so without this, adding a route proves nothing:
 
-Run: `yarn test src/app/Scenes/CityGuide/Components/__tests__/CityGuideCuratedLists.tests.tsx`
-Expected: FAIL — `CityGuideCuratedLists` takes no props and the rows are not pressable.
+```ts
+it("routes to CityGuideItinerary", () => {
+  expect(matchRoute("/city-guide/london-united-kingdom/itinerary/chill-vibes-only"))
+    .toMatchInlineSnapshot(`
+    {
+      "module": "CityGuideItinerary",
+      "params": {
+        "citySlug": "london-united-kingdom",
+        "itineraryId": "chill-vibes-only",
+      },
+      "type": "match",
+    }
+  `)
+})
+```
+
+- [ ] **Step 2: Run to verify they fail**
+
+```bash
+yarn test src/app/Scenes/CityGuide/Components/__tests__/CityGuideCuratedLists.tests.tsx
+yarn test src/app/Navigation/__tests__/routes.tests.ts -t CityGuideItinerary
+```
+
+Expected: FAIL — `CityGuideCuratedLists` takes no props and has no `curated-list-row` testID; the route does not match.
 
 - [ ] **Step 3: Rewrite CityGuideCuratedLists**
 
-The mock rows gain an `itineraryId` matching `MOCK_ITINERARIES`, so the first row leads to a real itinerary. The other two point at ids with no mock data, which is exactly what the "no longer available" branch in Task 7 handles.
-
-Replace `src/app/Scenes/CityGuide/Components/CityGuideCuratedLists.tsx`:
+Uses `RouterLink`, not `navigate` (FIX-11). Each `itineraryId` matches a real `MOCK_ITINERARIES` entry (BLOCK-06).
 
 ```tsx
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
-// eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { Image as RNImage, TouchableOpacity } from "react-native"
+import { Image as RNImage } from "react-native"
 
 const IMAGE_SIZE = 80
 
 const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string }) => {
   return (
-    <TouchableOpacity
-      accessibilityRole="button"
-      onPress={() => {
-        navigate(`/city-guide/${citySlug}/itinerary/${item.itineraryId}`)
-      }}
+    <RouterLink
+      testID="curated-list-row"
+      to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
+      hasChildTouchable
     >
       <Flex flexDirection="row" gap={1}>
         <RNImage
@@ -1335,7 +1493,7 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
           </Text>
         </Flex>
       </Flex>
-    </TouchableOpacity>
+    </RouterLink>
   )
 }
 
@@ -1351,6 +1509,7 @@ export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
   )
 }
 
+// itineraryId values must match MOCK_ITINERARIES entries; every row has to resolve.
 const data = [
   {
     id: 1,
@@ -1376,28 +1535,17 @@ const data = [
 ]
 ```
 
-- [ ] **Step 4: Pass citySlug from CityGuideNew**
+In `src/app/Scenes/CityGuide/CityGuideNew.tsx:51`, change `<CityGuideCuratedLists />` to `<CityGuideCuratedLists citySlug={city?.slug ?? ""} />`.
 
-In `src/app/Scenes/CityGuide/CityGuideNew.tsx:51`, change `<CityGuideCuratedLists />` to:
+- [ ] **Step 4: Register the route**
 
-```tsx
-<CityGuideCuratedLists citySlug={city?.slug ?? ""} />
-```
-
-- [ ] **Step 5: Run the test to verify it passes**
-
-Run: `yarn test src/app/Scenes/CityGuide/Components/__tests__/CityGuideCuratedLists.tests.tsx`
-Expected: PASS, 2 tests.
-
-- [ ] **Step 6: Register the route**
-
-In `src/app/Navigation/routes.tsx`, add the import beside the existing City Guide imports around line 85-98:
+Add the import beside the other City Guide imports (`routes.tsx:85-98`):
 
 ```tsx
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 ```
 
-Then add this entry directly after the `/city-guide` block that ends at line 1141:
+Add after the `/city-guide` block ending at line 1141:
 
 ```tsx
   {
@@ -1416,33 +1564,31 @@ Then add this entry directly after the `/city-guide` block that ends at line 114
   },
 ```
 
-The `options` block matches the neighbouring `/city-guide` route so the screen owns its own header, as `ItineraryScreen` renders `Screen.AnimatedHeader` itself.
+- [ ] **Step 5: Add the Android deep link**
 
-- [ ] **Step 7: Add the Android deep link entry**
-
-`/city-guide` has no entry in `android/app/src/main/AndroidManifest.xml` today. Add one; `pathPrefix` covers the itinerary sub-route too. Insert in the alphabetically sorted `<data android:pathPrefix=.../>` list, between `/artwork` and `/collect` style neighbours — find the correct alphabetical position with `grep -n "pathPrefix" android/app/src/main/AndroidManifest.xml`:
+`/city-guide` has no manifest entry today; `pathPrefix` covers the sub-route. The list is **not** alphabetically sorted — breaks at `:92-93`, `:109-110`, `:142-144` (CLAIM-06) — but the logical position is between `:103 /categories` and `:104 /collect`:
 
 ```xml
         <data android:pathPrefix="/city-guide"/>
 ```
 
-- [ ] **Step 8: Verify the route resolves**
+- [ ] **Step 6: Run to verify the tests pass**
 
-Run: `yarn test src/app/Navigation`
-Expected: PASS. If a routes snapshot test exists and fails purely because a route was added, update the snapshot and inspect the diff to confirm only the new entry appears.
+Expected: both PASS. If the inline snapshot differs, inspect the diff before accepting — `module` and both params must match exactly.
 
-- [ ] **Step 9: Type-check, lint, commit**
+- [ ] **Step 7: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Navigation/routes.tsx src/app/Scenes/CityGuide/Components/CityGuideCuratedLists.tsx src/app/Scenes/CityGuide/CityGuideNew.tsx
 yarn lint --fix src/app/Navigation/routes.tsx src/app/Scenes/CityGuide/
-git add src/app/Navigation/routes.tsx src/app/Scenes/CityGuide/ android/app/src/main/AndroidManifest.xml
+git add src/app/Navigation/ src/app/Scenes/CityGuide/ android/app/src/main/AndroidManifest.xml
 git commit -m "feat(city-guide): route curated list rows to itinerary screen"
 ```
 
 ---
 
-### Task 9: Stops-to-GeoJSON converter
+### Task 10: Stops-to-GeoJSON converter
 
 **Files:**
 
@@ -1451,21 +1597,13 @@ git commit -m "feat(city-guide): route curated list rows to itinerary screen"
 
 **Interfaces:**
 
-- Consumes: `Itinerary`, `ItineraryStop` from Task 1.
-- Produces:
-  - `itineraryStopsToGeoJSON(stops: ItineraryStop[], sectionTitleByStopId: Record<string, string>): ItineraryFeatureCollection`
-  - `flattenItineraryStops(itinerary: Itinerary): { stops: ItineraryStop[]; sectionTitleByStopId: Record<string, string> }`
-  - type `ItineraryFeatureCollection = { type: "FeatureCollection"; features: ItineraryFeature[] }`
+- Produces: `flattenItineraryStops(itinerary): FlattenedStop[]` where `FlattenedStop = { stop: ItineraryStop; sectionId: string; number: number }`; `itineraryStopsToGeoJSON(flattened): ItineraryFeatureCollection`.
 
-The existing `convertCityToGeoJSON` is not reusable: it requires `feature.location.coordinates` (`src/app/Scenes/CityGuide/utils/convertCityToGeoJSON.ts:43`), while itinerary stops carry `coordinates: { lat, lng }` at the top level.
+`convertCityToGeoJSON` is not reusable: it requires `feature.location.coordinates` (`convertCityToGeoJSON.ts:43`), while stops carry `coordinates: { lat, lng }` at the top level.
 
-`order` is stamped into properties as a string. Mapbox's `textField` expects a `FormattedString`, and stamping avoids an `["to-string", ...]` wrapper in the layer style.
-
-This is the map work's only pure logic, so it carries the map tests. Under the jest mock at `src/setupJest.tsx:295-304`, `MapView` renders as `() => null` and never renders its children, so layers cannot be asserted on.
+This is the map work's only pure logic, so it carries the map's real coverage — `MapView` mocks to `() => null`, so pins never mount.
 
 - [ ] **Step 1: Write the failing test**
-
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryStopsToGeoJSON.tests.ts`:
 
 ```ts
 import {
@@ -1475,24 +1613,18 @@ import {
 import { MOCK_ITINERARIES } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 
 describe("flattenItineraryStops", () => {
-  it("returns every stop across all sections", () => {
-    const { stops } = flattenItineraryStops(MOCK_ITINERARIES[0])
+  it("returns every stop with a continuous number and its section id", () => {
+    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
 
-    expect(stops.map((stop) => stop.id)).toEqual(["stop-1", "stop-2", "stop-3", "stop-4", "stop-5"])
-  })
-
-  it("maps each stop id to its section title", () => {
-    const { sectionTitleByStopId } = flattenItineraryStops(MOCK_ITINERARIES[0])
-
-    expect(sectionTitleByStopId["stop-1"]).toEqual("Day 1 — Easing in")
-    expect(sectionTitleByStopId["stop-4"]).toEqual("Day 2 — London Frieze")
+    expect(flattened.map((f) => f.number)).toEqual([1, 2, 3, 4, 5])
+    expect(flattened[0].sectionId).toEqual("day-1")
+    expect(flattened[3].sectionId).toEqual("day-2")
   })
 })
 
 describe("itineraryStopsToGeoJSON", () => {
   it("converts stops into a feature collection with lng,lat coordinates", () => {
-    const { stops, sectionTitleByStopId } = flattenItineraryStops(MOCK_ITINERARIES[0])
-    const collection = itineraryStopsToGeoJSON(stops, sectionTitleByStopId)
+    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(MOCK_ITINERARIES[0]))
 
     expect(collection.type).toEqual("FeatureCollection")
     expect(collection.features).toHaveLength(5)
@@ -1500,32 +1632,30 @@ describe("itineraryStopsToGeoJSON", () => {
     expect(collection.features[0].geometry.coordinates).toEqual([-0.1365, 51.5136])
   })
 
-  it("stamps id, title, section and a string order into properties", () => {
-    const { stops, sectionTitleByStopId } = flattenItineraryStops(MOCK_ITINERARIES[0])
-    const collection = itineraryStopsToGeoJSON(stops, sectionTitleByStopId)
+  it("stamps id, title, sectionId and a string number into properties", () => {
+    const collection = itineraryStopsToGeoJSON(flattenItineraryStops(MOCK_ITINERARIES[0]))
 
     expect(collection.features[1].properties).toEqual({
       id: "stop-2",
       title: "Museum",
-      section: "Day 1 — Easing in",
-      order: "2",
+      sectionId: "day-1",
+      number: "2",
     })
   })
 
   it("returns an empty collection for no stops", () => {
-    expect(itineraryStopsToGeoJSON([], {})).toEqual({ type: "FeatureCollection", features: [] })
+    expect(itineraryStopsToGeoJSON([])).toEqual({ type: "FeatureCollection", features: [] })
   })
 })
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [ ] **Step 2: Run to verify it fails**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryStopsToGeoJSON.tests.ts`
-Expected: FAIL — cannot resolve `itineraryStopsToGeoJSON`.
+Expected: FAIL — module not found.
 
 - [ ] **Step 3: Write the implementation**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON.ts`:
+`number` is stringified because Mapbox's `textField` expects a `FormattedString`; stamping it avoids a `["to-string", ...]` wrapper in the layer style.
 
 ```ts
 import {
@@ -1533,16 +1663,16 @@ import {
   ItineraryStop,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
+export interface FlattenedStop {
+  stop: ItineraryStop
+  sectionId: string
+  number: number
+}
+
 export interface ItineraryFeature {
   type: "Feature"
   geometry: { type: "Point"; coordinates: [number, number] }
-  properties: {
-    id: string
-    title: string
-    section: string
-    /** Stringified because Mapbox textField expects a FormattedString. */
-    order: string
-  }
+  properties: { id: string; title: string; sectionId: string; number: string }
 }
 
 export interface ItineraryFeatureCollection {
@@ -1550,28 +1680,24 @@ export interface ItineraryFeatureCollection {
   features: ItineraryFeature[]
 }
 
-export const flattenItineraryStops = (
-  itinerary: Itinerary
-): { stops: ItineraryStop[]; sectionTitleByStopId: Record<string, string> } => {
-  const stops: ItineraryStop[] = []
-  const sectionTitleByStopId: Record<string, string> = {}
+/** Single source of truth for stop numbering: position in the flattened list. */
+export const flattenItineraryStops = (itinerary: Itinerary): FlattenedStop[] => {
+  const flattened: FlattenedStop[] = []
 
   itinerary.sections.forEach((section) => {
     section.stops.forEach((stop) => {
-      stops.push(stop)
-      sectionTitleByStopId[stop.id] = section.title
+      flattened.push({ stop, sectionId: section.id, number: flattened.length + 1 })
     })
   })
 
-  return { stops, sectionTitleByStopId }
+  return flattened
 }
 
 export const itineraryStopsToGeoJSON = (
-  stops: ItineraryStop[],
-  sectionTitleByStopId: Record<string, string>
+  flattened: FlattenedStop[]
 ): ItineraryFeatureCollection => ({
   type: "FeatureCollection",
-  features: stops.map((stop) => ({
+  features: flattened.map(({ stop, sectionId, number }) => ({
     type: "Feature",
     geometry: {
       type: "Point",
@@ -1580,22 +1706,22 @@ export const itineraryStopsToGeoJSON = (
     properties: {
       id: stop.id,
       title: stop.title,
-      section: sectionTitleByStopId[stop.id] ?? "",
-      order: String(stop.order),
+      sectionId,
+      number: String(number),
     },
   })),
 })
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [ ] **Step 4: Run to verify it passes**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryStopsToGeoJSON.tests.ts`
-Expected: PASS, 5 tests.
+Expected: PASS, 4 tests.
 
-- [ ] **Step 5: Type-check, lint, commit**
+- [ ] **Step 5: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON.ts
 yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/utils/
 git add src/app/Scenes/CityGuide/Screens/Itinerary/utils/
 git commit -m "feat(city-guide): add itinerary stops to GeoJSON converter"
@@ -1603,66 +1729,21 @@ git commit -m "feat(city-guide): add itinerary stops to GeoJSON converter"
 
 ---
 
-### Task 10: ItineraryMapView and the list/map toggle
+### Task 11: Map view and the list/map toggle
 
 **Files:**
 
+- Create: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPins.tsx`
 - Create: `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView.tsx`
 - Modify: `src/app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen.tsx`
+- Modify: `src/setupJest.tsx:295-304`
 - Modify: `src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`
 
-**Interfaces:**
+Two components, not one — v1 promised a separate pins component and then inlined everything (CLAIM-08). `ItineraryMapPins` is pure rendering: no state, no camera. `ItineraryMapView` owns layout, camera, filters, and insets.
 
-- Consumes: `Itinerary` from Task 1; `flattenItineraryStops`, `itineraryStopsToGeoJSON` from Task 9; `ArtsyMapStyleURL` from `app/Scenes/CityGuide/Components/CityGuideMap`.
-- Produces: `ItineraryMapView: React.FC<{ itinerary: Itinerary }>`.
+- [ ] **Step 1: Extend the Jest Mapbox mock**
 
-**Deviation from the approved spec, needs sign-off.** The spec says to extend `CityGuideMapPins.tsx` rather than write a second map implementation. On inspection that component is built around clustering (`cluster`, `clusterRadius`, `point_count` filters, `getClusterLeaves` via `shapeSourceRef`), is keyed by `BucketKey`/`FilterData` from `cityTabs`, and draws sprite icons via `iconImage: ["get", "icon"]`. Numbered pins need none of that: no clustering for 5-15 stops, a circle layer plus a text layer instead of sprites, and a different feature-collection key. Reusing it would mean adding flags for cluster on/off and icon-versus-label. The honest answer is a separate ~40-line pins component that follows the same `ShapeSource` + layer pattern. Flag this to the reviewer before starting.
-
-- [ ] **Step 1: Write the failing test**
-
-Add to `src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`:
-
-```tsx
-it("switches to the map view and back", () => {
-  renderWithWrappers(
-    <ItineraryScreen citySlug="london-united-kingdom" itineraryId="chill-vibes-only" />
-  )
-
-  expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
-
-  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-
-  // The Mapbox MapView is mocked to render null, so its children never mount.
-  // Assert on what leaves the map: the list is gone and the filter pills are up.
-  expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
-  expect(screen.getByText("All")).toBeTruthy()
-  expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
-
-  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-
-  expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
-})
-
-it("filters the map to one section when its pill is tapped", () => {
-  renderWithWrappers(
-    <ItineraryScreen citySlug="london-united-kingdom" itineraryId="chill-vibes-only" />
-  )
-
-  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-  fireEvent.press(screen.getByText("Day 2 — London Frieze"))
-
-  expect(screen.getByTestId("itinerary-map-stop-count")).toHaveTextContent("2 stops")
-})
-```
-
-- [ ] **Step 2: Run the test to verify it fails**
-
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`
-Expected: FAIL — no `itinerary-view-toggle` testID.
-
-- [ ] **Step 3: Extend the jest Mapbox mock**
-
-`src/setupJest.tsx:295-304` mocks only `MapView`, `StyleURL`, `setAccessToken`, `StyleSheet`, `ShapeSource`, and `SymbolLayer`. `Camera` and `CircleLayer` are missing. They go unnoticed today only because `MapView: () => null` never renders children. Add both so the component is safe to render directly later:
+`Camera` and `CircleLayer` are absent today and go unnoticed only because `MapView: () => null` never renders children.
 
 ```ts
 jest.mock("@rnmapbox/maps", () => ({
@@ -1677,26 +1758,53 @@ jest.mock("@rnmapbox/maps", () => ({
 }))
 ```
 
-Do not read Mapbox constants during render — `MapboxGL.UserTrackingModes.Follow`, used at `CityGuideMap.tsx:221`, would throw under this mock.
+Never read a Mapbox constant during render — `MapboxGL.UserTrackingModes.Follow` (`CityGuideMap.tsx:221`) would throw under this mock.
 
-- [ ] **Step 4: Write ItineraryMapView**
+- [ ] **Step 2: Write the failing test**
 
-Create `src/app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView.tsx`. Both layers carry a Mapbox `filter` so switching pills does not rebuild the shape source. `textFont` uses "Unica77 LL Medium", already proven in the Artsy map style at `CityGuideMapPins.tsx:59-65`.
+Add to `src/app/Scenes/CityGuide/Screens/Itinerary/__tests__/ItineraryScreen.tests.tsx`, adding `fireEvent` to the existing import:
+
+```tsx
+it("switches to the map view and back", () => {
+  renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+
+  expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
+
+  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+
+  // MapView mocks to null, so its children never mount. Assert on the chrome
+  // outside the map: the list is gone and the filter pills are up.
+  expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
+  expect(screen.getByText("All")).toBeTruthy()
+  expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
+
+  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+
+  expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
+})
+
+it("filters the map to one section when its pill is tapped", () => {
+  renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+
+  fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
+  fireEvent.press(screen.getByText("Day 2 — London Frieze"))
+
+  expect(screen.getByTestId("itinerary-map-stop-count")).toHaveTextContent("2 stops")
+})
+```
+
+- [ ] **Step 3: Run to verify it fails**
+
+Expected: FAIL — no `itinerary-view-toggle` testID.
+
+- [ ] **Step 4: Write ItineraryMapPins**
+
+Pure rendering. `textFont` uses "Unica77 LL Medium", already proven in the Artsy style (`CityGuideMapPins.tsx:59-65`). No `cluster` prop — itineraries hold 5-15 stops.
 
 ```tsx
 import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
-import { Flex, Pill, Spacer, Text } from "@artsy/palette-mobile"
-import { ArtsyMapStyleURL } from "app/Scenes/CityGuide/Components/CityGuideMap"
-import {
-  flattenItineraryStops,
-  itineraryStopsToGeoJSON,
-} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
-import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { useMemo, useState } from "react"
-import { ScrollView, StyleProp } from "react-native"
-
-const ALL_PILL = "All"
-const DEFAULT_ZOOM_LEVEL = 12
+import { ItineraryFeatureCollection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
+import { StyleProp } from "react-native"
 
 const circleStyle: StyleProp<CircleLayerStyle> = {
   circleRadius: 14,
@@ -1707,7 +1815,7 @@ const circleStyle: StyleProp<CircleLayerStyle> = {
 }
 
 const numberStyle: StyleProp<SymbolLayerStyle> = {
-  textField: ["get", "order"],
+  textField: ["get", "number"],
   textSize: 14,
   textColor: "white",
   textFont: ["Unica77 LL Medium"],
@@ -1716,30 +1824,95 @@ const numberStyle: StyleProp<SymbolLayerStyle> = {
   textIgnorePlacement: true,
 }
 
+interface Props {
+  collection: ItineraryFeatureCollection
+  /** null shows every stop. */
+  selectedSectionId: string | null
+}
+
+export const ItineraryMapPins: React.FC<Props> = ({ collection, selectedSectionId }) => {
+  // Filter in the layer so switching pills does not rebuild the shape source.
+  const filter = selectedSectionId
+    ? (["==", ["get", "sectionId"], selectedSectionId] as any)
+    : undefined
+
+  return (
+    <MapboxGL.ShapeSource id="itineraryStops" shape={collection as any}>
+      <MapboxGL.CircleLayer id="stopCircles" style={circleStyle} filter={filter} />
+      <MapboxGL.SymbolLayer
+        id="stopNumbers"
+        aboveLayerID="stopCircles"
+        style={numberStyle}
+        filter={filter}
+      />
+    </MapboxGL.ShapeSource>
+  )
+}
+```
+
+- [ ] **Step 5: Write ItineraryMapView**
+
+Fits bounds to the visible stops rather than centring on the first at a fixed zoom (FIX-07).
+
+```tsx
+import { Flex, Pill, Spacer, Text } from "@artsy/palette-mobile"
+import MapboxGL from "@rnmapbox/maps"
+import { ItineraryMapPins } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPins"
+import {
+  flattenItineraryStops,
+  itineraryStopsToGeoJSON,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
+import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+configureMapbox()
+
+const ALL_PILL_ID = "__all__"
+const BOUNDS_PADDING = 60
+
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
-  const [selectedSection, setSelectedSection] = useState(ALL_PILL)
+  const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
+  const cameraRef = useRef<MapboxGL.Camera>(null)
+  const { top } = useSafeAreaInsets()
 
-  const { stops, sectionTitleByStopId } = useMemo(
-    () => flattenItineraryStops(itinerary),
-    [itinerary]
+  const flattened = useMemo(() => flattenItineraryStops(itinerary), [itinerary])
+  const collection = useMemo(() => itineraryStopsToGeoJSON(flattened), [flattened])
+
+  const visible = useMemo(
+    () =>
+      selectedSectionId === ALL_PILL_ID
+        ? flattened
+        : flattened.filter((f) => f.sectionId === selectedSectionId),
+    [flattened, selectedSectionId]
   )
 
-  const collection = useMemo(
-    () => itineraryStopsToGeoJSON(stops, sectionTitleByStopId),
-    [stops, sectionTitleByStopId]
-  )
+  // Refit whenever the visible set changes, so pins are never off-screen.
+  useEffect(() => {
+    if (!visible.length) return
 
-  const visibleStopCount =
-    selectedSection === ALL_PILL
-      ? stops.length
-      : stops.filter((stop) => sectionTitleByStopId[stop.id] === selectedSection).length
+    const lngs = visible.map((f) => f.stop.coordinates.lng)
+    const lats = visible.map((f) => f.stop.coordinates.lat)
 
-  const layerFilter =
-    selectedSection === ALL_PILL ? undefined : (["==", ["get", "section"], selectedSection] as any)
+    cameraRef.current?.setCamera({
+      bounds: {
+        ne: [Math.max(...lngs), Math.max(...lats)],
+        sw: [Math.min(...lngs), Math.min(...lats)],
+        paddingTop: BOUNDS_PADDING,
+        paddingBottom: BOUNDS_PADDING,
+        paddingLeft: BOUNDS_PADDING,
+        paddingRight: BOUNDS_PADDING,
+      },
+      animationDuration: 500,
+    })
+  }, [visible])
 
-  const center = stops[0]
-    ? ([stops[0].coordinates.lng, stops[0].coordinates.lat] as [number, number])
-    : ([0, 0] as [number, number])
+  const pills = [
+    { id: ALL_PILL_ID, title: "All" },
+    ...itinerary.sections.map((section) => ({ id: section.id, title: section.title })),
+  ]
 
   return (
     <Flex flex={1}>
@@ -1749,29 +1922,24 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         logoEnabled={false}
         attributionEnabled={false}
       >
-        <MapboxGL.Camera centerCoordinate={center} zoomLevel={DEFAULT_ZOOM_LEVEL} />
+        <MapboxGL.Camera ref={cameraRef} animationMode="moveTo" />
 
-        <MapboxGL.ShapeSource id="itineraryStops" shape={collection as any}>
-          <MapboxGL.CircleLayer id="stopCircles" style={circleStyle} filter={layerFilter} />
-          <MapboxGL.SymbolLayer
-            id="stopNumbers"
-            aboveLayerID="stopCircles"
-            style={numberStyle}
-            filter={layerFilter}
-          />
-        </MapboxGL.ShapeSource>
+        <ItineraryMapPins
+          collection={collection}
+          selectedSectionId={selectedSectionId === ALL_PILL_ID ? null : selectedSectionId}
+        />
       </MapboxGL.MapView>
 
-      <Flex position="absolute" top={0} left={0} right={0} pt={1}>
+      <Flex position="absolute" top={top} left={0} right={0} pt={1}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Flex flexDirection="row" px={2} gap={1}>
-            {[ALL_PILL, ...itinerary.sections.map((section) => section.title)].map((title) => (
+            {pills.map((pill) => (
               <Pill
-                key={title}
-                selected={selectedSection === title}
-                onPress={() => setSelectedSection(title)}
+                key={pill.id}
+                selected={selectedSectionId === pill.id}
+                onPress={() => setSelectedSectionId(pill.id)}
               >
-                {title}
+                {pill.title}
               </Pill>
             ))}
           </Flex>
@@ -1780,7 +1948,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         <Spacer y={1} />
 
         <Text testID="itinerary-map-stop-count" variant="xs" px={2}>
-          {visibleStopCount} stops
+          {visible.length} stops
         </Text>
       </Flex>
     </Flex>
@@ -1788,80 +1956,61 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
 }
 ```
 
-If `Pill` is not exported from `@artsy/palette-mobile` with a `selected` prop, check the real signature with `grep -rn "from \"@artsy/palette-mobile\"" src/app --include='*.tsx' -l | xargs grep -l "Pill"` and copy an existing call site rather than guessing.
+If `Pill` does not accept `selected`, copy a real call site found with `grep -rn "<Pill" src/app --include='*.tsx' | head`.
 
-- [ ] **Step 5: Add the toggle to ItineraryScreen**
+- [ ] **Step 6: Add the toggle to ItineraryScreen**
 
-In `src/app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen.tsx`, add the view mode state and render one view or the other. Add these imports:
+Add these imports and state:
 
 ```tsx
 import { Button } from "@artsy/palette-mobile"
 import { ItineraryMapView } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView"
-```
+import { useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-Add beside the existing `savedStopIds` state:
-
-```tsx
+// beside the itinerary lookup:
 const [isMapView, setIsMapView] = useState(false)
+const { bottom } = useSafeAreaInsets()
 ```
 
-Then wrap the body. The floating toggle mirrors `CityGuideFloatingMapButton.tsx`, which is a `Button` pinned bottom-centre; it is not reused directly because that component hardcodes a `navigate` to `/local-discovery`.
+Then render the map or the list inside `Screen.Body`, with the toggle above the safe-area inset. `CityGuideFloatingMapButton` is not reused because it hardcodes a `navigate` to `/local-discovery`.
 
 ```tsx
-return (
-  <Screen>
-    <Screen.AnimatedHeader title={itinerary.title} onBack={goBack} hideTitle />
+{
+  isMapView ? (
+    <ItineraryMapView itinerary={itinerary} />
+  ) : (
+    <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+      {/* header + sections, unchanged from Task 8 */}
+    </Screen.ScrollView>
+  )
+}
 
-    <Screen.Body fullwidth>
-      {isMapView ? (
-        <ItineraryMapView itinerary={itinerary} />
-      ) : (
-        <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-          <ItineraryHeader itinerary={itinerary} />
-
-          <Flex px={2} pt={2}>
-            <Join separator={<Spacer y={2} />}>
-              {itinerary.sections.map((section) => (
-                <ItinerarySectionRow
-                  key={section.title}
-                  section={section}
-                  savedStopIds={savedStopIds}
-                  onSaveStop={handleSaveStop}
-                />
-              ))}
-            </Join>
-          </Flex>
-        </Screen.ScrollView>
-      )}
-
-      <Flex position="absolute" bottom={20} width="100%" alignItems="center">
-        <Button
-          testID="itinerary-view-toggle"
-          size="small"
-          onPress={() => setIsMapView((current) => !current)}
-        >
-          {isMapView ? "List" : "Map"}
-        </Button>
-      </Flex>
-    </Screen.Body>
-  </Screen>
-)
+;<Flex position="absolute" bottom={bottom + 20} width="100%" alignItems="center">
+  <Button
+    testID="itinerary-view-toggle"
+    size="small"
+    onPress={() => setIsMapView((current) => !current)}
+  >
+    {isMapView ? "List" : "Map"}
+  </Button>
+</Flex>
 ```
 
-- [ ] **Step 6: Run the tests to verify they pass**
+- [ ] **Step 7: Run the tests**
 
-Run: `yarn test src/app/Scenes/CityGuide/Screens/Itinerary/`
-Expected: PASS — the four tests from Task 7 plus the two new ones.
+```bash
+yarn test src/app/Scenes/CityGuide/Screens/Itinerary/
+yarn test src/app/Components/LocationMap src/app/Scenes/Partner
+```
 
-- [ ] **Step 7: Confirm nothing else broke from the jest mock change**
+Expected: six `ItineraryScreen` tests pass, and the existing map tests still pass — the Jest mock gained exports and lost none.
 
-Run: `yarn test src/app/Components/LocationMap src/app/Scenes/Partner`
-Expected: PASS. The mock gained exports; it lost none, so existing map tests are unaffected.
-
-- [ ] **Step 8: Type-check, lint, commit**
+- [ ] **Step 8: Verify and commit**
 
 ```bash
 yarn tsc
+yarn test --findRelatedTests src/app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen.tsx src/setupJest.tsx
 yarn lint --fix src/app/Scenes/CityGuide/Screens/Itinerary/ src/setupJest.tsx
 git add src/app/Scenes/CityGuide/Screens/Itinerary/ src/setupJest.tsx
 git commit -m "feat(city-guide): add itinerary map view and list/map toggle"
@@ -1871,13 +2020,19 @@ git commit -m "feat(city-guide): add itinerary map view and list/map toggle"
 
 ## Verification
 
-After the final task, confirm the whole feature from a cold start:
+After the final task:
 
 - [ ] `yarn tsc` passes with no new errors.
-- [ ] `yarn test src/app/Scenes/CityGuide src/app/Components/SaveButton src/app/utils/mutations` passes.
-- [ ] `yarn lint src/app/Scenes/CityGuide src/app/Components/SaveButton src/app/utils/mutations` is clean.
-- [ ] In the simulator with `AREnableExpandedCityGuide` on: open `/city-guide`, tap "Chill Vibes Only", confirm the header, the two collapsible sections, and five numbered stops.
-- [ ] Tap a stop's `+`: the icon pops into a tick and a toast reads "Saved to your saves". Tap again: it reverts and toasts "Removed from your saves".
+- [ ] `yarn test src/app/Scenes/CityGuide src/app/utils/mutations src/app/Components/LocationMap src/app/Scenes/Partner src/app/Navigation` passes.
+- [ ] `yarn lint src/app/Scenes/CityGuide src/app/utils/mutations src/app/utils/mapbox.ts` is clean.
+- [ ] Open `/city-guide` and tap each of the three curated rows. **All three open an itinerary** — none shows the unavailable state.
+- [ ] On "Chill Vibes Only": the header renders with readable text over the hero, two sections, stops numbered 1-5 continuously across both.
+- [ ] The cafe stop (1) shows **no** save control. The others do.
+- [ ] Nothing animates on first render.
+- [ ] Tap a save control: the icon pops to a tick and a toast confirms. **Back out and re-enter the screen — the saved state survives.** This is the check that separates v2 from v1.
+- [ ] Confirm the save is genuinely real: the same show reads as saved elsewhere in the app.
+- [ ] Tap again: it reverts, toasts the removal, and that persists too.
 - [ ] Collapse and expand a section.
-- [ ] Tap "Map": numbered pins 1-5 appear over London. Tap "Day 2 — London Frieze": only pins 4 and 5 remain. Tap "List" to return.
-- [ ] Tap the second curated list row: the "This guide is no longer available." branch renders rather than crashing.
+- [ ] Tap "Map": pins 1-5 appear framed within the viewport. Tap "Day 2 — London Frieze": only pins 4 and 5 remain and the camera refits. Tap "List" to return.
+- [ ] Navigate to `/city-guide/paris-france/itinerary/chill-vibes-only`: the unavailable state renders, not the London itinerary.
+- [ ] The City Guide map, Partner map, and artwork location map all still render after the Mapbox extraction.
