@@ -8,9 +8,10 @@ describe("flattenItineraryStops", () => {
   it("returns every stop with a continuous number and its section id", () => {
     const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
 
-    expect(flattened.map((f) => f.number)).toEqual([1, 2, 3, 4, 5])
+    expect(flattened.map((f) => f.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
     expect(flattened[0].sectionId).toEqual("day-1")
     expect(flattened[3].sectionId).toEqual("day-2")
+    expect(flattened[7].sectionId).toEqual("day-3")
   })
 })
 
@@ -19,7 +20,7 @@ describe("itineraryStopsToGeoJSON", () => {
     const collection = itineraryStopsToGeoJSON(flattenItineraryStops(MOCK_ITINERARIES[0]))
 
     expect(collection.type).toEqual("FeatureCollection")
-    expect(collection.features).toHaveLength(5)
+    expect(collection.features).toHaveLength(8)
     // GeoJSON is lng first, lat second.
     expect(collection.features[0].geometry.coordinates).toEqual([-0.1365, 51.5136])
   })

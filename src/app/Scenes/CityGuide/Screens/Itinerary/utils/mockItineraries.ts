@@ -80,6 +80,43 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           },
         ],
       },
+      {
+        id: "day-3",
+        title: "Day 3 — Fair day",
+        stops: [
+          {
+            id: "stop-6",
+            title: "Frieze London",
+            // Real runs are Oct 2025 / May 2026; these read as open so the guide has
+            // something live to show.
+            displayTime: "Aug 24 - Aug 30",
+            note: "🥂",
+            imageUrl: "https://picsum.photos/id/1043/200/200.jpg",
+            // The Regent's Park
+            coordinates: { lat: 51.5268, lng: -0.1533 },
+            saveTarget: { type: "FAIR", slug: "frieze-london-2025" },
+          },
+          {
+            id: "stop-7",
+            title: "Photo London",
+            displayTime: "Aug 20 - Sep 6",
+            imageUrl: "https://picsum.photos/id/1050/200/200.jpg",
+            // Somerset House
+            coordinates: { lat: 51.511, lng: -0.117 },
+            saveTarget: { type: "FAIR", slug: "photo-london-2026" },
+          },
+          {
+            id: "stop-8",
+            title: "London Original Print Fair",
+            displayTime: "Aug 25 - Aug 31",
+            note: "🖨️",
+            imageUrl: "https://picsum.photos/id/1062/200/200.jpg",
+            // Somerset House as well, a few metres along the courtyard
+            coordinates: { lat: 51.5114, lng: -0.1176 },
+            saveTarget: { type: "FAIR", slug: "london-original-print-fair-2026" },
+          },
+        ],
+      },
     ],
   },
   {
