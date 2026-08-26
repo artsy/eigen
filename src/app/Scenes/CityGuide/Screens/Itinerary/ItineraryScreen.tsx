@@ -4,8 +4,8 @@ import { ItineraryMapView } from "app/Scenes/CityGuide/Screens/Itinerary/Compone
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { goBack } from "app/system/navigation/navigate"
+import { MotiView } from "moti"
 import { useState } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface Props {
   citySlug: string
@@ -16,7 +16,6 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // TODO: Replace with a Relay query once the itinerary schema lands.
   const itinerary = getMockItinerary(citySlug, itineraryId)
   const [isMapView, setIsMapView] = useState(false)
-  const { bottom } = useSafeAreaInsets()
 
   if (!itinerary) {
     return (
@@ -64,15 +63,35 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
           </Screen.ScrollView>
         )}
 
-        <Flex position="absolute" bottom={bottom + 20} width="100%" alignItems="center">
-          <Button
-            testID="itinerary-view-toggle"
-            size="small"
-            onPress={() => setIsMapView((current) => !current)}
+        {/*
+          Positioning copied from CityGuideFloatingMapButton so this sits at the same
+          height as the City Guide's own floating button. Not reused directly because
+          that component hardcodes a navigate to /local-discovery.
+        */}
+        <MotiView
+          from={{ opacity: 0.5, translateY: 0 }}
+          animate={{ opacity: 1, translateY: -60 }}
+          transition={{ type: "timing", duration: 300, delay: 200 }}
+        >
+          <Flex
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              bottom: -50,
+              zIndex: 1000,
+            }}
           >
-            {isMapView ? "List" : "Map"}
-          </Button>
-        </Flex>
+            <Button
+              testID="itinerary-view-toggle"
+              size="small"
+              onPress={() => setIsMapView((current) => !current)}
+            >
+              {isMapView ? "Show in List" : "Show in Map"}
+            </Button>
+          </Flex>
+        </MotiView>
       </Screen.Body>
     </Screen>
   )
