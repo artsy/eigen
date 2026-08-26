@@ -18,30 +18,32 @@ a `useFollowProfile` type widening, the wrong gradient package, and per-city row
 
 ## Progress
 
-Updated as each task lands. 7 of 11 done.
+All eleven tasks are complete. 9 test suites / 33 tests pass; `yarn tsc` clean.
 
-| Task                                  | Status           | Commit                               | Tests                   |
-| ------------------------------------- | ---------------- | ------------------------------------ | ----------------------- |
-| 1 — types + mock data                 | ✅ done          | `4e49585c9c`, real data `38dbf8206a` | n/a (pure data)         |
-| 2 — `ItinerarySaveButton`             | ✅ done          | `071e541a63`                         | 5/5                     |
-| 3 — `useFollowShow` + migration       | ✅ done          | `e2e73d9613`                         | 4/4 hook, 2/2 event     |
-| 4 — shared Mapbox module              | ✅ done          | `383b750c4c`                         | existing map tests pass |
-| 5 — `ItineraryStopRow` + save control | ✅ done          | `bfcef11470`                         | 4/4                     |
-| 6 — `ItinerarySectionRow`             | ⬜ next          | —                                    | —                       |
-| 7 — `ItineraryHeader`                 | ✅ done          | `6aea667fa1`                         | 2/2                     |
-| 8 — `ItineraryScreen` list view       | ⬜ blocked on 6  | —                                    | —                       |
-| 9 — route + entry point               | 🟡 manifest done | `c78c88b895` (step 5 only)           | —                       |
-| 10 — GeoJSON converter                | ✅ done          | `2c5458a26e`                         | 4/4                     |
-| 11 — map view + toggle                | ⬜ blocked on 8  | —                                    | —                       |
+| Task                                  | Status | Commit                               | Tests                   |
+| ------------------------------------- | ------ | ------------------------------------ | ----------------------- |
+| 1 — types + mock data                 | done   | `4e49585c9c`, real data `38dbf8206a` | n/a (pure data)         |
+| 2 — `ItinerarySaveButton`             | done   | `071e541a63`                         | 5/5                     |
+| 3 — `useFollowShow` + migration       | done   | `e2e73d9613`                         | 4/4 hook, 2/2 event     |
+| 4 — shared Mapbox module              | done   | `383b750c4c`                         | existing map tests pass |
+| 5 — `ItineraryStopRow` + save control | done   | `bfcef11470`                         | 4/4                     |
+| 6 — `ItinerarySectionRow`             | done   | `8841389612`                         | 3/3                     |
+| 7 — `ItineraryHeader`                 | done   | `6aea667fa1`                         | 2/2                     |
+| 8 — `ItineraryScreen` list view       | done   | `ea3f625303`                         | 4/4                     |
+| 9 — route + entry point               | done   | `15a5905e14`, manifest `c78c88b895`  | 3/3 + route test        |
+| 10 — GeoJSON converter                | done   | `2c5458a26e`                         | 4/4                     |
+| 11 — map view + toggle                | done   | `1674cbd0e4`                         | 6/6 screen              |
 
-Remaining is a dependency chain: 6 → 8 → 9, then 11. No further parallelism available.
-
-Notable deviations from the plan as written, all recorded in the commits:
+Deviations from the plan as written, all recorded in the commits:
 
 - Mock data uses real London shows scraped from `artsy.net/shows/london-united-kingdom`, so the
   save controls fire genuine mutations. Task 1's code blocks below are superseded by the committed
   file.
 - `--findRelatedTests` is banned in this repo; see Global Constraints.
+- Task 9's Android manifest step landed early, ahead of the rest of the task.
+
+**Not yet done:** the manual simulator pass in the Verification section below. Nothing here has been
+run on a device.
 
 ## Global Constraints
 
