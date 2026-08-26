@@ -54,7 +54,7 @@ export const CityGuideNew: React.FC = () => {
           </Join>
         </Screen.ScrollView>
 
-        <CityGuideFloatingMapButton citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
+        <CityGuideFloatingMapButton cityName={city?.name ?? ""} />
       </Screen.Body>
     </Screen>
   )

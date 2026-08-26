@@ -8,8 +8,8 @@ import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/C
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
 import {
-  SHOW_CARD_HEIGHT,
   CityGuideShowCardOverlay,
+  SHOW_CARD_HEIGHT,
 } from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
@@ -35,6 +35,7 @@ import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
 import { DrawerPosition, Fair, FilterData, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual } from "lodash"
 import { AnimatePresence } from "moti"
@@ -97,6 +98,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
+
+  const enableGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
 
   useEffect(() => {
     updateShowIdMap()
@@ -349,7 +352,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
         cityName={viewer.city?.name}
-        citySlug={viewer.city?.slug}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
@@ -432,7 +434,12 @@ export const CityGuideMap: React.FC<Props> = (props) => {
             />
           </Flex>
         )}
-        <CityGuideBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
+        {!enableGlobalMapList && (
+          <CityGuideBottomSheet
+            drawerPosition={drawerPosition}
+            citySlug={viewer.city?.slug || ""}
+          />
+        )}
       </Flex>
     </ProvideScreenTracking>
   )

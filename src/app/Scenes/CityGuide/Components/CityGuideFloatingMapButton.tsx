@@ -1,4 +1,5 @@
 import { Button, Flex } from "@artsy/palette-mobile"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { MotiView } from "moti"
 
