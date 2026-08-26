@@ -183,6 +183,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFollowShowsAndFairs",
   },
+  AREnableGlobalMapList: {
+    description: "Enable Global Map List View",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableGlobalMapList",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

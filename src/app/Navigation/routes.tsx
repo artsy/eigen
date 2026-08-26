@@ -83,8 +83,15 @@ import {
 import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOverview"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
-import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/CityGuide/Screens/CityFairList"
-import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/CityGuide/Screens/CitySavedList"
+import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
+import {
+  CityFairListQueryRenderer,
+  CityFairListScreenQuery,
+} from "app/Scenes/CityGuide/Screens/CityFairList"
+import {
+  CitySavedListQueryRenderer,
+  CitySavedListScreenQuery,
+} from "app/Scenes/CityGuide/Screens/CitySavedList"
 import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
@@ -1104,9 +1111,24 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    // TODO: Rename to /city-guide/map maybe 🤷
     path: "/local-discovery",
     name: "LocalDiscovery",
     Component: CityGuide,
+    options: {
+      screenOptions: {
+        headerTransparent: true,
+        headerShadowVisible: false,
+        header: () => {
+          return null
+        },
+      },
+    },
+  },
+  {
+    path: "/city-guide",
+    name: "CityGuide",
+    Component: CityGuideNew,
     options: {
       screenOptions: {
         headerTransparent: true,

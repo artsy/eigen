@@ -9,7 +9,6 @@ describe(buildFeatureCollections, () => {
     cityTabs.forEach((tab) => {
       expect(result[tab.id].filter).toBe(tab.id)
       expect(result[tab.id].featureCollection.features).toEqual([])
-      expect(typeof result[tab.id].clusterEngine.getClusters).toBe("function")
     })
   })
 

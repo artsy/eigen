@@ -1,11 +1,13 @@
-import MapboxGL, { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
+import MapboxGL, { CircleLayerStyle, ShapeSource, SymbolLayerStyle } from "@rnmapbox/maps"
 import { BucketKey } from "app/Scenes/CityGuide/utils/bucketCityResults"
+import { ClusterRadius } from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { FilterData } from "app/Scenes/CityGuide/utils/types"
-import { memo } from "react"
+import { memo, RefObject } from "react"
 import { StyleProp } from "react-native"
 
 const SELECTED_CLUSTER_COLOR = "#6E1EFF"
 
+const CLUSTER_CIRCLE_RADIUS = 28
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}
   onPress?: (event: any) => void
@@ -13,10 +15,12 @@ interface Props {
   filterID: string
   activePinSlug?: string | null
   activeClusterId?: number | null
+  /** Lets the map ask Mapbox which points a tapped cluster contains. */
+  shapeSourceRef?: RefObject<ShapeSource | null>
 }
 
 export const CityGuideMapPins: React.FC<Props> = memo(
-  ({ featureCollections, onPress, filterID, activePinSlug, activeClusterId }) => {
+  ({ featureCollections, onPress, filterID, activePinSlug, activeClusterId, shapeSourceRef }) => {
     const singleShowStyle: StyleProp<SymbolLayerStyle> = {
       iconImage: activePinSlug
         ? [
@@ -26,7 +30,7 @@ export const CityGuideMapPins: React.FC<Props> = memo(
             ["get", "icon"],
           ]
         : ["get", "icon"],
-      iconSize: 0.8,
+      iconSize: 0.7,
     }
 
     const clusteredPointsStyle: StyleProp<CircleLayerStyle> = {
@@ -46,9 +50,9 @@ export const CityGuideMapPins: React.FC<Props> = memo(
       circleRadius: [
             "step",
             ["get", "point_count"],
-                15,
-             5, 20,
-            30, 30,
+                CLUSTER_CIRCLE_RADIUS / 2,
+             CLUSTER_CIRCLE_RADIUS / 3, CLUSTER_CIRCLE_RADIUS * 2 / 3,
+            CLUSTER_CIRCLE_RADIUS, CLUSTER_CIRCLE_RADIUS,
           ],
     }
 
@@ -64,26 +68,27 @@ export const CityGuideMapPins: React.FC<Props> = memo(
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
     return (
-      <MapboxGL.Animated.ShapeSource
+      <MapboxGL.ShapeSource
+        ref={shapeSourceRef}
         id="shows"
         shape={collection}
         cluster
-        clusterRadius={50}
+        clusterRadius={ClusterRadius}
         onPress={onPress}
       >
-        <MapboxGL.Animated.SymbolLayer
+        <MapboxGL.SymbolLayer
           id="singleShow"
           filter={["!", ["has", "point_count"]]}
-          style={[singleShowStyle]}
+          style={singleShowStyle}
         />
-        <MapboxGL.Animated.SymbolLayer id="pointCount" style={clusterCountStyle} />
-        <MapboxGL.Animated.CircleLayer
+        <MapboxGL.SymbolLayer id="pointCount" style={clusterCountStyle} />
+        <MapboxGL.CircleLayer
           id="clusteredPoints"
           belowLayerID="pointCount"
           filter={["has", "point_count"]}
-          style={[clusteredPointsStyle]}
+          style={clusteredPointsStyle}
         />
-      </MapboxGL.Animated.ShapeSource>
+      </MapboxGL.ShapeSource>
     )
   }
 )

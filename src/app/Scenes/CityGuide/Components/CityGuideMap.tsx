@@ -7,37 +7,36 @@ import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideB
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
-import { SHOW_CARD_HEIGHT, CityGuideShowCardOverlay } from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
+import {
+  CityGuideShowCardOverlay,
+  SHOW_CARD_HEIGHT,
+} from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
-import {
-  bucketCityResults,
-  BucketKey,
-  BucketResults,
-  emptyBucketResults,
-} from "app/Scenes/CityGuide/utils/bucketCityResults"
+import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeatureCollections"
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
-import { getFeatureCollectionForTab } from "app/Scenes/CityGuide/utils/getFeatureCollectionForTab"
-import { getNearestPointToLatLongInCollection } from "app/Scenes/CityGuide/utils/getNearestPointToLatLongInCollection"
+import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
-import { DefaultZoomLevel, MaxZoomLevel, MinZoomLevel } from "app/Scenes/CityGuide/utils/mapZoomLevels"
+import {
+  DefaultZoomLevel,
+  MaxZoomLevel,
+  MinZoomLevel,
+} from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
-import { DrawerPosition, Fair, FilterData, Show } from "app/Scenes/CityGuide/utils/types"
+import { DrawerPosition, Fair, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { isEqual } from "lodash"
-import { AnimatePresence } from "moti"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import usePrevious from "react-use/lib/usePrevious"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
@@ -70,6 +69,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
+  const shapeSourceRef = useRef<MapboxGL.ShapeSource>(null)
   const currentZoomRef = useRef(DefaultZoomLevel)
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
@@ -79,20 +79,23 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const currentLocation = viewer.city?.coordinates
   const [userLocation, setUserLocation] = useState(currentLocation)
 
-  const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
-  const previousBucketResults = usePrevious(bucketResults)
+  // Derived from the fragment data rather than held in state, so that a show being saved anywhere
+  // else in the app re-buckets the results and repaints its pin with the saved variant.
+  const bucketResults = useMemo(
+    () => bucketCityResults(shows, upcomingShows, fairs),
+    [shows, upcomingShows, fairs]
+  )
+  const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
 
-  const [featureCollections, setFeatureCollections] = useState<
-    { [key in BucketKey]: FilterData } | {}
-  >({})
   const [isSavingShow, setIsSavingShow] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
 
+  const enableGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
+
   useEffect(() => {
-    updateShowIdMap()
     EventEmitter.subscribe("filters:change", handleFilterChange)
     return () => {
       EventEmitter.unsubscribe("filters:change", handleFilterChange)
@@ -100,35 +103,9 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!bucketResults) return
-
-    if (previousBucketResults) {
-      const prevFollowed = previousBucketResults.saved?.map((g) => g?.is_followed)
-      const currentFollowed = bucketResults.saved?.map((g) => g?.is_followed)
-
-      const shouldUpdate = !isEqual(prevFollowed, currentFollowed)
-
-      if (shouldUpdate) {
-        updateClusterMap(bucketResults)
-      }
-    }
-  }, [bucketResults])
-
-  useEffect(() => {
     updateShowIdMap()
-  }, [viewer])
-
-  useEffect(() => {
-    if (viewer) {
-      // TODO: This is currently really inefficient.
-      const newBucketResults = bucketCityResults(shows, upcomingShows, fairs)
-
-      setBucketResults(newBucketResults)
-      emitFilteredBucketResults(newBucketResults)
-      updateShowIdMap()
-      updateClusterMap(newBucketResults)
-    }
-  }, [props, viewer])
+    emitFilteredBucketResults(bucketResults)
+  }, [bucketResults])
 
   const onPressCitySwitcherButton = () => {
     if (!showCityPicker) {
@@ -162,10 +139,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
     trackEvent(tracks.trackPinTap(actionName, show, type))
-  }
-
-  const updateClusterMap = (newBucketResults: BucketResults) => {
-    setFeatureCollections(buildFeatureCollections(newBucketResults))
   }
 
   const emitFilteredBucketResults = (newBucketResults: BucketResults) => {
@@ -251,72 +224,56 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     compassEnabled: false,
   }
 
-  /**
-   * This function is complicated, because the work we have to do is tricky.
-   * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
-   * access to the shows that the user has tapped on.
-   */
+  /** Maps a pin's (or cluster leaf's) GeoJSON properties back to the show or fair it was built from. */
+  const featurePropertiesToShow = (properties: any): Fair | Show | null => {
+    if (!properties?.slug) {
+      return null
+    }
+
+    // The live Relay records, which the cards need for fragment data and save mutations.
+    if (properties.type === "Fair") {
+      return fairsRef.current[properties.slug] ?? null
+    }
+    return showsRef.current[properties.slug] ?? null
+  }
+
   const handleFeaturePress = async (event: any) => {
-    if (!mapRef.current) {
+    const feature: any = getNearestFeatureToTap(event.features ?? [], event.coordinates)
+
+    if (!feature) {
       return
     }
-    const {
-      properties: { slug, cluster, type },
-      geometry: { coordinates },
-    } = event.features[0]
+
+    const { cluster, type, point_count: pointCount } = feature.properties
 
     updateDrawerPosition(DrawerPosition.collapsed)
 
     let activeShows: Array<Fair | Show> = []
 
-    // If the user only taps on the pin we can use the
-    // id directly to retrieve the corresponding show
-    // @TODO: Adding active Fairs to state only to handle Selecting Fairs
-    // The rest of the logic for displaying active show shows and fairs in the
-    // maps pins and cards will remain the same for now.
     if (!cluster) {
-      if (type === "Show") {
-        activeShows = [showsRef.current[slug]]
-        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
-      } else if (type === "Fair") {
-        activeShows = [fairsRef.current[slug]]
-        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
-      }
-    }
-
-    // Otherwise the logic is as follows
-    // We use our clusterEngine which is map of our clusters
-    // 1. Fetch all features (pins, clusters) based on the current map visible bounds
-    // 2. Sort them by distance to the user tap coordinates
-    // 3. Retrieve points within the cluster and map them back to shows
-    else {
-      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
-      // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await mapRef.current.getZoom())
-      const [lat, lng] = coordinates
-
-      // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await mapRef.current.getVisibleBounds()
-      const [ne, sw] = visibleBounds
-      const [eastLng, northLat] = ne
-      const [westLng, southLat] = sw
-
-      const clusterEngine = getFeatureCollectionForTab(
-        activeIndex,
-        featureCollections
-      ).clusterEngine
-      const visibleFeatures = clusterEngine.getClusters(
-        [westLng, southLat, eastLng, northLat],
-        zoom
+      const show = featurePropertiesToShow(feature.properties)
+      activeShows = show ? [show] : []
+      trackPinTap(
+        Schema.ActionNames.SingleMapPin,
+        activeShows,
+        type === "Fair" ? Schema.OwnerEntityTypes.Fair : Schema.OwnerEntityTypes.Show
       )
-      const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+    } else if (shapeSourceRef.current) {
+      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
 
-      const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
-      activeShows = points.map((a: any) => a.properties) as any
+      // Mapbox is asked which points the tapped cluster contains, so the cards always match the
+      // count drawn on the cluster.
+      const leaves = await shapeSourceRef.current.getClusterLeaves(feature, pointCount, 0)
+      const parsed = typeof leaves === "string" ? JSON.parse(leaves) : leaves
+      const leafFeatures: any[] = Array.isArray(parsed) ? parsed : parsed?.features ?? []
+
+      activeShows = leafFeatures
+        .map((leaf) => featurePropertiesToShow(leaf?.properties))
+        .filter((item): item is Fair | Show => item != null)
     }
 
     setActiveShows(activeShows)
-    setActivePin(event.features[0])
+    setActivePin(feature)
   }
 
   const updateDrawerPosition = (position: DrawerPosition) => {
@@ -341,18 +298,18 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        city={viewer.city}
+        cityName={viewer.city?.name}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
         onPressUserPositionButton={onPressUserPositionButton}
       />
-      {/* TODO: think of a better way to animate the appearance of the city picker */}
-      <AnimatePresence>
-        {!!showCityPicker && (
-          <CityGuideCityPicker selectedCity={city?.name ?? ""} onSelectCity={onSelectCity} />
-        )}
-      </AnimatePresence>
+      <CityGuideCityPicker
+        showCityPicker={showCityPicker}
+        setShowCityPicker={setShowCityPicker}
+        selectedCity={city?.name ?? ""}
+        onSelectCity={onSelectCity}
+      />
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <MapboxGL.MapView
           ref={mapRef}
@@ -372,7 +329,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           }}
           onPress={onPressMap}
           scaleBarPosition={{
-            top: Platform.OS === "ios" ? safeAreaInsets.top : safeAreaInsets.top + 40,
+            top: Platform.OS === "ios" ? safeAreaInsets.top - 20 : safeAreaInsets.top + 40,
             left: space(2),
           }}
         >
@@ -392,6 +349,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
                   filterID={cityTabs[activeIndex].id}
                   featureCollections={featureCollections}
                   onPress={(e) => handleFeaturePress(e)}
+                  shapeSourceRef={shapeSourceRef}
                   activePinSlug={
                     activePin?.properties?.cluster ? null : activePin?.properties?.slug
                   }
@@ -421,7 +379,12 @@ export const CityGuideMap: React.FC<Props> = (props) => {
             />
           </Flex>
         )}
-        <CityGuideBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
+        {!enableGlobalMapList && (
+          <CityGuideBottomSheet
+            drawerPosition={drawerPosition}
+            citySlug={viewer.city?.slug || ""}
+          />
+        )}
       </Flex>
     </ProvideScreenTracking>
   )
