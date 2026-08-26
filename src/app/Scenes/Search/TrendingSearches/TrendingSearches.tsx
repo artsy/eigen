@@ -67,8 +67,8 @@ const TrendingContent: React.FC<{ period: TrendingPeriod }> = ({ period }) => {
   return (
     <Flex>
       <Join separator={<Spacer y={2} />}>
-        <TrendingArtistsAvatarsRail artists={artists} />
-        <TrendingArtworksRail artworks={artworks} />
+        <TrendingArtistsAvatarsRail artists={artists} resetKey={period} />
+        <TrendingArtworksRail artworks={artworks} resetKey={period} />
       </Join>
     </Flex>
   )
