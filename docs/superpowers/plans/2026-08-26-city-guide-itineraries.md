@@ -21,15 +21,17 @@ a `useFollowProfile` type widening, the wrong gradient package, and per-city row
 - Spec: `docs/superpowers/specs/2026-08-26-city-guide-itineraries-design.md` (v2).
 - Review trail: `docs/superpowers/reviews/`. Finding ids below (BLOCK-_, FIX-_, MISS-\*) are defined there.
 - Reuse existing components, spacing, and patterns over matching Figma pixel values. The designs are not final.
-- **Before every commit, run all three** (`AGENTS.md:41-51`). No task may skip these:
+- **Before every commit** run these, adapted from `AGENTS.md:41-51`:
   ```sh
   yarn tsc
-  yarn test --findRelatedTests <changed-files>
+  yarn test <the specific test file(s) you touched>
   yarn lint <changed-files>
   ```
-  `passWithNoTests` is not set in `jest.config.js` or `package.json`, so `--findRelatedTests` over files
-  with no related test yet (Tasks 1 and 4) can exit non-zero. Append `--passWithNoTests` in those two
-  cases; a spurious failure there is noise, not signal.
+  **Never `yarn test --findRelatedTests`, and never the full suite.** AGENTS.md names
+  `--findRelatedTests`, but in this repo it is unreliable — it hangs or drags in large unrelated
+  batches. One run in this project sat for eight minutes before being killed. Name the test files
+  explicitly instead. When a file you changed has no test file, say so rather than hunting for
+  "related" ones.
 - Run `yarn relay` after any change to a `graphql` tagged template.
 - No `index.ts(x)` files. No cross-scene imports — shared code goes in `src/app/Components/` or `src/app/utils/`.
 - Components and component folders are PascalCase; `hooks`, `utils`, `mutations` folders are camelCase. Tests live in a sibling `__tests__/` and end in `.tests.ts(x)`.
