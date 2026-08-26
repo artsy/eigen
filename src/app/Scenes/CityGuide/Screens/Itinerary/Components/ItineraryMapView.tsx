@@ -1,4 +1,4 @@
-import { Flex, Pill, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Pill } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { ItineraryMapPins } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPins"
 import {
@@ -144,12 +144,6 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
             })}
           </Flex>
         </ScrollView>
-
-        <Spacer y={1} />
-
-        <Text testID="itinerary-map-stop-count" variant="xs" px={2}>
-          {visible.length} stops
-        </Text>
       </Flex>
     </Flex>
   )

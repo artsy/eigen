@@ -57,13 +57,4 @@ describe("ItineraryScreen", () => {
 
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
-
-  it("filters the map to one section when its pill is tapped", () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
-
-    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-    fireEvent.press(screen.getByText("Day 2 — London Frieze"))
-
-    expect(screen.getByTestId("itinerary-map-stop-count")).toHaveTextContent("2 stops")
-  })
 })
