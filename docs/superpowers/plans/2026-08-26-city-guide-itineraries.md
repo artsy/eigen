@@ -16,6 +16,33 @@ a `useFollowProfile` type widening, the wrong gradient package, and per-city row
 
 **Tech Stack:** React Native, TypeScript (strict), Relay, `@artsy/palette-mobile`, `@artsy/icons/native`, `react-native-reanimated`, `@rnmapbox/maps`, Jest + `@testing-library/react-native`.
 
+## Progress
+
+Updated as each task lands. 7 of 11 done.
+
+| Task                                  | Status           | Commit                               | Tests                   |
+| ------------------------------------- | ---------------- | ------------------------------------ | ----------------------- |
+| 1 — types + mock data                 | ✅ done          | `4e49585c9c`, real data `38dbf8206a` | n/a (pure data)         |
+| 2 — `ItinerarySaveButton`             | ✅ done          | `071e541a63`                         | 5/5                     |
+| 3 — `useFollowShow` + migration       | ✅ done          | `e2e73d9613`                         | 4/4 hook, 2/2 event     |
+| 4 — shared Mapbox module              | ✅ done          | `383b750c4c`                         | existing map tests pass |
+| 5 — `ItineraryStopRow` + save control | ✅ done          | `bfcef11470`                         | 4/4                     |
+| 6 — `ItinerarySectionRow`             | ⬜ next          | —                                    | —                       |
+| 7 — `ItineraryHeader`                 | ✅ done          | `6aea667fa1`                         | 2/2                     |
+| 8 — `ItineraryScreen` list view       | ⬜ blocked on 6  | —                                    | —                       |
+| 9 — route + entry point               | 🟡 manifest done | `c78c88b895` (step 5 only)           | —                       |
+| 10 — GeoJSON converter                | ✅ done          | `2c5458a26e`                         | 4/4                     |
+| 11 — map view + toggle                | ⬜ blocked on 8  | —                                    | —                       |
+
+Remaining is a dependency chain: 6 → 8 → 9, then 11. No further parallelism available.
+
+Notable deviations from the plan as written, all recorded in the commits:
+
+- Mock data uses real London shows scraped from `artsy.net/shows/london-united-kingdom`, so the
+  save controls fire genuine mutations. Task 1's code blocks below are superseded by the committed
+  file.
+- `--findRelatedTests` is banned in this repo; see Global Constraints.
+
 ## Global Constraints
 
 - Spec: `docs/superpowers/specs/2026-08-26-city-guide-itineraries-design.md` (v2).
