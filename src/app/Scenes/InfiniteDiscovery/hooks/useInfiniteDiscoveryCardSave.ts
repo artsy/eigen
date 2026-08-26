@@ -35,20 +35,20 @@ export const useInfiniteDiscoveryCardSave = (
     removeNewUserOnboardingSavedArtwork,
   } = GlobalStore.actions.infiniteDiscovery
 
-  const addOnboardingArtwork = () => {
-    if (isNewUserOnboardingSession && artwork) {
-      addNewUserOnboardingSavedArtwork({
-        internalID: artwork.internalID,
-        url: getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
-        blurhash: artwork.images[0]?.blurhash,
-      })
-    }
+  const addOnboardingSavedArtwork = () => {
+    if (!artwork) return
+
+    addNewUserOnboardingSavedArtwork({
+      internalID: artwork.internalID,
+      url: getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
+      blurhash: artwork.images[0]?.blurhash,
+    })
   }
 
-  const removeOnboardingArtwork = () => {
-    if (isNewUserOnboardingSession && artwork) {
-      removeNewUserOnboardingSavedArtwork(artwork.internalID)
-    }
+  const removeOnboardingSavedArtwork = () => {
+    if (!artwork) return
+
+    removeNewUserOnboardingSavedArtwork(artwork.internalID)
   }
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -69,11 +69,11 @@ export const useInfiniteDiscoveryCardSave = (
       if (isSaved) {
         // if the artwork is currently saved, we optimistically decremented the count, so increment it back
         incrementSavedArtworksCount()
-        addOnboardingArtwork()
+        if (isNewUserOnboardingSession) addOnboardingSavedArtwork()
       } else {
         // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
         decrementSavedArtworksCount()
-        removeOnboardingArtwork()
+        if (isNewUserOnboardingSession) removeOnboardingSavedArtwork()
       }
     },
   })
@@ -84,11 +84,11 @@ export const useInfiniteDiscoveryCardSave = (
     if (isSaved) {
       // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
       decrementSavedArtworksCount()
-      removeOnboardingArtwork()
+      if (isNewUserOnboardingSession) removeOnboardingSavedArtwork()
     } else {
       // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
       incrementSavedArtworksCount()
-      addOnboardingArtwork()
+      if (isNewUserOnboardingSession) addOnboardingSavedArtwork()
     }
 
     saveArtworkToLists()
@@ -99,7 +99,7 @@ export const useInfiniteDiscoveryCardSave = (
 
     if (!hasSavedArtworks) setHasSavedArtworks(true)
     incrementSavedArtworksCount()
-    addOnboardingArtwork()
+    if (isNewUserOnboardingSession) addOnboardingSavedArtwork()
     saveArtworkToLists()
   }
 
