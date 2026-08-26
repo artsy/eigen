@@ -48,7 +48,7 @@ export const CityGuideNew: React.FC = () => {
           <Join separator={<Spacer y={4} />}>
             <CityGuideMetaData />
 
-            <CityGuideCuratedLists />
+            <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
 
             <CityGuideEvents />
           </Join>

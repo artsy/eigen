@@ -48,6 +48,20 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to CityGuideItinerary", () => {
+    expect(matchRoute("/city-guide/london-united-kingdom/itinerary/chill-vibes-only"))
+      .toMatchInlineSnapshot(`
+      {
+        "module": "CityGuideItinerary",
+        "params": {
+          "citySlug": "london-united-kingdom",
+          "itineraryId": "chill-vibes-only",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Artist", () => {
     expect(matchRoute("/artist/banksy")).toMatchInlineSnapshot(`
       {
