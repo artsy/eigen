@@ -18,10 +18,13 @@ const BOUNDS_PADDING = 60
 /** Roughly 200m. Below this, fitting bounds over-zooms rather than framing a place. */
 const MIN_BOUNDS_SPAN = 0.002
 const SINGLE_STOP_ZOOM = 14
+/** Breathing room between the pill overlay and the scale bar below it. */
+const SCALE_BAR_GAP = 8
 
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
+  const [overlayHeight, setOverlayHeight] = useState(0)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const { top } = useSafeAreaInsets()
 
@@ -96,6 +99,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         logoEnabled={false}
         attributionEnabled={false}
         onDidFinishLoadingMap={() => setIsMapLoaded(true)}
+        scaleBarPosition={{ top: top + overlayHeight + SCALE_BAR_GAP, left: SCALE_BAR_GAP }}
       >
         <MapboxGL.Camera
           ref={cameraRef}
@@ -106,7 +110,16 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         <ItineraryMapPins collection={collection} />
       </MapboxGL.MapView>
 
-      <Flex position="absolute" top={top} left={0} right={0} pt={1}>
+      <Flex
+        position="absolute"
+        top={top}
+        left={0}
+        right={0}
+        pt={1}
+        // Measured rather than hardcoded so the scale bar clears the pills on every
+        // device, whatever the safe-area inset and font scale work out to.
+        onLayout={(event) => setOverlayHeight(event.nativeEvent.layout.height)}
+      >
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Flex flexDirection="row" px={2} gap={1}>
             {pills.map((pill) => {

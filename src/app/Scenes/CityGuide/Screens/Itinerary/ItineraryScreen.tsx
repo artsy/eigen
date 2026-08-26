@@ -1,4 +1,12 @@
-import { Button, Flex, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  BackButtonWithBackground,
+  Button,
+  Flex,
+  Join,
+  Screen,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItineraryMapView } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
@@ -6,6 +14,10 @@ import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/m
 import { goBack } from "app/system/navigation/navigate"
 import { MotiView } from "moti"
 import { useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+/** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
+const NAVBAR_HEIGHT = 50
 
 interface Props {
   citySlug: string
@@ -16,6 +28,7 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // TODO: Replace with a Relay query once the itinerary schema lands.
   const itinerary = getMockItinerary(citySlug, itineraryId)
   const [isMapView, setIsMapView] = useState(false)
+  const { top } = useSafeAreaInsets()
 
   if (!itinerary) {
     return (
@@ -40,9 +53,29 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title={itinerary.title} onBack={goBack} hideTitle />
+      {/*
+        The map fills the screen, so it gets a floating back button over the map rather
+        than a header bar: Screen.Header paints a solid background and cannot be made
+        transparent through props. Same treatment CityGuideMapHeader gives the City
+        Guide's own map.
+      */}
+      {!isMapView && <Screen.AnimatedHeader title={itinerary.title} onBack={goBack} hideTitle />}
 
       <Screen.Body fullwidth>
+        {!!isMapView && (
+          <Flex
+            style={{ top, position: "absolute", zIndex: 1000 }}
+            // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2}
+            // (palette Screen/Header.js:69, constants.js:5). Matching both keeps the
+            // button from jumping when you toggle between list and map.
+            height={NAVBAR_HEIGHT}
+            justifyContent="center"
+            px={2}
+          >
+            <BackButtonWithBackground onPress={goBack} />
+          </Flex>
+        )}
+
         {isMapView ? (
           <ItineraryMapView itinerary={itinerary} />
         ) : (
