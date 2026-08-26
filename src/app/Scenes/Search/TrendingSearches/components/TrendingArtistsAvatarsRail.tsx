@@ -5,20 +5,28 @@ import { TrendingSectionHeader } from "app/Scenes/Search/TrendingSearches/compon
 import { AVATAR_ITEM_WIDTH, AVATAR_SIZE } from "app/Scenes/Search/TrendingSearches/constants"
 import { TrendingArtist } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 
 interface TrendingArtistsAvatarsRailProps {
   artists: TrendingArtist[]
+  resetKey?: string
   title?: string
 }
 
 export const TrendingArtistsAvatarsRail: React.FC<TrendingArtistsAvatarsRailProps> = ({
   artists,
+  resetKey,
   title = "Trending Artists",
 }) => {
   const space = useSpace()
   const { trackEvent } = useTracking()
+  const listRef = useRef<FlatList<TrendingArtist>>(null)
+
+  useEffect(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: false })
+  }, [resetKey])
 
   if (!artists.length) {
     return null
@@ -43,6 +51,7 @@ export const TrendingArtistsAvatarsRail: React.FC<TrendingArtistsAvatarsRailProp
       <TrendingSectionHeader title={title} />
 
       <FlatList
+        ref={listRef}
         horizontal
         data={artists}
         keyboardShouldPersistTaps="handled"
