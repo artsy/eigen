@@ -189,6 +189,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableGlobalMapList",
   },
+  AREnableCityGuideItineraryRoute: {
+    description: "Draw a route between itinerary stops on the map",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCityGuideItineraryRoute",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

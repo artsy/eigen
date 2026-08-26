@@ -2,11 +2,14 @@ import { Flex, Pill } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { ItineraryMapPins } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPins"
 import { ItineraryMapPreview } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapPreview"
+import { ItineraryMapRoute } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapRoute"
 import {
   flattenItineraryStops,
   itineraryStopsToGeoJSON,
+  itineraryStopsToRouteGeoJSON,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
@@ -33,6 +36,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const { top } = useSafeAreaInsets()
+  const showRoute = useFeatureFlag("AREnableCityGuideItineraryRoute")
 
   const flattened = useMemo(() => flattenItineraryStops(itinerary), [itinerary])
 
@@ -49,6 +53,16 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
   const collection = useMemo(() => itineraryStopsToGeoJSON(visible), [visible])
 
   const selectedStop = visible.find((f) => f.stop.id === selectedStopId)?.stop
+
+  // Only within a single section: across the whole itinerary the line would jump
+  // between days and imply an order nobody walks.
+  const routeCollection = useMemo(
+    () =>
+      showRoute && selectedSectionId !== ALL_PILL_ID
+        ? itineraryStopsToRouteGeoJSON(visible)
+        : { type: "FeatureCollection" as const, features: [] },
+    [showRoute, selectedSectionId, visible]
+  )
 
   const cameraStop = useMemo(() => {
     if (!visible.length) return undefined
@@ -117,6 +131,8 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
           animationMode="moveTo"
           defaultSettings={initialCameraStop}
         />
+
+        <ItineraryMapRoute collection={routeCollection} />
 
         <ItineraryMapPins
           collection={collection}
