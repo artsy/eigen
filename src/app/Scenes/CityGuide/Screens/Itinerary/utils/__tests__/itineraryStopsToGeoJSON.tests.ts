@@ -35,6 +35,16 @@ describe("itineraryStopsToGeoJSON", () => {
     })
   })
 
+  it("numbers by position in the list given, so a filtered section restarts at 1", () => {
+    const flattened = flattenItineraryStops(MOCK_ITINERARIES[0])
+    const dayTwoOnly = flattened.filter((f) => f.sectionId === "day-2")
+    const collection = itineraryStopsToGeoJSON(dayTwoOnly)
+
+    // These are stops 4 and 5 of the whole itinerary, but on their own they are 1 and 2.
+    expect(collection.features.map((f) => f.properties.number)).toEqual(["1", "2"])
+    expect(collection.features.map((f) => f.properties.id)).toEqual(["stop-4", "stop-5"])
+  })
+
   it("returns an empty collection for no stops", () => {
     expect(itineraryStopsToGeoJSON([])).toEqual({ type: "FeatureCollection", features: [] })
   })

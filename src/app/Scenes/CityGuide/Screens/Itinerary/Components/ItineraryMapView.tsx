@@ -15,6 +15,9 @@ configureMapbox()
 
 const ALL_PILL_ID = "__all__"
 const BOUNDS_PADDING = 60
+/** Roughly 200m. Below this, fitting bounds over-zooms rather than framing a place. */
+const MIN_BOUNDS_SPAN = 0.002
+const SINGLE_STOP_ZOOM = 14
 
 export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
@@ -23,7 +26,6 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
   const { top } = useSafeAreaInsets()
 
   const flattened = useMemo(() => flattenItineraryStops(itinerary), [itinerary])
-  const collection = useMemo(() => itineraryStopsToGeoJSON(flattened), [flattened])
 
   const visible = useMemo(
     () =>
@@ -33,34 +35,53 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
     [flattened, selectedSectionId]
   )
 
-  const bounds = useMemo(() => {
+  // Built from the visible stops only, never filtered at the layer. The converter numbers
+  // by position, so a filtered section renumbers from 1.
+  const collection = useMemo(() => itineraryStopsToGeoJSON(visible), [visible])
+
+  const cameraStop = useMemo(() => {
     if (!visible.length) return undefined
 
     const lngs = visible.map((f) => f.stop.coordinates.lng)
     const lats = visible.map((f) => f.stop.coordinates.lat)
+    const minLng = Math.min(...lngs)
+    const maxLng = Math.max(...lngs)
+    const minLat = Math.min(...lats)
+    const maxLat = Math.max(...lats)
+
+    // One stop — or several at the same address — gives a zero-size box, and fitting to
+    // that zooms Mapbox all the way in on a rooftop. Centre at a readable zoom instead.
+    if (maxLng - minLng < MIN_BOUNDS_SPAN && maxLat - minLat < MIN_BOUNDS_SPAN) {
+      return {
+        centerCoordinate: [(minLng + maxLng) / 2, (minLat + maxLat) / 2] as [number, number],
+        zoomLevel: SINGLE_STOP_ZOOM,
+      }
+    }
 
     return {
-      ne: [Math.max(...lngs), Math.max(...lats)] as [number, number],
-      sw: [Math.min(...lngs), Math.min(...lats)] as [number, number],
-      paddingTop: BOUNDS_PADDING,
-      paddingBottom: BOUNDS_PADDING,
-      paddingLeft: BOUNDS_PADDING,
-      paddingRight: BOUNDS_PADDING,
+      bounds: {
+        ne: [maxLng, maxLat] as [number, number],
+        sw: [minLng, minLat] as [number, number],
+        paddingTop: BOUNDS_PADDING,
+        paddingBottom: BOUNDS_PADDING,
+        paddingLeft: BOUNDS_PADDING,
+        paddingRight: BOUNDS_PADDING,
+      },
     }
   }, [visible])
 
   // The very first frame comes from defaultSettings, not from the effect below: on mount
   // the camera ref is not attached yet, so an imperative setCamera silently no-ops and the
   // map opens on Mapbox's default world view until something else moves it.
-  const initialBounds = useRef(bounds).current
+  const initialCameraStop = useRef(cameraStop).current
 
   // Refit on later changes only, and only once the map is ready — same gating as
   // CityGuideMap.tsx:89,207,317. Without the mapLoaded gate this fires too early and is lost.
   useEffect(() => {
-    if (!isMapLoaded || !bounds) return
+    if (!isMapLoaded || !cameraStop) return
 
-    cameraRef.current?.setCamera({ ...bounds, animationDuration: 500 })
-  }, [bounds, isMapLoaded])
+    cameraRef.current?.setCamera({ ...cameraStop, animationDuration: 500 })
+  }, [cameraStop, isMapLoaded])
 
   const pills = [
     { id: ALL_PILL_ID, title: "All" },
@@ -79,13 +100,10 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         <MapboxGL.Camera
           ref={cameraRef}
           animationMode="moveTo"
-          defaultSettings={initialBounds ? { bounds: initialBounds } : undefined}
+          defaultSettings={initialCameraStop}
         />
 
-        <ItineraryMapPins
-          collection={collection}
-          selectedSectionId={selectedSectionId === ALL_PILL_ID ? null : selectedSectionId}
-        />
+        <ItineraryMapPins collection={collection} />
       </MapboxGL.MapView>
 
       <Flex position="absolute" top={top} left={0} right={0} pt={1}>
@@ -97,11 +115,10 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
               return (
                 <Pill
                   key={pill.id}
-                  variant="badge"
+                  // "link" rather than the default variant: the default state declares no
+                  // background-color at all, so over a map the pills are see-through.
+                  variant="link"
                   selected={isSelected}
-                  // Set explicitly: the default Pill state declares no background-color at
-                  // all, so over a map the pills would be see-through and unreadable.
-                  backgroundColor={isSelected ? "mono100" : "mono0"}
                   color={isSelected ? "mono0" : "mono100"}
                   onPress={() => setSelectedSectionId(pill.id)}
                 >
