@@ -21,26 +21,23 @@ const numberStyle: StyleProp<SymbolLayerStyle> = {
 }
 
 interface Props {
+  /** Already filtered to the stops that should be visible. */
   collection: ItineraryFeatureCollection
-  /** null shows every stop. */
-  selectedSectionId: string | null
 }
 
-export const ItineraryMapPins: React.FC<Props> = ({ collection, selectedSectionId }) => {
-  // Filter in the layer so switching pills does not rebuild the shape source.
-  const filter = selectedSectionId
-    ? (["==", ["get", "sectionId"], selectedSectionId] as any)
-    : undefined
-
+/**
+ * Renders one numbered pin per feature. Deliberately has no filter prop: layer
+ * filters cannot be cleared once set, because rnmapbox maps an undefined filter to
+ * `[]` (utils/filterUtils.js) rather than to a reset, so the previous filter sticks
+ * on the native layer. Selecting a section and then "All" would keep showing only
+ * that section. Filtering the collection instead is unambiguous, and rebuilding a
+ * shape source of 5-15 points costs nothing.
+ */
+export const ItineraryMapPins: React.FC<Props> = ({ collection }) => {
   return (
     <MapboxGL.ShapeSource id="itineraryStops" shape={collection as any}>
-      <MapboxGL.CircleLayer id="stopCircles" style={circleStyle} filter={filter} />
-      <MapboxGL.SymbolLayer
-        id="stopNumbers"
-        aboveLayerID="stopCircles"
-        style={numberStyle}
-        filter={filter}
-      />
+      <MapboxGL.CircleLayer id="stopCircles" style={circleStyle} />
+      <MapboxGL.SymbolLayer id="stopNumbers" aboveLayerID="stopCircles" style={numberStyle} />
     </MapboxGL.ShapeSource>
   )
 }
