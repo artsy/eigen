@@ -349,6 +349,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
         cityName={viewer.city?.name}
+        citySlug={viewer.city?.slug}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
@@ -356,9 +357,12 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       />
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
-        {!!showCityPicker && (
-          <CityGuideCityPicker selectedCity={city?.name ?? ""} onSelectCity={onSelectCity} />
-        )}
+        <CityGuideCityPicker
+          showCityPicker={showCityPicker}
+          setShowCityPicker={setShowCityPicker}
+          selectedCity={city?.name ?? ""}
+          onSelectCity={onSelectCity}
+        />
       </AnimatePresence>
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <MapboxGL.MapView

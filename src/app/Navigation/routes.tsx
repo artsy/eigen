@@ -84,8 +84,14 @@ import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOver
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
-import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/CityGuide/Screens/CityFairList"
-import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/CityGuide/Screens/CitySavedList"
+import {
+  CityFairListQueryRenderer,
+  CityFairListScreenQuery,
+} from "app/Scenes/CityGuide/Screens/CityFairList"
+import {
+  CitySavedListQueryRenderer,
+  CitySavedListScreenQuery,
+} from "app/Scenes/CityGuide/Screens/CitySavedList"
 import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,

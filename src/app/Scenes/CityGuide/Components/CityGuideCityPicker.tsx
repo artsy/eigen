@@ -5,7 +5,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import { Modal, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import expandedCities from "../../../../../data/cityDataSortedByDisplayPreference-expanded.json"
 import originalCities from "../../../../../data/cityDataSortedByDisplayPreference.json"
@@ -29,6 +29,8 @@ export type CityData = {
   }
 }
 interface Props {
+  showCityPicker: boolean
+  setShowCityPicker: (show: boolean) => void
   selectedCity: string
   onSelectCity: (city: CityData) => void
 }
@@ -60,60 +62,81 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
 
   return (
-    <Flex
-      position="absolute"
-      zIndex={1000}
-      style={{
-        marginTop: insets.top + space(6),
-        height: "80%",
-        width: "70%",
-      }}
-      backgroundColor="mono0"
-      borderRadius={BORDER_RADIUS}
-      maxHeight="70%"
-      minWidth="90%"
-      alignSelf="center"
+    <Modal
+      visible={props.showCityPicker}
+      onDismiss={() => props.setShowCityPicker(false)}
+      onRequestClose={() => props.setShowCityPicker(false)}
+      statusBarTranslucent
+      animationType="fade"
+      transparent
+      presentationStyle="overFullScreen"
     >
-      <ProvideScreenTracking
-        info={{
-          context_screen: Schema.PageNames.CityPicker,
-          context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-        }}
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        onPress={() => props.setShowCityPicker(false)}
       >
-        <ScrollView contentContainerStyle={{ padding: space(2) }}>
-          <Box>
-            <Text variant="sm" weight="medium">
-              Fairs and Shows by City
-            </Text>
-          </Box>
-          <Join separator={<Separator />}>
-            {cities.map((city, i) => (
-              <Box key={i}>
-                <TouchableOpacity accessibilityRole="button" onPress={() => selectCity(city)}>
-                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                    <Text
-                      selectable={false}
-                      variant={dimensions(screenHeight)[size].cityFontSize}
-                      lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
-                    >
-                      {city.name}
-                    </Text>
-                    {selectedCity === city.name && (
-                      <Box mb={2} mt={2}>
-                        <CheckmarkStrokeIcon
-                          width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                          height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                        />
-                      </Box>
-                    )}
-                  </Flex>
-                </TouchableOpacity>
-              </Box>
-            ))}
-          </Join>
-        </ScrollView>
-      </ProvideScreenTracking>
-    </Flex>
+        <Flex style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.4)" }}>
+          <Flex
+            position="absolute"
+            zIndex={1000}
+            style={{
+              marginTop: insets.top + space(6),
+              height: "80%",
+              width: "70%",
+            }}
+            backgroundColor="mono0"
+            borderRadius={BORDER_RADIUS}
+            maxHeight="70%"
+            minWidth="90%"
+            alignSelf="center"
+          >
+            <ProvideScreenTracking
+              info={{
+                context_screen: Schema.PageNames.CityPicker,
+                context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+              }}
+            >
+              <ScrollView contentContainerStyle={{ padding: space(2) }}>
+                <Box>
+                  <Text variant="sm" weight="medium">
+                    Fairs and Shows by City
+                  </Text>
+                </Box>
+                <Join separator={<Separator />}>
+                  {cities.map((city, i) => (
+                    <Box key={i}>
+                      <TouchableOpacity accessibilityRole="button" onPress={() => selectCity(city)}>
+                        <Flex
+                          flexDirection="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                        >
+                          <Text
+                            selectable={false}
+                            variant={dimensions(screenHeight)[size].cityFontSize}
+                            lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
+                          >
+                            {city.name}
+                          </Text>
+                          {selectedCity === city.name && (
+                            <Box mb={2} mt={2}>
+                              <CheckmarkStrokeIcon
+                                width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                                height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                              />
+                            </Box>
+                          )}
+                        </Flex>
+                      </TouchableOpacity>
+                    </Box>
+                  ))}
+                </Join>
+              </ScrollView>
+            </ProvideScreenTracking>
+          </Flex>
+        </Flex>
+      </TouchableWithoutFeedback>
+    </Modal>
   )
 }
 
