@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -20,11 +21,15 @@ describe("ItineraryScreen", () => {
   })
 
   it("numbers stops continuously across sections", () => {
+    const itinerary = getMockItinerary("london-united-kingdom", "chill-vibes-only")!
+    const totalStops = itinerary.sections.reduce((sum, s) => sum + s.stops.length, 0)
+
     renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
 
-    // Day 1 holds three stops, so Day 2 starts at 4.
-    expect(screen.getByText("4")).toBeTruthy()
-    expect(screen.getByText("5")).toBeTruthy()
+    // Numbering runs 1..N across the whole itinerary rather than restarting per section,
+    // so the very last number only exists if every earlier section was counted.
+    expect(screen.getByText(String(totalStops))).toBeTruthy()
+    expect(screen.queryByText(String(totalStops + 1))).toBeNull()
   })
 
   it("renders the unavailable state for an unknown itinerary", () => {
