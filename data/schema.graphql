@@ -2734,9 +2734,14 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   last: String
 
   """
-  The most recent published article featuring this artist
+  The most recent published article featuring this artist, optionally limited to those published since a given date.
   """
-  latestArticle: Article
+  latestArticle(
+    """
+    Only return articles published since this ISO 8601 date.
+    """
+    publishedSince: String
+  ): Article
   location: String
   marketingCollections(
     after: String
