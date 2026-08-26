@@ -7,7 +7,10 @@ import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideB
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
-import { SHOW_CARD_HEIGHT, CityGuideShowCardOverlay } from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
+import {
+  SHOW_CARD_HEIGHT,
+  CityGuideShowCardOverlay,
+} from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
 import {
@@ -23,7 +26,11 @@ import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAn
 import { getFeatureCollectionForTab } from "app/Scenes/CityGuide/utils/getFeatureCollectionForTab"
 import { getNearestPointToLatLongInCollection } from "app/Scenes/CityGuide/utils/getNearestPointToLatLongInCollection"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
-import { DefaultZoomLevel, MaxZoomLevel, MinZoomLevel } from "app/Scenes/CityGuide/utils/mapZoomLevels"
+import {
+  DefaultZoomLevel,
+  MaxZoomLevel,
+  MinZoomLevel,
+} from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
 import { DrawerPosition, Fair, FilterData, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -341,7 +348,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     >
       <CityGuideMapHeader
         safeAreaInsetTop={safeAreaInsets.top}
-        city={viewer.city}
+        cityName={viewer.city?.name}
         userLocation={userLocation}
         currentLocation={currentLocation}
         onPressCitySwitcherButton={onPressCitySwitcherButton}
@@ -372,7 +379,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           }}
           onPress={onPressMap}
           scaleBarPosition={{
-            top: Platform.OS === "ios" ? safeAreaInsets.top : safeAreaInsets.top + 40,
+            top: Platform.OS === "ios" ? safeAreaInsets.top - 20 : safeAreaInsets.top + 40,
             left: space(2),
           }}
         >
