@@ -8,8 +8,6 @@ const routeStyle: StyleProp<LineLayerStyle> = {
   lineOpacity: 0.4,
   lineCap: "round",
   lineJoin: "round",
-  // Dashed so the line reads as "the order you walk this", not as a road.
-  lineDasharray: [2, 2],
 }
 
 /**

@@ -127,9 +127,11 @@ export const MOCK_ITINERARIES: Itinerary[] = [
     heroImageUrl: "https://picsum.photos/id/1016/800/600.jpg",
     authorName: "Casey Lesser",
     description: "A day and a half of galleries, museums, and somewhere decent for lunch.",
+    // Grouped by time of day rather than by day, unlike Chill Vibes Only. Section titles
+    // are opaque to the client, so both schemes render without a code change.
     sections: [
       {
-        id: "morning",
+        id: "mellow-morning",
         title: "Mellow morning",
         stops: [
           {
@@ -143,6 +145,134 @@ export const MOCK_ITINERARIES: Itinerary[] = [
               type: "SHOW",
               slug: "carpenters-workshop-gallery-the-language-of-glaze",
             },
+          },
+          {
+            id: "hours-stop-2",
+            title: "Vestiges",
+            displayTime: "12pm-1pm",
+            imageUrl: "https://picsum.photos/id/1027/200/200.jpg",
+            // Annely Juda Fine Art, Dering Street
+            coordinates: { lat: 51.514, lng: -0.1445 },
+            saveTarget: { type: "SHOW", slug: "annely-juda-fine-art-vestiges" },
+          },
+          {
+            id: "hours-stop-3",
+            title: "The Shape of Heat",
+            displayTime: "1pm-2pm",
+            note: "☕",
+            imageUrl: "https://picsum.photos/id/1029/200/200.jpg",
+            // Maddox Gallery, Mayfair
+            coordinates: { lat: 51.5135, lng: -0.142 },
+            saveTarget: { type: "SHOW", slug: "maddox-gallery-the-shape-of-heat" },
+          },
+        ],
+      },
+      {
+        id: "chill-afternoon",
+        title: "Chill afternoon",
+        stops: [
+          {
+            id: "hours-stop-4",
+            title: "Tjukurpa",
+            displayTime: "2pm-3pm",
+            imageUrl: "https://picsum.photos/id/1031/200/200.jpg",
+            // Rebecca Hossack Art Gallery, Fitzrovia
+            coordinates: { lat: 51.5215, lng: -0.14 },
+            saveTarget: { type: "SHOW", slug: "rebecca-hossack-art-gallery-tjukurpa" },
+          },
+          {
+            id: "hours-stop-5",
+            title: "Summer Show 2026",
+            displayTime: "3pm-4pm",
+            imageUrl: "https://picsum.photos/id/1036/200/200.jpg",
+            // Shapero Modern, St George Street
+            coordinates: { lat: 51.513, lng: -0.1435 },
+            saveTarget: { type: "SHOW", slug: "shapero-modern-summer-show-2026" },
+          },
+          {
+            id: "hours-stop-6",
+            title: "Pop Odyssey",
+            displayTime: "4pm-5pm",
+            note: "🍸",
+            imageUrl: "https://picsum.photos/id/1037/200/200.jpg",
+            // Halcyon Gallery, Bruton Street
+            coordinates: { lat: 51.5105, lng: -0.1445 },
+            saveTarget: { type: "SHOW", slug: "halcyon-pop-odyssey" },
+          },
+        ],
+      },
+      {
+        id: "nighttime-hang",
+        title: "Nighttime hang",
+        stops: [
+          {
+            id: "hours-stop-7",
+            title: "So This Is Goodbye...",
+            displayTime: "6pm-7pm",
+            imageUrl: "https://picsum.photos/id/1038/200/200.jpg",
+            // Beers London, Little Britain
+            coordinates: { lat: 51.5175, lng: -0.0985 },
+            saveTarget: { type: "SHOW", slug: "beers-london-so-this-is-goodbye-dot-dot-dot" },
+          },
+          {
+            id: "hours-stop-8",
+            title: "12:12",
+            displayTime: "7pm-8pm",
+            note: "🎤",
+            imageUrl: "https://picsum.photos/id/1039/200/200.jpg",
+            // Rhodes, Cremer Street, Hoxton
+            coordinates: { lat: 51.5305, lng: -0.0785 },
+            saveTarget: { type: "SHOW", slug: "rhodes-12-12" },
+          },
+          {
+            id: "hours-stop-9",
+            title: "One Fly Makes No Summer",
+            displayTime: "8pm-9pm",
+            note: "🥂",
+            imageUrl: "https://picsum.photos/id/1041/200/200.jpg",
+            // Kristin Hjellegjerde Gallery, Melior Place
+            coordinates: { lat: 51.5025, lng: -0.0865 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
+            },
+          },
+        ],
+      },
+      {
+        id: "if-you-have-the-energy",
+        title: "If you have the energy",
+        stops: [
+          {
+            id: "hours-stop-10",
+            title: "House Plant Care",
+            displayTime: "Next morning, 10am",
+            imageUrl: "https://picsum.photos/id/1044/200/200.jpg",
+            // 8 Holland Street, Kensington
+            coordinates: { lat: 51.5015, lng: -0.1955 },
+            saveTarget: { type: "SHOW", slug: "8-holland-street-david-turley-house-plant-care" },
+          },
+          {
+            id: "hours-stop-11",
+            title: "Disruptors",
+            displayTime: "11am-12pm",
+            imageUrl: "https://picsum.photos/id/1045/200/200.jpg",
+            // Ben Uri Gallery and Museum, Boundary Road
+            coordinates: { lat: 51.5345, lng: -0.1815 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "ben-uri-gallery-and-museum-disruptors-fractured-images-and-migrant-wordl",
+            },
+          },
+          {
+            id: "hours-stop-12",
+            title: "Second Nature",
+            displayTime: "12pm-1pm",
+            note: "🧀",
+            imageUrl: "https://picsum.photos/id/1047/200/200.jpg",
+            // Open Doors Gallery, Fitzrovia
+            coordinates: { lat: 51.5195, lng: -0.1365 },
+            saveTarget: { type: "SHOW", slug: "open-doors-gallery-second-nature" },
           },
         ],
       },
@@ -158,17 +288,107 @@ export const MOCK_ITINERARIES: Itinerary[] = [
     description: "The landmarks worth the queue, and the rooms nobody tells you about.",
     sections: [
       {
-        id: "afternoon",
-        title: "Chill afternoon",
+        id: "must-sees",
+        title: "The must sees",
         stops: [
           {
             id: "gems-stop-1",
             title: "An afternoon at White Cube",
-            displayTime: "2pm-5pm",
+            displayTime: "11am-1pm",
             imageUrl: "https://picsum.photos/id/1035/200/200.jpg",
             // White Cube Bermondsey
             coordinates: { lat: 51.4995, lng: -0.081 },
             saveTarget: { type: "PARTNER", slug: "white-cube" },
+          },
+          {
+            id: "gems-stop-2",
+            title: "Fame, Fashion, McGee",
+            displayTime: "1pm-2pm",
+            imageUrl: "https://picsum.photos/id/1048/200/200.jpg",
+            // Iconic Images, Mayfair
+            coordinates: { lat: 51.5115, lng: -0.1425 },
+            saveTarget: { type: "SHOW", slug: "iconic-images-fame-fashion-mcgee" },
+          },
+          {
+            id: "gems-stop-3",
+            title: "The Last Dolls",
+            displayTime: "2pm-3pm",
+            note: "🧀",
+            imageUrl: "https://picsum.photos/id/1051/200/200.jpg",
+            // Atlas Gallery, Marylebone
+            coordinates: { lat: 51.5185, lng: -0.156 },
+            saveTarget: { type: "SHOW", slug: "atlas-gallery-the-last-dolls" },
+          },
+        ],
+      },
+      {
+        id: "hidden-gems",
+        title: "The hidden gems",
+        stops: [
+          {
+            id: "gems-stop-4",
+            title: "Fragments of Place",
+            displayTime: "3pm-4pm",
+            imageUrl: "https://picsum.photos/id/1052/200/200.jpg",
+            // Purdy Hicks Gallery, Bankside
+            coordinates: { lat: 51.5065, lng: -0.0995 },
+            saveTarget: {
+              type: "SHOW",
+              slug: "purdy-hicks-gallery-pierre-bergian-fragments-of-place",
+            },
+          },
+          {
+            id: "gems-stop-5",
+            title: "Forging Forms",
+            displayTime: "4pm-5pm",
+            imageUrl: "https://picsum.photos/id/1053/200/200.jpg",
+            // Contemporary Applied Arts, Southwark Street
+            coordinates: { lat: 51.5055, lng: -0.0985 },
+            saveTarget: { type: "SHOW", slug: "contemporary-applied-arts-forging-forms" },
+          },
+          {
+            id: "gems-stop-6",
+            title: "Inner Weather",
+            displayTime: "5pm-6pm",
+            note: "🥂",
+            imageUrl: "https://picsum.photos/id/1055/200/200.jpg",
+            // Artistellar, Shoreditch
+            coordinates: { lat: 51.5245, lng: -0.0785 },
+            saveTarget: { type: "SHOW", slug: "artistellar-inner-weather" },
+          },
+        ],
+      },
+      {
+        id: "worth-the-detour",
+        title: "Worth the detour",
+        stops: [
+          {
+            id: "gems-stop-7",
+            title: "No Ruined Stones",
+            displayTime: "Sat, 11am",
+            imageUrl: "https://picsum.photos/id/1056/200/200.jpg",
+            // Cadogan Gallery, Chelsea
+            coordinates: { lat: 51.4925, lng: -0.16 },
+            saveTarget: { type: "SHOW", slug: "cadogan-gallery-no-ruined-stones-richard-hearns" },
+          },
+          {
+            id: "gems-stop-8",
+            title: "Cat Maquettes",
+            displayTime: "Sat, 1pm",
+            imageUrl: "https://picsum.photos/id/1057/200/200.jpg",
+            // Everard Read, Eastcastle Street
+            coordinates: { lat: 51.5175, lng: -0.1385 },
+            saveTarget: { type: "SHOW", slug: "everard-read-dylan-lewis-cat-maquettes" },
+          },
+          {
+            id: "gems-stop-9",
+            title: "You Should Smile More",
+            displayTime: "Sat, 3pm",
+            note: "🖨️",
+            imageUrl: "https://picsum.photos/id/1059/200/200.jpg",
+            // Rhodes, Hoxton
+            coordinates: { lat: 51.5305, lng: -0.0785 },
+            saveTarget: { type: "SHOW", slug: "rhodes-you-should-smile-more" },
           },
         ],
       },
