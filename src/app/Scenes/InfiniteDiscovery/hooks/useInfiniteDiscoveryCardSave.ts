@@ -4,6 +4,8 @@ import { InfiniteDiscoveryArtworkCard_artwork$data } from "__generated__/Infinit
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
+import { useState } from "react"
 import { PixelRatio } from "react-native"
 
 const getThumbnailUrl = (url: string, screenWidth: number) => {
@@ -35,20 +37,33 @@ export const useInfiniteDiscoveryCardSave = (
     removeNewUserOnboardingSavedArtwork,
   } = GlobalStore.actions.infiniteDiscovery
 
+  const [pendingSaveAnimationArtwork, setPendingSaveAnimationArtwork] =
+    useState<NewUserOnboardingSavedArtwork | null>(null)
+
+  const buildOnboardingSavedArtwork = (
+    artwork: NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>
+  ) => ({
+    internalID: artwork.internalID,
+    url: getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
+    blurhash: artwork.images[0]?.blurhash,
+  })
+
   const addOnboardingSavedArtwork = () => {
     if (!artwork) return
 
-    addNewUserOnboardingSavedArtwork({
-      internalID: artwork.internalID,
-      url: getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
-      blurhash: artwork.images[0]?.blurhash,
-    })
+    addNewUserOnboardingSavedArtwork(buildOnboardingSavedArtwork(artwork))
   }
 
   const removeOnboardingSavedArtwork = () => {
     if (!artwork) return
 
     removeNewUserOnboardingSavedArtwork(artwork.internalID)
+  }
+
+  const animateOnboardingSavedArtwork = () => {
+    if (!artwork) return
+
+    setPendingSaveAnimationArtwork(buildOnboardingSavedArtwork(artwork))
   }
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
@@ -88,7 +103,9 @@ export const useInfiniteDiscoveryCardSave = (
     } else {
       // if the artwork is currently unsaved, it will become saved, so optimistically increment the count
       incrementSavedArtworksCount()
-      if (isNewUserOnboardingSession) addOnboardingSavedArtwork()
+      if (isNewUserOnboardingSession) {
+        animateOnboardingSavedArtwork()
+      }
     }
 
     saveArtworkToLists()
@@ -99,9 +116,25 @@ export const useInfiniteDiscoveryCardSave = (
 
     if (!hasSavedArtworks) setHasSavedArtworks(true)
     incrementSavedArtworksCount()
-    if (isNewUserOnboardingSession) addOnboardingSavedArtwork()
+    if (isNewUserOnboardingSession) {
+      animateOnboardingSavedArtwork()
+    }
     saveArtworkToLists()
   }
 
-  return { isSaved, handleSaveButtonPress, handleDoubleTapSave }
+  const completeSaveAnimation = () => {
+    if (pendingSaveAnimationArtwork) {
+      addNewUserOnboardingSavedArtwork(pendingSaveAnimationArtwork)
+    }
+
+    setPendingSaveAnimationArtwork(null)
+  }
+
+  return {
+    isSaved,
+    handleSaveButtonPress,
+    handleDoubleTapSave,
+    pendingSaveAnimationArtwork,
+    completeSaveAnimation,
+  }
 }

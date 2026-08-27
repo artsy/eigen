@@ -120,15 +120,29 @@ describe("useInfiniteDiscoveryCardSave", () => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
     })
 
-    it("adds the artwork to the onboarding list when saved", () => {
+    it("stages the artwork for the flight animation when saved, without adding it to the onboarding list yet", () => {
       mockUseSaveArtworkToArtworkLists(false)
       const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
 
       act(() => result.current.handleSaveButtonPress())
 
+      expect(result.current.pendingSaveAnimationArtwork).toEqual(
+        expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" })
+      )
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
+    })
+
+    it("adds the artwork to the onboarding list once the flight animation completes", () => {
+      mockUseSaveArtworkToArtworkLists(false)
+      const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
+
+      act(() => result.current.handleSaveButtonPress())
+      act(() => result.current.completeSaveAnimation())
+
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([
         expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" }),
       ])
+      expect(result.current.pendingSaveAnimationArtwork).toBeNull()
     })
 
     it("removes the artwork from the onboarding list when unsaved", () => {
@@ -145,11 +159,15 @@ describe("useInfiniteDiscoveryCardSave", () => {
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
     })
 
-    it("adds the artwork to the onboarding list when saved via double-tap", () => {
+    it("adds the artwork to the onboarding list once the flight animation completes after a double-tap save", () => {
       mockUseSaveArtworkToArtworkLists(false)
       const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
 
       act(() => result.current.handleDoubleTapSave())
+
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
+
+      act(() => result.current.completeSaveAnimation())
 
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([
         expect.objectContaining({ internalID: "artwork-1" }),

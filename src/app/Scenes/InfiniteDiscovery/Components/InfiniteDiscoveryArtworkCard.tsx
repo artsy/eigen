@@ -5,6 +5,7 @@ import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/Infinite
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
+import { InfiniteDiscoverySaveFlightAnimation } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoverySaveFlightAnimation"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useInfiniteDiscoveryCardSave } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryCardSave"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
@@ -58,6 +59,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       isSaved: isSavedToArtworkList,
       handleSaveButtonPress,
       handleDoubleTapSave,
+      pendingSaveAnimationArtwork,
+      completeSaveAnimation,
     } = useInfiniteDiscoveryCardSave(artwork)
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
@@ -128,7 +131,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           state.numTaps = 0
           if (!isSaved) {
             Haptic.trigger("impactLight")
-            setShowScreenTapToSave(true)
+            if (!isNewUserOnboardingSession) {
+              setShowScreenTapToSave(true)
+            }
             handleDoubleTapSave()
           }
           return true
@@ -296,6 +301,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             </InfiniteDiscoveryArtworkCardPopover>
           </Touchable>
         </Flex>
+        <InfiniteDiscoverySaveFlightAnimation
+          artwork={pendingSaveAnimationArtwork}
+          onComplete={completeSaveAnimation}
+        />
       </Flex>
     )
   }
