@@ -21,6 +21,7 @@ import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useLiveHomeViewSectionIDs } from "app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"
+import { useRefreshLiveHomeViewSections } from "app/Scenes/HomeView/hooks/useRefreshLiveHomeViewSections"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
@@ -155,23 +156,10 @@ export const HomeView: React.FC = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Refresh all live rails when returning to home (skipping the initial mount focus).
-  // useFocusEffect is used because inactive screens are frozen and wouldn't observe the transition.
-  const hasFocusedHomeOnce = useRef(false)
-  useFocusEffect(
-    useCallback(() => {
-      if (!hasLiveSections) {
-        return
-      }
-
-      if (!hasFocusedHomeOnce.current) {
-        hasFocusedHomeOnce.current = true
-        return
-      }
-
-      bumpLiveRefetchKey()
-    }, [hasLiveSections, bumpLiveRefetchKey])
-  )
+  const { onSearchOverlayVisibilityChange } = useRefreshLiveHomeViewSections({
+    hasLiveSections,
+    refresh: bumpLiveRefetchKey,
+  })
 
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(
@@ -231,6 +219,11 @@ export const HomeView: React.FC = memo(() => {
     [refetchKey]
   )
 
+  const renderHomeHeader = useCallback(
+    () => <HomeHeader onSearchOverlayVisibilityChange={onSearchOverlayVisibilityChange} />,
+    [onSearchOverlayVisibilityChange]
+  )
+
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
@@ -244,7 +237,7 @@ export const HomeView: React.FC = memo(() => {
           keyExtractor={(item) => item.internalID}
           renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
-          ListHeaderComponent={HomeHeader}
+          ListHeaderComponent={renderHomeHeader}
           ListFooterComponent={() =>
             hasNext ? (
               <Flex width="100%" justifyContent="center" alignItems="center" height={200}>

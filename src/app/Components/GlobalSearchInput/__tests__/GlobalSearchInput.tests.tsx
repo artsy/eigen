@@ -38,4 +38,24 @@ describe("GlobalSearchInput", () => {
       })
     )
   })
+
+  it("reports overlay visibility changes", () => {
+    const onOverlayVisibilityChange = jest.fn()
+    const { unmount } = renderWithWrappers(
+      <GlobalSearchInput
+        ownerType={OwnerType.home}
+        onOverlayVisibilityChange={onOverlayVisibilityChange}
+      />
+    )
+
+    expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(false)
+
+    fireEvent.press(screen.getByTestId("search-button"))
+
+    expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(true)
+
+    unmount()
+
+    expect(onOverlayVisibilityChange).toHaveBeenLastCalledWith(false)
+  })
 })
