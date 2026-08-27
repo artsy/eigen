@@ -1,7 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
-import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import {
+  ItinerarySection,
+  ItineraryStop,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
@@ -9,9 +12,10 @@ interface Props {
   section: ItinerarySection
   /** Flattened index of this section's first stop, so numbering runs across sections. */
   startNumber: number
+  onSelectStop: (stop: ItineraryStop) => void
 }
 
-export const ItinerarySectionRow: React.FC<Props> = ({ section, startNumber }) => {
+export const ItinerarySectionRow: React.FC<Props> = ({ section, startNumber, onSelectStop }) => {
   const [isExpanded, setIsExpanded] = useState(true)
 
   return (
@@ -31,7 +35,12 @@ export const ItinerarySectionRow: React.FC<Props> = ({ section, startNumber }) =
       {!!isExpanded && (
         <Join separator={<Spacer y={1} />}>
           {section.stops.map((stop, index) => (
-            <ItineraryStopRow key={stop.id} stop={stop} number={startNumber + index} />
+            <ItineraryStopRow
+              key={stop.id}
+              stop={stop}
+              number={startNumber + index}
+              onPress={onSelectStop}
+            />
           ))}
         </Join>
       )}

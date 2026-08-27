@@ -4,7 +4,7 @@ import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itin
 import { Suspense } from "react"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { ErrorBoundary } from "react-error-boundary"
-import { Image as RNImage } from "react-native"
+import { Image as RNImage, TouchableOpacity } from "react-native"
 
 const IMAGE_SIZE = 60
 const BULLET_SIZE = 16
@@ -13,9 +13,10 @@ interface Props {
   stop: ItineraryStop
   /** Derived from the flattened stop index by the screen. Never stored on the stop. */
   number: number
+  onPress: (stop: ItineraryStop) => void
 }
 
-export const ItineraryStopRow: React.FC<Props> = ({ stop, number }) => {
+export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => {
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
       <Flex
@@ -31,23 +32,40 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number }) => {
         </Text>
       </Flex>
 
-      <RNImage
-        src={stop.imageUrl}
-        width={IMAGE_SIZE}
-        height={IMAGE_SIZE}
-        resizeMode="cover"
-        accessibilityIgnoresInvertColors
-      />
+      {/*
+        Only the image and text open the preview. The save control sits outside the
+        touchable so tapping it saves rather than opening the sheet.
+      */}
+      <TouchableOpacity
+        testID="itinerary-stop-row"
+        accessibilityRole="button"
+        accessibilityLabel={stop.title}
+        onPress={() => onPress(stop)}
+        style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 10 }}
+      >
+        <RNImage
+          src={stop.imageUrl}
+          width={IMAGE_SIZE}
+          height={IMAGE_SIZE}
+          resizeMode="cover"
+          accessibilityIgnoresInvertColors
+        />
 
-      <Flex flex={1}>
-        <Text variant="sm-display" numberOfLines={1} ellipsizeMode="tail">
-          {stop.title}
-        </Text>
-        <Text variant="xs" color="mono60">
-          {stop.displayTime}
-        </Text>
-        {!!stop.note && <Text variant="xs">{stop.note}</Text>}
-      </Flex>
+        <Flex flex={1}>
+          <Text variant="sm-display" numberOfLines={1} ellipsizeMode="tail">
+            {stop.title}
+          </Text>
+          <Text variant="xs" color="mono60">
+            {stop.displayTime}
+          </Text>
+          {/* The note is the longer editorial line; it belongs in the preview sheet. */}
+          {!!stop.address && (
+            <Text variant="xs" color="mono60" numberOfLines={1} ellipsizeMode="tail">
+              {stop.address}
+            </Text>
+          )}
+        </Flex>
+      </TouchableOpacity>
 
       {!!stop.saveTarget && (
         // Containment is mandatory, not decorative. The app's only ambient boundary is the

@@ -10,10 +10,13 @@ import {
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItineraryMapView } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
+import { ItineraryStopPreview } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopPreview"
+import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { goBack } from "app/system/navigation/navigate"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { MotiView } from "moti"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
@@ -28,6 +31,23 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // TODO: Replace with a Relay query once the itinerary schema lands.
   const itinerary = getMockItinerary(citySlug, itineraryId)
   const [isMapView, setIsMapView] = useState(false)
+  const [previewStop, setPreviewStop] = useState<ItineraryStop | null>(null)
+  // Lifted out of ItineraryMapView so the preview's "Show on map" can select a pin
+  // as it switches views.
+  const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
+
+  // Android's hardware back has to agree with the on-screen one, or the two disagree
+  // about whether the map is a mode or a screen. Returning false lets it pop as usual.
+  useBackHandler(
+    useCallback(() => {
+      if (isMapView) {
+        setIsMapView(false)
+        return true
+      }
+
+      return false
+    }, [isMapView])
+  )
   const { top } = useSafeAreaInsets()
 
   if (!itinerary) {
@@ -70,12 +90,30 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
         justifyContent="center"
         px={2}
       >
-        <BackButtonWithBackground onPress={goBack} />
+        {/*
+          On the map, back means "back to the list" rather than "leave the guide". The
+          map is a mode of this screen, not a screen of its own, so popping the whole
+          route would skip the itinerary the user came from.
+        */}
+        <BackButtonWithBackground
+          onPress={() => {
+            if (isMapView) {
+              setIsMapView(false)
+              return
+            }
+
+            goBack()
+          }}
+        />
       </Flex>
 
       <Screen.Body fullwidth>
         {isMapView ? (
-          <ItineraryMapView itinerary={itinerary} />
+          <ItineraryMapView
+            itinerary={itinerary}
+            selectedStopId={selectedStopId}
+            onSelectStop={setSelectedStopId}
+          />
         ) : (
           <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
             <ItineraryHeader itinerary={itinerary} />
@@ -87,6 +125,7 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
                     key={section.id}
                     section={section}
                     startNumber={sectionStartNumbers[index]}
+                    onSelectStop={setPreviewStop}
                   />
                 ))}
               </Join>
@@ -123,6 +162,15 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
             </Button>
           </Flex>
         </MotiView>
+        <ItineraryStopPreview
+          stop={previewStop}
+          onClose={() => setPreviewStop(null)}
+          onShowOnMap={(stopId) => {
+            setPreviewStop(null)
+            setSelectedStopId(stopId)
+            setIsMapView(true)
+          }}
+        />
       </Screen.Body>
     </Screen>
   )
