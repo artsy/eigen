@@ -29,11 +29,17 @@ const PREVIEW_BOTTOM_OFFSET = 70
 /** Close enough to separate two stops sharing one venue. */
 const CLUSTER_EXPAND_ZOOM = 17
 
-export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary }) => {
+interface Props {
+  itinerary: Itinerary
+  /** Owned by ItineraryScreen so the stop preview's "Show on map" can preselect a pin. */
+  selectedStopId: string | null
+  onSelectStop: (stopId: string) => void
+}
+
+export const ItineraryMapView: React.FC<Props> = ({ itinerary, selectedStopId, onSelectStop }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
   const [overlayHeight, setOverlayHeight] = useState(0)
-  const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const { top } = useSafeAreaInsets()
   const showRoute = useFeatureFlag("AREnableCityGuideItineraryRoute")
@@ -137,7 +143,7 @@ export const ItineraryMapView: React.FC<{ itinerary: Itinerary }> = ({ itinerary
         <ItineraryMapPins
           collection={collection}
           selectedStopId={selectedStopId}
-          onSelectStop={setSelectedStopId}
+          onSelectStop={onSelectStop}
           onSelectCluster={(centerCoordinate) => {
             cameraRef.current?.setCamera({
               centerCoordinate,

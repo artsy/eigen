@@ -10,21 +10,34 @@ import { Schema } from "app/utils/track"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
+type SaveButtonVariant = "icon" | "button"
+
 interface Props {
   saveTarget: ItinerarySaveTarget
   stopTitle: string
+  variant?: SaveButtonVariant
 }
 
-export const ItineraryStopSaveControl: React.FC<Props> = ({ saveTarget, stopTitle }) => {
+interface BranchProps {
+  slug: string
+  stopTitle: string
+  variant: SaveButtonVariant
+}
+
+export const ItineraryStopSaveControl: React.FC<Props> = ({
+  saveTarget,
+  stopTitle,
+  variant = "icon",
+}) => {
   if (saveTarget.type === "SHOW") {
-    return <ShowSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+    return <ShowSaveControl slug={saveTarget.slug} stopTitle={stopTitle} variant={variant} />
   }
 
   if (saveTarget.type === "FAIR") {
-    return <FairSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+    return <FairSaveControl slug={saveTarget.slug} stopTitle={stopTitle} variant={variant} />
   }
 
-  return <PartnerSaveControl slug={saveTarget.slug} stopTitle={stopTitle} />
+  return <PartnerSaveControl slug={saveTarget.slug} stopTitle={stopTitle} variant={variant} />
 }
 
 const useSaveToast = () => {
@@ -35,7 +48,7 @@ const useSaveToast = () => {
   }
 }
 
-const ShowSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+const ShowSaveControl: React.FC<BranchProps> = ({ slug, stopTitle, variant }) => {
   const data = useLazyLoadQuery<ItineraryStopSaveControlShowQuery>(ShowQuery, { slug })
   const showToast = useSaveToast()
   const { trackEvent } = useTracking()
@@ -52,6 +65,7 @@ const ShowSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, 
 
   return (
     <ItinerarySaveButton
+      variant={variant}
       isSaved={!!show.isFollowed}
       isSaving={isInFlight}
       accessibilityLabel={show.isFollowed ? `Unsave ${stopTitle}` : `Save ${stopTitle}`}
@@ -71,7 +85,7 @@ const ShowSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, 
   )
 }
 
-const PartnerSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+const PartnerSaveControl: React.FC<BranchProps> = ({ slug, stopTitle, variant }) => {
   const data = useLazyLoadQuery<ItineraryStopSaveControlPartnerQuery>(PartnerQuery, { slug })
   const showToast = useSaveToast()
   const profile = data?.partner?.profile
@@ -87,6 +101,7 @@ const PartnerSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slu
 
   return (
     <ItinerarySaveButton
+      variant={variant}
       isSaved={!!profile.isFollowed}
       isSaving={isInFlight}
       accessibilityLabel={profile.isFollowed ? `Unfollow ${stopTitle}` : `Follow ${stopTitle}`}
@@ -121,7 +136,7 @@ const PartnerQuery = graphql`
 `
 
 /** Fairs follow through fair.profile, the same path partners use. */
-const FairSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, stopTitle }) => {
+const FairSaveControl: React.FC<BranchProps> = ({ slug, stopTitle, variant }) => {
   const data = useLazyLoadQuery<ItineraryStopSaveControlFairQuery>(FairQuery, { slug })
   const showToast = useSaveToast()
   const profile = data?.fair?.profile
@@ -137,6 +152,7 @@ const FairSaveControl: React.FC<{ slug: string; stopTitle: string }> = ({ slug, 
 
   return (
     <ItinerarySaveButton
+      variant={variant}
       isSaved={!!profile.isFollowed}
       isSaving={isInFlight}
       accessibilityLabel={profile.isFollowed ? `Unfollow ${stopTitle}` : `Follow ${stopTitle}`}

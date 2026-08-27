@@ -36,6 +36,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-2",
             title: "Splash: Sea, Beach and Pool",
+            address: "Atlas Gallery, Marylebone",
+            category: "SHOW",
             displayTime: "11am-4pm",
             note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1040/200/200.jpg",
@@ -46,6 +48,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-3",
             title: "Georg Baselitz: Back Again",
+            address: "White Cube Bermondsey",
+            category: "SHOW",
             displayTime: "3pm-4pm",
             imageUrl: "https://picsum.photos/id/1033/200/200.jpg",
             // White Cube Bermondsey
@@ -55,6 +59,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-9",
             title: "The Shape of Heat",
+            address: "Maddox Gallery, Mayfair",
+            category: "SHOW",
             displayTime: "5pm-6pm",
             imageUrl: "https://picsum.photos/id/1072/200/200.jpg",
             // Maddox Gallery, Mayfair
@@ -70,6 +76,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-4",
             title: "Like Music in the Blood",
+            address: "Thaddaeus Ropac, Ely House, Mayfair",
+            category: "SHOW",
             displayTime: "12pm - 1pm",
             note: "🎤",
             imageUrl: "https://picsum.photos/id/1084/200/200.jpg",
@@ -80,6 +88,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-5",
             title: "Evening reception at Victoria Miro",
+            address: "Victoria Miro, Wharf Road, N1",
+            category: "GALLERY",
             displayTime: "6pm-9pm",
             note: "🥂 🧀",
             imageUrl: "https://picsum.photos/id/1074/200/200.jpg",
@@ -96,6 +106,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-6",
             title: "Frieze London",
+            address: "The Regent's Park",
+            category: "FAIR",
             // Real runs are Oct 2025 / May 2026; these read as open so the guide has
             // something live to show.
             displayTime: "Aug 24 - Aug 30",
@@ -108,6 +120,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-7",
             title: "Photo London",
+            address: "Somerset House",
+            category: "FAIR",
             displayTime: "Aug 20 - Sep 6",
             imageUrl: "https://picsum.photos/id/1050/200/200.jpg",
             // Somerset House
@@ -117,6 +131,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "stop-8",
             title: "London Original Print Fair",
+            address: "Somerset House as well, a few metres along the courtyard",
+            category: "FAIR",
             displayTime: "Aug 25 - Aug 31",
             note: "🖨️",
             imageUrl: "https://picsum.photos/id/1062/200/200.jpg",
@@ -146,6 +162,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-1",
             title: "The Language of Glaze",
+            address: "Carpenters Workshop Gallery, Mayfair",
+            category: "SHOW",
             displayTime: "10am-12pm",
             imageUrl: "https://picsum.photos/id/1025/200/200.jpg",
             // Carpenters Workshop Gallery, Mayfair
@@ -158,6 +176,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-2",
             title: "Vestiges",
+            address: "Annely Juda Fine Art, Dering Street",
+            category: "SHOW",
             displayTime: "12pm-1pm",
             imageUrl: "https://picsum.photos/id/1027/200/200.jpg",
             // Annely Juda Fine Art, Dering Street
@@ -167,6 +187,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-3",
             title: "The Shape of Heat",
+            address: "Maddox Gallery, Mayfair",
+            category: "SHOW",
             displayTime: "1pm-2pm",
             note: "☕",
             imageUrl: "https://picsum.photos/id/1029/200/200.jpg",
@@ -183,6 +205,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-4",
             title: "Tjukurpa",
+            address: "Rebecca Hossack Art Gallery, Fitzrovia",
+            category: "SHOW",
             displayTime: "2pm-3pm",
             imageUrl: "https://picsum.photos/id/1031/200/200.jpg",
             // Rebecca Hossack Art Gallery, Fitzrovia
@@ -192,6 +216,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-5",
             title: "Summer Show 2026",
+            address: "Shapero Modern, St George Street",
+            category: "SHOW",
             displayTime: "3pm-4pm",
             imageUrl: "https://picsum.photos/id/1036/200/200.jpg",
             // Shapero Modern, St George Street
@@ -201,6 +227,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-6",
             title: "Pop Odyssey",
+            address: "Halcyon Gallery, Bruton Street",
+            category: "SHOW",
             displayTime: "4pm-5pm",
             note: "🍸",
             imageUrl: "https://picsum.photos/id/1037/200/200.jpg",
@@ -211,6 +239,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-13",
             title: "The Transformation",
+            address: "Lysenko, Shoreditch",
+            category: "SHOW",
             displayTime: "5pm-6pm",
             imageUrl: "https://picsum.photos/id/1069/200/200.jpg",
             // Lysenko, Shoreditch
@@ -226,6 +256,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-7",
             title: "So This Is Goodbye...",
+            address: "Beers London, Little Britain",
+            category: "SHOW",
             displayTime: "6pm-7pm",
             imageUrl: "https://picsum.photos/id/1038/200/200.jpg",
             // Beers London, Little Britain
@@ -235,6 +267,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-8",
             title: "12:12",
+            address: "Rhodes, Cremer Street, Hoxton",
+            category: "SHOW",
             displayTime: "7pm-8pm",
             note: "🎤",
             imageUrl: "https://picsum.photos/id/1039/200/200.jpg",
@@ -245,6 +279,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-9",
             title: "One Fly Makes No Summer",
+            address: "Kristin Hjellegjerde Gallery, Melior Place",
+            category: "SHOW",
             displayTime: "8pm-9pm",
             note: "🥂",
             imageUrl: "https://picsum.photos/id/1041/200/200.jpg",
@@ -258,6 +294,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-14",
             title: "No Ruined Stones",
+            address: "Cadogan Gallery, Chelsea",
+            category: "SHOW",
             displayTime: "9pm-10pm",
             imageUrl: "https://picsum.photos/id/1073/200/200.jpg",
             // Cadogan Gallery, Chelsea
@@ -267,6 +305,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-15",
             title: "Fame, Fashion, McGee",
+            address: "Iconic Images, Mayfair",
+            category: "SHOW",
             displayTime: "10pm-11pm",
             note: "🍸",
             imageUrl: "https://picsum.photos/id/1075/200/200.jpg",
@@ -283,6 +323,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-10",
             title: "House Plant Care",
+            address: "8 Holland Street, Kensington",
+            category: "SHOW",
             displayTime: "Next morning, 10am",
             imageUrl: "https://picsum.photos/id/1044/200/200.jpg",
             // 8 Holland Street, Kensington
@@ -292,6 +334,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-11",
             title: "Disruptors",
+            address: "Ben Uri Gallery and Museum, Boundary Road",
+            category: "SHOW",
             displayTime: "11am-12pm",
             imageUrl: "https://picsum.photos/id/1045/200/200.jpg",
             // Ben Uri Gallery and Museum, Boundary Road
@@ -304,6 +348,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "hours-stop-12",
             title: "Second Nature",
+            address: "Open Doors Gallery, Fitzrovia",
+            category: "SHOW",
             displayTime: "12pm-1pm",
             note: "🧀",
             imageUrl: "https://picsum.photos/id/1047/200/200.jpg",
@@ -331,6 +377,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-1",
             title: "An afternoon at White Cube",
+            address: "White Cube Bermondsey",
+            category: "GALLERY",
             displayTime: "11am-1pm",
             imageUrl: "https://picsum.photos/id/1035/200/200.jpg",
             // White Cube Bermondsey
@@ -340,6 +388,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-2",
             title: "Fame, Fashion, McGee",
+            address: "Iconic Images, Mayfair",
+            category: "SHOW",
             displayTime: "1pm-2pm",
             imageUrl: "https://picsum.photos/id/1048/200/200.jpg",
             // Iconic Images, Mayfair
@@ -349,6 +399,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-3",
             title: "The Last Dolls",
+            address: "Atlas Gallery, Marylebone",
+            category: "SHOW",
             displayTime: "2pm-3pm",
             note: "🧀",
             imageUrl: "https://picsum.photos/id/1051/200/200.jpg",
@@ -365,6 +417,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-4",
             title: "Fragments of Place",
+            address: "Purdy Hicks Gallery, Bankside",
+            category: "SHOW",
             displayTime: "3pm-4pm",
             imageUrl: "https://picsum.photos/id/1052/200/200.jpg",
             // Purdy Hicks Gallery, Bankside
@@ -377,6 +431,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-5",
             title: "Forging Forms",
+            address: "Contemporary Applied Arts, Southwark Street",
+            category: "SHOW",
             displayTime: "4pm-5pm",
             imageUrl: "https://picsum.photos/id/1053/200/200.jpg",
             // Contemporary Applied Arts, Southwark Street
@@ -386,6 +442,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-6",
             title: "Inner Weather",
+            address: "Artistellar, Shoreditch",
+            category: "SHOW",
             displayTime: "5pm-6pm",
             note: "🥂",
             imageUrl: "https://picsum.photos/id/1055/200/200.jpg",
@@ -396,6 +454,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-16",
             title: "Chorus",
+            address: "Rhodes, Cremer Street, Hoxton",
+            category: "SHOW",
             displayTime: "6pm-7pm",
             imageUrl: "https://picsum.photos/id/1070/200/200.jpg",
             // Rhodes, Cremer Street, Hoxton
@@ -405,6 +465,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-17",
             title: "Photo London",
+            address: "Somerset House",
+            category: "FAIR",
             displayTime: "7pm-8pm",
             note: "🥂",
             imageUrl: "https://picsum.photos/id/1071/200/200.jpg",
@@ -421,6 +483,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-7",
             title: "No Ruined Stones",
+            address: "Cadogan Gallery, Chelsea",
+            category: "SHOW",
             displayTime: "Sat, 11am",
             imageUrl: "https://picsum.photos/id/1056/200/200.jpg",
             // Cadogan Gallery, Chelsea
@@ -430,6 +494,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-8",
             title: "Cat Maquettes",
+            address: "Everard Read, Eastcastle Street",
+            category: "SHOW",
             displayTime: "Sat, 1pm",
             imageUrl: "https://picsum.photos/id/1057/200/200.jpg",
             // Everard Read, Eastcastle Street
@@ -439,6 +505,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-9",
             title: "You Should Smile More",
+            address: "Rhodes, Hoxton",
+            category: "SHOW",
             displayTime: "Sat, 3pm",
             note: "🖨️",
             imageUrl: "https://picsum.photos/id/1059/200/200.jpg",
@@ -449,6 +517,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-18",
             title: "Vestiges",
+            address: "Annely Juda Fine Art, Dering Street",
+            category: "SHOW",
             displayTime: "Sat, 5pm",
             imageUrl: "https://picsum.photos/id/1076/200/200.jpg",
             // Annely Juda Fine Art, Dering Street
@@ -464,6 +534,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-10",
             title: "Learning to Fly",
+            address: "Kristin Hjellegjerde Gallery, Melior Place",
+            category: "SHOW",
             displayTime: "Sun, 11am",
             imageUrl: "https://picsum.photos/id/1063/200/200.jpg",
             // Kristin Hjellegjerde Gallery, Melior Place
@@ -473,6 +545,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-11",
             title: "Neither Here Nor There",
+            address: "General Assembly, Hoxton",
+            category: "SHOW",
             displayTime: "Sun, 12pm",
             imageUrl: "https://picsum.photos/id/1064/200/200.jpg",
             // General Assembly, Hoxton
@@ -482,6 +556,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-12",
             title: "Jonathan Delafield Cook",
+            address: "Purdy Hicks Gallery, Bankside",
+            category: "SHOW",
             displayTime: "Sun, 2pm",
             note: "☕",
             imageUrl: "https://picsum.photos/id/1065/200/200.jpg",
@@ -498,6 +574,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-13",
             title: "Amukela Leswi U Nga Nyikiwa Swona",
+            address: "Everard Read, Eastcastle Street",
+            category: "SHOW",
             displayTime: "Sun, 3pm",
             imageUrl: "https://picsum.photos/id/1066/200/200.jpg",
             // Everard Read, Eastcastle Street
@@ -510,6 +588,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-14",
             title: "London Design Festival: Rhythm",
+            address: "Contemporary Applied Arts, Southwark Street",
+            category: "SHOW",
             displayTime: "Sun, 4pm",
             imageUrl: "https://picsum.photos/id/1067/200/200.jpg",
             // Contemporary Applied Arts, Southwark Street
@@ -522,6 +602,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
           {
             id: "gems-stop-15",
             title: "A last look at Victoria Miro",
+            address: "Victoria Miro, Wharf Road, N1",
+            category: "GALLERY",
             displayTime: "Sun, 5pm",
             note: "🥂",
             imageUrl: "https://picsum.photos/id/1068/200/200.jpg",
