@@ -1,9 +1,10 @@
 import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
+import { useSaveFlightPhase } from "app/Scenes/InfiniteDiscovery/hooks/useSaveFlightPhase"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { MotiView } from "moti"
-import { useEffect, useRef, useState } from "react"
+import { useMemo } from "react"
 import { Easing } from "react-native-reanimated"
 
 export const INFINITE_DISCOVERY_SAVE_ANIMATION_PORTAL_HOST = "InfiniteDiscovery-SaveAnimation"
@@ -73,21 +74,15 @@ interface SaveFlightCardProps {
   onComplete: () => void
 }
 
-type FlightPhase = "pop_in" | "flight" | "fade_out"
-
-const PHASE_DURATIONS: Record<FlightPhase, number> = {
-  pop_in: POP_DURATION,
-  flight: FLIGHT_DURATION - FADE_OUT_DURATION,
-  fade_out: FADE_OUT_DURATION,
-}
-
 const POP_IN_SCALE_SEQUENCE = [
+  // overshoot past full size
   {
     value: POP_OVERSHOOT_SCALE,
     type: "timing" as const,
     duration: POP_OVERSHOOT_DURATION,
     easing: Easing.out(Easing.ease),
   },
+  // settle back down to full size
   {
     value: BASE_SCALE,
     type: "timing" as const,
@@ -105,31 +100,24 @@ const SaveFlightCard: React.FC<SaveFlightCardProps> = ({
   translateY,
   onComplete,
 }) => {
-  const [phase, setPhase] = useState<FlightPhase>("pop_in")
-  const onCompleteRef = useRef(onComplete)
-  onCompleteRef.current = onComplete
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (phase === "pop_in") setPhase("flight")
-      else if (phase === "flight") setPhase("fade_out")
-      else onCompleteRef.current()
-    }, PHASE_DURATIONS[phase])
-
-    return () => clearTimeout(timeout)
-  }, [phase])
+  const phase = useSaveFlightPhase({
+    popInDuration: POP_DURATION,
+    flightDuration: FLIGHT_DURATION - FADE_OUT_DURATION,
+    fadeOutDuration: FADE_OUT_DURATION,
+    onComplete,
+  })
 
   const isPoppingIn = phase === "pop_in"
   const isFadingOut = phase === "fade_out"
 
-  return (
-    <MotiView
-      pointerEvents="none"
-      from={{
+  // stable reference while phase is unchanged, so unrelated re-renders don't restart the sequence
+  const flightAnimationProps = useMemo(
+    () => ({
+      from: {
         transform: [{ translateX: 0 }, { translateY: 0 }, { scale: POP_START_SCALE }],
         opacity: 0,
-      }}
-      animate={{
+      },
+      animate: {
         transform: [
           { translateX: isPoppingIn ? 0 : translateX },
           { translateY: isPoppingIn ? 0 : translateY },
@@ -138,29 +126,38 @@ const SaveFlightCard: React.FC<SaveFlightCardProps> = ({
           },
         ],
         opacity: isFadingOut ? 0 : 1,
-      }}
-      transition={{
+      },
+      transition: {
         translateY: {
-          type: "timing",
+          type: "timing" as const,
           duration: FLIGHT_DURATION,
           easing: Easing.in(Easing.quad),
         },
         translateX: {
-          type: "timing",
+          type: "timing" as const,
           duration: FLIGHT_DURATION,
           easing: Easing.out(Easing.quad),
         },
         scale: {
-          type: "timing",
+          type: "timing" as const,
           duration: FADE_OUT_DURATION,
           easing: Easing.inOut(Easing.quad),
         },
         opacity: {
-          type: "timing",
+          type: "timing" as const,
           duration: isFadingOut ? OPACITY_DROP_DURATION : FADE_IN_DURATION,
+          // stays fully opaque while shrinking, then only fades in the final slice of fade_out
           delay: isFadingOut ? FADE_OUT_DURATION - OPACITY_DROP_DURATION : 0,
         },
-      }}
+      },
+    }),
+    [isPoppingIn, isFadingOut, translateX, translateY]
+  )
+
+  return (
+    <MotiView
+      pointerEvents="none"
+      {...flightAnimationProps}
       style={{
         position: "absolute",
         left: startLeft,
