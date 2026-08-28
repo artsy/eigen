@@ -396,6 +396,22 @@ def resolve_promoted_fingerprint(platform:, build_number:)
   promoted_fingerprint
 end
 
+def nightly_tag_suffix(options)
+  # CI passes is_nightly:true for the scheduled builds only. Fastlane hands CLI options over as
+  # strings, hence the to_s comparison rather than a plain truthiness check.
+  options[:is_nightly].to_s == 'true' ? NIGHTLY_TAG_SUFFIX : ''
+end
+
+def beta_tag_commit_message(tag)
+  # A beta's tag exists either plain or with the nightly suffix, so look for both and flag the
+  # nightly ones — those are the builds we ship.
+  msg = git_tag_commit_message(tag)
+  return msg if msg
+
+  nightly_msg = git_tag_commit_message("#{tag}#{NIGHTLY_TAG_SUFFIX}")
+  nightly_msg && "[nightly] #{nightly_msg}"
+end
+
 def should_silence_beta_failure?
   # Set this var in circleci if you want to silence beta failure alerts for a while
   # E.g. you are working on a ci change

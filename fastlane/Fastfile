@@ -42,6 +42,11 @@ IOS_BETA_TARGETS = {
 
 BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android build_maestro_android build_maestro_ios deploy_android_beta deploy_ios_beta].freeze
 
+# Suffix added to the git tag of the scheduled (nightly) betas, so they can be told apart at a
+# glance from betas triggered manually or by a push to a beta branch. The nightly is the build we
+# use for QA and releases, e.g. `ios-9.16.0-2026.08.14.08-nightly`.
+NIGHTLY_TAG_SUFFIX = '-nightly'
+
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
 GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
 GIT_COMMIT_DATE_STR = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
@@ -82,7 +87,7 @@ lane :ship_beta_ios do |options|
 
   # Builds the app
   sync_signing_ios(deployment_target: deployment_target)
-  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}", message: "fingerprint:#{current_fingerprint}")
+  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}#{nightly_tag_suffix(options)}", message: "fingerprint:#{current_fingerprint}")
 
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
@@ -209,7 +214,7 @@ lane :promote_beta_ios do
     raw_version = build.version
     padded      = format_build_number(raw_version)
     app_version = build.pre_release_version&.version || "?"
-    commit_msg  = git_tag_commit_message("ios-#{app_version}-#{padded}") || "(no tag found)"
+    commit_msg  = beta_tag_commit_message("ios-#{app_version}-#{padded}") || "(no tag found)"
     date        = begin
       Time.parse(build.uploaded_date.to_s).strftime('%Y-%m-%d %H:%M')
     rescue
@@ -367,7 +372,7 @@ lane :ship_beta_android do |options|
   end
 
   set_git_properties_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}", message: "fingerprint:#{current_fingerprint}")
+  tag_and_push(tag: "android-#{vname}-#{vcode}#{nightly_tag_suffix(options)}", message: "fingerprint:#{current_fingerprint}")
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   if deployment_target == 'firebase'
@@ -482,7 +487,7 @@ lane :select_android_build do |options|
 
   build_data = sorted_parsed.map do |date, filename|
     vcode      = filename.scan(/\d+/).first
-    raw_msg    = git_tag_commit_message("android-#{app_version}-#{vcode}")
+    raw_msg    = beta_tag_commit_message("android-#{app_version}-#{vcode}")
     version    = raw_msg ? app_version : "unknown"
     commit_msg = raw_msg || "(no tag found)"
     { filename: filename, vcode: vcode, date: date, version: version, commit_msg: commit_msg }

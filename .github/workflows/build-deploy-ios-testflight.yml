@@ -44,7 +44,8 @@ jobs:
         uses: ./.github/actions/setup-bin-modules
 
       - name: Build and deploy iOS to TestFlight
-        run: bundle exec fastlane ship_beta_ios deployment_target:testflight
+        # is_nightly tags the scheduled build as `-nightly` so it's identifiable among the beta tags
+        run: bundle exec fastlane ship_beta_ios deployment_target:testflight is_nightly:${{ github.event_name == 'schedule' }}
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120

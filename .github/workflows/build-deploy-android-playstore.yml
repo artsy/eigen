@@ -50,7 +50,8 @@ jobs:
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
       - name: Build and deploy Android to Play Store
-        run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
+        # is_nightly tags the scheduled build as `-nightly` so it's identifiable among the beta tags
+        run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE is_nightly:${{ github.event_name == 'schedule' }}
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
