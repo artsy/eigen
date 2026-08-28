@@ -3774,6 +3774,105 @@ type ArtistsWithAlertCountsEdge {
   totalAlertCount: Int
 }
 
+"""
+Artnet record of an artwork.
+"""
+type ArtnetArtwork {
+  artnetEditionSets: [ArtnetEditionSet]
+  artnetId: String
+
+  """
+  Artnet availability vocabulary, e.g. For Sale or Price on Request.
+  """
+  availability: String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+
+  """
+  Medium names + materials for this artwork, e.g. Paintings, Oil.
+  """
+  mediums: [String]
+  priceCurrency: String
+  priceFrom: Money
+  priceTo: Money
+
+  """
+  Whether the artwork is published on Artnet.
+  """
+  published: Boolean
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
+"""
+An Artnet edition set.
+"""
+type ArtnetEditionSet {
+  artnetId: String
+
+  """
+  Artnet availability vocabulary, e.g. For Sale or Price on Request.
+  """
+  availability: String
+
+  """
+  The corresponding CatalogEditionSet, if this edition set has been matched to one.
+  """
+  catalogEditionSetId: String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  label: String
+  priceCurrency: String
+  priceFrom: Money
+  priceTo: Money
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+}
+
 type ArtsyShippingOptInMutationFailure {
   mutationError: GravityMutationError
 }
@@ -8207,6 +8306,10 @@ type CareerHighlight implements Node {
 }
 
 type CatalogArtwork {
+  """
+  Artnet record of this catalog artwork.
+  """
+  artnetArtwork: ArtnetArtwork
   artworkId: String
   availability: String
 
