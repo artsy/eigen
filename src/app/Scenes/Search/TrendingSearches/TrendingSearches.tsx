@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, type RailViewed } from "@artsy/co
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import { SEARCH_BY_PHOTO_BUTTON_SPACE } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { RecentSearchesPillsRail } from "app/Scenes/Search/TrendingSearches/components/RecentSearchesPillsRail"
 import { TrendingArtistsAvatarsRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtistsAvatarsRail"
 import { TrendingArtworksRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtworksRail"
@@ -90,7 +91,6 @@ const RAIL_CARD_COUNT = 3
 
 // Height reserved for the "Search by photo" sticky button in the search overlay -- see
 // `GlobalSearchInputOverlay.tsx`. Includes the 50pt button height + 8pt `pb={1}` breathing space.
-const SEARCH_BY_PHOTO_BUTTON_SPACE = 58
 
 const TrendingPlaceholder: React.FC = () => (
   <Skeleton>

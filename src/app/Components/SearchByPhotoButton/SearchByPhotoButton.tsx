@@ -16,6 +16,13 @@ interface SearchByPhotoButtonProps {
 const LABEL = "Search by photo"
 
 /**
+ * Vertical room the pill occupies once pinned over scrolling content, including the padding it's
+ * usually given. Scroll containers underneath a pinned pill pad their bottom by this so their last
+ * item can clear it.
+ */
+export const SEARCH_BY_PHOTO_BUTTON_SPACE = 58
+
+/**
  * The Artsy Lens entry point. Shared rather than duplicated (AGENTS.md) because it appears on three
  * surfaces that disagree about *where* it goes — the search overlay opens the `/lens` modal, while
  * the Lens screens return to the camera inside their own independent stack — but must not disagree

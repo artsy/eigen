@@ -1,10 +1,12 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { PhotographIcon } from "@artsy/icons/native"
 import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
+import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { forwardRef, Fragment, useEffect, useImperativeHandle, useState } from "react"
 import { useTracking } from "react-tracking"
@@ -44,46 +46,50 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
 
     return (
       <Fragment>
-        <Touchable
-          accessibilityRole="button"
-          onPress={() => {
-            tracking.trackEvent(
-              tracks.tappedGlobalSearchBar({
-                ownerType,
-              })
-            )
-            setIsVisible(true)
-          }}
-          hitSlop={ICON_HIT_SLOP}
-          testID="search-button"
-        >
-          {/* In order to make the search input behave like a button here, we wrapped it with a
+        {/*
+          This wrapper exists to give the camera icon a positioning parent it can sit *outside* the
+          search Touchable in. The icon used to live inside the `pointerEvents="none"` subtree
+          below, where it could never receive a tap of its own — every press, icon included, opened
+          the search overlay. As a later sibling of the Touchable it renders on top of the bar and
+          wins touches within its own bounds, so it can open the camera directly.
+        */}
+        <Flex>
+          <Touchable
+            accessibilityRole="button"
+            onPress={() => {
+              tracking.trackEvent(
+                tracks.tappedGlobalSearchBar({
+                  ownerType,
+                })
+              )
+              setIsVisible(true)
+            }}
+            hitSlop={ICON_HIT_SLOP}
+            testID="search-button"
+          >
+            {/* In order to make the search input behave like a button here, we wrapped it with a
          Touchable and set pointerEvents to none. This will prevent the input from receiving
          touch events and make sure they are being handled by the Touchable.
         */}
-          <Flex pointerEvents="none">
-            <RoundSearchInput
-              placeholder="Search Artsy"
-              accessibilityHint="Search artists, artworks, galleries etc."
-              accessibilityLabel="Search artists, artworks, galleries etc."
-              maxLength={55}
-              numberOfLines={1}
-              multiline={false}
-            />
-            {!!enableArtsyLens && (
-              <Flex
-                position="absolute"
-                right={16}
-                top={0}
-                bottom={0}
-                justifyContent="center"
-                testID="search-input-camera-icon"
-              >
-                <PhotographIcon width={20} height={20} fill="mono100" />
-              </Flex>
-            )}
-          </Flex>
-        </Touchable>
+            <Flex pointerEvents="none">
+              <RoundSearchInput
+                placeholder="Search Artsy"
+                accessibilityHint="Search artists, artworks, galleries etc."
+                accessibilityLabel="Search artists, artworks, galleries etc."
+                maxLength={55}
+                numberOfLines={1}
+                multiline={false}
+              />
+            </Flex>
+          </Touchable>
+
+          {!!enableArtsyLens && (
+            // Straight to the camera rather than into the overlay: reverse-image search has nothing
+            // to do with the text field, so routing through the overlay would only add a tap.
+            <SearchByPhotoIconButton onPress={() => navigate("/lens")} />
+          )}
+        </Flex>
+
         <GlobalSearchInputOverlay
           ownerType={ownerType}
           visible={isVisible}
