@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { LensAnalyzing } from "app/Scenes/Lens/Screens/LensAnalyzing"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
@@ -14,6 +14,7 @@ jest.mock("app/utils/uploadImageToS3", () => ({
 }))
 
 const mockReplace = jest.fn()
+const mockNavigate = jest.fn()
 
 const photo = { uri: "file:///tmp/photo.jpg", width: 400, height: 300 }
 
@@ -23,7 +24,7 @@ const portraitCrop = { uri: "file:///tmp/cropped.jpg", width: 1454, height: 1744
 const landscapeCrop = { uri: "file:///tmp/cropped.jpg", width: 1744, height: 1454 }
 
 const navigationProps = {
-  navigation: { replace: mockReplace } as any,
+  navigation: { replace: mockReplace, navigate: mockNavigate } as any,
   route: { key: "LensAnalyzing", name: "LensAnalyzing", params: { photo } } as any,
 }
 
@@ -146,7 +147,7 @@ describe("LensAnalyzing", () => {
     renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     await screen.findByText(
-      "Something went wrong finding matches for that photo. Please close and try again."
+      "Something went wrong finding matches for that photo. Please try again."
     )
 
     expect(uploadImageToS3).not.toHaveBeenCalled()
@@ -159,10 +160,22 @@ describe("LensAnalyzing", () => {
     renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
     await screen.findByText(
-      "Something went wrong finding matches for that photo. Please close and try again."
+      "Something went wrong finding matches for that photo. Please try again."
     )
 
     expect(mockReplace).not.toHaveBeenCalled()
+  })
+
+  // The error state used to tell the user to close the modal, which meant re-entering Lens through
+  // the search overlay just to retry -- a dead end for the most likely next action.
+  it("offers a way back to the camera when the crop fails, instead of asking the user to close", async () => {
+    jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
+
+    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+
+    fireEvent.press(await screen.findByTestId("lensAnalyzingSearchByPhotoButton"))
+
+    expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
   })
 
   // The live preview aligns the sensor feed to the orientation-locked UI, so a sideways capture
@@ -189,7 +202,7 @@ describe("LensAnalyzing", () => {
 
     renderWithWrappers(
       <LensAnalyzing
-        navigation={{ replace: mockReplace } as any}
+        navigation={{ replace: mockReplace, navigate: mockNavigate } as any}
         route={
           {
             key: "LensAnalyzing",

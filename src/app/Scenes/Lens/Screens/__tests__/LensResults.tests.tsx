@@ -7,6 +7,9 @@ import { graphql } from "react-relay"
 
 const photo = { uri: "file:///tmp/photo.jpg", width: 400, height: 300 }
 
+const mockReplace = jest.fn()
+const mockNavigate = jest.fn()
+
 describe("LensResults", () => {
   const { renderWithRelay } = setupTestWrapper<LensResultsTestsQuery>({
     Component: () => (
@@ -18,7 +21,7 @@ describe("LensResults", () => {
             params: { s3Bucket: "my-bucket", s3Key: "my-key", photo },
           } as any
         }
-        navigation={{} as any}
+        navigation={{ replace: mockReplace, navigate: mockNavigate } as any}
       />
     ),
     query: graphql`
@@ -55,5 +58,38 @@ describe("LensResults", () => {
     afterDismiss?.()
 
     expect(navigate).toHaveBeenCalledWith("/artwork/abc123")
+  })
+
+  // LensAnalyzing replaced itself with this screen, so the only thing left in the stack below is
+  // the live camera -- a local goBack would pop onto a running viewfinder. The modal has to close
+  // before a tab route can resolve, hence the deferred navigate.
+  it("leaves the Lens flow for the Search tab when backing out", () => {
+    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    fireEvent.press(screen.getByLabelText("Back"))
+
+    expect(mockReplace).not.toHaveBeenCalled()
+
+    expect(dismissModal).toHaveBeenCalledTimes(1)
+    const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]
+    afterDismiss?.()
+
+    expect(navigate).toHaveBeenCalledWith("/search")
+  })
+
+  it("offers a way to search another photo when there are no matches", () => {
+    renderWithRelay({ ArtworkConnection: () => ({ edges: [] }) })
+
+    fireEvent.press(screen.getByTestId("lensResultsSearchByPhotoButton"))
+
+    expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
+  })
+
+  // With results on screen the next action is tapping one of them; a permanent CTA over the grid
+  // would compete with that.
+  it("does not offer that button when there are matches to tap", () => {
+    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    expect(screen.queryByTestId("lensResultsSearchByPhotoButton")).toBeNull()
   })
 })

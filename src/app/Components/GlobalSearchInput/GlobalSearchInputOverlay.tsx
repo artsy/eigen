@@ -1,18 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
-import { PhotographIcon } from "@artsy/icons/native"
-import {
-  Box,
-  Flex,
-  RoundSearchInput,
-  Spacer,
-  Text,
-  Touchable,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
+import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
@@ -199,29 +191,12 @@ export const GlobalSearchInputOverlay: React.FC<{
           <Flex position="absolute" left={0} right={0} bottom={insets.bottom}>
             <KeyboardStickyView offset={{ closed: -BOTTOM_TABS_HEIGHT, opened: insets.bottom }}>
               <Flex px={2} pb={1}>
-                <Touchable
-                  testID="search-by-photo-button"
-                  accessibilityRole="button"
-                  accessibilityLabel="Search by photo"
+                <SearchByPhotoButton
                   onPress={() => {
                     hideModal()
                     navigate("/lens")
                   }}
-                >
-                  <Flex
-                    bg="mono100"
-                    borderRadius={25}
-                    height={50}
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <PhotographIcon width={20} height={20} fill="mono0" />
-                    <Text variant="sm-display" color="mono0" ml={0.5} style={{ lineHeight: 20 }}>
-                      Search by photo
-                    </Text>
-                  </Flex>
-                </Touchable>
+                />
               </Flex>
             </KeyboardStickyView>
           </Flex>

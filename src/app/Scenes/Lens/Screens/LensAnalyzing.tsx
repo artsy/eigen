@@ -1,6 +1,8 @@
-import { BackButton, Flex, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spinner, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
+import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
+import { LensHeader } from "app/Scenes/Lens/Components/LensHeader"
 import { LensScanLine } from "app/Scenes/Lens/Components/LensScanLine"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
@@ -10,7 +12,6 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { useEffect, useState } from "react"
 import { Image, useWindowDimensions } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type Props = StackScreenProps<LensNavigationStack, "LensAnalyzing">
 
@@ -53,8 +54,6 @@ const CARD_MAX_HEIGHT_FRACTION = 0.62
  */
 export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   const { photo } = route.params
-  const insets = useSafeAreaInsets()
-  const space = useSpace()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const [cropped, setCropped] = useState<CroppedPhoto | null>(null)
   const [hasError, setHasError] = useState(false)
@@ -150,29 +149,30 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
-      <Flex
-        mt={`${insets.top}px`}
-        height={44}
-        flexDirection="row"
-        alignItems="center"
-        px={2}
-        position="absolute"
-        top={0}
-        left={0}
-        right={0}
-      >
-        <BackButton
-          color="mono0"
-          showX
-          onPress={() => dismissModal()}
-          hitSlop={{ top: space(2), left: space(2), right: space(2), bottom: space(2) }}
-        />
+      <Flex position="absolute" top={0} left={0} right={0}>
+        {/* No title: the caption below the card is the only label this screen needs. */}
+        <LensHeader onClose={() => dismissModal()} />
       </Flex>
 
       {hasError ? (
-        <Text variant="sm-display" color="mono0" mx={4} textAlign="center">
-          Something went wrong finding matches for that photo. Please close and try again.
-        </Text>
+        // Failing here used to be a dead end -- the copy asked the user to close the modal, which
+        // meant re-entering Lens through the search overlay just to retry. The button reruns the
+        // flow in place instead, so the copy no longer mentions closing.
+        <Flex mx={4} alignSelf="stretch" alignItems="center">
+          <Text variant="sm-display" color="mono0" textAlign="center">
+            Something went wrong finding matches for that photo. Please try again.
+          </Text>
+
+          <Flex alignSelf="stretch" mt={4}>
+            <SearchByPhotoButton
+              testID="lensAnalyzingSearchByPhotoButton"
+              variant="light"
+              // LensCamera is this stack's root and is still mounted below, so this pops back to
+              // it rather than stacking a second camera.
+              onPress={() => navigation.navigate("LensCamera")}
+            />
+          </Flex>
+        </Flex>
       ) : (
         <>
           <Flex
