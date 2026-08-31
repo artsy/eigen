@@ -21,6 +21,7 @@ import {
   FollowedArtistsBank,
 } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { useUpdateUserProfile } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useUpdateUserProfile"
 import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
@@ -34,6 +35,7 @@ const SET_ID = "onboarding:suggested-artists"
 
 export const FollowArtists: React.FC = () => {
   const { trackCompletedOnboarding, trackTappedSkip } = useOnboardingTracking()
+  const { commitMutation } = useUpdateUserProfile()
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
   const [query, setQuery] = useState("")
@@ -78,6 +80,7 @@ export const FollowArtists: React.FC = () => {
             onPress={() => {
               trackTappedSkip(ContextModule.onboardingFlow, OwnerType.onboarding)
               trackCompletedOnboarding()
+              commitMutation({ completedOnboarding: true })
               GlobalStore.actions.onboarding.setOnboardingState("complete")
             }}
             hitSlop={DEFAULT_HIT_SLOP}
@@ -152,6 +155,7 @@ export const FollowArtists: React.FC = () => {
                 trackCompletedOnboarding()
                 GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
                 GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
+                commitMutation({ completedOnboarding: true })
                 GlobalStore.actions.onboarding.setOnboardingState("complete")
               }}
             >

@@ -4,7 +4,7 @@ import {
 } from "__generated__/useUpdateUserProfileMutation.graphql"
 import { graphql, useMutation } from "react-relay"
 
-export const useUpdateUserProfile = (onMutationComplete: () => void) => {
+export const useUpdateUserProfile = (onMutationComplete?: () => void) => {
   const [commit] = useMutation<useUpdateUserProfileMutation>(UpdateProfileMutation)
 
   const commitMutation = (input: UpdateMyProfileInput) => {
@@ -13,7 +13,7 @@ export const useUpdateUserProfile = (onMutationComplete: () => void) => {
         input,
       },
       onCompleted() {
-        onMutationComplete()
+        onMutationComplete?.()
       },
       onError(e) {
         console.error(e)

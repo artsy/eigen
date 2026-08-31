@@ -3,6 +3,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowedArtistsBank } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
 import { FollowArtists } from "app/Scenes/Onboarding/Screens/Onboarding/FollowArtists"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { KeyboardController } from "react-native-keyboard-controller"
@@ -59,6 +60,10 @@ describe("FollowArtists", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     dismissSpy = jest.spyOn(KeyboardController, "dismiss").mockImplementation(jest.fn())
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   describe("default view", () => {
@@ -203,6 +208,39 @@ describe("FollowArtists", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
     })
 
+    it("still sets onboardingState to complete if the profile mutation fails", () => {
+      jest.spyOn(console, "error").mockImplementation()
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+
+      fireEvent.press(screen.getByTestId("continue-button"))
+
+      const environment = getMockRelayEnvironment()
+      environment.mock.rejectMostRecentOperation(new Error("network error"))
+
+      expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
+        "complete"
+      )
+    })
+
+    it("sends completedOnboarding: true in the profile mutation", () => {
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+      fireEvent.press(screen.getByText("OrderedSet"))
+
+      fireEvent.press(screen.getByTestId("continue-button"))
+
+      const environment = getMockRelayEnvironment()
+      const operation = environment.mock.getMostRecentOperation()
+
+      expect(operation.request.variables.input).toEqual({ completedOnboarding: true })
+    })
+
     it("defers home tooltips when pressed", () => {
       renderWithWrappers(<FollowArtists />)
 
@@ -231,6 +269,31 @@ describe("FollowArtists", () => {
         "complete"
       )
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+    })
+
+    it("still sets onboardingState to complete if the profile mutation fails", () => {
+      jest.spyOn(console, "error").mockImplementation()
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      const environment = getMockRelayEnvironment()
+      environment.mock.rejectMostRecentOperation(new Error("network error"))
+
+      expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
+        "complete"
+      )
+    })
+
+    it("sends completedOnboarding: true in the profile mutation", () => {
+      renderWithWrappers(<FollowArtists />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      const environment = getMockRelayEnvironment()
+      const operation = environment.mock.getMostRecentOperation()
+
+      expect(operation.request.variables.input).toEqual({ completedOnboarding: true })
     })
 
     it("tracks the skip tap", () => {
