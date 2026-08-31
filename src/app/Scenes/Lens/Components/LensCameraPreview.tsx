@@ -140,9 +140,7 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
         // else resets this automatically. Goes through `controller` (not `device.minZoom`,
         // per vision-camera's own docs: the actual configured session's minimum can differ from
         // the device's static reported one) and tolerates a race against camera startup the same
-        // way focusTo's callers do elsewhere in this scene. UNVERIFIED ON A REAL DEVICE: whether
-        // onPreviewStarted actually fires on a background/foreground resume, not just initial
-        // mount.
+        // way focusTo's callers do elsewhere in this scene.
         onPreviewStarted={() => {
           const controller = camera.current?.controller
           if (controller) {

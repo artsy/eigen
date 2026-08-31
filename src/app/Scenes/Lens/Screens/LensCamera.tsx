@@ -2,7 +2,10 @@ import { Flex, Spinner } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
-import { LensCameraButtons, LENS_CAMERA_BUTTONS_HEIGHT } from "app/Scenes/Lens/Components/LensCameraButtons"
+import {
+  LensCameraButtons,
+  LENS_CAMERA_BUTTONS_HEIGHT,
+} from "app/Scenes/Lens/Components/LensCameraButtons"
 import { LensCameraErrorState } from "app/Scenes/Lens/Components/LensCameraErrorState"
 import { LensCameraHeader } from "app/Scenes/Lens/Components/LensCameraHeader"
 import {

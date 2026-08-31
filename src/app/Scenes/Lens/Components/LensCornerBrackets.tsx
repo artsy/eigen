@@ -50,8 +50,20 @@ const Bracket: React.FC<{ placement: BracketPlacement }> = ({ placement }) => {
 
   return (
     <Flex position="absolute" {...container}>
-      <Flex width={BRACKET_SIZE} height={BRACKET_THICKNESS} bg="mono0" position="absolute" {...arm} />
-      <Flex width={BRACKET_THICKNESS} height={BRACKET_SIZE} bg="mono0" position="absolute" {...arm} />
+      <Flex
+        width={BRACKET_SIZE}
+        height={BRACKET_THICKNESS}
+        bg="mono0"
+        position="absolute"
+        {...arm}
+      />
+      <Flex
+        width={BRACKET_THICKNESS}
+        height={BRACKET_SIZE}
+        bg="mono0"
+        position="absolute"
+        {...arm}
+      />
     </Flex>
   )
 }

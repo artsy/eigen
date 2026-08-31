@@ -146,7 +146,8 @@ const artworksFragment = graphql`
 
 const lensResultsQuery = graphql`
   query LensResultsQuery($s3Bucket: String!, $s3Key: String!, $count: Int, $after: String) {
-    ...LensResults_artworks @arguments(s3Bucket: $s3Bucket, s3Key: $s3Key, count: $count, after: $after)
+    ...LensResults_artworks
+      @arguments(s3Bucket: $s3Bucket, s3Key: $s3Key, count: $count, after: $after)
   }
 `
 

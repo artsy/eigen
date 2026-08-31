@@ -81,9 +81,7 @@ export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
         accessibilityLabel="Choose from library"
         onPress={onSelectFromLibrary}
         style={
-          mode === "camera"
-            ? { position: "absolute", left: space(2) }
-            : { position: "absolute" }
+          mode === "camera" ? { position: "absolute", left: space(2) } : { position: "absolute" }
         }
       >
         <Flex
