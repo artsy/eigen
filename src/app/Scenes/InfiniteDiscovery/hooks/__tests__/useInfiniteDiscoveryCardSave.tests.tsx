@@ -4,12 +4,20 @@ import { InfiniteDiscoveryArtworkCard_artwork$data } from "__generated__/Infinit
 import * as useSaveArtworkToArtworkListsModule from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useInfiniteDiscoveryCardSave } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryCardSave"
 import { GlobalStore, GlobalStoreProvider, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useReducedMotion } from "react-native-reanimated"
 
 const mockTrack = { savedArtwork: jest.fn() }
 
 jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () => ({
   useInfiniteDiscoveryTracking: () => mockTrack,
 }))
+
+jest.mock("react-native-reanimated", () => ({
+  ...require("react-native-reanimated/mock"),
+  useReducedMotion: jest.fn(),
+}))
+
+const mockUseReducedMotion = useReducedMotion as jest.Mock
 
 const mockArtwork = {
   internalID: "artwork-1",
@@ -44,6 +52,7 @@ describe("useInfiniteDiscoveryCardSave", () => {
     GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
     GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks(false)
     GlobalStore.actions.onboarding.setOnboardingState("complete")
+    mockUseReducedMotion.mockReturnValue(false)
   })
 
   it("saves the artwork: increments the count and marks that artworks have been saved", () => {
@@ -130,6 +139,19 @@ describe("useInfiniteDiscoveryCardSave", () => {
         expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" })
       )
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
+    })
+
+    it("commits the artwork to the onboarding list immediately when Reduce Motion is enabled, skipping the flight animation", () => {
+      mockUseReducedMotion.mockReturnValue(true)
+      mockUseSaveArtworkToArtworkLists(false)
+      const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
+
+      act(() => result.current.handleSaveButtonPress())
+
+      expect(result.current.pendingSaveAnimationArtwork).toBeNull()
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([
+        expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" }),
+      ])
     })
 
     it("adds the artwork to the onboarding list once the flight animation completes", () => {

@@ -7,6 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { useState } from "react"
 import { PixelRatio } from "react-native"
+import { useReducedMotion } from "react-native-reanimated"
 
 const getThumbnailUrl = (url: string, screenWidth: number) => {
   const referenceWidth = 85
@@ -25,6 +26,7 @@ export const useInfiniteDiscoveryCardSave = (
 ) => {
   const { width: screenWidth } = useScreenDimensions()
   const track = useInfiniteDiscoveryTracking()
+  const isReducedMotionEnabled = useReducedMotion()
 
   const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
   const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
@@ -65,6 +67,11 @@ export const useInfiniteDiscoveryCardSave = (
 
   const animateOnboardingSavedArtwork = () => {
     if (!artwork) return
+
+    if (isReducedMotionEnabled) {
+      addOnboardingSavedArtwork()
+      return
+    }
 
     setPendingSaveAnimationArtwork(buildOnboardingSavedArtwork(artwork))
   }
