@@ -18,8 +18,7 @@ describe("computeViewfinderCropRect", () => {
   })
 
   it("stays within the source image bounds even when the container's aspect ratio differs sharply from the photo's", () => {
-    // A near-square photo viewed through a typical tall/narrow phone screen -- the case that was
-    // actually broken before computePhotoCropRect existed.
+    // A near-square photo through a tall phone screen -- the case that was actually broken.
     const rect = computeViewfinderCropRect(3024, 4032, 390, 844)
 
     expect(rect.originX).toBeGreaterThanOrEqual(0)

@@ -7,50 +7,30 @@ import { LensScanLine } from "app/Scenes/Lens/Components/LensScanLine"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { CroppedPhoto, cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
+import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { PhotoPresentation } from "app/Scenes/Lens/utils/viewfinderGeometry"
 import { dismissModal } from "app/system/navigation/navigate"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Image, useWindowDimensions } from "react-native"
 
 type Props = StackScreenProps<LensNavigationStack, "LensAnalyzing">
 
 const CARD_HORIZONTAL_MARGIN = 32
-// A max-height fraction rather than a fixed pixel reserve for the header/text around the card --
-// robust to different device sizes and dynamic type, at the cost of not being pixel-exact.
 const CARD_MAX_HEIGHT_FRACTION = 0.62
 
 /**
- * Crops the captured/selected photo to *exactly* the area the corner brackets marked on the
- * previous screen (see `utils/cropToViewfinder.ts`/`computePhotoCropRect` for the geometry), then
- * uploads the *cropped* file to S3, then hands the resulting `s3Bucket`/`s3Key` to `LensResults`
- * to run the real `artworksByImageConnection` search.
+ * Crops the photo to the area the brackets marked, uploads the *cropped* file, then hands the
+ * resulting `s3Bucket`/`s3Key` to `LensResults`.
  *
- * What's displayed is the *cropped* file, not the original photo with a bracket overlay drawn on
- * top of it. An overlay marking an inset ~78% sub-region always leaves original-image content
- * visible outside the brackets, however accurate the underlying crop math is. So cropping happens
- * up front, before this screen renders anything but a spinner, and the resulting URI is reused for
- * the upload rather than cropping twice.
+ * It displays the cropped file rather than the original with a bracket overlay: an overlay marking
+ * an inset sub-region always leaves image content visible outside the brackets, however accurate
+ * the crop math. So the crop runs up front and its URI is reused for the upload.
  *
- * The crop is NOT always `LENS_VIEWFINDER_ASPECT_RATIO`: a capture framed with the phone held
- * sideways comes back transposed (see `PhotoPresentation`). So the card is shaped from the crop's
- * own dimensions once it resolves, rather than being pinned to the viewfinder ratio -- pinning it
- * would either hide part of the region being searched or surround it with letterbox bars, and this
- * screen's whole job is to show exactly what's searched. The cost is that the card changes shape
- * once, when the crop lands; the spinner beforehand sits in a viewfinder-shaped box.
- *
- * The crop's reference container differs by capture method: a camera-captured photo was framed
- * against brackets drawn over the measured preview viewport on `LensCamera`, passed along as
- * `photo.captureContainerWidth`/`Height` (see `LensPhoto`), so that's the container the crop must
- * invert against. A library-picked photo was never shown with brackets at full screen -- the only
- * bracket-bearing view of it was this screen's own preview card -- so the card's own dimensions are
- * the right container for that case. Passing the wrong container for either reproduces the
- * crop-doesn't-match-brackets bug.
- *
- * The preview card matches `LENS_VIEWFINDER_ASPECT_RATIO` (the same fixed 5:6-ish ratio the
- * brackets and the crop use) rather than the screen's own ratio -- an earlier version mirrored the
- * live screen ratio here (and in the crop/brackets), which looked bad in practice: most phone
- * screens are ~9:19.5, an impractically tall, thin viewfinder shape.
+ * The crop's reference container differs by capture method, and passing the wrong one reproduces
+ * the crop-doesn't-match-brackets bug. A camera capture was framed against `LensCamera`'s measured
+ * viewport (`photo.captureContainerWidth`/`Height`); a library pick was only ever shown inside this
+ * screen's preview card, so that card's dimensions are its container.
  */
 export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   const { photo } = route.params
@@ -58,12 +38,15 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   const [cropped, setCropped] = useState<CroppedPhoto | null>(null)
   const [hasError, setHasError] = useState(false)
 
+  // Temp files to sweep on the way out (see the effect below). A ref, not state: adding them to
+  // the crop effect's deps would re-run the crop and upload. A library pick's file is deliberately
+  // left out -- see `discardTempPhotos` on why deleting one can cost the user their actual photo.
+  const tempPhotoUris = useRef<string[]>(photo.fromLibrary ? [] : [photo.uri])
+
   const maxCardWidth = windowWidth - CARD_HORIZONTAL_MARGIN * 2
   const maxCardHeight = windowHeight * CARD_MAX_HEIGHT_FRACTION
 
-  /**
-   * The largest box of the given aspect ratio that fits the space reserved for the card.
-   */
+  /** The largest box of the given aspect ratio that fits the space reserved for the card. */
   const fitCard = (aspectRatio: number) => {
     let width = maxCardWidth
     let height = width / aspectRatio
@@ -76,26 +59,18 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     return { width, height }
   }
 
-  // Deliberately two separate sizes.
-  //
-  // `viewfinderCard` is the fixed LENS_VIEWFINDER_ASPECT_RATIO box, and it is what a library pick
-  // is cropped against (below). It must NOT depend on the crop's own dimensions, or the crop
-  // container would depend on the crop result -- a circular dependency that would also re-trigger
-  // the effect on every resolve.
-  //
-  // `displayCard` is purely presentational: once the crop lands, the card takes the crop's actual
-  // shape, so a capture framed with the phone held sideways gets a landscape card instead of a
-  // portrait one with letterbox bars. Before it lands there's nothing to shape against, so the
-  // spinner sits in the viewfinder-shaped box.
+  // Two separate sizes on purpose. `viewfinderCard` is what a library pick is cropped against, so
+  // it must NOT depend on the crop's dimensions -- that would make the crop container depend on
+  // the crop result and re-trigger the effect on every resolve. `displayCard` is presentational:
+  // once the crop lands the card takes its actual shape, so a sideways capture gets a landscape
+  // card instead of letterbox bars.
   const viewfinderCard = fitCard(LENS_VIEWFINDER_ASPECT_RATIO)
   const displayCard =
     cropped && cropped.width > 0 && cropped.height > 0
       ? fitCard(cropped.width / cropped.height)
       : viewfinderCard
 
-  // See the docstring above for why these differ by capture method, and `LensPhoto` for why a
-  // camera capture must use the measured preview size rather than the window's. The window
-  // fallback is defensive, for a photo that somehow arrives without the measurement.
+  // The window fallback is defensive, for a photo that arrives without the measurement.
   const cropContainerWidth = photo.fromLibrary
     ? viewfinderCard.width
     : photo.captureContainerWidth ?? windowWidth
@@ -103,10 +78,9 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     ? viewfinderCard.height
     : photo.captureContainerHeight ?? windowHeight
 
-  // A camera capture was framed against the live preview, which aligns the sensor feed to the
-  // orientation-locked UI -- so holding the phone sideways rotates the world within the preview,
-  // and the crop has to invert that rotation. A library pick was only ever presented through
-  // `<Image resizeMode="cover">`, which never rotates. See `PhotoPresentation`.
+  // A camera capture was framed against a preview that aligns the sensor feed to the
+  // orientation-locked UI, so the crop has to invert that rotation. `<Image resizeMode="cover">`
+  // never rotates, so a library pick must not be. See `PhotoPresentation`.
   const cropPresentation: PhotoPresentation = photo.fromLibrary
     ? "cover"
     : "coverRotatedToContainer"
@@ -116,6 +90,10 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
 
     cropToViewfinder(photo.uri, cropContainerWidth, cropContainerHeight, cropPresentation)
       .then((cropped) => {
+        // Before the cancellation check, not after: the file is on disk either way, and an
+        // abandoned attempt is precisely what nothing else would clean up.
+        tempPhotoUris.current.push(cropped.uri)
+
         if (cancelled) {
           return Promise.reject(new Error("cancelled"))
         }
@@ -128,7 +106,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
           return
         }
 
-        navigation.replace("LensResults", { s3Bucket: bucket, s3Key: key, photo })
+        navigation.replace("LensResults", { s3Bucket: bucket, s3Key: key })
       })
       .catch((error) => {
         if (cancelled) {
@@ -147,17 +125,28 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     }
   }, [navigation, photo, cropContainerWidth, cropContainerHeight, cropPresentation])
 
+  /**
+   * Sweeps the temp files on unmount, which every exit from this screen passes through. Deleting
+   * inline after the upload would instead race the cropped image still on screen through the
+   * transition, and sharing the effect above would sweep on every deps change -- deleting the file
+   * that run is about to upload.
+   */
+  useEffect(() => {
+    return () => {
+      // The lint rule wants this copied into a variable at setup time, which is the one thing
+      // that would break it: the crop is appended after setup, so copying leaks every crop.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      discardTempPhotos(tempPhotoUris.current)
+    }
+  }, [])
+
   return (
     <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
       <Flex position="absolute" top={0} left={0} right={0}>
-        {/* No title: the caption below the card is the only label this screen needs. */}
         <LensHeader onClose={() => dismissModal()} />
       </Flex>
 
       {hasError ? (
-        // Failing here used to be a dead end -- the copy asked the user to close the modal, which
-        // meant re-entering Lens through the search overlay just to retry. The button reruns the
-        // flow in place instead, so the copy no longer mentions closing.
         <Flex mx={4} alignSelf="stretch" alignItems="center">
           <Text variant="sm-display" color="mono0" textAlign="center">
             Something went wrong finding matches for that photo. Please try again.
@@ -167,8 +156,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
             <SearchByPhotoButton
               testID="lensAnalyzingSearchByPhotoButton"
               variant="light"
-              // LensCamera is this stack's root and is still mounted below, so this pops back to
-              // it rather than stacking a second camera.
+              // `navigate`, not `push`: LensCamera is this stack's root and still mounted below.
               onPress={() => navigation.navigate("LensCamera")}
             />
           </Flex>
@@ -189,10 +177,9 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
                 <Image
                   testID="lensAnalyzingCroppedImage"
                   source={{ uri: cropped.uri }}
-                  // The card is shaped to the crop, so this is a no-op in the normal case. Kept
-                  // as "contain" rather than "cover" as a guard: if the dimensions are ever
-                  // missing or wrong, letterboxing is ugly, whereas "cover" would silently hide
-                  // part of the region actually being searched.
+                  // A no-op while the card is shaped to the crop. "contain" as a guard: if the
+                  // dimensions are ever wrong, "cover" would silently hide part of the region
+                  // being searched, where this only letterboxes.
                   resizeMode="contain"
                   style={{
                     width: displayCard.width,
@@ -200,9 +187,8 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
                     position: "absolute",
                   }}
                 />
-                {/* LensScanLine starts its sweep on mount, so it mounts only once there's an
-                    image to sweep over. Mounting it from the first frame instead sweeps across the
-                    empty placeholder, then jumps mid-sweep when the cropped image appears. */}
+                {/* Mounts only once there's an image to sweep over -- it starts its sweep on
+                    mount, so mounting earlier jumps mid-sweep when the crop appears. */}
                 <LensScanLine height={displayCard.height} />
               </>
             )}

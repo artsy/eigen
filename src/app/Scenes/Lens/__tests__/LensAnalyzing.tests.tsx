@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { LensAnalyzing } from "app/Scenes/Lens/Screens/LensAnalyzing"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
+import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 
@@ -13,14 +14,18 @@ jest.mock("app/utils/uploadImageToS3", () => ({
   uploadImageToS3: jest.fn(),
 }))
 
+jest.mock("app/Scenes/Lens/utils/discardTempPhotos", () => ({
+  discardTempPhotos: jest.fn(),
+}))
+
 const mockReplace = jest.fn()
 const mockNavigate = jest.fn()
 
 const photo = { uri: "file:///tmp/photo.jpg", width: 400, height: 300 }
 
-// 5:6, what a capture framed with the phone held normally comes back as.
+// 5:6 -- a capture framed with the phone upright.
 const portraitCrop = { uri: "file:///tmp/cropped.jpg", width: 1454, height: 1744 }
-// 6:5, what a capture framed with the phone held sideways comes back as -- see PhotoPresentation.
+// 6:5 -- a capture framed with the phone sideways. See PhotoPresentation.
 const landscapeCrop = { uri: "file:///tmp/cropped.jpg", width: 1744, height: 1454 }
 
 const navigationProps = {
@@ -52,14 +57,11 @@ describe("LensAnalyzing", () => {
       expect(mockReplace).toHaveBeenCalledWith("LensResults", {
         s3Bucket: "my-bucket",
         s3Key: "my-key",
-        photo,
       })
     )
   })
 
   it("displays the cropped image, never the original uncropped photo, once cropping resolves", async () => {
-    // A bracket overlay on the original photo always leaves image content visible outside the
-    // brackets, however accurate the crop math -- see LensAnalyzing.tsx.
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 
     renderWithWrappers(<LensAnalyzing {...navigationProps} />)
@@ -68,8 +70,7 @@ describe("LensAnalyzing", () => {
     expect(image.props.source).toEqual({ uri: "file:///tmp/cropped.jpg" })
   })
 
-  // The crop's aspect ratio is not fixed, so the card can't be: a landscape crop pinned to a
-  // portrait card either hides part of the searched region or shows it with letterbox bars.
+  // A landscape crop pinned to a portrait card hides part of the searched region or letterboxes it.
   it("shapes the preview card to a portrait crop", async () => {
     jest.mocked(cropToViewfinder).mockResolvedValue(portraitCrop)
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
@@ -111,10 +112,7 @@ describe("LensAnalyzing", () => {
   })
 
   it("crops against a different container for a library-picked photo than a camera-captured one", async () => {
-    // Library-picked photos were never shown with brackets at full screen (only in this screen's
-    // own preview card), so the crop must invert against that card, not the window -- see
-    // LensAnalyzing's docstring. This doesn't assert exact pixel values (that's
-    // computePhotoCropRect's/viewfinderGeometry's job); it just proves the branch fires.
+    // Only proves the branch fires; the pixel values are viewfinderGeometry's tests to check.
     jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
     renderWithWrappers(
@@ -166,8 +164,6 @@ describe("LensAnalyzing", () => {
     expect(mockReplace).not.toHaveBeenCalled()
   })
 
-  // The error state used to tell the user to close the modal, which meant re-entering Lens through
-  // the search overlay just to retry -- a dead end for the most likely next action.
   it("offers a way back to the camera when the crop fails, instead of asking the user to close", async () => {
     jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
 
@@ -178,10 +174,55 @@ describe("LensAnalyzing", () => {
     expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
   })
 
-  // The live preview aligns the sensor feed to the orientation-locked UI, so a sideways capture
-  // arrives rotated relative to the container it was framed against and the crop has to undo that.
-  // `<Image resizeMode="cover">` never rotates, so a library pick must not be transposed. Getting
-  // these two backwards silently searches the wrong region of the photo.
+  // Nothing else in the app prunes these, so leaving them behind piled up full-size photos.
+  describe("temp file cleanup", () => {
+    it("deletes the capture and the cropped file once it leaves the screen", async () => {
+      jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
+
+      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+
+      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalled())
+      // Not while the cropped image is still on screen, and not before the upload has read it.
+      expect(discardTempPhotos).not.toHaveBeenCalled()
+
+      unmount()
+
+      expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri, portraitCrop.uri])
+    })
+
+    // Deleting one can cost the user their actual photo -- see `discardTempPhotos`.
+    it("leaves a library-picked photo's own file alone", async () => {
+      jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
+      const libraryPhoto = { ...photo, fromLibrary: true }
+
+      const { unmount } = renderWithWrappers(
+        <LensAnalyzing
+          {...navigationProps}
+          route={{ ...navigationProps.route, params: { photo: libraryPhoto } } as any}
+        />
+      )
+
+      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalled())
+      unmount()
+
+      expect(discardTempPhotos).toHaveBeenCalledWith([portraitCrop.uri])
+    })
+
+    it("still deletes the capture when the crop never lands", async () => {
+      jest.mocked(cropToViewfinder).mockRejectedValue(new Error("crop failed"))
+
+      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+
+      await screen.findByText(
+        "Something went wrong finding matches for that photo. Please try again."
+      )
+      unmount()
+
+      expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri])
+    })
+  })
+
+  // Getting these two backwards silently searches the wrong region of the photo.
   it("asks for the rotation-aware mapping for a camera capture", () => {
     jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
 

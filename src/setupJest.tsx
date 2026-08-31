@@ -355,10 +355,9 @@ jest.mock("react-native-vision-camera", () => ({
   })),
 }))
 
-// Used by the Lens capture-crop step (Scenes/Lens/utils/cropToViewfinder.ts). A working chainable
-// default (manipulate -> crop -> renderAsync -> saveAsync) so anything that imports it -- even
-// transitively, e.g. via routes.tsx pulling in every registered scene -- can render in tests
-// without crashing; tests that care about crop behavior mock `cropToViewfinder` itself instead.
+// A working chainable default (manipulate -> crop -> renderAsync -> saveAsync) so anything that
+// imports Scenes/Lens/utils/cropToViewfinder.ts can render in tests; tests that care about crop
+// behavior mock `cropToViewfinder` itself instead.
 jest.mock("expo-image-manipulator", () => {
   const context: any = {
     crop: jest.fn(() => context),
@@ -382,6 +381,12 @@ jest.mock("expo-image-manipulator", () => {
     SaveFormat: { JPEG: "jpeg", PNG: "png", WEBP: "webp" },
   }
 })
+
+// Reports every file as already gone, so importing it (Scenes/Lens/utils/discardTempPhotos.ts) is
+// a no-op in tests. Tests that care about deletion mock that module, or this one, themselves.
+jest.mock("expo-file-system", () => ({
+  File: jest.fn().mockImplementation(() => ({ exists: false, delete: jest.fn() })),
+}))
 
 jest.mock("react-native-keys", () => {
   interface MockConfig {

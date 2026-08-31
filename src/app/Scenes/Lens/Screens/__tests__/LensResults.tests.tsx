@@ -5,8 +5,6 @@ import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-const photo = { uri: "file:///tmp/photo.jpg", width: 400, height: 300 }
-
 const mockReplace = jest.fn()
 const mockNavigate = jest.fn()
 
@@ -18,7 +16,7 @@ describe("LensResults", () => {
           {
             key: "LensResults",
             name: "LensResults",
-            params: { s3Bucket: "my-bucket", s3Key: "my-key", photo },
+            params: { s3Bucket: "my-bucket", s3Key: "my-key" },
           } as any
         }
         navigation={{ replace: mockReplace, navigate: mockNavigate } as any}
@@ -36,8 +34,8 @@ describe("LensResults", () => {
     jest.clearAllMocks()
   })
 
-  // Regression coverage for "PUSH ... was not handled by any navigator. Do you have a screen
-  // named 'Artwork'?" -- see LensResults.tsx for the root cause.
+  // Regression coverage for "PUSH ... was not handled by any navigator": `Artwork` lives inside a
+  // tab's stack, and Lens is a modal sibling of the tab navigator, so the modal must close first.
   it("dismisses the Lens modal, then navigates to the artwork by internalID (not slug)", () => {
     renderWithRelay({
       Artwork: () => ({
@@ -49,8 +47,8 @@ describe("LensResults", () => {
 
     fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
 
-    // Unsuppressed, the default RouterLink navigation fires synchronously with the slug-based
-    // href, before dismissModal's callback runs.
+    // Without `disableNavigation`, RouterLink's own navigation fires synchronously with the
+    // slug-based href, before dismissModal's callback runs.
     expect(navigate).not.toHaveBeenCalledWith(expect.stringContaining("some-artwork-slug"))
 
     expect(dismissModal).toHaveBeenCalledTimes(1)
@@ -60,9 +58,7 @@ describe("LensResults", () => {
     expect(navigate).toHaveBeenCalledWith("/artwork/abc123")
   })
 
-  // LensAnalyzing replaced itself with this screen, so the only thing left in the stack below is
-  // the live camera -- a local goBack would pop onto a running viewfinder. The modal has to close
-  // before a tab route can resolve, hence the deferred navigate.
+  // A local goBack would pop onto the live camera left below by LensAnalyzing's replace.
   it("leaves the Lens flow for the Search tab when backing out", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
@@ -85,8 +81,6 @@ describe("LensResults", () => {
     expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
   })
 
-  // With results on screen the next action is tapping one of them; a permanent CTA over the grid
-  // would compete with that.
   it("does not offer that button when there are matches to tap", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 

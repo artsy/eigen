@@ -9,17 +9,8 @@ import {
   usePhotoOutput,
 } from "react-native-vision-camera"
 
-/**
- * This is the ONLY file in the Lens scene that imports the camera library — see the spike plan's
- * "one seam that matters." Everything else (chrome, buttons, permission placeholder, error state)
- * is plain palette-mobile and doesn't care which library won the vision-camera-vs-expo-camera
- * timebox. If this file needs to be swapped for an expo-camera implementation later, nothing else
- * in the scene should need to change.
- *
- * Built against react-native-vision-camera@5's Nitro API (capturePhotoToFile, usePhotoOutput,
- * useCameraPermission, focusTo) — a full API rewrite from the v2 API the deleted 2022
- * `ReverseImageCamera.tsx` used (Camera.getCameraPermissionStatus/takePhoto/useCameraDevices).
- */
+// The ONLY file in the Lens scene that imports the camera library -- keep it that way, so
+// swapping vision-camera for something else stays contained here.
 
 export type LensCameraStatus =
   | { kind: "permission"; status: "undetermined" | "denied" }
@@ -47,12 +38,9 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
     const device = useCameraDevice("back")
     const photoOutput = usePhotoOutput({ qualityPrioritization: "speed" })
     const camera = useRef<CameraRef>(null)
-    // Once the native <Camera> view reports a runtime error, stop rendering it rather than
-    // leaving it mounted. Confirmed live on Android (Pixel 6): the native camera SurfaceView
-    // keeps compositing above the JS tree even after the session has failed/closed -- a bare
-    // black surface -- which visually hides LensCameraErrorState's fallback UI underneath even
-    // though React renders it correctly (verified via `adb shell uiautomator dump`: the error
-    // text was present in the view hierarchy the whole time, just covered).
+    // Unmount the native <Camera> on a runtime error rather than leaving it up: on Android its
+    // SurfaceView keeps compositing a black surface above the JS tree even after the session has
+    // failed, hiding LensCameraErrorState underneath.
     const [hasErrored, setHasErrored] = useState(false)
 
     const statusChangeRef = useRef(onStatusChange)
@@ -68,7 +56,7 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
       }
 
       if (!device) {
-        // No usable back camera — treat the same as a runtime error rather than spinning forever.
+        // No usable back camera -- treat as a runtime error rather than spinning forever.
         statusChangeRef.current({ kind: "error" })
         return
       }
@@ -84,9 +72,8 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
       ref,
       () => ({
         takePhoto: () => {
-          // Use the in-memory capturePhoto() rather than capturePhotoToFile() specifically to
-          // get width/height off the resulting Photo — capturePhotoToFile() only returns a
-          // filePath, with no dimensions.
+          // capturePhoto() rather than capturePhotoToFile(): the latter returns only a filePath,
+          // with no dimensions.
           photoOutput
             .capturePhoto({ flashMode: "off" }, {})
             .then(async (photo) => {
@@ -117,48 +104,31 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
         device={device}
         outputs={[photoOutput]}
         isActive={isActive}
-        // Omitted (not "off") when disabled: passing an explicit torchMode on every render,
-        // including the very first one, makes vision-camera eagerly call setTorchMode() before
-        // the CameraX session finishes opening. Confirmed live on Android (Pixel 6): that call
-        // throws `CameraControl$OperationCanceledException: Camera is not active` and tears the
-        // whole session down. Only pass a real value once the user actually asks for "on".
+        // Omitted, not "off", when disabled: an explicit torchMode on the first render makes
+        // vision-camera call setTorchMode() before the CameraX session opens, which throws
+        // `Camera is not active` on Android and tears the session down.
         torchMode={torchEnabled ? "on" : undefined}
         onError={(error) => {
           setHasErrored(true)
           onError(error)
         }}
-        // Pinned explicitly (this is already vision-camera's own default) because
-        // `cropToViewfinder`'s crop math depends on knowing exactly how the preview maps onto the
-        // screen -- see `computePhotoCropRect`'s docstring. Silently inheriting a default the crop
-        // math is coupled to is a bug waiting to happen if that default ever changes upstream.
+        // Pinned even though it's vision-camera's default: `computePhotoCropRect` inverts exactly
+        // this mapping, so the crop breaks if the default ever changes upstream.
         resizeMode="cover"
-        // Resets zoom back to fully-out whenever the preview (re)starts -- e.g. resuming from the
-        // background while this screen is still focused -- rather than staying at wherever a
-        // previous pinch left it. The native camera session (and its zoom state) persists across
-        // isActive toggles for as long as this component stays mounted -- see LensCamera.tsx's
-        // Stack.Navigator comment on why screens in this flow are never detached -- so nothing
-        // else resets this automatically. Goes through `controller` (not `device.minZoom`,
-        // per vision-camera's own docs: the actual configured session's minimum can differ from
-        // the device's static reported one) and tolerates a race against camera startup the same
-        // way focusTo's callers do elsewhere in this scene.
+        // The native session keeps its zoom across isActive toggles (screens here are never
+        // detached, see Lens.tsx), so a previous pinch would otherwise persist. Reads the minimum
+        // off `controller` rather than `device.minZoom`: the configured session's minimum can
+        // differ from the device's static one.
         onPreviewStarted={() => {
           const controller = camera.current?.controller
           if (controller) {
             controller.setZoom(controller.minZoom).catch(() => {})
           }
         }}
-        // Both native gestures, not a custom JS-side tap overlay + native pinch. An earlier
-        // version kept a custom `View` responder overlay on top of this preview (in LensCamera.tsx)
-        // to get tap coordinates for a custom focus-ring indicator, paired with
-        // enableNativeZoomGesture here for pinch. Confirmed on a real device: that combination
-        // doesn't work -- the JS responder overlay swallows the pinch's second touch point before
-        // vision-camera's native recognizer ever sees it, regardless of touch-count gating on the
-        // overlay's onStartShouldSetResponder. enableNativeTapToFocusGesture and
-        // enableNativeZoomGesture are two independent flags on the SAME native view, handled
-        // entirely by vision-camera's own gesture code -- that's the combination that's actually
-        // supported to coexist. Trade-off: there's no callback for the native tap gesture, so
-        // there's no way to show a custom focus-ring visual at the tap point anymore (see the
-        // deleted LensFocusIndicator) -- autofocus itself still happens, just without the marker.
+        // Both gestures native, deliberately: a JS responder overlay for tap coordinates (to draw
+        // a focus ring) swallows the pinch's second touch before vision-camera's recognizer sees
+        // it, whatever the touch-count gating. The cost is no callback for the tap, so no focus
+        // ring -- autofocus still happens.
         enableNativeTapToFocusGesture
         enableNativeZoomGesture
       />

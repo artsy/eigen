@@ -70,8 +70,7 @@ describe("GlobalSearchInput", () => {
     })
 
     // The icon used to sit inside the bar's `pointerEvents="none"` subtree, so tapping it opened
-    // the text-search overlay like any other part of the bar. Reverse-image search has nothing to
-    // do with the text field, so it goes straight to the camera.
+    // the text-search overlay like any other part of the bar.
     it("opens the camera directly, without the search overlay, when the icon is tapped", () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
       const onOverlayVisibilityChange = jest.fn()

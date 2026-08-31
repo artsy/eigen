@@ -1,11 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 
-/**
- * Rendered as the *surface* behind the header/button chrome when the camera device fails to
- * initialize (see LensCamera.tsx's screen composition) — not a standalone screen. Adapted from
- * the deleted 2022 `CameraErrorState.tsx`, which used a full `LegacyScreen` of its own; here the
- * header and library-picker fallback are always present, so this only needs to fill the middle.
- */
 export const LensCameraErrorState: React.FC = () => {
   return (
     <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center" px={4}>
