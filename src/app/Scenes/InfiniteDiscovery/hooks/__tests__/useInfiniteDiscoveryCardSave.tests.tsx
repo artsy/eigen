@@ -154,6 +154,28 @@ describe("useInfiniteDiscoveryCardSave", () => {
       ])
     })
 
+    it("commits the artwork to the onboarding list immediately once the onboarding goal has been reached, skipping the flight animation", () => {
+      mockUseSaveArtworkToArtworkLists(false)
+      for (let i = 0; i < 5; i++) {
+        GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
+          internalID: `goal-artwork-${i}`,
+          url: "https://example.com/image.jpg",
+          blurhash: "blurhash-1",
+        })
+      }
+      const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
+
+      act(() => result.current.handleSaveButtonPress())
+
+      expect(result.current.pendingSaveAnimationArtwork).toBeNull()
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([
+        ...Array.from({ length: 5 }, (_, i) =>
+          expect.objectContaining({ internalID: `goal-artwork-${i}` })
+        ),
+        expect.objectContaining({ internalID: "artwork-1" }),
+      ])
+    })
+
     it("adds the artwork to the onboarding list once the flight animation completes", () => {
       mockUseSaveArtworkToArtworkLists(false)
       const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })

@@ -47,6 +47,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const color = useColor()
     const isNewUserOnboardingSession =
       GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
+    const newUserOnboardingGoalReached = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
+    )
 
     const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
@@ -131,7 +134,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           state.numTaps = 0
           if (!isSaved) {
             Haptic.trigger("impactLight")
-            if (!isNewUserOnboardingSession) {
+            if (!isNewUserOnboardingSession || newUserOnboardingGoalReached) {
               setShowScreenTapToSave(true)
             }
             handleDoubleTapSave()

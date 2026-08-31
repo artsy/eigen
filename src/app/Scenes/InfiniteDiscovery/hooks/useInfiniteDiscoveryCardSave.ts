@@ -32,6 +32,9 @@ export const useInfiniteDiscoveryCardSave = (
   const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
   const isNewUserOnboardingSession =
     GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
+  const newUserOnboardingGoalReached = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
+  )
   const {
     incrementSavedArtworksCount,
     decrementSavedArtworksCount,
@@ -68,7 +71,7 @@ export const useInfiniteDiscoveryCardSave = (
   const animateOnboardingSavedArtwork = () => {
     if (!artwork) return
 
-    if (isReducedMotionEnabled) {
+    if (isReducedMotionEnabled || newUserOnboardingGoalReached) {
       addOnboardingSavedArtwork()
       return
     }
