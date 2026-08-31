@@ -68,9 +68,9 @@ describe("LensCamera", () => {
   })
 
   it("navigates to the stub with a file://-prefixed uri when a library photo is picked", async () => {
-    jest.mocked(requestPhotos).mockResolvedValue([
-      { path: "/tmp/picked-photo.jpg", width: 400, height: 300 } as any,
-    ])
+    jest
+      .mocked(requestPhotos)
+      .mockResolvedValue([{ path: "/tmp/picked-photo.jpg", width: 400, height: 300 } as any])
 
     renderWithWrappers(<LensCamera {...navigationProps} />)
 

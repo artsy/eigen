@@ -1,7 +1,4 @@
-import {
-  NavigationContainer,
-  NavigationIndependentTree,
-} from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { LensAnalyzing } from "app/Scenes/Lens/Screens/LensAnalyzing"
@@ -35,8 +32,16 @@ export const Lens: React.FC = () => {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LensCamera" component={LensCamera} />
-          <Stack.Screen name="LensAnalyzing" component={LensAnalyzing} options={{ animation: "fade" }} />
-          <Stack.Screen name="LensResults" component={LensResultsScreen} options={{ animation: "fade" }} />
+          <Stack.Screen
+            name="LensAnalyzing"
+            component={LensAnalyzing}
+            options={{ animation: "fade" }}
+          />
+          <Stack.Screen
+            name="LensResults"
+            component={LensResultsScreen}
+            options={{ animation: "fade" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </NavigationIndependentTree>

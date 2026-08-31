@@ -1,8 +1,20 @@
-import { computePhotoCropRect } from "app/Scenes/Lens/utils/viewfinderGeometry"
+import { computePhotoCropRect, PhotoPresentation } from "app/Scenes/Lens/utils/viewfinderGeometry"
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator"
 import { Image } from "react-native"
 
 const JPEG_COMPRESS_QUALITY = 0.9
+
+/**
+ * The dimensions come back alongside the uri because the crop's aspect ratio is NOT fixed: a
+ * capture framed with the phone held sideways is transposed (see `PhotoPresentation`), so callers
+ * that need to lay out a container around the result -- `LensAnalyzing`'s preview card -- can't
+ * assume `LENS_VIEWFINDER_ASPECT_RATIO`.
+ */
+export interface CroppedPhoto {
+  uri: string
+  width: number
+  height: number
+}
 
 /**
  * Crops the captured/selected photo to exactly the area the corner brackets marked -- see
@@ -27,27 +39,33 @@ const JPEG_COMPRESS_QUALITY = 0.9
  * orientation "applied lazily via EXIF flags," so they don't reliably match the photo's
  * display-space (rotated) dimensions.
  *
- * UNVERIFIED ON A REAL DEVICE: whether EXIF orientation is handled consistently between
- * `Image.getSize()` and expo-image-manipulator's own native decode, and whether the captured
- * photo's true aspect ratio matches the live preview stream's aspect ratio closely enough for the
- * `cover`-inversion assumption to hold exactly (they're configured somewhat independently in
- * vision-camera).
+ * `presentation` describes how the photo was drawn into that container, which decides whether the
+ * mapping has to be inverted through a 90-degree rotation -- see `PhotoPresentation`.
  */
 export async function cropToViewfinder(
   uri: string,
   containerWidth: number,
-  containerHeight: number
-): Promise<string> {
+  containerHeight: number,
+  presentation: PhotoPresentation = "cover"
+): Promise<CroppedPhoto> {
   const { width, height } = await getImageSize(uri)
-  const rect = computeViewfinderCropRect(width, height, containerWidth, containerHeight)
+  const rect = computeViewfinderCropRect(
+    width,
+    height,
+    containerWidth,
+    containerHeight,
+    presentation
+  )
 
   const context = ImageManipulator.manipulate(uri)
-  const result = await (await context.crop(rect).renderAsync()).saveAsync({
+  const result = await (
+    await context.crop(rect).renderAsync()
+  ).saveAsync({
     compress: JPEG_COMPRESS_QUALITY,
     format: SaveFormat.JPEG,
   })
 
-  return result.uri
+  return { uri: result.uri, width: result.width, height: result.height }
 }
 
 /**
@@ -60,9 +78,16 @@ export function computeViewfinderCropRect(
   imageWidth: number,
   imageHeight: number,
   containerWidth: number,
-  containerHeight: number
+  containerHeight: number,
+  presentation: PhotoPresentation = "cover"
 ): { originX: number; originY: number; width: number; height: number } {
-  const rect = computePhotoCropRect(imageWidth, imageHeight, containerWidth, containerHeight)
+  const rect = computePhotoCropRect(
+    imageWidth,
+    imageHeight,
+    containerWidth,
+    containerHeight,
+    presentation
+  )
 
   return {
     originX: Math.round(rect.originX),

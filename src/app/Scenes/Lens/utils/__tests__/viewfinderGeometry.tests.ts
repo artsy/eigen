@@ -1,5 +1,8 @@
 import { LENS_VIEWFINDER_ASPECT_RATIO, LENS_VIEWFINDER_FRACTION } from "app/Scenes/Lens/constants"
-import { computePhotoCropRect, computeViewfinderRect } from "app/Scenes/Lens/utils/viewfinderGeometry"
+import {
+  computePhotoCropRect,
+  computeViewfinderRect,
+} from "app/Scenes/Lens/utils/viewfinderGeometry"
 
 describe("computeViewfinderRect", () => {
   it("is height-constrained when the container is proportionally wider than the target ratio", () => {
@@ -97,5 +100,106 @@ describe("computePhotoCropRect", () => {
     const rect = computePhotoCropRect(3000, 4000, 390, 844)
 
     expect(rect.width / rect.height).toBeCloseTo(LENS_VIEWFINDER_ASPECT_RATIO)
+  })
+
+  describe("rotated presentation -- phone held sideways against an orientation-locked UI", () => {
+    const CONTAINER_WIDTH = 428
+    const CONTAINER_HEIGHT = 926
+
+    it("leaves a portrait capture untouched, because nothing is rotated", () => {
+      // Held upright: display space 3024x4032 -- portrait, matching the portrait container, so
+      // the rotation-aware mapping must agree with the plain one.
+      const asIs = computePhotoCropRect(3024, 4032, CONTAINER_WIDTH, CONTAINER_HEIGHT, "cover")
+      const rotationAware = computePhotoCropRect(
+        3024,
+        4032,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "coverRotatedToContainer"
+      )
+
+      expect(Math.round(rotationAware.width)).toBe(1454)
+      expect(Math.round(rotationAware.height)).toBe(1744)
+      expect(Math.round(rotationAware.originX)).toBe(785)
+      expect(Math.round(rotationAware.originY)).toBe(1144)
+      expect(rotationAware).toEqual(asIs)
+    })
+
+    it("transposes a landscape capture back into the region the brackets actually marked", () => {
+      // Held sideways: display space 4032x3024 -- landscape, while the container stays portrait.
+      // The uncorrected mapping returns 1090x1308 @ (1471, 858): the wrong shape, and only about
+      // half the framed area.
+      const rect = computePhotoCropRect(
+        4032,
+        3024,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "coverRotatedToContainer"
+      )
+
+      expect(Math.round(rect.width)).toBe(1744)
+      expect(Math.round(rect.height)).toBe(1454)
+      expect(Math.round(rect.originX)).toBe(1144)
+      expect(Math.round(rect.originY)).toBe(785)
+    })
+
+    it("produces the transposed viewfinder ratio for a rotated capture", () => {
+      // 6:5 in the photo's space, because the 5:6 bracket was drawn in a space rotated 90 degrees
+      // away from it. A rect that still reads 5:6 here is the signature of the original bug.
+      const rect = computePhotoCropRect(
+        4032,
+        3024,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "coverRotatedToContainer"
+      )
+
+      expect(rect.width / rect.height).toBeCloseTo(1 / LENS_VIEWFINDER_ASPECT_RATIO)
+    })
+
+    it("keeps the rotated rect within the photo's bounds", () => {
+      const rect = computePhotoCropRect(
+        4032,
+        3024,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "coverRotatedToContainer"
+      )
+
+      expect(rect.originX).toBeGreaterThanOrEqual(0)
+      expect(rect.originY).toBeGreaterThanOrEqual(0)
+      expect(rect.originX + rect.width).toBeLessThanOrEqual(4032)
+      expect(rect.originY + rect.height).toBeLessThanOrEqual(3024)
+    })
+
+    it("covers a strictly larger area than the uncorrected mapping did", () => {
+      const corrected = computePhotoCropRect(
+        4032,
+        3024,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "coverRotatedToContainer"
+      )
+      const uncorrected = computePhotoCropRect(
+        4032,
+        3024,
+        CONTAINER_WIDTH,
+        CONTAINER_HEIGHT,
+        "cover"
+      )
+
+      expect(corrected.width * corrected.height).toBeGreaterThan(
+        uncorrected.width * uncorrected.height
+      )
+    })
+
+    it("defaults to the unrotated mapping, so a library pick is never transposed", () => {
+      // `<Image resizeMode="cover">` does not rotate, so a landscape photo shown in the portrait
+      // preview card must keep the plain mapping even though the orientations disagree.
+      const explicit = computePhotoCropRect(4032, 3024, 500, 600, "cover")
+      const defaulted = computePhotoCropRect(4032, 3024, 500, 600)
+
+      expect(defaulted).toEqual(explicit)
+    })
   })
 })

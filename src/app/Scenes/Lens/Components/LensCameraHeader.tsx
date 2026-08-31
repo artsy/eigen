@@ -16,13 +16,7 @@ export const LensCameraHeader: React.FC<LensCameraHeaderProps> = (props) => {
   const space = useSpace()
 
   return (
-    <Flex
-      mt={`${insets.top}px`}
-      height={44}
-      flexDirection="row"
-      alignItems="center"
-      px={2}
-    >
+    <Flex mt={`${insets.top}px`} height={44} flexDirection="row" alignItems="center" px={2}>
       <BackButton
         color="mono0"
         showX

@@ -24,7 +24,11 @@ export const LensScanLine: React.FC<LensScanLineProps> = ({ height }) => {
 
   useEffect(() => {
     progress.set(() =>
-      withRepeat(withTiming(1, { duration: SCAN_DURATION_MS, easing: Easing.inOut(Easing.ease) }), -1, true)
+      withRepeat(
+        withTiming(1, { duration: SCAN_DURATION_MS, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true
+      )
     )
   }, [])
 

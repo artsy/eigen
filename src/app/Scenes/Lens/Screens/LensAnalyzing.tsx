@@ -4,7 +4,8 @@ import { captureException, withScope } from "@sentry/react-native"
 import { LensScanLine } from "app/Scenes/Lens/Components/LensScanLine"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
-import { cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
+import { CroppedPhoto, cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
+import { PhotoPresentation } from "app/Scenes/Lens/utils/viewfinderGeometry"
 import { dismissModal } from "app/system/navigation/navigate"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { useEffect, useState } from "react"
@@ -30,6 +31,13 @@ const CARD_MAX_HEIGHT_FRACTION = 0.62
  * up front, before this screen renders anything but a spinner, and the resulting URI is reused for
  * the upload rather than cropping twice.
  *
+ * The crop is NOT always `LENS_VIEWFINDER_ASPECT_RATIO`: a capture framed with the phone held
+ * sideways comes back transposed (see `PhotoPresentation`). So the card is shaped from the crop's
+ * own dimensions once it resolves, rather than being pinned to the viewfinder ratio -- pinning it
+ * would either hide part of the region being searched or surround it with letterbox bars, and this
+ * screen's whole job is to show exactly what's searched. The cost is that the card changes shape
+ * once, when the crop lands; the spinner beforehand sits in a viewfinder-shaped box.
+ *
  * The crop's reference container differs by capture method: a camera-captured photo was framed
  * against brackets drawn over the measured preview viewport on `LensCamera`, passed along as
  * `photo.captureContainerWidth`/`Height` (see `LensPhoto`), so that's the container the crop must
@@ -48,35 +56,73 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   const insets = useSafeAreaInsets()
   const space = useSpace()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
-  const [croppedUri, setCroppedUri] = useState<string | null>(null)
+  const [cropped, setCropped] = useState<CroppedPhoto | null>(null)
   const [hasError, setHasError] = useState(false)
 
   const maxCardWidth = windowWidth - CARD_HORIZONTAL_MARGIN * 2
   const maxCardHeight = windowHeight * CARD_MAX_HEIGHT_FRACTION
-  let cardWidth = maxCardWidth
-  let cardHeight = cardWidth / LENS_VIEWFINDER_ASPECT_RATIO
-  if (cardHeight > maxCardHeight) {
-    cardHeight = maxCardHeight
-    cardWidth = cardHeight * LENS_VIEWFINDER_ASPECT_RATIO
+
+  /**
+   * The largest box of the given aspect ratio that fits the space reserved for the card.
+   */
+  const fitCard = (aspectRatio: number) => {
+    let width = maxCardWidth
+    let height = width / aspectRatio
+
+    if (height > maxCardHeight) {
+      height = maxCardHeight
+      width = height * aspectRatio
+    }
+
+    return { width, height }
   }
+
+  // Deliberately two separate sizes.
+  //
+  // `viewfinderCard` is the fixed LENS_VIEWFINDER_ASPECT_RATIO box, and it is what a library pick
+  // is cropped against (below). It must NOT depend on the crop's own dimensions, or the crop
+  // container would depend on the crop result -- a circular dependency that would also re-trigger
+  // the effect on every resolve.
+  //
+  // `displayCard` is purely presentational: once the crop lands, the card takes the crop's actual
+  // shape, so a capture framed with the phone held sideways gets a landscape card instead of a
+  // portrait one with letterbox bars. Before it lands there's nothing to shape against, so the
+  // spinner sits in the viewfinder-shaped box.
+  const viewfinderCard = fitCard(LENS_VIEWFINDER_ASPECT_RATIO)
+  const displayCard =
+    cropped && cropped.width > 0 && cropped.height > 0
+      ? fitCard(cropped.width / cropped.height)
+      : viewfinderCard
 
   // See the docstring above for why these differ by capture method, and `LensPhoto` for why a
   // camera capture must use the measured preview size rather than the window's. The window
   // fallback is defensive, for a photo that somehow arrives without the measurement.
-  const cropContainerWidth = photo.fromLibrary ? cardWidth : photo.captureContainerWidth ?? windowWidth
-  const cropContainerHeight = photo.fromLibrary ? cardHeight : photo.captureContainerHeight ?? windowHeight
+  const cropContainerWidth = photo.fromLibrary
+    ? viewfinderCard.width
+    : photo.captureContainerWidth ?? windowWidth
+  const cropContainerHeight = photo.fromLibrary
+    ? viewfinderCard.height
+    : photo.captureContainerHeight ?? windowHeight
+
+  // A camera capture was framed against the live preview, which aligns the sensor feed to the
+  // orientation-locked UI -- so holding the phone sideways rotates the world within the preview,
+  // and the crop has to invert that rotation. A library pick was only ever presented through
+  // `<Image resizeMode="cover">`, which never rotates. See `PhotoPresentation`.
+  const cropPresentation: PhotoPresentation = photo.fromLibrary
+    ? "cover"
+    : "coverRotatedToContainer"
 
   useEffect(() => {
     let cancelled = false
 
-    cropToViewfinder(photo.uri, cropContainerWidth, cropContainerHeight)
+    cropToViewfinder(photo.uri, cropContainerWidth, cropContainerHeight, cropPresentation)
       .then((cropped) => {
         if (cancelled) {
           return Promise.reject(new Error("cancelled"))
         }
 
-        setCroppedUri(cropped)
-        return uploadImageToS3(cropped)
+        setCropped(cropped)
+        return uploadImageToS3(cropped.uri)
       })
       .then(({ bucket, key }) => {
         if (cancelled) {
@@ -100,11 +146,21 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     return () => {
       cancelled = true
     }
-  }, [navigation, photo, cropContainerWidth, cropContainerHeight])
+  }, [navigation, photo, cropContainerWidth, cropContainerHeight, cropPresentation])
 
   return (
     <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
-      <Flex mt={`${insets.top}px`} height={44} flexDirection="row" alignItems="center" px={2} position="absolute" top={0} left={0} right={0}>
+      <Flex
+        mt={`${insets.top}px`}
+        height={44}
+        flexDirection="row"
+        alignItems="center"
+        px={2}
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+      >
         <BackButton
           color="mono0"
           showX
@@ -120,29 +176,37 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
       ) : (
         <>
           <Flex
-            width={cardWidth}
-            height={cardHeight}
+            width={displayCard.width}
+            height={displayCard.height}
             borderRadius={16}
             overflow="hidden"
             bg="mono10"
             justifyContent="center"
             alignItems="center"
           >
-            {!!croppedUri && (
+            {!!cropped && (
               <>
                 <Image
                   testID="lensAnalyzingCroppedImage"
-                  source={{ uri: croppedUri }}
-                  resizeMode="cover"
-                  style={{ width: cardWidth, height: cardHeight, position: "absolute" }}
+                  source={{ uri: cropped.uri }}
+                  // The card is shaped to the crop, so this is a no-op in the normal case. Kept
+                  // as "contain" rather than "cover" as a guard: if the dimensions are ever
+                  // missing or wrong, letterboxing is ugly, whereas "cover" would silently hide
+                  // part of the region actually being searched.
+                  resizeMode="contain"
+                  style={{
+                    width: displayCard.width,
+                    height: displayCard.height,
+                    position: "absolute",
+                  }}
                 />
                 {/* LensScanLine starts its sweep on mount, so it mounts only once there's an
                     image to sweep over. Mounting it from the first frame instead sweeps across the
                     empty placeholder, then jumps mid-sweep when the cropped image appears. */}
-                <LensScanLine height={cardHeight} />
+                <LensScanLine height={displayCard.height} />
               </>
             )}
-            {!croppedUri && <Spinner color="mono0" />}
+            {!cropped && <Spinner color="mono0" />}
           </Flex>
 
           <Text variant="sm-display" color="mono0" mt={4}>
