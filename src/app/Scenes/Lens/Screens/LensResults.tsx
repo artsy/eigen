@@ -9,6 +9,7 @@ import {
 } from "__generated__/LensResults_artworks.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 // eslint-disable-next-line no-restricted-imports
@@ -23,12 +24,38 @@ const SCREEN_TITLE = "Your matches"
 
 type Props = StackScreenProps<LensNavigationStack, "LensResults">
 
+type Navigation = Props["navigation"]
+
+/**
+ * Back out of the Lens flow entirely and land on the Search tab.
+ *
+ * Deliberately not a local `goBack`: `LensAnalyzing` replaced itself with this screen, so the only
+ * thing left in the stack below is the live camera, and popping onto a running viewfinder is a
+ * jarring answer to "back". `/search` is the surface Lens is entered from -- its search input opens
+ * the overlay that carries the "Search by photo" button -- so it's both a familiar landing spot and
+ * a short route back into a second search.
+ *
+ * `dismissModal(() => navigate(...))` rather than a bare `navigate` for the same reason as the
+ * artwork tap below: Lens is `alwaysPresentModally`, a sibling of the tab navigator, so the modal
+ * has to close before a tab route can resolve.
+ */
+const backToSearch = () => {
+  dismissModal(() => navigate("/search"))
+}
+
+/**
+ * Restart the flow from the camera. `navigate` rather than `push`: `LensCamera` is this stack's root
+ * and is still mounted below, so this pops back to it instead of stacking a second camera.
+ */
+const restartSearch = (navigation: Navigation) => {
+  navigation.navigate("LensCamera")
+}
+
 /**
  * Queries `artworksByImageConnection` — the live, pure-vector (neural) image search field. This is
  * NOT the hybrid (lexical + vector) search mechanism: hybrid lives on `filterArtworksConnection`,
  * requires a keyword, and is team-only — unrelated to an uploaded image. Chrome here is deliberately
- * minimal (a bare back-to-dismiss header): the polished results header is Nikita's to build, per the
- * spike plan.
+ * minimal: the polished results header is Nikita's to build, per the spike plan.
  *
  * Tapping a result can't use `ArtworkGridItem`'s default `RouterLink`-based navigation, which
  * throws "PUSH ... was not handled by any navigator. Do you have a screen named 'Artwork'?".
@@ -48,7 +75,7 @@ type Props = StackScreenProps<LensNavigationStack, "LensResults">
  * identifier, while a slug is a human-readable handle that Metaphysics' `artworkResult(id:)`
  * happens to also accept.
  */
-const LensResults: React.FC<Props> = ({ route }) => {
+const LensResults: React.FC<Props> = ({ route, navigation }) => {
   const { s3Bucket, s3Key } = route.params
 
   const queryData = useLazyLoadQuery<LensResultsQuery>(lensResultsQuery, {
@@ -63,10 +90,13 @@ const LensResults: React.FC<Props> = ({ route }) => {
   >(artworksFragment, queryData)
 
   const artworks = extractNodes(data.artworksByImageConnection)
+  // The query has resolved by the time this renders (Suspense holds the placeholder until it does),
+  // so an empty list here means genuinely no matches rather than "not loaded yet".
+  const hasNoMatches = artworks.length === 0
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={() => dismissModal()} />
+      <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={() => backToSearch()} />
       <Screen.StickySubHeader title={SCREEN_TITLE} />
 
       <Screen.Body fullwidth>
@@ -77,6 +107,19 @@ const LensResults: React.FC<Props> = ({ route }) => {
           loadMore={(pageSize) => loadNext(pageSize)}
         />
       </Screen.Body>
+
+      {/* Only on the empty state: with matches on screen the next action is tapping one of them,
+          and a permanent CTA over the grid would compete with that. With nothing to tap, "try
+          another photo" is the only thing left to do, so it gets a button rather than living in
+          the empty-state sentence as an instruction the user can't act on. */}
+      {!!hasNoMatches && (
+        <Screen.BottomView>
+          <SearchByPhotoButton
+            testID="lensResultsSearchByPhotoButton"
+            onPress={() => restartSearch(navigation)}
+          />
+        </Screen.BottomView>
+      )}
     </Screen>
   )
 }
@@ -153,17 +196,17 @@ const lensResultsQuery = graphql`
 
 export const LensResultsScreen: React.FC<Props> = (props) => {
   return (
-    <Suspense fallback={<Placeholder />}>
+    <Suspense fallback={<Placeholder onBack={() => backToSearch()} />}>
       <LensResults {...props} />
     </Suspense>
   )
 }
 
-const Placeholder = () => {
+const Placeholder: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <ProvidePlaceholderContext>
       <Screen>
-        <Screen.AnimatedHeader onBack={() => dismissModal()} title={SCREEN_TITLE} />
+        <Screen.AnimatedHeader onBack={onBack} title={SCREEN_TITLE} />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
           <Spacer y={2} />

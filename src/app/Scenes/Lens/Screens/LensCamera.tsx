@@ -7,13 +7,13 @@ import {
   LENS_CAMERA_BUTTONS_HEIGHT,
 } from "app/Scenes/Lens/Components/LensCameraButtons"
 import { LensCameraErrorState } from "app/Scenes/Lens/Components/LensCameraErrorState"
-import { LensCameraHeader } from "app/Scenes/Lens/Components/LensCameraHeader"
 import {
   LensCameraPreview,
   LensCameraPreviewHandle,
   LensCameraStatus,
 } from "app/Scenes/Lens/Components/LensCameraPreview"
 import { LensCornerBrackets } from "app/Scenes/Lens/Components/LensCornerBrackets"
+import { LensHeader } from "app/Scenes/Lens/Components/LensHeader"
 import { LensPermissionPlaceholder } from "app/Scenes/Lens/Components/LensPermissionPlaceholder"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { dismissModal } from "app/system/navigation/navigate"
@@ -174,7 +174,7 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
         showing the same sentence twice on screen at once.
       */}
       <Flex position="absolute" top={0} left={0} right={0}>
-        <LensCameraHeader title="Artsy Lens" onClose={handleClose} />
+        <LensHeader title="Artsy Lens" onClose={handleClose} />
       </Flex>
 
       <Flex position="absolute" bottom={0} left={0} right={0} height={LENS_CAMERA_BUTTONS_HEIGHT}>
