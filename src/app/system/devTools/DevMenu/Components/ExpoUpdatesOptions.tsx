@@ -38,6 +38,10 @@ const isErrorWithMessage = (error: unknown): error is { message: string } => {
   )
 }
 
+const isCodedError = (error: unknown): error is { code: string } => {
+  return typeof error === "object" && error !== null && "code" in error
+}
+
 export const ExpoUpdatesOptions = () => {
   const [selectedDeployment, setSelectedDeployment] = useState<ExpoDeployment>("Staging")
   const [updateMetadata, setUpdateMetadata] = useState<any>(null)
@@ -143,6 +147,16 @@ export const ExpoUpdatesOptions = () => {
         }
       }
     } catch (error) {
+      // Android refuses to reload when the app is on an emergency launch, since there's no
+      // launched update to replace. The update is downloaded already, so force-quitting and
+      // reopening the app will run it.
+      if (isCodedError(error) && error.code === "ERR_UPDATES_RELOAD") {
+        setErrorMessage(
+          "Update downloaded, but the app can't reload itself. Force-quit and reopen the app to run it."
+        )
+        return
+      }
+
       if (
         isErrorWithMessage(error) &&
         error?.message?.includes("Code signature validation failed") &&
@@ -183,6 +197,19 @@ export const ExpoUpdatesOptions = () => {
           {!!updateMetadata && (
             <>
               <Message title="Active Release" text={activeReleaseText} variant="info" />
+              <Spacer y={2} />
+            </>
+          )}
+
+          {!!updateMetadata?.isEmergencyLaunch && (
+            <>
+              <Message
+                title="Emergency launch"
+                text={`Nothing was launchable last boot, so the app is running the embedded bundle.\nReason: ${
+                  Updates.emergencyLaunchReason || "unknown"
+                }\n\nFetching an update will still download it, but reloading it here will fail. Force-quit and reopen the app afterward to run it.`}
+                variant="warning"
+              />
               <Spacer y={2} />
             </>
           )}
