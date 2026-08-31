@@ -188,6 +188,23 @@ describe("useInfiniteDiscoveryCardSave", () => {
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
     })
 
+    it("does not commit the artwork to the onboarding list if it was un-saved before the flight animation finished", () => {
+      mockUseSaveArtworkToArtworkLists(false)
+      const { result, rerender } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), {
+        wrapper,
+      })
+
+      act(() => result.current.handleSaveButtonPress())
+
+      mockUseSaveArtworkToArtworkLists(true)
+      rerender(undefined)
+      act(() => result.current.handleSaveButtonPress())
+
+      act(() => result.current.completeSaveAnimation())
+
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
+    })
+
     it("re-adds the artwork to the onboarding list when reverting a failed unsave", () => {
       mockUseSaveArtworkToArtworkLists(true)
       renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })

@@ -57,6 +57,9 @@ export const useInfiniteDiscoveryCardSave = (
   const removeOnboardingSavedArtwork = () => {
     if (!artwork) return
 
+    setPendingSaveAnimationArtwork((pending) =>
+      pending?.internalID === artwork.internalID ? null : pending
+    )
     removeNewUserOnboardingSavedArtwork(artwork.internalID)
   }
 
