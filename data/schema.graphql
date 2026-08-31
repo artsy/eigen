@@ -2811,14 +2811,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   last: String
 
   """
-  The most recent published article featuring this artist, optionally limited to those published since a given date.
+  The most recent editorial article featuring this artist, published in the last 12 months.
   """
-  latestArticle(
-    """
-    Only return articles published since this ISO 8601 date.
-    """
-    publishedSince: String
-  ): Article
+  latestArticle: ArtistLatestArticle
   location: String
   marketingCollections(
     after: String
@@ -3140,6 +3135,10 @@ type ArtistInstagramMedia {
   image: Image
   internalID: String
   permalink: String
+}
+
+type ArtistLatestArticle {
+  href: String
 }
 
 type ArtistMeta {
