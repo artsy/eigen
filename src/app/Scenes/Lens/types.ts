@@ -1,9 +1,6 @@
 /**
- * `uri` is ALWAYS `file://`-prefixed, regardless of whether the photo came from the camera
- * or the library. The 2022 ReverseImage scene was inconsistent about this (camera results were
- * prefixed, library results were not), which was invisible in the simulator (no camera) and only
- * surfaced on device. Normalize at the boundary — see LensCameraPreview.tsx and
- * Screens/LensCamera.tsx's library handler.
+ * `uri` is ALWAYS `file://`-prefixed -- normalized at both boundaries (`LensCameraPreview` and
+ * `LensCamera`'s library handler), since the library path doesn't prefix it on its own.
  */
 export type LensPhoto = {
   uri: string
@@ -11,13 +8,10 @@ export type LensPhoto = {
   height: number
   fromLibrary?: boolean
   /**
-   * The measured size of the preview container the brackets were drawn against at capture time,
-   * which is the container the crop has to invert against. Measured (see `LensCamera`'s `onLayout`)
-   * rather than read from `useWindowDimensions()`: on Android the root content view is inset by the
-   * status bar (`MainActivity` sets `android:fitsSystemWindows="true"`), so the window reports a
-   * taller height than what actually renders, and the crop stops matching the brackets. Only set
-   * for camera captures -- library-picked photos never get a full-screen bracket moment (see
-   * `LensAnalyzing`).
+   * The container the brackets were drawn against at capture time, which is what the crop has to
+   * invert against. Measured (`LensCamera`'s `onLayout`) rather than taken from
+   * `useWindowDimensions()`: on Android the root view is inset by the status bar, so the window
+   * over-reports height and the crop stops matching the brackets. Camera captures only.
    */
   captureContainerWidth?: number
   captureContainerHeight?: number
@@ -28,9 +22,13 @@ export type LensNavigationStack = {
   LensAnalyzing: {
     photo: LensPhoto
   }
+  /**
+   * No local photo: the files are already deleted by the time this mounts (see `LensAnalyzing`'s
+   * sweep). A results thumbnail would need the *cropped* file kept alive past the upload -- the
+   * original isn't what the search saw.
+   */
   LensResults: {
     s3Bucket: string
     s3Key: string
-    photo: LensPhoto
   }
 }

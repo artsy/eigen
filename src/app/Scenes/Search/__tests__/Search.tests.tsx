@@ -44,8 +44,6 @@ describe("Search", () => {
       mockUseExperimentFlag.mockReturnValue(false)
     })
 
-    // The overlay's pill is two taps away from here (input, then pill), so the tab that Lens is
-    // most associated with was the one place the entry point wasn't directly on screen.
     it("opens the camera when the onyx_artsy-lens experiment is on", async () => {
       mockUseExperimentFlag.mockImplementation((key: string) => key === "onyx_artsy-lens")
 

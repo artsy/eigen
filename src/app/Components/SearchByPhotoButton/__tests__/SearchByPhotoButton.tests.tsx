@@ -16,9 +16,7 @@ describe("SearchByPhotoButton", () => {
     expect(onPress).toHaveBeenCalledTimes(1)
   })
 
-  // The two variants exist so the pill contrasts with whatever it sits on -- the light search
-  // overlay vs. the black Lens screens. Flipping them makes the button invisible, which no
-  // higher-level test would catch.
+  // Flipping the variants makes the button invisible, which no higher-level test would catch.
   it("labels the dark variant in white, for light surfaces", () => {
     renderWithWrappers(<SearchByPhotoButton variant="dark" onPress={jest.fn()} />)
 

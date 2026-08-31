@@ -27,19 +27,15 @@ type Props = StackScreenProps<LensNavigationStack, "LensCamera">
 type LensScreenState = LensCameraStatus | { kind: "loading" }
 
 /**
- * Full-screen camera capture. Structural difference from the deleted 2022 `ReverseImageCamera`:
- * permission/error states are *surfaces* the screen swaps behind an always-present header and
- * button row, not dead ends — the library-picker fallback stays reachable no matter what the
- * camera is doing. See the spike plan's "Screen composition" section.
+ * Permission and error states are surfaces swapped in behind an always-present header and button
+ * row, so the library-picker fallback stays reachable whatever the camera is doing.
  */
 export const LensCamera: React.FC<Props> = ({ navigation }) => {
   const [state, setState] = useState<LensScreenState>({ kind: "loading" })
   const [torchEnabled, setTorchEnabled] = useState(false)
   const camera = useRef<LensCameraPreviewHandle>(null)
-  // Measured via onLayout below rather than read from useWindowDimensions(), which over-reports
-  // height on Android -- see `LensPhoto.captureContainerWidth`. The brackets need the real rendered
-  // size, or they center on a taller coordinate space than what's visible and sit below true
-  // center.
+  // Measured, not read from useWindowDimensions(), which over-reports height on Android -- see
+  // `LensPhoto.captureContainerWidth`. With the window's value the brackets sit below true center.
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
   const isFocused = useIsFocused()
@@ -58,12 +54,9 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   }
 
   const handleClose = () => {
-    // Not navigation.goBack() -- LensCamera is the ROOT of this independent stack, so the local
-    // navigator has nothing to pop to and goBack() would silently no-op. dismissModal() reaches
-    // through to the outer app navigator that actually presented this modal (same pattern as
-    // MyCollectionArtworkForm.tsx). The deleted 2022 ReverseImageCamera.tsx had this same
-    // independent-stack-root shape and deliberately imported the *global* `goBack` for its close
-    // button rather than using the local `navigation` prop, for the same reason.
+    // Not navigation.goBack(): this screen is the root of an independent stack, so the local
+    // navigator has nothing to pop and goBack() silently no-ops. dismissModal() reaches the outer
+    // navigator that presented the modal.
     dismissModal()
   }
 
@@ -130,11 +123,9 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
       {state.kind === "error" && <LensCameraErrorState />}
 
       {/*
-        Always mounted, regardless of `state` — its internal effect is what *produces* every
-        state transition (loading -> permission/error/ready), including re-checking permission
-        after the placeholder's "Enable Access" is tapped. Gating it on `state` would deadlock:
-        it would never mount to report the status that ungates it. It renders nothing itself
-        until authorized, so this is safe alongside the placeholder/error surfaces above.
+        Always mounted: its own effect is what produces every state transition, so gating it on
+        `state` would deadlock -- it would never mount to report the status that ungates it. It
+        renders nothing until authorized, so it's safe alongside the surfaces above.
       */}
       <LensCameraPreview
         ref={camera}
@@ -161,17 +152,8 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
       )}
 
       {/*
-        Wrapped in its own absolute-positioned container — the header must float at the top
-        regardless of what else is on screen. Without this it's just another flex-column sibling,
-        and whichever surface above it renders with `flex={1}` (the permission placeholder, the
-        error state, the loading spinner) consumes all available height first, pushing the header
-        down to the bottom of the screen instead of the top. (Caught live via the ios-simulator
-        accessibility tree — AXFrame put the title/close button at y=842 on an 874pt-tall screen.)
-
-        Deliberately not "Search with your camera" as the title — LensPermissionPlaceholder uses
-        that exact phrase as its own headline, and this chrome title is visible alongside it (and
-        alongside the live preview, and the error state), so a distinct, more general label avoids
-        showing the same sentence twice on screen at once.
+        Absolutely positioned, not inline: as a plain flex-column sibling, whichever surface above
+        renders with `flex={1}` takes all the height first and pushes the header to the bottom.
       */}
       <Flex position="absolute" top={0} left={0} right={0}>
         <LensHeader title="Artsy Lens" onClose={handleClose} />

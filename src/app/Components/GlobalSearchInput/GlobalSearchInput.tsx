@@ -47,11 +47,9 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
     return (
       <Fragment>
         {/*
-          This wrapper exists to give the camera icon a positioning parent it can sit *outside* the
-          search Touchable in. The icon used to live inside the `pointerEvents="none"` subtree
-          below, where it could never receive a tap of its own — every press, icon included, opened
-          the search overlay. As a later sibling of the Touchable it renders on top of the bar and
-          wins touches within its own bounds, so it can open the camera directly.
+          The wrapper gives the camera icon a positioning parent *outside* the search Touchable.
+          Inside the `pointerEvents="none"` subtree below it could never take a tap of its own --
+          every press, icon included, opened the overlay.
         */}
         <Flex>
           <Touchable
@@ -83,11 +81,7 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
             </Flex>
           </Touchable>
 
-          {!!enableArtsyLens && (
-            // Straight to the camera rather than into the overlay: reverse-image search has nothing
-            // to do with the text field, so routing through the overlay would only add a tap.
-            <SearchByPhotoIconButton onPress={() => navigate("/lens")} />
-          )}
+          {!!enableArtsyLens && <SearchByPhotoIconButton onPress={() => navigate("/lens")} />}
         </Flex>
 
         <GlobalSearchInputOverlay

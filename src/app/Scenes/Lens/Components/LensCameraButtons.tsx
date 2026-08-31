@@ -8,11 +8,8 @@ export const LENS_CAMERA_BUTTONS_HEIGHT = 120
 const SMALL_BUTTON_SIZE = 40
 
 interface LensCameraButtonsProps extends FlexProps {
-  /**
-   * "camera" shows the shutter + torch alongside the library button. "libraryOnly" is used
-   * whenever the live preview isn't available — permission not yet granted/denied, or a camera
-   * runtime error — so a user without camera access can still complete the flow via the library.
-   */
+  /** "libraryOnly" drops the shutter and torch, so the flow stays completable without camera
+   * access. */
   mode: "camera" | "libraryOnly"
   isCameraInitialized: boolean
   deviceHasTorch: boolean
@@ -22,12 +19,6 @@ interface LensCameraButtonsProps extends FlexProps {
   onSelectFromLibrary: () => void
 }
 
-/**
- * Restyled/renamed from the deleted 2022 `CameraButtons.tsx`. Two behavior changes from that
- * version: (1) the library button is always enabled, even before the shutter/torch exist, so the
- * fallback path works without camera access; (2) the toggle drives a continuous torch for framing
- * (Google-Lens-style), not a flash that fires on shutter — see LensCameraPreview.tsx.
- */
 export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
   const {
     mode,

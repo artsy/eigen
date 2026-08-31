@@ -19,19 +19,14 @@ export interface ViewfinderRect {
  *   to the *interface*, which is orientation-locked, so holding the phone sideways rotates the
  *   world within the preview rather than rotating the UI.
  *
- * The distinction only matters when the photo's and the container's orientations disagree.
+ * Only matters when the photo's and the container's orientations disagree.
  */
 export type PhotoPresentation = "cover" | "coverRotatedToContainer"
 
 /**
- * The centered `LENS_VIEWFINDER_ASPECT_RATIO`-shaped rect within a container of the given
- * dimensions, sized to `LENS_VIEWFINDER_FRACTION` of the largest such rect that fits (a "contain"
- * fit -- height-constrained if the container is proportionally wider than the target ratio,
- * width-constrained otherwise).
- *
- * Shared by `LensCornerBrackets` (container = the screen, or the analyzing screen's smaller
- * preview card) and `cropToViewfinder.ts` (container = the captured photo's own pixel dimensions)
- * so the drawn rect and the cropped rect can't drift apart -- same math, different container.
+ * Shared by `LensCornerBrackets` (container = the screen, or the analyzing screen's preview card)
+ * and `cropToViewfinder.ts` (container = the photo's own pixels), so the drawn rect and the cropped
+ * rect can't drift apart -- same math, different container.
  */
 export function computeViewfinderRect(
   containerWidth: number,
@@ -56,37 +51,20 @@ export function computeViewfinderRect(
 }
 
 /**
- * The rect, in the PHOTO's own pixel space, that corresponds exactly to the `computeViewfinderRect`
- * bracket drawn over a `containerWidth x containerHeight` container the photo is displayed within
- * via `cover` scaling (LensCameraPreview's live preview, full-screen; or LensAnalyzing's preview
- * `<Image resizeMode="cover">`, card-sized).
+ * The rect, in the PHOTO's own pixel space, matching the bracket rect drawn over a container the
+ * photo is displayed within via `cover`. Assumes photo and container are both centered.
  *
- * This is NOT the same as just calling `computeViewfinderRect(photoWidth, photoHeight)` directly
- * -- that treats the photo's own raw canvas as the container, which only coincides with what's
- * visually inside the brackets when the container's aspect ratio happens to equal
- * `LENS_VIEWFINDER_ASPECT_RATIO` exactly (true for the analyzing screen's card, by construction --
- * NOT true for the live capture screen, whose full-screen container is a very different, much
- * taller ratio). Concretely: a 0.75-aspect photo viewed through a ~0.46-aspect (typical phone)
- * screen previously produced a crop covering a very different fraction of the photo's width than
- * what the on-screen brackets actually marked -- roughly 78% vs. 48% in one worked example. This
- * function inverts the actual `cover` mapping instead of independently re-deriving a same-shaped
- * rect against the wrong container, so it's always correct regardless of how the container's ratio
- * relates to the photo's.
+ * NOT the same as `computeViewfinderRect(photoWidth, photoHeight)`: that treats the photo's raw
+ * canvas as the container, which only coincides with what's inside the brackets when the
+ * container's ratio equals `LENS_VIEWFINDER_ASPECT_RATIO` -- true for the analyzing screen's card,
+ * badly false for the full-screen capture. Inverting the real `cover` mapping is correct for any
+ * container ratio.
  *
- * Assumes the photo and the container are both centered, and that the photo is displayed via
- * `cover` (matching `LensCameraPreview`'s pinned `resizeMode="cover"` and `LensAnalyzing`'s
- * `<Image resizeMode="cover">`) -- both true by construction in this scene, but not verified here.
- *
- * `presentation` corrects for a 90-degree rotation between the photo's own space and the space it
- * was presented in. A capture's display space follows the physical device, while the preview it was
- * framed against follows the orientation-locked interface -- so holding the phone sideways leaves
- * the two a quarter turn apart, and a plain `cover` inversion then returns a transposed rect
- * covering roughly half the area the brackets actually marked. Inverting in the presented
- * (transposed) space and rotating the result back is what recovers the framed region.
- *
- * The rotation's *direction* is irrelevant: the bracket rect is centered within the container and
- * the photo is centered within the preview, so 90 and 270 degrees produce the same rect. That's why
- * this needs only the two orientations, not vision-camera's `photo.orientation`.
+ * `presentation` corrects a 90-degree rotation between the photo's space and the space it was
+ * framed in: a capture follows the device, the preview follows the orientation-locked interface, so
+ * a sideways capture leaves them a quarter turn apart and a plain inversion returns a transposed
+ * rect. The rotation's *direction* doesn't matter -- everything involved is centered, so 90 and 270
+ * give the same rect, which is why two orientations suffice and `photo.orientation` isn't needed.
  */
 export function computePhotoCropRect(
   photoWidth: number,

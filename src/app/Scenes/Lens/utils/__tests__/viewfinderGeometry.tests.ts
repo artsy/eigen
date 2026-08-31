@@ -6,8 +6,7 @@ import {
 
 describe("computeViewfinderRect", () => {
   it("is height-constrained when the container is proportionally wider than the target ratio", () => {
-    // e.g. a typical phone screen (~9:19.5, much narrower/taller than 5:6) -- width is the
-    // constraint, height is derived. Also covers the analyzing screen's square-ish preview card.
+    // A typical phone screen (~9:19.5) -- width is the constraint, height is derived.
     const rect = computeViewfinderRect(390, 844)
 
     const expectedContainWidth = 390
@@ -17,7 +16,7 @@ describe("computeViewfinderRect", () => {
   })
 
   it("is width-constrained when the container is proportionally narrower than the target ratio", () => {
-    // A container wider than it is tall relative to 5:6 -- height is the constraint here.
+    // Wider than tall relative to 5:6 -- height is the constraint here.
     const rect = computeViewfinderRect(800, 400)
 
     const expectedContainHeight = 400
@@ -55,9 +54,8 @@ describe("computeViewfinderRect", () => {
 
 describe("computePhotoCropRect", () => {
   it("reduces to computeViewfinderRect applied directly to the photo when the container's aspect ratio already equals the target", () => {
-    // The analyzing screen's preview card is built to exactly LENS_VIEWFINDER_ASPECT_RATIO -- in
-    // that case, inverting the cover mapping should agree with the simpler "fit the target ratio
-    // within the photo's own canvas" formula, since there's no ratio mismatch to correct for.
+    // With no ratio mismatch to correct for (the preview card's case), inverting the cover mapping
+    // must agree with the simpler "fit the target ratio within the photo's own canvas".
     const photoWidth = 3000
     const photoHeight = 4000
     const containerWidth = 500
@@ -73,9 +71,8 @@ describe("computePhotoCropRect", () => {
   })
 
   it("differs from the naive direct formula when the container's ratio doesn't match the target -- the live capture screen case", () => {
-    // This is the bug this function exists to fix: a typical phone screen (~9:19.5) is a very
-    // different shape than a 0.75-aspect photo, so what's visible within the brackets on a
-    // full-screen live preview is NOT the same region as "fit 5:6 within the photo's own canvas."
+    // The bug this function exists to fix: through a ~9:19.5 screen, what's inside the brackets is
+    // NOT the same region as "fit 5:6 within the photo's own canvas".
     const photoWidth = 3000
     const photoHeight = 4000
     const screenWidth = 390
@@ -107,8 +104,7 @@ describe("computePhotoCropRect", () => {
     const CONTAINER_HEIGHT = 926
 
     it("leaves a portrait capture untouched, because nothing is rotated", () => {
-      // Held upright: display space 3024x4032 -- portrait, matching the portrait container, so
-      // the rotation-aware mapping must agree with the plain one.
+      // Upright: portrait photo, portrait container, so both mappings must agree.
       const asIs = computePhotoCropRect(3024, 4032, CONTAINER_WIDTH, CONTAINER_HEIGHT, "cover")
       const rotationAware = computePhotoCropRect(
         3024,
@@ -126,9 +122,8 @@ describe("computePhotoCropRect", () => {
     })
 
     it("transposes a landscape capture back into the region the brackets actually marked", () => {
-      // Held sideways: display space 4032x3024 -- landscape, while the container stays portrait.
-      // The uncorrected mapping returns 1090x1308 @ (1471, 858): the wrong shape, and only about
-      // half the framed area.
+      // Sideways: landscape photo, portrait container. Uncorrected this returns 1090x1308 @
+      // (1471, 858) -- the wrong shape, and about half the framed area.
       const rect = computePhotoCropRect(
         4032,
         3024,
@@ -144,8 +139,8 @@ describe("computePhotoCropRect", () => {
     })
 
     it("produces the transposed viewfinder ratio for a rotated capture", () => {
-      // 6:5 in the photo's space, because the 5:6 bracket was drawn in a space rotated 90 degrees
-      // away from it. A rect that still reads 5:6 here is the signature of the original bug.
+      // 6:5 in the photo's space: the 5:6 bracket was drawn in a space rotated 90 degrees away. A
+      // rect that still reads 5:6 here is the signature of the original bug.
       const rect = computePhotoCropRect(
         4032,
         3024,
@@ -194,8 +189,8 @@ describe("computePhotoCropRect", () => {
     })
 
     it("defaults to the unrotated mapping, so a library pick is never transposed", () => {
-      // `<Image resizeMode="cover">` does not rotate, so a landscape photo shown in the portrait
-      // preview card must keep the plain mapping even though the orientations disagree.
+      // `<Image resizeMode="cover">` doesn't rotate, so this keeps the plain mapping even though
+      // the orientations disagree.
       const explicit = computePhotoCropRect(4032, 3024, 500, 600, "cover")
       const defaulted = computePhotoCropRect(4032, 3024, 500, 600)
 

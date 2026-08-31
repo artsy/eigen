@@ -14,11 +14,6 @@ interface LensScanLineProps {
   height: number
 }
 
-/**
- * A horizontal line that sweeps up and down within its parent's bounds — the "scanning" motion
- * for LensAnalyzing. Follows this repo's standard looping-animation shape (useSharedValue +
- * useAnimatedStyle + withRepeat), see `app/utils/animations/useSkeletonAnimation.tsx`.
- */
 export const LensScanLine: React.FC<LensScanLineProps> = ({ height }) => {
   const progress = useSharedValue(0)
 
@@ -48,8 +43,7 @@ export const LensScanLine: React.FC<LensScanLineProps> = ({ height }) => {
           left: 0,
           right: 0,
           height: 2,
-          // #FFFFFF matches the `mono0` token — Animated.View takes a plain RN style object, not
-          // palette-mobile's styled-system props, so the token can't be referenced by name here.
+          // `mono0`, spelled out: Animated.View takes a plain RN style, not palette's props.
           backgroundColor: "#FFFFFF",
           shadowColor: "#FFFFFF",
           shadowOpacity: 0.8,

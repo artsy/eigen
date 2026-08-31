@@ -9,16 +9,6 @@ interface LensPermissionPlaceholderProps {
   onOpenSettings: () => void
 }
 
-/**
- * The surface shown behind the header/button chrome (see LensCamera.tsx) before camera access is
- * granted — modeled on Vinted's "Search with your camera" pre-permission screen rather than the
- * deleted 2022 `CameraGrantPermissions`, which dead-ended the whole screen on a bare "Grant"
- * button. The library-picker fallback stays available in this state (see LensCameraButtons.tsx),
- * so a user who never grants camera access can still complete the flow.
- *
- * The primary action's label and behavior depend on status: a second in-app permission request
- * after an iOS denial is a silent no-op, so "denied" must route to Settings instead of re-asking.
- */
 export const LensPermissionPlaceholder: React.FC<LensPermissionPlaceholderProps> = (props) => {
   const { status, onRequestPermission, onOpenSettings } = props
 

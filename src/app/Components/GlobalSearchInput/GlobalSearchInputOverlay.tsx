@@ -166,11 +166,7 @@ export const GlobalSearchInputOverlay: React.FC<{
           style={{ top: insets.top, marginBottom: insets.bottom }}
         >
           <Flex px={2} mt={2}>
-            {/*
-              Unpadded wrapper: the camera icon positions itself absolutely, and Yoga measures
-              absolute insets from the border box while ignoring padding, so anchoring it to the
-              `px={2}` Flex above would push it out past the input's edge.
-            */}
+            {/* Unpadded wrapper -- see SearchByPhotoIconButton on why the padding would break it. */}
             <Flex>
               <RoundSearchInput
                 placeholder={SEARCH_INPUT_PLACEHOLDER}
@@ -186,15 +182,6 @@ export const GlobalSearchInputOverlay: React.FC<{
                 }}
               />
 
-              {/*
-                The icon is carried over from the collapsed bar the user just tapped — without it,
-                opening the overlay looked like the camera affordance had been taken away.
-
-                It yields the slot once there's a query, though: `RoundSearchInput` sets
-                `clearButtonMode="always"`, so iOS draws its own clear button in exactly this
-                position as soon as text is entered, and the two would overlap. Photo search stays
-                reachable while typing via the pill at the bottom of the overlay.
-              */}
               {!!enableArtsyLens && !query && (
                 <SearchByPhotoIconButton
                   testID="search-overlay-camera-icon"

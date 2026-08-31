@@ -1,10 +1,7 @@
 import { PhotographIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 
-/**
- * The button's own fill, chosen to contrast with the surface it sits on: "dark" for light surfaces
- * (the search overlay, the results grid), "light" for the black Lens screens.
- */
+// "dark" for light surfaces, "light" for the black Lens screens.
 export type SearchByPhotoButtonVariant = "dark" | "light"
 
 interface SearchByPhotoButtonProps {
@@ -15,23 +12,9 @@ interface SearchByPhotoButtonProps {
 
 const LABEL = "Search by photo"
 
-/**
- * Vertical room the pill occupies once pinned over scrolling content, including the padding it's
- * usually given. Scroll containers underneath a pinned pill pad their bottom by this so their last
- * item can clear it.
- */
+// Room a pinned pill needs, so scroll containers underneath can pad their last item clear of it.
 export const SEARCH_BY_PHOTO_BUTTON_SPACE = 58
 
-/**
- * The Artsy Lens entry point. Shared rather than duplicated (AGENTS.md) because it appears on three
- * surfaces that disagree about *where* it goes — the search overlay opens the `/lens` modal, while
- * the Lens screens return to the camera inside their own independent stack — but must not disagree
- * about how it looks. Hence `onPress` as a prop instead of navigation owned in here.
- *
- * The full-width pill shape is intentionally not palette's `Button`: the rounded-25 capsule with a
- * leading icon is its own affordance in the search overlay's design, and `Button` has no variant
- * that produces it.
- */
 export const SearchByPhotoButton: React.FC<SearchByPhotoButtonProps> = ({
   onPress,
   testID = "search-by-photo-button",

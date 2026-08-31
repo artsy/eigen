@@ -145,14 +145,10 @@ export const Search: React.FC = () => {
       </Flex>
 
       {/*
-        Pinned to the bottom of the screen, the same placement the search overlay gives it. No tab
-        bar offset needed: `ScreenWrapper` already pads every screen by the (absolutely positioned)
-        tab bar's height, so this subtree's bottom edge *is* the top of the tab bar.
-
-        Last in the tree so it draws over the content above, and not inside the ScrollView, so it
-        stays put while the rails scroll under it. `KeyboardStickyView` — which the overlay wraps
-        its pill in — would be dead weight here: this screen's input is a button that opens the
-        overlay, so the keyboard never comes up on it.
+        No tab bar offset needed: `ScreenWrapper` already pads every screen by the (absolutely
+        positioned) tab bar's height, so this subtree's bottom edge *is* the top of the tab bar.
+        And no `KeyboardStickyView` as the overlay uses, since this screen's input is a button --
+        the keyboard never comes up here.
       */}
       {!!enableArtsyLens && (
         <Flex position="absolute" left={0} right={0} bottom={0} px={2} pb={1}>

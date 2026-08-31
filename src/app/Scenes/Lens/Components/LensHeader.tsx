@@ -6,15 +6,6 @@ interface LensHeaderProps {
   title?: string
 }
 
-/**
- * Merges the deleted 2022 `HeaderContainer` / `HeaderBackButton` / `HeaderTitle` into one
- * component. Shared by every screen in the Lens flow, and meant to sit absolutely over the
- * full-bleed surface below it rather than inline in a flex flow — see `LensCamera`'s comment on why
- * that positioning is load-bearing there.
- *
- * `title` is optional because `LensAnalyzing` deliberately shows a bare close button: its own
- * "Searching for matches..." caption is the only label that screen needs.
- */
 export const LensHeader: React.FC<LensHeaderProps> = ({ onClose, title }) => {
   const insets = useSafeAreaInsets()
   const space = useSpace()

@@ -7,24 +7,10 @@ const BRACKET_THICKNESS = 3
 const BRACKET_SIZE = 28
 
 interface LensCornerBracketsProps {
-  /** The dimensions of whatever this is rendered inside -- the full screen on the live capture
-   * screen, or the (smaller, but same aspect-ratio-shaped) preview card on the analyzing screen.
-   * Required rather than defaulting to `useWindowDimensions()` internally: this component doesn't
-   * know its own render context, and silently assuming "always full screen" was exactly the bug
-   * that made the brackets render wrong on the analyzing screen's smaller preview card. */
   width: number
   height: number
 }
 
-/**
- * Marks a real, centered `LENS_VIEWFINDER_ASPECT_RATIO`-shaped rect (see `constants.ts`) within
- * its container -- not the container's own aspect ratio, and not a square. This is the rect the
- * captured photo eventually gets cropped to for matching, so it's not purely cosmetic. The
- * *preview* underneath still renders full-bleed regardless (per the spike plan: never make the
- * live preview itself read as a crop box) -- this overlay only marks intent, it doesn't constrain
- * layout. `pointerEvents="none"` so it never intercepts the tap-to-focus/pinch-to-zoom gestures
- * underneath.
- */
 export const LensCornerBrackets: React.FC<LensCornerBracketsProps> = ({ width, height }) => {
   const rect = computeViewfinderRect(width, height)
 
