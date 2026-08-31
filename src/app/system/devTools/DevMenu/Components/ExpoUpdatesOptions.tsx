@@ -12,7 +12,7 @@ import { Expandable } from "app/Components/Expandable"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import * as Updates from "expo-updates"
 import { useEffect, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 
 type ExpoDeployment = "Canary" | "Staging" | "Production"
 
@@ -201,7 +201,7 @@ export const ExpoUpdatesOptions = () => {
             </>
           )}
 
-          {!!updateMetadata?.isEmergencyLaunch && (
+          {!!updateMetadata?.isEmergencyLaunch && Platform.OS === "android" && (
             <>
               <Message
                 title="Emergency launch"
