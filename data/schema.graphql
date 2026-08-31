@@ -3141,6 +3141,7 @@ type ArtistInstagramMedia {
 
 type ArtistLatestArticle {
   href: String
+  id: String @deprecated(reason: "Use href instead")
 }
 
 type ArtistMeta {
