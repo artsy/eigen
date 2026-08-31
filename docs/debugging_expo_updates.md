@@ -91,8 +91,8 @@ only happens on Android.
 
 If you land in this state, either the dev menu shows "Emergency Launch: Yes" or "Fetch and Run
 Deployment" throws `ERR_UPDATES_RELOAD`. Force-quit and reopen the app. The update already downloaded,
-so a cold start will pick it up. The dev menu's "Reset Channel Override" button clears the saved
-override and prompts the same restart, for switching back to the embedded channel specifically.
+so a cold start will pick it up. To get back to the embedded channel specifically, reinstall the app;
+the override is saved in SharedPreferences and survives a normal restart.
 
 If a future expo-updates upgrade fixes either of these upstream, this flag is safe to flip back. We
 only ever call the headers-only override API from the dev menu, never the URL one.
