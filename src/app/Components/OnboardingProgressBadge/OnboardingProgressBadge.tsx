@@ -1,7 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { MotiView } from "moti"
 import { useEffect, useLayoutEffect, useMemo, useState } from "react"
-import { Easing } from "react-native-reanimated"
+import { Easing, useReducedMotion } from "react-native-reanimated"
 
 export type OnboardingProgressUnit = "follows" | "saves"
 
@@ -67,17 +67,18 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   total,
   unit,
 }) => {
+  const isReducedMotionEnabled = useReducedMotion()
   const [isJumping, setIsJumping] = useState(false)
   const [displayedCount, setDisplayedCount] = useState(currentCount)
 
   // starts the jump when currentCount increases, or updates displayedCount directly otherwise
   useLayoutEffect(() => {
-    if (currentCount > displayedCount) {
+    if (currentCount > displayedCount && !isReducedMotionEnabled) {
       setIsJumping(true)
     } else {
       setDisplayedCount(currentCount)
     }
-  }, [currentCount, displayedCount])
+  }, [currentCount, displayedCount, isReducedMotionEnabled])
 
   // schedules the mid-jump number swap and the end-of-animation reset
   useEffect(() => {
@@ -112,7 +113,12 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
   }
 
   return (
-    <Flex flexDirection="row" alignItems="baseline">
+    <Flex
+      flexDirection="row"
+      alignItems="baseline"
+      accessible
+      accessibilityLabel={`${displayedCount} ${getProgressText(unit, total)}`}
+    >
       <MotiView {...jumpAnimationProps}>
         <Text
           variant="sm-display"
