@@ -3876,6 +3876,50 @@ type ArtnetEditionSet {
   ): String
 }
 
+type ArtnetImport {
+  completedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  createdCount: Int
+  deletedCount: Int
+  errorCount: Int
+  errorMessage: String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  skippedCount: Int
+  state: ArtnetImportState
+  totalCount: Int
+  unmatchedArtistNames: [String!]!
+}
+
+enum ArtnetImportState {
+  COMPLETED
+  FAILED
+  PENDING
+  PROCESSING
+}
+
 type ArtsyShippingOptInMutationFailure {
   mutationError: GravityMutationError
 }
@@ -14364,6 +14408,40 @@ type CreateArtistSuccess {
 }
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
+
+type CreateArtnetImportArtistAssignmentFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtnetImportArtistAssignmentInput {
+  """
+  The artist ID to assign to the unmatched name
+  """
+  artistID: String!
+
+  """
+  The unmatched artist name to assign
+  """
+  artistName: String!
+  artnetImportID: String!
+  clientMutationId: String
+}
+
+type CreateArtnetImportArtistAssignmentPayload {
+  clientMutationId: String
+  createArtnetImportArtistAssignmentOrError: CreateArtnetImportArtistAssignmentResponseOrError
+}
+
+union CreateArtnetImportArtistAssignmentResponseOrError =
+    CreateArtnetImportArtistAssignmentFailure
+  | CreateArtnetImportArtistAssignmentSuccess
+
+type CreateArtnetImportArtistAssignmentSuccess {
+  artnetImport: ArtnetImport
+  artnetImportID: String!
+  matchedRowsCount: Int!
+  updatedArtworksCount: Int!
+}
 
 type CreateArtnetImportFailure {
   mutationError: GravityMutationError
@@ -25689,6 +25767,9 @@ type Mutation {
   Kicks off a background job to pull a gallery's Artnet inventory and create corresponding Artsy artwork records.
   """
   createArtnetImport(input: CreateArtnetImportMutationInput!): CreateArtnetImportMutationPayload
+  createArtnetImportArtistAssignment(
+    input: CreateArtnetImportArtistAssignmentInput!
+  ): CreateArtnetImportArtistAssignmentPayload
 
   """
   Creates a new artwork, optionally with associated images.
@@ -31767,6 +31848,7 @@ type Query {
     """
     term: String
   ): ArtistConnection
+  artnetImport(id: String!): ArtnetImport
 
   """
   An Artwork
@@ -41617,6 +41699,7 @@ type Viewer {
     """
     term: String
   ): ArtistConnection
+  artnetImport(id: String!): ArtnetImport
 
   """
   An Artwork
