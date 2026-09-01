@@ -5,7 +5,15 @@ import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteD
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { useReducedMotion } from "react-native-reanimated"
 import RNShare from "react-native-share"
+
+jest.mock("react-native-reanimated", () => ({
+  ...require("react-native-reanimated/mock"),
+  useReducedMotion: jest.fn(),
+}))
+
+const mockUseReducedMotion = useReducedMotion as jest.Mock
 
 const mockGoBack = jest.fn()
 const mockNavigate = jest.fn()
@@ -77,6 +85,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockUseReducedMotion.mockReturnValue(false)
     ;(mockAddListener as any).beforeRemoveCallback = undefined
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
     GlobalStore.actions.onboarding.setOnboardingState("complete")
@@ -133,7 +142,8 @@ describe("InfiniteDiscoveryHeader", () => {
     it("shows the progress badge instead of the exit chevron", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("0 of 5 saves")).toBeOnTheScreen()
+      expect(screen.getByText("0")).toBeOnTheScreen()
+      expect(screen.getByText("of 5 saves")).toBeOnTheScreen()
       expect(screen.queryByTestId("close-icon")).not.toBeOnTheScreen()
     })
 
@@ -148,7 +158,8 @@ describe("InfiniteDiscoveryHeader", () => {
       })
       renderWithWrappers(<InfiniteDiscoveryHeader />)
 
-      expect(screen.getByText("2 of 5 saves")).toBeOnTheScreen()
+      expect(screen.getByText("2")).toBeOnTheScreen()
+      expect(screen.getByText("of 5 saves")).toBeOnTheScreen()
     })
 
     it("shows a Skip button instead of the share/more button", () => {

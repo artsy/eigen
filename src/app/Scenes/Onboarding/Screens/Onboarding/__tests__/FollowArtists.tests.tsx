@@ -6,6 +6,7 @@ import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { KeyboardController } from "react-native-keyboard-controller"
+import { useReducedMotion } from "react-native-reanimated"
 
 // Extend the global mock rather than replace it — replacing it drops KeyboardAwareScrollView
 // which BottomSheetKeyboardAwareScrollView depends on.
@@ -13,6 +14,13 @@ jest.mock("react-native-keyboard-controller", () => ({
   ...require("react-native-keyboard-controller/jest"),
   KeyboardStickyView: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
+
+jest.mock("react-native-reanimated", () => ({
+  ...require("react-native-reanimated/mock"),
+  useReducedMotion: jest.fn(),
+}))
+
+const mockUseReducedMotion = useReducedMotion as jest.Mock
 
 jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: { value: string }) => ({ debouncedValue: value }),
@@ -58,6 +66,7 @@ describe("FollowArtists", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    mockUseReducedMotion.mockReturnValue(false)
     dismissSpy = jest.spyOn(KeyboardController, "dismiss").mockImplementation(jest.fn())
   })
 
@@ -130,19 +139,21 @@ describe("FollowArtists", () => {
     it("shows 0 of 3 follows initially", () => {
       renderWithWrappers(<FollowArtists />)
 
-      expect(screen.getByText("0 of 3 follows")).toBeOnTheScreen()
+      expect(screen.getByText("0")).toBeOnTheScreen()
+      expect(screen.getByText("of 3 follows")).toBeOnTheScreen()
     })
 
-    it("reflects the number of followed artists", () => {
+    it("reflects the number of followed artists", async () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("2 of 3 follows")).toBeOnTheScreen()
+      expect(await screen.findByText("2")).toBeOnTheScreen()
+      expect(screen.getByText("of 3 follows")).toBeOnTheScreen()
     })
 
-    it("shows Complete once 3 or more artists are followed", () => {
+    it("shows Complete once 3 or more artists are followed", async () => {
       renderWithWrappers(<FollowArtists />)
 
       fireEvent.press(screen.getByText("OrderedSet"))
@@ -150,7 +161,7 @@ describe("FollowArtists", () => {
       fireEvent.press(screen.getByText("OrderedSet"))
       fireEvent.press(screen.getByText("OrderedSet"))
 
-      expect(screen.getByText("Complete")).toBeOnTheScreen()
+      expect(await screen.findByText("Complete")).toBeOnTheScreen()
     })
   })
 
