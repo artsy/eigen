@@ -8,7 +8,12 @@ import {
 } from "react-relay-network-modern"
 
 describe(checkAuthenticationMiddleware, () => {
-  const middleware = checkAuthenticationMiddleware()
+  let middleware: ReturnType<typeof checkAuthenticationMiddleware>
+
+  beforeEach(() => {
+    fetchMock.resetMocks()
+    middleware = checkAuthenticationMiddleware()
+  })
 
   const request: GraphQLRequest = {
     // @ts-ignore
@@ -23,7 +28,27 @@ describe(checkAuthenticationMiddleware, () => {
     } as any,
   }
 
-  it("calls signOut if there are errors", async () => {
+  it("calls signOut if there are errors and /me keeps returning 401", async () => {
+    const errors: GraphQLResponseErrors = [
+      { message: "The access token is invalid or has expired." },
+    ]
+    // @ts-ignore
+    const relayResponse: RelayNetworkLayerResponse = { errors }
+
+    const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
+    fetchMock.mockResponse("", { status: 401 })
+    expect(fetchMock).toHaveBeenCalledTimes(0)
+    await middleware(next)(request)
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
+      "@thunk.auth.signOut(success)"
+    )
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
+      "@thunkOn.resetAfterSignOut(success)"
+    )
+  })
+
+  it("does not sign out if /me recovers on a retry (e.g. a freshly issued token)", async () => {
     const errors: GraphQLResponseErrors = [
       { message: "The access token is invalid or has expired." },
     ]
@@ -32,14 +57,11 @@ describe(checkAuthenticationMiddleware, () => {
 
     const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
     fetchMock.mockResponseOnce("", { status: 401 })
-    expect(fetchMock).toHaveBeenCalledTimes(0)
+    fetchMock.mockResponseOnce("", { status: 200 })
     await middleware(next)(request)
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).not.toContain(
       "@thunk.auth.signOut(success)"
-    )
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
-      "@thunkOn.resetAfterSignOut(success)"
     )
   })
 
