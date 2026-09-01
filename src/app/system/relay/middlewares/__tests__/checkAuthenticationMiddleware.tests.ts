@@ -80,6 +80,31 @@ describe(checkAuthenticationMiddleware, () => {
     )
   })
 
+  it("only emits one recovered event per token across concurrent recoveries", async () => {
+    const errors: GraphQLResponseErrors = [
+      { message: "The access token is invalid or has expired." },
+    ]
+    // @ts-ignore
+    const relayResponse: RelayNetworkLayerResponse = { errors }
+
+    const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
+    // Two failing requests for the same token, each recovering (401 then 200).
+    fetchMock.mockResponses(
+      ["", { status: 401 }],
+      ["", { status: 200 }],
+      ["", { status: 401 }],
+      ["", { status: 200 }]
+    )
+
+    await middleware(next)(request)
+    await middleware(next)(request)
+
+    const recoveredCalls = captureMessageMock.mock.calls.filter(
+      ([, ctx]) => ctx?.tags?.authOutcome === "recovered_after_transient_401"
+    )
+    expect(recoveredCalls).toHaveLength(1)
+  })
+
   it("passes through if there is no errors", async () => {
     const errors: GraphQLResponseErrors = []
     // @ts-ignore

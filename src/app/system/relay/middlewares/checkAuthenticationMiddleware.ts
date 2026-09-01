@@ -43,6 +43,8 @@ const checkSession = async (gravityURL: string, token: string): Promise<SessionC
 export const checkAuthenticationMiddleware = (): Middleware => {
   // We want to avoid running the forced logout more than once.
   const expiredTokens: Set<string> = new Set()
+  // Dedup per token so the recovery signal is counted per-incident, not per-request.
+  const recoveredTokens: Set<string> = new Set()
   return (next) => async (req) => {
     const res = await next(req)
     const authenticationToken = req.fetchOpts.headers["X-ACCESS-TOKEN"]
@@ -59,7 +61,8 @@ export const checkAuthenticationMiddleware = (): Middleware => {
         if (expiredTokens.has(authenticationToken)) {
           return res
         }
-        if (recoveredAfterTransient401) {
+        if (recoveredAfterTransient401 && !recoveredTokens.has(authenticationToken)) {
+          recoveredTokens.add(authenticationToken)
           captureMessage("checkAuthentication: /me recovered after transient 401", {
             level: "info",
             tags: { authOutcome: "recovered_after_transient_401" },
