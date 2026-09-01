@@ -34,6 +34,7 @@ type AI {
 union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
 input AIAgentMessageInput {
+  artworkIDs: [String!]
   content: String!
   role: AIAgentRole!
 }
