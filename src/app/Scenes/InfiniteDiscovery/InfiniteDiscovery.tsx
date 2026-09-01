@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Screen } from "@artsy/palette-mobile"
+import { PortalHost } from "@gorhom/portal"
 import { captureMessage } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
 import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
@@ -10,6 +11,7 @@ import {
   negativeSignalsQuery,
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNegativeSignalsBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
+import { INFINITE_DISCOVERY_SAVE_ANIMATION_PORTAL_HOST } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoverySaveFlightAnimation"
 import { NewUserOnboardingArtworkCardBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingArtworkCardBottomSheet"
 import { NewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingCompletionBottomSheet"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
@@ -217,6 +219,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         )}
         <NewUserOnboardingCompletionBottomSheet />
       </Screen.Body>
+      {/* Outside Screen.Body so its marginTop doesn't offset this host's coordinate space */}
+      <PortalHost name={INFINITE_DISCOVERY_SAVE_ANIMATION_PORTAL_HOST} />
     </Screen>
   )
 }
