@@ -136,6 +136,16 @@ If all looks good with the fix you can update the rollout to all users:
 
 This will start an interactive dialog where you can choose the release you want to update the rollout for.
 
+### Rolling back
+
+If the fix turns out to be bad, roll it back:
+
+`./scripts/deploys/expo-updates/rollback`
+
+The script doesn't pick a rollback target for you. It prompts you to choose an earlier
+published update or the build's embedded update, then republishes your choice as the
+channel's latest update.
+
 </details>
 
 <details>
