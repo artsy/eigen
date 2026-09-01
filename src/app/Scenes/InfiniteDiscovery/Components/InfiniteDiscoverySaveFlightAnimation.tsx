@@ -157,6 +157,8 @@ const SaveFlightCard: React.FC<SaveFlightCardProps> = ({
   return (
     <MotiView
       pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
       {...flightAnimationProps}
       style={{
         position: "absolute",
