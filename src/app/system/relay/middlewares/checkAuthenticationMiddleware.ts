@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Alert } from "react-native"
 import { Middleware } from "react-relay-network-modern"
@@ -9,7 +10,17 @@ const ME_CHECK_RETRY_DELAY = 500
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const isSessionExpired = async (gravityURL: string, token: string): Promise<boolean> => {
+interface SessionCheckResult {
+  expired: boolean
+  // A 401 on the first attempt that a later attempt cleared — the token was briefly rejected
+  // before it propagated (read-your-writes lag). Reported so we can size how often this
+  // happens in production vs. genuine expirations.
+  recoveredAfterTransient401: boolean
+  attempts: number
+}
+
+const checkSession = async (gravityURL: string, token: string): Promise<SessionCheckResult> => {
+  let sawTransient401 = false
   for (let attempt = 0; attempt < ME_CHECK_MAX_ATTEMPTS; attempt++) {
     const result = await fetch(`${gravityURL}/api/v1/me`, {
       method: "HEAD",
@@ -18,13 +29,14 @@ const isSessionExpired = async (gravityURL: string, token: string): Promise<bool
       },
     })
     if (result.status !== 401) {
-      return false
+      return { expired: false, recoveredAfterTransient401: sawTransient401, attempts: attempt + 1 }
     }
+    sawTransient401 = true
     if (attempt < ME_CHECK_MAX_ATTEMPTS - 1) {
       await delay(ME_CHECK_RETRY_DELAY)
     }
   }
-  return true
+  return { expired: true, recoveredAfterTransient401: false, attempts: ME_CHECK_MAX_ATTEMPTS }
 }
 
 // This middleware is responsible of signing the user out if their session expired
@@ -38,14 +50,28 @@ export const checkAuthenticationMiddleware = (): Middleware => {
     if (res.errors?.length && authenticationToken && !expiredTokens.has(authenticationToken)) {
       const { gravityURL } = unsafe__getEnvironment()
       try {
-        const sessionExpired = await isSessionExpired(gravityURL, authenticationToken)
+        const { expired, recoveredAfterTransient401, attempts } = await checkSession(
+          gravityURL,
+          authenticationToken
+        )
         // Requests are not necessarily executed sequentially so we need to check that another request
         // didn't make it here already while we were awaiting.
         if (expiredTokens.has(authenticationToken)) {
           return res
         }
-        if (sessionExpired) {
+        if (recoveredAfterTransient401) {
+          captureMessage("checkAuthentication: /me recovered after transient 401", {
+            level: "info",
+            tags: { authOutcome: "recovered_after_transient_401" },
+            extra: { attempts },
+          })
+        }
+        if (expired) {
           expiredTokens.add(authenticationToken)
+          captureMessage("checkAuthentication: signed out on expired session", {
+            level: "info",
+            tags: { authOutcome: "signed_out_expired" },
+          })
           await GlobalStore.actions.auth.signOut()
           // There is a race condition that prevents the onboarding slideshow from starting if we call an Alert
           // here synchronously, so we need to wait a few ticks.

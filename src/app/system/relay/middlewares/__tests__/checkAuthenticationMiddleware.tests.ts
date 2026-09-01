@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { checkAuthenticationMiddleware } from "app/system/relay/middlewares/checkAuthenticationMiddleware"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
@@ -7,11 +8,14 @@ import {
   RelayNetworkLayerResponse,
 } from "react-relay-network-modern"
 
+const captureMessageMock = captureMessage as jest.Mock
+
 describe(checkAuthenticationMiddleware, () => {
   let middleware: ReturnType<typeof checkAuthenticationMiddleware>
 
   beforeEach(() => {
     fetchMock.resetMocks()
+    captureMessageMock.mockClear()
     middleware = checkAuthenticationMiddleware()
   })
 
@@ -46,6 +50,10 @@ describe(checkAuthenticationMiddleware, () => {
     expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
       "@thunkOn.resetAfterSignOut(success)"
     )
+    expect(captureMessageMock).toHaveBeenCalledWith(
+      expect.stringContaining("signed out on expired session"),
+      expect.objectContaining({ tags: { authOutcome: "signed_out_expired" } })
+    )
   })
 
   it("does not sign out if /me recovers on a retry (e.g. a freshly issued token)", async () => {
@@ -62,6 +70,13 @@ describe(checkAuthenticationMiddleware, () => {
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).not.toContain(
       "@thunk.auth.signOut(success)"
+    )
+    expect(captureMessageMock).toHaveBeenCalledWith(
+      expect.stringContaining("recovered after transient 401"),
+      expect.objectContaining({
+        tags: { authOutcome: "recovered_after_transient_401" },
+        extra: { attempts: 2 },
+      })
     )
   })
 
