@@ -19,34 +19,19 @@ type Props = StackScreenProps<LensNavigationStack, "LensAnalyzing">
 const CARD_HORIZONTAL_MARGIN = 32
 const CARD_MAX_HEIGHT_FRACTION = 0.62
 
-/**
- * Crops the photo to the area the brackets marked, uploads the *cropped* file, then hands the
- * resulting `s3Bucket`/`s3Key` to `LensResults`.
- *
- * It displays the cropped file rather than the original with a bracket overlay: an overlay marking
- * an inset sub-region always leaves image content visible outside the brackets, however accurate
- * the crop math. So the crop runs up front and its URI is reused for the upload.
- *
- * The crop's reference container differs by capture method, and passing the wrong one reproduces
- * the crop-doesn't-match-brackets bug. A camera capture was framed against `LensCamera`'s measured
- * viewport (`photo.captureContainerWidth`/`Height`); a library pick was only ever shown inside this
- * screen's preview card, so that card's dimensions are its container.
- */
 export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   const { photo } = route.params
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const [cropped, setCropped] = useState<CroppedPhoto | null>(null)
   const [hasError, setHasError] = useState(false)
 
-  // Temp files to sweep on the way out (see the effect below). A ref, not state: adding them to
-  // the crop effect's deps would re-run the crop and upload. A library pick's file is deliberately
-  // left out -- see `discardTempPhotos` on why deleting one can cost the user their actual photo.
+  // A ref avoids re-running the crop effect when a temporary file is added. Library photos must
+  // not be deleted because their URI can point to the user's original file.
   const tempPhotoUris = useRef<string[]>(photo.fromLibrary ? [] : [photo.uri])
 
   const maxCardWidth = windowWidth - CARD_HORIZONTAL_MARGIN * 2
   const maxCardHeight = windowHeight * CARD_MAX_HEIGHT_FRACTION
 
-  /** The largest box of the given aspect ratio that fits the space reserved for the card. */
   const fitCard = (aspectRatio: number) => {
     let width = maxCardWidth
     let height = width / aspectRatio
@@ -59,18 +44,13 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     return { width, height }
   }
 
-  // Two separate sizes on purpose. `viewfinderCard` is what a library pick is cropped against, so
-  // it must NOT depend on the crop's dimensions -- that would make the crop container depend on
-  // the crop result and re-trigger the effect on every resolve. `displayCard` is presentational:
-  // once the crop lands the card takes its actual shape, so a sideways capture gets a landscape
-  // card instead of letterbox bars.
+  // The crop container must not depend on the crop result, or the effect will re-run after cropping.
   const viewfinderCard = fitCard(LENS_VIEWFINDER_ASPECT_RATIO)
   const displayCard =
     cropped && cropped.width > 0 && cropped.height > 0
       ? fitCard(cropped.width / cropped.height)
       : viewfinderCard
 
-  // The window fallback is defensive, for a photo that arrives without the measurement.
   const cropContainerWidth = photo.fromLibrary
     ? viewfinderCard.width
     : photo.captureContainerWidth ?? windowWidth
@@ -78,9 +58,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     ? viewfinderCard.height
     : photo.captureContainerHeight ?? windowHeight
 
-  // A camera capture was framed against a preview that aligns the sensor feed to the
-  // orientation-locked UI, so the crop has to invert that rotation. `<Image resizeMode="cover">`
-  // never rotates, so a library pick must not be. See `PhotoPresentation`.
+  // Camera captures account for the preview rotation; library photos use regular cover geometry.
   const cropPresentation: PhotoPresentation = photo.fromLibrary
     ? "cover"
     : "coverRotatedToContainer"
@@ -90,8 +68,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
 
     cropToViewfinder(photo.uri, cropContainerWidth, cropContainerHeight, cropPresentation)
       .then((cropped) => {
-        // Before the cancellation check, not after: the file is on disk either way, and an
-        // abandoned attempt is precisely what nothing else would clean up.
+        // Track the file before checking cancellation so an abandoned crop is still cleaned up.
         tempPhotoUris.current.push(cropped.uri)
 
         if (cancelled) {
@@ -127,8 +104,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
 
   useEffect(() => {
     return () => {
-      // The lint rule wants this copied into a variable at setup time, which is the one thing
-      // that would break it: the crop is appended after setup, so copying leaks every crop.
+      // Copying the ref during setup would miss files appended after the crop completes.
       // eslint-disable-next-line react-hooks/exhaustive-deps
       discardTempPhotos(tempPhotoUris.current)
     }
@@ -151,7 +127,6 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
               <SearchByPhotoButton
                 testID="lensAnalyzingSearchByPhotoButton"
                 variant="fillLight"
-                // `navigate`, not `push`: LensCamera is this stack's root and still mounted below.
                 onPress={() => navigation.navigate("LensCamera")}
               />
             </Flex>
