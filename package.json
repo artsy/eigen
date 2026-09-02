@@ -121,7 +121,7 @@
   "dependencies": {
     "@artsy/changelog": "0.1.0",
     "@artsy/cohesion": "4.395.0",
-    "@artsy/icons": "3.77.0",
+    "@artsy/icons": "3.78.0",
     "@artsy/palette-mobile": "24.12.0",
     "@artsy/to-title-case": "1.2.0",
     "@braze/react-native-sdk": "16.1.0",
