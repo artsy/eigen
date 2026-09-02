@@ -72,7 +72,7 @@ describe("LensCamera", () => {
 
     renderWithWrappers(<LensCamera {...navigationProps} />)
 
-    expect(screen.getByText("Failed to open the camera device")).toBeOnTheScreen()
+    expect(screen.getByText("Failed to open the camera")).toBeOnTheScreen()
     expect(screen.getByTestId("lens-library-button")).toBeOnTheScreen()
   })
 
