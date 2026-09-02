@@ -9,7 +9,7 @@ import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { CroppedPhoto, cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
 import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { PhotoPresentation } from "app/Scenes/Lens/utils/viewfinderGeometry"
-import { dismissModal } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 import { useEffect, useRef, useState } from "react"
 import { Image, useWindowDimensions } from "react-native"
@@ -138,7 +138,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     <Theme theme="v3light">
       <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
         <Flex position="absolute" top={0} left={0} right={0}>
-          <LensHeader onClose={() => dismissModal()} />
+          <LensHeader onClose={() => goBack()} />
         </Flex>
 
         {hasError ? (

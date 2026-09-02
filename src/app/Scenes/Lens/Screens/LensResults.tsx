@@ -1,7 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { LensResultsQuery } from "__generated__/LensResultsQuery.graphql"
 import {
   LensResults_artworks$data,
@@ -12,8 +11,7 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
-// eslint-disable-next-line no-restricted-imports
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -26,10 +24,6 @@ const SCREEN_TITLE = "Your matches"
 type Props = StackScreenProps<LensNavigationStack, "LensResults">
 
 type Navigation = Props["navigation"]
-
-const backToSearch = () => {
-  dismissModal(() => navigate("/search"))
-}
 
 /** `navigate`, not `push`: LensCamera is this stack's root and still mounted below. */
 const restartSearch = (navigation: Navigation) => {
@@ -56,7 +50,7 @@ const LensResults: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={() => backToSearch()} />
+      <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={goBack} />
       <Screen.StickySubHeader title={SCREEN_TITLE} />
 
       <Screen.Body fullwidth>
@@ -90,21 +84,12 @@ const ArtworksGrid: React.FC<{
 }> = ({ artworks, hasNext, isLoadingNext, loadMore }) => {
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
-  const handlePress = (_artworkSlug: string, artwork?: ArtworkGridItem_artwork$data) => {
-    if (!artwork?.internalID) {
-      return
-    }
-
-    dismissModal(() => navigate(`/artwork/${artwork.internalID}`))
-  }
-
   return (
     <MasonryInfiniteScrollArtworkGrid
       animated
       artworks={artworks}
       contextScreenOwnerType={OwnerType.search}
       contextScreen={OwnerType.search}
-      disableNavigation
       ListEmptyComponent={
         <SimpleMessage m={2}>
           We couldn't find any matches for that image. Try another photo.
@@ -113,7 +98,6 @@ const ArtworksGrid: React.FC<{
       hasMore={hasNext}
       isLoading={isLoadingNext}
       loadMore={loadMore}
-      onPress={handlePress}
       onScroll={scrollHandler}
     />
   )
@@ -154,17 +138,17 @@ const lensResultsQuery = graphql`
 
 export const LensResultsScreen: React.FC<Props> = (props) => {
   /**
-   * Android hardware back, which the stack would otherwise handle itself by popping -- onto the
-   * live camera `LensAnalyzing` left below. Registered above the Suspense boundary so it covers the
-   * loading state too, and returns `true` to keep the stack's own handler from running after it.
+   * Android hardware back should match the header and leave the Lens route instead of popping the
+   * inner stack back to the camera. Registered above the Suspense boundary so it covers the loading
+   * state too, and returns `true` to keep the stack's own handler from running after it.
    */
   useBackHandler(() => {
-    backToSearch()
+    goBack()
     return true
   })
 
   return (
-    <Suspense fallback={<Placeholder onBack={() => backToSearch()} />}>
+    <Suspense fallback={<Placeholder onBack={goBack} />}>
       <LensResults {...props} />
     </Suspense>
   )

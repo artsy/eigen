@@ -898,7 +898,6 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Lens",
     Component: Lens,
     options: {
-      alwaysPresentModally: true,
       hidesBottomTabs: true,
       screenOptions: { headerShown: false, gestureEnabled: false, animation: "fade" },
     },

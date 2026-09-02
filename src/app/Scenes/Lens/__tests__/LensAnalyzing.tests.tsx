@@ -3,6 +3,7 @@ import { LensAnalyzing } from "app/Scenes/Lens/Screens/LensAnalyzing"
 import { LENS_VIEWFINDER_ASPECT_RATIO } from "app/Scenes/Lens/constants"
 import { cropToViewfinder } from "app/Scenes/Lens/utils/cropToViewfinder"
 import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
+import { goBack } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { uploadImageToS3 } from "app/utils/uploadImageToS3"
 
@@ -59,6 +60,16 @@ describe("LensAnalyzing", () => {
         s3Key: "my-key",
       })
     )
+  })
+
+  it("returns to the previous screen when closed", () => {
+    jest.mocked(uploadImageToS3).mockImplementation(() => new Promise(() => {}))
+
+    renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+
+    fireEvent.press(screen.getByLabelText("Close"))
+
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 
   it("displays the cropped image, never the original uncropped photo, once cropping resolves", async () => {

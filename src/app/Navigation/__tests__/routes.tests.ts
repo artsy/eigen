@@ -1,3 +1,4 @@
+import { artsyDotNetRoutes } from "app/Navigation/routes"
 import { addRoute, addWebViewRoute } from "app/Navigation/utils/addRoute"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
@@ -26,6 +27,18 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
+  })
+
+  it("routes to Lens inside the active tab stack while hiding the bottom tabs", () => {
+    const lensRoute = artsyDotNetRoutes.find((route) => route.name === "Lens")
+
+    expect(matchRoute("/lens")).toEqual({
+      module: "Lens",
+      params: {},
+      type: "match",
+    })
+    expect(lensRoute?.options?.alwaysPresentModally).toBeUndefined()
+    expect(lensRoute?.options?.hidesBottomTabs).toBe(true)
   })
 
   it("routes to Inbox", () => {
