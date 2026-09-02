@@ -13711,8 +13711,8 @@ __metadata:
     expo: "npm:55.0.24"
     expo-build-disk-cache: "patch:expo-build-disk-cache@npm%3A0.7.2#~/.yarn/patches/expo-build-disk-cache-npm-0.7.2-c51a562767.patch"
     expo-build-properties: "npm:55.0.14"
-    expo-file-system: "npm:~55.0.20"
-    expo-image-manipulator: "npm:~55.0.20"
+    expo-file-system: "npm:55.0.20"
+    expo-image-manipulator: "npm:55.0.20"
     expo-navigation-bar: "npm:55.0.13"
     expo-updates: "patch:expo-updates@npm%3A55.0.22#~/.yarn/patches/expo-updates-npm-55.0.22-990b55bddd.patch"
     formik: "npm:2.2.9"
@@ -15066,7 +15066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-file-system@npm:~55.0.20":
+"expo-file-system@npm:55.0.20, expo-file-system@npm:~55.0.20":
   version: 55.0.20
   resolution: "expo-file-system@npm:55.0.20"
   peerDependencies:
@@ -15098,7 +15098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-image-manipulator@npm:~55.0.20":
+"expo-image-manipulator@npm:55.0.20":
   version: 55.0.20
   resolution: "expo-image-manipulator@npm:55.0.20"
   dependencies:
