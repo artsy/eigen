@@ -1,7 +1,6 @@
 import { BoltFillIcon, ImageSetIcon } from "@artsy/icons/native"
-import { Flex, FlexProps, useSpace } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, FlexProps, Touchable, useSpace } from "@artsy/palette-mobile"
 import { LensCapturePhotoButton } from "app/Scenes/Lens/Components/LensCapturePhotoButton"
-import { TouchableOpacity } from "react-native"
 
 export const LENS_CAMERA_BUTTONS_HEIGHT = 120
 
@@ -43,12 +42,13 @@ export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
       )}
 
       {mode === "camera" && !!deviceHasTorch && (
-        <TouchableOpacity
+        <Touchable
           testID="lens-torch-button"
           accessibilityRole="button"
           accessibilityLabel={isTorchEnabled ? "Turn off torch" : "Turn on torch"}
           onPress={onToggleTorch}
           disabled={!isCameraInitialized}
+          hitSlop={DEFAULT_HIT_SLOP}
           style={{ position: "absolute", right: space(2) }}
         >
           <Flex
@@ -63,14 +63,15 @@ export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
           >
             <BoltFillIcon fill={isTorchEnabled ? "mono100" : "mono0"} width={18} height={18} />
           </Flex>
-        </TouchableOpacity>
+        </Touchable>
       )}
 
-      <TouchableOpacity
+      <Touchable
         testID="lens-library-button"
         accessibilityRole="button"
         accessibilityLabel="Choose from library"
         onPress={onSelectFromLibrary}
+        hitSlop={DEFAULT_HIT_SLOP}
         style={
           mode === "camera" ? { position: "absolute", left: space(2) } : { position: "absolute" }
         }
@@ -85,7 +86,7 @@ export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
         >
           <ImageSetIcon fill="mono100" width={18} height={18} />
         </Flex>
-      </TouchableOpacity>
+      </Touchable>
     </Flex>
   )
 }
