@@ -12,9 +12,6 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 interface SessionCheckResult {
   expired: boolean
-  // A 401 on the first attempt that a later attempt cleared — the token was briefly rejected
-  // before it propagated (read-your-writes lag). Reported so we can size how often this
-  // happens in production vs. genuine expirations.
   recoveredAfterTransient401: boolean
   attempts: number
 }
