@@ -16,7 +16,7 @@ import { LensCornerBrackets } from "app/Scenes/Lens/Components/LensCornerBracket
 import { LensHeader } from "app/Scenes/Lens/Components/LensHeader"
 import { LensPermissionPlaceholder } from "app/Scenes/Lens/Components/LensPermissionPlaceholder"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
-import { dismissModal } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { useRef, useState } from "react"
@@ -54,7 +54,7 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   }
 
   const handleClose = () => {
-    dismissModal()
+    goBack()
   }
 
   const handleTakePhoto = () => {

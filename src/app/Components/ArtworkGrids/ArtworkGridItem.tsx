@@ -56,14 +56,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   artworkMetaStyle?: ViewProps["style"]
   disableArtworksListPrompt?: boolean
   disableProgressiveOnboarding?: boolean
-  /**
-   * Suppresses the RouterLink's own `to={artwork.href}` navigation, which otherwise fires on tap
-   * regardless of `onPress` -- `onPress` overrides only the default tracking/recent-searches side
-   * effect, not the navigation. For callers that navigate from `onPress` themselves because the
-   * href-based route can't resolve from where the grid is rendered, e.g. inside a modal presented
-   * outside the tab stack.
-   */
-  disableNavigation?: boolean
   /** Hide sale info */
   height?: number
   hideCuratorsPickSignal?: boolean
@@ -105,7 +97,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     contextScreenOwnerType,
     contextScreenQuery,
     disableArtworksListPrompt = false,
-    disableNavigation = false,
     height,
     // disableProgressiveOnboarding = false,
     hideCuratorsPickSignal = false,
@@ -311,7 +302,6 @@ export const Artwork: React.FC<ArtworkProps> = memo(
             delayLongPress={400}
             navigationProps={navigationProps}
             to={artwork.href}
-            disableNavigation={disableNavigation}
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>

@@ -14,10 +14,9 @@ const Stack = createStackNavigator<LensNavigationStack>()
  * modeled on MyCollectionArtworkForm.tsx's NavigationIndependentTree + NavigationContainer +
  * createStackNavigator setup.
  *
- * `detachInactiveScreens={false}` is load-bearing, not incidental: the deleted 2022
- * `ReverseImage.tsx` carries an all-caps warning that `react-native-screens` freezes the camera
- * and makes capture impossible inside a React Native modal (this screen is `alwaysPresentModally`
- * -> `fullScreenModal`, so that exact situation applies here). Do not remove it.
+ * `detachInactiveScreens={false}` is retained from the previous ReverseImage implementation, where
+ * detaching screens could freeze camera capture. Do not remove it without testing the full flow on
+ * physical iOS and Android devices.
  */
 export const Lens: React.FC = () => {
   const theme = useNavigationTheme()

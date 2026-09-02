@@ -1,12 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { LensResultsTestsQuery } from "__generated__/LensResultsTestsQuery.graphql"
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { BackHandler } from "react-native"
 import { graphql } from "react-relay"
 
-const mockReplace = jest.fn()
 const mockNavigate = jest.fn()
 
 describe("LensResults", () => {
@@ -20,7 +19,7 @@ describe("LensResults", () => {
             params: { s3Bucket: "my-bucket", s3Key: "my-key" },
           } as any
         }
-        navigation={{ replace: mockReplace, navigate: mockNavigate } as any}
+        navigation={{ navigate: mockNavigate } as any}
       />
     ),
     query: graphql`
@@ -35,47 +34,29 @@ describe("LensResults", () => {
     jest.clearAllMocks()
   })
 
-  // Regression coverage for "PUSH ... was not handled by any navigator": `Artwork` lives inside a
-  // tab's stack, and Lens is a modal sibling of the tab navigator, so the modal must close first.
-  it("dismisses the Lens modal, then navigates to the artwork by internalID (not slug)", () => {
+  it("uses the artwork's standard link when a result is pressed", () => {
     renderWithRelay({
       Artwork: () => ({
         title: "Cool Painting",
         slug: "some-artwork-slug",
-        internalID: "abc123",
+        href: "/artwork/some-artwork-slug",
       }),
     })
 
     fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
 
-    // Without `disableNavigation`, RouterLink's own navigation fires synchronously with the
-    // slug-based href, before dismissModal's callback runs.
-    expect(navigate).not.toHaveBeenCalledWith(expect.stringContaining("some-artwork-slug"))
-
-    expect(dismissModal).toHaveBeenCalledTimes(1)
-    const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]
-    afterDismiss?.()
-
-    expect(navigate).toHaveBeenCalledWith("/artwork/abc123")
+    expect(navigate).toHaveBeenCalledExactlyOnceWith("/artwork/some-artwork-slug")
   })
 
-  // A local goBack would pop onto the live camera left below by LensAnalyzing's replace.
-  it("leaves the Lens flow for the Search tab when backing out", () => {
+  it("returns to the previous screen when backing out", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     fireEvent.press(screen.getByLabelText("Back"))
 
-    expect(mockReplace).not.toHaveBeenCalled()
-
-    expect(dismissModal).toHaveBeenCalledTimes(1)
-    const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]
-    afterDismiss?.()
-
-    expect(navigate).toHaveBeenCalledWith("/search")
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  // Android only: left to the stack, hardware back pops onto the camera left below by the replace.
-  it("leaves the Lens flow for the Search tab on hardware back too", () => {
+  it("returns to the previous screen on Android hardware back too", () => {
     const addEventListener = jest.spyOn(BackHandler, "addEventListener")
 
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
@@ -87,11 +68,7 @@ describe("LensResults", () => {
     // `true`, or the stack's own handler runs next and pops.
     expect(handler?.()).toBe(true)
 
-    expect(dismissModal).toHaveBeenCalledTimes(1)
-    const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]
-    afterDismiss?.()
-
-    expect(navigate).toHaveBeenCalledWith("/search")
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 
   it("offers a way to search another photo when there are no matches", () => {

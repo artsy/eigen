@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { LensCamera } from "app/Scenes/Lens/Screens/LensCamera"
+import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useCameraPermission } from "react-native-vision-camera"
@@ -36,6 +37,14 @@ describe("LensCamera", () => {
     expect(screen.getByTestId("lens-library-button")).toBeOnTheScreen()
     // No shutter — the live preview isn't available in this state.
     expect(screen.queryByTestId("lens-shutter-button")).not.toBeOnTheScreen()
+  })
+
+  it("returns to the previous screen when closed", () => {
+    renderWithWrappers(<LensCamera {...navigationProps} />)
+
+    fireEvent.press(screen.getByLabelText("Close"))
+
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 
   it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", () => {
