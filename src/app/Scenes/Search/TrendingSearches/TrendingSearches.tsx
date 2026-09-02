@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, type RailViewed } from "@artsy/co
 import { Flex, Join, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import { SEARCH_BY_PHOTO_BUTTON_SPACE } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { RecentSearchesPillsRail } from "app/Scenes/Search/TrendingSearches/components/RecentSearchesPillsRail"
 import { TrendingArtistsAvatarsRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtistsAvatarsRail"
 import { TrendingArtworksRail } from "app/Scenes/Search/TrendingSearches/components/TrendingArtworksRail"
@@ -11,6 +12,7 @@ import {
   TrendingPeriod,
   useTrendingSearches,
 } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { startTransition, useEffect, useState } from "react"
@@ -19,6 +21,7 @@ import { useTracking } from "react-tracking"
 
 export const TrendingSearches: React.FC = () => {
   const tabBarHeight = useBottomTabBarHeight()
+  const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
   const [period, setPeriod] = useState<TrendingPeriod>("ONE_DAY")
 
   const handlePeriodChange = (next: TrendingPeriod) => {
@@ -30,7 +33,9 @@ export const TrendingSearches: React.FC = () => {
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
+      contentContainerStyle={{
+        paddingBottom: tabBarHeight + 24 + (enableArtsyLens ? SEARCH_BY_PHOTO_BUTTON_SPACE : 0),
+      }}
     >
       <Join separator={<Spacer y={2} />}>
         <RecentSearchesPillsRail />

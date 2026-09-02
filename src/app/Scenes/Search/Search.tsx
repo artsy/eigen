@@ -92,6 +92,7 @@ export const Search: React.FC = () => {
       <Flex px={2} mt={2}>
         <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
       </Flex>
+
       <Flex flex={1} collapsable={false}>
         {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
           <Box backgroundColor="blue">

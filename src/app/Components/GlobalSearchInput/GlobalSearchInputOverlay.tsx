@@ -4,7 +4,10 @@ import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
+import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
+import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -13,11 +16,14 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { TrendingSearches } from "app/Scenes/Search/TrendingSearches/TrendingSearches"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
-import { KeyboardController } from "react-native-keyboard-controller"
+import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -109,6 +115,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
+  const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
 
   useBackHandler(() => {
     if (!!canGoBack()) {
@@ -159,19 +166,31 @@ export const GlobalSearchInputOverlay: React.FC<{
           style={{ top: insets.top, marginBottom: insets.bottom }}
         >
           <Flex px={2} mt={2}>
-            <RoundSearchInput
-              placeholder={SEARCH_INPUT_PLACEHOLDER}
-              accessibilityHint="Search artists, artworks, galleries etc."
-              accessibilityLabel="Search artists, artworks, galleries etc."
-              maxLength={55}
-              numberOfLines={1}
-              onChangeText={setQuery}
-              autoFocus
-              multiline={false}
-              onLeftIconPress={() => {
-                hideModal()
-              }}
-            />
+            <Flex>
+              <RoundSearchInput
+                placeholder={SEARCH_INPUT_PLACEHOLDER}
+                accessibilityHint="Search artists, artworks, galleries etc."
+                accessibilityLabel="Search artists, artworks, galleries etc."
+                maxLength={55}
+                numberOfLines={1}
+                onChangeText={setQuery}
+                autoFocus
+                multiline={false}
+                onLeftIconPress={() => {
+                  hideModal()
+                }}
+              />
+
+              {!!enableArtsyLens && !query && (
+                <SearchByPhotoIconButton
+                  testID="search-overlay-camera-icon"
+                  onPress={() => {
+                    hideModal()
+                    navigate("/lens")
+                  }}
+                />
+              )}
+            </Flex>
           </Flex>
 
           <Spacer y={2} />
@@ -180,6 +199,22 @@ export const GlobalSearchInputOverlay: React.FC<{
             <GlobalSearchInputOverlayContent query={query} />
           </Suspense>
         </Flex>
+
+        {!!enableArtsyLens && (
+          <KeyboardStickyView
+            style={{ position: "absolute", left: 0, right: 0, bottom: insets.bottom }}
+            offset={{ closed: -BOTTOM_TABS_HEIGHT, opened: insets.bottom }}
+          >
+            <Flex px={2} pb={1}>
+              <SearchByPhotoButton
+                onPress={() => {
+                  hideModal()
+                  navigate("/lens")
+                }}
+              />
+            </Flex>
+          </KeyboardStickyView>
+        )}
       </Animated.View>
     </Portal>
   )
