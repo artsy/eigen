@@ -14,7 +14,7 @@ export const SearchByPhotoIconButton: React.FC<SearchByPhotoIconButtonProps> = (
   return (
     <Touchable
       accessibilityRole="button"
-      accessibilityLabel="Search by photo"
+      accessibilityLabel="Search by Photo"
       onPress={onPress}
       hitSlop={ICON_HIT_SLOP}
       haptic="impactLight"

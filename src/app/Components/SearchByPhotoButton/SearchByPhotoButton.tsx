@@ -9,7 +9,7 @@ interface SearchByPhotoButtonProps {
   variant?: ButtonProps["variant"]
 }
 
-const LABEL = "Search by photo"
+const LABEL = "Search by Photo"
 
 const ICON_SIZE = 20
 

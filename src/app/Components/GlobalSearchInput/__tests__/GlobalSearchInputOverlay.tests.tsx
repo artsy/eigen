@@ -31,14 +31,14 @@ const renderOverlay = (props: { hideModal?: () => void } = {}) =>
     { includeNavigation: true }
   )
 
-describe("GlobalSearchInputOverlay — Search by photo entry point", () => {
+describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
   const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it("renders the Search by photo button when onyx_artsy-lens is on", () => {
+  it("renders the Search by Photo button when onyx_artsy-lens is on", () => {
     mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
 
     renderOverlay()
@@ -46,7 +46,7 @@ describe("GlobalSearchInputOverlay — Search by photo entry point", () => {
     expect(screen.getByTestId("search-by-photo-button")).toBeOnTheScreen()
   })
 
-  it("hides the Search by photo button when onyx_artsy-lens is off", () => {
+  it("hides the Search by Photo button when onyx_artsy-lens is off", () => {
     mockUseExperimentFlag.mockReturnValue(false)
 
     renderOverlay()
