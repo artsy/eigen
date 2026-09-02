@@ -3,7 +3,7 @@ import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchBy
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { StyleSheet } from "react-native"
 
-const labelColor = () => StyleSheet.flatten(screen.getByText("Search by photo").props.style).color
+const labelColor = () => StyleSheet.flatten(screen.getByText("Search by Photo").props.style).color
 
 describe("SearchByPhotoButton", () => {
   it("calls onPress", () => {
