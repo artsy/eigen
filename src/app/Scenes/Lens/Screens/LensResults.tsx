@@ -15,6 +15,7 @@ import { LensNavigationStack } from "app/Scenes/Lens/types"
 // eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Suspense } from "react"
@@ -26,11 +27,6 @@ type Props = StackScreenProps<LensNavigationStack, "LensResults">
 
 type Navigation = Props["navigation"]
 
-/**
- * Not a local `goBack`: `LensAnalyzing` replaced itself with this screen, so the only thing below
- * is the live camera. `dismissModal` first because Lens is `alwaysPresentModally`, a sibling of the
- * tab navigator -- a tab route can't resolve until the modal closes.
- */
 const backToSearch = () => {
   dismissModal(() => navigate("/search"))
 }
@@ -157,6 +153,16 @@ const lensResultsQuery = graphql`
 `
 
 export const LensResultsScreen: React.FC<Props> = (props) => {
+  /**
+   * Android hardware back, which the stack would otherwise handle itself by popping -- onto the
+   * live camera `LensAnalyzing` left below. Registered above the Suspense boundary so it covers the
+   * loading state too, and returns `true` to keep the stack's own handler from running after it.
+   */
+  useBackHandler(() => {
+    backToSearch()
+    return true
+  })
+
   return (
     <Suspense fallback={<Placeholder onBack={() => backToSearch()} />}>
       <LensResults {...props} />

@@ -89,9 +89,6 @@ const AVATAR_ITEM_COUNT = 4
 const RAIL_CARD_WIDTH = 240
 const RAIL_CARD_COUNT = 3
 
-// Height reserved for the "Search by photo" sticky button in the search overlay -- see
-// `GlobalSearchInputOverlay.tsx`. Includes the 50pt button height + 8pt `pb={1}` breathing space.
-
 const TrendingPlaceholder: React.FC = () => (
   <Skeleton>
     <Flex>

@@ -166,7 +166,6 @@ export const GlobalSearchInputOverlay: React.FC<{
           style={{ top: insets.top, marginBottom: insets.bottom }}
         >
           <Flex px={2} mt={2}>
-            {/* Unpadded wrapper -- see SearchByPhotoIconButton on why the padding would break it. */}
             <Flex>
               <RoundSearchInput
                 placeholder={SEARCH_INPUT_PLACEHOLDER}
@@ -202,18 +201,19 @@ export const GlobalSearchInputOverlay: React.FC<{
         </Flex>
 
         {!!enableArtsyLens && (
-          <Flex position="absolute" left={0} right={0} bottom={insets.bottom}>
-            <KeyboardStickyView offset={{ closed: -BOTTOM_TABS_HEIGHT, opened: insets.bottom }}>
-              <Flex px={2} pb={1}>
-                <SearchByPhotoButton
-                  onPress={() => {
-                    hideModal()
-                    navigate("/lens")
-                  }}
-                />
-              </Flex>
-            </KeyboardStickyView>
-          </Flex>
+          <KeyboardStickyView
+            style={{ position: "absolute", left: 0, right: 0, bottom: insets.bottom }}
+            offset={{ closed: -BOTTOM_TABS_HEIGHT, opened: insets.bottom }}
+          >
+            <Flex px={2} pb={1}>
+              <SearchByPhotoButton
+                onPress={() => {
+                  hideModal()
+                  navigate("/lens")
+                }}
+              />
+            </Flex>
+          </KeyboardStickyView>
         )}
       </Animated.View>
     </Portal>

@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import Animated, {
   Easing,
@@ -15,6 +16,7 @@ interface LensScanLineProps {
 }
 
 export const LensScanLine: React.FC<LensScanLineProps> = ({ height }) => {
+  const color = useColor()
   const progress = useSharedValue(0)
 
   useEffect(() => {
@@ -43,9 +45,8 @@ export const LensScanLine: React.FC<LensScanLineProps> = ({ height }) => {
           left: 0,
           right: 0,
           height: 2,
-          // `mono0`, spelled out: Animated.View takes a plain RN style, not palette's props.
-          backgroundColor: "#FFFFFF",
-          shadowColor: "#FFFFFF",
+          backgroundColor: color("mono0"),
+          shadowColor: color("mono0"),
           shadowOpacity: 0.8,
           shadowRadius: 8,
           shadowOffset: { width: 0, height: 0 },

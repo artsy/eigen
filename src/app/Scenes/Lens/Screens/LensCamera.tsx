@@ -1,4 +1,4 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spinner, Theme } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
@@ -54,9 +54,6 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   }
 
   const handleClose = () => {
-    // Not navigation.goBack(): this screen is the root of an independent stack, so the local
-    // navigator has nothing to pop and goBack() silently no-ops. dismissModal() reaches the outer
-    // navigator that presented the modal.
     dismissModal()
   }
 
@@ -98,78 +95,71 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <Flex
-      flex={1}
-      bg="mono100"
-      onLayout={(event) => {
-        const { width, height } = event.nativeEvent.layout
-        setContainerSize({ width, height })
-      }}
-    >
-      {state.kind === "loading" && (
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Spinner color="mono0" />
-        </Flex>
-      )}
-
-      {state.kind === "permission" && (
-        <LensPermissionPlaceholder
-          status={state.status}
-          onRequestPermission={() => camera.current?.requestPermission()}
-          onOpenSettings={() => Linking.openSettings()}
-        />
-      )}
-
-      {state.kind === "error" && <LensCameraErrorState />}
-
-      {/*
-        Always mounted: its own effect is what produces every state transition, so gating it on
-        `state` would deadlock -- it would never mount to report the status that ungates it. It
-        renders nothing until authorized, so it's safe alongside the surfaces above.
-      */}
-      <LensCameraPreview
-        ref={camera}
-        isActive={!!isActive && state.kind === "ready"}
-        torchEnabled={torchEnabled}
-        onStatusChange={setState}
-        onCapture={(photo) =>
-          navigation.navigate("LensAnalyzing", {
-            photo: {
-              ...photo,
-              captureContainerWidth: containerSize.width,
-              captureContainerHeight: containerSize.height,
-            },
-          })
-        }
-        onError={(error) => {
-          reportError("cameraError", error)
-          setState({ kind: "error" })
+    <Theme theme="v3light">
+      <Flex
+        flex={1}
+        bg="mono100"
+        onLayout={(event) => {
+          const { width, height } = event.nativeEvent.layout
+          setContainerSize({ width, height })
         }}
-      />
+      >
+        {state.kind === "loading" && (
+          <Flex flex={1} justifyContent="center" alignItems="center">
+            <Spinner color="mono0" />
+          </Flex>
+        )}
 
-      {state.kind === "ready" && containerSize.width > 0 && (
-        <LensCornerBrackets width={containerSize.width} height={containerSize.height} />
-      )}
+        {state.kind === "permission" && (
+          <LensPermissionPlaceholder
+            status={state.status}
+            onRequestPermission={() => camera.current?.requestPermission()}
+            onOpenSettings={() => Linking.openSettings()}
+          />
+        )}
 
-      {/*
-        Absolutely positioned, not inline: as a plain flex-column sibling, whichever surface above
-        renders with `flex={1}` takes all the height first and pushes the header to the bottom.
-      */}
-      <Flex position="absolute" top={0} left={0} right={0}>
-        <LensHeader title="Artsy Lens" onClose={handleClose} />
-      </Flex>
+        {state.kind === "error" && <LensCameraErrorState />}
 
-      <Flex position="absolute" bottom={0} left={0} right={0} height={LENS_CAMERA_BUTTONS_HEIGHT}>
-        <LensCameraButtons
-          mode={state.kind === "ready" ? "camera" : "libraryOnly"}
-          isCameraInitialized={state.kind === "ready"}
-          deviceHasTorch={state.kind === "ready" && state.hasTorch}
-          isTorchEnabled={torchEnabled}
-          onTakePhoto={handleTakePhoto}
-          onToggleTorch={handleToggleTorch}
-          onSelectFromLibrary={handleSelectFromLibrary}
+        <LensCameraPreview
+          ref={camera}
+          isActive={!!isActive && state.kind === "ready"}
+          torchEnabled={torchEnabled}
+          onStatusChange={setState}
+          onCapture={(photo) =>
+            navigation.navigate("LensAnalyzing", {
+              photo: {
+                ...photo,
+                captureContainerWidth: containerSize.width,
+                captureContainerHeight: containerSize.height,
+              },
+            })
+          }
+          onError={(error) => {
+            reportError("cameraError", error)
+            setState({ kind: "error" })
+          }}
         />
+
+        {state.kind === "ready" && containerSize.width > 0 && (
+          <LensCornerBrackets width={containerSize.width} height={containerSize.height} />
+        )}
+
+        <Flex position="absolute" top={0} left={0} right={0}>
+          <LensHeader title="Artsy Lens" onClose={handleClose} />
+        </Flex>
+
+        <Flex position="absolute" bottom={0} left={0} right={0} height={LENS_CAMERA_BUTTONS_HEIGHT}>
+          <LensCameraButtons
+            mode={state.kind === "ready" ? "camera" : "libraryOnly"}
+            isCameraInitialized={state.kind === "ready"}
+            deviceHasTorch={state.kind === "ready" && state.hasTorch}
+            isTorchEnabled={torchEnabled}
+            onTakePhoto={handleTakePhoto}
+            onToggleTorch={handleToggleTorch}
+            onSelectFromLibrary={handleSelectFromLibrary}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+    </Theme>
   )
 }

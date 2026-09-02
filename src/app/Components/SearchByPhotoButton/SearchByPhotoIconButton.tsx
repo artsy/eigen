@@ -1,5 +1,5 @@
 import { PhotographIcon } from "@artsy/icons/native"
-import { Touchable } from "@artsy/palette-mobile"
+import { SEARCH_INPUT_CONTAINER_HEIGHT, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 
 interface SearchByPhotoIconButtonProps {
@@ -22,8 +22,7 @@ export const SearchByPhotoIconButton: React.FC<SearchByPhotoIconButtonProps> = (
       style={{
         position: "absolute",
         right: 16,
-        top: 0,
-        bottom: 0,
+        height: SEARCH_INPUT_CONTAINER_HEIGHT,
         justifyContent: "center",
       }}
     >

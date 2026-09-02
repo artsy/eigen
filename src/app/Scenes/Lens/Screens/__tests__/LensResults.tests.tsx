@@ -3,6 +3,7 @@ import { LensResultsTestsQuery } from "__generated__/LensResultsTestsQuery.graph
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { BackHandler } from "react-native"
 import { graphql } from "react-relay"
 
 const mockReplace = jest.fn()
@@ -65,6 +66,26 @@ describe("LensResults", () => {
     fireEvent.press(screen.getByLabelText("Back"))
 
     expect(mockReplace).not.toHaveBeenCalled()
+
+    expect(dismissModal).toHaveBeenCalledTimes(1)
+    const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]
+    afterDismiss?.()
+
+    expect(navigate).toHaveBeenCalledWith("/search")
+  })
+
+  // Android only: left to the stack, hardware back pops onto the camera left below by the replace.
+  it("leaves the Lens flow for the Search tab on hardware back too", () => {
+    const addEventListener = jest.spyOn(BackHandler, "addEventListener")
+
+    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    const handler = addEventListener.mock.calls
+      .filter(([event]) => event === "hardwareBackPress")
+      .at(-1)?.[1]
+
+    // `true`, or the stack's own handler runs next and pops.
+    expect(handler?.()).toBe(true)
 
     expect(dismissModal).toHaveBeenCalledTimes(1)
     const afterDismiss = jest.mocked(dismissModal).mock.calls[0][0]

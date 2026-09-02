@@ -1,4 +1,4 @@
-import { Flex, Spinner, Text } from "@artsy/palette-mobile"
+import { Flex, Spinner, Text, Theme } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
@@ -125,12 +125,6 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
     }
   }, [navigation, photo, cropContainerWidth, cropContainerHeight, cropPresentation])
 
-  /**
-   * Sweeps the temp files on unmount, which every exit from this screen passes through. Deleting
-   * inline after the upload would instead race the cropped image still on screen through the
-   * transition, and sharing the effect above would sweep on every deps change -- deleting the file
-   * that run is about to upload.
-   */
   useEffect(() => {
     return () => {
       // The lint rule wants this copied into a variable at setup time, which is the one thing
@@ -141,65 +135,62 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
   }, [])
 
   return (
-    <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
-      <Flex position="absolute" top={0} left={0} right={0}>
-        <LensHeader onClose={() => dismissModal()} />
-      </Flex>
-
-      {hasError ? (
-        <Flex mx={4} alignSelf="stretch" alignItems="center">
-          <Text variant="sm-display" color="mono0" textAlign="center">
-            Something went wrong finding matches for that photo. Please try again.
-          </Text>
-
-          <Flex alignSelf="stretch" mt={4}>
-            <SearchByPhotoButton
-              testID="lensAnalyzingSearchByPhotoButton"
-              variant="light"
-              // `navigate`, not `push`: LensCamera is this stack's root and still mounted below.
-              onPress={() => navigation.navigate("LensCamera")}
-            />
-          </Flex>
+    <Theme theme="v3light">
+      <Flex flex={1} bg="mono100" justifyContent="center" alignItems="center">
+        <Flex position="absolute" top={0} left={0} right={0}>
+          <LensHeader onClose={() => dismissModal()} />
         </Flex>
-      ) : (
-        <>
-          <Flex
-            width={displayCard.width}
-            height={displayCard.height}
-            borderRadius={16}
-            overflow="hidden"
-            bg="mono10"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {!!cropped && (
-              <>
-                <Image
-                  testID="lensAnalyzingCroppedImage"
-                  source={{ uri: cropped.uri }}
-                  // A no-op while the card is shaped to the crop. "contain" as a guard: if the
-                  // dimensions are ever wrong, "cover" would silently hide part of the region
-                  // being searched, where this only letterboxes.
-                  resizeMode="contain"
-                  style={{
-                    width: displayCard.width,
-                    height: displayCard.height,
-                    position: "absolute",
-                  }}
-                />
-                {/* Mounts only once there's an image to sweep over -- it starts its sweep on
-                    mount, so mounting earlier jumps mid-sweep when the crop appears. */}
-                <LensScanLine height={displayCard.height} />
-              </>
-            )}
-            {!cropped && <Spinner color="mono0" />}
-          </Flex>
 
-          <Text variant="sm-display" color="mono0" mt={4}>
-            Searching for matches...
-          </Text>
-        </>
-      )}
-    </Flex>
+        {hasError ? (
+          <Flex mx={4} alignSelf="stretch" alignItems="center">
+            <Text variant="sm-display" color="mono0" textAlign="center">
+              Something went wrong finding matches for that photo. Please try again.
+            </Text>
+
+            <Flex alignSelf="stretch" mt={4}>
+              <SearchByPhotoButton
+                testID="lensAnalyzingSearchByPhotoButton"
+                variant="fillLight"
+                // `navigate`, not `push`: LensCamera is this stack's root and still mounted below.
+                onPress={() => navigation.navigate("LensCamera")}
+              />
+            </Flex>
+          </Flex>
+        ) : (
+          <>
+            <Flex
+              width={displayCard.width}
+              height={displayCard.height}
+              borderRadius={16}
+              overflow="hidden"
+              bg="mono10"
+              justifyContent="center"
+              alignItems="center"
+            >
+              {!!cropped && (
+                <>
+                  <Image
+                    testID="lensAnalyzingCroppedImage"
+                    source={{ uri: cropped.uri }}
+                    resizeMode="contain"
+                    style={{
+                      width: displayCard.width,
+                      height: displayCard.height,
+                      position: "absolute",
+                    }}
+                  />
+                  <LensScanLine height={displayCard.height} />
+                </>
+              )}
+              {!cropped && <Spinner color="mono0" />}
+            </Flex>
+
+            <Text variant="sm-display" color="mono0" mt={4}>
+              Searching for matches...
+            </Text>
+          </>
+        )}
+      </Flex>
+    </Theme>
   )
 }

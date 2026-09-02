@@ -11,21 +11,21 @@ describe("SearchByPhotoButton", () => {
 
     renderWithWrappers(<SearchByPhotoButton onPress={onPress} />)
 
-    fireEvent.press(screen.getByLabelText("Search by photo"))
+    fireEvent.press(screen.getByTestId("search-by-photo-button"))
 
     expect(onPress).toHaveBeenCalledTimes(1)
   })
 
   // Flipping the variants makes the button invisible, which no higher-level test would catch.
-  it("labels the dark variant in white, for light surfaces", () => {
-    renderWithWrappers(<SearchByPhotoButton variant="dark" onPress={jest.fn()} />)
+  it("labels the fillDark variant in white, for light surfaces", () => {
+    renderWithWrappers(<SearchByPhotoButton variant="fillDark" onPress={jest.fn()} />)
 
-    expect(labelColor()).toBe("#FFFFFF")
+    expect(labelColor()).toBe("rgba(255, 255, 255, 1)")
   })
 
-  it("labels the light variant in black, for the black Lens screens", () => {
-    renderWithWrappers(<SearchByPhotoButton variant="light" onPress={jest.fn()} />)
+  it("labels the fillLight variant in black, for the black Lens screens", () => {
+    renderWithWrappers(<SearchByPhotoButton variant="fillLight" onPress={jest.fn()} />)
 
-    expect(labelColor()).toBe("#000000")
+    expect(labelColor()).toBe("rgba(0, 0, 0, 1)")
   })
 })

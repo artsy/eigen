@@ -6,18 +6,11 @@ import * as Sentry from "@sentry/react-native"
 import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
-import {
-  SEARCH_BY_PHOTO_BUTTON_SPACE,
-  SearchByPhotoButton,
-} from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
-// eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
@@ -53,8 +46,6 @@ export const Search: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-
-  const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
@@ -128,11 +119,7 @@ export const Search: React.FC = () => {
             onScroll={handleScroll}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{
-              paddingTop: space(2),
-              // Room for the pinned pill below, so the last row can be scrolled clear of it.
-              paddingBottom: enableArtsyLens ? SEARCH_BY_PHOTO_BUTTON_SPACE : 0,
-            }}
+            contentContainerStyle={{ paddingTop: space(2) }}
           >
             <DiscoverSomethingNew />
             <ExploreByCategory />
@@ -143,18 +130,6 @@ export const Search: React.FC = () => {
           </ScrollView>
         )}
       </Flex>
-
-      {/*
-        No tab bar offset needed: `ScreenWrapper` already pads every screen by the (absolutely
-        positioned) tab bar's height, so this subtree's bottom edge *is* the top of the tab bar.
-        And no `KeyboardStickyView` as the overlay uses, since this screen's input is a button --
-        the keyboard never comes up here.
-      */}
-      {!!enableArtsyLens && (
-        <Flex position="absolute" left={0} right={0} bottom={0} px={2} pb={1}>
-          <SearchByPhotoButton onPress={() => navigate("/lens")} />
-        </Flex>
-      )}
     </KeyboardAvoidingContainer>
   )
 }
