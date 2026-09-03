@@ -29,6 +29,7 @@ export interface InfiniteDiscoveryModel {
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
   setHasPendingCompletionAnimation: Action<this, boolean>
+  setNewUserOnboardingGoalReached: Action<this, boolean>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
@@ -99,5 +100,8 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   }),
   setHasPendingCompletionAnimation: action((state, payload) => {
     state.sessionState.hasPendingCompletionAnimation = payload
+  }),
+  setNewUserOnboardingGoalReached: action((state, payload) => {
+    state.sessionState.newUserOnboardingGoalReached = payload
   }),
 })
