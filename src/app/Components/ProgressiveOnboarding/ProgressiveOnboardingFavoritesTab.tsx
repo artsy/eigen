@@ -8,6 +8,8 @@ import { PROGRESSIVE_ONBOARDING_FAVORITES_TAB } from "app/store/ProgressiveOnboa
 // eslint-disable-next-line no-restricted-imports
 import { switchTab } from "app/system/navigation/navigate"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useEffect } from "react"
+import { useReducedMotion } from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 
 const FAVORITES_TAB_ONBOARDING_POPOVER_DELAY = 1000
@@ -16,10 +18,18 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
   children,
 }) => {
   const tracking = useTracking()
+  const isReducedMotionEnabled = useReducedMotion()
 
   const newUserOnboardingSavedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.sessionState.newUserOnboardingSavedArtworks.length
   )
+  const newUserOnboardingGoalReached = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.newUserOnboardingGoalReached
+  )
+  const favoritesTabArtworkOverride = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.favoritesTabArtworkOverride
+  )
+  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
   const {
     isDismissed: isDismissedFn,
     sessionState: { isReady },
@@ -38,7 +48,12 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
   const isDismissed = isDismissedFn(PROGRESSIVE_ONBOARDING_FAVORITES_TAB).status
 
   const isFavoritesTooltipDisplayable =
-    newUserOnboardingSavedArtworksCount >= 1 && !isDismissed && currentRoute === "Home" && isReady
+    !isDismissed &&
+    currentRoute === "Home" &&
+    isReady &&
+    (isReducedMotionEnabled || !newUserOnboardingGoalReached
+      ? newUserOnboardingSavedArtworksCount >= 1
+      : !!favoritesTabArtworkOverride)
 
   const { isActive, clearActivePopover } = useSetActivePopover(isFavoritesTooltipDisplayable)
 
@@ -50,9 +65,17 @@ export const ProgressiveOnboardingFavoritesTab: React.FC<React.PropsWithChildren
   const handleDismiss = () => {
     setIsReady(false)
     dismiss(PROGRESSIVE_ONBOARDING_FAVORITES_TAB)
+    GlobalStore.actions.bottomTabs.setFavoritesTabArtworkOverride(null)
   }
 
   const isVisible = debounceIsActive.debouncedValue && !isDismissed
+
+  useEffect(() => {
+    if (favoritesTabArtworkOverride && selectedTab !== "home") {
+      handleDismiss()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favoritesTabArtworkOverride, selectedTab])
 
   const onPress = () => {
     handleDismiss()
