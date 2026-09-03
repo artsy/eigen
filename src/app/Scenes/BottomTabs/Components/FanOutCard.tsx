@@ -30,6 +30,8 @@ interface FanOutCardProps {
   isFlying: boolean
   flightTranslateX: number
   flightTranslateY: number
+  fanOutOffsetX: number
+  fanOutOffsetY: number
   left: number
   top: number
 }
@@ -43,6 +45,8 @@ export const FanOutCard: React.FC<FanOutCardProps> = ({
   isFlying,
   flightTranslateX,
   flightTranslateY,
+  fanOutOffsetX,
+  fanOutOffsetY,
   left,
   top,
 }) => {
@@ -61,8 +65,8 @@ export const FanOutCard: React.FC<FanOutCardProps> = ({
     return {
       from: {
         transform: [
-          { translateX: 0 },
-          { translateY: -FAN_OUT_FALL_DISTANCE },
+          { translateX: -fanOutOffsetX },
+          { translateY: -fanOutOffsetY - FAN_OUT_FALL_DISTANCE },
           { rotate: `${(angle * ROTATION_START_RATIO).toFixed(2)}deg` },
           { scale: 1 },
         ],
@@ -95,7 +99,17 @@ export const FanOutCard: React.FC<FanOutCardProps> = ({
             },
           },
     }
-  }, [isFlying, angle, rotate, flightTranslateX, flightTranslateY, index, entranceDelay])
+  }, [
+    isFlying,
+    angle,
+    rotate,
+    flightTranslateX,
+    flightTranslateY,
+    fanOutOffsetX,
+    fanOutOffsetY,
+    index,
+    entranceDelay,
+  ])
 
   const shadowAnimationProps = useMemo(
     () => ({

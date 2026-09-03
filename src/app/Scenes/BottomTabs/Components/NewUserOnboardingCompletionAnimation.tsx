@@ -191,6 +191,8 @@ export const NewUserOnboardingCompletionAnimation: React.FC = () => {
             isFlying={phase === "flying"}
             flightTranslateX={iconCenterX - cardCenterX}
             flightTranslateY={iconCenterY - cardCenterY}
+            fanOutOffsetX={config.offsetX}
+            fanOutOffsetY={config.offsetY}
             left={cardCenterX - CARD_WIDTH / 2}
             top={cardCenterY - CARD_HEIGHT / 2}
           />
