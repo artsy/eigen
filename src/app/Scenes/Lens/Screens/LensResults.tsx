@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
+import { Screen, SimpleMessage } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { LensResultsQuery } from "__generated__/LensResultsQuery.graphql"
 import {
@@ -10,16 +10,19 @@ import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LensResultsHeader } from "app/Scenes/Lens/Components/LensResultsHeader"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
+import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const SCREEN_TITLE = "Your matches"
+const MATCHES_TITLE = "Here are some matches to your photo"
+const SEARCHING_TITLE = "Searching for matches..."
 
 type Props = StackScreenProps<LensNavigationStack, "LensResults">
 
@@ -31,7 +34,7 @@ const restartSearch = (navigation: Navigation) => {
 }
 
 const LensResults: React.FC<Props> = ({ route, navigation }) => {
-  const { s3Bucket, s3Key } = route.params
+  const { s3Bucket, s3Key, photoUri } = route.params
 
   const queryData = useLazyLoadQuery<LensResultsQuery>(lensResultsQuery, {
     s3Bucket,
@@ -50,10 +53,13 @@ const LensResults: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={goBack} />
-      <Screen.StickySubHeader title={SCREEN_TITLE} />
+      <LensResultsHeader
+        onBack={goBack}
+        photoUri={photoUri}
+        title={hasNoMatches ? undefined : MATCHES_TITLE}
+      />
 
-      <Screen.Body fullwidth>
+      <Screen.Body fullwidth pt={1}>
         <ArtworksGrid
           artworks={artworks}
           hasNext={hasNext}
@@ -82,11 +88,8 @@ const ArtworksGrid: React.FC<{
   isLoadingNext: boolean
   loadMore: (pageSize: number) => void
 }> = ({ artworks, hasNext, isLoadingNext, loadMore }) => {
-  const { scrollHandler } = Screen.useListenForScreenScroll()
-
   return (
     <MasonryInfiniteScrollArtworkGrid
-      animated
       artworks={artworks}
       contextScreenOwnerType={OwnerType.search}
       contextScreen={OwnerType.search}
@@ -98,7 +101,6 @@ const ArtworksGrid: React.FC<{
       hasMore={hasNext}
       isLoading={isLoadingNext}
       loadMore={loadMore}
-      onScroll={scrollHandler}
     />
   )
 }
@@ -137,6 +139,15 @@ const lensResultsQuery = graphql`
 `
 
 export const LensResultsScreen: React.FC<Props> = (props) => {
+  const { photoUri } = props.route.params
+
+  // Keep cleanup outside Suspense so it also runs when leaving during loading.
+  useEffect(() => {
+    return () => {
+      discardTempPhotos([photoUri])
+    }
+  }, [photoUri])
+
   /**
    * Android hardware back should match the header and leave the Lens route instead of popping the
    * inner stack back to the camera. Registered above the Suspense boundary so it covers the loading
@@ -148,20 +159,18 @@ export const LensResultsScreen: React.FC<Props> = (props) => {
   })
 
   return (
-    <Suspense fallback={<Placeholder onBack={goBack} />}>
+    <Suspense fallback={<Placeholder onBack={goBack} photoUri={photoUri} />}>
       <LensResults {...props} />
     </Suspense>
   )
 }
 
-const Placeholder: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+const Placeholder: React.FC<{ onBack: () => void; photoUri: string }> = ({ onBack, photoUri }) => {
   return (
     <ProvidePlaceholderContext>
       <Screen>
-        <Screen.AnimatedHeader onBack={onBack} title={SCREEN_TITLE} />
-        <Screen.StickySubHeader title={SCREEN_TITLE} />
-        <Screen.Body fullwidth>
-          <Spacer y={2} />
+        <LensResultsHeader onBack={onBack} photoUri={photoUri} title={SEARCHING_TITLE} />
+        <Screen.Body fullwidth pt={1}>
           <PlaceholderGrid />
         </Screen.Body>
       </Screen>

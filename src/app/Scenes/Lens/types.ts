@@ -22,13 +22,9 @@ export type LensNavigationStack = {
   LensAnalyzing: {
     photo: LensPhoto
   }
-  /**
-   * No local photo: the files are already deleted by the time this mounts (see `LensAnalyzing`'s
-   * sweep). A results thumbnail would need the *cropped* file kept alive past the upload -- the
-   * original isn't what the search saw.
-   */
   LensResults: {
     s3Bucket: string
     s3Key: string
+    photoUri: string
   }
 }

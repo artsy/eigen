@@ -76,14 +76,16 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
         }
 
         setCropped(cropped)
-        return uploadImageToS3(cropped.uri)
+        return uploadImageToS3(cropped.uri).then(({ bucket, key }) => ({ bucket, key, cropped }))
       })
-      .then(({ bucket, key }) => {
+      .then(({ bucket, key, cropped }) => {
         if (cancelled) {
           return
         }
 
-        navigation.replace("LensResults", { s3Bucket: bucket, s3Key: key })
+        // LensResults owns the cropped file after navigation.
+        tempPhotoUris.current = tempPhotoUris.current.filter((uri) => uri !== cropped.uri)
+        navigation.replace("LensResults", { s3Bucket: bucket, s3Key: key, photoUri: cropped.uri })
       })
       .catch((error) => {
         if (cancelled) {
