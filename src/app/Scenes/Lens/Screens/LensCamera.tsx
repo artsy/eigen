@@ -18,9 +18,9 @@ import { LensPermissionPlaceholder } from "app/Scenes/Lens/Components/LensPermis
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { useIsForeground } from "app/utils/useIsForeground"
+import useAppState from "app/utils/useAppState"
 import { useRef, useState } from "react"
-import { Linking } from "react-native"
+import { AppState, Linking } from "react-native"
 
 type Props = StackScreenProps<LensNavigationStack, "LensCamera">
 
@@ -39,8 +39,9 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
   const isFocused = useIsFocused()
-  const isForeground = useIsForeground()
-  const isActive = isFocused && isForeground
+  const [appState, setAppState] = useState(AppState.currentState)
+  useAppState({ onChange: setAppState })
+  const isActive = isFocused && appState === "active"
 
   const reportError = (context: string, error: unknown) => {
     if (__DEV__) {
