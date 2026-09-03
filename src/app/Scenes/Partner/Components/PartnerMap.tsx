@@ -5,13 +5,12 @@ import { themeGet } from "@styled-system/theme-get"
 import { PartnerMap_location$data } from "__generated__/PartnerMap_location.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
-import { ArtsyMapStyleURL } from "app/Scenes/CityGuide/Components/CityGuideMap"
+import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { TouchableOpacity } from "react-native"
-import Keys from "react-native-keys"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
+configureMapbox()
 
 const PartnerMap: React.FC<{
   location: PartnerMap_location$data

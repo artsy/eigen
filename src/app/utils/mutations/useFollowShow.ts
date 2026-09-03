@@ -1,29 +1,32 @@
-import { useMutation, graphql } from "react-relay"
+import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
+import { graphql, useMutation } from "react-relay"
 
-export interface FollowProfileOptions {
+export interface FollowShowOptions {
+  /** Relay node id, used for the optimistic store update. */
   id: string
+  /** The show's internalID, sent to the mutation as partnerShowID. */
   internalID: string
   isFollowed: boolean | null | undefined
   onCompleted?: (isFollowed: boolean) => void
   onError?: () => void
 }
 
-export const useFollowProfile = ({
+export const useFollowShow = ({
   id,
   internalID,
   isFollowed,
   onCompleted,
   onError,
-}: FollowProfileOptions) => {
+}: FollowShowOptions) => {
   const [commit, isInFlight] = useMutation(Mutation)
 
   const nextFollowedState = !isFollowed
 
-  const followProfile = () => {
+  const followShow = () => {
     commit({
       variables: {
         input: {
-          profileID: internalID,
+          partnerShowID: internalID,
           unfollow: !!isFollowed,
         },
       },
@@ -32,8 +35,8 @@ export const useFollowProfile = ({
       },
       onError,
       optimisticResponse: {
-        followProfile: {
-          profile: {
+        followShow: {
+          show: {
             id,
             internalID,
             isFollowed: nextFollowedState,
@@ -41,19 +44,18 @@ export const useFollowProfile = ({
         },
       },
       optimisticUpdater: (store) => {
-        const profile = store.get(id)
-        profile?.setValue(nextFollowedState, "isFollowed")
+        setShowFollowed(store, id, nextFollowedState)
       },
     })
   }
 
-  return { followProfile, isInFlight }
+  return { followShow, isInFlight }
 }
 
 const Mutation = graphql`
-  mutation useFollowProfileMutation($input: FollowProfileInput!) {
-    followProfile(input: $input) {
-      profile {
+  mutation useFollowShowMutation($input: FollowShowInput!) {
+    followShow(input: $input) {
+      show {
         id
         internalID
         isFollowed

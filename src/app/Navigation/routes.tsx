@@ -96,6 +96,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CitySectionList"
+import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
@@ -1140,6 +1141,20 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/city-guide",
     name: "CityGuide",
     Component: CityGuideNew,
+    options: {
+      screenOptions: {
+        headerTransparent: true,
+        headerShadowVisible: false,
+        header: () => {
+          return null
+        },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itinerary/:itineraryId",
+    name: "CityGuideItinerary",
+    Component: ItineraryScreen,
     options: {
       screenOptions: {
         headerTransparent: true,
