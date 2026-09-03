@@ -1,9 +1,10 @@
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { FanOutCard } from "app/Scenes/BottomTabs/Components/FanOutCard"
 import { GlobalStore } from "app/store/GlobalStore"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
-import { useEffect, useState } from "react"
-import { useReducedMotion } from "react-native-reanimated"
+import { MotiView } from "moti"
+import { useEffect, useMemo, useState } from "react"
+import { Easing, useReducedMotion } from "react-native-reanimated"
 
 export const CARD_COUNT = 5
 
@@ -24,6 +25,9 @@ export const FLIGHT_STAGGER = 140
 export const FLIGHT_DURATION = 600
 
 const PILE_HOLD_DURATION = 400
+
+const SCRIM_OPACITY = 0.55
+const SCRIM_FADE_IN_DURATION = 350
 
 const toRad = (deg: number) => (deg * Math.PI) / 180
 
@@ -54,9 +58,15 @@ export const NewUserOnboardingCompletionAnimation: React.FC = () => {
   )
   const isReducedMotionEnabled = useReducedMotion()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+  const color = useColor()
 
   const [phase, setPhase] = useState<AnimationPhase>("idle")
   const [artworks, setArtworks] = useState<NewUserOnboardingSavedArtwork[]>([])
+
+  const landingDuration = useMemo(
+    () => (artworks.length - 1) * FLIGHT_STAGGER + FLIGHT_DURATION,
+    [artworks.length]
+  )
 
   useEffect(() => {
     if (!hasPendingCompletionAnimation) {
@@ -106,8 +116,6 @@ export const NewUserOnboardingCompletionAnimation: React.FC = () => {
       return
     }
 
-    const landingDuration = (artworks.length - 1) * FLIGHT_STAGGER + FLIGHT_DURATION
-
     const setOverrideTimeout = setTimeout(() => {
       const mostRecentlySaved = artworks[artworks.length - 1]
       if (mostRecentlySaved) {
@@ -127,7 +135,7 @@ export const NewUserOnboardingCompletionAnimation: React.FC = () => {
       clearTimeout(setOverrideTimeout)
       clearTimeout(clearOverlayTimeout)
     }
-  }, [phase, artworks])
+  }, [phase, artworks, landingDuration])
 
   if (
     phase === "idle" ||
@@ -150,6 +158,23 @@ export const NewUserOnboardingCompletionAnimation: React.FC = () => {
       importantForAccessibility="no-hide-descendants"
       style={{ position: "absolute", width: "100%", height: "100%" }}
     >
+      <MotiView
+        from={{ opacity: 0 }}
+        animate={{ opacity: phase === "fan_out" ? SCRIM_OPACITY : 0 }}
+        transition={{
+          type: "timing",
+          duration: phase === "fan_out" ? SCRIM_FADE_IN_DURATION : landingDuration,
+          easing: Easing.out(Easing.ease),
+        }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: favoritesTabIconPosition.y,
+          backgroundColor: color("mono0"),
+        }}
+      />
       {artworks.map((artwork, index) => {
         const config = FAN_CONFIGS[index]
         const cardCenterX = centerX + config.offsetX
