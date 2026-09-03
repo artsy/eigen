@@ -19,6 +19,7 @@ import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
+import { useHomeViewReadyForOnboardingCompletionAnimation } from "app/Scenes/HomeView/hooks/useHomeViewReadyForOnboardingCompletionAnimation"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useLiveHomeViewSectionIDs } from "app/Scenes/HomeView/hooks/useLiveHomeViewSectionIDs"
 import { useRefreshLiveHomeViewSections } from "app/Scenes/HomeView/hooks/useRefreshLiveHomeViewSections"
@@ -127,6 +128,8 @@ export const HomeView: React.FC = memo(() => {
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
+  const { onLayout: handleContentLayout } = useHomeViewReadyForOnboardingCompletionAnimation()
+
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
       const isDeepLink = !!url
@@ -228,10 +231,12 @@ export const HomeView: React.FC = memo(() => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <FlatList
+          testID="home-view-flat-list"
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          onLayout={handleContentLayout}
           ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
