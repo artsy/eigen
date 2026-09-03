@@ -212,6 +212,19 @@ describe("InfiniteDiscoveryHeader", () => {
       ).toBe(true)
     })
 
+    it("does not set hasPendingCompletionAnimation when Skip is pressed before reaching the goal", () => {
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery.sessionState
+          .hasPendingCompletionAnimation
+      ).toBe(false)
+    })
+
     it("tracks the skip tap", () => {
       renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
@@ -272,6 +285,17 @@ describe("InfiniteDiscoveryHeader", () => {
 
           expect(screen.getByText("Go to home")).toBeOnTheScreen()
           expect(screen.queryByText("Skip to home")).not.toBeOnTheScreen()
+        })
+
+        it("sets hasPendingCompletionAnimation when Go to home is pressed", () => {
+          renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+          fireEvent.press(screen.getByLabelText("Go to home"))
+
+          expect(
+            __globalStoreTestUtils__?.getCurrentState().infiniteDiscovery.sessionState
+              .hasPendingCompletionAnimation
+          ).toBe(true)
         })
 
         it("keeps the badge and progress bar frozen at Complete even after unsaving and resaving artworks", () => {

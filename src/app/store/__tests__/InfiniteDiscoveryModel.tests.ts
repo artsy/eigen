@@ -158,6 +158,18 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
+  describe("setHasPendingCompletionAnimation", () => {
+    it("toggles hasPendingCompletionAnimation", () => {
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(false)
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
+    })
+  })
+
   describe("removeNewUserOnboardingSavedArtwork", () => {
     it("removes the artwork with the given internalID", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -264,6 +276,16 @@ describe("InfiniteDiscoveryModel", () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
       expect(state()?.sessionState.newUserOnboardingGoalSnapshot).toHaveLength(0)
+    })
+
+    it("clears hasPendingCompletionAnimation", () => {
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
     })
   })
 })
