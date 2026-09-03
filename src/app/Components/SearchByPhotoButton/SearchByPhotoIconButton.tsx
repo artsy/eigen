@@ -1,4 +1,4 @@
-import { PhotographIcon } from "@artsy/icons/native"
+import { CameraStrokeIcon } from "@artsy/icons/native"
 import { SEARCH_INPUT_CONTAINER_HEIGHT, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 
@@ -26,7 +26,7 @@ export const SearchByPhotoIconButton: React.FC<SearchByPhotoIconButtonProps> = (
         justifyContent: "center",
       }}
     >
-      <PhotographIcon width={20} height={20} fill="mono100" />
+      <CameraStrokeIcon width={20} height={20} fill="mono100" />
     </Touchable>
   )
 }
