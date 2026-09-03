@@ -1,5 +1,6 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "@artsy/palette-mobile/dist/utils/createGeminiUrl"
+import FastImage from "@d11/react-native-fast-image"
 import { InfiniteDiscoveryArtworkCard_artwork$data } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
@@ -47,11 +48,21 @@ export const useInfiniteDiscoveryCardSave = (
 
   const buildOnboardingSavedArtwork = (
     artwork: NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>
-  ) => ({
-    internalID: artwork.internalID,
-    url: getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth),
-    blurhash: artwork.images[0]?.blurhash,
-  })
+  ) => {
+    const url = getThumbnailUrl(artwork.images[0]?.url ?? "", screenWidth)
+
+    // Warm FastImage's cache as early as possible — this exact thumbnail URL gets reused in
+    // the save-flight animation, the completion bottom sheet/animation, and the Favorites tab
+    // icon override, so by the time it reappears there it should already be resident instead
+    // of visibly reloading through its blurhash placeholder again.
+    FastImage.preload([{ uri: url }])
+
+    return {
+      internalID: artwork.internalID,
+      url,
+      blurhash: artwork.images[0]?.blurhash,
+    }
+  }
 
   const addOnboardingSavedArtwork = () => {
     if (!artwork) return
