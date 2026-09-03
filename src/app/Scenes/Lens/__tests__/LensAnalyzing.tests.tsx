@@ -58,6 +58,7 @@ describe("LensAnalyzing", () => {
       expect(mockReplace).toHaveBeenCalledWith("LensResults", {
         s3Bucket: "my-bucket",
         s3Key: "my-key",
+        photoUri: portraitCrop.uri,
       })
     )
   })
@@ -187,15 +188,28 @@ describe("LensAnalyzing", () => {
 
   // Nothing else in the app prunes these, so leaving them behind piled up full-size photos.
   describe("temp file cleanup", () => {
-    it("deletes the capture and the cropped file once it leaves the screen", async () => {
+    it("deletes the capture but hands the cropped file to LensResults", async () => {
       jest.mocked(uploadImageToS3).mockResolvedValue({ bucket: "my-bucket", key: "my-key" })
 
       const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
 
-      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalled())
+      await waitFor(() => expect(mockReplace).toHaveBeenCalled())
       // Not while the cropped image is still on screen, and not before the upload has read it.
       expect(discardTempPhotos).not.toHaveBeenCalled()
 
+      unmount()
+
+      expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri])
+    })
+
+    it("still deletes the cropped file when the upload fails", async () => {
+      jest.mocked(uploadImageToS3).mockRejectedValue(new Error("upload failed"))
+
+      const { unmount } = renderWithWrappers(<LensAnalyzing {...navigationProps} />)
+
+      await screen.findByText(
+        "Something went wrong finding matches for that photo. Please try again."
+      )
       unmount()
 
       expect(discardTempPhotos).toHaveBeenCalledWith([photo.uri, portraitCrop.uri])
@@ -213,10 +227,10 @@ describe("LensAnalyzing", () => {
         />
       )
 
-      await waitFor(() => expect(uploadImageToS3).toHaveBeenCalled())
+      await waitFor(() => expect(mockReplace).toHaveBeenCalled())
       unmount()
 
-      expect(discardTempPhotos).toHaveBeenCalledWith([portraitCrop.uri])
+      expect(discardTempPhotos).toHaveBeenCalledWith([])
     })
 
     it("still deletes the capture when the crop never lands", async () => {

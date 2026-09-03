@@ -1,12 +1,18 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { LensResultsTestsQuery } from "__generated__/LensResultsTestsQuery.graphql"
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
+import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { BackHandler } from "react-native"
 import { graphql } from "react-relay"
 
+jest.mock("app/Scenes/Lens/utils/discardTempPhotos", () => ({
+  discardTempPhotos: jest.fn(),
+}))
+
 const mockNavigate = jest.fn()
+const photoUri = "file:///tmp/cropped.jpg"
 
 describe("LensResults", () => {
   const { renderWithRelay } = setupTestWrapper<LensResultsTestsQuery>({
@@ -16,7 +22,7 @@ describe("LensResults", () => {
           {
             key: "LensResults",
             name: "LensResults",
-            params: { s3Bucket: "my-bucket", s3Key: "my-key" },
+            params: { s3Bucket: "my-bucket", s3Key: "my-key", photoUri },
           } as any
         }
         navigation={{ navigate: mockNavigate } as any}
@@ -30,7 +36,7 @@ describe("LensResults", () => {
     variables: { s3Bucket: "my-bucket", s3Key: "my-key" },
   })
 
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks()
   })
 
@@ -83,5 +89,33 @@ describe("LensResults", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
     expect(screen.queryByTestId("lensResultsSearchByPhotoButton")).toBeNull()
+  })
+
+  it("shows the photo the search ran on", () => {
+    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    expect(screen.getByTestId("lensResultsPhotoThumbnail").props.source).toEqual({ uri: photoUri })
+  })
+
+  it("tells the user these are matches to their photo", () => {
+    renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    expect(screen.getByText("Here are some matches to your photo")).toBeTruthy()
+  })
+
+  it("claims no matches when there are none", () => {
+    renderWithRelay({ ArtworkConnection: () => ({ edges: [] }) })
+
+    expect(screen.queryByText("Here are some matches to your photo")).toBeNull()
+  })
+
+  it("deletes the searched photo on the way out", () => {
+    const { unmount } = renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+    expect(discardTempPhotos).not.toHaveBeenCalled()
+
+    unmount()
+
+    expect(discardTempPhotos).toHaveBeenCalledWith([photoUri])
   })
 })
