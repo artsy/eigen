@@ -18,6 +18,7 @@ import { modules } from "app/Navigation/utils/modules"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { NewUserOnboardingCompletionAnimation } from "app/Scenes/BottomTabs/Components/NewUserOnboardingCompletionAnimation"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { Onboarding } from "app/Scenes/Onboarding/Screens/Onboarding/Onboarding"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingQuiz"
@@ -25,8 +26,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
-import { useCallback, useEffect, useState } from "react"
-import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { Easing, InteractionManager, PixelRatio, Platform, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -53,6 +54,35 @@ const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 export const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
 export const TAB_BAR_ANIMATION_DURATION = 300
+
+const FavoritesTabIcon: React.FC<{ focused: boolean }> = ({ focused }) => {
+  const iconRef = useRef<View>(null)
+  const artworkImageOverride = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.favoritesTabArtworkOverride
+  )
+
+  const handleLayout = () => {
+    iconRef.current?.measureInWindow((x, y, width, height) => {
+      GlobalStore.actions.bottomTabs.setFavoritesTabIconPosition({ x, y, width, height })
+    })
+  }
+
+  return (
+    <ProgressiveOnboardingFavoritesTab>
+      <Flex pt={1} style={{ overflow: "visible" }}>
+        {/* The ref must stay on this inner Flex, not the padded one above — otherwise the
+        measured box's center sits higher than where the icon actually renders. */}
+        <Flex ref={iconRef} onLayout={handleLayout} style={{ overflow: "visible" }}>
+          <BottomTabsIcon
+            tab="favorites"
+            state={focused ? "active" : "inactive"}
+            artworkImageOverride={artworkImageOverride}
+          />
+        </Flex>
+      </Flex>
+    </ProgressiveOnboardingFavoritesTab>
+  )
+}
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -102,123 +132,118 @@ const AppTabs: React.FC = () => {
   }
 
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => {
-        return {
-          animation: "none",
-          headerShown: false,
-          tabBarStyle: {
-            animate: true,
-            position: "absolute",
-            height: BOTTOM_TABS_HEIGHT + insets.bottom,
+    <>
+      <Tab.Navigator
+        screenOptions={({ route }) => {
+          return {
+            animation: "none",
+            headerShown: false,
+            tabBarStyle: {
+              animate: true,
+              position: "absolute",
+              height: BOTTOM_TABS_HEIGHT + insets.bottom,
 
-            ...(isStaging ? stagingTabBarStyle : {}),
-          },
-          tabBarHideOnKeyboard: true,
-          tabBarVisible: hidesBottomTabs,
-          tabBarVisibilityAnimationConfig: {
-            show: {
-              animation: "timing",
-              config: {
-                duration: TAB_BAR_ANIMATION_DURATION,
-                easing: Easing.inOut(Easing.ease),
+              ...(isStaging ? stagingTabBarStyle : {}),
+            },
+            tabBarHideOnKeyboard: true,
+            tabBarVisible: hidesBottomTabs,
+            tabBarVisibilityAnimationConfig: {
+              show: {
+                animation: "timing",
+                config: {
+                  duration: TAB_BAR_ANIMATION_DURATION,
+                  easing: Easing.inOut(Easing.ease),
+                },
+              },
+              hide: {
+                animation: "timing",
+                config: {
+                  duration: TAB_BAR_ANIMATION_DURATION,
+                  easing: Easing.inOut(Easing.ease),
+                },
               },
             },
-            hide: {
-              animation: "timing",
-              config: {
-                duration: TAB_BAR_ANIMATION_DURATION,
-                easing: Easing.inOut(Easing.ease),
-              },
+            tabBarIcon: ({ focused }) => {
+              if (route.name === "favorites") {
+                return <FavoritesTabIcon focused={focused} />
+              }
+
+              const Icon = () => {
+                return (
+                  <Flex pt={1}>
+                    <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+                  </Flex>
+                )
+              }
+
+              const WrappedProfileIcon = () => {
+                return (
+                  <ProgressiveOnboardingPriceRangeHome>
+                    <Icon />
+                  </ProgressiveOnboardingPriceRangeHome>
+                )
+              }
+
+              if (route.name === "profile") {
+                return <WrappedProfileIcon />
+              }
+
+              return <Icon />
             },
-          },
-          tabBarIcon: ({ focused }) => {
-            const Icon = () => {
+            tabBarButton: (props) => (
+              <PlatformPressable
+                {...props}
+                android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+              />
+            ),
+            tabBarLabelPosition: "below-icon",
+            tabBarLabel: () => {
               return (
-                <Flex pt={1}>
-                  <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+                <Flex
+                  flex={1}
+                  position="absolute"
+                  alignItems="flex-end"
+                  justifyContent="flex-end"
+                  height={BOTTOM_TABS_HEIGHT}
+                  pb={0.5}
+                >
+                  <Text
+                    variant="xxs"
+                    selectable={false}
+                    textAlign="center"
+                    color="mono100"
+                    numberOfLines={1}
+                  >
+                    {bottomTabsConfig[route.name].name}
+                  </Text>
                 </Flex>
               )
-            }
-
-            const WrappedProfileIcon = () => {
-              return (
-                <ProgressiveOnboardingPriceRangeHome>
-                  <Icon />
-                </ProgressiveOnboardingPriceRangeHome>
-              )
-            }
-
-            const WrappedFavoritesIcon = () => {
-              return (
-                <ProgressiveOnboardingFavoritesTab>
-                  <Icon />
-                </ProgressiveOnboardingFavoritesTab>
-              )
-            }
-
-            if (route.name === "profile") {
-              return <WrappedProfileIcon />
-            }
-
-            if (route.name === "favorites") {
-              return <WrappedFavoritesIcon />
-            }
-
-            return <Icon />
+            },
+            tabBarActiveTintColor: color("mono100"),
+            tabBarInactiveTintColor: color("mono100"),
+          }
+        }}
+        screenListeners={{
+          tabPress: (e) => {
+            // The goal of this is to queue up the tab press event to be handled after the tab has changed
+            InteractionManager.runAfterInteractions(() => {
+              handleTabPress(e)
+            })
           },
-          tabBarButton: (props) => (
-            <PlatformPressable
-              {...props}
-              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
-            />
-          ),
-          tabBarLabelPosition: "below-icon",
-          tabBarLabel: () => {
-            return (
-              <Flex
-                flex={1}
-                position="absolute"
-                alignItems="flex-end"
-                justifyContent="flex-end"
-                height={BOTTOM_TABS_HEIGHT}
-                pb={0.5}
-              >
-                <Text
-                  variant="xxs"
-                  selectable={false}
-                  textAlign="center"
-                  color="mono100"
-                  numberOfLines={1}
-                >
-                  {bottomTabsConfig[route.name].name}
-                </Text>
-              </Flex>
-            )
-          },
-          tabBarActiveTintColor: color("mono100"),
-          tabBarInactiveTintColor: color("mono100"),
-        }
-      }}
-      screenListeners={{
-        tabPress: (e) => {
-          // The goal of this is to queue up the tab press event to be handled after the tab has changed
-          InteractionManager.runAfterInteractions(() => {
-            handleTabPress(e)
-          })
-        },
-      }}
-    >
-      <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
-      <Tab.Screen name="search" component={SearchTab} />
-      <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      <Tab.Screen
-        name="favorites"
-        component={FavoritesTab}
-        options={{ ...tabsBadges["favorites"] }}
-      />
-      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
-    </Tab.Navigator>
+        }}
+      >
+        <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
+        <Tab.Screen name="search" component={SearchTab} />
+        <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
+        <Tab.Screen
+          name="favorites"
+          component={FavoritesTab}
+          options={{ ...tabsBadges["favorites"] }}
+        />
+        <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
+      </Tab.Navigator>
+      <NewUserOnboardingCompletionAnimation />
+    </>
   )
 }
 
