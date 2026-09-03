@@ -170,6 +170,18 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
+  describe("setNewUserOnboardingGoalReached", () => {
+    it("toggles newUserOnboardingGoalReached", () => {
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingGoalReached(true)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingGoalReached(false)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
+    })
+  })
+
   describe("removeNewUserOnboardingSavedArtwork", () => {
     it("removes the artwork with the given internalID", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({

@@ -9,6 +9,8 @@ interface ArtworkThumbnailProps {
   height: number
   rotate?: string
   style?: StyleProp<ViewStyle>
+  testID?: string
+  shadowOpacity?: number
 }
 
 export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
@@ -18,6 +20,8 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
   height,
   rotate = "0deg",
   style,
+  testID,
+  shadowOpacity = 0.08,
 }) => {
   const color = useColor()
   const borderWidth = (width / 88) * 8
@@ -26,6 +30,7 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
 
   return (
     <View
+      testID={testID}
       style={[
         style,
         {
@@ -38,7 +43,7 @@ export const ArtworkThumbnail: React.FC<ArtworkThumbnailProps> = ({
           backgroundColor: color("mono0"),
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 3 },
-          shadowOpacity: 0.08,
+          shadowOpacity,
           shadowRadius: 6,
           elevation: 3,
         },
