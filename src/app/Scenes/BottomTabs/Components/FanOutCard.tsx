@@ -1,11 +1,11 @@
 import { useColor } from "@artsy/palette-mobile"
+import { FAVORITES_ARTWORK_OVERRIDE_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
   FAN_OUT_DELAY,
   FAN_OUT_STAGGER,
   FLIGHT_DURATION,
-  FLIGHT_END_SCALE,
   FLIGHT_STAGGER,
 } from "app/Scenes/BottomTabs/Components/NewUserOnboardingCompletionAnimation"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
@@ -73,7 +73,7 @@ export const FanOutCard: React.FC<FanOutCardProps> = ({
           { translateX: isFlying ? flightTranslateX : 0 },
           { translateY: isFlying ? flightTranslateY : 0 },
           { rotate: isFlying ? "0deg" : rotate },
-          { scale: isFlying ? FLIGHT_END_SCALE : 1 },
+          { scale: isFlying ? FAVORITES_ARTWORK_OVERRIDE_HEIGHT / CARD_HEIGHT : 1 },
         ],
         opacity: 1,
       },
