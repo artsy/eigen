@@ -1,7 +1,6 @@
 import { ChevronLeftIcon } from "@artsy/icons/native"
-import { Flex, NAVBAR_HEIGHT, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, NAVBAR_HEIGHT, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { Image } from "react-native"
 
 const THUMBNAIL_SIZE = 44
 
@@ -33,9 +32,11 @@ export const LensResultsHeader: React.FC<LensResultsHeaderProps> = ({
         <Flex ml={1} width={THUMBNAIL_SIZE} height={THUMBNAIL_SIZE} bg="mono10" overflow="hidden">
           <Image
             testID="lensResultsPhotoThumbnail"
-            source={{ uri: photoUri }}
+            src={photoUri}
+            width={THUMBNAIL_SIZE}
+            height={THUMBNAIL_SIZE}
             resizeMode="cover"
-            style={{ width: THUMBNAIL_SIZE, height: THUMBNAIL_SIZE }}
+            performResize={false}
           />
         </Flex>
 
