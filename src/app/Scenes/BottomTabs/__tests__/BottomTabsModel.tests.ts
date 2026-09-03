@@ -14,4 +14,44 @@ describe("BottomTabsModel", () => {
       expect(state()?.sessionState.isHomeViewReadyForOnboardingCompletionAnimation).toBe(false)
     })
   })
+
+  describe("setFavoritesTabIconPosition", () => {
+    it("sets and clears favoritesTabIconPosition", () => {
+      expect(state()?.sessionState.favoritesTabIconPosition).toBeNull()
+
+      GlobalStore.actions.bottomTabs.setFavoritesTabIconPosition({
+        x: 1,
+        y: 2,
+        width: 3,
+        height: 4,
+      })
+      expect(state()?.sessionState.favoritesTabIconPosition).toEqual({
+        x: 1,
+        y: 2,
+        width: 3,
+        height: 4,
+      })
+
+      GlobalStore.actions.bottomTabs.setFavoritesTabIconPosition(null)
+      expect(state()?.sessionState.favoritesTabIconPosition).toBeNull()
+    })
+  })
+
+  describe("setFavoritesTabArtworkOverride", () => {
+    it("sets and clears favoritesTabArtworkOverride", () => {
+      expect(state()?.sessionState.favoritesTabArtworkOverride).toBeNull()
+
+      GlobalStore.actions.bottomTabs.setFavoritesTabArtworkOverride({
+        url: "https://example.com/artwork.jpg",
+        blurhash: "blurhash-1",
+      })
+      expect(state()?.sessionState.favoritesTabArtworkOverride).toEqual({
+        url: "https://example.com/artwork.jpg",
+        blurhash: "blurhash-1",
+      })
+
+      GlobalStore.actions.bottomTabs.setFavoritesTabArtworkOverride(null)
+      expect(state()?.sessionState.favoritesTabArtworkOverride).toBeNull()
+    })
+  })
 })
