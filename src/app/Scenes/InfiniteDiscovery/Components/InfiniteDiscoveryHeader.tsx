@@ -55,6 +55,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
     if (newUserOnboardingSavedArtworkCount >= 1) {
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
     }
+    if (newUserOnboardingGoalReached) {
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+    }
     GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
 

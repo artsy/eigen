@@ -16,6 +16,7 @@ export interface InfiniteDiscoveryModel {
     newUserOnboardingGoalSnapshot: NewUserOnboardingSavedArtwork[]
     newUserOnboardingCompletionBottomSheetVisible: boolean
     newUserOnboardingGoalReached: boolean
+    hasPendingCompletionAnimation: boolean
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -27,6 +28,7 @@ export interface InfiniteDiscoveryModel {
   setNewUserOnboardingCompletionBottomSheetVisible: Action<this, boolean>
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
+  setHasPendingCompletionAnimation: Action<this, boolean>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
@@ -39,6 +41,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     newUserOnboardingGoalSnapshot: [],
     newUserOnboardingCompletionBottomSheetVisible: false,
     newUserOnboardingGoalReached: false,
+    hasPendingCompletionAnimation: false,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -54,6 +57,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     state.sessionState.newUserOnboardingGoalSnapshot = []
     state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
     state.sessionState.newUserOnboardingGoalReached = false
+    state.sessionState.hasPendingCompletionAnimation = false
   }),
   setHasInteractedWithOnboarding: action((state, payload) => {
     state.hasInteractedWithOnboarding = payload
@@ -92,5 +96,8 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {
     state.sessionState.newUserOnboardingSavedArtworks =
       state.sessionState.newUserOnboardingSavedArtworks.filter((a) => a.internalID !== internalID)
+  }),
+  setHasPendingCompletionAnimation: action((state, payload) => {
+    state.sessionState.hasPendingCompletionAnimation = payload
   }),
 })
