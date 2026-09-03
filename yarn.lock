@@ -31,9 +31,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@artsy/icons@npm:3.78.0":
-  version: 3.78.0
-  resolution: "@artsy/icons@npm:3.78.0"
+"@artsy/icons@npm:3.79.0":
+  version: 3.79.0
+  resolution: "@artsy/icons@npm:3.79.0"
   peerDependencies:
     react: ">=16.2.0"
     react-native: ">=0.70.15"
@@ -45,7 +45,7 @@ __metadata:
       optional: true
     react-native-svg:
       optional: true
-  checksum: 10c0/6b4c5c2cf009606a15d8f3a3c0ebfa9eb38df4e6ed523f5e97ef77660413ff8fce9594193cadd2c6a331b2b12be818aa55bd9ea914a34b318283d7c05eecd1ad
+  checksum: 10c0/86e57014a0e1038e6a998863faa2cbdb6d3c254c7016e513fe6340c4adbc500334c6f3ca043d369a0d1f5ea0c81bba12800c8dd6cc4faee97be20a51571c0573
   languageName: node
   linkType: hard
 
@@ -13588,7 +13588,7 @@ __metadata:
   dependencies:
     "@artsy/changelog": "npm:0.1.0"
     "@artsy/cohesion": "npm:4.395.0"
-    "@artsy/icons": "npm:3.78.0"
+    "@artsy/icons": "npm:3.79.0"
     "@artsy/palette-mobile": "npm:24.12.0"
     "@artsy/to-title-case": "npm:1.2.0"
     "@artsy/update-repo": "npm:0.8.2"
