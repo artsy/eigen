@@ -24,7 +24,7 @@ export const Lens: React.FC = () => {
   return (
     <NavigationIndependentTree>
       <NavigationContainer theme={theme}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
         <Stack.Navigator
           detachInactiveScreens={false}
           initialRouteName="LensCamera"

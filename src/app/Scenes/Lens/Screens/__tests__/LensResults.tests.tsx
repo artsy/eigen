@@ -1,4 +1,5 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import FastImage from "@d11/react-native-fast-image"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { LensResultsTestsQuery } from "__generated__/LensResultsTestsQuery.graphql"
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
 import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
@@ -94,7 +95,11 @@ describe("LensResults", () => {
   it("shows the photo the search ran on", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
-    expect(screen.getByTestId("lensResultsPhotoThumbnail").props.source).toEqual({ uri: photoUri })
+    const thumbnail = within(screen.getByTestId("lensResultsPhotoThumbnail")).UNSAFE_getByType(
+      FastImage
+    )
+
+    expect(thumbnail.props.source.uri).toBe(photoUri)
   })
 
   it("tells the user these are matches to their photo", () => {
