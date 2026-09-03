@@ -30,6 +30,7 @@ export interface BottomTabsModel {
     unseenCounts: UnseenCounts
     tabProps: TabProps
     selectedTab: BottomTabType
+    isHomeViewReadyForOnboardingCompletionAnimation: boolean
   }
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   setUnreadConversationsCount: Action<BottomTabsModel, number>
@@ -38,6 +39,7 @@ export interface BottomTabsModel {
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
   setSelectedTab: Action<BottomTabsModel, BottomTabType>
+  setIsHomeViewReadyForOnboardingCompletionAnimation: Action<BottomTabsModel, boolean>
   hasUnseenNotifications: Computed<this, boolean>
 }
 
@@ -51,6 +53,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     },
     tabProps: {},
     selectedTab: "home",
+    isHomeViewReadyForOnboardingCompletionAnimation: false,
   },
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [actions.setUnreadConversationsCount, actions.setUnseenNotificationsCount],
@@ -143,6 +146,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setSelectedTab: action((state, payload) => {
     state.sessionState.selectedTab = payload
+  }),
+  setIsHomeViewReadyForOnboardingCompletionAnimation: action((state, payload) => {
+    state.sessionState.isHomeViewReadyForOnboardingCompletionAnimation = payload
   }),
   hasUnseenNotifications: computed((state) => state.sessionState.unseenCounts.notifications > 0),
 })
