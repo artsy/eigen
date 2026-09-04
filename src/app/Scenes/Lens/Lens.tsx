@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
@@ -5,6 +6,8 @@ import { LensAnalyzing } from "app/Scenes/Lens/Screens/LensAnalyzing"
 import { LensCamera } from "app/Scenes/Lens/Screens/LensCamera"
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { StatusBar } from "react-native"
 
 const Stack = createStackNavigator<LensNavigationStack>()
@@ -22,27 +25,31 @@ export const Lens: React.FC = () => {
   const theme = useNavigationTheme()
 
   return (
-    <NavigationIndependentTree>
-      <NavigationContainer theme={theme}>
-        <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-        <Stack.Navigator
-          detachInactiveScreens={false}
-          initialRouteName="LensCamera"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="LensCamera" component={LensCamera} />
-          <Stack.Screen
-            name="LensAnalyzing"
-            component={LensAnalyzing}
-            options={{ animation: "fade" }}
-          />
-          <Stack.Screen
-            name="LensResults"
-            component={LensResultsScreen}
-            options={{ animation: "fade" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </NavigationIndependentTree>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.searchByImage })}
+    >
+      <NavigationIndependentTree>
+        <NavigationContainer theme={theme}>
+          <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+          <Stack.Navigator
+            detachInactiveScreens={false}
+            initialRouteName="LensCamera"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="LensCamera" component={LensCamera} />
+            <Stack.Screen
+              name="LensAnalyzing"
+              component={LensAnalyzing}
+              options={{ animation: "fade" }}
+            />
+            <Stack.Screen
+              name="LensResults"
+              component={LensResultsScreen}
+              options={{ animation: "fade" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </NavigationIndependentTree>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

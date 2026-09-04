@@ -26,5 +26,6 @@ export type LensNavigationStack = {
     s3Bucket: string
     s3Key: string
     photoUri: string
+    fromLibrary: boolean
   }
 }

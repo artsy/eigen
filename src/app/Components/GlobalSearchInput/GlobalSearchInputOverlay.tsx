@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
@@ -6,6 +6,7 @@ import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchI
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
+import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
@@ -32,6 +33,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export const globalSearchInputOverlayQuery = graphql`
   query GlobalSearchInputOverlayQuery($term: String!, $skipSearchQuery: Boolean!) {
@@ -106,7 +108,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
 }
 
 export const GlobalSearchInputOverlay: React.FC<{
-  ownerType: OwnerType
+  ownerType: ScreenOwnerType
   visible: boolean
   hideModal: () => void
 }> = ({ hideModal, ownerType, visible }) => {
@@ -116,6 +118,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
   const enableArtsyLens = useEnableArtsyLens()
+  const tracking = useTracking()
 
   useBackHandler(() => {
     if (!!canGoBack()) {
@@ -185,6 +188,13 @@ export const GlobalSearchInputOverlay: React.FC<{
                 <SearchByPhotoIconButton
                   testID="search-overlay-camera-icon"
                   onPress={() => {
+                    tracking.trackEvent(
+                      tappedSearchByImage({
+                        contextModule: ContextModule.searchOverlay,
+                        contextScreenOwnerType: ownerType,
+                        type: "search_input_icon",
+                      })
+                    )
                     hideModal()
                     navigate("/lens")
                   }}
@@ -208,6 +218,13 @@ export const GlobalSearchInputOverlay: React.FC<{
             <Flex px={2} pb={1}>
               <SearchByPhotoButton
                 onPress={() => {
+                  tracking.trackEvent(
+                    tappedSearchByImage({
+                      contextModule: ContextModule.searchOverlay,
+                      contextScreenOwnerType: ownerType,
+                      type: "search_overlay_button",
+                    })
+                  )
                   hideModal()
                   navigate("/lens")
                 }}

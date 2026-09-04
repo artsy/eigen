@@ -5,6 +5,7 @@ import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/Globa
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
@@ -77,6 +78,22 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
     expect(navigate).toHaveBeenCalledWith("/lens")
   })
 
+  it("reports the button tap as the overlay button entry point", () => {
+    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
+
+    renderOverlay()
+
+    fireEvent.press(screen.getByTestId("search-by-photo-button"))
+
+    expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+      action: "tappedSearchByImage",
+      context_module: "searchOverlay",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "searchByImage",
+      type: "search_overlay_button",
+    })
+  })
+
   describe("the camera icon inside the input", () => {
     it("carries the icon over from the collapsed search bar", () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
@@ -119,6 +136,22 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
 
       expect(hideModal).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/lens")
+    })
+
+    it("reports the tap against the overlay, not the search bar", () => {
+      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
+
+      renderOverlay()
+
+      fireEvent.press(screen.getByTestId("search-overlay-camera-icon"))
+
+      expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+        action: "tappedSearchByImage",
+        context_module: "searchOverlay",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "searchByImage",
+        type: "search_input_icon",
+      })
     })
   })
 })
