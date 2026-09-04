@@ -27,8 +27,6 @@ const BASE_SCALE = 1
 const POP_START_SCALE = 0.4
 const POP_OVERSHOOT_SCALE = 1.1
 
-const BADGE_APPROXIMATE_LEFT = 20
-
 interface InfiniteDiscoverySaveFlightAnimationProps {
   artwork: NewUserOnboardingSavedArtwork | null
   onComplete: () => void
@@ -45,7 +43,7 @@ export const InfiniteDiscoverySaveFlightAnimation: React.FC<
 
   const startLeft = screenWidth / 2 - CARD_WIDTH / 2
   const startTop = screenHeight / 2 - CARD_HEIGHT / 2
-  const endLeft = BADGE_APPROXIMATE_LEFT
+  const endLeft = 0
   const endTop = safeAreaInsets.top
 
   return (
