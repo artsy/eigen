@@ -5,11 +5,12 @@ import { PixelRatio } from "react-native"
 interface SearchByPhotoButtonProps {
   onPress: () => void
   testID?: string
+  label?: string
   /** `Button`'s own vocabulary, passed straight through -- `fillLight` for the black Lens screens. */
   variant?: ButtonProps["variant"]
 }
 
-const LABEL = "Search by Photo"
+const DEFAULT_LABEL = "Search by Photo"
 
 const ICON_SIZE = 20
 
@@ -24,6 +25,7 @@ export const SEARCH_BY_PHOTO_BUTTON_SPACE = 50 * PixelRatio.getFontScale() + 10
 export const SearchByPhotoButton: React.FC<SearchByPhotoButtonProps> = ({
   onPress,
   testID = "search-by-photo-button",
+  label = DEFAULT_LABEL,
   variant = "fillDark",
 }) => {
   return (
@@ -36,7 +38,7 @@ export const SearchByPhotoButton: React.FC<SearchByPhotoButtonProps> = ({
       onPress={onPress}
       testID={testID}
     >
-      {LABEL}
+      {label}
     </Button>
   )
 }

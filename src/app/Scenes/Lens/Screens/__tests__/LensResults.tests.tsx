@@ -81,6 +81,9 @@ describe("LensResults", () => {
   it("offers a way to search another photo when there are no matches", () => {
     renderWithRelay({ ArtworkConnection: () => ({ edges: [] }) })
 
+    expect(screen.getByText("No matches found. Please try another photo.")).toBeOnTheScreen()
+    expect(screen.getByText("Try another photo")).toBeOnTheScreen()
+
     fireEvent.press(screen.getByTestId("lensResultsSearchByPhotoButton"))
 
     expect(mockNavigate).toHaveBeenCalledWith("LensCamera")
@@ -105,13 +108,16 @@ describe("LensResults", () => {
   it("tells the user these are matches to their photo", () => {
     renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
 
-    expect(screen.getByText("Here are some matches to your photo")).toBeTruthy()
+    expect(screen.getByText("Great taste! Here are some matches to your photo")).toBeTruthy()
   })
 
   it("claims no matches when there are none", () => {
     renderWithRelay({ ArtworkConnection: () => ({ edges: [] }) })
 
-    expect(screen.queryByText("Here are some matches to your photo")).toBeNull()
+    expect(
+      screen.getByText("Unfortunately, we couldn't find great matches for that photo")
+    ).toBeOnTheScreen()
+    expect(screen.queryByText("Great taste! Here are some matches to your photo")).toBeNull()
   })
 
   it("deletes the searched photo on the way out", () => {
