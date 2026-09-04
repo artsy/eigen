@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
@@ -31,6 +32,7 @@ describe("GlobalSearchInput", () => {
     jest.clearAllMocks()
     mockUseledTab.mockReturnValue("home")
     mockUseExperimentFlag.mockReturnValue(false)
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
   })
 
   it("renders the search label properly", () => {
@@ -63,6 +65,15 @@ describe("GlobalSearchInput", () => {
 
     it("hides the camera icon when the onyx_artsy-lens experiment is off", () => {
       mockUseExperimentFlag.mockReturnValue(false)
+
+      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+
+      expect(screen.queryByTestId("search-input-camera-icon")).not.toBeOnTheScreen()
+    })
+
+    it("hides the camera icon when AREnableArtsyLens is off, even if the experiment is on", () => {
+      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: false })
 
       renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
 

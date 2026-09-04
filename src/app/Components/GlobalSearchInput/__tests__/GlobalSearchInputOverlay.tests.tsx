@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { PortalHost } from "@gorhom/portal"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -36,6 +37,16 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
+  })
+
+  it("hides the Search by Photo button when AREnableArtsyLens is off", () => {
+    mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: false })
+
+    renderOverlay()
+
+    expect(screen.queryByTestId("search-by-photo-button")).not.toBeOnTheScreen()
   })
 
   it("renders the Search by Photo button when onyx_artsy-lens is on", () => {

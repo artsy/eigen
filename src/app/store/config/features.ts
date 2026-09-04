@@ -189,6 +189,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableGlobalMapList",
   },
+  AREnableArtsyLens: {
+    description: "Enable Artsy Lens (reverse-image-search camera) entry points",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtsyLens",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
