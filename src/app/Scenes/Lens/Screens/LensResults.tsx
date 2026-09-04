@@ -21,7 +21,8 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const MATCHES_TITLE = "Here are some matches to your photo"
+const MATCHES_TITLE = "Great taste! Here are some matches to your photo"
+const NO_MATCHES_TITLE = "Unfortunately, we couldn't find great matches for that photo"
 const SEARCHING_TITLE = "Searching for matches..."
 
 type Props = StackScreenProps<LensNavigationStack, "LensResults">
@@ -56,7 +57,7 @@ const LensResults: React.FC<Props> = ({ route, navigation }) => {
       <LensResultsHeader
         onBack={goBack}
         photoUri={photoUri}
-        title={hasNoMatches ? undefined : MATCHES_TITLE}
+        title={hasNoMatches ? NO_MATCHES_TITLE : MATCHES_TITLE}
       />
 
       <Screen.Body fullwidth pt={1}>
@@ -68,12 +69,11 @@ const LensResults: React.FC<Props> = ({ route, navigation }) => {
         />
       </Screen.Body>
 
-      {/* Empty state only: with matches on screen, tapping one is the action, and a permanent CTA
-          over the grid would compete with it. */}
       {!!hasNoMatches && (
         <Screen.BottomView>
           <SearchByPhotoButton
             testID="lensResultsSearchByPhotoButton"
+            label="Try another photo"
             onPress={() => restartSearch(navigation)}
           />
         </Screen.BottomView>
@@ -94,9 +94,7 @@ const ArtworksGrid: React.FC<{
       contextScreenOwnerType={OwnerType.search}
       contextScreen={OwnerType.search}
       ListEmptyComponent={
-        <SimpleMessage m={2}>
-          We couldn't find any matches for that image. Try another photo.
-        </SimpleMessage>
+        <SimpleMessage m={2}>No matches found. Please try another photo.</SimpleMessage>
       }
       hasMore={hasNext}
       isLoading={isLoadingNext}
