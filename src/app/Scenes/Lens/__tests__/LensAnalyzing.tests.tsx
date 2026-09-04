@@ -59,6 +59,7 @@ describe("LensAnalyzing", () => {
         s3Bucket: "my-bucket",
         s3Key: "my-key",
         photoUri: portraitCrop.uri,
+        fromLibrary: false,
       })
     )
   })
