@@ -1,7 +1,15 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { MotiView } from "moti"
-import { useEffect, useLayoutEffect, useMemo, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { View } from "react-native"
 import { Easing, useReducedMotion } from "react-native-reanimated"
+
+export interface OnboardingProgressBadgeNumberPosition {
+  x: number
+  y: number
+  width: number
+  height: number
+}
 
 export type OnboardingProgressUnit = "follows" | "saves"
 
@@ -60,14 +68,25 @@ interface OnboardingProgressBadgeProps {
   current: number
   total: number
   unit: OnboardingProgressUnit
+  onNumberLayout?: (position: OnboardingProgressBadgeNumberPosition) => void
 }
 
 export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = ({
   current: currentCount,
   total,
   unit,
+  onNumberLayout,
 }) => {
   const isReducedMotionEnabled = useReducedMotion()
+  const numberRef = useRef<View>(null)
+
+  const handleNumberLayout = () => {
+    if (!onNumberLayout) return
+
+    numberRef.current?.measureInWindow((x, y, width, height) => {
+      onNumberLayout({ x, y, width, height })
+    })
+  }
   const [isJumping, setIsJumping] = useState(false)
   const [displayedCount, setDisplayedCount] = useState(currentCount)
 
@@ -119,16 +138,18 @@ export const OnboardingProgressBadge: React.FC<OnboardingProgressBadgeProps> = (
       accessible
       accessibilityLabel={`${displayedCount} ${getProgressText(unit, total)}`}
     >
-      <MotiView {...jumpAnimationProps}>
-        <Text
-          variant="sm-display"
-          weight="medium"
-          color="blue100"
-          style={{ fontVariant: ["tabular-nums"] }}
-        >
-          {displayedCount}
-        </Text>
-      </MotiView>
+      <View ref={numberRef} onLayout={handleNumberLayout}>
+        <MotiView {...jumpAnimationProps}>
+          <Text
+            variant="sm-display"
+            weight="medium"
+            color="blue100"
+            style={{ fontVariant: ["tabular-nums"] }}
+          >
+            {displayedCount}
+          </Text>
+        </MotiView>
+      </View>
       <Text variant="sm-display" color="mono100">
         {` ${getProgressText(unit, total)}`}
       </Text>

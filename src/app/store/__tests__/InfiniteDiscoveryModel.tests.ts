@@ -196,6 +196,24 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
+  describe("setProgressBadgePosition", () => {
+    it("stores the measured position", () => {
+      GlobalStore.actions.infiniteDiscovery.setProgressBadgePosition({
+        x: 20,
+        y: 40,
+        width: 60,
+        height: 20,
+      })
+
+      expect(state()?.sessionState.progressBadgePosition).toEqual({
+        x: 20,
+        y: 40,
+        width: 60,
+        height: 20,
+      })
+    })
+  })
+
   describe("resetSavedArtworksCount", () => {
     it("resets savedArtworksCount", () => {
       GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
@@ -264,6 +282,21 @@ describe("InfiniteDiscoveryModel", () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
       expect(state()?.sessionState.newUserOnboardingGoalSnapshot).toHaveLength(0)
+    })
+
+    it("clears progressBadgePosition", () => {
+      GlobalStore.actions.infiniteDiscovery.setProgressBadgePosition({
+        x: 20,
+        y: 40,
+        width: 60,
+        height: 20,
+      })
+
+      expect(state()?.sessionState.progressBadgePosition).not.toBeNull()
+
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      expect(state()?.sessionState.progressBadgePosition).toBeNull()
     })
   })
 })

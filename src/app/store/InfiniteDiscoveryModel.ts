@@ -6,6 +6,13 @@ export interface NewUserOnboardingSavedArtwork {
   blurhash?: string | null
 }
 
+export interface ProgressBadgePosition {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 export interface InfiniteDiscoveryModel {
   hasSavedArtworks: boolean
   hasInteractedWithOnboarding: boolean
@@ -16,6 +23,7 @@ export interface InfiniteDiscoveryModel {
     newUserOnboardingGoalSnapshot: NewUserOnboardingSavedArtwork[]
     newUserOnboardingCompletionBottomSheetVisible: boolean
     newUserOnboardingGoalReached: boolean
+    progressBadgePosition: ProgressBadgePosition | null
   }
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
@@ -27,6 +35,7 @@ export interface InfiniteDiscoveryModel {
   setNewUserOnboardingCompletionBottomSheetVisible: Action<this, boolean>
   addNewUserOnboardingSavedArtwork: Action<this, NewUserOnboardingSavedArtwork>
   removeNewUserOnboardingSavedArtwork: Action<this, string>
+  setProgressBadgePosition: Action<this, ProgressBadgePosition>
 }
 
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
@@ -39,6 +48,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     newUserOnboardingGoalSnapshot: [],
     newUserOnboardingCompletionBottomSheetVisible: false,
     newUserOnboardingGoalReached: false,
+    progressBadgePosition: null,
   },
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
@@ -54,6 +64,7 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
     state.sessionState.newUserOnboardingGoalSnapshot = []
     state.sessionState.newUserOnboardingCompletionBottomSheetVisible = false
     state.sessionState.newUserOnboardingGoalReached = false
+    state.sessionState.progressBadgePosition = null
   }),
   setHasInteractedWithOnboarding: action((state, payload) => {
     state.hasInteractedWithOnboarding = payload
@@ -92,5 +103,8 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   removeNewUserOnboardingSavedArtwork: action((state, internalID) => {
     state.sessionState.newUserOnboardingSavedArtworks =
       state.sessionState.newUserOnboardingSavedArtworks.filter((a) => a.internalID !== internalID)
+  }),
+  setProgressBadgePosition: action((state, payload) => {
+    state.sessionState.progressBadgePosition = payload
   }),
 })

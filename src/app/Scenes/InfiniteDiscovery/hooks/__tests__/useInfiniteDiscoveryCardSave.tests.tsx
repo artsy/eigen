@@ -132,6 +132,12 @@ describe("useInfiniteDiscoveryCardSave", () => {
   describe("during onboarding", () => {
     beforeEach(() => {
       GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+      GlobalStore.actions.infiniteDiscovery.setProgressBadgePosition({
+        x: 20,
+        y: 40,
+        width: 60,
+        height: 20,
+      })
     })
 
     it("stages the artwork for the flight animation when saved, without adding it to the onboarding list yet", () => {
@@ -151,6 +157,19 @@ describe("useInfiniteDiscoveryCardSave", () => {
 
     it("commits the artwork to the onboarding list immediately when Reduce Motion is enabled, skipping the flight animation", () => {
       mockUseReducedMotion.mockReturnValue(true)
+      mockUseSaveArtworkToArtworkLists(false)
+      const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
+
+      act(() => result.current.handleSaveButtonPress())
+
+      expect(result.current.pendingSaveAnimationArtwork).toBeNull()
+      expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([
+        expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" }),
+      ])
+    })
+
+    it("commits the artwork to the onboarding list immediately when the progress badge hasn't been measured yet, skipping the flight animation", () => {
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
       mockUseSaveArtworkToArtworkLists(false)
       const { result } = renderHook(() => useInfiniteDiscoveryCardSave(mockArtwork), { wrapper })
 

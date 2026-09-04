@@ -1,6 +1,7 @@
 import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useSaveFlightPhase } from "app/Scenes/InfiniteDiscovery/hooks/useSaveFlightPhase"
+import { GlobalStore } from "app/store/GlobalStore"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { BLURHASH_DECODE_ASYNC } from "app/utils/blurhashDecodeAsync"
 import { MotiView } from "moti"
@@ -27,8 +28,6 @@ const BASE_SCALE = 1
 const POP_START_SCALE = 0.4
 const POP_OVERSHOOT_SCALE = 1.1
 
-const BADGE_APPROXIMATE_LEFT = 20
-
 interface InfiniteDiscoverySaveFlightAnimationProps {
   artwork: NewUserOnboardingSavedArtwork | null
   onComplete: () => void
@@ -37,16 +36,19 @@ interface InfiniteDiscoverySaveFlightAnimationProps {
 export const InfiniteDiscoverySaveFlightAnimation: React.FC<
   InfiniteDiscoverySaveFlightAnimationProps
 > = ({ artwork, onComplete }) => {
-  const { width: screenWidth, height: screenHeight, safeAreaInsets } = useScreenDimensions()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+  const progressBadgePosition = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.sessionState.progressBadgePosition
+  )
 
-  if (!artwork) {
+  if (!artwork || !progressBadgePosition) {
     return null
   }
 
   const startLeft = screenWidth / 2 - CARD_WIDTH / 2
   const startTop = screenHeight / 2 - CARD_HEIGHT / 2
-  const endLeft = BADGE_APPROXIMATE_LEFT
-  const endTop = safeAreaInsets.top
+  const endLeft = progressBadgePosition.x + progressBadgePosition.width / 2 - CARD_WIDTH / 2
+  const endTop = progressBadgePosition.y + progressBadgePosition.height / 2 - CARD_HEIGHT / 2
 
   return (
     <Portal hostName={INFINITE_DISCOVERY_SAVE_ANIMATION_PORTAL_HOST}>
@@ -156,6 +158,7 @@ const SaveFlightCard: React.FC<SaveFlightCardProps> = ({
 
   return (
     <MotiView
+      testID="infinite-discovery-save-flight-card"
       pointerEvents="none"
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
