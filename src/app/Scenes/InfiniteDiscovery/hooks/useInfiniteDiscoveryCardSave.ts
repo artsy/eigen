@@ -28,7 +28,9 @@ export const useInfiniteDiscoveryCardSave = (
   const track = useInfiniteDiscoveryTracking()
   const isReducedMotionEnabled = useReducedMotion()
 
-  const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
+  const hasSavedArtworks = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasSavedArtworks
+  )
   const setHasSavedArtworks = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
   const isNewUserOnboardingSession =
     GlobalStore.useAppState((state) => state.onboarding.onboardingState) === "incomplete"
