@@ -22,8 +22,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
   const track = useInfiniteDiscoveryTracking()
   const { trackCompletedOnboarding, trackTappedSkip } = useOnboardingTracking()
-  const { setMoreInfoSheetVisible, setProgressBadgePosition } =
-    GlobalStore.actions.infiniteDiscovery
+  const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
   const isNewUserOnboardingSession =
@@ -101,12 +100,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
         <Screen.Header
           hideTitle
           leftElements={
-            <OnboardingProgressBadge
-              current={displayedSavedArtworkCount}
-              total={5}
-              unit="saves"
-              onNumberLayout={setProgressBadgePosition}
-            />
+            <OnboardingProgressBadge current={displayedSavedArtworkCount} total={5} unit="saves" />
           }
           rightElements={
             <Touchable
