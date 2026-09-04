@@ -4,6 +4,7 @@ import { LensResultsTestsQuery } from "__generated__/LensResultsTestsQuery.graph
 import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
 import { discardTempPhotos } from "app/Scenes/Lens/utils/discardTempPhotos"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { BackHandler } from "react-native"
 import { graphql } from "react-relay"
@@ -14,6 +15,7 @@ jest.mock("app/Scenes/Lens/utils/discardTempPhotos", () => ({
 
 const mockNavigate = jest.fn()
 const photoUri = "file:///tmp/cropped.jpg"
+let fromLibrary = false
 
 describe("LensResults", () => {
   const { renderWithRelay } = setupTestWrapper<LensResultsTestsQuery>({
@@ -23,7 +25,7 @@ describe("LensResults", () => {
           {
             key: "LensResults",
             name: "LensResults",
-            params: { s3Bucket: "my-bucket", s3Key: "my-key", photoUri },
+            params: { s3Bucket: "my-bucket", s3Key: "my-key", photoUri, fromLibrary },
           } as any
         }
         navigation={{ navigate: mockNavigate } as any}
@@ -39,6 +41,7 @@ describe("LensResults", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    fromLibrary = false
   })
 
   it("uses the artwork's standard link when a result is pressed", () => {
@@ -128,5 +131,53 @@ describe("LensResults", () => {
     unmount()
 
     expect(discardTempPhotos).toHaveBeenCalledWith([photoUri])
+  })
+
+  describe("tracking", () => {
+    it("reports a search that found matches", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+      expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+        action: "searchedByImageWithResults",
+        context_owner_type: "searchByImage",
+        photo_source: "camera",
+      })
+    })
+
+    it("reports a search that found nothing", () => {
+      renderWithRelay({ ArtworkConnection: () => ({ edges: [] }) })
+
+      expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+        action: "searchedByImageWithNoResults",
+        context_owner_type: "searchByImage",
+        photo_source: "camera",
+      })
+    })
+
+    it("separates a photo picked from the library from a capture", () => {
+      fromLibrary = true
+
+      renderWithRelay({ Artwork: () => ({ title: "Cool Painting" }) })
+
+      expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ photo_source: "photo_library" })
+      )
+    })
+
+    it("attributes a tapped result to the image search, not to text search", () => {
+      renderWithRelay({ Artwork: () => ({ title: "Cool Painting", slug: "cool-painting" }) })
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Cool Painting"))
+
+      expect(mockTrackEvent).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          action: "tappedMainArtworkGrid",
+          context_module: "artworkGrid",
+          context_screen: "searchByImage",
+          context_screen_owner_type: "searchByImage",
+          destination_screen_owner_type: "artwork",
+        })
+      )
+    })
   })
 })

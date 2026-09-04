@@ -97,7 +97,22 @@ describe("GlobalSearchInput", () => {
 
       expect(navigate).toHaveBeenCalledWith("/lens")
       expect(onOverlayVisibilityChange).not.toHaveBeenCalledWith(true)
-      expect(mockTrackEvent).not.toHaveBeenCalled()
+    })
+
+    it("reports the tap as the search input icon entry point", () => {
+      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
+
+      renderWithWrappers(<GlobalSearchInput ownerType={OwnerType.home} />)
+
+      fireEvent.press(screen.getByTestId("search-input-camera-icon"))
+
+      expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+        action: "tappedSearchByImage",
+        context_module: "header",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "searchByImage",
+        type: "search_input_icon",
+      })
     })
   })
 
