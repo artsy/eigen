@@ -140,7 +140,7 @@ export const LensAnalyzing: React.FC<Props> = ({ route, navigation }) => {
               height={displayCard.height}
               borderRadius={16}
               overflow="hidden"
-              bg="mono10"
+              bg="mono100"
               justifyContent="center"
               alignItems="center"
             >
