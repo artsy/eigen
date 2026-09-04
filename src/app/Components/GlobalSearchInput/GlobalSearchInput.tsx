@@ -4,10 +4,10 @@ import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/Globa
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
 import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { forwardRef, Fragment, useEffect, useImperativeHandle, useState } from "react"
 import { useTracking } from "react-tracking"
 
@@ -27,7 +27,7 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
     const debouncedIsVisible = useDebouncedValue({ value: isVisible })
 
     const tracking = useTracking()
-    const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
+    const enableArtsyLens = useEnableArtsyLens()
 
     useEffect(() => {
       onOverlayVisibilityChange?.(isVisible)
