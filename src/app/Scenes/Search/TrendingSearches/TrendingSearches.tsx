@@ -12,7 +12,7 @@ import {
   TrendingPeriod,
   useTrendingSearches,
 } from "app/Scenes/Search/TrendingSearches/useTrendingSearches"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
 import { startTransition, useEffect, useState } from "react"
@@ -21,7 +21,7 @@ import { useTracking } from "react-tracking"
 
 export const TrendingSearches: React.FC = () => {
   const tabBarHeight = useBottomTabBarHeight()
-  const enableArtsyLens = useExperimentFlag("onyx_artsy-lens")
+  const enableArtsyLens = useEnableArtsyLens()
   const [period, setPeriod] = useState<TrendingPeriod>("ONE_DAY")
 
   const handlePeriodChange = (next: TrendingPeriod) => {
