@@ -64,6 +64,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     if (newUserOnboardingSavedArtworkCount >= 1) {
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
     }
+    GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
     setOnboardingState("complete")
     setNewUserOnboardingCompletionBottomSheetVisible(false)
   }

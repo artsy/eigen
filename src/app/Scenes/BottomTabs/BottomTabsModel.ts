@@ -24,12 +24,27 @@ type ProfileTabType = Record<
 
 type TabProps = Partial<Record<Exclude<BottomTabType, "profile">, any> & ProfileTabType>
 
+export interface FavoritesTabIconPosition {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+export interface FavoritesTabArtworkOverride {
+  url: string
+  blurhash?: string | null
+}
+
 export interface BottomTabsModel {
   sessionState: {
     unreadCounts: UnreadCounts
     unseenCounts: UnseenCounts
     tabProps: TabProps
     selectedTab: BottomTabType
+    isHomeViewReadyForOnboardingCompletionAnimation: boolean
+    favoritesTabIconPosition: FavoritesTabIconPosition | null
+    favoritesTabArtworkOverride: FavoritesTabArtworkOverride | null
   }
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   setUnreadConversationsCount: Action<BottomTabsModel, number>
@@ -38,6 +53,9 @@ export interface BottomTabsModel {
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
   setSelectedTab: Action<BottomTabsModel, BottomTabType>
+  setIsHomeViewReadyForOnboardingCompletionAnimation: Action<BottomTabsModel, boolean>
+  setFavoritesTabIconPosition: Action<BottomTabsModel, FavoritesTabIconPosition | null>
+  setFavoritesTabArtworkOverride: Action<BottomTabsModel, FavoritesTabArtworkOverride | null>
   hasUnseenNotifications: Computed<this, boolean>
 }
 
@@ -51,6 +69,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     },
     tabProps: {},
     selectedTab: "home",
+    isHomeViewReadyForOnboardingCompletionAnimation: false,
+    favoritesTabIconPosition: null,
+    favoritesTabArtworkOverride: null,
   },
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [actions.setUnreadConversationsCount, actions.setUnseenNotificationsCount],
@@ -143,6 +164,15 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setSelectedTab: action((state, payload) => {
     state.sessionState.selectedTab = payload
+  }),
+  setIsHomeViewReadyForOnboardingCompletionAnimation: action((state, payload) => {
+    state.sessionState.isHomeViewReadyForOnboardingCompletionAnimation = payload
+  }),
+  setFavoritesTabIconPosition: action((state, payload) => {
+    state.sessionState.favoritesTabIconPosition = payload
+  }),
+  setFavoritesTabArtworkOverride: action((state, payload) => {
+    state.sessionState.favoritesTabArtworkOverride = payload
   }),
   hasUnseenNotifications: computed((state) => state.sessionState.unseenCounts.notifications > 0),
 })

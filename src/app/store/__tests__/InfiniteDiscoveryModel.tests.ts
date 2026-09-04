@@ -158,6 +158,30 @@ describe("InfiniteDiscoveryModel", () => {
     })
   })
 
+  describe("setHasPendingCompletionAnimation", () => {
+    it("toggles hasPendingCompletionAnimation", () => {
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(false)
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
+    })
+  })
+
+  describe("setNewUserOnboardingGoalReached", () => {
+    it("toggles newUserOnboardingGoalReached", () => {
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
+
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingGoalReached(true)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingGoalReached(false)
+      expect(state()?.sessionState.newUserOnboardingGoalReached).toBe(false)
+    })
+  })
+
   describe("removeNewUserOnboardingSavedArtwork", () => {
     it("removes the artwork with the given internalID", () => {
       GlobalStore.actions.infiniteDiscovery.addNewUserOnboardingSavedArtwork({
@@ -264,6 +288,16 @@ describe("InfiniteDiscoveryModel", () => {
       GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
 
       expect(state()?.sessionState.newUserOnboardingGoalSnapshot).toHaveLength(0)
+    })
+
+    it("clears hasPendingCompletionAnimation", () => {
+      GlobalStore.actions.infiniteDiscovery.setHasPendingCompletionAnimation(true)
+
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(true)
+
+      GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+
+      expect(state()?.sessionState.hasPendingCompletionAnimation).toBe(false)
     })
   })
 })

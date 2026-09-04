@@ -17,6 +17,12 @@ jest.mock("react-native-reanimated", () => ({
   useReducedMotion: jest.fn(),
 }))
 
+// Stubbed because the real native module has no bridge to call into under Jest.
+jest.mock("@d11/react-native-fast-image", () => ({
+  __esModule: true,
+  default: { preload: jest.fn() },
+}))
+
 const mockUseReducedMotion = useReducedMotion as jest.Mock
 
 const mockArtwork = {

@@ -59,6 +59,30 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     expect(state?.onboarding.onboardingState).toBe("complete")
   })
 
+  it('"Take Me Home" sets hasPendingCompletionAnimation', () => {
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Take Me Home"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.infiniteDiscovery.sessionState.hasPendingCompletionAnimation).toBe(true)
+  })
+
+  it('"See More Works" does not set hasPendingCompletionAnimation', () => {
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("See More Works"))
+
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.infiniteDiscovery.sessionState.hasPendingCompletionAnimation).toBe(false)
+  })
+
   it('"Take Me Home" defers Home tooltips to the next session when at least one artwork was saved', () => {
     GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(false)
     GlobalStore.actions.onboarding.setOnboardingState("incomplete")

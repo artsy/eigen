@@ -1,4 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
+import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { PixelRatio } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
@@ -6,11 +7,33 @@ import { BottomTabType } from "./BottomTabType"
 export const ICON_WIDTH = 53
 export const ICON_HEIGHT = 49
 
-export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "inactive" }> = ({
+export const FAVORITES_ARTWORK_OVERRIDE_WIDTH = 30
+export const FAVORITES_ARTWORK_OVERRIDE_HEIGHT = 38
+
+interface BottomTabsIconProps {
+  tab: BottomTabType
+  state: "active" | "inactive"
+  artworkImageOverride?: { url: string; blurhash?: string | null } | null
+}
+
+export const BottomTabsIcon: React.FC<BottomTabsIconProps> = ({
   tab,
   state,
+  artworkImageOverride,
 }) => {
   const color = useColor()
+
+  if (artworkImageOverride && tab === "favorites") {
+    return (
+      <ArtworkThumbnail
+        testID="bottom-tabs-icon-artwork-image"
+        imageUrl={artworkImageOverride.url}
+        blurhash={artworkImageOverride.blurhash}
+        width={FAVORITES_ARTWORK_OVERRIDE_WIDTH * PixelRatio.getFontScale()}
+        height={FAVORITES_ARTWORK_OVERRIDE_HEIGHT * PixelRatio.getFontScale()}
+      />
+    )
+  }
 
   const ICONS: Record<BottomTabType, { active: React.JSX.Element; inactive: React.JSX.Element }> = {
     home: {
