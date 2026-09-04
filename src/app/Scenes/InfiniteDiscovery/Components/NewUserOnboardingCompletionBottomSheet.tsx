@@ -97,7 +97,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
       <BottomSheetView>
         <Flex px={2} pt={2} style={{ paddingBottom: safeAreaInsets.bottom + 16 }}>
           <View style={{ height: FAN_CONTAINER_HEIGHT * scale, width: REFERENCE_WIDTH * scale }}>
-            {savedArtworks.map((artwork, index) => {
+            {savedArtworks.slice(0, CARD_COUNT).map((artwork, index) => {
               const config = FAN_CONFIGS[index]
               return (
                 // `style` sets the card's final fanned-out position; `from`/`animate` offset it
