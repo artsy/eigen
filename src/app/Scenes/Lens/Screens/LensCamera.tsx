@@ -1,4 +1,5 @@
-import { Flex, Spinner, Theme } from "@artsy/palette-mobile"
+import { CameraStrokeIcon } from "@artsy/icons/native"
+import { Flex, Spinner, Text, Theme } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
@@ -146,7 +147,21 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
         )}
 
         <Flex position="absolute" top={0} left={0} right={0}>
-          <LensHeader title="Artsy Lens" onClose={handleClose} />
+          <LensHeader onClose={handleClose} />
+
+          <Flex alignItems="center" px={4} mt={1} pointerEvents="none">
+            <Flex flexDirection="row" alignItems="center">
+              <CameraStrokeIcon fill="mono0" width={18} height={18} />
+
+              <Text variant="sm-display" color="mono0" ml={0.5}>
+                ARTSY LENS
+              </Text>
+            </Flex>
+
+            <Text variant="sm" color="mono0" textAlign="center" mt={1}>
+              Take a photo and we'll match it with a similar artwork.
+            </Text>
+          </Flex>
         </Flex>
 
         <Flex position="absolute" bottom={0} left={0} right={0} height={LENS_CAMERA_BUTTONS_HEIGHT}>

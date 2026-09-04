@@ -47,6 +47,16 @@ describe("LensCamera", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
+  it("shows the Artsy Lens guidance and a photo icon for the library", () => {
+    renderWithWrappers(<LensCamera {...navigationProps} />)
+
+    expect(screen.getByText("ARTSY LENS")).toBeOnTheScreen()
+    expect(
+      screen.getByText("Take a photo and we'll match it with a similar artwork.")
+    ).toBeOnTheScreen()
+    expect(screen.getByTestId("lens-library-photo-icon")).toBeOnTheScreen()
+  })
+
   it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", () => {
     jest.mocked(useCameraPermission).mockReturnValue({
       hasPermission: false,

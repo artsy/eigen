@@ -1,4 +1,4 @@
-import { BoltFillIcon, ImageSetIcon } from "@artsy/icons/native"
+import { BoltFillIcon, PhotographIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, FlexProps, Touchable, useSpace } from "@artsy/palette-mobile"
 import { LensCapturePhotoButton } from "app/Scenes/Lens/Components/LensCapturePhotoButton"
 
@@ -84,7 +84,7 @@ export const LensCameraButtons: React.FC<LensCameraButtonsProps> = (props) => {
           alignItems="center"
           bg="mono0"
         >
-          <ImageSetIcon fill="mono100" width={18} height={18} />
+          <PhotographIcon testID="lens-library-photo-icon" fill="mono100" width={18} height={18} />
         </Flex>
       </Touchable>
     </Flex>
