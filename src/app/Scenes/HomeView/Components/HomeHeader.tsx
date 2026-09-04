@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { UnleashConstraintDemo } from "app/Components/UnleashConstraintDemo"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -17,6 +18,7 @@ export const HomeHeader: React.FC<{
 
   return (
     <Flex backgroundColor="background">
+      <UnleashConstraintDemo />
       {!!showPaymentFailureBanner && <PaymentFailureBanner />}
       <Flex pb={1} pt={2}>
         <Flex flexDirection="row" px={2} gap={1} justifyContent="space-around" alignItems="center">
