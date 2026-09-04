@@ -113,12 +113,15 @@ jobs:
         env:
           VERSION: ${{ needs.guard.outputs.version }}
         run: |
-          # Beta tags: ios-<version>-<build> / android-<version>-<code>
+          # Beta tags: ios-<version>-<build> / android-<version>-<code>, with an optional
+          # -nightly suffix on the scheduled builds
           # (exclude -submission and -expo- OTA tags; newest by version sort).
           ios_tag=$(git tag -l "ios-${VERSION}-*" | grep -v -- '-expo-' | grep -v -- '-submission' | sort -V | tail -1 || true)
           android_tag=$(git tag -l "android-${VERSION}-*" | grep -v -- '-expo-' | grep -v -- '-submission' | sort -V | tail -1 || true)
-          echo "ios_build=${ios_tag#ios-${VERSION}-}" >> "$GITHUB_OUTPUT"
-          echo "android_build=${android_tag#android-${VERSION}-}" >> "$GITHUB_OUTPUT"
+          ios_build=${ios_tag#ios-${VERSION}-}
+          android_build=${android_tag#android-${VERSION}-}
+          echo "ios_build=${ios_build%-nightly}" >> "$GITHUB_OUTPUT"
+          echo "android_build=${android_build%-nightly}" >> "$GITHUB_OUTPUT"
           echo "iOS tag: ${ios_tag:-<none>} / Android tag: ${android_tag:-<none>}"
 
       - name: Setup node.js
