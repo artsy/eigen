@@ -65,14 +65,34 @@ Expo updates has a bunch of native code checks to see if the local code is newer
 In dev mode there are assertions for valid state transitions that fail after switching channels, this may be a bug worth investigating and possibly PR back to expo?
 To get arround it you can comment out the assertions in the transition function in UpdatesStateMachine.swift when debugging in dev.
 
-#### Android NPE from `setUpdateRequestHeadersOverride` (`beta` build type)
+#### Android: `expoUpdatesDisableAntibrickingMeasures` must stay `"false"` on beta builds
 
 `android/app/build.gradle`'s `beta` build type must keep `expoUpdatesDisableAntibrickingMeasures: "false"`.
-`getUpdateUrl()` in expo-updates 55.0.22's Android `UpdatesConfiguration.kt` has a bug: when that flag
-is `true`, `configOverride?.let { return it.updateUrl }` returns unconditionally as soon as an override
-object exists — even if `it.updateUrl` is itself `null`, which it always is for a headers-only override
-like `setUpdateRequestHeadersOverride` (the only API the dev-menu channel switcher uses). That `null`
-gets force-unwrapped one line later and throws a `NullPointerException`. iOS's equivalent doesn't have
-this bug — it uses `if let updateUrl = configOverride?.updateUrl` there, which correctly falls back to
-the embedded URL when the override didn't set one. If a future expo-updates upgrade fixes this
-upstream, this flag is safe to flip back — we don't call the URL-override API that needs it anyway.
+Flipping it to `"true"` opens two separate bugs in expo-updates 55.0.22's Android code, depending on
+which override API you call. Neither has a safe workaround, so leave the flag alone.
+
+**NPE from `setUpdateURLAndRequestHeadersOverride`.** `getUpdateUrl()` in `UpdatesConfiguration.kt` has a
+bug. When the flag is `true`, `configOverride?.let { return it.updateUrl }` returns as soon as an
+override object exists, even if `it.updateUrl` is itself `null`, which it is for a headers-only
+override. That `null` gets force-unwrapped one line later and throws a `NullPointerException`. iOS's
+equivalent doesn't have this bug. It uses `if let updateUrl = configOverride?.updateUrl` there, which
+falls back to the embedded URL when the override didn't set one.
+
+**`ERR_UPDATES_RELOAD` from `setUpdateRequestHeadersOverride`.** With the flag `true`, saving any
+override, headers-only included, makes `getHasEmbeddedUpdate()` return `false` on the next launch, so
+`DatabaseLauncher` drops the embedded update from the launchable set. On a beta that hasn't downloaded
+an update yet, that leaves zero launchable updates, and the app falls back to an emergency launch with
+no launched update. The dev menu shows this as `isEmergencyLaunch: true` under "Active Release". The
+beta build type also sets `checkOnLaunch: "NEVER"`, so there's no remote check to recover from this.
+`Updates.fetchUpdateAsync()` still downloads fine, but Android's `relaunchReactApplicationForModule`
+hard-guards on having a launched update and rejects `reloadAsync()` with `Cannot relaunch without a
+launched update` (`ERR_UPDATES_RELOAD`). iOS's `requestRelaunch` has no such guard, which is why this
+only happens on Android.
+
+If you land in this state, either the dev menu shows "Emergency Launch: Yes" or "Fetch and Run
+Deployment" throws `ERR_UPDATES_RELOAD`. Force-quit and reopen the app. The update already downloaded,
+so a cold start will pick it up. To get back to the embedded channel specifically, reinstall the app;
+the override is saved in SharedPreferences and survives a normal restart.
+
+If a future expo-updates upgrade fixes either of these upstream, this flag is safe to flip back. We
+only ever call the headers-only override API from the dev menu, never the URL one.
