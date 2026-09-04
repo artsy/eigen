@@ -7,6 +7,7 @@ import {
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { useUpdateUserProfile } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useUpdateUserProfile"
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
 import { useCallback } from "react"
@@ -54,6 +55,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
   const { setOnboardingState } = GlobalStore.actions.onboarding
   const { setNewUserOnboardingCompletionBottomSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const { trackCompletedOnboarding } = useOnboardingTracking()
+  const { commitMutation } = useUpdateUserProfile()
 
   const handleContinueBrowsing = () => {
     setNewUserOnboardingCompletionBottomSheetVisible(false)
@@ -64,6 +66,7 @@ export const NewUserOnboardingCompletionBottomSheet: React.FC = () => {
     if (newUserOnboardingSavedArtworkCount >= 1) {
       GlobalStore.actions.progressiveOnboarding.setDeferHomeTooltipsThisSession(true)
     }
+    commitMutation({ completedOnboarding: true })
     setOnboardingState("complete")
     setNewUserOnboardingCompletionBottomSheetVisible(false)
   }

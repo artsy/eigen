@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { NewUserOnboardingCompletionBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/NewUserOnboardingCompletionBottomSheet"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const SAVED_ARTWORKS = Array.from({ length: 5 }, (_, i) => ({
@@ -14,6 +15,10 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
     GlobalStore.actions.onboarding.setOnboardingState("complete")
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
     GlobalStore.actions.infiniteDiscovery.resetNewUserOnboardingSessionState()
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   it("renders the sheet content when completionBottomSheetVisible is true", () => {
@@ -57,6 +62,35 @@ describe("NewUserOnboardingCompletionBottomSheet", () => {
       state?.infiniteDiscovery.sessionState.newUserOnboardingCompletionBottomSheetVisible
     ).toBe(false)
     expect(state?.onboarding.onboardingState).toBe("complete")
+  })
+
+  it('"Take Me Home" still completes onboarding if the profile mutation fails', () => {
+    jest.spyOn(console, "error").mockImplementation()
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Take Me Home"))
+
+    const environment = getMockRelayEnvironment()
+    environment.mock.rejectMostRecentOperation(new Error("network error"))
+
+    expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe("complete")
+  })
+
+  it('"Take Me Home" sends completedOnboarding: true in the profile mutation', () => {
+    GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+    GlobalStore.actions.infiniteDiscovery.setNewUserOnboardingCompletionBottomSheetVisible(true)
+
+    renderWithWrappers(<NewUserOnboardingCompletionBottomSheet />)
+
+    fireEvent.press(screen.getByText("Take Me Home"))
+
+    const environment = getMockRelayEnvironment()
+    const operation = environment.mock.getMostRecentOperation()
+
+    expect(operation.request.variables.input).toEqual({ completedOnboarding: true })
   })
 
   it('"Take Me Home" defers Home tooltips to the next session when at least one artwork was saved', () => {

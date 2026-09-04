@@ -3,6 +3,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useReducedMotion } from "react-native-reanimated"
@@ -93,6 +94,10 @@ describe("InfiniteDiscoveryHeader", () => {
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
   })
 
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it("renders more button when topArtwork has required data", () => {
     renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
@@ -178,6 +183,31 @@ describe("InfiniteDiscoveryHeader", () => {
 
       expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
       expect(mockTrackEvent).toHaveBeenCalledWith({ action: ActionType.completedOnboarding })
+    })
+
+    it("still exits onboarding when Skip is pressed if the profile mutation fails", () => {
+      jest.spyOn(console, "error").mockImplementation()
+      const setOnboardingStateSpy = jest.spyOn(GlobalStore.actions.onboarding, "setOnboardingState")
+
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      const environment = getMockRelayEnvironment()
+      environment.mock.rejectMostRecentOperation(new Error("network error"))
+
+      expect(setOnboardingStateSpy).toHaveBeenCalledWith("complete")
+    })
+
+    it("sends completedOnboarding: true in the profile mutation when Skip is pressed", () => {
+      renderWithWrappers(<InfiniteDiscoveryHeader />)
+
+      fireEvent.press(screen.getByLabelText("Skip to home"))
+
+      const environment = getMockRelayEnvironment()
+      const operation = environment.mock.getMostRecentOperation()
+
+      expect(operation.request.variables.input).toEqual({ completedOnboarding: true })
     })
 
     it("does not defer Home tooltips when Skip is pressed without any saves", () => {
