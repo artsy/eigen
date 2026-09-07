@@ -7,17 +7,21 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
+import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItineraryMapView } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryMapView"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryStopPreview } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopPreview"
+import { itineraryFromQuery } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryFromQuery"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
@@ -27,9 +31,17 @@ interface Props {
   itineraryId: string
 }
 
-export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
-  // TODO: Replace with a Relay query once the itinerary schema lands.
-  const itinerary = getMockItinerary(citySlug, itineraryId)
+const Itinerary: React.FC<Props> = ({ itineraryId }) => {
+  // `citySlug` is not a query variable: an itinerary is addressed by its own id or slug, and
+  // carries its city. The route keeps the slug in the path so the URL reads as a city's guide
+  // and so a deep link matches artsy.net, not because the lookup needs it.
+  const data = useLazyLoadQuery<ItineraryScreenQuery>(Query, { id: itineraryId })
+
+  const itinerary = useMemo(
+    () => (data.itinerary ? itineraryFromQuery(data.itinerary) : null),
+    [data.itinerary]
+  )
+
   const [isMapView, setIsMapView] = useState(false)
   const [previewStop, setPreviewStop] = useState<ItineraryStop | null>(null)
   // Lifted out of ItineraryMapView so the preview's "Show on map" can select a pin
@@ -175,3 +187,63 @@ export const ItineraryScreen: React.FC<Props> = ({ citySlug, itineraryId }) => {
     </Screen>
   )
 }
+
+const Query = graphql`
+  query ItineraryScreenQuery($id: String!) {
+    itinerary(id: $id) {
+      internalID
+      citySlug
+      name
+      subtitle
+      description
+      authorName
+      heroImageURL
+
+      sections {
+        internalID
+        title
+
+        stops {
+          internalID
+          title
+          address
+          category
+          note
+          imageURL
+          latitude
+          longitude
+
+          startTime: startAt(format: "h:mma")
+          endTime: endAt(format: "h:mma")
+
+          startAtISO: startAt
+          endAtISO: endAt
+
+          item {
+            __typename
+            ... on Show {
+              slug
+              name
+            }
+            ... on Fair {
+              slug
+              name
+            }
+            ... on Partner {
+              slug
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const ItineraryScreen = withSuspense({
+  Component: Itinerary,
+  LoadingFallback: SpinnerFallback,
+  ErrorFallback: (fallbackProps) => (
+    <LoadFailureView error={fallbackProps.error} onRetry={fallbackProps.resetErrorBoundary} />
+  ),
+})

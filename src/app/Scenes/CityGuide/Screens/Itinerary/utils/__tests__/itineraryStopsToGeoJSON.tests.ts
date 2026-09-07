@@ -3,6 +3,7 @@ import {
   itineraryStopsToGeoJSON,
   itineraryStopsToRouteGeoJSON,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToGeoJSON"
+import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { MOCK_ITINERARIES } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 
 // These assert on the shape of the transform, not on how much mock data happens to
@@ -40,8 +41,8 @@ describe("itineraryStopsToGeoJSON", () => {
     expect(collection.features).toHaveLength(TOTAL_STOPS)
     // GeoJSON is lng first, lat second — the reverse of how the stop stores them.
     expect(collection.features[0].geometry.coordinates).toEqual([
-      FIRST_STOP.coordinates.lng,
-      FIRST_STOP.coordinates.lat,
+      FIRST_STOP.coordinates?.lng,
+      FIRST_STOP.coordinates?.lat,
     ])
   })
 
@@ -81,7 +82,7 @@ describe("itineraryStopsToRouteGeoJSON", () => {
 
     expect(route.features).toHaveLength(1)
     expect(route.features[0].geometry.coordinates).toEqual(
-      FIRST_SECTION.stops.map((stop) => [stop.coordinates.lng, stop.coordinates.lat])
+      FIRST_SECTION.stops.map((stop) => [stop.coordinates?.lng, stop.coordinates?.lat])
     )
   })
 
@@ -90,5 +91,27 @@ describe("itineraryStopsToRouteGeoJSON", () => {
 
     expect(itineraryStopsToRouteGeoJSON(flattened.slice(0, 1)).features).toEqual([])
     expect(itineraryStopsToRouteGeoJSON([]).features).toEqual([])
+  })
+})
+
+describe("flattenItineraryStops, for a stop with no coordinates", () => {
+  // latitude and longitude are both nullable server-side, and a stop can be an editorial
+  // note with no location at all. Plotting one would put a pin at 0,0.
+  const withUnmappableStop: Itinerary = {
+    ...ITINERARY,
+    sections: [
+      {
+        ...FIRST_SECTION,
+        stops: [{ ...FIRST_STOP, id: "no-coords", coordinates: undefined }, ...FIRST_SECTION.stops],
+      },
+    ],
+  }
+
+  it("leaves it out, and numbers the rest from 1", () => {
+    const flattened = flattenItineraryStops(withUnmappableStop)
+
+    expect(flattened.map((f) => f.stop.id)).not.toContain("no-coords")
+    expect(flattened).toHaveLength(FIRST_SECTION.stops.length)
+    expect(flattened[0].number).toEqual(1)
   })
 })

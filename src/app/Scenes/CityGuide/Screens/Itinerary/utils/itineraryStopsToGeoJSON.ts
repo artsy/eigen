@@ -3,8 +3,16 @@ import {
   ItineraryStop,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
+/**
+ * A stop known to have coordinates. Everything in this module draws, so an unmappable stop
+ * never reaches it and callers need no null checks on `coordinates`.
+ */
+export type MappableStop = ItineraryStop & {
+  coordinates: NonNullable<ItineraryStop["coordinates"]>
+}
+
 export interface FlattenedStop {
-  stop: ItineraryStop
+  stop: MappableStop
   sectionId: string
   number: number
 }
@@ -20,13 +28,26 @@ export interface ItineraryFeatureCollection {
   features: ItineraryFeature[]
 }
 
-/** Single source of truth for stop numbering: position in the flattened list. */
+/**
+ * Single source of truth for stop numbering on the map: position in the flattened list.
+ *
+ * Stops without coordinates are dropped rather than plotted at 0,0 — latitude and longitude
+ * are both nullable server-side, and a stop can be a plain editorial note with no location.
+ * They still appear in the list, which numbers separately; the map numbers only what it can
+ * actually draw, the same way filtering to one section renumbers that section from 1.
+ */
 export const flattenItineraryStops = (itinerary: Itinerary): FlattenedStop[] => {
   const flattened: FlattenedStop[] = []
 
   itinerary.sections.forEach((section) => {
     section.stops.forEach((stop) => {
-      flattened.push({ stop, sectionId: section.id, number: flattened.length + 1 })
+      if (!stop.coordinates) return
+
+      flattened.push({
+        stop: stop as MappableStop,
+        sectionId: section.id,
+        number: flattened.length + 1,
+      })
     })
   })
 

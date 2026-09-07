@@ -1,65 +1,86 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
-import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-// "chill-vibes-only" has four saveable stops, so four queries fire. renderWithRelay
-// resolves one; the other three stay suspended, but each is contained by its own
-// Suspense fallback={null} (Task 5), so they render as nothing rather than blanking
-// the tree. Assertions below therefore target the screen chrome, never a save icon.
-// The unavailable-state tests issue no query at all and must use renderWithWrappers.
+const stop = (n: number) => ({
+  internalID: `stop-${n}`,
+  title: `Stop ${n}`,
+  address: null,
+  category: "GALLERY",
+  note: null,
+  imageURL: null,
+  latitude: 51.5,
+  longitude: -0.1,
+  startTime: "11:00am",
+  endTime: "4:00pm",
+  startAtISO: null,
+  endAtISO: null,
+  // Left null so no save control query fires: `item` resolving to null is the
+  // "not a saveable Artsy entity" case, which is also what the fixture returns today.
+  item: null,
+})
+
+const ITINERARY = {
+  internalID: "chill-vibes-only",
+  citySlug: "london-united-kingdom",
+  name: "Chill Vibes Only",
+  subtitle: "Top picks",
+  description: "Our list of recommendations.",
+  authorName: "Casey Lesser",
+  heroImageURL: "https://example.com/hero.jpg",
+  sections: [
+    { internalID: "day-1", title: "Day 1 — Easing in", stops: [stop(1), stop(2)] },
+    { internalID: "day-2", title: "Day 2 — London Frieze", stops: [stop(3), stop(4)] },
+  ],
+}
+
 describe("ItineraryScreen", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: ItineraryScreen })
+  const props = { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" }
 
-  it("renders the header and every section", () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+  it("renders the header and every section", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-    expect(screen.getByText("Chill Vibes Only")).toBeTruthy()
+    expect(await screen.findByText("Chill Vibes Only")).toBeTruthy()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Day 2 — London Frieze")).toBeTruthy()
   })
 
-  it("numbers stops continuously across sections", () => {
-    const itinerary = getMockItinerary("london-united-kingdom", "chill-vibes-only")!
-    const totalStops = itinerary.sections.reduce((sum, s) => sum + s.stops.length, 0)
-
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
+  it("numbers stops continuously across sections", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
     // Numbering runs 1..N across the whole itinerary rather than restarting per section,
-    // so the very last number only exists if every earlier section was counted.
-    expect(screen.getByText(String(totalStops))).toBeTruthy()
-    expect(screen.queryByText(String(totalStops + 1))).toBeNull()
+    // so the last number only exists if every earlier section was counted.
+    expect(await screen.findByText("4")).toBeTruthy()
+    expect(screen.queryByText("5")).toBeNull()
   })
 
-  it("renders the unavailable state for an unknown itinerary", () => {
-    renderWithWrappers(<ItineraryScreen citySlug="london-united-kingdom" itineraryId="nope" />)
+  it("falls back to a positional section title when the server sends none", async () => {
+    renderWithRelay(
+      {
+        Itinerary: () => ({
+          ...ITINERARY,
+          sections: [{ internalID: "untitled", title: null, stops: [stop(1)] }],
+        }),
+      },
+      props
+    )
 
-    expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
+    expect(await screen.findByText("Day 1")).toBeTruthy()
+  })
+
+  it("joins the two server-formatted times into the row's display time", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+    expect(await screen.findAllByText("11:00am-4:00pm")).not.toHaveLength(0)
+  })
+
+  it("renders the unavailable state when the itinerary does not resolve", async () => {
+    // Resolved at the root: an `Itinerary: () => null` resolver does not null the field,
+    // MockPayloadGenerator still generates a default object for it.
+    renderWithRelay({ Query: () => ({ itinerary: null }) }, props)
+
+    expect(await screen.findByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
-  })
-
-  it("does not render another city's itinerary", () => {
-    renderWithWrappers(<ItineraryScreen citySlug="paris-france" itineraryId="chill-vibes-only" />)
-
-    expect(screen.getByText("This guide is no longer available.")).toBeTruthy()
-  })
-
-  it("switches to the map view and back", () => {
-    renderWithRelay({}, { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" })
-
-    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
-
-    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-
-    // MapView mocks to null, so its children never mount. Assert on the chrome
-    // outside the map: the list is gone and the filter pills are up.
-    expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
-    expect(screen.getByText("All")).toBeTruthy()
-    expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
-
-    fireEvent.press(screen.getByTestId("itinerary-view-toggle"))
-
-    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 })

@@ -29,7 +29,12 @@ export interface ItineraryStop {
   /** Freeform. May hold emoji ("🥂 🧀") or a short caption. */
   note?: string
   imageUrl: string
-  coordinates: { lat: number; lng: number }
+  /**
+   * Absent when the stop has no usable location: latitude and longitude are both nullable
+   * server-side. Such a stop still belongs in the list — it just cannot be drawn, so the
+   * map converters filter on this rather than plotting a 0,0 pin.
+   */
+  coordinates?: { lat: number; lng: number }
   /** null when the stop is not a saveable Artsy entity; no save control renders. */
   saveTarget: ItinerarySaveTarget | null
 }
