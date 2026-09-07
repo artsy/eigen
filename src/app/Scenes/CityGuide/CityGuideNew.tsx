@@ -46,11 +46,12 @@ export const CityGuideNew: React.FC = () => {
           />
 
           <Join separator={<Spacer y={4} />}>
-            <CityGuideMetaData />
+            <>
+              <CityGuideMetaData />
+              <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
+            </>
 
-            <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
-
-            <CityGuideEvents />
+            <CityGuideEvents cityName={city?.name ?? ""} />
           </Join>
         </Screen.ScrollView>
 
