@@ -8,13 +8,17 @@ const data = {
 
 export const CityGuideMetaData = () => {
   return (
-    <Flex gap={2}>
+    <Flex gap={2} backgroundColor="mono100">
       <CityGuideParallaxImage src="https://files.artsy.net/images/frame-1000003604.png" />
 
       <Flex px={2}>
-        <Text variant="xs">CITY GUIDE</Text>
-        <Text variant="lg-display">{data.title}</Text>
-        <Text variant="xs" color="mono60">
+        <Text variant="xs" color="mono0">
+          CITY GUIDE
+        </Text>
+        <Text variant="lg-display" color="mono0">
+          {data.title}
+        </Text>
+        <Text variant="xs" color="mono0">
           {data.date}
         </Text>
       </Flex>

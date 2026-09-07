@@ -26,8 +26,10 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
         />
 
         <Flex flex={1}>
-          <Text variant="lg-display">{item.title}</Text>
-          <Text variant="xs" color="mono60">
+          <Text variant="lg-display" color="mono0">
+            {item.title}
+          </Text>
+          <Text variant="xs" color="mono0">
             By {item.author}
           </Text>
         </Flex>
@@ -47,7 +49,7 @@ export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
   }
 
   return (
-    <Flex px={2}>
+    <Flex px={2} backgroundColor="mono100" py={2}>
       <Join separator={<Spacer y={2} />}>
         {rows.map((item) => (
           <ListItem key={item.id} item={item} citySlug={citySlug} />
