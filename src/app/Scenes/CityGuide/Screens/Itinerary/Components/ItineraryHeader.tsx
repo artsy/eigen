@@ -11,6 +11,7 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
     <Flex>
       <Flex height={HERO_HEIGHT} justifyContent="flex-end">
         <RNImage
+          testID="itinerary-hero-image"
           src={itinerary.heroImageUrl}
           resizeMode="cover"
           accessibilityIgnoresInvertColors

@@ -12,7 +12,10 @@ describe("CityGuideCuratedLists", () => {
     slug,
     name,
     authorName: "Casey Lesser",
-    heroImageURL: "https://example.com/hero.jpg",
+    heroImage: {
+      resized: { url: "https://example.com/hero-240.jpg" },
+      url: "https://example.com/hero.jpg",
+    },
   })
 
   const connection = (nodes: object[]) => ({

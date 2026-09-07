@@ -27,7 +27,10 @@ const ITINERARY = {
   subtitle: "Top picks",
   description: "Our list of recommendations.",
   authorName: "Casey Lesser",
-  heroImageURL: "https://example.com/hero.jpg",
+  heroImage: {
+    resized: { url: "https://example.com/hero-400.jpg" },
+    url: "https://example.com/hero.jpg",
+  },
   sections: [
     { internalID: "day-1", title: "Day 1 — Easing in", stops: [stop(1), stop(2)] },
     { internalID: "day-2", title: "Day 2 — London Frieze", stops: [stop(3), stop(4)] },
@@ -82,5 +85,33 @@ describe("ItineraryScreen", () => {
 
     expect(await screen.findByText("This guide is no longer available.")).toBeTruthy()
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
+  })
+
+  // `heroImage` is a standard Artsy Image, so the header takes the width it draws from
+  // Gemini rather than the full-size original.
+  it("uses the resized hero image", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+    expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
+      "src",
+      "https://example.com/hero-400.jpg"
+    )
+  })
+
+  it("falls back to the original when there is no resized variant", async () => {
+    renderWithRelay(
+      {
+        Itinerary: () => ({
+          ...ITINERARY,
+          heroImage: { resized: null, url: "https://example.com/hero.jpg" },
+        }),
+      },
+      props
+    )
+
+    expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
+      "src",
+      "https://example.com/hero.jpg"
+    )
   })
 })

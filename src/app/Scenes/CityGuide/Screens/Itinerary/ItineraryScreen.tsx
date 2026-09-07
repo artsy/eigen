@@ -197,7 +197,12 @@ const Query = graphql`
       subtitle
       description
       authorName
-      heroImageURL
+      heroImage {
+        resized(width: 1200) {
+          url
+        }
+        url
+      }
 
       sections {
         internalID

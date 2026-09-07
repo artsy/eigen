@@ -112,7 +112,9 @@ export const itineraryFromQuery = (itinerary: QueryItinerary): Itinerary => ({
   citySlug: itinerary.citySlug,
   title: itinerary.name,
   subtitle: itinerary.subtitle ?? "",
-  heroImageUrl: itinerary.heroImageURL ?? "",
+  // `resized` asks Gemini for the width the header actually draws instead of pulling the
+  // full-size original; `url` is the fallback for an image with no resized variant.
+  heroImageUrl: itinerary.heroImage?.resized?.url ?? itinerary.heroImage?.url ?? "",
   authorName: itinerary.authorName ?? "",
   description: itinerary.description ?? "",
   sections: itinerary.sections.map(toSection),

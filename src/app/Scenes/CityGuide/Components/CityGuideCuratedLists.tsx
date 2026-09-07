@@ -53,6 +53,8 @@ const ListItem = ({ item, citySlug }: { item: CuratedList; citySlug: string }) =
 }
 
 const CuratedLists = ({ citySlug }: { citySlug: string }) => {
+  console.log("citySlug", citySlug)
+
   const data = useLazyLoadQuery<CityGuideCuratedListsQuery>(Query, { citySlug, first: PAGE_SIZE })
 
   const rows: CuratedList[] = extractNodes(data.itinerariesConnection).map((itinerary) => ({
@@ -62,7 +64,7 @@ const CuratedLists = ({ citySlug }: { citySlug: string }) => {
     itineraryId: itinerary.slug ?? itinerary.internalID,
     title: itinerary.name,
     authorName: itinerary.authorName ?? "",
-    imageUrl: itinerary.heroImageURL ?? "",
+    imageUrl: itinerary.heroImage?.resized?.url ?? itinerary.heroImage?.url ?? "",
   }))
 
   // Cities without curated guides render nothing at all rather than an empty dark band.
@@ -71,7 +73,7 @@ const CuratedLists = ({ citySlug }: { citySlug: string }) => {
   }
 
   return (
-    <Flex px={2} backgroundColor="mono100" py={2}>
+    <Flex px={2} backgroundColor="mono100" pb={2}>
       <Join separator={<Spacer y={2} />}>
         {rows.map((item) => (
           <ListItem key={item.id} item={item} citySlug={citySlug} />
@@ -90,7 +92,12 @@ const Query = graphql`
           slug
           name
           authorName
-          heroImageURL
+          heroImage {
+            resized(width: 240) {
+              url
+            }
+            url
+          }
         }
       }
     }
