@@ -1,12 +1,26 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
-import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
+import { CityGuideCuratedListsQuery } from "__generated__/CityGuideCuratedListsQuery.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { extractNodes } from "app/utils/extractNodes"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage } from "react-native"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 80
+/** Editorial guides per city. Well above the handful a city actually has. */
+const PAGE_SIZE = 10
 
-const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string }) => {
+interface CuratedList {
+  id: string
+  /** What `Query.itinerary` is addressed by: a published guide's slug, else its id. */
+  itineraryId: string
+  title: string
+  authorName: string
+  imageUrl: string
+}
+
+const ListItem = ({ item, citySlug }: { item: CuratedList; citySlug: string }) => {
   return (
     // No `hasChildTouchable`: that mode makes RouterLink render nothing itself and clone
     // onPress onto its child (RouterLink.tsx:92-99). The child here is a styled View, which
@@ -18,7 +32,7 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
     >
       <Flex flexDirection="row" gap={1}>
         <RNImage
-          src={item.image}
+          src={item.imageUrl}
           width={IMAGE_SIZE}
           height={IMAGE_SIZE}
           resizeMode="cover"
@@ -30,7 +44,7 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
             {item.title}
           </Text>
           <Text variant="xs" color="mono0">
-            By {item.author}
+            By {item.authorName}
           </Text>
         </Flex>
       </Flex>
@@ -38,12 +52,20 @@ const ListItem = ({ item, citySlug }: { item: (typeof data)[0]; citySlug: string
   )
 }
 
-export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
-  // The mock rows are a static constant but itineraries are per-city, so an unfiltered
-  // list gives every non-London city three rows that all dead-end into the unavailable
-  // state. Filter to rows that actually resolve, and render nothing when none do.
-  const rows = data.filter((item) => !!getMockItinerary(citySlug, item.itineraryId))
+const CuratedLists = ({ citySlug }: { citySlug: string }) => {
+  const data = useLazyLoadQuery<CityGuideCuratedListsQuery>(Query, { citySlug, first: PAGE_SIZE })
 
+  const rows: CuratedList[] = extractNodes(data.itinerariesConnection).map((itinerary) => ({
+    id: itinerary.internalID,
+    // A curated guide is published and so has a slug; falling back to the id keeps an
+    // unpublished one reachable rather than linking nowhere.
+    itineraryId: itinerary.slug ?? itinerary.internalID,
+    title: itinerary.name,
+    authorName: itinerary.authorName ?? "",
+    imageUrl: itinerary.heroImageURL ?? "",
+  }))
+
+  // Cities without curated guides render nothing at all rather than an empty dark band.
   if (!rows.length) {
     return null
   }
@@ -59,27 +81,28 @@ export const CityGuideCuratedLists = ({ citySlug }: { citySlug: string }) => {
   )
 }
 
-// itineraryId values must match MOCK_ITINERARIES entries; every row has to resolve.
-const data = [
-  {
-    id: 1,
-    itineraryId: "chill-vibes-only",
-    image: "https://picsum.photos/200/300.jpg",
-    title: "Chill Vibes Only",
-    author: "Casey Lesser",
-  },
-  {
-    id: 2,
-    itineraryId: "36-hours-in-london",
-    image: "https://picsum.photos/200/300.jpg",
-    title: "36 Hours in London",
-    author: "Casey Lesser",
-  },
-  {
-    id: 3,
-    itineraryId: "must-sees-and-hidden-gems",
-    image: "https://picsum.photos/200/300.jpg",
-    title: "Must Sees & Hidden Gems",
-    author: "Casey Lesser",
-  },
-]
+const Query = graphql`
+  query CityGuideCuratedListsQuery($citySlug: String!, $first: Int!) {
+    itinerariesConnection(citySlug: $citySlug, isCurated: true, first: $first) {
+      edges {
+        node {
+          internalID
+          slug
+          name
+          authorName
+          heroImageURL
+        }
+      }
+    }
+  }
+`
+
+export const CityGuideCuratedLists = withSuspense({
+  Component: CuratedLists,
+  // The section sits mid-scroll on the City Guide home, so it stays absent until it has
+  // rows rather than reserving space for a spinner and shifting everything below it.
+  // `withSuspense` only accepts `NoFallback` for the error slot, so the loading one is an
+  // explicit empty component.
+  LoadingFallback: () => null,
+  ErrorFallback: NoFallback,
+})
