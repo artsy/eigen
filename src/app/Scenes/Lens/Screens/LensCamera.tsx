@@ -33,7 +33,7 @@ type LensScreenState = LensCameraStatus | { kind: "loading" }
  */
 export const LensCamera: React.FC<Props> = ({ navigation }) => {
   const [state, setState] = useState<LensScreenState>({ kind: "loading" })
-  const [torchEnabled, setTorchEnabled] = useState(false)
+  const [torchMode, setTorchMode] = useState<"on" | "off">()
   const camera = useRef<LensCameraPreviewHandle>(null)
   // Measured, not read from useWindowDimensions(), which over-reports height on Android -- see
   // `LensPhoto.captureContainerWidth`. With the window's value the brackets sit below true center.
@@ -64,7 +64,7 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
   }
 
   const handleToggleTorch = () => {
-    setTorchEnabled((current) => !current)
+    setTorchMode((current) => (current === "on" ? "off" : "on"))
   }
 
   const handleSelectFromLibrary = async () => {
@@ -125,7 +125,7 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
         <LensCameraPreview
           ref={camera}
           isActive={!!isActive && state.kind === "ready"}
-          torchEnabled={torchEnabled}
+          torchMode={torchMode}
           onStatusChange={setState}
           onCapture={(photo) =>
             navigation.navigate("LensAnalyzing", {
@@ -169,7 +169,7 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
             mode={state.kind === "ready" ? "camera" : "libraryOnly"}
             isCameraInitialized={state.kind === "ready"}
             deviceHasTorch={state.kind === "ready" && state.hasTorch}
-            isTorchEnabled={torchEnabled}
+            isTorchEnabled={torchMode === "on"}
             onTakePhoto={handleTakePhoto}
             onToggleTorch={handleToggleTorch}
             onSelectFromLibrary={handleSelectFromLibrary}
