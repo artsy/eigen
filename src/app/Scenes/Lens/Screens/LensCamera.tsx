@@ -21,7 +21,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import useAppState from "app/utils/useAppState"
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { AppState, Linking, StatusBar } from "react-native"
 
 type Props = StackScreenProps<LensNavigationStack, "LensCamera">
@@ -99,16 +99,18 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
     }
   }
 
-  useFocusEffect(() => {
-    requestAnimationFrame(() => {
-      // Explicitly set the status bar style to Light Content
-      StatusBar.setBarStyle("light-content", true)
-    })
+  useFocusEffect(
+    useCallback(() => {
+      requestAnimationFrame(() => {
+        // Explicitly set the status bar style to Light Content
+        StatusBar.setBarStyle("light-content", true)
+      })
 
-    return () => {
-      StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
-    }
-  })
+      return () => {
+        StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+      }
+    }, [theme])
+  )
 
   return (
     <Theme theme="v3light">
