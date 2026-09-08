@@ -3,7 +3,7 @@ import { LensCamera } from "app/Scenes/Lens/Screens/LensCamera"
 import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { useCameraPermission } from "react-native-vision-camera"
+import { useCameraDevice, useCameraPermission } from "react-native-vision-camera"
 
 jest.mock("app/utils/requestPhotos", () => ({
   requestPhotos: jest.fn(),
@@ -20,6 +20,7 @@ const navigationProps = {
 describe("LensCamera", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.mocked(useCameraDevice).mockReturnValue(undefined)
   })
 
   it("shows the permission placeholder (with the library button still enabled) when camera access is undetermined", () => {
@@ -55,6 +56,29 @@ describe("LensCamera", () => {
       screen.getByText("Take a photo and we'll match it with a similar artwork.")
     ).toBeOnTheScreen()
     expect(screen.getByTestId("lens-library-photo-icon")).toBeOnTheScreen()
+  })
+
+  it("turns the camera torch off after it has been enabled", () => {
+    jest.mocked(useCameraPermission).mockReturnValue({
+      hasPermission: true,
+      canRequestPermission: false,
+      requestPermission: jest.fn(),
+      status: "authorized",
+    } as any)
+    jest.mocked(useCameraDevice).mockReturnValue({
+      hasTorch: true,
+      supportsFocusMetering: true,
+    } as any)
+
+    renderWithWrappers(<LensCamera {...navigationProps} />)
+
+    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBeUndefined()
+
+    fireEvent.press(screen.getByTestId("lens-torch-button"))
+    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBe("on")
+
+    fireEvent.press(screen.getByTestId("lens-torch-button"))
+    expect(screen.UNSAFE_getByType("Camera" as any).props.torchMode).toBe("off")
   })
 
   it("shows 'Go to Settings' (not another permission prompt) once camera access has been denied", () => {

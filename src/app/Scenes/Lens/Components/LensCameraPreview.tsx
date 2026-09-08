@@ -24,7 +24,7 @@ export type LensCameraPreviewHandle = {
 
 interface LensCameraPreviewProps {
   isActive: boolean
-  torchEnabled: boolean
+  torchMode?: "on" | "off"
   onStatusChange: (status: LensCameraStatus) => void
   onCapture: (photo: LensPhoto) => void
   onError: (error: unknown) => void
@@ -32,7 +32,7 @@ interface LensCameraPreviewProps {
 
 export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraPreviewProps>(
   (props, ref) => {
-    const { isActive, torchEnabled, onStatusChange, onCapture, onError } = props
+    const { isActive, torchMode, onStatusChange, onCapture, onError } = props
 
     const { hasPermission, canRequestPermission, requestPermission } = useCameraPermission()
     const device = useCameraDevice("back")
@@ -104,10 +104,7 @@ export const LensCameraPreview = forwardRef<LensCameraPreviewHandle, LensCameraP
         device={device}
         outputs={[photoOutput]}
         isActive={isActive}
-        // Omitted, not "off", when disabled: an explicit torchMode on the first render makes
-        // vision-camera call setTorchMode() before the CameraX session opens, which throws
-        // `Camera is not active` on Android and tears the session down.
-        torchMode={torchEnabled ? "on" : undefined}
+        torchMode={torchMode}
         onError={(error) => {
           setHasErrored(true)
           onError(error)
