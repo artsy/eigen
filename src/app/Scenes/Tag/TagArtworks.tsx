@@ -73,8 +73,8 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const closeFilterArtworksModal = useCallback(() => {
     if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.closeFilterWindow(tag.id, tag.slug))
-      setFilterArtworkModalVisible(false)
     }
+    setFilterArtworkModalVisible(false)
   }, [tracking, tag?.id, tag?.slug])
 
   const loadMore = useCallback(() => {
