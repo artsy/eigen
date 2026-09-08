@@ -113,12 +113,13 @@ export const useCityItineraryStops = ({
       if (!sectionID) {
         if (!createIfMissing) return { itineraryID, sectionID: undefined }
 
-        // Untitled: the section only exists because a stop needs one, and the UI shows a
-        // single unlabelled list. `ItinerarySection.title` is nullable for exactly this.
+        // Named after the city, like the itinerary itself. The section exists only because a
+        // stop must belong to one, and the UI shows a single list, so it needs no label of its
+        // own — but a name reads better than a blank heading anywhere it does surface.
         const created = await mutate<useCityItineraryStopsCreateSectionMutation>(
           environment,
           createSectionMutation,
-          { input: { itineraryID } }
+          { input: { itineraryID, title: cityName } }
         )
         const response = created.createItinerarySection?.responseOrError
 

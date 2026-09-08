@@ -93,6 +93,18 @@ describe("useCityItineraryStops", () => {
       })
     )
 
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "useCityItineraryStopsCreateSectionMutation"
+      )
+    )
+
+    // The section is named after the city too.
+    expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
+      itineraryID: "new-itinerary",
+      title: "London",
+    })
+
     await resolveNext("useCityItineraryStopsCreateSectionMutation", {
       createItinerarySectionPayload: () => ({
         responseOrError: {
