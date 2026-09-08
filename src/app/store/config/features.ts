@@ -191,7 +191,7 @@ export const features = {
   },
   AREnableArtsyLens: {
     description: "Enable Artsy Lens (reverse-image-search camera) entry points",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtsyLens",
   },
