@@ -1,5 +1,13 @@
 import { Flex, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { FanOutCard } from "app/Scenes/BottomTabs/Components/FanOutCard"
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  FAN_OUT_DELAY,
+  FAN_OUT_STAGGER,
+  FLIGHT_DURATION,
+  FLIGHT_STAGGER,
+} from "app/Scenes/BottomTabs/Components/completionAnimationConstants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { MotiView } from "moti"
@@ -8,21 +16,14 @@ import { Easing, useReducedMotion } from "react-native-reanimated"
 
 export const CARD_COUNT = 5
 
-export const CARD_WIDTH = 99
-export const CARD_HEIGHT = 124
 const SPREAD_ANGLE = 56
 const ARC_RADIUS = 260
 
-export const FAN_OUT_DELAY = 150
-export const FAN_OUT_STAGGER = 90
 const FAN_OUT_FALL_DURATION = 450
 const FAN_OUT_HOLD_DURATION = 500
 
 const HOME_READY_FALLBACK_TIMEOUT = 4000
 const POST_HOME_READY_SETTLE_DELAY = 500
-
-export const FLIGHT_STAGGER = 140
-export const FLIGHT_DURATION = 600
 
 const PILE_HOLD_DURATION = 400
 

@@ -7,7 +7,7 @@ import {
   FAN_OUT_STAGGER,
   FLIGHT_DURATION,
   FLIGHT_STAGGER,
-} from "app/Scenes/BottomTabs/Components/NewUserOnboardingCompletionAnimation"
+} from "app/Scenes/BottomTabs/Components/completionAnimationConstants"
 import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { MotiView } from "moti"
