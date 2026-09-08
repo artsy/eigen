@@ -8,7 +8,7 @@ type CommitConfig = UseMutationConfig<useCreateNewArtworkListMutation>
 type Data = useCreateNewArtworkListMutation$data | null | undefined
 type Response = [(config: CommitConfig) => Disposable, boolean]
 
-export const useCreateNewArtworkList = (): Response => {
+export const useCreateNewArtworkList = (artworkID?: string): Response => {
   const [initialCommit, inProgress] = useMutation<useCreateNewArtworkListMutation>(
     CreateNewArtworkListMutation
   )
@@ -42,7 +42,7 @@ export const useCreateNewArtworkList = (): Response => {
       },
       updater: (store, data) => {
         config.updater?.(store, data)
-        updater(store, data)
+        updater(store, data, artworkID)
       },
     })
   }
@@ -52,7 +52,8 @@ export const useCreateNewArtworkList = (): Response => {
 
 const updater = (
   store: Parameters<NonNullable<UseMutationConfig<useCreateNewArtworkListMutation>["updater"]>>[0],
-  data: Data
+  data: Data,
+  artworkID?: string
 ) => {
   const response = data?.createCollection?.responseOrError
   const me = store.getRoot().getLinkedRecord("me")
@@ -69,6 +70,13 @@ const updater = (
 
   if (!customArtworkListsConnection || !createdCollection) {
     return
+  }
+
+  // A brand-new list can't contain the artwork yet. Seed `isSavedArtwork` so
+  // `ArtworkListItem` doesn't mistake this row for the Offer Settings screen
+  // (which never fetches `isSavedArtwork`) and render a toggle instead of a checkbox.
+  if (artworkID) {
+    createdCollection.setValue(false, "isSavedArtwork", { artworkID })
   }
 
   const createdCollectionEdge = ConnectionHandler.createEdge(
