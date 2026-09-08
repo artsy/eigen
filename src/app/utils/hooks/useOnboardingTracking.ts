@@ -3,7 +3,6 @@ import {
   CompletedOnboarding,
   ContextModule,
   FollowedArtist,
-  FollowedGene,
   FollowedPartner,
   OnboardingUserInputData,
   OwnerType,
@@ -11,7 +10,6 @@ import {
   StartedOnboarding,
   TappedSkip,
   UnfollowedArtist,
-  UnfollowedGene,
   UnfollowedPartner,
 } from "@artsy/cohesion"
 import { useTracking } from "react-tracking"
@@ -27,41 +25,11 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }
 
-  const trackAnsweredQuestionOne = (response: string) => {
-    const payload: OnboardingUserInputData = {
-      action: ActionType.onboardingUserInputData,
-      context_module: ContextModule.onboardingCollectorLevel,
-      data_input: response,
-    }
-
-    trackEvent(payload)
-  }
-
   const trackAnsweredExperienceQuestion = (buttonText: string) => {
     const payload: OnboardingUserInputData = {
       action: ActionType.onboardingUserInputData,
       context_module: ContextModule.onboardingCollectorLevel,
       data_input: buttonText,
-    }
-
-    trackEvent(payload)
-  }
-
-  const trackAnsweredQuestionTwo = (response: string[]) => {
-    const payload: OnboardingUserInputData = {
-      action: ActionType.onboardingUserInputData,
-      context_module: ContextModule.onboardingInterests,
-      data_input: response.join(),
-    }
-
-    trackEvent(payload)
-  }
-
-  const trackAnsweredQuestionThree = (response: string) => {
-    const payload: OnboardingUserInputData = {
-      action: ActionType.onboardingUserInputData,
-      context_module: ContextModule.onboardingActivity,
-      data_input: response,
     }
 
     trackEvent(payload)
@@ -111,28 +79,6 @@ export const useOnboardingTracking = () => {
     trackEvent(isFollowed ? unfollowPayload : followPayload)
   }
 
-  const trackGeneFollow = (isFollowed: boolean, internalID: string, ownerSlug: string) => {
-    const followPayload: FollowedGene = {
-      action: ActionType.followedGene,
-      context_module: ContextModule.onboardingFlow,
-      context_owner_type: OwnerType.savesAndFollows,
-      owner_id: internalID,
-      owner_slug: ownerSlug,
-      owner_type: OwnerType.gene,
-    }
-
-    const unfollowPayload: UnfollowedGene = {
-      action: ActionType.unfollowedGene,
-      context_module: ContextModule.onboardingFlow,
-      context_owner_type: OwnerType.savesAndFollows,
-      owner_id: internalID,
-      owner_slug: ownerSlug,
-      owner_type: OwnerType.gene,
-    }
-
-    trackEvent(isFollowed ? unfollowPayload : followPayload)
-  }
-
   const trackCompletedOnboarding = () => {
     const payload: CompletedOnboarding = {
       action: ActionType.completedOnboarding,
@@ -161,13 +107,9 @@ export const useOnboardingTracking = () => {
 
   return {
     trackStartedOnboarding,
-    trackAnsweredQuestionOne,
     trackAnsweredExperienceQuestion,
-    trackAnsweredQuestionTwo,
-    trackAnsweredQuestionThree,
     trackArtistFollow,
     trackGalleryFollow,
-    trackGeneFollow,
     trackCompletedOnboarding,
     trackTappedSkip,
   }

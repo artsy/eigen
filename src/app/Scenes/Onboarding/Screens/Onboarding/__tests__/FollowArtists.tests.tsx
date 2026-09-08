@@ -54,7 +54,7 @@ jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/FollowArtistsOrde
   }
 })
 
-jest.mock("app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults", () => {
+jest.mock("app/Scenes/Onboarding/Screens/Onboarding/Components/OnboardingSearchResults", () => {
   const { Text } = require("react-native")
   return {
     OnboardingSearchResultsScreen: () => <Text>SearchResults</Text>,

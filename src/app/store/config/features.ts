@@ -133,11 +133,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
-  ARShowOnboardingPriceRangeScreen: {
-    readyForRelease: true,
-    description: "Show onboarding price range screen",
-    echoFlagKey: "ARShowOnboardingPriceRangeScreen",
-  },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     description: "Enable Redirecting feature pages with video to webviews",

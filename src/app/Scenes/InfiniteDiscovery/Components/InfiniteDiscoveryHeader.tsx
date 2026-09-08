@@ -7,10 +7,10 @@ import { StepProgressBar } from "app/Components/StepProgressBar/StepProgressBar"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useOnboardingTracking } from "app/utils/hooks/useOnboardingTracking"
 import RNShare from "react-native-share"
 
 interface InfiniteDiscoveryHeaderProps {
