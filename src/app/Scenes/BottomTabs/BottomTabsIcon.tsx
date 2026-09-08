@@ -1,5 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
-import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
+import { ArtworkThumbnail } from "app/Components/ArtworkThumbnail"
 import { PixelRatio } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"

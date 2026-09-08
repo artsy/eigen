@@ -1,4 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
+import { ArtworkThumbnail } from "app/Components/ArtworkThumbnail"
 import { FAVORITES_ARTWORK_OVERRIDE_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import {
   CARD_HEIGHT,
@@ -8,7 +9,6 @@ import {
   FLIGHT_DURATION,
   FLIGHT_STAGGER,
 } from "app/Scenes/BottomTabs/Components/completionAnimationConstants"
-import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { NewUserOnboardingSavedArtwork } from "app/store/InfiniteDiscoveryModel"
 import { MotiView } from "moti"
 import { useMemo } from "react"

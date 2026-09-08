@@ -4,8 +4,8 @@ import {
   BottomSheetBackdropProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet"
+import { ArtworkThumbnail } from "app/Components/ArtworkThumbnail"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { ArtworkThumbnail } from "app/Scenes/InfiniteDiscovery/Components/ArtworkThumbnail"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
