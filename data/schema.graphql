@@ -18212,6 +18212,34 @@ enum DomesticType {
   FREE_SHIPPING
 }
 
+type DuplicateCatalogArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input DuplicateCatalogArtworkMutationInput {
+  """
+  The ID of the artwork to duplicate.
+  """
+  artworkID: String!
+  clientMutationId: String
+}
+
+type DuplicateCatalogArtworkMutationPayload {
+  """
+  On success: the newly created duplicate artwork. On error: the error that occurred.
+  """
+  artworkOrError: DuplicateCatalogArtworkResponseOrError
+  clientMutationId: String
+}
+
+union DuplicateCatalogArtworkResponseOrError =
+    DuplicateCatalogArtworkFailure
+  | DuplicateCatalogArtworkSuccess
+
+type DuplicateCatalogArtworkSuccess {
+  artwork: Artwork
+}
+
 input EditableLocation {
   """
   First line of an address
@@ -26347,6 +26375,13 @@ type Mutation {
   distributePartnerList(
     input: DistributePartnerListMutationInput!
   ): DistributePartnerListMutationPayload
+
+  """
+  Duplicates an OS inventory (catalog) artwork's OS-editable fields into a new, inventory-only artwork.
+  """
+  duplicateCatalogArtwork(
+    input: DuplicateCatalogArtworkMutationInput!
+  ): DuplicateCatalogArtworkMutationPayload
   enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
 
   """
