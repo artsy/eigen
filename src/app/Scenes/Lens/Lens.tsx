@@ -8,7 +8,6 @@ import { LensResultsScreen } from "app/Scenes/Lens/Screens/LensResults"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { StatusBar } from "react-native"
 
 const Stack = createStackNavigator<LensNavigationStack>()
 
@@ -30,7 +29,6 @@ export const Lens: React.FC = () => {
     >
       <NavigationIndependentTree>
         <NavigationContainer theme={theme}>
-          <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
           <Stack.Navigator
             detachInactiveScreens={false}
             initialRouteName="LensCamera"

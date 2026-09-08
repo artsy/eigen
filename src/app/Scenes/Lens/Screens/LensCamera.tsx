@@ -1,6 +1,6 @@
 import { CameraStrokeIcon } from "@artsy/icons/native"
 import { Flex, Spinner, Text, Theme } from "@artsy/palette-mobile"
-import { useIsFocused } from "@react-navigation/native"
+import { useFocusEffect, useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
 import {
@@ -17,11 +17,12 @@ import { LensCornerBrackets } from "app/Scenes/Lens/Components/LensCornerBracket
 import { LensHeader } from "app/Scenes/Lens/Components/LensHeader"
 import { LensPermissionPlaceholder } from "app/Scenes/Lens/Components/LensPermissionPlaceholder"
 import { LensNavigationStack } from "app/Scenes/Lens/types"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import useAppState from "app/utils/useAppState"
-import { useRef, useState } from "react"
-import { AppState, Linking } from "react-native"
+import { useCallback, useRef, useState } from "react"
+import { AppState, Linking, StatusBar } from "react-native"
 
 type Props = StackScreenProps<LensNavigationStack, "LensCamera">
 
@@ -41,6 +42,8 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
 
   const isFocused = useIsFocused()
   const [appState, setAppState] = useState(AppState.currentState)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   useAppState({ onChange: setAppState })
   const isActive = isFocused && appState === "active"
 
@@ -95,6 +98,19 @@ export const LensCamera: React.FC<Props> = ({ navigation }) => {
       reportError("selectPhotosFromLibrary", error)
     }
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      requestAnimationFrame(() => {
+        // Explicitly set the status bar style to Light Content
+        StatusBar.setBarStyle("light-content", true)
+      })
+
+      return () => {
+        StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content", true)
+      }
+    }, [theme])
+  )
 
   return (
     <Theme theme="v3light">
