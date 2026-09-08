@@ -1,31 +1,21 @@
-import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
-import { BoxProps, Button, Flex } from "@artsy/palette-mobile"
+import { BoxProps, Button } from "@artsy/palette-mobile"
 import {
   ShowFollowButton_show$data,
   ShowFollowButton_show$key,
 } from "__generated__/ShowFollowButton_show.graphql"
+import { FollowIconButton } from "app/Components/FollowIconButton"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { Schema } from "app/utils/track"
 import { FC } from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-
-/** Matches the 24 the show header's designs specify for the glyph. */
-const ICON_SIZE = 24
-const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 
 interface ShowFollowButtonProps extends BoxProps {
   show: ShowFollowButton_show$key
   /**
    * "button" is the labelled Save/Saved button. "icon" is the bare plus/tick the show
-   * header's designs put on the title's row.
-   *
-   * The icon rendering is deliberately a few lines here rather than a shared component:
-   * CityGuide has its own `CityGuideSaveButton` doing the same thing, but a Scene may not
-   * import from another Scene (AGENTS.md). Worth extracting to `app/Components` if a third
-   * caller appears.
+   * header and the Saves tab's designs use, drawn by the shared `FollowIconButton`.
    */
   variant?: "button" | "icon"
 }
@@ -68,23 +58,12 @@ export const ShowFollowButton: FC<ShowFollowButtonProps> = ({
 
   if (variant === "icon") {
     return (
-      <TouchableOpacity
+      <FollowIconButton
         testID="show-follow-icon"
-        accessibilityRole="button"
-        accessibilityLabel={show.isFollowed ? "Saved" : "Save"}
-        accessibilityState={{ selected: !!show.isFollowed, disabled: isInFlight }}
-        disabled={isInFlight}
-        hitSlop={HIT_SLOP}
+        isFollowed={!!show.isFollowed}
+        isInFlight={isInFlight}
         onPress={handlePress}
-      >
-        <Flex width={ICON_SIZE} height={ICON_SIZE} alignItems="center" justifyContent="center">
-          {show.isFollowed ? (
-            <CheckmarkIcon width={ICON_SIZE} height={ICON_SIZE} />
-          ) : (
-            <AddStrokeIcon width={ICON_SIZE} height={ICON_SIZE} />
-          )}
-        </Flex>
-      </TouchableOpacity>
+      />
     )
   }
 

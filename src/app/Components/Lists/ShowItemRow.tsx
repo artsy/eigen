@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
+import { FollowIconButton } from "app/Components/FollowIconButton"
 import { Pin } from "app/Components/Icons/Pin"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -20,6 +21,11 @@ interface Props {
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
+  /**
+   * Renders the save control as the bare plus/tick instead of the labelled button. Opt-in,
+   * because this row appears on several screens and only the Saves tab's designs ask for it.
+   */
+  useIconSaveButton?: boolean
   isListItem?: boolean
 }
 
@@ -28,6 +34,7 @@ export const ShowItemRow: React.FC<Props> = ({
   onSaveStarted,
   onSaveEnded,
   shouldHideSaveButton,
+  useIconSaveButton,
   isListItem,
 }) => {
   const color = useColor()
@@ -115,7 +122,17 @@ export const ShowItemRow: React.FC<Props> = ({
             </Text>
           )}
         </Flex>
-        {!shouldHideSaveButton && (
+        {!shouldHideSaveButton && !!useIconSaveButton && (
+          <FollowIconButton
+            testID="show-item-row-follow-icon"
+            isFollowed={!!show.is_followed}
+            isInFlight={isInFlight}
+            name={show.name ?? undefined}
+            onPress={handleSave}
+          />
+        )}
+
+        {!shouldHideSaveButton && !useIconSaveButton && (
           <Button
             variant={show.is_followed ? "outline" : "fillDark"}
             size="small"
