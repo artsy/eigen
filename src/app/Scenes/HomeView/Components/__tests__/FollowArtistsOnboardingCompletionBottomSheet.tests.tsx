@@ -2,21 +2,15 @@ import FastImage from "@d11/react-native-fast-image"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { FollowArtistsOnboardingCompletionBottomSheet } from "app/Scenes/HomeView/Components/FollowArtistsOnboardingCompletionBottomSheet"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import PagerView from "react-native-pager-view"
-
-jest.mock("app/utils/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: jest.fn(),
-}))
 
 describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(false)
     GlobalStore.actions.onboarding.resetFollowedOnboardingArtists()
-    ;(useFeatureFlag as jest.Mock).mockReturnValue(true)
   })
 
   describe("Visibility", () => {
@@ -30,18 +24,7 @@ describe("FollowArtistsOnboardingCompletionBottomSheet", () => {
       ).not.toBeOnTheScreen()
     })
 
-    it("does not render content when feature flag is disabled", () => {
-      ;(useFeatureFlag as jest.Mock).mockReturnValue(false)
-      GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
-
-      renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)
-
-      expect(
-        screen.queryByText("Your followed artists are saved to Favorites.")
-      ).not.toBeOnTheScreen()
-    })
-
-    it("renders the sheet content when both conditions are met", async () => {
+    it("renders the sheet content when showFollowedArtistSummaryBottomSheet is true", async () => {
       GlobalStore.actions.onboarding.setShowFollowedArtistSummaryBottomSheet(true)
 
       renderWithWrappers(<FollowArtistsOnboardingCompletionBottomSheet />)

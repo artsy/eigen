@@ -20,9 +20,7 @@ import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabT
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { Onboarding } from "app/Scenes/Onboarding/Screens/Onboarding/Onboarding"
-import { OnboardingQuiz } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback, useEffect, useState } from "react"
@@ -226,10 +224,9 @@ export const AuthenticatedRoutesStack = createNativeStackNavigator()
 
 export const AuthenticatedRoutes: React.FC = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
-  const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
 
   if (onboardingState === "incomplete") {
-    return isExperienceOnboardingEnabled ? <Onboarding /> : <OnboardingQuiz />
+    return <Onboarding />
   }
 
   return (

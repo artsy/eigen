@@ -153,12 +153,6 @@ export const features = {
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
   },
-  AREnableExperienceBasedOnboarding: {
-    readyForRelease: true,
-    description: "Enable experience-based onboarding",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableExperienceBasedOnboarding",
-  },
   AREnableConversationPartnerOffers: {
     readyForRelease: true,
     description: "Show partner offers in convos",
