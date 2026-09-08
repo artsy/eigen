@@ -71,9 +71,10 @@ export const Versions = {
   AddShowFollowedArtistSummaryBottomSheetToOnboardingModel: 58,
   AddFollowedOnboardingArtistsToOnboardingModel: 59,
   AddInitialsToFollowedOnboardingArtists: 60,
+  RemoveOnboardingArtQuizState: 61,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddInitialsToFollowedOnboardingArtists
+export const CURRENT_APP_VERSION = Versions.RemoveOnboardingArtQuizState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -397,6 +398,9 @@ export const artsyAppMigrations: Migrations = {
     state.onboarding.followedOnboardingArtists.forEach((artist: any) => {
       artist.initials = null
     })
+  },
+  [Versions.RemoveOnboardingArtQuizState]: (state) => {
+    delete state.onboarding.onboardingArtQuizState
   },
 }
 

@@ -1346,4 +1346,23 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       ])
     })
   })
+  describe("App version Versions.RemoveOnboardingArtQuizState", () => {
+    it("should remove onboardingArtQuizState from the onboarding model", () => {
+      const migrationToTest = Versions.RemoveOnboardingArtQuizState
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.onboarding.onboardingArtQuizState).toEqual("none")
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.onboarding.onboardingArtQuizState).toEqual(undefined)
+    })
+  })
 })
