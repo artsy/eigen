@@ -1,4 +1,5 @@
 import { ScreenDimensionsProvider } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import { act, renderHook } from "@testing-library/react-native"
 import { InfiniteDiscoveryArtworkCard_artwork$data } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import * as useSaveArtworkToArtworkListsModule from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
@@ -11,6 +12,10 @@ const mockTrack = { savedArtwork: jest.fn() }
 jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () => ({
   useInfiniteDiscoveryTracking: () => mockTrack,
 }))
+
+jest.mock("@d11/react-native-fast-image", () => ({ preload: jest.fn() }))
+
+const mockFastImagePreload = FastImage.preload as jest.Mock
 
 jest.mock("react-native-reanimated", () => ({
   ...require("react-native-reanimated/mock"),
@@ -139,6 +144,9 @@ describe("useInfiniteDiscoveryCardSave", () => {
         expect.objectContaining({ internalID: "artwork-1", blurhash: "blurhash-1" })
       )
       expect(getState().sessionState.newUserOnboardingSavedArtworks).toEqual([])
+      expect(mockFastImagePreload).toHaveBeenCalledWith([
+        { uri: result.current.pendingSaveAnimationArtwork?.url },
+      ])
     })
 
     it("commits the artwork to the onboarding list immediately when Reduce Motion is enabled, skipping the flight animation", () => {
