@@ -25,8 +25,6 @@ import { useRefreshLiveHomeViewSections } from "app/Scenes/HomeView/hooks/useRef
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
-// eslint-disable-next-line no-restricted-imports
-import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { extractNodes } from "app/utils/extractNodes"
@@ -260,8 +258,6 @@ export const HomeView: React.FC = memo(() => {
 })
 
 const HomeViewScreenComponent: React.FC = () => {
-  const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
-  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const showPlayground = useDevToggle("DTShowPlayground")
@@ -274,24 +270,9 @@ const HomeViewScreenComponent: React.FC = () => {
     })
   }, [theme])
 
-  useEffect(() => {
-    if (!isNavigationReady) return
-
-    if (artQuizState === "incomplete") {
-      // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
-      requestAnimationFrame(() => {
-        navigate("/art-quiz")
-      })
-    }
-  }, [artQuizState, isNavigationReady])
-
   // We want to avoid rendering the home view when the user comes back from a deep link
   // Because it triggers a lot of queries that affect the user's experience and can be avoided
   if (isDeepLink !== false) {
-    return null
-  }
-
-  if (artQuizState === "incomplete") {
     return null
   }
 
