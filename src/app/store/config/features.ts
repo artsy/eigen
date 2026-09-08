@@ -307,6 +307,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
     description:
       "Disable navigation state rehydration. This change only affects DEV builds. In release builds, navigation state is never rehydrated.",
   },
+  DTShowItineraryUnaddableStops: {
+    description: "Show itinerary stops that can't be added",
+  },
 }
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

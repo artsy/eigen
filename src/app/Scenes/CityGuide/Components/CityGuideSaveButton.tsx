@@ -17,7 +17,7 @@ interface Props {
   variant?: "icon" | "button"
 }
 
-export const ItinerarySaveButton: React.FC<Props> = ({
+export const CityGuideSaveButton: React.FC<Props> = ({
   isSaved,
   onPress,
   isSaving = false,
@@ -27,7 +27,7 @@ export const ItinerarySaveButton: React.FC<Props> = ({
   if (variant === "button") {
     return (
       <Button
-        testID="itinerary-save-button"
+        testID="city-guide-save-button"
         variant="outline"
         block
         loading={isSaving}
@@ -43,7 +43,7 @@ export const ItinerarySaveButton: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
-      testID="itinerary-save-button"
+      testID="city-guide-save-button"
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (isSaved ? "Saved" : "Save")}
       accessibilityState={{ selected: isSaved, disabled: isSaving }}
@@ -54,13 +54,13 @@ export const ItinerarySaveButton: React.FC<Props> = ({
       <Flex width={ICON_SIZE} height={ICON_SIZE} alignItems="center" justifyContent="center">
         {isSaved ? (
           <CheckmarkIcon
-            testID="itinerary-save-button-check-icon"
+            testID="city-guide-save-button-check-icon"
             width={ICON_SIZE}
             height={ICON_SIZE}
           />
         ) : (
           <AddStrokeIcon
-            testID="itinerary-save-button-add-icon"
+            testID="city-guide-save-button-add-icon"
             width={ICON_SIZE}
             height={ICON_SIZE}
           />

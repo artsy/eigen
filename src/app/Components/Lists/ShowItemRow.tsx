@@ -1,19 +1,17 @@
 import { Box, Button, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
-import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
+import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { hrefForPartialShow } from "app/utils/router"
 import { Schema } from "app/utils/track"
 import { debounce } from "lodash"
-import React, { useState } from "react"
+import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, graphql, useFragment } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
@@ -34,8 +32,16 @@ export const ShowItemRow: React.FC<Props> = ({
 }) => {
   const color = useColor()
   const show = useFragment(showFragment, showProp)
-  const [isFollowedSaving, setIsFollowedSaving] = useState(false)
   const { trackEvent } = useTracking()
+
+  const { followShow, isInFlight } = useFollowShow({
+    id: show.id,
+    internalID: show.internalID,
+    isFollowed: show.is_followed,
+    onCompleted: () => {
+      onSaveEnded?.()
+    },
+  })
 
   const handleTap = debounce((_slug: string, _internalID: string) => {
     const href = hrefForPartialShow(show)
@@ -43,54 +49,15 @@ export const ShowItemRow: React.FC<Props> = ({
   })
 
   const handleSave = () => {
-    const { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = show
+    const { slug: showSlug, id: nodeID, internalID: showID } = show
 
-    if (showID && showSlug && nodeID && !isFollowedSaving) {
+    if (showID && showSlug && nodeID && !isInFlight) {
       trackEvent(tracks.trackSave(show))
 
       onSaveStarted?.()
 
-      setIsFollowedSaving(true)
-      commitMutation<ShowItemRowMutation>(getRelayEnvironment(), {
-        onCompleted: () => handleShowSuccessfullyUpdated(),
-        mutation: graphql`
-          mutation ShowItemRowMutation($input: FollowShowInput!) {
-            followShow(input: $input) {
-              show {
-                slug
-                internalID
-                is_followed: isFollowed
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            partnerShowID: showID,
-            unfollow: isShowFollowed,
-          },
-        },
-        // @ts-ignore RELAY 12 MIGRATION
-        optimisticResponse: {
-          followShow: {
-            show: {
-              id: nodeID,
-              slug: showSlug,
-              internalID: showID,
-              is_followed: !isShowFollowed,
-            },
-          },
-        },
-        updater: (store) => {
-          setShowFollowed(store, nodeID, !isShowFollowed)
-        },
-      })
+      followShow()
     }
-  }
-
-  const handleShowSuccessfullyUpdated = () => {
-    onSaveEnded?.()
-    setIsFollowedSaving(false)
   }
 
   const renderItemDetails = () => {
@@ -153,7 +120,7 @@ export const ShowItemRow: React.FC<Props> = ({
             variant={show.is_followed ? "outline" : "fillDark"}
             size="small"
             onPress={handleSave}
-            loading={isFollowedSaving}
+            loading={isInFlight}
             longestText="Saved"
           >
             {show.is_followed ? "Saved" : "Save"}

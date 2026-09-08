@@ -1,4 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
+import {
+  ItineraryAddFullListButton,
+  ItineraryAddFullListStatus,
+} from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { Image as RNImage } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -35,9 +39,16 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
       </Flex>
 
       <Flex px={2} pt={2}>
-        <Text variant="xs" color="mono60">
-          By {itinerary.authorName}
-        </Text>
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+          <Text variant="xs" color="mono60">
+            By {itinerary.authorName}
+          </Text>
+
+          <ItineraryAddFullListButton citySlug={itinerary.citySlug} itineraryId={itinerary.id} />
+        </Flex>
+
+        <ItineraryAddFullListStatus />
+
         <Text variant="sm" mt={1}>
           {itinerary.description}
         </Text>

@@ -84,6 +84,7 @@ import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOver
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
+import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import {
   CityFairListQueryRenderer,
   CityFairListScreenQuery,
@@ -1161,6 +1162,16 @@ export const artsyDotNetRoutes = defineRoutes([
         header: () => {
           return null
         },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/events/:section",
+    name: "CityEventList",
+    Component: CityEventListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },

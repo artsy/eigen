@@ -1,9 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { Suspense } from "react"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { ErrorBoundary } from "react-error-boundary"
 import { Image as RNImage, TouchableOpacity } from "react-native"
 
 const IMAGE_SIZE = 60
@@ -68,15 +66,10 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => 
       </TouchableOpacity>
 
       {!!stop.saveTarget && (
-        // Containment is mandatory, not decorative. The app's only ambient boundary is the
-        // RetryErrorBoundary at Navigation/AuthenticatedRoutes/ScreenWrapper.tsx:51, which has
-        // no Suspense — an uncontained suspending child blanks the whole screen into its retry
-        // state. Both boundaries render null so one slow or 404 lookup costs one control.
-        <ErrorBoundary fallbackRender={() => null}>
-          <Suspense fallback={null}>
-            <ItineraryStopSaveControl saveTarget={stop.saveTarget} stopTitle={stop.title} />
-          </Suspense>
-        </ErrorBoundary>
+        // The entity for this stop is resolved at screen level (ItineraryStopEntityResolvers),
+        // one per saveable stop, each with its own Suspense and error boundary. This control is
+        // just a reader of the reported result, so it needs neither here.
+        <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
       )}
     </Flex>
   )

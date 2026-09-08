@@ -1,15 +1,19 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
+import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
+import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RelayEnvironmentProvider } from "react-relay"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
-// Harness rule for every test in this plan: `renderWithRelay` unconditionally calls
-// env.mock.resolveMostRecentOperation (setupTestWrapper.tsx:117), and relay-test-utils
-// throws "There are no pending operations in the list" when nothing is pending
-// (RelayModernMockEnvironment.js:220). So use setupTestWrapper ONLY when the render
-// actually issues a query — i.e. when a stop has a non-null saveTarget. Otherwise use
-// renderWithWrappers.
+// The row itself fires no query any more (Task 13): a saveable stop's entity is resolved by
+// ItineraryStopEntityResolvers, sitting alongside the row here, and reported into
+// ItineraryStopEntitiesProvider, which the row's save control reads from. So these tests build
+// that small stack directly rather than using `setupTestWrapper`, whose `renderWithRelay`
+// assumes the component under test is the one issuing the query. The two stops with no
+// saveTarget below still issue no query at all and keep using bare `renderWithWrappers`.
 
 const savedStop: ItineraryStop = {
   id: "stop-2",
@@ -32,11 +36,40 @@ const unsaveableStop: ItineraryStop = {
   saveTarget: null,
 }
 
-describe("ItineraryStopRow", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: ItineraryStopRow })
+interface RowProps {
+  stop: ItineraryStop
+  number: number
+  onPress: (stop: ItineraryStop) => void
+}
 
+/**
+ * Mounts the row alongside its own entity provider and resolver, seeded with just this one
+ * stop, then resolves the single query that stop's resolver fires.
+ */
+const renderRow = (mockResolvers: MockResolvers, props: RowProps) => {
+  const env = createMockEnvironment()
+
+  const view = renderWithWrappers(
+    <RelayEnvironmentProvider environment={env}>
+      <ItineraryStopEntitiesProvider stops={[props.stop]}>
+        <ItineraryStopEntityResolvers stops={[props.stop]} />
+        <ItineraryStopRow {...props} />
+      </ItineraryStopEntitiesProvider>
+    </RelayEnvironmentProvider>
+  )
+
+  act(() => {
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
+  })
+
+  return view
+}
+
+describe("ItineraryStopRow", () => {
   it("renders the number, title, time and address", async () => {
-    renderWithRelay(
+    renderRow(
       { Show: () => ({ isFollowed: false }) },
       { stop: savedStop, number: 2, onPress: jest.fn() }
     )
@@ -48,7 +81,7 @@ describe("ItineraryStopRow", () => {
   })
 
   it("leaves the note to the preview sheet rather than the row", async () => {
-    renderWithRelay(
+    renderRow(
       { Show: () => ({ isFollowed: false }) },
       { stop: savedStop, number: 2, onPress: jest.fn() }
     )
@@ -59,17 +92,14 @@ describe("ItineraryStopRow", () => {
 
   it("opens the preview when the row is tapped", async () => {
     const onPress = jest.fn()
-    renderWithRelay(
-      { Show: () => ({ isFollowed: false }) },
-      { stop: savedStop, number: 2, onPress }
-    )
+    renderRow({ Show: () => ({ isFollowed: false }) }, { stop: savedStop, number: 2, onPress })
 
     fireEvent.press(await screen.findByTestId("itinerary-stop-row"))
 
     expect(onPress).toHaveBeenCalledWith(savedStop)
   })
 
-  // No saveTarget means no query, so these two must not go through renderWithRelay.
+  // No saveTarget means no query, so these two must not go through the entities/resolvers stack.
   it("omits the note when the stop has none", () => {
     renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} onPress={jest.fn()} />)
 
@@ -79,16 +109,16 @@ describe("ItineraryStopRow", () => {
   it("renders no save control when the stop has no save target", () => {
     renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} onPress={jest.fn()} />)
 
-    expect(screen.queryByTestId("itinerary-save-button")).toBeNull()
+    expect(screen.queryByTestId("city-guide-save-button")).toBeNull()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 
   it("reflects the resolved followed state", async () => {
-    renderWithRelay(
+    renderRow(
       { Show: () => ({ isFollowed: true }) },
       { stop: savedStop, number: 2, onPress: jest.fn() }
     )
 
-    expect(await screen.findByTestId("itinerary-save-button-check-icon")).toBeTruthy()
+    expect(await screen.findByTestId("city-guide-save-button-check-icon")).toBeTruthy()
   })
 })

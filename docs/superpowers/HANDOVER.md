@@ -1,6 +1,9 @@
 # City Guide — handover
 
-**Written:** 2026-08-27. Supersede or delete this once the work lands.
+**Written:** 2026-08-27. **SUPERSEDED** by
+`docs/superpowers/HANDOVER-city-guide-api.md`, which covers this sub-project, the two that
+followed it, and the API work that comes next. Read that one instead. This is kept only because
+the branch it describes, `city-guide-itineraries-docs`, is still an open draft PR.
 
 ## Where things stand
 

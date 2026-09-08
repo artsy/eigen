@@ -1,11 +1,44 @@
 import { useMutation, graphql } from "react-relay"
+import { PayloadError, RecordSourceSelectorProxy } from "relay-runtime"
 
 export interface FollowProfileOptions {
   id: string
   internalID: string
   isFollowed: boolean | null | undefined
-  onCompleted?: (isFollowed: boolean) => void
-  onError?: () => void
+  /** `errors` carries GraphQL errors returned with a successful response. */
+  onCompleted?: (isFollowed: boolean, errors?: PayloadError[] | null) => void
+  onError?: (error: Error) => void
+}
+
+export const followProfileMutationConfig = ({
+  id,
+  internalID,
+  isFollowed,
+}: FollowProfileOptions) => {
+  const nextFollowedState = !isFollowed
+
+  return {
+    mutation: Mutation,
+    variables: {
+      input: {
+        profileID: internalID,
+        unfollow: !!isFollowed,
+      },
+    },
+    optimisticResponse: {
+      followProfile: {
+        profile: {
+          id,
+          internalID,
+          isFollowed: nextFollowedState,
+        },
+      },
+    },
+    optimisticUpdater: (store: RecordSourceSelectorProxy<{}>) => {
+      const profile = store.get(id)
+      profile?.setValue(nextFollowedState, "isFollowed")
+    },
+  }
 }
 
 export const useFollowProfile = ({
@@ -17,33 +50,17 @@ export const useFollowProfile = ({
 }: FollowProfileOptions) => {
   const [commit, isInFlight] = useMutation(Mutation)
 
-  const nextFollowedState = !isFollowed
-
   const followProfile = () => {
+    const config = followProfileMutationConfig({ id, internalID, isFollowed })
+
     commit({
-      variables: {
-        input: {
-          profileID: internalID,
-          unfollow: !!isFollowed,
-        },
-      },
-      onCompleted: () => {
-        onCompleted?.(nextFollowedState)
+      variables: config.variables,
+      optimisticResponse: config.optimisticResponse,
+      optimisticUpdater: config.optimisticUpdater,
+      onCompleted: (_response, errors) => {
+        onCompleted?.(!isFollowed, errors)
       },
       onError,
-      optimisticResponse: {
-        followProfile: {
-          profile: {
-            id,
-            internalID,
-            isFollowed: nextFollowedState,
-          },
-        },
-      },
-      optimisticUpdater: (store) => {
-        const profile = store.get(id)
-        profile?.setValue(nextFollowedState, "isFollowed")
-      },
     })
   }
 
@@ -51,7 +68,7 @@ export const useFollowProfile = ({
 }
 
 const Mutation = graphql`
-  mutation useFollowProfileMutation($input: FollowProfileInput!) {
+  mutation useFollowProfileMutation($input: FollowProfileInput!) @raw_response_type {
     followProfile(input: $input) {
       profile {
         id

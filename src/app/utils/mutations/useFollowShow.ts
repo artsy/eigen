@@ -1,5 +1,6 @@
 import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
 import { graphql, useMutation } from "react-relay"
+import { PayloadError, RecordSourceSelectorProxy } from "relay-runtime"
 
 export interface FollowShowOptions {
   /** Relay node id, used for the optimistic store update. */
@@ -7,8 +8,35 @@ export interface FollowShowOptions {
   /** The show's internalID, sent to the mutation as partnerShowID. */
   internalID: string
   isFollowed: boolean | null | undefined
-  onCompleted?: (isFollowed: boolean) => void
-  onError?: () => void
+  /** `errors` carries GraphQL errors returned with a successful response. */
+  onCompleted?: (isFollowed: boolean, errors?: PayloadError[] | null) => void
+  onError?: (error: Error) => void
+}
+
+export const followShowMutationConfig = ({ id, internalID, isFollowed }: FollowShowOptions) => {
+  const nextFollowedState = !isFollowed
+
+  return {
+    mutation: Mutation,
+    variables: {
+      input: {
+        partnerShowID: internalID,
+        unfollow: !!isFollowed,
+      },
+    },
+    optimisticResponse: {
+      followShow: {
+        show: {
+          id,
+          internalID,
+          isFollowed: nextFollowedState,
+        },
+      },
+    },
+    optimisticUpdater: (store: RecordSourceSelectorProxy<{}>) => {
+      setShowFollowed(store, id, nextFollowedState)
+    },
+  }
 }
 
 export const useFollowShow = ({
@@ -20,32 +48,17 @@ export const useFollowShow = ({
 }: FollowShowOptions) => {
   const [commit, isInFlight] = useMutation(Mutation)
 
-  const nextFollowedState = !isFollowed
-
   const followShow = () => {
+    const config = followShowMutationConfig({ id, internalID, isFollowed })
+
     commit({
-      variables: {
-        input: {
-          partnerShowID: internalID,
-          unfollow: !!isFollowed,
-        },
-      },
-      onCompleted: () => {
-        onCompleted?.(nextFollowedState)
+      variables: config.variables,
+      optimisticResponse: config.optimisticResponse,
+      optimisticUpdater: config.optimisticUpdater,
+      onCompleted: (_response, errors) => {
+        onCompleted?.(!isFollowed, errors)
       },
       onError,
-      optimisticResponse: {
-        followShow: {
-          show: {
-            id,
-            internalID,
-            isFollowed: nextFollowedState,
-          },
-        },
-      },
-      optimisticUpdater: (store) => {
-        setShowFollowed(store, id, nextFollowedState)
-      },
     })
   }
 
@@ -53,7 +66,7 @@ export const useFollowShow = ({
 }
 
 const Mutation = graphql`
-  mutation useFollowShowMutation($input: FollowShowInput!) {
+  mutation useFollowShowMutation($input: FollowShowInput!) @raw_response_type {
     followShow(input: $input) {
       show {
         id

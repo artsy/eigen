@@ -8,7 +8,7 @@ const data = {
 
 export const CityGuideMetaData = () => {
   return (
-    <Flex gap={2} backgroundColor="mono100">
+    <Flex gap={2} backgroundColor="mono100" pb={2}>
       <CityGuideParallaxImage src="https://files.artsy.net/images/frame-1000003604.png" />
 
       <Flex px={2}>

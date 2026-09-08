@@ -2,6 +2,7 @@ import { CloseIcon } from "@artsy/icons/native"
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
+import { ItineraryStopEntity } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { Image as RNImage, TouchableOpacity } from "react-native"
@@ -14,6 +15,12 @@ interface Props {
   onClose: () => void
   /** Switches the screen to the map with this stop selected. */
   onShowOnMap: (stopId: string) => void
+  /**
+   * The previewed stop's resolved entity, looked up by the screen — which sits inside
+   * `ItineraryStopEntitiesProvider` — and forwarded here because this sheet renders through a
+   * `@gorhom/bottom-sheet` portal, which cannot see that provider's context.
+   */
+  entity?: ItineraryStopEntity
 }
 
 /**
@@ -21,7 +28,7 @@ interface Props {
  * author's own copy — title, address, hours and note — rather than the entity's, so it
  * needs no query. Only the save control resolves the real entity.
  */
-export const ItineraryStopPreview: React.FC<Props> = ({ stop, onClose, onShowOnMap }) => {
+export const ItineraryStopPreview: React.FC<Props> = ({ stop, onClose, onShowOnMap, entity }) => {
   return (
     // handleComponent={null} drops the drag indicator: the image runs to the top edge
     // and the close button is the affordance instead.
@@ -98,9 +105,10 @@ export const ItineraryStopPreview: React.FC<Props> = ({ stop, onClose, onShowOnM
               {!!stop.saveTarget && (
                 <Flex flex={1}>
                   <ItineraryStopSaveControl
-                    saveTarget={stop.saveTarget}
+                    stopId={stop.id}
                     stopTitle={stop.title}
                     variant="button"
+                    entity={entity}
                   />
                 </Flex>
               )}

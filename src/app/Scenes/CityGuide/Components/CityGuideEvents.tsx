@@ -1,8 +1,28 @@
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { CityGuideEventsQuery } from "__generated__/CityGuideEventsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
+import {
+  CityEventFairSaveControl,
+  CityEventShowSaveControl,
+} from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
+import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
+import { extractNodes } from "app/utils/extractNodes"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
+
+/**
+ * Enough to fill a rail the user can scroll a fair way, without paying for a hundred records
+ * the home screen will never show. The section header leads to the full list.
+ */
+const RAIL_SIZE = 10
+
+/** The 10pt gap the designs put between cards. */
+const RAIL_GAP = 10
 
 /**
  * Cards bleed past the right gutter, so the rail is laid out edge to edge and the padding
@@ -11,206 +31,257 @@ import { FlatList } from "react-native"
  */
 const railContentStyle = { paddingHorizontal: 20 }
 
-/** The 10pt gap the designs put between cards, applied as a separator. */
-const RAIL_GAP = 10
-
-export const CityGuideFairs: React.FC<{ cityName: string }> = ({ cityName }) => {
-  return (
-    <Flex>
-      <Flex px={2}>
-        <SectionTitle variant="large" title={`Current ${cityName} Fairs`} onPress={() => {}} />
-      </Flex>
-
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={fairsData}
-        contentContainerStyle={railContentStyle}
-        ItemSeparatorComponent={() => <Flex width={RAIL_GAP} />}
-        renderItem={({ item }) => (
-          <CityFairRailCard title={item.name} image={item.image} href={item.href} />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </Flex>
-  )
+interface Props {
+  citySlug: string
+  cityName: string
 }
 
-export const CityGuideShows: React.FC<{ cityName: string }> = ({ cityName }) => {
-  return (
-    <Flex>
-      <Flex px={2}>
-        <SectionTitle variant="large" title={`Current ${cityName} Shows`} onPress={() => {}} />
-      </Flex>
+/** The designs show admission as words, not a boolean. Absent when the server does not know. */
+const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
+  if (isFreeAdmission == null) return undefined
 
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={showsData}
-        contentContainerStyle={railContentStyle}
-        ItemSeparatorComponent={() => <Flex width={RAIL_GAP} />}
-        renderItem={({ item }) => (
-          <CityEventRailCard
-            title={item.name}
-            image={item.image}
-            href={item.href}
-            meta={item.dates}
-            admission={item.admission}
-          />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </Flex>
-  )
+  return isFreeAdmission ? "Free" : "Paid Entry"
 }
 
 /**
- * Unlike the two "Current …" sections, this title carries no city name — the designs show a
- * plain "Opening Soon".
+ * One section: the header and its horizontal rail. Rendered by all three sections rather
+ * than repeated three times, so the "hide when empty" rule lives in one place.
+ *
+ * `Join` drops falsy children (`Children.toArray`), so a caller can guard this with `&&`
+ * without leaving a stray separator behind.
  */
-export const CityGuideOpeningSoon: React.FC = () => {
+const EventRail = <T,>({
+  title,
+  href,
+  onPress,
+  data,
+  keyExtractor,
+  renderItem,
+}: {
+  title: string
+  href: string
+  onPress: () => void
+  data: readonly T[]
+  keyExtractor: (item: T) => string
+  renderItem: (item: T) => React.ReactElement
+}) => {
   return (
     <Flex>
       <Flex px={2}>
-        <SectionTitle variant="large" title="Opening Soon" onPress={() => {}} />
+        <SectionTitle variant="large" title={title} href={href} onPress={onPress} />
       </Flex>
 
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={openingSoonData}
+        data={data}
         contentContainerStyle={railContentStyle}
         ItemSeparatorComponent={() => <Flex width={RAIL_GAP} />}
-        renderItem={({ item }) => (
-          // Arched image and no admission line: the two things separating this card from a
-          // Current Shows one.
-          <CityEventRailCard
-            title={item.name}
-            image={item.image}
-            href={item.href}
-            meta={item.opensAt}
-            archTopImage
-          />
-        )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={keyExtractor}
+        renderItem={({ item }) => renderItem(item)}
       />
     </Flex>
   )
 }
 
-export const CityGuideEvents: React.FC<{ cityName: string }> = ({ cityName }) => {
+const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
+  const { trackEvent } = useTracking<Schema.Entity>()
+  const data = useLazyLoadQuery<CityGuideEventsQuery>(Query, { citySlug, first: RAIL_SIZE })
+
+  const sectionHref = (section: CityEventSectionKey) => `/city-guide/${citySlug}/events/${section}`
+
+  const trackSectionTap = (section: CityEventSectionKey) => () => {
+    trackEvent({
+      action_name: Schema.ActionNames.ViewAll,
+      action_type: Schema.ActionTypes.Tap,
+      owner_type: Schema.OwnerEntityTypes.CityGuide,
+      owner_slug: citySlug,
+      context_module: section,
+    })
+  }
+
+  const fairs = extractNodes(data.city?.fairsConnection)
+  const currentShows = extractNodes(data.city?.currentShows)
+  const openingShows = extractNodes(data.city?.openingShows)
+
   return (
     <Join separator={<Spacer y={2} />}>
-      <CityGuideFairs cityName={cityName} />
-      <CityGuideShows cityName={cityName} />
-      <CityGuideOpeningSoon />
+      {/*
+        A section with nothing in it is hidden entirely, header included: an empty rail under
+        a "Current London Fairs" heading reads as a broken screen rather than as "no fairs".
+      */}
+      {!!fairs.length && (
+        <EventRail
+          title={`Current ${cityName} Fairs`}
+          href={sectionHref("fairs")}
+          onPress={trackSectionTap("fairs")}
+          data={fairs}
+          keyExtractor={(fair) => fair.internalID}
+          renderItem={(fair) => (
+            <CityFairRailCard
+              title={fair.name ?? ""}
+              image={fair.image?.url ?? ""}
+              href={fair.href ?? ""}
+              saveControl={
+                // A fair is followed through its Profile, not directly. No profile, no
+                // control — there is nothing to follow.
+                fair.profile ? (
+                  <CityEventFairSaveControl
+                    id={fair.profile.id}
+                    internalID={fair.profile.internalID}
+                    isFollowed={fair.profile.isFollowed}
+                    name={fair.name ?? ""}
+                  />
+                ) : null
+              }
+            />
+          )}
+        />
+      )}
+
+      {!!currentShows.length && (
+        <EventRail
+          title={`Current ${cityName} Shows`}
+          href={sectionHref("shows")}
+          onPress={trackSectionTap("shows")}
+          data={currentShows}
+          keyExtractor={(show) => show.internalID}
+          renderItem={(show) => (
+            <CityEventRailCard
+              title={show.name ?? ""}
+              image={show.coverImage?.url ?? ""}
+              href={show.href ?? ""}
+              meta={show.exhibitionPeriod ?? ""}
+              admission={admissionLabel(show.isFreeAdmission)}
+              saveControl={
+                <CityEventShowSaveControl
+                  id={show.id}
+                  internalID={show.internalID}
+                  isFollowed={show.isFollowed}
+                  name={show.name ?? ""}
+                />
+              }
+            />
+          )}
+        />
+      )}
+
+      {/*
+        Unlike the two "Current …" sections, this title carries no city name — the designs
+        show a plain "Opening Soon".
+      */}
+      {!!openingShows.length && (
+        <EventRail
+          title="Opening Soon"
+          href={sectionHref("opening")}
+          onPress={trackSectionTap("opening")}
+          data={openingShows}
+          keyExtractor={(show) => show.internalID}
+          renderItem={(show) => (
+            // Arched image and no admission line: the two things separating this card from
+            // a Current Shows one. The date is the opening day rather than a run, which is
+            // what the section is about.
+            <CityEventRailCard
+              title={show.name ?? ""}
+              image={show.coverImage?.url ?? ""}
+              href={show.href ?? ""}
+              meta={show.opensAt ?? ""}
+              archTopImage
+              saveControl={
+                <CityEventShowSaveControl
+                  id={show.id}
+                  internalID={show.internalID}
+                  isFollowed={show.isFollowed}
+                  name={show.name ?? ""}
+                />
+              }
+            />
+          )}
+        />
+      )}
     </Join>
   )
 }
 
-/*
-  Slugs are real, reused from the itinerary mocks on the city-guide-saves branch, which took
-  them off artsy.net. Invented slugs render the app's not-found state: `/show/:showID` resolves
-  a real Show, and a show's slug is `<partner>-<title>` rather than the title alone. A few
-  titles here changed with them — the ones I had filled in from Figma's truncated mock text
-  ("David Turley: House…", "Splash: Sea, Beach…") were guesses, and these are the real shows.
-*/
-const fairsData = [
-  {
-    id: 1,
-    name: "Frieze London",
-    href: "/fair/frieze-london-2025",
-    image: "https://picsum.photos/id/1015/300/500.jpg",
-  },
-  {
-    id: 2,
-    name: "Photo London",
-    href: "/fair/photo-london-2026",
-    image: "https://picsum.photos/id/1016/300/500.jpg",
-  },
-  {
-    id: 3,
-    name: "London Original Print Fair",
-    href: "/fair/london-original-print-fair-2026",
-    image: "https://picsum.photos/id/1018/300/500.jpg",
-  },
-]
+/**
+ * `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put the same
+ * show under both Current Shows and Opening Soon.
+ *
+ * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
+ * is about when a show opens, and the designs show one date. Formatting stays on the server,
+ * through Metaphysics' own `format` argument.
+ */
+const Query = graphql`
+  query CityGuideEventsQuery($citySlug: String!, $first: Int!) {
+    city(slug: $citySlug) {
+      fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
+        edges {
+          node {
+            internalID
+            name
+            href
+            image {
+              url
+            }
+            profile {
+              id
+              internalID
+              isFollowed
+            }
+          }
+        }
+      }
 
-const showsData = [
-  {
-    id: 1,
-    name: "One Fly Makes No Summer",
-    href: "/show/kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
-    dates: "Jul 31 - Aug 29, 2026",
-    admission: "Free",
-    image: "https://picsum.photos/id/1020/300/300.jpg",
-  },
-  {
-    id: 2,
-    name: "House Plant Care",
-    href: "/show/8-holland-street-david-turley-house-plant-care",
-    dates: "Jul 15 - Aug 29, 2026",
-    admission: "Free",
-    image: "https://picsum.photos/id/1021/300/300.jpg",
-  },
-  {
-    id: 3,
-    name: "So This Is Goodbye...",
-    href: "/show/beers-london-so-this-is-goodbye-dot-dot-dot",
-    dates: "Aug 20 - Aug 29, 2026",
-    admission: "Paid Entry",
-    image: "https://picsum.photos/id/1022/300/300.jpg",
-  },
-  {
-    id: 4,
-    name: "The Language of Glaze",
-    href: "/show/carpenters-workshop-gallery-the-language-of-glaze",
-    dates: "Aug 1 - Aug 29, 2026",
-    image: "https://picsum.photos/id/1023/300/300.jpg",
-  },
-  {
-    id: 5,
-    name: "Splash: Sea, Beach and Pool",
-    href: "/show/atlas-gallery-splash-sea-beach-and-pool",
-    dates: "Jun 9 - Aug 30, 2026",
-    image: "https://picsum.photos/id/1024/300/300.jpg",
-  },
-]
+      currentShows: showsConnection(
+        first: $first
+        status: RUNNING
+        sort: START_AT_ASC
+        includeStubShows: false
+      ) {
+        edges {
+          node {
+            id
+            internalID
+            name
+            href
+            isFollowed
+            exhibitionPeriod
+            isFreeAdmission
+            coverImage {
+              url
+            }
+          }
+        }
+      }
 
-const openingSoonData = [
-  {
-    id: 1,
-    name: "Vestiges",
-    href: "/show/annely-juda-fine-art-vestiges",
-    opensAt: "Sep 3, 2026",
-    image: "https://picsum.photos/id/1025/300/300.jpg",
-  },
-  {
-    id: 2,
-    name: "Pop Odyssey",
-    href: "/show/halcyon-pop-odyssey",
-    opensAt: "Sep 3, 2026",
-    image: "https://picsum.photos/id/1026/300/300.jpg",
-  },
-  {
-    id: 3,
-    name: "Like Music in the Blood",
-    href: "/show/thaddaeus-ropac-like-music-in-the-blood",
-    opensAt: "Sep 3, 2026",
-    image: "https://picsum.photos/id/1027/300/300.jpg",
-  },
-  {
-    id: 4,
-    name: "No Ruined Stones",
-    href: "/show/cadogan-gallery-no-ruined-stones-richard-hearns",
-    opensAt: "Sep 3, 2026",
-    image: "https://picsum.photos/id/1028/300/300.jpg",
-  },
-  {
-    id: 5,
-    name: "Second Nature",
-    href: "/show/open-doors-gallery-second-nature",
-    opensAt: "Sep 3, 2026",
-    image: "https://picsum.photos/id/1029/300/300.jpg",
-  },
-]
+      openingShows: showsConnection(
+        first: $first
+        status: UPCOMING
+        dayThreshold: 14
+        sort: START_AT_ASC
+      ) {
+        edges {
+          node {
+            id
+            internalID
+            name
+            href
+            isFollowed
+            opensAt: startAt(format: "MMM D, YYYY")
+            coverImage {
+              url
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const CityGuideEvents = withSuspense({
+  Component: CityGuideEventsSections,
+  // The sections sit mid-scroll on the home screen, so they stay absent until they have
+  // data rather than reserving space and shifting everything below.
+  LoadingFallback: () => null,
+  ErrorFallback: NoFallback,
+})

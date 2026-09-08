@@ -74,6 +74,8 @@ describe("useFollowShow", () => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
     })
 
-    expect(onCompleted).toHaveBeenCalledWith(true)
+    // The second argument is the payload's errors, which a caller needs because GraphQL
+    // returns them alongside a 200. Null here: the mock resolved cleanly.
+    expect(onCompleted).toHaveBeenCalledWith(true, null)
   })
 })

@@ -1,4 +1,3 @@
-import { AddStrokeIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once the images come from the API.
@@ -9,7 +8,6 @@ import { Image as RNImage } from "react-native"
  * 150 × 149 inside a 150 × 150 box — a rounding artifact, not a 1px gap).
  */
 const CARD_SIZE = 150
-const ADD_ICON_SIZE = 18
 /**
  * The arch the designs put on Opening Soon images. 80 is past half the card's width, so it
  * renders as a full semicircle — React Native clamps a corner radius to half the side.
@@ -27,6 +25,12 @@ interface Props {
   admission?: string
   /** Arches the top of the image. The Opening Soon rail is the only one that asks for it. */
   archTopImage?: boolean
+  /**
+   * A `CityEventShowSaveControl` or `CityEventFairSaveControl`, injected so this card holds no
+   * Relay dependency. Rendered as a sibling of the links below, never inside one — the same
+   * arrangement `CityEventRow` uses, so tapping it saves instead of navigating.
+   */
+  saveControl?: React.ReactNode
 }
 
 /**
@@ -41,13 +45,11 @@ export const CityEventRailCard: React.FC<Props> = ({
   meta,
   admission,
   archTopImage = false,
+  saveControl,
 }) => {
   return (
-    // The whole card is the tap target, the add icon included — it is inert today. Once it
-    // becomes a real save control it will be a Touchable child, and this link will need
-    // `hasChildTouchable` so the two do not both fire.
-    <RouterLink to={href} style={{ width: CARD_SIZE }}>
-      <Flex gap={0.5}>
+    <Flex width={CARD_SIZE} gap={0.5}>
+      <RouterLink to={href} disablePrefetch>
         <RNImage
           testID="city-event-rail-card-image"
           source={{ uri: image }}
@@ -60,10 +62,12 @@ export const CityEventRailCard: React.FC<Props> = ({
             borderTopRightRadius: archTopImage ? ARCH_RADIUS : 0,
           }}
         />
+      </RouterLink>
 
-        {/* alignItems="flex-start" keeps the icon level with the title rather than centred
+      {/* alignItems="flex-start" keeps the control level with the title rather than centred
           against a caption whose height changes with the admission line. */}
-        <Flex flexDirection="row" alignItems="flex-start">
+      <Flex flexDirection="row" alignItems="flex-start">
+        <RouterLink to={href} disablePrefetch style={{ flex: 1 }}>
           <Flex flex={1}>
             {/* One line, as the designs show ("One Fly Makes No S…"). */}
             <Text variant="xs" weight="medium" numberOfLines={1}>
@@ -80,12 +84,10 @@ export const CityEventRailCard: React.FC<Props> = ({
               </Text>
             )}
           </Flex>
+        </RouterLink>
 
-          {/* The save control in the real feature. Nothing on this screen has a save target to
-            mutate yet, so it renders as the designed glyph without a press handler. */}
-          <AddStrokeIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
-        </Flex>
+        {!!saveControl && <Flex>{saveControl}</Flex>}
       </Flex>
-    </RouterLink>
+    </Flex>
   )
 }
