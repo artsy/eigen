@@ -166,4 +166,18 @@ describe("CityGuideEvents", () => {
       "/show/kristin-hjellegjerde-gallery-one-fly-makes-no-summer"
     )
   })
+
+  // The designs size the rails' add glyph at 18; CityGuideSaveButton defaults to the 24 the
+  // list rows use, so the rails have to ask for the smaller one.
+  it("renders the save glyph at the size the rail designs specify", async () => {
+    renderWithRelay(resolvers, props)
+
+    const icons = await screen.findAllByTestId("city-guide-save-button-add-icon")
+
+    expect(icons.length).toBeGreaterThan(0)
+    icons.forEach((icon) => {
+      expect(icon).toHaveProp("width", 18)
+      expect(icon).toHaveProp("height", 18)
+    })
+  })
 })

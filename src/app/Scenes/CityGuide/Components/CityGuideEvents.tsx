@@ -24,6 +24,9 @@ const RAIL_SIZE = 10
 /** The 10pt gap the designs put between cards. */
 const RAIL_GAP = 10
 
+/** The designs size the rails' add glyph at 18, smaller than the 24 the list rows use. */
+const SAVE_ICON_SIZE = 18
+
 /**
  * Cards bleed past the right gutter, so the rail is laid out edge to edge and the padding
  * lives on its content instead. Figma gives the Fairs frame 10 and the other two 20; the rest
@@ -131,6 +134,7 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
                     internalID={fair.profile.internalID}
                     isFollowed={fair.profile.isFollowed}
                     name={fair.name ?? ""}
+                    iconSize={SAVE_ICON_SIZE}
                   />
                 ) : null
               }
@@ -159,6 +163,7 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
                   internalID={show.internalID}
                   isFollowed={show.isFollowed}
                   name={show.name ?? ""}
+                  iconSize={SAVE_ICON_SIZE}
                 />
               }
             />
@@ -193,6 +198,7 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
                   internalID={show.internalID}
                   isFollowed={show.isFollowed}
                   name={show.name ?? ""}
+                  iconSize={SAVE_ICON_SIZE}
                 />
               }
             />

@@ -14,6 +14,8 @@ interface Props {
   name: string
   /** "icon" is the circular add/check used in rows. "button" is the labelled form the stop preview needs. */
   variant?: "icon" | "button"
+  /** Forwarded to `CityGuideSaveButton`. The rail cards pass 18, per their designs. */
+  iconSize?: number
 }
 
 const useSaveToast = () => {
@@ -37,6 +39,7 @@ export const CityEventShowSaveControl: React.FC<Props> = ({
   isFollowed,
   name,
   variant,
+  iconSize,
 }) => {
   const showToast = useSaveToast()
   const { trackEvent } = useTracking<Schema.Entity>()
@@ -52,6 +55,7 @@ export const CityEventShowSaveControl: React.FC<Props> = ({
   return (
     <CityGuideSaveButton
       variant={variant}
+      iconSize={iconSize}
       isSaved={isSaved}
       isSaving={isInFlight}
       accessibilityLabel={accessibilityLabel(isSaved, name)}
@@ -79,6 +83,7 @@ export const CityEventFairSaveControl: React.FC<Props> = ({
   isFollowed,
   name,
   variant,
+  iconSize,
 }) => {
   const showToast = useSaveToast()
   const { trackEvent } = useTracking<Schema.Entity>()
@@ -94,6 +99,7 @@ export const CityEventFairSaveControl: React.FC<Props> = ({
   return (
     <CityGuideSaveButton
       variant={variant}
+      iconSize={iconSize}
       isSaved={isSaved}
       isSaving={isInFlight}
       accessibilityLabel={accessibilityLabel(isSaved, name)}
@@ -125,6 +131,7 @@ export const CityEventPartnerSaveControl: React.FC<Props> = ({
   isFollowed,
   name,
   variant,
+  iconSize,
 }) => {
   const showToast = useSaveToast()
   const { trackEvent } = useTracking<Schema.Entity>()
@@ -140,6 +147,7 @@ export const CityEventPartnerSaveControl: React.FC<Props> = ({
   return (
     <CityGuideSaveButton
       variant={variant}
+      iconSize={iconSize}
       isSaved={isSaved}
       isSaving={isInFlight}
       accessibilityLabel={accessibilityLabel(isSaved, name)}

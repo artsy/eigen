@@ -2,7 +2,8 @@ import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Button, Flex } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 
-const ICON_SIZE = 24
+/** List rows and the map card. The rails' designs call for a smaller 18. */
+const DEFAULT_ICON_SIZE = 24
 const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 
 interface Props {
@@ -15,6 +16,12 @@ interface Props {
    * labelled form the stop preview sheet needs, sitting beside "Show on map".
    */
   variant?: "icon" | "button"
+  /**
+   * Overrides the glyph size for the "icon" variant. The rail cards pass 18, which is what
+   * their designs specify; rows keep the larger default. `hitSlop` is unchanged, so a smaller
+   * glyph still gets a comfortable tap target.
+   */
+  iconSize?: number
 }
 
 export const CityGuideSaveButton: React.FC<Props> = ({
@@ -23,6 +30,7 @@ export const CityGuideSaveButton: React.FC<Props> = ({
   isSaving = false,
   accessibilityLabel,
   variant = "icon",
+  iconSize = DEFAULT_ICON_SIZE,
 }) => {
   if (variant === "button") {
     return (
@@ -51,18 +59,18 @@ export const CityGuideSaveButton: React.FC<Props> = ({
       hitSlop={HIT_SLOP}
       onPress={onPress}
     >
-      <Flex width={ICON_SIZE} height={ICON_SIZE} alignItems="center" justifyContent="center">
+      <Flex width={iconSize} height={iconSize} alignItems="center" justifyContent="center">
         {isSaved ? (
           <CheckmarkIcon
             testID="city-guide-save-button-check-icon"
-            width={ICON_SIZE}
-            height={ICON_SIZE}
+            width={iconSize}
+            height={iconSize}
           />
         ) : (
           <AddStrokeIcon
             testID="city-guide-save-button-add-icon"
-            width={ICON_SIZE}
-            height={ICON_SIZE}
+            width={iconSize}
+            height={iconSize}
           />
         )}
       </Flex>
