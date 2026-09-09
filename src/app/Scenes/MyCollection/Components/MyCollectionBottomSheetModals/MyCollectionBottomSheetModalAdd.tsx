@@ -3,7 +3,6 @@ import { Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { MenuItem } from "app/Components/MenuItem"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
@@ -28,8 +27,6 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{ isVisible: boolean }> =
       visible={isVisible}
       snapPoints={SNAP_POINTS}
       enableDynamicSizing={false}
-      enablePanDownToClose
-      handleIndicatorStyle={defaultIndicatorHandleStyle(color)}
       backgroundStyle={{
         backgroundColor: color("mono0"),
       }}
