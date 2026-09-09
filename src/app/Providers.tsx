@@ -46,7 +46,8 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       PopoverMessageProvider,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
-      ArtworkListsProvider,
+      PortalProvider,
+      ArtworkListsProvider, // uses BottomSheetModalProvider, which nests its own PortalProvider
       ShareSheetProvider, // uses BottomSheetProvider
       KeyboardControllerProvider,
     ],
