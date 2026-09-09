@@ -105,7 +105,7 @@ export const FollowsTab = () => {
         sentryName="FollowsTab"
         visible={showFollowsBottomSheet}
         snapPoints={SNAP_POINTS}
-        enableDynamicSizing
+        enableDynamicSizing={false}
         onDismiss={() => {
           setShowFollowsBottomSheet(false)
         }}

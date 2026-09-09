@@ -21,6 +21,9 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
         paddingBottom: bottom + BOTTOM_TABS_HEIGHT + space(2),
       }}
     >
+      <BottomSheetView>
+        <Text>LOL this is MyCollectionBottomSheetModalAdd </Text>
+      </BottomSheetView>
       <Flex pb={1}>
         <Text textAlign="center" variant="sm" pt={2} pb={2}>
           Add to My Collection

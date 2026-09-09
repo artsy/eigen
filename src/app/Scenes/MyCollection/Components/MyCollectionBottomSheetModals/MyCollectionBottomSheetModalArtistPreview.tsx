@@ -260,7 +260,7 @@ export const MyCollectionBottomSheetModal: React.FC<{
   <AutomountedBottomSheetModal
     visible={visible}
     snapPoints={SNAP_POINTS}
-    enableDynamicSizing
+    enableDynamicSizing={false}
     onDismiss={onDismiss}
   >
     <BottomSheetView>

@@ -20,7 +20,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
       sentryName="MyCollectionBottomSheetModalProfile"
       visible={isVisible}
       snapPoints={SNAP_POINTS}
-      enableDynamicSizing
+      enableDynamicSizing={false}
       onDismiss={() => {
         setViewKind({ viewKind: null })
       }}

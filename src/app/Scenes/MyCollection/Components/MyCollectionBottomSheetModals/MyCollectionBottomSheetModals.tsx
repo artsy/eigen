@@ -45,6 +45,8 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         index={0}
         onChange={handleSheetChanges}
         snapPoints={snapPoints}
+        // This brings the issue of another modal being displayed on the back
+        // enableDynamicSizing={false}
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         handleIndicatorStyle={defaultIndicatorHandleStyle(color)}
@@ -53,20 +55,18 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
-        {view === "Profile" && (
-          <MyCollectionBottomSheetModalProfile isVisible={view === "Profile"} />
-        )}
-        {view === "Artist" && !!artistId && !!interestId ? (
-          <MyCollectionBottomSheetModal
-            visible={view === "Artist" && !!artistId && !!interestId}
-            artistID={artistId}
-            interestId={interestId}
-            onDismiss={() => {
-              setViewKind({ viewKind: null })
-            }}
-          />
-        ) : null}
       </BottomSheet>
+      {view === "Profile" && <MyCollectionBottomSheetModalProfile isVisible={view === "Profile"} />}
+      {view === "Artist" && !!artistId && !!interestId ? (
+        <MyCollectionBottomSheetModal
+          visible={view === "Artist" && !!artistId && !!interestId}
+          artistID={artistId}
+          interestId={interestId}
+          onDismiss={() => {
+            setViewKind({ viewKind: null })
+          }}
+        />
+      ) : null}
     </>
   )
 }
