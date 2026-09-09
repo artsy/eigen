@@ -27925,6 +27925,11 @@ type Order {
   fulfillmentOptions: [FulfillmentOption!]!
 
   """
+  Flag indicating whether the order has a partner offer associated with it
+  """
+  hasPartnerOffer: Boolean!
+
+  """
   A globally unique ID.
   """
   id: ID!
