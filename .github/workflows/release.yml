@@ -120,6 +120,8 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
         run: |
+          set -o pipefail
+
           # Reuse the alert across releases so the Slack action isn't recreated every time -
           # only the per-release detector (crash rate thresholds) is release-specific.
           workflow_name="Mobile Release Crash Rate"
