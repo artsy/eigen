@@ -19,11 +19,6 @@ import {
 } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
-import { ArtQuiz, ArtQuizScreenQuery } from "app/Scenes/ArtQuiz/ArtQuiz"
-import {
-  ArtQuizResults,
-  ArtQuizResultsScreenQuery,
-} from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
@@ -370,43 +365,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ActivityItemQuery],
-  },
-  {
-    path: "/art-quiz",
-    name: "ArtQuiz",
-    Component: ArtQuiz,
-    options: {
-      screenOptions: {
-        gestureEnabled: false,
-        headerShown: false,
-      },
-      hidesBottomTabs: true,
-    },
-    queries: [ArtQuizScreenQuery],
-  },
-  {
-    path: "/art-quiz/artworks",
-    name: "ArtQuiz",
-    Component: ArtQuiz,
-    options: {
-      screenOptions: {
-        gestureEnabled: false,
-      },
-      hidesBottomTabs: true,
-    },
-    queries: [ArtQuizScreenQuery],
-  },
-  {
-    path: "/art-quiz/results",
-    name: "ArtQuizResults",
-    Component: ArtQuizResults,
-    options: {
-      screenOptions: {
-        animationTypeForReplace: "pop",
-        headerShown: false,
-      },
-    },
-    queries: [ArtQuizResultsScreenQuery],
   },
   {
     path: "/article/:articleID",

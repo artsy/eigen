@@ -1,7 +1,7 @@
 import { Join, Spacer } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
-import { ArtistListItemNew } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Components/ArtistListItem"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { ArtistListItemNew } from "app/Components/ArtistListItemNew"
+import { useOnboardingTracking } from "app/utils/hooks/useOnboardingTracking"
 
 export interface ArtistRef {
   ref: ArtistListItemNew_artist$key

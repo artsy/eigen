@@ -20,11 +20,11 @@ import {
   ArtistRef,
   FollowedArtistsBank,
 } from "app/Scenes/Onboarding/Screens/Onboarding/Components/FollowedArtistsBank"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
-import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/OnboardingSearchResults"
+import { OnboardingSearchResultsScreen } from "app/Scenes/Onboarding/Screens/Onboarding/Components/OnboardingSearchResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
+import { useOnboardingTracking } from "app/utils/hooks/useOnboardingTracking"
 import { useState } from "react"
 import { KeyboardController, KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -124,7 +124,6 @@ export const FollowArtists: React.FC = () => {
           {debouncedValue.length >= 2 ? (
             <OnboardingSearchResultsScreen
               term={debouncedValue}
-              entities="ARTIST"
               onArtistFollowed={handleArtistFollowed}
               onArtistUnfollowed={handleArtistUnfollowed}
             />

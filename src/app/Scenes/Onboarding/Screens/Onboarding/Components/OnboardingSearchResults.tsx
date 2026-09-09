@@ -3,22 +3,19 @@ import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_ar
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { ArtistListItemNew } from "app/Components/ArtistListItemNew"
 import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { ONBOARDING_AVATAR_SIZE as AVATAR_SIZE } from "app/Scenes/Onboarding/Screens/constants"
 import { OnboardingFollowedArtist } from "app/store/OnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
+import { useOnboardingTracking } from "app/utils/hooks/useOnboardingTracking"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { ArtistListItemNew } from "./Components/ArtistListItem"
-import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
-import { useOnboardingContext } from "./Hooks/useOnboardingContext"
-import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 
 interface OnboardingSearchResultsProps {
-  entities: "ARTIST" | "PROFILE"
   term: string
   onArtistFollowed?: (
     artistRef: ArtistListItemNew_artist$key,
@@ -29,19 +26,16 @@ interface OnboardingSearchResultsProps {
 }
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
-  entities,
   term,
   onArtistFollowed,
   onArtistUnfollowed,
 }) => {
-  const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
-  const { dispatch } = useOnboardingContext()
+  const { trackArtistFollow } = useOnboardingTracking()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
     OnboardingSearchResultsScreenQuery,
     {
       term,
-      entities: [entities],
       imageSize: AVATAR_SIZE,
     }
   )
@@ -62,65 +56,34 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
         paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
-      keyExtractor={(item, index) => {
-        switch (item.__typename) {
-          case "Artist":
-            return item.internalID
-          case "Profile":
-            return item.internalID
-          default:
-            return item.__typename + index
-        }
-      }}
+      keyExtractor={(item, index) => (item.__typename === "Artist" ? item.internalID : `${index}`)}
       renderItem={({ item }) => {
-        switch (item.__typename) {
-          case "Artist":
-            return (
-              <ArtistListItemNew
-                onFollow={() => {
-                  trackArtistFollow(false, item.internalID, item.slug)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
-                  onArtistFollowed?.(
-                    item,
-                    {
-                      internalID: item.internalID,
-                      imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
-                      blurhash: item.coverArtwork?.image?.blurhash ?? null,
-                      initials: item.initials ?? null,
-                    },
-                    item.slug
-                  )
-                }}
-                onUnfollow={() => {
-                  trackArtistFollow(true, item.internalID, item.slug)
-                  onArtistUnfollowed?.(item.internalID)
-                }}
-                artist={item}
-              />
-            )
-          case "Profile": {
-            const partner = item.owner
-
-            if (!partner || partner.__typename !== "Partner") {
-              return null
-            }
-
-            return (
-              <OnboardingPartnerListItem
-                partner={partner}
-                onFollow={() => {
-                  trackGalleryFollow(false, item.internalID, item.slug)
-                  dispatch({ type: "FOLLOW", payload: item.internalID })
-                }}
-                onUnfollow={() => {
-                  trackGalleryFollow(true, item.internalID, item.slug)
-                }}
-              />
-            )
-          }
-          default:
-            return null
+        if (item.__typename !== "Artist") {
+          return null
         }
+
+        return (
+          <ArtistListItemNew
+            onFollow={() => {
+              trackArtistFollow(false, item.internalID, item.slug)
+              onArtistFollowed?.(
+                item,
+                {
+                  internalID: item.internalID,
+                  imageUrl: item.coverArtwork?.image?.cropped?.src ?? null,
+                  blurhash: item.coverArtwork?.image?.blurhash ?? null,
+                  initials: item.initials ?? null,
+                },
+                item.slug
+              )
+            }}
+            onUnfollow={() => {
+              trackArtistFollow(true, item.internalID, item.slug)
+              onArtistUnfollowed?.(item.internalID)
+            }}
+            artist={item}
+          />
+        )
       }}
       ListEmptyComponent={
         <>
@@ -139,7 +102,6 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({
 }
 
 export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProps> = ({
-  entities,
   term,
   onArtistFollowed,
   onArtistUnfollowed,
@@ -148,7 +110,6 @@ export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProp
     <Suspense fallback={<Placeholder />}>
       <OnboardingSearchResults
         term={term}
-        entities={entities}
         onArtistFollowed={onArtistFollowed}
         onArtistUnfollowed={onArtistUnfollowed}
       />
@@ -157,14 +118,9 @@ export const OnboardingSearchResultsScreen: React.FC<OnboardingSearchResultsProp
 }
 
 const OnboardingSearchResultsScreenQuery = graphql`
-  query OnboardingSearchResultsQuery(
-    $term: String!
-    $entities: [SearchEntity!]!
-    $imageSize: Int!
-  ) {
+  query OnboardingSearchResultsQuery($term: String!, $imageSize: Int!) {
     viewer {
-      ...OnboardingSearchResults_viewer
-        @arguments(term: $term, entities: $entities, imageSize: $imageSize)
+      ...OnboardingSearchResults_viewer @arguments(term: $term, imageSize: $imageSize)
     }
   }
 `
@@ -174,14 +130,13 @@ const OnboardingSearchResultsFragment = graphql`
   @refetchable(queryName: "OnboardingSearchResults_viewerRefetch")
   @argumentDefinitions(
     term: { type: "String!" }
-    entities: { type: "[SearchEntity!]!" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
     imageSize: { type: "Int!" }
   ) {
     matchConnection(
       term: $term
-      entities: $entities
+      entities: [ARTIST]
       first: $count
       after: $after
       mode: AUTOSUGGEST
@@ -204,17 +159,6 @@ const OnboardingSearchResultsFragment = graphql`
               }
             }
             ...ArtistListItemNew_artist @arguments(imageSize: $imageSize)
-          }
-          ... on Profile {
-            internalID
-            slug
-            isFollowed
-            owner {
-              __typename
-              ... on Partner {
-                ...OnboardingPartnerListItem_partner
-              }
-            }
           }
         }
       }

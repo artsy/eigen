@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/Screens/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { useOnboardingTracking } from "app/utils/hooks/useOnboardingTracking"
 import { useTracking } from "react-tracking"
 
 jest.mock("react-tracking")
@@ -24,50 +24,6 @@ describe("useOnboardingTracking", () => {
     }))
   })
 
-  describe("user input event", () => {
-    it.each<
-      [
-        "trackAnsweredQuestionOne" | "trackAnsweredQuestionTwo" | "trackAnsweredQuestionThree",
-        ActionType,
-        ContextModule,
-        string | string[],
-      ]
-    >([
-      [
-        "trackAnsweredQuestionOne",
-        ActionType.onboardingUserInputData,
-        ContextModule.onboardingCollectorLevel,
-        "question 1 test response",
-      ],
-      [
-        "trackAnsweredQuestionTwo",
-        ActionType.onboardingUserInputData,
-        ContextModule.onboardingInterests,
-        ["question 2 test response 0", "question 2 test response 1"],
-      ],
-      [
-        "trackAnsweredQuestionThree",
-        ActionType.onboardingUserInputData,
-        ContextModule.onboardingActivity,
-        "question 3 test response",
-      ],
-    ])(
-      "%s calls trackEvent with the expected payload",
-      (key, actionType, contextModule, response) => {
-        const { [key]: fn } = useOnboardingTracking()
-
-        // @ts-expect-error
-        fn(response)
-
-        expect(trackEventMock).toHaveBeenCalledWith({
-          action: actionType,
-          context_module: contextModule,
-          data_input: typeof response === "string" ? response : response.join(),
-        })
-      }
-    )
-  })
-
   describe("start / end event", () => {
     it.each<["trackCompletedOnboarding" | "trackStartedOnboarding", ActionType]>([
       ["trackCompletedOnboarding", ActionType.completedOnboarding],
@@ -84,7 +40,7 @@ describe("useOnboardingTracking", () => {
   describe("follow event", () => {
     it.each<
       [
-        "trackArtistFollow" | "trackGalleryFollow" | "trackGeneFollow",
+        "trackArtistFollow" | "trackGalleryFollow",
         ActionType,
         ContextModule,
         string,
@@ -112,15 +68,6 @@ describe("useOnboardingTracking", () => {
         OwnerType.partner,
       ],
       [
-        "trackGeneFollow",
-        ActionType.followedGene,
-        ContextModule.onboardingFlow,
-        "gene-test-id",
-        false,
-        OwnerType.savesAndFollows,
-        OwnerType.gene,
-      ],
-      [
         "trackArtistFollow",
         ActionType.unfollowedArtist,
         ContextModule.onboardingFlow,
@@ -137,15 +84,6 @@ describe("useOnboardingTracking", () => {
         true,
         OwnerType.savesAndFollows,
         OwnerType.partner,
-      ],
-      [
-        "trackGeneFollow",
-        ActionType.unfollowedGene,
-        ContextModule.onboardingFlow,
-        "gene-test-id",
-        true,
-        OwnerType.savesAndFollows,
-        OwnerType.gene,
       ],
     ])(
       "%s calls trackEvent with the expected payload",

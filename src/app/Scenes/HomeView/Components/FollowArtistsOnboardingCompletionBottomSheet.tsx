@@ -7,7 +7,6 @@ import {
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { MotiView } from "moti"
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Platform, Pressable, StyleSheet } from "react-native"
@@ -24,7 +23,6 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const followedOnboardingArtists = GlobalStore.useAppState(
     (state) => state.onboarding.followedOnboardingArtists
   )
-  const isExperienceOnboardingEnabled = useFeatureFlag("AREnableExperienceBasedOnboarding")
   const [isVisible, setIsVisible] = useState(false)
 
   const bottomSheetViewStyles = Platform.OS === "ios" ? { flex: 1 } : {}
@@ -33,10 +31,10 @@ export const FollowArtistsOnboardingCompletionBottomSheet = () => {
   const numberOfPages = 2
 
   useEffect(() => {
-    if (showFollowedArtistSummaryBottomSheet && isExperienceOnboardingEnabled) {
+    if (showFollowedArtistSummaryBottomSheet) {
       setIsVisible(true)
     }
-  }, [showFollowedArtistSummaryBottomSheet, isExperienceOnboardingEnabled])
+  }, [showFollowedArtistSummaryBottomSheet])
 
   const handleDismiss = () => {
     setIsVisible(false)

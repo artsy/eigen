@@ -133,11 +133,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
-  ARShowOnboardingPriceRangeScreen: {
-    readyForRelease: true,
-    description: "Show onboarding price range screen",
-    echoFlagKey: "ARShowOnboardingPriceRangeScreen",
-  },
   AREnableRedirectForVideoFeatureType: {
     readyForRelease: true,
     description: "Enable Redirecting feature pages with video to webviews",
@@ -152,12 +147,6 @@ export const features = {
     readyForRelease: true,
     description: "Enable expanded city list in City Guide",
     echoFlagKey: "AREnableExpandedCityGuide",
-  },
-  AREnableExperienceBasedOnboarding: {
-    readyForRelease: true,
-    description: "Enable experience-based onboarding",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableExperienceBasedOnboarding",
   },
   AREnableConversationPartnerOffers: {
     readyForRelease: true,

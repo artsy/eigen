@@ -57,12 +57,6 @@ export const DevTools: React.FC<{}> = () => {
             })}
 
           <DevMenuButtonItem
-            title="Open Art Quiz"
-            onPress={() => {
-              dismissModal(() => navigate("/art-quiz"))
-            }}
-          />
-          <DevMenuButtonItem
             title="Open Artsy Lens"
             onPress={() => {
               dismissModal(() => navigate("/lens"))
