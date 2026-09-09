@@ -262,6 +262,7 @@ export const MyCollectionBottomSheetModal: React.FC<{
     snapPoints={SNAP_POINTS}
     enableDynamicSizing={false}
     onDismiss={onDismiss}
+    sentryName="MyCollectionBottomSheetModal"
   >
     <BottomSheetView>
       <MyCollectionBottomSheetModalArtistPreviewQueryRenderer

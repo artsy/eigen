@@ -1,4 +1,3 @@
-import BottomSheet from "@gorhom/bottom-sheet"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
@@ -10,9 +9,7 @@ describe("MyCollectionBottomSheetModalAdd", () => {
   const TestRenderer = () => {
     return (
       <MyCollectionTabsStoreProvider injections={{ view: "Add" }}>
-        <BottomSheet index={0} snapPoints={["50%"]}>
-          <MyCollectionBottomSheetModalAdd />
-        </BottomSheet>
+        <MyCollectionBottomSheetModalAdd isVisible />
       </MyCollectionTabsStoreProvider>
     )
   }
