@@ -19,6 +19,7 @@ import {
 } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
+import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
@@ -365,6 +366,17 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ActivityItemQuery],
+  },
+  {
+    path: "/art-assistant",
+    name: "ArtAssistant",
+    Component: ArtAssistant,
+    options: {
+      hidesBottomTabs: true,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/article/:articleID",

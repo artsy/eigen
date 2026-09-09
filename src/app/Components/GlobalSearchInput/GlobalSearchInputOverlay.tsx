@@ -1,7 +1,15 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  RoundSearchInput,
+  SEARCH_INPUT_CONTAINER_BORDER_RADIUS,
+  Spacer,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
+import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
@@ -17,6 +25,7 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { TrendingSearches } from "app/Scenes/Search/TrendingSearches/TrendingSearches"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
@@ -118,6 +127,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
   const enableArtsyLens = useEnableArtsyLens()
+  const showArtAssistant = useExperimentFlag("onyx_art-assistant-app")
   const tracking = useTracking()
 
   useBackHandler(() => {
@@ -168,24 +178,32 @@ export const GlobalSearchInputOverlay: React.FC<{
           backgroundColor="mono0"
           style={{ top: insets.top, marginBottom: insets.bottom }}
         >
-          <Flex px={2} mt={2}>
-            <Flex>
-              <RoundSearchInput
-                placeholder={SEARCH_INPUT_PLACEHOLDER}
-                accessibilityHint="Search artists, artworks, galleries etc."
-                accessibilityLabel="Search artists, artworks, galleries etc."
-                maxLength={55}
-                numberOfLines={1}
-                onChangeText={setQuery}
-                autoFocus
-                multiline={false}
-                onLeftIconPress={() => {
-                  hideModal()
-                }}
-              />
+          <Flex px={2} mt={2} flexDirection="row" alignItems="center" gap={1}>
+            <Flex
+              flex={1}
+              flexDirection="row"
+              backgroundColor="mono5"
+              borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
+            >
+              <Flex flex={1}>
+                <RoundSearchInput
+                  placeholder={SEARCH_INPUT_PLACEHOLDER}
+                  accessibilityHint="Search artists, artworks, galleries etc."
+                  accessibilityLabel="Search artists, artworks, galleries etc."
+                  maxLength={55}
+                  numberOfLines={1}
+                  onChangeText={setQuery}
+                  autoFocus
+                  multiline={false}
+                  onLeftIconPress={() => {
+                    hideModal()
+                  }}
+                />
+              </Flex>
 
               {!!enableArtsyLens && !query && (
                 <SearchByPhotoIconButton
+                  inline
                   testID="search-overlay-camera-icon"
                   onPress={() => {
                     tracking.trackEvent(
@@ -201,6 +219,16 @@ export const GlobalSearchInputOverlay: React.FC<{
                 />
               )}
             </Flex>
+
+            {!!showArtAssistant && (
+              <ArtAssistantSearchButton
+                testID="art-assistant-search-overlay-button"
+                onPress={() => {
+                  hideModal()
+                  navigate("/art-assistant")
+                }}
+              />
+            )}
           </Flex>
 
           <Spacer y={2} />

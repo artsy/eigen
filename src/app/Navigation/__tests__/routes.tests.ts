@@ -41,6 +41,18 @@ describe("artsy.net routes", () => {
     expect(lensRoute?.options?.hidesBottomTabs).toBe(true)
   })
 
+  it("routes to Art Assistant inside the active tab stack while hiding the bottom tabs", () => {
+    const artAssistantRoute = artsyDotNetRoutes.find((route) => route.name === "ArtAssistant")
+
+    expect(matchRoute("/art-assistant")).toEqual({
+      module: "ArtAssistant",
+      params: {},
+      type: "match",
+    })
+    expect(artAssistantRoute?.options?.alwaysPresentModally).toBeUndefined()
+    expect(artAssistantRoute?.options?.hidesBottomTabs).toBe(true)
+  })
+
   it("routes to Inbox", () => {
     expect(matchRoute("/inbox")).toMatchInlineSnapshot(`
       {

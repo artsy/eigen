@@ -94,6 +94,41 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
     })
   })
 
+  describe("the Art Assistant entry point", () => {
+    it("is hidden when its experiment is off", () => {
+      mockUseExperimentFlag.mockReturnValue(false)
+
+      renderOverlay()
+
+      expect(screen.queryByTestId("art-assistant-search-overlay-button")).not.toBeOnTheScreen()
+    })
+
+    it("dismisses the overlay and navigates to Art Assistant", () => {
+      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_art-assistant-app")
+      const hideModal = jest.fn()
+
+      renderOverlay({ hideModal })
+
+      fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+
+      expect(hideModal).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/art-assistant")
+    })
+
+    it("stays available while the user types a search query", () => {
+      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_art-assistant-app")
+
+      renderOverlay()
+
+      fireEvent.changeText(
+        screen.getByLabelText("Search artists, artworks, galleries etc."),
+        "banksy"
+      )
+
+      expect(screen.getByTestId("art-assistant-search-overlay-button")).toBeOnTheScreen()
+    })
+  })
+
   describe("the camera icon inside the input", () => {
     it("carries the icon over from the collapsed search bar", () => {
       mockUseExperimentFlag.mockImplementation((key) => key === "onyx_artsy-lens")
