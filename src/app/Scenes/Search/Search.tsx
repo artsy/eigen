@@ -5,12 +5,16 @@ import { StackScreenProps } from "@react-navigation/stack"
 import * as Sentry from "@sentry/react-native"
 import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
+import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
@@ -46,6 +50,7 @@ export const Search: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
+  const showArtAssistant = useExperimentFlag("onyx_art-assistant-app")
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
@@ -89,8 +94,14 @@ export const Search: React.FC = () => {
 
   return (
     <KeyboardAvoidingContainer>
-      <Flex px={2} mt={2}>
-        <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
+      <Flex px={2} mt={2} flexDirection="row" alignItems="center" gap={1}>
+        <Flex flex={1}>
+          <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
+        </Flex>
+
+        {!!showArtAssistant && (
+          <ArtAssistantSearchButton onPress={() => navigate("/art-assistant")} />
+        )}
       </Flex>
 
       <Flex flex={1} collapsable={false}>
