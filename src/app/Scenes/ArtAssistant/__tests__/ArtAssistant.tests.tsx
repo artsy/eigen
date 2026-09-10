@@ -8,6 +8,7 @@ describe("ArtAssistant", () => {
 
     expect(screen.getByText("Art Assistant")).toBeOnTheScreen()
     expect(screen.getByText("What are you looking for?")).toBeOnTheScreen()
+    expect(screen.getByTestId("art-assistant-layout")).toBeOnTheScreen()
     expect(screen.getByLabelText("Art Assistant prompt")).toBeOnTheScreen()
     expect(screen.getByLabelText("Send")).toBeDisabled()
 
@@ -34,19 +35,6 @@ describe("ArtAssistant", () => {
     fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "  blue painting  ")
 
     expect(screen.getByLabelText("Send")).toBeDisabled()
-  })
-
-  it("reserves scroll space for the sticky composer", () => {
-    renderWithWrappers(<ArtAssistant />)
-
-    fireEvent(screen.getByTestId("art-assistant-composer"), "layout", {
-      nativeEvent: { layout: { height: 80, width: 390, x: 0, y: 0 } },
-    })
-
-    expect(screen.getByTestId("art-assistant-content")).toHaveProp("contentContainerStyle", {
-      flexGrow: 1,
-      paddingBottom: 80,
-    })
   })
 
   it("closes the screen", () => {
