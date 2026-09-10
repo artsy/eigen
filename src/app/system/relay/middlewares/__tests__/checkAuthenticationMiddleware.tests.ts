@@ -80,6 +80,26 @@ describe(checkAuthenticationMiddleware, () => {
     )
   })
 
+  it("does not emit a recovered event if a transient 401 is followed by a non-401 error", async () => {
+    const errors: GraphQLResponseErrors = [
+      { message: "The access token is invalid or has expired." },
+    ]
+    // @ts-ignore
+    const relayResponse: RelayNetworkLayerResponse = { errors }
+
+    const next: MiddlewareNextFn = () => Promise.resolve(relayResponse)
+    fetchMock.mockResponseOnce("", { status: 401 })
+    fetchMock.mockResponseOnce("", { status: 500 })
+    await middleware(next)(request)
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).not.toContain(
+      "@thunk.auth.signOut(success)"
+    )
+    expect(captureMessageMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("recovered after transient 401"),
+      expect.anything()
+    )
+  })
+
   it("only emits one recovered event per token across concurrent recoveries", async () => {
     const errors: GraphQLResponseErrors = [
       { message: "The access token is invalid or has expired." },

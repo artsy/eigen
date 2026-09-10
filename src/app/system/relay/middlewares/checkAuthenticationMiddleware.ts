@@ -26,7 +26,10 @@ const checkSession = async (gravityURL: string, token: string): Promise<SessionC
       },
     })
     if (result.status !== 401) {
-      return { expired: false, recoveredAfterTransient401: sawTransient401, attempts: attempt + 1 }
+      // Only a genuine 2xx confirms the session recovered; a non-401 error (e.g. 500)
+      // tells us nothing, so don't count it as a recovery.
+      const recovered = sawTransient401 && result.ok
+      return { expired: false, recoveredAfterTransient401: recovered, attempts: attempt + 1 }
     }
     sawTransient401 = true
     if (attempt < ME_CHECK_MAX_ATTEMPTS - 1) {
