@@ -1,8 +1,17 @@
 import { ActionType, ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, RoundSearchInput, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  RoundSearchInput,
+  SEARCH_INPUT_CONTAINER_BORDER_RADIUS,
+  SEARCH_INPUT_CONTAINER_HEIGHT,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlay"
 import { useDismissSearchOverlayOnTabBarPress } from "app/Components/GlobalSearchInput/utils/useDismissSearchOverlayOnTabBarPress"
-import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
+import {
+  SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH,
+  SearchByPhotoIconButton,
+} from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 // eslint-disable-next-line no-restricted-imports
@@ -47,7 +56,11 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
 
     return (
       <Fragment>
-        <Flex>
+        <Flex
+          backgroundColor="mono5"
+          borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
+          flexDirection="row"
+        >
           <Touchable
             accessibilityRole="button"
             onPress={() => {
@@ -59,6 +72,7 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
               setIsVisible(true)
             }}
             hitSlop={ICON_HIT_SLOP}
+            style={{ flex: 1 }}
             testID="search-button"
           >
             <Flex pointerEvents="none">
@@ -74,18 +88,25 @@ export const GlobalSearchInput = forwardRef<GlobalSearchInput, GlobalSearchInput
           </Touchable>
 
           {!!enableArtsyLens && (
-            <SearchByPhotoIconButton
-              onPress={() => {
-                tracking.trackEvent(
-                  tappedSearchByImage({
-                    contextModule: ContextModule.header,
-                    contextScreenOwnerType: ownerType,
-                    type: "search_input_icon",
-                  })
-                )
-                navigate("/lens")
-              }}
-            />
+            <Flex
+              alignItems="center"
+              height={SEARCH_INPUT_CONTAINER_HEIGHT}
+              justifyContent="center"
+              width={SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH}
+            >
+              <SearchByPhotoIconButton
+                onPress={() => {
+                  tracking.trackEvent(
+                    tappedSearchByImage({
+                      contextModule: ContextModule.header,
+                      contextScreenOwnerType: ownerType,
+                      type: "search_input_icon",
+                    })
+                  )
+                  navigate("/lens")
+                }}
+              />
+            </Flex>
           )}
         </Flex>
 

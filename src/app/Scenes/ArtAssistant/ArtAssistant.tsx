@@ -116,9 +116,9 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
             alignItems="center"
             backgroundColor="background"
             gap={1}
+            pb={`${bottom + composerKeyboardGap}px`}
             px={2}
             pt={1}
-            style={{ paddingBottom: bottom + composerKeyboardGap }}
           >
             <Flex
               flex={1}
