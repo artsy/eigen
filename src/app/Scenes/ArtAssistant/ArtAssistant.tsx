@@ -10,9 +10,9 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
+import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useState } from "react"
-import { LayoutChangeEvent, StyleSheet } from "react-native"
-import { KeyboardStickyView } from "react-native-keyboard-controller"
+import { StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const ART_ASSISTANT_SUGGESTIONS = [
@@ -30,12 +30,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
-  const [composerHeight, setComposerHeight] = useState(0)
   const composerKeyboardGap = space(1)
-
-  const handleComposerLayout = (event: LayoutChangeEvent) => {
-    setComposerHeight(event.nativeEvent.layout.height)
-  }
 
   return (
     <Screen>
@@ -55,9 +50,9 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
         }
       />
 
-      <Flex flex={1}>
+      <KeyboardAvoidingContainer automaticOffset testID="art-assistant-layout">
         <Screen.ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: composerHeight }}
+          contentContainerStyle={{ flexGrow: 1 }}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           style={{ flex: 1 }}
@@ -106,69 +101,64 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           </Flex>
         </Screen.ScrollView>
 
-        <KeyboardStickyView
-          offset={{ opened: bottom }}
-          onLayout={handleComposerLayout}
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          backgroundColor="background"
+          gap={1}
+          pb={`${bottom + composerKeyboardGap}px`}
+          px={2}
+          pt={1}
           testID="art-assistant-composer"
         >
           <Flex
-            flexDirection="row"
-            alignItems="center"
-            backgroundColor="background"
-            gap={1}
-            pb={`${bottom + composerKeyboardGap}px`}
+            flex={1}
+            borderColor="mono15"
+            borderRadius={50}
+            borderWidth={StyleSheet.hairlineWidth}
+            minHeight={50}
+            justifyContent="center"
             px={2}
-            pt={1}
+          >
+            <Input
+              accessibilityLabel="Art Assistant prompt"
+              multiline
+              onChangeText={setPrompt}
+              placeholder="Tell us what you'd like..."
+              placeholderTextColor={color("mono60")}
+              style={{
+                borderWidth: 0,
+                height: undefined,
+                maxHeight: 100,
+                minHeight: 50,
+                paddingHorizontal: 0,
+              }}
+              value={prompt}
+            />
+          </Flex>
+
+          <Touchable
+            accessibilityLabel="Send"
+            accessibilityRole="button"
+            accessibilityState={{ disabled: true }}
+            disabled
+            style={{ borderRadius: 50, overflow: "hidden" }}
           >
             <Flex
-              flex={1}
-              borderColor="mono15"
+              alignItems="center"
+              backgroundColor="mono30"
               borderRadius={50}
-              borderWidth={StyleSheet.hairlineWidth}
-              minHeight={50}
+              height={50}
               justifyContent="center"
               px={2}
             >
-              <Input
-                accessibilityLabel="Art Assistant prompt"
-                multiline
-                onChangeText={setPrompt}
-                placeholder="Tell us what you'd like..."
-                placeholderTextColor={color("mono60")}
-                style={{
-                  borderWidth: 0,
-                  height: undefined,
-                  maxHeight: 100,
-                  minHeight: 50,
-                  paddingHorizontal: 0,
-                }}
-                value={prompt}
-              />
+              <Text variant="sm" color="mono0">
+                Send
+              </Text>
             </Flex>
-
-            <Touchable
-              accessibilityLabel="Send"
-              accessibilityRole="button"
-              accessibilityState={{ disabled: true }}
-              disabled
-              style={{ borderRadius: 50, overflow: "hidden" }}
-            >
-              <Flex
-                alignItems="center"
-                backgroundColor="mono30"
-                borderRadius={50}
-                height={50}
-                justifyContent="center"
-                px={2}
-              >
-                <Text variant="sm" color="mono0">
-                  Send
-                </Text>
-              </Flex>
-            </Touchable>
-          </Flex>
-        </KeyboardStickyView>
-      </Flex>
+          </Touchable>
+        </Flex>
+      </KeyboardAvoidingContainer>
     </Screen>
   )
 }
