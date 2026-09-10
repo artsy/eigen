@@ -9,6 +9,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
@@ -126,22 +127,40 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
           height={NAVBAR_HEIGHT}
           justifyContent="center"
           px={2}
+          // Full width only on the map, where the row also carries the itinerary picker at
+          // its right. In list mode it stays as wide as the back button so it does not
+          // swallow taps meant for the header beneath it.
+          {...(isMapView ? { left: 0, right: 0 } : {})}
         >
           {/*
             On the map, back means "back to the list" rather than "leave the guide". The
             map is a mode of this screen, not a screen of its own, so popping the whole
             route would skip the itinerary the user came from.
           */}
-          <BackButtonWithBackground
-            onPress={() => {
-              if (isMapView) {
-                setIsMapView(false)
-                return
-              }
+          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+            <BackButtonWithBackground
+              onPress={() => {
+                if (isMapView) {
+                  setIsMapView(false)
+                  return
+                }
 
-              goBack()
-            }}
-          />
+                goBack()
+              }}
+            />
+
+            {/*
+              Only on the map, where the designs put it. The list already names the itinerary
+              in its own header.
+            */}
+            {!!isMapView && (
+              <ItineraryPicker
+                citySlug={itinerary.citySlug}
+                currentItineraryId={itinerary.id}
+                currentItineraryName={itinerary.title}
+              />
+            )}
+          </Flex>
         </Flex>
 
         <Screen.Body fullwidth>
