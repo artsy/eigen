@@ -5,11 +5,16 @@ import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/Globa
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
   useExperimentFlag: jest.fn(),
+}))
+
+jest.mock("app/utils/hooks/useEnableArtAssistant", () => ({
+  useEnableArtAssistant: jest.fn(),
 }))
 
 jest.mock("app/utils/hooks/useSelectedTab", () => ({
@@ -38,6 +43,7 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.mocked(useEnableArtAssistant).mockReturnValue(false)
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
   })
 
@@ -104,7 +110,7 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
     })
 
     it("dismisses the overlay and navigates to Art Assistant", () => {
-      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_art-assistant-app")
+      jest.mocked(useEnableArtAssistant).mockReturnValue(true)
       const hideModal = jest.fn()
 
       renderOverlay({ hideModal })
@@ -116,7 +122,7 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
     })
 
     it("stays available while the user types a search query", () => {
-      mockUseExperimentFlag.mockImplementation((key) => key === "onyx_art-assistant-app")
+      jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
       renderOverlay()
 

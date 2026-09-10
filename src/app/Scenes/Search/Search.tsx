@@ -12,10 +12,10 @@ import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomet
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
@@ -50,7 +50,7 @@ export const Search: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const showArtAssistant = useExperimentFlag("onyx_art-assistant-app")
+  const showArtAssistant = useEnableArtAssistant()
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
