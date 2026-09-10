@@ -108,59 +108,127 @@ jobs:
               --generate-notes \
               --notes "$(printf "%s\n\n%s\n\n%s" "$sentry_header" "$sentry_footer" "$sentry_mobile_vitals_details")"
 
-  create-sentry-alerts:
+  sentry-alert-workflow:
     needs: generate-release
+    runs-on: ubuntu-latest
+    outputs:
+      workflow_id: ${{ steps.find_or_create.outputs.workflow_id }}
+
+    steps:
+      - name: Find or create Mobile Release Crash Rate workflow
+        id: find_or_create
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
+        run: |
+          set -o pipefail
+
+          # Reuse the alert across releases so the Slack action isn't recreated every time -
+          # only the per-release detector (crash rate thresholds) is release-specific.
+          workflow_name="Mobile Release Crash Rate"
+
+          existing_id=$(curl --fail-with-body -s -X GET "https://sentry.io/api/0/organizations/artsynet/workflows/" \
+            -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+            | jq -r --arg name "$workflow_name" '.[] | select(.name == $name) | .id' | head -n1)
+
+          if [ -n "$existing_id" ]; then
+            echo "Found existing alert '$workflow_name' (id: $existing_id)"
+            workflow_id="$existing_id"
+          else
+            echo "Creating alert '$workflow_name'"
+            workflow_id=$(curl --fail-with-body -X POST "https://sentry.io/api/0/organizations/artsynet/workflows/" \
+              -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              -d "{
+                \"name\": \"$workflow_name\",
+                \"enabled\": true,
+                \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
+                \"triggers\": { \"logicType\": \"any-short\", \"conditions\": [] },
+                \"action_filters\": [
+                  {
+                    \"logicType\": \"any\",
+                    \"conditions\": [
+                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 75, \"conditionResult\": true },
+                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 75, \"conditionResult\": true }
+                    ],
+                    \"actions\": [
+                      {
+                        \"type\": \"slack\",
+                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
+                        \"config\": {
+                          \"targetType\": \"specific\",
+                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                          \"targetDisplay\": \"#mobile-alerts\"
+                        },
+                        \"data\": {},
+                        \"status\": \"active\"
+                      }
+                    ]
+                  },
+                  {
+                    \"logicType\": \"any\",
+                    \"conditions\": [
+                      { \"type\": \"issue_priority_greater_or_equal\", \"comparison\": 50, \"conditionResult\": true },
+                      { \"type\": \"issue_priority_deescalating\", \"comparison\": 50, \"conditionResult\": true }
+                    ],
+                    \"actions\": [
+                      {
+                        \"type\": \"slack\",
+                        \"integrationId\": \"${{ env.SENTRY_SLACK_INTEGRATION_ID }}\",
+                        \"config\": {
+                          \"targetType\": \"specific\",
+                          \"targetIdentifier\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
+                          \"targetDisplay\": \"#mobile-alerts\"
+                        },
+                        \"data\": {},
+                        \"status\": \"active\"
+                      }
+                    ]
+                  }
+                ]
+              }" | jq -r '.id')
+            echo "Created alert '$workflow_name' (id: $workflow_id)"
+          fi
+
+          echo "workflow_id=$workflow_id" >> "$GITHUB_OUTPUT"
+
+  create-sentry-alerts:
+    needs: [generate-release, sentry-alert-workflow]
     runs-on: ubuntu-latest
     strategy:
       matrix:
         release_version: ${{ fromJson(needs.generate-release.outputs.sentry_release_versions) }}
 
     steps:
-      - name: Create Sentry crash rate alert
+      - name: Create Sentry crash rate monitor
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN_ALERTS }}
         run: |
-          curl --fail-with-body -X POST https://sentry.io/api/0/organizations/artsynet/alert-rules/ \
+          curl --fail-with-body -X POST https://sentry.io/api/0/organizations/artsynet/projects/eigen/detectors/ \
             -H "Authorization: Bearer ${SENTRY_AUTH_TOKEN}" \
             -H 'Content-Type: application/json' \
             -d "{
               \"name\": \"Release Crashes Threshold - ${{ matrix.release_version }}\",
-              \"queryType\": 2,
-              \"dataset\": \"metrics\",
-              \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
-              \"query\": \"release:${{ matrix.release_version }}\",
-              \"timeWindow\": 120,
-              \"thresholdType\": 1,
-              \"resolveThreshold\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }},
-              \"environment\": \"production\",
-              \"projects\": [\"eigen\"],
+              \"type\": \"metric_issue\",
               \"owner\": \"team:${{ env.SENTRY_OWNER_TEAM }}\",
-              \"triggers\": [
+              \"workflowIds\": [${{ needs.sentry-alert-workflow.outputs.workflow_id }}],
+              \"dataSources\": [
                 {
-                  \"label\": \"critical\",
-                  \"alertThreshold\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }},
-                  \"actions\": [
-                    {
-                      \"type\": \"slack\",
-                      \"targetType\": \"specific\",
-                      \"targetIdentifier\": \"#mobile-alerts\",
-                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
-                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
-                    }
-                  ]
-                },
-                {
-                  \"label\": \"warning\",
-                  \"alertThreshold\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }},
-                  \"actions\": [
-                    {
-                      \"type\": \"slack\",
-                      \"targetType\": \"specific\",
-                      \"targetIdentifier\": \"#mobile-alerts\",
-                      \"inputChannelId\": \"${{ env.SENTRY_SLACK_CHANNEL_ID }}\",
-                      \"integrationId\": ${{ env.SENTRY_SLACK_INTEGRATION_ID }}
-                    }
-                  ]
+                  \"queryType\": 2,
+                  \"dataset\": \"metrics\",
+                  \"aggregate\": \"percentage(sessions_crashed, sessions) AS _crash_rate_alert_aggregate\",
+                  \"query\": \"release:${{ matrix.release_version }}\",
+                  \"timeWindow\": 7200,
+                  \"environment\": \"production\",
+                  \"eventTypes\": []
                 }
-              ]
+              ],
+              \"config\": { \"detectionType\": \"static\" },
+              \"conditionGroup\": {
+                \"logicType\": \"any\",
+                \"conditions\": [
+                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_CRITICAL_THRESHOLD }}, \"conditionResult\": 75 },
+                  { \"type\": \"lt\", \"comparison\": ${{ env.SENTRY_ALERT_WARNING_THRESHOLD }}, \"conditionResult\": 50 },
+                  { \"type\": \"gte\", \"comparison\": ${{ env.SENTRY_ALERT_RESOLVE_THRESHOLD }}, \"conditionResult\": 0 }
+                ]
+              }
             }"
