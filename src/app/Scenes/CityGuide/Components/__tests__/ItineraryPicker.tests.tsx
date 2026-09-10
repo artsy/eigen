@@ -32,11 +32,16 @@ describe("ItineraryPicker", () => {
     expect(await screen.findByText("London Oct 2026")).toBeOnTheScreen()
   })
 
-  // A pill that opens an empty sheet is a button that does nothing.
-  it("does not offer switching with only one itinerary", async () => {
+  // It used to be gated on having more than one, which read as a dead button for anyone with
+  // exactly one — the common case while nothing can create them yet.
+  it("still opens with only one itinerary", async () => {
     renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
 
-    expect(await screen.findByTestId("itinerary-picker")).toBeDisabled()
+    expect(await screen.findByTestId("itinerary-picker")).not.toBeDisabled()
+
+    fireEvent.press(screen.getByTestId("itinerary-picker"))
+
+    expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
   })
 
   it("lists the others once there is more than one", async () => {

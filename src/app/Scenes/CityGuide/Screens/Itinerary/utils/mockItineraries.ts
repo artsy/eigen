@@ -13,6 +13,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "chill-vibes-only",
     citySlug: "london-united-kingdom",
+    isCurated: true,
     title: "Chill Vibes Only",
     subtitle: "Top picks",
     heroImageUrl: "https://picsum.photos/id/1015/800/600.jpg",
@@ -147,6 +148,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "36-hours-in-london",
     citySlug: "london-united-kingdom",
+    isCurated: true,
     title: "36 Hours in London",
     subtitle: "Top picks",
     heroImageUrl: "https://picsum.photos/id/1016/800/600.jpg",
@@ -364,6 +366,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "must-sees-and-hidden-gems",
     citySlug: "london-united-kingdom",
+    isCurated: true,
     title: "Must Sees & Hidden Gems",
     subtitle: "Top picks",
     heroImageUrl: "https://picsum.photos/id/1024/800/600.jpg",

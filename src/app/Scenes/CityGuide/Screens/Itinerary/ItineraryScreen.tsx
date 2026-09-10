@@ -99,6 +99,10 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
     )
   }
 
+  // Your own itinerary shows no order and no section headings: it is a single unordered list,
+  // so numbering and a section name would both be noise. A curated guide keeps both.
+  const isEditorial = itinerary.isCurated
+
   // Numbering runs continuously across sections, so each needs its running start.
   let runningTotal = 0
   const sectionStartNumbers = itinerary.sections.map((section) => {
@@ -169,7 +173,7 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
               sections={mapSections}
               selectedPlaceId={selectedStopId}
               onSelectPlace={setSelectedStopId}
-              numbered
+              numbered={isEditorial}
               showRoute={showRoute}
               safeArea
             />
@@ -183,7 +187,8 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
                     <ItinerarySectionRow
                       key={section.id}
                       section={section}
-                      startNumber={sectionStartNumbers[index]}
+                      startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
+                      showHeader={isEditorial}
                       onSelectStop={setPreviewStop}
                     />
                   ))}
@@ -263,6 +268,7 @@ const Query = graphql`
   query ItineraryScreenQuery($id: String!) {
     itinerary(id: $id) {
       internalID
+      isCurated
       citySlug
       name
       subtitle

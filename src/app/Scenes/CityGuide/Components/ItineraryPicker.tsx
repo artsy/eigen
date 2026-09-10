@@ -30,9 +30,10 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
   const itineraries = extractNodes(data.me?.itinerariesConnection)
 
-  // With nothing to switch to, the pill would be a button that does nothing. The name still
-  // belongs on screen, so it renders without the chevron or the sheet.
-  const canSwitch = itineraries.length > 1
+  // Always tappable once anything has loaded. It was gated on having more than one
+  // itinerary, which read as a dead button whenever a user had exactly one — the common case
+  // while nothing can create them yet.
+  const canSwitch = itineraries.length > 0
 
   return (
     <>
@@ -62,7 +63,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
             {currentItineraryName}
           </Text>
 
-          {!!canSwitch && <ChevronDownIcon width={CHEVRON_SIZE} height={CHEVRON_SIZE} />}
+          <ChevronDownIcon width={CHEVRON_SIZE} height={CHEVRON_SIZE} />
         </Flex>
       </TouchableOpacity>
 

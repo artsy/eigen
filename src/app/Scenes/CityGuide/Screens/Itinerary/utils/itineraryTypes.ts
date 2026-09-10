@@ -49,6 +49,12 @@ export interface ItinerarySection {
 
 export interface Itinerary {
   id: string
+  /**
+   * Editorial guides are curated; a user's own itinerary is not. The only ownership signal
+   * available — `Query.itinerary` exposes no "is this mine". Drives what the screen hides for
+   * your own itinerary: numbering, section headings and the byline.
+   */
+  isCurated: boolean
   citySlug: string
   title: string
   subtitle: string

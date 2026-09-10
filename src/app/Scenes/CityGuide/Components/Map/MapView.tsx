@@ -202,6 +202,10 @@ export const MapView: React.FC<Props> = ({
     ...sections.map((section) => ({ id: section.id, title: section.title })),
   ]
 
+  // One section is nothing to filter between: "All" and that section show the same pins, so
+  // the row is a control with no effect. Your own itinerary is always a single section.
+  const showPills = sections.length > 1
+
   return (
     <Flex flex={1}>
       <MapboxGL.MapView
@@ -237,42 +241,44 @@ export const MapView: React.FC<Props> = ({
         />
       </MapboxGL.MapView>
 
-      <Flex
-        position="absolute"
-        top={safeArea ? top : 2}
-        left={0}
-        right={0}
-        style={{ paddingTop: pillsTopOffset }}
-        // Measured rather than hardcoded so the scale bar clears the pills on every
-        // device, whatever the safe-area inset and font scale work out to.
-        onLayout={(event) => setOverlayHeight(event.nativeEvent.layout.height)}
-      >
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <Flex flexDirection="row" px={2} gap={1}>
-            {pills.map((pill) => {
-              const isSelected = selectedSectionId === pill.id
+      {!!showPills && (
+        <Flex
+          position="absolute"
+          top={safeArea ? top : 2}
+          left={0}
+          right={0}
+          style={{ paddingTop: pillsTopOffset }}
+          // Measured rather than hardcoded so the scale bar clears the pills on every
+          // device, whatever the safe-area inset and font scale work out to.
+          onLayout={(event) => setOverlayHeight(event.nativeEvent.layout.height)}
+        >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <Flex flexDirection="row" px={2} gap={1}>
+              {pills.map((pill) => {
+                const isSelected = selectedSectionId === pill.id
 
-              return (
-                <Pill
-                  key={pill.id}
-                  // "link" rather than the default variant: the default state declares no
-                  // background-color at all, so over a map the pills are see-through.
-                  variant="link"
-                  selected={isSelected}
-                  color={isSelected ? "mono0" : "mono100"}
-                  onPress={() => {
-                    // Filtering can drop places the rail is currently showing.
-                    dismissClusterRail()
-                    setSelectedSectionId(pill.id)
-                  }}
-                >
-                  {pill.title}
-                </Pill>
-              )
-            })}
-          </Flex>
-        </ScrollView>
-      </Flex>
+                return (
+                  <Pill
+                    key={pill.id}
+                    // "link" rather than the default variant: the default state declares no
+                    // background-color at all, so over a map the pills are see-through.
+                    variant="link"
+                    selected={isSelected}
+                    color={isSelected ? "mono0" : "mono100"}
+                    onPress={() => {
+                      // Filtering can drop places the rail is currently showing.
+                      dismissClusterRail()
+                      setSelectedSectionId(pill.id)
+                    }}
+                  >
+                    {pill.title}
+                  </Pill>
+                )
+              })}
+            </Flex>
+          </ScrollView>
+        </Flex>
+      )}
 
       {/*
         Sits above the list/map toggle, which the screen renders at bottom -50 with a

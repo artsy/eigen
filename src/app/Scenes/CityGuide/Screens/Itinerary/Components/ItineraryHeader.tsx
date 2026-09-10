@@ -29,6 +29,14 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
         />
 
         <Flex p={2}>
+          {/* The designs label your own itinerary above its name. A curated guide has its
+              byline instead, below. */}
+          {!itinerary.isCurated && (
+            <Text variant="xs" color="mono0">
+              Your Itinerary
+            </Text>
+          )}
+
           <Text variant="xl" color="mono0">
             {itinerary.title}
           </Text>
@@ -39,10 +47,19 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
       </Flex>
 
       <Flex px={2} pt={2}>
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Text variant="xs" color="mono60">
-            By {itinerary.authorName}
-          </Text>
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          // Nothing on the left for your own itinerary, so the button keeps the right edge
+          // rather than drifting to the middle of an otherwise empty row.
+          justifyContent={itinerary.isCurated ? "space-between" : "flex-end"}
+        >
+          {/* No byline on your own itinerary: it is all by you. */}
+          {!!itinerary.isCurated && (
+            <Text variant="xs" color="mono60">
+              By {itinerary.authorName}
+            </Text>
+          )}
 
           <ItineraryAddFullListButton citySlug={itinerary.citySlug} itineraryId={itinerary.id} />
         </Flex>

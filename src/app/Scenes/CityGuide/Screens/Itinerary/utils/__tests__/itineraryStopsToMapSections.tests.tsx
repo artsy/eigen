@@ -20,6 +20,7 @@ const makeStop = (overrides: Partial<ItineraryStop> = {}): ItineraryStop => ({
 const makeItinerary = (stops: ItineraryStop[]): Itinerary => ({
   id: "itinerary-1",
   citySlug: "london-united-kingdom",
+  isCurated: true,
   title: "Test Itinerary",
   subtitle: "",
   heroImageUrl: "",

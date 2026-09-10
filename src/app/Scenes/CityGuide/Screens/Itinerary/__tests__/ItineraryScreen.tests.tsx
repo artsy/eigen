@@ -22,6 +22,7 @@ const stop = (n: number) => ({
 
 const ITINERARY = {
   internalID: "chill-vibes-only",
+  isCurated: true,
   citySlug: "london-united-kingdom",
   name: "Chill Vibes Only",
   subtitle: "Top picks",
@@ -113,5 +114,39 @@ describe("ItineraryScreen", () => {
       "src",
       "https://example.com/hero.jpg"
     )
+  })
+
+  describe("your own itinerary", () => {
+    // `isCurated` is the only ownership signal available: Query.itinerary exposes no
+    // "is this mine".
+    const own = { ...ITINERARY, isCurated: false }
+
+    it("labels it Your Itinerary and drops the byline", async () => {
+      renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Your Itinerary")).toBeOnTheScreen()
+      expect(screen.queryByText(/^By /)).not.toBeOnTheScreen()
+    })
+
+    it("shows no stop numbers and no section heading", async () => {
+      renderWithRelay({ Itinerary: () => own }, props)
+
+      await screen.findByText("Stop 1")
+
+      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
+      expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(0)
+      expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("a curated guide", () => {
+    it("keeps its numbering, section headings and byline", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
+      expect(screen.getByText("By Casey Lesser")).toBeOnTheScreen()
+      expect(screen.queryAllByTestId("itinerary-stop-number")).not.toHaveLength(0)
+      expect(screen.queryByText("Your Itinerary")).not.toBeOnTheScreen()
+    })
   })
 })

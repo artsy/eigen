@@ -109,6 +109,7 @@ const toSection = (section: QuerySection, index: number): ItinerarySection => ({
  */
 export const itineraryFromQuery = (itinerary: QueryItinerary): Itinerary => ({
   id: itinerary.internalID,
+  isCurated: itinerary.isCurated,
   citySlug: itinerary.citySlug,
   title: itinerary.name,
   subtitle: itinerary.subtitle ?? "",

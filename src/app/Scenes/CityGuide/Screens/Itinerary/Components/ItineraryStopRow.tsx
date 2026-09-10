@@ -10,25 +10,32 @@ const BULLET_SIZE = 16
 interface Props {
   stop: ItineraryStop
   /** Derived from the flattened stop index by the screen. Never stored on the stop. */
-  number: number
+  /**
+   * Its position in the guide. Absent on your own itinerary, which is a single unordered
+   * list, so no numbered bullet renders at all.
+   */
+  number?: number
   onPress: (stop: ItineraryStop) => void
 }
 
 export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => {
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
-      <Flex
-        width={BULLET_SIZE}
-        height={BULLET_SIZE}
-        borderRadius={BULLET_SIZE / 2}
-        backgroundColor="mono100"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Text variant="xxs" color="mono0">
-          {number}
-        </Text>
-      </Flex>
+      {number !== undefined && (
+        <Flex
+          testID="itinerary-stop-number"
+          width={BULLET_SIZE}
+          height={BULLET_SIZE}
+          borderRadius={BULLET_SIZE / 2}
+          backgroundColor="mono100"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text variant="xxs" color="mono0">
+            {number}
+          </Text>
+        </Flex>
+      )}
 
       {/*
         Only the image and text open the preview. The save control sits outside the
