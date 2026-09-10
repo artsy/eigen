@@ -90,6 +90,10 @@ import {
   CityFairListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CityFairList"
 import {
+  CityItinerariesScreenQuery,
+  CityItinerariesScreenQueryRenderer,
+} from "app/Scenes/CityGuide/Screens/CityItineraries"
+import {
   CitySavedListQueryRenderer,
   CitySavedListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CitySavedList"
@@ -1162,6 +1166,17 @@ export const artsyDotNetRoutes = defineRoutes([
         header: () => {
           return null
         },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itineraries",
+    name: "CityItineraries",
+    Component: CityItinerariesScreenQueryRenderer,
+    queries: [CityItinerariesScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },

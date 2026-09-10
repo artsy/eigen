@@ -74,4 +74,10 @@ transparent). Back chevron left; on the right a pill: 1px `mono100` border, `rad
       render, tapping one opens that itinerary, paginates.
 - [ ] **5. `ItineraryPicker`** in the itinerary map header. Test: shows the current
       itinerary's name, lists the others, selecting one switches.
+- [ ] **7. `ItineraryEditSheet`** (`147:53736`) — a bottom sheet with Name, Notes (200-char
+      counter), the cover image, Save Changes, and a red "Delete Itinerary". `updateItinerary`
+      takes `name` and `description`, so Notes maps to `description`. **Cover image is display
+      only:** changing it needs `arImageID`, which means picking and uploading an ArImage — its
+      own flow, so "Change image" is not wired in this pass. Individual stop designs are
+      deliberately untouched, since they are not finalised.
 - [ ] **6. Verify** — `yarn relay`, `yarn tsc`, eslint, the new tests, and the CityGuide suite.
