@@ -2,8 +2,8 @@ import { CloseIcon, MagicMagnifyingGlassIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
+  Input,
   Screen,
-  THEMES,
   Text,
   Touchable,
   useColor,
@@ -11,7 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { useState } from "react"
-import { LayoutChangeEvent, ScrollView, StyleSheet, TextInput } from "react-native"
+import { LayoutChangeEvent, ScrollView, StyleSheet } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -129,18 +129,18 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               justifyContent="center"
               px={2}
             >
-              <TextInput
+              <Input
                 accessibilityLabel="Art Assistant prompt"
                 multiline
                 onChangeText={setPrompt}
                 placeholder="Tell us what you'd like..."
                 placeholderTextColor={color("mono60")}
                 style={{
-                  ...THEMES.v3.textTreatments.sm,
-                  color: color("mono100"),
-                  fontFamily: THEMES.v3.fonts.sans.regular,
+                  borderWidth: 0,
+                  height: undefined,
                   maxHeight: 100,
-                  padding: 0,
+                  minHeight: 50,
+                  paddingHorizontal: 0,
                 }}
                 value={prompt}
               />
