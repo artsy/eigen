@@ -8,7 +8,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -85,7 +85,7 @@ const CuratedCollectionsPlaceholder = () => {
 }
 
 export const SearchPlaceholder: React.FC = () => {
-  const showArtAssistant = useExperimentFlag("onyx_art-assistant-app")
+  const showArtAssistant = useEnableArtAssistant()
 
   return (
     <ProvidePlaceholderContext>

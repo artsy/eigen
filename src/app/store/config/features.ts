@@ -184,6 +184,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtsyLens",
   },
+  AREnableArtAssistant: {
+    description: "Enable Art Assistant entry points",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtAssistant",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

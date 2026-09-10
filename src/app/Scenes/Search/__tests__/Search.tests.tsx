@@ -2,8 +2,8 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { SearchScreen } from "app/Scenes/Search/Search"
 import { SearchPlaceholder } from "app/Scenes/Search/components/placeholders/SearchPlaceholder"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("lodash/throttle", () => (fn: any) => {
@@ -11,8 +11,8 @@ jest.mock("lodash/throttle", () => (fn: any) => {
   return fn
 })
 
-jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
-  useExperimentFlag: jest.fn(),
+jest.mock("app/utils/hooks/useEnableArtAssistant", () => ({
+  useEnableArtAssistant: jest.fn(),
 }))
 
 jest.mock("app/system/navigation/navigate", () => ({
@@ -22,7 +22,7 @@ jest.mock("app/system/navigation/navigate", () => ({
 describe("Search", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.mocked(useExperimentFlag).mockReturnValue(false)
+    jest.mocked(useEnableArtAssistant).mockReturnValue(false)
   })
 
   it("should render a text input with placeholder and no pills", async () => {
@@ -52,9 +52,7 @@ describe("Search", () => {
   })
 
   it("opens Art Assistant when its experiment is on", async () => {
-    jest
-      .mocked(useExperimentFlag)
-      .mockImplementation((experiment) => experiment === "onyx_art-assistant-app")
+    jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
     renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
@@ -69,9 +67,7 @@ describe("Search", () => {
   })
 
   it("reserves space for the Art Assistant entry point while Search is loading", () => {
-    jest
-      .mocked(useExperimentFlag)
-      .mockImplementation((experiment) => experiment === "onyx_art-assistant-app")
+    jest.mocked(useEnableArtAssistant).mockReturnValue(true)
 
     renderWithWrappers(<SearchPlaceholder />)
 

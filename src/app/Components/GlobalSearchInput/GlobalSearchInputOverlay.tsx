@@ -25,10 +25,10 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { TrendingSearches } from "app/Scenes/Search/TrendingSearches/TrendingSearches"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
-import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
@@ -127,7 +127,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
   const enableArtsyLens = useEnableArtsyLens()
-  const showArtAssistant = useExperimentFlag("onyx_art-assistant-app")
+  const showArtAssistant = useEnableArtAssistant()
   const tracking = useTracking()
 
   useBackHandler(() => {
