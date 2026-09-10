@@ -1,14 +1,16 @@
-import { ShareIcon } from "@artsy/icons/native"
+import { EditIcon, ShareIcon } from "@artsy/icons/native"
 import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
 import { CityItineraries_me$key } from "__generated__/CityItineraries_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
+import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -20,9 +22,13 @@ interface Props {
 }
 
 const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
-  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(fragment, me)
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(fragment, me)
 
   const itineraries = extractNodes(data.itinerariesConnection)
+
+  // The itinerary the edit sheet is open for. Held here rather than per row so only one sheet
+  // ever mounts.
+  const [editing, setEditing] = useState<(typeof itineraries)[number] | null>(null)
 
   return (
     <Screen>
@@ -63,23 +69,57 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               imageUrl={item.heroImage?.resized?.url ?? item.heroImage?.url}
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
               rightSlot={
-                // Sharing needs a share token, which is `updateItinerary` with its token
-                // flags — a mutation that throws today. Rendered and wired so the row does
-                // not need rebuilding once it works.
-                <TouchableOpacity
-                  testID="itinerary-share"
-                  accessibilityRole="button"
-                  accessibilityLabel={`Share ${item.name}`}
-                  onPress={() => {
-                    // TODO: mint a share token and open the share sheet.
-                  }}
-                >
-                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                </TouchableOpacity>
+                <Flex flexDirection="row" alignItems="center" gap={1}>
+                  {/*
+                    Not in the designs, which show only share. The edit sheet needs an entry
+                    point, and this screen is the only place ownership is guaranteed — it
+                    queries through `me`, while `Query.itinerary` exposes no ownership flag.
+                  */}
+                  <TouchableOpacity
+                    testID="itinerary-edit"
+                    accessibilityRole="button"
+                    accessibilityLabel={`Edit ${item.name}`}
+                    onPress={() => setEditing(item)}
+                  >
+                    <EditIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+                  </TouchableOpacity>
+
+                  {/*
+                    Sharing needs a share token, which is `updateItinerary` with its token
+                    flags — a mutation that throws today. Rendered and wired so the row does
+                    not need rebuilding once it works.
+                  */}
+                  <TouchableOpacity
+                    testID="itinerary-share"
+                    accessibilityRole="button"
+                    accessibilityLabel={`Share ${item.name}`}
+                    onPress={() => {
+                      // TODO: mint a share token and open the share sheet.
+                    }}
+                  >
+                    <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+                  </TouchableOpacity>
+                </Flex>
               }
             />
           )}
         />
+
+        {!!editing && (
+          <ItineraryEditSheet
+            visible
+            onClose={() => setEditing(null)}
+            itinerary={{
+              internalID: editing.internalID,
+              name: editing.name,
+              description: editing.description,
+              coverImageUrl: editing.heroImage?.resized?.url ?? editing.heroImage?.url,
+            }}
+            // A deleted itinerary has to leave the list, and the connection has no record of
+            // the removal, so the page is refetched from the top.
+            onDeleted={() => refetch({}, { fetchPolicy: "network-only" })}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -100,6 +140,7 @@ const fragment = graphql`
           internalID
           slug
           name
+          description
           heroImage {
             resized(width: 180) {
               url

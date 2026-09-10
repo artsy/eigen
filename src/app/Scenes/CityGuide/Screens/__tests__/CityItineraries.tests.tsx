@@ -13,6 +13,7 @@ describe("CityItineraries", () => {
     internalID,
     slug: null,
     name,
+    description: "If time, check out Borough Market",
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
   })
@@ -55,5 +56,20 @@ describe("CityItineraries", () => {
     renderWithRelay(connection([]), props)
 
     expect(await screen.findByText(/haven’t started an itinerary/)).toBeOnTheScreen()
+  })
+
+  // Not in the designs, but the sheet needs an entry point and this screen is the only place
+  // ownership is guaranteed — it queries through `me`.
+  it("opens the edit sheet from a row, prefilled with the itinerary", async () => {
+    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+
+    fireEvent.press(await screen.findByLabelText("Edit London Oct 2026"))
+
+    expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
+    expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "London Oct 2026")
+    expect(screen.getByTestId("itinerary-edit-notes")).toHaveProp(
+      "value",
+      "If time, check out Borough Market"
+    )
   })
 })
