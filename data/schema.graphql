@@ -23519,11 +23519,6 @@ type Location {
   name: String
 
   """
-  The neighborhood derived from the address by the geocoder, not entered by hand
-  """
-  neighborhood: String
-
-  """
   Union returning opening hours in formatted structure or a string
   """
   openingHours: OpeningHoursUnion
@@ -27168,13 +27163,6 @@ type Mutation {
   removeInstallShotFromPartnerShow(
     input: RemoveInstallShotFromPartnerShowMutationInput!
   ): RemoveInstallShotFromPartnerShowMutationPayload
-
-  """
-  Not implemented yet: Gravity's itinerary endpoints are not deployed. Removes every stop in the given itinerary that references the given item — not just one. Gravity has no uniqueness constraint on (section, item), so the same item can legitimately appear more than once in one itinerary; a client holding an item (e.g. a show) rather than a stop id should use this instead of `deleteItineraryStop`, which requires already knowing which stop references the item. Calling this mutation always throws.
-  """
-  removeItineraryStopByItem(
-    input: removeItineraryStopByItemInput!
-  ): removeItineraryStopByItemPayload
 
   """
   Reopen a dismissed artwork duplicate pair
@@ -35282,21 +35270,6 @@ union RemoveInstallShotFromPartnerShowResponseOrError =
 
 type RemoveInstallShotFromPartnerShowSuccess {
   show: Show
-}
-
-type RemoveItineraryStopByItemFailure {
-  mutationError: GravityMutationError
-}
-
-union RemoveItineraryStopByItemResponseOrError =
-    RemoveItineraryStopByItemFailure
-  | RemoveItineraryStopByItemSuccess
-
-type RemoveItineraryStopByItemSuccess {
-  """
-  Every stop that was removed
-  """
-  itineraryStops: [ItineraryStop!]!
 }
 
 type ReopenArtworkDuplicatePairFailure {
@@ -45429,18 +45402,6 @@ input rejectSellerOfferInput {
 type rejectSellerOfferPayload {
   clientMutationId: String
   orderOrError: OrderMutationResponse
-}
-
-input removeItineraryStopByItemInput {
-  clientMutationId: String
-  itemID: String!
-  itemType: String!
-  itineraryID: String!
-}
-
-type removeItineraryStopByItemPayload {
-  clientMutationId: String
-  responseOrError: RemoveItineraryStopByItemResponseOrError
 }
 
 input setOrderFulfillmentOptionInput {

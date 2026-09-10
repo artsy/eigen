@@ -33,10 +33,41 @@ describe("useCityItineraryStops", () => {
     jest.clearAllMocks()
   })
 
+  /** An itinerary with one empty section. */
   const existingItinerary = {
     Me: () => ({
       itinerariesConnection: {
-        edges: [{ node: { internalID: "itinerary-1", sections: [{ internalID: "section-1" }] } }],
+        edges: [
+          {
+            node: { internalID: "itinerary-1", sections: [{ internalID: "section-1", stops: [] }] },
+          },
+        ],
+      },
+    }),
+  }
+
+  /** The same, already holding a stop for show-1. */
+  const itineraryWithShow = {
+    Me: () => ({
+      itinerariesConnection: {
+        edges: [
+          {
+            node: {
+              internalID: "itinerary-1",
+              sections: [
+                {
+                  internalID: "section-1",
+                  stops: [
+                    {
+                      internalID: "stop-1",
+                      item: { __typename: "Show", internalID: "show-1" },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        ],
       },
     }),
   }
@@ -126,22 +157,59 @@ describe("useCityItineraryStops", () => {
     await expect(promise).resolves.toBeTruthy()
   })
 
-  it("removes a stop by what it points at, without creating anything", async () => {
+  // deleteItineraryStop takes the stop's own id, which a card never has, so the stop is found
+  // by the entity it points at.
+  it("finds the stop by its item, then deletes it by id", async () => {
+    const { result } = renderIt()
+
+    const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", itineraryWithShow)
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "useCityItineraryStopsRemoveMutation"
+      )
+    )
+
+    expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({ id: "stop-1" })
+
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        deleteItineraryStopPayload: () => ({
+          responseOrError: {
+            __typename: "ItineraryStopMutationSuccess",
+            itineraryStop: { internalID: "stop-1" },
+          },
+        }),
+      })
+    )
+
+    await expect(promise).resolves.toBeTruthy()
+  })
+
+  // The card already shows what the user wanted, so this is success, not an error.
+  it("does nothing when the itinerary has no stop for that entity", async () => {
     const { result } = renderIt()
 
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
-    await resolveNext("useCityItineraryStopsRemoveMutation", {
-      removeItineraryStopByItemPayload: () => ({
-        responseOrError: {
-          __typename: "RemoveItineraryStopByItemSuccess",
-          itineraryStops: [{ internalID: "stop-1" }],
-        },
-      }),
-    })
 
-    await expect(promise).resolves.toHaveLength(1)
+    await expect(promise).resolves.toBeNull()
+  })
+
+  // Gravity has no uniqueness constraint on (section, item type, item id) yet.
+  it("does not add a second stop for an entity already on the itinerary", async () => {
+    const { result } = renderIt()
+
+    const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", itineraryWithShow)
+
+    await expect(promise).resolves.toMatchObject({ internalID: "stop-1" })
+    // Only the lookup ran: no create mutation was fired.
+    expect(env.mock.getAllOperations()).toHaveLength(0)
   })
 
   // Nothing to remove from, and creating an itinerary in order to delete from it is absurd.
@@ -154,7 +222,7 @@ describe("useCityItineraryStops", () => {
       Me: () => ({ itinerariesConnection: { edges: [] } }),
     })
 
-    await expect(promise).resolves.toEqual([])
+    await expect(promise).resolves.toBeNull()
   })
 
   it("surfaces a mutation failure rather than reporting success", async () => {

@@ -17,6 +17,13 @@ interface StopInput {
   title?: string
 }
 
+/** How a stop's `item` union member maps onto the item type the caller passes in. */
+const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
+  SHOW: "Show",
+  FAIR: "Fair",
+  PARTNER: "Partner",
+}
+
 /**
  * Promise wrapper around `commitMutation`. A GraphQL payload can carry errors alongside a 200,
  * so those reject too rather than resolving with a half-written result.
@@ -41,6 +48,22 @@ const mutate = <T extends { variables: any; response: any }>(
       onError: reject,
     })
   })
+
+interface ExistingStop {
+  readonly internalID: string
+  readonly item?: { readonly __typename: string; readonly internalID?: string } | null
+}
+
+/** The stop pointing at this entity, if the itinerary already has one. */
+const findStop = <T extends ExistingStop>(
+  stops: readonly T[],
+  { itemType, itemID }: Pick<StopInput, "itemType" | "itemID">
+) =>
+  stops.find(
+    (candidate) =>
+      candidate.item?.__typename === ITEM_TYPENAMES[itemType] &&
+      candidate.item?.internalID === itemID
+  )
 
 /**
  * Adds and removes stops on the user's own itinerary for a city.
@@ -83,6 +106,9 @@ export const useCityItineraryStops = ({
 
       let itineraryID = existing?.internalID
       let sectionID = existing?.sections?.[0]?.internalID
+      // Flattened across sections: a stop is on the itinerary or it is not, and which section
+      // holds it does not matter for finding or removing one.
+      const stops = (existing?.sections ?? []).flatMap((section) => section.stops)
 
       if (!itineraryID) {
         if (!createIfMissing) return null
@@ -111,7 +137,7 @@ export const useCityItineraryStops = ({
       }
 
       if (!sectionID) {
-        if (!createIfMissing) return { itineraryID, sectionID: undefined }
+        if (!createIfMissing) return { itineraryID, sectionID: undefined, stops }
 
         // Named after the city, like the itinerary itself. The section exists only because a
         // stop must belong to one, and the UI shows a single list, so it needs no label of its
@@ -137,7 +163,7 @@ export const useCityItineraryStops = ({
         }
       }
 
-      return { itineraryID, sectionID }
+      return { itineraryID, sectionID, stops }
     },
     [environment, citySlug, cityName]
   )
@@ -160,6 +186,13 @@ export const useCityItineraryStops = ({
         if (!target?.sectionID) {
           throw new Error("Could not find a section to add the stop to")
         }
+
+        // Adding the same entity twice is a no-op. Gravity has no uniqueness constraint on
+        // (section, item type, item id) yet, so without this a second tap would leave two
+        // identical stops on the itinerary.
+        const already = findStop(target.stops, stop)
+
+        if (already) return already
 
         const created = await mutate<useCityItineraryStopsAddMutation>(
           environment,
@@ -194,30 +227,31 @@ export const useCityItineraryStops = ({
         // No itinerary means nothing to remove, and creating one to delete from would be absurd.
         const target = await resolveTarget(false)
 
-        if (!target?.itineraryID) return []
+        if (!target?.itineraryID) return null
+
+        // `deleteItineraryStop` takes the stop's own id, which a card never has — it knows the
+        // show or fair it renders. So the stop is found by what it points at. Nothing to
+        // remove is success, not an error: the card already shows the state the user wanted.
+        const existingStop = findStop(target.stops, stop)
+
+        if (!existingStop) return null
 
         const removed = await mutate<useCityItineraryStopsRemoveMutation>(
           environment,
           removeStopMutation,
-          {
-            input: {
-              itineraryID: target.itineraryID,
-              itemType: stop.itemType,
-              itemID: stop.itemID,
-            },
-          }
+          { input: { id: existingStop.internalID } }
         )
-        const response = removed.removeItineraryStopByItem?.responseOrError
+        const response = removed.deleteItineraryStop?.responseOrError
 
-        if (response?.__typename !== "RemoveItineraryStopByItemSuccess") {
+        if (response?.__typename !== "ItineraryStopMutationSuccess") {
           throw new Error(
-            response?.__typename === "RemoveItineraryStopByItemFailure"
+            response?.__typename === "ItineraryStopMutationFailure"
               ? response.mutationError?.message ?? "Could not remove the stop"
               : "Could not remove the stop"
           )
         }
 
-        return response.itineraryStops
+        return response.itineraryStop
       }),
     [serialise, resolveTarget, environment]
   )
@@ -234,6 +268,21 @@ const lookupQuery = graphql`
             internalID
             sections {
               internalID
+              stops {
+                internalID
+                item {
+                  __typename
+                  ... on Show {
+                    internalID
+                  }
+                  ... on Fair {
+                    internalID
+                  }
+                  ... on Partner {
+                    internalID
+                  }
+                }
+              }
             }
           }
         }
@@ -303,16 +352,16 @@ const addStopMutation = graphql`
 `
 
 const removeStopMutation = graphql`
-  mutation useCityItineraryStopsRemoveMutation($input: removeItineraryStopByItemInput!) {
-    removeItineraryStopByItem(input: $input) {
+  mutation useCityItineraryStopsRemoveMutation($input: deleteItineraryStopInput!) {
+    deleteItineraryStop(input: $input) {
       responseOrError {
         __typename
-        ... on RemoveItineraryStopByItemSuccess {
-          itineraryStops {
+        ... on ItineraryStopMutationSuccess {
+          itineraryStop {
             internalID
           }
         }
-        ... on RemoveItineraryStopByItemFailure {
+        ... on ItineraryStopMutationFailure {
           mutationError {
             message
           }
