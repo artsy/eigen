@@ -13,7 +13,10 @@ import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAs
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
-import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
+import {
+  SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH,
+  SearchByPhotoIconButton,
+} from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
@@ -202,21 +205,27 @@ export const GlobalSearchInputOverlay: React.FC<{
               </Flex>
 
               {!!enableArtsyLens && !query && (
-                <SearchByPhotoIconButton
-                  inline
-                  testID="search-overlay-camera-icon"
-                  onPress={() => {
-                    tracking.trackEvent(
-                      tappedSearchByImage({
-                        contextModule: ContextModule.searchOverlay,
-                        contextScreenOwnerType: ownerType,
-                        type: "search_input_icon",
-                      })
-                    )
-                    hideModal()
-                    navigate("/lens")
-                  }}
-                />
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  testID="search-overlay-camera-icon-container"
+                  width={SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH}
+                >
+                  <SearchByPhotoIconButton
+                    testID="search-overlay-camera-icon"
+                    onPress={() => {
+                      tracking.trackEvent(
+                        tappedSearchByImage({
+                          contextModule: ContextModule.searchOverlay,
+                          contextScreenOwnerType: ownerType,
+                          type: "search_input_icon",
+                        })
+                      )
+                      hideModal()
+                      navigate("/lens")
+                    }}
+                  />
+                </Flex>
               )}
             </Flex>
 
