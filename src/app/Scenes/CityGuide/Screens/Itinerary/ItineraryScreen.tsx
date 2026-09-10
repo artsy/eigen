@@ -154,10 +154,11 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
             />
 
             {/*
-              Only on the map, where the designs put it. The list already names the itinerary
-              in its own header.
+              Only on the map, where the designs put it, and only for your own itineraries:
+              the picker switches between yours, so it has nothing to offer while you are
+              reading a curated guide.
             */}
-            {!!isMapView && (
+            {!!isMapView && !isEditorial && (
               <ItineraryPicker
                 citySlug={itinerary.citySlug}
                 currentItineraryId={itinerary.id}

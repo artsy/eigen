@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -128,6 +128,24 @@ describe("ItineraryScreen", () => {
       expect(screen.queryByText(/^By /)).not.toBeOnTheScreen()
     })
 
+    it("offers the itinerary picker on the map", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+
+      // The picker runs its own query, and renderWithRelay resolves only the screen's.
+      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      view.mockResolveLastOperation({
+        Me: () => ({
+          itinerariesConnection: {
+            edges: [{ node: { internalID: "chill-vibes-only", slug: null, name: "Mine" } }],
+          },
+        }),
+      })
+
+      expect(await screen.findByTestId("itinerary-picker")).toBeOnTheScreen()
+    })
+
     it("shows no stop numbers and no section heading", async () => {
       renderWithRelay({ Itinerary: () => own }, props)
 
@@ -147,6 +165,16 @@ describe("ItineraryScreen", () => {
       expect(screen.getByText("By Casey Lesser")).toBeOnTheScreen()
       expect(screen.queryAllByTestId("itinerary-stop-number")).not.toHaveLength(0)
       expect(screen.queryByText("Your Itinerary")).not.toBeOnTheScreen()
+    })
+
+    // The picker lists what you own, so on a guide it would navigate away from what you are
+    // reading rather than switch between peers.
+    it("offers no itinerary picker on the map", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+
+      expect(screen.queryByTestId("itinerary-picker")).not.toBeOnTheScreen()
     })
   })
 })

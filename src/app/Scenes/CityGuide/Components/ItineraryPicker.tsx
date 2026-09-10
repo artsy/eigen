@@ -127,6 +127,9 @@ const Query = graphql`
 /**
  * The pill in the itinerary map's header that names the itinerary you are looking at and
  * switches between your others for the city.
+ *
+ * Rendered only while viewing one of your own: it lists what you own, so on a curated guide
+ * it would offer to navigate away from what you are reading rather than switch between peers.
  */
 export const ItineraryPicker = withSuspense({
   Component: Picker,
