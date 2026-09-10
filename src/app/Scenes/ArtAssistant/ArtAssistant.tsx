@@ -11,7 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { useState } from "react"
-import { LayoutChangeEvent, ScrollView, StyleSheet } from "react-native"
+import { LayoutChangeEvent, StyleSheet } from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -56,7 +56,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       />
 
       <Flex flex={1}>
-        <ScrollView
+        <Screen.ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: composerHeight }}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
@@ -104,7 +104,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               ))}
             </Flex>
           </Flex>
-        </ScrollView>
+        </Screen.ScrollView>
 
         <KeyboardStickyView
           offset={{ opened: bottom }}
