@@ -1,5 +1,6 @@
 import { Button } from "@artsy/palette-mobile"
 import { FairFollowButton_fair$key } from "__generated__/FairFollowButton_fair.graphql"
+import { FollowIconButton } from "app/Components/FollowIconButton"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
@@ -10,9 +11,14 @@ import { useTracking } from "react-tracking"
 
 interface FairFollowButtonProps {
   fair: FairFollowButton_fair$key
+  /**
+   * "button" is the labelled Save/Saved button. "icon" is the bare plus/tick the Saves tab's
+   * designs use for a followed fair's row.
+   */
+  variant?: "button" | "icon"
 }
 
-export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair }) => {
+export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair, variant = "button" }) => {
   const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
@@ -33,6 +39,17 @@ export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair }) => {
   const handlePress = () => {
     trackEvent(tracks.trackFollowFair(data.internalID, !!data.profile?.isFollowed, analytics))
     followProfile()
+  }
+
+  if (variant === "icon") {
+    return (
+      <FollowIconButton
+        testID="fair-follow-icon"
+        isFollowed={!!data.profile.isFollowed}
+        isInFlight={isInFlight}
+        onPress={handlePress}
+      />
+    )
   }
 
   return (

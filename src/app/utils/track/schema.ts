@@ -106,6 +106,7 @@ export enum PageNames {
   CityGuideMuseumsList = "CityGuideMuseumsList",
   CityGuideOpeningSoonList = "CityGuideOpeningSoonList",
   CityGuideSavedList = "CityGuideSavedList",
+  CityGuideShowsList = "CityGuideShowsList",
   CityPicker = "CityPicker",
   Collect = "Collect",
   Collection = "Collection",
@@ -249,6 +250,8 @@ export enum ActionNames {
   FairsTab = "fairsTab",
   GalleriesTab = "galleriesTab",
   MuseumsTab = "museumsTab",
+  CityGuideShowMap = "cityGuideShowMap",
+  CityGuideShowList = "cityGuideShowList",
 
   /**
    * Commercial flow
@@ -265,6 +268,11 @@ export enum ActionNames {
   SaveShow = "saveShow",
   UnsaveShow = "unsaveShow",
   NearbyShow = "nearbyShow",
+
+  /**
+   * City Guide itinerary events
+   */
+  TappedAddFullList = "tappedAddFullList",
 
   /**
    * Fair page events

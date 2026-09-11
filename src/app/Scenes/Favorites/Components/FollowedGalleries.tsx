@@ -74,6 +74,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
       renderItem={({ item }) => {
         return (
           <PartnerListItemShort
+            useIconFollowButton
             partner={item}
             disabledLocation
             onPress={() => {

@@ -4,6 +4,7 @@ import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/Cit
 import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
+import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { CityGuideMetaData } from "app/Scenes/CityGuide/Components/CityGuideMetaData"
 import { goBack } from "app/system/navigation/navigate"
 import { useState } from "react"
@@ -46,11 +47,14 @@ export const CityGuideNew: React.FC = () => {
           />
 
           <Join separator={<Spacer y={4} />}>
-            <CityGuideMetaData />
+            <>
+              <CityGuideMetaData />
+              <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
+            </>
 
-            <CityGuideCuratedLists />
+            <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
 
-            <CityGuideEvents />
+            <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
           </Join>
         </Screen.ScrollView>
 

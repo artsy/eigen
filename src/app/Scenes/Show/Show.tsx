@@ -17,6 +17,7 @@ import { ShowContextCardFragmentContainer as ShowContextCard } from "./Component
 import { ShowHeaderFragmentContainer as ShowHeader } from "./Components/ShowHeader"
 import { ShowInfoFragmentContainer as ShowInfo } from "./Components/ShowInfo"
 import { ShowInstallShotsFragmentContainer as ShowInstallShots } from "./Components/ShowInstallShots"
+import { ShowPartnerLocation } from "./Components/ShowPartnerLocation"
 import { ShowViewingRoomFragmentContainer as ShowViewingRoom } from "./Components/ShowViewingRoom"
 
 interface Section {
@@ -54,6 +55,10 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     ...(Boolean(show.images?.length)
       ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }]
       : []),
+
+    // Directly under the carousel, per the designs. Renders nothing without a partner name
+    // and an address, so a show with neither adds no empty band.
+    { key: "partner-location", element: <ShowPartnerLocation show={show} /> },
 
     { key: "info", element: <ShowInfo show={show} mx={2} /> },
 
@@ -134,6 +139,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       isActive
       ...ShowHeader_show
       ...ShowInstallShots_show
+      ...ShowPartnerLocation_show
       ...ShowInfo_show
       ...ShowViewingRoom_show
       ...ShowContextCard_show

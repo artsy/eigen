@@ -5,14 +5,13 @@ import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { LocationMap_location$data } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "app/Components/Icons/Pin"
-import { ArtsyMapStyleURL } from "app/Scenes/CityGuide/Components/CityGuideMap"
 import { __unsafe__useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
+import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { Linking, TouchableOpacity, View } from "react-native"
-import Keys from "react-native-keys"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
+configureMapbox()
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;

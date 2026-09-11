@@ -1,14 +1,12 @@
 import { Box, Button, Flex, Text, useColor } from "@artsy/palette-mobile"
-import { CityGuideEventMutation } from "__generated__/CityGuideEventMutation.graphql"
 import { CityGuideEventArtworkRailQueryRenderer } from "app/Scenes/CityGuide/Components/CityGuideEventArtworkRail"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { exhibitionDates } from "app/utils/exhibitionPeriodParser"
+import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { Schema } from "app/utils/track"
-import { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const TEXT_CONTAINER_WIDTH = 200
@@ -22,48 +20,24 @@ export const CityGuideEvent: React.FC<Props> = ({ event }) => {
   const partnerName = partner?.name
   const color = useColor()
   const { trackEvent } = useTracking()
-  const [isFollowedSaving, setIsFollowedSaving] = useState(false)
-  const [commitFollowShow] = useMutation<CityGuideEventMutation>(eventMutation)
+
+  const { followShow, isInFlight } = useFollowShow({
+    id: event.id,
+    internalID: event.internalID,
+    isFollowed: is_followed,
+  })
 
   const handleTap = () => {
     navigate(`/show/${event.slug}`)
   }
 
   const handleSaveChange = () => {
-    const { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = event
-
-    if (!showID || !showSlug || !nodeID || isFollowedSaving) {
+    if (!event.internalID || !event.slug || !event.id || isInFlight) {
       return
     }
 
-    setIsFollowedSaving(true)
     trackEvent(tracks.trackSave(event))
-
-    commitFollowShow({
-      variables: {
-        input: {
-          partnerShowID: showID,
-          unfollow: isShowFollowed,
-        },
-      },
-      onCompleted: () => {
-        setIsFollowedSaving(false)
-      },
-      // @ts-ignore RELAY 12 MIGRATION
-      optimisticResponse: {
-        followShow: {
-          show: {
-            slug: showSlug,
-            internalID: showID,
-            is_followed: !isShowFollowed,
-          },
-        },
-      },
-      updater: (store) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        store.get(nodeID).setValue(!isShowFollowed, "is_followed")
-      },
-    })
+    followShow()
   }
 
   return (
@@ -85,7 +59,7 @@ export const CityGuideEvent: React.FC<Props> = ({ event }) => {
           </Box>
           <Button
             variant={is_followed ? "outline" : "fillDark"}
-            loading={isFollowedSaving}
+            loading={isInFlight}
             onPress={handleSaveChange}
             longestText="Saved"
             size="small"
@@ -105,18 +79,6 @@ export const CityGuideEvent: React.FC<Props> = ({ event }) => {
     </TouchableWithoutFeedback>
   )
 }
-
-const eventMutation = graphql`
-  mutation CityGuideEventMutation($input: FollowShowInput!) {
-    followShow(input: $input) {
-      show {
-        slug
-        internalID
-        is_followed: isFollowed
-      }
-    }
-  }
-`
 
 const tracks = {
   trackSave: (event: Show) => {

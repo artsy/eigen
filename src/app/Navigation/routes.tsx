@@ -79,10 +79,15 @@ import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOver
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
+import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import {
   CityFairListQueryRenderer,
   CityFairListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CityFairList"
+import {
+  CityItinerariesScreenQuery,
+  CityItinerariesScreenQueryRenderer,
+} from "app/Scenes/CityGuide/Screens/CityItineraries"
 import {
   CitySavedListQueryRenderer,
   CitySavedListScreenQuery,
@@ -91,6 +96,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CitySectionList"
+import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
@@ -1104,6 +1110,41 @@ export const artsyDotNetRoutes = defineRoutes([
         header: () => {
           return null
         },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itinerary/:itineraryId",
+    name: "CityGuideItinerary",
+    Component: ItineraryScreen,
+    options: {
+      screenOptions: {
+        headerTransparent: true,
+        headerShadowVisible: false,
+        header: () => {
+          return null
+        },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itineraries",
+    name: "CityItineraries",
+    Component: CityItinerariesScreenQueryRenderer,
+    queries: [CityItinerariesScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/events/:section",
+    name: "CityEventList",
+    Component: CityEventListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },

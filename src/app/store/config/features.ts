@@ -184,6 +184,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtsyLens",
   },
+  AREnableCityGuideItineraryRoute: {
+    description: "Draw a route between itinerary stops on the map",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCityGuideItineraryRoute",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
@@ -289,6 +295,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTDisableNavigationStateRehydration: {
     description:
       "Disable navigation state rehydration. This change only affects DEV builds. In release builds, navigation state is never rehydrated.",
+  },
+  DTShowItineraryUnaddableStops: {
+    description: "Show itinerary stops that can't be added",
   },
 }
 
