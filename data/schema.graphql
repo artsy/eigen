@@ -23085,6 +23085,38 @@ enum InvoiceState {
   READY
 }
 
+"""
+A connection to a list of items.
+"""
+type ItinerariesConnection {
+  """
+  A list of edges.
+  """
+  edges: [ItinerariesEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type ItinerariesEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: Itinerary
+}
+
 type Itinerary {
   authorName: String
   citySlug: String!
@@ -24526,6 +24558,23 @@ type Me implements Node {
   """
   isEmailConfirmed: Boolean!
   isIdentityVerified: Boolean
+
+  """
+  A connection of the current user's own City Guide itineraries, of any visibility
+  """
+  itinerariesConnection(
+    after: String
+    before: String
+
+    """
+    Only itineraries for this city
+    """
+    citySlug: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): ItinerariesConnection
 
   """
   List of lab features for this user
@@ -33356,6 +33405,28 @@ type Query {
     partnerId: String!
   ): InstagramPostConnection
   invoice(token: String!): Invoice
+
+  """
+  A connection of City Guide itineraries
+  """
+  itinerariesConnection(
+    after: String
+    before: String
+
+    """
+    Only itineraries for this city
+    """
+    citySlug: String
+    first: Int
+
+    """
+    Only curated (editorial) or only personal itineraries
+    """
+    isCurated: Boolean
+    last: Int
+    page: Int
+    size: Int
+  ): ItinerariesConnection
 
   """
   A City Guide itinerary
@@ -43037,6 +43108,28 @@ type Viewer {
     partnerId: String!
   ): InstagramPostConnection
   invoice(token: String!): Invoice
+
+  """
+  A connection of City Guide itineraries
+  """
+  itinerariesConnection(
+    after: String
+    before: String
+
+    """
+    Only itineraries for this city
+    """
+    citySlug: String
+    first: Int
+
+    """
+    Only curated (editorial) or only personal itineraries
+    """
+    isCurated: Boolean
+    last: Int
+    page: Int
+    size: Int
+  ): ItinerariesConnection
 
   """
   A City Guide itinerary
