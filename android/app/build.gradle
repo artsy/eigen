@@ -83,6 +83,11 @@ react {
  */
 def enableMinifyInReleaseBuilds = (findProperty('android.enableMinifyInReleaseBuilds') ?: false).toBoolean()
 
+/**
+ * Set this to true in release builds to strip unused resources. Requires [enableMinifyInReleaseBuilds].
+ */
+def enableShrinkResourcesInReleaseBuilds = (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: false).toBoolean()
+
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -162,6 +167,7 @@ android {
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
             minifyEnabled enableMinifyInReleaseBuilds
+            shrinkResources enableShrinkResourcesInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
             buildConfigField "boolean", "IS_BETA", "false"
