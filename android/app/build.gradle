@@ -129,6 +129,12 @@ android {
         }
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -161,7 +167,8 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
-            minifyEnabled enableMinifyInReleaseBuilds
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
             buildConfigField "boolean", "IS_BETA", "false"

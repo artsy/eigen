@@ -23,3 +23,10 @@
   **[] $VALUES;
   public *;
 }
+
+# Fresco's animated-image support is referenced but not bundled in this app.
+-dontwarn com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl
+
+# @stripe/stripe-react-native references the optional push-provisioning SDK
+# (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
+-dontwarn com.stripe.android.pushProvisioning.**
