@@ -7,11 +7,12 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import * as Updates from "expo-updates"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Alert, Platform } from "react-native"
 
 type ExpoDeployment = "Canary" | "Staging" | "Production"
@@ -42,16 +43,20 @@ const isCodedError = (error: unknown): error is { code: string } => {
   return typeof error === "object" && error !== null && "code" in error
 }
 
+type CheckState = "checking" | "fetchable" | "upToDate" | "error"
+
 export const ExpoUpdatesOptions = () => {
   const [selectedDeployment, setSelectedDeployment] = useState<ExpoDeployment>("Staging")
   const [updateMetadata, setUpdateMetadata] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
-  const [loadStatus, setLoadStatus] = useState("")
+  const [checkState, setCheckState] = useState<CheckState>("checking")
+  const [fetching, setFetching] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [loadProgress, setLoadProgress] = useState(0)
+
+  const { isDownloading, isUpdatePending, downloadProgress } = Updates.useUpdates()
 
   const updatesEnabled = Updates.isEnabled
   const channelSwitchingAllowed = updatesEnabled && ArtsyNativeModule.isBetaOrDev
+  const canFetch = ["fetchable", "error"].includes(checkState)
 
   const fetchUpdateMetadata = async () => {
     try {
@@ -78,6 +83,14 @@ export const ExpoUpdatesOptions = () => {
     fetchUpdateMetadata()
   }, [])
 
+  useFocusEffect(
+    useCallback(() => {
+      if (updatesEnabled && !isUpdatePending) {
+        runCheck()
+      }
+    }, [updatesEnabled, isUpdatePending])
+  )
+
   const activeReleaseText = `
     Update ID: ${updateMetadata?.updateId || "N/A"}
     Channel: ${updateMetadata?.channel || "N/A"}
@@ -94,7 +107,9 @@ export const ExpoUpdatesOptions = () => {
       Updates.setUpdateRequestHeadersOverride({ "expo-channel-name": channelName })
     } catch (error) {
       setErrorMessage(
-        isErrorWithMessage(error) ? error.message : `Could not switch to ${channelName}: ${error}`
+        isErrorWithMessage(error)
+          ? `Could not switch to ${channelName}: ${error.message}`
+          : `Could not switch to ${channelName}: ${error}`
       )
       return
     }
@@ -119,33 +134,56 @@ export const ExpoUpdatesOptions = () => {
     )
   }
 
-  const fetchAndApplyUpdate = async () => {
-    setLoading(true)
-    setLoadProgress(0)
-    setLoadStatus("Checking for update...")
+  const runCheck = async (withErrors = false) => {
+    setCheckState("checking")
     setErrorMessage(null)
 
     try {
       const update = await Updates.checkForUpdateAsync()
+
       if (update.isAvailable) {
-        setLoadStatus("Update available, downloading...")
-        await Updates.fetchUpdateAsync()
-        setLoadProgress(100)
-        await Updates.reloadAsync()
-      } else {
-        if (update.reason) {
-          if (
-            update.reason ===
-            Updates.UpdateCheckResultNotAvailableReason.NO_UPDATE_AVAILABLE_ON_SERVER
-          ) {
-            setErrorMessage("No new update available.")
-          } else {
-            setErrorMessage(`Update check failed: ${update.reason}`)
-          }
-        } else {
-          setErrorMessage("No new update available.")
-        }
+        setCheckState("fetchable")
+        return
       }
+
+      if (
+        update.reason &&
+        update.reason !== Updates.UpdateCheckResultNotAvailableReason.NO_UPDATE_AVAILABLE_ON_SERVER
+      ) {
+        setCheckState("error")
+        !!withErrors && setErrorMessage(`Update check failed: ${update.reason}`)
+        return
+      }
+
+      setCheckState("upToDate")
+    } catch (error) {
+      console.error("Error checking for Expo update:", error)
+      setCheckState("error")
+      !!withErrors &&
+        setErrorMessage(
+          `Error fetching update: ${isErrorWithMessage(error) ? error.message : error}`
+        )
+    } finally {
+      setFetching(false)
+    }
+  }
+
+  const fetchAndApplyUpdate = async () => {
+    setFetching(true)
+    setErrorMessage(null)
+
+    if (checkState === "error") {
+      await runCheck(true)
+      return
+    }
+
+    if (checkState !== "fetchable") {
+      return
+    }
+
+    try {
+      await Updates.fetchUpdateAsync()
+      await Updates.reloadAsync()
     } catch (error) {
       // Android refuses to reload when the app is on an emergency launch, since there's no
       // launched update to replace. The update is downloaded already, so force-quitting and
@@ -175,7 +213,7 @@ export const ExpoUpdatesOptions = () => {
       console.error("Error fetching Expo update:", error)
       setErrorMessage(`Error fetching update: ${error}`)
     } finally {
-      setLoading(false)
+      setFetching(false)
     }
   }
 
@@ -239,10 +277,10 @@ export const ExpoUpdatesOptions = () => {
             />
           ))}
 
-          {loadProgress > 0 && (
+          {!!isDownloading && (
             <Flex mt={2}>
-              <Text>{loadStatus}</Text>
-              <ProgressBar progress={loadProgress} />
+              <Text>Downloading update…</Text>
+              <ProgressBar progress={(downloadProgress ?? 0) * 100} />
             </Flex>
           )}
 
@@ -254,7 +292,12 @@ export const ExpoUpdatesOptions = () => {
 
           <Spacer y={2} />
 
-          <Button block loading={loading} disabled={!updatesEnabled} onPress={fetchAndApplyUpdate}>
+          <Button
+            block
+            loading={fetching}
+            disabled={!updatesEnabled || !canFetch}
+            onPress={fetchAndApplyUpdate}
+          >
             Fetch and Run Deployment
           </Button>
         </Flex>
