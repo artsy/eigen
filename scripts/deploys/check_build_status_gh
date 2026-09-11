@@ -84,12 +84,21 @@ rc_conflict=false
 # These tags are annotated, so we want `refs/tags/X^{}` (the commit) and not
 # `refs/tags/X` (the tag object, which can never match an rc-v tip). The
 # trailing `*` is what makes ls-remote emit the `^{}` line at all.
+# The nightly beta tags this same build number with a `-nightly` suffix, so
+# check that form too or a same-hour manual beta would slip past this guard.
 tag_refs=$(git ls-remote --tags origin "refs/tags/${EXPECTED_TAG}*")
-existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}^{}" '$2 == ref {print $1}' <<<"$tag_refs")
-if [ -z "$existing_tag_sha" ]; then
+existing_tag=""
+existing_tag_sha=""
+for candidate in "$EXPECTED_TAG" "${EXPECTED_TAG}-nightly"; do
+  sha=$(awk -v ref="refs/tags/${candidate}^{}" '$2 == ref {print $1}' <<<"$tag_refs")
   # Lightweight tag: the ref points straight at the commit.
-  existing_tag_sha=$(awk -v ref="refs/tags/${EXPECTED_TAG}" '$2 == ref {print $1}' <<<"$tag_refs")
-fi
+  [ -z "$sha" ] && sha=$(awk -v ref="refs/tags/${candidate}" '$2 == ref {print $1}' <<<"$tag_refs")
+  if [ -n "$sha" ]; then
+    existing_tag="$candidate"
+    existing_tag_sha="$sha"
+    break
+  fi
+done
 
 if [ -n "$existing_tag_sha" ]; then
   marker=""
@@ -98,7 +107,7 @@ if [ -n "$existing_tag_sha" ]; then
     rc_conflict=true
   fi
   subject=$(commit_subject "$existing_tag_sha")
-  conflicts+="  - build ${BUILD_NUMBER} is already taken — tag ${EXPECTED_TAG}${marker}"$'\n'
+  conflicts+="  - build ${BUILD_NUMBER} is already taken — tag ${existing_tag}${marker}"$'\n'
   conflicts+="      ${existing_tag_sha:0:8} — ${subject}"$'\n'
 fi
 

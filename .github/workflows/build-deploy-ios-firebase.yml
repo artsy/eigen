@@ -47,7 +47,7 @@ jobs:
         run: brew install imagemagick librsvg
 
       - name: Build and deploy iOS to Firebase
-        run: bundle exec fastlane ship_beta_ios deployment_target:firebase
+        run: bundle exec fastlane ship_beta_ios deployment_target:firebase is_nightly:${{ github.event_name == 'schedule' }}
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120

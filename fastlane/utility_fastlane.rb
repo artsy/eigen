@@ -368,10 +368,11 @@ end
 
 def resolve_promoted_fingerprint(platform:, build_number:)
   # Looks up the ship-time tag for the exact build being promoted (ios-*-<build_number> /
-  # android-*-<build_number>) and reads back the fingerprint from its annotation message.
+  # android-*-<build_number>, plus the nightly-suffixed form) and reads back the fingerprint from
+  # its annotation message.
   # Falls back to an interactive confirm-and-recompute if the tag can't be found unambiguously.
   `git fetch --tags 2>/dev/null`
-  ship_tags = `git tag -l '#{platform}-*-#{build_number}'`.split("\n")
+  ship_tags = `git tag -l '#{platform}-*-#{build_number}' '#{platform}-*-#{build_number}#{NIGHTLY_TAG_SUFFIX}'`.split("\n")
   promoted_fingerprint = nil
   if ship_tags.length == 1
     tag_message = `git for-each-ref refs/tags/#{ship_tags.first} --format='%(contents)'`.strip
@@ -394,6 +395,22 @@ def resolve_promoted_fingerprint(platform:, build_number:)
   end
 
   promoted_fingerprint
+end
+
+def nightly_tag_suffix(options)
+  # CI passes is_nightly:true for the scheduled builds only. Fastlane hands CLI options over as
+  # strings, hence the to_s comparison rather than a plain truthiness check.
+  options[:is_nightly].to_s == 'true' ? NIGHTLY_TAG_SUFFIX : ''
+end
+
+def beta_tag_commit_message(tag)
+  # A beta tag exists either plain or with the nightly suffix, so look for both and label the
+  # nightly ones — those are the builds we ship.
+  msg = git_tag_commit_message(tag)
+  return msg if msg
+
+  nightly_msg = git_tag_commit_message("#{tag}#{NIGHTLY_TAG_SUFFIX}")
+  nightly_msg && "[nightly] #{nightly_msg}"
 end
 
 def should_silence_beta_failure?
