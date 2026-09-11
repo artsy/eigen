@@ -23,3 +23,11 @@
   **[] $VALUES;
   public *;
 }
+# @generated begin expo-build-properties - expo prebuild (DO NOT MODIFY)
+# Fresco's animated-image backend is referenced but not bundled in this app.
+-dontwarn com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl
+
+# @stripe/stripe-react-native references the optional push-provisioning SDK
+# (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.
+-dontwarn com.stripe.android.pushProvisioning.**
+# @generated end expo-build-properties
