@@ -23162,6 +23162,16 @@ type Itinerary {
   visibility: ItineraryVisibility!
 }
 
+type ItineraryMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union ItineraryMutationResponseOrError = ItineraryMutationFailure | ItineraryMutationSuccess
+
+type ItineraryMutationSuccess {
+  itinerary: Itinerary
+}
+
 type ItinerarySection {
   internalID: String!
 
@@ -23177,6 +23187,18 @@ type ItinerarySection {
   An opaque display string for the section, e.g. "Day 1", "Morning", or "Peckham"
   """
   title: String
+}
+
+type ItinerarySectionMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union ItinerarySectionMutationResponseOrError =
+    ItinerarySectionMutationFailure
+  | ItinerarySectionMutationSuccess
+
+type ItinerarySectionMutationSuccess {
+  itinerarySection: ItinerarySection
 }
 
 type ItineraryStop {
@@ -23241,6 +23263,18 @@ enum ItineraryStopCategory {
 }
 
 union ItineraryStopItem = Fair | Location | Show
+
+type ItineraryStopMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union ItineraryStopMutationResponseOrError =
+    ItineraryStopMutationFailure
+  | ItineraryStopMutationSuccess
+
+type ItineraryStopMutationSuccess {
+  itineraryStop: ItineraryStop
+}
 
 enum ItineraryVisibility {
   PRIVATE
@@ -26066,6 +26100,11 @@ type Mutation {
   ): CreateSubmissionMutationPayload
 
   """
+  Copy an itinerary into the caller's account. `shareToken` is needed for an unlisted source.
+  """
+  copyItinerary(input: copyItineraryInput!): copyItineraryPayload
+
+  """
   Create an account request
   """
   createAccountRequest(
@@ -26249,6 +26288,21 @@ type Mutation {
   """
   createInstagramPost(input: CreateInstagramPostInput!): CreateInstagramPostPayload
   createInvoicePayment(input: CreateInvoicePaymentInput!): CreateInvoicePaymentPayload
+
+  """
+  Create an itinerary.
+  """
+  createItinerary(input: createItineraryInput!): createItineraryPayload
+
+  """
+  Create a section in an itinerary.
+  """
+  createItinerarySection(input: createItinerarySectionInput!): createItinerarySectionPayload
+
+  """
+  Add a stop to a section. A stop points at a show, a location or a fair, or is a custom place with its own title and coordinates.
+  """
+  createItineraryStop(input: createItineraryStopInput!): createItineraryStopPayload
 
   """
   Create a Mailchimp campaign draft for a partner from pre-rendered HTML
@@ -26498,6 +26552,21 @@ type Mutation {
   Disconnect an Instagram account from a partner
   """
   deleteInstagramAccount(input: DeleteInstagramAccountInput!): DeleteInstagramAccountPayload
+
+  """
+  Delete an itinerary.
+  """
+  deleteItinerary(input: deleteItineraryInput!): deleteItineraryPayload
+
+  """
+  Delete a section and its stops.
+  """
+  deleteItinerarySection(input: deleteItinerarySectionInput!): deleteItinerarySectionPayload
+
+  """
+  Delete a stop by its id.
+  """
+  deleteItineraryStop(input: deleteItineraryStopInput!): deleteItineraryStopPayload
 
   """
   Disconnect a Mailchimp account from a partner
@@ -26788,6 +26857,11 @@ type Mutation {
   ): MyCollectionUpdateArtworkPayload
 
   """
+  Publish an itinerary. Needs the publish ability.
+  """
+  publishItinerary(input: publishItineraryInput!): publishItineraryPayload
+
+  """
   Publish a draft navigation version. Accepts either a groupID (for backward compatibility) or versionID (preferred for admin workflows).
   """
   publishNavigationDraft(input: PublishNavigationDraftInput!): PublishNavigationDraftPayload
@@ -27020,6 +27094,11 @@ type Mutation {
   ): UnlinkAuthenticationMutationPayload
 
   """
+  Unpublish an itinerary. Also revokes its share link, so it becomes private. Needs the publish ability.
+  """
+  unpublishItinerary(input: unpublishItineraryInput!): unpublishItineraryPayload
+
+  """
   Unpublishes a partner list's private viewing room. Does not delete the publication.
   """
   unpublishPartnerListPublication(
@@ -27153,6 +27232,21 @@ type Mutation {
   updateInstallShotForPartnerShow(
     input: UpdateInstallShotForPartnerShowMutationInput!
   ): UpdateInstallShotForPartnerShowMutationPayload
+
+  """
+  Update an itinerary. Pass `generateShareToken` or `revokeShareToken` to manage its share link.
+  """
+  updateItinerary(input: updateItineraryInput!): updateItineraryPayload
+
+  """
+  Update a section. `position` moves it among its itinerary's sections.
+  """
+  updateItinerarySection(input: updateItinerarySectionInput!): updateItinerarySectionPayload
+
+  """
+  Update a stop. `position` moves it among its section's stops. `isFreeAdmission: null` clears the override.
+  """
+  updateItineraryStop(input: updateItineraryStopInput!): updateItineraryStopPayload
 
   """
   Updates the user's collections in batch.
@@ -44331,6 +44425,21 @@ enum contactType {
   PARTNER
 }
 
+input copyItineraryInput {
+  clientMutationId: String
+  id: String!
+
+  """
+  The share token of the itinerary being copied, required to copy an unlisted itinerary the caller does not own
+  """
+  shareToken: String
+}
+
+type copyItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
+}
+
 input createAlertInput {
   acquireable: Boolean
   additionalGeneIDs: [String]
@@ -44409,6 +44518,67 @@ union createHeroUnitResponseOrError = createHeroUnitFailure | createHeroUnitSucc
 
 type createHeroUnitSuccess {
   heroUnit: HeroUnit
+}
+
+input createItineraryInput {
+  authorName: String
+  citySlug: String!
+  clientMutationId: String
+  description: String
+  isCurated: Boolean
+  subtitle: String
+  title: String!
+}
+
+type createItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
+}
+
+input createItinerarySectionInput {
+  clientMutationId: String
+  itineraryID: String!
+
+  """
+  Free-text note shown with the section.
+  """
+  note: String
+  title: String
+}
+
+type createItinerarySectionPayload {
+  clientMutationId: String
+  responseOrError: ItinerarySectionMutationResponseOrError
+}
+
+input createItineraryStopInput {
+  address: String
+  category: ItineraryStopCategory
+  clientMutationId: String
+  endAt: String
+  eventID: String
+  eventType: String
+  imageURL: String
+  isFreeAdmission: Boolean
+  itemID: String
+  itemType: String
+  itinerarySectionID: String!
+  latitude: Float
+  longitude: Float
+  note: String
+  sourceURL: String
+  startAt: String
+
+  """
+  IANA time zone identifier, e.g. Europe/London.
+  """
+  timeZone: String
+  title: String
+}
+
+type createItineraryStopPayload {
+  clientMutationId: String
+  responseOrError: ItineraryStopMutationResponseOrError
 }
 
 type createOrderedSetFailure {
@@ -44562,6 +44732,36 @@ type deleteHeroUnitSuccess {
   heroUnit: HeroUnit
 }
 
+input deleteItineraryInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
+}
+
+input deleteItinerarySectionInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteItinerarySectionPayload {
+  clientMutationId: String
+  responseOrError: ItinerarySectionMutationResponseOrError
+}
+
+input deleteItineraryStopInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteItineraryStopPayload {
+  clientMutationId: String
+  responseOrError: ItineraryStopMutationResponseOrError
+}
+
 type deleteOrderedSetFailure {
   mutationError: GravityMutationError
 }
@@ -44693,6 +44893,16 @@ type dimensions {
 
 type partnerBiographyBlurb {
   text: String
+}
+
+input publishItineraryInput {
+  clientMutationId: String
+  id: String!
+}
+
+type publishItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
 }
 
 type purchases {
@@ -44852,6 +45062,16 @@ type submitOrderPayload {
   orderOrError: OrderMutationResponse
 }
 
+input unpublishItineraryInput {
+  clientMutationId: String
+  id: String!
+}
+
+type unpublishItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
+}
+
 input unsetOrderFulfillmentOptionInput {
   clientMutationId: String
 
@@ -44977,6 +45197,88 @@ union updateHeroUnitResponseOrError = updateHeroUnitFailure | updateHeroUnitSucc
 
 type updateHeroUnitSuccess {
   heroUnit: HeroUnit
+}
+
+input updateItineraryInput {
+  authorName: String
+  citySlug: String
+  clientMutationId: String
+  description: String
+
+  """
+  Generate a new share token for this itinerary, replacing any existing one
+  """
+  generateShareToken: Boolean
+  id: String!
+  isCurated: Boolean
+
+  """
+  Revoke this itinerary's current share token, if any
+  """
+  revokeShareToken: Boolean
+  subtitle: String
+  title: String
+}
+
+type updateItineraryPayload {
+  clientMutationId: String
+  responseOrError: ItineraryMutationResponseOrError
+}
+
+input updateItinerarySectionInput {
+  clientMutationId: String
+  id: String!
+
+  """
+  Free-text note shown with the section.
+  """
+  note: String
+
+  """
+  Reorders the section among its itinerary's sections via acts_as_list's insert_at. There is no separate reposition mutation for sections.
+  """
+  position: Int
+  title: String
+}
+
+type updateItinerarySectionPayload {
+  clientMutationId: String
+  responseOrError: ItinerarySectionMutationResponseOrError
+}
+
+input updateItineraryStopInput {
+  address: String
+  category: ItineraryStopCategory
+  clientMutationId: String
+  endAt: String
+  eventID: String
+  eventType: String
+  id: String!
+  imageURL: String
+  isFreeAdmission: Boolean
+  itemID: String
+  itemType: String
+  latitude: Float
+  longitude: Float
+  note: String
+
+  """
+  Reorders the stop among its section's stops via acts_as_list's insert_at. There is no separate reposition mutation for stops.
+  """
+  position: Int
+  sourceURL: String
+  startAt: String
+
+  """
+  IANA time zone identifier, e.g. Europe/London.
+  """
+  timeZone: String
+  title: String
+}
+
+type updateItineraryStopPayload {
+  clientMutationId: String
+  responseOrError: ItineraryStopMutationResponseOrError
 }
 
 input updateMeCollectionsMutationInput {
