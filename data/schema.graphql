@@ -23215,9 +23215,9 @@ type ItineraryStop {
   eventID: String
 
   """
-  PartnerShowEvent on a show stop, FairEvent on a fair stop. Null when the stop names no event.
+  SHOW_EVENT on a show stop, FAIR_EVENT on a fair stop; null when the stop names no event.
   """
-  eventType: String
+  eventType: ItineraryStopEventType
   imageURL: String
   internalID: String!
   isFreeAdmission: Boolean
@@ -23226,6 +23226,11 @@ type ItineraryStop {
   The Show, gallery location, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
   """
   item: ItineraryStopItem
+
+  """
+  What kind of item this stop points at, if any
+  """
+  itemType: ItineraryStopItemType
   latitude: Float
   longitude: Float
   note: String
@@ -23262,7 +23267,24 @@ enum ItineraryStopCategory {
   SHOW
 }
 
+"""
+What kind of event a stop names
+"""
+enum ItineraryStopEventType {
+  FAIR_EVENT
+  SHOW_EVENT
+}
+
 union ItineraryStopItem = Fair | Location | Show
+
+"""
+What kind of item a stop points at
+"""
+enum ItineraryStopItemType {
+  FAIR
+  LOCATION
+  SHOW
+}
 
 type ItineraryStopMutationFailure {
   mutationError: GravityMutationError
@@ -44557,11 +44579,11 @@ input createItineraryStopInput {
   clientMutationId: String
   endAt: String
   eventID: String
-  eventType: String
+  eventType: ItineraryStopEventType
   imageURL: String
   isFreeAdmission: Boolean
   itemID: String
-  itemType: String
+  itemType: ItineraryStopItemType
   itinerarySectionID: String!
   latitude: Float
   longitude: Float
@@ -45252,12 +45274,12 @@ input updateItineraryStopInput {
   clientMutationId: String
   endAt: String
   eventID: String
-  eventType: String
+  eventType: ItineraryStopEventType
   id: String!
   imageURL: String
   isFreeAdmission: Boolean
   itemID: String
-  itemType: String
+  itemType: ItineraryStopItemType
   latitude: Float
   longitude: Float
   note: String
