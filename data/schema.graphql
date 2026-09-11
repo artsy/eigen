@@ -23237,7 +23237,6 @@ type Itinerary {
   """
   internalID: String!
   isCurated: Boolean!
-  name: String!
   publishedAt(
     format: String
 
@@ -23255,6 +23254,15 @@ type Itinerary {
   """
   slug: String
   subtitle: String
+  title: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
   visibility: ItineraryVisibility!
 }
 
@@ -23272,6 +23280,11 @@ type ItineraryMutationSuccess {
 
 type ItinerarySection {
   internalID: String!
+
+  """
+  An editorial note about the section, shown under its title
+  """
+  note: String
   position: Int!
   stops: [ItineraryStop!]!
   stopsCount: Int!
@@ -23296,7 +23309,6 @@ type ItinerarySectionMutationSuccess {
 
 type ItineraryStop {
   address: String
-  addressOverride: String
   category: ItineraryStopCategory
   endAt(
     format: String
@@ -23307,18 +23319,28 @@ type ItineraryStop {
     timezone: String
   ): String
   eventID: String
+
+  """
+  PartnerShowEvent on a show stop, FairEvent on a fair stop. Null when the stop names no event.
+  """
+  eventType: String
   imageURL: String
   internalID: String!
   isFreeAdmission: Boolean
 
   """
-  The Show, Partner, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
+  The Show, gallery location, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
   """
   item: ItineraryStopItem
   latitude: Float
   longitude: Float
   note: String
   position: Int!
+
+  """
+  Where the curator found this stop
+  """
+  sourceURL: String
   startAt(
     format: String
 
@@ -23329,14 +23351,14 @@ type ItineraryStop {
   ): String
 
   """
+  IANA identifier saying which wall clock startAt and endAt were written against, e.g. Europe/London. Pass it to those fields as `timezone` to render the time the curator meant.
+  """
+  timeZone: String
+
+  """
   The editorial override for this stop's display title
   """
   title: String
-
-  """
-  The same raw title-override value as `title`, exposed separately for edit forms
-  """
-  titleOverride: String
 }
 
 enum ItineraryStopCategory {
@@ -23346,7 +23368,7 @@ enum ItineraryStopCategory {
   SHOW
 }
 
-union ItineraryStopItem = Fair | Partner | Show
+union ItineraryStopItem = Fair | Location | Show
 
 type ItineraryStopMutationFailure {
   mutationError: GravityMutationError
@@ -23522,6 +23544,7 @@ type Location {
   Union returning opening hours in formatted structure or a string
   """
   openingHours: OpeningHoursUnion
+  partner: Partner
   phone: String
   pier: String
   postalCode: String
@@ -33895,7 +33918,7 @@ type Query {
     id: String!
 
     """
-    An optional share token; unused by the fixture, reserved for the Gravity-backed resolver that authorizes access to unlisted guides
+    The share token for an unlisted itinerary. Gravity returns 404 without it, so a caller who is neither the owner nor holding the token cannot tell an unlisted guide from one that does not exist.
     """
     shareToken: String
   ): Itinerary
@@ -43680,7 +43703,7 @@ type Viewer {
     id: String!
 
     """
-    An optional share token; unused by the fixture, reserved for the Gravity-backed resolver that authorizes access to unlisted guides
+    The share token for an unlisted itinerary. Gravity returns 404 without it, so a caller who is neither the owner nor holding the token cannot tell an unlisted guide from one that does not exist.
     """
     shareToken: String
   ): Itinerary

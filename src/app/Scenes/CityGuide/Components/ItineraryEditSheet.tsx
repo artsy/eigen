@@ -157,7 +157,7 @@ const updateMutation = graphql`
         ... on ItineraryMutationSuccess {
           itinerary {
             internalID
-            name
+            title
             description
           }
         }

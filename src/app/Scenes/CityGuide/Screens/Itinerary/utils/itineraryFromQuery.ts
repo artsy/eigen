@@ -27,10 +27,19 @@ const knownItem = (
       return { type: "SHOW", slug: item.slug, name: item.name ?? null }
     case "Fair":
       return { type: "FAIR", slug: item.slug, name: item.name ?? null }
-    case "Partner":
+    case "Location":
+      // A gallery stop points at one of a partner's locations, not at the partner. The
+      // location is what carries the address and the opening hours; the partner is what
+      // the save control follows and what `/partner/:slug` links to. Without a partner
+      // there is nothing to save or link, so the stop reads as unsaveable.
+      if (!item.partner?.slug) return null
       // Galleries and museums are both Partners in Artsy's model; the visible distinction
       // between them is the stop's own `category`, not this.
-      return { type: "PARTNER", slug: item.slug, name: item.name ?? null }
+      return {
+        type: "PARTNER",
+        slug: item.partner.slug,
+        name: item.name ?? item.partner.name ?? null,
+      }
     default:
       return null
   }
@@ -113,11 +122,11 @@ export const itineraryFromQuery = (itinerary: QueryItinerary): Itinerary => ({
   id: itinerary.internalID,
   isCurated: itinerary.isCurated,
   citySlug: itinerary.citySlug,
-  title: itinerary.name,
+  title: itinerary.title,
   subtitle: itinerary.subtitle ?? "",
-  // `resized` asks Gemini for the width the header actually draws instead of pulling the
-  // full-size original; `url` is the fallback for an image with no resized variant.
-  heroImageUrl: itinerary.heroImage?.resized?.url ?? itinerary.heroImage?.url ?? "",
+  // `url(version:)` rather than `resized(width:)`: Gravity sends the versioned URLs it
+  // generated but not the original's dimensions, and `resized` scales from those.
+  heroImageUrl: itinerary.heroImage?.url ?? "",
   authorName: itinerary.authorName ?? "",
   description: itinerary.description ?? "",
   sections: itinerary.sections.map(toSection),

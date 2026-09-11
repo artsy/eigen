@@ -64,9 +64,9 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
           ListFooterComponent={isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : null}
           renderItem={({ item }) => (
             <ItineraryListItem
-              title={item.name}
+              title={item.title}
               stopsCount={itineraryStopsCount(item)}
-              imageUrl={item.heroImage?.resized?.url ?? item.heroImage?.url}
+              imageUrl={item.heroImage?.url}
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
               rightSlot={
                 <Flex flexDirection="row" alignItems="center" gap={1}>
@@ -78,7 +78,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                   <TouchableOpacity
                     testID="itinerary-edit"
                     accessibilityRole="button"
-                    accessibilityLabel={`Edit ${item.name}`}
+                    accessibilityLabel={`Edit ${item.title}`}
                     onPress={() => setEditing(item)}
                   >
                     <EditIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
@@ -92,7 +92,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                   <TouchableOpacity
                     testID="itinerary-share"
                     accessibilityRole="button"
-                    accessibilityLabel={`Share ${item.name}`}
+                    accessibilityLabel={`Share ${item.title}`}
                     onPress={() => {
                       // TODO: mint a share token and open the share sheet.
                     }}
@@ -111,9 +111,9 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
             onClose={() => setEditing(null)}
             itinerary={{
               internalID: editing.internalID,
-              name: editing.name,
+              name: editing.title,
               description: editing.description,
-              coverImageUrl: editing.heroImage?.resized?.url ?? editing.heroImage?.url,
+              coverImageUrl: editing.heroImage?.url,
             }}
             // A deleted itinerary has to leave the list, and the connection has no record of
             // the removal, so the page is refetched from the top.
@@ -139,13 +139,10 @@ const fragment = graphql`
         node {
           internalID
           slug
-          name
+          title
           description
           heroImage {
-            resized(width: 180) {
-              url
-            }
-            url
+            url(version: "small")
           }
           sections {
             stopsCount

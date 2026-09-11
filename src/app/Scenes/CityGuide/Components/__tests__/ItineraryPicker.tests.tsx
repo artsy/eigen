@@ -14,7 +14,7 @@ describe("ItineraryPicker", () => {
   const itinerary = (internalID: string, name: string) => ({
     internalID,
     slug: null,
-    name,
+    title: name,
     sections: [{ stopsCount: 4 }],
   })
 

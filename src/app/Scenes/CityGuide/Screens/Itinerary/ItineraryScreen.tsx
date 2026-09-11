@@ -271,15 +271,12 @@ const Query = graphql`
       internalID
       isCurated
       citySlug
-      name
+      title
       subtitle
       description
       authorName
       heroImage {
-        resized(width: 1200) {
-          url
-        }
-        url
+        url(version: "large")
       }
 
       sections {
@@ -332,13 +329,14 @@ const Query = graphql`
                 city
               }
             }
-            ... on Partner {
-              slug
+            ... on Location {
               name
-              href
-              locations(size: 1) {
+              city
+              address
+              partner {
+                slug
                 name
-                city
+                href
               }
             }
           }

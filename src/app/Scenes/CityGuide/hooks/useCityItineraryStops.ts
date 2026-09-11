@@ -278,7 +278,7 @@ const lookupQuery = graphql`
                   ... on Fair {
                     internalID
                   }
-                  ... on Partner {
+                  ... on Location {
                     internalID
                   }
                 }

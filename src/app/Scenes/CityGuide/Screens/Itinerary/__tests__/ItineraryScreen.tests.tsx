@@ -24,12 +24,11 @@ const ITINERARY = {
   internalID: "chill-vibes-only",
   isCurated: true,
   citySlug: "london-united-kingdom",
-  name: "Chill Vibes Only",
+  title: "Chill Vibes Only",
   subtitle: "Top picks",
   description: "Our list of recommendations.",
   authorName: "Casey Lesser",
   heroImage: {
-    resized: { url: "https://example.com/hero-400.jpg" },
     url: "https://example.com/hero.jpg",
   },
   sections: [
@@ -88,32 +87,27 @@ describe("ItineraryScreen", () => {
     expect(screen.queryByText("Chill Vibes Only")).toBeNull()
   })
 
-  // `heroImage` is a standard Artsy Image, so the header takes the width it draws from
-  // Gemini rather than the full-size original.
-  it("uses the resized hero image", async () => {
+  // The hero asks for a named version rather than a Gemini resize: Gravity sends the
+  // versioned URLs it generated but not the original's dimensions, and `resized` scales
+  // from those.
+  it("uses the hero image url", async () => {
     renderWithRelay({ Itinerary: () => ITINERARY }, props)
-
-    expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
-      "src",
-      "https://example.com/hero-400.jpg"
-    )
-  })
-
-  it("falls back to the original when there is no resized variant", async () => {
-    renderWithRelay(
-      {
-        Itinerary: () => ({
-          ...ITINERARY,
-          heroImage: { resized: null, url: "https://example.com/hero.jpg" },
-        }),
-      },
-      props
-    )
 
     expect(await screen.findByTestId("itinerary-hero-image")).toHaveProp(
       "src",
       "https://example.com/hero.jpg"
     )
+  })
+
+  it("renders without a hero image at all", async () => {
+    renderWithRelay(
+      {
+        Itinerary: () => ({ ...ITINERARY, heroImage: null }),
+      },
+      props
+    )
+
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
   })
 
   describe("your own itinerary", () => {
@@ -138,7 +132,7 @@ describe("ItineraryScreen", () => {
       view.mockResolveLastOperation({
         Me: () => ({
           itinerariesConnection: {
-            edges: [{ node: { internalID: "chill-vibes-only", slug: null, name: "Mine" } }],
+            edges: [{ node: { internalID: "chill-vibes-only", slug: null, title: "Mine" } }],
           },
         }),
       })

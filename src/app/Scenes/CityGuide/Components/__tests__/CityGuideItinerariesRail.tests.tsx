@@ -10,7 +10,7 @@ describe("CityGuideItinerariesRail", () => {
   const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({
     internalID,
     slug: null,
-    name,
+    title: name,
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
   })

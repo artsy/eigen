@@ -10,12 +10,9 @@ describe("CityGuideCuratedLists", () => {
   const itinerary = (slug: string | null, name: string) => ({
     internalID: `id-for-${name}`,
     slug,
-    name,
+    title: name,
     authorName: "Casey Lesser",
-    heroImage: {
-      resized: { url: "https://example.com/hero-240.jpg" },
-      url: "https://example.com/hero.jpg",
-    },
+    heroImage: { url: "https://example.com/hero-240.jpg" },
   })
 
   const connection = (nodes: object[]) => ({

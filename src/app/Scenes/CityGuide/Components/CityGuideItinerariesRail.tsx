@@ -71,9 +71,9 @@ const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
           <Flex maxWidth={MAX_CARD_WIDTH}>
             <ItineraryListItem
               variant="card"
-              title={item.name}
+              title={item.title}
               stopsCount={itineraryStopsCount(item)}
-              imageUrl={item.heroImage?.resized?.url ?? item.heroImage?.url}
+              imageUrl={item.heroImage?.url}
               // Addressed by slug when it has one, else its id — Query.itinerary takes either.
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
             />
@@ -92,12 +92,9 @@ const Query = graphql`
           node {
             internalID
             slug
-            name
+            title
             heroImage {
-              resized(width: 180) {
-                url
-              }
-              url
+              url(version: "small")
             }
             sections {
               stopsCount

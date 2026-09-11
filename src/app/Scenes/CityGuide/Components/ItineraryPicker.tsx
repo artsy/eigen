@@ -87,7 +87,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
               >
                 <Flex px={2} py={1}>
                   <Text variant="sm" weight={isCurrent ? "medium" : "regular"}>
-                    {itinerary.name}
+                    {itinerary.title}
                   </Text>
                   <Text variant="xs" color="mono60">
                     {`${itineraryStopsCount(itinerary)} ${pluralize(
@@ -113,7 +113,7 @@ const Query = graphql`
           node {
             internalID
             slug
-            name
+            title
             sections {
               stopsCount
             }

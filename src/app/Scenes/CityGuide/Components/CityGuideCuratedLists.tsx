@@ -62,9 +62,9 @@ const CuratedLists = ({ citySlug }: { citySlug: string }) => {
     // A curated guide is published and so has a slug; falling back to the id keeps an
     // unpublished one reachable rather than linking nowhere.
     itineraryId: itinerary.slug ?? itinerary.internalID,
-    title: itinerary.name,
+    title: itinerary.title,
     authorName: itinerary.authorName ?? "",
-    imageUrl: itinerary.heroImage?.resized?.url ?? itinerary.heroImage?.url ?? "",
+    imageUrl: itinerary.heroImage?.url ?? "",
   }))
 
   // Cities without curated guides render nothing at all rather than an empty dark band.
@@ -90,13 +90,10 @@ const Query = graphql`
         node {
           internalID
           slug
-          name
+          title
           authorName
           heroImage {
-            resized(width: 240) {
-              url
-            }
-            url
+            url(version: "small")
           }
         }
       }

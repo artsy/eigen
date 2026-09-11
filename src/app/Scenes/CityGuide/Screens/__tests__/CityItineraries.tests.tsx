@@ -12,7 +12,7 @@ describe("CityItineraries", () => {
   const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({
     internalID,
     slug: null,
-    name,
+    title: name,
     description: "If time, check out Borough Market",
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
