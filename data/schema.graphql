@@ -23085,6 +23085,137 @@ enum InvoiceState {
   READY
 }
 
+type Itinerary {
+  authorName: String
+  citySlug: String!
+  description: String
+  heroImage: Image
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The itinerary's UUID
+  """
+  internalID: String!
+  isCurated: Boolean!
+  publishedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  sections: [ItinerarySection!]!
+  sectionsCount: Int!
+  shareToken: String
+
+  """
+  Only published, curated guides have a slug. Null otherwise.
+  """
+  slug: String
+  subtitle: String
+  title: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  visibility: ItineraryVisibility!
+}
+
+type ItinerarySection {
+  internalID: String!
+
+  """
+  An editorial note about the section, shown under its title
+  """
+  note: String
+  position: Int!
+  stops: [ItineraryStop!]!
+  stopsCount: Int!
+
+  """
+  An opaque display string for the section, e.g. "Day 1", "Morning", or "Peckham"
+  """
+  title: String
+}
+
+type ItineraryStop {
+  address: String
+  category: ItineraryStopCategory
+  endAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  eventID: String
+
+  """
+  PartnerShowEvent on a show stop, FairEvent on a fair stop. Null when the stop names no event.
+  """
+  eventType: String
+  imageURL: String
+  internalID: String!
+  isFreeAdmission: Boolean
+
+  """
+  The Show, gallery location, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
+  """
+  item: ItineraryStopItem
+  latitude: Float
+  longitude: Float
+  note: String
+  position: Int!
+
+  """
+  Where the curator found this stop
+  """
+  sourceURL: String
+  startAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  IANA identifier saying which wall clock startAt and endAt were written against, e.g. Europe/London. Pass it to those fields as `timezone` to render the time the curator meant.
+  """
+  timeZone: String
+
+  """
+  The editorial override for this stop's display title
+  """
+  title: String
+}
+
+enum ItineraryStopCategory {
+  FAIR
+  GALLERY
+  MUSEUM
+  SHOW
+}
+
+union ItineraryStopItem = Fair | Location | Show
+
+enum ItineraryVisibility {
+  PRIVATE
+  PUBLIC
+  UNLISTED
+}
+
 """
 Represents untyped JSON
 """
@@ -33225,6 +33356,21 @@ type Query {
     partnerId: String!
   ): InstagramPostConnection
   invoice(token: String!): Invoice
+
+  """
+  A City Guide itinerary
+  """
+  itinerary(
+    """
+    The internal ID or slug of the Itinerary
+    """
+    id: String!
+
+    """
+    The share token for an unlisted itinerary. Gravity returns 404 without it, so a caller who is neither the owner nor holding the token cannot tell an unlisted guide from one that does not exist.
+    """
+    shareToken: String
+  ): Itinerary
   job(id: ID!): Job!
   jobs: [Job!]!
 
@@ -42891,6 +43037,21 @@ type Viewer {
     partnerId: String!
   ): InstagramPostConnection
   invoice(token: String!): Invoice
+
+  """
+  A City Guide itinerary
+  """
+  itinerary(
+    """
+    The internal ID or slug of the Itinerary
+    """
+    id: String!
+
+    """
+    The share token for an unlisted itinerary. Gravity returns 404 without it, so a caller who is neither the owner nor holding the token cannot tell an unlisted guide from one that does not exist.
+    """
+    shareToken: String
+  ): Itinerary
   job(id: ID!): Job!
   jobs: [Job!]!
 
