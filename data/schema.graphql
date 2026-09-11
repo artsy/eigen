@@ -20345,6 +20345,7 @@ type FollowedShowConnection {
   Information to aid in pagination.
   """
   pageInfo: PageInfo!
+  totalCount: Int
 }
 
 """
@@ -23240,6 +23241,7 @@ type Location {
   Union returning opening hours in formatted structure or a string
   """
   openingHours: OpeningHoursUnion
+  partner: Partner
   phone: String
   pier: String
   postalCode: String
@@ -36796,6 +36798,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   Is the user following this show
   """
   isFollowed: Boolean
+
+  """
+  Is entry to this show free? Null means this is genuinely unknown, not that admission isn't free.
+  """
+  isFreeAdmission: Boolean
 
   """
   Does the show exist soley online
