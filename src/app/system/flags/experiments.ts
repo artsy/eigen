@@ -27,6 +27,9 @@ export const experiments = {
   "onyx_artsy-lens": {
     description: "Enable Artsy Lens (reverse-image-search camera) entry points",
   },
+  "onyx_art-assistant-app": {
+    description: "Enable Art Assistant entry points in the app",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

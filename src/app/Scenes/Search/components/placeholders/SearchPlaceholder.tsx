@@ -8,6 +8,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -84,13 +85,27 @@ const CuratedCollectionsPlaceholder = () => {
 }
 
 export const SearchPlaceholder: React.FC = () => {
+  const showArtAssistant = useEnableArtAssistant()
+
   return (
     <ProvidePlaceholderContext>
       <Box m={2} mb={0} testID="search-placeholder">
-        <SkeletonBox
-          height={SEARCH_INPUT_CONTAINER_HEIGHT}
-          borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
-        />
+        <Flex flexDirection="row" gap={1}>
+          <SkeletonBox
+            flex={1}
+            height={SEARCH_INPUT_CONTAINER_HEIGHT}
+            borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
+          />
+
+          {!!showArtAssistant && (
+            <SkeletonBox
+              borderRadius={50}
+              height={SEARCH_INPUT_CONTAINER_HEIGHT}
+              testID="art-assistant-search-button-placeholder"
+              width={SEARCH_INPUT_CONTAINER_HEIGHT}
+            />
+          )}
+        </Flex>
 
         <Spacer y={2} />
 

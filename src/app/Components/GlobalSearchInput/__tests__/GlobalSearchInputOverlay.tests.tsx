@@ -5,11 +5,16 @@ import { GlobalSearchInputOverlay } from "app/Components/GlobalSearchInput/Globa
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { navigate } from "app/system/navigation/navigate"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
   useExperimentFlag: jest.fn(),
+}))
+
+jest.mock("app/utils/hooks/useEnableArtAssistant", () => ({
+  useEnableArtAssistant: jest.fn(),
 }))
 
 jest.mock("app/utils/hooks/useSelectedTab", () => ({
@@ -38,6 +43,7 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.mocked(useEnableArtAssistant).mockReturnValue(false)
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtsyLens: true })
   })
 
@@ -91,6 +97,41 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
       context_screen_owner_type: "home",
       destination_screen_owner_type: "searchByImage",
       type: "search_overlay_button",
+    })
+  })
+
+  describe("the Art Assistant entry point", () => {
+    it("is hidden when its experiment is off", () => {
+      mockUseExperimentFlag.mockReturnValue(false)
+
+      renderOverlay()
+
+      expect(screen.queryByTestId("art-assistant-search-overlay-button")).not.toBeOnTheScreen()
+    })
+
+    it("dismisses the overlay and navigates to Art Assistant", () => {
+      jest.mocked(useEnableArtAssistant).mockReturnValue(true)
+      const hideModal = jest.fn()
+
+      renderOverlay({ hideModal })
+
+      fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+
+      expect(hideModal).toHaveBeenCalledTimes(1)
+      expect(navigate).toHaveBeenCalledWith("/art-assistant")
+    })
+
+    it("stays available while the user types a search query", () => {
+      jest.mocked(useEnableArtAssistant).mockReturnValue(true)
+
+      renderOverlay()
+
+      fireEvent.changeText(
+        screen.getByLabelText("Search artists, artworks, galleries etc."),
+        "banksy"
+      )
+
+      expect(screen.getByTestId("art-assistant-search-overlay-button")).toBeOnTheScreen()
     })
   })
 

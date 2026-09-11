@@ -1,11 +1,22 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Box, Flex, RoundSearchInput, Spacer, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  RoundSearchInput,
+  SEARCH_INPUT_CONTAINER_BORDER_RADIUS,
+  Spacer,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
+import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
-import { SearchByPhotoIconButton } from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
+import {
+  SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH,
+  SearchByPhotoIconButton,
+} from "app/Components/SearchByPhotoButton/SearchByPhotoIconButton"
 import { tappedSearchByImage } from "app/Components/SearchByPhotoButton/tracks"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
@@ -20,6 +31,7 @@ import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
+import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
 import { useEnableArtsyLens } from "app/utils/hooks/useEnableArtsyLens"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
@@ -118,6 +130,7 @@ export const GlobalSearchInputOverlay: React.FC<{
   const { goBack, canGoBack } = useNavigation()
   const opacity = useSharedValue(0)
   const enableArtsyLens = useEnableArtsyLens()
+  const showArtAssistant = useEnableArtAssistant()
   const tracking = useTracking()
 
   useBackHandler(() => {
@@ -168,39 +181,63 @@ export const GlobalSearchInputOverlay: React.FC<{
           backgroundColor="mono0"
           style={{ top: insets.top, marginBottom: insets.bottom }}
         >
-          <Flex px={2} mt={2}>
-            <Flex>
-              <RoundSearchInput
-                placeholder={SEARCH_INPUT_PLACEHOLDER}
-                accessibilityHint="Search artists, artworks, galleries etc."
-                accessibilityLabel="Search artists, artworks, galleries etc."
-                maxLength={55}
-                numberOfLines={1}
-                onChangeText={setQuery}
-                autoFocus
-                multiline={false}
-                onLeftIconPress={() => {
-                  hideModal()
-                }}
-              />
-
-              {!!enableArtsyLens && !query && (
-                <SearchByPhotoIconButton
-                  testID="search-overlay-camera-icon"
-                  onPress={() => {
-                    tracking.trackEvent(
-                      tappedSearchByImage({
-                        contextModule: ContextModule.searchOverlay,
-                        contextScreenOwnerType: ownerType,
-                        type: "search_input_icon",
-                      })
-                    )
+          <Flex px={2} mt={2} flexDirection="row" alignItems="center" gap={1}>
+            <Flex
+              flex={1}
+              flexDirection="row"
+              backgroundColor="mono5"
+              borderRadius={SEARCH_INPUT_CONTAINER_BORDER_RADIUS}
+            >
+              <Flex flex={1}>
+                <RoundSearchInput
+                  placeholder={SEARCH_INPUT_PLACEHOLDER}
+                  accessibilityHint="Search artists, artworks, galleries etc."
+                  accessibilityLabel="Search artists, artworks, galleries etc."
+                  maxLength={55}
+                  numberOfLines={1}
+                  onChangeText={setQuery}
+                  autoFocus
+                  multiline={false}
+                  onLeftIconPress={() => {
                     hideModal()
-                    navigate("/lens")
                   }}
                 />
+              </Flex>
+
+              {!!enableArtsyLens && !query && (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  testID="search-overlay-camera-icon-container"
+                  width={SEARCH_BY_PHOTO_ICON_CONTAINER_WIDTH}
+                >
+                  <SearchByPhotoIconButton
+                    testID="search-overlay-camera-icon"
+                    onPress={() => {
+                      tracking.trackEvent(
+                        tappedSearchByImage({
+                          contextModule: ContextModule.searchOverlay,
+                          contextScreenOwnerType: ownerType,
+                          type: "search_input_icon",
+                        })
+                      )
+                      hideModal()
+                      navigate("/lens")
+                    }}
+                  />
+                </Flex>
               )}
             </Flex>
+
+            {!!showArtAssistant && (
+              <ArtAssistantSearchButton
+                testID="art-assistant-search-overlay-button"
+                onPress={() => {
+                  hideModal()
+                  navigate("/art-assistant")
+                }}
+              />
+            )}
           </Flex>
 
           <Spacer y={2} />
