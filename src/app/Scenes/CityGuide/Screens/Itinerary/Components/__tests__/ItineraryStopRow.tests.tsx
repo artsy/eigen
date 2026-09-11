@@ -121,4 +121,43 @@ describe("ItineraryStopRow", () => {
 
     expect(await screen.findByTestId("city-guide-save-button-check-icon")).toBeTruthy()
   })
+
+  // The designs give the card three lines and separate hours from admission with a dot.
+  it("renders the three card lines for a show, with a dot between hours and admission", () => {
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={{
+          ...unsaveableStop,
+          title: "",
+          displayTime: "10am-6pm",
+          cardItem: {
+            __typename: "Show",
+            name: "Georg Baselitz: Back Again",
+            href: "/show/white-cube-georg-baselitz-back-again",
+            isFreeAdmission: false,
+            partner: { name: "White Cube" },
+          },
+        }}
+        onPress={jest.fn()}
+      />
+    )
+
+    expect(screen.getByText("Georg Baselitz: Back Again")).toBeOnTheScreen()
+    expect(screen.getByText("White Cube")).toBeOnTheScreen()
+    expect(screen.getByText("10am-6pm")).toBeOnTheScreen()
+    expect(screen.getByText("Paid Entry")).toBeOnTheScreen()
+    expect(screen.getByTestId("itinerary-stop-meta-dot")).toBeOnTheScreen()
+  })
+
+  it("shows no dot when there is only one of hours and admission", () => {
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={{ ...unsaveableStop, displayTime: "10am-6pm", cardItem: undefined }}
+        onPress={jest.fn()}
+      />
+    )
+
+    expect(screen.getByText("10am-6pm")).toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-stop-meta-dot")).not.toBeOnTheScreen()
+  })
 })

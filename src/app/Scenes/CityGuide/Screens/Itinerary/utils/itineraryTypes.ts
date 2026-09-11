@@ -1,3 +1,5 @@
+import { StopCardItem } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
+
 /** How a stop resolves to a saveable Artsy entity. null for a non-Artsy editorial place. */
 export type ItinerarySaveTarget =
   | { type: "SHOW"; slug: string }
@@ -28,6 +30,11 @@ export interface ItineraryStop {
   endAt?: string
   /** Freeform. May hold emoji ("🥂 🧀") or a short caption. */
   note?: string
+  /**
+   * Whether entry is free. The stop's own answer, which an author can set to override what
+   * the entity says — so it wins over `Show.isFreeAdmission` on the card.
+   */
+  isFreeAdmission?: boolean
   imageUrl: string
   /**
    * Absent when the stop has no usable location: latitude and longitude are both nullable
@@ -37,6 +44,12 @@ export interface ItineraryStop {
   coordinates?: { lat: number; lng: number }
   /** null when the stop is not a saveable Artsy entity; no save control renders. */
   saveTarget: ItinerarySaveTarget | null
+  /**
+   * What the stop resolved to, kept in the shape the card needs. Separate from `saveTarget`,
+   * which is only a type and a slug: the card also wants the entity's own name, place, href
+   * and admission. Absent for a custom stop.
+   */
+  cardItem?: StopCardItem
 }
 
 export interface ItinerarySection {

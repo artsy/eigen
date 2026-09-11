@@ -292,6 +292,7 @@ const Query = graphql`
           address
           category
           note
+          isFreeAdmission
           imageURL
           latitude
           longitude
@@ -307,14 +308,38 @@ const Query = graphql`
             ... on Show {
               slug
               name
+              href
+              isFreeAdmission
+              partner {
+                ... on Partner {
+                  name
+                }
+                ... on ExternalPartner {
+                  name
+                }
+              }
+              location {
+                name
+                city
+              }
             }
             ... on Fair {
               slug
               name
+              href
+              location {
+                name
+                city
+              }
             }
             ... on Partner {
               slug
               name
+              href
+              locations(size: 1) {
+                name
+                city
+              }
             }
           }
         }

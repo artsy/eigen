@@ -81,6 +81,7 @@ const toStop = (stop: QueryStop): ItineraryStop => ({
   startAt: stop.startAtISO ?? undefined,
   endAt: stop.endAtISO ?? undefined,
   note: stop.note ?? undefined,
+  isFreeAdmission: stop.isFreeAdmission ?? undefined,
   imageUrl: stop.imageURL ?? "",
   // Both nullable server-side, and a stop is only mappable with both. Left undefined rather
   // than defaulted to 0,0 — the Gulf of Guinea is not a plausible London stop, and the map
@@ -90,6 +91,7 @@ const toStop = (stop: QueryStop): ItineraryStop => ({
       ? { lat: stop.latitude, lng: stop.longitude }
       : undefined,
   saveTarget: toSaveTarget(stop.item),
+  cardItem: stop.item ?? undefined,
 })
 
 const toSection = (section: QuerySection, index: number): ItinerarySection => ({
