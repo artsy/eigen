@@ -294,6 +294,7 @@ jest.mock("@sentry/react-native", () => ({
 
 jest.mock("@rnmapbox/maps", () => ({
   MapView: () => null,
+  Camera: () => null,
   StyleURL: {
     Light: null,
   },
@@ -301,6 +302,7 @@ jest.mock("@rnmapbox/maps", () => ({
   StyleSheet: {},
   ShapeSource: () => null,
   SymbolLayer: () => null,
+  CircleLayer: () => null,
 }))
 
 jest.mock("react-native-localize", () => ({
