@@ -23171,6 +23171,11 @@ type Itinerary {
   Only published, curated guides have a slug. Null otherwise.
   """
   slug: String
+
+  """
+  How many stops the itinerary has in total. Nullable because the listing endpoint only began sending it recently; fall back to summing the sections when it is absent.
+  """
+  stopsCount: Int
   subtitle: String
   title: String!
   updatedAt(
