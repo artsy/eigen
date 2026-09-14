@@ -27,6 +27,12 @@ export const experiments = {
   "onyx_artsy-lens": {
     description: "Enable Artsy Lens (reverse-image-search camera) entry points",
   },
+  "onyx_demo-version-gate": {
+    description: "Demo only: proves an appVersion constraint gates a flag per app version",
+  },
+  "onyx_demo-platform-gate": {
+    description: "Demo only: proves an appPlatformOS constraint gates a flag per platform",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
