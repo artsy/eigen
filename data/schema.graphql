@@ -29502,7 +29502,17 @@ type Partner implements Node {
     first: Int
     last: Int
     page: Int
+
+    """
+    Filter by seller states
+    """
+    sellerState: [OrderSellerStateEnum]
     size: Int
+
+    """
+    Sort order for returned orders
+    """
+    sort: PartnerOrdersSortEnum
   ): PartnerOrdersConnection
 
   """
@@ -31191,6 +31201,13 @@ type PartnerOrdersEdge {
   The item at the end of the edge
   """
   node: Order
+}
+
+enum PartnerOrdersSortEnum {
+  STATE_EXPIRES_AT_ASC
+  STATE_EXPIRES_AT_DESC
+  STATE_UPDATED_AT_ASC
+  STATE_UPDATED_AT_DESC
 }
 
 """
