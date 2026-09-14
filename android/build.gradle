@@ -18,6 +18,9 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath('com.google.gms:google-services:4.4.0')
+        // Keep in lockstep with the version pinned by @sentry/react-native
+        // (node_modules/@sentry/react-native/plugin/build/withSentryAndroidGradlePlugin.js)
+        classpath("io.sentry:sentry-android-gradle-plugin:6.8.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }

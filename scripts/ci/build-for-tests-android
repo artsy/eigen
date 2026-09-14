@@ -11,6 +11,10 @@ else
 fi
 CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
 
+# These are verification builds, not deploys — don't push R8 mapping files to Sentry.
+# Deploy lanes (fastlane) leave this unset so the mapping upload runs there.
+export SENTRY_DISABLE_AUTO_UPLOAD=true
+
 pushd android
 
 echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"

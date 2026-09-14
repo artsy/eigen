@@ -9,6 +9,11 @@
 
 # Add any project specific keep options here:
 
+# Keep source file names and line numbers so Sentry can map obfuscated native frames back
+# to readable stack traces via the uploaded R8 mapping file.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
 # needed for hermes
 -keep class com.facebook.hermes.unicode.** { *; }
 -keep class com.facebook.jni.** { *; }
