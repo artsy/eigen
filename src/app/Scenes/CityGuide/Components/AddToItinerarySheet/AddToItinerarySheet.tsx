@@ -123,6 +123,7 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
         initialName={defaultItineraryTitle(cityName)}
         isCreating={isCreating}
         onCreate={create}
+        onCancel={() => setIsNaming(false)}
       />
     )
   }

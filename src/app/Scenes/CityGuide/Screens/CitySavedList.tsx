@@ -8,6 +8,7 @@ import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { CitySavedList_me$key } from "__generated__/CitySavedList_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { renderFairRow, renderShowRow } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
@@ -153,76 +154,80 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug, city }) => {
   }
 
   return (
-    <Flex flex={1}>
-      {isMapView ? (
-        <MapView
-          sections={mapSections}
-          selectedPlaceId={selectedPlaceId}
-          onSelectPlace={setSelectedPlaceId}
-          // This screen has no in-flow header of its own (unlike the itinerary, which
-          // the 60 default is tuned for) — it sits under a static native header, which
-          // already reserves its own space above this view. No extra clearance needed
-          // beyond the safe-area inset MapView already adds.
-          pillsTopOffset={0}
-        />
-      ) : (
-        <FlashList<CityItineraryRow>
-          data={rows}
-          keyExtractor={(row) =>
-            row.kind === "fair" ? `fair-${row.fair.id}` : `show-${row.show.id}`
-          }
-          getItemType={(row) => row.kind}
-          renderItem={({ item }) =>
-            item.kind === "fair" ? renderFairRow(item.fair) : renderShowRow(item.show)
-          }
-          onScroll={isCloseToBottom(fetchData)}
-          ListFooterComponent={fetchingNextPage ? <Spinner style={{ marginVertical: 20 }} /> : null}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-        />
-      )}
+    <AddToItineraryProvider citySlug={citySlug} cityName={cityName}>
+      <Flex flex={1}>
+        {isMapView ? (
+          <MapView
+            sections={mapSections}
+            selectedPlaceId={selectedPlaceId}
+            onSelectPlace={setSelectedPlaceId}
+            // This screen has no in-flow header of its own (unlike the itinerary, which
+            // the 60 default is tuned for) — it sits under a static native header, which
+            // already reserves its own space above this view. No extra clearance needed
+            // beyond the safe-area inset MapView already adds.
+            pillsTopOffset={0}
+          />
+        ) : (
+          <FlashList<CityItineraryRow>
+            data={rows}
+            keyExtractor={(row) =>
+              row.kind === "fair" ? `fair-${row.fair.id}` : `show-${row.show.id}`
+            }
+            getItemType={(row) => row.kind}
+            renderItem={({ item }) =>
+              item.kind === "fair" ? renderFairRow(item.fair) : renderShowRow(item.show)
+            }
+            onScroll={isCloseToBottom(fetchData)}
+            ListFooterComponent={
+              fetchingNextPage ? <Spinner style={{ marginVertical: 20 }} /> : null
+            }
+            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+          />
+        )}
 
-      {/*
+        {/*
         Hidden with nothing to map: with zero valid places the camera target is undefined
         and the map opens on Mapbox's world view rather than framing anything, exactly the
         gate CityEventListScreen uses.
       */}
-      {!!hasMappablePlaces && (
-        <MotiView
-          from={{ opacity: 0.5, translateY: 0 }}
-          animate={{ opacity: 1, translateY: -60 }}
-          transition={{ type: "timing", duration: 300, delay: 200 }}
-        >
-          <Flex
-            style={{
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              bottom: -50,
-              zIndex: 1000,
-            }}
+        {!!hasMappablePlaces && (
+          <MotiView
+            from={{ opacity: 0.5, translateY: 0 }}
+            animate={{ opacity: 1, translateY: -60 }}
+            transition={{ type: "timing", duration: 300, delay: 200 }}
           >
-            <Button
-              testID="city-saved-list-view-toggle"
-              size="small"
-              onPress={() => {
-                trackEntity({
-                  action_name: isMapView
-                    ? Schema.ActionNames.CityGuideShowList
-                    : Schema.ActionNames.CityGuideShowMap,
-                  action_type: Schema.ActionTypes.Tap,
-                  owner_type: Schema.OwnerEntityTypes.CityGuide,
-                  owner_slug: citySlug,
-                })
-                setIsMapView((current) => !current)
+            <Flex
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                bottom: -50,
+                zIndex: 1000,
               }}
             >
-              {isMapView ? "Show in List" : "Show on Map"}
-            </Button>
-          </Flex>
-        </MotiView>
-      )}
-    </Flex>
+              <Button
+                testID="city-saved-list-view-toggle"
+                size="small"
+                onPress={() => {
+                  trackEntity({
+                    action_name: isMapView
+                      ? Schema.ActionNames.CityGuideShowList
+                      : Schema.ActionNames.CityGuideShowMap,
+                    action_type: Schema.ActionTypes.Tap,
+                    owner_type: Schema.OwnerEntityTypes.CityGuide,
+                    owner_slug: citySlug,
+                  })
+                  setIsMapView((current) => !current)
+                }}
+              >
+                {isMapView ? "Show in List" : "Show on Map"}
+              </Button>
+            </Flex>
+          </MotiView>
+        )}
+      </Flex>
+    </AddToItineraryProvider>
   )
 }
 

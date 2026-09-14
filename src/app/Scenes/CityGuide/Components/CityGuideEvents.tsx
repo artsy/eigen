@@ -2,10 +2,7 @@ import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEventsQuery } from "__generated__/CityGuideEventsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
-import {
-  CityEventFairSaveControl,
-  CityEventShowSaveControl,
-} from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
 import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
 import { extractNodes } from "app/utils/extractNodes"
@@ -126,17 +123,12 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               image={fair.image?.url ?? ""}
               href={fair.href ?? ""}
               saveControl={
-                // A fair is followed through its Profile, not directly. No profile, no
-                // control — there is nothing to follow.
-                fair.profile ? (
-                  <CityEventFairSaveControl
-                    id={fair.profile.id}
-                    internalID={fair.profile.internalID}
-                    isFollowed={fair.profile.isFollowed}
-                    name={fair.name ?? ""}
-                    iconSize={SAVE_ICON_SIZE}
-                  />
-                ) : null
+                <CityEventSaveControl
+                  itemType="FAIR"
+                  itemID={fair.internalID}
+                  name={fair.name ?? ""}
+                  iconSize={SAVE_ICON_SIZE}
+                />
               }
             />
           )}
@@ -158,10 +150,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               meta={show.exhibitionPeriod ?? ""}
               admission={admissionLabel(show.isFreeAdmission)}
               saveControl={
-                <CityEventShowSaveControl
-                  id={show.id}
-                  internalID={show.internalID}
-                  isFollowed={show.isFollowed}
+                <CityEventSaveControl
+                  itemType="SHOW"
+                  itemID={show.internalID}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -193,10 +184,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               meta={show.opensAt ?? ""}
               archTopImage
               saveControl={
-                <CityEventShowSaveControl
-                  id={show.id}
-                  internalID={show.internalID}
-                  isFollowed={show.isFollowed}
+                <CityEventSaveControl
+                  itemType="SHOW"
+                  itemID={show.internalID}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />

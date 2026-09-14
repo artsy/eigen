@@ -1,20 +1,12 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
-import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
-import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
-// The row itself fires no query any more (Task 13): a saveable stop's entity is resolved by
-// ItineraryStopEntityResolvers, sitting alongside the row here, and reported into
-// ItineraryStopEntitiesProvider, which the row's save control reads from. So these tests build
-// that small stack directly rather than using `setupTestWrapper`, whose `renderWithRelay`
-// assumes the component under test is the one issuing the query. The two stops with no
-// saveTarget below still issue no query at all and keep using bare `renderWithWrappers`.
+// The row fires no query: a stop already knows what it points at, so its plus needs no
+// lookup. It does need an AddToItineraryProvider above it, or it renders no plus at all.
 
 const savedStop: ItineraryStop = {
   id: "stop-2",
@@ -25,7 +17,7 @@ const savedStop: ItineraryStop = {
   note: "🥂 🧀",
   imageUrl: "https://example.com/image.jpg",
   coordinates: { lat: 51.5194, lng: -0.127 },
-  saveTarget: { type: "SHOW", slug: "museum-show" },
+  saveTarget: { itemType: "SHOW", itemID: "show-1" },
 }
 
 const unsaveableStop: ItineraryStop = {
@@ -45,43 +37,23 @@ interface RowProps {
   cityName: string
 }
 
-/**
- * Mounts the row alongside its own entity provider and resolver, seeded with just this one
- * stop, then resolves the single query that stop's resolver fires.
- */
-const renderRow = (mockResolvers: MockResolvers, props: RowProps) => {
-  const env = createMockEnvironment()
-
-  const view = renderWithWrappers(
-    <RelayEnvironmentProvider environment={env}>
-      <ItineraryStopEntitiesProvider stops={[props.stop]}>
-        <ItineraryStopEntityResolvers stops={[props.stop]} />
-        <ItineraryStopRow {...props} />
-      </ItineraryStopEntitiesProvider>
-    </RelayEnvironmentProvider>
+/** Mounts the row under the provider its plus needs. */
+const renderRow = (props: RowProps) =>
+  renderWithWrappers(
+    <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+      <ItineraryStopRow {...props} />
+    </AddToItineraryProvider>
   )
-
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
-
-  return view
-}
 
 describe("ItineraryStopRow", () => {
   it("renders the number, title, time and address", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: false }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
     expect(await screen.findByText("Museum")).toBeTruthy()
     expect(screen.getByText("2")).toBeTruthy()
@@ -90,16 +62,13 @@ describe("ItineraryStopRow", () => {
   })
 
   it("leaves the note off the row", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: false }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
     expect(await screen.findByText("Museum")).toBeTruthy()
     expect(screen.queryByText("🥂 🧀")).toBeNull()
@@ -260,19 +229,17 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 
-  it("reflects the resolved followed state", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: true }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+  // The plus has no saved state now: which itineraries hold the entity is the sheet's business.
+  it("shows a plus on an entity-backed stop", () => {
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
-    expect(await screen.findByTestId("city-guide-save-button-check-icon")).toBeTruthy()
+    expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
   })
 
   // The designs give the card three lines and separate hours from admission with a dot.

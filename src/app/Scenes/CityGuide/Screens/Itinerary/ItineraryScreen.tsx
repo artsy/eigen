@@ -9,13 +9,11 @@ import {
 } from "@artsy/palette-mobile"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
-import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
-import { ItineraryUnaddableStopsDevList } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryUnaddableStopsDevList"
-import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { itineraryFromQuery } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryFromQuery"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { goBack } from "app/system/navigation/navigate"
@@ -100,15 +98,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   const { top } = useSafeAreaInsets()
   const showRoute = useFeatureFlag("AREnableCityGuideItineraryRoute")
 
-  // Flattened once and shared by the provider, the resolvers and the rows below, so the
-  // expected set (provider) and the queried set (resolvers) can never disagree. Computed
-  // ahead of the null check so hook order stays stable regardless of whether the itinerary
-  // resolves; it is simply empty when there is no itinerary.
-  const stops = useMemo(
-    () => itinerary?.sections.flatMap((section) => section.stops) ?? [],
-    [itinerary]
-  )
-
   // Same reasoning: computed ahead of the null check to keep hook order stable.
   const mapSections = useMemo(
     () => (itinerary ? itineraryStopsToMapSections(itinerary) : []),
@@ -151,8 +140,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   })
 
   return (
-    <ItineraryStopEntitiesProvider stops={stops}>
-      <ItineraryStopEntityResolvers stops={stops} />
+    <AddToItineraryProvider citySlug={itinerary.citySlug} cityName={data.city?.name ?? undefined}>
       <Screen safeArea={false}>
         {/*
           The map fills the screen, so it gets a floating back button over the map rather
@@ -239,8 +227,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
                   ))}
                 </Join>
               </Flex>
-
-              <ItineraryUnaddableStopsDevList stops={stops} />
             </Screen.ScrollView>
           )}
 
@@ -275,7 +261,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
           </MotiView>
         </Screen.Body>
       </Screen>
-    </ItineraryStopEntitiesProvider>
+    </AddToItineraryProvider>
   )
 }
 
@@ -338,6 +324,7 @@ const Query = graphql`
           item {
             __typename
             ... on Show {
+              internalID
               slug
               name
               href
@@ -363,6 +350,7 @@ const Query = graphql`
               }
             }
             ... on Fair {
+              internalID
               slug
               name
               href
@@ -379,6 +367,7 @@ const Query = graphql`
               }
             }
             ... on Location {
+              internalID
               name
               city
               address

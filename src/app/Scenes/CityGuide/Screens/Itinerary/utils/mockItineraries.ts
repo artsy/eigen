@@ -44,7 +44,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1040/200/200.jpg",
             // Atlas Gallery, Marylebone
             coordinates: { lat: 51.5185, lng: -0.156 },
-            saveTarget: { type: "SHOW", slug: "atlas-gallery-splash-sea-beach-and-pool" },
+            saveTarget: { itemType: "SHOW", itemID: "atlas-gallery-splash-sea-beach-and-pool" },
           },
           {
             id: "stop-3",
@@ -55,7 +55,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1033/200/200.jpg",
             // White Cube Bermondsey
             coordinates: { lat: 51.4995, lng: -0.081 },
-            saveTarget: { type: "SHOW", slug: "white-cube-georg-baselitz-back-again" },
+            saveTarget: { itemType: "SHOW", itemID: "white-cube-georg-baselitz-back-again" },
           },
           {
             id: "stop-9",
@@ -66,7 +66,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1072/200/200.jpg",
             // Maddox Gallery, Mayfair
             coordinates: { lat: 51.5135, lng: -0.142 },
-            saveTarget: { type: "SHOW", slug: "maddox-gallery-the-shape-of-heat" },
+            saveTarget: { itemType: "SHOW", itemID: "maddox-gallery-the-shape-of-heat" },
           },
         ],
       },
@@ -84,7 +84,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1084/200/200.jpg",
             // Thaddaeus Ropac, Ely House, Mayfair
             coordinates: { lat: 51.5085, lng: -0.143 },
-            saveTarget: { type: "SHOW", slug: "thaddaeus-ropac-like-music-in-the-blood" },
+            saveTarget: { itemType: "SHOW", itemID: "thaddaeus-ropac-like-music-in-the-blood" },
           },
           {
             id: "stop-5",
@@ -96,7 +96,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1074/200/200.jpg",
             // Victoria Miro, Wharf Road, N1
             coordinates: { lat: 51.532, lng: -0.095 },
-            saveTarget: { type: "PARTNER", slug: "victoria-miro" },
+            saveTarget: { itemType: "LOCATION", itemID: "victoria-miro" },
           },
         ],
       },
@@ -116,7 +116,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1043/200/200.jpg",
             // The Regent's Park
             coordinates: { lat: 51.5268, lng: -0.1533 },
-            saveTarget: { type: "FAIR", slug: "frieze-london-2025" },
+            saveTarget: { itemType: "FAIR", itemID: "frieze-london-2025" },
           },
           {
             id: "stop-7",
@@ -127,7 +127,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1050/200/200.jpg",
             // Somerset House
             coordinates: { lat: 51.511, lng: -0.117 },
-            saveTarget: { type: "FAIR", slug: "photo-london-2026" },
+            saveTarget: { itemType: "FAIR", itemID: "photo-london-2026" },
           },
           {
             id: "stop-8",
@@ -139,7 +139,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1062/200/200.jpg",
             // Somerset House as well, a few metres along the courtyard
             coordinates: { lat: 51.5114, lng: -0.1176 },
-            saveTarget: { type: "FAIR", slug: "london-original-print-fair-2026" },
+            saveTarget: { itemType: "FAIR", itemID: "london-original-print-fair-2026" },
           },
         ],
       },
@@ -171,8 +171,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Carpenters Workshop Gallery, Mayfair
             coordinates: { lat: 51.512, lng: -0.14 },
             saveTarget: {
-              type: "SHOW",
-              slug: "carpenters-workshop-gallery-the-language-of-glaze",
+              itemType: "SHOW",
+              itemID: "carpenters-workshop-gallery-the-language-of-glaze",
             },
           },
           {
@@ -184,7 +184,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1027/200/200.jpg",
             // Annely Juda Fine Art, Dering Street
             coordinates: { lat: 51.514, lng: -0.1445 },
-            saveTarget: { type: "SHOW", slug: "annely-juda-fine-art-vestiges" },
+            saveTarget: { itemType: "SHOW", itemID: "annely-juda-fine-art-vestiges" },
           },
           {
             id: "hours-stop-3",
@@ -196,7 +196,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1029/200/200.jpg",
             // Maddox Gallery, Mayfair
             coordinates: { lat: 51.5135, lng: -0.142 },
-            saveTarget: { type: "SHOW", slug: "maddox-gallery-the-shape-of-heat" },
+            saveTarget: { itemType: "SHOW", itemID: "maddox-gallery-the-shape-of-heat" },
           },
         ],
       },
@@ -213,7 +213,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1031/200/200.jpg",
             // Rebecca Hossack Art Gallery, Fitzrovia
             coordinates: { lat: 51.5215, lng: -0.14 },
-            saveTarget: { type: "SHOW", slug: "rebecca-hossack-art-gallery-tjukurpa" },
+            saveTarget: { itemType: "SHOW", itemID: "rebecca-hossack-art-gallery-tjukurpa" },
           },
           {
             id: "hours-stop-5",
@@ -224,7 +224,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1036/200/200.jpg",
             // Shapero Modern, St George Street
             coordinates: { lat: 51.513, lng: -0.1435 },
-            saveTarget: { type: "SHOW", slug: "shapero-modern-summer-show-2026" },
+            saveTarget: { itemType: "SHOW", itemID: "shapero-modern-summer-show-2026" },
           },
           {
             id: "hours-stop-6",
@@ -236,7 +236,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1037/200/200.jpg",
             // Halcyon Gallery, Bruton Street
             coordinates: { lat: 51.5105, lng: -0.1445 },
-            saveTarget: { type: "SHOW", slug: "halcyon-pop-odyssey" },
+            saveTarget: { itemType: "SHOW", itemID: "halcyon-pop-odyssey" },
           },
           {
             id: "hours-stop-13",
@@ -247,7 +247,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1069/200/200.jpg",
             // Lysenko, Shoreditch
             coordinates: { lat: 51.5215, lng: -0.0795 },
-            saveTarget: { type: "SHOW", slug: "lysenko-the-transformation" },
+            saveTarget: { itemType: "SHOW", itemID: "lysenko-the-transformation" },
           },
         ],
       },
@@ -264,7 +264,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1038/200/200.jpg",
             // Beers London, Little Britain
             coordinates: { lat: 51.5175, lng: -0.0985 },
-            saveTarget: { type: "SHOW", slug: "beers-london-so-this-is-goodbye-dot-dot-dot" },
+            saveTarget: { itemType: "SHOW", itemID: "beers-london-so-this-is-goodbye-dot-dot-dot" },
           },
           {
             id: "hours-stop-8",
@@ -276,7 +276,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1039/200/200.jpg",
             // Rhodes, Cremer Street, Hoxton
             coordinates: { lat: 51.5305, lng: -0.0785 },
-            saveTarget: { type: "SHOW", slug: "rhodes-12-12" },
+            saveTarget: { itemType: "SHOW", itemID: "rhodes-12-12" },
           },
           {
             id: "hours-stop-9",
@@ -289,8 +289,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Kristin Hjellegjerde Gallery, Melior Place
             coordinates: { lat: 51.5025, lng: -0.0865 },
             saveTarget: {
-              type: "SHOW",
-              slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
+              itemType: "SHOW",
+              itemID: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
             },
           },
           {
@@ -302,7 +302,10 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1073/200/200.jpg",
             // Cadogan Gallery, Chelsea
             coordinates: { lat: 51.4925, lng: -0.16 },
-            saveTarget: { type: "SHOW", slug: "cadogan-gallery-no-ruined-stones-richard-hearns" },
+            saveTarget: {
+              itemType: "SHOW",
+              itemID: "cadogan-gallery-no-ruined-stones-richard-hearns",
+            },
           },
           {
             id: "hours-stop-15",
@@ -314,7 +317,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1075/200/200.jpg",
             // Iconic Images, Mayfair
             coordinates: { lat: 51.5115, lng: -0.1425 },
-            saveTarget: { type: "SHOW", slug: "iconic-images-fame-fashion-mcgee" },
+            saveTarget: { itemType: "SHOW", itemID: "iconic-images-fame-fashion-mcgee" },
           },
         ],
       },
@@ -331,7 +334,10 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1044/200/200.jpg",
             // 8 Holland Street, Kensington
             coordinates: { lat: 51.5015, lng: -0.1955 },
-            saveTarget: { type: "SHOW", slug: "8-holland-street-david-turley-house-plant-care" },
+            saveTarget: {
+              itemType: "SHOW",
+              itemID: "8-holland-street-david-turley-house-plant-care",
+            },
           },
           {
             id: "hours-stop-11",
@@ -343,8 +349,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Ben Uri Gallery and Museum, Boundary Road
             coordinates: { lat: 51.5345, lng: -0.1815 },
             saveTarget: {
-              type: "SHOW",
-              slug: "ben-uri-gallery-and-museum-disruptors-fractured-images-and-migrant-wordl",
+              itemType: "SHOW",
+              itemID: "ben-uri-gallery-and-museum-disruptors-fractured-images-and-migrant-wordl",
             },
           },
           {
@@ -357,7 +363,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1047/200/200.jpg",
             // Open Doors Gallery, Fitzrovia
             coordinates: { lat: 51.5195, lng: -0.1365 },
-            saveTarget: { type: "SHOW", slug: "open-doors-gallery-second-nature" },
+            saveTarget: { itemType: "SHOW", itemID: "open-doors-gallery-second-nature" },
           },
         ],
       },
@@ -386,7 +392,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1035/200/200.jpg",
             // White Cube Bermondsey
             coordinates: { lat: 51.4995, lng: -0.081 },
-            saveTarget: { type: "PARTNER", slug: "white-cube" },
+            saveTarget: { itemType: "LOCATION", itemID: "white-cube" },
           },
           {
             id: "gems-stop-2",
@@ -397,7 +403,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1048/200/200.jpg",
             // Iconic Images, Mayfair
             coordinates: { lat: 51.5115, lng: -0.1425 },
-            saveTarget: { type: "SHOW", slug: "iconic-images-fame-fashion-mcgee" },
+            saveTarget: { itemType: "SHOW", itemID: "iconic-images-fame-fashion-mcgee" },
           },
           {
             id: "gems-stop-3",
@@ -409,7 +415,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1051/200/200.jpg",
             // Atlas Gallery, Marylebone
             coordinates: { lat: 51.5185, lng: -0.156 },
-            saveTarget: { type: "SHOW", slug: "atlas-gallery-the-last-dolls" },
+            saveTarget: { itemType: "SHOW", itemID: "atlas-gallery-the-last-dolls" },
           },
         ],
       },
@@ -427,8 +433,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Purdy Hicks Gallery, Bankside
             coordinates: { lat: 51.5065, lng: -0.0995 },
             saveTarget: {
-              type: "SHOW",
-              slug: "purdy-hicks-gallery-pierre-bergian-fragments-of-place",
+              itemType: "SHOW",
+              itemID: "purdy-hicks-gallery-pierre-bergian-fragments-of-place",
             },
           },
           {
@@ -440,7 +446,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1053/200/200.jpg",
             // Contemporary Applied Arts, Southwark Street
             coordinates: { lat: 51.5055, lng: -0.0985 },
-            saveTarget: { type: "SHOW", slug: "contemporary-applied-arts-forging-forms" },
+            saveTarget: { itemType: "SHOW", itemID: "contemporary-applied-arts-forging-forms" },
           },
           {
             id: "gems-stop-6",
@@ -452,7 +458,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1055/200/200.jpg",
             // Artistellar, Shoreditch
             coordinates: { lat: 51.5245, lng: -0.0785 },
-            saveTarget: { type: "SHOW", slug: "artistellar-inner-weather" },
+            saveTarget: { itemType: "SHOW", itemID: "artistellar-inner-weather" },
           },
           {
             id: "gems-stop-16",
@@ -463,7 +469,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1070/200/200.jpg",
             // Rhodes, Cremer Street, Hoxton
             coordinates: { lat: 51.5305, lng: -0.0785 },
-            saveTarget: { type: "SHOW", slug: "rhodes-chorus" },
+            saveTarget: { itemType: "SHOW", itemID: "rhodes-chorus" },
           },
           {
             id: "gems-stop-17",
@@ -475,7 +481,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1071/200/200.jpg",
             // Somerset House
             coordinates: { lat: 51.511, lng: -0.117 },
-            saveTarget: { type: "FAIR", slug: "photo-london-2026" },
+            saveTarget: { itemType: "FAIR", itemID: "photo-london-2026" },
           },
         ],
       },
@@ -492,7 +498,10 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1056/200/200.jpg",
             // Cadogan Gallery, Chelsea
             coordinates: { lat: 51.4925, lng: -0.16 },
-            saveTarget: { type: "SHOW", slug: "cadogan-gallery-no-ruined-stones-richard-hearns" },
+            saveTarget: {
+              itemType: "SHOW",
+              itemID: "cadogan-gallery-no-ruined-stones-richard-hearns",
+            },
           },
           {
             id: "gems-stop-8",
@@ -503,7 +512,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1057/200/200.jpg",
             // Everard Read, Eastcastle Street
             coordinates: { lat: 51.5175, lng: -0.1385 },
-            saveTarget: { type: "SHOW", slug: "everard-read-dylan-lewis-cat-maquettes" },
+            saveTarget: { itemType: "SHOW", itemID: "everard-read-dylan-lewis-cat-maquettes" },
           },
           {
             id: "gems-stop-9",
@@ -515,7 +524,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1059/200/200.jpg",
             // Rhodes, Hoxton
             coordinates: { lat: 51.5305, lng: -0.0785 },
-            saveTarget: { type: "SHOW", slug: "rhodes-you-should-smile-more" },
+            saveTarget: { itemType: "SHOW", itemID: "rhodes-you-should-smile-more" },
           },
           {
             id: "gems-stop-18",
@@ -526,7 +535,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1076/200/200.jpg",
             // Annely Juda Fine Art, Dering Street
             coordinates: { lat: 51.514, lng: -0.1445 },
-            saveTarget: { type: "SHOW", slug: "annely-juda-fine-art-vestiges" },
+            saveTarget: { itemType: "SHOW", itemID: "annely-juda-fine-art-vestiges" },
           },
         ],
       },
@@ -543,7 +552,10 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1063/200/200.jpg",
             // Kristin Hjellegjerde Gallery, Melior Place
             coordinates: { lat: 51.5025, lng: -0.0865 },
-            saveTarget: { type: "SHOW", slug: "kristin-hjellegjerde-gallery-learning-to-fly" },
+            saveTarget: {
+              itemType: "SHOW",
+              itemID: "kristin-hjellegjerde-gallery-learning-to-fly",
+            },
           },
           {
             id: "gems-stop-11",
@@ -554,7 +566,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1064/200/200.jpg",
             // General Assembly, Hoxton
             coordinates: { lat: 51.5265, lng: -0.0755 },
-            saveTarget: { type: "SHOW", slug: "general-assembly-neither-here-nor-there" },
+            saveTarget: { itemType: "SHOW", itemID: "general-assembly-neither-here-nor-there" },
           },
           {
             id: "gems-stop-12",
@@ -566,7 +578,10 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1065/200/200.jpg",
             // Purdy Hicks Gallery, Bankside
             coordinates: { lat: 51.5065, lng: -0.0995 },
-            saveTarget: { type: "SHOW", slug: "purdy-hicks-gallery-jonathan-delafield-cook-1" },
+            saveTarget: {
+              itemType: "SHOW",
+              itemID: "purdy-hicks-gallery-jonathan-delafield-cook-1",
+            },
           },
         ],
       },
@@ -584,8 +599,9 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Everard Read, Eastcastle Street
             coordinates: { lat: 51.5175, lng: -0.1385 },
             saveTarget: {
-              type: "SHOW",
-              slug: "everard-read-phillemon-hlungwani-amukela-leswi-u-nga-nyikiwa-swona-accept-what-you-have-been-given",
+              itemType: "SHOW",
+              itemID:
+                "everard-read-phillemon-hlungwani-amukela-leswi-u-nga-nyikiwa-swona-accept-what-you-have-been-given",
             },
           },
           {
@@ -598,8 +614,8 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             // Contemporary Applied Arts, Southwark Street
             coordinates: { lat: 51.5055, lng: -0.0985 },
             saveTarget: {
-              type: "SHOW",
-              slug: "contemporary-applied-arts-london-design-festival-rhythm",
+              itemType: "SHOW",
+              itemID: "contemporary-applied-arts-london-design-festival-rhythm",
             },
           },
           {
@@ -612,7 +628,7 @@ export const MOCK_ITINERARIES: Itinerary[] = [
             imageUrl: "https://picsum.photos/id/1068/200/200.jpg",
             // Victoria Miro, Wharf Road, N1
             coordinates: { lat: 51.532, lng: -0.095 },
-            saveTarget: { type: "PARTNER", slug: "victoria-miro" },
+            saveTarget: { itemType: "LOCATION", itemID: "victoria-miro" },
           },
         ],
       },

@@ -19,26 +19,25 @@ type QueryStop = QuerySection["stops"][number]
  */
 const knownItem = (
   item: QueryStop["item"]
-): { type: ItinerarySaveTarget["type"]; slug: string; name: string | null } | null => {
+): (ItinerarySaveTarget & { name: string | null }) | null => {
   if (!item) return null
 
   switch (item.__typename) {
     case "Show":
-      return { type: "SHOW", slug: item.slug, name: item.name ?? null }
+      return { itemType: "SHOW", itemID: item.internalID, name: item.name ?? null }
     case "Fair":
-      return { type: "FAIR", slug: item.slug, name: item.name ?? null }
+      return { itemType: "FAIR", itemID: item.internalID, name: item.name ?? null }
     case "Location":
       // A gallery stop points at one of a partner's locations, not at the partner. The
       // location is what carries the address and the opening hours; the partner is what
       // the save control follows and what `/partner/:slug` links to. Without a partner
       // there is nothing to save or link, so the stop reads as unsaveable.
-      if (!item.partner?.slug) return null
-      // Galleries and museums are both Partners in Artsy's model; the visible distinction
-      // between them is the stop's own `category`, not this.
+      // A stop names the location, not the partner, so `LOCATION` is what it stores. The
+      // partner is still where the name and the link come from.
       return {
-        type: "PARTNER",
-        slug: item.partner.slug,
-        name: item.name ?? item.partner.name ?? null,
+        itemType: "LOCATION",
+        itemID: item.internalID,
+        name: item.name ?? item.partner?.name ?? null,
       }
     default:
       return null
@@ -53,7 +52,7 @@ const knownItem = (
 const toSaveTarget = (item: QueryStop["item"]): ItinerarySaveTarget | null => {
   const known = knownItem(item)
 
-  return known ? { type: known.type, slug: known.slug } : null
+  return known ? { itemType: known.itemType, itemID: known.itemID } : null
 }
 
 /**

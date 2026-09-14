@@ -32,11 +32,12 @@ const FallbackDetails: React.FC<Props> = ({ stop }) => (
 )
 
 const StopDetails: React.FC<Props> = ({ stop }) => {
-  const isShow = stop.saveTarget?.type === "SHOW"
+  const isShow = stop.saveTarget?.itemType === "SHOW"
 
   const data = useLazyLoadQuery<ItineraryStopMapDetailQuery>(
     ShowQuery,
-    { slug: stop.saveTarget?.slug ?? "", skip: !isShow },
+    // `show(id:)` takes an id or a slug, and a stop stores the id.
+    { slug: stop.saveTarget?.itemID ?? "", skip: !isShow },
     { fetchPolicy: "store-or-network" }
   )
 

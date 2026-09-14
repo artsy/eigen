@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { CityEventFairSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
@@ -34,13 +34,10 @@ export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSecti
             {fair.exhibition_period}
           </Text>
         ) : undefined,
-        saveControl: fair.profile ? (
-          <CityEventFairSaveControl
-            id={fair.profile.id}
-            internalID={fair.profile.internalID}
-            isFollowed={fair.profile.isFollowed}
-            name={fair.name ?? ""}
-          />
-        ) : undefined,
+        // No longer gated on the fair having a profile: a stop stores the fair itself, so
+        // there is nothing a missing profile would stop.
+        saveControl: (
+          <CityEventSaveControl itemType="FAIR" itemID={fair.internalID} name={fair.name ?? ""} />
+        ),
       })),
   }))

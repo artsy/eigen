@@ -1,11 +1,11 @@
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
-import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
-import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import {
   Itinerary,
   ItineraryStop,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 
 /**
@@ -29,10 +29,15 @@ export const itineraryStopsToMapSections = (itinerary: Itinerary): MapSection[] 
         id: stop.id,
         title: stop.title,
         coordinates: stop.coordinates,
-        href: itineraryStopHref(stop.saveTarget),
+        // The same destination the list row uses, rather than a second mapping of type to path.
+        href: stopCardFields(stop, stop.cardItem).href ?? null,
         detail: <ItineraryStopMapDetail stop={stop} />,
         saveControl: stop.saveTarget ? (
-          <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
+          <CityEventSaveControl
+            itemType={stop.saveTarget.itemType}
+            itemID={stop.saveTarget.itemID}
+            name={stop.title}
+          />
         ) : undefined,
       })),
   }))

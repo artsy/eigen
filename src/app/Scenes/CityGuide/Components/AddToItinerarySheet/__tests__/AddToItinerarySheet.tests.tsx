@@ -180,6 +180,20 @@ describe("AddToItinerarySheet", () => {
       expect(screen.getByTestId("create-itinerary-submit")).toBeDisabled()
     })
 
+    // For someone who opened the form and then remembered they have one already.
+    it("goes back to the list without creating anything", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), props)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      expect(screen.getByTestId("create-itinerary-name")).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("create-itinerary-back"))
+
+      expect(await screen.findByText("First")).toBeOnTheScreen()
+      expect(screen.queryByTestId("create-itinerary-name")).not.toBeOnTheScreen()
+      expect(view.env.mock.getAllOperations()).toHaveLength(0)
+    })
+
     it("creates it with the city and the name", async () => {
       const view = renderWithRelay(withItineraries([]), props)
 

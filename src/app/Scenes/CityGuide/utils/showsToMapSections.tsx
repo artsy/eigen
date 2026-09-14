@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { CityEventShowSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
@@ -34,12 +34,7 @@ export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSecti
           </Text>
         ) : undefined,
         saveControl: (
-          <CityEventShowSaveControl
-            id={show.id}
-            internalID={show.internalID}
-            isFollowed={show.is_followed}
-            name={show.name ?? ""}
-          />
+          <CityEventSaveControl itemType="SHOW" itemID={show.internalID} name={show.name ?? ""} />
         ),
       })),
   }))

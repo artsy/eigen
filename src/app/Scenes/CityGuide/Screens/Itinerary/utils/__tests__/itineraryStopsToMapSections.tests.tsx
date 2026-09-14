@@ -1,5 +1,5 @@
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
-import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import {
   Itinerary,
@@ -38,8 +38,12 @@ describe("itineraryStopsToMapSections", () => {
     expect(sections[0].title).toEqual("Day 1")
   })
 
+  // The href is the one the list row uses, rather than a second mapping of type to path.
   it("maps a stop's id, title, coordinates and href", () => {
-    const stop = makeStop({ saveTarget: { type: "SHOW", slug: "some-show" } })
+    const stop = makeStop({
+      saveTarget: { itemType: "SHOW", itemID: "some-show" },
+      cardItem: { __typename: "Show", name: "A show", href: "/show/some-show" },
+    })
     const sections = itineraryStopsToMapSections(makeItinerary([stop]))
 
     expect(sections[0].places[0]).toMatchObject({
@@ -73,7 +77,7 @@ describe("itineraryStopsToMapSections", () => {
   it("injects a save control only when the stop has a save target", () => {
     const withTarget = makeStop({
       id: "with-target",
-      saveTarget: { type: "SHOW", slug: "some-show" },
+      saveTarget: { itemType: "SHOW", itemID: "some-show" },
     })
     const withoutTarget = makeStop({ id: "without-target", saveTarget: null })
 
@@ -81,7 +85,7 @@ describe("itineraryStopsToMapSections", () => {
     const [placeWithTarget, placeWithoutTarget] = sections[0].places
 
     expect(isValidElement(placeWithTarget.saveControl)).toBe(true)
-    expect((placeWithTarget.saveControl as React.ReactElement).type).toBe(ItineraryStopSaveControl)
+    expect((placeWithTarget.saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
     expect(placeWithoutTarget.saveControl).toBeUndefined()
   })
 })

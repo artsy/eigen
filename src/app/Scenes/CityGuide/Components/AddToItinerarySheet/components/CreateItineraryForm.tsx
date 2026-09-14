@@ -1,26 +1,47 @@
+import { ChevronLeftIcon } from "@artsy/icons/native"
 import { Button, Flex, Input, Text } from "@artsy/palette-mobile"
 import { useState } from "react"
+import { TouchableOpacity } from "react-native"
 
 /** The designs' limit, shown as a counter under the field. */
 const MAX_LENGTH = 40
+const BACK_SIZE = 18
+const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 
 interface Props {
   /** Prefilled with what an implicitly created itinerary would be called. */
   initialName: string
   isCreating: boolean
   onCreate: (name: string) => void
+  /** Back to the list, for someone who meant to add to an itinerary they already have. */
+  onCancel: () => void
 }
 
 /** The sheet's second view: name a new itinerary. */
-export const CreateItineraryForm: React.FC<Props> = ({ initialName, isCreating, onCreate }) => {
+export const CreateItineraryForm: React.FC<Props> = ({
+  initialName,
+  isCreating,
+  onCreate,
+  onCancel,
+}) => {
   const [name, setName] = useState(initialName)
   const trimmed = name.trim()
 
   return (
     <Flex px={2} pb={2}>
-      <Text variant="md" mb={2}>
-        New Itinerary
-      </Text>
+      <Flex flexDirection="row" alignItems="center" gap={1} mb={2}>
+        <TouchableOpacity
+          testID="create-itinerary-back"
+          accessibilityRole="button"
+          accessibilityLabel="Back to your itineraries"
+          hitSlop={HIT_SLOP}
+          onPress={onCancel}
+        >
+          <ChevronLeftIcon width={BACK_SIZE} height={BACK_SIZE} />
+        </TouchableOpacity>
+
+        <Text variant="md">New Itinerary</Text>
+      </Flex>
 
       <Input
         testID="create-itinerary-name"

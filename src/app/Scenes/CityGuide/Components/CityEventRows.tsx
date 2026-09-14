@@ -1,8 +1,5 @@
 import { CityEventRow } from "app/Scenes/CityGuide/Components/CityEventRow"
-import {
-  CityEventFairSaveControl,
-  CityEventShowSaveControl,
-} from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 
 /**
@@ -17,12 +14,7 @@ export const renderShowRow = (show: Show) => (
     imageURL={show.cover_image?.url ?? null}
     href={show.href ?? null}
     saveControl={
-      <CityEventShowSaveControl
-        id={show.id}
-        internalID={show.internalID}
-        isFollowed={show.is_followed}
-        name={show.name ?? ""}
-      />
+      <CityEventSaveControl itemType="SHOW" itemID={show.internalID} name={show.name ?? ""} />
     }
   />
 )
@@ -35,14 +27,7 @@ export const renderFairRow = (fair: Fair) => (
     imageURL={fair.image?.url ?? null}
     href={`/fair/${fair.slug}`}
     saveControl={
-      fair.profile ? (
-        <CityEventFairSaveControl
-          id={fair.profile.id}
-          internalID={fair.profile.internalID}
-          isFollowed={fair.profile.isFollowed}
-          name={fair.name ?? ""}
-        />
-      ) : null
+      <CityEventSaveControl itemType="FAIR" itemID={fair.internalID} name={fair.name ?? ""} />
     }
   />
 )

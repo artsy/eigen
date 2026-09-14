@@ -1,166 +1,68 @@
-import { useToast } from "app/Components/Toast/toastHook"
+import { useAddToItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
-import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
-import { useFollowShow } from "app/utils/mutations/useFollowShow"
+import { CityItineraryItemType } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
 
 interface Props {
-  /** Relay node id, for the optimistic store update. */
-  id: string
-  internalID: string
-  isFollowed: boolean | null | undefined
+  /** What the stop would point at. A gallery is a `LOCATION`: a stop names the place. */
+  itemType: CityItineraryItemType
+  /** The entity's own id, not its profile's — that is what a stop stores. */
+  itemID: string
   /** Used for the accessibility label and nothing else. */
   name: string
-  /** "icon" is the circular add/check used in rows. "button" is the labelled form the stop preview needs. */
-  variant?: "icon" | "button"
   /** Forwarded to `CityGuideSaveButton`. The rail cards pass 18, per their designs. */
   iconSize?: number
 }
 
-const useSaveToast = () => {
-  const toast = useToast()
+/** Which tracking names each type sends. Eigen already had all six. */
+const TRACKING: Record<
+  CityItineraryItemType,
+  { action: Schema.ActionNames; ownerType: Schema.OwnerEntityTypes }
+> = {
+  SHOW: { action: Schema.ActionNames.SaveShow, ownerType: Schema.OwnerEntityTypes.Show },
+  FAIR: { action: Schema.ActionNames.FollowFair, ownerType: Schema.OwnerEntityTypes.Fair },
+  // `OwnerEntityTypes` has no `Gallery`, so this uses `Partner`, the type Metaphysics uses.
+  LOCATION: {
+    action: Schema.ActionNames.GalleryFollow,
+    ownerType: Schema.OwnerEntityTypes.Partner,
+  },
+}
 
-  return (isNowSaved: boolean) => {
-    toast.show(isNowSaved ? "Saved to your saves" : "Removed from your saves", "bottom")
+/**
+ * The plus on every City Guide card, row and map card.
+ *
+ * It opens the Add to Itinerary sheet. It used to follow the entity, which is why it had a
+ * saved state; adding is now the only thing it does, and which itineraries hold the entity is
+ * the sheet's business, so the glyph is always a plus.
+ *
+ * Renders nothing without an `AddToItineraryProvider` above it — a plus that did nothing when
+ * tapped would be worse than none.
+ */
+export const CityEventSaveControl: React.FC<Props> = ({ itemType, itemID, name, iconSize }) => {
+  const addToItinerary = useAddToItinerary()
+  const { trackEvent } = useTracking<Schema.Entity>()
+
+  if (!addToItinerary) {
+    return null
   }
-}
-
-const accessibilityLabel = (isFollowed: boolean, name: string) =>
-  isFollowed ? `Unsave ${name}` : `Save ${name}`
-
-/**
- * Save control for a show whose data the caller has already fetched. Unlike
- * `ItineraryStopSaveControl`, which must resolve an entity from a slug, this fires no query.
- */
-export const CityEventShowSaveControl: React.FC<Props> = ({
-  id,
-  internalID,
-  isFollowed,
-  name,
-  variant,
-  iconSize,
-}) => {
-  const showToast = useSaveToast()
-  const { trackEvent } = useTracking<Schema.Entity>()
-  const isSaved = !!isFollowed
-
-  const { followShow, isInFlight } = useFollowShow({
-    id,
-    internalID,
-    isFollowed,
-    onCompleted: showToast,
-  })
 
   return (
     <CityGuideSaveButton
-      variant={variant}
       iconSize={iconSize}
-      isSaved={isSaved}
-      isSaving={isInFlight}
-      accessibilityLabel={accessibilityLabel(isSaved, name)}
+      isSaved={false}
+      accessibilityLabel={`Add ${name} to an itinerary`}
       onPress={() => {
+        const { action, ownerType } = TRACKING[itemType]
+
         trackEvent({
-          action_name: isSaved ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
-          action_type: Schema.ActionTypes.Success,
-          owner_type: Schema.OwnerEntityTypes.Show,
-          owner_id: internalID,
+          action_name: action,
+          action_type: Schema.ActionTypes.Tap,
+          owner_type: ownerType,
+          owner_id: itemID,
         })
-        followShow()
-      }}
-    />
-  )
-}
 
-/**
- * Save control for a fair. Following a fair is a profile follow in Gravity
- * (`me/followed_fairs.ts:24` filters on `owner_types: "Fair"`), so `id` and `internalID`
- * here are the fair's profile ids, not the fair's own.
- */
-export const CityEventFairSaveControl: React.FC<Props> = ({
-  id,
-  internalID,
-  isFollowed,
-  name,
-  variant,
-  iconSize,
-}) => {
-  const showToast = useSaveToast()
-  const { trackEvent } = useTracking<Schema.Entity>()
-  const isSaved = !!isFollowed
-
-  const { followProfile, isInFlight } = useFollowProfile({
-    id,
-    internalID,
-    isFollowed,
-    onCompleted: showToast,
-  })
-
-  return (
-    <CityGuideSaveButton
-      variant={variant}
-      iconSize={iconSize}
-      isSaved={isSaved}
-      isSaving={isInFlight}
-      accessibilityLabel={accessibilityLabel(isSaved, name)}
-      onPress={() => {
-        // Eigen already has fair-specific names at `track/schema.ts:276-277`. Using SaveShow
-        // for a fair would be reusing the wrong existing name, which is worse than inventing one.
-        trackEvent({
-          action_name: isSaved ? Schema.ActionNames.UnfollowFair : Schema.ActionNames.FollowFair,
-          action_type: Schema.ActionTypes.Success,
-          owner_type: Schema.OwnerEntityTypes.Fair,
-          owner_id: internalID,
-        })
-        followProfile()
-      }}
-    />
-  )
-}
-
-/**
- * Save control for a partner/gallery stop. Following a gallery is also a profile follow, but it
- * tracks under different names. `GalleryFollow` / `GalleryUnfollow` exist at
- * `utils/track/schema.ts:280-281` and are already used elsewhere in the app, by Onboarding, but
- * no City Guide surface sent them before this. `OwnerEntityTypes` has no `Gallery` value, so this
- * uses `Partner`, the type Metaphysics itself uses for a gallery.
- */
-export const CityEventPartnerSaveControl: React.FC<Props> = ({
-  id,
-  internalID,
-  isFollowed,
-  name,
-  variant,
-  iconSize,
-}) => {
-  const showToast = useSaveToast()
-  const { trackEvent } = useTracking<Schema.Entity>()
-  const isSaved = !!isFollowed
-
-  const { followProfile, isInFlight } = useFollowProfile({
-    id,
-    internalID,
-    isFollowed,
-    onCompleted: showToast,
-  })
-
-  return (
-    <CityGuideSaveButton
-      variant={variant}
-      iconSize={iconSize}
-      isSaved={isSaved}
-      isSaving={isInFlight}
-      accessibilityLabel={accessibilityLabel(isSaved, name)}
-      onPress={() => {
-        trackEvent({
-          action_name: isSaved
-            ? Schema.ActionNames.GalleryUnfollow
-            : Schema.ActionNames.GalleryFollow,
-          action_type: Schema.ActionTypes.Success,
-          owner_type: Schema.OwnerEntityTypes.Partner,
-          owner_id: internalID,
-        })
-        followProfile()
+        addToItinerary.open({ itemType, itemID })
       }}
     />
   )
