@@ -1,6 +1,7 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen, waitFor } from "@testing-library/react-native"
 import { CustomStopScreen } from "app/Scenes/CityGuide/Screens/CustomStop/CustomStopScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RefreshControl } from "react-native"
 
 const STOP = {
   internalID: "stop-1",
@@ -107,5 +108,18 @@ describe("CustomStopScreen", () => {
       expect(await screen.findByText("Coffee at London Cafe")).toBeOnTheScreen()
       expect(screen.queryByTestId("custom-stop-save-button")).not.toBeOnTheScreen()
     })
+  })
+
+  it("refetches on pull to refresh without unmounting the stop", async () => {
+    const view = renderWithRelay(withStop(), props)
+
+    await screen.findByText("Coffee at London Cafe")
+
+    act(() => {
+      screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+    })
+
+    await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+    expect(screen.getByText("Coffee at London Cafe")).toBeOnTheScreen()
   })
 })

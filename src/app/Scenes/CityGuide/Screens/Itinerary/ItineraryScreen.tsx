@@ -24,8 +24,9 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useMemo, useRef, useState } from "react"
+import { RefreshControl } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
@@ -60,6 +61,29 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   const itinerary = derived?.sections.length ? derived : lastResolved.current
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
+
+  const environment = useRelayEnvironment()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  /*
+    Refetched through `fetchQuery` rather than by bumping this query's fetchKey: a
+    network-only re-render would suspend the screen and replace it with the spinner, so a pull
+    would blank the guide you are reading. This writes the same query's own fields, so every
+    stop record is overwritten in full and the positional keying holds.
+  */
+  const refresh = useCallback(() => {
+    setIsRefreshing(true)
+
+    fetchQuery<ItineraryScreenQuery>(
+      environment,
+      Query,
+      { id: itineraryId, citySlug },
+      { fetchPolicy: "network-only" }
+    ).subscribe({
+      complete: () => setIsRefreshing(false),
+      error: () => setIsRefreshing(false),
+    })
+  }, [environment, itineraryId, citySlug])
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
   // about whether the map is a mode or a screen. Returning false lets it pop as usual.
@@ -184,7 +208,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
               safeArea
             />
           ) : (
-            <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+            <Screen.ScrollView
+              contentContainerStyle={{ paddingBottom: 40 }}
+              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+            >
               <ItineraryHeader itinerary={itinerary} />
 
               <Flex px={2} pt={2}>

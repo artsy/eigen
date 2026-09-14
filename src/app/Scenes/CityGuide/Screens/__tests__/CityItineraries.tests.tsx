@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CityItinerariesScreenQueryRenderer } from "app/Scenes/CityGuide/Screens/CityItineraries"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RefreshControl } from "react-native"
 
 describe("CityItineraries", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -95,5 +96,24 @@ describe("CityItineraries", () => {
 
       expect(refetch?.request.variables.cursor).toBeNull()
     })
+  })
+
+  it("refetches the list on pull to refresh", async () => {
+    const view = renderWithRelay(
+      { Me: () => ({ itinerariesConnection: { edges: [{ node: itinerary("a", "A", [2]) }] } }) },
+      props
+    )
+
+    await screen.findByText("A")
+
+    act(() => {
+      screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+    })
+
+    await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+    expect(view.env.mock.getAllOperations()[0].request.node.params.name).toBe(
+      "CityItinerariesPaginationQuery"
+    )
+    expect(screen.getByText("A")).toBeOnTheScreen()
   })
 })
