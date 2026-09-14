@@ -486,13 +486,13 @@ jobs:
 parameters:
   xcode_version:
     type: string
-    default: "26.2"
+    default: "26.4.1"
   node_version:
     type: string
     default: "24.6.0"
   simulator_version:
     type: string
-    default: "26.2"
+    default: "26.4"
   default_mac_runner:
     type: string
     default: "m4pro.medium"
