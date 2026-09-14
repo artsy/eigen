@@ -69,7 +69,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
         )
       }
       renderItem={({ item }) => {
-        return <ShowItemRow show={item} isListItem />
+        return <ShowItemRow useIconSaveButton show={item} isListItem />
       }}
     />
   )

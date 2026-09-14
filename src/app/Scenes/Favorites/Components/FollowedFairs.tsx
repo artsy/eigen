@@ -125,7 +125,7 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
           )}
         </Flex>
 
-        <FairFollowButton fair={fair} />
+        <FairFollowButton fair={fair} variant="icon" />
       </Flex>
     </Touchable>
   )
