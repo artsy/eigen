@@ -139,29 +139,30 @@ promotion. We added custom logic to work around this.
 
 #### When can we remove this:
 
-When react-native-keys merges this PR
-https://github.com/numandev1/react-native-keys/pull/117
+The Android build-path hunk can go when react-native-keys merges https://github.com/numandev1/react-native-keys/pull/117
+
+The bridgeless/JSI hunks can go when react-native-keys supports the New Architecture without a bridge. There is no upstream PR for this yet — we should open one.
 
 #### Explanation/Context:
 
-Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one
+Two unrelated problems in one patch:
+
+**1. Android build path.** Because RN >= 0.80 has moved react-native from `react-native/android` to `react-native/ReactAndroid`, we need to be looking at the new folder instead of the previous one.
+
+**2. Bridgeless (New Architecture) JSI installation.** The library installed its `secureFor` / `publicKeys` JSI host functions by reaching for `[RCTBridge currentBridge]` and casting to `RCTCxxBridge` to get the runtime. In bridgeless mode there is no bridge, so `install()` returned `false` and the globals were never defined — which breaks every consumer of `Keys` (all our env/secret access at startup).
+
+The patch reworks this without touching the public API:
+
+- `ios/Keys.mm` — extracts the binding setup into a shared `installKeysBindings(jsi::Runtime&)` helper, and under `RCT_NEW_ARCH_ENABLED` adopts `RCTTurboModuleWithJSIBindings` so RN calls `installJSIBindingsWithRuntime:callInvoker:` and hands us the runtime directly (no bridge or CallInvoker hacks). The JS-callable `install()` then just returns `true` when there is no bridge, and still falls back to the legacy `RCTCxxBridge` path on the old architecture.
+- `android/.../KeysModule.java` — `getJavaScriptContextHolder()` is still exposed on `BridgelessReactContext` (via `@UnstableReactNativeAPI`) and returns the active `ReactInstance`'s runtime pointer, so the JSI install works; we just guard against a null/zero holder instead of crashing.
+
+⚠️ `yarn patch <pkg>` extracts the **unpatched** source. Re-apply the existing patch before adding hunks or you will silently drop them, and run `yarn install` after `yarn patch-commit` (it does not refresh `node_modules`).
 
 ## Patch for @react-navigation/bottom-tabs
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
-
-## patch for react-native RCTEventEmitter
-
-#### Explanation/Context:
-
-We use a singleton pattern for our ARNotificationsManagerModule, which is also an RCTEventEmitter for things like push notification handling, there is a bug in react native where stopObserving is called when bridge is invalidated but listenerCount is
-not reset. This causes the module to never start listening again causing events not to be sent over the bridge.
-
-#### When can we remove this:
-
-It can be removed once if we stop using the singleton pattern or get rid of ARNotificationsManagerModule, or it is fixed upstream.
 
 ## react-native-reanimated package.json flags and react-native patch
 
@@ -252,9 +253,19 @@ https://github.com/gorhom/react-native-bottom-sheet/issues/2547
 
 On Fabric, reanimated's `scrollTo` uses `dispatchCommand` which forces a native commit cycle that re-triggers `onScroll` even when the scroll offset hasn't changed. In `useScrollEventsHandlersDefault`, when the scrollable state is `LOCKED`, `handleOnScroll` calls `scrollTo` to enforce the lock position, which fires another `onScroll`, which calls `scrollTo` again — creating an infinite recursion that crashes with "Maximum call stack size exceeded (native stack depth)".
 
-The patch adds a guard (`if (y === lockPosition) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+The patch adds a guard (`if (Math.abs(y - lockPosition) < 1) return`) in `handleOnScroll`, `handleOnEndDrag`, and `handleOnMomentumEnd` to skip the `scrollTo` call when the scroll position is already at the lock position. The epsilon comparison (rather than `===`) matters because the offset that comes back from the native scroll event is a float and is not always exactly equal to the position we asked for. It also fixes a bug in `handleOnMomentumEnd` where `scrollableContentOffsetY.value` was incorrectly set to `0` instead of `lockPosition`.
+
+Only `src/` is patched, not `lib/` — the package's `react-native` entry point is `src/index.ts`, so that is what Metro consumes.
 
 Sentry issue: https://artsynet.sentry.io/issues/7304441200/
+
+⚠️ **This patch has been lost once already.** It was dropped while bumping `@gorhom/bottom-sheet` 5.2.8 → 5.2.14 and re-ported afterwards. Neither half of it is upstream as of 5.2.14 (`handleOnMomentumEnd` there still sets `scrollableContentOffsetY.value = 0`), so **re-apply it on every version bump** and verify with:
+
+```sh
+grep -c "Math.abs(y - lockPosition)" node_modules/@gorhom/bottom-sheet/src/hooks/useScrollEventsHandlersDefault.ts  # expect 3
+```
+
+Note that `expo install --fix` silently strips `patch:` protocol descriptors from `package.json`, which is one way this goes missing.
 
 ## patch for @d11/react-native-fast-image
 
@@ -270,25 +281,51 @@ When the upstream @d11/react-native-fast-image closes and releases this PR https
 
 #### Explanation/Context:
 
-Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. This patch attempts to fix that.
+Two unrelated hunks:
+
+**1. `android/.../errorrecovery/ErrorRecovery.kt` — blank screens instead of crashes.** Started seeing blank screens on android when app was crashing instead of regularly crashing the app after we enabled new architecture. In bridgeless mode `onReactInstanceException` silently swallowed the exception once expo-updates had unregistered its own handler (i.e. more than ~10s after launch). The patch keeps a fallback handler around that forwards to the thread's default uncaught-exception handler, so the app crashes properly — and gets reported — instead of showing a blank screen.
+
+**2. `ios/EXUpdates.podspec` — `use_dev_client` wrongly enabled.** Upstream detects expo-dev-client with:
+
+```rb
+use_dev_client = File.dirname(`node --print "require.resolve('expo-dev-client/package.json', ...)"`).length > 0
+```
+
+We do not install `expo-dev-client`, so the backtick returns `""`, `File.dirname("")` is `"."`, and `".".length > 0` is **true** — so Debug builds wrongly got `-DUSE_DEV_CLIENT=1`. It also leaked a node `MODULE_NOT_FOUND` stack trace to stderr on every `pod install`. The patch checks `$?.success?` and a non-empty result instead, and silences the stderr.
 
 #### When can we remove this:
 
-When the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
+**Hunk 1:** when the upstream expo-updates repository fixes the issue and releases a new version that properly handles crashes on Android with the new architecture. https://github.com/expo/expo/issues/41543
 
-## Hermes engine podspec path fix in react-native patch
+**Hunk 2:** when upstream fixes the `use_dev_client` detection. Still broken as of `expo-updates@57.0.21` — carry this hunk forward on every SDK bump.
+
+## Patch for react-native-ios-utilities
+
+#### When can we remove this:
+
+When `react-native-ios-utilities` stops referencing the legacy-architecture-only `RCTRootContentView`. `5.2.0` is the **latest published** version, so there is no upgrade to move to — we should report this upstream. Rebuild the patch on every version bump.
 
 #### Explanation/Context:
 
-After the Expo 55 bump (`react-native@0.83.6`), the `hermes-engine.podspec` resolves `HERMES_CLI_PATH` (the path to `hermesc`) by running `node -p require.resolve("hermes-compiler", ...)` at pod install time. This produces an **absolute path** containing the current user's home directory (e.g. `/Users/george/…/node_modules/hermes-compiler/hermesc/osx-bin/hermesc`).
+The iOS build failed to link with `Undefined symbols: _OBJC_CLASS_$_RCTRootContentView`, referenced from `react-native-ios-utilities` (pulled in via `react-native-ios-context-menu` / zeego).
 
-Because each developer has a different username, CocoaPods computes a **different checksum** for the `hermes-engine` pod on every machine, causing `Podfile.lock` to show a diff after every `pod install` even when nothing actually changed. See upstream issue: https://github.com/facebook/react-native/issues/54891
+`RCTRootContentView` is a legacy (Paper) class. RN 0.85+ removes the legacy architecture **and** ships a **prebuilt** React-Core (`RCT_USE_PREBUILT_RNCORE=1` by default) that is built with `RCT_REMOVE_LEGACY_ARCH=1`, so the symbol no longer exists in the binary we link against.
 
-The fix (bundled into `.yarn/patches/react-native-npm-0.83.6-hermes-checksum.patch`) replaces the dynamic `node` resolution with a static CocoaPods-relative path: `$(PODS_ROOT)/../../node_modules/hermes-compiler/hermesc/osx-bin/hermesc`. This path is identical on every machine, so the checksum stabilises.
+The patch removes the `closestParentReactContentView` helper and returns `nil` from its single consumer — the tail fallback of `closestParentReactTouchHandler`, which `react-native-ios-context-menu` uses to cancel a touch handler. This is safe because eigen runs the New Architecture: `RCTRootContentView` is never present in a Fabric view hierarchy, so that fallback was already dead code for us.
+
+**Failed approach — do not retry:** setting `ENV['RCT_REMOVE_LEGACY_ARCH'] = '0'` in the Podfile. A compiler flag cannot add symbols back into a prebuilt binary; it would additionally require `RCT_USE_PREBUILT_RNCORE=0`, i.e. compiling React Native from source on every clean build.
+
+## Patch for react-native-safe-area-context
 
 #### When can we remove this:
 
-When https://github.com/facebook/react-native/issues/54891 is resolved upstream and we upgrade to a version of `react-native` that uses a machine-independent path for `HERMES_CLI_PATH`.
+When upstream drops the unused `React` import from `jest/mock.tsx`, or when our Babel/TS config no longer errors on it.
+
+#### Explanation/Context:
+
+`jest/mock.tsx` does `import React, { useContext } from 'react'` but never references `React` itself. Under our Jest transform this trips the unused-import/`verbatimModuleSyntax`-style handling and fails the mock. The patch is a one-liner that drops the default import and keeps `{ useContext }`.
+
+Purely a test-time fix — it does not affect app code. Needs rebuilding on every `react-native-safe-area-context` version bump (it has already been carried across 5.6.2 → 5.7.0).
 
 ## patch for AFNetworking
 
