@@ -42,7 +42,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   return (
     <ImageBackground
       resizeMode="cover"
-      style={{ ...StyleSheet.absoluteFillObject }}
+      style={{ ...StyleSheet.absoluteFill }}
       source={imgSource}
     >
       <Content />
