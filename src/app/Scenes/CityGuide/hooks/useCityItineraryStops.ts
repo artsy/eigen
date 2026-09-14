@@ -3,6 +3,7 @@ import { useCityItineraryStopsCreateItineraryMutation } from "__generated__/useC
 import { useCityItineraryStopsCreateSectionMutation } from "__generated__/useCityItineraryStopsCreateSectionMutation.graphql"
 import { useCityItineraryStopsLookupQuery } from "__generated__/useCityItineraryStopsLookupQuery.graphql"
 import { useCityItineraryStopsRemoveMutation } from "__generated__/useCityItineraryStopsRemoveMutation.graphql"
+import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
 import { Environment, commitMutation } from "relay-runtime"
@@ -41,6 +42,23 @@ export interface CustomStopInput {
 }
 
 type StopInput = EntityStopInput | CustomStopInput
+
+/**
+ * Every stop the app adds goes here. Nothing can create a section yet, so one name for all of
+ * them keeps a user's own stops together rather than scattered through a copied guide's days.
+ */
+export const MY_STOPS_SECTION = "My Stops"
+
+/**
+ * What a new itinerary is called: "London October 2026", or "October 2026" where no city is
+ * known. It reads as a trip rather than a place, so a second visit does not collide with the
+ * first.
+ */
+export const defaultItineraryTitle = (cityName?: string) => {
+  const monthAndYear = DateTime.local().toFormat("MMMM yyyy")
+
+  return cityName ? `${cityName} ${monthAndYear}` : monthAndYear
+}
 
 /** How a stop's `item` union member maps onto the item type the caller passes in. */
 const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
@@ -128,8 +146,8 @@ export const useCityItineraryStops = ({
   cityName,
 }: {
   citySlug: string
-  /** The default itinerary's name is just the city's — "London", not "London Itinerary". */
-  cityName: string
+  /** Absent where no city is known, which leaves it out of a new itinerary's name. */
+  cityName?: string
 }) => {
   const environment = useRelayEnvironment()
   const inFlight = useRef<Promise<unknown>>(Promise.resolve())
@@ -151,7 +169,10 @@ export const useCityItineraryStops = ({
       const existing = data?.me?.itinerariesConnection?.edges?.[0]?.node
 
       let itineraryID = existing?.internalID
-      let sectionID = existing?.sections?.[0]?.internalID
+      // By name, not the first section: an itinerary copied from a guide arrives with the
+      // guide's own days, and a stop the user adds belongs in theirs.
+      let sectionID = existing?.sections?.find((section) => section.title === MY_STOPS_SECTION)
+        ?.internalID
       // Flattened across sections: a stop is on the itinerary or it is not, and which section
       // holds it does not matter for finding or removing one.
       const stops = (existing?.sections ?? []).flatMap((section) => section.stops)
@@ -162,7 +183,7 @@ export const useCityItineraryStops = ({
         const created = await mutate<useCityItineraryStopsCreateItineraryMutation>(
           environment,
           createItineraryMutation,
-          { input: { citySlug, title: cityName } }
+          { input: { citySlug, title: defaultItineraryTitle(cityName) } }
         )
         const response = created.createItinerary?.responseOrError
 
@@ -185,13 +206,10 @@ export const useCityItineraryStops = ({
       if (!sectionID) {
         if (!createIfMissing) return { itineraryID, sectionID: undefined, stops }
 
-        // Named after the city, like the itinerary itself. The section exists only because a
-        // stop must belong to one, and the UI shows a single list, so it needs no label of its
-        // own — but a name reads better than a blank heading anywhere it does surface.
         const created = await mutate<useCityItineraryStopsCreateSectionMutation>(
           environment,
           createSectionMutation,
-          { input: { itineraryID, title: cityName } }
+          { input: { itineraryID, title: MY_STOPS_SECTION } }
         )
         const response = created.createItinerarySection?.responseOrError
 
@@ -307,6 +325,7 @@ const lookupQuery = graphql`
             internalID
             sections {
               internalID
+              title
               stops {
                 internalID
                 title
