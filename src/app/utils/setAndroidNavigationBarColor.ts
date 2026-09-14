@@ -1,15 +1,20 @@
 import * as NavigationBar from "expo-navigation-bar"
 
-export const DEFAULT_NAVIGATION_BAR_COLOR = "#FFFFFF"
-export const DEFAULT_NAVIGATION_BAR_DARK_COLOR = "#000000"
-
+/**
+ * Sets the appearance of the Android system navigation bar.
+ *
+ * Since Expo SDK 56 (edge-to-edge), the navigation bar background color can no longer be set:
+ * the system owns the background and the app draws behind it. We can only control the content
+ * (button/icon) style, where "light" means a light bar with dark content and "dark" means a dark
+ * bar with light content — matching the backgrounds we used to set explicitly.
+ */
 export const setAndroidNavigationBarColor = (theme: "light" | "dark") => {
   switch (theme) {
     case "dark":
-      NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_DARK_COLOR)
+      NavigationBar.setStyle("dark")
       break
     case "light":
-      NavigationBar.setBackgroundColorAsync(DEFAULT_NAVIGATION_BAR_COLOR)
+      NavigationBar.setStyle("light")
       break
 
     default:
