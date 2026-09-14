@@ -14,12 +14,33 @@ import { Environment, commitMutation } from "relay-runtime"
  */
 export type CityItineraryItemType = "SHOW" | "FAIR" | "LOCATION"
 
-interface StopInput {
+interface EntityStopInput {
   itemType: CityItineraryItemType
   itemID: string
   /** The editorial title. Falls back to the entity's own name server-side when absent. */
   title?: string
 }
+
+/**
+ * A stop with no Artsy entity — a cafe, a landmark. `createItineraryStopInput` leaves
+ * `itemType` and `itemID` optional, so these fields alone make a stop.
+ *
+ * No image: that input takes an S3 upload URL which Gravity converts through Gemini, so a
+ * copied stop cannot carry the original's picture.
+ */
+export interface CustomStopInput {
+  itemType?: undefined
+  title: string
+  address?: string
+  note?: string
+  sourceURL?: string
+  category?: "MUSEUM" | "GALLERY" | "SHOW" | "FAIR"
+  isFreeAdmission?: boolean
+  latitude?: number
+  longitude?: number
+}
+
+type StopInput = EntityStopInput | CustomStopInput
 
 /** How a stop's `item` union member maps onto the item type the caller passes in. */
 const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
@@ -55,19 +76,40 @@ const mutate = <T extends { variables: any; response: any }>(
 
 interface ExistingStop {
   readonly internalID: string
+  readonly title?: string | null
+  readonly address?: string | null
   readonly item?: { readonly __typename: string; readonly internalID?: string } | null
 }
 
-/** The stop pointing at this entity, if the itinerary already has one. */
-const findStop = <T extends ExistingStop>(
-  stops: readonly T[],
-  { itemType, itemID }: Pick<StopInput, "itemType" | "itemID">
+/**
+ * The stop for this input, if the itinerary already has one.
+ *
+ * An entity stop matches on what it points at. A custom stop has no id to compare, so it
+ * matches on title and address — imperfect, but allowing silent duplicates is worse.
+ */
+const findStop = <T extends ExistingStop>(stops: readonly T[], input: StopInput) => {
+  if (input.itemType) {
+    return stops.find(
+      (candidate) =>
+        candidate.item?.__typename === ITEM_TYPENAMES[input.itemType] &&
+        candidate.item?.internalID === input.itemID
+    )
+  }
+
+  return stops.find((candidate) => isSameCustomStop(candidate, input))
+}
+
+/**
+ * Whether an existing stop is a copy of this custom one. Exported so a screen can show the
+ * right state for its add control without restating the rule.
+ */
+export const isSameCustomStop = (
+  candidate: Omit<ExistingStop, "internalID">,
+  input: { title: string; address?: string }
 ) =>
-  stops.find(
-    (candidate) =>
-      candidate.item?.__typename === ITEM_TYPENAMES[itemType] &&
-      candidate.item?.internalID === itemID
-  )
+  !candidate.item &&
+  candidate.title === input.title &&
+  (candidate.address ?? undefined) === input.address
 
 /**
  * Adds and removes stops on the user's own itinerary for a city.
@@ -201,14 +243,7 @@ export const useCityItineraryStops = ({
         const created = await mutate<useCityItineraryStopsAddMutation>(
           environment,
           addStopMutation,
-          {
-            input: {
-              itinerarySectionID: target.sectionID,
-              itemType: stop.itemType,
-              itemID: stop.itemID,
-              title: stop.title,
-            },
-          }
+          { input: { itinerarySectionID: target.sectionID, ...stop } }
         )
         const response = created.createItineraryStop?.responseOrError
 
@@ -226,7 +261,7 @@ export const useCityItineraryStops = ({
   )
 
   const removeStop = useCallback(
-    (stop: Pick<StopInput, "itemType" | "itemID">) =>
+    (stop: StopInput) =>
       serialise(async () => {
         // No itinerary means nothing to remove, and creating one to delete from would be absurd.
         const target = await resolveTarget(false)
@@ -274,6 +309,8 @@ const lookupQuery = graphql`
               internalID
               stops {
                 internalID
+                title
+                address
                 item {
                   __typename
                   ... on Show {

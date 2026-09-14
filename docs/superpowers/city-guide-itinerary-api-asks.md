@@ -124,3 +124,31 @@ the client needs new design for the two states.
 2. **§4** — without membership, every card lies about its state.
 3. **§2, §3** — removal and idempotency, to make adding safe.
 4. **§5, §6** — the count and reordering.
+
+---
+
+## `id` on `ItinerarySection` and `ItineraryStop` (a correctness bug, not a nicety)
+
+`Itinerary` exposes `id: ID!`; `ItinerarySection` and `ItineraryStop` expose only
+`internalID: String!`. Relay identifies records by `id`, so without one it falls back to
+keying a stop **by its position**:
+
+```
+client:<itinerary global id>:sections:0:stops:3
+```
+
+That makes the store wrong rather than merely inefficient. Any second query that reads the same
+itinerary with a changed stop list — adding or removing a stop and re-reading it, for instance
+— writes into those positional slots, so every stop after the insertion point takes on its
+neighbour's fields. A screen holding a stop by `internalID` then fails to find it, and the row
+it was rendering empties.
+
+We hit this three times in one session: rows vanishing from a guide, and a stop screen
+reporting "no longer available" the moment its own plus was tapped. The client works around it
+by holding the last resolved value rather than re-deriving from the store, which is a patch
+over a broken identity, not a fix.
+
+**Ask:** add `id: ID!` to `ItinerarySection` and `ItineraryStop`, as `Itinerary` already has.
+Both are Gravity records with their own identifiers, so this is a resolver change rather than a
+data change. Once shipped, the client can drop the held-value workarounds and read straight
+from the store.

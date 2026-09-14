@@ -90,6 +90,93 @@ describe("useCityItineraryStops", () => {
     await expect(promise).resolves.toBeTruthy()
   })
 
+  // A custom stop has no Artsy entity to point at, so its fields are copied instead. The
+  // image cannot come across: createItineraryStopInput.imageURL takes an S3 upload URL.
+  describe("a custom stop", () => {
+    const customStop = {
+      title: "Coffee at London Cafe",
+      address: "12 Bermondsey Street",
+      note: "Small place, good pastries.",
+      sourceURL: "https://timeout.com/london-cafe",
+      category: "GALLERY" as const,
+      isFreeAdmission: true,
+      latitude: 51.5,
+      longitude: -0.1,
+    }
+
+    it("sends the copied fields and no item", async () => {
+      const { result } = renderIt()
+
+      const promise = result.current.addStop(customStop)
+
+      await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+
+      await waitFor(() => {
+        const op = env.mock.getMostRecentOperation()
+        expect(op.request.node.params.name).toEqual("useCityItineraryStopsAddMutation")
+      })
+
+      const { input } = env.mock.getMostRecentOperation().request.variables
+
+      expect(input).toEqual({
+        itinerarySectionID: "section-1",
+        ...customStop,
+      })
+      expect(input.itemType).toBeUndefined()
+      expect(input.itemID).toBeUndefined()
+
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          createItineraryStopPayload: () => ({
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "stop-9" },
+            },
+          }),
+        })
+      )
+
+      await expect(promise).resolves.toBeTruthy()
+    })
+
+    // No id to compare, so a duplicate is caught on title plus address.
+    it("does not add the same custom stop twice", async () => {
+      const { result } = renderIt()
+
+      const promise = result.current.addStop(customStop)
+
+      await resolveNext("useCityItineraryStopsLookupQuery", {
+        Me: () => ({
+          itinerariesConnection: {
+            edges: [
+              {
+                node: {
+                  internalID: "itinerary-1",
+                  sections: [
+                    {
+                      internalID: "section-1",
+                      stops: [
+                        {
+                          internalID: "stop-9",
+                          title: "Coffee at London Cafe",
+                          address: "12 Bermondsey Street",
+                          item: null,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      await expect(promise).resolves.toBeTruthy()
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+    })
+  })
+
   // Three round trips, because Metaphysics has no find-or-create and a new itinerary has no
   // section for a stop to belong to.
   it("creates the itinerary and a section when the user has none", async () => {

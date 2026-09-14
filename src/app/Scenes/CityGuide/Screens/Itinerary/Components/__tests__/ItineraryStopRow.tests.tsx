@@ -40,7 +40,9 @@ const unsaveableStop: ItineraryStop = {
 interface RowProps {
   stop: ItineraryStop
   number: number
-  onPress: (stop: ItineraryStop) => void
+  citySlug: string
+  itineraryId: string
+  cityName: string
 }
 
 /**
@@ -72,7 +74,13 @@ describe("ItineraryStopRow", () => {
   it("renders the number, title, time and address", async () => {
     renderRow(
       { Show: () => ({ isFollowed: false }) },
-      { stop: savedStop, number: 2, onPress: jest.fn() }
+      {
+        stop: savedStop,
+        number: 2,
+        citySlug: "london-united-kingdom",
+        itineraryId: "guide-1",
+        cityName: "London",
+      }
     )
 
     expect(await screen.findByText("Museum")).toBeTruthy()
@@ -84,7 +92,13 @@ describe("ItineraryStopRow", () => {
   it("leaves the note off the row", async () => {
     renderRow(
       { Show: () => ({ isFollowed: false }) },
-      { stop: savedStop, number: 2, onPress: jest.fn() }
+      {
+        stop: savedStop,
+        number: 2,
+        citySlug: "london-united-kingdom",
+        itineraryId: "guide-1",
+        cityName: "London",
+      }
     )
 
     expect(await screen.findByText("Museum")).toBeTruthy()
@@ -112,7 +126,9 @@ describe("ItineraryStopRow", () => {
       renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({ __typename: "Show", name: "A show", href: "/show/a-show" })}
-          onPress={jest.fn()}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
         />
       )
 
@@ -122,7 +138,6 @@ describe("ItineraryStopRow", () => {
     })
 
     it("navigates to a show", () => {
-      const onPress = jest.fn()
       renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({
@@ -130,14 +145,15 @@ describe("ItineraryStopRow", () => {
             name: "Georg Baselitz: Back Again",
             href: "/show/white-cube-georg-baselitz-back-again",
           })}
-          onPress={onPress}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
         />
       )
 
       fireEvent.press(screen.getByTestId("itinerary-stop-row"))
 
       expect(navigate).toHaveBeenCalledWith("/show/white-cube-georg-baselitz-back-again")
-      expect(onPress).not.toHaveBeenCalled()
     })
 
     // A gallery stop points at a Location, and the partner behind it is what has a page.
@@ -149,7 +165,9 @@ describe("ItineraryStopRow", () => {
             name: "Bermondsey",
             partner: { name: "White Cube", href: "/partner/white-cube" },
           })}
-          onPress={jest.fn()}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
         />
       )
 
@@ -158,42 +176,85 @@ describe("ItineraryStopRow", () => {
       expect(navigate).toHaveBeenCalledWith("/partner/white-cube")
     })
 
-    it("opens the details for a custom stop", () => {
-      const onPress = jest.fn()
-      renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} onPress={onPress} />)
-
-      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
-
-      expect(onPress).toHaveBeenCalledWith(unsaveableStop)
-      expect(navigate).not.toHaveBeenCalled()
-    })
-
-    // The source link leaves Artsy, so it is offered inside the details rather than followed.
-    it("does not follow a custom stop's source link", () => {
-      const onPress = jest.fn()
+    // A custom stop has no entity page, so it gets its own screen, addressed by the itinerary
+    // it belongs to — Metaphysics has no root lookup for a single stop.
+    it("goes to a custom stop's own screen", () => {
       renderWithWrappers(
         <ItineraryStopRow
-          stop={{ ...unsaveableStop, sourceURL: "https://timeout.com/london-cafe" }}
-          onPress={onPress}
+          stop={unsaveableStop}
+          number={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
         />
       )
 
       fireEvent.press(screen.getByTestId("itinerary-stop-row"))
 
-      expect(navigate).not.toHaveBeenCalled()
-      expect(onPress).toHaveBeenCalled()
+      expect(navigate).toHaveBeenCalledWith(
+        "/city-guide/london-united-kingdom/itinerary/guide-1/stop/stop-1"
+      )
+    })
+
+    // The source link leaves Artsy, so the screen offers it rather than the row following it.
+    it("does not follow a custom stop's source link", () => {
+      renderWithWrappers(
+        <ItineraryStopRow
+          stop={{ ...unsaveableStop, sourceURL: "https://timeout.com/london-cafe" }}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+        />
+      )
+
+      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
+
+      expect(navigate).not.toHaveBeenCalledWith("https://timeout.com/london-cafe")
     })
   })
 
   // No saveTarget means no query, so these two must not go through the entities/resolvers stack.
   it("omits the note when the stop has none", () => {
-    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} onPress={jest.fn()} />)
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={unsaveableStop}
+        number={1}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
+    )
 
     expect(screen.queryByText("🥂 🧀")).toBeNull()
   })
 
-  it("renders no save control when the stop has no save target", () => {
-    renderWithWrappers(<ItineraryStopRow stop={unsaveableStop} number={1} onPress={jest.fn()} />)
+  // A custom stop has no entity to resolve, so its plus renders straight away rather than
+  // waiting on a lookup the way an Artsy stop's control does.
+  it("shows the plus on a custom stop without waiting on a lookup", () => {
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={unsaveableStop}
+        number={1}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
+    )
+
+    expect(screen.getByTestId("custom-stop-save-button")).toBeOnTheScreen()
+    expect(screen.getByTestId("follow-icon-button-add")).toBeOnTheScreen()
+  })
+
+  it("renders no entity save control when the stop has no save target", () => {
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={unsaveableStop}
+        number={1}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
+    )
 
     expect(screen.queryByTestId("city-guide-save-button")).toBeNull()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -202,7 +263,13 @@ describe("ItineraryStopRow", () => {
   it("reflects the resolved followed state", async () => {
     renderRow(
       { Show: () => ({ isFollowed: true }) },
-      { stop: savedStop, number: 2, onPress: jest.fn() }
+      {
+        stop: savedStop,
+        number: 2,
+        citySlug: "london-united-kingdom",
+        itineraryId: "guide-1",
+        cityName: "London",
+      }
     )
 
     expect(await screen.findByTestId("city-guide-save-button-check-icon")).toBeTruthy()
@@ -224,7 +291,9 @@ describe("ItineraryStopRow", () => {
             partner: { name: "White Cube" },
           },
         }}
-        onPress={jest.fn()}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
       />
     )
 
@@ -239,7 +308,9 @@ describe("ItineraryStopRow", () => {
     renderWithWrappers(
       <ItineraryStopRow
         stop={{ ...unsaveableStop, displayTime: "10am-6pm", cardItem: undefined }}
-        onPress={jest.fn()}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
       />
     )
 

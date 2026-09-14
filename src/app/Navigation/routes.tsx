@@ -97,6 +97,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CitySectionList"
+import { CustomStopScreen } from "app/Scenes/CityGuide/Screens/CustomStop/CustomStopScreen"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
@@ -1136,6 +1137,17 @@ export const artsyDotNetRoutes = defineRoutes([
         header: () => {
           return null
         },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itinerary/:itineraryId/stop/:stopId",
+    name: "CityGuideCustomStop",
+    Component: CustomStopScreen,
+    options: {
+      screenOptions: {
+        // The screen renders its own Screen.Header, as the other City Guide screens do.
+        headerShown: false,
       },
     },
   },
