@@ -28578,6 +28578,11 @@ enum OrderSellerStateEnum {
   COMPLETED
 
   """
+  Order has expired
+  """
+  EXPIRED
+
+  """
   Order is incomplete (not actionable by seller)
   """
   INCOMPLETE
