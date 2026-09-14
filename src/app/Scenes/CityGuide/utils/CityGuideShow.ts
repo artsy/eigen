@@ -25,6 +25,7 @@ export const cityGuideShowFragment = graphql`
       url
     }
     location {
+      postalCode
       coordinates {
         lat
         lng

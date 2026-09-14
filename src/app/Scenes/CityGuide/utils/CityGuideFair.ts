@@ -14,6 +14,7 @@ export const cityGuideFairFragment = graphql`
       partners
     }
     location {
+      postalCode
       coordinates {
         lat
         lng
@@ -33,6 +34,8 @@ export const cityGuideFairFragment = graphql`
         url(version: "square140")
       }
       id
+      internalID
+      isFollowed
       slug
       name
     }
