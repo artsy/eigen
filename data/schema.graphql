@@ -23245,7 +23245,11 @@ type ItineraryStop {
   SHOW_EVENT on a show stop, FAIR_EVENT on a fair stop; null when the stop names no event.
   """
   eventType: ItineraryStopEventType
-  imageURL: String
+
+  """
+  The stop's uploaded image; null until Gemini processing finishes.
+  """
+  image: Image
   internalID: String!
   isFreeAdmission: Boolean
 
@@ -44576,6 +44580,11 @@ input createItineraryInput {
   citySlug: String!
   clientMutationId: String
   description: String
+
+  """
+  URL of an image already uploaded to S3, from which Gravity builds the itinerary's hero `ArImage`
+  """
+  imageURL: String
   isCurated: Boolean
   subtitle: String
   title: String!
@@ -44609,6 +44618,10 @@ input createItineraryStopInput {
   endAt: String
   eventID: String
   eventType: ItineraryStopEventType
+
+  """
+  S3 upload URL for the stop image; Gravity converts it via Gemini. Other URLs are rejected.
+  """
   imageURL: String
   isFreeAdmission: Boolean
   itemID: String
@@ -45261,6 +45274,11 @@ input updateItineraryInput {
   """
   generateShareToken: Boolean
   id: String!
+
+  """
+  URL of an image already uploaded to S3, from which Gravity builds the itinerary's hero `ArImage`. Pass `null` to clear the current hero image.
+  """
+  imageURL: String
   isCurated: Boolean
 
   """
@@ -45305,6 +45323,10 @@ input updateItineraryStopInput {
   eventID: String
   eventType: ItineraryStopEventType
   id: String!
+
+  """
+  S3 upload URL for the stop image; Gravity converts it via Gemini. Other URLs are rejected. Pass `null` to clear it.
+  """
   imageURL: String
   isFreeAdmission: Boolean
   itemID: String
