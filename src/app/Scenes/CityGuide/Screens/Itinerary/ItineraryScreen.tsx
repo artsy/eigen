@@ -128,13 +128,23 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
     )
   }
 
-  // Your own itinerary shows no order and no section headings: it is a single unordered list,
-  // so numbering and a section name would both be noise. A curated guide keeps both.
+  // Your own itinerary shows no order: it is a list of places you picked, not a route, so
+  // numbering would imply an order nobody chose. A curated guide keeps it.
   const isEditorial = itinerary.isCurated
+
+  // An empty section is not worth a heading or a gap. A guide keeps its own, so a day with
+  // nothing in it still reads as part of the itinerary.
+  const sections = isEditorial
+    ? itinerary.sections
+    : itinerary.sections.filter((section) => section.stops.length)
+
+  // One populated section needs no heading to tell it apart from the others. Two or more keep
+  // theirs, or the stops run together.
+  const showSectionHeaders = isEditorial || sections.length > 1
 
   // Numbering runs continuously across sections, so each needs its running start.
   let runningTotal = 0
-  const sectionStartNumbers = itinerary.sections.map((section) => {
+  const sectionStartNumbers = sections.map((section) => {
     const start = runningTotal + 1
     runningTotal += section.stops.length
     return start
@@ -216,12 +226,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
 
               <Flex px={2} pt={2}>
                 <Join separator={<Spacer y={2} />}>
-                  {itinerary.sections.map((section, index) => (
+                  {sections.map((section, index) => (
                     <ItinerarySectionRow
                       key={section.id}
                       section={section}
                       startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
-                      showHeader={isEditorial}
+                      showHeader={showSectionHeaders}
                       citySlug={itinerary.citySlug}
                       itineraryId={itineraryId}
                       cityName={data.city?.name ?? ""}

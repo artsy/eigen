@@ -140,18 +140,84 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("itinerary-picker")).toBeOnTheScreen()
     })
 
-    it("shows no stop numbers and no section heading", async () => {
+    it("shows no stop numbers", async () => {
       renderWithRelay({ Itinerary: () => own }, props)
 
       await screen.findByText("Stop 1")
 
       expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
-      expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(0)
-      expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
+    })
+
+    // Sections only earn a heading when there is more than one to tell apart. Stops added from
+    // the app all land in "My Stops", so the common case is a single section.
+    describe("section headings", () => {
+      const withSections = (sections: object[]) => ({
+        Itinerary: () => ({ ...own, sections }),
+      })
+
+      it("hides the heading when only one section has stops", async () => {
+        renderWithRelay(
+          withSections([{ internalID: "my-stops", title: "My Stops", stops: [stop(1)] }]),
+          props
+        )
+
+        await screen.findByText("Stop 1")
+
+        expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(0)
+        expect(screen.queryByText("My Stops")).not.toBeOnTheScreen()
+      })
+
+      it("keeps the headings when more than one section has stops", async () => {
+        renderWithRelay(
+          withSections([
+            { internalID: "day-1", title: "Day 1", stops: [stop(1)] },
+            { internalID: "my-stops", title: "My Stops", stops: [stop(2)] },
+          ]),
+          props
+        )
+
+        expect(await screen.findByText("Day 1")).toBeOnTheScreen()
+        expect(screen.getByText("My Stops")).toBeOnTheScreen()
+      })
+
+      // A copied guide's empty days would otherwise leave headings with nothing under them.
+      it("does not render a section with no stops", async () => {
+        renderWithRelay(
+          withSections([
+            { internalID: "my-stops", title: "My Stops", stops: [stop(1)] },
+            { internalID: "day-2", title: "Day 2", stops: [] },
+          ]),
+          props
+        )
+
+        await screen.findByText("Stop 1")
+
+        expect(screen.queryByText("Day 2")).not.toBeOnTheScreen()
+        // One populated section left, so that one loses its heading too.
+        expect(screen.queryByText("My Stops")).not.toBeOnTheScreen()
+      })
     })
   })
 
   describe("a curated guide", () => {
+    // A guide's own days are editorial: an empty one still reads as part of the itinerary.
+    it("keeps a section with no stops", async () => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...ITINERARY,
+            sections: [
+              { internalID: "day-1", title: "Day 1 — Easing in", stops: [stop(1)] },
+              { internalID: "day-2", title: "Day 2 — Nothing booked", stops: [] },
+            ],
+          }),
+        },
+        props
+      )
+
+      expect(await screen.findByText("Day 2 — Nothing booked")).toBeOnTheScreen()
+    })
+
     it("keeps its numbering, section headings and byline", async () => {
       renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
