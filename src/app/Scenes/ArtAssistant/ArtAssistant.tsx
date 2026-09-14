@@ -1,4 +1,4 @@
-import { CloseIcon, MagicMagnifyingGlassIcon } from "@artsy/icons/native"
+import { CloseIcon, SparklesStrokeIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
@@ -60,7 +60,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
         >
           <Flex flex={1} px={2} pt={4} pb={2}>
             <Flex flexDirection="row" alignItems="center" justifyContent="center">
-              <MagicMagnifyingGlassIcon fill="mono60" width={28} height={28} />
+              <SparklesStrokeIcon width={28} height={28} />
               <Text variant="sm" color="mono60" ml={0.5} caps>
                 Art Assistant
               </Text>
