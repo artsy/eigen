@@ -30,15 +30,15 @@ import { DrawerPosition, Fair, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
-import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
+configureMapbox()
 
 interface Props {
   /** city slug */
@@ -49,8 +49,6 @@ interface Props {
   /** The viewer data */
   viewer: CityGuideMap_viewer$key
 }
-
-export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
 export const CityGuideMap: React.FC<Props> = (props) => {
   const color = useColor()
