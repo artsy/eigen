@@ -71,7 +71,7 @@ const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
  * Promise wrapper around `commitMutation`. A GraphQL payload can carry errors alongside a 200,
  * so those reject too rather than resolving with a half-written result.
  */
-const mutate = <T extends { variables: any; response: any }>(
+export const mutate = <T extends { variables: any; response: any }>(
   environment: Environment,
   mutation: any,
   variables: T["variables"]
