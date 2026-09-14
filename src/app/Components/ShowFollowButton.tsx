@@ -1,90 +1,77 @@
 import { BoxProps, Button } from "@artsy/palette-mobile"
-import { ShowFollowButtonMutation } from "__generated__/ShowFollowButtonMutation.graphql"
 import {
   ShowFollowButton_show$data,
   ShowFollowButton_show$key,
 } from "__generated__/ShowFollowButton_show.graphql"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { FollowIconButton } from "app/Components/FollowIconButton"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
+import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { Schema } from "app/utils/track"
-import { FC, useState } from "react"
-import { commitMutation, graphql, useFragment } from "react-relay"
+import { FC } from "react"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ShowFollowButtonProps extends BoxProps {
   show: ShowFollowButton_show$key
+  /**
+   * "button" is the labelled Save/Saved button. "icon" is the bare plus/tick the show
+   * header and the Saves tab's designs use, drawn by the shared `FollowIconButton`.
+   */
+  variant?: "button" | "icon"
 }
 
-export const ShowFollowButton: FC<ShowFollowButtonProps> = ({ show: showProp, ...boxProps }) => {
+export const ShowFollowButton: FC<ShowFollowButtonProps> = ({
+  show: showProp,
+  variant = "button",
+  ...boxProps
+}) => {
   const isFollowShowsAndFairsEnabled = useFeatureFlag("AREnableFollowShowsAndFairs")
   const show = useFragment(showFragment, showProp)
-  const [isFollowedSaving, setIsFollowedSaving] = useState(false)
   const { trackEvent } = useTracking()
+
+  const { followShow, isInFlight } = useFollowShow({
+    id: show.id,
+    internalID: show.internalID,
+    isFollowed: show.isFollowed,
+    onCompleted: (_isFollowed, errors) => {
+      if (errors?.length) {
+        console.error("ShowFollowButton: followShow mutation returned errors", errors)
+      }
+    },
+    onError: (error) => {
+      console.error("ShowFollowButton: followShow mutation failed", error)
+    },
+  })
 
   if (!isFollowShowsAndFairsEnabled) {
     return null
   }
 
   const handlePress = () => {
-    const { id: nodeID, internalID: showID, isFollowed: isShowFollowed } = show
+    const { internalID: showID, id: nodeID } = show
 
-    if (showID && nodeID && !isFollowedSaving) {
+    if (showID && nodeID && !isInFlight) {
       trackEvent(tracks.trackSave(show))
-
-      setIsFollowedSaving(true)
-      commitMutation<ShowFollowButtonMutation>(getRelayEnvironment(), {
-        onCompleted: (_response, errors) => {
-          setIsFollowedSaving(false)
-          if (errors?.length) {
-            console.error("ShowFollowButton: followShow mutation returned errors", errors)
-          }
-        },
-        onError: (error) => {
-          setIsFollowedSaving(false)
-          console.error("ShowFollowButton: followShow mutation failed", error)
-        },
-        mutation: graphql`
-          mutation ShowFollowButtonMutation($input: FollowShowInput!) {
-            followShow(input: $input) {
-              show {
-                id
-                slug
-                internalID
-                isFollowed
-              }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            partnerShowID: showID,
-            unfollow: isShowFollowed,
-          },
-        },
-        // @ts-ignore RELAY 12 MIGRATION
-        optimisticResponse: {
-          followShow: {
-            show: {
-              id: nodeID,
-              slug: show.slug,
-              internalID: showID,
-              isFollowed: !isShowFollowed,
-            },
-          },
-        },
-        updater: (store) => {
-          setShowFollowed(store, nodeID, !isShowFollowed)
-        },
-      })
+      followShow()
     }
+  }
+
+  if (variant === "icon") {
+    return (
+      <FollowIconButton
+        testID="show-follow-icon"
+        isFollowed={!!show.isFollowed}
+        isInFlight={isInFlight}
+        onPress={handlePress}
+      />
+    )
   }
 
   return (
     <Button
       variant={show.isFollowed ? "outline" : "fillDark"}
       onPress={handlePress}
-      loading={isFollowedSaving}
+      loading={isInFlight}
       longestText="Saved"
       {...boxProps}
       size="small"

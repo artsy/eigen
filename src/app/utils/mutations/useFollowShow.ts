@@ -1,8 +1,11 @@
-import { useMutation, graphql } from "react-relay"
+import { setShowFollowed } from "app/utils/mutations/setShowFollowed"
+import { graphql, useMutation } from "react-relay"
 import { PayloadError, RecordSourceSelectorProxy } from "relay-runtime"
 
-export interface FollowProfileOptions {
+export interface FollowShowOptions {
+  /** Relay node id, used for the optimistic store update. */
   id: string
+  /** The show's internalID, sent to the mutation as partnerShowID. */
   internalID: string
   isFollowed: boolean | null | undefined
   /** `errors` carries GraphQL errors returned with a successful response. */
@@ -10,24 +13,20 @@ export interface FollowProfileOptions {
   onError?: (error: Error) => void
 }
 
-export const followProfileMutationConfig = ({
-  id,
-  internalID,
-  isFollowed,
-}: FollowProfileOptions) => {
+export const followShowMutationConfig = ({ id, internalID, isFollowed }: FollowShowOptions) => {
   const nextFollowedState = !isFollowed
 
   return {
     mutation: Mutation,
     variables: {
       input: {
-        profileID: internalID,
+        partnerShowID: internalID,
         unfollow: !!isFollowed,
       },
     },
     optimisticResponse: {
-      followProfile: {
-        profile: {
+      followShow: {
+        show: {
           id,
           internalID,
           isFollowed: nextFollowedState,
@@ -35,23 +34,22 @@ export const followProfileMutationConfig = ({
       },
     },
     optimisticUpdater: (store: RecordSourceSelectorProxy<{}>) => {
-      const profile = store.get(id)
-      profile?.setValue(nextFollowedState, "isFollowed")
+      setShowFollowed(store, id, nextFollowedState)
     },
   }
 }
 
-export const useFollowProfile = ({
+export const useFollowShow = ({
   id,
   internalID,
   isFollowed,
   onCompleted,
   onError,
-}: FollowProfileOptions) => {
+}: FollowShowOptions) => {
   const [commit, isInFlight] = useMutation(Mutation)
 
-  const followProfile = () => {
-    const config = followProfileMutationConfig({ id, internalID, isFollowed })
+  const followShow = () => {
+    const config = followShowMutationConfig({ id, internalID, isFollowed })
 
     commit({
       variables: config.variables,
@@ -64,13 +62,13 @@ export const useFollowProfile = ({
     })
   }
 
-  return { followProfile, isInFlight }
+  return { followShow, isInFlight }
 }
 
 const Mutation = graphql`
-  mutation useFollowProfileMutation($input: FollowProfileInput!) @raw_response_type {
-    followProfile(input: $input) {
-      profile {
+  mutation useFollowShowMutation($input: FollowShowInput!) @raw_response_type {
+    followShow(input: $input) {
+      show {
         id
         internalID
         isFollowed
