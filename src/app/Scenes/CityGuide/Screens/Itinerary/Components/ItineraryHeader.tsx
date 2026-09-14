@@ -1,9 +1,6 @@
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
-import {
-  ItineraryAddFullListButton,
-  ItineraryAddFullListStatus,
-} from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
+import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { Image as RNImage } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -76,8 +73,6 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
                 itineraryId={itinerary.id}
               />
             </Flex>
-
-            <ItineraryAddFullListStatus />
           </>
         )}
 
