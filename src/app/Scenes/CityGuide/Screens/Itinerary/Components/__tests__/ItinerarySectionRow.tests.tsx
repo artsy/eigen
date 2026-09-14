@@ -31,7 +31,13 @@ const section: ItinerarySection = {
 describe("ItinerarySectionRow", () => {
   it("renders the title and its stops expanded by default", () => {
     renderWithWrappers(
-      <ItinerarySectionRow section={section} startNumber={1} onSelectStop={jest.fn()} />
+      <ItinerarySectionRow
+        section={section}
+        startNumber={1}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
     )
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
@@ -41,7 +47,13 @@ describe("ItinerarySectionRow", () => {
 
   it("numbers stops from startNumber", () => {
     renderWithWrappers(
-      <ItinerarySectionRow section={section} startNumber={4} onSelectStop={jest.fn()} />
+      <ItinerarySectionRow
+        section={section}
+        startNumber={4}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
     )
 
     expect(screen.getByText("4")).toBeTruthy()
@@ -50,7 +62,13 @@ describe("ItinerarySectionRow", () => {
 
   it("hides the stops when the header is tapped", () => {
     renderWithWrappers(
-      <ItinerarySectionRow section={section} startNumber={1} onSelectStop={jest.fn()} />
+      <ItinerarySectionRow
+        section={section}
+        startNumber={1}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
     )
 
     fireEvent.press(screen.getByTestId("itinerary-section-header"))

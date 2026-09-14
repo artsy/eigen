@@ -1,10 +1,11 @@
 import { Flex, Text } from "@artsy/palette-mobile"
+import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { Image as RNImage, TouchableOpacity } from "react-native"
+import { Image as RNImage } from "react-native"
 
 /** The designs' card image: taller than square, at 60 × 70. */
 const IMAGE_WIDTH = 60
@@ -12,6 +13,7 @@ const IMAGE_HEIGHT = 70
 /** The dot between hours and admission. */
 const DOT_SIZE = 4
 const BULLET_SIZE = 16
+const ROW_STYLE = { flex: 1 } as const
 
 interface Props {
   stop: ItineraryStop
@@ -21,18 +23,28 @@ interface Props {
    * list, so no numbered bullet renders at all.
    */
   number?: number
-  /**
-   * Opens the stop's own details. Only reached by a stop with nowhere to navigate to — a
-   * custom one the curator typed in, with no Artsy entity behind it.
-   */
-  onPress: (stop: ItineraryStop) => void
+  /** Where a custom stop's own screen lives, which needs the itinerary this stop belongs to. */
+  citySlug: string
+  itineraryId: string
+  /** What a new itinerary gets called when a custom stop is copied onto one. */
+  cityName: string
 }
 
-export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => {
+export const ItineraryStopRow: React.FC<Props> = ({
+  stop,
+  number,
+  citySlug,
+  itineraryId,
+  cityName,
+}) => {
   const card = stopCardFields(stop, stop.cardItem)
+  // Nothing resolved from Artsy: no entity to follow and no entity page to open.
+  const isCustom = !stop.cardItem && !stop.saveTarget
   // A custom stop's only link is wherever the curator found it, which leads out of Artsy, so
-  // it opens its own details instead of navigating.
-  const href = card.kind === "custom" ? undefined : card.href
+  // it goes to its own screen instead.
+  const href = isCustom
+    ? `/city-guide/${citySlug}/itinerary/${itineraryId}/stop/${stop.id}`
+    : card.href
 
   return (
     <Flex flexDirection="row" alignItems="center" gap={1}>
@@ -56,7 +68,13 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => 
         Only the image and text are tappable. The save control sits outside, so tapping it
         saves rather than navigating.
       */}
-      <Tap href={href} stop={stop} onPress={onPress}>
+      <RouterLink
+        testID="itinerary-stop-row"
+        accessibilityLabel={stop.title}
+        to={href}
+        disablePrefetch
+        style={ROW_STYLE}
+      >
         {/*
           One child, not two: RouterLink renders palette's Touchable, which wraps multiple
           children in an unstyled Flex (Touchable.js:42) and leaves the row layout on the
@@ -125,53 +143,35 @@ export const ItineraryStopRow: React.FC<Props> = ({ stop, number, onPress }) => 
             )}
           </Flex>
         </Flex>
-      </Tap>
+      </RouterLink>
 
-      {!!stop.saveTarget && (
-        // The entity for this stop is resolved at screen level (ItineraryStopEntityResolvers),
-        // one per saveable stop, each with its own Suspense and error boundary. This control is
-        // just a reader of the reported result, so it needs neither here.
-        <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
+      {/*
+        A custom stop has no entity to resolve, so its control renders straight away rather
+        than waiting on a lookup, and copies the stop's own fields.
+      */}
+      {isCustom ? (
+        <CustomStopSaveControl
+          stop={{
+            title: stop.title,
+            address: stop.address,
+            note: stop.note,
+            sourceURL: stop.sourceURL,
+            category: stop.category,
+            isFreeAdmission: stop.isFreeAdmission,
+            latitude: stop.coordinates?.lat,
+            longitude: stop.coordinates?.lng,
+          }}
+          citySlug={citySlug}
+          cityName={cityName}
+        />
+      ) : (
+        !!stop.saveTarget && (
+          // The entity for this stop is resolved at screen level
+          // (ItineraryStopEntityResolvers), one per saveable stop, each with its own Suspense
+          // and error boundary. This control is just a reader of the reported result.
+          <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
+        )
       )}
     </Flex>
-  )
-}
-
-const ROW_STYLE = { flex: 1 } as const
-
-/**
- * The tappable part of the row. A stop backed by an Artsy entity navigates straight to it;
- * one without goes nowhere, so it opens its own details instead.
- */
-const Tap: React.FC<{
-  href?: string
-  stop: ItineraryStop
-  onPress: (stop: ItineraryStop) => void
-  children: React.ReactNode
-}> = ({ href, stop, onPress, children }) => {
-  if (href) {
-    return (
-      <RouterLink
-        testID="itinerary-stop-row"
-        accessibilityLabel={stop.title}
-        to={href}
-        disablePrefetch
-        style={ROW_STYLE}
-      >
-        {children}
-      </RouterLink>
-    )
-  }
-
-  return (
-    <TouchableOpacity
-      testID="itinerary-stop-row"
-      accessibilityRole="button"
-      accessibilityLabel={stop.title}
-      onPress={() => onPress(stop)}
-      style={ROW_STYLE}
-    >
-      {children}
-    </TouchableOpacity>
   )
 }

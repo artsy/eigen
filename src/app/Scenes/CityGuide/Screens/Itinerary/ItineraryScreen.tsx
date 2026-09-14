@@ -11,7 +11,6 @@ import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
-import { ItineraryCustomStopSheet } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryCustomStopSheet"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
@@ -19,13 +18,12 @@ import { ItineraryUnaddableStopsDevList } from "app/Scenes/CityGuide/Screens/Iti
 import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { itineraryFromQuery } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryFromQuery"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
-import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -37,19 +35,30 @@ interface Props {
   itineraryId: string
 }
 
-const Itinerary: React.FC<Props> = ({ itineraryId }) => {
-  // `citySlug` is not a query variable: an itinerary is addressed by its own id or slug, and
-  // carries its city. The route keeps the slug in the path so the URL reads as a city's guide
-  // and so a deep link matches artsy.net, not because the lookup needs it.
-  const data = useLazyLoadQuery<ItineraryScreenQuery>(Query, { id: itineraryId })
+const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
+  // An itinerary is addressed by its own id or slug and carries its city; `citySlug` is a
+  // variable only to look the city's name up, which is what a new itinerary gets called when
+  // a custom stop is copied onto one.
+  const data = useLazyLoadQuery<ItineraryScreenQuery>(Query, { id: itineraryId, citySlug })
 
-  const itinerary = useMemo(
+  const derived = useMemo(
     () => (data.itinerary ? itineraryFromQuery(data.itinerary) : null),
     [data.itinerary]
   )
+
+  /*
+    Kept when a re-read comes back empty. A section and a stop have no `id` in the schema —
+    only `Itinerary` does — so Relay keys them positionally, as
+    `client:<itinerary id>:sections:0:stops:3`. Adding or removing a stop refetches this
+    itinerary with a shifted list, which rewrites those slots and could empty the guide under
+    the reader.
+  */
+  const lastResolved = useRef(derived)
+
+  if (derived?.sections.length) lastResolved.current = derived
+
+  const itinerary = derived?.sections.length ? derived : lastResolved.current
   const [isMapView, setIsMapView] = useState(false)
-  // Only a custom stop reaches this: everything backed by an Artsy entity navigates instead.
-  const [customStop, setCustomStop] = useState<ItineraryStop | null>(null)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
@@ -186,7 +195,9 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
                       section={section}
                       startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
                       showHeader={isEditorial}
-                      onSelectStop={setCustomStop}
+                      citySlug={itinerary.citySlug}
+                      itineraryId={itineraryId}
+                      cityName={data.city?.name ?? ""}
                     />
                   ))}
                 </Join>
@@ -225,7 +236,6 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
               </Button>
             </Flex>
           </MotiView>
-          <ItineraryCustomStopSheet stop={customStop} onClose={() => setCustomStop(null)} />
         </Screen.Body>
       </Screen>
     </ItineraryStopEntitiesProvider>
@@ -233,7 +243,11 @@ const Itinerary: React.FC<Props> = ({ itineraryId }) => {
 }
 
 const Query = graphql`
-  query ItineraryScreenQuery($id: String!) {
+  query ItineraryScreenQuery($id: String!, $citySlug: String!) {
+    city(slug: $citySlug) {
+      name
+    }
+
     itinerary(id: $id) {
       internalID
       isCurated
