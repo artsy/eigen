@@ -14,9 +14,9 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 // TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { useRef } from "react"
-import { Image as RNImage, TouchableOpacity } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { useCallback, useRef, useState } from "react"
+import { Image as RNImage, RefreshControl, TouchableOpacity } from "react-native"
+import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 const HERO_HEIGHT = 300
 const NO_ICON_SIZE = 40
@@ -78,6 +78,25 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
 
   if (stop) lastResolved.current = stop
 
+  const environment = useRelayEnvironment()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // Through `fetchQuery`, not this query's fetchKey: a network-only re-render would suspend
+  // and replace the screen with a spinner.
+  const refresh = useCallback(() => {
+    setIsRefreshing(true)
+
+    fetchQuery<CustomStopScreenQuery>(
+      environment,
+      Query,
+      { itineraryId, citySlug },
+      { fetchPolicy: "network-only" }
+    ).subscribe({
+      complete: () => setIsRefreshing(false),
+      error: () => setIsRefreshing(false),
+    })
+  }, [environment, itineraryId, citySlug])
+
   if (!stop) {
     return (
       <Screen>
@@ -99,7 +118,10 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
       <Screen.Header onBack={goBack} />
 
       <Screen.Body fullwidth>
-        <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+        <Screen.ScrollView
+          contentContainerStyle={{ paddingBottom: 40 }}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+        >
           {stop.imageUrl ? (
             <RNImage
               testID="custom-stop-image"

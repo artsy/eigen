@@ -10,6 +10,7 @@ import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCo
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { useRefreshControl } from "app/utils/refreshHelpers"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -23,6 +24,7 @@ interface Props {
 
 const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(fragment, me)
+  const refreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
   const itineraries = extractNodes(data.itinerariesConnection)
 
@@ -62,6 +64,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
             </Text>
           }
           ListFooterComponent={isLoadingNext ? <Spinner style={{ marginVertical: 20 }} /> : null}
+          refreshControl={refreshControl}
           renderItem={({ item }) => (
             <ItineraryListItem
               title={item.title}

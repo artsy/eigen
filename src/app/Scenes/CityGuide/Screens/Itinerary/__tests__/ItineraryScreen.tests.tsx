@@ -1,6 +1,7 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RefreshControl } from "react-native"
 
 const stop = (n: number) => ({
   internalID: `stop-${n}`,
@@ -264,6 +265,30 @@ describe("ItineraryScreen", () => {
         "src",
         "https://example.com/gallery.jpg"
       )
+    })
+  })
+
+  // Refreshed through fetchQuery rather than this query's fetchKey: a network-only re-render
+  // would suspend and replace the guide with a spinner.
+  describe("pull to refresh", () => {
+    it("refetches without unmounting the guide", async () => {
+      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      await screen.findByText("Chill Vibes Only")
+
+      // The RefreshControl element itself does not surface in the tree, so the refresh is
+      // fired through the scroll view that owns it.
+      act(() => {
+        screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+      })
+
+      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      expect(view.env.mock.getAllOperations()[0].request.node.params.name).toBe(
+        "ItineraryScreenQuery"
+      )
+
+      // Still on screen while the refetch is in flight, rather than replaced by the fallback.
+      expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
     })
   })
 })
