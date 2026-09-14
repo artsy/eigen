@@ -15,6 +15,7 @@ export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress
 
   return (
     <Button
+      testID="city-guide-city-switcher"
       variant="outline"
       onPress={onPress}
       size="small"

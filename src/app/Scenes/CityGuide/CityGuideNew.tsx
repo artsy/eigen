@@ -4,20 +4,30 @@ import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/Cit
 import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
+import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { CityGuideMetaData } from "app/Scenes/CityGuide/Components/CityGuideMetaData"
+import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useState } from "react"
 import expandedCities from "../../../../data/cityDataSortedByDisplayPreference-expanded.json"
 
-const londonCity = expandedCities.find((city) => city.slug === "london-united-kingdom") as CityData
+const cities = expandedCities as CityData[]
+const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") as CityData
 
 export const CityGuideNew: React.FC = () => {
   const [showCityPicker, setShowCityPicker] = useState(false)
-  const [city, setCity] = useState<CityData>(londonCity)
+
+  // Same order the map's City Guide uses: where you were last, else nearest, else New York.
+  const initialCitySlug = useInitialLocation()
+  const [city, setCity] = useState<CityData>(
+    () => cities.find((option) => option.slug === initialCitySlug) ?? fallbackCity
+  )
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
     setCity(newCity)
+    GlobalStore.actions.userPrefs.setPreviouslySelectedCitySlug(newCity.slug)
   }
 
   return (
@@ -46,11 +56,14 @@ export const CityGuideNew: React.FC = () => {
           />
 
           <Join separator={<Spacer y={4} />}>
-            <CityGuideMetaData />
+            <>
+              <CityGuideMetaData cityName={city?.name ?? ""} citySlug={city?.slug ?? ""} />
+              <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
+            </>
 
-            <CityGuideCuratedLists />
+            <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
 
-            <CityGuideEvents />
+            <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
           </Join>
         </Screen.ScrollView>
 
