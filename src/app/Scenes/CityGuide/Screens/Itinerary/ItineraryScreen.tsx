@@ -15,7 +15,6 @@ import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Componen
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
 import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
-import { itineraryFromQuery } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryFromQuery"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
@@ -40,20 +39,15 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
   const data = useLazyLoadQuery<ItineraryScreenQuery>(itineraryQuery, { id: itineraryId, citySlug })
 
-  const derived = useMemo(
-    () => (data.itinerary ? itineraryFromQuery(data.itinerary) : null),
-    [data.itinerary]
-  )
-
   /*
     Kept when a re-read comes back empty: sections/stops have no schema `id`, so Relay keys
     them positionally — adding/removing a stop shifts those slots and could empty the guide.
   */
-  const lastResolved = useRef(derived)
+  const lastResolved = useRef(data.itinerary)
 
-  if (derived?.sections.length) lastResolved.current = derived
+  if (data.itinerary?.sections.length) lastResolved.current = data.itinerary
 
-  const itinerary = derived?.sections.length ? derived : lastResolved.current
+  const itinerary = data.itinerary?.sections.length ? data.itinerary : lastResolved.current
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
 
@@ -175,7 +169,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
             {!!isMapView && !isEditorial && (
               <ItineraryPicker
                 citySlug={itinerary.citySlug}
-                currentItineraryId={itinerary.id}
+                currentItineraryId={itinerary.internalID}
                 currentItineraryName={itinerary.title}
               />
             )}
@@ -203,8 +197,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
                 <Join separator={<Spacer y={2} />}>
                   {itinerary.sections.map((section, index) => (
                     <ItinerarySectionRow
-                      key={section.id}
+                      key={section.internalID}
                       section={section}
+                      sectionIndex={index}
                       startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
                       showHeader={isEditorial}
                       citySlug={itinerary.citySlug}
@@ -262,12 +257,7 @@ export const itineraryQuery = graphql`
       isCurated
       citySlug
       title
-      subtitle
-      description
-      authorName
-      heroImage {
-        url(version: "large")
-      }
+      ...ItineraryHeader_itinerary
 
       sections {
         internalID

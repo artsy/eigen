@@ -1,5 +1,9 @@
 import { Text } from "@artsy/palette-mobile"
 import { ItineraryStopMapDetailQuery } from "__generated__/ItineraryStopMapDetailQuery.graphql"
+import {
+  itineraryStopDisplayTime,
+  itineraryStopSaveTarget,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
@@ -25,16 +29,17 @@ export const ItineraryStopMapDetail: React.FC<Props> = ({ stop }) => (
 
 const FallbackDetails: React.FC<Props> = ({ stop }) => (
   <Text variant="xs" color="mono60">
-    {stop.displayTime}
+    {itineraryStopDisplayTime(stop)}
   </Text>
 )
 
 const StopDetails: React.FC<Props> = ({ stop }) => {
-  const isShow = stop.saveTarget?.type === "SHOW"
+  const saveTarget = itineraryStopSaveTarget(stop)
+  const isShow = saveTarget?.type === "SHOW"
 
   const data = useLazyLoadQuery<ItineraryStopMapDetailQuery>(
     ShowQuery,
-    { slug: stop.saveTarget?.slug ?? "", skip: !isShow },
+    { slug: saveTarget?.slug ?? "", skip: !isShow },
     { fetchPolicy: "store-or-network" }
   )
 

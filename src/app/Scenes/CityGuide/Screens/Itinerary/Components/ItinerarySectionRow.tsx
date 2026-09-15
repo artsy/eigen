@@ -1,11 +1,14 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
+import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { useState } from "react"
 
 interface Props {
   section: ItinerarySection
+  /** Position among sections — used only for the nullable-title fallback label. */
+  sectionIndex: number
   /**
    * Flattened index of this section's first stop, so numbering runs across sections. Absent
    * on your own itinerary, which shows no order.
@@ -25,6 +28,7 @@ interface Props {
 
 export const ItinerarySectionRow: React.FC<Props> = ({
   section,
+  sectionIndex,
   startNumber,
   showHeader = true,
   citySlug,
@@ -32,6 +36,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   cityName,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true)
+  const title = itinerarySectionTitle(section, sectionIndex)
 
   return (
     <Flex>
@@ -43,7 +48,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           onPress={() => setIsExpanded((expanded) => !expanded)}
         >
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={1}>
-            <Text variant="sm-display">{section.title}</Text>
+            <Text variant="sm-display">{title}</Text>
             {isExpanded ? <ChevronUpIcon fill="mono60" /> : <ChevronDownIcon fill="mono60" />}
           </Flex>
         </Touchable>
@@ -53,7 +58,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
         <Join separator={<Spacer y={1} />}>
           {section.stops.map((stop, index) => (
             <ItineraryStopRow
-              key={stop.id}
+              key={stop.internalID}
               stop={stop}
               number={startNumber === undefined ? undefined : startNumber + index}
               citySlug={citySlug}

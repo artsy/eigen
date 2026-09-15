@@ -1,11 +1,14 @@
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
-import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import {
-  Itinerary,
-  ItineraryStop,
-} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+  itinerarySectionTitle,
+  itineraryStopCoordinates,
+  itineraryStopSaveTarget,
+  itineraryStopTitle,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
+import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 
 /**
@@ -13,21 +16,30 @@ import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
  * coordinates are dropped (still shown in the list) so `MapPlace.coordinates` can stay required.
  */
 export const itineraryStopsToMapSections = (itinerary: Itinerary): MapSection[] =>
-  itinerary.sections.map((section) => ({
-    id: section.id,
-    title: section.title,
+  itinerary.sections.map((section, index) => ({
+    id: section.internalID,
+    title: itinerarySectionTitle(section, index),
     places: section.stops
-      .filter((stop): stop is ItineraryStop & { coordinates: { lat: number; lng: number } } =>
-        isValidLatLng(stop.coordinates)
+      .map((stop) => ({ stop, coordinates: itineraryStopCoordinates(stop) }))
+      .filter(
+        (
+          entry
+        ): entry is { stop: (typeof entry)["stop"]; coordinates: { lat: number; lng: number } } =>
+          isValidLatLng(entry.coordinates)
       )
-      .map((stop) => ({
-        id: stop.id,
-        title: stop.title,
-        coordinates: stop.coordinates,
-        href: itineraryStopHref(stop.saveTarget),
-        detail: <ItineraryStopMapDetail stop={stop} />,
-        saveControl: stop.saveTarget ? (
-          <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
-        ) : undefined,
-      })),
+      .map(({ stop, coordinates }) => {
+        const saveTarget = itineraryStopSaveTarget(stop)
+        const title = itineraryStopTitle(stop)
+
+        return {
+          id: stop.internalID,
+          title,
+          coordinates,
+          href: itineraryStopHref(saveTarget),
+          detail: <ItineraryStopMapDetail stop={stop} />,
+          saveControl: saveTarget ? (
+            <ItineraryStopSaveControl stopId={stop.internalID} stopTitle={title} />
+          ) : undefined,
+        }
+      }),
   }))

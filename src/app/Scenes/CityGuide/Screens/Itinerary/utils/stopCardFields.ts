@@ -1,3 +1,9 @@
+import {
+  itineraryStopCategory,
+  itineraryStopDisplayTime,
+  itineraryStopEvent,
+  itineraryStopTitle,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { DateTime } from "luxon"
 
@@ -36,12 +42,13 @@ const RECEPTION_KINDS = ["Opening Reception", "Closing Reception"]
  * comparison in this file; everything else displayed is formatted server-side.
  */
 const receptionLine = (stop: ItineraryStop) => {
-  const kind = stop.event?.kind
+  const event = itineraryStopEvent(stop)
+  const kind = event?.kind
 
   if (!kind || !RECEPTION_KINDS.includes(kind)) return undefined
-  if (!stop.event?.startAt) return undefined
+  if (!event?.startAt) return undefined
 
-  const startsToday = DateTime.fromISO(stop.event.startAt).hasSame(DateTime.local(), "day")
+  const startsToday = DateTime.fromISO(event.startAt).hasSame(DateTime.local(), "day")
 
   return startsToday ? `${kind} today` : undefined
 }
@@ -84,7 +91,10 @@ export interface StopCardItem {
 export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null): StopCardFields => {
   // The stop's own admission wins: an author can override what the entity says.
   const admission = admissionLabel(stop.isFreeAdmission ?? item?.isFreeAdmission)
-  const hours = stop.displayTime || undefined
+  const hours = itineraryStopDisplayTime(stop) || undefined
+  const title = itineraryStopTitle(stop)
+  const category = itineraryStopCategory(stop.category)
+  const event = itineraryStopEvent(stop)
 
   // An event at a venue, checked before the item's type — an event stop also carries the
   // show/fair it belongs to, which is where its place and href (it has none of its own) come from.
@@ -92,11 +102,11 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
     return {
       kind: "event",
       // The curator's title wins, then the event's own name, then the parent's.
-      title: stop.title || stop.event?.title || item?.name || "",
+      title: title || event?.title || item?.name || "",
       subtitle: item?.partner?.name ?? placeLine(item?.locations?.[0] ?? item?.location),
       hours,
       admission,
-      href: item?.href ?? stop.sourceURL,
+      href: item?.href ?? stop.sourceURL ?? undefined,
     }
   }
 
@@ -105,10 +115,10 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
       return {
         kind: "show",
         // The editorial title wins over the show's own name, as everywhere else.
-        title: stop.title || item.name || "",
+        title: title || item.name || "",
         // A museum is marked with a building, per the designs. The distinction is the stop's
         // category, since both museums and galleries are Partners.
-        subtitle: [stop.category === "MUSEUM" ? MUSEUM_EMOJI : null, item.partner?.name]
+        subtitle: [category === "MUSEUM" ? MUSEUM_EMOJI : null, item.partner?.name]
           .filter(Boolean)
           .join(" "),
         hours,
@@ -120,7 +130,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
     case "Fair":
       return {
         kind: "fair",
-        title: stop.title || item.name || "",
+        title: title || item.name || "",
         subtitle: placeLine(item.location),
         hours,
         admission,
@@ -130,7 +140,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
     case "Partner":
       return {
         kind: "partner",
-        title: stop.title || item.name || "",
+        title: title || item.name || "",
         // `Partner.location` needs a locationId, so the first of `locations` stands in.
         subtitle: placeLine(item.locations?.[0] ?? item.location),
         hours,
@@ -143,7 +153,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
     case "Location":
       return {
         kind: "partner",
-        title: stop.title || item.partner?.name || item.name || "",
+        title: title || item.partner?.name || item.name || "",
         subtitle: placeLine(item),
         hours,
         admission,
@@ -153,13 +163,13 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
     default:
       return {
         kind: "custom",
-        title: stop.title,
+        title,
         // The designs put the place's type here ("Cafe", "Landmark") pulled from the source
         // link. Nothing exposes it, so the stop's address stands in instead.
-        subtitle: stop.address,
+        subtitle: stop.address ?? undefined,
         hours,
         // Where the curator found it — the only thing a custom stop can link to.
-        href: stop.sourceURL,
+        href: stop.sourceURL ?? undefined,
       }
   }
 }

@@ -1,14 +1,14 @@
-import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { DateTime } from "luxon"
 
-const stop = (overrides: Partial<ItineraryStop> = {}): ItineraryStop => ({
-  id: "stop-1",
-  title: "Stop title",
-  displayTime: "10am-6pm",
-  imageUrl: "https://example.com/stop.jpg",
-  saveTarget: null,
-  ...overrides,
+const stop = (overrides: Record<string, unknown> = {}) => makeItineraryStop(overrides)
+
+const showEvent = (kind: string, startAt: string | null) => ({
+  __typename: "ShowEventType" as const,
+  title: null,
+  eventType: kind,
+  startAtISO: startAt,
 })
 
 describe("stopCardFields", () => {
@@ -21,9 +21,7 @@ describe("stopCardFields", () => {
 
     it("calls out a reception happening today", () => {
       const fields = stopCardFields(
-        stop({
-          event: { kind: "Opening Reception", startAt: DateTime.local().toISO() },
-        }),
+        stop({ event: showEvent("Opening Reception", DateTime.local().toISO()) }),
         show
       )
 
@@ -32,7 +30,7 @@ describe("stopCardFields", () => {
 
     it("says closing too", () => {
       const fields = stopCardFields(
-        stop({ event: { kind: "Closing Reception", startAt: DateTime.local().toISO() } }),
+        stop({ event: showEvent("Closing Reception", DateTime.local().toISO()) }),
         show
       )
 
@@ -43,10 +41,7 @@ describe("stopCardFields", () => {
     it("says nothing for a reception on another day", () => {
       const fields = stopCardFields(
         stop({
-          event: {
-            kind: "Opening Reception",
-            startAt: DateTime.local().plus({ days: 3 }).toISO(),
-          },
+          event: showEvent("Opening Reception", DateTime.local().plus({ days: 3 }).toISO()),
         }),
         show
       )
@@ -57,7 +52,7 @@ describe("stopCardFields", () => {
     // Gravity has eight event kinds; only the two receptions earn the line.
     it("says nothing for an event that is not a reception", () => {
       const fields = stopCardFields(
-        stop({ event: { kind: "Screening", startAt: DateTime.local().toISO() } }),
+        stop({ event: showEvent("Screening", DateTime.local().toISO()) }),
         show
       )
 
@@ -170,7 +165,7 @@ describe("stopCardFields", () => {
   })
 
   it("omits hours when the stop has none", () => {
-    expect(stopCardFields(stop({ displayTime: "" })).hours).toBeUndefined()
+    expect(stopCardFields(stop({ startTime: null, endTime: null })).hours).toBeUndefined()
   })
 
   it("links a custom stop to where the curator found it", () => {
@@ -185,11 +180,20 @@ describe("stopCardFields", () => {
   describe("an event", () => {
     // `eventType` is the polymorphic class, so a stop can be known to name an event without
     // anything knowing which kind it is.
-    const showEvent = stop({ title: "Artist walkthrough", eventType: "SHOW_EVENT" })
+    const eventStop = stop({ title: "Artist walkthrough", eventType: "SHOW_EVENT" })
 
     it("prefers the event's own name when the curator gave no title", () => {
       const fields = stopCardFields(
-        stop({ title: "", eventType: "SHOW_EVENT", event: { title: "Baselitz in conversation" } }),
+        stop({
+          title: "",
+          eventType: "SHOW_EVENT",
+          event: {
+            __typename: "ShowEventType",
+            title: "Baselitz in conversation",
+            eventType: null,
+            startAtISO: null,
+          },
+        }),
         { __typename: "Show", name: "Georg Baselitz: Back Again" }
       )
 
@@ -197,7 +201,7 @@ describe("stopCardFields", () => {
     })
 
     it("is an event card even though its item is the parent show", () => {
-      const fields = stopCardFields(showEvent, {
+      const fields = stopCardFields(eventStop, {
         __typename: "Show",
         name: "Georg Baselitz: Back Again",
         href: "/show/white-cube-georg-baselitz-back-again",

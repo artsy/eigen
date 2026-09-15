@@ -2,6 +2,7 @@ import { ItineraryStopEntityResolversFairQuery } from "__generated__/ItinerarySt
 import { ItineraryStopEntityResolversPartnerQuery } from "__generated__/ItineraryStopEntityResolversPartnerQuery.graphql"
 import { ItineraryStopEntityResolversShowQuery } from "__generated__/ItineraryStopEntityResolversShowQuery.graphql"
 import { useReportItineraryStopEntity } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
+import { itineraryStopSaveTarget } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import {
   ItinerarySaveTarget,
   ItineraryStop,
@@ -123,16 +124,21 @@ const ResolverFailed: React.FC<{ stopId: string }> = ({ stopId }) => {
 export const ItineraryStopEntityResolvers: React.FC<{ stops: ItineraryStop[] }> = ({ stops }) => (
   <>
     {stops.map((stop) => {
-      if (!stop.saveTarget) {
+      const saveTarget = itineraryStopSaveTarget(stop)
+
+      if (!saveTarget) {
         return null
       }
 
-      const Resolver = RESOLVERS[stop.saveTarget.type]
+      const Resolver = RESOLVERS[saveTarget.type]
 
       return (
-        <ErrorBoundary key={stop.id} fallbackRender={() => <ResolverFailed stopId={stop.id} />}>
+        <ErrorBoundary
+          key={stop.internalID}
+          fallbackRender={() => <ResolverFailed stopId={stop.internalID} />}
+        >
           <Suspense fallback={null}>
-            <Resolver stopId={stop.id} saveTarget={stop.saveTarget} />
+            <Resolver stopId={stop.internalID} saveTarget={saveTarget} />
           </Suspense>
         </ErrorBoundary>
       )

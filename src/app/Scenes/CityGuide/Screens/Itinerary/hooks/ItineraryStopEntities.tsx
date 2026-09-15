@@ -1,3 +1,4 @@
+import { itineraryStopSaveTarget } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import {
   ItinerarySaveTarget,
   ItineraryStop,
@@ -46,7 +47,7 @@ const Context = createContext<ContextValue>({
 })
 
 const saveableStopIds = (stops: ItineraryStop[]) =>
-  stops.filter((stop) => !!stop.saveTarget).map((stop) => stop.id)
+  stops.filter((stop) => !!itineraryStopSaveTarget(stop)).map((stop) => stop.internalID)
 
 /**
  * Holds one lookup per saveable stop, seeded `pending` from `stops` before any query runs —

@@ -2,6 +2,13 @@ import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
+import {
+  itineraryStopCategory,
+  itineraryStopCoordinates,
+  itineraryStopImageUrl,
+  itineraryStopSaveTarget,
+  itineraryStopTitle,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -34,13 +41,17 @@ export const ItineraryStopRow: React.FC<Props> = ({
   itineraryId,
   cityName,
 }) => {
-  const card = stopCardFields(stop, stop.cardItem)
+  const title = itineraryStopTitle(stop)
+  const imageUrl = itineraryStopImageUrl(stop)
+  const saveTarget = itineraryStopSaveTarget(stop)
+  const coordinates = itineraryStopCoordinates(stop)
+  const card = stopCardFields(stop, stop.item)
   // Nothing resolved from Artsy: no entity to follow and no entity page to open.
-  const isCustom = !stop.cardItem && !stop.saveTarget
+  const isCustom = !stop.item && !saveTarget
   // A custom stop's only link is wherever the curator found it, which leads out of Artsy, so
   // it goes to its own screen instead.
   const href = isCustom
-    ? `/city-guide/${citySlug}/itinerary/${itineraryId}/stop/${stop.id}`
+    ? `/city-guide/${citySlug}/itinerary/${itineraryId}/stop/${stop.internalID}`
     : card.href
 
   return (
@@ -67,7 +78,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
       */}
       <RouterLink
         testID="itinerary-stop-row"
-        accessibilityLabel={stop.title}
+        accessibilityLabel={title}
         to={href}
         disablePrefetch
         style={ROW_STYLE}
@@ -80,10 +91,10 @@ export const ItineraryStopRow: React.FC<Props> = ({
           flatten the row.
         */}
         <Flex testID="itinerary-stop-row-content" flexDirection="row" alignItems="center" gap={1}>
-          {stop.imageUrl ? (
+          {imageUrl ? (
             <Image
               testID="itinerary-stop-image"
-              src={stop.imageUrl}
+              src={imageUrl}
               width={IMAGE_WIDTH}
               height={IMAGE_HEIGHT}
               resizeMode="cover"
@@ -161,24 +172,24 @@ export const ItineraryStopRow: React.FC<Props> = ({
       {isCustom ? (
         <CustomStopSaveControl
           stop={{
-            title: stop.title,
-            address: stop.address,
-            note: stop.note,
-            sourceURL: stop.sourceURL,
-            category: stop.category,
-            isFreeAdmission: stop.isFreeAdmission,
-            latitude: stop.coordinates?.lat,
-            longitude: stop.coordinates?.lng,
+            title,
+            address: stop.address ?? undefined,
+            note: stop.note ?? undefined,
+            sourceURL: stop.sourceURL ?? undefined,
+            category: itineraryStopCategory(stop.category),
+            isFreeAdmission: stop.isFreeAdmission ?? undefined,
+            latitude: coordinates?.lat,
+            longitude: coordinates?.lng,
           }}
           citySlug={citySlug}
           cityName={cityName}
         />
       ) : (
-        !!stop.saveTarget && (
+        !!saveTarget && (
           // The entity for this stop is resolved at screen level
           // (ItineraryStopEntityResolvers), one per saveable stop, each with its own Suspense
           // and error boundary. This control is just a reader of the reported result.
-          <ItineraryStopSaveControl stopId={stop.id} stopTitle={stop.title} />
+          <ItineraryStopSaveControl stopId={stop.internalID} stopTitle={title} />
         )
       )}
     </Flex>

@@ -1,21 +1,16 @@
-import { ItineraryScreenQuery$data } from "__generated__/ItineraryScreenQuery.graphql"
 import {
-  Itinerary,
   ItinerarySaveTarget,
   ItinerarySection,
   ItineraryStop,
+  ItineraryStopCategory,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-
-type QueryItinerary = NonNullable<ItineraryScreenQuery$data["itinerary"]>
-type QuerySection = QueryItinerary["sections"][number]
-type QueryStop = QuerySection["stops"][number]
 
 /**
  * Narrows the `Show | Fair | Partner` union to the members this client knows. Relay adds a
  * `"%other"` member for anything unselected, so a server-side addition lands here, not a crash.
  */
 const knownItem = (
-  item: QueryStop["item"]
+  item: ItineraryStop["item"]
 ): { type: ItinerarySaveTarget["type"]; slug: string; name: string | null } | null => {
   if (!item) return null
 
@@ -44,8 +39,8 @@ const knownItem = (
  * The save controls are keyed by type and slug, so that is all this carries. `null` when a
  * stop points at no Artsy entity, or one whose entity didn't resolve — either way, nothing to follow.
  */
-const toSaveTarget = (item: QueryStop["item"]): ItinerarySaveTarget | null => {
-  const known = knownItem(item)
+export const itineraryStopSaveTarget = (stop: ItineraryStop): ItinerarySaveTarget | null => {
+  const known = knownItem(stop.item)
 
   return known ? { type: known.type, slug: known.slug } : null
 }
@@ -54,7 +49,9 @@ const toSaveTarget = (item: QueryStop["item"]): ItinerarySaveTarget | null => {
  * The generated enum carries `"%future added value"` for a category added server-side. Such a
  * stop shows no badge rather than a raw string the UI has no styling for.
  */
-const toCategory = (category: QueryStop["category"]): ItineraryStop["category"] => {
+export const itineraryStopCategory = (
+  category: ItineraryStop["category"]
+): ItineraryStopCategory | undefined => {
   switch (category) {
     case "MUSEUM":
     case "GALLERY":
@@ -66,7 +63,8 @@ const toCategory = (category: QueryStop["category"]): ItineraryStop["category"] 
   }
 }
 
-const toDisplayTime = (stop: QueryStop): string => {
+/** Backend-formatted for display. e.g. "11am-4pm" */
+export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
 
   return stop.startTime ?? stop.endTime ?? ""
@@ -76,7 +74,10 @@ const toDisplayTime = (stop: QueryStop): string => {
  * Flattens the `ShowEventType | FairEvent` union into the one shape the card reads. Only a
  * show event has a kind; a fair event has a name and nothing else the card needs.
  */
-const toEvent = (event: QueryStop["event"]): ItineraryStop["event"] => {
+export const itineraryStopEvent = (
+  stop: ItineraryStop
+): { title?: string | null; kind?: string | null; startAt?: string | null } | undefined => {
+  const event = stop.event
   if (!event) return undefined
 
   switch (event.__typename) {
@@ -93,7 +94,7 @@ const toEvent = (event: QueryStop["event"]): ItineraryStop["event"] => {
  * The entity's own picture, for a stop with no uploaded one. `ItineraryStop.image` is only
  * set when the curator uploaded something, so without this every app-created stop shows an empty box.
  */
-const itemImageUrl = (item: QueryStop["item"]) => {
+const itemImageUrl = (item: ItineraryStop["item"]) => {
   if (!item) return undefined
 
   switch (item.__typename) {
@@ -109,11 +110,14 @@ const itemImageUrl = (item: QueryStop["item"]) => {
   }
 }
 
+export const itineraryStopImageUrl = (stop: ItineraryStop): string =>
+  stop.image?.url ?? itemImageUrl(stop.item) ?? ""
+
 /**
  * Where the stop's entity is, for a stop with no coordinates of its own. A curator-typed
  * stop has lat/lng directly; an app-created one has neither, so without this it drops off the map.
  */
-const itemCoordinates = (item: QueryStop["item"]) => {
+const itemCoordinates = (item: ItineraryStop["item"]) => {
   if (!item) return undefined
 
   switch (item.__typename) {
@@ -127,7 +131,9 @@ const itemCoordinates = (item: QueryStop["item"]) => {
   }
 }
 
-const toCoordinates = (stop: QueryStop): ItineraryStop["coordinates"] => {
+export const itineraryStopCoordinates = (
+  stop: ItineraryStop
+): { lat: number; lng: number } | undefined => {
   if (stop.latitude != null && stop.longitude != null) {
     return { lat: stop.latitude, lng: stop.longitude }
   }
@@ -141,49 +147,16 @@ const toCoordinates = (stop: QueryStop): ItineraryStop["coordinates"] => {
   return { lat: fallback.lat, lng: fallback.lng }
 }
 
-const toStop = (stop: QueryStop): ItineraryStop => ({
-  id: stop.internalID,
-  // `title` is the editorial override, the only title a stop has of its own — falling back
-  // to the item's name, then an empty string, when there's neither.
-  title: stop.title ?? knownItem(stop.item)?.name ?? "",
-  address: stop.address ?? undefined,
-  category: toCategory(stop.category),
-  displayTime: toDisplayTime(stop),
-  startAt: stop.startAtISO ?? undefined,
-  endAt: stop.endAtISO ?? undefined,
-  note: stop.note ?? undefined,
-  isFreeAdmission: stop.isFreeAdmission ?? undefined,
-  sourceURL: stop.sourceURL ?? undefined,
-  eventType: stop.eventType ?? undefined,
-  event: toEvent(stop.event),
-  imageUrl: stop.image?.url ?? itemImageUrl(stop.item) ?? "",
-  coordinates: toCoordinates(stop),
-  saveTarget: toSaveTarget(stop.item),
-  cardItem: stop.item ?? undefined,
-})
-
-const toSection = (section: QuerySection, index: number): ItinerarySection => ({
-  id: section.internalID,
-  // Server-side the title is nullable; the client needs a required display string, so it
-  // falls back to a positional label — sections arrive sorted, so the index is that position.
-  title: section.title ?? `Day ${index + 1}`,
-  stops: section.stops.map(toStop),
-})
+/**
+ * `title` is the editorial override, the only title a stop has of its own — falling back
+ * to the item's name, then an empty string, when there's neither.
+ */
+export const itineraryStopTitle = (stop: ItineraryStop): string =>
+  stop.title ?? knownItem(stop.item)?.name ?? ""
 
 /**
- * Maps the GraphQL payload onto the client's own `Itinerary` type, which every component
- * below the screen already speaks, so the adapter lives here instead of threading fragments.
+ * Server-side the title is nullable; the client needs a required display string, so it
+ * falls back to a positional label — sections arrive sorted, so the index is that position.
  */
-export const itineraryFromQuery = (itinerary: QueryItinerary): Itinerary => ({
-  id: itinerary.internalID,
-  isCurated: itinerary.isCurated,
-  citySlug: itinerary.citySlug,
-  title: itinerary.title,
-  subtitle: itinerary.subtitle ?? "",
-  // `url(version:)` rather than `resized(width:)`: Gravity sends the versioned URLs it
-  // generated but not the original's dimensions, and `resized` scales from those.
-  heroImageUrl: itinerary.heroImage?.url ?? "",
-  authorName: itinerary.authorName ?? "",
-  description: itinerary.description ?? "",
-  sections: itinerary.sections.map(toSection),
-})
+export const itinerarySectionTitle = (section: ItinerarySection, index: number): string =>
+  section.title ?? `Day ${index + 1}`

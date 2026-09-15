@@ -5,6 +5,7 @@ import {
   ItineraryStopEntitiesProvider,
   useItineraryStopEntitiesState,
 } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
+import { itineraryStopSaveTarget } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { getMockItinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/mockItineraries"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -12,7 +13,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 const itinerary = getMockItinerary("london-united-kingdom", "chill-vibes-only")!
 const stops = itinerary.sections.flatMap((section) => section.stops)
-const saveableStops = stops.filter((stop) => !!stop.saveTarget)
+const saveableStops = stops.filter((stop) => !!itineraryStopSaveTarget(stop))
 
 const Readout: React.FC = () => {
   const { entities, expectedCount, failedCount, isSettled, isComplete } =
@@ -108,7 +109,7 @@ describe("ItineraryStopEntities", () => {
   })
 
   it("fires no query and reports nothing to resolve when no stop is saveable", () => {
-    const nonSaveable = stops.filter((stop) => !stop.saveTarget)
+    const nonSaveable = stops.filter((stop) => !itineraryStopSaveTarget(stop))
 
     renderHarness(env, nonSaveable)
 

@@ -1,33 +1,21 @@
 import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
-import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import {
-  Itinerary,
-  ItineraryStop,
-} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+  makeItinerary,
+  makeItineraryStop,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
+import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { isValidElement } from "react"
 
-const makeStop = (overrides: Partial<ItineraryStop> = {}): ItineraryStop => ({
-  id: "stop-1",
-  title: "Coffee at London Cafe",
-  displayTime: "10am",
-  imageUrl: "https://example.com/image.jpg",
-  coordinates: { lat: 51.5, lng: -0.1 },
-  saveTarget: null,
-  ...overrides,
-})
-
-const makeItinerary = (stops: ItineraryStop[]): Itinerary => ({
-  id: "itinerary-1",
-  citySlug: "london-united-kingdom",
-  isCurated: true,
-  title: "Test Itinerary",
-  subtitle: "",
-  heroImageUrl: "",
-  authorName: "",
-  description: "",
-  sections: [{ id: "day-1", title: "Day 1", stops }],
-})
+const makeStop = (overrides: Record<string, unknown> = {}) =>
+  makeItineraryStop({
+    title: "Coffee at London Cafe",
+    startTime: "10am",
+    endTime: null,
+    latitude: 51.5,
+    longitude: -0.1,
+    ...overrides,
+  })
 
 describe("itineraryStopsToMapSections", () => {
   it("carries the section id and title over unchanged", () => {
@@ -39,7 +27,18 @@ describe("itineraryStopsToMapSections", () => {
   })
 
   it("maps a stop's id, title, coordinates and href", () => {
-    const stop = makeStop({ saveTarget: { type: "SHOW", slug: "some-show" } })
+    const stop = makeStop({
+      item: {
+        __typename: "Show",
+        slug: "some-show",
+        name: "Some Show",
+        href: "/show/some-show",
+        isFreeAdmission: null,
+        coverImage: null,
+        partner: null,
+        location: null,
+      },
+    })
     const sections = itineraryStopsToMapSections(makeItinerary([stop]))
 
     expect(sections[0].places[0]).toMatchObject({
@@ -51,10 +50,11 @@ describe("itineraryStopsToMapSections", () => {
   })
 
   it("drops stops with invalid coordinates rather than trusting them", () => {
-    const valid = makeStop({ id: "valid" })
+    const valid = makeStop({ internalID: "valid" })
     const invalid = makeStop({
-      id: "invalid",
-      coordinates: { lat: NaN as any, lng: undefined as any },
+      internalID: "invalid",
+      latitude: NaN,
+      longitude: undefined,
     })
 
     const sections = itineraryStopsToMapSections(makeItinerary([valid, invalid]))
@@ -72,10 +72,19 @@ describe("itineraryStopsToMapSections", () => {
 
   it("injects a save control only when the stop has a save target", () => {
     const withTarget = makeStop({
-      id: "with-target",
-      saveTarget: { type: "SHOW", slug: "some-show" },
+      internalID: "with-target",
+      item: {
+        __typename: "Show",
+        slug: "some-show",
+        name: "Some Show",
+        href: "/show/some-show",
+        isFreeAdmission: null,
+        coverImage: null,
+        partner: null,
+        location: null,
+      },
     })
-    const withoutTarget = makeStop({ id: "without-target", saveTarget: null })
+    const withoutTarget = makeStop({ internalID: "without-target", item: null })
 
     const sections = itineraryStopsToMapSections(makeItinerary([withTarget, withoutTarget]))
     const [placeWithTarget, placeWithoutTarget] = sections[0].places
