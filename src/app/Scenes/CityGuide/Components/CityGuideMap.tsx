@@ -91,7 +91,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
 
-  const enableGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
+  const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
 
   useEffect(() => {
     EventEmitter.subscribe("filters:change", handleFilterChange)
