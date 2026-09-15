@@ -20,6 +20,7 @@ interface FairFollowButtonProps {
 
 export const FairFollowButton: React.FC<FairFollowButtonProps> = ({ fair, variant = "button" }) => {
   const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
+  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraryRoute")
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
   const data = useFragment(fragment, fair)
@@ -32,7 +33,15 @@ export const FairFollowButton: React.FC<FairFollowButtonProps> = ({ fair, varian
     },
   })
 
-  if (!enableFollowShowsAndFairs || !data?.profile) {
+  if (!data?.profile) {
+    return null
+  }
+
+  if (variant === "icon") {
+    if (!enableCityGuideItinerary || !data.location?.address) {
+      return null
+    }
+  } else if (!enableFollowShowsAndFairs) {
     return null
   }
 
@@ -68,6 +77,9 @@ export const FairFollowButton: React.FC<FairFollowButtonProps> = ({ fair, varian
 const fragment = graphql`
   fragment FairFollowButton_fair on Fair {
     internalID
+    location {
+      address
+    }
     profile {
       id
       internalID

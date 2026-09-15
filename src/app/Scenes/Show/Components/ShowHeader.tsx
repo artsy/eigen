@@ -1,7 +1,6 @@
 import { Box, BoxProps, Flex, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { ShowFollowButton } from "app/Components/ShowFollowButton"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
@@ -12,7 +11,6 @@ export interface ShowHeaderProps extends BoxProps {
 }
 
 export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
-  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const [currentTime, setCurrentTime] = useState(DateTime.local().toString())
 
   const { formattedTime } = useEventTiming({
@@ -42,7 +40,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
           <Text variant="lg-display">{show.name}</Text>
         </Flex>
 
-        {!!enableFollowShowsAndFairs && <ShowFollowButton show={show} variant="icon" />}
+        <ShowFollowButton show={show} variant="icon" />
       </Flex>
 
       <Text variant="sm">

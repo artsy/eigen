@@ -26,6 +26,7 @@ export const ShowFollowButton: React.FC<ShowFollowButtonProps> = ({
   ...boxProps
 }) => {
   const isFollowShowsAndFairsEnabled = useFeatureFlag("AREnableFollowShowsAndFairs")
+  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraryRoute")
   const show = useFragment(showFragment, showProp)
   const { trackEvent } = useTracking()
 
@@ -43,7 +44,11 @@ export const ShowFollowButton: React.FC<ShowFollowButtonProps> = ({
     },
   })
 
-  if (!isFollowShowsAndFairsEnabled) {
+  if (variant === "icon") {
+    if (!enableCityGuideItinerary || show.isOnlineExclusive || !show.location?.address) {
+      return null
+    }
+  } else if (!isFollowShowsAndFairsEnabled) {
     return null
   }
 
@@ -87,6 +92,10 @@ const showFragment = graphql`
     internalID
     slug
     isFollowed
+    isOnlineExclusive
+    location {
+      address
+    }
   }
 `
 

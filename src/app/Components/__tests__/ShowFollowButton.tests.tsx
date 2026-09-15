@@ -16,6 +16,17 @@ describe("ShowFollowButton", () => {
     `,
   })
 
+  const { renderWithRelay: renderIconVariant } = setupTestWrapper({
+    Component: ({ show }: any) => <ShowFollowButton show={show} variant="icon" />,
+    query: graphql`
+      query ShowFollowButtonIconTestQuery @relay_test_operation {
+        show(id: "some-show") {
+          ...ShowFollowButton_show
+        }
+      }
+    `,
+  })
+
   beforeEach(() => {
     jest.clearAllMocks()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFollowShowsAndFairs: true })
@@ -61,5 +72,43 @@ describe("ShowFollowButton", () => {
 
     await waitFor(() => expect(errorSpy).toHaveBeenCalled())
     errorSpy.mockRestore()
+  })
+
+  describe("the icon variant", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraryRoute: true })
+    })
+
+    it("renders when the show has a location and the itinerary flag is on", () => {
+      renderIconVariant({
+        Show: () => ({ isOnlineExclusive: false, location: { address: "123 Main St" } }),
+      })
+
+      expect(screen.getByTestId("show-follow-icon")).toBeOnTheScreen()
+    })
+
+    it("renders nothing when the itinerary flag is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraryRoute: false })
+
+      renderIconVariant({
+        Show: () => ({ isOnlineExclusive: false, location: { address: "123 Main St" } }),
+      })
+
+      expect(screen.toJSON()).toBeNull()
+    })
+
+    it("renders nothing for an online-exclusive show", () => {
+      renderIconVariant({
+        Show: () => ({ isOnlineExclusive: true, location: { address: "123 Main St" } }),
+      })
+
+      expect(screen.toJSON()).toBeNull()
+    })
+
+    it("renders nothing for a show with no address", () => {
+      renderIconVariant({ Show: () => ({ isOnlineExclusive: false, location: null }) })
+
+      expect(screen.toJSON()).toBeNull()
+    })
   })
 })

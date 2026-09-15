@@ -191,7 +191,8 @@ export const features = {
     echoFlagKey: "AREnableArtAssistant",
   },
   AREnableCityGuideItineraryRoute: {
-    description: "Draw a route between itinerary stops on the map",
+    description:
+      "City Guide itinerary features: the map route between stops, and adding a Show/Fair to your itinerary from its own screen",
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideItineraryRoute",
