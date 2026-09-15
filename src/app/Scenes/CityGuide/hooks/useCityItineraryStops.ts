@@ -3,6 +3,7 @@ import { useCityItineraryStopsCreateItineraryMutation } from "__generated__/useC
 import { useCityItineraryStopsCreateSectionMutation } from "__generated__/useCityItineraryStopsCreateSectionMutation.graphql"
 import { useCityItineraryStopsLookupQuery } from "__generated__/useCityItineraryStopsLookupQuery.graphql"
 import { useCityItineraryStopsRemoveMutation } from "__generated__/useCityItineraryStopsRemoveMutation.graphql"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
@@ -273,9 +274,12 @@ export const useCityItineraryStops = ({
           )
         }
 
+        // Best-effort: a stale rail is a smaller problem than failing the add itself over it.
+        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+
         return response.itineraryStop
       }),
-    [serialise, resolveTarget, environment]
+    [serialise, resolveTarget, environment, citySlug]
   )
 
   const removeStop = useCallback(
@@ -308,9 +312,11 @@ export const useCityItineraryStops = ({
           )
         }
 
+        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+
         return response.itineraryStop
       }),
-    [serialise, resolveTarget, environment]
+    [serialise, resolveTarget, environment, citySlug]
   )
 
   return { addStop, removeStop }

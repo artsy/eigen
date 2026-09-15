@@ -2,16 +2,18 @@ import { Flex } from "@artsy/palette-mobile"
 import { CityGuideItinerariesRailQuery } from "__generated__/CityGuideItinerariesRailQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
+import {
+  CITY_GUIDE_ITINERARIES_RAIL_SIZE,
+  cityGuideItinerariesRailQuery,
+} from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
-/** Enough to fill the rail; the header leads to the full list. */
-const RAIL_SIZE = 10
 const RAIL_GAP = 10
 
 interface Props {
@@ -20,9 +22,9 @@ interface Props {
 
 const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
-  const data = useLazyLoadQuery<CityGuideItinerariesRailQuery>(Query, {
+  const data = useLazyLoadQuery<CityGuideItinerariesRailQuery>(cityGuideItinerariesRailQuery, {
     citySlug,
-    first: RAIL_SIZE,
+    first: CITY_GUIDE_ITINERARIES_RAIL_SIZE,
   })
 
   const itineraries = extractNodes(data.me?.itinerariesConnection)
@@ -77,29 +79,6 @@ const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
     </Flex>
   )
 }
-
-const Query = graphql`
-  query CityGuideItinerariesRailQuery($citySlug: String!, $first: Int!) {
-    me {
-      itinerariesConnection(citySlug: $citySlug, first: $first) {
-        edges {
-          node {
-            internalID
-            slug
-            title
-            heroImage {
-              url(version: "small")
-            }
-            stopsCount
-            sections {
-              stopsCount
-            }
-          }
-        }
-      }
-    }
-  }
-`
 
 export const CityGuideItinerariesRail = withSuspense({
   Component: ItinerariesRail,

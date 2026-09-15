@@ -1,5 +1,7 @@
 import { AddIcon } from "@artsy/icons/native"
 import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
+import { Portal, PortalHost } from "@gorhom/portal"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
@@ -17,17 +19,25 @@ import {
   mutate,
   useCityItineraryStops,
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
-import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 /** Well above the number of itineraries a user has for one city. */
 const PAGE_SIZE = 20
 const ADD_ICON_SIZE = 16
 const SNAP_POINTS = ["50%", "95%"]
+/**
+ * `BottomSheetFooter` only gets the animated value it needs when rendered through
+ * `BottomSheetModal`'s own `footerComponent` prop, which is outside `Sheet`'s own (suspended,
+ * data-fetching) content — so the Done button, which needs `Sheet`'s state, can't be built
+ * there directly. Instead `Sheet` portals the actual button into a host sitting inside that
+ * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
+ */
+const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
 
 export interface AddToItineraryTarget extends StopTarget {
   /** Absent where no city is known — the sheet then lists every itinerary. */
@@ -67,6 +77,9 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
   // neither shows in the list nor is findable by `applySelection` when Done is pressed.
   const [createdItineraries, setCreatedItineraries] = useState<PayloadItinerary[]>([])
   const itineraries: PayloadItinerary[] = [...fetchedItineraries, ...createdItineraries]
+  // A user with no itineraries has nothing to tick, so Done means "make me one" instead —
+  // still something to do, even with nothing selected.
+  const canAutoCreate = !itineraries.length && canCreate
 
   const toggle = (id: string) =>
     setSelected((current) =>
@@ -111,12 +124,18 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
     setIsApplying(true)
 
     try {
-      // A user with no itineraries has nothing to tick, so Done means "make me one" — which is
-      // what `addStop` already does, including naming it and its section.
-      if (!itineraries.length && canCreate) {
+      // Done means "make me one" — which is what `addStop` already does, including naming it
+      // and its section (and refetching the rail itself).
+      if (canAutoCreate) {
         await addStop(target)
       } else {
         await applySelection({ itineraries, target, initial, selected })
+
+        // `addStop` above already refetches on its own path; this covers ticking existing
+        // itineraries, which goes through `applySelection` instead.
+        if (citySlug) {
+          refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        }
       }
 
       toast.show("Added to your itinerary", "bottom")
@@ -141,7 +160,7 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
   }
 
   return (
-    <Flex flex={1}>
+    <BottomSheetView style={{ flex: 1 }}>
       <Flex px={2} pb={2}>
         <Text variant="md">Add to Itinerary</Text>
       </Flex>
@@ -175,7 +194,7 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
         visible area — a sibling, not part of the scrollable content, so there is no way to
         reach it by scrolling.
       */}
-      <ScrollView
+      <BottomSheetScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}
       >
@@ -195,14 +214,22 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
             onPress={() => toggle(itinerary.internalID)}
           />
         ))}
-      </ScrollView>
+      </BottomSheetScrollView>
 
-      <Flex p={2}>
-        <Button testID="add-to-itinerary-done" block loading={isApplying} onPress={done}>
-          Done
-        </Button>
-      </Flex>
-    </Flex>
+      <Portal hostName={FOOTER_PORTAL_HOST}>
+        <Flex p={2} backgroundColor="mono0">
+          <Button
+            testID="add-to-itinerary-done"
+            block
+            loading={isApplying}
+            disabled={!selected.length && !canAutoCreate}
+            onPress={done}
+          >
+            Done
+          </Button>
+        </Flex>
+      </Portal>
+    </BottomSheetView>
   )
 }
 
@@ -230,6 +257,11 @@ export const AddToItinerarySheet: React.FC<{
     snapPoints={SNAP_POINTS}
     enableDynamicSizing={false}
     onDismiss={onClose}
+    footerComponent={({ animatedFooterPosition }) => (
+      <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
+        <PortalHost name={FOOTER_PORTAL_HOST} />
+      </BottomSheetFooter>
+    )}
   >
     {!!target && <SheetWithSuspense {...target} onClose={onClose} />}
   </AutomountedBottomSheetModal>

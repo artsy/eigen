@@ -98,6 +98,35 @@ describe("useCityItineraryStops", () => {
     await expect(promise).resolves.toBeTruthy()
   })
 
+  // The rail's own counts would otherwise stay stale until its screen happens to remount.
+  it("refetches the itineraries rail once a stop is added", async () => {
+    const { result } = renderIt()
+
+    const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("useCityItineraryStopsAddMutation", {
+      createItineraryStopPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryStopMutationSuccess",
+          itineraryStop: { internalID: "stop-1" },
+        },
+      }),
+    })
+
+    await expect(promise).resolves.toBeTruthy()
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "CityGuideItinerariesRailQuery"
+      )
+    )
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
+      citySlug: "london-united-kingdom",
+      first: 10,
+    })
+  })
+
   // An itinerary copied from a guide arrives with the guide's own days, so the section is
   // matched by name rather than taken as the first.
   it("adds to an existing My Stops section rather than a guide's own days", async () => {
