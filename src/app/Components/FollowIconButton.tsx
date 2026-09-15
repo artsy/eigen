@@ -16,14 +16,7 @@ interface Props {
   testID?: string
 }
 
-/**
- * The bare plus/tick follow control the designs use wherever a labelled Save button would
- * crowd the row: the show header, and the Saves tab's followed shows, fairs and galleries.
- *
- * Only the glyph and its touch behaviour live here. Each caller keeps its own mutation and
- * tracking, because what "follow" means differs — a show is followed directly, a fair and a
- * gallery through their profile.
- */
+/** The bare plus/tick follow control used where a labelled Save button would crowd the row. */
 export const FollowIconButton: React.FC<Props> = ({
   isFollowed,
   onPress,
