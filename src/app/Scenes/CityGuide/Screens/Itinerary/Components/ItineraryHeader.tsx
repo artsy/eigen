@@ -8,9 +8,15 @@ const HERO_HEIGHT = 300
 
 interface Props {
   itinerary: ItineraryHeader_itinerary$key
+  /**
+   * The floating back button sits over this header, absolutely positioned outside the
+   * scroll view. A hero image is tall enough that its title clears it either way; with no
+   * hero the title would otherwise render right under the button.
+   */
+  topInset: number
 }
 
-export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef }) => {
+export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topInset }) => {
   const itinerary = useFragment(fragment, itineraryRef)
   const heroImage = itinerary.heroImage
 
@@ -18,13 +24,15 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef }) =>
     <Flex>
       {heroImage?.url ? (
         <Flex height={HERO_HEIGHT} justifyContent="flex-end">
-          <Image
-            testID="itinerary-hero-image"
-            src={heroImage.url}
-            blurhash={heroImage.blurhash}
-            resizeMode="cover"
-            style={{ position: "absolute", width: "100%", height: HERO_HEIGHT }}
-          />
+          <Flex style={{ position: "absolute", width: "100%", height: HERO_HEIGHT }}>
+            <Image
+              testID="itinerary-hero-image"
+              src={heroImage.url}
+              blurhash={heroImage.blurhash}
+              resizeMode="cover"
+              style={{ width: "100%", height: HERO_HEIGHT }}
+            />
+          </Flex>
 
           <LinearGradient
             testID="itinerary-hero-scrim"
@@ -52,7 +60,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef }) =>
           </Flex>
         </Flex>
       ) : (
-        <Flex p={2}>
+        <Flex testID="itinerary-header-no-image" px={2} pb={2} style={{ paddingTop: topInset }}>
           {!itinerary.isCurated && <Text variant="xs">Your Itinerary</Text>}
 
           <Text variant="xl">{itinerary.title}</Text>

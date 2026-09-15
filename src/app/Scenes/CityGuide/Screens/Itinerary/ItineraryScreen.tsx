@@ -191,7 +191,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
               contentContainerStyle={{ paddingBottom: 40 }}
               refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
             >
-              <ItineraryHeader itinerary={itinerary} />
+              <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
 
               <Flex px={2} pt={2}>
                 <Join separator={<Spacer y={2} />}>

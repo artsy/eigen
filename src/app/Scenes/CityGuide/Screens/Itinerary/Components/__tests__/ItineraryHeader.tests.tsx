@@ -6,7 +6,7 @@ import { graphql } from "react-relay"
 
 describe("ItineraryHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ItineraryHeaderTestsQuery>({
-    Component: (props) => <ItineraryHeader itinerary={props.itinerary!} />,
+    Component: (props) => <ItineraryHeader itinerary={props.itinerary!} topInset={90} />,
     query: graphql`
       query ItineraryHeaderTestsQuery @relay_test_operation {
         itinerary(id: "chill-vibes-only") {
@@ -43,5 +43,15 @@ describe("ItineraryHeader", () => {
     })
 
     expect(screen.getByTestId("itinerary-hero-scrim")).toBeTruthy()
+  })
+
+  // With no hero image, the title has nothing else pushing it below the floating back
+  // button (ItineraryScreen.tsx), which is absolutely positioned outside the scroll view.
+  it("clears the floating back button with no hero image", () => {
+    renderWithRelay({
+      Itinerary: () => ({ title: "Chill Vibes Only", isCurated: true, heroImage: null }),
+    })
+
+    expect(screen.getByTestId("itinerary-header-no-image")).toHaveStyle({ paddingTop: 90 })
   })
 })
