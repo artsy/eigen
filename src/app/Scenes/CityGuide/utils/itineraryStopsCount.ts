@@ -1,6 +1,6 @@
 interface WithCounts {
   readonly stopsCount?: number | null
-  readonly sections?: readonly { readonly stopsCount: number }[] | null
+  readonly sections?: readonly { readonly stopsCount?: number | null }[] | null
 }
 
 /**
@@ -14,5 +14,5 @@ export const itineraryStopsCount = (itinerary: WithCounts) => {
 
   if (!sections?.length) return undefined
 
-  return sections.reduce((total, section) => total + section.stopsCount, 0)
+  return sections.reduce((total, section) => total + (section.stopsCount ?? 0), 0)
 }

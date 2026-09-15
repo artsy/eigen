@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { MockPayloadGenerator } from "relay-test-utils"
 
 const itinerary = (internalID: string, title: string, stops: object[]) => ({
   internalID,
@@ -209,6 +210,53 @@ describe("AddToItinerarySheet", () => {
       expect(operation.request.variables.input).toEqual({
         citySlug: "london-united-kingdom",
         title: "Frieze week",
+      })
+    })
+
+    // A regression: `create` used to only tick the new itinerary locally, without adding it
+    // to the list the sheet renders from or the one Done reads to find what to mutate — so it
+    // never showed up, and Done silently did nothing for it.
+    it("shows the created itinerary in the list, and adds to it on Done", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), props)
+
+      await screen.findByText("First")
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
+      fireEvent.press(screen.getByTestId("create-itinerary-submit"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Mutation: () => ({
+            createItinerary: {
+              responseOrError: {
+                __typename: "ItineraryMutationSuccess",
+                itinerary: { internalID: "new-itinerary" },
+              },
+            },
+          }),
+        })
+      )
+
+      expect(await screen.findByText("Frieze week")).toBeOnTheScreen()
+      expect(screen.getByText("1 selected")).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      // The itinerary just made has no "My Stops" section yet, so applying its tick creates
+      // one first, same as any other itinerary that arrived without one.
+      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+
+      const sectionOp = view.env.mock.getMostRecentOperation()
+
+      expect(sectionOp.request.node.params.name).toBe(
+        "useApplyItinerarySelectionCreateSectionMutation"
+      )
+      expect(sectionOp.request.variables.input).toEqual({
+        itineraryID: "new-itinerary",
+        title: "My Stops",
       })
     })
   })

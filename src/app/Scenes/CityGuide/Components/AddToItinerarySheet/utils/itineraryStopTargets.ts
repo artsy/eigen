@@ -20,6 +20,8 @@ interface PayloadStop {
 interface PayloadSection {
   readonly internalID: string
   readonly title?: string | null
+  /** Absent on a section built locally for a just-created itinerary, which has none yet. */
+  readonly stopsCount?: number | null
   readonly stops: readonly PayloadStop[]
 }
 

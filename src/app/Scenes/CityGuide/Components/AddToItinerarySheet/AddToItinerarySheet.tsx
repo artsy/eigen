@@ -1,4 +1,4 @@
-import { AddStrokeIcon } from "@artsy/icons/native"
+import { AddIcon } from "@artsy/icons/native"
 import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
@@ -8,6 +8,7 @@ import { AddToItineraryRow } from "app/Scenes/CityGuide/Components/AddToItinerar
 import { CreateItineraryForm } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/CreateItineraryForm"
 import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/useApplyItinerarySelection"
 import {
+  PayloadItinerary,
   StopTarget,
   itinerariesHoldingTarget,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
@@ -50,17 +51,22 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
     first: PAGE_SIZE,
   })
 
-  const itineraries = extractNodes(data.me?.itinerariesConnection)
+  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection)
   const target = { itemType, itemID }
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
 
-  const [initial] = useState(() => itinerariesHoldingTarget(itineraries, target))
+  const [initial] = useState(() => itinerariesHoldingTarget(fetchedItineraries, target))
   const [selected, setSelected] = useState<string[]>(initial)
   const [isCreating, setIsCreating] = useState(false)
   const [isApplying, setIsApplying] = useState(false)
   const [isNaming, setIsNaming] = useState(false)
+  // `create` mutates straight through the store, not through this screen's own
+  // `useLazyLoadQuery`, so the itinerary it makes has to be added here by hand — otherwise it
+  // neither shows in the list nor is findable by `applySelection` when Done is pressed.
+  const [createdItineraries, setCreatedItineraries] = useState<PayloadItinerary[]>([])
+  const itineraries: PayloadItinerary[] = [...fetchedItineraries, ...createdItineraries]
 
   const toggle = (id: string) =>
     setSelected((current) =>
@@ -85,6 +91,12 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
 
       if (!internalID) throw new Error("Could not create the itinerary")
 
+      // A brand new itinerary has no stops and no section yet — `applySelection` creates the
+      // section itself when it finds none, same as it does for any other itinerary.
+      setCreatedItineraries((current) => [
+        ...current,
+        { internalID, title, stopsCount: 0, heroImage: null, sections: [] },
+      ])
       // Ticked straight away, so Done adds the stop to what you just made.
       setSelected((current) => [...current, internalID])
       setIsNaming(false)
@@ -137,7 +149,7 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
       <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
         {canCreate ? (
           <Flex flexDirection="row" alignItems="center" gap={0.5}>
-            <AddStrokeIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
+            <AddIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
 
             <Text
               testID="add-to-itinerary-create"
