@@ -1,5 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react-native"
-import { useCityItineraryStops } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import {
+  defaultItineraryTitle,
+  MY_STOPS_SECTION,
+  useCityItineraryStops,
+} from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -33,13 +37,16 @@ describe("useCityItineraryStops", () => {
     jest.clearAllMocks()
   })
 
-  /** An itinerary with one empty section. */
+  /** An itinerary with an empty "My Stops" section, which is where an added stop belongs. */
   const existingItinerary = {
     Me: () => ({
       itinerariesConnection: {
         edges: [
           {
-            node: { internalID: "itinerary-1", sections: [{ internalID: "section-1", stops: [] }] },
+            node: {
+              internalID: "itinerary-1",
+              sections: [{ internalID: "section-1", title: MY_STOPS_SECTION, stops: [] }],
+            },
           },
         ],
       },
@@ -57,6 +64,7 @@ describe("useCityItineraryStops", () => {
               sections: [
                 {
                   internalID: "section-1",
+                  title: MY_STOPS_SECTION,
                   stops: [
                     {
                       internalID: "stop-1",
@@ -88,6 +96,48 @@ describe("useCityItineraryStops", () => {
     })
 
     await expect(promise).resolves.toBeTruthy()
+  })
+
+  // An itinerary copied from a guide arrives with the guide's own days, so the section is
+  // matched by name rather than taken as the first.
+  it("adds to an existing My Stops section rather than a guide's own days", async () => {
+    const { result } = renderIt()
+
+    // Not awaited: the assertion is about which section the add targets, not its result.
+    void result.current.addStop({ itemType: "SHOW", itemID: "show-2" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", {
+      Me: () => ({
+        itinerariesConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "itinerary-1",
+                sections: [
+                  { internalID: "day-1", title: "Day 1", stops: [] },
+                  { internalID: "my-stops", title: MY_STOPS_SECTION, stops: [] },
+                ],
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "useCityItineraryStopsAddMutation"
+      )
+    )
+
+    expect(env.mock.getMostRecentOperation().request.variables.input.itinerarySectionID).toBe(
+      "my-stops"
+    )
+  })
+
+  it("leaves the city out of the name when none is known", () => {
+    expect(defaultItineraryTitle()).toBe(defaultItineraryTitle(undefined))
+    expect(defaultItineraryTitle("London")).toBe(`London ${defaultItineraryTitle()}`)
   })
 
   // A custom stop has no Artsy entity to point at, so its fields are copied instead. The
@@ -155,6 +205,7 @@ describe("useCityItineraryStops", () => {
                   sections: [
                     {
                       internalID: "section-1",
+                      title: MY_STOPS_SECTION,
                       stops: [
                         {
                           internalID: "stop-9",
@@ -194,10 +245,10 @@ describe("useCityItineraryStops", () => {
       )
     )
 
-    // The default itinerary is named after the city, and nothing else.
+    // "London October 2026" — a trip rather than a place, so a second visit does not collide.
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       citySlug: "london-united-kingdom",
-      title: "London",
+      title: defaultItineraryTitle("London"),
     })
 
     env.mock.resolveMostRecentOperation((operation) =>
@@ -217,10 +268,10 @@ describe("useCityItineraryStops", () => {
       )
     )
 
-    // The section is named after the city too.
+    // Every added stop goes to "My Stops": nothing can create a section yet.
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       itineraryID: "new-itinerary",
-      title: "London",
+      title: MY_STOPS_SECTION,
     })
 
     await resolveNext("useCityItineraryStopsCreateSectionMutation", {

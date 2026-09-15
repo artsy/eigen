@@ -3,13 +3,15 @@ import { useCityItineraryStopsCreateItineraryMutation } from "__generated__/useC
 import { useCityItineraryStopsCreateSectionMutation } from "__generated__/useCityItineraryStopsCreateSectionMutation.graphql"
 import { useCityItineraryStopsLookupQuery } from "__generated__/useCityItineraryStopsLookupQuery.graphql"
 import { useCityItineraryStopsRemoveMutation } from "__generated__/useCityItineraryStopsRemoveMutation.graphql"
+import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
 import { Environment, commitMutation } from "relay-runtime"
 
 /**
  * What a stop points at, matching `ItineraryStopItemType`. A gallery or museum is a
- * `LOCATION` — the schema used to say `PARTNER`, reached now through `Location.partner`.
+ * `LOCATION`: the schema used to say `PARTNER`, but a stop names the place, and its partner is
+ * reached through `Location.partner`.
  */
 export type CityItineraryItemType = "SHOW" | "FAIR" | "LOCATION"
 
@@ -21,8 +23,11 @@ interface EntityStopInput {
 }
 
 /**
- * A stop with no Artsy entity — a cafe, a landmark. No image: it takes an S3 upload URL that
- * Gravity converts through Gemini, so a copied stop cannot carry the original's picture.
+ * A stop with no Artsy entity — a cafe, a landmark. `createItineraryStopInput` leaves
+ * `itemType` and `itemID` optional, so these fields alone make a stop.
+ *
+ * No image: that input takes an S3 upload URL which Gravity converts through Gemini, so a
+ * copied stop cannot carry the original's picture.
  */
 export interface CustomStopInput {
   itemType?: undefined
@@ -38,6 +43,23 @@ export interface CustomStopInput {
 
 type StopInput = EntityStopInput | CustomStopInput
 
+/**
+ * Every stop the app adds goes here. Nothing can create a section yet, so one name for all of
+ * them keeps a user's own stops together rather than scattered through a copied guide's days.
+ */
+export const MY_STOPS_SECTION = "My Stops"
+
+/**
+ * What a new itinerary is called: "London October 2026", or "October 2026" where no city is
+ * known. It reads as a trip rather than a place, so a second visit does not collide with the
+ * first.
+ */
+export const defaultItineraryTitle = (cityName?: string) => {
+  const monthAndYear = DateTime.local().toFormat("MMMM yyyy")
+
+  return cityName ? `${cityName} ${monthAndYear}` : monthAndYear
+}
+
 /** How a stop's `item` union member maps onto the item type the caller passes in. */
 const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
   SHOW: "Show",
@@ -49,7 +71,7 @@ const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
  * Promise wrapper around `commitMutation`. A GraphQL payload can carry errors alongside a 200,
  * so those reject too rather than resolving with a half-written result.
  */
-const mutate = <T extends { variables: any; response: any }>(
+export const mutate = <T extends { variables: any; response: any }>(
   environment: Environment,
   mutation: any,
   variables: T["variables"]
@@ -78,8 +100,10 @@ interface ExistingStop {
 }
 
 /**
- * The stop for this input, if the itinerary already has one. An entity stop matches on what
- * it points at; a custom stop matches on title/address instead — imperfect, but better than duplicates.
+ * The stop for this input, if the itinerary already has one.
+ *
+ * An entity stop matches on what it points at. A custom stop has no id to compare, so it
+ * matches on title and address — imperfect, but allowing silent duplicates is worse.
  */
 const findStop = <T extends ExistingStop>(stops: readonly T[], input: StopInput) => {
   if (input.itemType) {
@@ -106,16 +130,24 @@ export const isSameCustomStop = (
   (candidate.address ?? undefined) === input.address
 
 /**
- * Adds and removes stops on the user's own itinerary for a city. Adding takes up to three
- * round trips (no find-or-create server-side), serialised so double-taps can't create duplicates.
+ * Adds and removes stops on the user's own itinerary for a city.
+ *
+ * Adding takes three round trips, because Metaphysics has no find-or-create: look up the
+ * itinerary, create it if the user has none, make sure it has a section (creating one is
+ * required — a new itinerary has none, and a stop must belong to a section), then create the
+ * stop. Removing takes one, since `removeItineraryStopByItem` resolves the stop from what it
+ * points at, which is all a card knows about itself.
+ *
+ * A single in-flight promise per hook instance serialises calls: two quick taps would
+ * otherwise each find no itinerary and create one, leaving the user with two.
  */
 export const useCityItineraryStops = ({
   citySlug,
   cityName,
 }: {
   citySlug: string
-  /** The default itinerary's name is just the city's — "London", not "London Itinerary". */
-  cityName: string
+  /** Absent where no city is known, which leaves it out of a new itinerary's name. */
+  cityName?: string
 }) => {
   const environment = useRelayEnvironment()
   const inFlight = useRef<Promise<unknown>>(Promise.resolve())
@@ -131,12 +163,16 @@ export const useCityItineraryStops = ({
         { fetchPolicy: "network-only" }
       ).toPromise()
 
-      // The connection is the caller's own, so the first edge is their itinerary for this
-      // city — Gravity orders by most recent; multiple personal itineraries is a later feature.
+      // The connection is the caller's own by definition, so the first is their itinerary for
+      // this city. A user with several picks up the most recent, which is what Gravity orders
+      // by; multiple personal itineraries per city are a later feature.
       const existing = data?.me?.itinerariesConnection?.edges?.[0]?.node
 
       let itineraryID = existing?.internalID
-      let sectionID = existing?.sections?.[0]?.internalID
+      // By name, not the first section: an itinerary copied from a guide arrives with the
+      // guide's own days, and a stop the user adds belongs in theirs.
+      let sectionID = existing?.sections?.find((section) => section.title === MY_STOPS_SECTION)
+        ?.internalID
       // Flattened across sections: a stop is on the itinerary or it is not, and which section
       // holds it does not matter for finding or removing one.
       const stops = (existing?.sections ?? []).flatMap((section) => section.stops)
@@ -147,7 +183,7 @@ export const useCityItineraryStops = ({
         const created = await mutate<useCityItineraryStopsCreateItineraryMutation>(
           environment,
           createItineraryMutation,
-          { input: { citySlug, title: cityName } }
+          { input: { citySlug, title: defaultItineraryTitle(cityName) } }
         )
         const response = created.createItinerary?.responseOrError
 
@@ -170,12 +206,10 @@ export const useCityItineraryStops = ({
       if (!sectionID) {
         if (!createIfMissing) return { itineraryID, sectionID: undefined, stops }
 
-        // Named after the city, like the itinerary itself — the section exists only because a
-        // stop must belong to one; the UI never shows its label, but a name reads better if it surfaces.
         const created = await mutate<useCityItineraryStopsCreateSectionMutation>(
           environment,
           createSectionMutation,
-          { input: { itineraryID, title: cityName } }
+          { input: { itineraryID, title: MY_STOPS_SECTION } }
         )
         const response = created.createItinerarySection?.responseOrError
 
@@ -217,8 +251,9 @@ export const useCityItineraryStops = ({
           throw new Error("Could not find a section to add the stop to")
         }
 
-        // Adding the same entity twice is a no-op — Gravity has no uniqueness constraint on
-        // (section, item type, item id) yet, so without this a second tap would duplicate it.
+        // Adding the same entity twice is a no-op. Gravity has no uniqueness constraint on
+        // (section, item type, item id) yet, so without this a second tap would leave two
+        // identical stops on the itinerary.
         const already = findStop(target.stops, stop)
 
         if (already) return already
@@ -251,8 +286,9 @@ export const useCityItineraryStops = ({
 
         if (!target?.itineraryID) return null
 
-        // `deleteItineraryStop` needs the stop's own id, which a card never has, so it's found
-        // by what it points at. Nothing to remove is success, not an error — that's the state the user wanted.
+        // `deleteItineraryStop` takes the stop's own id, which a card never has — it knows the
+        // show or fair it renders. So the stop is found by what it points at. Nothing to
+        // remove is success, not an error: the card already shows the state the user wanted.
         const existingStop = findStop(target.stops, stop)
 
         if (!existingStop) return null
@@ -289,6 +325,7 @@ const lookupQuery = graphql`
             internalID
             sections {
               internalID
+              title
               stops {
                 internalID
                 title
