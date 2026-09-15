@@ -53,6 +53,18 @@ const receptionLine = (stop: ItineraryStop) => {
   return startsToday ? `${kind} today` : undefined
 }
 
+/**
+ * "Oct 15" — an event stop's hours alone ("4pm-5pm") don't say which day, unlike a venue's
+ * recurring daily hours, so its own event's date goes in front of them.
+ */
+const eventDateLabel = (startAt: string | null | undefined) => {
+  if (!startAt) return undefined
+
+  const date = DateTime.fromISO(startAt, { zone: "utc" })
+
+  return date.isValid ? date.toFormat("MMM d") : undefined
+}
+
 const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
   if (isFreeAdmission == null) return undefined
 
@@ -73,6 +85,8 @@ export interface StopCardItem {
   readonly city?: string | null
   readonly href?: string | null
   readonly isFreeAdmission?: boolean | null
+  /** A Show or Fair's own running dates, e.g. "Feb 25 - May 24". Absent on a venue itself. */
+  readonly exhibitionPeriod?: string | null
   readonly partner?: { readonly name?: string | null; readonly href?: string | null } | null
   readonly location?: { readonly name?: string | null; readonly city?: string | null } | null
   readonly locations?:
@@ -99,12 +113,17 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
   // An event at a venue, checked before the item's type — an event stop also carries the
   // show/fair it belongs to, which is where its place and href (it has none of its own) come from.
   if (stop.eventType) {
+    // The stop's own date wins, as with title and admission elsewhere in here — a curator's
+    // override beats what the linked event says. Falls back to the event's own date when the
+    // curator set none.
+    const eventDate = eventDateLabel(stop.startAtISO ?? event?.startAt)
+
     return {
       kind: "event",
       // The curator's title wins, then the event's own name, then the parent's.
       title: title || event?.title || item?.name || "",
       subtitle: item?.partner?.name ?? placeLine(item?.locations?.[0] ?? item?.location),
-      hours,
+      hours: [eventDate, hours].filter(Boolean).join(", ") || undefined,
       admission,
       href: item?.href ?? stop.sourceURL ?? undefined,
     }
@@ -121,7 +140,9 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         subtitle: [category === "MUSEUM" ? MUSEUM_EMOJI : null, item.partner?.name]
           .filter(Boolean)
           .join(" "),
-        hours,
+        // The curator's own visiting hours win when set; otherwise the show's running dates —
+        // more useful than a blank line, and what tells you it's even on during your trip.
+        hours: hours || item.exhibitionPeriod || undefined,
         admission,
         href: item.href ?? undefined,
         reception: receptionLine(stop),
@@ -132,7 +153,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         kind: "fair",
         title: title || item.name || "",
         subtitle: placeLine(item.location),
-        hours,
+        hours: hours || item.exhibitionPeriod || undefined,
         admission,
         href: item.href ?? undefined,
       }
@@ -168,6 +189,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         // link. Nothing exposes it, so the stop's address stands in instead.
         subtitle: stop.address ?? undefined,
         hours,
+        admission,
         // Where the curator found it — the only thing a custom stop can link to.
         href: stop.sourceURL ?? undefined,
       }

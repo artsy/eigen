@@ -305,6 +305,7 @@ export const itineraryQuery = graphql`
               name
               href
               isFreeAdmission
+              exhibitionPeriod(format: SHORT)
               coverImage {
                 url
                 blurhash
@@ -330,6 +331,7 @@ export const itineraryQuery = graphql`
               slug
               name
               href
+              exhibitionPeriod(format: SHORT)
               image {
                 url
                 blurhash

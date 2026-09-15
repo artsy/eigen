@@ -97,6 +97,22 @@ describe("stopCardFields", () => {
     it("lets the stop's admission win over the show's", () => {
       expect(stopCardFields(stop({ isFreeAdmission: true }), show).admission).toEqual("Free")
     })
+
+    // A blank line tells you nothing; the show's own dates at least say it's on.
+    it("falls back to the show's exhibition period when the stop has no hours of its own", () => {
+      const fields = stopCardFields(stop({ startTime: null, endTime: null }), {
+        ...show,
+        exhibitionPeriod: "Feb 25 - May 24",
+      })
+
+      expect(fields.hours).toEqual("Feb 25 - May 24")
+    })
+
+    it("prefers the stop's own hours over the show's exhibition period", () => {
+      const fields = stopCardFields(stop(), { ...show, exhibitionPeriod: "Feb 25 - May 24" })
+
+      expect(fields.hours).toEqual("10am-6pm")
+    })
   })
 
   describe("a fair", () => {
@@ -152,6 +168,11 @@ describe("stopCardFields", () => {
       expect(fields.hours).toEqual("10am-6pm")
       // A custom stop has nothing on Artsy, so it links where the curator found it.
       expect(fields.href).toBeUndefined()
+    })
+
+    it("shows the admission the curator set", () => {
+      expect(stopCardFields(stop({ isFreeAdmission: true })).admission).toEqual("Free")
+      expect(stopCardFields(stop({ isFreeAdmission: false })).admission).toEqual("Paid Entry")
     })
 
     // Relay adds "%other" for a union member the query does not select on.
