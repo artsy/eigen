@@ -1,14 +1,16 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Flex, Pill, Text } from "@artsy/palette-mobile"
+import { Flex, Pill, Text, Touchable } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ItineraryPickerQuery } from "__generated__/ItineraryPickerQuery.graphql"
+import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
+import { itineraryQuery } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
 import { useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 interface Props {
   citySlug: string
@@ -19,6 +21,12 @@ interface Props {
 
 const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItineraryName }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isSwitching, setIsSwitching] = useState(false)
+  // AuthenticatedRoutesParams types every route's params as `undefined` since they're passed
+  // dynamically at runtime — this screen's own `itineraryId` route param included — so
+  // `setParams` needs a param list that actually reflects what this screen can be given.
+  const navigation = useNavigation<NavigationProp<Record<string, { itineraryId: string }>>>()
+  const environment = useRelayEnvironment()
   const data = useLazyLoadQuery<ItineraryPickerQuery>(Query, { citySlug, first: 20 })
 
   const itineraries = extractNodes(data.me?.itinerariesConnection)
@@ -26,6 +34,35 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
   // Always tappable once anything has loaded — gating on "more than one itinerary" read as a
   // dead button for the common case of having exactly one, while nothing can create more yet.
   const canSwitch = itineraries.length > 0
+
+  const switchTo = (itinerary: (typeof itineraries)[number]) => {
+    setIsOpen(false)
+
+    const isCurrent =
+      itinerary.internalID === currentItineraryId || itinerary.slug === currentItineraryId
+
+    // Already showing it — no need to refetch or touch the route params.
+    if (isCurrent) {
+      return
+    }
+
+    const itineraryId = itinerary.slug ?? itinerary.internalID
+
+    setIsSwitching(true)
+
+    // Fetched first so the store already has it: swapping params before this resolves would
+    // suspend the screen and blank the guide, the same reasoning as this screen's own `refresh`.
+    fetchQuery<ItineraryScreenQuery>(environment, itineraryQuery, {
+      id: itineraryId,
+      citySlug,
+    }).subscribe({
+      complete: () => {
+        setIsSwitching(false)
+        navigation.setParams({ itineraryId })
+      },
+      error: () => setIsSwitching(false),
+    })
+  }
 
   return (
     <>
@@ -51,12 +88,12 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
               itinerary.internalID === currentItineraryId || itinerary.slug === currentItineraryId
 
             return (
-              <RouterLink
+              <Touchable
                 key={itinerary.internalID}
                 testID="itinerary-picker-option"
-                to={`/city-guide/${citySlug}/itinerary/${itinerary.slug ?? itinerary.internalID}`}
-                disablePrefetch
-                onPress={() => setIsOpen(false)}
+                accessibilityRole="button"
+                disabled={isSwitching}
+                onPress={() => switchTo(itinerary)}
               >
                 <Flex px={2} py={1}>
                   <Text variant="sm" weight={isCurrent ? "medium" : "regular"}>
@@ -68,7 +105,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
                     </Text>
                   )}
                 </Flex>
-              </RouterLink>
+              </Touchable>
             )
           })}
         </Flex>

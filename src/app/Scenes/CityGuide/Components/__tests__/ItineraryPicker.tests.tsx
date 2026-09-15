@@ -1,6 +1,7 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { navigate } from "app/system/navigation/navigate"
+import { mockSetParams } from "app/utils/tests/navigationMocks"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("ItineraryPicker", () => {
@@ -56,7 +57,7 @@ describe("ItineraryPicker", () => {
   })
 
   it("switches to the itinerary that is picked", async () => {
-    renderWithRelay(
+    const view = renderWithRelay(
       connection([itinerary("a", "London Oct 2026"), itinerary("b", "London Winter")]),
       props
     )
@@ -64,6 +65,28 @@ describe("ItineraryPicker", () => {
     fireEvent.press(await screen.findByText("London Oct 2026"))
     fireEvent.press(await screen.findByText("London Winter"))
 
-    expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/b")
+    // Resolve the picker's own itinerariesConnection first, then the pre-fetch it kicks off.
+    await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+    view.mockResolveLastOperation({
+      Itinerary: () => ({ internalID: "b", title: "London Winter" }),
+    })
+
+    await waitFor(() => expect(mockSetParams).toHaveBeenCalledWith({ itineraryId: "b" }))
+
+    // It swaps the screen's params in place rather than pushing a new one.
+    expect(navigate).not.toHaveBeenCalled()
+  })
+
+  it("is a no-op when the active itinerary is tapped", async () => {
+    renderWithRelay(
+      connection([itinerary("a", "London Oct 2026"), itinerary("b", "London Winter")]),
+      props
+    )
+
+    fireEvent.press(await screen.findByText("London Oct 2026"))
+    fireEvent.press(screen.getAllByText("London Oct 2026")[1])
+
+    expect(mockSetParams).not.toHaveBeenCalled()
+    await waitFor(() => expect(screen.queryByText("Your Itineraries")).not.toBeOnTheScreen())
   })
 })

@@ -56,8 +56,9 @@ export const ItineraryStopEntitiesProvider: React.FC<{
   stops: ItineraryStop[]
   children: React.ReactNode
 }> = ({ stops, children }) => {
-  // Seeded once, from `stops` on first render — the screen remounts rather than swapping
-  // itineraries in place. Do not add a reseeding effect: it would clobber already-reported entities.
+  // Seeded once, from `stops` on first render. The call site keys this provider by
+  // itinerary id, so switching itineraries remounts it fresh. Do not add a reseeding
+  // effect: it would clobber already-reported entities.
   const [lookups, setLookups] = useState<Record<string, Lookup>>(() =>
     Object.fromEntries(
       saveableStopIds(stops).map((id) => [id, { status: "pending" as LookupStatus }])

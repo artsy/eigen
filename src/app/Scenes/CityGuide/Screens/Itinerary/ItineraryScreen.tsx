@@ -38,7 +38,7 @@ interface Props {
 const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   // An itinerary is addressed by its own id or slug and carries its city; `citySlug` only
   // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
-  const data = useLazyLoadQuery<ItineraryScreenQuery>(Query, { id: itineraryId, citySlug })
+  const data = useLazyLoadQuery<ItineraryScreenQuery>(itineraryQuery, { id: itineraryId, citySlug })
 
   const derived = useMemo(
     () => (data.itinerary ? itineraryFromQuery(data.itinerary) : null),
@@ -69,7 +69,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
 
     fetchQuery<ItineraryScreenQuery>(
       environment,
-      Query,
+      itineraryQuery,
       { id: itineraryId, citySlug },
       { fetchPolicy: "network-only" }
     ).subscribe({
@@ -132,7 +132,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   })
 
   return (
-    <ItineraryStopEntitiesProvider stops={stops}>
+    <ItineraryStopEntitiesProvider key={itineraryId} stops={stops}>
       <ItineraryStopEntityResolvers stops={stops} />
       <Screen safeArea={false}>
         {/*
@@ -251,7 +251,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   )
 }
 
-const Query = graphql`
+export const itineraryQuery = graphql`
   query ItineraryScreenQuery($id: String!, $citySlug: String!) {
     city(slug: $citySlug) {
       name
