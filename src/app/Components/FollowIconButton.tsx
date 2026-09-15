@@ -1,8 +1,7 @@
 import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { FC } from "react"
-import { TouchableOpacity } from "react-native"
 
 /** What the show header and the Saves-tab rows specify. The City Guide rails pass 18. */
 const DEFAULT_SIZE = 24
@@ -36,7 +35,7 @@ export const FollowIconButton: FC<Props> = ({
   const action = isFollowed ? "Unsave" : "Save"
 
   return (
-    <TouchableOpacity
+    <Touchable
       testID={testID ?? "follow-icon-button"}
       accessibilityRole="button"
       accessibilityLabel={name ? `${action} ${name}` : action}
@@ -52,6 +51,6 @@ export const FollowIconButton: FC<Props> = ({
           <AddStrokeIcon testID="follow-icon-button-add" width={size} height={size} />
         )}
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
