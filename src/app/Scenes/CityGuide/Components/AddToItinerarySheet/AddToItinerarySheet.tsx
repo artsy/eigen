@@ -169,7 +169,16 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
         </Text>
       </Flex>
 
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+      {/*
+        `flex: 1`, not left to size itself: without it the ScrollView takes up all the space
+        left in the sheet regardless of how little content it holds, pushing Done below the
+        visible area — a sibling, not part of the scrollable content, so there is no way to
+        reach it by scrolling.
+      */}
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}
+      >
         {!itineraries.length && !canCreate && (
           <Text variant="xs" color="mono60">
             You have no itineraries yet. Start one from a city guide.
