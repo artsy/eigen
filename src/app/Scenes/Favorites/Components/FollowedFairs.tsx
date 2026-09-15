@@ -84,7 +84,6 @@ interface FollowedFairRowProps {
   fair: FollowedFairs_fair$key
 }
 
-// Compact list row for a followed fair (image thumbnail + name + exhibition dates + follow button).
 const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => {
   const color = useColor()
   const fair = useFragment(followedFairRowFragment, fairProp)
@@ -125,7 +124,7 @@ const FollowedFairRow: React.FC<FollowedFairRowProps> = ({ fair: fairProp }) => 
           )}
         </Flex>
 
-        <FairFollowButton fair={fair} />
+        <FairFollowButton fair={fair} variant="icon" />
       </Flex>
     </Touchable>
   )

@@ -80,10 +80,15 @@ import { AuctionsOverviewScreen } from "app/Scenes/AuctionsOverview/AuctionsOver
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
+import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import {
   CityFairListQueryRenderer,
   CityFairListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CityFairList"
+import {
+  CityItinerariesScreenQuery,
+  CityItinerariesScreenQueryRenderer,
+} from "app/Scenes/CityGuide/Screens/CityItineraries"
 import {
   CitySavedListQueryRenderer,
   CitySavedListScreenQuery,
@@ -92,6 +97,8 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/CityGuide/Screens/CitySectionList"
+import { CustomStopScreen } from "app/Scenes/CityGuide/Screens/CustomStop/CustomStopScreen"
+import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
@@ -578,7 +585,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtistScreenQuery],
-  }, // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
+  }, // For artists in a gallery context, use the native artist view instead of a web view.
 
   {
     path: "/artwork-certificate-of-authenticity",
@@ -656,10 +663,8 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [BrowseSimilarWorksScreenQuery],
   },
   {
-    // Alias for artwork URLs with a trailing segment (e.g. /artwork/:artworkID/:optional).
-    // MUST stay below
-    // the more specific /artwork/:artworkID/medium and /browse-similar-works routes, since
-    // matching is first-match-wins and this pattern would otherwise shadow them.
+    // Alias for artwork URLs with a trailing segment. Must stay below the more specific
+    // /artwork/:artworkID/medium and /browse-similar-works routes (first match wins).
     path: "/artwork/:artworkID/:optional",
     name: "Artwork",
     Component: ArtworkScreen,
@@ -742,11 +747,8 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [
       SalesActiveBidsScreenQuery,
-      // Prefetching SalesRecommendedAuctionLotsScreenQuery requires a variable
-      // that currently depends on an experiment-specific value.
-      // Adding that logic here would introduce unnecessary complexity at this stage.
-      // TODO: Revisit after the experiment finishes.
-      // SalesRecommendedAuctionLotsScreenQuery,
+      // TODO: Prefetch SalesRecommendedAuctionLotsScreenQuery once its variable no longer
+      // depends on an experiment-specific value.
       SalesLatestAuctionResultsScreenQuery,
       SalesAuctionsOverviewScreenQuery,
     ],
@@ -1116,6 +1118,52 @@ export const artsyDotNetRoutes = defineRoutes([
         header: () => {
           return null
         },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itinerary/:itineraryId",
+    name: "CityGuideItinerary",
+    Component: ItineraryScreen,
+    options: {
+      screenOptions: {
+        headerTransparent: true,
+        headerShadowVisible: false,
+        header: () => {
+          return null
+        },
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itinerary/:itineraryId/stop/:stopId",
+    name: "CityGuideCustomStop",
+    Component: CustomStopScreen,
+    options: {
+      screenOptions: {
+        // The screen renders its own Screen.Header, as the other City Guide screens do.
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/itineraries",
+    name: "CityItineraries",
+    Component: CityItinerariesScreenQueryRenderer,
+    queries: [CityItinerariesScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/city-guide/:citySlug/events/:section",
+    name: "CityEventList",
+    Component: CityEventListScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },

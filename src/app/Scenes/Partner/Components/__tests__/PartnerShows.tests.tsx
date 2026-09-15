@@ -83,6 +83,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           __typename: "Show",
           isDisplayable: true,
           isFollowed: false,
+          isOnlineExclusive: false,
+          location: null,
           partner: null,
           id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=",
           internalID: "5d6420cf2a41e4000f1c03a1",
@@ -98,6 +100,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         cursor: "b",
         node: {
           __typename: "Show",
+          isOnlineExclusive: false,
+          location: null,
           isDisplayable: true,
           isFollowed: false,
           partner: null,
@@ -122,6 +126,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         cursor: "c",
         node: {
           __typename: "Show",
+          isOnlineExclusive: false,
+          location: null,
           isDisplayable: true,
           isFollowed: false,
           partner: null,

@@ -1,18 +1,27 @@
 import { FollowButton } from "@artsy/palette-mobile"
 import { PartnerFollowButtonQuery } from "__generated__/PartnerFollowButtonQuery.graphql"
 import { PartnerFollowButton_partner$key } from "__generated__/PartnerFollowButton_partner.graphql"
+import { FollowIconButton } from "app/Components/FollowIconButton"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface PartnerFollowButtonProps {
   partner: PartnerFollowButton_partner$key
+  /**
+   * "button" is palette's labelled FollowButton. "icon" is the bare plus/tick the Saves tab's
+   * designs use for a followed gallery's row.
+   */
+  variant?: "button" | "icon"
 }
 
-export const PartnerFollowButton: FC<PartnerFollowButtonProps> = ({ partner }) => {
+export const PartnerFollowButton: React.FC<PartnerFollowButtonProps> = ({
+  partner,
+  variant = "button",
+}) => {
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
   const data = useFragment(fragment, partner)
@@ -29,6 +38,17 @@ export const PartnerFollowButton: FC<PartnerFollowButtonProps> = ({ partner }) =
   const handleOnPress = () => {
     followProfile()
     trackEvent(tracks.trackFollowPartner(data.internalID, analytics))
+  }
+
+  if (variant === "icon") {
+    return (
+      <FollowIconButton
+        testID="partner-follow-icon"
+        isFollowed={!!data.profile.isFollowed}
+        isInFlight={isInFlight}
+        onPress={handleOnPress}
+      />
+    )
   }
 
   return (
@@ -54,18 +74,22 @@ const fragment = graphql`
 
 interface PartnerFollowButtonQueryRendererProps {
   partnerID: string
+  variant?: "button" | "icon"
 }
 
-export const PartnerFollowButtonQueryRenderer: FC<PartnerFollowButtonQueryRendererProps> = ({
+export const PartnerFollowButtonQueryRenderer: React.FC<PartnerFollowButtonQueryRendererProps> = ({
   partnerID,
+  variant = "button",
 }) => {
   const data = useLazyLoadQuery<PartnerFollowButtonQuery>(query, { id: partnerID })
 
   if (!data.partner) {
-    return <FollowButton isFollowed={false} />
+    // The icon variant renders nothing rather than a dead glyph: unlike the labelled button,
+    // a lone plus with no partner behind it reads as broken instead of as "not followed".
+    return variant === "icon" ? null : <FollowButton isFollowed={false} />
   }
 
-  return <PartnerFollowButton partner={data.partner} />
+  return <PartnerFollowButton partner={data.partner} variant={variant} />
 }
 
 const query = graphql`
@@ -77,9 +101,8 @@ const query = graphql`
 `
 
 const tracks = {
-  // TODO: action_name is always FollowPartner, should be FollowPartner or UnfollowPartner
-  // I've checked other follow partner buttons, and the behavior is the same
-  // Should be fixed in a separate PR
+  // TODO: action_name is always FollowPartner, should be FollowPartner or UnfollowPartner.
+  // Other follow-partner buttons have the same bug — fix in a separate PR.
   trackFollowPartner: (internalID: string, analytics: AnalyticsContextProps) => ({
     action_name: ActionNames.FollowPartner,
     action_type: ActionTypes.Tap,

@@ -172,12 +172,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFollowShowsAndFairs",
   },
-  AREnableGlobalMapList: {
-    description: "Enable Global Map List View",
-    readyForRelease: false,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableGlobalMapList",
-  },
   AREnableArtsyLens: {
     description: "Enable Artsy Lens (reverse-image-search camera) entry points",
     readyForRelease: true,
@@ -189,6 +183,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistant",
+  },
+  AREnableCityGuideItineraries: {
+    description: "Enable City Guide Itineraries",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCityGuideItineraries",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

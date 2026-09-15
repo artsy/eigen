@@ -5,7 +5,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Image } from "react-native"
 
 export const CityGuideCTA: React.FC = () => {
-  const enableCityGuideList = useFeatureFlag("AREnableGlobalMapList")
+  const enableCityGuideList = useFeatureFlag("AREnableCityGuideItineraries")
   const cityGuideMapImage = require("images/city-guide-bg.webp")
 
   const color = useColor()

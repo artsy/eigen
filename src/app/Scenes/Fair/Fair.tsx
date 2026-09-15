@@ -123,7 +123,7 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
             hideTitle: true,
             rightElements: (
               <Flex flexDirection="row" alignItems="center" gap={1}>
-                <FairFollowButton fair={data} />
+                <FairFollowButton fair={data} variant="icon" />
                 <TouchableOpacity
                   accessibilityRole="button"
                   accessibilityLabel="Share Fair"

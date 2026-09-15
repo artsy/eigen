@@ -22,7 +22,7 @@ export const CityGuideMapHeader: React.FC<Props> = ({
   onPressCitySwitcherButton,
   onPressUserPositionButton,
 }) => {
-  const showGlobalMapList = useFeatureFlag("AREnableGlobalMapList")
+  const showGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
 
   return (
     <Flex
