@@ -84,13 +84,17 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
 
 /** Only the guides link out — the event itself is a heading, not a tap target. */
 const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: string }) => {
-  const rows: GuideRow[] = event.itineraries.map((itinerary) => ({
-    id: itinerary.internalID,
-    itineraryId: itinerary.slug ?? itinerary.internalID,
-    title: itinerary.title,
-    authorName: itinerary.authorName ?? "",
-    imageUrl: itinerary.heroImage?.url ?? "",
-  }))
+  // The join row's own position, not the order the connection happened to return — the
+  // attachments are reorderable server-side (Gravity), so this can't be assumed stable.
+  const rows: GuideRow[] = [...event.itineraries]
+    .sort((a, b) => a.position - b.position)
+    .map((attachment) => ({
+      id: attachment.internalID,
+      itineraryId: attachment.itinerary.slug ?? attachment.itinerary.internalID,
+      title: attachment.itinerary.title,
+      authorName: attachment.itinerary.authorName ?? "",
+      imageUrl: attachment.itinerary.heroImage?.url ?? "",
+    }))
 
   if (!rows.length) {
     return null
@@ -178,11 +182,15 @@ const Query = graphql`
             }
             itineraries {
               internalID
-              slug
-              title
-              authorName
-              heroImage {
-                url(version: "small")
+              position
+              itinerary {
+                internalID
+                slug
+                title
+                authorName
+                heroImage {
+                  url(version: "small")
+                }
               }
             }
           }

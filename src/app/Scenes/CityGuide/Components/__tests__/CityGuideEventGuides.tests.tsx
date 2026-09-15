@@ -14,12 +14,16 @@ describe("CityGuideEventGuides", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: CityGuideEventGuides })
   const props = { citySlug: "london-united-kingdom" }
 
-  const itinerary = (slug: string | null, name: string) => ({
-    internalID: `id-for-${name}`,
-    slug,
-    title: name,
-    authorName: "Casey Lesser",
-    heroImage: { url: "https://example.com/hero-240.jpg" },
+  const itinerary = (slug: string | null, name: string, position = 0) => ({
+    internalID: `attachment-for-${name}`,
+    position,
+    itinerary: {
+      internalID: `id-for-${name}`,
+      slug,
+      title: name,
+      authorName: "Casey Lesser",
+      heroImage: { url: "https://example.com/hero-240.jpg" },
+    },
   })
 
   const event = (title: string, itineraries: object[]) => ({
@@ -112,10 +116,12 @@ describe("CityGuideEventGuides", () => {
   // Gravity can hold an image row whose upload Gemini never processed, so every version
   // comes back null and the row would otherwise be an empty box.
   it("renders a placeholder when a guide's hero image has no url", async () => {
+    const attachment = itinerary("chill-vibes-only", "Chill Vibes Only")
+
     renderWithRelay(
       connection([
         event("London Art Week", [
-          { ...itinerary("chill-vibes-only", "Chill Vibes Only"), heroImage: null },
+          { ...attachment, itinerary: { ...attachment.itinerary, heroImage: null } },
         ]),
       ]),
       props
