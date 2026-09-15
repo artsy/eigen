@@ -1,7 +1,7 @@
 import { Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
-import { CityGuideCuratedLists } from "app/Scenes/CityGuide/Components/CityGuideCuratedLists"
+import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
@@ -57,8 +57,8 @@ export const CityGuideNew: React.FC = () => {
 
           <Join separator={<Spacer y={4} />}>
             <>
-              <CityGuideMetaData cityName={city?.name ?? ""} citySlug={city?.slug ?? ""} />
-              <CityGuideCuratedLists citySlug={city?.slug ?? ""} />
+              <CityGuideMetaData cityName={city?.name ?? ""} />
+              <CityGuideEventGuides citySlug={city?.slug ?? ""} />
             </>
 
             <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
