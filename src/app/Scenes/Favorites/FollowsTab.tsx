@@ -5,8 +5,6 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FollowedFairsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedFairs"
-import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
-import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import {
   useFavoritesScrenTracking,
@@ -17,7 +15,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-export type FollowOption = "artists" | "shows" | "galleries" | "fairs"
+export type FollowOption = "artists" | "fairs"
 
 const BASE_FOLLOW_OPTIONS: {
   value: FollowOption
@@ -26,14 +24,6 @@ const BASE_FOLLOW_OPTIONS: {
   {
     value: "artists",
     label: "Artists",
-  },
-  {
-    value: "shows",
-    label: "Shows",
-  },
-  {
-    value: "galleries",
-    label: "Galleries",
   },
 ]
 
@@ -97,8 +87,6 @@ export const FollowsTab = () => {
   return (
     <Flex flex={1}>
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
-      {followOption === "shows" && <FollowedShowsQueryRenderer />}
-      {followOption === "galleries" && <FollowedGalleriesQueryRenderer />}
       {followOption === "fairs" && <FollowedFairsQueryRenderer />}
 
       <AutomountedBottomSheetModal
