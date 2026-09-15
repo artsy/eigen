@@ -1,14 +1,15 @@
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
-import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   itinerarySectionTitle,
   itineraryStopCoordinates,
+  itineraryStopImage,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 
 /**
@@ -36,7 +37,8 @@ export const itineraryStopsToMapSections = (itinerary: Itinerary): MapSection[] 
           title,
           coordinates,
           href: itineraryStopHref(saveTarget),
-          detail: <ItineraryStopMapDetail stop={stop} />,
+          card: stopCardFields(stop, stop.item),
+          image: itineraryStopImage(stop),
           saveControl: saveTarget ? (
             <ItineraryStopSaveControl stopId={stop.internalID} stopTitle={title} />
           ) : undefined,

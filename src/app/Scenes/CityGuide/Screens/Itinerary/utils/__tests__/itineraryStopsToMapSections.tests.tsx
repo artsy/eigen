@@ -1,4 +1,3 @@
-import { ItineraryStopMapDetail } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopMapDetail"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   makeItinerary,
@@ -62,12 +61,15 @@ describe("itineraryStopsToMapSections", () => {
     expect(sections[0].places.map((p) => p.id)).toEqual(["valid"])
   })
 
-  it("injects ItineraryStopMapDetail as the detail node", () => {
+  // Same card the itinerary list shows, so the map preview never drifts from it.
+  it("carries the stop's card fields", () => {
     const sections = itineraryStopsToMapSections(makeItinerary([makeStop()]))
-    const detail = sections[0].places[0].detail
 
-    expect(isValidElement(detail)).toBe(true)
-    expect((detail as React.ReactElement).type).toBe(ItineraryStopMapDetail)
+    expect(sections[0].places[0].card).toMatchObject({
+      kind: "custom",
+      title: "Coffee at London Cafe",
+      hours: "10am",
+    })
   })
 
   it("injects a save control only when the stop has a save target", () => {

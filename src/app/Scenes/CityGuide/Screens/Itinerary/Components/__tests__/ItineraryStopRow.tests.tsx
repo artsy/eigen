@@ -113,7 +113,7 @@ describe("ItineraryStopRow", () => {
     )
 
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
-    expect(screen.queryByTestId("itinerary-stop-image")).toBeNull()
+    expect(screen.queryByTestId("stop-card-image")).toBeNull()
   })
 
   it("leaves the note off the row", async () => {
@@ -159,6 +159,7 @@ describe("ItineraryStopRow", () => {
             href: "/show/a-show",
             slug: "a-show",
             isFreeAdmission: null,
+            exhibitionPeriod: null,
             coverImage: null,
             partner: null,
             location: null,
@@ -169,7 +170,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      expect(screen.getByTestId("itinerary-stop-row-content")).toHaveStyle({
+      expect(screen.getByTestId("stop-card")).toHaveStyle({
         flexDirection: "row",
       })
     })
@@ -183,6 +184,7 @@ describe("ItineraryStopRow", () => {
             href: "/show/white-cube-georg-baselitz-back-again",
             slug: "white-cube-georg-baselitz-back-again",
             isFreeAdmission: null,
+            exhibitionPeriod: null,
             coverImage: null,
             partner: null,
             location: null,
@@ -193,7 +195,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
+      fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith("/show/white-cube-georg-baselitz-back-again")
     })
@@ -221,7 +223,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
+      fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith("/partner/white-cube")
     })
@@ -239,7 +241,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
+      fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).toHaveBeenCalledWith(
         "/city-guide/london-united-kingdom/itinerary/guide-1/stop/stop-1"
@@ -260,7 +262,7 @@ describe("ItineraryStopRow", () => {
         />
       )
 
-      fireEvent.press(screen.getByTestId("itinerary-stop-row"))
+      fireEvent.press(screen.getByTestId("stop-card-link"))
 
       expect(navigate).not.toHaveBeenCalledWith("https://timeout.com/london-cafe")
     })
@@ -358,7 +360,7 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("White Cube")).toBeOnTheScreen()
     expect(screen.getByText("10am-6pm")).toBeOnTheScreen()
     expect(screen.getByText("Paid Entry")).toBeOnTheScreen()
-    expect(screen.getByTestId("itinerary-stop-meta-dot")).toBeOnTheScreen()
+    expect(screen.getByTestId("stop-card-meta-dot")).toBeOnTheScreen()
   })
 
   it("shows no dot when there is only one of hours and admission", () => {
@@ -377,6 +379,6 @@ describe("ItineraryStopRow", () => {
     )
 
     expect(screen.getByText("10am-6pm")).toBeOnTheScreen()
-    expect(screen.queryByTestId("itinerary-stop-meta-dot")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("stop-card-meta-dot")).not.toBeOnTheScreen()
   })
 })

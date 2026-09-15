@@ -203,7 +203,7 @@ describe("ItineraryScreen", () => {
         props
       )
 
-      expect(await screen.findByTestId("itinerary-stop-image")).toHaveProp(
+      expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/uploaded.jpg"
       )
@@ -224,7 +224,7 @@ describe("ItineraryScreen", () => {
         props
       )
 
-      expect(await screen.findByTestId("itinerary-stop-image")).toHaveProp(
+      expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/show.jpg"
       )
@@ -242,7 +242,7 @@ describe("ItineraryScreen", () => {
         props
       )
 
-      expect(await screen.findByTestId("itinerary-stop-image")).toHaveProp(
+      expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/fair.jpg"
       )
@@ -267,7 +267,7 @@ describe("ItineraryScreen", () => {
         props
       )
 
-      expect(await screen.findByTestId("itinerary-stop-image")).toHaveProp(
+      expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/gallery.jpg"
       )
