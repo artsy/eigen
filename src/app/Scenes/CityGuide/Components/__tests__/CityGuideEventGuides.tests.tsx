@@ -25,7 +25,9 @@ describe("CityGuideEventGuides", () => {
   const event = (title: string, itineraries: object[]) => ({
     internalID: `id-for-${title}`,
     title,
-    subtitle: "Sep 1 – Sep 7",
+    subtitle: "Gallery Week highlights",
+    startAt: "2026-10-14T00:00:00Z",
+    endAt: "2026-10-18T00:00:00Z",
     heroImage: { url: "https://example.com/event-hero.jpg" },
     itineraries,
   })
@@ -60,7 +62,8 @@ describe("CityGuideEventGuides", () => {
       "https://example.com/event-hero.jpg"
     )
     expect(screen.getByText("London Art Week")).toBeOnTheScreen()
-    expect(screen.getByText("Sep 1 – Sep 7")).toBeOnTheScreen()
+    expect(screen.getByText("Gallery Week highlights")).toBeOnTheScreen()
+    expect(screen.getByText("October 14-18, 2026")).toBeOnTheScreen()
     expect(await screen.findAllByTestId("event-guide-row")).toHaveLength(2)
     expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.getAllByText("By Casey Lesser")).toHaveLength(2)

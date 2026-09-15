@@ -5,6 +5,7 @@ import {
   CityGuideEventGuidesQuery$data,
 } from "__generated__/CityGuideEventGuidesQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEventDateRange"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -120,6 +121,10 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
           </Text>
         )}
 
+        <Text variant="xs" color="mono10">
+          {cityGuideEventDateRange(event.startAt, event.endAt)}
+        </Text>
+
         <Spacer y={2} />
 
         <Join separator={<Spacer y={2} />}>
@@ -166,6 +171,8 @@ const Query = graphql`
             internalID
             title
             subtitle
+            startAt
+            endAt
             heroImage {
               url(version: "large")
             }
