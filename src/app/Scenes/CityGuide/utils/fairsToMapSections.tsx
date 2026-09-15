@@ -7,11 +7,7 @@ import { Fair } from "app/Scenes/CityGuide/utils/types"
 
 /**
  * Adapts the event list screen's fair sections into the shared map's section-shaped input.
- * Two fair-specific gotchas, both already handled by `CityEventRows.renderFairRow` and
- * repeated here rather than shared, since that helper returns a row, not a map place:
- * fairs fetch no `href`, so the URL is built from the slug by hand, and following a fair is
- * a follow of its **profile**, which is nullable, so the save control is only injected when
- * one exists.
+ * Fairs fetch no `href` (built from the slug by hand) and follow through a nullable profile.
  */
 export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSection[] =>
   sections.map((section) => ({

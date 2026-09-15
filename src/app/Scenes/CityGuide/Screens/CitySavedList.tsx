@@ -8,7 +8,7 @@ import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { CitySavedList_me$key } from "__generated__/CitySavedList_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { renderFairRow, renderShowRow } from "app/Scenes/CityGuide/Components/CityEventRows"
+import { FairEventRow, ShowEventRow } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
@@ -173,7 +173,11 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug, city }) => {
           }
           getItemType={(row) => row.kind}
           renderItem={({ item }) =>
-            item.kind === "fair" ? renderFairRow(item.fair) : renderShowRow(item.show)
+            item.kind === "fair" ? (
+              <FairEventRow fair={item.fair} />
+            ) : (
+              <ShowEventRow show={item.show} />
+            )
           }
           onScroll={isCloseToBottom(fetchData)}
           ListFooterComponent={fetchingNextPage ? <Spinner style={{ marginVertical: 20 }} /> : null}

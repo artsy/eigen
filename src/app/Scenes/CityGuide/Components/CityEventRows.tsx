@@ -9,7 +9,7 @@ import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
  * Shared by `CityEventListScreen` and `CitySavedList`: both list shows and fairs as
  * `CityEventRow`s with the same fields and the same save control wiring.
  */
-export const renderShowRow = (show: Show) => (
+export const ShowEventRow: React.FC<{ show: Show }> = ({ show }) => (
   <CityEventRow
     title={show.name ?? ""}
     subtitle={show.partner?.name ?? null}
@@ -27,7 +27,7 @@ export const renderShowRow = (show: Show) => (
   />
 )
 
-export const renderFairRow = (fair: Fair) => (
+export const FairEventRow: React.FC<{ fair: Fair }> = ({ fair }) => (
   <CityEventRow
     title={fair.name ?? ""}
     subtitle={fair.profile?.name ?? null}

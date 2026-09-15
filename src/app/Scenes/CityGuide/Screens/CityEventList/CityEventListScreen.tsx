@@ -3,7 +3,7 @@ import { CityEventListScreenQuery } from "__generated__/CityEventListScreenQuery
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { renderFairRow, renderShowRow } from "app/Scenes/CityGuide/Components/CityEventRows"
+import { FairEventRow, ShowEventRow } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSectionHeader } from "app/Scenes/CityGuide/Components/CityEventSectionHeader"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import {
@@ -155,9 +155,11 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
         )
       }
 
-      return section === "fairs"
-        ? renderFairRow(item.item as Fair)
-        : renderShowRow(item.item as Show)
+      return section === "fairs" ? (
+        <FairEventRow fair={item.item as Fair} />
+      ) : (
+        <ShowEventRow show={item.item as Show} />
+      )
     },
     [section, toggleSection]
   )
