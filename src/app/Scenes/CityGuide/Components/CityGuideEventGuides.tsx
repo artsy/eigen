@@ -1,5 +1,13 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Image, Join, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Image,
+  Join,
+  Spacer,
+  Text,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import {
   CityGuideEventGuidesQuery,
   CityGuideEventGuidesQuery$data,
@@ -9,7 +17,6 @@ import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEve
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { Dimensions } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 70
@@ -61,7 +68,7 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
             testID="event-guide-no-image"
             width={IMAGE_SIZE}
             height={IMAGE_SIZE}
-            backgroundColor="mono90"
+            backgroundColor="mono10"
             alignItems="center"
             justifyContent="center"
           >
@@ -69,7 +76,7 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
           </Flex>
         )}
 
-        <Flex flex={1} justifyContent="flex-end">
+        <Flex flex={1}>
           <Text variant="md" color="mono0">
             {item.title}
           </Text>
@@ -84,6 +91,8 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
 
 /** Only the guides link out — the event itself is a heading, not a tap target. */
 const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: string }) => {
+  const { width: screenWidth } = useScreenDimensions()
+  const space = useSpace()
   // The join row's own position, not the order the connection happened to return — the
   // attachments are reorderable server-side (Gravity), so this can't be assumed stable.
   const rows: GuideRow[] = [...event.itineraries]
@@ -107,6 +116,7 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
           testID="event-guide-hero-image"
           src={event.heroImage.url}
           height={HERO_HEIGHT}
+          width={screenWidth - 2 * space(2)}
           resizeMode="cover"
         />
       ) : (

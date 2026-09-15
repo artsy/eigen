@@ -55,9 +55,11 @@ export const CityGuideNew: React.FC = () => {
           />
 
           <Join separator={<Spacer y={4} />}>
-            <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
+            <>
+              <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
 
-            <CityGuideEventGuides citySlug={city?.slug ?? ""} />
+              <CityGuideEventGuides citySlug={city?.slug ?? ""} />
+            </>
 
             <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
           </Join>
