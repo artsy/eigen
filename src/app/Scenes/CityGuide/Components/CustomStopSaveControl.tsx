@@ -16,13 +16,8 @@ interface Props {
 }
 
 /**
- * Copies a custom stop onto your own itinerary, and takes it back off — the same plus/tick the
- * show header uses, shown on a custom stop wherever an Artsy stop shows its follow control.
- *
- * The fields are copied rather than referenced: a custom stop has no Artsy entity to point at,
- * so there is nothing for two itineraries to share. The image is the one thing that cannot
- * come across — `createItineraryStopInput.imageURL` takes an S3 upload URL that Gravity
- * converts through Gemini.
+ * Copies a custom stop onto your own itinerary, and takes it back off. Fields are copied, not
+ * referenced — except the image, which `imageURL` won't accept except as an S3 upload URL.
  */
 export const CustomStopSaveControl: React.FC<Props> = ({ stop, citySlug, cityName, size }) => {
   const toast = useToast()
