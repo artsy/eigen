@@ -8676,7 +8676,7 @@ type CityGuideEvent {
   The city guide event's UUID
   """
   internalID: String!
-  itineraries: [Itinerary!]!
+  itineraries: [CityGuideEventItinerary!]!
   publishedAt(
     format: String
 
@@ -8705,6 +8705,20 @@ type CityGuideEvent {
     """
     timezone: String
   ): String!
+}
+
+type CityGuideEventItinerary {
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The attachment's own UUID, not the itinerary's
+  """
+  internalID: String!
+  itinerary: Itinerary!
+  position: Int!
 }
 
 enum CityGuideEventStatus {
