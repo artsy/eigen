@@ -1,3 +1,4 @@
+import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   makeItinerary,
@@ -16,9 +17,12 @@ const makeStop = (overrides: Record<string, unknown> = {}) =>
     ...overrides,
   })
 
+const toMapSections = (itinerary: ReturnType<typeof makeItinerary>) =>
+  itineraryStopsToMapSections(itinerary, "london-united-kingdom", "London")
+
 describe("itineraryStopsToMapSections", () => {
   it("carries the section id and title over unchanged", () => {
-    const sections = itineraryStopsToMapSections(makeItinerary([makeStop()]))
+    const sections = toMapSections(makeItinerary([makeStop()]))
 
     expect(sections).toHaveLength(1)
     expect(sections[0].id).toEqual("day-1")
@@ -38,7 +42,7 @@ describe("itineraryStopsToMapSections", () => {
         location: null,
       },
     })
-    const sections = itineraryStopsToMapSections(makeItinerary([stop]))
+    const sections = toMapSections(makeItinerary([stop]))
 
     expect(sections[0].places[0]).toMatchObject({
       id: "stop-1",
@@ -56,14 +60,14 @@ describe("itineraryStopsToMapSections", () => {
       longitude: undefined,
     })
 
-    const sections = itineraryStopsToMapSections(makeItinerary([valid, invalid]))
+    const sections = toMapSections(makeItinerary([valid, invalid]))
 
     expect(sections[0].places.map((p) => p.id)).toEqual(["valid"])
   })
 
   // Same card the itinerary list shows, so the map preview never drifts from it.
   it("carries the stop's card fields", () => {
-    const sections = itineraryStopsToMapSections(makeItinerary([makeStop()]))
+    const sections = toMapSections(makeItinerary([makeStop()]))
 
     expect(sections[0].places[0].card).toMatchObject({
       kind: "custom",
@@ -72,7 +76,7 @@ describe("itineraryStopsToMapSections", () => {
     })
   })
 
-  it("injects a save control only when the stop has a save target", () => {
+  it("injects the entity save control for a stop with a save target", () => {
     const withTarget = makeStop({
       internalID: "with-target",
       item: {
@@ -86,13 +90,23 @@ describe("itineraryStopsToMapSections", () => {
         location: null,
       },
     })
+
+    const sections = toMapSections(makeItinerary([withTarget]))
+    const [place] = sections[0].places
+
+    expect(isValidElement(place.saveControl)).toBe(true)
+    expect((place.saveControl as React.ReactElement).type).toBe(ItineraryStopSaveControl)
+  })
+
+  // Same plus the list shows for a custom stop (ItineraryStopRow) — the map preview must not
+  // silently drop it just because there's no Artsy entity behind the stop.
+  it("injects the custom stop save control for a stop with no entity", () => {
     const withoutTarget = makeStop({ internalID: "without-target", item: null })
 
-    const sections = itineraryStopsToMapSections(makeItinerary([withTarget, withoutTarget]))
-    const [placeWithTarget, placeWithoutTarget] = sections[0].places
+    const sections = toMapSections(makeItinerary([withoutTarget]))
+    const [place] = sections[0].places
 
-    expect(isValidElement(placeWithTarget.saveControl)).toBe(true)
-    expect((placeWithTarget.saveControl as React.ReactElement).type).toBe(ItineraryStopSaveControl)
-    expect(placeWithoutTarget.saveControl).toBeUndefined()
+    expect(isValidElement(place.saveControl)).toBe(true)
+    expect((place.saveControl as React.ReactElement).type).toBe(CustomStopSaveControl)
   })
 })

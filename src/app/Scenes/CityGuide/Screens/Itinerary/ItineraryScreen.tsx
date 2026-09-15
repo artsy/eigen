@@ -96,8 +96,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
 
   // Same reasoning: computed ahead of the null check to keep hook order stable.
   const mapSections = useMemo(
-    () => (itinerary ? itineraryStopsToMapSections(itinerary) : []),
-    [itinerary]
+    () =>
+      itinerary ? itineraryStopsToMapSections(itinerary, citySlug, data.city?.name ?? "") : [],
+    [itinerary, citySlug, data.city?.name]
   )
 
   if (!itinerary) {
