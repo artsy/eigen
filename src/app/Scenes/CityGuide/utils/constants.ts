@@ -28,7 +28,7 @@ export const PLAIN_CLUSTER_COUNT_FIELD = ["to-string", ["get", "point_count"]] a
 
 export const BOUNDS_PADDING = 60
 
-/** The designs' card shadow — Dropshadow/100 on iOS, elevation is Android's equivalent. */
+/** elevation is Android's equivalent of the shadow* properties, which it ignores. */
 export const CARD_SHADOW = {
   shadowColor: "black",
   shadowOpacity: 0.08,

@@ -106,7 +106,6 @@ const RESOLVERS: Record<ItinerarySaveTarget["type"], React.FC<ResolverProps>> = 
   PARTNER: PartnerResolver,
 }
 
-/** Reports a failed lookup from inside an error boundary's fallback. */
 const ResolverFailed: React.FC<{ stopId: string }> = ({ stopId }) => {
   const { reportFailure } = useReportItineraryStopEntity()
 

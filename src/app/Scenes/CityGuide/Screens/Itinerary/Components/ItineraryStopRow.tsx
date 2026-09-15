@@ -15,11 +15,8 @@ const ROW_STYLE = { flex: 1 } as const
 
 interface Props {
   stop: ItineraryStop
-  /** Derived from the flattened stop index by the screen. Never stored on the stop. */
-  /**
-   * Its position in the guide. Absent on your own itinerary, which is a single unordered
-   * list, so no numbered bullet renders at all.
-   */
+  /** Derived from the flattened stop index, never stored on the stop. Absent on your own
+   *  itinerary, which is unordered and renders no bullet. */
   number?: number
   /** Where a custom stop's own screen lives, which needs the itinerary this stop belongs to. */
   citySlug: string

@@ -11,7 +11,6 @@ const ARCH_RADIUS = 80
 interface Props {
   image: string
   title: string
-  /** Where a tap goes — the show's or fair's own page. */
   href: string
   /** The date line: a range for a running show, a single date for one opening soon. */
   meta: string

@@ -23,7 +23,6 @@ interface Props {
   variant?: "row" | "card"
 }
 
-/** One itinerary, as the home rail's card or the list screen's row: same innards, different chrome. */
 export const ItineraryListItem: React.FC<Props> = ({
   title,
   stopsCount,

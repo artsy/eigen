@@ -7,13 +7,11 @@ const CARD_WIDTH = 150
 const CARD_HEIGHT = 250
 /** Space kept clear at the title's right so it never runs under the save control. */
 const CONTROL_WIDTH = 18
-/** The designs darken the image so the white title stays legible over any artwork. */
 const SCRIM_COLOR = "rgba(0, 0, 0, 0.2)"
 
 interface Props {
   image: string
   title: string
-  /** Where a tap goes — the fair's own page. */
   href: string
   /**
    * A `CityEventFairSaveControl`, injected so this card holds no Relay dependency. Positioned

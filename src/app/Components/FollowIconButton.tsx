@@ -3,7 +3,6 @@ import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import React from "react"
 
-/** What the show header and the Saves-tab rows specify. The City Guide rails pass 18. */
 const DEFAULT_SIZE = 24
 
 interface Props {
@@ -16,7 +15,6 @@ interface Props {
   testID?: string
 }
 
-/** The bare plus/tick follow control used where a labelled Save button would crowd the row. */
 export const FollowIconButton: React.FC<Props> = ({
   isFollowed,
   onPress,

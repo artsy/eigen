@@ -26,7 +26,6 @@ interface Props {
   stopId: string
 }
 
-/** The grey band under the hero, where the Show screen puts its gallery and address. */
 const StopAddress: React.FC<{ stop: CustomStop }> = ({ stop }) => {
   const { showActionSheetWithOptions } = useActionSheet()
 

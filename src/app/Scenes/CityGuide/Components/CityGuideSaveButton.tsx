@@ -1,7 +1,6 @@
 import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Button, Flex, Touchable } from "@artsy/palette-mobile"
 
-/** List rows and the map card. The rails' designs call for a smaller 18. */
 const DEFAULT_ICON_SIZE = 24
 const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 

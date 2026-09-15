@@ -1,7 +1,7 @@
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
-// TODO: Replace with data from the API once the itinerary schema lands. Slugs are real, taken
-// from artsy.net; they stay valid after a show closes since save queries pass includeAllShows: true.
+// Test fixture data. Slugs are real, taken from artsy.net; they stay valid after a show closes
+// since save queries pass includeAllShows: true.
 export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "chill-vibes-only",

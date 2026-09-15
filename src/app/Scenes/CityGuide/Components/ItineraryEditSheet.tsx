@@ -6,7 +6,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { useState } from "react"
 import { graphql, useMutation } from "react-relay"
 
-/** The designs' cap on the notes field, shown as a counter beneath it. */
 const NOTES_LIMIT = 200
 const COVER_WIDTH = 165
 const COVER_HEIGHT = 123

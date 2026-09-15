@@ -21,10 +21,7 @@ import { useTracking } from "react-tracking"
  */
 const RAIL_SIZE = 10
 
-/** The 10pt gap the designs put between cards. */
 const RAIL_GAP = 10
-
-/** The designs size the rails' add glyph at 18, smaller than the 24 the list rows use. */
 const SAVE_ICON_SIZE = 18
 
 /**

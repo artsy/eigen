@@ -1,7 +1,6 @@
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { DateTime } from "luxon"
 
-/** Shown before a museum's location line, per the designs. */
 const MUSEUM_EMOJI = "🏛"
 
 /**

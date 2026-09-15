@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 80
 const NO_ICON_SIZE = 24
-/** Editorial guides per city. Well above the handful a city actually has. */
 const PAGE_SIZE = 10
 
 interface CuratedList {
