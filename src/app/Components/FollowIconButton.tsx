@@ -1,12 +1,11 @@
 import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Flex } from "@artsy/palette-mobile"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { FC } from "react"
 import { TouchableOpacity } from "react-native"
 
 /** What the show header and the Saves-tab rows specify. The City Guide rails pass 18. */
 const DEFAULT_SIZE = 24
-/** Keeps a small glyph at a comfortable tap target without changing its drawn size. */
-const HIT_SLOP = { top: 10, bottom: 10, left: 10, right: 10 }
 
 interface Props {
   isFollowed: boolean
@@ -43,7 +42,7 @@ export const FollowIconButton: FC<Props> = ({
       accessibilityLabel={name ? `${action} ${name}` : action}
       accessibilityState={{ selected: isFollowed, disabled: isInFlight }}
       disabled={isInFlight}
-      hitSlop={HIT_SLOP}
+      hitSlop={ICON_HIT_SLOP}
       onPress={onPress}
     >
       <Flex width={size} height={size} alignItems="center" justifyContent="center">
