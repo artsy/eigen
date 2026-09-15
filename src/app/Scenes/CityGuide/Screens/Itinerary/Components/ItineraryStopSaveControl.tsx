@@ -17,9 +17,8 @@ interface Props {
 export const ItineraryStopSaveControl: React.FC<Props> = ({ stopId, stopTitle }) => {
   const entity = useItineraryStopEntity(stopId)
 
-  // Nothing to render until this stop's resolver reports. Matches today's behaviour, where a
-  // suspended per-row query rendered its own null fallback. Rows are independent of the
-  // provider's overall completeness: one row appears as soon as its own lookup resolves.
+  // Nothing to render until this stop's resolver reports. Rows are independent of the
+  // provider's overall completeness — one appears as soon as its own lookup resolves.
   if (!entity) {
     return null
   }

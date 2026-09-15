@@ -9,13 +9,8 @@ import {
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 
 /**
- * Adapts an itinerary's sections into the shared map's section-shaped input. Stops with no
- * valid coordinates are dropped: `ItineraryStop.coordinates` is optional, because Metaphysics
- * makes latitude and longitude both nullable and a stop can be an editorial note with no
- * location. Such a stop still shows in the list — it just cannot be drawn.
- *
- * The predicate narrows the stop, not just its coordinates, so `MapPlace.coordinates` can stay
- * required below.
+ * Adapts an itinerary's sections into the shared map's input. Stops with no valid
+ * coordinates are dropped (still shown in the list) so `MapPlace.coordinates` can stay required.
  */
 export const itineraryStopsToMapSections = (itinerary: Itinerary): MapSection[] =>
   itinerary.sections.map((section) => ({

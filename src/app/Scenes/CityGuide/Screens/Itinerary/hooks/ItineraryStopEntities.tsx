@@ -49,23 +49,15 @@ const saveableStopIds = (stops: ItineraryStop[]) =>
   stops.filter((stop) => !!stop.saveTarget).map((stop) => stop.id)
 
 /**
- * Holds one lookup per saveable stop, keyed by `stopId`, seeded as `pending` from `stops`
- * before any query runs.
- *
- * Seeding up front is the whole point. A provider that only held what had reported let the
- * first resolver make bulk-add actionable while the rest were still in flight, so pressing it
- * followed a partial set while claiming to add the full list.
+ * Holds one lookup per saveable stop, seeded `pending` from `stops` before any query runs —
+ * without seeding, the first resolver could make bulk-add actionable while others were still in flight.
  */
 export const ItineraryStopEntitiesProvider: React.FC<{
   stops: ItineraryStop[]
   children: React.ReactNode
 }> = ({ stops, children }) => {
-  // Seeded once, from `stops` as passed on first render: the initializer runs only on mount, so
-  // this implies no ongoing dependency on `stops`. `stops` comes from a static mock keyed by
-  // itinerary id, and the screen remounts rather than swapping itineraries in place, so the
-  // expected set never changes for a given mount. Do not add a reseeding effect: it would
-  // clobber entities that have already reported. If itineraries ever become switchable in
-  // place, key the provider on the itinerary id instead so React remounts it.
+  // Seeded once, from `stops` on first render — the screen remounts rather than swapping
+  // itineraries in place. Do not add a reseeding effect: it would clobber already-reported entities.
   const [lookups, setLookups] = useState<Record<string, Lookup>>(() =>
     Object.fromEntries(
       saveableStopIds(stops).map((id) => [id, { status: "pending" as LookupStatus }])

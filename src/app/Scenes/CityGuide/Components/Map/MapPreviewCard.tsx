@@ -5,9 +5,8 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 interface Props {
   place: MapPlace
   /**
-   * Fired before RouterLink's default navigate-on-press. The cluster rail uses this,
-   * together with `disableNavigation`, so tapping a card selects that place the same way
-   * tapping its pin would, rather than navigating straight off the map.
+   * Fired before RouterLink's default navigate-on-press. The cluster rail uses this with
+   * `disableNavigation` so tapping a card selects a place instead of navigating off the map.
    */
   onPress?: () => void
   /** Forces select-only behaviour, even when the place has an `href`. See `onPress`. */
@@ -16,11 +15,8 @@ interface Props {
 }
 
 /**
- * The card shown over the map when a pin is tapped. Holds no Relay or context dependency
- * of its own — `detail` and `saveControl` are injected by the caller, since what they need
- * (a lazy address lookup and a context-reading save control for the itinerary; plain text
- * and a `CityEventShowSaveControl`/`CityEventFairSaveControl` for an event map) differs per
- * screen.
+ * The card shown over the map when a pin is tapped. Holds no Relay or context dependency —
+ * `detail` and `saveControl` are injected by the caller, since what they need differs per screen.
  */
 export const MapPreviewCard: React.FC<Props> = ({ place, onPress, disableNavigation, isLast }) => {
   return (

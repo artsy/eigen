@@ -1,12 +1,6 @@
 /**
- * MOCK DATA. Editorial, not from any API.
- *
- * Neighbourhood is not stored anywhere in Gravity: there is no field on `Location`,
- * `PartnerLocation` or `PartnerShow`, and `CityGeocodingService` discards the
- * `neighborhood` the geocoder hands it because it only builds city-level slugs.
- *
- * So the grouping input is real (`Show.location.postalCode`) and only the label is mock.
- * When `Location.neighborhood` lands, delete this file and read the field.
+ * MOCK DATA: neighbourhood isn't stored anywhere in Gravity, so this is editorial. The
+ * grouping input (postalCode) is real; delete this file once `Location.neighborhood` lands.
  */
 export interface NeighborhoodDef {
   id: string

@@ -340,9 +340,8 @@ jest.mock("react-native-image-crop-picker", () => ({
   clean: jest.fn(),
 }))
 
-// The deleted 2022 ReverseImage camera scene mocked this as `jest.mock("react-native-vision-camera", () => {})`.
-// This version returns working defaults (permission denied, no device) so components using it can render
-// without crashing; tests that need other states override these with jest.mocked(...).mockReturnValue(...).
+// Returns working defaults (permission denied, no device) so components using this can render
+// without crashing; tests needing other states override via jest.mocked(...).mockReturnValue(...).
 jest.mock("react-native-vision-camera", () => ({
   Camera: "Camera",
   useCameraPermission: jest.fn(() => ({
@@ -357,9 +356,8 @@ jest.mock("react-native-vision-camera", () => ({
   })),
 }))
 
-// A working chainable default (manipulate -> crop -> renderAsync -> saveAsync) so anything that
-// imports Scenes/Lens/utils/cropToViewfinder.ts can render in tests; tests that care about crop
-// behavior mock `cropToViewfinder` itself instead.
+// A working chainable default (manipulate -> crop -> renderAsync -> saveAsync) so anything
+// importing this can render in tests; tests that care about crop behavior mock it directly.
 jest.mock("expo-image-manipulator", () => {
   const context: any = {
     crop: jest.fn(() => context),
@@ -716,17 +714,8 @@ jest.mock("@gorhom/bottom-sheet", () => {
   const bottomSheetMock = require("@gorhom/bottom-sheet/mock")
 
   /**
-   * The bundled mock's `BottomSheetModal` stubs out `present`/`dismiss` entirely, so it never
-   * invokes the `onAnimate`/`onDismiss` callbacks that the real component fires. That makes any
-   * logic hanging off those props unreachable from tests. Mirror the real component instead:
-   *
-   * - `present()` reports the presentation through `onAnimate`.
-   * - dismissing reports it through `onDismiss`, but only *once* and only if the sheet was
-   *   actually presented (the real one early-exits when it is already closed).
-   * - `onDismiss` fires asynchronously, because the real sheet only reports a dismissal once its
-   *   closing animation has finished — i.e. a tick after whatever triggered the close. Callbacks
-   *   that read component state therefore see it already committed, and tests that depend on
-   *   this ordering stay honest.
+   * The bundled mock stubs `present`/`dismiss` without firing `onAnimate`/`onDismiss`. This
+   * mirrors the real component, including firing `onDismiss` a tick later, so timing-dependent tests stay honest.
    */
   class BottomSheetModal extends bottomSheetMock.BottomSheetModal {
     isPresented = false

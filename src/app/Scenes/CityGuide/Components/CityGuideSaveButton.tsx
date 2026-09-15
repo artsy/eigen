@@ -16,9 +16,8 @@ interface Props {
    */
   variant?: "icon" | "button"
   /**
-   * Overrides the glyph size for the "icon" variant. The rail cards pass 18, which is what
-   * their designs specify; rows keep the larger default. `hitSlop` is unchanged, so a smaller
-   * glyph still gets a comfortable tap target.
+   * Overrides the glyph size for the "icon" variant — rail cards pass 18, others keep the
+   * default. `hitSlop` is unchanged, so a smaller glyph still gets a comfortable tap target.
    */
   iconSize?: number
 }

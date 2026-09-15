@@ -29,9 +29,8 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
   const itineraries = extractNodes(data.me?.itinerariesConnection)
 
-  // Always tappable once anything has loaded. It was gated on having more than one
-  // itinerary, which read as a dead button whenever a user had exactly one — the common case
-  // while nothing can create them yet.
+  // Always tappable once anything has loaded — gating on "more than one itinerary" read as a
+  // dead button for the common case of having exactly one, while nothing can create more yet.
   const canSwitch = itineraries.length > 0
 
   return (
@@ -125,11 +124,8 @@ const Query = graphql`
 `
 
 /**
- * The pill in the itinerary map's header that names the itinerary you are looking at and
- * switches between your others for the city.
- *
- * Rendered only while viewing one of your own: it lists what you own, so on a curated guide
- * it would offer to navigate away from what you are reading rather than switch between peers.
+ * The pill in the itinerary map's header that names and switches between your itineraries.
+ * Rendered only while viewing your own — a curated guide has no peers to switch between.
  */
 export const ItineraryPicker = withSuspense({
   Component: Picker,

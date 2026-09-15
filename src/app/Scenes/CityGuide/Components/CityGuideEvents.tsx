@@ -28,9 +28,8 @@ const RAIL_GAP = 10
 const SAVE_ICON_SIZE = 18
 
 /**
- * Cards bleed past the right gutter, so the rail is laid out edge to edge and the padding
- * lives on its content instead. Figma gives the Fairs frame 10 and the other two 20; the rest
- * of the screen sits at 20, so the 10 reads as a stray frame value rather than intent.
+ * Cards bleed past the right gutter, so the rail is laid out edge to edge with padding on its
+ * content instead — hardcoded to 20 to match the rest of the screen, not the Fairs frame's 10.
  */
 const railContentStyle = { paddingHorizontal: 20 }
 
@@ -47,11 +46,8 @@ const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
 }
 
 /**
- * One section: the header and its horizontal rail. Rendered by all three sections rather
- * than repeated three times, so the "hide when empty" rule lives in one place.
- *
- * `Join` drops falsy children (`Children.toArray`), so a caller can guard this with `&&`
- * without leaving a stray separator behind.
+ * One section: the header and rail, shared by all three sections so "hide when empty" lives
+ * in one place. `Join` drops falsy children, so callers can guard with `&&` safely.
  */
 const EventRail = <T,>({
   title,
@@ -183,9 +179,8 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
           data={openingShows}
           keyExtractor={(show) => show.internalID}
           renderItem={(show) => (
-            // Arched image and no admission line: the two things separating this card from
-            // a Current Shows one. The date is the opening day rather than a run, which is
-            // what the section is about.
+            // Arched image, no admission line, and the date is the opening day rather than a
+            // run — what separates this card from a Current Shows one.
             <CityEventRailCard
               title={show.name ?? ""}
               image={show.coverImage?.url ?? ""}
@@ -210,12 +205,8 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
 }
 
 /**
- * `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put the same
- * show under both Current Shows and Opening Soon.
- *
- * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
- * is about when a show opens, and the designs show one date. Formatting stays on the server,
- * through Metaphysics' own `format` argument.
+ * Uses `status: RUNNING` (not `CURRENT`, which overlaps `UPCOMING`) and a single formatted
+ * `startAt` instead of `exhibitionPeriod`, since Opening Soon is about the day a show opens.
  */
 const Query = graphql`
   query CityGuideEventsQuery($citySlug: String!, $first: Int!) {

@@ -5,11 +5,8 @@ import { DateTime } from "luxon"
 const MUSEUM_EMOJI = "🏛"
 
 /**
- * Which card a stop renders as. Inferred rather than stored: the resolved item's type gives
- * show / fair / museum-or-gallery, and a stop with no item at all is a custom one — a cafe, a
- * restaurant, a landmark.
- *
- * `event` covers the designs' Event card: a stop that names one inside its show or fair.
+ * Which card a stop renders as. Inferred rather than stored, from the resolved item's type
+ * (show/fair/museum-or-gallery) or its absence (custom). `event` covers a stop naming one.
  */
 export type StopCardKind = "show" | "fair" | "partner" | "custom" | "event"
 
@@ -36,10 +33,8 @@ export interface StopCardFields {
 const RECEPTION_KINDS = ["Opening Reception", "Closing Reception"]
 
 /**
- * "Opening Reception today", when the stop names one and it falls today.
- *
- * The only date comparison in this file: everything else displayed is formatted server-side.
- * A reception on another day gets no line, because "today" is the whole point of it.
+ * "Opening Reception today", when the stop names one and it falls today — the only date
+ * comparison in this file; everything else displayed is formatted server-side.
  */
 const receptionLine = (stop: ItineraryStop) => {
   const kind = stop.event?.kind
@@ -59,9 +54,8 @@ const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
 }
 
 /**
- * The place line for a museum or gallery. The designs ask for "neighborhood location";
- * `Location.neighborhood` was reverted out of Metaphysics, so this falls back to the
- * location's own name and then its city.
+ * The place line for a museum or gallery. Falls back to name then city — the designs wanted
+ * "neighborhood location" via `Location.neighborhood`, which was reverted out of Metaphysics.
  */
 const placeLine = (
   location: { readonly name?: string | null; readonly city?: string | null } | null | undefined
@@ -85,19 +79,16 @@ export interface StopCardItem {
 }
 
 /**
- * Derives a stop card's lines and destination from the stop and whatever its item resolved to.
- *
- * Kept pure and separate from the component so every combination of type, admission and
- * missing data is testable without rendering — there are more combinations than card layouts.
+ * Derives a stop card's lines and destination from the stop and whatever its item resolved
+ * to. Kept pure and separate from the component so every combination is testable without rendering.
  */
 export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null): StopCardFields => {
   // The stop's own admission wins: an author can override what the entity says.
   const admission = admissionLabel(stop.isFreeAdmission ?? item?.isFreeAdmission)
   const hours = stop.displayTime || undefined
 
-  // An event at a venue, rather than the venue's own show. Checked before the item's type,
-  // because an event stop also carries the show or fair it belongs to — that is where its
-  // place comes from, and where tapping goes, since no event has an href of its own.
+  // An event at a venue, checked before the item's type — an event stop also carries the
+  // show/fair it belongs to, which is where its place and href (it has none of its own) come from.
   if (stop.eventType) {
     return {
       kind: "event",
@@ -164,9 +155,8 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
       return {
         kind: "custom",
         title: stop.title,
-        // The designs put the place's type here — "Cafe", "Landmark" — pulled from the source
-        // link. Nothing exposes it, so the stop's address stands in as the nearest thing it
-        // does know about where this is.
+        // The designs put the place's type here ("Cafe", "Landmark") pulled from the source
+        // link. Nothing exposes it, so the stop's address stands in instead.
         subtitle: stop.address,
         hours,
         // Where the curator found it — the only thing a custom stop can link to.

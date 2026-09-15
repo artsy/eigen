@@ -34,9 +34,8 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
   return (
     <Box {...rest}>
       {/*
-        The designs put the follow control on the title's own row rather than as a full-width
-        button below, so the title takes the remaining width and truncates instead of pushing
-        the control off the edge.
+        The designs put the follow control on the title's own row, so the title takes the
+        remaining width and truncates instead of pushing the control off the edge.
       */}
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
         <Flex flex={1} mr={1}>

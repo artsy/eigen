@@ -585,7 +585,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtistScreenQuery],
-  }, // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
+  }, // For artists in a gallery context, use the native artist view instead of a web view.
 
   {
     path: "/artwork-certificate-of-authenticity",
@@ -663,10 +663,8 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [BrowseSimilarWorksScreenQuery],
   },
   {
-    // Alias for artwork URLs with a trailing segment (e.g. /artwork/:artworkID/:optional).
-    // MUST stay below
-    // the more specific /artwork/:artworkID/medium and /browse-similar-works routes, since
-    // matching is first-match-wins and this pattern would otherwise shadow them.
+    // Alias for artwork URLs with a trailing segment. Must stay below the more specific
+    // /artwork/:artworkID/medium and /browse-similar-works routes (first match wins).
     path: "/artwork/:artworkID/:optional",
     name: "Artwork",
     Component: ArtworkScreen,
@@ -749,11 +747,8 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [
       SalesActiveBidsScreenQuery,
-      // Prefetching SalesRecommendedAuctionLotsScreenQuery requires a variable
-      // that currently depends on an experiment-specific value.
-      // Adding that logic here would introduce unnecessary complexity at this stage.
-      // TODO: Revisit after the experiment finishes.
-      // SalesRecommendedAuctionLotsScreenQuery,
+      // TODO: Prefetch SalesRecommendedAuctionLotsScreenQuery once its variable no longer
+      // depends on an experiment-specific value.
       SalesLatestAuctionResultsScreenQuery,
       SalesAuctionsOverviewScreenQuery,
     ],

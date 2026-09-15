@@ -20,13 +20,7 @@ const OPENING_WINDOW_DAYS = 14
 
 /**
  * Buckets upcoming events into two rolling weeks measured from `now`, not calendar weeks.
- *
- * Gravity's `upcoming` scope is `start_at > now && start_at < in_days.days.from_now`
- * (`event_status.rb:26-28`), so a query using `dayThreshold: 14` cannot return anything
- * these two buckets do not cover. We drop out-of-range items anyway rather than trusting
- * the caller to have passed the matching threshold.
- *
- * `now` is injected so the week boundaries are testable.
+ * Out-of-range items are dropped rather than trusting the caller passed a matching threshold.
  */
 export const groupByOpeningWeek = <T extends HasStartAt>(
   items: readonly T[],
@@ -74,12 +68,8 @@ export const normalizePostalCode = (postalCode?: string | null): string =>
   (postalCode ?? "").toUpperCase().replace(/\s+/g, "")
 
 /**
- * Groups events by the neighbourhood their postcode falls in, using the editorial table in
- * `mockCityNeighborhoods.ts`.
- *
- * Gravity defaults `postal_code` to "" rather than null (`partner_location.rb:26`), so a
- * blank code must fall through to the fallback instead of prefix-matching everything.
- * Longest prefix wins, so "W10" does not get read as "W1".
+ * Groups events by neighbourhood using the postcode table in `mockCityNeighborhoods.ts`.
+ * A blank code falls through to the fallback; the longest matching prefix wins otherwise.
  */
 export const groupByNeighborhood = <T extends HasPostalCode>(
   items: readonly T[],

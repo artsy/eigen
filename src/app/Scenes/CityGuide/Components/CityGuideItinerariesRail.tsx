@@ -37,10 +37,8 @@ const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
     <Flex backgroundColor="mono5" pt={1} pb={2}>
       <Flex px={2}>
         {/*
-          `onPress` is what makes SectionTitle tappable at all: without it the component
-          renders its children bare rather than wrapping them in a RouterLink
-          (SectionTitle.tsx:95), so `href` alone would leave the header and its chevron dead.
-          The handler tracks; RouterLink still does the navigating.
+          `onPress` is what makes SectionTitle tappable — without it, it renders children bare
+          instead of wrapping them in a RouterLink, so `href` alone leaves the header dead.
         */}
         <SectionTitle
           variant="large"

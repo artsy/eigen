@@ -64,13 +64,8 @@ const toHours = (stop: PayloadStop) => {
 }
 
 /**
- * Finds one custom stop in an itinerary payload.
- *
- * The screen is addressed by itinerary plus stop because Metaphysics has no root lookup for a
- * stop — `Query` exposes `itinerary` and `itinerariesConnection` only.
- *
- * `null` both for a stop that is not there and for one that turns out to have an Artsy entity:
- * that stop has its own page, so this screen is the wrong place for it.
+ * Finds one custom stop in an itinerary payload. Returns `null` both when the stop isn't
+ * there and when it turns out to have an Artsy entity — that stop has its own page instead.
  */
 export const customStopFromItinerary = (
   itinerary: PayloadItinerary | null | undefined,

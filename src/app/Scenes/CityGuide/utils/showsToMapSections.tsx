@@ -6,11 +6,8 @@ import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 
 /**
- * Adapts the event list screen's show sections into the shared map's section-shaped input.
- * `Show.location.coordinates` is nullable, unlike an itinerary stop's, so shows without a
- * valid pair are dropped rather than trusted (`isValidLatLng`). The detail line is plain
- * text: unlike the itinerary's pin-tap card, the exhibition period is already in hand from
- * the list query, so no lazy lookup is needed.
+ * Adapts the event list screen's show sections into the shared map's input. Shows with no
+ * valid coordinates are dropped; the detail line is plain text since the period is already in hand.
  */
 export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSection[] =>
   sections.map((section) => ({

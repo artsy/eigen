@@ -9,15 +9,8 @@ interface UnaddableStop {
 }
 
 /**
- * Dev-only aid for auditing "Add Full List" gaps. Two distinct reasons a stop cannot be
- * added: it was never an Artsy entity to begin with (`saveTarget` is null, by design — a
- * cafe or address the guide author added), or it has a `saveTarget` but its lookup settled
- * as failed (see `ItineraryStopEntityResolvers`).
- *
- * Mounted directly on the itinerary screen, inside `ItineraryStopEntitiesProvider` and
- * outside the stop preview's bottom sheet: the sheet renders through a `@gorhom/portal`
- * `PortalHost`, which does not carry React context, so a context-dependent component mounted
- * there would silently render nothing.
+ * Dev-only aid for auditing "Add Full List" gaps — a stop with no `saveTarget`, or one whose
+ * lookup failed. Mounted outside the stop preview's `@gorhom/portal` sheet, which drops React context.
  */
 export const ItineraryUnaddableStopsDevList: React.FC<{ stops: ItineraryStop[] }> = ({ stops }) => {
   const showUnaddableStops = useDevToggle("DTShowItineraryUnaddableStops")

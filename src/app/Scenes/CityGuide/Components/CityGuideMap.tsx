@@ -174,9 +174,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const onUserLocationUpdate = (location: MapboxGL.Location) => {
     const coords = location?.coords
 
-    // The native side sends updates with an empty `coords` object before the first location fix
-    // lands (and for heading-only updates), which would otherwise leave us with a location made of
-    // `undefined`s and crash the camera.
+    // The native side can send an empty `coords` object before the first location fix (and for
+    // heading-only updates); guard so we don't build a location out of `undefined`s and crash.
     if (typeof coords?.latitude !== "number" || typeof coords?.longitude !== "number") {
       return
     }

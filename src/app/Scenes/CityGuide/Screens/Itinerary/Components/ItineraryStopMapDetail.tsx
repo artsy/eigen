@@ -10,10 +10,8 @@ interface Props {
 }
 
 /**
- * The detail line injected into the shared map's pin-tap card for an itinerary stop. The
- * title is the guide author's, but the address and dates are facts about the entity, so
- * they are fetched. Only one pin is selected at a time, so this is a single query, not one
- * per stop.
+ * The detail line injected into the shared map's pin-tap card for an itinerary stop. Address
+ * and dates are entity facts, so they're fetched — one query, since only one pin is selected.
  */
 export const ItineraryStopMapDetail: React.FC<Props> = ({ stop }) => (
   // Details degrade to the itinerary's own time label rather than blanking the card, so a

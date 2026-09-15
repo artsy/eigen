@@ -45,9 +45,8 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
         </Flex>
 
         {/*
-          No year grouping. The designs group rows under a blue year, but `Itinerary` exposes
-          no createdAt and publishedAt is null for a private itinerary, so there is no date to
-          group by — see the plan.
+          No year grouping: `Itinerary` exposes no createdAt, and publishedAt is null for a
+          private one, so there's no date to group rows by.
         */}
         <Screen.FlatList
           data={itineraries}
@@ -73,9 +72,8 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               rightSlot={
                 <Flex flexDirection="row" alignItems="center" gap={1}>
                   {/*
-                    Not in the designs, which show only share. The edit sheet needs an entry
-                    point, and this screen is the only place ownership is guaranteed — it
-                    queries through `me`, while `Query.itinerary` exposes no ownership flag.
+                    Not in the designs (share only). This screen is the only place ownership
+                    is guaranteed — it queries through `me`, unlike `Query.itinerary`.
                   */}
                   <Touchable
                     testID="itinerary-edit"
@@ -87,9 +85,8 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                   </Touchable>
 
                   {/*
-                    Sharing needs a share token, which is `updateItinerary` with its token
-                    flags — a mutation that throws today. Rendered and wired so the row does
-                    not need rebuilding once it works.
+                    Sharing needs a share token via `updateItinerary`, which throws today.
+                    Rendered and wired anyway so the row needn't be rebuilt once it works.
                   */}
                   <Touchable
                     testID="itinerary-share"

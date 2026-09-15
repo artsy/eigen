@@ -6,8 +6,7 @@ export type CityEventListItem<T> =
 
 /**
  * Flattens sections into one array for `Screen.FlatList`. A collapsed section keeps its header
- * and loses its rows, so collapsing shifts every index below it. That is why the screen's
- * headers are not sticky.
+ * and loses its rows, so collapsing shifts every index below it — headers aren't sticky.
  */
 export const toCityEventListItems = <T>(
   sections: CityEventSection<T>[],

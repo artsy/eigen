@@ -8,11 +8,8 @@ interface Props {
 }
 
 /**
- * Stateless on purpose. This renders as a recycled cell in `CityEventListScreen`'s
- * `Screen.FlatList` (recycled the same way a FlashList cell would be), so the screen owns
- * expansion state — a recycled cell tracking its own expanded/collapsed state would show the
- * wrong state as it gets reused for a different section. `ItinerarySectionRow` is the stateful
- * ScrollView equivalent and stays where it is.
+ * Stateless on purpose: this renders as a recycled FlatList cell, so the screen owns
+ * expansion state — a cell tracking its own state would show the wrong state when reused.
  */
 export const CityEventSectionHeader: React.FC<Props> = ({ title, isExpanded, onToggle }) => {
   return (

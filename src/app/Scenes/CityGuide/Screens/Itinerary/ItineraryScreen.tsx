@@ -37,9 +37,8 @@ interface Props {
 }
 
 const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
-  // An itinerary is addressed by its own id or slug and carries its city; `citySlug` is a
-  // variable only to look the city's name up, which is what a new itinerary gets called when
-  // a custom stop is copied onto one.
+  // An itinerary is addressed by its own id or slug and carries its city; `citySlug` only
+  // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
   const data = useLazyLoadQuery<ItineraryScreenQuery>(Query, { id: itineraryId, citySlug })
 
   const derived = useMemo(
@@ -48,11 +47,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   )
 
   /*
-    Kept when a re-read comes back empty. A section and a stop have no `id` in the schema —
-    only `Itinerary` does — so Relay keys them positionally, as
-    `client:<itinerary id>:sections:0:stops:3`. Adding or removing a stop refetches this
-    itinerary with a shifted list, which rewrites those slots and could empty the guide under
-    the reader.
+    Kept when a re-read comes back empty: sections/stops have no schema `id`, so Relay keys
+    them positionally — adding/removing a stop shifts those slots and could empty the guide.
   */
   const lastResolved = useRef(derived)
 
@@ -66,10 +62,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   /*
-    Refetched through `fetchQuery` rather than by bumping this query's fetchKey: a
-    network-only re-render would suspend the screen and replace it with the spinner, so a pull
-    would blank the guide you are reading. This writes the same query's own fields, so every
-    stop record is overwritten in full and the positional keying holds.
+    Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
+    suspend the screen and blank the guide mid-pull instead of updating it in place.
   */
   const refresh = useCallback(() => {
     setIsRefreshing(true)
@@ -100,10 +94,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
   const { top } = useSafeAreaInsets()
   const showRoute = useFeatureFlag("AREnableCityGuideItineraryRoute")
 
-  // Flattened once and shared by the provider, the resolvers and the rows below, so the
-  // expected set (provider) and the queried set (resolvers) can never disagree. Computed
-  // ahead of the null check so hook order stays stable regardless of whether the itinerary
-  // resolves; it is simply empty when there is no itinerary.
+  // Flattened once and shared by the provider, resolvers, and rows, so the expected and
+  // queried sets can never disagree. Computed ahead of the null check to keep hook order stable.
   const stops = useMemo(
     () => itinerary?.sections.flatMap((section) => section.stops) ?? [],
     [itinerary]
@@ -145,30 +137,25 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
       <ItineraryStopEntityResolvers stops={stops} />
       <Screen safeArea={false}>
         {/*
-          The map fills the screen, so it gets a floating back button over the map rather
-          than a header bar: Screen.Header paints a solid background and cannot be made
-          transparent through props. Same treatment CityGuideMapHeader gives the City
-          Guide's own map.
+          The map fills the screen, so it gets a floating back button rather than a header
+          bar: Screen.Header paints a solid background and can't be made transparent.
         */}
         {/* {!isMapView && <Screen.AnimatedHeader title={itinerary.title} hideLeftElements hideTitle />} */}
 
         <Flex
           style={{ top, position: "absolute", zIndex: 1000 }}
-          // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2}
-          // (palette Screen/Header.js:69, constants.js:5). Matching both keeps the
-          // button from jumping when you toggle between list and map.
+          // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2} —
+          // matching both keeps the button from jumping between list and map.
           height={NAVBAR_HEIGHT}
           justifyContent="center"
           px={2}
-          // Full width only on the map, where the row also carries the itinerary picker at
-          // its right. In list mode it stays as wide as the back button so it does not
-          // swallow taps meant for the header beneath it.
+          // Full width only on the map, where the row also carries the itinerary picker. In
+          // list mode it stays back-button width so it doesn't swallow taps meant for the header.
           {...(isMapView ? { left: 0, right: 0 } : {})}
         >
           {/*
-            On the map, back means "back to the list" rather than "leave the guide". The
-            map is a mode of this screen, not a screen of its own, so popping the whole
-            route would skip the itinerary the user came from.
+            On the map, back means "back to the list", not "leave the guide" — the map is a
+            mode of this screen, not a screen of its own.
           */}
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <BackButtonWithBackground
@@ -183,9 +170,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
             />
 
             {/*
-              Only on the map, where the designs put it, and only for your own itineraries:
-              the picker switches between yours, so it has nothing to offer while you are
-              reading a curated guide.
+              Only on the map, and only for your own itineraries — the picker switches
+              between yours, so it has nothing to offer on a curated guide.
             */}
             {!!isMapView && !isEditorial && (
               <ItineraryPicker
@@ -235,9 +221,8 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
           )}
 
           {/*
-            Positioning copied from CityGuideFloatingMapButton so this sits at the same
-            height as the City Guide's own floating button. Not reused directly because
-            that component hardcodes a navigate to /local-discovery.
+            Positioning copied from CityGuideFloatingMapButton for matching height. Not
+            reused directly since that component hardcodes a navigate to /local-discovery.
           */}
           <MotiView
             from={{ opacity: 0.5, translateY: 0 }}

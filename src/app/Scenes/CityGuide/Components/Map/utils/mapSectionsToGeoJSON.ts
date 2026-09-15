@@ -8,8 +8,7 @@ export interface MapPlace {
   saveControl?: React.ReactNode
   /**
    * Name of a pin sprite in the Artsy Mapbox style, e.g. "pin", "pin-saved", "pin-fair".
-   * Defaults to "pin" when absent. Event maps set this; the itinerary ignores it, since it
-   * draws numbered circles instead (see `MapPins`'s `numbered` option).
+   * Defaults to "pin"; the itinerary ignores it since it draws numbered circles instead.
    */
   icon?: string
 }
@@ -53,19 +52,15 @@ export const flattenMapSections = (sections: MapSection[]): FlattenedMapPlace[] 
 
 export interface MapPlacesToGeoJSONOptions {
   /**
-   * Stamps a 1-based "number" property, computed from position in the list given here —
-   * never baked onto a place ahead of filtering. So filtering the map to one section
-   * numbers that section 1..N, not by its position across the whole map. Off by default:
-   * only the itinerary map numbers pins.
+   * Stamps a 1-based "number" from position in the list given here, so filtering to one
+   * section numbers it 1..N rather than by position across the whole map. Off by default.
    */
   numbered?: boolean
 }
 
 /**
- * Numbers pins (when asked to) by their position in the list it is given, not by a place's
- * position in some larger, unfiltered set. Passing every place numbers them 1..N, while
- * passing one section's places numbers that section 1..N on its own — filtering the map to
- * day two shows its stops as 1 and 2 rather than 4 and 5.
+ * Numbers pins by position in the list given, not in some larger unfiltered set — filtering
+ * to day two shows its stops as 1 and 2 rather than 4 and 5.
  */
 export const mapPlacesToGeoJSON = (
   flattened: FlattenedMapPlace[],
@@ -80,9 +75,8 @@ export const mapPlacesToGeoJSON = (
     },
     properties: {
       id: place.id,
-      // Defaults to the plain pin sprite; event adapters set a more specific icon (a save
-      // state or a fair marker). The itinerary never sets one, since it draws numbered
-      // circles instead and ignores this property entirely.
+      // Defaults to the plain pin sprite; event adapters set a more specific one. The
+      // itinerary never sets this — it draws numbered circles instead.
       icon: place.icon ?? "pin",
       // Mapbox textField expects a FormattedString; stamping avoids a to-string wrapper in layer style.
       ...(numbered ? { number: String(index + 1) } : {}),
@@ -100,9 +94,8 @@ export interface MapRouteCollection {
 }
 
 /**
- * The path through a list of places, in order, for drawing a route on the map. Returns no
- * features for fewer than two places, since a line needs two ends. Itinerary-only today —
- * the event maps never pass a non-empty list here.
+ * The path through a list of places, in order. Returns no features for fewer than two
+ * places, since a line needs two ends.
  */
 export const mapPlacesToRouteGeoJSON = (flattened: FlattenedMapPlace[]): MapRouteCollection => {
   if (flattened.length < 2) {

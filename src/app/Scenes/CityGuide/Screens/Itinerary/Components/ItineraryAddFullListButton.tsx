@@ -14,11 +14,8 @@ interface Props {
 }
 
 /**
- * Copies a curated guide onto your own itineraries, in one call.
- *
- * `copyItinerary` does the whole thing server-side. This used to follow each of the guide's
- * entities one at a time, which meant it could half-succeed, and could not copy a stop with no
- * entity behind it at all.
+ * Copies a curated guide onto your own itineraries in one call — `copyItinerary` does the
+ * whole thing server-side, so it can't half-succeed partway through.
  */
 export const ItineraryAddFullListButton: React.FC<Props> = ({ citySlug, itineraryId }) => {
   const toast = useToast()

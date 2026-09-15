@@ -9,8 +9,7 @@ import { Environment, commitMutation } from "relay-runtime"
 
 /**
  * What a stop points at, matching `ItineraryStopItemType`. A gallery or museum is a
- * `LOCATION`: the schema used to say `PARTNER`, but a stop names the place, and its partner is
- * reached through `Location.partner`.
+ * `LOCATION` — the schema used to say `PARTNER`, reached now through `Location.partner`.
  */
 export type CityItineraryItemType = "SHOW" | "FAIR" | "LOCATION"
 
@@ -22,11 +21,8 @@ interface EntityStopInput {
 }
 
 /**
- * A stop with no Artsy entity — a cafe, a landmark. `createItineraryStopInput` leaves
- * `itemType` and `itemID` optional, so these fields alone make a stop.
- *
- * No image: that input takes an S3 upload URL which Gravity converts through Gemini, so a
- * copied stop cannot carry the original's picture.
+ * A stop with no Artsy entity — a cafe, a landmark. No image: it takes an S3 upload URL that
+ * Gravity converts through Gemini, so a copied stop cannot carry the original's picture.
  */
 export interface CustomStopInput {
   itemType?: undefined
@@ -82,10 +78,8 @@ interface ExistingStop {
 }
 
 /**
- * The stop for this input, if the itinerary already has one.
- *
- * An entity stop matches on what it points at. A custom stop has no id to compare, so it
- * matches on title and address — imperfect, but allowing silent duplicates is worse.
+ * The stop for this input, if the itinerary already has one. An entity stop matches on what
+ * it points at; a custom stop matches on title/address instead — imperfect, but better than duplicates.
  */
 const findStop = <T extends ExistingStop>(stops: readonly T[], input: StopInput) => {
   if (input.itemType) {
@@ -112,16 +106,8 @@ export const isSameCustomStop = (
   (candidate.address ?? undefined) === input.address
 
 /**
- * Adds and removes stops on the user's own itinerary for a city.
- *
- * Adding takes three round trips, because Metaphysics has no find-or-create: look up the
- * itinerary, create it if the user has none, make sure it has a section (creating one is
- * required — a new itinerary has none, and a stop must belong to a section), then create the
- * stop. Removing takes one, since `removeItineraryStopByItem` resolves the stop from what it
- * points at, which is all a card knows about itself.
- *
- * A single in-flight promise per hook instance serialises calls: two quick taps would
- * otherwise each find no itinerary and create one, leaving the user with two.
+ * Adds and removes stops on the user's own itinerary for a city. Adding takes up to three
+ * round trips (no find-or-create server-side), serialised so double-taps can't create duplicates.
  */
 export const useCityItineraryStops = ({
   citySlug,
@@ -145,9 +131,8 @@ export const useCityItineraryStops = ({
         { fetchPolicy: "network-only" }
       ).toPromise()
 
-      // The connection is the caller's own by definition, so the first is their itinerary for
-      // this city. A user with several picks up the most recent, which is what Gravity orders
-      // by; multiple personal itineraries per city are a later feature.
+      // The connection is the caller's own, so the first edge is their itinerary for this
+      // city — Gravity orders by most recent; multiple personal itineraries is a later feature.
       const existing = data?.me?.itinerariesConnection?.edges?.[0]?.node
 
       let itineraryID = existing?.internalID
@@ -185,9 +170,8 @@ export const useCityItineraryStops = ({
       if (!sectionID) {
         if (!createIfMissing) return { itineraryID, sectionID: undefined, stops }
 
-        // Named after the city, like the itinerary itself. The section exists only because a
-        // stop must belong to one, and the UI shows a single list, so it needs no label of its
-        // own — but a name reads better than a blank heading anywhere it does surface.
+        // Named after the city, like the itinerary itself — the section exists only because a
+        // stop must belong to one; the UI never shows its label, but a name reads better if it surfaces.
         const created = await mutate<useCityItineraryStopsCreateSectionMutation>(
           environment,
           createSectionMutation,
@@ -233,9 +217,8 @@ export const useCityItineraryStops = ({
           throw new Error("Could not find a section to add the stop to")
         }
 
-        // Adding the same entity twice is a no-op. Gravity has no uniqueness constraint on
-        // (section, item type, item id) yet, so without this a second tap would leave two
-        // identical stops on the itinerary.
+        // Adding the same entity twice is a no-op — Gravity has no uniqueness constraint on
+        // (section, item type, item id) yet, so without this a second tap would duplicate it.
         const already = findStop(target.stops, stop)
 
         if (already) return already
@@ -268,9 +251,8 @@ export const useCityItineraryStops = ({
 
         if (!target?.itineraryID) return null
 
-        // `deleteItineraryStop` takes the stop's own id, which a card never has — it knows the
-        // show or fair it renders. So the stop is found by what it points at. Nothing to
-        // remove is success, not an error: the card already shows the state the user wanted.
+        // `deleteItineraryStop` needs the stop's own id, which a card never has, so it's found
+        // by what it points at. Nothing to remove is success, not an error — that's the state the user wanted.
         const existingStop = findStop(target.stops, stop)
 
         if (!existingStop) return null

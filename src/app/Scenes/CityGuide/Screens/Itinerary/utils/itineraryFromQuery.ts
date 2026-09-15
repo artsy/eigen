@@ -11,11 +11,8 @@ type QuerySection = QueryItinerary["sections"][number]
 type QueryStop = QuerySection["stops"][number]
 
 /**
- * Narrows the `Show | Fair | Partner` union to the members this client knows.
- *
- * Relay adds a `"%other"` member for anything the query does not select on, so a member added
- * to the union server-side lands here rather than crashing — it reads as "not a saveable
- * entity" until this client is taught about it.
+ * Narrows the `Show | Fair | Partner` union to the members this client knows. Relay adds a
+ * `"%other"` member for anything unselected, so a server-side addition lands here, not a crash.
  */
 const knownItem = (
   item: QueryStop["item"]
@@ -28,10 +25,8 @@ const knownItem = (
     case "Fair":
       return { type: "FAIR", slug: item.slug, name: item.name ?? null }
     case "Location":
-      // A gallery stop points at one of a partner's locations, not at the partner. The
-      // location is what carries the address and the opening hours; the partner is what
-      // the save control follows and what `/partner/:slug` links to. Without a partner
-      // there is nothing to save or link, so the stop reads as unsaveable.
+      // A gallery stop points at a partner's location, not the partner — the location carries
+      // the address, the partner is what's followed and linked. No partner means unsaveable.
       if (!item.partner?.slug) return null
       // Galleries and museums are both Partners in Artsy's model; the visible distinction
       // between them is the stop's own `category`, not this.
@@ -46,9 +41,8 @@ const knownItem = (
 }
 
 /**
- * The save controls are keyed by type and slug, so that is all this carries. `null` for a stop
- * that points at no Artsy entity (a café, a plain address) and for one whose entity did not
- * resolve: either way there is nothing to follow.
+ * The save controls are keyed by type and slug, so that is all this carries. `null` when a
+ * stop points at no Artsy entity, or one whose entity didn't resolve — either way, nothing to follow.
  */
 const toSaveTarget = (item: QueryStop["item"]): ItinerarySaveTarget | null => {
   const known = knownItem(item)
@@ -96,11 +90,8 @@ const toEvent = (event: QueryStop["event"]): ItineraryStop["event"] => {
 }
 
 /**
- * The entity's own picture, for a stop with no uploaded one.
- *
- * `ItineraryStop.image` comes from the stop's own `image_url` column, which is only set when
- * the curator uploaded something. A stop the app creates sends no image, so without this every
- * show, fair and gallery stop would render an empty box.
+ * The entity's own picture, for a stop with no uploaded one. `ItineraryStop.image` is only
+ * set when the curator uploaded something, so without this every app-created stop shows an empty box.
  */
 const itemImageUrl = (item: QueryStop["item"]) => {
   if (!item) return undefined
@@ -119,11 +110,8 @@ const itemImageUrl = (item: QueryStop["item"]) => {
 }
 
 /**
- * Where the stop's entity is, for a stop with no coordinates of its own.
- *
- * A stop only carries `latitude`/`longitude` when a curator typed them in; one the app creates
- * from a show, fair or gallery has neither, so without this every entity-backed stop would be
- * dropped from the map.
+ * Where the stop's entity is, for a stop with no coordinates of its own. A curator-typed
+ * stop has lat/lng directly; an app-created one has neither, so without this it drops off the map.
  */
 const itemCoordinates = (item: QueryStop["item"]) => {
   if (!item) return undefined
@@ -155,9 +143,8 @@ const toCoordinates = (stop: QueryStop): ItineraryStop["coordinates"] => {
 
 const toStop = (stop: QueryStop): ItineraryStop => ({
   id: stop.internalID,
-  // `title` is the editorial override and the only title a stop has of its own. A stop with
-  // neither a title nor a resolved item has nothing to show, so it falls back to the item's
-  // name before an empty string.
+  // `title` is the editorial override, the only title a stop has of its own — falling back
+  // to the item's name, then an empty string, when there's neither.
   title: stop.title ?? knownItem(stop.item)?.name ?? "",
   address: stop.address ?? undefined,
   category: toCategory(stop.category),
@@ -177,18 +164,15 @@ const toStop = (stop: QueryStop): ItineraryStop => ({
 
 const toSection = (section: QuerySection, index: number): ItinerarySection => ({
   id: section.internalID,
-  // Server-side the title is nullable; the client uses it as a required display string. The
-  // fallback is positional so a section is never unlabelled. Sections arrive sorted by
-  // position, so the index is that position.
+  // Server-side the title is nullable; the client needs a required display string, so it
+  // falls back to a positional label — sections arrive sorted, so the index is that position.
   title: section.title ?? `Day ${index + 1}`,
   stops: section.stops.map(toStop),
 })
 
 /**
  * Maps the GraphQL payload onto the client's own `Itinerary` type, which every component
- * below the screen already speaks. Keeping the adapter here rather than threading fragments
- * through the tree means the map converter, the rows, the header and the preview sheet are
- * untouched by the move off mock data.
+ * below the screen already speaks, so the adapter lives here instead of threading fragments.
  */
 export const itineraryFromQuery = (itinerary: QueryItinerary): Itinerary => ({
   id: itinerary.internalID,

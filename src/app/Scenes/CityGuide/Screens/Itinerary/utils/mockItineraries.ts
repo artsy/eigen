@@ -1,14 +1,7 @@
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
-// TODO: Replace with data from the API once the itinerary schema lands.
-//
-// Every slug below is real, taken from artsy.net on 2026-08-26:
-// shows from artsy.net/shows/london-united-kingdom, partners from their show pages.
-// Coordinates are the galleries' actual London locations, so the map view is plausible.
-//
-// Show slugs keep resolving after a show closes, and the save queries pass
-// includeAllShows: true, so these stay valid. Titles are the guide author's framing and
-// deliberately need not match the entity's own name — see the spec on editorial curation.
+// TODO: Replace with data from the API once the itinerary schema lands. Slugs are real, taken
+// from artsy.net; they stay valid after a show closes since save queries pass includeAllShows: true.
 export const MOCK_ITINERARIES: Itinerary[] = [
   {
     id: "chill-vibes-only",

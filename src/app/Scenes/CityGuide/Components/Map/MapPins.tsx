@@ -26,9 +26,8 @@ interface Props {
    */
   onSelectCluster: (feature: any) => void
   /**
-   * Off by default. When on, pins are numbered and clusters read "2+"; the itinerary is
-   * the only map that turns it on. When off, the number symbol layer is skipped entirely
-   * rather than rendered with an empty label, and clusters read a plain count.
+   * Off by default; only the itinerary map turns it on. When on, pins are numbered and
+   * clusters read "2+" — when off, the number symbol layer is skipped, not just left empty.
    */
   numbered?: boolean
   /** Lets the map ask Mapbox which points a tapped cluster contains, mirroring
@@ -36,20 +35,14 @@ interface Props {
   shapeSourceRef?: RefObject<ShapeSource | null>
   /**
    * The `cluster_id` of the tapped cluster, so its own circle can recolour the same way a
-   * selected pin does (mirrors `CityGuideMapPins`'s `activeClusterId`, copied since that
-   * map is frozen).
+   * selected pin does (mirrors `CityGuideMapPins`'s `activeClusterId`).
    */
   activeClusterId?: number | null
 }
 
 /**
- * Renders one pin per place — numbered when asked to — merging only pins that genuinely
- * overlap.
- *
- * The layer filters here are always set, never undefined. That matters: rnmapbox maps an
- * undefined filter to `[]` (utils/filterUtils.js) rather than to a reset, so a filter set
- * once can never be cleared. Section filtering is therefore done on the collection, not
- * here — only the cluster/stop split uses layer filters, and those never change.
+ * Renders one pin per place, merging only overlapping ones. Layer filters here are always
+ * set — rnmapbox treats an undefined filter as `[]`, not a reset — so filtering lives on the collection.
  */
 export const MapPins: React.FC<Props> = ({
   collection,
@@ -68,18 +61,10 @@ export const MapPins: React.FC<Props> = ({
   const clusterCountStyle = getClusterCountStyle(numbered)
 
   /*
-    Handed to the ShapeSource as one flat array rather than as conditional JSX children.
-    Two constraints meet here. ShapeSource passes its `sourceID` down by cloning its
-    children, and `cloneReactChildrenWithProps` returns a `React.Fragment` child untouched,
-    without adding props (@rnmapbox/maps utils/index.ts:71) — so a layer grouped inside a
-    fragment binds to no source and silently draws nothing, which is what hid the
-    itinerary's numbered pins. Its `children` prop is typed `ReactElement | ReactElement[]`
-    too, which rejects the `{cond && <Layer/>}` form a fragment would otherwise be swapped
-    for. An array satisfies both: `React.Children.map` flattens it, so every layer is
-    cloned and gets its `sourceID`.
-
-    Order is load-bearing — each layer's `aboveLayerID` names the one before it.
+    A flat array, not conditional JSX: ShapeSource clones children to inject `sourceID`, but a
+    fragment child passes through untouched and binds to no source (this hid the itinerary's pins).
   */
+  // Order matters — each layer's `aboveLayerID` names the one before it.
   const layers = [
     ...(numbered
       ? [

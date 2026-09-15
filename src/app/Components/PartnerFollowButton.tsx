@@ -101,9 +101,8 @@ const query = graphql`
 `
 
 const tracks = {
-  // TODO: action_name is always FollowPartner, should be FollowPartner or UnfollowPartner
-  // I've checked other follow partner buttons, and the behavior is the same
-  // Should be fixed in a separate PR
+  // TODO: action_name is always FollowPartner, should be FollowPartner or UnfollowPartner.
+  // Other follow-partner buttons have the same bug — fix in a separate PR.
   trackFollowPartner: (internalID: string, analytics: AnalyticsContextProps) => ({
     action_name: ActionNames.FollowPartner,
     action_type: ActionTypes.Tap,

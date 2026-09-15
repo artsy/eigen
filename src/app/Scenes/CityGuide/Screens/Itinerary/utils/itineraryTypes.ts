@@ -22,9 +22,8 @@ export interface ItineraryStop {
   /** Backend-formatted for display. e.g. "11am-4pm" */
   displayTime: string
   /**
-   * Reserved, unused in this pass. ISO 8601. Carried so sorting and timezone-aware
-   * behaviour do not need a schema change later. Never format from these — display
-   * always comes from displayTime.
+   * Reserved, unused in this pass — ISO 8601, carried so sorting/timezone behaviour needs no
+   * later schema change. Never format from these; display always comes from displayTime.
    */
   startAt?: string
   endAt?: string
@@ -35,9 +34,8 @@ export interface ItineraryStop {
   /** `SHOW_EVENT` or `FAIR_EVENT` when the stop names an event, else absent. */
   eventType?: string
   /**
-   * The event itself, when the stop names one. A show event carries its own kind — "Opening
-   * Reception", "Artist Talk", "Screening" and so on, from `PartnerShowEvent::EVENT_TYPES` in
-   * Gravity. A fair event has a name but no kind.
+   * The event itself, when the stop names one. A show event carries its own kind (e.g.
+   * "Opening Reception", "Artist Talk"); a fair event has a name but no kind.
    */
   event?: {
     title?: string | null
@@ -53,17 +51,15 @@ export interface ItineraryStop {
   isFreeAdmission?: boolean
   imageUrl: string
   /**
-   * Absent when the stop has no usable location: latitude and longitude are both nullable
-   * server-side. Such a stop still belongs in the list — it just cannot be drawn, so the
-   * map converters filter on this rather than plotting a 0,0 pin.
+   * Absent when the stop has no usable location — lat/lng are both nullable server-side. Map
+   * converters filter on this rather than plot a 0,0 pin; the stop still belongs in the list.
    */
   coordinates?: { lat: number; lng: number }
   /** null when the stop is not a saveable Artsy entity; no save control renders. */
   saveTarget: ItinerarySaveTarget | null
   /**
-   * What the stop resolved to, kept in the shape the card needs. Separate from `saveTarget`,
-   * which is only a type and a slug: the card also wants the entity's own name, place, href
-   * and admission. Absent for a custom stop.
+   * What the stop resolved to, in the shape the card needs — separate from `saveTarget`,
+   * which is only a type and slug. Absent for a custom stop.
    */
   cardItem?: StopCardItem
 }
@@ -79,9 +75,8 @@ export interface ItinerarySection {
 export interface Itinerary {
   id: string
   /**
-   * Editorial guides are curated; a user's own itinerary is not. The only ownership signal
-   * available — `Query.itinerary` exposes no "is this mine". Drives what the screen hides for
-   * your own itinerary: numbering, section headings and the byline.
+   * Editorial guides are curated; a user's own itinerary is not — the only ownership signal
+   * available. Drives what the screen hides for your own: numbering, headings, byline.
    */
   isCurated: boolean
   citySlug: string

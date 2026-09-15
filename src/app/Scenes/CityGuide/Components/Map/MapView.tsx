@@ -35,28 +35,18 @@ interface Props {
    */
   numbered?: boolean
   /**
-   * Off by default. Only the itinerary map draws a route, and only within a single
-   * section — across the whole map the line would jump between sections and imply an
-   * order nobody walks. The caller decides whether the feature is available at all (the
-   * itinerary gates this on `AREnableCityGuideItineraryRoute`); this component decides
-   * only whether one section is selected.
+   * Off by default. Only the itinerary map draws a route, and only within a single section —
+   * across the whole map the line would jump between sections and imply an order nobody walks.
    */
   showRoute?: boolean
   /**
-   * Extra space above the pill overlay, on top of the safe-area inset. Defaults to 60,
-   * the value tuned for the itinerary map, which runs `<Screen safeArea={false}>` with no
-   * native or in-flow header of its own — the pills are the topmost thing on screen, so
-   * they need this much clearance from the status bar. A screen whose own header already
-   * occupies the space above the map (a solid `Screen.Header`, or a native stack header)
-   * should pass a smaller value, or 0, rather than inherit this one.
+   * Extra space above the pill overlay, on top of the safe-area inset. Defaults to 60, tuned
+   * for the itinerary map's headerless screen — pass less (or 0) when the screen has its own header.
    */
   pillsTopOffset?: number
   /**
-   * Off by default, where the pill overlay starts at a flat `space(2)` from the top of the
-   * map. Turn it on for a map that runs full bleed under the status bar — the itinerary's
-   * does, via `<Screen safeArea={false}>` — and the overlay starts at the safe-area inset
-   * instead, so the pills clear the status bar rather than sitting under it. Stacks with
-   * `pillsTopOffset`, which pads the overlay further down from wherever this puts it.
+   * Off by default, where the pill overlay starts at a flat `space(2)`. Turn it on for a map
+   * that runs full bleed under the status bar, so the overlay starts at the safe-area inset instead.
    */
   safeArea?: boolean
 }
@@ -73,19 +63,16 @@ export const MapView: React.FC<Props> = ({
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
   const [overlayHeight, setOverlayHeight] = useState(0)
-  // The tapped cluster: its id (for recolouring its own circle purple) and the places it
-  // contains (for the rail). Kept as one state so the two can never drift apart — a
-  // separate id state alongside the places would be a second, parallel place to track
-  // the same selection.
+  // The tapped cluster's id (to recolour its circle) and places (for the rail), kept as one
+  // state so the two can never drift apart.
   const [clusterSelection, setClusterSelection] = useState<{
     clusterId: number
     places: MapPlace[]
   } | null>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const shapeSourceRef = useRef<ShapeSource>(null)
-  // Bumped on every cluster tap and on dismissal, so a `getClusterLeaves` promise that
-  // resolves after the user has already moved on — tapped another cluster, or dismissed
-  // the rail — is recognised as stale and doesn't overwrite newer state.
+  // Bumped on every cluster tap and dismissal, so a stale `getClusterLeaves` promise that
+  // resolves after the user moved on doesn't overwrite newer state.
   const clusterRequestIdRef = useRef(0)
   const { top } = useSafeAreaInsets()
   const { width: screenWidth } = useScreenDimensions()
@@ -184,9 +171,8 @@ export const MapView: React.FC<Props> = ({
     }
   }, [visible, overlayHeight])
 
-  // The very first frame comes from defaultSettings, not from the effect below: on mount
-  // the camera ref is not attached yet, so an imperative setCamera silently no-ops and the
-  // map opens on Mapbox's default world view until something else moves it.
+  // The first frame comes from defaultSettings, not the effect below — on mount the camera
+  // ref isn't attached yet, so an imperative setCamera silently no-ops.
   const initialCameraStop = useRef(cameraStop).current
 
   // Refit on later changes only, and only once the map is ready — same gating as
@@ -281,10 +267,8 @@ export const MapView: React.FC<Props> = ({
       )}
 
       {/*
-        Sits above the list/map toggle, which the screen renders at bottom -50 with a
-        -60 translate. selectedPlace comes from the visible set, so switching filters
-        away from the selected pin drops its card too. Hidden while the cluster rail is
-        up, so the two overlays are never shown at once.
+        Sits above the list/map toggle (bottom -50, -60 translate). Hidden while the cluster
+        rail is up, so the two overlays are never shown at once.
       */}
       {!!selectedPlace && !clusterSelection && (
         <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
@@ -293,10 +277,8 @@ export const MapView: React.FC<Props> = ({
       )}
 
       {/*
-        The cluster's contents, revealed rather than zoomed into (see MapPins'
-        onSelectCluster). One card type reused from the single-pin preview above —
-        `disableNavigation` plus `onPress` makes tapping a card select that place instead
-        of navigating straight off the map, matching a direct pin tap.
+        The cluster's contents, revealed rather than zoomed into. Reuses MapPreviewCard with
+        `disableNavigation` + `onPress` so tapping a card selects that place, like a pin tap.
       */}
       {!!clusterSelection && (
         <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
@@ -304,8 +286,7 @@ export const MapView: React.FC<Props> = ({
             <Flex flexDirection="row">
               {clusterSelection.places.map((place, index) => (
                 // Fixed width: the single-card usage above relies on the absolute-positioned
-                // parent (left:0, right:0) to size it, which a horizontal ScrollView doesn't
-                // provide.
+                // parent to size it, which a horizontal ScrollView doesn't provide.
                 <Flex key={place.id} width={screenWidth - 2 * space(2)}>
                   <MapPreviewCard
                     isLast={index === clusterSelection.places.length - 1}

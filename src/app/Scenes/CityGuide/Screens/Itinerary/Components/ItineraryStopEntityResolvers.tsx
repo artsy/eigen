@@ -16,11 +16,8 @@ interface ResolverProps {
 }
 
 /**
- * Renders nothing. Its only job is to resolve one stop's entity and report it upward.
- *
- * `useLazyLoadQuery` subscribes to the store, so after a follow mutation this re-renders with
- * the new `isFollowed`, the effect fires again, and the reported entity updates. That is how
- * rows reflect a bulk add immediately.
+ * Renders nothing — resolves one stop's entity and reports it upward. `useLazyLoadQuery`
+ * subscribes to the store, so a follow mutation re-renders this and updates the report.
  */
 const ShowResolver: React.FC<ResolverProps> = ({ stopId, saveTarget }) => {
   const data = useLazyLoadQuery<ItineraryStopEntityResolversShowQuery>(ShowQuery, {
@@ -44,9 +41,8 @@ const ShowResolver: React.FC<ResolverProps> = ({ stopId, saveTarget }) => {
       isFollowed: !!show.isFollowed,
       type: "SHOW",
     })
-    // `show` in full, not its members: the body dereferences it, so
-    // react-hooks/exhaustive-deps demands the object. The provider's `report` bails out when
-    // nothing changed, so a new object identity each render cannot loop.
+    // `show` in full, not its members, since exhaustive-deps demands the object it's
+    // dereferenced from; `report` bails out on no change, so a new identity each render can't loop.
   }, [stopId, show, report, reportFailure])
 
   return null

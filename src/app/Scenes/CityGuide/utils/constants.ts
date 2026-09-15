@@ -1,26 +1,23 @@
 import { CircleLayerStyle, SymbolLayerStyle } from "@rnmapbox/maps"
 
 /**
- * Same highlight the City Guide map uses for a tapped pin and a tapped cluster
- * (CityGuideMapPins.tsx's SELECTED_CLUSTER_COLOR — both are "#6E1EFF", so one constant
- * covers both here too).
+ * Same highlight the City Guide map uses for a tapped pin and cluster (both "#6E1EFF"), so
+ * one constant covers both here too.
  */
 export const SELECTED_COLOR = "#6E1EFF"
 export const PIN_COLOR = "black"
 export const PIN_RADIUS = 14
 /**
- * Deliberately far below Mapbox's default of 50. On the itinerary, stops are numbered and
- * the sequence is the content, so pins should only merge when they genuinely sit on top of
- * each other — two fairs sharing Somerset House, say — not merely when they are nearby. The
- * event maps keep the same radius so clustering behaves the same everywhere.
+ * Deliberately far below Mapbox's default of 50 — on the itinerary, stops are numbered and
+ * sequence is the content, so pins should merge only when they truly overlap, not just nearby.
  */
 export const CLUSTER_RADIUS = 20
 
 export const ICON_SIZE = 0.7
 
-/** "2+" when numbered rather than "2": a bare count would be indistinguishable from the
- * pin numbered 2. Unnumbered maps have no such pin to confuse it with, so the developer
- * chose a plain count there.
+/**
+ * "2+" when numbered, not a bare "2" — that would be indistinguishable from the pin numbered
+ * 2. Unnumbered maps have no such pin to confuse it with, so they get a plain count.
  */
 export const NUMBERED_CLUSTER_COUNT_FIELD = [
   "concat",

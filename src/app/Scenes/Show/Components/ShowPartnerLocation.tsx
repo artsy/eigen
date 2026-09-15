@@ -9,10 +9,8 @@ interface Props {
 }
 
 /**
- * The gallery name and its address, on the grey band the designs put directly under the
- * install-shot carousel. The address is underlined because it is tappable: it opens the same
- * "which maps app?" sheet the location map at the bottom of the screen already uses, rather
- * than introducing a second way to get directions.
+ * The gallery name and its address, on the grey band under the install-shot carousel. The
+ * address opens the same "which maps app?" sheet the location map already uses.
  */
 export const ShowPartnerLocation: React.FC<Props> = ({ show: showProp }) => {
   const show = useFragment(showFragment, showProp)
