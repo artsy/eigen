@@ -1,5 +1,6 @@
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
+import { CARD_SHADOW } from "app/Scenes/CityGuide/utils/constants"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { pluralize } from "app/utils/pluralize"
 
@@ -44,13 +45,7 @@ export const ItineraryListItem: React.FC<Props> = ({
               width: CARD_WIDTH,
               backgroundColor: "white",
               borderRadius: CARD_RADIUS,
-              // The designs' Dropshadow/100. elevation is Android's equivalent; iOS reads the
-              // shadow* properties.
-              shadowColor: "black",
-              shadowOpacity: 0.08,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: 10,
-              elevation: 2,
+              ...CARD_SHADOW,
             }
           : undefined
       }
