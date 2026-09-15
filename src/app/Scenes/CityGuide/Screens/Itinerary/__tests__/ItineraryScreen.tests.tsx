@@ -2,6 +2,7 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
+import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
 // Image component. See https://github.com/facebook/react/issues/17301
@@ -282,6 +283,14 @@ describe("ItineraryScreen", () => {
       const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       await screen.findByText("Chill Vibes Only")
+
+      // A curated guide's own Add Full List button fires its own query to check for a
+      // same-named itinerary you already own; resolve it so it doesn't count below.
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, { Me: () => ({ itinerariesConnection: null }) })
+        )
+      })
 
       // The RefreshControl element itself does not surface in the tree, so the refresh is
       // fired through the scroll view that owns it.

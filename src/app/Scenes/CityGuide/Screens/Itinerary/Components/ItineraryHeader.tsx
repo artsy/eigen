@@ -68,6 +68,7 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
               <ItineraryAddFullListButton
                 citySlug={itinerary.citySlug}
                 itineraryId={itinerary.id}
+                title={itinerary.title}
               />
             </Flex>
           </>

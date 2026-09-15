@@ -14,12 +14,31 @@ describe("ItineraryAddFullListButton", () => {
     jest.clearAllMocks()
   })
 
-  const renderIt = () =>
-    renderWithWrappers(
+  const renderIt = async (ownTitles: string[] = []) => {
+    const view = renderWithWrappers(
       <RelayEnvironmentProvider environment={env}>
-        <ItineraryAddFullListButton citySlug="london-united-kingdom" itineraryId="guide-1" />
+        <ItineraryAddFullListButton
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          title="Chill Vibes Only"
+        />
       </RelayEnvironmentProvider>
     )
+
+    await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
+
+    await act(async () => {
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            itinerariesConnection: { edges: ownTitles.map((title) => ({ node: { title } })) },
+          }),
+        })
+      )
+    })
+
+    return view
+  }
 
   /** Resolves the pending copy with a success or a failure payload. */
   const resolveCopy = async (responseOrError: object) => {
@@ -34,9 +53,22 @@ describe("ItineraryAddFullListButton", () => {
     })
   }
 
+  it("shows as already added when you own an itinerary with the same title", async () => {
+    await renderIt(["Chill Vibes Only"])
+
+    expect(await screen.findByText("Added")).toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-add-full-list")).not.toBeOnTheScreen()
+  })
+
+  it("ignores case and surrounding whitespace when matching titles", async () => {
+    await renderIt([" chill vibes only "])
+
+    expect(await screen.findByText("Added")).toBeOnTheScreen()
+  })
+
   // One server-side call, rather than following each of the guide's entities in turn.
   it("copies the itinerary in one mutation", async () => {
-    renderIt()
+    await renderIt()
 
     fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
 
@@ -49,7 +81,7 @@ describe("ItineraryAddFullListButton", () => {
   })
 
   it("reports the guide as added once the copy lands", async () => {
-    renderIt()
+    await renderIt()
 
     fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
     await resolveCopy({
@@ -62,7 +94,7 @@ describe("ItineraryAddFullListButton", () => {
   })
 
   it("stays actionable and says so when the copy fails", async () => {
-    renderIt()
+    await renderIt()
 
     fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
     await resolveCopy({
@@ -76,7 +108,7 @@ describe("ItineraryAddFullListButton", () => {
   })
 
   it("tracks the copy against the itinerary", async () => {
-    renderIt()
+    await renderIt()
 
     fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
     await resolveCopy({

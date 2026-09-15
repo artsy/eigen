@@ -1,9 +1,12 @@
 import { Button } from "@artsy/palette-mobile"
 import { ItineraryAddFullListButtonCopyMutation } from "__generated__/ItineraryAddFullListButtonCopyMutation.graphql"
+import { ItineraryAddFullListButtonQuery } from "__generated__/ItineraryAddFullListButtonQuery.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
+import { extractNodes } from "app/utils/extractNodes"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { useEffect, useRef, useState } from "react"
-import { graphql, useMutation } from "react-relay"
+import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
@@ -11,18 +14,21 @@ interface Props {
   citySlug: string
   /** The itinerary's own id, which is what `copyItinerary` takes. */
   itineraryId: string
+  /** Checked against your own itineraries' titles, so a guide already copied shows as such. */
+  title: string
 }
 
-/**
- * Copies a curated guide onto your own itineraries in one call — `copyItinerary` does the
- * whole thing server-side, so it can't half-succeed partway through.
- */
-export const ItineraryAddFullListButton: React.FC<Props> = ({ citySlug, itineraryId }) => {
+const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, title }) => {
   const toast = useToast()
   const { trackEvent } = useTracking<Schema.Entity>()
   const [commit] = useMutation<ItineraryAddFullListButtonCopyMutation>(CopyMutation)
   const [isCopying, setIsCopying] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+
+  const data = useLazyLoadQuery<ItineraryAddFullListButtonQuery>(Query, { citySlug })
+  const alreadyOwned = extractNodes(data.me?.itinerariesConnection).some(
+    (itinerary) => itinerary.title.trim().toLowerCase() === title.trim().toLowerCase()
+  )
 
   // Guards against setting state or toasting after the screen has gone away.
   const isMounted = useRef(true)
@@ -33,7 +39,7 @@ export const ItineraryAddFullListButton: React.FC<Props> = ({ citySlug, itinerar
     []
   )
 
-  if (isCopied) {
+  if (isCopied || alreadyOwned) {
     return (
       <Button variant="outline" size="small" disabled longestText="Add Full List">
         Added
@@ -97,6 +103,26 @@ export const ItineraryAddFullListButton: React.FC<Props> = ({ citySlug, itinerar
     </Button>
   )
 }
+
+export const ItineraryAddFullListButton = withSuspense({
+  Component: AddFullListButton,
+  LoadingFallback: () => null,
+  ErrorFallback: NoFallback,
+})
+
+const Query = graphql`
+  query ItineraryAddFullListButtonQuery($citySlug: String!) {
+    me {
+      itinerariesConnection(citySlug: $citySlug, first: 50) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }
+`
 
 const CopyMutation = graphql`
   mutation ItineraryAddFullListButtonCopyMutation($input: copyItineraryInput!) {
