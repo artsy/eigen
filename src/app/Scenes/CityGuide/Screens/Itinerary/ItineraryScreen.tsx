@@ -14,7 +14,6 @@ import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
-import { ItineraryUnaddableStopsDevList } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryUnaddableStopsDevList"
 import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { itineraryFromQuery } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryFromQuery"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
@@ -215,8 +214,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
                   ))}
                 </Join>
               </Flex>
-
-              <ItineraryUnaddableStopsDevList stops={stops} />
             </Screen.ScrollView>
           )}
 
