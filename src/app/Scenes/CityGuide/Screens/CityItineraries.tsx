@@ -6,6 +6,7 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
+import { useItineraryShare } from "app/Scenes/CityGuide/hooks/useItineraryShare"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -19,6 +20,45 @@ const SHARE_ICON_SIZE = 24
 interface Props {
   citySlug: string
   me: CityItineraries_me$key
+}
+
+interface ShareableItinerary {
+  internalID: string
+  title: string
+  isCurated?: boolean | null
+  slug?: string | null
+  shareToken?: string | null
+}
+
+/**
+ * Its own component, not inlined in `renderItem`: `Screen.FlatList` renders each row through a
+ * class-based cell renderer, and `useItineraryShare` — a hook — needs a real function
+ * component to run in.
+ */
+const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: string }> = ({
+  item,
+  citySlug,
+}) => {
+  const { share, isSharing } = useItineraryShare({
+    internalID: item.internalID,
+    slug: item.slug,
+    citySlug,
+    title: item.title,
+    isCurated: !!item.isCurated,
+    shareToken: item.shareToken,
+  })
+
+  return (
+    <Touchable
+      testID="itinerary-share"
+      accessibilityRole="button"
+      accessibilityLabel={`Share ${item.title}`}
+      disabled={isSharing}
+      onPress={share}
+    >
+      <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+    </Touchable>
+  )
 }
 
 const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
@@ -84,20 +124,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                     <EditIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
                   </Touchable>
 
-                  {/*
-                    Sharing needs a share token via `updateItinerary`, which throws today.
-                    Rendered and wired anyway so the row needn't be rebuilt once it works.
-                  */}
-                  <Touchable
-                    testID="itinerary-share"
-                    accessibilityRole="button"
-                    accessibilityLabel={`Share ${item.title}`}
-                    onPress={() => {
-                      // TODO: mint a share token and open the share sheet.
-                    }}
-                  >
-                    <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                  </Touchable>
+                  <ItineraryShareTouchable item={item} citySlug={citySlug} />
                 </Flex>
               }
             />
@@ -138,6 +165,8 @@ const fragment = graphql`
           slug
           title
           description
+          isCurated
+          shareToken
           heroImage {
             url(version: "small")
           }

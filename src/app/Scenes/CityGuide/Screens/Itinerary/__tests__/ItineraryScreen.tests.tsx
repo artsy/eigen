@@ -2,6 +2,7 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
+import RNShare from "react-native-share"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
@@ -10,6 +11,8 @@ jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
 }))
+
+jest.mock("react-native-share", () => ({ open: jest.fn() }))
 
 const stop = (n: number) => ({
   internalID: `stop-${n}`,
@@ -33,6 +36,8 @@ const ITINERARY = {
   internalID: "chill-vibes-only",
   isCurated: true,
   citySlug: "london-united-kingdom",
+  slug: "chill-vibes-only",
+  shareToken: null,
   title: "Chill Vibes Only",
   subtitle: "Top picks",
   description: "Our list of recommendations.",
@@ -49,6 +54,10 @@ const ITINERARY = {
 describe("ItineraryScreen", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: ItineraryScreen })
   const props = { citySlug: "london-united-kingdom", itineraryId: "chill-vibes-only" }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   it("renders the header and every section", async () => {
     renderWithRelay({ Itinerary: () => ITINERARY }, props)
@@ -270,6 +279,66 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/gallery.jpg"
+      )
+    })
+  })
+
+  describe("the share button", () => {
+    it("shares a curated guide's public link, minting nothing", async () => {
+      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      fireEvent.press(await screen.findByTestId("itinerary-share"))
+
+      await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
+
+      // No share-token mutation for a curated guide — its slug is already public. (A curated
+      // guide's own Add Full List button fires an unrelated query of its own on mount.)
+      expect(
+        view.env.mock
+          .getAllOperations()
+          .some((op) => op.request.node.params.name === "useItineraryShareMintTokenMutation")
+      ).toBe(false)
+      expect(RNShare.open).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: expect.stringContaining(
+            "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
+          ),
+        })
+      )
+    })
+
+    it("mints a share token for a personal itinerary and includes it in the link", async () => {
+      const own = { ...ITINERARY, isCurated: false, slug: null, shareToken: null }
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      fireEvent.press(await screen.findByTestId("itinerary-share"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useItineraryShareMintTokenMutation"
+        )
+      )
+
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Mutation: () => ({
+            updateItinerary: {
+              responseOrError: {
+                __typename: "ItineraryMutationSuccess",
+                itinerary: { internalID: "chill-vibes-only", shareToken: "abc123" },
+              },
+            },
+          }),
+        })
+      )
+
+      await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
+      expect(RNShare.open).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: expect.stringContaining(
+            "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only?shareToken=abc123"
+          ),
+        })
       )
     })
   })

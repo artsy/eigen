@@ -14,6 +14,7 @@ import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
+import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
@@ -31,12 +32,22 @@ const NAVBAR_HEIGHT = 50
 interface Props {
   citySlug: string
   itineraryId: string
+  /**
+   * Present when this screen was opened from a shared link to somebody else's personal
+   * itinerary — `Query.itinerary` needs it to resolve one that isn't yours or curated, per
+   * the schema: "Gravity returns 404 without it."
+   */
+  shareToken?: string
 }
 
-const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
+const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // An itinerary is addressed by its own id or slug and carries its city; `citySlug` only
   // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
-  const data = useLazyLoadQuery<ItineraryScreenQuery>(itineraryQuery, { id: itineraryId, citySlug })
+  const data = useLazyLoadQuery<ItineraryScreenQuery>(itineraryQuery, {
+    id: itineraryId,
+    citySlug,
+    shareToken,
+  })
 
   /*
     Kept when a re-read comes back empty: sections/stops have no schema `id`, so Relay keys
@@ -63,13 +74,13 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
     fetchQuery<ItineraryScreenQuery>(
       environment,
       itineraryQuery,
-      { id: itineraryId, citySlug },
+      { id: itineraryId, citySlug, shareToken },
       { fetchPolicy: "network-only" }
     ).subscribe({
       complete: () => setIsRefreshing(false),
       error: () => setIsRefreshing(false),
     })
-  }, [environment, itineraryId, citySlug])
+  }, [environment, itineraryId, citySlug, shareToken])
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
   // about whether the map is a mode or a screen. Returning false lets it pop as usual.
@@ -134,9 +145,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
           height={NAVBAR_HEIGHT}
           justifyContent="center"
           px={2}
-          // Full width only on the map, where the row also carries the itinerary picker. In
-          // list mode it stays back-button width so it doesn't swallow taps meant for the header.
-          {...(isMapView ? { left: 0, right: 0 } : {})}
+          // Always full width now: the share button sits on the right in both list and map
+          // mode, not just when the map's itinerary picker is there too.
+          left={0}
+          right={0}
         >
           {/*
             On the map, back means "back to the list", not "leave the guide" — the map is a
@@ -154,17 +166,21 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
               }}
             />
 
-            {/*
-              Only on the map, and only for your own itineraries — the picker switches
-              between yours, so it has nothing to offer on a curated guide.
-            */}
-            {!!isMapView && !isEditorial && (
-              <ItineraryPicker
-                citySlug={itinerary.citySlug}
-                currentItineraryId={itinerary.internalID}
-                currentItineraryName={itinerary.title}
-              />
-            )}
+            <Flex flexDirection="row" alignItems="center" gap={1}>
+              {/*
+                Only on the map, and only for your own itineraries — the picker switches
+                between yours, so it has nothing to offer on a curated guide.
+              */}
+              {!!isMapView && !isEditorial && (
+                <ItineraryPicker
+                  citySlug={itinerary.citySlug}
+                  currentItineraryId={itinerary.internalID}
+                  currentItineraryName={itinerary.title}
+                />
+              )}
+
+              <ItineraryShareButton itinerary={itinerary} />
+            </Flex>
           </Flex>
         </Flex>
 
@@ -239,17 +255,20 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
 }
 
 export const itineraryQuery = graphql`
-  query ItineraryScreenQuery($id: String!, $citySlug: String!) {
+  query ItineraryScreenQuery($id: String!, $citySlug: String!, $shareToken: String) {
     city(slug: $citySlug) {
       name
     }
 
-    itinerary(id: $id) {
+    itinerary(id: $id, shareToken: $shareToken) {
       internalID
       isCurated
       citySlug
       title
+      slug
+      shareToken
       ...ItineraryHeader_itinerary
+      ...ItineraryShareButton_itinerary
 
       sections {
         internalID

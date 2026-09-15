@@ -3,6 +3,10 @@ import { CityItinerariesScreenQueryRenderer } from "app/Scenes/CityGuide/Screens
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
+import RNShare from "react-native-share"
+import { MockPayloadGenerator } from "relay-test-utils"
+
+jest.mock("react-native-share", () => ({ open: jest.fn() }))
 
 describe("CityItineraries", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -15,6 +19,8 @@ describe("CityItineraries", () => {
     slug: null,
     title: name,
     description: "If time, check out Borough Market",
+    isCurated: false,
+    shareToken: null,
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     stopsCount: stopsCounts.reduce((a, b) => a + b, 0),
     sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
@@ -52,6 +58,44 @@ describe("CityItineraries", () => {
     renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
 
     expect(await screen.findByLabelText("Share London Oct 2026")).toBeOnTheScreen()
+  })
+
+  it("mints a share token and shares the link when pressed", async () => {
+    const view = renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+
+    fireEvent.press(await screen.findByLabelText("Share London Oct 2026"))
+
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+        "useItineraryShareMintTokenMutation"
+      )
+    )
+    expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
+      id: "a",
+      generateShareToken: true,
+    })
+
+    view.env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Mutation: () => ({
+          updateItinerary: {
+            responseOrError: {
+              __typename: "ItineraryMutationSuccess",
+              itinerary: { internalID: "a", shareToken: "abc123" },
+            },
+          },
+        }),
+      })
+    )
+
+    await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
+    expect(RNShare.open).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: expect.stringContaining(
+          "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/a?shareToken=abc123"
+        ),
+      })
+    )
   })
 
   it("says so when the user has no itineraries here", async () => {
