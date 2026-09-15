@@ -274,6 +274,7 @@ export const itineraryQuery = graphql`
           eventType
           image {
             url(version: "small")
+            blurhash
           }
 
           event {
@@ -306,6 +307,7 @@ export const itineraryQuery = graphql`
               isFreeAdmission
               coverImage {
                 url
+                blurhash
               }
               partner {
                 ... on Partner {
@@ -330,6 +332,7 @@ export const itineraryQuery = graphql`
               href
               image {
                 url
+                blurhash
               }
               location {
                 name
@@ -355,6 +358,7 @@ export const itineraryQuery = graphql`
                 profile {
                   image {
                     url
+                    blurhash
                   }
                 }
               }

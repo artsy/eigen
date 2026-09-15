@@ -4,7 +4,7 @@ import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary
 import {
   itineraryStopCategory,
   itineraryStopCoordinates,
-  itineraryStopImageUrl,
+  itineraryStopImage,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -40,7 +40,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
   cityName,
 }) => {
   const title = itineraryStopTitle(stop)
-  const imageUrl = itineraryStopImageUrl(stop)
+  const image = itineraryStopImage(stop)
   const saveTarget = itineraryStopSaveTarget(stop)
   const coordinates = itineraryStopCoordinates(stop)
   const card = stopCardFields(stop, stop.item)
@@ -89,10 +89,11 @@ export const ItineraryStopRow: React.FC<Props> = ({
           flatten the row.
         */}
         <Flex testID="itinerary-stop-row-content" flexDirection="row" alignItems="center" gap={1}>
-          {!!imageUrl && (
+          {!!image?.url && (
             <Image
               testID="itinerary-stop-image"
-              src={imageUrl}
+              src={image.url}
+              blurhash={image.blurhash}
               width={IMAGE_WIDTH}
               height={IMAGE_HEIGHT}
               resizeMode="cover"

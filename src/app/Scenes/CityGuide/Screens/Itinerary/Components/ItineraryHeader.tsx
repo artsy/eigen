@@ -29,6 +29,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
               testID="itinerary-hero-image"
               src={heroImage.url}
               blurhash={heroImage.blurhash}
+              aspectRatio={heroImage.aspectRatio}
               resizeMode="cover"
               style={{ width: "100%", height: HERO_HEIGHT }}
             />
@@ -111,6 +112,7 @@ const fragment = graphql`
       url(version: "large")
       height
       width
+      aspectRatio
       blurhash
     }
   }

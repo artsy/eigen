@@ -94,24 +94,40 @@ export const itineraryStopEvent = (
  * The entity's own picture, for a stop with no uploaded one. `ItineraryStop.image` is only
  * set when the curator uploaded something, so without this every app-created stop shows an empty box.
  */
-const itemImageUrl = (item: ItineraryStop["item"]) => {
+const itemImage = (
+  item: ItineraryStop["item"]
+): { url: string; blurhash?: string | null } | undefined => {
   if (!item) return undefined
 
   switch (item.__typename) {
-    case "Show":
-      return item.coverImage?.url ?? undefined
-    case "Fair":
-      return item.image?.url ?? undefined
-    case "Location":
+    case "Show": {
+      const url = item.coverImage?.url
+      return url ? { url, blurhash: item.coverImage?.blurhash } : undefined
+    }
+    case "Fair": {
+      const url = item.image?.url
+      return url ? { url, blurhash: item.image?.blurhash } : undefined
+    }
+    case "Location": {
       // A location has no picture of its own; the gallery's profile is the nearest thing.
-      return item.partner?.profile?.image?.url ?? undefined
+      const image = item.partner?.profile?.image
+      const url = image?.url
+      return url ? { url, blurhash: image?.blurhash } : undefined
+    }
     default:
       return undefined
   }
 }
 
-export const itineraryStopImageUrl = (stop: ItineraryStop): string =>
-  stop.image?.url ?? itemImageUrl(stop.item) ?? ""
+export const itineraryStopImage = (
+  stop: ItineraryStop
+): { url: string; blurhash?: string | null } | null => {
+  if (stop.image?.url) {
+    return { url: stop.image.url, blurhash: stop.image.blurhash }
+  }
+
+  return itemImage(stop.item) ?? null
+}
 
 /**
  * Where the stop's entity is, for a stop with no coordinates of its own. A curator-typed
