@@ -29652,14 +29652,24 @@ type Partner implements Node {
   ): PartnerInquiryRequest
 
   """
-  The partner's inquiry response rate percentage (0-100) over the last 90 days
+  The partner's inquiry response rate percentage (0-100) over the trailing window (90 days by default)
   """
-  inquiryResponseRate: Float
+  inquiryResponseRate(
+    """
+    Size of the trailing window, in days, to compute the response rate over
+    """
+    daysInPast: Int = 90
+  ): Float
 
   """
-  The partner's average inquiry response time in minutes over the last 90 days
+  The partner's average inquiry response time in minutes over the trailing window (90 days by default)
   """
-  inquiryResponseTime: Int
+  inquiryResponseTime(
+    """
+    Size of the trailing window, in days, to compute the response time over
+    """
+    daysInPast: Int = 90
+  ): Int
 
   """
   A type-specific ID likely used as a database ID.
