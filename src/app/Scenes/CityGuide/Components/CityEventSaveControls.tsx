@@ -72,11 +72,7 @@ export const CityEventShowSaveControl: React.FC<Props> = ({
   )
 }
 
-/**
- * Save control for a fair. Following a fair is a profile follow in Gravity
- * (`me/followed_fairs.ts:24` filters on `owner_types: "Fair"`), so `id` and `internalID`
- * here are the fair's profile ids, not the fair's own.
- */
+/** Save control for a fair — following one is a profile follow, keyed by its profile id. */
 export const CityEventFairSaveControl: React.FC<Props> = ({
   id,
   internalID,
@@ -104,8 +100,6 @@ export const CityEventFairSaveControl: React.FC<Props> = ({
       isSaving={isInFlight}
       accessibilityLabel={accessibilityLabel(isSaved, name)}
       onPress={() => {
-        // Eigen already has fair-specific names at `track/schema.ts:276-277`. Using SaveShow
-        // for a fair would be reusing the wrong existing name, which is worse than inventing one.
         trackEvent({
           action_name: isSaved ? Schema.ActionNames.UnfollowFair : Schema.ActionNames.FollowFair,
           action_type: Schema.ActionTypes.Success,
@@ -118,13 +112,7 @@ export const CityEventFairSaveControl: React.FC<Props> = ({
   )
 }
 
-/**
- * Save control for a partner/gallery stop. Following a gallery is also a profile follow, but it
- * tracks under different names. `GalleryFollow` / `GalleryUnfollow` exist at
- * `utils/track/schema.ts:280-281` and are already used elsewhere in the app, by Onboarding, but
- * no City Guide surface sent them before this. `OwnerEntityTypes` has no `Gallery` value, so this
- * uses `Partner`, the type Metaphysics itself uses for a gallery.
- */
+/** Save control for a partner/gallery stop — also a profile follow, tracked under Partner. */
 export const CityEventPartnerSaveControl: React.FC<Props> = ({
   id,
   internalID,
