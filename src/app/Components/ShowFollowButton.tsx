@@ -7,7 +7,7 @@ import { FollowIconButton } from "app/Components/FollowIconButton"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFollowShow } from "app/utils/mutations/useFollowShow"
 import { Schema } from "app/utils/track"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -20,7 +20,7 @@ interface ShowFollowButtonProps extends BoxProps {
   variant?: "button" | "icon"
 }
 
-export const ShowFollowButton: FC<ShowFollowButtonProps> = ({
+export const ShowFollowButton: React.FC<ShowFollowButtonProps> = ({
   show: showProp,
   variant = "button",
   ...boxProps

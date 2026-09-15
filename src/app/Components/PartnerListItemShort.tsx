@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface PartnerListItemShortProps {
@@ -24,7 +24,7 @@ interface PartnerListItemShortProps {
   useIconFollowButton?: boolean
 }
 
-export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
+export const PartnerListItemShort: React.FC<PartnerListItemShortProps> = ({
   partner,
   onPress,
   disabledLocation,

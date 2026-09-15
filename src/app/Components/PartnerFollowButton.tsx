@@ -5,7 +5,7 @@ import { FollowIconButton } from "app/Components/FollowIconButton"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -18,7 +18,7 @@ interface PartnerFollowButtonProps {
   variant?: "button" | "icon"
 }
 
-export const PartnerFollowButton: FC<PartnerFollowButtonProps> = ({
+export const PartnerFollowButton: React.FC<PartnerFollowButtonProps> = ({
   partner,
   variant = "button",
 }) => {
@@ -77,7 +77,7 @@ interface PartnerFollowButtonQueryRendererProps {
   variant?: "button" | "icon"
 }
 
-export const PartnerFollowButtonQueryRenderer: FC<PartnerFollowButtonQueryRendererProps> = ({
+export const PartnerFollowButtonQueryRenderer: React.FC<PartnerFollowButtonQueryRendererProps> = ({
   partnerID,
   variant = "button",
 }) => {

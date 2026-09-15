@@ -5,7 +5,7 @@ import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { ActionNames, ActionTypes, OwnerEntityTypes } from "app/utils/track/schema"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -18,7 +18,7 @@ interface FairFollowButtonProps {
   variant?: "button" | "icon"
 }
 
-export const FairFollowButton: FC<FairFollowButtonProps> = ({ fair, variant = "button" }) => {
+export const FairFollowButton: React.FC<FairFollowButtonProps> = ({ fair, variant = "button" }) => {
   const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
