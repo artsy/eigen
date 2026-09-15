@@ -31,6 +31,20 @@ type AI {
   ): AIPromptTemplateConnection
 }
 
+"""
+A stable, client-safe description of what the agent is currently doing.
+"""
+enum AIAgentActivity {
+  FINDING_RECOMMENDATIONS
+  LOADING_ARTWORK_DETAILS
+  SEARCHING_ARTISTS
+  SEARCHING_ARTSY
+  SEARCHING_ARTWORKS
+  SEARCHING_FAIRS
+  SEARCHING_SHOWS
+  THINKING
+}
+
 union AIAgentEvent = AIAgentTextDelta | AIAgentToolCall | AIAgentToolResult | AIAgentTurnComplete
 
 input AIAgentMessageInput {
@@ -50,13 +64,27 @@ type AIAgentTextDelta {
 
 type AIAgentToolCall {
   """
-  Human-readable label, e.g. "Searching artists…".
+  Stable, client-safe activity for rendering localized progress UI.
+  """
+  activity: AIAgentActivity!
+
+  """
+  Developer-facing tool arguments, populated only when debug mode is enabled.
+  """
+  debugSummary: String
+
+  """
+  Generic human-readable label, e.g. "Searching for artists…".
   """
   summary: String
   toolName: String!
 }
 
 type AIAgentToolResult {
+  """
+  Developer-facing failure detail, populated only when debug mode is enabled.
+  """
+  debugSummary: String
   ok: Boolean!
   summary: String
   toolName: String!
@@ -82,6 +110,11 @@ input AIAgentTurnInput {
   Prior turns, owned and replayed by the client.
   """
   history: [AIAgentMessageInput!]
+
+  """
+  Request developer-facing tool-call details. Honored only where the server enables debug mode; ignored elsewhere.
+  """
+  includeDebugToolCalls: Boolean
 
   """
   The new user message.
