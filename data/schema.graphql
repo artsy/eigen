@@ -8551,6 +8551,22 @@ enum ChannelType {
 }
 
 type City {
+  """
+  A connection of City Guide events for this city
+  """
+  cityGuideEventsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+
+    """
+    Limit to events with this status
+    """
+    status: CityGuideEventStatus
+  ): CityGuideEventsConnection
   coordinates: LatLng
   fairsConnection(
     after: String
@@ -8598,6 +8614,108 @@ type City {
   ): ShowConnection
   slug: String!
   sponsoredContent: CitySponsoredContent
+}
+
+type CityGuideEvent {
+  citySlug: String!
+  description: String
+  endAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String!
+  heroImage: Image
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The city guide event's UUID
+  """
+  internalID: String!
+  itineraries: [Itinerary!]!
+  publishedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  slug: String!
+  startAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String!
+  subtitle: String
+  timeZone: String
+  title: String!
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String!
+}
+
+enum CityGuideEventStatus {
+  """
+  Already ended
+  """
+  CLOSED
+
+  """
+  Started, hasn't ended
+  """
+  CURRENT
+
+  """
+  Hasn't started yet
+  """
+  UPCOMING
+}
+
+"""
+A connection to a list of items.
+"""
+type CityGuideEventsConnection {
+  """
+  A list of edges.
+  """
+  edges: [CityGuideEventsEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type CityGuideEventsEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: CityGuideEvent
 }
 
 type CitySponsoredContent {
@@ -32771,6 +32889,16 @@ type Query {
     """
     slug: String
   ): City
+
+  """
+  A City Guide event, e.g. "London Art Week"
+  """
+  cityGuideEvent(
+    """
+    The internal ID or slug of the City Guide Event
+    """
+    id: String!
+  ): CityGuideEvent
   collection(
     """
     The ID or slug of the Collection
@@ -42657,6 +42785,16 @@ type Viewer {
     """
     slug: String
   ): City
+
+  """
+  A City Guide event, e.g. "London Art Week"
+  """
+  cityGuideEvent(
+    """
+    The internal ID or slug of the City Guide Event
+    """
+    id: String!
+  ): CityGuideEvent
   collection(
     """
     The ID or slug of the Collection
