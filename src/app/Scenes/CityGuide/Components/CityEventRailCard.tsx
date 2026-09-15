@@ -8,10 +8,6 @@ import { Image as RNImage } from "react-native"
  * 150 × 149 inside a 150 × 150 box — a rounding artifact, not a 1px gap).
  */
 const CARD_SIZE = 150
-/**
- * The arch the designs put on Opening Soon images. 80 is past half the card's width, so it
- * renders as a full semicircle — React Native clamps a corner radius to half the side.
- */
 const ARCH_RADIUS = 80
 
 interface Props {
@@ -25,11 +21,6 @@ interface Props {
   admission?: string
   /** Arches the top of the image. The Opening Soon rail is the only one that asks for it. */
   archTopImage?: boolean
-  /**
-   * A `CityEventShowSaveControl` or `CityEventFairSaveControl`, injected so this card holds no
-   * Relay dependency. Rendered as a sibling of the links below, never inside one — the same
-   * arrangement `CityEventRow` uses, so tapping it saves instead of navigating.
-   */
   saveControl?: React.ReactNode
 }
 
@@ -69,7 +60,6 @@ export const CityEventRailCard: React.FC<Props> = ({
       <Flex flexDirection="row" alignItems="flex-start">
         <RouterLink to={href} disablePrefetch style={{ flex: 1 }}>
           <Flex flex={1}>
-            {/* One line, as the designs show ("One Fly Makes No S…"). */}
             <Text variant="xs" weight="medium" numberOfLines={1}>
               {title}
             </Text>
