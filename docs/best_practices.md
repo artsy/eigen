@@ -159,6 +159,7 @@ We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomi
 
 - Type function components as `React.FC<Props>` with `import React from "react"`, rather than importing `FC` by name from `"react"` and writing `Component: FC<Props>`.
 - Prefer `Touchable` from `@artsy/palette-mobile` over React Native's `TouchableOpacity` / `TouchableHighlight`, unless there's a specific reason not to (e.g. a third-party library needs a native touchable for its own gesture handling).
+- Prefer an existing `@artsy/palette-mobile` component over hand-building a visual equivalent, even if the palette one doesn't match the Figma designs pixel-for-pixel.
 
 ## TypeScript
 

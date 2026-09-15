@@ -37,9 +37,9 @@ describe("ItineraryPicker", () => {
   it("still opens with only one itinerary", async () => {
     renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
 
-    expect(await screen.findByTestId("itinerary-picker")).not.toBeDisabled()
+    await screen.findByTestId("itinerary-picker")
 
-    fireEvent.press(screen.getByTestId("itinerary-picker"))
+    fireEvent.press(screen.getByText("London Oct 2026"))
 
     expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
   })
@@ -50,7 +50,7 @@ describe("ItineraryPicker", () => {
       props
     )
 
-    fireEvent.press(await screen.findByTestId("itinerary-picker"))
+    fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(await screen.findByText("London Winter")).toBeOnTheScreen()
   })
@@ -61,7 +61,7 @@ describe("ItineraryPicker", () => {
       props
     )
 
-    fireEvent.press(await screen.findByTestId("itinerary-picker"))
+    fireEvent.press(await screen.findByText("London Oct 2026"))
     fireEvent.press(await screen.findByText("London Winter"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/b")

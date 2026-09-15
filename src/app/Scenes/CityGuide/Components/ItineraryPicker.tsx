@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Pill, Text } from "@artsy/palette-mobile"
 import { ItineraryPickerQuery } from "__generated__/ItineraryPickerQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
@@ -9,12 +9,6 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-
-const CHEVRON_SIZE = 18
-/** The designs' pill: 1px border, fully rounded, 30 tall. */
-const PILL_HEIGHT = 30
-const PILL_RADIUS = 50
-const PILL_PADDING = 15
 
 interface Props {
   citySlug: string
@@ -35,35 +29,15 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
   return (
     <>
-      <Touchable
+      <Pill
         testID="itinerary-picker"
-        accessibilityRole="button"
-        accessibilityLabel={
-          canSwitch ? `Switch itinerary, currently ${currentItineraryName}` : currentItineraryName
-        }
+        variant="default"
+        Icon={ChevronDownIcon}
         disabled={!canSwitch}
         onPress={() => setIsOpen(true)}
       >
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="center"
-          gap={0.5}
-          height={PILL_HEIGHT}
-          // The designs' 15, which is not a palette spacing unit.
-          style={{ paddingHorizontal: PILL_PADDING }}
-          border="1px solid"
-          borderColor="mono100"
-          borderRadius={PILL_RADIUS}
-          backgroundColor="mono0"
-        >
-          <Text variant="xs" numberOfLines={1}>
-            {currentItineraryName}
-          </Text>
-
-          <ChevronDownIcon width={CHEVRON_SIZE} height={CHEVRON_SIZE} />
-        </Flex>
-      </Touchable>
+        {currentItineraryName}
+      </Pill>
 
       <AutoHeightBottomSheet visible={isOpen} onDismiss={() => setIsOpen(false)}>
         <Flex py={2}>
