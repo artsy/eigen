@@ -3,6 +3,13 @@ import { CustomStopScreen } from "app/Scenes/CityGuide/Screens/CustomStop/Custom
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 
+// React-test-renderer has issues with memo components, so we need to mock the palette-mobile
+// Image component. See https://github.com/facebook/react/issues/17301
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
+
 const STOP = {
   internalID: "stop-1",
   title: "Coffee at London Cafe",

@@ -1,11 +1,9 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { CityGuideCuratedListsQuery } from "__generated__/CityGuideCuratedListsQuery.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-// TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { Image as RNImage } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 80
@@ -34,13 +32,12 @@ const ListItem = ({ item, citySlug }: { item: CuratedList; citySlug: string }) =
     >
       <Flex flexDirection="row" gap={1}>
         {item.imageUrl ? (
-          <RNImage
+          <Image
             testID="curated-list-image"
             src={item.imageUrl}
             width={IMAGE_SIZE}
             height={IMAGE_SIZE}
             resizeMode="cover"
-            accessibilityIgnoresInvertColors
           />
         ) : (
           // Gravity can hold an image row whose upload Gemini never processed, so every

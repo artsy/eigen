@@ -1,5 +1,5 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { CustomStopScreenQuery } from "__generated__/CustomStopScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -13,9 +13,8 @@ import {
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-// TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 import { useCallback, useRef, useState } from "react"
-import { Image as RNImage, RefreshControl } from "react-native"
+import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 const HERO_HEIGHT = 300
@@ -123,11 +122,10 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
         >
           {stop.imageUrl ? (
-            <RNImage
+            <Image
               testID="custom-stop-image"
               src={stop.imageUrl}
               resizeMode="cover"
-              accessibilityIgnoresInvertColors
               style={{ width: "100%", height: HERO_HEIGHT }}
             />
           ) : (

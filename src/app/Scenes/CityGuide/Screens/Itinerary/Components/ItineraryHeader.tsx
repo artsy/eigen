@@ -1,10 +1,8 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import { Itinerary } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { Image as RNImage } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-// TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
 
 const HERO_HEIGHT = 300
 const NO_ICON_SIZE = 40
@@ -14,11 +12,10 @@ export const ItineraryHeader: React.FC<{ itinerary: Itinerary }> = ({ itinerary 
     <Flex>
       <Flex height={HERO_HEIGHT} justifyContent="flex-end">
         {itinerary.heroImageUrl ? (
-          <RNImage
+          <Image
             testID="itinerary-hero-image"
             src={itinerary.heroImageUrl}
             resizeMode="cover"
-            accessibilityIgnoresInvertColors
             style={{ position: "absolute", width: "100%", height: HERO_HEIGHT }}
           />
         ) : (

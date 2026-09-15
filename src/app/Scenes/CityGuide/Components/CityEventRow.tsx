@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { Image as RNImage } from "react-native"
 
 const IMAGE_SIZE = 60
 
@@ -29,12 +28,7 @@ export const CityEventRow: React.FC<Props> = ({
       <RouterLink to={href ?? undefined} disablePrefetch style={{ flex: 1 }}>
         <Flex flexDirection="row" alignItems="center" gap={1} flex={1}>
           {!!imageURL && (
-            <RNImage
-              source={{ uri: imageURL }}
-              width={IMAGE_SIZE}
-              height={IMAGE_SIZE}
-              resizeMode="cover"
-            />
+            <Image src={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} resizeMode="cover" />
           )}
 
           <Flex flex={1}>

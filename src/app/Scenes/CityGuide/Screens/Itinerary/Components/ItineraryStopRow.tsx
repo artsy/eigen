@@ -1,11 +1,9 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { RouterLink } from "app/system/navigation/RouterLink"
-// TODO: Replace with Image from @artsy/palette-mobile once we get the data from the API
-import { Image as RNImage } from "react-native"
 
 /** The designs' card image: taller than square, at 60 × 70. */
 const IMAGE_WIDTH = 60
@@ -83,13 +81,12 @@ export const ItineraryStopRow: React.FC<Props> = ({
           flatten the row.
         */}
         <Flex testID="itinerary-stop-row-content" flexDirection="row" alignItems="center" gap={1}>
-          <RNImage
+          <Image
             testID="itinerary-stop-image"
             src={stop.imageUrl}
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}
             resizeMode="cover"
-            accessibilityIgnoresInvertColors
           />
 
           {/*

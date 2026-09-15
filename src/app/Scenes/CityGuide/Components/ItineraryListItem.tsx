@@ -1,9 +1,7 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { pluralize } from "app/utils/pluralize"
-// TODO: Replace with Image from @artsy/palette-mobile once the itinerary hero is a real image.
-import { Image as RNImage } from "react-native"
 
 const IMAGE_SIZE = 60
 const CARD_RADIUS = 8
@@ -59,14 +57,13 @@ export const ItineraryListItem: React.FC<Props> = ({
     >
       <Flex flexDirection="row" alignItems="center" gap={1} pr={isCard ? 0.5 : 0}>
         {imageUrl ? (
-          <RNImage
+          <Image
             testID="itinerary-list-item-image"
-            source={{ uri: imageUrl }}
+            src={imageUrl}
+            width={IMAGE_SIZE}
+            height={IMAGE_SIZE}
             resizeMode="cover"
-            accessibilityIgnoresInvertColors
             style={{
-              width: IMAGE_SIZE,
-              height: IMAGE_SIZE,
               // Only the left corners, so the image meets the card's edge flush.
               borderTopLeftRadius: isCard ? CARD_RADIUS : 0,
               borderBottomLeftRadius: isCard ? CARD_RADIUS : 0,

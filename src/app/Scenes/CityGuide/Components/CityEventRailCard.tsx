@@ -1,7 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
-// TODO: Replace with Image from @artsy/palette-mobile once the images come from the API.
-import { Image as RNImage } from "react-native"
 
 /**
  * Both the card and its image box, which the designs keep square (Figma reports the image as
@@ -41,14 +39,13 @@ export const CityEventRailCard: React.FC<Props> = ({
   return (
     <Flex width={CARD_SIZE} gap={0.5}>
       <RouterLink to={href} disablePrefetch>
-        <RNImage
+        <Image
           testID="city-event-rail-card-image"
-          source={{ uri: image }}
+          src={image}
+          width={CARD_SIZE}
+          height={CARD_SIZE}
           resizeMode="cover"
-          accessibilityIgnoresInvertColors
           style={{
-            width: CARD_SIZE,
-            height: CARD_SIZE,
             borderTopLeftRadius: archTopImage ? ARCH_RADIUS : 0,
             borderTopRightRadius: archTopImage ? ARCH_RADIUS : 0,
           }}

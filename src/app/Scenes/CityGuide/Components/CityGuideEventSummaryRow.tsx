@@ -1,8 +1,7 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { pluralize } from "app/utils/pluralize"
-import { Image as RNImage } from "react-native"
 
 const IMAGE_SIZE = 44
 
@@ -55,12 +54,7 @@ export const CityGuideEventSummaryRow: React.FC<Props> = ({
       >
         <Flex flexDirection="row" gap={1} alignItems="center">
           {!!imageURL && (
-            <RNImage
-              source={{ uri: imageURL }}
-              width={IMAGE_SIZE}
-              height={IMAGE_SIZE}
-              resizeMode="cover"
-            />
+            <Image src={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} resizeMode="cover" />
           )}
 
           <Flex flex={1}>

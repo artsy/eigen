@@ -1,11 +1,9 @@
-import { Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Image, Input, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useState } from "react"
-// TODO: Replace with Image from @artsy/palette-mobile once the cover is a real image.
-import { Image as RNImage } from "react-native"
 import { graphql, useMutation } from "react-relay"
 
 /** The designs' cap on the notes field, shown as a counter beneath it. */
@@ -102,11 +100,11 @@ export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerar
             <Text variant="sm">Cover image</Text>
 
             {!!itinerary.coverImageUrl && (
-              <RNImage
-                source={{ uri: itinerary.coverImageUrl }}
+              <Image
+                src={itinerary.coverImageUrl}
+                width={COVER_WIDTH}
+                height={COVER_HEIGHT}
                 resizeMode="cover"
-                accessibilityIgnoresInvertColors
-                style={{ width: COVER_WIDTH, height: COVER_HEIGHT }}
               />
             )}
 
