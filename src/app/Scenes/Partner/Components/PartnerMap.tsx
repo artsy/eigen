@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
@@ -6,7 +6,6 @@ import { PartnerMap_location$data } from "__generated__/PartnerMap_location.grap
 import { Pin } from "app/Components/Icons/Pin"
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -32,7 +31,7 @@ const PartnerMap: React.FC<{
         {city}
       </Text>
       <Spacer y={0.5} />
-      <TouchableOpacity
+      <Touchable
         accessibilityRole="button"
         onPress={() =>
           showActionSheetWithOptions(
@@ -72,7 +71,7 @@ const PartnerMap: React.FC<{
             )}
           </Box>
         </MapWrapper>
-      </TouchableOpacity>
+      </Touchable>
     </Box>
   )
 }

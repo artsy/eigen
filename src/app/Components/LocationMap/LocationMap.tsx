@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import MapboxGL from "@rnmapbox/maps"
@@ -7,7 +7,7 @@ import { LocationMap_location$data } from "__generated__/LocationMap_location.gr
 import { Pin } from "app/Components/Icons/Pin"
 import { __unsafe__useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
-import { Linking, TouchableOpacity, View } from "react-native"
+import { Linking, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -223,7 +223,7 @@ export const LocationMap: React.FC<Props> = (props) => {
   }
 
   return (
-    <TouchableOpacity
+    <Touchable
       accessibilityRole="button"
       accessibilityLabel="map"
       onPress={() =>
@@ -250,7 +250,7 @@ export const LocationMap: React.FC<Props> = (props) => {
         </MapboxGL.MapView>
         {renderAddress()}
       </MapWrapper>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
 
