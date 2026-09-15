@@ -1,18 +1,31 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideEventsTestQuery } from "__generated__/CityGuideEventsTestQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("CityGuideEvents", () => {
   // Wrapped in the provider the plus needs: without one it renders no plus at all, which is
   // what happens on any screen that forgets to mount it.
-  const { renderWithRelay } = setupTestWrapper({
+  const { renderWithRelay } = setupTestWrapper<
+    CityGuideEventsTestQuery,
+    { citySlug: string; cityName: string }
+  >({
     Component: (componentProps: React.ComponentProps<typeof CityGuideEvents>) => (
       <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
         <CityGuideEvents {...componentProps} />
       </AddToItineraryProvider>
     ),
+    query: graphql`
+      query CityGuideEventsTestQuery($citySlug: String!, $first: Int!) @relay_test_operation {
+        city(slug: $citySlug) {
+          ...CityGuideEvents_city @arguments(first: $first)
+        }
+      }
+    `,
+    variables: { citySlug: "london-united-kingdom", first: 10 },
   })
   const props = { citySlug: "london-united-kingdom", cityName: "London" }
 

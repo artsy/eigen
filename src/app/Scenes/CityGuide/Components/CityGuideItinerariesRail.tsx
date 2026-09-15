@@ -1,33 +1,26 @@
 import { Flex } from "@artsy/palette-mobile"
-import { CityGuideItinerariesRailQuery } from "__generated__/CityGuideItinerariesRailQuery.graphql"
+import { CityGuideItinerariesRail_me$key } from "__generated__/CityGuideItinerariesRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
-import {
-  CITY_GUIDE_ITINERARIES_RAIL_SIZE,
-  cityGuideItinerariesRailQuery,
-} from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
-import { useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const RAIL_GAP = 10
 
 interface Props {
   citySlug: string
+  me: CityGuideItinerariesRail_me$key | null | undefined
 }
 
-const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
+export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
-  const data = useLazyLoadQuery<CityGuideItinerariesRailQuery>(cityGuideItinerariesRailQuery, {
-    citySlug,
-    first: CITY_GUIDE_ITINERARIES_RAIL_SIZE,
-  })
+  const me = useFragment(fragment, meRef)
 
-  const itineraries = extractNodes(data.me?.itinerariesConnection)
+  const itineraries = extractNodes(me?.itinerariesConnection)
 
   // Nothing of the user's own for this city renders no band at all, the same way the summary
   // row it replaces hid itself at a count of zero.
@@ -80,10 +73,29 @@ const ItinerariesRail: React.FC<Props> = ({ citySlug }) => {
   )
 }
 
-export const CityGuideItinerariesRail = withSuspense({
-  Component: ItinerariesRail,
-  // Mid-scroll on the home screen, so it stays absent until it has rows rather than
-  // reserving space and shifting everything below it.
-  LoadingFallback: () => null,
-  ErrorFallback: NoFallback,
-})
+/**
+ * Shared with `refetchCityGuideItinerariesRail` (`CityGuideItinerariesRailQuery.ts`), so every
+ * caller that changes an itinerary's stops reads it back through the exact shape the rail
+ * itself renders from.
+ */
+const fragment = graphql`
+  fragment CityGuideItinerariesRail_me on Me
+  @argumentDefinitions(citySlug: { type: "String!" }, first: { type: "Int!" }) {
+    itinerariesConnection(citySlug: $citySlug, first: $first) {
+      edges {
+        node {
+          internalID
+          slug
+          title
+          heroImage {
+            url(version: "small")
+          }
+          stopsCount
+          sections {
+            stopsCount
+          }
+        }
+      }
+    }
+  }
+`

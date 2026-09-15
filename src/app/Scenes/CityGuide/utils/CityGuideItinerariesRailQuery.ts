@@ -6,28 +6,13 @@ import { Environment } from "relay-runtime"
 export const CITY_GUIDE_ITINERARIES_RAIL_SIZE = 10
 
 /**
- * Shared with `refetchCityGuideItinerariesRail` below, so every caller that changes an
- * itinerary's stops reads it back through the exact query the rail itself uses.
+ * Reads back through the rail's own fragment (`CityGuideItinerariesRail_me`), so a refetch
+ * here writes exactly the records the rail renders from, whether or not it's mounted.
  */
 export const cityGuideItinerariesRailQuery = graphql`
   query CityGuideItinerariesRailQuery($citySlug: String!, $first: Int!) {
     me {
-      itinerariesConnection(citySlug: $citySlug, first: $first) {
-        edges {
-          node {
-            internalID
-            slug
-            title
-            heroImage {
-              url(version: "small")
-            }
-            stopsCount
-            sections {
-              stopsCount
-            }
-          }
-        }
-      }
+      ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
     }
   }
 `

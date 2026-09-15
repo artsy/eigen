@@ -9,25 +9,22 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import {
-  CityGuideEventGuidesQuery,
-  CityGuideEventGuidesQuery$data,
-} from "__generated__/CityGuideEventGuidesQuery.graphql"
+  CityGuideEventGuides_city$data,
+  CityGuideEventGuides_city$key,
+} from "__generated__/CityGuideEventGuides_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEventDateRange"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 
 const IMAGE_SIZE = 70
 const HERO_HEIGHT = 198
-const PAGE_SIZE = 10
 const NO_ICON_SIZE = 24
 const HERO_NO_ICON_SIZE = 40
 
-type CityGuideEventsConnection = NonNullable<
-  CityGuideEventGuidesQuery$data["city"]
->["cityGuideEventsConnection"]
+type CityGuideEventsConnection =
+  NonNullable<CityGuideEventGuides_city$data>["cityGuideEventsConnection"]
 
 type CityGuideEventEdge = NonNullable<
   NonNullable<NonNullable<CityGuideEventsConnection>["edges"]>[number]
@@ -158,10 +155,15 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
   )
 }
 
-const EventGuides = ({ citySlug }: { citySlug: string }) => {
-  const data = useLazyLoadQuery<CityGuideEventGuidesQuery>(Query, { citySlug, first: PAGE_SIZE })
+interface Props {
+  citySlug: string
+  city: CityGuideEventGuides_city$key | null | undefined
+}
 
-  const events = extractNodes(data.city?.cityGuideEventsConnection)
+export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, city: cityRef }) => {
+  const city = useFragment(fragment, cityRef)
+
+  const events = extractNodes(city?.cityGuideEventsConnection)
 
   // Cities without a current city guide event render nothing at all rather than an empty
   // dark band.
@@ -183,31 +185,29 @@ const EventGuides = ({ citySlug }: { citySlug: string }) => {
   )
 }
 
-const Query = graphql`
-  query CityGuideEventGuidesQuery($citySlug: String!, $first: Int!) {
-    city(slug: $citySlug) {
-      cityGuideEventsConnection(first: $first, status: CURRENT) {
-        edges {
-          node {
+const fragment = graphql`
+  fragment CityGuideEventGuides_city on City @argumentDefinitions(first: { type: "Int!" }) {
+    cityGuideEventsConnection(first: $first, status: CURRENT) {
+      edges {
+        node {
+          internalID
+          title
+          subtitle
+          startAt
+          endAt
+          heroImage {
+            url(version: "large")
+          }
+          itineraries {
             internalID
-            title
-            subtitle
-            startAt
-            endAt
-            heroImage {
-              url(version: "large")
-            }
-            itineraries {
+            position
+            itinerary {
               internalID
-              position
-              itinerary {
-                internalID
-                slug
-                title
-                authorName
-                heroImage {
-                  url(version: "small")
-                }
+              slug
+              title
+              authorName
+              heroImage {
+                url(version: "small")
               }
             }
           }
@@ -216,13 +216,3 @@ const Query = graphql`
     }
   }
 `
-
-export const CityGuideEventGuides = withSuspense({
-  Component: EventGuides,
-  // The section sits mid-scroll on the City Guide home, so it stays absent until it has
-  // rows rather than reserving space for a spinner and shifting everything below it.
-  // `withSuspense` only accepts `NoFallback` for the error slot, so the loading one is an
-  // explicit empty component.
-  LoadingFallback: () => null,
-  ErrorFallback: NoFallback,
-})

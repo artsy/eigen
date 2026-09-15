@@ -1,10 +1,26 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideItinerariesRailTestQuery } from "__generated__/CityGuideItinerariesRailTestQuery.graphql"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("CityGuideItinerariesRail", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: CityGuideItinerariesRail })
+  const { renderWithRelay } = setupTestWrapper<
+    CityGuideItinerariesRailTestQuery,
+    { citySlug: string }
+  >({
+    Component: CityGuideItinerariesRail,
+    query: graphql`
+      query CityGuideItinerariesRailTestQuery($citySlug: String!, $first: Int!)
+      @relay_test_operation {
+        me {
+          ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
+        }
+      }
+    `,
+    variables: { citySlug: "london-united-kingdom", first: 10 },
+  })
   const props = { citySlug: "london-united-kingdom" }
 
   const itinerary = (internalID: string, name: string, stopsCounts: number[]) => ({

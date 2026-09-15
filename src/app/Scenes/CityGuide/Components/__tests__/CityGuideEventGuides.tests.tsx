@@ -1,7 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideEventGuidesTestQuery } from "__generated__/CityGuideEventGuidesTestQuery.graphql"
 import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
 // Image component. See https://github.com/facebook/react/issues/17301
@@ -11,7 +13,20 @@ jest.mock("@artsy/palette-mobile", () => ({
 }))
 
 describe("CityGuideEventGuides", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: CityGuideEventGuides })
+  const { renderWithRelay } = setupTestWrapper<CityGuideEventGuidesTestQuery, { citySlug: string }>(
+    {
+      Component: CityGuideEventGuides,
+      query: graphql`
+        query CityGuideEventGuidesTestQuery($citySlug: String!, $first: Int!)
+        @relay_test_operation {
+          city(slug: $citySlug) {
+            ...CityGuideEventGuides_city @arguments(first: $first)
+          }
+        }
+      `,
+      variables: { citySlug: "london-united-kingdom", first: 10 },
+    }
+  )
   const props = { citySlug: "london-united-kingdom" }
 
   const itinerary = (slug: string | null, name: string, position = 0) => ({

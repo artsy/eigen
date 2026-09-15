@@ -1,22 +1,15 @@
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
-import { CityGuideEventsQuery } from "__generated__/CityGuideEventsQuery.graphql"
+import { CityGuideEvents_city$key } from "__generated__/CityGuideEvents_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
 import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
 import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-
-/**
- * Enough to fill a rail the user can scroll a fair way, without paying for a hundred records
- * the home screen will never show. The section header leads to the full list.
- */
-const RAIL_SIZE = 10
 
 /** The 10pt gap the designs put between cards. */
 const RAIL_GAP = 10
@@ -34,6 +27,7 @@ const railContentStyle = { paddingHorizontal: 20 }
 interface Props {
   citySlug: string
   cityName: string
+  city: CityGuideEvents_city$key | null | undefined
 }
 
 /** The designs show admission as words, not a boolean. Absent when the server does not know. */
@@ -84,9 +78,9 @@ const EventRail = <T,>({
   )
 }
 
-const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
+export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cityRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
-  const data = useLazyLoadQuery<CityGuideEventsQuery>(Query, { citySlug, first: RAIL_SIZE })
+  const city = useFragment(fragment, cityRef)
 
   const sectionHref = (section: CityEventSectionKey) => `/city-guide/${citySlug}/events/${section}`
 
@@ -100,9 +94,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
     })
   }
 
-  const fairs = extractNodes(data.city?.fairsConnection)
-  const currentShows = extractNodes(data.city?.currentShows)
-  const openingShows = extractNodes(data.city?.openingShows)
+  const fairs = extractNodes(city?.fairsConnection)
+  const currentShows = extractNodes(city?.currentShows)
+  const openingShows = extractNodes(city?.openingShows)
 
   return (
     <Join separator={<Spacer y={2} />}>
@@ -207,77 +201,67 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
  * is about when a show opens, and the designs show one date. Formatting stays on the server,
  * through Metaphysics' own `format` argument.
  */
-const Query = graphql`
-  query CityGuideEventsQuery($citySlug: String!, $first: Int!) {
-    city(slug: $citySlug) {
-      fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
-        edges {
-          node {
+const fragment = graphql`
+  fragment CityGuideEvents_city on City @argumentDefinitions(first: { type: "Int!" }) {
+    fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
+      edges {
+        node {
+          internalID
+          name
+          href
+          image {
+            url
+          }
+          profile {
+            id
             internalID
-            name
-            href
-            image {
-              url
-            }
-            profile {
-              id
-              internalID
-              isFollowed
-            }
+            isFollowed
           }
         }
       }
+    }
 
-      currentShows: showsConnection(
-        first: $first
-        status: RUNNING
-        sort: START_AT_ASC
-        includeStubShows: false
-      ) {
-        edges {
-          node {
-            id
-            internalID
-            name
-            href
-            isFollowed
-            exhibitionPeriod
-            isFreeAdmission
-            coverImage {
-              url
-            }
+    currentShows: showsConnection(
+      first: $first
+      status: RUNNING
+      sort: START_AT_ASC
+      includeStubShows: false
+    ) {
+      edges {
+        node {
+          id
+          internalID
+          name
+          href
+          isFollowed
+          exhibitionPeriod
+          isFreeAdmission
+          coverImage {
+            url
           }
         }
       }
+    }
 
-      openingShows: showsConnection(
-        first: $first
-        status: UPCOMING
-        dayThreshold: 14
-        sort: START_AT_ASC
-      ) {
-        edges {
-          node {
-            id
-            internalID
-            name
-            href
-            isFollowed
-            opensAt: startAt(format: "MMM D, YYYY")
-            coverImage {
-              url
-            }
+    openingShows: showsConnection(
+      first: $first
+      status: UPCOMING
+      dayThreshold: 14
+      sort: START_AT_ASC
+    ) {
+      edges {
+        node {
+          id
+          internalID
+          name
+          href
+          isFollowed
+          opensAt: startAt(format: "MMM D, YYYY")
+          coverImage {
+            url
           }
         }
       }
     }
   }
 `
-
-export const CityGuideEvents = withSuspense({
-  Component: CityGuideEventsSections,
-  // The sections sit mid-scroll on the home screen, so they stay absent until they have
-  // data rather than reserving space and shifting everything below.
-  LoadingFallback: () => null,
-  ErrorFallback: NoFallback,
-})
