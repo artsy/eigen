@@ -1,5 +1,5 @@
 import { EditIcon, ShareIcon } from "@artsy/icons/native"
-import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
 import { CityItineraries_me$key } from "__generated__/CityItineraries_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -12,7 +12,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { useState } from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SHARE_ICON_SIZE = 24
@@ -78,21 +77,21 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                     point, and this screen is the only place ownership is guaranteed — it
                     queries through `me`, while `Query.itinerary` exposes no ownership flag.
                   */}
-                  <TouchableOpacity
+                  <Touchable
                     testID="itinerary-edit"
                     accessibilityRole="button"
                     accessibilityLabel={`Edit ${item.title}`}
                     onPress={() => setEditing(item)}
                   >
                     <EditIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                  </TouchableOpacity>
+                  </Touchable>
 
                   {/*
                     Sharing needs a share token, which is `updateItinerary` with its token
                     flags — a mutation that throws today. Rendered and wired so the row does
                     not need rebuilding once it works.
                   */}
-                  <TouchableOpacity
+                  <Touchable
                     testID="itinerary-share"
                     accessibilityRole="button"
                     accessibilityLabel={`Share ${item.title}`}
@@ -101,7 +100,7 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
                     }}
                   >
                     <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                  </TouchableOpacity>
+                  </Touchable>
                 </Flex>
               }
             />

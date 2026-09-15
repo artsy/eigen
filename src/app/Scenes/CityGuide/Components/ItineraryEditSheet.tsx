@@ -1,11 +1,11 @@
-import { Button, Flex, Input, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useState } from "react"
 // TODO: Replace with Image from @artsy/palette-mobile once the cover is a real image.
-import { Image as RNImage, TouchableOpacity } from "react-native"
+import { Image as RNImage } from "react-native"
 import { graphql, useMutation } from "react-relay"
 
 /** The designs' cap on the notes field, shown as a counter beneath it. */
@@ -132,7 +132,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerar
           </Button>
 
           {/* Red and underlined, per the designs — a text link rather than a button. */}
-          <TouchableOpacity
+          <Touchable
             testID="itinerary-edit-delete"
             accessibilityRole="button"
             accessibilityLabel="Delete Itinerary"
@@ -142,7 +142,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerar
             <Text variant="sm" color="red100" textAlign="center" underline>
               Delete Itinerary
             </Text>
-          </TouchableOpacity>
+          </Touchable>
         </Flex>
       </Flex>
     </AutoHeightBottomSheet>

@@ -1,6 +1,5 @@
 import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
-import { Button, Flex } from "@artsy/palette-mobile"
-import { TouchableOpacity } from "react-native"
+import { Button, Flex, Touchable } from "@artsy/palette-mobile"
 
 /** List rows and the map card. The rails' designs call for a smaller 18. */
 const DEFAULT_ICON_SIZE = 24
@@ -50,7 +49,7 @@ export const CityGuideSaveButton: React.FC<Props> = ({
   }
 
   return (
-    <TouchableOpacity
+    <Touchable
       testID="city-guide-save-button"
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (isSaved ? "Saved" : "Save")}
@@ -74,6 +73,6 @@ export const CityGuideSaveButton: React.FC<Props> = ({
           />
         )}
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }

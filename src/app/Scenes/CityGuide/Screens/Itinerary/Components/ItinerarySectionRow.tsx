@@ -1,9 +1,8 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
-import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { useState } from "react"
-import { TouchableOpacity } from "react-native"
 
 interface Props {
   section: ItinerarySection
@@ -37,7 +36,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   return (
     <Flex>
       {!!showHeader && (
-        <TouchableOpacity
+        <Touchable
           testID="itinerary-section-header"
           accessibilityRole="button"
           accessibilityState={{ expanded: isExpanded }}
@@ -47,7 +46,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
             <Text variant="sm-display">{section.title}</Text>
             {isExpanded ? <ChevronUpIcon fill="mono60" /> : <ChevronDownIcon fill="mono60" />}
           </Flex>
-        </TouchableOpacity>
+        </Touchable>
       )}
 
       {!!isExpanded && (

@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryPickerQuery } from "__generated__/ItineraryPickerQuery.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
@@ -8,7 +8,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
 import { useState } from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const CHEVRON_SIZE = 18
@@ -37,7 +36,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
   return (
     <>
-      <TouchableOpacity
+      <Touchable
         testID="itinerary-picker"
         accessibilityRole="button"
         accessibilityLabel={
@@ -65,7 +64,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
 
           <ChevronDownIcon width={CHEVRON_SIZE} height={CHEVRON_SIZE} />
         </Flex>
-      </TouchableOpacity>
+      </Touchable>
 
       <AutoHeightBottomSheet visible={isOpen} onDismiss={() => setIsOpen(false)}>
         <Flex py={2}>
