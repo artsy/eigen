@@ -21,11 +21,8 @@ interface Props {
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
-  /**
-   * Renders the save control as the bare plus/tick instead of the labelled button. Opt-in,
-   * because this row appears on several screens and only the Saves tab's designs ask for it.
-   */
-  useIconSaveButton?: boolean
+  /** Renders the save control as the bare plus/tick instead of the labelled button. */
+  useAddToItinerary?: boolean
   isListItem?: boolean
 }
 
@@ -34,7 +31,7 @@ export const ShowItemRow: React.FC<Props> = ({
   onSaveStarted,
   onSaveEnded,
   shouldHideSaveButton,
-  useIconSaveButton,
+  useAddToItinerary,
   isListItem,
 }) => {
   const color = useColor()
@@ -122,7 +119,7 @@ export const ShowItemRow: React.FC<Props> = ({
             </Text>
           )}
         </Flex>
-        {!shouldHideSaveButton && !!useIconSaveButton && (
+        {!shouldHideSaveButton && !!useAddToItinerary && (
           <FollowIconButton
             testID="show-item-row-follow-icon"
             isFollowed={!!show.is_followed}
@@ -132,7 +129,7 @@ export const ShowItemRow: React.FC<Props> = ({
           />
         )}
 
-        {!shouldHideSaveButton && !useIconSaveButton && (
+        {!shouldHideSaveButton && !useAddToItinerary && (
           <Button
             variant={show.is_followed ? "outline" : "fillDark"}
             size="small"

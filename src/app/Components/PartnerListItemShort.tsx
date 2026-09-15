@@ -16,12 +16,8 @@ interface PartnerListItemShortProps {
   disabledLocation?: boolean
   disableNavigation?: boolean
   onPress?: () => void
-  /**
-   * Renders the follow control as the bare plus/tick instead of palette's labelled
-   * FollowButton. Opt-in: this row is also used on the Infinite Discovery tabs, which keep
-   * the labelled form.
-   */
-  useIconFollowButton?: boolean
+  /** Renders the follow control as the bare plus/tick instead of palette's labelled FollowButton. */
+  useAddToItinerary?: boolean
 }
 
 export const PartnerListItemShort: React.FC<PartnerListItemShortProps> = ({
@@ -29,7 +25,7 @@ export const PartnerListItemShort: React.FC<PartnerListItemShortProps> = ({
   onPress,
   disabledLocation,
   disableNavigation,
-  useIconFollowButton,
+  useAddToItinerary,
 }) => {
   const data = useFragment(fragment, partner)
   const { location } = useLocation({ disabled: !!disabledLocation })
@@ -73,7 +69,7 @@ export const PartnerListItemShort: React.FC<PartnerListItemShortProps> = ({
         RightButton={
           <PartnerFollowButtonQueryRenderer
             partnerID={data.internalID}
-            variant={useIconFollowButton ? "icon" : "button"}
+            variant={useAddToItinerary ? "icon" : "button"}
           />
         }
       />
