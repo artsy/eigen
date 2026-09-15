@@ -14,7 +14,7 @@ import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/
 import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, Platform, ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 configureMapbox()
