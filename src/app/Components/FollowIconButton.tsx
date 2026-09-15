@@ -1,7 +1,7 @@
 import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { FC } from "react"
+import React from "react"
 
 /** What the show header and the Saves-tab rows specify. The City Guide rails pass 18. */
 const DEFAULT_SIZE = 24
@@ -24,7 +24,7 @@ interface Props {
  * tracking, because what "follow" means differs — a show is followed directly, a fair and a
  * gallery through their profile.
  */
-export const FollowIconButton: FC<Props> = ({
+export const FollowIconButton: React.FC<Props> = ({
   isFollowed,
   onPress,
   isInFlight = false,
