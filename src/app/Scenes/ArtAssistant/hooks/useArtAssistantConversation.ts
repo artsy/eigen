@@ -1,35 +1,61 @@
 import {
+  AIAgentActivity,
   ArtAssistantAgentTurnSubscription,
+  ArtAssistantAgentTurnSubscription$data,
   ArtAssistantAgentTurnSubscription$variables,
 } from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
 import { artAssistantAgentTurnSubscription } from "app/Scenes/ArtAssistant/transport/ArtAssistantAgentTurnSubscription"
+import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import {
   ArtAssistantTurnFailure,
   reportArtAssistantTurnFailure,
   stopReasonMessage,
   subscriptionErrorMessage,
 } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import {
+  ArtAssistantHistoryEntry,
+  trimArtAssistantHistory,
+} from "app/Scenes/ArtAssistant/utils/conversationHistory"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { requestSubscription, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
 
+type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
+type NormalizedAgentEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
+
+export interface ActiveTurn {
+  message: AssistantMessage
+  streamedText: string
+  didReceiveTerminalEvent: boolean
+}
+
+const ACTIVITY_COPY: Record<Exclude<AIAgentActivity, "%future added value">, string> = {
+  THINKING: "Thinking...",
+  SEARCHING_ARTWORKS: "Searching artworks...",
+  SEARCHING_ARTISTS: "Searching artists...",
+  SEARCHING_SHOWS: "Searching shows...",
+  SEARCHING_FAIRS: "Searching fairs...",
+  FINDING_RECOMMENDATIONS: "Finding recommendations...",
+  LOADING_ARTWORK_DETAILS: "Loading artwork details...",
+  SEARCHING_ARTSY: "Searching Artsy...",
+}
+
 export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 60_000
 
-/**
- * Minimal consumer for the Art Assistant subscription transport. Message history, activity
- * states, and artwork presentation are layered on separately from the transport integration.
- */
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
+  const [messages, setMessages] = useState<ArtAssistantMessage[]>([])
+  const [isResponding, setIsResponding] = useState(false)
+  const isRespondingRef = useRef(false)
   const conversationID = useRef(uuid())
   const activeSubscription = useRef<ReturnType<typeof requestSubscription> | null>(null)
   const responseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isRespondingRef = useRef(false)
-  const [isResponding, setIsResponding] = useState(false)
-  const [response, setResponse] = useState<string | null>(null)
+  const messagesRef = useRef(messages)
+
+  messagesRef.current = messages
 
   const abort = useCallback(() => {
     activeSubscription.current?.dispose()
@@ -43,34 +69,79 @@ export const useArtAssistantConversation = () => {
 
   useEffect(() => abort, [abort])
 
+  const startNewConversation = useCallback(() => {
+    abort()
+    conversationID.current = uuid()
+    messagesRef.current = []
+    isRespondingRef.current = false
+    setMessages([])
+    setIsResponding(false)
+  }, [abort])
+
   const submit = useCallback(
     (prompt: string) => {
-      const message = prompt.trim()
+      const text = prompt.trim()
 
-      if (!message || isRespondingRef.current) {
+      if (!text || isRespondingRef.current) {
         return
+      }
+
+      const previousMessages = messagesRef.current
+      const userMessage: ArtAssistantMessage = { id: uuid(), role: "user", text }
+      const assistantMessage: AssistantMessage = {
+        id: uuid(),
+        role: "assistant",
+        text: "",
+        phase: "responding",
+        progress: [ACTIVITY_COPY.THINKING],
+      }
+      let activeTurn: ActiveTurn = {
+        message: assistantMessage,
+        streamedText: "",
+        didReceiveTerminalEvent: false,
+      }
+
+      isRespondingRef.current = true
+      setIsResponding(true)
+      setMessages([...previousMessages, userMessage, assistantMessage])
+
+      const updateAssistant = (nextTurn: ActiveTurn) => {
+        const previousMessage = activeTurn.message
+
+        activeTurn = nextTurn
+
+        // A text delta only grows `streamedText`; the rendered message is the same object, so
+        // skip the state update instead of re-rendering the whole list on every token.
+        if (nextTurn.message === previousMessage) {
+          return
+        }
+
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === assistantMessage.id ? activeTurn.message : message
+          )
+        )
       }
 
       if (!userID || !authenticationToken) {
-        setResponse("Please sign in again to use Art Assistant.")
+        updateAssistant(failActiveTurn(activeTurn, "Please sign in again to use Art Assistant."))
+        isRespondingRef.current = false
+        setIsResponding(false)
         return
       }
 
-      abort()
-      isRespondingRef.current = true
-      setIsResponding(true)
-      setResponse("Thinking...")
-
-      const input = { conversationID: conversationID.current, message, history: [] }
+      const input = {
+        conversationID: conversationID.current,
+        message: text,
+        history: trimArtAssistantHistory(toHistory(previousMessages), text),
+      }
       const variables: ArtAssistantAgentTurnSubscription$variables = { input }
-      let streamedText = ""
-      let didReceiveTerminalEvent = false
+
+      abort()
+
       let didFinish = false
       let subscription: ReturnType<typeof requestSubscription> | null = null
       let timeout: ReturnType<typeof setTimeout> | null = null
-
-      const reportFailure = (failure: Omit<ArtAssistantTurnFailure, "conversationID">) =>
-        reportArtAssistantTurnFailure({ ...failure, conversationID: input.conversationID })
 
       const finish = () => {
         if (didFinish) {
@@ -91,17 +162,37 @@ export const useArtAssistantConversation = () => {
           responseTimeout.current = null
         }
 
-        isRespondingRef.current = false
         setIsResponding(false)
+        isRespondingRef.current = false
+      }
+
+      const reportFailure = (failure: Omit<ArtAssistantTurnFailure, "conversationID">) =>
+        reportArtAssistantTurnFailure({ ...failure, conversationID: input.conversationID })
+
+      const finishTurn = () => {
+        // `subscription` is still null when the payload arrived synchronously; the caller
+        // disposes in that case, guided by `didFinish`.
+        subscription?.dispose()
+        finish()
       }
 
       const failIdleTurn = () => {
         subscription?.dispose()
+
+        if (activeTurn.didReceiveTerminalEvent) {
+          finish()
+          return
+        }
+
         reportFailure({ outcome: "idle_timeout" })
-        setResponse("This is taking longer than expected. Please try again.")
+        updateAssistant(
+          failActiveTurn(activeTurn, "This is taking longer than expected. Please try again.")
+        )
         finish()
       }
 
+      // A turn can legitimately run for minutes while the agent calls tools, so the deadline
+      // measures silence rather than total duration: any event proves the stream is alive.
       const restartIdleTimeout = () => {
         if (didFinish) {
           return
@@ -123,28 +214,39 @@ export const useArtAssistantConversation = () => {
 
           restartIdleTimeout()
 
-          if (event?.__typename === "AIAgentTextDelta") {
-            streamedText += event.text
-          }
+          if (event) {
+            const nextTurn = reduceActiveTurn(activeTurn, event)
+            updateAssistant(nextTurn)
 
-          if (event?.__typename === "AIAgentTurnComplete") {
-            didReceiveTerminalEvent = true
-            const text = event.message ?? streamedText
+            if (event.__typename === "AIAgentTurnComplete" && nextTurn.message.phase === "error") {
+              reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
+            }
 
-            setResponse(text || stopReasonMessage(event.stopReason))
-            subscription?.dispose()
-            finish()
+            if (event.__typename === "AIAgentTurnComplete") {
+              // Metaphysics keeps the stream open after the answer is final, so end the turn on
+              // the application-level terminal event instead of waiting for the protocol one.
+              finishTurn()
+            }
           }
         },
         onError: (error) => {
+          if (activeTurn.didReceiveTerminalEvent) {
+            // The answer is already on screen, so keep it and only report the broken stream.
+            reportFailure({ outcome: "trailing_stream_error", error })
+            finish()
+            return
+          }
+
           reportFailure({ outcome: "stream_error", error })
-          setResponse(subscriptionErrorMessage(error))
+          updateAssistant(failActiveTurn(activeTurn, subscriptionErrorMessage(error)))
           finish()
         },
         onCompleted: () => {
-          if (!didReceiveTerminalEvent) {
+          if (!activeTurn.didReceiveTerminalEvent && activeTurn.message.phase === "responding") {
             reportFailure({ outcome: "ended_without_answer" })
-            setResponse("The response ended unexpectedly. Please try again.")
+            updateAssistant(
+              failActiveTurn(activeTurn, "The response ended unexpectedly. Please try again.")
+            )
           }
 
           finish()
@@ -162,5 +264,88 @@ export const useArtAssistantConversation = () => {
     [abort, authenticationToken, environment, userID]
   )
 
-  return { isResponding, response, submit }
+  return { isResponding, messages, startNewConversation, submit }
 }
+
+export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent): ActiveTurn => {
+  switch (event.__typename) {
+    case "AIAgentTextDelta":
+      return { ...turn, streamedText: turn.streamedText + event.text }
+    case "AIAgentToolCall":
+      return {
+        ...turn,
+        message: appendProgress(turn.message, activityCopy(event.activity)),
+      }
+    case "AIAgentToolResult":
+      // Keep the last activity visible. Tool call and result events can arrive in the same
+      // network chunk, so replacing it with Thinking here could prevent it from rendering at all.
+      return turn
+    case "AIAgentTurnComplete": {
+      const text = event.message ?? turn.streamedText
+
+      if (!text) {
+        return failActiveTurn(
+          { ...turn, didReceiveTerminalEvent: true },
+          stopReasonMessage(event.stopReason)
+        )
+      }
+
+      const artworks = event.artworks ?? []
+      const artworkIDs = artworks.map((artwork) => artwork.internalID)
+
+      return {
+        ...turn,
+        didReceiveTerminalEvent: true,
+        message: {
+          ...turn.message,
+          text,
+          phase: "complete",
+          progress: [],
+          artworkRail: artworks.length > 0 ? { status: "ready", artworkIDs } : undefined,
+        },
+      }
+    }
+    default:
+      return turn
+  }
+}
+
+export const toHistory = (messages: ArtAssistantMessage[]): ArtAssistantHistoryEntry[] =>
+  messages.flatMap<ArtAssistantHistoryEntry>((message) => {
+    if (message.role === "user") {
+      return [{ role: "USER" as const, content: message.text }]
+    }
+
+    if (message.phase !== "complete" || !message.text) {
+      return []
+    }
+
+    return [
+      {
+        role: "ASSISTANT" as const,
+        content: message.text,
+        artworkIDs:
+          message.artworkRail?.status === "ready" ? message.artworkRail.artworkIDs : undefined,
+      },
+    ]
+  })
+
+const activityCopy = (activity: AIAgentActivity) =>
+  activity === "%future added value" ? ACTIVITY_COPY.THINKING : ACTIVITY_COPY[activity]
+
+const appendProgress = (message: AssistantMessage, progress: string): AssistantMessage => ({
+  ...message,
+  progress:
+    message.progress.at(-1) === progress ? message.progress : [...message.progress, progress],
+})
+
+const failActiveTurn = (turn: ActiveTurn, errorMessage: string): ActiveTurn => ({
+  ...turn,
+  message: {
+    ...turn.message,
+    phase: "error",
+    progress: [],
+    artworkRail: undefined,
+    errorMessage,
+  },
+})
