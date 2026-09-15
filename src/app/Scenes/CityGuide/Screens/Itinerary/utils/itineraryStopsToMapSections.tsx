@@ -1,6 +1,6 @@
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
-import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   itineraryStopCategory,
   itinerarySectionTitle,
@@ -9,7 +9,6 @@ import {
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
-import { itineraryStopHref } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopHref"
 import {
   Itinerary,
   ItineraryStop,
@@ -55,13 +54,15 @@ export const itineraryStopsToMapSections = (
         // Nothing resolved from Artsy: no entity to follow and no entity page to open. Same
         // test `ItineraryStopRow` uses for its own plus.
         const isCustom = !stop.item && !saveTarget
+        const card = stopCardFields(stop, stop.item)
 
         return {
           id: stop.internalID,
           title,
           coordinates,
-          href: itineraryStopHref(saveTarget),
-          card: stopCardFields(stop, stop.item),
+          // Same destination the list row uses, rather than a second mapping of type to path.
+          href: card.href ?? null,
+          card,
           image: itineraryStopImage(stop),
           saveControl: isCustom ? (
             <CustomStopSaveControl
@@ -70,7 +71,13 @@ export const itineraryStopsToMapSections = (
               cityName={cityName}
             />
           ) : (
-            saveTarget && <ItineraryStopSaveControl stopId={stop.internalID} stopTitle={title} />
+            saveTarget && (
+              <CityEventSaveControl
+                itemType={saveTarget.itemType}
+                itemID={saveTarget.itemID}
+                name={title}
+              />
+            )
           ),
         }
       }),

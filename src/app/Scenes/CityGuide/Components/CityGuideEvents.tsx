@@ -2,10 +2,7 @@ import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEventsQuery } from "__generated__/CityGuideEventsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { CityEventRailCard } from "app/Scenes/CityGuide/Components/CityEventRailCard"
-import {
-  CityEventFairSaveControl,
-  CityEventShowSaveControl,
-} from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityFairRailCard } from "app/Scenes/CityGuide/Components/CityFairRailCard"
 import { CityEventSectionKey } from "app/Scenes/CityGuide/utils/cityEventSectionKey"
 import { extractNodes } from "app/utils/extractNodes"
@@ -21,12 +18,16 @@ import { useTracking } from "react-tracking"
  */
 const RAIL_SIZE = 10
 
+/** The 10pt gap the designs put between cards. */
 const RAIL_GAP = 10
+
+/** The designs size the rails' add glyph at 18, smaller than the 24 the list rows use. */
 const SAVE_ICON_SIZE = 18
 
 /**
- * Cards bleed past the right gutter, so the rail is laid out edge to edge with padding on its
- * content instead — hardcoded to 20 to match the rest of the screen, not the Fairs frame's 10.
+ * Cards bleed past the right gutter, so the rail is laid out edge to edge and the padding
+ * lives on its content instead. Figma gives the Fairs frame 10 and the other two 20; the rest
+ * of the screen sits at 20, so the 10 reads as a stray frame value rather than intent.
  */
 const railContentStyle = { paddingHorizontal: 20 }
 
@@ -43,8 +44,11 @@ const admissionLabel = (isFreeAdmission: boolean | null | undefined) => {
 }
 
 /**
- * One section: the header and rail, shared by all three sections so "hide when empty" lives
- * in one place. `Join` drops falsy children, so callers can guard with `&&` safely.
+ * One section: the header and its horizontal rail. Rendered by all three sections rather
+ * than repeated three times, so the "hide when empty" rule lives in one place.
+ *
+ * `Join` drops falsy children (`Children.toArray`), so a caller can guard this with `&&`
+ * without leaving a stray separator behind.
  */
 const EventRail = <T,>({
   title,
@@ -119,17 +123,12 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               image={fair.image?.url ?? ""}
               href={fair.href ?? ""}
               saveControl={
-                // A fair is followed through its Profile, not directly. No profile, no
-                // control — there is nothing to follow.
-                fair.profile ? (
-                  <CityEventFairSaveControl
-                    id={fair.profile.id}
-                    internalID={fair.profile.internalID}
-                    isFollowed={fair.profile.isFollowed}
-                    name={fair.name ?? ""}
-                    iconSize={SAVE_ICON_SIZE}
-                  />
-                ) : null
+                <CityEventSaveControl
+                  itemType="FAIR"
+                  itemID={fair.internalID}
+                  name={fair.name ?? ""}
+                  iconSize={SAVE_ICON_SIZE}
+                />
               }
             />
           )}
@@ -151,10 +150,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               meta={show.exhibitionPeriod ?? ""}
               admission={admissionLabel(show.isFreeAdmission)}
               saveControl={
-                <CityEventShowSaveControl
-                  id={show.id}
-                  internalID={show.internalID}
-                  isFollowed={show.isFollowed}
+                <CityEventSaveControl
+                  itemType="SHOW"
+                  itemID={show.internalID}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -176,8 +174,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
           data={openingShows}
           keyExtractor={(show) => show.internalID}
           renderItem={(show) => (
-            // Arched image, no admission line, and the date is the opening day rather than a
-            // run — what separates this card from a Current Shows one.
+            // Arched image and no admission line: the two things separating this card from
+            // a Current Shows one. The date is the opening day rather than a run, which is
+            // what the section is about.
             <CityEventRailCard
               title={show.name ?? ""}
               image={show.coverImage?.url ?? ""}
@@ -185,10 +184,9 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
               meta={show.opensAt ?? ""}
               archTopImage
               saveControl={
-                <CityEventShowSaveControl
-                  id={show.id}
-                  internalID={show.internalID}
-                  isFollowed={show.isFollowed}
+                <CityEventSaveControl
+                  itemType="SHOW"
+                  itemID={show.internalID}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -202,8 +200,12 @@ const CityGuideEventsSections: React.FC<Props> = ({ citySlug, cityName }) => {
 }
 
 /**
- * Uses `status: RUNNING` (not `CURRENT`, which overlaps `UPCOMING`) and a single formatted
- * `startAt` instead of `exhibitionPeriod`, since Opening Soon is about the day a show opens.
+ * `status: RUNNING` rather than `CURRENT`, which would overlap `UPCOMING` and put the same
+ * show under both Current Shows and Opening Soon.
+ *
+ * Opening Soon takes a single formatted `startAt` rather than `exhibitionPeriod`: the section
+ * is about when a show opens, and the designs show one date. Formatting stays on the server,
+ * through Metaphysics' own `format` argument.
  */
 const Query = graphql`
   query CityGuideEventsQuery($citySlug: String!, $first: Int!) {

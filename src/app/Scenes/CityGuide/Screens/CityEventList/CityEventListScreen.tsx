@@ -3,7 +3,8 @@ import { CityEventListScreenQuery } from "__generated__/CityEventListScreenQuery
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { FairEventRow, ShowEventRow } from "app/Scenes/CityGuide/Components/CityEventRows"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { renderFairRow, renderShowRow } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSectionHeader } from "app/Scenes/CityGuide/Components/CityEventSectionHeader"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import {
@@ -155,11 +156,9 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
         )
       }
 
-      return section === "fairs" ? (
-        <FairEventRow fair={item.item as Fair} />
-      ) : (
-        <ShowEventRow show={item.item as Show} />
-      )
+      return section === "fairs"
+        ? renderFairRow(item.item as Fair)
+        : renderShowRow(item.item as Show)
     },
     [section, toggleSection]
   )
@@ -173,106 +172,108 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
   }, [trackEvent, section, citySlug])
 
   return (
-    <Screen>
-      {/*
+    <AddToItineraryProvider citySlug={citySlug} cityName={cityName}>
+      <Screen>
+        {/*
         Screen.AnimatedHeader and Screen.StickySubHeader are both driven by scroll events
         from Screen.FlatList (`Screen.useListenForScreenScroll`). Map mode has no scroll
         view feeding them, so rather than leave them frozen mid-animation they are
         swapped for a plain `Screen.Header` below — the same trade the itinerary screen's
         map mode already made.
       */}
-      {!isMapView ? (
-        <>
-          <Screen.AnimatedHeader title={TITLES[section]} onBack={goBack} />
-          <Screen.StickySubHeader title={TITLES[section]} />
-        </>
-      ) : (
-        <Screen.Header
-          title={TITLES[section]}
-          // On the map, back means "back to the list" rather than leaving the screen. The
-          // map is a mode of this screen, not a screen of its own.
-          onBack={() => setIsMapView(false)}
-        />
-      )}
-
-      <Screen.Body fullwidth>
-        {items.length === 0 ? (
-          <Flex px={2} py={2}>
-            <SimpleMessage>
-              {`There is nothing to show here yet. Check back later to see events in ${cityName}.`}
-            </SimpleMessage>
-          </Flex>
-        ) : isMapView ? (
-          <MapView
-            sections={mapSections}
-            selectedPlaceId={selectedPlaceId}
-            onSelectPlace={setSelectedPlaceId}
-            // The itinerary's default (60) is tuned for its own transparent, headerless
-            // map. Here a solid Screen.Header already occupies the space above the map,
-            // so the pills need no extra clearance beyond the safe-area inset MapView
-            // already adds.
-            pillsTopOffset={0}
-          />
+        {!isMapView ? (
+          <>
+            <Screen.AnimatedHeader title={TITLES[section]} onBack={goBack} />
+            <Screen.StickySubHeader title={TITLES[section]} />
+          </>
         ) : (
-          <Screen.FlatList<CityEventListItem<Event>>
-            data={items}
-            renderItem={renderItem}
-            keyExtractor={cityEventListKey}
-            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-            ListFooterComponent={
-              totalCount > PAGE_SIZE ? (
-                <Flex py={2}>
-                  <Text variant="xs" color="mono60">
-                    {`Showing ${fetchedCount} of ${totalCount}`}
-                  </Text>
-                </Flex>
-              ) : null
-            }
+          <Screen.Header
+            title={TITLES[section]}
+            // On the map, back means "back to the list" rather than leaving the screen. The
+            // map is a mode of this screen, not a screen of its own.
+            onBack={() => setIsMapView(false)}
           />
         )}
 
-        {/*
+        <Screen.Body fullwidth>
+          {items.length === 0 ? (
+            <Flex px={2} py={2}>
+              <SimpleMessage>
+                {`There is nothing to show here yet. Check back later to see events in ${cityName}.`}
+              </SimpleMessage>
+            </Flex>
+          ) : isMapView ? (
+            <MapView
+              sections={mapSections}
+              selectedPlaceId={selectedPlaceId}
+              onSelectPlace={setSelectedPlaceId}
+              // The itinerary's default (60) is tuned for its own transparent, headerless
+              // map. Here a solid Screen.Header already occupies the space above the map,
+              // so the pills need no extra clearance beyond the safe-area inset MapView
+              // already adds.
+              pillsTopOffset={0}
+            />
+          ) : (
+            <Screen.FlatList<CityEventListItem<Event>>
+              data={items}
+              renderItem={renderItem}
+              keyExtractor={cityEventListKey}
+              contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+              ListFooterComponent={
+                totalCount > PAGE_SIZE ? (
+                  <Flex py={2}>
+                    <Text variant="xs" color="mono60">
+                      {`Showing ${fetchedCount} of ${totalCount}`}
+                    </Text>
+                  </Flex>
+                ) : null
+              }
+            />
+          )}
+
+          {/*
           Hidden with nothing to map: with zero valid places the camera target is
           undefined and the map opens on Mapbox's world view rather than framing anything.
         */}
-        {items.length > 0 && !!hasMappablePlaces && (
-          <MotiView
-            from={{ opacity: 0.5, translateY: 0 }}
-            animate={{ opacity: 1, translateY: -60 }}
-            transition={{ type: "timing", duration: 300, delay: 200 }}
-          >
-            <Flex
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                bottom: -50,
-                zIndex: 1000,
-              }}
+          {items.length > 0 && !!hasMappablePlaces && (
+            <MotiView
+              from={{ opacity: 0.5, translateY: 0 }}
+              animate={{ opacity: 1, translateY: -60 }}
+              transition={{ type: "timing", duration: 300, delay: 200 }}
             >
-              <Button
-                testID="city-event-list-view-toggle"
-                size="small"
-                onPress={() => {
-                  trackEntity({
-                    action_name: isMapView
-                      ? Schema.ActionNames.CityGuideShowList
-                      : Schema.ActionNames.CityGuideShowMap,
-                    action_type: Schema.ActionTypes.Tap,
-                    owner_type: Schema.OwnerEntityTypes.CityGuide,
-                    owner_slug: citySlug,
-                  })
-                  setIsMapView((current) => !current)
+              <Flex
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  bottom: -50,
+                  zIndex: 1000,
                 }}
               >
-                {isMapView ? "Show in List" : "Show on Map"}
-              </Button>
-            </Flex>
-          </MotiView>
-        )}
-      </Screen.Body>
-    </Screen>
+                <Button
+                  testID="city-event-list-view-toggle"
+                  size="small"
+                  onPress={() => {
+                    trackEntity({
+                      action_name: isMapView
+                        ? Schema.ActionNames.CityGuideShowList
+                        : Schema.ActionNames.CityGuideShowMap,
+                      action_type: Schema.ActionTypes.Tap,
+                      owner_type: Schema.OwnerEntityTypes.CityGuide,
+                      owner_slug: citySlug,
+                    })
+                    setIsMapView((current) => !current)
+                  }}
+                >
+                  {isMapView ? "Show in List" : "Show on Map"}
+                </Button>
+              </Flex>
+            </MotiView>
+          )}
+        </Screen.Body>
+      </Screen>
+    </AddToItineraryProvider>
   )
 }
 

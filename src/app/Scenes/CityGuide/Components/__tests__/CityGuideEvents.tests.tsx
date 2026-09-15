@@ -1,10 +1,19 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("CityGuideEvents", () => {
-  const { renderWithRelay } = setupTestWrapper({ Component: CityGuideEvents })
+  // Wrapped in the provider the plus needs: without one it renders no plus at all, which is
+  // what happens on any screen that forgets to mount it.
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (componentProps: React.ComponentProps<typeof CityGuideEvents>) => (
+      <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+        <CityGuideEvents {...componentProps} />
+      </AddToItineraryProvider>
+    ),
+  })
   const props = { citySlug: "london-united-kingdom", cityName: "London" }
 
   const city = {
@@ -149,10 +158,11 @@ describe("CityGuideEvents", () => {
 
   // The save control used to be a bare icon inside the card's RouterLink, so tapping it
   // navigated instead of saving. It is now a sibling of the link, as in CityEventRow.
-  it("saves instead of navigating when the save control is tapped", async () => {
+  // The plus opens the Add to Itinerary sheet; it must not also follow the card's link.
+  it("does not navigate when the plus is tapped", async () => {
     renderWithRelay(resolvers, props)
 
-    fireEvent.press(await screen.findByLabelText("Save One Fly Makes No Summer"))
+    fireEvent.press(await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary"))
 
     expect(navigate).not.toHaveBeenCalled()
   })

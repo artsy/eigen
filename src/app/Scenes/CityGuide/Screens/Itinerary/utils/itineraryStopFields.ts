@@ -6,29 +6,26 @@ import {
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 /**
- * Narrows the `Show | Fair | Partner` union to the members this client knows. Relay adds a
+ * Narrows the `Show | Fair | Location` union to the members this client knows. Relay adds a
  * `"%other"` member for anything unselected, so a server-side addition lands here, not a crash.
  */
 const knownItem = (
   item: ItineraryStop["item"]
-): { type: ItinerarySaveTarget["type"]; slug: string; name: string | null } | null => {
+): (ItinerarySaveTarget & { name: string | null }) | null => {
   if (!item) return null
 
   switch (item.__typename) {
     case "Show":
-      return { type: "SHOW", slug: item.slug, name: item.name ?? null }
+      return { itemType: "SHOW", itemID: item.internalID, name: item.name ?? null }
     case "Fair":
-      return { type: "FAIR", slug: item.slug, name: item.name ?? null }
+      return { itemType: "FAIR", itemID: item.internalID, name: item.name ?? null }
     case "Location":
-      // A gallery stop points at a partner's location, not the partner — the location carries
-      // the address, the partner is what's followed and linked. No partner means unsaveable.
-      if (!item.partner?.slug) return null
-      // Galleries and museums are both Partners in Artsy's model; the visible distinction
-      // between them is the stop's own `category`, not this.
+      // A stop names the location, not the partner, so `LOCATION` is what it stores — the
+      // partner is still where the name falls back to.
       return {
-        type: "PARTNER",
-        slug: item.partner.slug,
-        name: item.name ?? item.partner.name ?? null,
+        itemType: "LOCATION",
+        itemID: item.internalID,
+        name: item.name ?? item.partner?.name ?? null,
       }
     default:
       return null
@@ -36,13 +33,13 @@ const knownItem = (
 }
 
 /**
- * The save controls are keyed by type and slug, so that is all this carries. `null` when a
- * stop points at no Artsy entity, or one whose entity didn't resolve — either way, nothing to follow.
+ * What the plus adds to your own itinerary. `null` when a stop points at no Artsy entity, or
+ * one whose entity didn't resolve — either way, nothing to add.
  */
 export const itineraryStopSaveTarget = (stop: ItineraryStop): ItinerarySaveTarget | null => {
   const known = knownItem(stop.item)
 
-  return known ? { type: known.type, slug: known.slug } : null
+  return known ? { itemType: known.itemType, itemID: known.itemID } : null
 }
 
 /**

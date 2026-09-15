@@ -1,7 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { StopCard } from "app/Scenes/CityGuide/Components/StopCard"
-import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   itineraryStopCategory,
   itineraryStopCoordinates,
@@ -91,10 +91,13 @@ export const ItineraryStopRow: React.FC<Props> = ({
             />
           ) : (
             !!saveTarget && (
-              // The entity for this stop is resolved at screen level
-              // (ItineraryStopEntityResolvers), one per saveable stop, each with its own
-              // Suspense and error boundary. This control is just a reader of the resolved result.
-              <ItineraryStopSaveControl stopId={stop.internalID} stopTitle={title} />
+              // The stop already knows what it points at, so the plus needs no lookup of its
+              // own.
+              <CityEventSaveControl
+                itemType={saveTarget.itemType}
+                itemID={saveTarget.itemID}
+                name={title}
+              />
             )
           )
         }

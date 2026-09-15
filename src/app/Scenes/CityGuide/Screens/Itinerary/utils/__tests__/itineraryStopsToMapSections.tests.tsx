@@ -1,5 +1,5 @@
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
-import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
 import {
   makeItinerary,
   makeItineraryStop,
@@ -81,10 +81,12 @@ describe("itineraryStopsToMapSections", () => {
       internalID: "with-target",
       item: {
         __typename: "Show",
+        internalID: "some-show-id",
         slug: "some-show",
         name: "Some Show",
         href: "/show/some-show",
         isFreeAdmission: null,
+        exhibitionPeriod: null,
         coverImage: null,
         partner: null,
         location: null,
@@ -95,7 +97,7 @@ describe("itineraryStopsToMapSections", () => {
     const [place] = sections[0].places
 
     expect(isValidElement(place.saveControl)).toBe(true)
-    expect((place.saveControl as React.ReactElement).type).toBe(ItineraryStopSaveControl)
+    expect((place.saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
   })
 
   // Same plus the list shows for a custom stop (ItineraryStopRow) — the map preview must not

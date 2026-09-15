@@ -1,4 +1,4 @@
-import { CityEventShowSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
 import { Show } from "app/Scenes/CityGuide/utils/types"
@@ -87,11 +87,11 @@ describe("showsToMapSections", () => {
     expect(notFollowed[0].places[0].icon).toEqual("pin")
   })
 
-  it("always injects a CityEventShowSaveControl", () => {
+  it("always injects a CityEventSaveControl", () => {
     const sections = showsToMapSections(makeSection([makeShow()]))
     const saveControl = sections[0].places[0].saveControl
 
     expect(isValidElement(saveControl)).toBe(true)
-    expect((saveControl as React.ReactElement).type).toBe(CityEventShowSaveControl)
+    expect((saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
   })
 })

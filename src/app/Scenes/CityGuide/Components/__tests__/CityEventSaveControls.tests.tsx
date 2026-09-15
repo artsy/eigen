@@ -1,158 +1,69 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import {
-  CityEventFairSaveControl,
-  CityEventPartnerSaveControl,
-  CityEventShowSaveControl,
-} from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Schema } from "app/utils/track"
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
-describe("CityEventShowSaveControl", () => {
-  const props = { id: "show-node-id", internalID: "show-internal-id", name: "Frida Kahlo" }
+describe("CityEventSaveControl", () => {
+  const renderIt = (props: Partial<React.ComponentProps<typeof CityEventSaveControl>> = {}) =>
+    renderWithWrappers(
+      <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+        <CityEventSaveControl
+          itemType="SHOW"
+          itemID="show-internal-id"
+          name="Frida Kahlo"
+          {...props}
+        />
+      </AddToItineraryProvider>
+    )
 
-  it("offers to save a show that is not followed", () => {
-    renderWithWrappers(<CityEventShowSaveControl {...props} isFollowed={false} />)
+  // The plus no longer follows, so it has no saved state of its own: which itineraries hold
+  // the entity is the sheet's business.
+  it("offers to add the entity to an itinerary", () => {
+    renderIt()
 
-    expect(screen.getByLabelText("Save Frida Kahlo")).toBeTruthy()
+    expect(screen.getByLabelText("Add Frida Kahlo to an itinerary")).toBeTruthy()
     expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
   })
 
-  it("offers to unsave a show that is followed", () => {
-    renderWithWrappers(<CityEventShowSaveControl {...props} isFollowed />)
+  it("tracks the tap against the entity", () => {
+    renderIt()
 
-    expect(screen.getByLabelText("Unsave Frida Kahlo")).toBeTruthy()
-    expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
-  })
-
-  it("treats a null follow state as not followed", () => {
-    renderWithWrappers(<CityEventShowSaveControl {...props} isFollowed={null} />)
-
-    expect(screen.getByLabelText("Save Frida Kahlo")).toBeTruthy()
-  })
-})
-
-describe("variant", () => {
-  it("renders the labelled form when asked", () => {
-    renderWithWrappers(
-      <CityEventShowSaveControl
-        id="show-node-id"
-        internalID="show-internal-id"
-        isFollowed={false}
-        name="Frida Kahlo"
-        variant="button"
-      />
-    )
-
-    // ItineraryStopPreview needs this form beside "Show on map".
-    expect(screen.getByText("Save")).toBeTruthy()
-  })
-})
-
-describe("CityEventFairSaveControl", () => {
-  it("tracks a fair follow", () => {
-    renderWithWrappers(
-      <CityEventFairSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed={false}
-        name="Frieze London"
-      />
-    )
-    fireEvent.press(screen.getByLabelText("Save Frieze London"))
-
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      expect.objectContaining({ action_name: "followFair" })
-    )
-  })
-
-  it("tracks a fair unfollow", () => {
-    renderWithWrappers(
-      <CityEventFairSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed
-        name="Frieze London"
-      />
-    )
-    fireEvent.press(screen.getByLabelText("Unsave Frieze London"))
-
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      expect.objectContaining({ action_name: "unfollowFair" })
-    )
-  })
-
-  it("labels itself with the fair name", () => {
-    renderWithWrappers(
-      <CityEventFairSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed={false}
-        name="Frieze London"
-      />
-    )
-
-    expect(screen.getByLabelText("Save Frieze London")).toBeTruthy()
-  })
-})
-
-describe("CityEventPartnerSaveControl", () => {
-  it("tracks a gallery follow", () => {
-    renderWithWrappers(
-      <CityEventPartnerSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed={false}
-        name="White Cube"
-      />
-    )
-    fireEvent.press(screen.getByLabelText("Save White Cube"))
+    fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        action_name: "galleryFollow",
-        action_type: "success",
-        owner_type: "Partner",
-        owner_id: "profile-internal-id",
+        action_name: Schema.ActionNames.SaveShow,
+        owner_type: Schema.OwnerEntityTypes.Show,
+        owner_id: "show-internal-id",
       })
     )
   })
 
-  it("tracks a gallery unfollow", () => {
-    renderWithWrappers(
-      <CityEventPartnerSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed
-        name="White Cube"
-      />
-    )
-    fireEvent.press(screen.getByLabelText("Unsave White Cube"))
+  it("tracks a fair and a gallery under their own names", () => {
+    renderIt({ itemType: "FAIR", itemID: "fair-1", name: "Frieze" })
+
+    fireEvent.press(screen.getByTestId("city-guide-save-button"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        action_name: "galleryUnfollow",
-        action_type: "success",
-        owner_type: "Partner",
-        owner_id: "profile-internal-id",
+        action_name: Schema.ActionNames.FollowFair,
+        owner_type: Schema.OwnerEntityTypes.Fair,
       })
     )
   })
 
-  it("supports the labelled button variant", () => {
+  // A plus that did nothing when tapped would be worse than none at all.
+  it("renders nothing without a provider", () => {
     renderWithWrappers(
-      <CityEventPartnerSaveControl
-        id="profile-node-id"
-        internalID="profile-internal-id"
-        isFollowed={false}
-        name="White Cube"
-        variant="button"
-      />
+      <CityEventSaveControl itemType="SHOW" itemID="show-internal-id" name="Frida Kahlo" />
     )
 
-    expect(screen.getByText("Save")).toBeTruthy()
+    expect(screen.queryByTestId("city-guide-save-button")).toBeNull()
   })
 })

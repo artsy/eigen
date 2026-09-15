@@ -1,4 +1,4 @@
-import { CityEventFairSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { Fair } from "app/Scenes/CityGuide/utils/types"
@@ -7,6 +7,7 @@ import { isValidElement } from "react"
 const makeFair = (overrides: Partial<Fair> = {}): Fair =>
   ({
     id: "fair-1",
+    internalID: "fair-internal-1",
     slug: "frieze-london",
     name: "Frieze London",
     exhibition_period: "Oct 9 – Oct 12, 2026",
@@ -68,18 +69,20 @@ describe("fairsToMapSections", () => {
     expect(sections[0].places[0].icon).toEqual("pin-fair")
   })
 
-  it("injects a save control keyed on the fair's profile ids, not the fair's own", () => {
+  // Keyed on the fair itself, not its profile: a stop stores the fair, and following — which
+  // is what needed the profile — is gone.
+  it("injects a save control keyed on the fair's own id", () => {
     const sections = fairsToMapSections(makeSection([makeFair()]))
     const saveControl = sections[0].places[0].saveControl as React.ReactElement
 
     expect(isValidElement(saveControl)).toBe(true)
-    expect(saveControl.type).toBe(CityEventFairSaveControl)
-    expect(saveControl.props).toMatchObject({ id: "profile-1", internalID: "profile-internal-1" })
+    expect(saveControl.type).toBe(CityEventSaveControl)
+    expect(saveControl.props).toMatchObject({ itemType: "FAIR", itemID: "fair-internal-1" })
   })
 
-  it("omits the save control when the fair has no profile", () => {
+  it("still offers the control for a fair with no profile", () => {
     const sections = fairsToMapSections(makeSection([makeFair({ profile: null })]))
 
-    expect(sections[0].places[0].saveControl).toBeUndefined()
+    expect(sections[0].places[0].saveControl).toBeTruthy()
   })
 })

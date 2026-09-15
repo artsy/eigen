@@ -1,4 +1,5 @@
 import { Join, Screen, Spacer } from "@artsy/palette-mobile"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
 import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
@@ -30,43 +31,45 @@ export const CityGuideNew: React.FC = () => {
   }
 
   return (
-    <Screen>
-      <Screen.AnimatedHeader
-        title={city?.name ?? ""}
-        rightElements={
-          <CityGuideCitySwitcherButton
-            cityName={city?.name ?? ""}
-            onPress={() => {
-              setShowCityPicker(true)
-            }}
-          />
-        }
-        onBack={goBack}
-        hideTitle
-      />
+    <AddToItineraryProvider citySlug={city?.slug ?? ""} cityName={city?.name ?? ""}>
+      <Screen>
+        <Screen.AnimatedHeader
+          title={city?.name ?? ""}
+          rightElements={
+            <CityGuideCitySwitcherButton
+              cityName={city?.name ?? ""}
+              onPress={() => {
+                setShowCityPicker(true)
+              }}
+            />
+          }
+          onBack={goBack}
+          hideTitle
+        />
 
-      <Screen.Body fullwidth>
-        <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-          <CityGuideCityPicker
-            showCityPicker={showCityPicker}
-            setShowCityPicker={setShowCityPicker}
-            selectedCity={city?.name ?? ""}
-            onSelectCity={onSelectCity}
-          />
+        <Screen.Body fullwidth>
+          <Screen.ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+            <CityGuideCityPicker
+              showCityPicker={showCityPicker}
+              setShowCityPicker={setShowCityPicker}
+              selectedCity={city?.name ?? ""}
+              onSelectCity={onSelectCity}
+            />
 
-          <Join separator={<Spacer y={4} />}>
-            <>
-              <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
+            <Join separator={<Spacer y={4} />}>
+              <>
+                <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
 
-              <CityGuideEventGuides citySlug={city?.slug ?? ""} />
-            </>
+                <CityGuideEventGuides citySlug={city?.slug ?? ""} />
+              </>
 
-            <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
-          </Join>
-        </Screen.ScrollView>
+              <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
+            </Join>
+          </Screen.ScrollView>
 
-        <CityGuideFloatingMapButton cityName={city?.name ?? ""} citySlug={city?.slug ?? ""} />
-      </Screen.Body>
-    </Screen>
+          <CityGuideFloatingMapButton cityName={city?.name ?? ""} citySlug={city?.slug ?? ""} />
+        </Screen.Body>
+      </Screen>
+    </AddToItineraryProvider>
   )
 }

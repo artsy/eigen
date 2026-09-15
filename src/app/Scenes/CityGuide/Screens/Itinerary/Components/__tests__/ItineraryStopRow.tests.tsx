@@ -1,21 +1,13 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
-import { ItineraryStopEntityResolvers } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopEntityResolvers"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
-import { ItineraryStopEntitiesProvider } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/ItineraryStopEntities"
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
-// The row itself fires no query any more (Task 13): a saveable stop's entity is resolved by
-// ItineraryStopEntityResolvers, sitting alongside the row here, and reported into
-// ItineraryStopEntitiesProvider, which the row's save control reads from. So these tests build
-// that small stack directly rather than using `setupTestWrapper`, whose `renderWithRelay`
-// assumes the component under test is the one issuing the query. The two stops with no
-// saveable item below still issue no query at all and keep using bare `renderWithWrappers`.
+// The row fires no query: a stop already knows what it points at, so its plus needs no
+// lookup. It does need an AddToItineraryProvider above it, or it renders no plus at all.
 
 const savedStop = makeItineraryStop({
   internalID: "stop-2",
@@ -29,10 +21,12 @@ const savedStop = makeItineraryStop({
   longitude: -0.127,
   item: {
     __typename: "Show",
+    internalID: "show-1",
     slug: "museum-show",
     name: "Museum",
     href: "/show/museum-show",
     isFreeAdmission: null,
+    exhibitionPeriod: null,
     coverImage: null,
     partner: { name: "Trafalgar Square, WC2N 5DN" },
     location: null,
@@ -58,43 +52,23 @@ interface RowProps {
   cityName: string
 }
 
-/**
- * Mounts the row alongside its own entity provider and resolver, seeded with just this one
- * stop, then resolves the single query that stop's resolver fires.
- */
-const renderRow = (mockResolvers: MockResolvers, props: RowProps) => {
-  const env = createMockEnvironment()
-
-  const view = renderWithWrappers(
-    <RelayEnvironmentProvider environment={env}>
-      <ItineraryStopEntitiesProvider stops={[props.stop]}>
-        <ItineraryStopEntityResolvers stops={[props.stop]} />
-        <ItineraryStopRow {...props} />
-      </ItineraryStopEntitiesProvider>
-    </RelayEnvironmentProvider>
+/** Mounts the row under the provider its plus needs. */
+const renderRow = (props: RowProps) =>
+  renderWithWrappers(
+    <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+      <ItineraryStopRow {...props} />
+    </AddToItineraryProvider>
   )
-
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
-
-  return view
-}
 
 describe("ItineraryStopRow", () => {
   it("renders the number, title, time and address", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: false }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
     expect(await screen.findByText("Museum")).toBeTruthy()
     expect(screen.getByText("2")).toBeTruthy()
@@ -117,16 +91,13 @@ describe("ItineraryStopRow", () => {
   })
 
   it("leaves the note off the row", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: false }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
     expect(await screen.findByText("Museum")).toBeTruthy()
     expect(screen.queryByText("🥂 🧀")).toBeNull()
@@ -146,15 +117,14 @@ describe("ItineraryStopRow", () => {
         item,
       })
 
-    // The row layout has to live on an element inside the link, not on the link: RouterLink
-    // renders palette's Touchable, which wraps multiple children in an unstyled Flex
-    // (Touchable.js:42) and leaves the image and text with no width to share. RNTL does no
-    // layout, so this asserts where the layout is declared.
+    // The row layout has to live on an element inside the link, not on the link: `StopCard`
+    // declares it itself. RNTL does no layout, so this asserts where it's declared.
     it("declares the row layout inside the link", () => {
       renderWithWrappers(
         <ItineraryStopRow
           stop={withItem({
             __typename: "Show",
+            internalID: "a-show-id",
             name: "A show",
             href: "/show/a-show",
             slug: "a-show",
@@ -180,6 +150,7 @@ describe("ItineraryStopRow", () => {
         <ItineraryStopRow
           stop={withItem({
             __typename: "Show",
+            internalID: "white-cube-georg-baselitz-back-again-id",
             name: "Georg Baselitz: Back Again",
             href: "/show/white-cube-georg-baselitz-back-again",
             slug: "white-cube-georg-baselitz-back-again",
@@ -206,6 +177,7 @@ describe("ItineraryStopRow", () => {
         <ItineraryStopRow
           stop={withItem({
             __typename: "Location",
+            internalID: "bermondsey-id",
             name: "Bermondsey",
             city: null,
             address: null,
@@ -268,7 +240,8 @@ describe("ItineraryStopRow", () => {
     })
   })
 
-  // No saveable item means no query, so these two must not go through the entities/resolvers stack.
+  // No saveTarget means the plus needs no lookup — a custom stop's own control renders
+  // straight away, and an entity-backed stop's plus needs only an AddToItineraryProvider.
   it("omits the note when the stop has none", () => {
     renderWithWrappers(
       <ItineraryStopRow
@@ -315,19 +288,17 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
   })
 
-  it("reflects the resolved followed state", async () => {
-    renderRow(
-      { Show: () => ({ isFollowed: true }) },
-      {
-        stop: savedStop,
-        number: 2,
-        citySlug: "london-united-kingdom",
-        itineraryId: "guide-1",
-        cityName: "London",
-      }
-    )
+  // The plus has no saved state now: which itineraries hold the entity is the sheet's business.
+  it("shows a plus on an entity-backed stop", () => {
+    renderRow({
+      stop: savedStop,
+      number: 2,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
-    expect(await screen.findByTestId("city-guide-save-button-check-icon")).toBeTruthy()
+    expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
   })
 
   // The designs give the card three lines and separate hours from admission with a dot.
@@ -341,10 +312,12 @@ describe("ItineraryStopRow", () => {
           endTime: "6pm",
           item: {
             __typename: "Show",
+            internalID: "georg-baselitz-back-again-id",
             name: "Georg Baselitz: Back Again",
             href: "/show/white-cube-georg-baselitz-back-again",
             slug: "white-cube-georg-baselitz-back-again",
             isFreeAdmission: false,
+            exhibitionPeriod: null,
             coverImage: null,
             partner: { name: "White Cube" },
             location: null,

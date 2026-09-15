@@ -1,13 +1,16 @@
 import { Text } from "@artsy/palette-mobile"
-import { CityEventShowSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 
 /**
- * Adapts the event list screen's show sections into the shared map's input. Shows with no
- * valid coordinates are dropped; the detail line is plain text since the period is already in hand.
+ * Adapts the event list screen's show sections into the shared map's section-shaped input.
+ * `Show.location.coordinates` is nullable, unlike an itinerary stop's, so shows without a
+ * valid pair are dropped rather than trusted (`isValidLatLng`). The detail line is plain
+ * text: unlike the itinerary's pin-tap card, the exhibition period is already in hand from
+ * the list query, so no lazy lookup is needed.
  */
 export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSection[] =>
   sections.map((section) => ({
@@ -31,12 +34,7 @@ export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSecti
           </Text>
         ) : undefined,
         saveControl: (
-          <CityEventShowSaveControl
-            id={show.id}
-            internalID={show.internalID}
-            isFollowed={show.is_followed}
-            name={show.name ?? ""}
-          />
+          <CityEventSaveControl itemType="SHOW" itemID={show.internalID} name={show.name ?? ""} />
         ),
       })),
   }))

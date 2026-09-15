@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { CityEventFairSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
@@ -7,7 +7,11 @@ import { Fair } from "app/Scenes/CityGuide/utils/types"
 
 /**
  * Adapts the event list screen's fair sections into the shared map's section-shaped input.
- * Fairs fetch no `href` (built from the slug by hand) and follow through a nullable profile.
+ * Two fair-specific gotchas, both already handled by `CityEventRows.renderFairRow` and
+ * repeated here rather than shared, since that helper returns a row, not a map place:
+ * fairs fetch no `href`, so the URL is built from the slug by hand, and following a fair is
+ * a follow of its **profile**, which is nullable, so the save control is only injected when
+ * one exists.
  */
 export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSection[] =>
   sections.map((section) => ({
@@ -30,13 +34,10 @@ export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSecti
             {fair.exhibition_period}
           </Text>
         ) : undefined,
-        saveControl: fair.profile ? (
-          <CityEventFairSaveControl
-            id={fair.profile.id}
-            internalID={fair.profile.internalID}
-            isFollowed={fair.profile.isFollowed}
-            name={fair.name ?? ""}
-          />
-        ) : undefined,
+        // No longer gated on the fair having a profile: a stop stores the fair itself, so
+        // there is nothing a missing profile would stop.
+        saveControl: (
+          <CityEventSaveControl itemType="FAIR" itemID={fair.internalID} name={fair.name ?? ""} />
+        ),
       })),
   }))
