@@ -89,6 +89,20 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("Trafalgar Square, WC2N 5DN")).toBeTruthy()
   })
 
+  it("shows the no-artwork icon instead of a stop with no image", () => {
+    renderWithWrappers(
+      <ItineraryStopRow
+        stop={{ ...unsaveableStop, imageUrl: "" }}
+        citySlug="london-united-kingdom"
+        itineraryId="guide-1"
+        cityName="London"
+      />
+    )
+
+    expect(screen.getByTestId("itinerary-stop-no-image")).toBeTruthy()
+    expect(screen.queryByTestId("itinerary-stop-image")).toBeNull()
+  })
+
   it("leaves the note off the row", async () => {
     renderRow(
       { Show: () => ({ isFollowed: false }) },
