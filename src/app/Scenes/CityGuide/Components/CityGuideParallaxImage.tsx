@@ -35,7 +35,14 @@ export const CityGuideParallaxImage: React.FC<CityGuideParallaxImageProps> = ({
   return (
     <Flex height={height} width={screenWidth} overflow="hidden">
       <Animated.View style={[{ width: screenWidth, height }, animatedImageStyle]}>
-        <Image src={src} width={screenWidth} height={height} aspectRatio={aspectRatio} />
+        <Image
+          src={src}
+          width={screenWidth}
+          height={height}
+          aspectRatio={aspectRatio}
+          resizeMode="cover"
+          performResize={false}
+        />
       </Animated.View>
     </Flex>
   )
