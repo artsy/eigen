@@ -1,9 +1,7 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ShowPartnerLocation_show$key } from "__generated__/ShowPartnerLocation_show.graphql"
 import { tappedOnMap } from "app/Components/LocationMap/LocationMap"
-import { FC } from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface Props {
@@ -16,7 +14,7 @@ interface Props {
  * "which maps app?" sheet the location map at the bottom of the screen already uses, rather
  * than introducing a second way to get directions.
  */
-export const ShowPartnerLocation: FC<Props> = ({ show: showProp }) => {
+export const ShowPartnerLocation: React.FC<Props> = ({ show: showProp }) => {
   const show = useFragment(showFragment, showProp)
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -51,7 +49,7 @@ export const ShowPartnerLocation: FC<Props> = ({ show: showProp }) => {
         {partnerName}
       </Text>
 
-      <TouchableOpacity
+      <Touchable
         testID="show-partner-location-address"
         accessibilityRole="link"
         accessibilityLabel={`Get directions to ${address}`}
@@ -60,7 +58,7 @@ export const ShowPartnerLocation: FC<Props> = ({ show: showProp }) => {
         <Text variant="sm" underline>
           {address}
         </Text>
-      </TouchableOpacity>
+      </Touchable>
     </Flex>
   )
 }
