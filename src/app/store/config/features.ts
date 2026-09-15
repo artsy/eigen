@@ -190,12 +190,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistant",
   },
-  AREnableCityGuideItineraryRoute: {
-    description:
-      "City Guide itinerary features: the map route between stops, and adding a Show/Fair to your itinerary from its own screen",
+  AREnableCityGuideItineraries: {
+    description: "Enable City Guide Itineraries",
     readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableCityGuideItineraryRoute",
+    echoFlagKey: "AREnableCityGuideItineraries",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

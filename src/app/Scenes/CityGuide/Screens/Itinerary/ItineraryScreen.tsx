@@ -85,7 +85,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId }) => {
     }, [isMapView])
   )
   const { top } = useSafeAreaInsets()
-  const showRoute = useFeatureFlag("AREnableCityGuideItineraryRoute")
+  const showRoute = useFeatureFlag("AREnableCityGuideItineraries")
 
   // Flattened once and shared by the provider, resolvers, and rows, so the expected and
   // queried sets can never disagree. Computed ahead of the null check to keep hook order stable.

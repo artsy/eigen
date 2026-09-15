@@ -76,7 +76,7 @@ describe("ShowFollowButton", () => {
 
   describe("the icon variant", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraryRoute: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraries: true })
     })
 
     it("renders when the show has a location and the itinerary flag is on", () => {
@@ -88,7 +88,7 @@ describe("ShowFollowButton", () => {
     })
 
     it("renders nothing when the itinerary flag is off", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraryRoute: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideItineraries: false })
 
       renderIconVariant({
         Show: () => ({ isOnlineExclusive: false, location: { address: "123 Main St" } }),

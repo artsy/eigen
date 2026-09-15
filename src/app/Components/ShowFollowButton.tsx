@@ -26,7 +26,7 @@ export const ShowFollowButton: React.FC<ShowFollowButtonProps> = ({
   ...boxProps
 }) => {
   const isFollowShowsAndFairsEnabled = useFeatureFlag("AREnableFollowShowsAndFairs")
-  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraryRoute")
+  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraries")
   const show = useFragment(showFragment, showProp)
   const { trackEvent } = useTracking()
 

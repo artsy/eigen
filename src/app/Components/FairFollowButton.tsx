@@ -20,7 +20,7 @@ interface FairFollowButtonProps {
 
 export const FairFollowButton: React.FC<FairFollowButtonProps> = ({ fair, variant = "button" }) => {
   const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
-  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraryRoute")
+  const enableCityGuideItinerary = useFeatureFlag("AREnableCityGuideItineraries")
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
   const data = useFragment(fragment, fair)
