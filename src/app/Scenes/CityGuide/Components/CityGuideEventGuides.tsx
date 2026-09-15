@@ -1,4 +1,3 @@
-import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Join, Spacer, Text } from "@artsy/palette-mobile"
 import {
   CityGuideEventGuidesQuery,
@@ -13,7 +12,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 70
 const HERO_HEIGHT = 198
-const NO_ICON_SIZE = 24
 const PAGE_SIZE = 10
 
 type CityGuideEventsConnection = NonNullable<
@@ -46,7 +44,7 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
     >
       <Flex flexDirection="row" gap={1}>
-        {item.imageUrl ? (
+        {!!item.imageUrl && (
           <Image
             testID="event-guide-image"
             src={item.imageUrl}
@@ -54,19 +52,6 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
             height={IMAGE_SIZE}
             resizeMode="cover"
           />
-        ) : (
-          // Gravity can hold an image row whose upload Gemini never processed, so every
-          // version comes back null.
-          <Flex
-            testID="event-guide-no-image"
-            width={IMAGE_SIZE}
-            height={IMAGE_SIZE}
-            backgroundColor="mono90"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
-          </Flex>
         )}
 
         <Flex flex={1} justifyContent="flex-end">

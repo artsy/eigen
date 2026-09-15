@@ -102,7 +102,7 @@ describe("ItineraryStopRow", () => {
     expect(screen.getByText("🏛 Trafalgar Square, WC2N 5DN")).toBeTruthy()
   })
 
-  it("shows the no-artwork icon instead of a stop with no image", () => {
+  it("hides the image section when the stop has no image", () => {
     renderWithWrappers(
       <ItineraryStopRow
         stop={makeItineraryStop({ ...unsaveableStop, image: null })}
@@ -112,7 +112,7 @@ describe("ItineraryStopRow", () => {
       />
     )
 
-    expect(screen.getByTestId("itinerary-stop-no-image")).toBeTruthy()
+    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
     expect(screen.queryByTestId("itinerary-stop-image")).toBeNull()
   })
 

@@ -108,14 +108,12 @@ describe("ItineraryScreen", () => {
     )
   })
 
-  // Gravity can hold an image row whose upload Gemini never processed, so every version
-  // comes back null and the hero would otherwise be an empty box.
-  it("renders a placeholder when the hero image has no url", async () => {
+  it("hides the hero image section when the itinerary has no image", async () => {
     renderWithRelay({ Itinerary: () => ({ ...ITINERARY, heroImage: null }) }, props)
 
-    expect(await screen.findByTestId("itinerary-hero-no-image")).toBeOnTheScreen()
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-hero-image")).not.toBeOnTheScreen()
-    expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-hero-scrim")).not.toBeOnTheScreen()
   })
 
   describe("your own itinerary", () => {

@@ -1,4 +1,3 @@
-import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { CustomStopScreenQuery } from "__generated__/CustomStopScreenQuery.graphql"
@@ -18,7 +17,6 @@ import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 
 const HERO_HEIGHT = 300
-const NO_ICON_SIZE = 40
 
 interface Props {
   citySlug: string
@@ -120,24 +118,13 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
           contentContainerStyle={{ paddingBottom: 40 }}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
         >
-          {stop.imageUrl ? (
+          {!!stop.imageUrl && (
             <Image
               testID="custom-stop-image"
               src={stop.imageUrl}
               resizeMode="cover"
               style={{ width: "100%", height: HERO_HEIGHT }}
             />
-          ) : (
-            // Gravity only holds a stop image when a curator uploaded one.
-            <Flex
-              testID="custom-stop-no-image"
-              height={HERO_HEIGHT}
-              backgroundColor="mono10"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
-            </Flex>
           )}
 
           <Flex px={2} pt={2} pb={1}>

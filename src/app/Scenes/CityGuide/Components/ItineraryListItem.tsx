@@ -64,19 +64,22 @@ export const ItineraryListItem: React.FC<Props> = ({
             }}
           />
         ) : (
-          // No hero until someone uploads one, and createItinerary takes no image.
-          <Flex
-            testID="itinerary-list-item-no-image"
-            width={IMAGE_SIZE}
-            height={IMAGE_SIZE}
-            backgroundColor="mono10"
-            alignItems="center"
-            justifyContent="center"
-            borderTopLeftRadius={isCard ? CARD_RADIUS : 0}
-            borderBottomLeftRadius={isCard ? CARD_RADIUS : 0}
-          >
-            <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
-          </Flex>
+          // Only the home rail's card keeps a placeholder box — the list screen's plain row
+          // just drops the image section instead.
+          isCard && (
+            <Flex
+              testID="itinerary-list-item-no-image"
+              width={IMAGE_SIZE}
+              height={IMAGE_SIZE}
+              backgroundColor="mono10"
+              alignItems="center"
+              justifyContent="center"
+              borderTopLeftRadius={CARD_RADIUS}
+              borderBottomLeftRadius={CARD_RADIUS}
+            >
+              <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
+            </Flex>
+          )
         )}
 
         <Flex flex={1} py={0.5}>

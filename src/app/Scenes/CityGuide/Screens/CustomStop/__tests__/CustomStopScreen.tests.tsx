@@ -79,10 +79,10 @@ describe("CustomStopScreen", () => {
     expect(screen.queryByText("Small place, good pastries.")).not.toBeOnTheScreen()
   })
 
-  it("falls back to a placeholder when the stop has no image", async () => {
+  it("hides the image section when the stop has no image", async () => {
     renderWithRelay(withStop({ image: null }), props)
 
-    expect(await screen.findByTestId("custom-stop-no-image")).toBeOnTheScreen()
+    expect(await screen.findByText("Coffee at London Cafe")).toBeOnTheScreen()
     expect(screen.queryByTestId("custom-stop-image")).not.toBeOnTheScreen()
   })
 

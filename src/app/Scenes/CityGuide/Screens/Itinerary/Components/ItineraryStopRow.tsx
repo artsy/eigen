@@ -1,4 +1,3 @@
-import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { ItineraryStopSaveControl } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSaveControl"
@@ -19,7 +18,6 @@ const IMAGE_HEIGHT = 70
 /** The dot between hours and admission. */
 const DOT_SIZE = 4
 const BULLET_SIZE = 16
-const NO_ICON_SIZE = 24
 const ROW_STYLE = { flex: 1 } as const
 
 interface Props {
@@ -91,7 +89,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
           flatten the row.
         */}
         <Flex testID="itinerary-stop-row-content" flexDirection="row" alignItems="center" gap={1}>
-          {imageUrl ? (
+          {!!imageUrl && (
             <Image
               testID="itinerary-stop-image"
               src={imageUrl}
@@ -99,17 +97,6 @@ export const ItineraryStopRow: React.FC<Props> = ({
               height={IMAGE_HEIGHT}
               resizeMode="cover"
             />
-          ) : (
-            <Flex
-              testID="itinerary-stop-no-image"
-              width={IMAGE_WIDTH}
-              height={IMAGE_HEIGHT}
-              backgroundColor="mono10"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
-            </Flex>
           )}
 
           {/*

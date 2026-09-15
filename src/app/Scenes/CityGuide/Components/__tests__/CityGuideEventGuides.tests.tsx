@@ -113,9 +113,7 @@ describe("CityGuideEventGuides", () => {
     )
   })
 
-  // Gravity can hold an image row whose upload Gemini never processed, so every version
-  // comes back null and the row would otherwise be an empty box.
-  it("renders a placeholder when a guide's hero image has no url", async () => {
+  it("hides a guide's image section when it has no hero image", async () => {
     const attachment = itinerary("chill-vibes-only", "Chill Vibes Only")
 
     renderWithRelay(
@@ -127,9 +125,8 @@ describe("CityGuideEventGuides", () => {
       props
     )
 
-    expect(await screen.findByTestId("event-guide-no-image")).toBeOnTheScreen()
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.queryByTestId("event-guide-image")).not.toBeOnTheScreen()
-    expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
   })
 
   it("renders no hero image when the event has none", async () => {
