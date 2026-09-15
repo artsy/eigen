@@ -1,3 +1,4 @@
+import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Join, Spacer, Text } from "@artsy/palette-mobile"
 import {
   CityGuideEventGuidesQuery,
@@ -8,11 +9,14 @@ import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEve
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { Dimensions } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const IMAGE_SIZE = 70
 const HERO_HEIGHT = 198
 const PAGE_SIZE = 10
+const NO_ICON_SIZE = 24
+const HERO_NO_ICON_SIZE = 40
 
 type CityGuideEventsConnection = NonNullable<
   CityGuideEventGuidesQuery$data["city"]
@@ -44,7 +48,7 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
     >
       <Flex flexDirection="row" gap={1}>
-        {!!item.imageUrl && (
+        {item.imageUrl ? (
           <Image
             testID="event-guide-image"
             src={item.imageUrl}
@@ -52,6 +56,17 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
             height={IMAGE_SIZE}
             resizeMode="cover"
           />
+        ) : (
+          <Flex
+            testID="event-guide-no-image"
+            width={IMAGE_SIZE}
+            height={IMAGE_SIZE}
+            backgroundColor="mono90"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <NoArtIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
+          </Flex>
         )}
 
         <Flex flex={1} justifyContent="flex-end">
@@ -86,42 +101,49 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
   }
 
   return (
-    <Flex testID="event-guide-group">
-      {/* Bleeds past the section's own horizontal padding, unlike everything below it. */}
-      {!!event.heroImage?.url && (
+    <Flex testID="event-guide-group" px={2}>
+      {event.heroImage?.url ? (
         <Image
           testID="event-guide-hero-image"
           src={event.heroImage.url}
           height={HERO_HEIGHT}
           resizeMode="cover"
         />
+      ) : (
+        <Flex
+          testID="event-guide-hero-no-image"
+          height={HERO_HEIGHT}
+          backgroundColor="mono90"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <NoArtIcon width={HERO_NO_ICON_SIZE} height={HERO_NO_ICON_SIZE} fill="mono60" />
+        </Flex>
       )}
 
-      <Flex px={2}>
-        <Spacer y={2} />
+      <Spacer y={2} />
 
-        <Text variant="lg-display" color="mono0">
-          {event.title}
-        </Text>
+      <Text variant="lg-display" color="mono0">
+        {event.title}
+      </Text>
 
-        {!!event.subtitle && (
-          <Text variant="xs" color="mono10">
-            {event.subtitle}
-          </Text>
-        )}
-
+      {!!event.subtitle && (
         <Text variant="xs" color="mono10">
-          {cityGuideEventDateRange(event.startAt, event.endAt)}
+          {event.subtitle}
         </Text>
+      )}
 
-        <Spacer y={2} />
+      <Text variant="xs" color="mono10">
+        {cityGuideEventDateRange(event.startAt, event.endAt)}
+      </Text>
 
-        <Join separator={<Spacer y={2} />}>
-          {rows.map((item) => (
-            <GuideListItem key={item.id} item={item} citySlug={citySlug} />
-          ))}
-        </Join>
-      </Flex>
+      <Spacer y={2} />
+
+      <Join separator={<Spacer y={2} />}>
+        {rows.map((item) => (
+          <GuideListItem key={item.id} item={item} citySlug={citySlug} />
+        ))}
+      </Join>
     </Flex>
   )
 }
@@ -138,9 +160,9 @@ const EventGuides = ({ citySlug }: { citySlug: string }) => {
   }
 
   return (
-    <Flex backgroundColor="mono100" pb={2}>
+    <Flex backgroundColor="mono100" py={2}>
       {/* Static heading, unlike the other sections' SectionTitle: no chevron, no tap target. */}
-      <SectionTitle variant="large" title="Curated City Guides" titleColor="mono0" px={2} mb={1} />
+      <SectionTitle variant="large" title="Curated City Guides" titleColor="mono0" px={2} />
 
       <Join separator={<Spacer y={4} />}>
         {events.map((event) => (

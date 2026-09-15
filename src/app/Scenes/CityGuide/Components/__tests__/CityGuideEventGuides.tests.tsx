@@ -113,7 +113,7 @@ describe("CityGuideEventGuides", () => {
     )
   })
 
-  it("hides a guide's image section when it has no hero image", async () => {
+  it("shows a placeholder when a guide has no hero image", async () => {
     const attachment = itinerary("chill-vibes-only", "Chill Vibes Only")
 
     renderWithRelay(
@@ -125,18 +125,20 @@ describe("CityGuideEventGuides", () => {
       props
     )
 
-    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
+    expect(await screen.findByTestId("event-guide-no-image")).toBeOnTheScreen()
     expect(screen.queryByTestId("event-guide-image")).not.toBeOnTheScreen()
+    expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
   })
 
-  it("renders no hero image when the event has none", async () => {
+  it("shows a placeholder when the event has no hero image", async () => {
     renderWithRelay(
       connection([{ ...event("London Art Week", [itinerary("a", "A")]), heroImage: null }]),
       props
     )
 
-    expect(await screen.findByText("London Art Week")).toBeOnTheScreen()
+    expect(await screen.findByTestId("event-guide-hero-no-image")).toBeOnTheScreen()
     expect(screen.queryByTestId("event-guide-hero-image")).not.toBeOnTheScreen()
+    expect(screen.getByText("London Art Week")).toBeOnTheScreen()
   })
 
   it("renders nothing for a city with no current city guide events", async () => {

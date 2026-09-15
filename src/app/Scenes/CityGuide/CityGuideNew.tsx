@@ -5,7 +5,6 @@ import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideE
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
-import { CityGuideMetaData } from "app/Scenes/CityGuide/Components/CityGuideMetaData"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -56,14 +55,11 @@ export const CityGuideNew: React.FC = () => {
           />
 
           <Join separator={<Spacer y={4} />}>
-            <>
-              <CityGuideMetaData cityName={city?.name ?? ""} />
-              <CityGuideEventGuides citySlug={city?.slug ?? ""} />
-            </>
+            <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
+
+            <CityGuideEventGuides citySlug={city?.slug ?? ""} />
 
             <CityGuideEvents citySlug={city?.slug ?? ""} cityName={city?.name ?? ""} />
-
-            <CityGuideItinerariesRail citySlug={city?.slug ?? ""} />
           </Join>
         </Screen.ScrollView>
 
