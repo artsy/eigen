@@ -14,7 +14,7 @@ import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/
 import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Platform, ScrollView } from "react-native"
+import { FlatList, Platform, ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 configureMapbox()
@@ -277,25 +277,30 @@ export const MapView: React.FC<Props> = ({
       )}
 
       {/*
-        The cluster's contents, revealed rather than zoomed into. Reuses MapPreviewCard with
-        `disableNavigation` + `onPress` so tapping a card selects that place, like a pin tap.
+        The cluster's contents, revealed rather than zoomed into. `onPress` keeps the selected
+        pin in sync (so back-navigation lands on the right one still highlighted); the card's
+        own `href` navigates straight there on a single tap, same as any other card.
       */}
       {!!clusterSelection && (
-        <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
+        <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <Flex flexDirection="row">
-              {clusterSelection.places.map((place, index) => (
-                // Fixed width: the single-card usage above relies on the absolute-positioned
-                // parent to size it, which a horizontal ScrollView doesn't provide.
-                <Flex key={place.id} width={screenWidth - 2 * space(2)}>
-                  <MapPreviewCard
-                    isLast={index === clusterSelection.places.length - 1}
-                    place={place}
-                    disableNavigation
-                    onPress={() => handleSelectPlace(place.id)}
-                  />
-                </Flex>
-              ))}
+              {clusterSelection.places.map((place, index) => {
+                const clusterLength = clusterSelection.places.length
+
+                const width = screenWidth - 2 * space(2)
+                return (
+                  // Fixed width: the single-card usage above relies on the absolute-positioned
+                  // parent to size it, which a horizontal ScrollView doesn't provide.
+                  <Flex key={place.id} width={width}>
+                    <MapPreviewCard
+                      isLast={index === clusterLength - 1}
+                      place={place}
+                      onPress={() => handleSelectPlace(place.id)}
+                    />
+                  </Flex>
+                )
+              })}
             </Flex>
           </ScrollView>
         </Flex>

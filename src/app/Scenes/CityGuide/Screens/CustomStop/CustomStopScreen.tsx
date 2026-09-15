@@ -128,7 +128,7 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
           )}
 
           <Flex px={2} pt={2} pb={1}>
-            <Flex flexDirection="row" alignItems="flex-start" gap={1}>
+            <Flex flexDirection="row" alignItems="center" gap={1}>
               <Flex flex={1}>
                 <Text variant="lg-display">{stop.title}</Text>
               </Flex>
