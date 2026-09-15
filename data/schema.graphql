@@ -1421,6 +1421,11 @@ type AnalyticsPartnerSalesStats {
   orderCount: Int!
 
   """
+  Percentage (0-100) of orders/offers the partner responded to
+  """
+  orderResponseRate: Float
+
+  """
   Order response time in seconds
   """
   orderResponseTime: Int
@@ -29527,6 +29532,11 @@ type Partner implements Node {
   initials(length: Int = 3): String
 
   """
+  Aggregate metrics for the partner's unanswered inquiries, composed from Impulse conversations and Gravity collector profiles. Only resolvable for a single partner (e.g. `partner(id:)` on that partner's own CMS homepage) — not selectable under any list or connection field, such as partnersConnection.
+  """
+  inquiryMetrics: PartnerInquiryMetrics
+
+  """
   Inquiry Request details
   """
   inquiryRequest(
@@ -30839,6 +30849,18 @@ type PartnerGenomeGenesConnectionEdge {
   The item at the end of the edge
   """
   node: PartnerGenomeGene
+}
+
+type PartnerInquiryMetrics {
+  """
+  Number of confirmed buyers whose inquiries are still awaiting a response from the partner. Only scanned within the first 50 unanswered conversations returned by Impulse, so for partners with more unanswered conversations than that, this is a lower bound rather than an exact count.
+  """
+  confirmedBuyersWaitingCount: Int
+
+  """
+  Number of inquiries still awaiting a response from the partner
+  """
+  unansweredCount: Int
 }
 
 type PartnerInquiryRequest {
