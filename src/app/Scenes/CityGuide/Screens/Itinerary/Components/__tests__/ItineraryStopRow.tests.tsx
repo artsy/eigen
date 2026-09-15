@@ -257,20 +257,18 @@ describe("ItineraryStopRow", () => {
   })
 
   // A custom stop has no entity to resolve, so its plus renders straight away rather than
-  // waiting on a lookup the way an Artsy stop's control does.
+  // waiting on a lookup the way an Artsy stop's control does. Its plus opens the same Add to
+  // Itinerary sheet as an Artsy stop's, so it still needs the provider mounted above it.
   it("shows the plus on a custom stop without waiting on a lookup", () => {
-    renderWithWrappers(
-      <ItineraryStopRow
-        stop={unsaveableStop}
-        number={1}
-        citySlug="london-united-kingdom"
-        itineraryId="guide-1"
-        cityName="London"
-      />
-    )
+    renderRow({
+      stop: unsaveableStop,
+      number: 1,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
 
     expect(screen.getByTestId("custom-stop-save-button")).toBeOnTheScreen()
-    expect(screen.getByTestId("follow-icon-button-add")).toBeOnTheScreen()
   })
 
   it("renders no entity save control when the stop has no save target", () => {

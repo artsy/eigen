@@ -42,7 +42,7 @@ export interface CustomStopInput {
   longitude?: number
 }
 
-type StopInput = EntityStopInput | CustomStopInput
+export type StopInput = EntityStopInput | CustomStopInput
 
 /**
  * Every stop the app adds goes here. Nothing can create a section yet, so one name for all of

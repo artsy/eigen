@@ -1,13 +1,9 @@
-import { FollowIconButton } from "app/Components/FollowIconButton"
-import { useToast } from "app/Components/Toast/toastHook"
-import {
-  CustomStopInput,
-  useCityItineraryStops,
-} from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
-import { useEffect, useRef, useState } from "react"
+import { useAddToItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
+import { CustomStopInput } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 
 interface Props {
-  /** What gets copied. The same shape `addStop` and `removeStop` take. */
+  /** What gets copied. The same shape the Add to Itinerary sheet takes for a custom stop. */
   stop: CustomStopInput
   citySlug: string
   /** The city's own name, which is what a new itinerary and its section are called. */
@@ -16,61 +12,29 @@ interface Props {
 }
 
 /**
- * Copies a custom stop onto your own itinerary, and takes it back off. Fields are copied, not
- * referenced — except the image, which `imageURL` won't accept except as an S3 upload URL.
+ * The plus on a custom stop — a cafe, a landmark, anything with no Artsy entity behind it.
+ *
+ * Opens the Add to Itinerary sheet exactly as `CityEventSaveControl` does for an Artsy stop,
+ * copying the stop's own fields across rather than pointing at an entity id. Which itineraries
+ * already hold it is the sheet's business, so the glyph is always a plus.
+ *
+ * Renders nothing without an `AddToItineraryProvider` above it — a plus that did nothing when
+ * tapped would be worse than none.
  */
 export const CustomStopSaveControl: React.FC<Props> = ({ stop, citySlug, cityName, size }) => {
-  const toast = useToast()
-  const { addStop, removeStop } = useCityItineraryStops({ citySlug, cityName })
-  // Reflects what you did on this visit only. Reading your itinerary to seed it would put the
-  // screen's own data in the path of its mutations, which blanked the screen; `addStop`
-  // already refuses a duplicate, so a stale plus costs nothing.
-  const [isAdded, setIsAdded] = useState(false)
-  const [isInFlight, setIsInFlight] = useState(false)
+  const addToItinerary = useAddToItinerary()
 
-  // Guards against setting state or toasting after the screen has gone away.
-  const isMounted = useRef(true)
-  useEffect(
-    () => () => {
-      isMounted.current = false
-    },
-    []
-  )
-
-  const toggle = async () => {
-    setIsInFlight(true)
-
-    try {
-      if (isAdded) {
-        await removeStop(stop)
-
-        if (!isMounted.current) return
-
-        setIsAdded(false)
-        toast.show(`Removed ${stop.title} from your itinerary`, "bottom")
-      } else {
-        await addStop(stop)
-
-        if (!isMounted.current) return
-
-        setIsAdded(true)
-        toast.show(`Added ${stop.title} to your itinerary`, "bottom")
-      }
-    } catch {
-      if (isMounted.current) toast.show("Something went wrong. Please try again.", "bottom")
-    } finally {
-      if (isMounted.current) setIsInFlight(false)
-    }
+  if (!addToItinerary) {
+    return null
   }
 
   return (
-    <FollowIconButton
+    <CityGuideSaveButton
       testID="custom-stop-save-button"
-      isFollowed={isAdded}
-      isInFlight={isInFlight}
-      name={stop.title}
-      size={size}
-      onPress={toggle}
+      iconSize={size}
+      isSaved={false}
+      accessibilityLabel={`Add ${stop.title} to an itinerary`}
+      onPress={() => addToItinerary.open({ ...stop, citySlug, cityName })}
     />
   )
 }

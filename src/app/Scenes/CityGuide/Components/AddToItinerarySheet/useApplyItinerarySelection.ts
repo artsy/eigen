@@ -77,7 +77,7 @@ export const useApplyItinerarySelection = () => {
         const created = await mutate<useApplyItinerarySelectionAddMutation>(
           environment,
           AddMutation,
-          { input: { itinerarySectionID, itemType: target.itemType, itemID: target.itemID } }
+          { input: { itinerarySectionID, ...target } }
         )
         const response = created.createItineraryStop?.responseOrError
 

@@ -39,17 +39,18 @@ const SNAP_POINTS = ["50%", "95%"]
  */
 const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
 
-export interface AddToItineraryTarget extends StopTarget {
+/** An Artsy entity or a custom stop — whatever the sheet was opened for. */
+export type AddToItineraryTarget = StopTarget & {
   /** Absent where no city is known — the sheet then lists every itinerary. */
   citySlug?: string
   cityName?: string
 }
 
-interface Props extends AddToItineraryTarget {
+type Props = AddToItineraryTarget & {
   onClose: () => void
 }
 
-const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose }) => {
+const Sheet: React.FC<Props> = ({ citySlug, cityName, onClose, ...target }) => {
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
@@ -62,7 +63,6 @@ const Sheet: React.FC<Props> = ({ itemType, itemID, citySlug, cityName, onClose 
   })
 
   const fetchedItineraries = extractNodes(data.me?.itinerariesConnection)
-  const target = { itemType, itemID }
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
@@ -288,6 +288,8 @@ const Query = graphql`
 
               stops {
                 internalID
+                title
+                address
                 item {
                   __typename
                   ... on Show {

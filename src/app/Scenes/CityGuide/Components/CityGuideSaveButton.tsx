@@ -19,6 +19,8 @@ interface Props {
    * default. `hitSlop` is unchanged, so a smaller glyph still gets a comfortable tap target.
    */
   iconSize?: number
+  /** Lets a caller with its own established testID (e.g. a custom stop's plus) keep it. */
+  testID?: string
 }
 
 export const CityGuideSaveButton: React.FC<Props> = ({
@@ -28,11 +30,12 @@ export const CityGuideSaveButton: React.FC<Props> = ({
   accessibilityLabel,
   variant = "icon",
   iconSize = DEFAULT_ICON_SIZE,
+  testID = "city-guide-save-button",
 }) => {
   if (variant === "button") {
     return (
       <Button
-        testID="city-guide-save-button"
+        testID={testID}
         variant="outline"
         block
         loading={isSaving}
@@ -48,7 +51,7 @@ export const CityGuideSaveButton: React.FC<Props> = ({
 
   return (
     <Touchable
-      testID="city-guide-save-button"
+      testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (isSaved ? "Saved" : "Save")}
       accessibilityState={{ selected: isSaved, disabled: isSaving }}

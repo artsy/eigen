@@ -1,4 +1,8 @@
-import { CityItineraryItemType } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import {
+  CityItineraryItemType,
+  StopInput,
+  isSameCustomStop,
+} from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 
 /** How a stop's `item` union member maps onto the item type a caller passes in. */
 const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
@@ -7,13 +11,13 @@ const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
   LOCATION: "Location",
 }
 
-export interface StopTarget {
-  itemType: CityItineraryItemType
-  itemID: string
-}
+/** An Artsy entity or a custom stop — whatever the sheet was opened for. */
+export type StopTarget = StopInput
 
 interface PayloadStop {
   readonly internalID: string
+  readonly title?: string | null
+  readonly address?: string | null
   readonly item?: { readonly __typename: string; readonly internalID?: string } | null
 }
 
@@ -39,14 +43,21 @@ export interface PayloadItinerary {
  * Metaphysics has no "is this entity on my itinerary" field — `Show.isOnCityItinerary` was
  * asked for and does not exist — so the sheet works it out from the itineraries themselves.
  */
-export const findStopForTarget = (itinerary: PayloadItinerary, target: StopTarget) =>
-  itinerary.sections
-    .flatMap((section) => section.stops)
-    .find(
+export const findStopForTarget = (itinerary: PayloadItinerary, target: StopTarget) => {
+  const stops = itinerary.sections.flatMap((section) => section.stops)
+
+  if (target.itemType) {
+    const itemType = target.itemType
+
+    return stops.find(
       (stop) =>
-        stop.item?.__typename === ITEM_TYPENAMES[target.itemType] &&
+        stop.item?.__typename === ITEM_TYPENAMES[itemType] &&
         stop.item?.internalID === target.itemID
     )
+  }
+
+  return stops.find((stop) => isSameCustomStop(stop, target))
+}
 
 /** The ids of the itineraries already holding this entity, which open ticked. */
 export const itinerariesHoldingTarget = (

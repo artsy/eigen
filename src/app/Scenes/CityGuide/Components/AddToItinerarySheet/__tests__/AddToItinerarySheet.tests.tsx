@@ -105,6 +105,36 @@ describe("AddToItinerarySheet", () => {
       })
     })
 
+    // A custom stop has no entity to point at, so it carries its own fields across instead of
+    // an itemType/itemID pair — same sheet, same picker, as an Artsy stop gets.
+    it("adds a custom stop's own fields, not itemType/itemID", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), {
+        ...props,
+        target: {
+          title: "Coffee at London Cafe",
+          address: "12 Bermondsey Street",
+          citySlug: "london-united-kingdom",
+          cityName: "London",
+        },
+      })
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+
+      const operation = view.env.mock.getMostRecentOperation()
+
+      // "First" already has a My Stops section (every fixture itinerary gets one), so the
+      // stop is created straight away.
+      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
+      expect(operation.request.variables.input).toEqual({
+        itinerarySectionID: "a-s",
+        title: "Coffee at London Cafe",
+        address: "12 Bermondsey Street",
+      })
+    })
+
     it("removes the stop from an itinerary whose tick was cleared", async () => {
       const view = renderWithRelay(
         withItineraries([itinerary("a", "First", [showStop("stop-1", "show-1")])]),
