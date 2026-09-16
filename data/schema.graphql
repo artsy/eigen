@@ -16265,6 +16265,39 @@ type CreatePartnerShowSuccess {
   show: Show
 }
 
+type CreatePartnerUserNoteFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerUserNoteInput {
+  """
+  Note text.
+  """
+  body: String!
+  clientMutationId: String
+
+  """
+  ID of the partner.
+  """
+  partnerId: String!
+
+  """
+  ID of the collector the note is about.
+  """
+  userId: String!
+}
+
+union CreatePartnerUserNoteOrError = CreatePartnerUserNoteFailure | CreatePartnerUserNoteSuccess
+
+type CreatePartnerUserNotePayload {
+  clientMutationId: String
+  partnerUserNoteOrError: CreatePartnerUserNoteOrError
+}
+
+type CreatePartnerUserNoteSuccess {
+  partnerUserNote: PartnerUserNote
+}
+
 type CreatePurchaseFailure {
   mutationError: GravityMutationError
 }
@@ -17688,6 +17721,30 @@ union DeletePartnerShowResponseOrError = DeletePartnerShowFailure | DeletePartne
 
 type DeletePartnerShowSuccess {
   show: Show
+}
+
+type DeletePartnerUserNoteFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerUserNoteInput {
+  clientMutationId: String
+
+  """
+  ID of the note to delete.
+  """
+  id: String!
+}
+
+union DeletePartnerUserNoteOrError = DeletePartnerUserNoteFailure | DeletePartnerUserNoteSuccess
+
+type DeletePartnerUserNotePayload {
+  clientMutationId: String
+  partnerUserNoteOrError: DeletePartnerUserNoteOrError
+}
+
+type DeletePartnerUserNoteSuccess {
+  partnerUserNote: PartnerUserNote
 }
 
 type DeletePurchaseFailure {
@@ -26653,6 +26710,11 @@ type Mutation {
   ): CreatePartnerShowEventMutationPayload
 
   """
+  Creates a partner's note about a collector.
+  """
+  createPartnerUserNote(input: CreatePartnerUserNoteInput!): CreatePartnerUserNotePayload
+
+  """
   Create a purchase
   """
   createPurchase(input: createPurchaseInput!): createPurchasePayload
@@ -26926,6 +26988,11 @@ type Mutation {
   deletePartnerShowEvent(
     input: DeletePartnerShowEventMutationInput!
   ): DeletePartnerShowEventMutationPayload
+
+  """
+  Deletes a partner's note about a collector.
+  """
+  deletePartnerUserNote(input: DeletePartnerUserNoteInput!): DeletePartnerUserNotePayload
 
   """
   Deletes a purchase
@@ -27667,6 +27734,11 @@ type Mutation {
   updatePartnerShowEvent(
     input: UpdatePartnerShowEventMutationInput!
   ): UpdatePartnerShowEventMutationPayload
+
+  """
+  Updates a partner's note about a collector.
+  """
+  updatePartnerUserNote(input: UpdatePartnerUserNoteInput!): UpdatePartnerUserNotePayload
 
   """
   Updates a profile.
@@ -29890,6 +29962,21 @@ type Partner implements Node {
   type: String
 
   """
+  A connection of notes this partner has made about collectors.
+  """
+  userNotesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Only return notes about this collector.
+    """
+    userId: String
+  ): PartnerUserNoteConnection
+
+  """
   Returns VAT number or a fallback message based on the partner's VAT status.
   """
   vatInformation: String
@@ -31523,6 +31610,82 @@ enum PartnerShowPartnerType {
 }
 
 union PartnerTypes = ExternalPartner | Partner
+
+"""
+A partner's private note about a collector.
+"""
+type PartnerUserNote {
+  body: String
+  createdAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  A type-specific ID likely used as a database ID.
+  """
+  internalID: ID!
+  partnerId: String
+  updatedAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+
+  """
+  ID of the partner user who last touched this note.
+  """
+  updatedByUserId: String
+
+  """
+  ID of the collector this note is about.
+  """
+  userId: String
+}
+
+"""
+A connection to a list of items.
+"""
+type PartnerUserNoteConnection {
+  """
+  A list of edges.
+  """
+  edges: [PartnerUserNoteEdge]
+  pageCursors: PageCursors!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type PartnerUserNoteEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: PartnerUserNote
+}
 
 enum PartnersAggregation {
   CATEGORY
@@ -34326,6 +34489,16 @@ type Query {
     showID: String!
     size: Int
   ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+
+  """
+  A partner's note about a collector.
+  """
+  partnerUserNote(
+    """
+    The ID of the PartnerUserNote.
+    """
+    id: String!
+  ): PartnerUserNote
 
   """
   A list of Partners
@@ -41007,6 +41180,34 @@ type UpdatePartnerSuccess {
   partner: Partner
 }
 
+type UpdatePartnerUserNoteFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerUserNoteInput {
+  """
+  Note text.
+  """
+  body: String!
+  clientMutationId: String
+
+  """
+  ID of the note to update.
+  """
+  id: String!
+}
+
+union UpdatePartnerUserNoteOrError = UpdatePartnerUserNoteFailure | UpdatePartnerUserNoteSuccess
+
+type UpdatePartnerUserNotePayload {
+  clientMutationId: String
+  partnerUserNoteOrError: UpdatePartnerUserNoteOrError
+}
+
+type UpdatePartnerUserNoteSuccess {
+  partnerUserNote: PartnerUserNote
+}
+
 type UpdateProfileFailure {
   mutationError: GravityMutationError
 }
@@ -43998,6 +44199,16 @@ type Viewer {
     showID: String!
     size: Int
   ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
+
+  """
+  A partner's note about a collector.
+  """
+  partnerUserNote(
+    """
+    The ID of the PartnerUserNote.
+    """
+    id: String!
+  ): PartnerUserNote
 
   """
   A list of Partners
