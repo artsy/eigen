@@ -1,0 +1,182 @@
+#!/bin/bash
+set -euo pipefail
+
+# deploy-to-expo-updates-ci
+#
+# Dispatches an Expo Update publish to GitHub Actions (.github/workflows/deploy-expo-update.yml).
+# Similar to ./scripts/deploys/expo-updates/deploy-to-expo-updates, but the workflow checks out
+# the exact commit SHA this script resolves below, so the published bundle is built from pushed
+# code rather than what's on a machine's disk.
+#
+# Usage:
+#   deploy-to-expo-updates-ci <deployment> [description] [rollout_percentage] \
+#     [--platform ios|android|all] [--check-against-version]
+#
+# If a branch doesn't have the workflow yet (e.g. an old *-hotfix branch), this script refuses to
+# dispatch and tells you to use deploy-to-expo-updates directly.
+
+REPO="artsy/eigen"
+WORKFLOW_FILE="deploy-expo-update.yml"
+
+platform="all"
+check_against_version=false
+check_against_version_explicit=false
+positional_args=()
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+  --platform=*)
+    platform="${1#--platform=}"
+    shift
+    ;;
+  --platform)
+    platform="${2:-}"
+    shift 2
+    ;;
+  --check-against-version)
+    check_against_version=true
+    check_against_version_explicit=true
+    shift
+    ;;
+  *)
+    positional_args+=("$1")
+    shift
+    ;;
+  esac
+done
+
+set -- "${positional_args[@]}"
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
+  echo "Usage: $0 <deployment> [description] [rollout_percentage] [--platform ios|android|all] [--check-against-version]"
+  echo "Deployment must be either 'canary', 'staging' or 'production'."
+  echo "Rollout percentage is optional (integer from 0 to 100). Production defaults to 50 if omitted."
+  echo "Platform is optional ('ios', 'android' or 'all'). Defaults to 'all'."
+  echo "--check-against-version checks against this version's own shipped fingerprint instead of"
+  echo "the latest beta's. Defaults to true on a branch ending in '-hotfix'."
+  exit 1
+fi
+
+deployment=$1
+description="${2:-}"
+rollout="${3:-}"
+
+if [ "$deployment" != "canary" ] && [ "$deployment" != "staging" ] && [ "$deployment" != "production" ]; then
+  echo "Invalid deployment option: $deployment" >&2
+  echo "Deployment must be either 'canary', 'staging' or 'production'." >&2
+  exit 1
+fi
+
+if [ "$platform" != "ios" ] && [ "$platform" != "android" ] && [ "$platform" != "all" ]; then
+  echo "Invalid platform option: $platform" >&2
+  echo "Platform must be either 'ios', 'android' or 'all'." >&2
+  exit 1
+fi
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "❌ The GitHub CLI ('gh') is required to dispatch this from your machine." >&2
+  echo "   Install it: https://cli.github.com/, then 'gh auth login'." >&2
+  exit 1
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+sha=$(git rev-parse HEAD)
+
+if [ "$branch" = "HEAD" ]; then
+  echo "❌ You're in a detached HEAD state, not on a branch. Check out the branch you want to" >&2
+  echo "   publish from — dispatching needs a branch name to push against and check the" >&2
+  echo "   workflow file on." >&2
+  exit 1
+fi
+
+if ! git diff-index --quiet HEAD --; then
+  echo "⚠️  Your working tree is dirty. The published bundle will still come from commit" >&2
+  echo "   ${sha:0:8} on GitHub, not your working tree — but the fingerprint pre-flight below runs" >&2
+  echo "   against your working tree, so its result may not reflect what actually gets published." >&2
+fi
+
+echo "Fetching latest '$branch' from origin to confirm ${sha:0:8} is pushed..."
+git fetch origin "$branch" --quiet
+
+if ! git merge-base --is-ancestor "$sha" "origin/$branch"; then
+  echo "❌ ${sha:0:8} is not on origin/$branch. Push your commit before dispatching — the workflow" >&2
+  echo "   checks out this exact SHA from the remote, so an unpushed commit can't be published." >&2
+  exit 1
+fi
+
+if ! git cat-file -e "origin/$branch:.github/workflows/$WORKFLOW_FILE" 2>/dev/null; then
+  fallback_cmd="./scripts/deploys/expo-updates/deploy-to-expo-updates $deployment"
+  [ -n "$description" ] && fallback_cmd+=" \"$description\""
+  [ -n "$rollout" ] && fallback_cmd+=" $rollout"
+  fallback_cmd+=" --platform $platform"
+  [ "$check_against_version" = true ] && fallback_cmd+=" --check-against-version"
+
+  echo "❌ '$branch' predates the CI publish workflow (.github/workflows/$WORKFLOW_FILE isn't on it)." >&2
+  echo "   This is expected for a hotfix branch cut from an old release tag. Publish locally instead:" >&2
+  echo "" >&2
+  echo "   $fallback_cmd" >&2
+  exit 1
+fi
+
+# Compare fingerprint against version on hotfix branches
+if [ "$check_against_version_explicit" = false ] && [[ "$branch" == *-hotfix ]]; then
+  check_against_version=true
+  echo "Branch '$branch' looks like a hotfix branch — defaulting to --check-against-version."
+fi
+
+echo "Running fingerprint pre-flight..."
+if [ "$check_against_version" = true ]; then
+  ./scripts/deploys/expo-updates/check-native-fingerprint-synced "$deployment" --check-against-version
+else
+  ./scripts/deploys/expo-updates/check-native-fingerprint-synced "$deployment"
+fi
+
+if [ -z "$description" ]; then
+  commit_hash=$(git rev-parse --short "$sha")
+  commit_description=$(git log -1 --pretty=%s "$sha")
+  description="Commit: $commit_hash, Description: $commit_description"
+fi
+
+if [ "$deployment" = "production" ] && [ -z "$rollout" ]; then
+  rollout=50
+  echo "No rollout percentage given for production — defaulting to 50%."
+fi
+
+if [ "$deployment" = "production" ]; then
+  echo -e "\033[0;33mWarning: You are about to deploy to production with a rollout of ${rollout}%.\033[0m"
+  echo -e "\033[0;33mThis will publish commit ${sha:0:8} on '$branch' to production users.\033[0m"
+  read -r -p "Are you sure you want to continue? (y/N): " confirm
+  if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "Deployment aborted."
+    exit 1
+  fi
+fi
+
+echo "Dispatching $deployment publish of ${sha:0:8} on '$branch'..."
+
+dispatch_args=(
+  -f "ref=$branch"
+  -F "return_run_details=true"
+  -f "inputs[sha]=$sha"
+  -f "inputs[deployment]=$deployment"
+  -f "inputs[platform]=$platform"
+  -f "inputs[description]=$description"
+  -f "inputs[check_against_version]=$check_against_version"
+)
+
+if [ -n "$rollout" ]; then
+  dispatch_args+=(-f "inputs[rollout_percentage]=$rollout")
+fi
+
+run_id=$(gh api -X POST "repos/$REPO/actions/workflows/$WORKFLOW_FILE/dispatches" \
+  "${dispatch_args[@]}" \
+  --jq '.workflow_run_id')
+
+if [ -z "$run_id" ] || [ "$run_id" = "null" ]; then
+  echo "❌ Dispatch succeeded but no run id was returned. Check the Actions tab manually:" >&2
+  echo "   https://github.com/$REPO/actions/workflows/$WORKFLOW_FILE" >&2
+  exit 1
+fi
+
+run_url="https://github.com/$REPO/actions/runs/$run_id"
+echo "Dispatched: $run_url"

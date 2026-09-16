@@ -107,6 +107,57 @@ lane :notify_beta_failed do |options|
   )
 end
 
+desc "Notifies in slack that an Expo Update was published to production"
+lane :notify_expo_update_published do |options|
+  description = options[:description]
+  rollout_percentage = options[:rollout_percentage]
+
+  rollout_line = (rollout_percentage.nil? || rollout_percentage.empty?) ? "Rollout: 100%" : "Rollout: #{rollout_percentage}%"
+
+  message = <<~MSG
+              :rocket: :iphone:
+              An Expo Update was published to *production*.
+              #{rollout_line}
+              #{description}
+              See GitHub action run for more details.
+            MSG
+
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
+  slack(
+    message: message,
+    success: true,
+    payload: {
+      'GitHub Actions' => github_url
+    },
+    default_payloads: []
+  )
+end
+
+desc "Notifies in slack if an Expo Update failed to publish to production"
+lane :notify_expo_update_failed do
+  message = <<~MSG
+              :x: :iphone:
+              An Expo Update publish to *production* failed!
+              See GitHub action run for more details.
+            MSG
+
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+
+  slack(
+    message: message,
+    success: false,
+    payload: {
+      'GitHub Actions' => github_url
+    },
+    default_payloads: []
+  )
+end
+
 desc "Notifies in slack if a new beta is needed"
 lane :notify_beta_needed do
   message = <<~MSG

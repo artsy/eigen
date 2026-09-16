@@ -1,0 +1,113 @@
+name: Deploy Expo Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: "Commit SHA to publish"
+        required: true
+        type: string
+      deployment:
+        description: "Channel to publish to"
+        required: true
+        type: choice
+        options:
+          - canary
+          - staging
+          - production
+      platform:
+        description: "Platform(s) to publish"
+        required: false
+        type: choice
+        default: all
+        options:
+          - all
+          - ios
+          - android
+      description:
+        description: "Update description (defaults to the commit subject if left blank)"
+        required: false
+        type: string
+      rollout_percentage:
+        description: "Rollout percentage (0-100). Leave blank for a full rollout."
+        required: false
+        type: string
+      check_against_version:
+        description: "Compare against this app version's shipped fingerprint instead of main's latest"
+        required: false
+        type: boolean
+        default: false
+
+run-name: "Deploy Expo Update to ${{ inputs.deployment }} on ${{ case(inputs.platform == 'all', 'both platforms', inputs.platform) }} · ${{ inputs.sha }}"
+# example: Deploy Expo Update to production on android · SHA
+
+permissions:
+  contents: write # needed for tag_and_push (fastlane/utility_fastlane.rb)
+
+concurrency:
+  group: deploy-expo-update-${{ inputs.deployment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository at the published commit
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.sha }}
+
+      - name: Setup repository environment
+        uses: ./.github/actions/setup-repo-environment
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Setup SSH agent
+        uses: ./.github/actions/setup-ssh
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Setup JavaScript environment
+        uses: ./.github/actions/setup-javascript-environment
+
+      - name: Setup Ruby
+        uses: ./.github/actions/setup-ruby
+
+      - name: Setup iOS environment
+        uses: ./.github/actions/setup-ios-environment
+
+      - name: Update echo
+        uses: ./.github/actions/setup-update-echo
+
+      - name: Install bin modules
+        uses: ./.github/actions/setup-bin-modules
+
+      - name: Deploy to Expo Updates
+        id: deploy
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_UPDATES_TOKEN }}
+          DEPLOYMENT: ${{ inputs.deployment }}
+          PLATFORM: ${{ inputs.platform }}
+          DESCRIPTION: ${{ inputs.description }}
+          ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
+          CHECK_AGAINST_VERSION: ${{ inputs.check_against_version }}
+        run: |
+          args=("$DEPLOYMENT" "$DESCRIPTION" "$ROLLOUT_PERCENTAGE" --platform "$PLATFORM")
+          if [ "$CHECK_AGAINST_VERSION" = "true" ]; then
+            args+=(--check-against-version)
+          fi
+          ./scripts/deploys/expo-updates/deploy-to-expo-updates "${args[@]}"
+
+      - name: Notify Slack of production publish
+        if: success() && inputs.deployment == 'production'
+        env:
+          DESCRIPTION: ${{ inputs.description }}
+          ROLLOUT_PERCENTAGE: ${{ inputs.rollout_percentage }}
+        run: bundle exec fastlane notify_expo_update_published description:"$DESCRIPTION" rollout_percentage:"$ROLLOUT_PERCENTAGE"
+
+      - name: Notify Slack of production publish failure
+        if: failure() && inputs.deployment == 'production'
+        run: bundle exec fastlane notify_expo_update_failed
