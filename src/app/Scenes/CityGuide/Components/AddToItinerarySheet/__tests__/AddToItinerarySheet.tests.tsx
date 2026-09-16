@@ -3,6 +3,13 @@ import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItiner
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
 
+// The bottom-sheet mock does not mount its footer host. Render portal children
+// inline here so these tests can exercise the Done button's mutation behavior.
+jest.mock("@gorhom/portal", () => ({
+  ...jest.requireActual("@gorhom/portal"),
+  Portal: ({ children }: { children: React.ReactNode }) => children,
+}))
+
 const itinerary = (internalID: string, title: string, stops: object[]) => ({
   internalID,
   title,
@@ -112,6 +119,8 @@ describe("AddToItinerarySheet", () => {
         ...props,
         target: {
           title: "Coffee at London Cafe",
+          sourceStopID: "source-stop",
+          sourceShareToken: "source-token",
           address: "12 Bermondsey Street",
           citySlug: "london-united-kingdom",
           cityName: "London",
@@ -131,6 +140,8 @@ describe("AddToItinerarySheet", () => {
       expect(operation.request.variables.input).toEqual({
         itinerarySectionID: "a-s",
         title: "Coffee at London Cafe",
+        sourceStopID: "source-stop",
+        sourceShareToken: "source-token",
         address: "12 Bermondsey Street",
       })
     })

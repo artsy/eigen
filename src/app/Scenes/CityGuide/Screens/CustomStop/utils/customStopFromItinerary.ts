@@ -97,6 +97,7 @@ export const customStopFromItinerary = (
 
 /** What "add to itinerary" copies. A custom stop has no entity, so it is its own fields. */
 export const customStopInput = (stop: CustomStop) => ({
+  sourceStopID: stop.id,
   title: stop.title,
   address: stop.address,
   note: stop.description,
