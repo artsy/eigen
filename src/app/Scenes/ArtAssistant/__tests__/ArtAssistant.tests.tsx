@@ -1,8 +1,16 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ART_ASSISTANT_SUGGESTIONS, ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("ArtAssistant", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectState({
+      auth: { userID: "user-id", userAccessToken: "access-token" },
+    })
+  })
+
   it("renders the empty state and composer", () => {
     renderWithWrappers(<ArtAssistant />)
 
@@ -26,14 +34,44 @@ describe("ArtAssistant", () => {
       "value",
       ART_ASSISTANT_SUGGESTIONS[0]
     )
-    expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(screen.getByLabelText("Send")).toBeEnabled()
   })
 
-  it("keeps Send disabled until sending is implemented", () => {
+  it("enables Send when the prompt has text", () => {
     renderWithWrappers(<ArtAssistant />)
 
     fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "  blue painting  ")
 
+    expect(screen.getByLabelText("Send")).toBeEnabled()
+  })
+
+  it("shows the response from Metaphysics", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "blue painting")
+    fireEvent.press(screen.getByLabelText("Send"))
+
+    expect(screen.getByText("Thinking...")).toBeOnTheScreen()
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      environment.mock.nextValue(operation, {
+        data: {
+          aiAgentTurn: {
+            __typename: "AIAgentTurnComplete",
+            message: "I found a few works for you.",
+            stopReason: "end_turn",
+            toolCallCount: 1,
+            artworks: [],
+          },
+        },
+      })
+    })
+
+    // The terminal application event is enough; the server does not need to close the stream.
+    expect(screen.getByText("I found a few works for you.")).toBeOnTheScreen()
     expect(screen.getByLabelText("Send")).toBeDisabled()
   })
 

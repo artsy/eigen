@@ -9,6 +9,7 @@ import {
   useColor,
   useSpace,
 } from "@artsy/palette-mobile"
+import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { goBack } from "app/system/navigation/navigate"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useState } from "react"
@@ -30,7 +31,20 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
+  const { isResponding, response, submit } = useArtAssistantConversation()
   const composerKeyboardGap = space(1)
+  const canSend = prompt.trim().length > 0 && !isResponding
+
+  const handleSend = () => {
+    const text = prompt.trim()
+
+    if (!text) {
+      return
+    }
+
+    submit(text)
+    setPrompt("")
+  }
 
   return (
     <Screen>
@@ -59,45 +73,51 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           testID="art-assistant-content"
         >
           <Flex flex={1} px={2} pt={4} pb={2}>
-            <Flex flexDirection="row" alignItems="center" justifyContent="center">
-              <SparklesStrokeIcon fill="mono60" width={28} height={28} />
-              <Text variant="sm" color="mono60" ml={0.5} caps>
-                Art Assistant
-              </Text>
-            </Flex>
+            {response ? (
+              <Text variant="sm">{response}</Text>
+            ) : (
+              <>
+                <Flex flexDirection="row" alignItems="center" justifyContent="center">
+                  <SparklesStrokeIcon fill="mono60" width={28} height={28} />
+                  <Text variant="sm" color="mono60" ml={0.5} caps>
+                    Art Assistant
+                  </Text>
+                </Flex>
 
-            <Text variant="lg" textAlign="center" mt={2}>
-              What are you looking for?
-            </Text>
+                <Text variant="lg" textAlign="center" mt={2}>
+                  What are you looking for?
+                </Text>
 
-            <Text variant="sm" color="mono60" textAlign="center" mt={1} mb={2}>
-              Describe it the way you'd describe it to a friend — medium, mood, color, budget. I'll
-              do the filtering.
-            </Text>
+                <Text variant="sm" color="mono60" textAlign="center" mt={1} mb={2}>
+                  Describe it the way you'd describe it to a friend — medium, mood, color, budget.
+                  I'll do the filtering.
+                </Text>
 
-            <Flex gap={1}>
-              {ART_ASSISTANT_SUGGESTIONS.map((suggestion) => (
-                <Touchable
-                  accessibilityRole="button"
-                  key={suggestion}
-                  onPress={() => setPrompt(suggestion)}
-                  underlayColor="mono5"
-                  style={{ borderRadius: 20, overflow: "hidden" }}
-                >
-                  <Flex
-                    borderColor="mono15"
-                    borderRadius={20}
-                    borderWidth={StyleSheet.hairlineWidth}
-                    justifyContent="center"
-                    minHeight={56}
-                    px={2}
-                    py={1}
-                  >
-                    <Text variant="sm">{suggestion}</Text>
-                  </Flex>
-                </Touchable>
-              ))}
-            </Flex>
+                <Flex gap={1}>
+                  {ART_ASSISTANT_SUGGESTIONS.map((suggestion) => (
+                    <Touchable
+                      accessibilityRole="button"
+                      key={suggestion}
+                      onPress={() => setPrompt(suggestion)}
+                      underlayColor="mono5"
+                      style={{ borderRadius: 20, overflow: "hidden" }}
+                    >
+                      <Flex
+                        borderColor="mono15"
+                        borderRadius={20}
+                        borderWidth={StyleSheet.hairlineWidth}
+                        justifyContent="center"
+                        minHeight={56}
+                        px={2}
+                        py={1}
+                      >
+                        <Text variant="sm">{suggestion}</Text>
+                      </Flex>
+                    </Touchable>
+                  ))}
+                </Flex>
+              </>
+            )}
           </Flex>
         </Screen.ScrollView>
 
@@ -140,13 +160,14 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           <Touchable
             accessibilityLabel="Send"
             accessibilityRole="button"
-            accessibilityState={{ disabled: true }}
-            disabled
+            accessibilityState={{ disabled: !canSend }}
+            disabled={!canSend}
+            onPress={handleSend}
             style={{ borderRadius: 50, overflow: "hidden" }}
           >
             <Flex
               alignItems="center"
-              backgroundColor="mono30"
+              backgroundColor={canSend ? "blue100" : "mono30"}
               borderRadius={50}
               height={50}
               justifyContent="center"
