@@ -205,7 +205,15 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
           ) : (
             <Screen.ScrollView
               contentContainerStyle={{ paddingBottom: 40 }}
-              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={isRefreshing}
+                  onRefresh={refresh}
+                  // Without this, the spinner sits right under the floating back/share bar
+                  // above (`top` to `top + NAVBAR_HEIGHT`), which paints over it.
+                  progressViewOffset={top + NAVBAR_HEIGHT}
+                />
+              }
             >
               <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
 
