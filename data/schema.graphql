@@ -23441,6 +23441,11 @@ type ItineraryStop {
   isFreeAdmission: Boolean
 
   """
+  Whether this stop occurs in any of the current user's personal itineraries. Matches Artsy items by type and ID (including events of that item), and custom stops by exact title and address. False when signed out.
+  """
+  isOnMyItineraries: Boolean
+
+  """
   The Show, gallery location, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
   """
   item: ItineraryStopItem
@@ -23451,6 +23456,11 @@ type ItineraryStop {
   itemType: ItineraryStopItemType
   latitude: Float
   longitude: Float
+
+  """
+  The current user's personal itineraries containing this stop, newest first. Uses the same matching rules as isOnMyItineraries. Details are fetched only when this field is selected. Empty when signed out.
+  """
+  myItineraries: [Itinerary!]
   note: String
   position: Int!
 
@@ -33883,6 +33893,21 @@ type Query {
     """
     shareToken: String
   ): Itinerary
+
+  """
+  A single City Guide itinerary stop. Uses the parent itinerary's read permissions.
+  """
+  itineraryStop(
+    """
+    The stop's internal ID
+    """
+    id: String!
+
+    """
+    The parent itinerary's share token, when unlisted
+    """
+    shareToken: String
+  ): ItineraryStop
   job(id: ID!): Job!
   jobs: [Job!]!
 
@@ -43596,6 +43621,21 @@ type Viewer {
     """
     shareToken: String
   ): Itinerary
+
+  """
+  A single City Guide itinerary stop. Uses the parent itinerary's read permissions.
+  """
+  itineraryStop(
+    """
+    The stop's internal ID
+    """
+    id: String!
+
+    """
+    The parent itinerary's share token, when unlisted
+    """
+    shareToken: String
+  ): ItineraryStop
   job(id: ID!): Job!
   jobs: [Job!]!
 
