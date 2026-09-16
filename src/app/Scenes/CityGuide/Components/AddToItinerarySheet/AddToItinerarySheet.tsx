@@ -20,6 +20,7 @@ import {
   mutate,
   useCityItineraryStops,
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -144,10 +145,14 @@ const Sheet: React.FC<Props> = ({
       if (canAutoCreate) {
         await addStop(target)
       } else {
-        await applySelection({ itineraries, target, initial, selected })
+        const changes = await applySelection({ itineraries, target, initial, selected })
+
+        if (citySlug && (changes.added > 0 || changes.removed > 0)) {
+          refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        }
       }
 
-      toast.show("Added to your itinerary", "bottom")
+      toast.show("Changes Saved", "bottom")
       onClose()
     } catch {
       // Left open on failure: dismissing would claim the change stuck.

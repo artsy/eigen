@@ -43,11 +43,15 @@ interface Props {
 const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // An itinerary is addressed by its own id or slug and carries its city; `citySlug` only
   // looks the city's name up, for what a new itinerary is called when a custom stop is copied.
-  const data = useLazyLoadQuery<ItineraryScreenQuery>(itineraryQuery, {
-    id: itineraryId,
-    citySlug,
-    shareToken,
-  })
+  const data = useLazyLoadQuery<ItineraryScreenQuery>(
+    itineraryQuery,
+    {
+      id: itineraryId,
+      citySlug,
+      shareToken,
+    },
+    { fetchPolicy: "network-only" }
+  )
 
   /*
     Kept when a re-read comes back empty: sections/stops have no schema `id`, so Relay keys

@@ -7,6 +7,7 @@ import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
 import { Environment, commitMutation } from "relay-runtime"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 
 /**
  * What a stop points at, matching `ItineraryStopItemType`. A gallery or museum is a
@@ -276,6 +277,8 @@ export const useCityItineraryStops = ({
           )
         }
 
+        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+
         return response.itineraryStop
       }),
     [serialise, resolveTarget, environment, citySlug]
@@ -310,6 +313,8 @@ export const useCityItineraryStops = ({
               : "Could not remove the stop"
           )
         }
+
+        refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
 
         return response.itineraryStop
       }),
