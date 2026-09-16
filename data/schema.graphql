@@ -45026,6 +45026,16 @@ input createItineraryStopInput {
   latitude: Float
   longitude: Float
   note: String
+
+  """
+  The source stop's parent itinerary share token, when unlisted
+  """
+  sourceShareToken: String
+
+  """
+  Copy the processed image from a readable stop. Other stop fields must be supplied separately. Cannot be combined with imageURL.
+  """
+  sourceStopID: String
   sourceURL: String
   startAt: String
 
