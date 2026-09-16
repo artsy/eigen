@@ -16,7 +16,7 @@ describe("ItineraryPicker", () => {
     internalID,
     slug: null,
     title: name,
-    sections: [{ stopsCount: 4 }],
+    stopsCount: 4,
   })
 
   const connection = (nodes: object[]) => ({
@@ -25,6 +25,19 @@ describe("ItineraryPicker", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+  })
+
+  it("does not request sections that would replace the screen's populated sections", () => {
+    const query = require("__generated__/ItineraryPickerQuery.graphql").default
+    expect(JSON.stringify(query.operation)).not.toContain('"name":"sections"')
+  })
+
+  it("shows the top-level stop count", async () => {
+    renderWithRelay(connection([itinerary("a", "London Oct 2026")]), props)
+
+    fireEvent.press(await screen.findByText("London Oct 2026"))
+
+    expect(await screen.findByText("4 stops")).toBeOnTheScreen()
   })
 
   it("names the itinerary being viewed", async () => {

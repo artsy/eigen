@@ -124,9 +124,6 @@ const Query = graphql`
             slug
             title
             stopsCount
-            sections {
-              stopsCount
-            }
           }
         }
       }

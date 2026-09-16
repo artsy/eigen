@@ -58,11 +58,18 @@ export const useApplyItinerarySelection = () => {
       target,
       initial,
       selected,
+      memberships,
     }: {
       itineraries: readonly PayloadItinerary[]
       target: StopTarget
       initial: readonly string[]
       selected: readonly string[]
+      memberships?:
+        | readonly {
+            readonly itineraryID: string
+            readonly stopIDs: readonly string[]
+          }[]
+        | null
     }) => {
       const { added, removed } = selectionChanges(initial, selected)
       const byId = new Map(itineraries.map((itinerary) => [itinerary.internalID, itinerary]))
@@ -92,24 +99,35 @@ export const useApplyItinerarySelection = () => {
 
       for (const id of removed) {
         const itinerary = byId.get(id)
-        const stop = itinerary && findStopForTarget(itinerary, target)
+        const membership = memberships?.find(({ itineraryID }) => itineraryID === id)
+        const matchingStopIDs = membership?.stopIDs ?? []
+        const stopIDs =
+          target.sourceStopID && matchingStopIDs.includes(target.sourceStopID)
+            ? [target.sourceStopID]
+            : matchingStopIDs.length
+              ? matchingStopIDs
+              : [itinerary && findStopForTarget(itinerary, target)?.internalID].filter(
+                  (stopID): stopID is string => !!stopID
+                )
 
         // Nothing to remove is success: the row already shows the state the user asked for.
-        if (!stop) continue
+        if (!stopIDs.length) continue
 
-        const deleted = await mutate<useApplyItinerarySelectionRemoveMutation>(
-          environment,
-          RemoveMutation,
-          { input: { id: stop.internalID } }
-        )
-        const response = deleted.deleteItineraryStop?.responseOrError
-
-        if (response?.__typename !== "ItineraryStopMutationSuccess") {
-          throw new Error(
-            response?.__typename === "ItineraryStopMutationFailure"
-              ? response.mutationError?.message ?? "Could not remove the stop"
-              : "Could not remove the stop"
+        for (const stopID of stopIDs) {
+          const deleted = await mutate<useApplyItinerarySelectionRemoveMutation>(
+            environment,
+            RemoveMutation,
+            { input: { id: stopID } }
           )
+          const response = deleted.deleteItineraryStop?.responseOrError
+
+          if (response?.__typename !== "ItineraryStopMutationSuccess") {
+            throw new Error(
+              response?.__typename === "ItineraryStopMutationFailure"
+                ? response.mutationError?.message ?? "Could not remove the stop"
+                : "Could not remove the stop"
+            )
+          }
         }
       }
 

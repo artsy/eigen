@@ -21,7 +21,7 @@ import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { RefreshControl } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
@@ -53,15 +53,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     { fetchPolicy: "network-only" }
   )
 
-  /*
-    Kept when a re-read comes back empty: sections/stops have no schema `id`, so Relay keys
-    them positionally — adding/removing a stop shifts those slots and could empty the guide.
-  */
-  const lastResolved = useRef(data.itinerary)
-
-  if (data.itinerary?.sections.length) lastResolved.current = data.itinerary
-
-  const itinerary = data.itinerary?.sections.length ? data.itinerary : lastResolved.current
+  const itinerary = data.itinerary
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
 
@@ -72,18 +64,21 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
     suspend the screen and blank the guide mid-pull instead of updating it in place.
   */
-  const refresh = useCallback(() => {
+  const refresh = useCallback(async () => {
     setIsRefreshing(true)
 
-    fetchQuery<ItineraryScreenQuery>(
-      environment,
-      itineraryQuery,
-      { id: itineraryId, citySlug, shareToken },
-      { fetchPolicy: "network-only" }
-    ).subscribe({
-      complete: () => setIsRefreshing(false),
-      error: () => setIsRefreshing(false),
-    })
+    try {
+      await fetchQuery<ItineraryScreenQuery>(
+        environment,
+        itineraryQuery,
+        { id: itineraryId, citySlug, shareToken },
+        { fetchPolicy: "network-only" }
+      ).toPromise()
+    } catch {
+      // Keep the current itinerary visible when a refresh fails.
+    } finally {
+      setIsRefreshing(false)
+    }
   }, [environment, itineraryId, citySlug, shareToken])
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree

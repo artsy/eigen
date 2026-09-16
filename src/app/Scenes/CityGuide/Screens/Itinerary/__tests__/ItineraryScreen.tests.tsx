@@ -373,5 +373,34 @@ describe("ItineraryScreen", () => {
       // Still on screen while the refetch is in flight, rather than replaced by the fallback.
       expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
     })
+
+    it("renders an itinerary that becomes empty after refreshing", async () => {
+      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, { Me: () => ({ itinerariesConnection: null }) })
+        )
+      })
+
+      act(() => {
+        screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
+      })
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Itinerary: () => ({ ...ITINERARY, sections: [] }),
+          })
+        )
+      })
+
+      await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
+      expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
+    })
   })
 })

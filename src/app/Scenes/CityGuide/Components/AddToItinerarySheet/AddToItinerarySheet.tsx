@@ -81,14 +81,10 @@ const Sheet: React.FC<Props> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const memberships = data.sourceStop?.myItineraries ?? null
-  // The connection's own copy of an itinerary this stop is already on carries only its
-  // short-list (empty sections); `memberships` is the same itinerary read through the stop
-  // that knows its real ones, so it wins wherever both cover the same itinerary.
-  const membershipByID = new Map(memberships?.map((itinerary) => [itinerary.internalID, itinerary]))
-  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection)
-    .filter((itinerary) => !itinerary.isCurated)
-    .map((itinerary) => membershipByID.get(itinerary.internalID) ?? itinerary)
+  const memberships = data.sourceStop?.myItineraryStopMemberships ?? null
+  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated
+  )
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
@@ -97,7 +93,8 @@ const Sheet: React.FC<Props> = ({
     memberships || myItineraries
       ? itinerariesHoldingTarget(fetchedItineraries, {
           ...target,
-          myItineraries: memberships ?? myItineraries,
+          myItineraries:
+            memberships?.map(({ itineraryID }) => ({ internalID: itineraryID })) ?? myItineraries,
         })
       : itinerariesHoldingTarget(fetchedItineraries, target)
   )
@@ -166,7 +163,13 @@ const Sheet: React.FC<Props> = ({
         await addStop(target)
         onSaved?.()
       } else {
-        const changes = await applySelection({ itineraries, target, initial, selected })
+        const changes = await applySelection({
+          itineraries,
+          target,
+          initial,
+          selected,
+          memberships,
+        })
 
         if (changes.added > 0 || changes.removed > 0) {
           onSaved?.()
@@ -330,39 +333,9 @@ const Query = graphql`
   ) {
     sourceStop: itineraryStop(id: $sourceStopID, shareToken: $sourceShareToken)
       @include(if: $hasSourceStopID) {
-      myItineraries {
-        internalID
-        title
-        isCurated
-        stopsCount
-
-        heroImage {
-          url(version: "small")
-        }
-
-        sections {
-          internalID
-          title
-          stopsCount
-
-          stops {
-            internalID
-            title
-            address
-            item {
-              __typename
-              ... on Show {
-                internalID
-              }
-              ... on Fair {
-                internalID
-              }
-              ... on Location {
-                internalID
-              }
-            }
-          }
-        }
+      myItineraryStopMemberships {
+        itineraryID
+        stopIDs
       }
     }
 

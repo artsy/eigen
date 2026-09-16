@@ -57,7 +57,7 @@ describe("AddToItinerarySheet", () => {
     expect(screen.getByText("1 selected")).toBeOnTheScreen()
   })
 
-  it("uses fresh memberships from the source stop instead of stale caller data", async () => {
+  it("deletes every matching stop when a fresh membership is unselected", async () => {
     const view = renderWithRelay(
       {
         ...withItineraries([
@@ -67,8 +67,11 @@ describe("AddToItinerarySheet", () => {
         Query: () => ({
           sourceStop: {
             internalID: "source-stop",
-            myItineraries: [
-              itinerary("b", "Still on this trip", [showStop("copied-stop", "show-1")]),
+            myItineraryStopMemberships: [
+              {
+                itineraryID: "b",
+                stopIDs: ["copied-stop-1", "copied-stop-2"],
+              },
             ],
           },
         }),
@@ -97,9 +100,62 @@ describe("AddToItinerarySheet", () => {
     fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
     await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+    const firstDelete = view.env.mock.getMostRecentOperation()
+    expect(firstDelete.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
+    expect(firstDelete.request.variables.input).toEqual({ id: "copied-stop-1" })
+
+    view.env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Mutation: () => ({
+          deleteItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "copied-stop-1" },
+            },
+          },
+        }),
+      })
+    )
+
+    await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+    const secondDelete = view.env.mock.getMostRecentOperation()
+    expect(secondDelete.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
+    expect(secondDelete.request.variables.input).toEqual({ id: "copied-stop-2" })
+  })
+
+  it("deletes only the exact source stop from its own itinerary", async () => {
+    const view = renderWithRelay(
+      {
+        ...withItineraries([itinerary("b", "Current trip", [])]),
+        Query: () => ({
+          sourceStop: {
+            internalID: "copied-stop-1",
+            myItineraryStopMemberships: [
+              {
+                itineraryID: "b",
+                stopIDs: ["copied-stop-1", "copied-stop-2"],
+              },
+            ],
+          },
+        }),
+      },
+      {
+        ...props,
+        target: { ...props.target, sourceStopID: "copied-stop-1" },
+      }
+    )
+
+    expect(await screen.findByLabelText("Current trip")).toHaveProp("accessibilityState", {
+      checked: true,
+    })
+
+    fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+    fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+    await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
     const operation = view.env.mock.getMostRecentOperation()
     expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
-    expect(operation.request.variables.input).toEqual({ id: "copied-stop" })
+    expect(operation.request.variables.input).toEqual({ id: "copied-stop-1" })
   })
 
   // Selection is local until Done, as the artwork-lists sheet does it.
