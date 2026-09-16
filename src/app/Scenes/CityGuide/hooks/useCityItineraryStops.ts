@@ -31,6 +31,8 @@ interface EntityStopInput {
  */
 export interface CustomStopInput {
   itemType?: undefined
+  isOnMyItineraries?: boolean | null
+  myItineraries?: readonly { readonly internalID: string }[] | null
   sourceStopID?: string
   sourceShareToken?: string
   title: string

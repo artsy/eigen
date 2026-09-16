@@ -288,6 +288,10 @@ export const itineraryQuery = graphql`
             url(version: "small")
             blurhash
           }
+          isOnMyItineraries
+          myItineraries {
+            internalID
+          }
 
           event {
             __typename

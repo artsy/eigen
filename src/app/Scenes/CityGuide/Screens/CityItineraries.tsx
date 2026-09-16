@@ -65,7 +65,9 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(fragment, me)
   const refreshControl = useRefreshControl(refetch, { pageSize: PAGE_SIZE })
 
-  const itineraries = extractNodes(data.itinerariesConnection)
+  const itineraries = extractNodes(data.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated
+  )
 
   // The itinerary the edit sheet is open for. Held here rather than per row so only one sheet
   // ever mounts.

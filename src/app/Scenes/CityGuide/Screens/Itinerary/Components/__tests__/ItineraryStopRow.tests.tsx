@@ -61,6 +61,22 @@ const renderRow = (props: RowProps) =>
   )
 
 describe("ItineraryStopRow", () => {
+  it("shows a check when the stop is already on one of my itineraries", () => {
+    renderRow({
+      stop: makeItineraryStop({
+        ...savedStop,
+        isOnMyItineraries: true,
+        myItineraries: [{ internalID: "mine-1" }],
+      }),
+      number: 1,
+      citySlug: "london-united-kingdom",
+      itineraryId: "guide-1",
+      cityName: "London",
+    })
+
+    expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
+  })
+
   it("renders the number, title, time and address", async () => {
     renderRow({
       stop: savedStop,

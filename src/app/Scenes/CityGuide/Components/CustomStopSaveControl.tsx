@@ -32,8 +32,12 @@ export const CustomStopSaveControl: React.FC<Props> = ({ stop, citySlug, cityNam
     <CityGuideSaveButton
       testID="custom-stop-save-button"
       iconSize={size}
-      isSaved={false}
-      accessibilityLabel={`Add ${stop.title} to an itinerary`}
+      isSaved={!!stop.isOnMyItineraries}
+      accessibilityLabel={
+        stop.isOnMyItineraries
+          ? `${stop.title} is on an itinerary`
+          : `Add ${stop.title} to an itinerary`
+      }
       onPress={() => addToItinerary.open({ ...stop, citySlug, cityName })}
     />
   )

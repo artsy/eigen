@@ -18,6 +18,8 @@ export interface CustomStop {
   hours?: string
   imageUrl?: string
   coordinates?: { lat: number; lng: number }
+  isOnMyItineraries?: boolean | null
+  myItineraries?: readonly { readonly internalID: string }[] | null
 }
 
 /** Typed structurally rather than off the generated query, so the deriver is testable alone. */
@@ -35,6 +37,8 @@ interface PayloadStop {
   readonly endTime?: string | null
   readonly image?: { readonly url?: string | null } | null
   readonly item?: { readonly __typename: string } | null
+  readonly isOnMyItineraries?: boolean | null
+  readonly myItineraries?: readonly { readonly internalID: string }[] | null
 }
 
 interface PayloadItinerary {
@@ -92,6 +96,8 @@ export const customStopFromItinerary = (
       stop.latitude != null && stop.longitude != null
         ? { lat: stop.latitude, lng: stop.longitude }
         : undefined,
+    isOnMyItineraries: stop.isOnMyItineraries,
+    myItineraries: stop.myItineraries,
   }
 }
 
@@ -106,4 +112,6 @@ export const customStopInput = (stop: CustomStop) => ({
   isFreeAdmission: stop.isFreeAdmission,
   latitude: stop.coordinates?.lat,
   longitude: stop.coordinates?.lng,
+  isOnMyItineraries: stop.isOnMyItineraries,
+  myItineraries: stop.myItineraries,
 })

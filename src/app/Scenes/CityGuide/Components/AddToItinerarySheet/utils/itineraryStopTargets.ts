@@ -12,7 +12,11 @@ const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
 }
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
-export type StopTarget = StopInput
+export type StopTarget = StopInput & {
+  /** Membership details returned by ItineraryStop for an already-resolved stop. */
+  isOnMyItineraries?: boolean | null
+  myItineraries?: readonly { readonly internalID: string }[] | null
+}
 
 interface PayloadStop {
   readonly internalID: string
@@ -32,6 +36,7 @@ interface PayloadSection {
 export interface PayloadItinerary {
   readonly internalID: string
   readonly title: string
+  readonly isCurated?: boolean | null
   readonly stopsCount?: number | null
   readonly heroImage?: { readonly url?: string | null } | null
   readonly sections: readonly PayloadSection[]
@@ -64,9 +69,13 @@ export const itinerariesHoldingTarget = (
   itineraries: readonly PayloadItinerary[],
   target: StopTarget
 ) =>
-  itineraries
-    .filter((itinerary) => !!findStopForTarget(itinerary, target))
-    .map((itinerary) => itinerary.internalID)
+  target.myItineraries
+    ? target.myItineraries
+        .map((membership) => membership.internalID)
+        .filter((id) => itineraries.some((itinerary) => itinerary.internalID === id))
+    : itineraries
+        .filter((itinerary) => !!findStopForTarget(itinerary, target))
+        .map((itinerary) => itinerary.internalID)
 
 /** Which itineraries gained a tick and which lost one, once Done is pressed. */
 export const selectionChanges = (

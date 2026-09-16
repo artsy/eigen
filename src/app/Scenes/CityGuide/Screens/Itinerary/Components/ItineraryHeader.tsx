@@ -69,7 +69,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
         </Flex>
       )}
 
-      <Flex px={2} pt={2}>
+      <Flex px={2} pt={itinerary.isCurated ? 2 : 0}>
         {/* Both belong to a curated guide: your own list has no byline and nothing to bulk-add. */}
         {!!itinerary.isCurated && (
           <>

@@ -1,5 +1,6 @@
 import { ChevronLeftIcon } from "@artsy/icons/native"
-import { Button, Flex, Input, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
@@ -43,7 +44,7 @@ export const CreateItineraryForm: React.FC<Props> = ({
         <Text variant="md">New Itinerary</Text>
       </Flex>
 
-      <Input
+      <BottomSheetInput
         testID="create-itinerary-name"
         placeholder="Name your Itinerary"
         value={name}

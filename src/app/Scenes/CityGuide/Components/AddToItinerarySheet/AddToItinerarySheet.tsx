@@ -1,9 +1,10 @@
 import { AddIcon } from "@artsy/icons/native"
-import { Button, Flex, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import { Portal, PortalHost } from "@gorhom/portal"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
+import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { AddToItineraryRow } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/components/AddToItineraryRow"
@@ -50,7 +51,14 @@ type Props = AddToItineraryTarget & {
   onClose: () => void
 }
 
-const Sheet: React.FC<Props> = ({ citySlug, cityName, onClose, ...target }) => {
+const Sheet: React.FC<Props> = ({
+  citySlug,
+  cityName,
+  onClose,
+  isOnMyItineraries: _isOnMyItineraries,
+  myItineraries,
+  ...target
+}) => {
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
@@ -62,16 +70,24 @@ const Sheet: React.FC<Props> = ({ citySlug, cityName, onClose, ...target }) => {
     first: PAGE_SIZE,
   })
 
-  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection)
+  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated
+  )
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
 
-  const [initial] = useState(() => itinerariesHoldingTarget(fetchedItineraries, target))
+  const [initial] = useState(() =>
+    myItineraries
+      ? itinerariesHoldingTarget(fetchedItineraries, { ...target, myItineraries })
+      : itinerariesHoldingTarget(fetchedItineraries, target)
+  )
   const [selected, setSelected] = useState<string[]>(initial)
   const [isCreating, setIsCreating] = useState(false)
   const [isApplying, setIsApplying] = useState(false)
   const [isNaming, setIsNaming] = useState(false)
+
+  const space = useSpace()
   // `create` mutates straight through the store, not through this screen's own
   // `useLazyLoadQuery`, so the itinerary it makes has to be added here by hand — otherwise it
   // neither shows in the list nor is findable by `applySelection` when Done is pressed.
@@ -129,11 +145,11 @@ const Sheet: React.FC<Props> = ({ citySlug, cityName, onClose, ...target }) => {
       if (canAutoCreate) {
         await addStop(target)
       } else {
-        await applySelection({ itineraries, target, initial, selected })
+        const changes = await applySelection({ itineraries, target, initial, selected })
 
         // `addStop` above already refetches on its own path; this covers ticking existing
         // itineraries, which goes through `applySelection` instead.
-        if (citySlug) {
+        if (citySlug && (changes.added > 0 || changes.removed > 0)) {
           refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
         }
       }
@@ -148,88 +164,89 @@ const Sheet: React.FC<Props> = ({ citySlug, cityName, onClose, ...target }) => {
     }
   }
 
-  if (isNaming) {
-    return (
-      <CreateItineraryForm
-        initialName={defaultItineraryTitle(cityName)}
-        isCreating={isCreating}
-        onCreate={create}
-        onCancel={() => setIsNaming(false)}
-      />
-    )
-  }
-
   return (
-    <BottomSheetView style={{ flex: 1 }}>
-      <Flex px={2} pb={2}>
-        <Text variant="md">Add to Itinerary</Text>
-      </Flex>
-
-      <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
-        {canCreate ? (
-          <Flex flexDirection="row" alignItems="center" gap={0.5}>
-            <AddIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
-
-            <Text
-              testID="add-to-itinerary-create"
-              variant="xs"
-              onPress={() => setIsNaming(true)}
-              accessibilityRole="button"
-            >
-              Create New Itinerary
-            </Text>
-          </Flex>
-        ) : (
-          <Flex />
-        )}
-
-        <Text variant="xs" color="mono60">
-          {`${selected.length} selected`}
-        </Text>
-      </Flex>
-
-      {/*
-        `flex: 1`, not left to size itself: without it the ScrollView takes up all the space
-        left in the sheet regardless of how little content it holds, pushing Done below the
-        visible area — a sibling, not part of the scrollable content, so there is no way to
-        reach it by scrolling.
-      */}
-      <BottomSheetScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}
-      >
-        {!itineraries.length && !canCreate && (
-          <Text variant="xs" color="mono60">
-            You have no itineraries yet. Start one from a city guide.
-          </Text>
-        )}
-
-        {itineraries.map((itinerary) => (
-          <AddToItineraryRow
-            key={itinerary.internalID}
-            title={itinerary.title}
-            stopsCount={itineraryStopsCount(itinerary)}
-            imageUrl={itinerary.heroImage?.url}
-            selected={selected.includes(itinerary.internalID)}
-            onPress={() => toggle(itinerary.internalID)}
-          />
-        ))}
-      </BottomSheetScrollView>
-
-      <Portal hostName={FOOTER_PORTAL_HOST}>
-        <Flex p={2} backgroundColor="mono0">
-          <Button
-            testID="add-to-itinerary-done"
-            block
-            loading={isApplying}
-            disabled={!selected.length && !canAutoCreate}
-            onPress={done}
-          >
-            Done
-          </Button>
+    <>
+      <BottomSheetView style={{ flex: 1 }}>
+        <Flex px={2} pb={2}>
+          <Text variant="md">Add to Itinerary</Text>
         </Flex>
-      </Portal>
-    </BottomSheetView>
+
+        <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
+          {canCreate ? (
+            <Flex flexDirection="row" alignItems="center" gap={0.5}>
+              <AddIcon width={ADD_ICON_SIZE} height={ADD_ICON_SIZE} />
+
+              <Text
+                testID="add-to-itinerary-create"
+                variant="xs"
+                onPress={() => setIsNaming(true)}
+                accessibilityRole="button"
+              >
+                Create New Itinerary
+              </Text>
+            </Flex>
+          ) : (
+            <Flex />
+          )}
+
+          <Text variant="xs" color="mono60">
+            {`${selected.length} selected`}
+          </Text>
+        </Flex>
+
+        <BottomSheetScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingHorizontal: space(2), paddingVertical: space(2) }}
+          keyboardShouldPersistTaps="always"
+        >
+          {!itineraries.length && !canCreate && (
+            <Text variant="xs" color="mono60">
+              You have no itineraries yet. Start one from a city guide.
+            </Text>
+          )}
+
+          {itineraries.map((itinerary) => (
+            <AddToItineraryRow
+              key={`${itinerary.internalID}`}
+              title={itinerary.title}
+              stopsCount={itineraryStopsCount(itinerary)}
+              imageUrl={itinerary.heroImage?.url}
+              selected={selected.includes(itinerary.internalID)}
+              onPress={() => toggle(itinerary.internalID)}
+            />
+          ))}
+        </BottomSheetScrollView>
+
+        <Portal hostName={FOOTER_PORTAL_HOST}>
+          <Flex p={2} backgroundColor="mono0">
+            <Button
+              testID="add-to-itinerary-done"
+              block
+              loading={isApplying}
+              disabled={!selected.length && !initial.length && !canAutoCreate}
+              onPress={done}
+            >
+              Done
+            </Button>
+          </Flex>
+        </Portal>
+      </BottomSheetView>
+
+      <AutoHeightBottomSheet
+        visible={isNaming}
+        name="CreateItinerary"
+        onDismiss={() => setIsNaming(false)}
+      >
+        <Flex mt={2}>
+          <CreateItineraryForm
+            initialName={defaultItineraryTitle(cityName)}
+            isCreating={isCreating}
+            onCreate={create}
+            onCancel={() => setIsNaming(false)}
+          />
+        </Flex>
+      </AutoHeightBottomSheet>
+    </>
   )
 }
 
@@ -275,6 +292,7 @@ const Query = graphql`
           node {
             internalID
             title
+            isCurated
             stopsCount
 
             heroImage {

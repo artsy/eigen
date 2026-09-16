@@ -75,6 +75,19 @@ describe("itinerariesHoldingTarget", () => {
 
     expect(result).toEqual(["a", "c"])
   })
+
+  it("uses the membership itineraries returned with the stop", () => {
+    const result = itinerariesHoldingTarget(
+      [itinerary("a", []), itinerary("b", []), itinerary("c", [])],
+      {
+        itemType: "SHOW",
+        itemID: "show-1",
+        myItineraries: [{ internalID: "b" }],
+      }
+    )
+
+    expect(result).toEqual(["b"])
+  })
 })
 
 describe("selectionChanges", () => {

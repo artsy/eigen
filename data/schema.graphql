@@ -23439,6 +23439,7 @@ type ItineraryStop {
   image: Image
   internalID: String!
   isFreeAdmission: Boolean
+  isOnMyItineraries: Boolean
 
   """
   The Show, gallery location, or Fair this stop refers to, if any. A stop without an `item_id` (e.g. a café) resolves to null.
@@ -23451,6 +23452,7 @@ type ItineraryStop {
   itemType: ItineraryStopItemType
   latitude: Float
   longitude: Float
+  myItineraries: [Itinerary!]
   note: String
   position: Int!
 

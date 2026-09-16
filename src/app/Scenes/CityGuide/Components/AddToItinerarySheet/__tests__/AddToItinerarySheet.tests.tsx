@@ -13,6 +13,7 @@ jest.mock("@gorhom/portal", () => ({
 const itinerary = (internalID: string, title: string, stops: object[]) => ({
   internalID,
   title,
+  isCurated: false,
   stopsCount: stops.length,
   heroImage: null,
   sections: [{ internalID: `${internalID}-s`, title: "My Stops", stopsCount: stops.length, stops }],
@@ -155,6 +156,7 @@ describe("AddToItinerarySheet", () => {
       await screen.findByText("First")
 
       fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+      await waitFor(() => expect(screen.getByText("0 selected")).toBeOnTheScreen())
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
       await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))

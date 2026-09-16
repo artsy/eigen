@@ -11,6 +11,8 @@ interface Props {
   itemID: string
   /** Used for the accessibility label and nothing else. */
   name: string
+  isOnMyItineraries?: boolean | null
+  myItineraries?: readonly { readonly internalID: string }[] | null
   /** Forwarded to `CityGuideSaveButton`. The rail cards pass 18, per their designs. */
   iconSize?: number
 }
@@ -39,7 +41,14 @@ const TRACKING: Record<
  * Renders nothing without an `AddToItineraryProvider` above it — a plus that did nothing when
  * tapped would be worse than none.
  */
-export const CityEventSaveControl: React.FC<Props> = ({ itemType, itemID, name, iconSize }) => {
+export const CityEventSaveControl: React.FC<Props> = ({
+  itemType,
+  itemID,
+  name,
+  iconSize,
+  isOnMyItineraries,
+  myItineraries,
+}) => {
   const addToItinerary = useAddToItinerary()
   const { trackEvent } = useTracking<Schema.Entity>()
 
@@ -50,8 +59,10 @@ export const CityEventSaveControl: React.FC<Props> = ({ itemType, itemID, name, 
   return (
     <CityGuideSaveButton
       iconSize={iconSize}
-      isSaved={false}
-      accessibilityLabel={`Add ${name} to an itinerary`}
+      isSaved={!!isOnMyItineraries}
+      accessibilityLabel={
+        isOnMyItineraries ? `${name} is on an itinerary` : `Add ${name} to an itinerary`
+      }
       onPress={() => {
         const { action, ownerType } = TRACKING[itemType]
 
@@ -62,7 +73,7 @@ export const CityEventSaveControl: React.FC<Props> = ({ itemType, itemID, name, 
           owner_id: itemID,
         })
 
-        addToItinerary.open({ itemType, itemID })
+        addToItinerary.open({ itemType, itemID, isOnMyItineraries, myItineraries })
       }}
     />
   )

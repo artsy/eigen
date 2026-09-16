@@ -81,6 +81,8 @@ export const ItineraryStopRow: React.FC<Props> = ({
               stop={{
                 sourceStopID: stop.internalID,
                 sourceShareToken: shareToken,
+                isOnMyItineraries: stop.isOnMyItineraries,
+                myItineraries: stop.myItineraries,
                 title,
                 address: stop.address ?? undefined,
                 note: stop.note ?? undefined,
@@ -101,6 +103,8 @@ export const ItineraryStopRow: React.FC<Props> = ({
                 itemType={saveTarget.itemType}
                 itemID={saveTarget.itemID}
                 name={title}
+                isOnMyItineraries={stop.isOnMyItineraries}
+                myItineraries={stop.myItineraries}
               />
             )
           )

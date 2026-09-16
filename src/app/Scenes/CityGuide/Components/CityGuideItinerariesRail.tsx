@@ -20,7 +20,9 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
   const { trackEvent } = useTracking<Schema.Entity>()
   const me = useFragment(fragment, meRef)
 
-  const itineraries = extractNodes(me?.itinerariesConnection)
+  const itineraries = extractNodes(me?.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated
+  )
 
   // Nothing of the user's own for this city renders no band at all, the same way the summary
   // row it replaces hid itself at a count of zero.
@@ -87,6 +89,7 @@ const fragment = graphql`
           internalID
           slug
           title
+          isCurated
           heroImage {
             url(version: "small")
           }

@@ -219,6 +219,10 @@ const Query = graphql`
           image {
             url(version: "large")
           }
+          isOnMyItineraries
+          myItineraries {
+            internalID
+          }
 
           startTime: startAt(format: "h:mma")
           endTime: endAt(format: "h:mma")
