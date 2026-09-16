@@ -62,7 +62,8 @@ const network = new RelayNetworkLayer(
     // Subscriptions do NOT go through the middlewares above — `subscribeFn` is a separate
     // transport (SSE, see `metaphysicsSubscription`). What it replaces on its own side:
     // session expiry (`withSessionExpiry`), Sentry/dev logging (`withSubscriptionBreadcrumbs`)
-    // and persisted queries (`requestDocument`). Deliberately not carried over: rate limiting
+    // and persisted queries (`documentID` with a full-document fallback). Deliberately not
+    // carried over: rate limiting
     // (current subscriptions are user-driven and single-flight), response caching and uploads
     // (meaningless for a stream), timing and the extensions logger.
     // Exceptions are reported by the feature owning the subscription, which has the context.

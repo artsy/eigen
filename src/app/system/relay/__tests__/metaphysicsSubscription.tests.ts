@@ -35,8 +35,9 @@ describe("metaphysicsSubscribe", () => {
 
     expect(client.subscribe).toHaveBeenCalledWith(
       {
+        documentID: "test-subscription-id",
         operationName: "TestSubscription",
-        query: "subscription TestSubscription { testEvent }",
+        query: "TestSubscription",
         variables,
       },
       expect.any(Object)
@@ -52,6 +53,30 @@ describe("metaphysicsSubscribe", () => {
 
     subscription.unsubscribe()
     expect(dispose).toHaveBeenCalledTimes(1)
+  })
+
+  it("sends document text when the operation has no persisted query ID", () => {
+    const client = { subscribe: jest.fn(() => jest.fn()) }
+    const subscribe = createMetaphysicsSubscribe(() => client)
+    const variables = { input: "value" }
+
+    subscribe(
+      {
+        id: null,
+        name: "TestSubscription",
+        text: "subscription TestSubscription { testEvent }",
+      },
+      variables
+    ).subscribe({})
+
+    expect(client.subscribe).toHaveBeenCalledWith(
+      {
+        operationName: "TestSubscription",
+        query: "subscription TestSubscription { testEvent }",
+        variables,
+      },
+      expect.any(Object)
+    )
   })
 
   it("forwards subscription errors to Relay", () => {
@@ -122,6 +147,41 @@ describe("createSubscriptionFetch", () => {
       statusText: "You need to be signed in to perform this action",
       graphQLErrors: ["You need to be signed in to perform this action"],
     })
+  })
+
+  it("retries a missing persisted query with its local document text", async () => {
+    const missingQueryResponse = fakeResponse({ contentType: "text/plain", status: 404 })
+    const streamResponse = fakeResponse({ contentType: "text/event-stream" })
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce(missingQueryResponse)
+      .mockResolvedValueOnce(streamResponse)
+    const body = {
+      documentID: "test-subscription-id",
+      operationName: "TestSubscription",
+      query: "TestSubscription",
+      variables: { input: "value" },
+    }
+
+    const fetch = fetchMock as unknown as Parameters<typeof createSubscriptionFetch>[0]
+    const result = await createSubscriptionFetch(fetch)("/v2", {
+      body: JSON.stringify(body),
+      method: "POST",
+    })
+
+    expect(result).toBe(streamResponse)
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock.mock.calls[1]).toEqual([
+      "/v2",
+      {
+        body: JSON.stringify({
+          operationName: "TestSubscription",
+          query: "subscription TestSubscription { testEvent }",
+          variables: { input: "value" },
+        }),
+        method: "POST",
+      },
+    ])
   })
 
   it("still rejects when the body is neither a stream nor GraphQL", async () => {

@@ -15,12 +15,13 @@ import {
 } from "app/system/relay/subscriptionMiddlewares"
 import { createClient } from "graphql-sse"
 import { Observable } from "relay-runtime"
-import type { Client } from "graphql-sse"
+import type { Client, RequestParams } from "graphql-sse"
 import type { GraphQLResponse } from "relay-runtime"
 
 type ExpoFetch = typeof import("expo/fetch").fetch
 type ExpoFetchResponse = Awaited<ReturnType<ExpoFetch>>
 type SubscriptionClient = Pick<Client, "subscribe">
+type MetaphysicsRequestParams = RequestParams & { documentID?: string }
 
 let client: Client | null = null
 
@@ -29,11 +30,7 @@ export const createMetaphysicsSubscribe =
   (request, variables) =>
     Observable.create((sink) =>
       getSubscriptionClient().subscribe(
-        {
-          operationName: request.name,
-          query: requestDocument(request.id, request.text),
-          variables,
-        },
+        getSubscriptionRequest(request.id, request.name, request.text, variables),
         {
           next: (response) => sink.next(response as GraphQLResponse),
           error: (error) => sink.error(toMetaphysicsSubscriptionError(error)),
@@ -63,21 +60,28 @@ export const metaphysicsSubscribe = withSubscriptionBreadcrumbs(
   withSessionExpiry(createMetaphysicsSubscribe(getClient))
 )
 
-// Deliberately duplicates `persistedQueryMiddleware`: graphql-sse requires the document text,
-// so a subscription cannot be sent as a `documentID` the way our queries are.
-const requestDocument = (requestID: string | null | undefined, requestText: string | null) => {
-  if (requestText) {
-    return requestText
+// graphql-sse's public type only includes standard GraphQL parameters, but it serializes the
+// request object as-is. Metaphysics accepts `documentID` and resolves it before Yoga handles SSE.
+const getSubscriptionRequest = (
+  requestID: string | null | undefined,
+  requestName: string,
+  requestText: string | null,
+  variables: RequestParams["variables"]
+): MetaphysicsRequestParams => {
+  if (requestID) {
+    return {
+      operationName: requestName,
+      query: requestName,
+      documentID: requestID,
+      variables,
+    }
   }
 
-  const queryMap = require("../../../../data/complete.queryMap.json") as Record<string, string>
-  const document = requestID ? queryMap[requestID] : undefined
-
-  if (!document) {
-    throw new Error("The subscription document is missing from the query map.")
+  if (!requestText) {
+    throw new Error("The subscription has neither a persisted query ID nor document text.")
   }
 
-  return document
+  return { operationName: requestName, query: requestText, variables }
 }
 
 const requestHeaders = () => {
@@ -108,7 +112,11 @@ const getExpoFetch = (): ExpoFetch => require("expo/fetch").fetch as ExpoFetch
 export const createSubscriptionFetch =
   (fetch: ExpoFetch): ExpoFetch =>
   async (...args) => {
-    const response = await fetch(...args)
+    let response = await fetch(...args)
+
+    if (response.status === 404) {
+      response = (await retryWithRequestDocument(fetch, args)) ?? response
+    }
 
     if (response.headers.get("content-type")?.includes("text/event-stream")) {
       return response
@@ -119,6 +127,46 @@ export const createSubscriptionFetch =
     // graphql-sse only reads `ok`, `status` and `statusText` off a response it rejects.
     return rejection as unknown as ExpoFetchResponse
   }
+
+// A newly shipped Eigen query can briefly be missing from Metaphysics' deployed query map.
+// A 404 is returned before GraphQL execution, so retrying that request with the local document
+// cannot repeat subscription side effects. The large query map stays lazy on the normal path.
+const retryWithRequestDocument = async (
+  fetch: ExpoFetch,
+  args: Parameters<ExpoFetch>
+): Promise<ExpoFetchResponse | null> => {
+  const [input, init] = args
+
+  if (typeof init?.body !== "string") {
+    return null
+  }
+
+  let request: Record<string, unknown>
+
+  try {
+    request = JSON.parse(init.body) as Record<string, unknown>
+  } catch {
+    return null
+  }
+
+  const { documentID, ...requestWithoutDocumentID } = request
+
+  if (typeof documentID !== "string") {
+    return null
+  }
+
+  const queryMap = require("../../../../data/complete.queryMap.json") as Record<string, string>
+  const query = queryMap[documentID]
+
+  if (!query) {
+    return null
+  }
+
+  return await fetch(input, {
+    ...init,
+    body: JSON.stringify({ ...requestWithoutDocumentID, query }),
+  })
+}
 
 const readGraphQLErrors = async (response: ExpoFetchResponse) => {
   try {
