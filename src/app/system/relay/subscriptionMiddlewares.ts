@@ -47,10 +47,10 @@ export const withSessionExpiry: SubscriptionMiddleware = (subscribe) => (request
         // Metaphysics reports an expired session as a GraphQL error rather than a status code,
         // so any pre-stream rejection is worth verifying — as in the middleware, which checks
         // every response carrying errors.
-        const isSuspicious =
+        const shouldVerifySession =
           status === 401 || status === 403 || isMetaphysicsSubscriptionRejection(error)
 
-        if (isSuspicious) {
+        if (shouldVerifySession) {
           // Not awaited: the subscription already failed, and the sign out is a side effect.
           void enforceSessionExpiry(authenticationToken)
         }
