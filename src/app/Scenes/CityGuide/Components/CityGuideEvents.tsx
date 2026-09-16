@@ -120,6 +120,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="FAIR"
                   itemID={fair.internalID}
+                  isOnMyItineraries={fair.isOnMyItineraries}
                   name={fair.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -147,6 +148,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="SHOW"
                   itemID={show.internalID}
+                  isOnMyItineraries={show.isOnMyItineraries}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -181,6 +183,7 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="SHOW"
                   itemID={show.internalID}
+                  isOnMyItineraries={show.isOnMyItineraries}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
                 />
@@ -207,6 +210,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
+          isOnMyItineraries
           name
           href
           image {
@@ -234,6 +238,7 @@ const fragment = graphql`
           name
           href
           isFollowed
+          isOnMyItineraries
           exhibitionPeriod
           isFreeAdmission
           coverImage {
@@ -256,6 +261,7 @@ const fragment = graphql`
           name
           href
           isFollowed
+          isOnMyItineraries
           opensAt: startAt(format: "MMM D, YYYY")
           coverImage {
             url

@@ -91,7 +91,7 @@ export const CityGuideNew: React.FC = () => {
   }
 
   return (
-    <AddToItineraryProvider citySlug={citySlug} cityName={city?.name ?? ""}>
+    <AddToItineraryProvider citySlug={citySlug} cityName={city?.name ?? ""} onSaved={refresh}>
       <Screen>
         <Screen.AnimatedHeader
           title={city?.name ?? ""}

@@ -19155,6 +19155,8 @@ type ExternalPartner {
 }
 
 type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
+  isOnMyItineraries: Boolean
+  myItineraryStopMemberships: [ItineraryStopMembership!]
   about(format: Format): String
   activeStartAt(
     format: String
@@ -37321,6 +37323,8 @@ type Shortcut {
 }
 
 type Show implements EntityWithFilterArtworksConnectionInterface & Node {
+  isOnMyItineraries: Boolean
+  myItineraryStopMemberships: [ItineraryStopMembership!]
   """
   The Artists presenting in this show
   """

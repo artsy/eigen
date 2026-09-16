@@ -1,6 +1,6 @@
 import { Box, BoxProps, Flex, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
-import { ShowFollowButton } from "app/Components/ShowFollowButton"
+import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
@@ -40,7 +40,13 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
           <Text variant="lg-display">{show.name}</Text>
         </Flex>
 
-        <ShowFollowButton show={show} variant="icon" />
+        {!show.isOnlineExclusive && !!show.location?.address && (
+          <ItineraryItemSaveControl
+            itemType="SHOW"
+            itemID={show.internalID}
+            name={show.name ?? ""}
+          />
+        )}
       </Flex>
 
       <Text variant="sm">
@@ -60,6 +66,11 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
       name
+      internalID
+      isOnlineExclusive
+      location {
+        address
+      }
       startAt
       endAt
       formattedStartAt: startAt(format: "MMMM D")
@@ -72,7 +83,6 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
           name
         }
       }
-      ...ShowFollowButton_show
     }
   `,
 })

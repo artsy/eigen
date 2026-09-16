@@ -77,11 +77,18 @@ const Sheet: React.FC<Props> = ({
       sourceStopID: target.sourceStopID ?? "",
       sourceShareToken: target.sourceShareToken ?? null,
       hasSourceStopID: !!target.sourceStopID,
+      itemID: target.itemType ? target.itemID : "",
+      hasShow: !target.sourceStopID && target.itemType === "SHOW",
+      hasFair: !target.sourceStopID && target.itemType === "FAIR",
     },
     { fetchPolicy: "network-only" }
   )
 
-  const memberships = data.sourceStop?.myItineraryStopMemberships ?? null
+  const memberships =
+    data.sourceStop?.myItineraryStopMemberships ??
+    data.sourceShow?.myItineraryStopMemberships ??
+    data.sourceFair?.myItineraryStopMemberships ??
+    null
   const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
     (itinerary) => !itinerary.isCurated
   )
@@ -330,7 +337,22 @@ const Query = graphql`
     $sourceStopID: String!
     $sourceShareToken: String
     $hasSourceStopID: Boolean!
+    $itemID: String!
+    $hasShow: Boolean!
+    $hasFair: Boolean!
   ) {
+    sourceShow: show(id: $itemID) @include(if: $hasShow) {
+      myItineraryStopMemberships {
+        itineraryID
+        stopIDs
+      }
+    }
+    sourceFair: fair(id: $itemID) @include(if: $hasFair) {
+      myItineraryStopMemberships {
+        itineraryID
+        stopIDs
+      }
+    }
     sourceStop: itineraryStop(id: $sourceStopID, shareToken: $sourceShareToken)
       @include(if: $hasSourceStopID) {
       myItineraryStopMemberships {

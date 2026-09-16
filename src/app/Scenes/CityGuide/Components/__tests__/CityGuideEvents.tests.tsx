@@ -82,6 +82,29 @@ describe("CityGuideEvents", () => {
     jest.clearAllMocks()
   })
 
+  it("shows itinerary membership independently of follows on all three rails", async () => {
+    renderWithRelay(
+      {
+        City: () => ({
+          fairsConnection: {
+            edges: [{ node: { ...city.fairsConnection.edges[0].node, isOnMyItineraries: true } }],
+          },
+          currentShows: {
+            edges: [{ node: { ...city.currentShows.edges[0].node, isOnMyItineraries: true } }],
+          },
+          openingShows: {
+            edges: [{ node: { ...city.openingShows.edges[0].node, isOnMyItineraries: true } }],
+          },
+        }),
+      },
+      props
+    )
+
+    expect(await screen.findByLabelText("Frieze London is on an itinerary")).toBeOnTheScreen()
+    expect(screen.getByLabelText("One Fly Makes No Summer is on an itinerary")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Vestiges is on an itinerary")).toBeOnTheScreen()
+  })
+
   it("interpolates the city name into the two Current headers, but not Opening Soon", async () => {
     renderWithRelay(resolvers, props)
 

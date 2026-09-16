@@ -38,8 +38,36 @@ describe("AddToItinerarySheet", () => {
   }
 
   const withItineraries = (nodes: object[]) => ({
+    Query: () => ({ sourceShow: null, sourceFair: null }),
     Me: () => ({ itinerariesConnection: { edges: nodes.map((node) => ({ node })) } }),
   })
+
+  it.each(["SHOW", "FAIR"] as const)(
+    "deletes a %s by entity membership even when the listing has no stops",
+    async (itemType) => {
+      const view = renderWithRelay(
+        {
+          ...withItineraries([itinerary("a", "My trip", [])]),
+          Query: () => ({
+            [itemType === "SHOW" ? "sourceShow" : "sourceFair"]: {
+              myItineraryStopMemberships: [{ itineraryID: "a", stopIDs: ["matching-stop"] }],
+            },
+          }),
+        },
+        { ...props, target: { ...props.target, itemType } }
+      )
+
+      expect(await screen.findByText("My trip")).toBeOnTheScreen()
+      expect(screen.getByText("1 selected")).toBeOnTheScreen()
+      fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+      const operation = view.env.mock.getMostRecentOperation()
+      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
+      expect(operation.request.variables.input).toEqual({ id: "matching-stop" })
+    }
+  )
 
   it("lists the itineraries, ticking the ones already holding the entity", async () => {
     renderWithRelay(
