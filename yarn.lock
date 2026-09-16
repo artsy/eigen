@@ -13718,6 +13718,7 @@ __metadata:
     formik: "npm:2.2.9"
     graphql: "npm:16.8.1"
     graphql-request: "npm:5.1.0"
+    graphql-sse: "npm:2.6.1"
     html-entities: "npm:2.3.3"
     husky: "npm:7.0.4"
     jest: "npm:29.7.0"
@@ -16443,6 +16444,15 @@ __metadata:
   peerDependencies:
     graphql: 14 - 16
   checksum: 10c0/89ca7ca1eaa08b0ed5aa5d86425cda3af2dcc61ea68e1f43ca0ede1aa1eb230d5192c5662760098dc0a7c0ff9b5de51250b38edeb962935f57c96bfb9d72116f
+  languageName: node
+  linkType: hard
+
+"graphql-sse@npm:2.6.1":
+  version: 2.6.1
+  resolution: "graphql-sse@npm:2.6.1"
+  peerDependencies:
+    graphql: ">=0.11 <=17"
+  checksum: 10c0/8a767b83c970dea75db634b27cd28d5040d6e7b07234c38919bc88d15eacf978171e380ba8ab3fa21a1779421e24b8e19dc51a798a90c5766382c406b3d6c221
   languageName: node
   linkType: hard
 

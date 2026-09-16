@@ -1,0 +1,102 @@
+import { captureMessage } from "@sentry/react-native"
+import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { Alert } from "react-native"
+
+// A freshly issued token (e.g. right after sign up) can briefly 401 on /me before it
+// propagates, so we confirm the session is really gone before forcing a sign out.
+const ME_CHECK_MAX_ATTEMPTS = 3
+const ME_CHECK_RETRY_DELAY = 500
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+interface SessionCheckResult {
+  expired: boolean
+  recoveredAfterTransient401: boolean
+  attempts: number
+}
+
+// Shared by every transport that can hit an expired session (queries, mutations and
+// subscriptions), so a dead token signs the user out and alerts them exactly once.
+const expiredTokens: Set<string> = new Set()
+// Dedup per token so the recovery signal is counted per-incident, not per-request.
+const recoveredTokens: Set<string> = new Set()
+
+const checkSession = async (gravityURL: string, token: string): Promise<SessionCheckResult> => {
+  let sawTransient401 = false
+  for (let attempt = 0; attempt < ME_CHECK_MAX_ATTEMPTS; attempt++) {
+    const result = await fetch(`${gravityURL}/api/v1/me`, {
+      method: "HEAD",
+      headers: {
+        "X-ACCESS-TOKEN": token,
+      },
+    })
+    if (result.status !== 401) {
+      // Only a genuine 2xx confirms the session recovered; a non-401 error (e.g. 500)
+      // tells us nothing, so don't count it as a recovery.
+      const recovered = sawTransient401 && result.ok
+      return { expired: false, recoveredAfterTransient401: recovered, attempts: attempt + 1 }
+    }
+    sawTransient401 = true
+    if (attempt < ME_CHECK_MAX_ATTEMPTS - 1) {
+      await delay(ME_CHECK_RETRY_DELAY)
+    }
+  }
+  return { expired: true, recoveredAfterTransient401: false, attempts: ME_CHECK_MAX_ATTEMPTS }
+}
+
+/**
+ * Signs the user out if `authenticationToken` no longer works, after confirming it against
+ * Gravity. Safe to call on any suspicious response: it never throws and never repeats itself
+ * for a token it already handled.
+ */
+export const enforceSessionExpiry = async (authenticationToken: string | undefined) => {
+  // The token can be `undefined` if the user was logged out *just* before this request ran.
+  if (!authenticationToken || expiredTokens.has(authenticationToken)) {
+    return
+  }
+
+  const { gravityURL } = unsafe__getEnvironment()
+
+  try {
+    const { expired, recoveredAfterTransient401, attempts } = await checkSession(
+      gravityURL,
+      authenticationToken
+    )
+    // Requests are not necessarily executed sequentially so we need to check that another request
+    // didn't make it here already while we were awaiting.
+    if (expiredTokens.has(authenticationToken)) {
+      return
+    }
+    if (recoveredAfterTransient401 && !recoveredTokens.has(authenticationToken)) {
+      recoveredTokens.add(authenticationToken)
+      captureMessage("checkAuthentication: /me recovered after transient 401", {
+        level: "info",
+        tags: { authOutcome: "recovered_after_transient_401" },
+        extra: { attempts },
+      })
+    }
+    if (expired) {
+      expiredTokens.add(authenticationToken)
+      captureMessage("checkAuthentication: signed out on expired session", {
+        level: "info",
+        tags: { authOutcome: "signed_out_expired" },
+      })
+      await GlobalStore.actions.auth.signOut()
+      // There is a race condition that prevents the onboarding slideshow from starting if we call an Alert
+      // here synchronously, so we need to wait a few ticks.
+      setTimeout(() => {
+        Alert.alert("Session expired", "Please log in to continue.")
+      }, 200)
+    }
+  } catch (e) {
+    if (__DEV__) {
+      console.error(e)
+    }
+  }
+}
+
+/** The trackers above live for the whole app session, so specs have to reset them. */
+export const __resetSessionExpiryTrackingForTests = () => {
+  expiredTokens.clear()
+  recoveredTokens.clear()
+}

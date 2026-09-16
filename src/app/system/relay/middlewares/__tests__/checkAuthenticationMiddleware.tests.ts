@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { __resetSessionExpiryTrackingForTests } from "app/system/relay/helpers/sessionExpiry"
 import { checkAuthenticationMiddleware } from "app/system/relay/middlewares/checkAuthenticationMiddleware"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import {
@@ -16,6 +17,7 @@ describe(checkAuthenticationMiddleware, () => {
   beforeEach(() => {
     fetchMock.resetMocks()
     captureMessageMock.mockClear()
+    __resetSessionExpiryTrackingForTests()
     middleware = checkAuthenticationMiddleware()
   })
 

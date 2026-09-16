@@ -1,3 +1,4 @@
+import { metaphysicsSubscribe } from "app/system/relay/metaphysicsSubscription"
 import { cacheHeaderMiddleware } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { logRelay } from "app/utils/loggers"
 import { Environment as IEnvironment } from "react-relay"
@@ -58,6 +59,15 @@ const network = new RelayNetworkLayer(
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
     // See: https://github.com/relay-tools/react-relay-network-modern#advanced-options-2nd-argument-after-middlewares
     noThrow: true,
+    // Subscriptions do NOT go through the middlewares above — `subscribeFn` is a separate
+    // transport (SSE, see `metaphysicsSubscription`). What it replaces on its own side:
+    // session expiry (`withSessionExpiry`), Sentry/dev logging (`withSubscriptionBreadcrumbs`)
+    // and persisted queries (`documentID` with a full-document fallback). Deliberately not
+    // carried over: rate limiting
+    // (current subscriptions are user-driven and single-flight), response caching and uploads
+    // (meaningless for a stream), timing and the extensions logger.
+    // Exceptions are reported by the feature owning the subscription, which has the context.
+    subscribeFn: metaphysicsSubscribe,
   }
 )
 const store = new Store(new RecordSource(), { gcReleaseBufferSize: 100 })
