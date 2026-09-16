@@ -105,6 +105,8 @@ export const ItineraryStopRow: React.FC<Props> = ({
                 name={title}
                 isOnMyItineraries={stop.isOnMyItineraries}
                 myItineraries={stop.myItineraries}
+                sourceStopID={stop.internalID}
+                sourceShareToken={shareToken}
               />
             )
           )

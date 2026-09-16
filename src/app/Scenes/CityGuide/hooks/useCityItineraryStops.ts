@@ -3,11 +3,11 @@ import { useCityItineraryStopsCreateItineraryMutation } from "__generated__/useC
 import { useCityItineraryStopsCreateSectionMutation } from "__generated__/useCityItineraryStopsCreateSectionMutation.graphql"
 import { useCityItineraryStopsLookupQuery } from "__generated__/useCityItineraryStopsLookupQuery.graphql"
 import { useCityItineraryStopsRemoveMutation } from "__generated__/useCityItineraryStopsRemoveMutation.graphql"
+import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
 import { Environment, commitMutation } from "relay-runtime"
-import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
 
 /**
  * What a stop points at, matching `ItineraryStopItemType`. A gallery or museum is a
@@ -19,6 +19,9 @@ export type CityItineraryItemType = "SHOW" | "FAIR" | "LOCATION"
 interface EntityStopInput {
   itemType: CityItineraryItemType
   itemID: string
+  /** The itinerary stop this entity came from, so Gravity can copy its processed image. */
+  sourceStopID?: string
+  sourceShareToken?: string
   /** The editorial title. Falls back to the entity's own name server-side when absent. */
   title?: string
 }

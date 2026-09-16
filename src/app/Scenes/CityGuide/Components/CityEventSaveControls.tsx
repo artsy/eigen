@@ -13,6 +13,9 @@ interface Props {
   name: string
   isOnMyItineraries?: boolean | null
   myItineraries?: readonly { readonly internalID: string }[] | null
+  /** The itinerary stop that led here, when there is one. Used to refresh memberships. */
+  sourceStopID?: string
+  sourceShareToken?: string | null
   /** Forwarded to `CityGuideSaveButton`. The rail cards pass 18, per their designs. */
   iconSize?: number
 }
@@ -48,6 +51,8 @@ export const CityEventSaveControl: React.FC<Props> = ({
   iconSize,
   isOnMyItineraries,
   myItineraries,
+  sourceStopID,
+  sourceShareToken,
 }) => {
   const addToItinerary = useAddToItinerary()
   const { trackEvent } = useTracking<Schema.Entity>()
@@ -73,7 +78,14 @@ export const CityEventSaveControl: React.FC<Props> = ({
           owner_id: itemID,
         })
 
-        addToItinerary.open({ itemType, itemID, isOnMyItineraries, myItineraries })
+        addToItinerary.open({
+          itemType,
+          itemID,
+          isOnMyItineraries,
+          myItineraries,
+          sourceStopID,
+          sourceShareToken: sourceShareToken ?? undefined,
+        })
       }}
     />
   )

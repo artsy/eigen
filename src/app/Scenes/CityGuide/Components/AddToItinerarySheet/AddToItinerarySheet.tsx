@@ -49,12 +49,16 @@ export type AddToItineraryTarget = StopTarget & {
 
 type Props = AddToItineraryTarget & {
   onClose: () => void
+  /** Called after Done actually changes something, so the screen this sheet was opened from
+   *  can refetch and stop showing a stale membership state. */
+  onSaved?: () => void
 }
 
 const Sheet: React.FC<Props> = ({
   citySlug,
   cityName,
   onClose,
+  onSaved,
   isOnMyItineraries: _isOnMyItineraries,
   myItineraries,
   ...target
@@ -65,21 +69,36 @@ const Sheet: React.FC<Props> = ({
   // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
   const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
 
-  const data = useLazyLoadQuery<AddToItinerarySheetQuery>(Query, {
-    citySlug: citySlug ?? null,
-    first: PAGE_SIZE,
-  })
-
-  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
-    (itinerary) => !itinerary.isCurated
+  const data = useLazyLoadQuery<AddToItinerarySheetQuery>(
+    Query,
+    {
+      citySlug: citySlug ?? null,
+      first: PAGE_SIZE,
+      sourceStopID: target.sourceStopID ?? "",
+      sourceShareToken: target.sourceShareToken ?? null,
+      hasSourceStopID: !!target.sourceStopID,
+    },
+    { fetchPolicy: "network-only" }
   )
+
+  const memberships = data.sourceStop?.myItineraries ?? null
+  // The connection's own copy of an itinerary this stop is already on carries only its
+  // short-list (empty sections); `memberships` is the same itinerary read through the stop
+  // that knows its real ones, so it wins wherever both cover the same itinerary.
+  const membershipByID = new Map(memberships?.map((itinerary) => [itinerary.internalID, itinerary]))
+  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection)
+    .filter((itinerary) => !itinerary.isCurated)
+    .map((itinerary) => membershipByID.get(itinerary.internalID) ?? itinerary)
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
 
   const [initial] = useState(() =>
-    myItineraries
-      ? itinerariesHoldingTarget(fetchedItineraries, { ...target, myItineraries })
+    memberships || myItineraries
+      ? itinerariesHoldingTarget(fetchedItineraries, {
+          ...target,
+          myItineraries: memberships ?? myItineraries,
+        })
       : itinerariesHoldingTarget(fetchedItineraries, target)
   )
   const [selected, setSelected] = useState<string[]>(initial)
@@ -143,12 +162,18 @@ const Sheet: React.FC<Props> = ({
       // Done means "make me one" — which is what `addStop` already does, including naming it
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
+        // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
         await addStop(target)
+        onSaved?.()
       } else {
         const changes = await applySelection({ itineraries, target, initial, selected })
 
-        if (citySlug && (changes.added > 0 || changes.removed > 0)) {
-          refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+        if (changes.added > 0 || changes.removed > 0) {
+          onSaved?.()
+
+          if (citySlug) {
+            refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+          }
         }
       }
 
@@ -265,7 +290,8 @@ const SheetWithSuspense = withSuspense({
 export const AddToItinerarySheet: React.FC<{
   target: AddToItineraryTarget | null
   onClose: () => void
-}> = ({ target, onClose }) => (
+  onSaved?: () => void
+}> = ({ target, onClose, onSaved }) => (
   <AutomountedBottomSheetModal
     visible={!!target}
     name="AddToItinerary"
@@ -278,12 +304,68 @@ export const AddToItinerarySheet: React.FC<{
       </BottomSheetFooter>
     )}
   >
-    {!!target && <SheetWithSuspense {...target} onClose={onClose} />}
+    {!!target && (
+      <SheetWithSuspense
+        key={sheetTargetKey(target)}
+        {...target}
+        onClose={onClose}
+        onSaved={onSaved}
+      />
+    )}
   </AutomountedBottomSheetModal>
 )
 
+const sheetTargetKey = (target: AddToItineraryTarget) =>
+  target.itemType
+    ? `${target.itemType}:${target.itemID}`
+    : `custom:${target.sourceStopID ?? target.title}:${target.address ?? ""}`
+
 const Query = graphql`
-  query AddToItinerarySheetQuery($citySlug: String, $first: Int!) {
+  query AddToItinerarySheetQuery(
+    $citySlug: String
+    $first: Int!
+    $sourceStopID: String!
+    $sourceShareToken: String
+    $hasSourceStopID: Boolean!
+  ) {
+    sourceStop: itineraryStop(id: $sourceStopID, shareToken: $sourceShareToken)
+      @include(if: $hasSourceStopID) {
+      myItineraries {
+        internalID
+        title
+        isCurated
+        stopsCount
+
+        heroImage {
+          url(version: "small")
+        }
+
+        sections {
+          internalID
+          title
+          stopsCount
+
+          stops {
+            internalID
+            title
+            address
+            item {
+              __typename
+              ... on Show {
+                internalID
+              }
+              ... on Fair {
+                internalID
+              }
+              ... on Location {
+                internalID
+              }
+            }
+          }
+        }
+      }
+    }
+
     me {
       itinerariesConnection(citySlug: $citySlug, first: $first) {
         edges {

@@ -17,7 +17,13 @@ import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/sto
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 
 /** Same shape `CustomStopSaveControl` and `ItineraryStopRow` build for a custom stop's plus. */
-const customStopInput = (stop: ItineraryStop, coordinates: { lat: number; lng: number }) => ({
+const customStopInput = (
+  stop: ItineraryStop,
+  coordinates: { lat: number; lng: number },
+  shareToken?: string | null
+) => ({
+  sourceStopID: stop.internalID,
+  sourceShareToken: shareToken ?? undefined,
   title: itineraryStopTitle(stop),
   address: stop.address ?? undefined,
   note: stop.note ?? undefined,
@@ -66,7 +72,7 @@ export const itineraryStopsToMapSections = (
           image: itineraryStopImage(stop),
           saveControl: isCustom ? (
             <CustomStopSaveControl
-              stop={customStopInput(stop, coordinates)}
+              stop={customStopInput(stop, coordinates, itinerary.shareToken)}
               citySlug={citySlug}
               cityName={cityName}
             />
@@ -76,6 +82,8 @@ export const itineraryStopsToMapSections = (
                 itemType={saveTarget.itemType}
                 itemID={saveTarget.itemID}
                 name={title}
+                sourceStopID={stop.internalID}
+                sourceShareToken={itinerary.shareToken}
               />
             )
           ),

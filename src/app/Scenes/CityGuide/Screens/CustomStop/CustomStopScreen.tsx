@@ -111,7 +111,11 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
     stop.isFreeAdmission == null ? undefined : stop.isFreeAdmission ? "Free" : "Paid Entry"
 
   return (
-    <AddToItineraryProvider citySlug={citySlug} cityName={data.city?.name ?? undefined}>
+    <AddToItineraryProvider
+      citySlug={citySlug}
+      cityName={data.city?.name ?? undefined}
+      onSaved={refresh}
+    >
       <Screen>
         <Screen.Header onBack={goBack} />
 

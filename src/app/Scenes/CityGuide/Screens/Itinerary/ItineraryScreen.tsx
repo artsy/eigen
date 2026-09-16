@@ -134,7 +134,11 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   })
 
   return (
-    <AddToItineraryProvider citySlug={itinerary.citySlug} cityName={data.city?.name ?? undefined}>
+    <AddToItineraryProvider
+      citySlug={itinerary.citySlug}
+      cityName={data.city?.name ?? undefined}
+      onSaved={refresh}
+    >
       <Screen safeArea={false}>
         {/*
           The map fills the screen, so it gets a floating back button rather than a header

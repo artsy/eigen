@@ -21,8 +21,11 @@ const Context = createContext<AddToItineraryContext | null>(null)
 export const AddToItineraryProvider: React.FC<{
   citySlug?: string
   cityName?: string
+  /** Called after Done actually changes something, so the screen showing this stop's
+   *  membership (its own `isOnMyItineraries`) can refetch and stop showing a stale state. */
+  onSaved?: () => void
   children: React.ReactNode
-}> = ({ citySlug, cityName, children }) => {
+}> = ({ citySlug, cityName, onSaved, children }) => {
   const [target, setTarget] = useState<AddToItineraryTarget | null>(null)
 
   const open = useCallback(
@@ -36,7 +39,7 @@ export const AddToItineraryProvider: React.FC<{
     <Context.Provider value={value}>
       {children}
 
-      <AddToItinerarySheet target={target} onClose={() => setTarget(null)} />
+      <AddToItinerarySheet target={target} onClose={() => setTarget(null)} onSaved={onSaved} />
     </Context.Provider>
   )
 }

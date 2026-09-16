@@ -57,6 +57,51 @@ describe("AddToItinerarySheet", () => {
     expect(screen.getByText("1 selected")).toBeOnTheScreen()
   })
 
+  it("uses fresh memberships from the source stop instead of stale caller data", async () => {
+    const view = renderWithRelay(
+      {
+        ...withItineraries([
+          itinerary("a", "Removed from this trip", []),
+          itinerary("b", "Still on this trip", []),
+        ]),
+        Query: () => ({
+          sourceStop: {
+            internalID: "source-stop",
+            myItineraries: [
+              itinerary("b", "Still on this trip", [showStop("copied-stop", "show-1")]),
+            ],
+          },
+        }),
+      },
+      {
+        ...props,
+        target: {
+          ...props.target,
+          sourceStopID: "source-stop",
+          myItineraries: [{ internalID: "a" }],
+        },
+      }
+    )
+
+    expect(await screen.findByText("Still on this trip")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Removed from this trip")).toHaveProp("accessibilityState", {
+      checked: false,
+    })
+    expect(screen.getByLabelText("Still on this trip")).toHaveProp("accessibilityState", {
+      checked: true,
+    })
+    expect(screen.getByText("1 selected")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getAllByTestId("add-to-itinerary-row")[1])
+    expect(screen.getByText("0 selected")).toBeOnTheScreen()
+    fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+    await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+    const operation = view.env.mock.getMostRecentOperation()
+    expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionRemoveMutation")
+    expect(operation.request.variables.input).toEqual({ id: "copied-stop" })
+  })
+
   // Selection is local until Done, as the artwork-lists sheet does it.
   it("toggles a row without firing a mutation", async () => {
     const view = renderWithRelay(withItineraries([itinerary("b", "Second trip", [])]), props)
@@ -156,7 +201,7 @@ describe("AddToItinerarySheet", () => {
       await screen.findByText("First")
 
       fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
-      await waitFor(() => expect(screen.getByText("0 selected")).toBeOnTheScreen())
+      await screen.findByText("0 selected")
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
       await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
