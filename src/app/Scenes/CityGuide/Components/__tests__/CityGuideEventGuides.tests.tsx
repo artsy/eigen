@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { CityGuideEventGuidesTestQuery } from "__generated__/CityGuideEventGuidesTestQuery.graphql"
 import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
 import { navigate } from "app/system/navigation/navigate"
@@ -15,13 +15,16 @@ jest.mock("@artsy/palette-mobile", () => ({
 describe("CityGuideEventGuides", () => {
   const { renderWithRelay } = setupTestWrapper<CityGuideEventGuidesTestQuery, { citySlug: string }>(
     {
-      Component: CityGuideEventGuides,
+      // The query fragment is spread at the query root, so the component receives the whole
+      // query response as its `query` prop, the same object relay handed the test renderer.
+      Component: (props: any) => <CityGuideEventGuides {...props} query={props} />,
       query: graphql`
         query CityGuideEventGuidesTestQuery($citySlug: String!, $first: Int!)
         @relay_test_operation {
           city(slug: $citySlug) {
             ...CityGuideEventGuides_city @arguments(first: $first)
           }
+          ...CityGuideEventGuides_query @arguments(citySlug: $citySlug, first: $first)
         }
       `,
       variables: { citySlug: "london-united-kingdom", first: 10 },
@@ -51,8 +54,18 @@ describe("CityGuideEventGuides", () => {
     itineraries,
   })
 
-  const connection = (nodes: object[]) => ({
-    CityGuideEventsConnection: () => ({ edges: nodes.map((node) => ({ node })) }),
+  /** A curated itinerary as returned by the city-wide `itinerariesConnection`, not an event's. */
+  const cityItinerary = (internalID: string, slug: string | null, name: string) => ({
+    internalID,
+    slug,
+    title: name,
+    authorName: "Casey Lesser",
+    heroImage: { url: "https://example.com/hero-240.jpg" },
+  })
+
+  const connection = (eventNodes: object[], cityItineraryNodes: object[] = []) => ({
+    CityGuideEventsConnection: () => ({ edges: eventNodes.map((node) => ({ node })) }),
+    ItinerariesConnection: () => ({ edges: cityItineraryNodes.map((node) => ({ node })) }),
   })
 
   it("renders the static, unpressable section title", async () => {
@@ -169,5 +182,65 @@ describe("CityGuideEventGuides", () => {
 
     expect(screen.queryAllByTestId("event-guide-group")).toHaveLength(0)
     expect(screen.queryByText("Empty Event")).not.toBeOnTheScreen()
+  })
+
+  describe("the city's other curated guides", () => {
+    it("renders below the event groups", async () => {
+      renderWithRelay(
+        connection(
+          [event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])],
+          [cityItinerary("id-for-other", "off-the-beaten-path", "Off the Beaten Path")]
+        ),
+        props
+      )
+
+      const otherGuides = await screen.findByTestId("city-other-guides")
+
+      expect(within(otherGuides).getByText("Off the Beaten Path")).toBeOnTheScreen()
+    })
+
+    it("excludes an itinerary already attached to a shown event", async () => {
+      renderWithRelay(
+        connection(
+          [event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])],
+          [cityItinerary("id-for-Chill Vibes Only", "chill-vibes-only", "Chill Vibes Only")]
+        ),
+        props
+      )
+
+      await screen.findByText("London Art Week")
+
+      expect(screen.getAllByText("Chill Vibes Only")).toHaveLength(1)
+      expect(screen.queryByTestId("city-other-guides")).not.toBeOnTheScreen()
+    })
+
+    it("renders nothing when the city has no other curated itineraries", async () => {
+      renderWithRelay(
+        connection([event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])]),
+        props
+      )
+
+      await screen.findByText("London Art Week")
+
+      expect(screen.queryByTestId("city-other-guides")).not.toBeOnTheScreen()
+    })
+
+    it("navigates to the itinerary when tapped", async () => {
+      renderWithRelay(
+        connection(
+          [event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])],
+          [cityItinerary("id-for-other", "off-the-beaten-path", "Off the Beaten Path")]
+        ),
+        props
+      )
+
+      const otherGuides = await screen.findByTestId("city-other-guides")
+
+      fireEvent.press(within(otherGuides).getByTestId("event-guide-row"))
+
+      expect(navigate).toHaveBeenCalledWith(
+        "/city-guide/london-united-kingdom/itinerary/off-the-beaten-path"
+      )
+    })
   })
 })

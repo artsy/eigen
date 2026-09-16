@@ -12,6 +12,7 @@ import {
   CityGuideEventGuides_city$data,
   CityGuideEventGuides_city$key,
 } from "__generated__/CityGuideEventGuides_city.graphql"
+import { CityGuideEventGuides_query$key } from "__generated__/CityGuideEventGuides_query.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEventDateRange"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -155,13 +156,40 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
   )
 }
 
+/** The city's curated itineraries that aren't already attached to one of the events above. */
+const OtherCuratedGuides = ({ rows, citySlug }: { rows: GuideRow[]; citySlug: string }) => {
+  if (!rows.length) {
+    return null
+  }
+
+  return (
+    <>
+      <Spacer y={4} />
+
+      <Flex testID="city-other-guides" px={2}>
+        <Join separator={<Spacer y={2} />}>
+          {rows.map((item) => (
+            <GuideListItem key={item.id} item={item} citySlug={citySlug} />
+          ))}
+        </Join>
+      </Flex>
+    </>
+  )
+}
+
 interface Props {
   citySlug: string
   city: CityGuideEventGuides_city$key | null | undefined
+  query: CityGuideEventGuides_query$key | null | undefined
 }
 
-export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, city: cityRef }) => {
-  const city = useFragment(fragment, cityRef)
+export const CityGuideEventGuides: React.FC<Props> = ({
+  citySlug,
+  city: cityRef,
+  query: queryRef,
+}) => {
+  const city = useFragment(cityFragment, cityRef)
+  const query = useFragment(queryFragment, queryRef)
 
   const events = extractNodes(city?.cityGuideEventsConnection)
 
@@ -170,6 +198,23 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, city: cityRef 
   if (!events.length) {
     return null
   }
+
+  // Itineraries already shown in an event group above don't repeat in the city-wide list.
+  const attachedItineraryIds = new Set(
+    events.flatMap((event) =>
+      event.itineraries.map((attachment) => attachment.itinerary.internalID)
+    )
+  )
+
+  const otherCuratedRows: GuideRow[] = extractNodes(query?.itinerariesConnection)
+    .filter((itinerary) => !attachedItineraryIds.has(itinerary.internalID))
+    .map((itinerary) => ({
+      id: itinerary.internalID,
+      itineraryId: itinerary.slug ?? itinerary.internalID,
+      title: itinerary.title,
+      authorName: itinerary.authorName ?? "",
+      imageUrl: itinerary.heroImage?.url ?? "",
+    }))
 
   return (
     <Flex backgroundColor="mono100" py={2}>
@@ -181,11 +226,13 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, city: cityRef 
           <EventGroup key={event.internalID} event={event} citySlug={citySlug} />
         ))}
       </Join>
+
+      <OtherCuratedGuides rows={otherCuratedRows} citySlug={citySlug} />
     </Flex>
   )
 }
 
-const fragment = graphql`
+const cityFragment = graphql`
   fragment CityGuideEventGuides_city on City @argumentDefinitions(first: { type: "Int!" }) {
     cityGuideEventsConnection(first: $first, status: CURRENT) {
       edges {
@@ -210,6 +257,25 @@ const fragment = graphql`
                 url(version: "small")
               }
             }
+          }
+        }
+      }
+    }
+  }
+`
+
+const queryFragment = graphql`
+  fragment CityGuideEventGuides_query on Query
+  @argumentDefinitions(citySlug: { type: "String!" }, first: { type: "Int!" }) {
+    itinerariesConnection(citySlug: $citySlug, first: $first, isCurated: true) {
+      edges {
+        node {
+          internalID
+          slug
+          title
+          authorName
+          heroImage {
+            url(version: "small")
           }
         }
       }
