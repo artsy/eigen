@@ -27,11 +27,12 @@ interface EntityStopInput {
  * A stop with no Artsy entity — a cafe, a landmark. `createItineraryStopInput` leaves
  * `itemType` and `itemID` optional, so these fields alone make a stop.
  *
- * No image: that input takes an S3 upload URL which Gravity converts through Gemini, so a
- * copied stop cannot carry the original's picture.
+ * A source stop ID lets Gravity copy its processed image without another upload.
  */
 export interface CustomStopInput {
   itemType?: undefined
+  sourceStopID?: string
+  sourceShareToken?: string
   title: string
   address?: string
   note?: string

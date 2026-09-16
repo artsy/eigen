@@ -22,6 +22,7 @@ interface Props {
   /** Where a custom stop's own screen lives, which needs the itinerary this stop belongs to. */
   citySlug: string
   itineraryId: string
+  shareToken?: string
   /** What a new itinerary gets called when a custom stop is copied onto one. */
   cityName: string
 }
@@ -31,6 +32,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
   number,
   citySlug,
   itineraryId,
+  shareToken,
   cityName,
 }) => {
   const title = itineraryStopTitle(stop)
@@ -77,6 +79,8 @@ export const ItineraryStopRow: React.FC<Props> = ({
           isCustom ? (
             <CustomStopSaveControl
               stop={{
+                sourceStopID: stop.internalID,
+                sourceShareToken: shareToken,
                 title,
                 address: stop.address ?? undefined,
                 note: stop.note ?? undefined,

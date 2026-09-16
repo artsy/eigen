@@ -22,6 +22,7 @@ interface Props {
   /** Passed through to the rows, which address a custom stop's screen by itinerary. */
   citySlug: string
   itineraryId: string
+  shareToken?: string
   /** What a new itinerary gets called when a custom stop is copied onto one. */
   cityName: string
 }
@@ -33,6 +34,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   showHeader = true,
   citySlug,
   itineraryId,
+  shareToken,
   cityName,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true)
@@ -63,6 +65,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
               number={startNumber === undefined ? undefined : startNumber + index}
               citySlug={citySlug}
               itineraryId={itineraryId}
+              shareToken={shareToken}
               cityName={cityName}
             />
           ))}

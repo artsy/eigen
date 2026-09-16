@@ -1,4 +1,7 @@
-import { customStopFromItinerary } from "app/Scenes/CityGuide/Screens/CustomStop/utils/customStopFromItinerary"
+import {
+  customStopFromItinerary,
+  customStopInput,
+} from "app/Scenes/CityGuide/Screens/CustomStop/utils/customStopFromItinerary"
 
 const stop = (overrides: object = {}) => ({
   internalID: "stop-2",
@@ -22,6 +25,15 @@ const itinerary = (stops: object[]) => ({
 })
 
 describe("customStopFromItinerary", () => {
+  it("passes the source ID for image copying, without sending a rendered image URL", () => {
+    const input = customStopInput({
+      id: "source-stop",
+      title: "Cafe",
+      imageUrl: "https://example.com/image.jpg",
+    })
+    expect(input.sourceStopID).toBe("source-stop")
+    expect(input).not.toHaveProperty("imageURL")
+  })
   // The screen is addressed by itinerary plus stop: Metaphysics has no root lookup for a stop.
   it("finds a stop in any section", () => {
     const result = customStopFromItinerary(itinerary([stop()]) as any, "stop-2")

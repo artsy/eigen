@@ -212,6 +212,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       showHeader={isEditorial}
                       citySlug={itinerary.citySlug}
                       itineraryId={itineraryId}
+                      shareToken={shareToken}
                       cityName={data.city?.name ?? ""}
                     />
                   ))}
