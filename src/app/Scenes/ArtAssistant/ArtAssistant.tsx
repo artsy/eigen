@@ -5,6 +5,7 @@ import {
   Dialog,
   Flex,
   Input,
+  InputRef,
   Screen,
   Text,
   Touchable,
@@ -35,13 +36,23 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const { isResponding, messages, startNewConversation, submit } = useArtAssistantConversation()
+  const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
 
-  const handleOpenNewChatDialog = () => {
+  const dismissComposerKeyboard = () => {
+    composerInputRef.current?.blur()
     KeyboardController.dismiss()
+  }
+
+  const handleScrollBeginDrag = () => {
+    dismissComposerKeyboard()
+  }
+
+  const handleOpenNewChatDialog = () => {
+    dismissComposerKeyboard()
     setIsNewChatDialogVisible(true)
   }
 
@@ -63,6 +74,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     pendingScrollIndex.current = userMessageIndex
     void submit(text)
     setPrompt("")
+    dismissComposerKeyboard()
   }
 
   const scrollToPendingTurn = useCallback(() => {
@@ -123,7 +135,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
         }
       />
 
-      <KeyboardAvoidingContainer automaticOffset testID="art-assistant-layout">
+      <KeyboardAvoidingContainer
+        automaticOffset
+        keyboardVerticalOffset={-bottom}
+        testID="art-assistant-layout"
+      >
         <FlashList
           contentContainerStyle={{
             flexGrow: 1,
@@ -133,10 +149,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           data={messages}
           ref={messageListRef}
           keyExtractor={(message) => message.id}
-          keyboardDismissMode="interactive"
+          keyboardDismissMode="none"
           keyboardShouldPersistTaps="handled"
           ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
           onContentSizeChange={scrollToPendingTurn}
+          onScrollBeginDrag={handleScrollBeginDrag}
           renderItem={({ item, index }) => (
             <Flex mb={index === messages.length - 1 ? 0 : 2}>
               <ArtAssistantMessage message={item} />
@@ -174,6 +191,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               onFocus={() => setIsComposerFocused(true)}
               placeholder="Tell us what you'd like..."
               placeholderTextColor={color("mono60")}
+              ref={composerInputRef}
               style={{
                 borderWidth: 0,
                 height: undefined,
