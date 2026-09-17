@@ -1,6 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { act, fireEvent, screen } from "@testing-library/react-native"
-import { ART_ASSISTANT_SUGGESTIONS, ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
+import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
+import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"

@@ -1,4 +1,4 @@
-import { CloseIcon, SparklesStrokeIcon } from "@artsy/icons/native"
+import { CloseIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
@@ -9,6 +9,7 @@ import {
   useColor,
   useSpace,
 } from "@artsy/palette-mobile"
+import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
@@ -17,14 +18,6 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-
-const EMPTY_STATE_ICON_SIZE = 28
-
-export const ART_ASSISTANT_SUGGESTIONS = [
-  "Large blue abstract painting for a living room, under $10k",
-  "Emerging photographers showing in Berlin right now",
-  "Something like Ruth Asawa but I can actually afford",
-]
 
 interface ArtAssistantProps {
   onClose?: () => void
@@ -114,53 +107,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           keyExtractor={(message) => message.id}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
-          ListEmptyComponent={
-            <Flex flex={1} pt={2}>
-              <Flex flexDirection="row" alignItems="center" justifyContent="center">
-                <SparklesStrokeIcon
-                  fill="mono60"
-                  width={EMPTY_STATE_ICON_SIZE}
-                  height={EMPTY_STATE_ICON_SIZE}
-                />
-                <Text variant="sm" color="mono60" ml={0.5} caps>
-                  Art Assistant
-                </Text>
-              </Flex>
-
-              <Text variant="lg" textAlign="center" mt={2}>
-                What are you looking for?
-              </Text>
-
-              <Text variant="sm" color="mono60" textAlign="center" mt={1} mb={2}>
-                Describe it the way you'd describe it to a friend — medium, mood, color, budget.
-                I'll do the filtering.
-              </Text>
-
-              <Flex gap={1}>
-                {ART_ASSISTANT_SUGGESTIONS.map((suggestion) => (
-                  <Touchable
-                    accessibilityRole="button"
-                    key={suggestion}
-                    onPress={() => setPrompt(suggestion)}
-                    underlayColor="mono5"
-                    style={{ borderRadius: 20, overflow: "hidden" }}
-                  >
-                    <Flex
-                      borderColor="mono15"
-                      borderRadius={20}
-                      borderWidth={StyleSheet.hairlineWidth}
-                      justifyContent="center"
-                      minHeight={56}
-                      px={2}
-                      py={1}
-                    >
-                      <Text variant="sm">{suggestion}</Text>
-                    </Flex>
-                  </Touchable>
-                ))}
-              </Flex>
-            </Flex>
-          }
+          ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
           onContentSizeChange={scrollToPendingTurn}
           onScrollToIndexFailed={({ averageItemLength, index }) => {
             messageListRef.current?.scrollToOffset({
