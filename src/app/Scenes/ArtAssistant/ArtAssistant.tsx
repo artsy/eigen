@@ -9,6 +9,7 @@ import {
   useColor,
   useSpace,
 } from "@artsy/palette-mobile"
+import { FlashList, FlashListRef } from "@shopify/flash-list"
 import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
@@ -16,7 +17,7 @@ import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAs
 import { goBack } from "app/system/navigation/navigate"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 interface ArtAssistantProps {
@@ -29,7 +30,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
   const { isResponding, messages, submit } = useArtAssistantConversation()
-  const messageListRef = useRef<FlatList<ArtAssistantMessageType>>(null)
+  const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
@@ -96,34 +97,19 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       />
 
       <KeyboardAvoidingContainer automaticOffset testID="art-assistant-layout">
-        <Screen.FlatList
+        <FlashList
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: space(2),
             paddingVertical: space(2),
           }}
           data={messages}
-          innerRef={messageListRef}
+          ref={messageListRef}
           keyExtractor={(message) => message.id}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
           onContentSizeChange={scrollToPendingTurn}
-          onScrollToIndexFailed={({ averageItemLength, index }) => {
-            messageListRef.current?.scrollToOffset({
-              animated: false,
-              offset: averageItemLength * index,
-            })
-
-            requestAnimationFrame(() => {
-              messageListRef.current?.scrollToIndex({
-                animated: true,
-                index,
-                viewOffset: space(1),
-                viewPosition: 0,
-              })
-            })
-          }}
           renderItem={({ item, index }) => (
             <Flex mb={index === messages.length - 1 ? 0 : 2}>
               <ArtAssistantMessage message={item} />
