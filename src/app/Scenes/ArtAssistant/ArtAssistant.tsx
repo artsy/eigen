@@ -1,4 +1,4 @@
-import { CloseIcon, SparklesStrokeIcon } from "@artsy/icons/native"
+import { CloseIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
@@ -9,18 +9,16 @@ import {
   useColor,
   useSpace,
 } from "@artsy/palette-mobile"
+import { FlashList, FlashListRef } from "@shopify/flash-list"
+import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
+import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
+import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
 import { goBack } from "app/system/navigation/navigate"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-
-export const ART_ASSISTANT_SUGGESTIONS = [
-  "Large blue abstract painting for a living room, under $10k",
-  "Emerging photographers showing in Berlin right now",
-  "Something like Ruth Asawa but I can actually afford",
-]
 
 interface ArtAssistantProps {
   onClose?: () => void
@@ -31,7 +29,9 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
-  const { isResponding, response, submit } = useArtAssistantConversation()
+  const { isResponding, messages, submit } = useArtAssistantConversation()
+  const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
+  const pendingScrollIndex = useRef<number | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
 
@@ -42,9 +42,41 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       return
     }
 
-    submit(text)
+    const userMessageIndex = messages.length
+
+    pendingScrollIndex.current = userMessageIndex
+    void submit(text)
     setPrompt("")
   }
+
+  const scrollToPendingTurn = useCallback(() => {
+    const index = pendingScrollIndex.current
+
+    if (index === null) {
+      return
+    }
+
+    pendingScrollIndex.current = null
+    // Anchor the latest user turn after Thinking/final response layout changes, but do not
+    // keep pulling the user down when artwork images load or while they read older messages.
+    requestAnimationFrame(() => {
+      messageListRef.current?.scrollToIndex({
+        animated: true,
+        index,
+        viewOffset: space(1),
+        viewPosition: 0,
+      })
+    })
+  }, [space])
+
+  useEffect(() => {
+    const lastMessage = messages.at(-1)
+
+    if (lastMessage?.role === "assistant" && lastMessage.phase !== "responding") {
+      pendingScrollIndex.current = Math.max(0, messages.length - 2)
+      requestAnimationFrame(scrollToPendingTurn)
+    }
+  }, [messages, scrollToPendingTurn])
 
   return (
     <Screen>
@@ -65,61 +97,27 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       />
 
       <KeyboardAvoidingContainer automaticOffset testID="art-assistant-layout">
-        <Screen.ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+        <FlashList
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingHorizontal: space(2),
+            paddingVertical: space(2),
+          }}
+          data={messages}
+          ref={messageListRef}
+          keyExtractor={(message) => message.id}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
+          ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
+          onContentSizeChange={scrollToPendingTurn}
+          renderItem={({ item, index }) => (
+            <Flex mb={index === messages.length - 1 ? 0 : 2}>
+              <ArtAssistantMessage message={item} />
+            </Flex>
+          )}
           style={{ flex: 1 }}
           testID="art-assistant-content"
-        >
-          <Flex flex={1} px={2} pt={4} pb={2}>
-            {response ? (
-              <Text variant="sm">{response}</Text>
-            ) : (
-              <>
-                <Flex flexDirection="row" alignItems="center" justifyContent="center">
-                  <SparklesStrokeIcon fill="mono60" width={28} height={28} />
-                  <Text variant="sm" color="mono60" ml={0.5} caps>
-                    Art Assistant
-                  </Text>
-                </Flex>
-
-                <Text variant="lg" textAlign="center" mt={2}>
-                  What are you looking for?
-                </Text>
-
-                <Text variant="sm" color="mono60" textAlign="center" mt={1} mb={2}>
-                  Describe it the way you'd describe it to a friend — medium, mood, color, budget.
-                  I'll do the filtering.
-                </Text>
-
-                <Flex gap={1}>
-                  {ART_ASSISTANT_SUGGESTIONS.map((suggestion) => (
-                    <Touchable
-                      accessibilityRole="button"
-                      key={suggestion}
-                      onPress={() => setPrompt(suggestion)}
-                      underlayColor="mono5"
-                      style={{ borderRadius: 20, overflow: "hidden" }}
-                    >
-                      <Flex
-                        borderColor="mono15"
-                        borderRadius={20}
-                        borderWidth={StyleSheet.hairlineWidth}
-                        justifyContent="center"
-                        minHeight={56}
-                        px={2}
-                        py={1}
-                      >
-                        <Text variant="sm">{suggestion}</Text>
-                      </Flex>
-                    </Touchable>
-                  ))}
-                </Flex>
-              </>
-            )}
-          </Flex>
-        </Screen.ScrollView>
+        />
 
         <Flex
           flexDirection="row"
