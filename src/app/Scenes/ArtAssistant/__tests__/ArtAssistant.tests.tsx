@@ -67,6 +67,21 @@ describe("ArtAssistant", () => {
     expect(screen.getByLabelText("Send")).toBeDisabled()
   })
 
+  it("highlights the composer while it is focused", () => {
+    renderWithWrappers(<ArtAssistant />)
+
+    const composer = screen.getByTestId("art-assistant-composer-input-container")
+    const prompt = screen.getByLabelText("Art Assistant prompt")
+
+    expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
+
+    fireEvent(prompt, "focus")
+    expect(composer).toHaveStyle({ borderColor: "#1023D7" })
+
+    fireEvent(prompt, "blur")
+    expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
+  })
+
   it("shows progress before publishing the completed response", async () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
