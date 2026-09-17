@@ -32,6 +32,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
+  const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const { isResponding, messages, startNewConversation, submit } = useArtAssistantConversation()
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
@@ -157,17 +158,20 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
         >
           <Flex
             flex={1}
-            borderColor="mono15"
+            borderColor={isComposerFocused ? "blue100" : "mono15"}
             borderRadius={50}
             borderWidth={StyleSheet.hairlineWidth}
             minHeight={50}
             justifyContent="center"
             px={2}
+            testID="art-assistant-composer-input-container"
           >
             <Input
               accessibilityLabel="Art Assistant prompt"
               multiline
+              onBlur={() => setIsComposerFocused(false)}
               onChangeText={setPrompt}
+              onFocus={() => setIsComposerFocused(true)}
               placeholder="Tell us what you'd like..."
               placeholderTextColor={color("mono60")}
               style={{
