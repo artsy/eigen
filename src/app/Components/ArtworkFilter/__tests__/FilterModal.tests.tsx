@@ -18,6 +18,7 @@ import {
   MockFilterScreen,
 } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -25,7 +26,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
 const exitModalMock = jest.fn()
-const trackEvent = jest.fn()
 
 const mockAggregations: Aggregations = [
   {
@@ -245,33 +245,6 @@ describe("Filter modal states", () => {
     expect(screen.getByText("Medium • 1")).toBeTruthy()
   })
 
-  it("displays the filter screen apply button correctly when no filters are selected", () => {
-    renderWithWrappers(<MockFilterModalNavigator />)
-
-    expect(screen.getByText("Show Results")).toBeDisabled()
-  })
-
-  it("displays the filter screen apply button correctly when filters are selected", () => {
-    const injectedState: ArtworkFiltersState = {
-      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: mockAggregations,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-      showFilterArtworksModal: false,
-      sizeMetric: "cm",
-    }
-
-    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
-
-    expect(screen.getByText("Show Results")).not.toBeDisabled()
-  })
-
   it("does not display default filters numbers on the Filter modal", () => {
     renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
@@ -326,6 +299,14 @@ describe("Filter modal states", () => {
 })
 
 describe("Clearing filters", () => {
+  beforeEach(() => {
+    exitModalMock.mockClear()
+    closeModalMock.mockClear()
+    // the global clearing in setupJest is skipped when ALLOW_CONSOLE_LOGS=true,
+    // so clear explicitly to keep the tracking assertions below reliable
+    mockTrackEvent.mockClear()
+  })
+
   it("allows users to clear all filters when selecting clear all", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
@@ -359,7 +340,7 @@ describe("Clearing filters", () => {
     expect(screen.queryByText("• 1")).toBeFalsy()
   })
 
-  it("exits the modal when clear all button is pressed", () => {
+  it("closes the modal without applying when Show Results is pressed after clear all", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
@@ -379,12 +360,63 @@ describe("Clearing filters", () => {
 
     renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(screen.getByText("Show Results")).toBeDisabled()
-
     fireEvent.press(screen.getByText("Clear All"))
 
     expect(screen.getByText("Sort By")).toBeTruthy()
     expect(screen.getByText("Rarity")).toBeTruthy()
+
+    fireEvent.press(screen.getByText("Show Results"))
+
+    // the tap is a dismissal, not an apply: closeModal (which consumers may
+    // track as a close) rather than exitModal, and no filter-change event
+    expect(closeModalMock).toHaveBeenCalled()
+    expect(exitModalMock).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
+    )
+  })
+})
+
+describe("Applying filters via Show Results", () => {
+  beforeEach(() => {
+    exitModalMock.mockClear()
+    closeModalMock.mockClear()
+    mockTrackEvent.mockClear()
+  })
+
+  // counterpart to the no-op dismissal above: with staged filters the same
+  // tap must go through the full apply path instead of the early return
+  it("applies filters and tracks the change when Show Results is pressed with staged filters", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Works on Paper",
+          paramName: FilterParamName.medium,
+          paramValue: "work-on-paper",
+        },
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      showFilterArtworksModal: false,
+      sizeMetric: "cm",
+    }
+
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
+
+    fireEvent.press(screen.getByText("Show Results"))
+
+    expect(exitModalMock).toHaveBeenCalled()
+    expect(closeModalMock).not.toHaveBeenCalled()
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ action_type: "commercialFilterParamsChanged" })
+    )
   })
 })
 
@@ -474,69 +506,6 @@ describe("Applying filters on Artworks", () => {
         "sort": null,
       }
     `)
-  })
-
-  it.skip("tracks changes in the filter state when a filter is applied", async () => {
-    const injectedState: ArtworkFiltersState = {
-      selectedFilters: [
-        {
-          displayText: "Works on Paper",
-          paramName: FilterParamName.medium,
-          paramValue: "work-on-paper",
-        },
-      ],
-      appliedFilters: [
-        {
-          displayText: "Recently Added",
-          paramName: FilterParamName.sort,
-          paramValue: "-decayed_merch",
-        },
-      ],
-      previouslyAppliedFilters: [
-        {
-          displayText: "Recently Added",
-          paramName: FilterParamName.sort,
-          paramValue: "-decayed_merch",
-        },
-      ],
-      applyFilters: true,
-      aggregations: mockAggregations,
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-      showFilterArtworksModal: false,
-      sizeMetric: "cm",
-    }
-
-    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
-
-    resolveMostRecentRelayOperation(env)
-
-    fireEvent.press(screen.getByText("Show Results"))
-
-    expect(trackEvent).toHaveBeenCalledWith({
-      action_type: "commercialFilterParamsChanged",
-      changed: JSON.stringify({
-        medium: "work-on-paper",
-      }),
-      context_screen: "Artist",
-      context_screen_owner_id: "abc123",
-      context_screen_owner_slug: "some-artist",
-      context_screen_owner_type: "Artist",
-      current: JSON.stringify({
-        acquireable: false,
-        atAuction: false,
-        estimateRange: "",
-        includeArtworksByFollowedArtists: false,
-        inquireableOnly: false,
-        medium: "*",
-        offerable: false,
-        priceRange: "*-*",
-        sort: "-decayed_merch",
-      }),
-    })
   })
 })
 
