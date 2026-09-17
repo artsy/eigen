@@ -40,10 +40,7 @@
         "expo-build-properties",
         {
           "android": {
-            "reactNativeReleaseLevel": "stable",
-            "enableMinifyInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true,
-            "extraProguardRules": "# Fresco's animated-image backend is referenced but not bundled in this app.\n-dontwarn com.facebook.imagepipeline.animated.factory.AnimatedFactoryImpl\n\n# @stripe/stripe-react-native references the optional push-provisioning SDK\n# (com.stripe:stripe-android-issuing-push-provisioning), which we don't depend on.\n-dontwarn com.stripe.android.pushProvisioning.**"
+            "reactNativeReleaseLevel": "stable"
           },
           "ios": {
             "reactNativeReleaseLevel": "stable"
