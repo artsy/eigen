@@ -1,9 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import {
-  getCurrentEmissionState,
-  globalStoreInstance,
-  unsafe__getEnvironment,
-} from "app/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import {
   toMetaphysicsSubscriptionError,
   toSubscriptionRejection,
@@ -86,14 +82,14 @@ const getSubscriptionRequest = (
 
 const requestHeaders = () => {
   const { authenticationToken, userAgent, userID } = getCurrentEmissionState()
-  const xAppToken = globalStoreInstance().getState()?.auth.xAppToken
 
+  // Do not forward Eigen's XApp token. Metaphysics owns authentication for its downstream
+  // services, and an app token persisted for another environment would override its valid token.
   return {
     "User-Agent": userAgent,
     "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
     "X-USER-ID": userID,
     "X-ACCESS-TOKEN": authenticationToken,
-    ...(xAppToken ? { "X-XAPP-TOKEN": xAppToken } : {}),
   }
 }
 
