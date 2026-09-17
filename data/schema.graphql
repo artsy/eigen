@@ -19431,6 +19431,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   When true, the fair is considered evergreen and not bound to specific dates.
   """
   isEvergreen: Boolean!
+
+  """
+  Whether this item occurs in any of the current user's personal itineraries. False when signed out.
+  """
+  isOnMyItineraries: Boolean
   isPublished: Boolean
   links(format: Format): String
   location: Location
@@ -19442,6 +19447,11 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     size: Int
   ): [MarketingCollection]!
   mobileImage: Image
+
+  """
+  Personal itineraries containing this item, with every matching stop ID. Details are fetched only when selected. Empty when signed out.
+  """
+  myItineraryStopMemberships: [ItineraryStopMembership!]
   name: String
   organizer: FairOrganizer
   profile: Profile
@@ -21145,12 +21155,34 @@ type GeneMeta {
   description: String!
 }
 
+input GenerateArtworkDescriptionDocumentInput {
+  """
+  Original filename of the document.
+  """
+  fileName: String
+
+  """
+  S3 bucket of the uploaded document.
+  """
+  s3Bucket: String!
+
+  """
+  S3 key of the uploaded document.
+  """
+  s3Key: String!
+}
+
 type GenerateArtworkDescriptionFailure {
   mutationError: GravityMutationError
 }
 
 input GenerateArtworkDescriptionInput {
   clientMutationId: String
+
+  """
+  S3 documents (DOC, DOCX, or PDF) to include as additional context for description generation.
+  """
+  documents: [GenerateArtworkDescriptionDocumentInput!]
 
   """
   The internal ID of the artwork to generate a description for
@@ -37698,6 +37730,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   isFreeAdmission: Boolean
 
   """
+  Whether this item occurs in any of the current user's personal itineraries. False when signed out.
+  """
+  isOnMyItineraries: Boolean
+
+  """
   Does the show exist soley online
   """
   isOnlineExclusive: Boolean!
@@ -37726,6 +37763,11 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   An image representing the show, or a sharable image from an artwork in the show
   """
   metaImage: Image
+
+  """
+  Personal itineraries containing this item, with every matching stop ID. Details are fetched only when selected. Empty when signed out.
+  """
+  myItineraryStopMemberships: [ItineraryStopMembership!]
 
   """
   The exhibition title
