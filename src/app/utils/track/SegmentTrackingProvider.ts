@@ -42,8 +42,13 @@ export const SegmentTrackingProvider: TrackingProvider = {
   },
 
   postEvent: (info) => {
+    // Breadcrumbs ride along on every Sentry crash report, which has broader
+    // internal access and different retention than the warehouse. Keep
+    // user-authored text (e.g. Art Assistant prompts) out of them.
+    const { prompt: _prompt, ...breadcrumbSafe } = info as Record<string, unknown>
+
     addBreadcrumb({
-      message: `${JSON.stringify(info, null, 2)}`,
+      message: `${JSON.stringify(breadcrumbSafe, null, 2)}`,
       category: "analytics",
     })
 

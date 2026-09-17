@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import {
   AIAgentActivity,
   ArtAssistantAgentTurnSubscription,
@@ -16,9 +17,11 @@ import {
   ArtAssistantHistoryEntry,
   trimArtAssistantHistory,
 } from "app/Scenes/ArtAssistant/utils/conversationHistory"
+import { sanitizePrompt } from "app/Scenes/ArtAssistant/utils/sanitizePrompt"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { requestSubscription, useRelayEnvironment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { v4 as uuid } from "uuid"
 
 type AssistantMessage = Extract<ArtAssistantMessage, { role: "assistant" }>
@@ -45,6 +48,7 @@ export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 60_000
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
+  const { trackEvent } = useTracking()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
   const [messages, setMessages] = useState<ArtAssistantMessage[]>([])
@@ -87,6 +91,15 @@ export const useArtAssistantConversation = () => {
       }
 
       const previousMessages = messagesRef.current
+
+      trackEvent(
+        tracks.sentPrompt(
+          conversationID.current,
+          previousMessages.filter((message) => message.role === "user").length,
+          text
+        )
+      )
+
       const userMessage: ArtAssistantMessage = { id: uuid(), role: "user", text }
       const assistantMessage: AssistantMessage = {
         id: uuid(),
@@ -261,10 +274,16 @@ export const useArtAssistantConversation = () => {
       activeSubscription.current = subscription
       restartIdleTimeout()
     },
-    [abort, authenticationToken, environment, userID]
+    [abort, authenticationToken, environment, trackEvent, userID]
   )
 
-  return { isResponding, messages, startNewConversation, submit }
+  return {
+    conversationID: conversationID.current,
+    isResponding,
+    messages,
+    startNewConversation,
+    submit,
+  }
 }
 
 export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent): ActiveTurn => {
@@ -349,3 +368,14 @@ const failActiveTurn = (turn: ActiveTurn, errorMessage: string): ActiveTurn => (
     errorMessage,
   },
 })
+
+const tracks = {
+  sentPrompt: (conversationID: string, turnIndex: number, prompt: string) => ({
+    action: ActionType.sentArtAssistantPrompt,
+    context_screen_owner_type: OwnerType.artAssistant,
+    conversation_id: conversationID,
+    turn_index: turnIndex,
+    prompt: sanitizePrompt(prompt),
+    prompt_length: prompt.length,
+  }),
+}
