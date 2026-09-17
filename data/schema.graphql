@@ -3418,6 +3418,11 @@ type ArtistPartnerEdge {
   isUseDefaultBiography: Boolean
 
   """
+  Whether Artsy has verified that this partner represents this artist.
+  """
+  isVerifiedRepresentative: Boolean
+
+  """
   The item at the end of the edge
   """
   node: Artist
