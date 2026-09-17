@@ -9,6 +9,7 @@ import {
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { createElement, ReactNode } from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -148,6 +149,71 @@ describe("useArtAssistantConversation", () => {
       phase: "complete",
       text: "A partial answer",
     })
+  })
+
+  it("tracks each prompt with a redacted body and an incrementing turn index", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting, email me at a@b.co"))
+
+    expect(mockTrackEvent).toHaveBeenLastCalledWith({
+      action: "sentArtAssistantPrompt",
+      context_screen_owner_type: "artAssistant",
+      conversation_id: result.current.conversationID,
+      turn_index: 0,
+      prompt: "blue painting, email me at <EMAIL>",
+      prompt_length: "blue painting, email me at a@b.co".length,
+    })
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: "Here are a few.",
+        stopReason: "end_turn",
+        toolCallCount: 1,
+        artworks: [],
+      })
+    })
+
+    act(() => result.current.submit("something cheaper"))
+
+    expect(mockTrackEvent).toHaveBeenLastCalledWith(
+      expect.objectContaining({ turn_index: 1, prompt: "something cheaper" })
+    )
+  })
+
+  it("keeps one conversation id across turns", () => {
+    const { environment, result } = renderConversation()
+    const { conversationID } = result.current
+
+    act(() => result.current.submit("blue painting"))
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: "Here are a few.",
+        stopReason: "end_turn",
+        toolCallCount: 1,
+        artworks: [],
+      })
+    })
+
+    act(() => result.current.submit("something cheaper"))
+
+    expect(result.current.conversationID).toBe(conversationID)
+    expect(conversationID).toEqual(expect.any(String))
+  })
+
+  it("does not track an empty prompt", () => {
+    const { result } = renderConversation()
+
+    act(() => result.current.submit("   "))
+
+    expect(mockTrackEvent).not.toHaveBeenCalled()
   })
 
   it("ends the turn on the terminal event instead of waiting for the stream to close", () => {

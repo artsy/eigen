@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { CloseIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
@@ -10,7 +11,10 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { FlashList, FlashListRef } from "@shopify/flash-list"
-import { ArtAssistantEmptyState } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
+import {
+  ART_ASSISTANT_SUGGESTIONS,
+  ArtAssistantEmptyState,
+} from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
 import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
@@ -19,6 +23,7 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { useCallback, useEffect, useRef, useState } from "react"
 import { StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 interface ArtAssistantProps {
   onClose?: () => void
@@ -29,11 +34,25 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const space = useSpace()
   const { bottom } = useSafeAreaInsets()
   const [prompt, setPrompt] = useState("")
-  const { isResponding, messages, submit } = useArtAssistantConversation()
+  const { conversationID, isResponding, messages, submit } = useArtAssistantConversation()
+  const { trackEvent } = useTracking()
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
+
+  const handleSelectSuggestion = (suggestion: string) => {
+    // The chips are unique strings, so their position comes from the source list
+    // rather than threading an index through ArtAssistantEmptyState.
+    trackEvent(
+      tracks.tappedSuggestion(
+        conversationID,
+        suggestion,
+        ART_ASSISTANT_SUGGESTIONS.indexOf(suggestion)
+      )
+    )
+    setPrompt(suggestion)
+  }
 
   const handleSend = () => {
     const text = prompt.trim()
@@ -108,7 +127,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           keyExtractor={(message) => message.id}
           keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
-          ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
+          ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={handleSelectSuggestion} />}
           onContentSizeChange={scrollToPendingTurn}
           renderItem={({ item, index }) => (
             <Flex mb={index === messages.length - 1 ? 0 : 2}>
@@ -180,4 +199,14 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       </KeyboardAvoidingContainer>
     </Screen>
   )
+}
+
+const tracks = {
+  tappedSuggestion: (conversationID: string, suggestion: string, position: number) => ({
+    action: ActionType.tappedArtAssistantSuggestion,
+    context_screen_owner_type: OwnerType.artAssistant,
+    conversation_id: conversationID,
+    subject: suggestion,
+    position,
+  }),
 }

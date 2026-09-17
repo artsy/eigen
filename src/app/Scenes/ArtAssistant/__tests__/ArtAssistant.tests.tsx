@@ -4,6 +4,7 @@ import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -47,6 +48,20 @@ describe("ArtAssistant", () => {
       ART_ASSISTANT_SUGGESTIONS[0]
     )
     expect(screen.getByLabelText("Send")).toBeEnabled()
+  })
+
+  it("tracks a suggestion tap with its position", () => {
+    renderWithWrappers(<ArtAssistant />)
+
+    fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[1]))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistantSuggestion",
+      context_screen_owner_type: "artAssistant",
+      conversation_id: expect.any(String),
+      subject: ART_ASSISTANT_SUGGESTIONS[1],
+      position: 1,
+    })
   })
 
   it("enables Send when the prompt has text", () => {
