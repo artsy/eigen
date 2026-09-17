@@ -29,7 +29,6 @@ describe("CityGuideItinerariesRail", () => {
     title: name,
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     stopsCount: stopsCounts.reduce((a, b) => a + b, 0),
-    sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
   })
 
   const connection = (nodes: object[]) => ({
@@ -92,8 +91,8 @@ describe("CityGuideItinerariesRail", () => {
     )
   })
 
-  // Gravity's listing serializes at :short, which omits sections, and older responses carry
-  // no stopsCount either. "0 stops" would be a lie, so the line is left out.
+  // Gravity's listing serializes at :short, and older responses carry no stopsCount. "0 stops"
+  // would be a lie, so the line is left out.
   it("shows no count when nothing knows it", async () => {
     renderWithRelay(
       connection([
@@ -103,7 +102,6 @@ describe("CityGuideItinerariesRail", () => {
           title: "London Oct 2026",
           heroImage: null,
           stopsCount: null,
-          sections: [],
         },
       ]),
       props

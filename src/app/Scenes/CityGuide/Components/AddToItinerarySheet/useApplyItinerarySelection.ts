@@ -2,12 +2,15 @@ import { useApplyItinerarySelectionAddMutation } from "__generated__/useApplyIti
 import { useApplyItinerarySelectionCreateSectionMutation } from "__generated__/useApplyItinerarySelectionCreateSectionMutation.graphql"
 import { useApplyItinerarySelectionRemoveMutation } from "__generated__/useApplyItinerarySelectionRemoveMutation.graphql"
 import {
-  PayloadItinerary,
   StopTarget,
-  findStopForTarget,
   selectionChanges,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
-import { MY_STOPS_SECTION, mutate } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import {
+  MY_STOPS_SECTION,
+  findStop,
+  mutate,
+} from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import { fetchItinerarySections } from "app/Scenes/CityGuide/utils/fetchItinerarySections"
 import { useCallback } from "react"
 import { graphql, useRelayEnvironment } from "react-relay"
 
@@ -23,15 +26,16 @@ export const useApplyItinerarySelection = () => {
 
   /** The itinerary's "My Stops" section, created if it has none. */
   const resolveSection = useCallback(
-    async (itinerary: PayloadItinerary) => {
-      const existing = itinerary.sections.find((section) => section.title === MY_STOPS_SECTION)
+    async (itineraryID: string) => {
+      const sections = await fetchItinerarySections(environment, itineraryID)
+      const existing = sections.find((section) => section.title === MY_STOPS_SECTION)
 
       if (existing) return existing.internalID
 
       const created = await mutate<useApplyItinerarySelectionCreateSectionMutation>(
         environment,
         CreateSectionMutation,
-        { input: { itineraryID: itinerary.internalID, title: MY_STOPS_SECTION } }
+        { input: { itineraryID, title: MY_STOPS_SECTION } }
       )
       const response = created.createItinerarySection?.responseOrError
 
@@ -54,13 +58,11 @@ export const useApplyItinerarySelection = () => {
 
   return useCallback(
     async ({
-      itineraries,
       target,
       initial,
       selected,
       memberships,
     }: {
-      itineraries: readonly PayloadItinerary[]
       target: StopTarget
       initial: readonly string[]
       selected: readonly string[]
@@ -72,14 +74,9 @@ export const useApplyItinerarySelection = () => {
         | null
     }) => {
       const { added, removed } = selectionChanges(initial, selected)
-      const byId = new Map(itineraries.map((itinerary) => [itinerary.internalID, itinerary]))
 
-      for (const id of added) {
-        const itinerary = byId.get(id)
-
-        if (!itinerary) continue
-
-        const itinerarySectionID = await resolveSection(itinerary)
+      for (const itineraryID of added) {
+        const itinerarySectionID = await resolveSection(itineraryID)
 
         const created = await mutate<useApplyItinerarySelectionAddMutation>(
           environment,
@@ -97,18 +94,15 @@ export const useApplyItinerarySelection = () => {
         }
       }
 
-      for (const id of removed) {
-        const itinerary = byId.get(id)
-        const membership = memberships?.find(({ itineraryID }) => itineraryID === id)
+      for (const itineraryID of removed) {
+        const membership = memberships?.find((each) => each.itineraryID === itineraryID)
         const matchingStopIDs = membership?.stopIDs ?? []
         const stopIDs =
           target.sourceStopID && matchingStopIDs.includes(target.sourceStopID)
             ? [target.sourceStopID]
             : matchingStopIDs.length
               ? matchingStopIDs
-              : [itinerary && findStopForTarget(itinerary, target)?.internalID].filter(
-                  (stopID): stopID is string => !!stopID
-                )
+              : await findStopIDByTarget(itineraryID)
 
         // Nothing to remove is success: the row already shows the state the user asked for.
         if (!stopIDs.length) continue
@@ -132,6 +126,17 @@ export const useApplyItinerarySelection = () => {
       }
 
       return { added: added.length, removed: removed.length }
+
+      /** Without membership data, the stop is found by what it points at. */
+      async function findStopIDByTarget(itineraryID: string) {
+        const sections = await fetchItinerarySections(environment, itineraryID)
+        const stop = findStop(
+          sections.flatMap((section) => section.stops),
+          target
+        )
+
+        return stop ? [stop.internalID] : []
+      }
     },
     [environment, resolveSection]
   )

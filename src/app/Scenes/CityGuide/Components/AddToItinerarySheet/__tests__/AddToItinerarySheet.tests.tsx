@@ -10,22 +10,19 @@ jest.mock("@gorhom/portal", () => ({
   Portal: ({ children }: { children: React.ReactNode }) => children,
 }))
 
-const itinerary = (internalID: string, title: string, stops: object[]) => ({
+/** What the listing knows about an itinerary: no sections, those come from a second read. */
+const itinerary = (internalID: string, title: string) => ({
   internalID,
   title,
   isCurated: false,
-  stopsCount: stops.length,
+  stopsCount: 0,
   heroImage: null,
-  sections: [{ internalID: `${internalID}-s`, title: "My Stops", stopsCount: stops.length, stops }],
-})
-
-const showStop = (stopId: string, showId: string) => ({
-  internalID: stopId,
-  item: { __typename: "Show", internalID: showId },
 })
 
 describe("AddToItinerarySheet", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: AddToItinerarySheet })
+
+  type View = ReturnType<typeof renderWithRelay>
 
   const props = {
     target: {
@@ -42,12 +39,35 @@ describe("AddToItinerarySheet", () => {
     Me: () => ({ itinerariesConnection: { edges: nodes.map((node) => ({ node })) } }),
   })
 
+  /** The show the sheet was opened for already sits on these itineraries, as these stops. */
+  const heldBy = (memberships: { itineraryID: string; stopIDs: string[] }[]) => ({
+    Query: () => ({ sourceShow: { myItineraryStopMemberships: memberships }, sourceFair: null }),
+  })
+
+  /** An itinerary's sections as `Query.itinerary` returns them: one empty "My Stops". */
+  const myStopsSection = (itineraryID: string) => ({
+    Itinerary: () => ({
+      sections: [{ internalID: `${itineraryID}-s`, title: "My Stops", stops: [] }],
+    }),
+  })
+
+  /** Resolves the next pending operation, checking it is the one expected. */
+  const resolveNext = async (view: View, name: string, resolvers: object) => {
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(name)
+    )
+
+    view.env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, resolvers)
+    )
+  }
+
   it.each(["SHOW", "FAIR"] as const)(
     "deletes a %s by entity membership even when the listing has no stops",
     async (itemType) => {
       const view = renderWithRelay(
         {
-          ...withItineraries([itinerary("a", "My trip", [])]),
+          ...withItineraries([itinerary("a", "My trip")]),
           Query: () => ({
             [itemType === "SHOW" ? "sourceShow" : "sourceFair"]: {
               myItineraryStopMemberships: [{ itineraryID: "a", stopIDs: ["matching-stop"] }],
@@ -71,10 +91,10 @@ describe("AddToItinerarySheet", () => {
 
   it("lists the itineraries, ticking the ones already holding the entity", async () => {
     renderWithRelay(
-      withItineraries([
-        itinerary("a", "London October 2026", [showStop("stop-1", "show-1")]),
-        itinerary("b", "Second trip", []),
-      ]),
+      {
+        ...withItineraries([itinerary("a", "London October 2026"), itinerary("b", "Second trip")]),
+        ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+      },
       props
     )
 
@@ -85,12 +105,26 @@ describe("AddToItinerarySheet", () => {
     expect(screen.getByText("1 selected")).toBeOnTheScreen()
   })
 
+  // A membership on an itinerary the listing doesn't show (another city's, say) is no row.
+  it("ignores memberships on itineraries that are not listed", async () => {
+    renderWithRelay(
+      {
+        ...withItineraries([itinerary("a", "London October 2026")]),
+        ...heldBy([{ itineraryID: "elsewhere", stopIDs: ["stop-1"] }]),
+      },
+      props
+    )
+
+    expect(await screen.findByText("London October 2026")).toBeOnTheScreen()
+    expect(screen.getByText("0 selected")).toBeOnTheScreen()
+  })
+
   it("deletes every matching stop when a fresh membership is unselected", async () => {
     const view = renderWithRelay(
       {
         ...withItineraries([
-          itinerary("a", "Removed from this trip", []),
-          itinerary("b", "Still on this trip", []),
+          itinerary("a", "Removed from this trip"),
+          itinerary("b", "Still on this trip"),
         ]),
         Query: () => ({
           sourceStop: {
@@ -154,7 +188,7 @@ describe("AddToItinerarySheet", () => {
   it("deletes only the exact source stop from its own itinerary", async () => {
     const view = renderWithRelay(
       {
-        ...withItineraries([itinerary("b", "Current trip", [])]),
+        ...withItineraries([itinerary("b", "Current trip")]),
         Query: () => ({
           sourceStop: {
             internalID: "copied-stop-1",
@@ -188,7 +222,7 @@ describe("AddToItinerarySheet", () => {
 
   // Selection is local until Done, as the artwork-lists sheet does it.
   it("toggles a row without firing a mutation", async () => {
-    const view = renderWithRelay(withItineraries([itinerary("b", "Second trip", [])]), props)
+    const view = renderWithRelay(withItineraries([itinerary("b", "Second trip")]), props)
 
     fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
 
@@ -199,10 +233,10 @@ describe("AddToItinerarySheet", () => {
 
   it("counts the ticks as they change", async () => {
     renderWithRelay(
-      withItineraries([
-        itinerary("a", "First", [showStop("stop-1", "show-1")]),
-        itinerary("b", "Second", []),
-      ]),
+      {
+        ...withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
+        ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+      },
       props
     )
 
@@ -215,12 +249,14 @@ describe("AddToItinerarySheet", () => {
   })
 
   describe("Done", () => {
+    // The listing serializes at :short, which has no sections, so the ticked itinerary's own
+    // are read through Query.itinerary — the same record the itinerary screen renders from.
     it("adds a stop to a newly ticked itinerary and nothing to an untouched one", async () => {
       const view = renderWithRelay(
-        withItineraries([
-          itinerary("a", "First", [showStop("stop-1", "show-1")]),
-          itinerary("b", "Second", []),
-        ]),
+        {
+          ...withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
         props
       )
 
@@ -229,13 +265,20 @@ describe("AddToItinerarySheet", () => {
       fireEvent.press(screen.getAllByTestId("add-to-itinerary-row")[1])
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+      const read = view.env.mock.getMostRecentOperation()
+      expect(read.request.node.params.name).toBe("fetchItinerarySectionsQuery")
+      expect(read.request.variables).toEqual({ id: "b" })
 
-      const operation = view.env.mock.getMostRecentOperation()
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("b"))
 
       // "Second" already has a My Stops section, so the stop is created straight away.
-      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
-      expect(operation.request.variables.input).toEqual({
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useApplyItinerarySelectionAddMutation"
+        )
+      )
+      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
         itinerarySectionID: "b-s",
         itemType: "SHOW",
         itemID: "show-1",
@@ -245,7 +288,7 @@ describe("AddToItinerarySheet", () => {
     // A custom stop has no entity to point at, so it carries its own fields across instead of
     // an itemType/itemID pair — same sheet, same picker, as an Artsy stop gets.
     it("adds a custom stop's own fields, not itemType/itemID", async () => {
-      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
         ...props,
         target: {
           title: "Coffee at London Cafe",
@@ -260,14 +303,14 @@ describe("AddToItinerarySheet", () => {
       fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
 
-      const operation = view.env.mock.getMostRecentOperation()
-
-      // "First" already has a My Stops section (every fixture itinerary gets one), so the
-      // stop is created straight away.
-      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
-      expect(operation.request.variables.input).toEqual({
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useApplyItinerarySelectionAddMutation"
+        )
+      )
+      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
         itinerarySectionID: "a-s",
         title: "Coffee at London Cafe",
         sourceStopID: "source-stop",
@@ -278,7 +321,10 @@ describe("AddToItinerarySheet", () => {
 
     it("removes the stop from an itinerary whose tick was cleared", async () => {
       const view = renderWithRelay(
-        withItineraries([itinerary("a", "First", [showStop("stop-1", "show-1")])]),
+        {
+          ...withItineraries([itinerary("a", "First")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
         props
       )
 
@@ -288,7 +334,7 @@ describe("AddToItinerarySheet", () => {
       await screen.findByText("0 selected")
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
 
       const operation = view.env.mock.getMostRecentOperation()
 
@@ -296,9 +342,51 @@ describe("AddToItinerarySheet", () => {
       expect(operation.request.variables.input).toEqual({ id: "stop-1" })
     })
 
+    // deleteItineraryStop takes a stop id. With none in the membership, the stop is found by
+    // what it points at, in the itinerary's own sections.
+    it("looks the stop up when the membership names no stop", async () => {
+      const view = renderWithRelay(
+        {
+          ...withItineraries([itinerary("a", "First")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: [] }]),
+        },
+        props
+      )
+
+      await screen.findByText("First")
+
+      fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", {
+        Itinerary: () => ({
+          sections: [
+            {
+              internalID: "a-s",
+              title: "My Stops",
+              stops: [{ internalID: "stop-9", item: { __typename: "Show", internalID: "show-1" } }],
+            },
+          ],
+        }),
+      })
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useApplyItinerarySelectionRemoveMutation"
+        )
+      )
+      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
+        id: "stop-9",
+      })
+    })
+
     it("fires nothing when no tick changed", async () => {
       const view = renderWithRelay(
-        withItineraries([itinerary("a", "First", [showStop("stop-1", "show-1")])]),
+        {
+          ...withItineraries([itinerary("a", "First")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
         props
       )
 
@@ -316,7 +404,7 @@ describe("AddToItinerarySheet", () => {
     const noCity = { ...props, target: { itemType: "SHOW" as const, itemID: "show-1" } }
 
     it("offers no way to create one", async () => {
-      renderWithRelay(withItineraries([itinerary("a", "First", [])]), noCity)
+      renderWithRelay(withItineraries([itinerary("a", "First")]), noCity)
 
       await screen.findByText("First")
 
@@ -355,7 +443,7 @@ describe("AddToItinerarySheet", () => {
 
     // For someone who opened the form and then remembered they have one already.
     it("goes back to the list without creating anything", async () => {
-      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), props)
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
 
       fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
       expect(screen.getByTestId("create-itinerary-name")).toBeOnTheScreen()
@@ -374,7 +462,7 @@ describe("AddToItinerarySheet", () => {
       fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
       fireEvent.press(screen.getByTestId("create-itinerary-submit"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
 
       const operation = view.env.mock.getMostRecentOperation()
 
@@ -389,7 +477,7 @@ describe("AddToItinerarySheet", () => {
     // to the list the sheet renders from or the one Done reads to find what to mutate — so it
     // never showed up, and Done silently did nothing for it.
     it("shows the created itinerary in the list, and adds to it on Done", async () => {
-      const view = renderWithRelay(withItineraries([itinerary("a", "First", [])]), props)
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
 
       await screen.findByText("First")
 
@@ -397,20 +485,16 @@ describe("AddToItinerarySheet", () => {
       fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Frieze week")
       fireEvent.press(screen.getByTestId("create-itinerary-submit"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
-
-      view.env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Mutation: () => ({
-            createItinerary: {
-              responseOrError: {
-                __typename: "ItineraryMutationSuccess",
-                itinerary: { internalID: "new-itinerary" },
-              },
+      await resolveNext(view, "AddToItinerarySheetCreateMutation", {
+        Mutation: () => ({
+          createItinerary: {
+            responseOrError: {
+              __typename: "ItineraryMutationSuccess",
+              itinerary: { internalID: "new-itinerary" },
             },
-          }),
-        })
-      )
+          },
+        }),
+      })
 
       expect(await screen.findByText("Frieze week")).toBeOnTheScreen()
       expect(screen.getByText("1 selected")).toBeOnTheScreen()
@@ -419,14 +503,16 @@ describe("AddToItinerarySheet", () => {
 
       // The itinerary just made has no "My Stops" section yet, so applying its tick creates
       // one first, same as any other itinerary that arrived without one.
-      await waitFor(() => expect(view.env.mock.getAllOperations().length).toBe(1))
+      await resolveNext(view, "fetchItinerarySectionsQuery", {
+        Itinerary: () => ({ sections: [] }),
+      })
 
-      const sectionOp = view.env.mock.getMostRecentOperation()
-
-      expect(sectionOp.request.node.params.name).toBe(
-        "useApplyItinerarySelectionCreateSectionMutation"
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useApplyItinerarySelectionCreateSectionMutation"
+        )
       )
-      expect(sectionOp.request.variables.input).toEqual({
+      expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
         itineraryID: "new-itinerary",
         title: "My Stops",
       })

@@ -403,4 +403,69 @@ describe("ItineraryScreen", () => {
       expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
     })
   })
+
+  // Itinerary, ItinerarySection and ItineraryStop each carry an id, so every query that reads
+  // an itinerary writes to the same record this screen renders from. The listing behind the
+  // Add to Itinerary sheet has no sections (Gravity serializes it at :short), and a listing
+  // that selected them wrote that empty list over this screen's own, blanking the stops.
+  describe("opening Add to Itinerary", () => {
+    const own = {
+      ...ITINERARY,
+      id: "itinerary-global-id",
+      isCurated: false,
+      sections: [
+        {
+          internalID: "day-1",
+          title: "Day 1",
+          stops: [
+            { ...stop(1), item: { __typename: "Show", internalID: "show-1", name: "Show 1" } },
+          ],
+        },
+        { internalID: "day-2", title: "Day 2", stops: [stop(2)] },
+      ],
+    }
+
+    it("keeps every stop on screen once the sheet's own query resolves", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("city-guide-save-button"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "AddToItinerarySheetQuery"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Me: () => ({
+              itinerariesConnection: {
+                edges: [
+                  {
+                    node: {
+                      id: "itinerary-global-id",
+                      internalID: own.internalID,
+                      title: own.title,
+                      isCurated: false,
+                      stopsCount: 2,
+                      heroImage: null,
+                    },
+                  },
+                ],
+              },
+            }),
+          })
+        )
+      })
+
+      // The sheet lists the itinerary by title, so the header's copy is no longer alone.
+      expect(await screen.findAllByText("Chill Vibes Only")).toHaveLength(2)
+      expect(screen.getByText("Stop 1")).toBeOnTheScreen()
+      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
+    })
+  })
 })

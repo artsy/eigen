@@ -4,6 +4,7 @@ import { useCityItineraryStopsCreateSectionMutation } from "__generated__/useCit
 import { useCityItineraryStopsLookupQuery } from "__generated__/useCityItineraryStopsLookupQuery.graphql"
 import { useCityItineraryStopsRemoveMutation } from "__generated__/useCityItineraryStopsRemoveMutation.graphql"
 import { refetchCityGuideItinerariesRail } from "app/Scenes/CityGuide/utils/CityGuideItinerariesRailQuery"
+import { fetchItinerarySections } from "app/Scenes/CityGuide/utils/fetchItinerarySections"
 import { DateTime } from "luxon"
 import { useCallback, useRef } from "react"
 import { fetchQuery, graphql, useRelayEnvironment } from "react-relay"
@@ -99,7 +100,7 @@ export const mutate = <T extends { variables: any; response: any }>(
     })
   })
 
-interface ExistingStop {
+export interface ExistingStop {
   readonly internalID: string
   readonly title?: string | null
   readonly address?: string | null
@@ -112,7 +113,7 @@ interface ExistingStop {
  * An entity stop matches on what it points at. A custom stop has no id to compare, so it
  * matches on title and address — imperfect, but allowing silent duplicates is worse.
  */
-const findStop = <T extends ExistingStop>(stops: readonly T[], input: StopInput) => {
+export const findStop = <T extends ExistingStop>(stops: readonly T[], input: StopInput) => {
   if (input.itemType) {
     return stops.find(
       (candidate) =>
@@ -139,11 +140,11 @@ export const isSameCustomStop = (
 /**
  * Adds and removes stops on the user's own itinerary for a city.
  *
- * Adding takes three round trips, because Metaphysics has no find-or-create: look up the
- * itinerary, create it if the user has none, make sure it has a section (creating one is
- * required — a new itinerary has none, and a stop must belong to a section), then create the
- * stop. Removing takes one, since `removeItineraryStopByItem` resolves the stop from what it
- * points at, which is all a card knows about itself.
+ * Adding takes several round trips, because Metaphysics has no find-or-create: look up the
+ * itinerary, read its sections (the listing carries none), create it if the user has none,
+ * make sure it has a section (creating one is required — a new itinerary has none, and a stop
+ * must belong to a section), then create the stop. Removing finds the stop from what it points
+ * at, which is all a card knows about itself, then deletes it by id.
  *
  * A single in-flight promise per hook instance serialises calls: two quick taps would
  * otherwise each find no itinerary and create one, leaving the user with two.
@@ -173,16 +174,14 @@ export const useCityItineraryStops = ({
       // The connection is the caller's own by definition, so the first is their itinerary for
       // this city. A user with several picks up the most recent, which is what Gravity orders
       // by; multiple personal itineraries per city are a later feature.
-      const existing = data?.me?.itinerariesConnection?.edges?.[0]?.node
-
-      let itineraryID = existing?.internalID
+      let itineraryID = data?.me?.itinerariesConnection?.edges?.[0]?.node?.internalID
+      const sections = itineraryID ? await fetchItinerarySections(environment, itineraryID) : []
       // By name, not the first section: an itinerary copied from a guide arrives with the
       // guide's own days, and a stop the user adds belongs in theirs.
-      let sectionID = existing?.sections?.find((section) => section.title === MY_STOPS_SECTION)
-        ?.internalID
+      let sectionID = sections.find((section) => section.title === MY_STOPS_SECTION)?.internalID
       // Flattened across sections: a stop is on the itinerary or it is not, and which section
       // holds it does not matter for finding or removing one.
-      const stops = (existing?.sections ?? []).flatMap((section) => section.stops)
+      const stops = sections.flatMap((section) => section.stops)
 
       if (!itineraryID) {
         if (!createIfMissing) return null
@@ -327,6 +326,8 @@ export const useCityItineraryStops = ({
   return { addStop, removeStop }
 }
 
+// Only the id: the listing has no sections (see `fetchItinerarySections`), and selecting them
+// here would write an empty list over the itinerary screen's own.
 const lookupQuery = graphql`
   query useCityItineraryStopsLookupQuery($citySlug: String!) {
     me {
@@ -334,27 +335,6 @@ const lookupQuery = graphql`
         edges {
           node {
             internalID
-            sections {
-              internalID
-              title
-              stops {
-                internalID
-                title
-                address
-                item {
-                  __typename
-                  ... on Show {
-                    internalID
-                  }
-                  ... on Fair {
-                    internalID
-                  }
-                  ... on Location {
-                    internalID
-                  }
-                }
-              }
-            }
           }
         }
       }

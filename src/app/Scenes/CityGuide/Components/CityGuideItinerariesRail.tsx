@@ -94,9 +94,6 @@ const fragment = graphql`
             url(version: "small")
           }
           stopsCount
-          sections {
-            stopsCount
-          }
         }
       }
     }

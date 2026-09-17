@@ -23,7 +23,6 @@ describe("CityItineraries", () => {
     shareToken: null,
     heroImage: { resized: { url: `https://example.com/${internalID}.jpg` }, url: null },
     stopsCount: stopsCounts.reduce((a, b) => a + b, 0),
-    sections: stopsCounts.map((stopsCount) => ({ stopsCount })),
   })
 
   const connection = (nodes: object[]) => ({

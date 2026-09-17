@@ -1,11 +1,47 @@
 import { renderHook, waitFor } from "@testing-library/react-native"
 import {
   defaultItineraryTitle,
+  findStop,
   MY_STOPS_SECTION,
   useCityItineraryStops,
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+const showStop = (stopId: string, showId: string) => ({
+  internalID: stopId,
+  item: { __typename: "Show", internalID: showId },
+})
+
+describe("findStop", () => {
+  // Metaphysics has no "is this on my itinerary" field, so the app works it out itself.
+  it("finds the stop pointing at the entity", () => {
+    const result = findStop([showStop("stop-1", "show-1")], { itemType: "SHOW", itemID: "show-1" })
+
+    expect(result?.internalID).toBe("stop-1")
+  })
+
+  it("ignores a stop of another type with the same id", () => {
+    const result = findStop(
+      [{ internalID: "stop-1", item: { __typename: "Fair", internalID: "x-1" } }],
+      {
+        itemType: "SHOW",
+        itemID: "x-1",
+      }
+    )
+
+    expect(result).toBeUndefined()
+  })
+
+  it("ignores a custom stop, which points at nothing", () => {
+    const result = findStop([{ internalID: "stop-1", item: null }], {
+      itemType: "SHOW",
+      itemID: "show-1",
+    })
+
+    expect(result).toBeUndefined()
+  })
+})
 
 describe("useCityItineraryStops", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -37,48 +73,35 @@ describe("useCityItineraryStops", () => {
     jest.clearAllMocks()
   })
 
-  /** An itinerary with an empty "My Stops" section, which is where an added stop belongs. */
+  /** The listing knows the user has an itinerary. Its sections come from a second read. */
   const existingItinerary = {
-    Me: () => ({
-      itinerariesConnection: {
-        edges: [
-          {
-            node: {
-              internalID: "itinerary-1",
-              sections: [{ internalID: "section-1", title: MY_STOPS_SECTION, stops: [] }],
-            },
-          },
-        ],
-      },
+    Me: () => ({ itinerariesConnection: { edges: [{ node: { internalID: "itinerary-1" } }] } }),
+  }
+
+  /** An empty "My Stops" section, which is where an added stop belongs. */
+  const emptyMyStops = {
+    Itinerary: () => ({
+      sections: [{ internalID: "section-1", title: MY_STOPS_SECTION, stops: [] }],
     }),
   }
 
   /** The same, already holding a stop for show-1. */
-  const itineraryWithShow = {
-    Me: () => ({
-      itinerariesConnection: {
-        edges: [
-          {
-            node: {
-              internalID: "itinerary-1",
-              sections: [
-                {
-                  internalID: "section-1",
-                  title: MY_STOPS_SECTION,
-                  stops: [
-                    {
-                      internalID: "stop-1",
-                      item: { __typename: "Show", internalID: "show-1" },
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        ],
-      },
+  const myStopsWithShow = {
+    Itinerary: () => ({
+      sections: [
+        { internalID: "section-1", title: MY_STOPS_SECTION, stops: [showStop("stop-1", "show-1")] },
+      ],
     }),
   }
+
+  const stopAdded = (internalID: string) => ({
+    createItineraryStopPayload: () => ({
+      responseOrError: {
+        __typename: "ItineraryStopMutationSuccess",
+        itineraryStop: { internalID },
+      },
+    }),
+  })
 
   it("adds a stop to the itinerary the user already has, in one mutation", async () => {
     const { result } = renderIt()
@@ -86,14 +109,8 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
-    await resolveNext("useCityItineraryStopsAddMutation", {
-      createItineraryStopPayload: () => ({
-        responseOrError: {
-          __typename: "ItineraryStopMutationSuccess",
-          itineraryStop: { internalID: "stop-1" },
-        },
-      }),
-    })
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
+    await resolveNext("useCityItineraryStopsAddMutation", stopAdded("stop-1"))
 
     await expect(promise).resolves.toBeTruthy()
   })
@@ -105,14 +122,8 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
-    await resolveNext("useCityItineraryStopsAddMutation", {
-      createItineraryStopPayload: () => ({
-        responseOrError: {
-          __typename: "ItineraryStopMutationSuccess",
-          itineraryStop: { internalID: "stop-1" },
-        },
-      }),
-    })
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
+    await resolveNext("useCityItineraryStopsAddMutation", stopAdded("stop-1"))
 
     await expect(promise).resolves.toBeTruthy()
 
@@ -127,6 +138,23 @@ describe("useCityItineraryStops", () => {
     })
   })
 
+  // The listing serializes at :short, which has no sections, so the itinerary's own are read
+  // separately — through Query.itinerary, the same record the itinerary screen renders from.
+  it("reads the sections through Query.itinerary rather than the listing", async () => {
+    const { result } = renderIt()
+
+    void result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "fetchItinerarySectionsQuery"
+      )
+    )
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({ id: "itinerary-1" })
+  })
+
   // An itinerary copied from a guide arrives with the guide's own days, so the section is
   // matched by name rather than taken as the first.
   it("adds to an existing My Stops section rather than a guide's own days", async () => {
@@ -135,21 +163,13 @@ describe("useCityItineraryStops", () => {
     // Not awaited: the assertion is about which section the add targets, not its result.
     void result.current.addStop({ itemType: "SHOW", itemID: "show-2" })
 
-    await resolveNext("useCityItineraryStopsLookupQuery", {
-      Me: () => ({
-        itinerariesConnection: {
-          edges: [
-            {
-              node: {
-                internalID: "itinerary-1",
-                sections: [
-                  { internalID: "day-1", title: "Day 1", stops: [] },
-                  { internalID: "my-stops", title: MY_STOPS_SECTION, stops: [] },
-                ],
-              },
-            },
-          ],
-        },
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", {
+      Itinerary: () => ({
+        sections: [
+          { internalID: "day-1", title: "Day 1", stops: [] },
+          { internalID: "my-stops", title: MY_STOPS_SECTION, stops: [] },
+        ],
       }),
     })
 
@@ -189,6 +209,7 @@ describe("useCityItineraryStops", () => {
       const promise = result.current.addStop(customStop)
 
       await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+      await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
 
       await waitFor(() => {
         const op = env.mock.getMostRecentOperation()
@@ -205,14 +226,7 @@ describe("useCityItineraryStops", () => {
       expect(input.itemID).toBeUndefined()
 
       env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          createItineraryStopPayload: () => ({
-            responseOrError: {
-              __typename: "ItineraryStopMutationSuccess",
-              itineraryStop: { internalID: "stop-9" },
-            },
-          }),
-        })
+        MockPayloadGenerator.generate(operation, stopAdded("stop-9"))
       )
 
       await expect(promise).resolves.toBeTruthy()
@@ -224,31 +238,23 @@ describe("useCityItineraryStops", () => {
 
       const promise = result.current.addStop(customStop)
 
-      await resolveNext("useCityItineraryStopsLookupQuery", {
-        Me: () => ({
-          itinerariesConnection: {
-            edges: [
-              {
-                node: {
-                  internalID: "itinerary-1",
-                  sections: [
-                    {
-                      internalID: "section-1",
-                      title: MY_STOPS_SECTION,
-                      stops: [
-                        {
-                          internalID: "stop-9",
-                          title: "Coffee at London Cafe",
-                          address: "12 Bermondsey Street",
-                          item: null,
-                        },
-                      ],
-                    },
-                  ],
+      await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+      await resolveNext("fetchItinerarySectionsQuery", {
+        Itinerary: () => ({
+          sections: [
+            {
+              internalID: "section-1",
+              title: MY_STOPS_SECTION,
+              stops: [
+                {
+                  internalID: "stop-9",
+                  title: "Coffee at London Cafe",
+                  address: "12 Bermondsey Street",
+                  item: null,
                 },
-              },
-            ],
-          },
+              ],
+            },
+          ],
         }),
       })
 
@@ -257,8 +263,8 @@ describe("useCityItineraryStops", () => {
     })
   })
 
-  // Three round trips, because Metaphysics has no find-or-create and a new itinerary has no
-  // section for a stop to belong to.
+  // Metaphysics has no find-or-create, and a new itinerary has no section for a stop to
+  // belong to. With no itinerary there are no sections to read either.
   it("creates the itinerary and a section when the user has none", async () => {
     const { result } = renderIt()
 
@@ -312,14 +318,7 @@ describe("useCityItineraryStops", () => {
       }),
     })
 
-    await resolveNext("useCityItineraryStopsAddMutation", {
-      createItineraryStopPayload: () => ({
-        responseOrError: {
-          __typename: "ItineraryStopMutationSuccess",
-          itineraryStop: { internalID: "stop-1" },
-        },
-      }),
-    })
+    await resolveNext("useCityItineraryStopsAddMutation", stopAdded("stop-1"))
 
     await expect(promise).resolves.toBeTruthy()
   })
@@ -331,7 +330,8 @@ describe("useCityItineraryStops", () => {
 
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
-    await resolveNext("useCityItineraryStopsLookupQuery", itineraryWithShow)
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", myStopsWithShow)
 
     await waitFor(() =>
       expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
@@ -362,6 +362,7 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.removeStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
 
     await expect(promise).resolves.toBeNull()
   })
@@ -372,10 +373,11 @@ describe("useCityItineraryStops", () => {
 
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
-    await resolveNext("useCityItineraryStopsLookupQuery", itineraryWithShow)
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", myStopsWithShow)
 
     await expect(promise).resolves.toMatchObject({ internalID: "stop-1" })
-    // Only the lookup ran: no create mutation was fired.
+    // Only the reads ran: no create mutation was fired.
     expect(env.mock.getAllOperations()).toHaveLength(0)
   })
 
@@ -398,6 +400,7 @@ describe("useCityItineraryStops", () => {
     const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
     await resolveNext("useCityItineraryStopsAddMutation", {
       createItineraryStopPayload: () => ({
         responseOrError: {
@@ -421,27 +424,15 @@ describe("useCityItineraryStops", () => {
     await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
 
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
-    await resolveNext("useCityItineraryStopsAddMutation", {
-      createItineraryStopPayload: () => ({
-        responseOrError: {
-          __typename: "ItineraryStopMutationSuccess",
-          itineraryStop: { internalID: "stop-1" },
-        },
-      }),
-    })
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
+    await resolveNext("useCityItineraryStopsAddMutation", stopAdded("stop-1"))
 
     await expect(first).resolves.toBeTruthy()
 
     // Now the second one starts.
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
-    await resolveNext("useCityItineraryStopsAddMutation", {
-      createItineraryStopPayload: () => ({
-        responseOrError: {
-          __typename: "ItineraryStopMutationSuccess",
-          itineraryStop: { internalID: "stop-2" },
-        },
-      }),
-    })
+    await resolveNext("fetchItinerarySectionsQuery", emptyMyStops)
+    await resolveNext("useCityItineraryStopsAddMutation", stopAdded("stop-2"))
 
     await expect(second).resolves.toBeTruthy()
   })

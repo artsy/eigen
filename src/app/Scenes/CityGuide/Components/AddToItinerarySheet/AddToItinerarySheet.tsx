@@ -13,7 +13,6 @@ import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddT
 import {
   PayloadItinerary,
   StopTarget,
-  itinerariesHoldingTarget,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import {
   defaultItineraryTitle,
@@ -96,15 +95,18 @@ const Sheet: React.FC<Props> = ({
   // city. Reached from outside City Guide you can only add to one you already have.
   const canCreate = !!citySlug
 
-  const [initial] = useState(() =>
-    memberships || myItineraries
-      ? itinerariesHoldingTarget(fetchedItineraries, {
-          ...target,
-          myItineraries:
-            memberships?.map(({ itineraryID }) => ({ internalID: itineraryID })) ?? myItineraries,
-        })
-      : itinerariesHoldingTarget(fetchedItineraries, target)
-  )
+  // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
+  // stop it came from) say already hold it, kept to the ones actually listed.
+  const [initial] = useState(() => {
+    const holdingIDs =
+      memberships?.map(({ itineraryID }) => itineraryID) ??
+      myItineraries?.map(({ internalID }) => internalID) ??
+      []
+
+    return holdingIDs.filter((id) =>
+      fetchedItineraries.some((itinerary) => itinerary.internalID === id)
+    )
+  })
   const [selected, setSelected] = useState<string[]>(initial)
   const [isCreating, setIsCreating] = useState(false)
   const [isApplying, setIsApplying] = useState(false)
@@ -147,7 +149,7 @@ const Sheet: React.FC<Props> = ({
       // section itself when it finds none, same as it does for any other itinerary.
       setCreatedItineraries((current) => [
         ...current,
-        { internalID, title, stopsCount: 0, heroImage: null, sections: [] },
+        { internalID, title, stopsCount: 0, heroImage: null },
       ])
       // Ticked straight away, so Done adds the stop to what you just made.
       setSelected((current) => [...current, internalID])
@@ -170,13 +172,7 @@ const Sheet: React.FC<Props> = ({
         await addStop(target)
         onSaved?.()
       } else {
-        const changes = await applySelection({
-          itineraries,
-          target,
-          initial,
-          selected,
-          memberships,
-        })
+        const changes = await applySelection({ target, initial, selected, memberships })
 
         if (changes.added > 0 || changes.removed > 0) {
           onSaved?.()
@@ -373,30 +369,8 @@ const Query = graphql`
             heroImage {
               url(version: "small")
             }
-
-            sections {
-              internalID
-              title
-              stopsCount
-
-              stops {
-                internalID
-                title
-                address
-                item {
-                  __typename
-                  ... on Show {
-                    internalID
-                  }
-                  ... on Fair {
-                    internalID
-                  }
-                  ... on Location {
-                    internalID
-                  }
-                }
-              }
-            }
+            # No sections: the listing has none (see fetchItinerarySections), and selecting them
+            # here would write an empty list over the itinerary screen's own.
           }
         }
       }
