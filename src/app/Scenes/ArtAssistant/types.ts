@@ -18,7 +18,7 @@ export type ArtAssistantMessage =
       role: "assistant"
       text: string
       phase: "responding" | "complete" | "error"
-      progress: string[]
+      activity?: string
       artworkRail?: ArtAssistantArtworkRailState
       errorMessage?: string
     }

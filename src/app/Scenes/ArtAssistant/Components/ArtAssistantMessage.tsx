@@ -8,18 +8,19 @@ interface ArtAssistantMessageProps {
 
 export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({ message }) => {
   const isUser = message.role === "user"
-  const respondingText = message.role === "assistant" ? message.progress.at(-1) : undefined
+
+  if (message.role === "assistant" && message.phase === "responding") {
+    return <ArtAssistantActivityStatus text={message.activity ?? "Thinking..."} />
+  }
+
   const text =
     message.role === "assistant" && message.phase === "error"
       ? message.errorMessage ?? "Something went wrong. Please try again."
-      : message.text || respondingText || "Thinking..."
+      : message.text
 
   return (
     <Flex alignItems={isUser ? "flex-end" : "flex-start"}>
       <Flex
-        accessibilityLiveRegion={
-          message.role === "assistant" && message.phase === "responding" ? "polite" : undefined
-        }
         alignSelf={isUser ? "flex-end" : "flex-start"}
         backgroundColor={isUser ? "mono100" : "mono10"}
         borderRadius={15}
@@ -41,3 +42,22 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({ messag
     </Flex>
   )
 }
+
+const ArtAssistantActivityStatus: React.FC<{ text: string }> = ({ text }) => (
+  <Flex alignItems="flex-start">
+    <Flex
+      accessibilityLiveRegion="polite"
+      alignSelf="flex-start"
+      backgroundColor="mono5"
+      borderRadius={15}
+      maxWidth="75%"
+      px={1}
+      py={0.5}
+      testID="art-assistant-activity-status"
+    >
+      <Text color="mono60" variant="xs">
+        {text}
+      </Text>
+    </Flex>
+  </Flex>
+)

@@ -93,7 +93,7 @@ export const useArtAssistantConversation = () => {
         role: "assistant",
         text: "",
         phase: "responding",
-        progress: [ACTIVITY_COPY.THINKING],
+        activity: ACTIVITY_COPY.THINKING,
       }
       let activeTurn: ActiveTurn = {
         message: assistantMessage,
@@ -274,7 +274,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
     case "AIAgentToolCall":
       return {
         ...turn,
-        message: appendProgress(turn.message, activityCopy(event.activity)),
+        message: setActivity(turn.message, activityCopy(event.activity)),
       }
     case "AIAgentToolResult":
       // Keep the last activity visible. Tool call and result events can arrive in the same
@@ -300,7 +300,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
           ...turn.message,
           text,
           phase: "complete",
-          progress: [],
+          activity: undefined,
           artworkRail: artworks.length > 0 ? { status: "ready", artworkIDs } : undefined,
         },
       }
@@ -333,18 +333,15 @@ export const toHistory = (messages: ArtAssistantMessage[]): ArtAssistantHistoryE
 const activityCopy = (activity: AIAgentActivity) =>
   activity === "%future added value" ? ACTIVITY_COPY.THINKING : ACTIVITY_COPY[activity]
 
-const appendProgress = (message: AssistantMessage, progress: string): AssistantMessage => ({
-  ...message,
-  progress:
-    message.progress.at(-1) === progress ? message.progress : [...message.progress, progress],
-})
+const setActivity = (message: AssistantMessage, activity: string): AssistantMessage =>
+  message.activity === activity ? message : { ...message, activity }
 
 const failActiveTurn = (turn: ActiveTurn, errorMessage: string): ActiveTurn => ({
   ...turn,
   message: {
     ...turn.message,
     phase: "error",
-    progress: [],
+    activity: undefined,
     artworkRail: undefined,
     errorMessage,
   },
