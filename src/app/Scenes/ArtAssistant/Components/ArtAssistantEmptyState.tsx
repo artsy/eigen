@@ -5,9 +5,9 @@ import { StyleSheet } from "react-native"
 const EMPTY_STATE_ICON_SIZE = 28
 
 export const ART_ASSISTANT_SUGGESTIONS = [
-  "Large blue abstract painting for a living room, under $10k",
-  "Emerging photographers showing in Berlin right now",
-  "Something like Ruth Asawa but I can actually afford",
+  "Something similar to my taste, check out my saves for inspiration",
+  "Large black and white paintings under $5K",
+  "What's trending right now",
 ]
 
 interface ArtAssistantEmptyStateProps {
