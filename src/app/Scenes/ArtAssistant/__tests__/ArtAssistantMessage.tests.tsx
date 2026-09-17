@@ -11,6 +11,7 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByTestId("art-assistant-user-message")).toHaveStyle({
       alignSelf: "flex-end",
       backgroundColor: "#000000",
+      maxWidth: "75%",
     })
     expect(screen.getByText("Blue painting")).toHaveStyle({ color: "#FFFFFF" })
   })
@@ -31,6 +32,7 @@ describe("ArtAssistantMessage", () => {
     expect(screen.getByTestId("art-assistant-assistant-message")).toHaveStyle({
       alignSelf: "flex-start",
       backgroundColor: "#E7E7E7",
+      maxWidth: "75%",
     })
     expect(screen.getByText("I found a few works.")).toHaveStyle({ color: "#000000" })
   })
