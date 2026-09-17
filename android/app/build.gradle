@@ -235,7 +235,7 @@ sentry {
     }
 
     // NDK/.so debug symbols are a separate concern from R8 and cost significant build time
-    // across our ABIs. Left off for now; see docs/analytics_and_tracking.md.
+    // across our ABIs. Left off for now;
     uploadNativeSymbols = false
     includeSourceContext = false
 }
