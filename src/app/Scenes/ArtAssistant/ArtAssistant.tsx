@@ -39,6 +39,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
+  const anchoredTurnID = useRef<string | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
 
@@ -59,6 +60,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const handleStartNewConversation = () => {
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
+    anchoredTurnID.current = null
     startNewConversation()
   }
 
@@ -91,19 +93,30 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       messageListRef.current?.scrollToIndex({
         animated: true,
         index,
-        viewOffset: space(1),
+        viewOffset: composerKeyboardGap,
         viewPosition: 0,
       })
     })
-  }, [space])
+    // `space` is a new function on every render, so the numeric gap is what keeps this callback
+    // stable: an unstable identity would re-run the effect below on unrelated re-renders.
+  }, [composerKeyboardGap])
 
   useEffect(() => {
     const lastMessage = messages.at(-1)
 
-    if (lastMessage?.role === "assistant" && lastMessage.phase !== "responding") {
-      pendingScrollIndex.current = Math.max(0, messages.length - 2)
-      requestAnimationFrame(scrollToPendingTurn)
+    if (lastMessage?.role !== "assistant" || lastMessage.phase === "responding") {
+      return
     }
+
+    // Only a turn that just became final earns an autoscroll. Focusing the composer or typing
+    // re-renders the screen with the same messages, and those must not move the list.
+    if (anchoredTurnID.current === lastMessage.id) {
+      return
+    }
+
+    anchoredTurnID.current = lastMessage.id
+    pendingScrollIndex.current = Math.max(0, messages.length - 2)
+    requestAnimationFrame(scrollToPendingTurn)
   }, [messages, scrollToPendingTurn])
 
   return (
