@@ -7,7 +7,10 @@ export type ItinerarySectionDetail = NonNullable<
 >["sections"][number]
 
 /**
- * An itinerary's sections and stops, read through `Query.itinerary`.
+ * An itinerary's sections and stops, read through `Query.itinerary`. `null` when the itinerary
+ * itself did not resolve, which callers must tell apart from an itinerary that genuinely has
+ * no sections yet: creating a "My Stops" on the strength of a failed read is what leaves an
+ * itinerary with two of them.
  *
  * Never read these through `me.itinerariesConnection`: Gravity serialises that listing at
  * `:short`, which omits `sections`, so Metaphysics returns `[]` for every node — and since
@@ -17,7 +20,7 @@ export type ItinerarySectionDetail = NonNullable<
 export const fetchItinerarySections = async (
   environment: IEnvironment,
   itineraryID: string
-): Promise<readonly ItinerarySectionDetail[]> => {
+): Promise<readonly ItinerarySectionDetail[] | null> => {
   const data = await fetchQuery<fetchItinerarySectionsQuery>(
     environment,
     query,
@@ -26,7 +29,7 @@ export const fetchItinerarySections = async (
     { fetchPolicy: "network-only" }
   ).toPromise()
 
-  return data?.itinerary?.sections ?? []
+  return data?.itinerary?.sections ?? null
 }
 
 const query = graphql`

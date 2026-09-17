@@ -28,13 +28,30 @@ describe("fetchItinerarySections", () => {
     ])
   })
 
-  it("returns no sections when the itinerary does not resolve", async () => {
+  /*
+    Null, not an empty list: a caller must be able to tell "this itinerary has no sections
+    yet" from "we could not read it". Creating a "My Stops" on the strength of the latter is
+    what leaves an itinerary with two of them.
+  */
+  it("returns null when the itinerary does not resolve", async () => {
     const env = createMockEnvironment()
 
     const promise = fetchItinerarySections(env, "gone")
 
     env.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, { Query: () => ({ itinerary: null }) })
+    )
+
+    await expect(promise).resolves.toBeNull()
+  })
+
+  it("returns an empty list for an itinerary that has no sections yet", async () => {
+    const env = createMockEnvironment()
+
+    const promise = fetchItinerarySections(env, "brand-new")
+
+    env.mock.resolveMostRecentOperation((op) =>
+      MockPayloadGenerator.generate(op, { Itinerary: () => ({ sections: [] }) })
     )
 
     await expect(promise).resolves.toEqual([])

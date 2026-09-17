@@ -183,14 +183,18 @@ export const MapView: React.FC<Props> = ({
     cameraRef.current?.setCamera({ ...cameraStop, animationDuration: 500 })
   }, [cameraStop, isMapLoaded])
 
+  // A section with no pins on it is nothing to filter to — its pill would only ever clear the
+  // map. An itinerary section whose every stop lacks coordinates arrives here like this.
+  const filterableSections = sections.filter((section) => section.places.length > 0)
+
   const pills = [
     { id: ALL_PILL_ID, title: "All" },
-    ...sections.map((section) => ({ id: section.id, title: section.title })),
+    ...filterableSections.map((section) => ({ id: section.id, title: section.title })),
   ]
 
   // One section is nothing to filter between: "All" and that section show the same pins, so
-  // the row is a control with no effect. Your own itinerary is always a single section.
-  const showPills = sections.length > 1
+  // the row is a control with no effect.
+  const showPills = filterableSections.length > 1
 
   return (
     <Flex flex={1}>

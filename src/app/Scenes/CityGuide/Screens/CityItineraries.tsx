@@ -141,7 +141,6 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               internalID: editing.internalID,
               name: editing.title,
               description: editing.description,
-              coverImageUrl: editing.heroImage?.url,
             }}
             onDeleted={() => refetch({ count: PAGE_SIZE }, { fetchPolicy: "network-only" })}
           />

@@ -116,13 +116,22 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     )
   }
 
-  // Your own itinerary shows no order and no section headings: it is a single unordered list,
-  // so numbering and a section name would both be noise. A curated guide keeps both.
+  // Your own itinerary shows no order: it is an unordered list, so numbering would be noise.
+  // A curated guide keeps it.
   const isEditorial = itinerary.isCurated
+  // A section with nothing in it is nothing to show — not even its heading. Emptying one by
+  // removing its last stop leaves it behind on the itinerary, so this is the common case.
+  const sections = itinerary.sections.filter((section) => section.stops.length > 0)
+  /*
+    A guide always names its days. Your own itinerary usually has just the one section, whose
+    name would be a redundant subheading over the whole list — but once it has several (a
+    guide copied onto it brings its days along) they need their headings to be told apart.
+  */
+  const showSectionHeaders = isEditorial || sections.length > 1
 
   // Numbering runs continuously across sections, so each needs its running start.
   let runningTotal = 0
-  const sectionStartNumbers = itinerary.sections.map((section) => {
+  const sectionStartNumbers = sections.map((section) => {
     const start = runningTotal + 1
     runningTotal += section.stops.length
     return start
@@ -214,13 +223,13 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
 
               <Flex px={2} pt={2}>
                 <Join separator={<Spacer y={2} />}>
-                  {itinerary.sections.map((section, index) => (
+                  {sections.map((section, index) => (
                     <ItinerarySectionRow
                       key={section.internalID}
                       section={section}
                       sectionIndex={index}
                       startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
-                      showHeader={isEditorial}
+                      showHeader={showSectionHeaders}
                       citySlug={itinerary.citySlug}
                       itineraryId={itineraryId}
                       shareToken={shareToken}

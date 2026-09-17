@@ -11,7 +11,6 @@ describe("ItineraryEditSheet", () => {
     internalID: "itinerary-1",
     name: "London Oct 2026",
     description: "If time, check out Borough Market",
-    coverImageUrl: "https://example.com/cover.jpg",
   }
 
   // No fragment of its own: the sheet takes plain props, but it commits mutations, so it
@@ -92,10 +91,12 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
-  it("renders the cover image and a change affordance that is not wired yet", () => {
+  // Changing one needs an ArImage upload flow that does not exist yet, so the sheet says
+  // nothing about cover images at all rather than showing one it cannot edit.
+  it("says nothing about the cover image", () => {
     renderWithRelay({})
 
-    expect(screen.getByText("Cover image")).toBeOnTheScreen()
-    expect(screen.getByText("Change image")).toBeOnTheScreen()
+    expect(screen.queryByText("Cover image")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Change image")).not.toBeOnTheScreen()
   })
 })

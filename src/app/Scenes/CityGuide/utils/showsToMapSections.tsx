@@ -1,6 +1,6 @@
-import { Text } from "@artsy/palette-mobile"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
+import { showCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import { Show } from "app/Scenes/CityGuide/utils/types"
@@ -8,9 +8,9 @@ import { Show } from "app/Scenes/CityGuide/utils/types"
 /**
  * Adapts the event list screen's show sections into the shared map's section-shaped input.
  * `Show.location.coordinates` is nullable, unlike an itinerary stop's, so shows without a
- * valid pair are dropped rather than trusted (`isValidLatLng`). The detail line is plain
- * text: unlike the itinerary's pin-tap card, the exhibition period is already in hand from
- * the list query, so no lazy lookup is needed.
+ * valid pair are dropped rather than trusted (`isValidLatLng`). Each pin carries the same
+ * `StopCard` content an itinerary stop does — including any event the show runs — so a show
+ * reads the same whether you meet it on this map or in a guide.
  */
 export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSection[] =>
   sections.map((section) => ({
@@ -28,11 +28,8 @@ export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSecti
         coordinates,
         href: show.href ?? null,
         icon: show.is_followed ? "pin-saved" : "pin",
-        detail: show.exhibition_period ? (
-          <Text variant="xs" color="mono60">
-            {show.exhibition_period}
-          </Text>
-        ) : undefined,
+        card: showCardFields(show),
+        image: show.cover_image?.url ? { url: show.cover_image.url } : null,
         saveControl: (
           <CityEventSaveControl itemType="SHOW" itemID={show.internalID} name={show.name ?? ""} />
         ),

@@ -17,6 +17,7 @@ export const cityGuideShowFragment = graphql`
     type
     is_followed: isFollowed
     exhibition_period: exhibitionPeriod(format: SHORT)
+    isFreeAdmission
     cover_image: coverImage {
       url
     }

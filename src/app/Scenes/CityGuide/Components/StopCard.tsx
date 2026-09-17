@@ -6,9 +6,8 @@ import { useState } from "react"
 
 /** The designs' card image: taller than square, at 60 wide. Flush with the card's own corners. */
 const IMAGE_WIDTH = 60
-/** The card's own height, which the image matches: 70 normally, 90 with a reception line. */
+/** The card's own height, which the image matches. Grows with the text — see `textHeight`. */
 const CARD_HEIGHT = 70
-const CARD_HEIGHT_WITH_RECEPTION = 90
 /** The dot between hours and admission. */
 const DOT_SIZE = 4
 const CARD_RADIUS = 8
@@ -48,12 +47,11 @@ export const StopCard: React.FC<Props> = ({
   disableNavigation,
   saveControl,
 }) => {
-  const designHeight = card.reception ? CARD_HEIGHT_WITH_RECEPTION : CARD_HEIGHT
   // The image needs a concrete height number (it can't stretch to match a sibling's), so this
-  // measures the text column and grows the image to match once large accessibility text pushes
-  // the card past its normal 70/90 — never below that floor, only ever up to it.
-  const [textHeight, setTextHeight] = useState(designHeight)
-  const cardHeight = Math.max(designHeight, textHeight)
+  // measures the text column and grows the image to match once a wrapped title — or large
+  // accessibility text — pushes the card past its normal 70; never below that floor.
+  const [textHeight, setTextHeight] = useState(CARD_HEIGHT)
+  const cardHeight = Math.max(CARD_HEIGHT, textHeight)
 
   const handlePress = () => {
     onPress?.()
@@ -105,7 +103,8 @@ export const StopCard: React.FC<Props> = ({
           {/*
             Three lines, per the designs: what it is, where it is, then hours and admission
             separated by a dot. Which of them are filled depends on what the stop resolved
-            to — see `stopCardFields`.
+            to — see `stopCardFields`. The first runs to two lines, since an event's title
+            carries both the event and the show it belongs to.
           */}
           <Flex
             flex={1}
@@ -120,7 +119,16 @@ export const StopCard: React.FC<Props> = ({
               if (measured > textHeight) setTextHeight(measured)
             }}
           >
-            <Text variant="sm-display" numberOfLines={1} ellipsizeMode="tail">
+            <Text variant="sm-display" numberOfLines={2} ellipsizeMode="tail">
+              {/* What kind of event it is leads the line in bold; the colon stays plain. */}
+              {!!card.eventKind && (
+                <>
+                  <Text variant="sm-display" fontWeight="bold">
+                    {card.eventKind}
+                  </Text>
+                  {": "}
+                </>
+              )}
               {card.title}
             </Text>
 
@@ -155,13 +163,6 @@ export const StopCard: React.FC<Props> = ({
                   </Text>
                 )}
               </Flex>
-            )}
-
-            {/* The designs' fourth line, which grows the card to 90. Only a reception today. */}
-            {!!card.reception && (
-              <Text variant="xs" color="mono100">
-                {card.reception}
-              </Text>
             )}
           </Flex>
         </Flex>

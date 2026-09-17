@@ -36,7 +36,9 @@ const customStopInput = (
 
 /**
  * Adapts an itinerary's sections into the shared map's input. Stops with no valid
- * coordinates are dropped (still shown in the list) so `MapPlace.coordinates` can stay required.
+ * coordinates are dropped (still shown in the list) so `MapPlace.coordinates` can stay
+ * required. A section can come out of this with no places at all; `MapView` is what decides
+ * such a section is not worth a filter pill.
  */
 export const itineraryStopsToMapSections = (
   itinerary: Itinerary,

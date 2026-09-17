@@ -155,6 +155,43 @@ describe("useCityItineraryStops", () => {
     expect(env.mock.getMostRecentOperation().request.variables).toEqual({ id: "itinerary-1" })
   })
 
+  // The name is a plain string Gravity stores verbatim, so a stop belongs in the section the
+  // user already has rather than in a second one differing only in case.
+  it("reuses a My Stops section however it is cased", async () => {
+    const { result } = renderIt()
+
+    void result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", {
+      Itinerary: () => ({
+        sections: [{ internalID: "my-stops", title: "my stops ", stops: [] }],
+      }),
+    })
+
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.params.name).toEqual(
+        "useCityItineraryStopsAddMutation"
+      )
+    )
+    expect(env.mock.getMostRecentOperation().request.variables.input.itinerarySectionID).toBe(
+      "my-stops"
+    )
+  })
+
+  // Creating one on the strength of a failed read is what leaves an itinerary with two.
+  it("refuses to add a section when the itinerary cannot be read", async () => {
+    const { result } = renderIt()
+
+    const promise = result.current.addStop({ itemType: "SHOW", itemID: "show-1" })
+
+    await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
+    await resolveNext("fetchItinerarySectionsQuery", { Query: () => ({ itinerary: null }) })
+
+    await expect(promise).rejects.toThrow("Could not read that itinerary")
+    expect(env.mock.getAllOperations()).toHaveLength(0)
+  })
+
   // An itinerary copied from a guide arrives with the guide's own days, so the section is
   // matched by name rather than taken as the first.
   it("adds to an existing My Stops section rather than a guide's own days", async () => {

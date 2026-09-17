@@ -63,20 +63,27 @@ describe("showsToMapSections", () => {
     expect(sections[0].places).toEqual([])
   })
 
-  it("injects the exhibition period as plain text, not a lazy lookup", () => {
+  // The same card an itinerary stop gets, so a show reads the same on either map.
+  it("gives each pin the show's own stop card", () => {
     const sections = showsToMapSections(makeSection([makeShow()]))
-    const detail = sections[0].places[0].detail
 
-    expect(isValidElement(detail)).toBe(true)
-    expect((detail as React.ReactElement<{ children: string }>).props.children).toEqual(
-      "Aug 24 – Sep 28, 2026"
-    )
+    expect(sections[0].places[0].card).toMatchObject({
+      kind: "show",
+      title: "Frida Kahlo",
+      hours: "Aug 24 – Sep 28, 2026",
+      href: "/show/frida-kahlo",
+    })
   })
 
-  it("omits the detail node when there is no exhibition period", () => {
-    const sections = showsToMapSections(makeSection([makeShow({ exhibition_period: null })]))
+  it("carries the show's cover image, and none when it has none", () => {
+    const withCover = showsToMapSections(
+      makeSection([
+        makeShow({ cover_image: { url: "https://example.com/show.jpg" } } as Partial<Show>),
+      ])
+    )
 
-    expect(sections[0].places[0].detail).toBeUndefined()
+    expect(withCover[0].places[0].image).toEqual({ url: "https://example.com/show.jpg" })
+    expect(showsToMapSections(makeSection([makeShow()]))[0].places[0].image).toBeNull()
   })
 
   it("uses the saved pin icon for a followed show, and the plain pin otherwise", () => {

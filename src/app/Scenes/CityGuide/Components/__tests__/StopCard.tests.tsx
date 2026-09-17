@@ -31,12 +31,30 @@ describe("StopCard", () => {
     expect(screen.queryByTestId("stop-card-meta-dot")).not.toBeOnTheScreen()
   })
 
-  it("renders the reception line when present", () => {
+  // An event's title carries both the event and the show it belongs to, which rarely fits one.
+  it("gives the title two lines before truncating it", () => {
     renderWithWrappers(
-      <StopCard card={card({ reception: "Opening Reception today" })} image={null} />
+      <StopCard card={card({ title: "Georg Baselitz: Back Again" })} image={null} />
     )
 
-    expect(screen.getByText("Opening Reception today")).toBeOnTheScreen()
+    expect(screen.getByText("Georg Baselitz: Back Again")).toHaveProp("numberOfLines", 2)
+  })
+
+  it("bolds an event's kind ahead of the show it belongs to", () => {
+    renderWithWrappers(
+      <StopCard
+        card={card({ eventKind: "Closing Reception", title: "Georg Baselitz: Back Again" })}
+        image={null}
+      />
+    )
+
+    // One line of prose — the kind, a plain colon, then the show — wrapping as one.
+    expect(screen.getByText("Closing Reception: Georg Baselitz: Back Again")).toHaveProp(
+      "numberOfLines",
+      2
+    )
+    // Only the kind is bold; the rest inherits the title's own weight.
+    expect(screen.getByText("Closing Reception")).toHaveStyle({ fontWeight: "bold" })
   })
 
   it("renders the image when present, and nothing when absent", () => {

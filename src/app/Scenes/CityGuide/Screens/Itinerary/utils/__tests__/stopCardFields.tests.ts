@@ -1,10 +1,14 @@
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
-import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
+import {
+  showCardFields,
+  stopCardFields,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
+import { Show } from "app/Scenes/CityGuide/utils/types"
 import { DateTime } from "luxon"
 
 const stop = (overrides: Record<string, unknown> = {}) => makeItineraryStop(overrides)
 
-const showEvent = (kind: string, startAt: string | null) => ({
+const showEvent = (kind: string | null, startAt: string | null) => ({
   __typename: "ShowEventType" as const,
   title: null,
   eventType: kind,
@@ -12,51 +16,89 @@ const showEvent = (kind: string, startAt: string | null) => ({
 })
 
 describe("stopCardFields", () => {
-  describe("a show with a reception", () => {
+  describe("a show's own event", () => {
     const show = {
       __typename: "Show",
       name: "Georg Baselitz: Back Again",
+      href: "/show/white-cube-georg-baselitz-back-again",
       partner: { name: "White Cube" },
     }
 
-    it("calls out a reception happening today", () => {
-      const fields = stopCardFields(
-        stop({ event: showEvent("Opening Reception", DateTime.local().toISO()) }),
+    // Gravity sets `eventType` on every stop that names an event.
+    const eventStop = (kind: string | null, startAt: string | null = null) =>
+      stop({ title: "", eventType: "SHOW_EVENT", event: showEvent(kind, startAt) })
+
+    // Two parts, because the card bolds the kind and leaves the show's name plain.
+    it("leads with what the event is, then the show it belongs to", () => {
+      const fields = stopCardFields(eventStop("Closing Reception"), show)
+
+      expect(fields.eventKind).toEqual("Closing Reception")
+      expect(fields.title).toEqual("Georg Baselitz: Back Again")
+      expect(fields.kind).toEqual("event")
+      // Its place still comes from the show it belongs to.
+      expect(fields.subtitle).toEqual("White Cube")
+    })
+
+    /*
+      Gravity's `event_type` is free text, not a fixed set — Metaphysics passes it through
+      untouched bar "Other". So whatever a partner called it leads the title, rather than only
+      the kinds this app happens to have seen.
+    */
+    it("names whatever kind the show gave it", () => {
+      expect(stopCardFields(eventStop("Closing Ceremony"), show).eventKind).toEqual(
+        "Closing Ceremony"
+      )
+      expect(stopCardFields(eventStop("Artist Talk"), show).eventKind).toEqual("Artist Talk")
+    })
+
+    // Every kind earns it, whenever it falls — the card no longer works out which day it is.
+    it("names it whether it has passed or is still to come", () => {
+      const past = stopCardFields(
+        eventStop("Closing Reception", DateTime.local().minus({ days: 2 }).toISO()),
+        show
+      )
+      const future = stopCardFields(
+        eventStop("Closing Reception", DateTime.local().plus({ days: 2 }).toISO()),
         show
       )
 
-      expect(fields.reception).toEqual("Opening Reception today")
+      expect(past.eventKind).toEqual("Closing Reception")
+      expect(future.eventKind).toEqual("Closing Reception")
     })
 
-    it("says closing too", () => {
-      const fields = stopCardFields(
-        stop({ event: showEvent("Closing Reception", DateTime.local().toISO()) }),
-        show
-      )
-
-      expect(fields.reception).toEqual("Closing Reception today")
-    })
-
-    // "today" is the whole point of the line, so another day earns none.
-    it("says nothing for a reception on another day", () => {
+    // Nothing says what kind it is, so the curator's own title stands alone, unbolded.
+    it("falls back to the curator's title when the event has no kind", () => {
       const fields = stopCardFields(
         stop({
-          event: showEvent("Opening Reception", DateTime.local().plus({ days: 3 }).toISO()),
+          title: "Artist walkthrough",
+          eventType: "SHOW_EVENT",
+          event: showEvent(null, null),
         }),
         show
       )
 
-      expect(fields.reception).toBeUndefined()
+      expect(fields.title).toEqual("Artist walkthrough")
+      expect(fields.eventKind).toBeUndefined()
     })
 
-    // Gravity has eight event kinds; only the two receptions earn the line.
-    it("says nothing for an event that is not a reception", () => {
+    // A fair's event has no kind of its own, only a name, which the designs give it alone.
+    it("leaves a fair's event named by itself", () => {
       const fields = stopCardFields(
-        stop({ event: showEvent("Screening", DateTime.local().toISO()) }),
-        show
+        stop({
+          title: "",
+          eventType: "FAIR_EVENT",
+          event: {
+            __typename: "FairEvent",
+            name: "Musical Performance",
+            startAtISO: DateTime.local().toISO(),
+          },
+        }),
+        { __typename: "Fair", name: "Frieze London" }
       )
 
-      expect(fields.reception).toBeUndefined()
+      expect(fields.title).toEqual("Musical Performance")
+      expect(fields.eventKind).toBeUndefined()
+      expect(fields.kind).toEqual("event")
     })
   })
 
@@ -248,5 +290,34 @@ describe("stopCardFields", () => {
       expect(fields.kind).toEqual("event")
       expect(fields.subtitle).toEqual("The Regent's Park")
     })
+  })
+})
+
+describe("showCardFields", () => {
+  const show = (overrides: Record<string, unknown> = {}) =>
+    ({
+      name: "Splash: Sea, Beach, and Pool",
+      href: "/show/atlas-gallery-splash",
+      exhibition_period: "Feb 25 – May 24",
+      isFreeAdmission: true,
+      partner: { name: "Atlas Gallery" },
+      events: [],
+      ...overrides,
+    }) as unknown as Show
+
+  it("reads as the same show card an itinerary stop would give it", () => {
+    expect(showCardFields(show())).toEqual({
+      kind: "show",
+      title: "Splash: Sea, Beach, and Pool",
+      subtitle: "Atlas Gallery",
+      // A show in this query has no visiting hours, so its running dates stand in.
+      hours: "Feb 25 – May 24",
+      admission: "Free",
+      href: "/show/atlas-gallery-splash",
+    })
+  })
+
+  it("omits admission when the show does not say", () => {
+    expect(showCardFields(show({ isFreeAdmission: null })).admission).toBeUndefined()
   })
 })

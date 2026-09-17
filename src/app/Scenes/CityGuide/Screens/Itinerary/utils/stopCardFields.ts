@@ -5,6 +5,7 @@ import {
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { Show } from "app/Scenes/CityGuide/utils/types"
 import { DateTime } from "luxon"
 
 const MUSEUM_EMOJI = "🏛"
@@ -17,8 +18,13 @@ export type StopCardKind = "show" | "fair" | "partner" | "custom" | "event"
 
 export interface StopCardFields {
   kind: StopCardKind
-  /** First line: what the stop is called. */
+  /** First line: what the stop is called. An event's kind leads it — see `eventKind`. */
   title: string
+  /**
+   * Bolded ahead of the title, which then carries what the event belongs to: "**Closing
+   * Reception**: Cecily Brown". Only an event that knows its kind has one.
+   */
+  eventKind?: string
   /** Second line: where it is. Absent on a custom stop, which has no resolved place. */
   subtitle?: string
   /** Third line, left of the dot. Server-formatted; this never parses a date. */
@@ -27,30 +33,28 @@ export interface StopCardFields {
   admission?: string
   /** Where tapping goes. Absent when nothing is linkable. */
   href?: string
-  /**
-   * The fourth line the designs give a show with a reception: "Opening Reception today". Only
-   * a show event carries a kind, and only a reception earns the line.
-   */
-  reception?: string
 }
 
-/** Gravity's `PartnerShowEvent::EVENT_TYPES` values that the designs call out on the card. */
-const RECEPTION_KINDS = ["Opening Reception", "Closing Reception"]
-
 /**
- * "Opening Reception today", when the stop names one and it falls today — the only date
- * comparison in this file; everything else displayed is formatted server-side.
+ * An event's first line in two parts: what kind of event it is, which the card bolds, then the
+ * show it belongs to — "Closing Reception: Cecily Brown".
+ *
+ * The kind is whatever Gravity's `event_type` says — free text, not a fixed set (Metaphysics
+ * only rewrites "Other" to "Event"), so nothing here matches against a list of known kinds.
+ * Only a show's event carries one; a fair's has just its own name, which the designs give it
+ * alone. With no kind, or nothing for it to belong to, the title stands on its own.
  */
-const receptionLine = (stop: ItineraryStop) => {
-  const event = itineraryStopEvent(stop)
+const eventTitleParts = (
+  event: { kind?: string | null; title?: string | null } | undefined,
+  parentName: string | null | undefined,
+  /** The curator's editorial title, which leads wherever the event names nothing itself. */
+  curatorTitle: string
+): { eventKind?: string; title: string } => {
   const kind = event?.kind
 
-  if (!kind || !RECEPTION_KINDS.includes(kind)) return undefined
-  if (!event?.startAt) return undefined
+  if (kind && parentName) return { eventKind: kind, title: parentName }
 
-  const startsToday = DateTime.fromISO(event.startAt).hasSame(DateTime.local(), "day")
-
-  return startsToday ? `${kind} today` : undefined
+  return { title: curatorTitle || event?.title || parentName || kind || "" }
 }
 
 /**
@@ -120,8 +124,7 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
 
     return {
       kind: "event",
-      // The curator's title wins, then the event's own name, then the parent's.
-      title: title || event?.title || item?.name || "",
+      ...eventTitleParts(event, item?.name, title),
       subtitle: item?.partner?.name ?? placeLine(item?.locations?.[0] ?? item?.location),
       hours: [eventDate, hours].filter(Boolean).join(", ") || undefined,
       admission,
@@ -145,7 +148,6 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
         hours: hours || item.exhibitionPeriod || undefined,
         admission,
         href: item.href ?? undefined,
-        reception: receptionLine(stop),
       }
 
     case "Fair":
@@ -195,3 +197,18 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
       }
   }
 }
+
+/**
+ * The same card for a show the city guide has in hand directly — its own map, rather than an
+ * itinerary — so a show pin's preview reads like the stop it would become. A show has no
+ * visiting hours of its own in that query, so its running dates stand in, as they do for a
+ * stop with no hours set.
+ */
+export const showCardFields = (show: Show): StopCardFields => ({
+  kind: "show",
+  title: show.name ?? "",
+  subtitle: show.partner?.name ?? undefined,
+  hours: show.exhibition_period ?? undefined,
+  admission: admissionLabel(show.isFreeAdmission),
+  href: show.href ?? undefined,
+})

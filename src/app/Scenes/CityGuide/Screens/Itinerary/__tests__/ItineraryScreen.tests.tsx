@@ -30,6 +30,10 @@ const stop = (n: number) => ({
   // Left null so no save control query fires: `item` resolving to null is the
   // "not a saveable Artsy entity" case, which is also what the fixture returns today.
   item: null,
+  // A plain stop, naming no event of its own — otherwise the mock generator invents one and
+  // every card here reads as that event (see `stopCardFields`).
+  eventType: null,
+  event: null,
 })
 
 const ITINERARY = {
@@ -155,14 +159,65 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("itinerary-picker")).toBeOnTheScreen()
     })
 
-    it("shows no stop numbers and no section heading", async () => {
+    it("shows no stop numbers, since it has no running order", async () => {
       renderWithRelay({ Itinerary: () => own }, props)
 
       await screen.findByText("Stop 1")
 
       expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
+    })
+
+    // One section is the whole list, so its name would be a redundant subheading.
+    it("hides the heading while it has a single section", async () => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...own,
+            sections: [{ internalID: "my-stops", title: "My Stops", stops: [stop(1)] }],
+          }),
+        },
+        props
+      )
+
+      await screen.findByText("Stop 1")
+
       expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(0)
-      expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
+      expect(screen.queryByText("My Stops")).not.toBeOnTheScreen()
+    })
+
+    // Removing a section's last stop leaves the section behind, and a heading over nothing
+    // reads as a section that failed to load.
+    it("leaves out a section with no stops, and stops counting it", async () => {
+      renderWithRelay(
+        {
+          Itinerary: () => ({
+            ...own,
+            sections: [
+              { internalID: "my-stops", title: "My Stops", stops: [stop(1)] },
+              { internalID: "emptied", title: "Emptied", stops: [] },
+            ],
+          }),
+        },
+        props
+      )
+
+      await screen.findByText("Stop 1")
+
+      expect(screen.queryByText("Emptied")).not.toBeOnTheScreen()
+      // One section left to show, so its own heading is redundant again.
+      expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(0)
+    })
+
+    // A guide copied onto your own itinerary brings its days along; without their headings
+    // they read as one undifferentiated list.
+    it("shows every section's heading once it has more than one", async () => {
+      renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
+      expect(screen.getByText("Day 2 — London Frieze")).toBeOnTheScreen()
+      expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(2)
+      // Still no numbering: the headings say where you are, not in what order.
+      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
     })
   })
 

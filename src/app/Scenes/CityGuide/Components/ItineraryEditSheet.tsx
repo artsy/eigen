@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
@@ -7,8 +7,6 @@ import { useState } from "react"
 import { graphql, useMutation } from "react-relay"
 
 const NOTES_LIMIT = 200
-const COVER_WIDTH = 165
-const COVER_HEIGHT = 123
 
 interface Props {
   visible: boolean
@@ -18,14 +16,15 @@ interface Props {
     name: string
     /** The designs label this "Notes"; it is the itinerary's `description`. */
     description?: string | null
-    coverImageUrl?: string | null
   }
   /** Called after a successful delete, so the caller can leave the screen or refresh. */
   onDeleted?: () => void
 }
 
 /**
- * The "Edit Itinerary" sheet: rename it, edit its notes, or delete it.
+ * The "Edit Itinerary" sheet: rename it, edit its notes, or delete it. Its cover image is not
+ * among them — changing one means `updateItinerary`'s `arImageID`, which needs an image picked
+ * and uploaded as an ArImage, a flow that does not exist yet.
  *
  * Only reachable from the itineraries list, which queries through `me`, so the caller always
  * owns what it is editing. `Query.itinerary` exposes no ownership flag, so the itinerary
@@ -92,27 +91,6 @@ export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerar
 
             <Text variant="xs" color="mono60" textAlign="right" mt={0.5}>
               {`${notes.length} / ${NOTES_LIMIT}`}
-            </Text>
-          </Flex>
-
-          <Flex gap={1}>
-            <Text variant="sm">Cover image</Text>
-
-            {!!itinerary.coverImageUrl && (
-              <Image
-                src={itinerary.coverImageUrl}
-                width={COVER_WIDTH}
-                height={COVER_HEIGHT}
-                resizeMode="cover"
-              />
-            )}
-
-            {/*
-              Display only for now. Changing it means `updateItinerary`'s `arImageID`, which
-              needs an image picked and uploaded as an ArImage — its own flow.
-            */}
-            <Text variant="xs" color="mono60" underline>
-              Change image
             </Text>
           </Flex>
         </Flex>

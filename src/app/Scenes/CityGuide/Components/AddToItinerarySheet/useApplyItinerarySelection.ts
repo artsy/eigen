@@ -8,6 +8,7 @@ import {
 import {
   MY_STOPS_SECTION,
   findStop,
+  isMyStopsSection,
   mutate,
 } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
 import { fetchItinerarySections } from "app/Scenes/CityGuide/utils/fetchItinerarySections"
@@ -28,7 +29,11 @@ export const useApplyItinerarySelection = () => {
   const resolveSection = useCallback(
     async (itineraryID: string) => {
       const sections = await fetchItinerarySections(environment, itineraryID)
-      const existing = sections.find((section) => section.title === MY_STOPS_SECTION)
+
+      // Rather than carry on and add a second "My Stops" to an itinerary that already has one.
+      if (!sections) throw new Error("Could not read that itinerary")
+
+      const existing = sections.find(isMyStopsSection)
 
       if (existing) return existing.internalID
 
@@ -129,7 +134,7 @@ export const useApplyItinerarySelection = () => {
 
       /** Without membership data, the stop is found by what it points at. */
       async function findStopIDByTarget(itineraryID: string) {
-        const sections = await fetchItinerarySections(environment, itineraryID)
+        const sections = (await fetchItinerarySections(environment, itineraryID)) ?? []
         const stop = findStop(
           sections.flatMap((section) => section.stops),
           target

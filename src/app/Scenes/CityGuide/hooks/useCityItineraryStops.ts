@@ -58,6 +58,14 @@ export type StopInput = EntityStopInput | CustomStopInput
 export const MY_STOPS_SECTION = "My Stops"
 
 /**
+ * Whether this is that section — matched loosely, since the name is a plain string Gravity
+ * stores verbatim, and a stop belongs in the section the user already has rather than in a
+ * second one that differs only in case.
+ */
+export const isMyStopsSection = (section: { readonly title?: string | null }) =>
+  section.title?.trim().toLowerCase() === MY_STOPS_SECTION.toLowerCase()
+
+/**
  * What a new itinerary is called: "London October 2026", or "October 2026" where no city is
  * known. It reads as a trip rather than a place, so a second visit does not collide with the
  * first.
@@ -176,9 +184,13 @@ export const useCityItineraryStops = ({
       // by; multiple personal itineraries per city are a later feature.
       let itineraryID = data?.me?.itinerariesConnection?.edges?.[0]?.node?.internalID
       const sections = itineraryID ? await fetchItinerarySections(environment, itineraryID) : []
+
+      // Rather than carry on and add a second "My Stops" to an itinerary that already has one.
+      if (!sections) throw new Error("Could not read that itinerary")
+
       // By name, not the first section: an itinerary copied from a guide arrives with the
       // guide's own days, and a stop the user adds belongs in theirs.
-      let sectionID = sections.find((section) => section.title === MY_STOPS_SECTION)?.internalID
+      let sectionID = sections.find(isMyStopsSection)?.internalID
       // Flattened across sections: a stop is on the itinerary or it is not, and which section
       // holds it does not matter for finding or removing one.
       const stops = sections.flatMap((section) => section.stops)

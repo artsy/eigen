@@ -15,8 +15,8 @@ interface Props {
    */
   startNumber?: number
   /**
-   * The collapsible section heading. Hidden on your own itinerary, which has a single section
-   * whose name would be a redundant subheading.
+   * The collapsible section heading. Hidden on your own itinerary while it has a single
+   * section, whose name would be a redundant subheading over the whole list.
    */
   showHeader?: boolean
   /** Passed through to the rows, which address a custom stop's screen by itinerary. */
