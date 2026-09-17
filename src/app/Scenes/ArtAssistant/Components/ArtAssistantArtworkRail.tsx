@@ -11,7 +11,7 @@ interface ArtAssistantArtworkRailProps {
 }
 
 const ArtworkRailLoading: React.FC = () => (
-  <Flex pl={1} testID="art-assistant-artwork-rail-loading">
+  <Flex ml={2} testID="art-assistant-artwork-rail-loading">
     <ArtworkRailPlaceholder />
   </Flex>
 )
