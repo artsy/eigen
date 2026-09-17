@@ -82,6 +82,14 @@ describe("ArtAssistant", () => {
     expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
   })
 
+  it("dismisses the keyboard when the conversation starts scrolling", () => {
+    renderWithWrappers(<ArtAssistant />)
+
+    fireEvent(screen.getByTestId("art-assistant-content"), "scrollBeginDrag")
+
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+  })
+
   it("shows activity before publishing the completed response", async () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
@@ -94,6 +102,7 @@ describe("ArtAssistant", () => {
     expect(screen.getByText("Thinking...")).toBeOnTheScreen()
     expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
     expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
 
     const operation = environment.mock.getMostRecentOperation()
 
@@ -134,6 +143,39 @@ describe("ArtAssistant", () => {
     expect(screen.queryByText("Searching artworks...")).not.toBeOnTheScreen()
     expect(screen.getByText("I found a few works for you.")).toBeOnTheScreen()
     expect(screen.getByLabelText("Send")).toBeDisabled()
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+  })
+
+  it("does not dismiss the keyboard again when the user is writing the next prompt", async () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "blue painting")
+    fireEvent.press(screen.getByLabelText("Send"))
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "show me sculpture next")
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    await act(async () => {
+      environment.mock.nextValue(operation, {
+        data: {
+          aiAgentTurn: {
+            __typename: "AIAgentTurnComplete",
+            message: "I found a few works for you.",
+            stopReason: "end_turn",
+            toolCallCount: 1,
+            artworks: [],
+          },
+        },
+      })
+    })
+
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
+      "value",
+      "show me sculpture next"
+    )
   })
 
   it("waits as long as the agent keeps streaming, then gives up on silence", () => {
@@ -227,6 +269,7 @@ describe("ArtAssistant", () => {
 
     fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "blue painting")
     fireEvent.press(screen.getByLabelText("Send"))
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
 
     const firstConversationID =
       environment.mock.getMostRecentOperation().request.variables.input.conversationID
@@ -236,7 +279,7 @@ describe("ArtAssistant", () => {
 
     expect(screen.getByText("Start a new chat?")).toBeOnTheScreen()
     expect(screen.getByText("Your current chat will be lost.")).toBeOnTheScreen()
-    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(1)
+    expect(KeyboardController.dismiss).toHaveBeenCalledTimes(2)
 
     fireEvent.press(screen.getByTestId("dialog-primary-action-button"))
 
