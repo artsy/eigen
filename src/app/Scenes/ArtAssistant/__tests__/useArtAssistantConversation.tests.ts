@@ -33,14 +33,14 @@ describe("Art Assistant conversation reducer", () => {
       activity: "SEARCHING_ARTWORKS",
     })
 
-    expect(searching.message.progress).toEqual(["Thinking...", "Searching artworks..."])
+    expect(searching.message.activity).toBe("Searching artworks...")
 
     const thinking = reduceActiveTurn(searching, {
       __typename: "AIAgentToolResult",
       ok: true,
     })
 
-    expect(thinking.message.progress).toEqual(["Thinking...", "Searching artworks..."])
+    expect(thinking.message.activity).toBe("Searching artworks...")
   })
 
   it("falls back to Thinking for a future activity", () => {
@@ -49,7 +49,7 @@ describe("Art Assistant conversation reducer", () => {
       activity: "%future added value",
     })
 
-    expect(result.message.progress).toEqual(["Thinking..."])
+    expect(result.message.activity).toBe("Thinking...")
   })
 
   it("publishes the final answer and preserves artwork ranking", () => {
@@ -95,7 +95,6 @@ describe("Art Assistant conversation reducer", () => {
         role: "assistant",
         text: "Here are some works.",
         phase: "complete",
-        progress: [],
         artworkRail: { status: "ready", artworkIDs: ["first", "second"] },
       },
     ]
@@ -204,6 +203,6 @@ const createActiveTurn = (): ActiveTurn => ({
     role: "assistant",
     text: "",
     phase: "responding",
-    progress: ["Thinking..."],
+    activity: "Thinking...",
   },
 })

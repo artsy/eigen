@@ -82,7 +82,7 @@ describe("ArtAssistant", () => {
     expect(composer).toHaveStyle({ borderColor: "#D8D8D8" })
   })
 
-  it("shows progress before publishing the completed response", async () => {
+  it("shows activity before publishing the completed response", async () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
 
