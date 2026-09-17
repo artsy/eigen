@@ -3,13 +3,16 @@ import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideCitySwitcherButton } from "app/Scenes/CityGuide/Components/CityGuideCitySwitcherButton"
+import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
 import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
+import { CityGuideEventVideos } from "app/Scenes/CityGuide/Components/CityGuideEventVideos"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useCallback, useState } from "react"
 import { RefreshControl } from "react-native"
@@ -29,6 +32,7 @@ interface SectionsProps {
 
 const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) => {
   const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE })
+  const enableEditorialContent = useFeatureFlag("AREnableCityGuideEditorialContent")
 
   return (
     <Join separator={<Spacer y={4} />}>
@@ -39,6 +43,15 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) =
       </>
 
       <CityGuideEvents citySlug={citySlug} cityName={cityName} city={data.city} />
+
+      {/*
+        Both sections come from the event the guides above belong to, but sit at the bottom of
+        the screen rather than inside that dark block, which is where the designs put them.
+        `Join` drops falsy children, so the flag being off leaves no stray separator behind.
+      */}
+      {!!enableEditorialContent && <CityGuideEventVideos city={data.city} />}
+
+      {!!enableEditorialContent && <CityGuideEventArticles city={data.city} />}
     </Join>
   )
 }
@@ -137,6 +150,8 @@ const Query = graphql`
     city(slug: $citySlug) {
       ...CityGuideEventGuides_city @arguments(first: $first)
       ...CityGuideEvents_city @arguments(first: $first)
+      ...CityGuideEventVideos_city @arguments(first: $first)
+      ...CityGuideEventArticles_city @arguments(first: $first)
     }
     ...CityGuideEventGuides_query @arguments(citySlug: $citySlug, first: $first)
   }

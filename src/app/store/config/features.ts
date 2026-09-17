@@ -190,6 +190,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideItineraries",
   },
+  AREnableCityGuideEditorialContent: {
+    description: "Enable City Guide event videos and Artsy Editorial articles",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCityGuideEditorialContent",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
