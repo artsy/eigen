@@ -8672,6 +8672,7 @@ type City {
 }
 
 type CityGuideEvent {
+  articles: [CityGuideEventArticle!]!
   citySlug: String!
   description: String
   endAt(
@@ -8722,6 +8723,22 @@ type CityGuideEvent {
     """
     timezone: String
   ): String!
+  video: Video
+}
+
+type CityGuideEventArticle {
+  article: Article!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The attachment's own UUID, not the article's
+  """
+  internalID: String!
+  position: Int!
 }
 
 type CityGuideEventItinerary {
@@ -26592,6 +26609,13 @@ type Mutation {
   createCityGuideEvent(input: createCityGuideEventInput!): createCityGuideEventPayload
 
   """
+  Attach an editorial article to a city guide event, at the end of its list. Returns the event with its articles in their new order.
+  """
+  createCityGuideEventArticle(
+    input: createCityGuideEventArticleInput!
+  ): createCityGuideEventArticlePayload
+
+  """
   Attach a curated itinerary to a city guide event, at the end of its list. Returns the event with its itineraries in their new order.
   """
   createCityGuideEventItinerary(
@@ -26917,6 +26941,13 @@ type Mutation {
   Delete a city guide event and its itinerary attachments. The itineraries themselves are left alone.
   """
   deleteCityGuideEvent(input: deleteCityGuideEventInput!): deleteCityGuideEventPayload
+
+  """
+  Detach an article from a city guide event. Returns the event with its remaining articles.
+  """
+  deleteCityGuideEventArticle(
+    input: deleteCityGuideEventArticleInput!
+  ): deleteCityGuideEventArticlePayload
 
   """
   Detach an itinerary from a city guide event. The itinerary itself is left alone. Returns the event with its remaining itineraries.
@@ -27343,6 +27374,13 @@ type Mutation {
   ): RemoveAssetFromConsignmentSubmissionPayload
 
   """
+  Remove a city guide event's video. The underlying Video record is left alone — delete it separately with deleteVideo if desired.
+  """
+  removeCityGuideEventVideo(
+    input: removeCityGuideEventVideoInput!
+  ): removeCityGuideEventVideoPayload
+
+  """
   Removes an installation shot from a partner show.
   """
   removeInstallShotFromPartnerShow(
@@ -27453,6 +27491,11 @@ type Mutation {
   sendIdentityVerificationEmail(
     input: SendIdentityVerificationEmailMutationInput!
   ): SendIdentityVerificationEmailMutationPayload
+
+  """
+  Set (or replace) a city guide event's video. Needs the editorial or content-manager role. The Video must already exist — create it with createVideo first.
+  """
+  setCityGuideEventVideo(input: setCityGuideEventVideoInput!): setCityGuideEventVideoPayload
 
   """
   Set fulfillment option on an order
@@ -27609,6 +27652,13 @@ type Mutation {
   Update a city guide event. Only the fields sent are changed.
   """
   updateCityGuideEvent(input: updateCityGuideEventInput!): updateCityGuideEventPayload
+
+  """
+  Move an article within its city guide event's list. Returns the event with its articles in their new order.
+  """
+  updateCityGuideEventArticle(
+    input: updateCityGuideEventArticleInput!
+  ): updateCityGuideEventArticlePayload
 
   """
   Move an itinerary within its city guide event's list. Returns the event with its itineraries in their new order.
@@ -45201,6 +45251,24 @@ type createBuyerOfferPayload {
   offerOrError: OfferMutationResponse
 }
 
+input createCityGuideEventArticleInput {
+  """
+  The Positron article's id.
+  """
+  articleID: String!
+
+  """
+  The event's id or slug.
+  """
+  cityGuideEventID: String!
+  clientMutationId: String
+}
+
+type createCityGuideEventArticlePayload {
+  clientMutationId: String
+  responseOrError: CityGuideEventMutationResponseOrError
+}
+
 input createCityGuideEventInput {
   """
   A featured city's slug, e.g. london-united-kingdom.
@@ -45469,6 +45537,20 @@ input deleteAlertInput {
 type deleteAlertPayload {
   clientMutationId: String
   responseOrError: DeleteAlertResponseOrError
+}
+
+input deleteCityGuideEventArticleInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the article's).
+  """
+  id: String!
+}
+
+type deleteCityGuideEventArticlePayload {
+  clientMutationId: String
+  responseOrError: CityGuideEventMutationResponseOrError
 }
 
 input deleteCityGuideEventInput {
@@ -45760,6 +45842,39 @@ type rejectSellerOfferPayload {
   orderOrError: OrderMutationResponse
 }
 
+input removeCityGuideEventVideoInput {
+  clientMutationId: String
+
+  """
+  The event's id or slug.
+  """
+  id: String!
+}
+
+type removeCityGuideEventVideoPayload {
+  clientMutationId: String
+  responseOrError: CityGuideEventMutationResponseOrError
+}
+
+input setCityGuideEventVideoInput {
+  clientMutationId: String
+
+  """
+  The event's id or slug.
+  """
+  id: String!
+
+  """
+  The Gravity Video's id.
+  """
+  videoID: String!
+}
+
+type setCityGuideEventVideoPayload {
+  clientMutationId: String
+  responseOrError: CityGuideEventMutationResponseOrError
+}
+
 input setOrderFulfillmentOptionInput {
   clientMutationId: String
   fulfillmentOption: FulfillmentOptionInput!
@@ -45999,6 +46114,25 @@ input updateBuyerOfferInput {
 type updateBuyerOfferPayload {
   clientMutationId: String
   offerOrError: OfferMutationResponse
+}
+
+input updateCityGuideEventArticleInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the article's).
+  """
+  id: String!
+
+  """
+  Zero-based position among the event's articles, via acts_as_list's insert_at.
+  """
+  position: Int!
+}
+
+type updateCityGuideEventArticlePayload {
+  clientMutationId: String
+  responseOrError: CityGuideEventMutationResponseOrError
 }
 
 input updateCityGuideEventInput {
