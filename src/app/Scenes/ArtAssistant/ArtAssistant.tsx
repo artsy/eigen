@@ -18,6 +18,8 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+const EMPTY_STATE_ICON_SIZE = 28
+
 export const ART_ASSISTANT_SUGGESTIONS = [
   "Large blue abstract painting for a living room, under $10k",
   "Emerging photographers showing in Berlin right now",
@@ -115,7 +117,11 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
           ListEmptyComponent={
             <Flex flex={1} pt={2}>
               <Flex flexDirection="row" alignItems="center" justifyContent="center">
-                <SparklesStrokeIcon fill="mono60" width={28} height={28} />
+                <SparklesStrokeIcon
+                  fill="mono60"
+                  width={EMPTY_STATE_ICON_SIZE}
+                  height={EMPTY_STATE_ICON_SIZE}
+                />
                 <Text variant="sm" color="mono60" ml={0.5} caps>
                   Art Assistant
                 </Text>
