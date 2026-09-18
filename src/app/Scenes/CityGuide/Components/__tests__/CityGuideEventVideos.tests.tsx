@@ -5,8 +5,11 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("CityGuideEventVideos", () => {
+  /** Stands in for the scroll view's measured viewport, which the screen passes down. */
+  const PAGE_HEIGHT = 700
+
   const { renderWithRelay } = setupTestWrapper<CityGuideEventVideosTestQuery>({
-    Component: CityGuideEventVideos,
+    Component: (props: any) => <CityGuideEventVideos {...props} pageHeight={PAGE_HEIGHT} />,
     query: graphql`
       query CityGuideEventVideosTestQuery($citySlug: String!, $first: Int!) @relay_test_operation {
         city(slug: $citySlug) {
@@ -64,15 +67,19 @@ describe("CityGuideEventVideos", () => {
     expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
   })
 
-  // Each video gets a screenful so the scroll view can stop on it, which is what makes the
-  // section read as a page rather than a rail.
-  it("gives every video a full screen-height page", async () => {
+  /*
+    The page matches the scroll view's viewport, not the screen: the screen height includes
+    the animated header and the bottom tabs, so a page built from it hangs under both and
+    can never snap flush.
+  */
+  it("sizes every page to the viewport it was given", async () => {
     renderWithRelay(connection([event(video())]))
 
     const page = (await screen.findAllByTestId("city-guide-video-page"))[0]
     const { height: screenHeight } = require("react-native").Dimensions.get("window")
 
-    expect(page).toHaveStyle({ height: screenHeight })
+    expect(page).toHaveStyle({ height: PAGE_HEIGHT })
+    expect(PAGE_HEIGHT).toBeLessThan(screenHeight)
   })
 
   // The player fills the gutters, so the width is whatever the screen gives it and the ratio

@@ -12,11 +12,18 @@ const FALLBACK_ASPECT_RATIO = 16 / 9
 
 interface Props {
   city: CityGuideEventVideos_city$key | null | undefined
+  /**
+   * The scroll view's own visible height, which is the screen minus the header and the
+   * bottom tabs. Measured and passed down rather than derived from the screen height here:
+   * a page built from the full screen height runs under both chrome and can never sit
+   * flush, however the scroll is snapped.
+   */
+  pageHeight: number
 }
 
-export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef }) => {
+export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef, pageHeight }) => {
   const city = useFragment(fragment, cityRef)
-  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+  const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
 
   /*
@@ -32,20 +39,22 @@ export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef }) => {
   )
 
   // No videos means no heading either: a "Videos" title over nothing reads as a broken screen.
-  if (!videos.length) {
+  // Nothing renders before the scroll view has been measured either, so a page is never
+  // laid out at the wrong height and then resized under the reader.
+  if (!videos.length || pageHeight <= 0) {
     return null
   }
 
   const videoWidth = screenWidth - 2 * space(2)
 
   return (
-    <Flex testID="city-guide-event-videos">
+    <Flex testID="city-guide-event-videos" backgroundColor="black">
       {videos.map((video, index) => (
         <VideoPage
           key={video.internalID}
           video={video}
           videoWidth={videoWidth}
-          pageHeight={screenHeight}
+          pageHeight={pageHeight}
           // The heading belongs to the first page, so the section reads as "Videos" once
           // rather than repeating above every clip.
           showHeading={index === 0}
@@ -56,9 +65,9 @@ export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef }) => {
 }
 
 /**
- * One video, one screenful. The page is a fixed screen height so the scroll view can treat
- * its top and bottom as snap offsets — see CityGuideNew, which is what actually stops the
- * scroll here rather than letting the video sit half off the screen.
+ * One video, one viewportful. The page matches the scroll view's visible height exactly, so
+ * that snapping to its top lands it flush between the header and the tabs — see CityGuideNew,
+ * which owns both the measurement and the snap offsets built from it.
  */
 const VideoPage = ({
   video,
@@ -93,7 +102,7 @@ const VideoPage = ({
       */}
       {!!showHeading && (
         <Flex px={2}>
-          <SectionTitle variant="large" title="Videos" />
+          <SectionTitle variant="large" title="Videos" titleColor="white" />
         </Flex>
       )}
 
@@ -102,6 +111,7 @@ const VideoPage = ({
         flex={1}
         px={2}
         justifyContent="center"
+        backgroundColor="black"
         onLayout={(event) => setBoxHeight(event.nativeEvent.layout.height)}
       >
         {height > 0 && (

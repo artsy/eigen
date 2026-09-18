@@ -51,6 +51,22 @@ describe("CityGuideNew", () => {
      * The flushes matter: the query is issued under a suspense boundary, so it is not pending
      * on the first tick, and the sections only mount once the payload has propagated.
      */
+    /** The visible scroll area, which is the screen without the header or the bottom tabs. */
+    const VIEWPORT_HEIGHT = 700
+
+    const getScrollView = () =>
+      screen.UNSAFE_getByType(require("react-native-reanimated").default.ScrollView)
+
+    /*
+     * The video pages size themselves from the scroll view's measured height, and nothing
+     * lays out in the test renderer — so the viewport is reported the way a device would.
+     */
+    const layoutViewport = () => {
+      fireEvent(getScrollView(), "layout", {
+        nativeEvent: { layout: { width: 390, height: VIEWPORT_HEIGHT } },
+      })
+    }
+
     const resolveWithEditorialContent = async ({ withVideo = true } = {}) => {
       await act(async () => {
         await flushPromiseQueue()
@@ -101,6 +117,8 @@ describe("CityGuideNew", () => {
       await act(async () => {
         await flushPromiseQueue()
       })
+
+      layoutViewport()
     }
 
     it("shows the videos and Artsy Editorial sections when the flag is on", async () => {
@@ -140,18 +158,17 @@ describe("CityGuideNew", () => {
       renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent()
 
-      const { height: screenHeight } = require("react-native").Dimensions.get("window")
       const videos = screen.getByTestId("city-guide-event-videos")
 
       fireEvent(videos.parent as any, "layout", {
-        nativeEvent: { layout: { y: 900, height: screenHeight } },
+        nativeEvent: { layout: { y: 900, height: VIEWPORT_HEIGHT } },
       })
 
-      const scrollView = screen.UNSAFE_getByType(
-        require("react-native-reanimated").default.ScrollView
-      )
+      const scrollView = getScrollView()
 
-      expect(scrollView.props.snapToOffsets).toEqual([900, 900 + screenHeight])
+      // The viewport, not the screen: snapping to a screen-height page would leave the
+      // video tucked under the header and the tabs.
+      expect(scrollView.props.snapToOffsets).toEqual([900, 900 + VIEWPORT_HEIGHT])
       expect(scrollView.props.snapToStart).toBe(false)
       expect(scrollView.props.snapToEnd).toBe(false)
     })
@@ -164,11 +181,7 @@ describe("CityGuideNew", () => {
       renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent({ withVideo: false })
 
-      const scrollView = screen.UNSAFE_getByType(
-        require("react-native-reanimated").default.ScrollView
-      )
-
-      expect(scrollView.props.snapToOffsets).toBeUndefined()
+      expect(getScrollView().props.snapToOffsets).toBeUndefined()
     })
   })
 })

@@ -64,8 +64,14 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
         accessibilityLabel="Vimeo Video Player Controls"
         width={width}
         height={height}
+        backgroundColor="black"
       >
-        <Vimeo videoId={vimeoId} params={vimeoParams} allowsFullscreenVideo />
+        <Vimeo
+          videoId={vimeoId}
+          params={vimeoParams}
+          allowsFullscreenVideo
+          style={{ backgroundColor: "black" }}
+        />
       </Flex>
     )
   }
