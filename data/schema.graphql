@@ -8680,6 +8680,22 @@ type CityGuideEvent {
   articles: [CityGuideEventArticle!]!
   citySlug: String!
   description: String
+  displayEndAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
+  displayStartAt(
+    format: String
+
+    """
+    A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    """
+    timezone: String
+  ): String
   endAt(
     format: String
 
@@ -8779,7 +8795,7 @@ enum CityGuideEventStatus {
   CLOSED
 
   """
-  Started, hasn't ended
+  Within the event's display window
   """
   CURRENT
 
@@ -45283,6 +45299,16 @@ input createCityGuideEventInput {
   description: String
 
   """
+  Display until (ISO 8601). Null defaults to endAt.
+  """
+  displayEndAt: String
+
+  """
+  Display from (ISO 8601). Null defaults to startAt.
+  """
+  displayStartAt: String
+
+  """
   ISO 8601 datetime. Must not be before `startAt`.
   """
   endAt: String!
@@ -46147,6 +46173,16 @@ input updateCityGuideEventInput {
   citySlug: String
   clientMutationId: String
   description: String
+
+  """
+  Display until (ISO 8601). Null defaults to endAt.
+  """
+  displayEndAt: String
+
+  """
+  Display from (ISO 8601). Null defaults to startAt.
+  """
+  displayStartAt: String
 
   """
   ISO 8601 datetime. Must not be before `startAt`.
