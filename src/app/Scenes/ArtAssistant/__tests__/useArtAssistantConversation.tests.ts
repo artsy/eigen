@@ -268,7 +268,6 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.prompt_message_id).toEqual(sent.message_id)
     expect(sent.conversation_id).toEqual(received.conversation_id)
     expect(received.duration_ms).toEqual(expect.any(Number))
-    expect(received.time_to_first_token_ms).toEqual(expect.any(Number))
   })
 
   it("keeps the message and the answer out of Segment while the content flag is off", () => {

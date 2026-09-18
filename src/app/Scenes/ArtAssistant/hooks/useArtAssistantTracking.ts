@@ -29,7 +29,6 @@ interface ResponseReceived {
   promptMessageID: string
   response: string
   stopReason: string
-  timeToFirstTokenMs?: number
   toolCallCount: number
 }
 
@@ -112,7 +111,6 @@ export const useArtAssistantTracking = () => {
       promptMessageID,
       response,
       stopReason,
-      timeToFirstTokenMs,
       toolCallCount,
     }: ResponseReceived) => {
       const payload: ReceivedArtAssistantResponse = {
@@ -128,7 +126,6 @@ export const useArtAssistantTracking = () => {
         stop_reason: stopReason,
         tool_call_count: toolCallCount,
         ...(itemType ? { item_type: itemType } : {}),
-        ...(timeToFirstTokenMs === undefined ? {} : { time_to_first_token_ms: timeToFirstTokenMs }),
         ...(canTrackMessageContent ? { response } : {}),
       }
 

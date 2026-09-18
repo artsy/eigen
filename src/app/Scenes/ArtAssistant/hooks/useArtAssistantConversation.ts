@@ -112,10 +112,6 @@ export const useArtAssistantConversation = () => {
         streamedText: "",
         didReceiveTerminalEvent: false,
       }
-      // The first delta is when the agent stops working and starts answering, so it splits the
-      // wait the user felt into thinking time and streaming time.
-      let firstTokenAt: number | null = null
-
       const trackFailure = (
         outcome: ArtAssistantTurnFailed["outcome"],
         failure: { error?: unknown; stopReason?: string } = {}
@@ -255,10 +251,6 @@ export const useArtAssistantConversation = () => {
           restartIdleTimeout()
 
           if (event) {
-            if (event.__typename === "AIAgentTextDelta" && firstTokenAt === null) {
-              firstTokenAt = Date.now()
-            }
-
             const nextTurn = reduceActiveTurn(activeTurn, event)
             updateAssistant(nextTurn)
 
@@ -277,7 +269,6 @@ export const useArtAssistantConversation = () => {
                   promptMessageID: userMessage.id,
                   response: nextTurn.message.text,
                   stopReason: event.stopReason,
-                  timeToFirstTokenMs: firstTokenAt === null ? undefined : firstTokenAt - startedAt,
                   toolCallCount: event.toolCallCount,
                 })
               }
