@@ -1,4 +1,4 @@
-import { act, screen, within } from "@testing-library/react-native"
+import { act, fireEvent, screen, within } from "@testing-library/react-native"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -51,7 +51,7 @@ describe("CityGuideNew", () => {
      * The flushes matter: the query is issued under a suspense boundary, so it is not pending
      * on the first tick, and the sections only mount once the payload has propagated.
      */
-    const resolveWithEditorialContent = async () => {
+    const resolveWithEditorialContent = async ({ withVideo = true } = {}) => {
       await act(async () => {
         await flushPromiseQueue()
       })
@@ -66,13 +66,15 @@ describe("CityGuideNew", () => {
                   node: {
                     internalID: "london-art-week",
                     itineraries: [],
-                    video: {
-                      internalID: "video-1",
-                      playerUrl: "https://player.vimeo.com/video/76979871",
-                      width: 352,
-                      height: 471,
-                      aspectRatio: 0.75,
-                    },
+                    video: withVideo
+                      ? {
+                          internalID: "video-1",
+                          playerUrl: "https://player.vimeo.com/video/76979871",
+                          width: 352,
+                          height: 471,
+                          aspectRatio: 0.75,
+                        }
+                      : null,
                     articles: [
                       {
                         internalID: "attachment-1",
@@ -125,6 +127,48 @@ describe("CityGuideNew", () => {
       expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
       expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
+    })
+
+    /*
+      The videos block is a run of screen-height pages, and these offsets are what stop the
+      scroll on one of them. Paired with snapToStart/snapToEnd off, that is the whole story-
+      page behaviour: free scrolling either side, but never a video left half on screen.
+    */
+    it("snaps the scroll view to the video's pages, and only those", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
+
+      renderWithWrappers(<CityGuideNew />)
+      await resolveWithEditorialContent()
+
+      const { height: screenHeight } = require("react-native").Dimensions.get("window")
+      const videos = screen.getByTestId("city-guide-event-videos")
+
+      fireEvent(videos.parent as any, "layout", {
+        nativeEvent: { layout: { y: 900, height: screenHeight } },
+      })
+
+      const scrollView = screen.UNSAFE_getByType(
+        require("react-native-reanimated").default.ScrollView
+      )
+
+      expect(scrollView.props.snapToOffsets).toEqual([900, 900 + screenHeight])
+      expect(scrollView.props.snapToStart).toBe(false)
+      expect(scrollView.props.snapToEnd).toBe(false)
+    })
+
+    // An empty offsets array would still put the scroll view into snapping mode, so a city
+    // with no video has to leave the prop off entirely.
+    it("leaves scrolling alone when there is no video", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
+
+      renderWithWrappers(<CityGuideNew />)
+      await resolveWithEditorialContent({ withVideo: false })
+
+      const scrollView = screen.UNSAFE_getByType(
+        require("react-native-reanimated").default.ScrollView
+      )
+
+      expect(scrollView.props.snapToOffsets).toBeUndefined()
     })
   })
 })

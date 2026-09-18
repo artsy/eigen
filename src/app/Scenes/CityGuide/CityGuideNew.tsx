@@ -1,4 +1,4 @@
-import { Join, Screen, Spacer } from "@artsy/palette-mobile"
+import { Flex, Join, Screen, Spacer, useScreenDimensions } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -28,9 +28,10 @@ const PAGE_SIZE = 10
 interface SectionsProps {
   citySlug: string
   cityName: string
+  onVideosLayout: (layout: { y: number; height: number }) => void
 }
 
-const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) => {
+const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName, onVideosLayout }) => {
   const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE })
   const enableEditorialContent = useFeatureFlag("AREnableCityGuideEditorialContent")
 
@@ -49,7 +50,19 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) =
         the screen rather than inside that dark block, which is where the designs put them.
         `Join` drops falsy children, so the flag being off leaves no stray separator behind.
       */}
-      {!!enableEditorialContent && <CityGuideEventVideos city={data.city} />}
+      {!!enableEditorialContent && (
+        // Measured, not self-reporting: `y` here is the offset within the scroll content,
+        // which is what the scroll view needs to snap to. The videos themselves only know
+        // their own size.
+        <Flex
+          onLayout={(event) => {
+            const { y, height } = event.nativeEvent.layout
+            onVideosLayout({ y, height })
+          }}
+        >
+          <CityGuideEventVideos city={data.city} />
+        </Flex>
+      )}
 
       {!!enableEditorialContent && <CityGuideEventArticles city={data.city} />}
     </Join>
@@ -66,6 +79,35 @@ const CityGuideNewSectionsWithSuspense = withSuspense({
 
 export const CityGuideNew: React.FC = () => {
   const [showCityPicker, setShowCityPicker] = useState(false)
+  const { height: screenHeight } = useScreenDimensions()
+  const [videoSnapOffsets, setVideoSnapOffsets] = useState<number[]>([])
+
+  /*
+    Turns the videos block into a run of screen-height pages the scroll can stop on. Paired
+    with `snapToStart`/`snapToEnd` off, this is what makes the video behave like a story
+    page: everything above and below scrolls freely, but a release that would leave the
+    video half on screen resolves to either the page's top or the content after it.
+  */
+  const handleVideosLayout = useCallback(
+    ({ y, height }: { y: number; height: number }) => {
+      // The block collapses to nothing when the city has no video, and a zero-height
+      // "page" would otherwise pin the scroll to a single offset.
+      if (height < 1) {
+        setVideoSnapOffsets((current) => (current.length ? [] : current))
+        return
+      }
+
+      const pages = Math.max(1, Math.round(height / screenHeight))
+      const offsets = Array.from({ length: pages + 1 }, (_, page) => y + page * screenHeight)
+
+      setVideoSnapOffsets((current) =>
+        current.length === offsets.length && current.every((offset, i) => offset === offsets[i])
+          ? current
+          : offsets
+      )
+    },
+    [screenHeight]
+  )
 
   // Same order the map's City Guide uses: where you were last, else nearest, else New York.
   const initialCitySlug = useInitialLocation()
@@ -124,6 +166,14 @@ export const CityGuideNew: React.FC = () => {
           <Screen.ScrollView
             contentContainerStyle={{ paddingBottom: 40 }}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+            // Undefined rather than an empty array when there is no video: an empty list
+            // still puts the scroll view into snapping mode.
+            snapToOffsets={videoSnapOffsets.length ? videoSnapOffsets : undefined}
+            // Both off so the only snap points are the video's own pages — the rest of the
+            // screen keeps scrolling freely.
+            snapToStart={false}
+            snapToEnd={false}
+            decelerationRate="fast"
           >
             <CityGuideCityPicker
               showCityPicker={showCityPicker}
@@ -132,7 +182,11 @@ export const CityGuideNew: React.FC = () => {
               onSelectCity={onSelectCity}
             />
 
-            <CityGuideNewSectionsWithSuspense citySlug={citySlug} cityName={city?.name ?? ""} />
+            <CityGuideNewSectionsWithSuspense
+              citySlug={citySlug}
+              cityName={city?.name ?? ""}
+              onVideosLayout={handleVideosLayout}
+            />
           </Screen.ScrollView>
 
           <CityGuideFloatingMapButton cityName={city?.name ?? ""} citySlug={citySlug} />

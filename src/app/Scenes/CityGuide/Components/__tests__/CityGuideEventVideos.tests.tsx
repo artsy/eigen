@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideEventVideosTestQuery } from "__generated__/CityGuideEventVideosTestQuery.graphql"
 import { CityGuideEventVideos } from "app/Scenes/CityGuide/Components/CityGuideEventVideos"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -35,6 +35,21 @@ describe("CityGuideEventVideos", () => {
     CityGuideEventsConnection: () => ({ edges: eventNodes.map((node) => ({ node })) }),
   })
 
+  /**
+   * Each page sizes its player from the space the heading leaves behind, which it learns
+   * from `onLayout` — nothing lays out in the test renderer, so the pages are handed a
+   * height the way the device would.
+   */
+  const layoutPages = async (height = 800) => {
+    const boxes = await screen.findAllByTestId("city-guide-video-box")
+
+    act(() => {
+      boxes.forEach((box) => {
+        fireEvent(box, "layout", { nativeEvent: { layout: { width: 710, height } } })
+      })
+    })
+  }
+
   it("renders the static, unpressable section title", async () => {
     renderWithRelay(connection([event(video())]))
 
@@ -44,8 +59,20 @@ describe("CityGuideEventVideos", () => {
 
   it("renders a player for the event's video", async () => {
     renderWithRelay(connection([event(video())]))
+    await layoutPages()
 
-    expect(await screen.findByTestId("FeatureVideo")).toBeOnTheScreen()
+    expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
+  })
+
+  // Each video gets a screenful so the scroll view can stop on it, which is what makes the
+  // section read as a page rather than a rail.
+  it("gives every video a full screen-height page", async () => {
+    renderWithRelay(connection([event(video())]))
+
+    const page = (await screen.findAllByTestId("city-guide-video-page"))[0]
+    const { height: screenHeight } = require("react-native").Dimensions.get("window")
+
+    expect(page).toHaveStyle({ height: screenHeight })
   })
 
   // The player fills the gutters, so the width is whatever the screen gives it and the ratio
@@ -53,8 +80,9 @@ describe("CityGuideEventVideos", () => {
   // independent of the test renderer's screen width.
   it("sizes the player from the video's own aspect ratio, keeping it portrait", async () => {
     renderWithRelay(connection([event(video())]))
+    await layoutPages(2000)
 
-    const player = await screen.findByTestId("FeatureVideo")
+    const player = screen.getByTestId("FeatureVideo")
 
     expect(player.props.height).toBeCloseTo(player.props.width / 0.75)
     expect(player.props.height).toBeGreaterThan(player.props.width)
@@ -62,22 +90,33 @@ describe("CityGuideEventVideos", () => {
 
   it("falls back to the width/height pair when aspectRatio is absent", async () => {
     renderWithRelay(connection([event(video({ aspectRatio: null }))]))
+    await layoutPages(2000)
 
-    const player = await screen.findByTestId("FeatureVideo")
+    const player = screen.getByTestId("FeatureVideo")
 
     expect(player.props.height).toBeCloseTo(player.props.width / (352 / 471))
   })
 
+  // Letterboxed rather than overflowing its page when the clip is taller than the space.
+  it("never makes the player taller than its page", async () => {
+    renderWithRelay(connection([event(video())]))
+    await layoutPages(300)
+
+    expect(screen.getByTestId("FeatureVideo").props.height).toBeLessThanOrEqual(300)
+  })
+
   it("renders a player per current event that has a video", async () => {
     renderWithRelay(connection([event(video()), event(video(), "second-event")]))
+    await layoutPages()
 
-    expect(await screen.findAllByTestId("FeatureVideo")).toHaveLength(2)
+    expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(2)
   })
 
   it("skips an event with no video", async () => {
     renderWithRelay(connection([event(null), event(video(), "second-event")]))
+    await layoutPages()
 
-    expect(await screen.findAllByTestId("FeatureVideo")).toHaveLength(1)
+    expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
   })
 
   it("renders nothing, heading included, when no event has a video", () => {
