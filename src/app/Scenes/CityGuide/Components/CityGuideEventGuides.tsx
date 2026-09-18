@@ -164,7 +164,7 @@ const OtherCuratedGuides = ({ rows, citySlug }: { rows: GuideRow[]; citySlug: st
 
   return (
     <>
-      <Spacer y={4} />
+      <Spacer y={2} />
 
       <Flex testID="city-other-guides" px={2}>
         <Join separator={<Spacer y={2} />}>
