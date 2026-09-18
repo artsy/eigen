@@ -6,23 +6,29 @@ In order to allow faster testing for typescript changes on real devices you can 
 
 You will need to have the latest beta downloaded from firebase in order to run expo updates. If you need help getting access please ask in the **#practice-mobile** channel.
 
-You will need the release environment vars to deploy to expo updates as well as the cli tools in the bin directory:
+You will need the release environment vars and the cli tools in the bin directory. Both are needed either way, since the pre-flight fingerprint check below runs locally even when you publish via CI:
 
 ```
 yarn setup:releases
 ./scripts/setup/install-bin
 ```
 
-You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
+### Deploying (default: publishes via GitHub Actions)
 
-`./bin/node_modules/.bin/eas login --no-browser`
+Make your changes in typescript, commit and push your changes, then run:
 
-> `--no-browser` keeps the username/password prompt. Without it, eas-cli opens a browser and logs
-> you in as whichever account that browser session is already signed into.
+```
+./scripts/deploys/expo-updates/deploy-to-expo-updates-ci <deployment> [description] [rollout_percentage] [--platform ios|android|all] [--check-against-version]
+```
 
-### Deploying
+This dispatches [`.github/workflows/deploy-expo-update.yml`](../.github/workflows/deploy-expo-update.yml), which checks out your exact commit SHA and runs the publish there. The bundle that reaches devices is built from what's on GitHub, not from what's on your machine.
 
-Make your changes in typescript, commit, and run the script to deploy.
+The script:
+
+- refuses to dispatch if your commit isn't pushed, or if `origin/<branch>` doesn't have the workflow file yet (see [Publishing from an older branch](#publishing-from-an-older-branch-fallback) below)
+- runs the same fingerprint pre-flight described below, against your local checkout, before dispatching
+- for `production`, defaults the rollout to 50% if you don't pass one, and asks you to confirm
+- dispatches and returns immediately, printing the run URL. It doesn't wait for the run to finish, so watch progress there or in the Actions tab.
 
 We have 3 channels currently:
 
@@ -34,16 +40,27 @@ For testing your changes you want canary. Deploying to canary will make any prev
 Then run:
 
 ```
-./scripts/deploys/expo-updates/deploy-to-expo-updates canary
+./scripts/deploys/expo-updates/deploy-to-expo-updates-ci canary
 ```
 
-Full usage:
+By default an update goes out to both platforms. Pass `--platform ios` or `--platform android` to target one.
+
+### Publishing from an older branch (fallback)
+
+`workflow_dispatch` only runs a workflow whose file already exists on the branch you dispatch against. A branch created before this workflow existed can't use it, most commonly a hotfix branch from from a older release tag. `deploy-to-expo-updates-ci` detects this and tells you to fall back to running the command directly on your machine:
+
+You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
+
+`./bin/node_modules/.bin/eas login --no-browser`
+
+> `--no-browser` keeps the username/password prompt. Without it, eas-cli opens a browser and logs
+> you in as whichever account that browser session is already signed into.
 
 ```
 ./scripts/deploys/expo-updates/deploy-to-expo-updates <deployment> [description] [rollout_percentage] [--platform ios|android|all] [--check-against-version]
 ```
 
-By default an update goes out to both platforms. Pass `--platform ios` or `--platform android` to target one.
+This is the same command CI runs. It publishes whatever is on your disk, uncommitted changes included, so double-check your working tree matches what you intend to ship before running it. Use it only when CI is unavailable or the branch predates the workflow.
 
 ### How updates are matched to builds
 
@@ -51,7 +68,7 @@ By default an update goes out to both platforms. Pass `--platform ios` or `--pla
 
 ```mermaid
 flowchart TD
-  A["Running deploy-to-expo-updates"] --> B{"Which reference \n fingerprint to use?"}
+  A["Running deploy-to-expo-updates \n (locally, or on the runner via -ci)"] --> B{"Which reference \n fingerprint to use?"}
   B -->|"channel=canary OR staging"| C["latest.txt \n\n fingerprint of `main`"]
   B -->|"channel=production OR \n with `--check-against-version`"| D["{version}.txt \n\n fingerprint of the build \n actually shipped for \n `app.json` version"]
   C --> E["Generate current fingerprint using \n `npx @expo/fingerprint`"]
@@ -123,5 +140,8 @@ Since we can't calculate the fingerprint on submission time, we do the calculati
 At the time of submitting to the store, we just read the fingerprint from the tag, and add it to a new file named by the version (e.g. `9.16.0.txt`) and upload that to S3
 
 ### Using in app
+
+> [!NOTE]
+> If you published via CI, wait for the dispatched run to finish successfully first. The command returning just means the dispatch was accepted, not that the update is live yet.
 
 In the latest beta from firebase open Dev Menu -> Expo Updates -> Select your channel (e.g. Canary). The app will exit. Reopen the app and your changes should be running.

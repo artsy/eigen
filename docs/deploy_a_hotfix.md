@@ -8,7 +8,7 @@ There are 2 methods of deploying hot fixes depending on the issue:
 
 > [!IMPORTANT]
 >
-> > **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
+> **Expo Updates is not yet available for production hotfixes, please follow the `Native release hotfix process`**
 
 2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
 
@@ -86,28 +86,25 @@ yarn setup:releases
 ./scripts/setup/install-bin
 ```
 
-You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
-
-`./bin/node_modules/.bin/eas login --no-browser`
-
-> `--no-browser` keeps the username/password prompt. Without it, eas-cli opens a browser and logs
-> you in as whichever account that browser session is already signed into.
-
 > ⚠️ **IMPORTANT:** If the install results in changes to Podfile.lock you must do a Native Release Hotfix. Please refer to that section of the docs.
 
 ## Deploy your change to expo updates canary channel
 
 Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
 
-Since the canary channel checks for `main`'s native code fingerprint, we would need to pass `--check-against-version` to check the shipped version's fingerprint.
+Since the canary channel checks for `main`'s native code fingerprint, we would need to pass `--check-against-version` to check the shipped version's fingerprint. `deploy-to-expo-updates-ci` defaults this to `true` automatically on any branch ending in `-hotfix`, so you can normally leave it off.
 
 Run the script to deploy the hotfix to the canary channel:
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --check-against-version`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci 'canary' 'hotfix description'`
 
 By default this deploys to both platforms. Pass `--platform ios` or `--platform android` to target just one, e.g. if the fix is platform-specific:
 
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description' --check-against-version --platform ios`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci 'canary' 'hotfix description' --platform ios`
+
+This runs the same fingerprint check against your local checkout first, catching a native-code mismatch before anything is dispatched, then dispatches the publish to GitHub Actions and prints the run's URL. The command returns as soon as the dispatch is accepted, not when the publish finishes, so wait for that run to succeed (watch the URL or the Actions tab) before moving on.
+
+If your hotfix branch predates the CI publish workflow, the command tells you so and prints the equivalent `deploy-to-expo-updates` command to run locally instead. See [Publishing from an older branch (fallback)](deploy_to_expo_updates.md#publishing-from-an-older-branch-fallback) for what that needs.
 
 ## Test your update in the firebase equivalent of the production app
 
@@ -121,12 +118,15 @@ Test that the fix is working as intended and do some basic QA to make sure the a
 If QA goes well run the script to promote the bundle to production.
 Make sure to monitor the app as it rolls out to users.
 
-> ⚠️ **IMPORTANT:** This will deploy the code from your local branch to production. Make sure you are on the branch with the changes you want to deploy and _only_ the changes you want to deploy!
+> ⚠️ **IMPORTANT:** This will deploy the commit currently pushed on your branch to production. Make sure you are on the branch with the changes you want to deploy and _only_ the changes you want to deploy!
 
-`./scripts/deploys/expo-updates/deploy-to-production <rollout_percentage>`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description'`
 
-For example if you wanted to rollout to 50% of users you would pass `50` for `rollout_percentage`. If it is critical to get the fix out fast
-you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
+If you don't pass a rollout percentage it defaults to 50%. The script warns you and asks you to confirm before dispatching. If it is critical to get the fix out fast you can pass `100` explicitly; otherwise, leave it at 50% and monitor before updating to 100% (see "Update rollout" below):
+
+`./scripts/deploys/expo-updates/deploy-to-expo-updates-ci production 'hotfix description' 100`
+
+The command returns as soon as the run is dispatched, not when the publish finishes. A production Expo Update reaches users with no other review step, so the Slack message posted on both success and failure is how you find out it actually landed. Don't consider the hotfix shipped until you see that message.
 
 ### Update rollout
 
@@ -145,6 +145,10 @@ If the fix turns out to be bad, roll it back:
 The script doesn't pick a rollback target for you. It prompts you to choose an earlier
 published update or the build's embedded update, then republishes your choice as the
 channel's latest update.
+
+> Both of these run locally. You'll need to be logged in to the `artsy_mobile` account:
+> `./bin/node_modules/.bin/eas login --no-browser` (credentials in 1Password; `--no-browser` keeps
+> the username/password prompt instead of trusting whatever account your browser is signed into).
 
 </details>
 
