@@ -11,6 +11,7 @@ import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
+import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistantTracks"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { SearchByPhotoButton } from "app/Components/SearchByPhotoButton/SearchByPhotoButton"
 import {
@@ -233,6 +234,13 @@ export const GlobalSearchInputOverlay: React.FC<{
               <ArtAssistantSearchButton
                 testID="art-assistant-search-overlay-button"
                 onPress={() => {
+                  tracking.trackEvent(
+                    tappedArtAssistant({
+                      contextModule: ContextModule.searchOverlay,
+                      contextScreenOwnerType: ownerType,
+                      type: "icon",
+                    })
+                  )
                   hideModal()
                   navigate("/art-assistant")
                 }}

@@ -196,3 +196,36 @@ describe("GlobalSearchInputOverlay — Search by Photo entry point", () => {
     })
   })
 })
+
+describe("GlobalSearchInputOverlay — Art Assistant entry point", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.mocked(useExperimentFlag).mockReturnValue(false)
+    jest.mocked(useEnableArtAssistant).mockReturnValue(true)
+  })
+
+  it("dismisses the overlay and navigates to the Art Assistant on press", () => {
+    const hideModal = jest.fn()
+
+    renderOverlay({ hideModal })
+
+    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+
+    expect(hideModal).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledWith("/art-assistant")
+  })
+
+  it("reports the tap against the overlay, not the search bar", () => {
+    renderOverlay()
+
+    fireEvent.press(screen.getByTestId("art-assistant-search-overlay-button"))
+
+    expect(mockTrackEvent).toHaveBeenCalledExactlyOnceWith({
+      action: "tappedArtAssistant",
+      context_module: "searchOverlay",
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: "artAssistant",
+      type: "icon",
+    })
+  })
+})

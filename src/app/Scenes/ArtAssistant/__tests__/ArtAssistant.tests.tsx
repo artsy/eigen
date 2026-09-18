@@ -4,6 +4,7 @@ import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { createMockEnvironment } from "relay-test-utils"
@@ -294,6 +295,57 @@ describe("ArtAssistant", () => {
 
     expect(input.conversationID).not.toEqual(firstConversationID)
     expect(input.history).toEqual([])
+  })
+
+  it("reports the screen view", () => {
+    renderWithWrappers(<ArtAssistant />)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "screen",
+      context_screen_owner_type: "artAssistant",
+    })
+  })
+
+  it("reports a tapped suggestion with its position", () => {
+    renderWithWrappers(<ArtAssistant />)
+
+    fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[1]))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistantSuggestion",
+      context_module: "artAssistantSuggestions",
+      context_screen_owner_type: "artAssistant",
+      position: 1,
+      suggestion: ART_ASSISTANT_SUGGESTIONS[1],
+    })
+  })
+
+  it("reports a sent suggestion as a suggestion", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
+    fireEvent.press(screen.getByLabelText("Send"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "sentArtAssistantMessage", type: "suggestion" })
+    )
+  })
+
+  it("reports a suggestion the user rewrote as their own prompt", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
+
+    fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
+    fireEvent.changeText(
+      screen.getByLabelText("Art Assistant prompt"),
+      `${ART_ASSISTANT_SUGGESTIONS[0]} in blue`
+    )
+    fireEvent.press(screen.getByLabelText("Send"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ action: "sentArtAssistantMessage", type: "typed" })
+    )
   })
 
   it("keeps the current chat when starting a new chat is canceled", () => {

@@ -4,6 +4,7 @@ import { SearchScreen } from "app/Scenes/Search/Search"
 import { SearchPlaceholder } from "app/Scenes/Search/components/placeholders/SearchPlaceholder"
 import { navigate } from "app/system/navigation/navigate"
 import { useEnableArtAssistant } from "app/utils/hooks/useEnableArtAssistant"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("lodash/throttle", () => (fn: any) => {
@@ -64,6 +65,24 @@ describe("Search", () => {
     fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/art-assistant")
+  })
+
+  it("reports the Art Assistant entry point as the search header icon", async () => {
+    jest.mocked(useEnableArtAssistant).mockReturnValue(true)
+
+    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
+
+    await screen.findByPlaceholderText("Search Artsy")
+
+    fireEvent.press(screen.getByTestId("art-assistant-search-button"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistant",
+      context_module: "header",
+      context_screen_owner_type: "search",
+      destination_screen_owner_type: "artAssistant",
+      type: "icon",
+    })
   })
 
   it("reserves space for the Art Assistant entry point while Search is loading", () => {
