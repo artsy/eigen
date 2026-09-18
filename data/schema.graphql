@@ -6263,6 +6263,13 @@ type ArtworksCollectionsBatchUpdateSuccess {
   removedFromCollections: [Collection]
 }
 
+enum ArtworksForUserBackfillSource {
+  """
+  Biddable lots with the most bids, as shown on /auctions
+  """
+  TRENDING_LOTS
+}
+
 enum AssetType {
   ADDITIONAL_FILE
   IMAGE
@@ -33262,6 +33269,11 @@ type Query {
     The ID of the marketing collection to be used for backfill
     """
     backfillMarketingCollectionID: String
+
+    """
+    Where backfill artworks come from. Defaults to the marketing collection, or the backfill set.
+    """
+    backfillSource: ArtworksForUserBackfillSource
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
@@ -43238,6 +43250,11 @@ type Viewer {
     The ID of the marketing collection to be used for backfill
     """
     backfillMarketingCollectionID: String
+
+    """
+    Where backfill artworks come from. Defaults to the marketing collection, or the backfill set.
+    """
+    backfillSource: ArtworksForUserBackfillSource
     before: String
     excludeArtworkIds: [String] = []
     excludeDislikedArtworks: Boolean = false
