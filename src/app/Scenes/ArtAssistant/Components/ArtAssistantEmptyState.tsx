@@ -1,5 +1,6 @@
 import { SparklesStrokeIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 import { StyleSheet } from "react-native"
 
 const EMPTY_STATE_ICON_SIZE = 28
@@ -17,6 +18,8 @@ interface ArtAssistantEmptyStateProps {
 export const ArtAssistantEmptyState: React.FC<ArtAssistantEmptyStateProps> = ({
   onSelectSuggestion,
 }) => {
+  const { trackSuggestionTapped } = useArtAssistantTracking()
+
   return (
     <Flex flex={1} pt={2}>
       <Flex flexDirection="row" alignItems="center" justifyContent="center">
@@ -40,11 +43,14 @@ export const ArtAssistantEmptyState: React.FC<ArtAssistantEmptyStateProps> = ({
       </Text>
 
       <Flex gap={1}>
-        {ART_ASSISTANT_SUGGESTIONS.map((suggestion) => (
+        {ART_ASSISTANT_SUGGESTIONS.map((suggestion, index) => (
           <Touchable
             accessibilityRole="button"
             key={suggestion}
-            onPress={() => onSelectSuggestion(suggestion)}
+            onPress={() => {
+              trackSuggestionTapped(suggestion, index)
+              onSelectSuggestion(suggestion)
+            }}
             underlayColor="mono5"
             style={{ borderRadius: 20, overflow: "hidden" }}
           >

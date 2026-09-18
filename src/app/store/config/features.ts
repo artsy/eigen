@@ -196,6 +196,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideEditorialContent",
   },
+  AREnableArtAssistantMessageTracking: {
+    description: "Send Art Assistant message and response text to Segment",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtAssistantMessageTracking",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
