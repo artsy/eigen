@@ -58,7 +58,7 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
       <>
         <CityGuideItinerariesRail citySlug={citySlug} me={data.me} />
 
-        <CityGuideEventGuides citySlug={citySlug} city={data.city} query={data} />
+        <CityGuideEventGuides citySlug={citySlug} query={data} />
       </>
 
       <CityGuideEvents citySlug={citySlug} cityName={cityName} city={data.city} />
@@ -243,7 +243,6 @@ const Query = graphql`
       ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
     }
     city(slug: $citySlug) {
-      ...CityGuideEventGuides_city @arguments(first: $first)
       ...CityGuideEvents_city @arguments(first: $first)
       ...CityGuideEventVideos_city @arguments(first: $first)
       ...CityGuideEventArticles_city @arguments(first: $first)
