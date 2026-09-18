@@ -19,8 +19,16 @@ interface FeatureVideoProps {
 export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, height }) => {
   const ytId = extractYouTubeId(videoUrl)
 
-  const { videoId: vimeoId } = extractVimeoVideoDataFromUrl(videoUrl)
+  const { videoId: vimeoId, token } = extractVimeoVideoDataFromUrl(videoUrl)
   const playerRef = useRef(null)
+
+  /*
+    An unlisted Vimeo video only plays for a request carrying its hash, which Vimeo puts in
+    the player url as `h`. Dropping it is what makes the player answer "Sorry, we're having a
+    little trouble" — the same url pasted into a browser keeps the hash and plays fine.
+    Left off entirely for a public video, so its url stays exactly as it was.
+  */
+  const vimeoParams = typeof token === "string" && token ? `h=${token}` : undefined
 
   if (!isValidVideoUrl(videoUrl)) {
     console.warn(`FeatureVideo: Invalid video URL domain: ${videoUrl}`)
@@ -56,8 +64,14 @@ export const FeatureVideo: React.FC<FeatureVideoProps> = ({ videoUrl, width, hei
         accessibilityLabel="Vimeo Video Player Controls"
         width={width}
         height={height}
+        backgroundColor="black"
       >
-        <Vimeo videoId={vimeoId} allowsFullscreenVideo />
+        <Vimeo
+          videoId={vimeoId}
+          params={vimeoParams}
+          allowsFullscreenVideo
+          style={{ backgroundColor: "black" }}
+        />
       </Flex>
     )
   }

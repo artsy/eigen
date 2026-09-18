@@ -21,6 +21,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [When committing code](#when-committing-code)
   - [Frontend](#frontend)
     - [Styling](#styling)
+    - [Component conventions](#component-conventions)
   - [TypeScript](#typescript)
   - [Fetching data](#fetching-data)
   - [Testing](#testing)
@@ -153,6 +154,12 @@ The same thing applies for hooks, utils etc...
 Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
 
 We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette.
+
+### Component conventions
+
+- Type function components as `React.FC<Props>` with `import React from "react"`, rather than importing `FC` by name from `"react"` and writing `Component: FC<Props>`.
+- Prefer `Touchable` from `@artsy/palette-mobile` over React Native's `TouchableOpacity` / `TouchableHighlight`, unless there's a specific reason not to (e.g. a third-party library needs a native touchable for its own gesture handling).
+- Prefer an existing `@artsy/palette-mobile` component over hand-building a visual equivalent, even if the palette one doesn't match the Figma designs pixel-for-pixel.
 
 ## TypeScript
 

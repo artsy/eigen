@@ -11,7 +11,7 @@ import {
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FairFollowButton } from "app/Components/FairFollowButton"
+import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
@@ -123,7 +123,13 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
             hideTitle: true,
             rightElements: (
               <Flex flexDirection="row" alignItems="center" gap={1}>
-                <FairFollowButton fair={data} />
+                {!!data.location?.address && (
+                  <ItineraryItemSaveControl
+                    itemType="FAIR"
+                    itemID={data.internalID}
+                    name={data.name ?? ""}
+                  />
+                )}
                 <TouchableOpacity
                   accessibilityRole="button"
                   accessibilityLabel="Share Fair"
@@ -165,7 +171,9 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
 const fragment = graphql`
   fragment Fair_fair on Fair {
     ...FairHeader_fair
-    ...FairFollowButton_fair
+    location {
+      address
+    }
     internalID
     slug
     name

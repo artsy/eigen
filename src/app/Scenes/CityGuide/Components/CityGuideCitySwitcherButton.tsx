@@ -11,10 +11,11 @@ interface Props {
 const ICON_SIZE = 18
 
 export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress }) => {
-  const enableCityGuideList = useFeatureFlag("AREnableGlobalMapList")
+  const enableCityGuideList = useFeatureFlag("AREnableCityGuideItineraries")
 
   return (
     <Button
+      testID="city-guide-city-switcher"
       variant="outline"
       onPress={onPress}
       size="small"
