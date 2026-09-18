@@ -186,7 +186,7 @@ export const features = {
   },
   AREnableArtAssistant: {
     description: "Enable Art Assistant entry points",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtAssistant",
   },
