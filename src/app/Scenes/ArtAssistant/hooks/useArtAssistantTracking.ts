@@ -8,7 +8,7 @@ import {
   TappedArtAssistantNewChat,
   TappedArtAssistantSuggestion,
 } from "@artsy/cohesion"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
 
@@ -44,13 +44,15 @@ interface TurnFailed {
 
 /**
  * Art Assistant tracking. Everything but the message and response text is always sent; the text
- * itself is user and agent content, so it only rides along while
- * `AREnableArtAssistantMessageTracking` is on. Turning that flag off keeps every other field, so
- * the counts, latencies and failure rates survive a decision not to collect the content.
+ * itself is user and agent content, so it only rides along while the
+ * `onyx_send-art-assistant-messages-to-segment` experiment is on. That gate lives in Unleash
+ * rather than in echo so it can be turned off without an app release, and turning it off keeps
+ * every other field: the counts, timings and failure rates survive a decision not to collect
+ * the content.
  */
 export const useArtAssistantTracking = () => {
   const { trackEvent } = useTracking()
-  const canTrackMessageContent = !!useFeatureFlag("AREnableArtAssistantMessageTracking")
+  const canTrackMessageContent = !!useExperimentFlag("onyx_send-art-assistant-messages-to-segment")
 
   const trackSuggestionTapped = useCallback(
     (suggestion: string, position: number) => {

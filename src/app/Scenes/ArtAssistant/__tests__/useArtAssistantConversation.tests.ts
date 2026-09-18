@@ -9,11 +9,16 @@ import {
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { createElement, ReactNode } from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
+  useExperimentFlag: jest.fn(),
+}))
 
 describe("Art Assistant conversation reducer", () => {
   it("keeps text deltas private until the terminal event", () => {
@@ -213,6 +218,7 @@ const createActiveTurn = (): ActiveTurn => ({
 describe("useArtAssistantConversation tracking", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.mocked(useExperimentFlag).mockReturnValue(false)
     __globalStoreTestUtils__?.injectState({
       auth: { userID: "user-id", userAccessToken: "access-token" },
     })
@@ -270,7 +276,7 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.duration_ms).toEqual(expect.any(Number))
   })
 
-  it("keeps the message and the answer out of Segment while the content flag is off", () => {
+  it("keeps the message and the answer out of Segment while the content experiment is off", () => {
     const { environment, result } = renderConversation()
 
     act(() => result.current.submit("blue painting"))
@@ -299,8 +305,10 @@ describe("useArtAssistantConversation tracking", () => {
     expect(received.item_count).toBe(0)
   })
 
-  it("sends the message and the answer while the content flag is on", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtAssistantMessageTracking: true })
+  it("sends the message and the answer while the content experiment is on", () => {
+    jest
+      .mocked(useExperimentFlag)
+      .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
 
     const { environment, result } = renderConversation()
 

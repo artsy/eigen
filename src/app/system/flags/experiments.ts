@@ -30,6 +30,9 @@ export const experiments = {
   "onyx_art-assistant-app": {
     description: "Enable Art Assistant entry points in the app",
   },
+  "onyx_send-art-assistant-messages-to-segment": {
+    description: "Send Art Assistant message and response text to Segment",
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
