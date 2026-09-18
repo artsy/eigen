@@ -167,10 +167,54 @@ describe("CityGuideNew", () => {
       const scrollView = getScrollView()
 
       // The viewport, not the screen: snapping to a screen-height page would leave the
-      // video tucked under the header and the tabs.
-      expect(scrollView.props.snapToOffsets).toEqual([900, 900 + VIEWPORT_HEIGHT])
+      // video tucked under the header and the tabs. The leading offset is the entry point,
+      // 70% of a page above the block — see VIDEO_ENTRY_VISIBLE_RATIO.
+      expect(scrollView.props.snapToOffsets).toEqual([
+        900 - VIEWPORT_HEIGHT * 0.3,
+        900,
+        900 + VIEWPORT_HEIGHT,
+      ])
       expect(scrollView.props.snapToStart).toBe(false)
       expect(scrollView.props.snapToEnd).toBe(false)
+    })
+
+    /*
+      The asymmetry this guards against: with the block's own top as the first offset and
+      snapToStart off, RN scrolls free whenever the target is at or before that offset, so
+      the video clamped on the way up but never on the way down. The entry offset below it
+      is what puts a downward release inside the snapping range.
+    */
+    it("puts a snap offset above the video so scrolling down onto it clamps", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
+
+      renderWithWrappers(<CityGuideNew />)
+      await resolveWithEditorialContent()
+
+      fireEvent(screen.getByTestId("city-guide-event-videos").parent as any, "layout", {
+        nativeEvent: { layout: { y: 900, height: VIEWPORT_HEIGHT } },
+      })
+
+      const [firstOffset] = getScrollView().props.snapToOffsets
+
+      expect(firstOffset).toBeLessThan(900)
+    })
+
+    // A video close to the top of the content would otherwise be handed a negative entry
+    // offset, which sorts before the scroll's own start and breaks the snapToStart check.
+    it("never places the entry offset above the top of the scroll", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
+
+      renderWithWrappers(<CityGuideNew />)
+      await resolveWithEditorialContent()
+
+      fireEvent(screen.getByTestId("city-guide-event-videos").parent as any, "layout", {
+        nativeEvent: { layout: { y: 50, height: VIEWPORT_HEIGHT } },
+      })
+
+      const offsets = getScrollView().props.snapToOffsets
+
+      expect(offsets[0]).toBe(0)
+      expect(offsets).toEqual([...offsets].sort((a: number, b: number) => a - b))
     })
 
     // An empty offsets array would still put the scroll view into snapping mode, so a city

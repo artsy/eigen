@@ -25,6 +25,14 @@ const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") as C
 /** Well above the number of rows any one of the three sections shows on the home screen. */
 const PAGE_SIZE = 10
 
+/**
+ * How much of the first video page has to be showing before scrolling down commits to it.
+ * This rides in `snapToOffsets` as an offset just above the block, because with `snapToStart`
+ * off the scroll runs free below the *first* offset — so while the video's own top was that
+ * first offset, coming down onto it never snapped, and only leaving it upwards did.
+ */
+const VIDEO_ENTRY_VISIBLE_RATIO = 0.7
+
 interface SectionsProps {
   citySlug: string
   cityName: string
@@ -111,7 +119,13 @@ export const CityGuideNew: React.FC = () => {
       }
 
       const pages = Math.max(1, Math.round(height / viewportHeight))
-      const offsets = Array.from({ length: pages + 1 }, (_, page) => y + page * viewportHeight)
+      const pageOffsets = Array.from({ length: pages + 1 }, (_, page) => y + page * viewportHeight)
+
+      // Clamped so a video sitting near the top of the content can't produce an offset above
+      // the scroll's own start, and dropped when it collides with the block's top — an
+      // out-of-order or duplicated first offset would make `snapToStart` read the wrong end.
+      const entryOffset = Math.max(0, y - viewportHeight * (1 - VIDEO_ENTRY_VISIBLE_RATIO))
+      const offsets = entryOffset < y ? [entryOffset, ...pageOffsets] : pageOffsets
 
       setVideoSnapOffsets((current) =>
         current.length === offsets.length && current.every((offset, i) => offset === offsets[i])
