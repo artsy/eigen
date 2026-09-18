@@ -118,7 +118,7 @@ lane :notify_expo_update_published do |options|
               :rocket: :iphone:
               An Expo Update was published to *production*.
               #{rollout_line}
-              #{description}
+              Description: #{description}
               See GitHub action run for more details.
             MSG
 
