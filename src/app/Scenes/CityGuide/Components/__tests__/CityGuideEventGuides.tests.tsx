@@ -169,12 +169,30 @@ describe("CityGuideEventGuides", () => {
     expect(screen.getByText("London Art Week")).toBeOnTheScreen()
   })
 
-  it("renders nothing for a city with no current city guide events", async () => {
+  it("renders nothing for a city with no events and no curated guides", async () => {
     renderWithRelay(connection([]), props)
 
     // Nothing to await: the section renders null, so assert the tree never gains a group.
     expect(screen.queryAllByTestId("event-guide-group")).toHaveLength(0)
     expect(screen.queryByText("Curated City Guides")).not.toBeOnTheScreen()
+  })
+
+  /*
+    A city's curated guides come from their own query and are filtered to the city by
+    Gravity — they do not depend on an event being on. Bailing on the event list alone hid
+    them for the whole gap between one event ending and the next starting.
+  */
+  it("still renders the city's curated guides when no event is on", async () => {
+    renderWithRelay(
+      connection([], [cityItinerary("id-for-other", "off-the-beaten-path", "Off the Beaten Path")]),
+      props
+    )
+
+    const otherGuides = await screen.findByTestId("city-other-guides")
+
+    expect(within(otherGuides).getByText("Off the Beaten Path")).toBeOnTheScreen()
+    expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
+    expect(screen.queryAllByTestId("event-guide-group")).toHaveLength(0)
   })
 
   it("skips an event that has no guides", async () => {

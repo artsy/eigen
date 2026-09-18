@@ -157,14 +157,23 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
 }
 
 /** The city's curated itineraries that aren't already attached to one of the events above. */
-const OtherCuratedGuides = ({ rows, citySlug }: { rows: GuideRow[]; citySlug: string }) => {
+const OtherCuratedGuides = ({
+  rows,
+  citySlug,
+  withTopSpacer,
+}: {
+  rows: GuideRow[]
+  citySlug: string
+  /** Separates these from the event above. Off when they follow the heading directly. */
+  withTopSpacer: boolean
+}) => {
   if (!rows.length) {
     return null
   }
 
   return (
     <>
-      <Spacer y={2} />
+      {!!withTopSpacer && <Spacer y={2} />}
 
       <Flex testID="city-other-guides" px={2}>
         <Join separator={<Spacer y={2} />}>
@@ -193,12 +202,6 @@ export const CityGuideEventGuides: React.FC<Props> = ({
 
   const events = extractNodes(city?.cityGuideEventsConnection)
 
-  // Cities without a current city guide event render nothing at all rather than an empty
-  // dark band.
-  if (!events.length) {
-    return null
-  }
-
   // Itineraries already shown in an event group above don't repeat in the city-wide list.
   const attachedItineraryIds = new Set(
     events.flatMap((event) =>
@@ -206,6 +209,10 @@ export const CityGuideEventGuides: React.FC<Props> = ({
     )
   )
 
+  /*
+    A separate query from the events above, filtered to this city by Gravity: a city's
+    curated guides stand on their own and do not depend on an event being on right now.
+  */
   const otherCuratedRows: GuideRow[] = extractNodes(query?.itinerariesConnection)
     .filter((itinerary) => !attachedItineraryIds.has(itinerary.internalID))
     .map((itinerary) => ({
@@ -215,6 +222,15 @@ export const CityGuideEventGuides: React.FC<Props> = ({
       authorName: itinerary.authorName ?? "",
       imageUrl: itinerary.heroImage?.url ?? "",
     }))
+
+  /*
+    Only an entirely empty section disappears. Checked after the guides are gathered, not
+    on the events alone: between events a city still has its curated guides, and bailing on
+    `events.length` alone hid them for the whole gap.
+  */
+  if (!events.length && !otherCuratedRows.length) {
+    return null
+  }
 
   return (
     <Flex backgroundColor="mono100" py={2}>
@@ -227,7 +243,11 @@ export const CityGuideEventGuides: React.FC<Props> = ({
         ))}
       </Join>
 
-      <OtherCuratedGuides rows={otherCuratedRows} citySlug={citySlug} />
+      <OtherCuratedGuides
+        rows={otherCuratedRows}
+        citySlug={citySlug}
+        withTopSpacer={events.length > 0}
+      />
     </Flex>
   )
 }
