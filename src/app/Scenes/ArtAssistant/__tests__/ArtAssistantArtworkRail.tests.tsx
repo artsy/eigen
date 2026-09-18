@@ -2,6 +2,7 @@ import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/r
 import { ArtAssistantArtworkRailQuery } from "__generated__/ArtAssistantArtworkRailQuery.graphql"
 import { ArtAssistantArtworkRail } from "app/Scenes/ArtAssistant/Components/ArtAssistantArtworkRail"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -32,6 +33,27 @@ describe("ArtAssistantArtworkRail", () => {
     fireEvent.press(screen.getByText("Ai Weiwei"))
 
     expect(navigate).toHaveBeenCalledWith("/artwork/ai-weiwei-sunflower-seeds-exhibition")
+  })
+
+  it("reports the tapped artwork against the Art Assistant results", async () => {
+    renderReadyRail()
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByTestId("art-assistant-artwork-rail-loading")
+    )
+
+    fireEvent.press(screen.getByText("Jean-Michel Basquiat"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtworkGroup",
+      context_module: "artAssistantResults",
+      context_screen_owner_type: "artAssistant",
+      destination_screen_owner_type: "artwork",
+      destination_screen_owner_id: ARTWORK_IDS[1],
+      destination_screen_owner_slug: "basquiat-artwork",
+      horizontal_slide_position: 1,
+      type: "thumbnail",
+    })
   })
 
   it("renders loading state using the standard rail placeholder", () => {
@@ -90,6 +112,7 @@ const mockResponse = {
             aspectRatio: 1.27,
             url: "https://example.com/ai-weiwei.jpg",
           },
+          collectorSignals: null,
           sale: null,
           saleArtwork: null,
         },
@@ -108,6 +131,7 @@ const mockResponse = {
             aspectRatio: 1,
             url: "https://example.com/basquiat.jpg",
           },
+          collectorSignals: null,
           sale: null,
           saleArtwork: null,
         },

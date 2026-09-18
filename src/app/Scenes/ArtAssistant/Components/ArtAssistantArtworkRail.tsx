@@ -1,10 +1,14 @@
+import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtAssistantArtworkRailQuery } from "__generated__/ArtAssistantArtworkRailQuery.graphql"
+import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { ArtAssistantArtworkRailState } from "app/Scenes/ArtAssistant/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtAssistantArtworkRailProps {
   state: ArtAssistantArtworkRailState
@@ -84,11 +88,35 @@ const ArtAssistantArtworkRailQueryRenderer: React.FC<ArtAssistantArtworkRailQuer
 
 const ReadyArtworkRail: React.FC<{
   artworks: React.ComponentProps<typeof ArtworkRail>["artworks"]
-}> = ({ artworks }) => (
-  <Flex testID="art-assistant-artwork-rail">
-    <ArtworkRail artworks={artworks} showSaveIcon />
-  </Flex>
-)
+}> = ({ artworks }) => {
+  const { trackEvent } = useTracking()
+
+  return (
+    <Flex testID="art-assistant-artwork-rail">
+      <ArtworkRail
+        artworks={artworks}
+        contextModule={ContextModule.artAssistantResults}
+        contextScreenOwnerType={OwnerType.artAssistant}
+        onPress={(artwork, index) => trackEvent(tracks.tappedArtwork(artwork, index))}
+        showSaveIcon
+      />
+    </Flex>
+  )
+}
+
+const tracks = {
+  tappedArtwork: (artwork: ArtworkRail_artworks$data[0], index: number): TappedArtworkGroup => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.artAssistantResults,
+    context_screen_owner_type: OwnerType.artAssistant,
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_id: artwork.internalID,
+    destination_screen_owner_slug: artwork.slug,
+    horizontal_slide_position: index,
+    type: "thumbnail",
+    ...getArtworkSignalTrackingFields(artwork.collectorSignals),
+  }),
+}
 
 const artworkRailQuery = graphql`
   query ArtAssistantArtworkRailQuery($artworkIDs: [String], $first: Int!) {

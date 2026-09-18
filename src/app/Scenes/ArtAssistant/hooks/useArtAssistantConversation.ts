@@ -1,9 +1,11 @@
+import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
 import {
   AIAgentActivity,
   ArtAssistantAgentTurnSubscription,
   ArtAssistantAgentTurnSubscription$data,
   ArtAssistantAgentTurnSubscription$variables,
 } from "__generated__/ArtAssistantAgentTurnSubscription.graphql"
+import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
 import { artAssistantAgentTurnSubscription } from "app/Scenes/ArtAssistant/transport/ArtAssistantAgentTurnSubscription"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import {
@@ -17,6 +19,7 @@ import {
   trimArtAssistantHistory,
 } from "app/Scenes/ArtAssistant/utils/conversationHistory"
 import { GlobalStore } from "app/store/GlobalStore"
+import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { requestSubscription, useRelayEnvironment } from "react-relay"
 import { v4 as uuid } from "uuid"
@@ -45,6 +48,8 @@ export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 60_000
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
+  const { trackMessageSent, trackNewChat, trackResponseReceived, trackTurnFailed } =
+    useArtAssistantTracking()
   const userID = GlobalStore.useAppState((state) => state.auth.userID)
   const authenticationToken = GlobalStore.useAppState((state) => state.auth.userAccessToken)
   const [messages, setMessages] = useState<ArtAssistantMessage[]>([])
@@ -70,22 +75,29 @@ export const useArtAssistantConversation = () => {
   useEffect(() => abort, [abort])
 
   const startNewConversation = useCallback(() => {
+    const discardedMessages = messagesRef.current
+
+    if (discardedMessages.length > 0) {
+      trackNewChat(conversationID.current, discardedMessages.length)
+    }
+
     abort()
     conversationID.current = uuid()
     messagesRef.current = []
     isRespondingRef.current = false
     setMessages([])
     setIsResponding(false)
-  }, [abort])
+  }, [abort, trackNewChat])
 
   const submit = useCallback(
-    (prompt: string) => {
+    (prompt: string, options?: { type: SentArtAssistantMessage["type"] }) => {
       const text = prompt.trim()
 
       if (!text || isRespondingRef.current) {
         return
       }
 
+      const startedAt = Date.now()
       const previousMessages = messagesRef.current
       const userMessage: ArtAssistantMessage = { id: uuid(), role: "user", text }
       const assistantMessage: AssistantMessage = {
@@ -100,10 +112,31 @@ export const useArtAssistantConversation = () => {
         streamedText: "",
         didReceiveTerminalEvent: false,
       }
+      const trackFailure = (
+        outcome: ArtAssistantTurnFailed["outcome"],
+        failure: { error?: unknown; stopReason?: string } = {}
+      ) =>
+        trackTurnFailed({
+          conversationID: conversationID.current,
+          durationMs: Date.now() - startedAt,
+          errorStatus: metaphysicsSubscriptionErrorStatus(failure.error),
+          messageID: assistantMessage.id,
+          outcome,
+          promptMessageID: userMessage.id,
+          stopReason: failure.stopReason,
+        })
 
       isRespondingRef.current = true
       setIsResponding(true)
       setMessages([...previousMessages, userMessage, assistantMessage])
+
+      trackMessageSent({
+        conversationID: conversationID.current,
+        message: text,
+        messageID: userMessage.id,
+        messageIndex: previousMessages.filter((message) => message.role === "user").length,
+        type: options?.type ?? "typed",
+      })
 
       const updateAssistant = (nextTurn: ActiveTurn) => {
         const previousMessage = activeTurn.message
@@ -125,6 +158,7 @@ export const useArtAssistantConversation = () => {
 
       if (!userID || !authenticationToken) {
         updateAssistant(failActiveTurn(activeTurn, "Please sign in again to use Art Assistant."))
+        trackFailure("unauthenticated")
         isRespondingRef.current = false
         setIsResponding(false)
         return
@@ -166,8 +200,10 @@ export const useArtAssistantConversation = () => {
         isRespondingRef.current = false
       }
 
-      const reportFailure = (failure: Omit<ArtAssistantTurnFailure, "conversationID">) =>
+      const reportFailure = (failure: Omit<ArtAssistantTurnFailure, "conversationID">) => {
         reportArtAssistantTurnFailure({ ...failure, conversationID: input.conversationID })
+        trackFailure(failure.outcome, failure)
+      }
 
       const finishTurn = () => {
         // `subscription` is still null when the payload arrived synchronously; the caller
@@ -218,11 +254,25 @@ export const useArtAssistantConversation = () => {
             const nextTurn = reduceActiveTurn(activeTurn, event)
             updateAssistant(nextTurn)
 
-            if (event.__typename === "AIAgentTurnComplete" && nextTurn.message.phase === "error") {
-              reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
-            }
-
             if (event.__typename === "AIAgentTurnComplete") {
+              if (nextTurn.message.phase === "error") {
+                reportFailure({ outcome: "stopped_without_answer", stopReason: event.stopReason })
+              } else {
+                const artworks = event.artworks ?? []
+
+                trackResponseReceived({
+                  conversationID: input.conversationID,
+                  durationMs: Date.now() - startedAt,
+                  itemIDs: artworks.map((artwork) => artwork.internalID),
+                  itemType: artworks.length > 0 ? OwnerType.artwork : undefined,
+                  messageID: assistantMessage.id,
+                  promptMessageID: userMessage.id,
+                  response: nextTurn.message.text,
+                  stopReason: event.stopReason,
+                  toolCallCount: event.toolCallCount,
+                })
+              }
+
               // Metaphysics keeps the stream open after the answer is final, so end the turn on
               // the application-level terminal event instead of waiting for the protocol one.
               finishTurn()
@@ -261,7 +311,15 @@ export const useArtAssistantConversation = () => {
       activeSubscription.current = subscription
       restartIdleTimeout()
     },
-    [abort, authenticationToken, environment, userID]
+    [
+      abort,
+      authenticationToken,
+      environment,
+      trackMessageSent,
+      trackResponseReceived,
+      trackTurnFailed,
+      userID,
+    ]
   )
 
   return { isResponding, messages, startNewConversation, submit }

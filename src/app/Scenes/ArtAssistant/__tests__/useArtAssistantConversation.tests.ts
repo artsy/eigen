@@ -9,9 +9,16 @@ import {
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
+import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { createElement, ReactNode } from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+
+jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
+  useExperimentFlag: jest.fn(),
+}))
 
 describe("Art Assistant conversation reducer", () => {
   it("keeps text deltas private until the terminal event", () => {
@@ -112,6 +119,7 @@ describe("Art Assistant conversation reducer", () => {
 
 describe("useArtAssistantConversation", () => {
   beforeEach(() => {
+    jest.clearAllMocks()
     __globalStoreTestUtils__?.injectState({
       auth: { userID: "user-id", userAccessToken: "access-token" },
     })
@@ -206,3 +214,227 @@ const createActiveTurn = (): ActiveTurn => ({
     activity: "Thinking...",
   },
 })
+
+describe("useArtAssistantConversation tracking", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.mocked(useExperimentFlag).mockReturnValue(false)
+    __globalStoreTestUtils__?.injectState({
+      auth: { userID: "user-id", userAccessToken: "access-token" },
+    })
+  })
+
+  it("reports the sent message and the answer it received", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting", { type: "suggestion" }))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "sentArtAssistantMessage",
+        character_count: 13,
+        context_module: "artAssistant",
+        context_screen_owner_type: "artAssistant",
+        message_index: 0,
+        type: "suggestion",
+      })
+    )
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, { __typename: "AIAgentTextDelta", text: "A partial answer" })
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: "I found two works for you.",
+        stopReason: "end_turn",
+        toolCallCount: 3,
+        artworks: [{ internalID: "first" }, { internalID: "second" }],
+      })
+    })
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "receivedArtAssistantResponse",
+        context_module: "artAssistant",
+        context_screen_owner_type: "artAssistant",
+        item_count: 2,
+        item_ids: ["first", "second"],
+        item_type: "artwork",
+        stop_reason: "end_turn",
+        tool_call_count: 3,
+      })
+    )
+
+    const [sent, received] = trackedEvents([
+      "sentArtAssistantMessage",
+      "receivedArtAssistantResponse",
+    ])
+
+    expect(received.prompt_message_id).toEqual(sent.message_id)
+    expect(sent.conversation_id).toEqual(received.conversation_id)
+    expect(received.duration_ms).toEqual(expect.any(Number))
+  })
+
+  it("keeps the message and the answer out of Segment while the content experiment is off", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: "I found two works for you.",
+        stopReason: "end_turn",
+        toolCallCount: 1,
+        artworks: [],
+      })
+    })
+
+    const [sent, received] = trackedEvents([
+      "sentArtAssistantMessage",
+      "receivedArtAssistantResponse",
+    ])
+
+    expect(sent).not.toHaveProperty("message")
+    expect(received).not.toHaveProperty("response")
+    // The metrics that do not depend on the flag still arrive.
+    expect(sent.character_count).toBe(13)
+    expect(received.item_count).toBe(0)
+  })
+
+  it("sends the message and the answer while the content experiment is on", () => {
+    jest
+      .mocked(useExperimentFlag)
+      .mockImplementation((name) => name === "onyx_send-art-assistant-messages-to-segment")
+
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: "I found two works for you.",
+        stopReason: "end_turn",
+        toolCallCount: 1,
+        artworks: [],
+      })
+    })
+
+    const [sent, received] = trackedEvents([
+      "sentArtAssistantMessage",
+      "receivedArtAssistantResponse",
+    ])
+
+    expect(sent.message).toBe("blue painting")
+    expect(received.response).toBe("I found two works for you.")
+  })
+
+  it("reports a turn the agent stopped without an answer instead of a response", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const operation = environment.mock.getMostRecentOperation()
+
+    act(() => {
+      emit(environment, operation, {
+        __typename: "AIAgentTurnComplete",
+        message: null,
+        stopReason: "max_iterations",
+        toolCallCount: 8,
+        artworks: [],
+      })
+    })
+
+    const [failed] = trackedEvents(["artAssistantTurnFailed"])
+
+    expect(failed).toMatchObject({
+      action: "artAssistantTurnFailed",
+      context_module: "artAssistant",
+      context_screen_owner_type: "artAssistant",
+      outcome: "stopped_without_answer",
+      stop_reason: "max_iterations",
+    })
+    expect(trackedEventsOfType("receivedArtAssistantResponse")).toHaveLength(0)
+  })
+
+  it("reports a broken stream", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    act(() =>
+      environment.mock.rejectMostRecentOperation(
+        new MetaphysicsSubscriptionError("Too many requests", { status: 429 })
+      )
+    )
+
+    const [failed] = trackedEvents(["artAssistantTurnFailed"])
+
+    expect(failed).toMatchObject({
+      action: "artAssistantTurnFailed",
+      error_status: 429,
+      outcome: "stream_error",
+    })
+  })
+
+  it("reports a message sent without a valid session", () => {
+    __globalStoreTestUtils__?.injectState({ auth: { userID: null, userAccessToken: null } })
+
+    const { result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const [sent, failed] = trackedEvents(["sentArtAssistantMessage", "artAssistantTurnFailed"])
+
+    expect(failed).toMatchObject({ outcome: "unauthenticated" })
+    expect(failed.prompt_message_id).toEqual(sent.message_id)
+  })
+
+  it("reports the conversation that was discarded for a new chat", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    const conversationID =
+      environment.mock.getMostRecentOperation().request.variables.input.conversationID
+
+    act(() => result.current.startNewConversation())
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArtAssistantNewChat",
+      context_module: "artAssistant",
+      context_screen_owner_type: "artAssistant",
+      conversation_id: conversationID,
+      message_count: 2,
+    })
+  })
+
+  it("does not report a new chat when there is nothing to discard", () => {
+    const { result } = renderConversation()
+
+    act(() => result.current.startNewConversation())
+
+    expect(trackedEventsOfType("tappedArtAssistantNewChat")).toHaveLength(0)
+  })
+})
+
+const trackedEventsOfType = (action: string) =>
+  mockTrackEvent.mock.calls
+    .map(([event]) => event as Record<string, any>)
+    .filter((event) => event.action === action)
+
+const trackedEvents = (actions: string[]) =>
+  actions.map((action) => {
+    const [event] = trackedEventsOfType(action)
+
+    expect(event).toBeDefined()
+
+    return event
+  })
