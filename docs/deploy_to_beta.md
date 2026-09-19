@@ -22,6 +22,8 @@ Deployment to TestFlight and Play Store is handled by the `build-deploy-*` GitHu
 
 When you trigger a beta yourself it runs on [Blacksmith](https://blacksmith.sh) runners and takes roughly **15–25 minutes**. Follow along in [GitHub Actions](https://github.com/artsy/eigen/actions).
 
+Every beta is tagged in git as `ios-<version>-<build>` / `android-<version>-<code>`. Nightly betas carry a `-nightly` suffix (e.g. `ios-9.16.0-2026.08.14.08-nightly`), so you can tell them apart from on-demand betas in the [tag list](https://github.com/artsy/eigen/tags) without digging through commits. Prefer the nightly for QA and releases.
+
 Note that only one beta can be deployed at a time; teams should use [feature flags](./developing_a_feature.md) to avoid the need for having two parallel beta versions.
 
 There are two types of betas on TestFlight: Internal and External. Our deploy script sends the beta to both groups. However, Internal testers get access to the beta immediately, while external testers may have a delay of several hours/days while Apple does beta review. This additional review typically only happens when we change the version number.
