@@ -16,7 +16,7 @@ export const LensCapturePhotoButton: React.FC<TouchableOpacityProps> = (props) =
         borderColor="mono0"
       />
 
-      <Flex {...StyleSheet.absoluteFillObject} justifyContent="center" alignItems="center">
+      <Flex {...StyleSheet.absoluteFill} justifyContent="center" alignItems="center">
         <Flex
           width={SMALL_BUTTON_SIZE}
           height={SMALL_BUTTON_SIZE}

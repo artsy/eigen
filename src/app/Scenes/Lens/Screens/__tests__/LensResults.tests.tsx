@@ -76,7 +76,8 @@ describe("LensResults", () => {
       .at(-1)?.[1]
 
     // `true`, or the stack's own handler runs next and pops.
-    expect(handler?.()).toBe(true)
+    // RN 0.86 passes a HardwareBackPressEvent to `hardwareBackPress` handlers.
+    expect(handler?.({ type: "hardwareBackPress", timeStamp: Date.now() })).toBe(true)
 
     expect(goBack).toHaveBeenCalledTimes(1)
   })
