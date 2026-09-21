@@ -28,9 +28,15 @@ export const ArtAssistantEmptyState: React.FC<ArtAssistantEmptyStateProps> = ({
           width={EMPTY_STATE_ICON_SIZE}
           height={EMPTY_STATE_ICON_SIZE}
         />
-        <Text variant="sm" color="mono60" ml={0.5} caps>
+        <Text variant="sm" color="mono60" ml={0.5}>
           Art Assistant
         </Text>
+
+        <Flex backgroundColor="blue100" borderRadius={15} mb={1} ml={0.5} px={1} py={0.5}>
+          <Text variant="xxs" color="mono0">
+            Beta
+          </Text>
+        </Flex>
       </Flex>
 
       <Text variant="lg" textAlign="center" mt={2}>
