@@ -106,6 +106,9 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
               variant="link"
               selected={selected}
               disabled={disabled}
+              // Default "link" text color is mono100 (pure black/white); dial it back to a
+              // mid-gray so unselected pills read as gray against the map, matching designs.
+              color={selected ? "mono0" : "mono60"}
               accessibilityState={{ selected, disabled }}
               onPress={disabled ? undefined : () => onSelectTab(tab)}
             >

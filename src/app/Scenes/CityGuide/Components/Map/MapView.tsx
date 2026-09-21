@@ -257,7 +257,7 @@ export const MapView: React.FC<Props> = ({
                     // background-color at all, so over a map the pills are see-through.
                     variant="link"
                     selected={isSelected}
-                    color={isSelected ? "mono0" : "mono100"}
+                    color={isSelected ? "mono0" : "mono60"}
                     onPress={() => {
                       // Filtering can drop places the rail is currently showing.
                       dismissClusterRail()
