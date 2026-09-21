@@ -45,7 +45,7 @@ const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, itinerarySl
 
   if (isCopied || alreadyOwned) {
     return (
-      <Button variant="outline" size="small" disabled longestText="Add Full List">
+      <Button variant="outline" size="small" disabled longestText="Add Whole Guide">
         Added
       </Button>
     )
@@ -112,9 +112,9 @@ const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, itinerarySl
       size="small"
       loading={isCopying}
       onPress={copy}
-      longestText="Add Full List"
+      longestText="Add Whole Guide"
     >
-      Add Full List
+      Add Whole Guide
     </Button>
   )
 }

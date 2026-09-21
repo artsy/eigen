@@ -92,7 +92,7 @@ describe("ItineraryAddFullListButton", () => {
     })
 
     expect(await screen.findByText("Added")).toBeOnTheScreen()
-    expect(screen.queryByText("Add Full List")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Add Whole Guide")).not.toBeOnTheScreen()
   })
 
   it("stays actionable and says so when the copy fails", async () => {
@@ -105,7 +105,7 @@ describe("ItineraryAddFullListButton", () => {
     })
 
     // Still offering the copy rather than claiming it worked.
-    expect(await screen.findByText("Add Full List")).toBeOnTheScreen()
+    expect(await screen.findByText("Add Whole Guide")).toBeOnTheScreen()
     expect(screen.queryByText("Added")).not.toBeOnTheScreen()
   })
 

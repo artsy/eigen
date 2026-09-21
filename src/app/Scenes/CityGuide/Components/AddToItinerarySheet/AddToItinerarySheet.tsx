@@ -168,7 +168,7 @@ const Sheet: React.FC<Props> = ({
     }
   }
 
-  /** One event however many itineraries the stop landed on — the bulk "Add Full List" case
+  /** One event however many itineraries the stop landed on — the bulk "Add Whole Guide" case
    *  still lands on several itineraries in a single Done tap, not several taps. */
   const trackAddedStop = (ownerIDs: string[]) => {
     trackCohesionEvent({

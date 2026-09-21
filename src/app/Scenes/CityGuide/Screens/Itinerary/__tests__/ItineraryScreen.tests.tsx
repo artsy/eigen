@@ -436,7 +436,7 @@ describe("ItineraryScreen", () => {
       await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
 
       // No share-token mutation for a curated guide — its slug is already public. (A curated
-      // guide's own Add Full List button fires an unrelated query of its own on mount.)
+      // guide's own Add Whole Guide button fires an unrelated query of its own on mount.)
       expect(
         view.env.mock
           .getAllOperations()
@@ -495,7 +495,7 @@ describe("ItineraryScreen", () => {
 
       await screen.findByText("Chill Vibes Only")
 
-      // A curated guide's own Add Full List button fires its own query to check for a
+      // A curated guide's own Add Whole Guide button fires its own query to check for a
       // same-named itinerary you already own; resolve it so it doesn't count below.
       await act(async () => {
         view.env.mock.resolveMostRecentOperation((operation) =>

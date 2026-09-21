@@ -426,7 +426,7 @@ describe("AddToItinerarySheet", () => {
       )
     })
 
-    // The bulk "Add Full List" path still lands on one or more itineraries in a single Done
+    // The bulk "Add Whole Guide" path still lands on one or more itineraries in a single Done
     // tap — one event with every landed-on id, not one event per itinerary.
     it("tracks a custom stop's own owner type with no destination entity", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
