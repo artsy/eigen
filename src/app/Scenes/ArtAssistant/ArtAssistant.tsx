@@ -43,11 +43,14 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const { isResponding, messages, startNewConversation, submit } = useArtAssistantConversation()
+  const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
-  const anchoredTurnID = useRef<string | null>(null)
+  const anchoredTurn = useRef<{ id: string; index: number } | null>(null)
+  const messageListHeight = useRef(0)
   const composerKeyboardGap = space(1)
+  const messageGap = space(2)
   const canSend = prompt.trim().length > 0 && !isResponding
 
   const dismissComposerKeyboard = () => {
@@ -67,9 +70,16 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const handleStartNewConversation = () => {
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
-    anchoredTurnID.current = null
+    anchoredTurn.current = null
+    setMessageHeights({})
     startNewConversation()
   }
+
+  const handleMessageLayout = useCallback((messageID: string, height: number) => {
+    setMessageHeights((heights) =>
+      heights[messageID] === height ? heights : { ...heights, [messageID]: height }
+    )
+  }, [])
 
   const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
     const text = promptText.trim()
@@ -124,16 +134,27 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       return
     }
 
+    const answerIndex = messages.length - 1
+    const questionIndex = Math.max(0, answerIndex - 1)
+    const questionHeight =
+      questionIndex === answerIndex ? 0 : messageHeights[messages[questionIndex].id] ?? 0
+    const turnHeight = questionHeight + messageGap + (messageHeights[lastMessage.id] ?? 0)
+    // A turn taller than the list is anchored on the answer instead of the question, so the end
+    // of the answer clears the composer.
+    const turnFitsList = turnHeight + composerKeyboardGap <= messageListHeight.current
+    const index = turnFitsList ? questionIndex : answerIndex
+    const anchor = anchoredTurn.current
+
     // Only a turn that just became final earns an autoscroll. Focusing the composer or typing
     // re-renders the screen with the same messages, and those must not move the list.
-    if (anchoredTurnID.current === lastMessage.id) {
+    if (anchor?.id === lastMessage.id && anchor.index >= index) {
       return
     }
 
-    anchoredTurnID.current = lastMessage.id
-    pendingScrollIndex.current = Math.max(0, messages.length - 2)
+    anchoredTurn.current = { id: lastMessage.id, index }
+    pendingScrollIndex.current = index
     requestAnimationFrame(scrollToPendingTurn)
-  }, [messages, scrollToPendingTurn])
+  }, [composerKeyboardGap, messageGap, messageHeights, messages, scrollToPendingTurn])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -187,9 +208,15 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               <ArtAssistantEmptyState onSelectSuggestion={handleSelectSuggestion} />
             }
             onContentSizeChange={scrollToPendingTurn}
+            onLayout={(event) => {
+              messageListHeight.current = event.nativeEvent.layout.height
+            }}
             onScrollBeginDrag={handleScrollBeginDrag}
             renderItem={({ item, index }) => (
-              <Flex mb={index === messages.length - 1 ? 0 : 2}>
+              <Flex
+                mb={index === messages.length - 1 ? 0 : 2}
+                onLayout={(event) => handleMessageLayout(item.id, event.nativeEvent.layout.height)}
+              >
                 <ArtAssistantMessage message={item} />
               </Flex>
             )}
