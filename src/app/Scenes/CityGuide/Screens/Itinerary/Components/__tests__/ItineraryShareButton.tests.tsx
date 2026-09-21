@@ -49,4 +49,23 @@ describe("ItineraryShareButton", () => {
       })
     )
   })
+
+  it("does not extend hitSlop toward the Edit button on its left (FIREWORKS-48)", async () => {
+    renderWithRelay({
+      Itinerary: () => ({
+        internalID: "guide-1",
+        slug: "chill-vibes-only",
+        citySlug: "london-united-kingdom",
+        title: "Chill Vibes Only",
+        isCurated: true,
+        shareToken: null,
+      }),
+    })
+
+    const shareButton = await screen.findByTestId("itinerary-share")
+
+    // The Edit button sits directly to the left with only a 10pt gap (space[1]) between them.
+    // A left hitSlop of 0 keeps this button's touch target from reaching into that gap.
+    expect(shareButton).toHaveProp("hitSlop", expect.objectContaining({ left: 0 }))
+  })
 })
