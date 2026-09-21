@@ -86,7 +86,7 @@ describe("CityGuideNew", () => {
       })
 
       expect(screen.queryByTestId("city-guide-new-placeholder")).not.toBeOnTheScreen()
-      expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
+      expect(screen.getByText("City Guides")).toBeOnTheScreen()
     })
   })
 
@@ -187,7 +187,7 @@ describe("CityGuideNew", () => {
       renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent()
 
-      expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
+      expect(screen.getByText("City Guides")).toBeOnTheScreen()
       expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
       expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     })

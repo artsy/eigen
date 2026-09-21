@@ -96,7 +96,7 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
                 onPress={() => switchTo(itinerary)}
               >
                 <Flex px={2} py={1}>
-                  <Text variant="sm" weight={isCurrent ? "medium" : "regular"}>
+                  <Text variant="sm" weight={isCurrent ? "medium" : "regular"} color="black">
                     {itinerary.title}
                   </Text>
                   {stopsCount !== undefined && (
