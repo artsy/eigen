@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
-import { FC } from "react"
+import React from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface PartnerListItemShortProps {
@@ -16,13 +16,16 @@ interface PartnerListItemShortProps {
   disabledLocation?: boolean
   disableNavigation?: boolean
   onPress?: () => void
+  /** Renders the follow control as the bare plus/tick instead of palette's labelled FollowButton. */
+  useAddToItinerary?: boolean
 }
 
-export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
+export const PartnerListItemShort: React.FC<PartnerListItemShortProps> = ({
   partner,
   onPress,
   disabledLocation,
   disableNavigation,
+  useAddToItinerary,
 }) => {
   const data = useFragment(fragment, partner)
   const { location } = useLocation({ disabled: !!disabledLocation })
@@ -63,7 +66,12 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
             )}
           </>
         }
-        RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
+        RightButton={
+          <PartnerFollowButtonQueryRenderer
+            partnerID={data.internalID}
+            variant={useAddToItinerary ? "icon" : "button"}
+          />
+        }
       />
     </RouterLink>
   )

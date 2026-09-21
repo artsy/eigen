@@ -10,14 +10,8 @@ import { OwnerType } from "@artsy/cohesion"
  */
 export interface Global {
   /**
-   * The name of an event.
-   *
-   * Options are: Tap, Fail, Success
-   *
-   * This is unique to a "Track" event, meaning a "screen view" in Segment does not have this
-   * This is how we distinguish the two type of events in Eigen
-   * Track data inherits the screen view (called "context_screen") properties
-   *
+   * The name of an event (Tap, Fail, Success). Unique to a "Track" event — a "screen view"
+   * in Segment has no such name, which is how we tell the two kinds of events apart.
    */
   action_type: ActionTypes
 
@@ -106,6 +100,7 @@ export enum PageNames {
   CityGuideMuseumsList = "CityGuideMuseumsList",
   CityGuideOpeningSoonList = "CityGuideOpeningSoonList",
   CityGuideSavedList = "CityGuideSavedList",
+  CityGuideShowsList = "CityGuideShowsList",
   CityPicker = "CityPicker",
   Collect = "Collect",
   Collection = "Collection",
@@ -249,6 +244,8 @@ export enum ActionNames {
   FairsTab = "fairsTab",
   GalleriesTab = "galleriesTab",
   MuseumsTab = "museumsTab",
+  CityGuideShowMap = "cityGuideShowMap",
+  CityGuideShowList = "cityGuideShowList",
 
   /**
    * Commercial flow
@@ -265,6 +262,11 @@ export enum ActionNames {
   SaveShow = "saveShow",
   UnsaveShow = "unsaveShow",
   NearbyShow = "nearbyShow",
+
+  /**
+   * City Guide itinerary events
+   */
+  TappedAddFullList = "tappedAddFullList",
 
   /**
    * Fair page events

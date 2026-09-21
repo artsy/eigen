@@ -1,7 +1,6 @@
-import { Box, BoxProps, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, BoxProps, Flex, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
-import { ShowFollowButton } from "app/Components/ShowFollowButton"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
@@ -12,7 +11,6 @@ export interface ShowHeaderProps extends BoxProps {
 }
 
 export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
-  const enableFollowShowsAndFairs = useFeatureFlag("AREnableFollowShowsAndFairs")
   const [currentTime, setCurrentTime] = useState(DateTime.local().toString())
 
   const { formattedTime } = useEventTiming({
@@ -33,9 +31,23 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Text variant="lg-display" mb={1}>
-        {show.name}
-      </Text>
+      {/*
+        The designs put the follow control on the title's own row, so the title takes the
+        remaining width and truncates instead of pushing the control off the edge.
+      */}
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Flex flex={1} mr={1}>
+          <Text variant="lg-display">{show.name}</Text>
+        </Flex>
+
+        {!show.isOnlineExclusive && !!show.location?.address && (
+          <ItineraryItemSaveControl
+            itemType="SHOW"
+            itemID={show.internalID}
+            name={show.name ?? ""}
+          />
+        )}
+      </Flex>
 
       <Text variant="sm">
         {show.formattedStartAt} – {show.formattedEndAt}
@@ -46,20 +58,6 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
           {formattedTime}
         </Text>
       )}
-
-      {!!show.partner && (
-        <Text variant="sm" color="mono60" mt={1}>
-          {show.partner.name}
-        </Text>
-      )}
-
-      {!!enableFollowShowsAndFairs && (
-        <>
-          <Spacer y={1} />
-
-          <ShowFollowButton show={show} />
-        </>
-      )}
     </Box>
   )
 }
@@ -68,6 +66,11 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
       name
+      internalID
+      isOnlineExclusive
+      location {
+        address
+      }
       startAt
       endAt
       formattedStartAt: startAt(format: "MMMM D")
@@ -80,7 +83,6 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
           name
         }
       }
-      ...ShowFollowButton_show
     }
   `,
 })

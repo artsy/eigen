@@ -1,8 +1,9 @@
 import { graphql } from "react-relay"
 
-/** Shared shape for a "fair" row across the City guide and Map scenes. Spread `...CityGuideFair_fair`
- * on a connection's `node`, then unmask the whole extracted array in one call with
- * `useFragment(cityGuideFairFragment, extractNodes(connection))` (plural, so it accepts an array of refs). */
+/**
+ * Shared shape for a "fair" row across the City Guide and Map scenes. Spread on a node, then
+ * unmask the array with `useFragment(cityGuideFairFragment, extractNodes(connection))`.
+ */
 export const cityGuideFairFragment = graphql`
   fragment CityGuideFair_fair on Fair @relay(plural: true) {
     id
@@ -14,6 +15,7 @@ export const cityGuideFairFragment = graphql`
       partners
     }
     location {
+      postalCode
       coordinates {
         lat
         lng
@@ -33,6 +35,8 @@ export const cityGuideFairFragment = graphql`
         url(version: "square140")
       }
       id
+      internalID
+      isFollowed
       slug
       name
     }
