@@ -26,6 +26,8 @@ const SINGLE_STOP_ZOOM = 14
 
 interface Props {
   sections: MapSection[]
+  /** The city this map belongs to, threaded down to the pin-tap preview card's tracking. */
+  citySlug: string
   /** Owned by the caller so a list-view "Show on map" action can preselect a pin. */
   selectedPlaceId: string | null
   onSelectPlace: (placeId: string) => void
@@ -53,6 +55,7 @@ interface Props {
 
 export const MapView: React.FC<Props> = ({
   sections,
+  citySlug,
   selectedPlaceId,
   onSelectPlace,
   numbered = false,
@@ -276,7 +279,7 @@ export const MapView: React.FC<Props> = ({
       */}
       {!!selectedPlace && !clusterSelection && (
         <Flex position="absolute" bottom={PREVIEW_BOTTOM_OFFSET} left={0} right={0}>
-          <MapPreviewCard place={selectedPlace} />
+          <MapPreviewCard place={selectedPlace} citySlug={citySlug} />
         </Flex>
       )}
 
@@ -300,6 +303,7 @@ export const MapView: React.FC<Props> = ({
                     <MapPreviewCard
                       isLast={index === clusterLength - 1}
                       place={place}
+                      citySlug={citySlug}
                       onPress={() => handleSelectPlace(place.id)}
                     />
                   </Flex>

@@ -68,4 +68,14 @@ describe("CityEventRailCard", () => {
 
     expect(navigate).toHaveBeenCalledWith("/show/one-fly-makes-no-summer")
   })
+
+  it("fires onPress before navigating", () => {
+    const onPress = jest.fn()
+    renderWithWrappers(<CityEventRailCard {...props} onPress={onPress} />)
+
+    fireEvent.press(screen.getByText("One Fly Makes No Summer"))
+
+    expect(onPress).toHaveBeenCalled()
+    expect(navigate).toHaveBeenCalledWith("/show/one-fly-makes-no-summer")
+  })
 })

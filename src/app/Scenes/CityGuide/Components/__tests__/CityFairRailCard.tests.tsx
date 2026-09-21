@@ -27,4 +27,14 @@ describe("CityFairRailCard", () => {
 
     expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")
   })
+
+  it("fires onPress before navigating", () => {
+    const onPress = jest.fn()
+    renderWithWrappers(<CityFairRailCard {...props} onPress={onPress} />)
+
+    fireEvent.press(screen.getByText("London Frieze"))
+
+    expect(onPress).toHaveBeenCalled()
+    expect(navigate).toHaveBeenCalledWith("/fair/frieze-london-2026")
+  })
 })

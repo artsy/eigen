@@ -44,6 +44,16 @@ describe("ItineraryListItem", () => {
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/abc")
   })
 
+  it("fires onPress before navigating", () => {
+    const onPress = jest.fn()
+    renderWithWrappers(<ItineraryListItem {...props} onPress={onPress} />)
+
+    fireEvent.press(screen.getByText("London Oct 2026"))
+
+    expect(onPress).toHaveBeenCalled()
+    expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/abc")
+  })
+
   it("renders a right slot when given one", () => {
     renderWithWrappers(<ItineraryListItem {...props} rightSlot={<Text>share</Text>} />)
 

@@ -205,6 +205,7 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
           ) : isMapView ? (
             <MapView
               sections={mapSections}
+              citySlug={citySlug}
               selectedPlaceId={selectedPlaceId}
               onSelectPlace={setSelectedPlaceId}
               // The itinerary's default (60) is tuned for its own transparent, headerless

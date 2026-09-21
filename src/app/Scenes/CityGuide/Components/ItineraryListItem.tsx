@@ -21,6 +21,11 @@ interface Props {
   rightSlot?: React.ReactNode
   /** "card" is the home rail's white rounded tile; "row" is the list screen's plain row. */
   variant?: "row" | "card"
+  /**
+   * Fired before RouterLink's default navigate-on-press. Optional: shared with the
+   * itineraries list screen, which has no tap tracking of its own to add here.
+   */
+  onPress?: () => void
 }
 
 export const ItineraryListItem: React.FC<Props> = ({
@@ -30,6 +35,7 @@ export const ItineraryListItem: React.FC<Props> = ({
   href,
   rightSlot,
   variant = "row",
+  onPress,
 }) => {
   const isCard = variant === "card"
 
@@ -37,6 +43,7 @@ export const ItineraryListItem: React.FC<Props> = ({
     <RouterLink
       testID="itinerary-list-item"
       to={href}
+      onPress={onPress}
       disablePrefetch
       style={
         isCard
