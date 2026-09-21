@@ -83,6 +83,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
               <ItineraryAddFullListButton
                 citySlug={itinerary.citySlug}
                 itineraryId={itinerary.internalID}
+                itinerarySlug={itinerary.slug ?? undefined}
                 title={itinerary.title}
               />
             </Flex>
@@ -104,6 +105,7 @@ const fragment = graphql`
     internalID
     isCurated
     citySlug
+    slug
     title
     subtitle
     description

@@ -125,9 +125,13 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="FAIR"
                   itemID={fair.internalID}
+                  itemSlug={fair.slug ?? undefined}
                   isOnMyItineraries={fair.isOnMyItineraries}
                   name={fair.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
+                  contextScreenOwnerType={OwnerType.cityGuide}
+                  contextScreenOwnerSlug={citySlug}
+                  isCuratedGuide={false}
                 />
               }
             />
@@ -163,9 +167,13 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="SHOW"
                   itemID={show.internalID}
+                  itemSlug={show.slug ?? undefined}
                   isOnMyItineraries={show.isOnMyItineraries}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
+                  contextScreenOwnerType={OwnerType.cityGuide}
+                  contextScreenOwnerSlug={citySlug}
+                  isCuratedGuide={false}
                 />
               }
             />
@@ -208,9 +216,13 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 <CityEventSaveControl
                   itemType="SHOW"
                   itemID={show.internalID}
+                  itemSlug={show.slug ?? undefined}
                   isOnMyItineraries={show.isOnMyItineraries}
                   name={show.name ?? ""}
                   iconSize={SAVE_ICON_SIZE}
+                  contextScreenOwnerType={OwnerType.cityGuide}
+                  contextScreenOwnerSlug={citySlug}
+                  isCuratedGuide={false}
                 />
               }
             />

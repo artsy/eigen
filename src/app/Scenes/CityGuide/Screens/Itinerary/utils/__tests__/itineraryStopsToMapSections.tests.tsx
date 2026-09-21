@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import {
@@ -98,6 +99,11 @@ describe("itineraryStopsToMapSections", () => {
 
     expect(isValidElement(place.saveControl)).toBe(true)
     expect((place.saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
+    expect((place.saveControl as React.ReactElement).props).toMatchObject({
+      contextScreenOwnerType: OwnerType.cityGuideGuide,
+      contextScreenOwnerId: "itinerary-1",
+      isCuratedGuide: true,
+    })
   })
 
   // Same plus the list shows for a custom stop (ItineraryStopRow) — the map preview must not
@@ -110,5 +116,10 @@ describe("itineraryStopsToMapSections", () => {
 
     expect(isValidElement(place.saveControl)).toBe(true)
     expect((place.saveControl as React.ReactElement).type).toBe(CustomStopSaveControl)
+    expect((place.saveControl as React.ReactElement).props).toMatchObject({
+      contextScreenOwnerType: OwnerType.cityGuideGuide,
+      contextScreenOwnerId: "itinerary-1",
+      isCuratedGuide: true,
+    })
   })
 })

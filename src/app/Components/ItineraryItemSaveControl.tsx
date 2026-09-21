@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { ItineraryItemSaveControlQuery } from "__generated__/ItineraryItemSaveControlQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
@@ -8,11 +9,24 @@ import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "reac
 interface Props {
   itemType: "SHOW" | "FAIR"
   itemID: string
+  itemSlug?: string
   name: string
+  /** Where this control is rendered — the show or fair's own page. */
+  contextScreenOwnerType: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
 /** Standalone detail-screen control. Lists must request the boolean on their batched query instead. */
-const Control: React.FC<Props> = ({ itemType, itemID, name }) => {
+const Control: React.FC<Props> = ({
+  itemType,
+  itemID,
+  itemSlug,
+  name,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+}) => {
   const environment = useRelayEnvironment()
   const variables = { itemID, isShow: itemType === "SHOW", isFair: itemType === "FAIR" }
   const data = useLazyLoadQuery<ItineraryItemSaveControlQuery>(Query, variables, {
@@ -37,8 +51,12 @@ const Control: React.FC<Props> = ({ itemType, itemID, name }) => {
       <CityEventSaveControl
         itemType={itemType}
         itemID={itemID}
+        itemSlug={itemSlug}
         name={name}
         isOnMyItineraries={item.isOnMyItineraries}
+        contextScreenOwnerType={contextScreenOwnerType}
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
       />
     </AddToItineraryProvider>
   )

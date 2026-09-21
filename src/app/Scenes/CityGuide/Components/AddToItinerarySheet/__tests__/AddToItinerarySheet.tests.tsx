@@ -1,5 +1,7 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
 
@@ -33,6 +35,10 @@ describe("AddToItinerarySheet", () => {
     },
     onClose: jest.fn(),
   }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
   const withItineraries = (nodes: object[]) => ({
     Query: () => ({ sourceShow: null, sourceFair: null }),
@@ -381,6 +387,167 @@ describe("AddToItinerarySheet", () => {
       })
     })
 
+    it("tracks addedStopToItinerary against the newly ticked itinerary", async () => {
+      const view = renderWithRelay(
+        {
+          ...withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
+        { ...props, target: { ...props.target, itemSlug: "frida-kahlo" } }
+      )
+
+      await screen.findByText("Second")
+
+      fireEvent.press(screen.getAllByTestId("add-to-itinerary-row")[1])
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("b"))
+      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: ActionType.addedStopToItinerary,
+            context_owner_type: OwnerType.show,
+            context_owner_id: "show-1",
+            context_owner_slug: "frida-kahlo",
+            owner_ids: ["b"],
+          })
+        )
+      )
+    })
+
+    // The bulk "Add Full List" path still lands on one or more itineraries in a single Done
+    // tap — one event with every landed-on id, not one event per itinerary.
+    it("tracks a custom stop's own owner type with no destination entity", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
+        ...props,
+        target: {
+          title: "Coffee at London Cafe",
+          citySlug: "london-united-kingdom",
+          cityName: "London",
+        },
+      })
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: ActionType.addedStopToItinerary,
+            context_owner_type: OwnerType.cityGuideCustomStop,
+            owner_ids: ["a"],
+          })
+        )
+      )
+    })
+
+    it("does not track addedStopToItinerary on a pure removal", async () => {
+      const view = renderWithRelay(
+        {
+          ...withItineraries([itinerary("a", "First")]),
+          ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
+        },
+        props
+      )
+
+      await screen.findByText("First")
+
+      fireEvent.press(screen.getByTestId("add-to-itinerary-row"))
+      await screen.findByText("0 selected")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+
+      expect(mockTrackEvent).not.toHaveBeenCalledWith(
+        expect.objectContaining({ action: ActionType.addedStopToItinerary })
+      )
+    })
+
+    it("tracks addedStopToItinerary when Done auto-creates the only itinerary", async () => {
+      const view = renderWithRelay(withItineraries([]), {
+        ...props,
+        target: { ...props.target, itemSlug: "frida-kahlo" },
+      })
+
+      await screen.findByTestId("add-to-itinerary-done")
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useCityItineraryStopsLookupQuery"
+        )
+      )
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, { Me: () => ({ itinerariesConnection: null }) })
+      )
+
+      await resolveNext(view, "useCityItineraryStopsCreateItineraryMutation", {
+        Mutation: () => ({
+          createItinerary: {
+            responseOrError: {
+              __typename: "ItineraryMutationSuccess",
+              itinerary: { internalID: "auto-created" },
+            },
+          },
+        }),
+      })
+      await resolveNext(view, "useCityItineraryStopsCreateSectionMutation", {
+        Mutation: () => ({
+          createItinerarySection: {
+            responseOrError: {
+              __typename: "ItinerarySectionMutationSuccess",
+              itinerarySection: { internalID: "auto-created-s" },
+            },
+          },
+        }),
+      })
+      await resolveNext(view, "useCityItineraryStopsAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(mockTrackEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: ActionType.addedStopToItinerary,
+            context_owner_type: OwnerType.show,
+            context_owner_id: "show-1",
+            context_owner_slug: "frida-kahlo",
+            owner_ids: ["auto-created"],
+          })
+        )
+      )
+    })
+
     it("fires nothing when no tick changed", async () => {
       const view = renderWithRelay(
         {
@@ -421,6 +588,18 @@ describe("AddToItinerarySheet", () => {
   })
 
   describe("creating one", () => {
+    it("tracks tappedCreateItinerary against the sheet's own city", async () => {
+      renderWithRelay(withItineraries([]), props)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedCreateItinerary,
+        context_screen_owner_type: OwnerType.cityGuide,
+        context_screen_owner_slug: "london-united-kingdom",
+      })
+    })
+
     it("names it after the city, month and year, and counts the characters", async () => {
       renderWithRelay(withItineraries([]), props)
 

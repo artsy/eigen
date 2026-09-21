@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -20,6 +21,7 @@ describe("ItineraryAddFullListButton", () => {
         <ItineraryAddFullListButton
           citySlug="london-united-kingdom"
           itineraryId="guide-1"
+          itinerarySlug="chill-vibes-only"
           title="Chill Vibes Only"
         />
       </RelayEnvironmentProvider>
@@ -105,6 +107,21 @@ describe("ItineraryAddFullListButton", () => {
     // Still offering the copy rather than claiming it worked.
     expect(await screen.findByText("Add Full List")).toBeOnTheScreen()
     expect(screen.queryByText("Added")).not.toBeOnTheScreen()
+  })
+
+  // Fired at tap-time, before the mutation even starts — separate from (and not a
+  // replacement for) the legacy Success/Fail outcome tracking below.
+  it("tracks the cohesion tap event as soon as the button is pressed", async () => {
+    await renderIt()
+
+    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.tappedAddFullListToItinerary,
+      context_screen_owner_type: OwnerType.cityGuideGuide,
+      context_screen_owner_id: "guide-1",
+      context_screen_owner_slug: "chill-vibes-only",
+    })
   })
 
   it("tracks the copy against the itinerary", async () => {

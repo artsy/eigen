@@ -1,3 +1,4 @@
+import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { showCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
@@ -12,7 +13,10 @@ import { Show } from "app/Scenes/CityGuide/utils/types"
  * `StopCard` content an itinerary stop does — including any event the show runs — so a show
  * reads the same whether you meet it on this map or in a guide.
  */
-export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSection[] =>
+export const showsToMapSections = (
+  sections: CityEventSection<Show>[],
+  context: CityEventRowContext
+): MapSection[] =>
   sections.map((section) => ({
     id: section.id,
     title: section.title,
@@ -31,7 +35,14 @@ export const showsToMapSections = (sections: CityEventSection<Show>[]): MapSecti
         card: showCardFields(show),
         image: show.cover_image?.url ? { url: show.cover_image.url } : null,
         saveControl: (
-          <CityEventSaveControl itemType="SHOW" itemID={show.internalID} name={show.name ?? ""} />
+          <CityEventSaveControl
+            itemType="SHOW"
+            itemID={show.internalID}
+            itemSlug={show.slug ?? undefined}
+            name={show.name ?? ""}
+            contextScreenOwnerType={context.contextScreenOwnerType}
+            contextScreenOwnerSlug={context.contextScreenOwnerSlug}
+          />
         ),
       })),
   }))

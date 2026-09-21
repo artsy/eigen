@@ -29,9 +29,14 @@ interface Props {
   /** Passed through to the rows, which address a custom stop's screen by itinerary. */
   citySlug: string
   itineraryId: string
+  /** The itinerary's own slug, threaded through to each row's save control for tracking only. */
+  itinerarySlug?: string
   shareToken?: string
   /** What a new itinerary gets called when a custom stop is copied onto one. */
   cityName: string
+  /** Whether this section belongs to a curated guide's own stop list, rather than the
+   *  viewer's personal itinerary. */
+  isCuratedGuide?: boolean
   /** False on a curated guide or a shared link — neither is yours to edit. */
   canDelete?: boolean
   /** Same ownership gate as `canDelete` — reordering somebody else's guide isn't yours to do
@@ -55,8 +60,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   showHeader = true,
   citySlug,
   itineraryId,
+  itinerarySlug,
   shareToken,
   cityName,
+  isCuratedGuide = false,
   canDelete = false,
   canReorder = false,
   swipingStopID,
@@ -138,8 +145,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
                 number={startNumber === undefined ? undefined : startNumber + index}
                 citySlug={citySlug}
                 itineraryId={itineraryId}
+                itinerarySlug={itinerarySlug}
                 shareToken={shareToken}
                 cityName={cityName}
+                isCuratedGuide={isCuratedGuide}
               />
             </ItineraryDraggableStop>
           ))}

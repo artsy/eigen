@@ -413,7 +413,7 @@ describe("useCityItineraryStops", () => {
     await resolveNext("useCityItineraryStopsLookupQuery", existingItinerary)
     await resolveNext("fetchItinerarySectionsQuery", myStopsWithShow)
 
-    await expect(promise).resolves.toMatchObject({ internalID: "stop-1" })
+    await expect(promise).resolves.toMatchObject({ stop: { internalID: "stop-1" } })
     // Only the reads ran: no create mutation was fired.
     expect(env.mock.getAllOperations()).toHaveLength(0)
   })

@@ -1,8 +1,15 @@
+import { OwnerType } from "@artsy/cohesion"
+import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 import { isValidElement } from "react"
+
+const TEST_CONTEXT: CityEventRowContext = {
+  contextScreenOwnerType: OwnerType.cityGuideEventList,
+  contextScreenOwnerSlug: "london-united-kingdom",
+}
 
 const makeShow = (overrides: Partial<Show> = {}): Show =>
   ({
@@ -22,7 +29,7 @@ const makeSection = (items: Show[]): CityEventSection<Show>[] => [
 
 describe("showsToMapSections", () => {
   it("carries the section id and title over unchanged", () => {
-    const sections = showsToMapSections(makeSection([makeShow()]))
+    const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
 
     expect(sections).toHaveLength(1)
     expect(sections[0].id).toEqual("clerkenwell")
@@ -30,7 +37,7 @@ describe("showsToMapSections", () => {
   })
 
   it("maps a show's id, title, coordinates and href", () => {
-    const sections = showsToMapSections(makeSection([makeShow()]))
+    const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
 
     expect(sections[0].places[0]).toMatchObject({
       id: "show-1",
@@ -47,7 +54,7 @@ describe("showsToMapSections", () => {
       location: { postalCode: "EC1M 5RR", coordinates: { lat: null, lng: null } },
     })
 
-    const sections = showsToMapSections(makeSection([valid, invalid]))
+    const sections = showsToMapSections(makeSection([valid, invalid]), TEST_CONTEXT)
 
     expect(sections[0].places.map((p) => p.id)).toEqual(["valid"])
   })
@@ -57,7 +64,7 @@ describe("showsToMapSections", () => {
       location: { postalCode: "EC1M 5RR", coordinates: { lat: undefined, lng: undefined } },
     })
 
-    const sections = showsToMapSections(makeSection([invalid]))
+    const sections = showsToMapSections(makeSection([invalid]), TEST_CONTEXT)
 
     expect(sections).toHaveLength(1)
     expect(sections[0].places).toEqual([])
@@ -65,7 +72,7 @@ describe("showsToMapSections", () => {
 
   // The same card an itinerary stop gets, so a show reads the same on either map.
   it("gives each pin the show's own stop card", () => {
-    const sections = showsToMapSections(makeSection([makeShow()]))
+    const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
 
     expect(sections[0].places[0].card).toMatchObject({
       kind: "show",
@@ -79,26 +86,45 @@ describe("showsToMapSections", () => {
     const withCover = showsToMapSections(
       makeSection([
         makeShow({ cover_image: { url: "https://example.com/show.jpg" } } as Partial<Show>),
-      ])
+      ]),
+      TEST_CONTEXT
     )
 
     expect(withCover[0].places[0].image).toEqual({ url: "https://example.com/show.jpg" })
-    expect(showsToMapSections(makeSection([makeShow()]))[0].places[0].image).toBeNull()
+    expect(
+      showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)[0].places[0].image
+    ).toBeNull()
   })
 
   it("uses the saved pin icon for a followed show, and the plain pin otherwise", () => {
-    const followed = showsToMapSections(makeSection([makeShow({ is_followed: true })]))
-    const notFollowed = showsToMapSections(makeSection([makeShow({ is_followed: false })]))
+    const followed = showsToMapSections(
+      makeSection([makeShow({ is_followed: true })]),
+      TEST_CONTEXT
+    )
+    const notFollowed = showsToMapSections(
+      makeSection([makeShow({ is_followed: false })]),
+      TEST_CONTEXT
+    )
 
     expect(followed[0].places[0].icon).toEqual("pin-saved")
     expect(notFollowed[0].places[0].icon).toEqual("pin")
   })
 
   it("always injects a CityEventSaveControl", () => {
-    const sections = showsToMapSections(makeSection([makeShow()]))
+    const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
     const saveControl = sections[0].places[0].saveControl
 
     expect(isValidElement(saveControl)).toBe(true)
     expect((saveControl as React.ReactElement).type).toBe(CityEventSaveControl)
+  })
+
+  it("threads the calling screen's context onto the save control", () => {
+    const sections = showsToMapSections(makeSection([makeShow()]), TEST_CONTEXT)
+    const saveControl = sections[0].places[0].saveControl as React.ReactElement
+
+    expect(saveControl.props).toMatchObject({
+      contextScreenOwnerType: OwnerType.cityGuideEventList,
+      contextScreenOwnerSlug: "london-united-kingdom",
+    })
   })
 })

@@ -1,5 +1,7 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({ useFeatureFlag: () => true }))
@@ -16,7 +18,13 @@ describe("ItineraryItemSaveControl", () => {
             [itemType === "SHOW" ? "show" : "fair"]: { isOnMyItineraries: true },
           }),
         },
-        { itemType, itemID: "entity-id", name: "My event" }
+        {
+          itemType,
+          itemID: "entity-id",
+          name: "My event",
+          contextScreenOwnerType: itemType === "SHOW" ? OwnerType.show : OwnerType.fair,
+          contextScreenOwnerId: "entity-id",
+        }
       )
 
       expect(await screen.findByLabelText("My event is on an itinerary")).toBeOnTheScreen()
@@ -29,6 +37,15 @@ describe("ItineraryItemSaveControl", () => {
         hasShow: itemType === "SHOW",
         hasFair: itemType === "FAIR",
       })
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.tappedAddToItinerary,
+          context_screen_owner_type: itemType === "SHOW" ? OwnerType.show : OwnerType.fair,
+          context_screen_owner_id: "entity-id",
+          destination_screen_owner_type: itemType === "SHOW" ? OwnerType.show : OwnerType.fair,
+          destination_screen_owner_id: "entity-id",
+        })
+      )
     }
   )
 })

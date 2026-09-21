@@ -1,4 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
+import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
@@ -13,7 +14,10 @@ import { Fair } from "app/Scenes/CityGuide/utils/types"
  * a follow of its **profile**, which is nullable, so the save control is only injected when
  * one exists.
  */
-export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSection[] =>
+export const fairsToMapSections = (
+  sections: CityEventSection<Fair>[],
+  context: CityEventRowContext
+): MapSection[] =>
   sections.map((section) => ({
     id: section.id,
     title: section.title,
@@ -37,7 +41,14 @@ export const fairsToMapSections = (sections: CityEventSection<Fair>[]): MapSecti
         // No longer gated on the fair having a profile: a stop stores the fair itself, so
         // there is nothing a missing profile would stop.
         saveControl: (
-          <CityEventSaveControl itemType="FAIR" itemID={fair.internalID} name={fair.name ?? ""} />
+          <CityEventSaveControl
+            itemType="FAIR"
+            itemID={fair.internalID}
+            itemSlug={fair.slug ?? undefined}
+            name={fair.name ?? ""}
+            contextScreenOwnerType={context.contextScreenOwnerType}
+            contextScreenOwnerSlug={context.contextScreenOwnerSlug}
+          />
         ),
       })),
   }))

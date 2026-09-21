@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, BoxProps, Flex, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
@@ -44,7 +45,11 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
           <ItineraryItemSaveControl
             itemType="SHOW"
             itemID={show.internalID}
+            itemSlug={show.slug ?? undefined}
             name={show.name ?? ""}
+            contextScreenOwnerType={OwnerType.show}
+            contextScreenOwnerId={show.internalID}
+            contextScreenOwnerSlug={show.slug ?? undefined}
           />
         )}
       </Flex>
@@ -67,6 +72,7 @@ export const ShowHeaderFragmentContainer = createFragmentContainer(ShowHeader, {
     fragment ShowHeader_show on Show {
       name
       internalID
+      slug
       isOnlineExclusive
       location {
         address

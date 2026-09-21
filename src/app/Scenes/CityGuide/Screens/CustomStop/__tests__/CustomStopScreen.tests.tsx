@@ -1,5 +1,7 @@
-import { act, screen, waitFor } from "@testing-library/react-native"
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CustomStopScreen } from "app/Scenes/CityGuide/Screens/CustomStop/CustomStopScreen"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 
@@ -40,6 +42,18 @@ describe("CustomStopScreen", () => {
       isCurated,
       sections: [{ stops: [{ ...STOP, ...overrides }] }],
     }),
+  })
+
+  it("tracks the screen view against cityGuideCustomStop", async () => {
+    renderWithRelay(withStop(), props)
+
+    await screen.findByText("Coffee at London Cafe")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.screen,
+      context_screen_owner_type: OwnerType.cityGuideCustomStop,
+      context_screen_owner_slug: "london-united-kingdom",
+    })
   })
 
   it("renders every block the stop carries", async () => {
@@ -107,6 +121,21 @@ describe("CustomStopScreen", () => {
       renderWithRelay(withStop(), props)
 
       expect(await screen.findByTestId("custom-stop-save-button")).toBeOnTheScreen()
+    })
+
+    it("tracks tappedAddToItinerary, marked as a curated guide, with no destination entity", async () => {
+      renderWithRelay(withStop(), props)
+
+      fireEvent.press(await screen.findByTestId("custom-stop-save-button"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.tappedAddToItinerary,
+          context_screen_owner_type: OwnerType.cityGuideCustomStop,
+          context_screen_owner_slug: "london-united-kingdom",
+          is_curated_guide: true,
+        })
+      )
     })
 
     it("offers nothing on your own itinerary", async () => {

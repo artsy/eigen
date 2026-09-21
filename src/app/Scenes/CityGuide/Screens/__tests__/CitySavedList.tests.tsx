@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, within } from "@testing-library/react-native"
 import { CitySavedListQueryRenderer } from "app/Scenes/CityGuide/Screens/CitySavedList"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -143,6 +144,24 @@ describe("CitySavedListQueryRenderer", () => {
     expect(mockSetOptions).toHaveBeenCalledWith({ title: "Your London Itinerary" })
   })
 
+  it("tracks the cohesion screen view against cityGuideSavedList", async () => {
+    renderWithRelay(
+      {
+        FollowsAndSaves: () => ({ shows: { edges: [{ node: { name: "Frida Kahlo" } }] } }),
+        City: () => ({ name: "London", fairsConnection: { edges: [] } }),
+      },
+      props
+    )
+
+    await screen.findByText("Frida Kahlo")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.screen,
+      context_screen_owner_type: OwnerType.cityGuideSavedList,
+      context_screen_owner_slug: "london-united-kingdom",
+    })
+  })
+
   it("shows a map toggle when there are places to map, and switches list/map mode when pressed", async () => {
     renderWithRelay(
       {
@@ -179,12 +198,28 @@ describe("CitySavedListQueryRenderer", () => {
         owner_slug: "london-united-kingdom",
       })
     )
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: ActionType.tappedNavigationTab,
+        context_module: ContextModule.cityGuideMapToggle,
+        context_screen_owner_type: OwnerType.cityGuideSavedList,
+        context_screen_owner_slug: "london-united-kingdom",
+        subject: "map",
+      })
+    )
 
     fireEvent.press(screen.getByTestId("city-saved-list-view-toggle"))
 
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ action_name: "cityGuideShowList" })
+    )
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: ActionType.tappedNavigationTab,
+        context_module: ContextModule.cityGuideMapToggle,
+        subject: "list",
+      })
     )
   })
 

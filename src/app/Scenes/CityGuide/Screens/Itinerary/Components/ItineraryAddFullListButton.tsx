@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Button } from "@artsy/palette-mobile"
 import { ItineraryAddFullListButtonCopyMutation } from "__generated__/ItineraryAddFullListButtonCopyMutation.graphql"
 import { ItineraryAddFullListButtonQuery } from "__generated__/ItineraryAddFullListButtonQuery.graphql"
@@ -14,13 +15,16 @@ interface Props {
   citySlug: string
   /** The itinerary's own id, which is what `copyItinerary` takes. */
   itineraryId: string
+  /** The itinerary's own slug, for tracking only. */
+  itinerarySlug?: string
   /** Checked against your own itineraries' titles, so a guide already copied shows as such. */
   title: string
 }
 
-const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, title }) => {
+const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, itinerarySlug, title }) => {
   const toast = useToast()
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   const [commit] = useMutation<ItineraryAddFullListButtonCopyMutation>(CopyMutation)
   const [isCopying, setIsCopying] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
@@ -49,6 +53,17 @@ const AddFullListButton: React.FC<Props> = ({ citySlug, itineraryId, title }) =>
 
   const copy = () => {
     setIsCopying(true)
+
+    // Fired at tap-time, alongside (not instead of) the legacy outcome tracking `settle`
+    // does below: this button still does the old `copyItinerary` mutation, which #14110
+    // will replace with the Add to Itinerary sheet — whoever finishes that PR needs to
+    // carry this tap event over, since the outcome-based tracking below won't survive it.
+    trackCohesionEvent({
+      action: ActionType.tappedAddFullListToItinerary,
+      context_screen_owner_type: OwnerType.cityGuideGuide,
+      context_screen_owner_id: itineraryId,
+      context_screen_owner_slug: itinerarySlug,
+    })
 
     const settle = (didCopy: boolean, message: string) => {
       // Tracked whether or not the screen is still mounted: the tap happened and the mutation

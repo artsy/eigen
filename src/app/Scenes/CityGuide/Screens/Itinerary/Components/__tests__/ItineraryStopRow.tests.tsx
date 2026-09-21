@@ -1,9 +1,11 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 // The row fires no query: a stop already knows what it points at, so its plus needs no
@@ -313,6 +315,68 @@ describe("ItineraryStopRow", () => {
     })
 
     expect(screen.getByTestId("city-guide-save-button-add-icon")).toBeTruthy()
+  })
+
+  describe("tracking the plus", () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("tracks the row's own itinerary as context, with the entity as the destination", () => {
+      renderWithWrappers(
+        <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+          <ItineraryStopRow
+            stop={savedStop}
+            number={2}
+            citySlug="london-united-kingdom"
+            itineraryId="guide-1"
+            itinerarySlug="guide-one"
+            cityName="London"
+            isCuratedGuide
+          />
+        </AddToItineraryProvider>
+      )
+
+      fireEvent.press(screen.getByTestId("city-guide-save-button"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.tappedAddToItinerary,
+          context_screen_owner_type: OwnerType.cityGuideGuide,
+          context_screen_owner_id: "guide-1",
+          context_screen_owner_slug: "guide-one",
+          destination_screen_owner_type: OwnerType.show,
+          destination_screen_owner_id: "show-1",
+          destination_screen_owner_slug: "museum-show",
+          is_curated_guide: true,
+        })
+      )
+    })
+
+    it("tracks a custom stop with no destination entity", () => {
+      renderWithWrappers(
+        <AddToItineraryProvider citySlug="london-united-kingdom" cityName="London">
+          <ItineraryStopRow
+            stop={unsaveableStop}
+            number={1}
+            citySlug="london-united-kingdom"
+            itineraryId="guide-1"
+            cityName="London"
+          />
+        </AddToItineraryProvider>
+      )
+
+      fireEvent.press(screen.getByTestId("custom-stop-save-button"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: ActionType.tappedAddToItinerary,
+          context_screen_owner_type: OwnerType.cityGuideGuide,
+          context_screen_owner_id: "guide-1",
+          is_curated_guide: false,
+        })
+      )
+    })
   })
 
   // The designs give the card three lines and separate hours from admission with a dot.

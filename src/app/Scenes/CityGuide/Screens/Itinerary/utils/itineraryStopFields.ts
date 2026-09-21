@@ -16,12 +16,22 @@ const knownItem = (
 
   switch (item.__typename) {
     case "Show":
-      return { itemType: "SHOW", itemID: item.internalID, name: item.name ?? null }
+      return {
+        itemType: "SHOW",
+        itemID: item.internalID,
+        itemSlug: item.slug ?? undefined,
+        name: item.name ?? null,
+      }
     case "Fair":
-      return { itemType: "FAIR", itemID: item.internalID, name: item.name ?? null }
+      return {
+        itemType: "FAIR",
+        itemID: item.internalID,
+        itemSlug: item.slug ?? undefined,
+        name: item.name ?? null,
+      }
     case "Location":
       // A stop names the location, not the partner, so `LOCATION` is what it stores — the
-      // partner is still where the name falls back to.
+      // partner is still where the name falls back to. A location has no slug of its own.
       return {
         itemType: "LOCATION",
         itemID: item.internalID,
@@ -39,7 +49,7 @@ const knownItem = (
 export const itineraryStopSaveTarget = (stop: ItineraryStop): ItinerarySaveTarget | null => {
   const known = knownItem(stop.item)
 
-  return known ? { itemType: known.itemType, itemID: known.itemID } : null
+  return known ? { itemType: known.itemType, itemID: known.itemID, itemSlug: known.itemSlug } : null
 }
 
 /**

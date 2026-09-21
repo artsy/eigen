@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, SimpleMessage, Spinner } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
@@ -9,7 +10,11 @@ import { CitySavedList_me$key } from "__generated__/CitySavedList_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
-import { renderFairRow, renderShowRow } from "app/Scenes/CityGuide/Components/CityEventRows"
+import {
+  CityEventRowContext,
+  renderFairRow,
+  renderShowRow,
+} from "app/Scenes/CityGuide/Components/CityEventRows"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
@@ -21,7 +26,8 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import { Schema } from "app/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema, Schema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -122,113 +128,141 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug, city }) => {
   // totalCount. Triggering further pagination when the map opens was considered and rejected
   // for this task — it would mean fetching pages of shows the list hasn't scrolled to only to
   // populate a map, which is a bigger behavioural change than "add a map" calls for.
+  // Every save control on this screen — rows and map pins alike — is rendered from the
+  // saved list, never the home screen's rails.
+  const rowContext: CityEventRowContext = useMemo(
+    () => ({
+      contextScreenOwnerType: OwnerType.cityGuideSavedList,
+      contextScreenOwnerSlug: citySlug,
+    }),
+    [citySlug]
+  )
+
   const mapSections = useMemo(() => {
     const sections: MapSection[] = []
 
     if (followedFairs.length > 0) {
-      sections.push(...fairsToMapSections([{ id: "fairs", title: "Fairs", items: followedFairs }]))
+      sections.push(
+        ...fairsToMapSections([{ id: "fairs", title: "Fairs", items: followedFairs }], rowContext)
+      )
     }
 
     if (shows.length > 0) {
       // Relay's fragment result is a readonly array; CityEventSection<T> wants a plain T[],
       // so it is copied rather than cast.
-      sections.push(...showsToMapSections([{ id: "shows", title: "Shows", items: [...shows] }]))
+      sections.push(
+        ...showsToMapSections([{ id: "shows", title: "Shows", items: [...shows] }], rowContext)
+      )
     }
 
     return sections
-  }, [followedFairs, shows])
+  }, [followedFairs, shows, rowContext])
 
   const hasMappablePlaces = useMemo(
     () => mapSections.some((mapSection) => mapSection.places.length > 0),
     [mapSections]
   )
 
-  if (rows.length === 0) {
-    return (
-      <Flex px={2} py={2}>
-        <SimpleMessage>
-          {`You haven’t saved anything in ${cityName} yet. When you save shows and fairs, they will show up here.`}
-        </SimpleMessage>
-      </Flex>
-    )
-  }
-
   return (
-    <AddToItineraryProvider citySlug={citySlug} cityName={cityName}>
-      <Flex flex={1}>
-        {isMapView ? (
-          <MapView
-            sections={mapSections}
-            citySlug={citySlug}
-            selectedPlaceId={selectedPlaceId}
-            onSelectPlace={setSelectedPlaceId}
-            // This screen has no in-flow header of its own (unlike the itinerary, which
-            // the 60 default is tuned for) — it sits under a static native header, which
-            // already reserves its own space above this view. No extra clearance needed
-            // beyond the safe-area inset MapView already adds.
-            pillsTopOffset={0}
-          />
-        ) : (
-          <FlashList<CityItineraryRow>
-            data={rows}
-            keyExtractor={(row) =>
-              row.kind === "fair" ? `fair-${row.fair.id}` : `show-${row.show.id}`
-            }
-            getItemType={(row) => row.kind}
-            renderItem={({ item }) =>
-              item.kind === "fair" ? renderFairRow(item.fair) : renderShowRow(item.show)
-            }
-            onScroll={isCloseToBottom(fetchData)}
-            ListFooterComponent={
-              fetchingNextPage ? <Spinner style={{ marginVertical: 20 }} /> : null
-            }
-            contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
-          />
-        )}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.cityGuideSavedList,
+        context_screen_owner_slug: citySlug,
+      })}
+    >
+      {rows.length === 0 ? (
+        <Flex px={2} py={2}>
+          <SimpleMessage>
+            {`You haven’t saved anything in ${cityName} yet. When you save shows and fairs, they will show up here.`}
+          </SimpleMessage>
+        </Flex>
+      ) : (
+        <AddToItineraryProvider citySlug={citySlug} cityName={cityName}>
+          <Flex flex={1}>
+            {isMapView ? (
+              <MapView
+                sections={mapSections}
+                citySlug={citySlug}
+                selectedPlaceId={selectedPlaceId}
+                onSelectPlace={setSelectedPlaceId}
+                // This screen has no in-flow header of its own (unlike the itinerary, which
+                // the 60 default is tuned for) — it sits under a static native header, which
+                // already reserves its own space above this view. No extra clearance needed
+                // beyond the safe-area inset MapView already adds.
+                pillsTopOffset={0}
+              />
+            ) : (
+              <FlashList<CityItineraryRow>
+                data={rows}
+                keyExtractor={(row) =>
+                  row.kind === "fair" ? `fair-${row.fair.id}` : `show-${row.show.id}`
+                }
+                getItemType={(row) => row.kind}
+                renderItem={({ item }) =>
+                  item.kind === "fair"
+                    ? renderFairRow(item.fair, rowContext)
+                    : renderShowRow(item.show, rowContext)
+                }
+                onScroll={isCloseToBottom(fetchData)}
+                ListFooterComponent={
+                  fetchingNextPage ? <Spinner style={{ marginVertical: 20 }} /> : null
+                }
+                contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
+              />
+            )}
 
-        {/*
-        Hidden with nothing to map: with zero valid places the camera target is undefined
-        and the map opens on Mapbox's world view rather than framing anything, exactly the
-        gate CityEventListScreen uses.
-      */}
-        {!!hasMappablePlaces && (
-          <MotiView
-            from={{ opacity: 0.5, translateY: 0 }}
-            animate={{ opacity: 1, translateY: -60 }}
-            transition={{ type: "timing", duration: 300, delay: 200 }}
-          >
-            <Flex
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                bottom: -50,
-                zIndex: 1000,
-              }}
-            >
-              <Button
-                testID="city-saved-list-view-toggle"
-                size="small"
-                onPress={() => {
-                  trackEntity({
-                    action_name: isMapView
-                      ? Schema.ActionNames.CityGuideShowList
-                      : Schema.ActionNames.CityGuideShowMap,
-                    action_type: Schema.ActionTypes.Tap,
-                    owner_type: Schema.OwnerEntityTypes.CityGuide,
-                    owner_slug: citySlug,
-                  })
-                  setIsMapView((current) => !current)
-                }}
+            {/*
+            Hidden with nothing to map: with zero valid places the camera target is undefined
+            and the map opens on Mapbox's world view rather than framing anything, exactly the
+            gate CityEventListScreen uses.
+          */}
+            {!!hasMappablePlaces && (
+              <MotiView
+                from={{ opacity: 0.5, translateY: 0 }}
+                animate={{ opacity: 1, translateY: -60 }}
+                transition={{ type: "timing", duration: 300, delay: 200 }}
               >
-                {isMapView ? "Show in List" : "Show on Map"}
-              </Button>
-            </Flex>
-          </MotiView>
-        )}
-      </Flex>
-    </AddToItineraryProvider>
+                <Flex
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "absolute",
+                    bottom: -50,
+                    zIndex: 1000,
+                  }}
+                >
+                  <Button
+                    testID="city-saved-list-view-toggle"
+                    size="small"
+                    onPress={() => {
+                      trackEntity({
+                        action_name: isMapView
+                          ? Schema.ActionNames.CityGuideShowList
+                          : Schema.ActionNames.CityGuideShowMap,
+                        action_type: Schema.ActionTypes.Tap,
+                        owner_type: Schema.OwnerEntityTypes.CityGuide,
+                        owner_slug: citySlug,
+                      })
+                      trackEvent({
+                        action: ActionType.tappedNavigationTab,
+                        context_module: ContextModule.cityGuideMapToggle,
+                        context_screen_owner_type: OwnerType.cityGuideSavedList,
+                        context_screen_owner_slug: citySlug,
+                        subject: isMapView ? "list" : "map",
+                      })
+                      setIsMapView((current) => !current)
+                    }}
+                  >
+                    {isMapView ? "Show in List" : "Show on Map"}
+                  </Button>
+                </Flex>
+              </MotiView>
+            )}
+          </Flex>
+        </AddToItineraryProvider>
+      )}
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

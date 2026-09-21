@@ -1,8 +1,15 @@
+import { OwnerType } from "@artsy/cohesion"
+import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityEventSection } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { Fair } from "app/Scenes/CityGuide/utils/types"
 import { isValidElement } from "react"
+
+const TEST_CONTEXT: CityEventRowContext = {
+  contextScreenOwnerType: OwnerType.cityGuideEventList,
+  contextScreenOwnerSlug: "london-united-kingdom",
+}
 
 const makeFair = (overrides: Partial<Fair> = {}): Fair =>
   ({
@@ -22,7 +29,7 @@ const makeSection = (items: Fair[]): CityEventSection<Fair>[] => [
 
 describe("fairsToMapSections", () => {
   it("carries the section id and title over unchanged", () => {
-    const sections = fairsToMapSections(makeSection([makeFair()]))
+    const sections = fairsToMapSections(makeSection([makeFair()]), TEST_CONTEXT)
 
     expect(sections).toHaveLength(1)
     expect(sections[0].id).toEqual("regents-park")
@@ -30,7 +37,7 @@ describe("fairsToMapSections", () => {
   })
 
   it("maps a fair's id, title, coordinates, and builds an href from the slug", () => {
-    const sections = fairsToMapSections(makeSection([makeFair()]))
+    const sections = fairsToMapSections(makeSection([makeFair()]), TEST_CONTEXT)
 
     expect(sections[0].places[0]).toMatchObject({
       id: "fair-1",
@@ -47,7 +54,7 @@ describe("fairsToMapSections", () => {
       location: { postalCode: "NW1 4NR", coordinates: { lat: null, lng: null } },
     })
 
-    const sections = fairsToMapSections(makeSection([valid, invalid]))
+    const sections = fairsToMapSections(makeSection([valid, invalid]), TEST_CONTEXT)
 
     expect(sections[0].places.map((p) => p.id)).toEqual(["valid"])
   })
@@ -57,14 +64,14 @@ describe("fairsToMapSections", () => {
       location: { postalCode: "NW1 4NR", coordinates: { lat: undefined, lng: undefined } },
     })
 
-    const sections = fairsToMapSections(makeSection([invalid]))
+    const sections = fairsToMapSections(makeSection([invalid]), TEST_CONTEXT)
 
     expect(sections).toHaveLength(1)
     expect(sections[0].places).toEqual([])
   })
 
   it("always uses the fair pin icon", () => {
-    const sections = fairsToMapSections(makeSection([makeFair()]))
+    const sections = fairsToMapSections(makeSection([makeFair()]), TEST_CONTEXT)
 
     expect(sections[0].places[0].icon).toEqual("pin-fair")
   })
@@ -72,16 +79,22 @@ describe("fairsToMapSections", () => {
   // Keyed on the fair itself, not its profile: a stop stores the fair, and following — which
   // is what needed the profile — is gone.
   it("injects a save control keyed on the fair's own id", () => {
-    const sections = fairsToMapSections(makeSection([makeFair()]))
+    const sections = fairsToMapSections(makeSection([makeFair()]), TEST_CONTEXT)
     const saveControl = sections[0].places[0].saveControl as React.ReactElement
 
     expect(isValidElement(saveControl)).toBe(true)
     expect(saveControl.type).toBe(CityEventSaveControl)
-    expect(saveControl.props).toMatchObject({ itemType: "FAIR", itemID: "fair-internal-1" })
+    expect(saveControl.props).toMatchObject({
+      itemType: "FAIR",
+      itemID: "fair-internal-1",
+      itemSlug: "frieze-london",
+      contextScreenOwnerType: OwnerType.cityGuideEventList,
+      contextScreenOwnerSlug: "london-united-kingdom",
+    })
   })
 
   it("still offers the control for a fair with no profile", () => {
-    const sections = fairsToMapSections(makeSection([makeFair({ profile: null })]))
+    const sections = fairsToMapSections(makeSection([makeFair({ profile: null })]), TEST_CONTEXT)
 
     expect(sections[0].places[0].saveControl).toBeTruthy()
   })
