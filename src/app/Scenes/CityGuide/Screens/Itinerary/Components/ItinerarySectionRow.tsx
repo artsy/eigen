@@ -1,6 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
+import { ItineraryStopSwipeRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSwipeRow"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { useState } from "react"
@@ -25,6 +26,12 @@ interface Props {
   shareToken?: string
   /** What a new itinerary gets called when a custom stop is copied onto one. */
   cityName: string
+  /** False on a curated guide or a shared link — neither is yours to edit. */
+  canDelete?: boolean
+  /** The stop id whose swipe row is currently open, so opening another one closes it. */
+  swipingStopID?: string | null
+  onSwipeBegin?: (id: string) => void
+  onStopDeleted?: (id: string) => void
 }
 
 export const ItinerarySectionRow: React.FC<Props> = ({
@@ -36,6 +43,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   itineraryId,
   shareToken,
   cityName,
+  canDelete = false,
+  swipingStopID,
+  onSwipeBegin,
+  onStopDeleted,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true)
   const title = itinerarySectionTitle(section, sectionIndex)
@@ -59,15 +70,24 @@ export const ItinerarySectionRow: React.FC<Props> = ({
       {!!isExpanded && (
         <Join separator={<Spacer y={1} />}>
           {section.stops.map((stop, index) => (
-            <ItineraryStopRow
+            <ItineraryStopSwipeRow
               key={stop.internalID}
-              stop={stop}
-              number={startNumber === undefined ? undefined : startNumber + index}
+              stopID={stop.internalID}
               citySlug={citySlug}
-              itineraryId={itineraryId}
-              shareToken={shareToken}
-              cityName={cityName}
-            />
+              canDelete={canDelete}
+              isSwipingActive={swipingStopID === stop.internalID}
+              onSwipeBegin={onSwipeBegin ?? (() => undefined)}
+              onDeleted={onStopDeleted}
+            >
+              <ItineraryStopRow
+                stop={stop}
+                number={startNumber === undefined ? undefined : startNumber + index}
+                citySlug={citySlug}
+                itineraryId={itineraryId}
+                shareToken={shareToken}
+                cityName={cityName}
+              />
+            </ItineraryStopSwipeRow>
           ))}
         </Join>
       )}

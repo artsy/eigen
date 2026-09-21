@@ -1,7 +1,9 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { RefreshControl } from "react-native"
+import { Alert, RefreshControl } from "react-native"
+import { PanGesture } from "react-native-gesture-handler"
+import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import RNShare from "react-native-share"
 import { MockPayloadGenerator } from "relay-test-utils"
 
@@ -520,6 +522,124 @@ describe("ItineraryScreen", () => {
       // The sheet lists the itinerary by title, so the header's copy is no longer alone.
       expect(await screen.findAllByText("Chill Vibes Only")).toHaveLength(2)
       expect(screen.getByText("Stop 1")).toBeOnTheScreen()
+      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
+    })
+  })
+
+  // No real ownership field on `Query.itinerary` yet (FIREWORKS-36 is adding one), so the gate
+  // is `!isCurated && !shareToken` — exercised here rather than restated per screen.
+  describe("swipe to delete a stop", () => {
+    const own = { ...ITINERARY, isCurated: false, shareToken: null }
+
+    beforeEach(() => {
+      jest.spyOn(Alert, "alert").mockImplementation((_title, _message, buttons) => {
+        buttons?.find((button) => button.style === "destructive")?.onPress?.()
+      })
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+    })
+
+    const swipeAndConfirmDelete = (stopID: string) => {
+      fireGestureHandler<PanGesture>(getByGestureTestId(`pan-itinerary-stop-${stopID}`), [
+        { translationX: 0 },
+        { translationX: -100 },
+      ])
+      fireEvent.press(screen.getByTestId(`delete-button-${stopID}`))
+    }
+
+    it("offers no swipe gesture on a curated guide", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      await screen.findByText("Stop 1")
+
+      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
+    })
+
+    it("offers no swipe gesture on a shared link to somebody else's itinerary", async () => {
+      renderWithRelay(
+        { Itinerary: () => ({ ...own, shareToken: "abc123" }) },
+        { ...props, shareToken: "abc123" }
+      )
+
+      await screen.findByText("Stop 1")
+
+      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
+    })
+
+    it("removes the swiped stop from the list and the map after a confirmed delete", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      swipeAndConfirmDelete("stop-1")
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useDeleteItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              deleteItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-1" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
+      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
+    })
+
+    // Removing the only stop left in a day empties that section, which the screen already
+    // drops rather than showing a heading over nothing.
+    it("drops a section once its last stop is swipe-deleted", async () => {
+      const twoDays = {
+        ...own,
+        sections: [
+          { internalID: "day-1", title: "Day 1 — Easing in", stops: [stop(1)] },
+          { internalID: "day-2", title: "Day 2 — London Frieze", stops: [stop(2)] },
+        ],
+      }
+      const view = renderWithRelay({ Itinerary: () => twoDays }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      swipeAndConfirmDelete("stop-1")
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useDeleteItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              deleteItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-1" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
+      // The section itself is gone too, not just its stop, since it now has none left.
+      expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
       expect(screen.getByText("Stop 2")).toBeOnTheScreen()
     })
   })

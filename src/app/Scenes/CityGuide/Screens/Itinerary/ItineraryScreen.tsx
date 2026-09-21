@@ -16,6 +16,7 @@ import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Componen
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
+import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -28,6 +29,21 @@ import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "reac
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
+
+/**
+ * Drops a swipe-deleted stop from both the list and the map without waiting on a refetch of
+ * the whole itinerary.
+ */
+const withoutDeletedStops = (
+  itinerary: ItineraryData,
+  deletedStopIDs: ReadonlySet<string>
+): ItineraryData => ({
+  ...itinerary,
+  sections: itinerary.sections.map((section) => ({
+    ...section,
+    stops: section.stops.filter((stop) => !deletedStopIDs.has(stop.internalID)),
+  })),
+})
 
 interface Props {
   citySlug: string
@@ -59,6 +75,11 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
 
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  // The stop whose swipe row is currently open, so opening another one closes it, and the
+  // stops removed this session, tracked here (not in the section row) because a deleted stop
+  // must also disappear from the map, which this screen builds from the raw itinerary.
+  const [swipingStopID, setSwipingStopID] = useState<string | null>(null)
+  const [deletedStopIDs, setDeletedStopIDs] = useState<ReadonlySet<string>>(new Set())
 
   /*
     Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
@@ -99,8 +120,14 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // Computed ahead of the null check to keep hook order stable.
   const mapSections = useMemo(
     () =>
-      itinerary ? itineraryStopsToMapSections(itinerary, citySlug, data.city?.name ?? "") : [],
-    [itinerary, citySlug, data.city?.name]
+      itinerary
+        ? itineraryStopsToMapSections(
+            withoutDeletedStops(itinerary, deletedStopIDs),
+            citySlug,
+            data.city?.name ?? ""
+          )
+        : [],
+    [itinerary, deletedStopIDs, citySlug, data.city?.name]
   )
 
   if (!itinerary) {
@@ -119,9 +146,16 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // Your own itinerary shows no order: it is an unordered list, so numbering would be noise.
   // A curated guide keeps it.
   const isEditorial = itinerary.isCurated
+  // No real ownership field yet (FIREWORKS-36 is adding `Itinerary.isMine` to metaphysics for
+  // this); a personal itinerary reached without a share token is the closest signal available
+  // today that it's actually yours to edit.
+  const canDelete = !itinerary.isCurated && !shareToken
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
-  // removing its last stop leaves it behind on the itinerary, so this is the common case.
-  const sections = itinerary.sections.filter((section) => section.stops.length > 0)
+  // removing its last stop (or swipe-deleting it) leaves it behind on the itinerary, so this
+  // is the common case.
+  const sections = withoutDeletedStops(itinerary, deletedStopIDs).sections.filter(
+    (section) => section.stops.length > 0
+  )
   /*
     A guide always names its days. Your own itinerary usually has just the one section, whose
     name would be a redundant subheading over the whole list — but once it has several (a
@@ -234,6 +268,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       itineraryId={itineraryId}
                       shareToken={shareToken}
                       cityName={data.city?.name ?? ""}
+                      canDelete={canDelete}
+                      swipingStopID={swipingStopID}
+                      onSwipeBegin={setSwipingStopID}
+                      onStopDeleted={(stopID) =>
+                        setDeletedStopIDs((current) => new Set(current).add(stopID))
+                      }
                     />
                   ))}
                 </Join>

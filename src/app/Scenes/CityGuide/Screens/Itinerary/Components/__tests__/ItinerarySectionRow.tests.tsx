@@ -82,4 +82,39 @@ describe("ItinerarySectionRow", () => {
     expect(screen.queryByText("Coffee at London Cafe")).toBeNull()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
   })
+
+  describe("swipe to delete", () => {
+    it("offers no swipe gesture by default", () => {
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+        />
+      )
+
+      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
+    })
+
+    it("wraps every stop with a swipe row once canDelete is true", () => {
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canDelete
+        />
+      )
+
+      // The delete panel sits behind the row, off-screen until swiped, but RNTL renders both.
+      expect(screen.getByTestId("delete-button-stop-1")).toBeTruthy()
+      expect(screen.getByTestId("delete-button-stop-2")).toBeTruthy()
+    })
+  })
 })
