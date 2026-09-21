@@ -5,6 +5,7 @@ import { Alert, RefreshControl } from "react-native"
 import { PanGesture } from "react-native-gesture-handler"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import RNShare from "react-native-share"
+import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
@@ -15,6 +16,15 @@ jest.mock("@artsy/palette-mobile", () => ({
 }))
 
 jest.mock("react-native-share", () => ({ open: jest.fn() }))
+
+// A stop title `Text` renders its string directly, or as the lone string among other
+// (falsy, conditional) children — either way, this pulls out just the string.
+const stopTitleText = (element: ReactTestInstance) => {
+  // eslint-disable-next-line testing-library/no-node-access -- React props, not a DOM node.
+  const children = element.props.children
+
+  return Array.isArray(children) ? children.find((child) => typeof child === "string") : children
+}
 
 const stop = (n: number) => ({
   internalID: `stop-${n}`,
@@ -641,6 +651,89 @@ describe("ItineraryScreen", () => {
       // The section itself is gone too, not just its stop, since it now has none left.
       expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
       expect(screen.getByText("Stop 2")).toBeOnTheScreen()
+    })
+
+    // Regression test: `handleReorderStop` used to resolve its section and previous order from
+    // the raw itinerary rather than the displayed one, so a drag after a delete in the same
+    // section ran `moveStop` on stale indices and produced the wrong order.
+    it("keeps the order correct when a stop is dragged after an earlier delete in the same section", async () => {
+      const fourStops = {
+        ...own,
+        sections: [
+          {
+            internalID: "day-1",
+            title: "Day 1 — Easing in",
+            stops: [stop(1), stop(2), stop(3), stop(4)],
+          },
+        ],
+      }
+      const view = renderWithRelay({ Itinerary: () => fourStops }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      // Delete Stop 2, so the displayed section is [Stop 1, Stop 3, Stop 4] while the raw
+      // itinerary this screen still holds keeps all four.
+      swipeAndConfirmDelete("stop-2")
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useDeleteItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              deleteItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-2" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      await waitFor(() => expect(screen.queryByText("Stop 2")).not.toBeOnTheScreen())
+
+      // Drag Stop 1 (displayed index 0 of 3) to the end of the displayed section.
+      act(() => {
+        fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+          { translationY: 0 },
+          { translationY: 20 },
+        ])
+      })
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useReorderItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              updateItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-1" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      // Dragging Stop 1 to the end of the displayed [Stop 1, Stop 3, Stop 4] gives
+      // [Stop 3, Stop 4, Stop 1] — resolving the section against the raw (undeleted)
+      // itinerary would instead have produced [Stop 3, Stop 1, Stop 4].
+      await waitFor(() => {
+        const titles = screen.getAllByText(/^Stop \d$/).map(stopTitleText)
+        expect(titles).toEqual(["Stop 3", "Stop 4", "Stop 1"])
+      })
     })
   })
 })

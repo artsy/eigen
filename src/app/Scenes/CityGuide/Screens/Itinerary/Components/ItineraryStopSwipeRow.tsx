@@ -4,10 +4,11 @@ import { useDeleteItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/h
 import { Schema } from "app/utils/track"
 import { useRef } from "react"
 import { Alert } from "react-native"
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { Gesture, GestureDetector, PanGesture } from "react-native-gesture-handler"
 import Animated, {
   Easing,
   runOnJS,
+  SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -27,6 +28,16 @@ interface ItineraryStopSwipeRowProps {
   isSwipingActive?: boolean
   onSwipeBegin: (id: string) => void
   onDeleted?: (id: string) => void
+  /**
+   * FIREWORKS-42's hold-and-drag reorder gesture, raced against this row's own swipe pan so
+   * only one wins a given touch: the swipe's 5px offset threshold wins a real horizontal
+   * flick, `activateAfterLongPress` wins a finger held still. Both have to sit on the same
+   * `GestureDetector` for `Gesture.Race` to arbitrate between them — passed in rather than
+   * composed by the caller, which is why this prop exists at all.
+   */
+  dragGesture?: PanGesture
+  /** The live vertical offset the drag gesture wants this row moved by, if any. */
+  dragTranslateY?: Readonly<SharedValue<number>>
 }
 
 /**
@@ -37,7 +48,17 @@ interface ItineraryStopSwipeRowProps {
  */
 export const ItineraryStopSwipeRow: React.FC<
   React.PropsWithChildren<ItineraryStopSwipeRowProps>
-> = ({ stopID, citySlug, canDelete, isSwipingActive, onSwipeBegin, onDeleted, children }) => {
+> = ({
+  stopID,
+  citySlug,
+  canDelete,
+  isSwipingActive,
+  onSwipeBegin,
+  onDeleted,
+  dragGesture,
+  dragTranslateY,
+  children,
+}) => {
   const deleteItineraryStop = useDeleteItineraryStop(citySlug)
   const { trackEvent } = useTracking<Schema.Entity>()
 
@@ -104,9 +125,11 @@ export const ItineraryStopSwipeRow: React.FC<
       }
     })
 
+  const gesture = dragGesture ? Gesture.Race(pan, dragGesture) : pan
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.get() }],
+      transform: [{ translateX: translateX.get() }, { translateY: dragTranslateY?.get() ?? 0 }],
     }
   })
 
@@ -143,40 +166,43 @@ export const ItineraryStopSwipeRow: React.FC<
     ])
   }
 
-  if (!canDelete) {
+  // Neither a delete swipe nor a drag applies here — nothing to wrap the row in a gesture for.
+  if (!canDelete && !dragGesture) {
     return <>{children}</>
   }
 
   return (
     <Flex>
-      <GestureDetector gesture={pan}>
+      <GestureDetector gesture={gesture}>
         <Animated.View>
-          <Flex
-            position="absolute"
-            top={0}
-            bottom={0}
-            right={0}
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            backgroundColor="red100"
-            width={DELETE_BUTTON_WIDTH}
-            borderTopRightRadius={CARD_RADIUS}
-            borderBottomRightRadius={CARD_RADIUS}
-          >
-            <Touchable
-              accessibilityRole="button"
-              onPress={() => handleDeleteStop()}
-              testID={`delete-button-${stopID}`}
+          {!!canDelete && (
+            <Flex
+              position="absolute"
+              top={0}
+              bottom={0}
+              right={0}
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+              backgroundColor="red100"
+              width={DELETE_BUTTON_WIDTH}
+              borderTopRightRadius={CARD_RADIUS}
+              borderBottomRightRadius={CARD_RADIUS}
             >
-              <Flex flexDirection="row" alignItems="center" width="100%" height="100%">
-                <Text variant="sm-display" color="mono0" selectable={false}>
-                  Delete
-                </Text>
-                <TrashIcon fill="mono0" width="16px" height="16px" />
-              </Flex>
-            </Touchable>
-          </Flex>
+              <Touchable
+                accessibilityRole="button"
+                onPress={() => handleDeleteStop()}
+                testID={`delete-button-${stopID}`}
+              >
+                <Flex flexDirection="row" alignItems="center" width="100%" height="100%">
+                  <Text variant="sm-display" color="mono0" selectable={false}>
+                    Delete
+                  </Text>
+                  <TrashIcon fill="mono0" width="16px" height="16px" />
+                </Flex>
+              </Touchable>
+            </Flex>
+          )}
 
           <Animated.View testID={`itinerary-stop-swipe-content-${stopID}`} style={animatedStyles}>
             {children}

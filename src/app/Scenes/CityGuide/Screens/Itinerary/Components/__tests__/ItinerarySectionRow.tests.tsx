@@ -3,6 +3,8 @@ import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Comp
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { PanGesture } from "react-native-gesture-handler"
+import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 
 // Both fixture stops have no item, so no query fires and setupTestWrapper would throw.
 // See the harness rule in the ItineraryStopRow test.
@@ -115,6 +117,72 @@ describe("ItinerarySectionRow", () => {
       // The delete panel sits behind the row, off-screen until swiped, but RNTL renders both.
       expect(screen.getByTestId("delete-button-stop-1")).toBeTruthy()
       expect(screen.getByTestId("delete-button-stop-2")).toBeTruthy()
+    })
+  })
+
+  describe("hold-and-drag to reorder", () => {
+    it("does not bind a drag gesture by default", () => {
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+        />
+      )
+
+      expect(() => getByGestureTestId("drag-itinerary-stop-stop-1")).toThrow()
+    })
+
+    it("calls onReorderStop with the section, the dragged stop, and both indices once the drag crosses into a neighbour", () => {
+      const onReorderStop = jest.fn()
+
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canReorder
+          onReorderStop={onReorderStop}
+        />
+      )
+
+      // Rows measure 0 in RNTL (no real layout pass), so the section's row gap alone decides
+      // the threshold — any downward drag past half of it crosses into the next stop.
+      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+        { translationY: 0 },
+        { translationY: 20 },
+      ])
+
+      expect(onReorderStop).toHaveBeenCalledWith("day-1", "stop-1", 0, 1)
+    })
+
+    it("does not call onReorderStop when the drag ends back where it started", () => {
+      const onReorderStop = jest.fn()
+
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canReorder
+          onReorderStop={onReorderStop}
+        />
+      )
+
+      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+        { translationY: 0 },
+      ])
+
+      expect(onReorderStop).not.toHaveBeenCalled()
     })
   })
 })
