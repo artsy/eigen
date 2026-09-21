@@ -25,6 +25,12 @@ describe("StopCard", () => {
     expect(screen.getByTestId("stop-card-meta-dot")).toBeOnTheScreen()
   })
 
+  it("centers the row on the cross axis, so the save control lines up with the title", () => {
+    renderWithWrappers(<StopCard card={card()} image={null} />)
+
+    expect(screen.getByTestId("stop-card")).toHaveStyle({ alignItems: "center" })
+  })
+
   it("shows no dot when only one of hours and admission is present", () => {
     renderWithWrappers(<StopCard card={card({ hours: "7am-4pm" })} image={null} />)
 

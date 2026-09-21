@@ -66,6 +66,7 @@ export const StopCard: React.FC<Props> = ({
       testID="stop-card"
       flex={1}
       flexDirection="row"
+      alignItems="center"
       backgroundColor="mono0"
       borderRadius={CARD_RADIUS}
       // `minHeight`, not `height`: every card — with or without an image — lines up at the

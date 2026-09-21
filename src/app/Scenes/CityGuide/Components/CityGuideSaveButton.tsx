@@ -1,4 +1,4 @@
-import { AddStrokeIcon, CheckmarkIcon } from "@artsy/icons/native"
+import { AddStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
 import { Button, Flex, Touchable } from "@artsy/palette-mobile"
 
 const DEFAULT_ICON_SIZE = 24
@@ -61,7 +61,7 @@ export const CityGuideSaveButton: React.FC<Props> = ({
     >
       <Flex width={iconSize} height={iconSize} alignItems="center" justifyContent="center">
         {isSaved ? (
-          <CheckmarkIcon
+          <CheckmarkFillIcon
             testID="city-guide-save-button-check-icon"
             width={iconSize}
             height={iconSize}
