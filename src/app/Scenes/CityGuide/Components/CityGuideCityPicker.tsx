@@ -1,5 +1,14 @@
 import { CheckmarkStrokeIcon } from "@artsy/icons/native"
-import { Box, Flex, Join, Separator, Text, TextProps, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Join,
+  Separator,
+  Text,
+  TextProps,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -40,6 +49,7 @@ const BORDER_RADIUS = 10
 export const CityGuideCityPicker: React.FC<Props> = (props) => {
   const [selectedCity, setSelectedCity] = useState<string | null>(props.selectedCity)
   const { size } = useScreenDimensions()
+  const color = useColor()
   const space = useSpace()
   const insets = useSafeAreaInsets()
   const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
@@ -81,8 +91,8 @@ export const CityGuideCityPicker: React.FC<Props> = (props) => {
             zIndex={1000}
             style={{
               marginTop: insets.top + space(6),
+              backgroundColor: color("mono0"),
             }}
-            backgroundColor="mono0"
             borderRadius={BORDER_RADIUS}
             maxHeight="70%"
             minWidth="90%"
