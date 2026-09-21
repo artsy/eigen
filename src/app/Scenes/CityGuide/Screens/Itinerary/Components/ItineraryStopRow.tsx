@@ -70,7 +70,10 @@ export const ItineraryStopRow: React.FC<Props> = ({
           alignItems="center"
           justifyContent="center"
         >
-          <Text variant="xxs" color="mono0">
+          {/* xxs's default 14px line height sits the digit ~1px low in this 16px circle
+              (iOS puts all of a Text's extra leading above the baseline); 12px removes
+              enough of the gap to center it. */}
+          <Text variant="xxs" color="mono0" lineHeight="12px">
             {number}
           </Text>
         </Flex>
