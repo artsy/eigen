@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { EditIcon } from "@artsy/icons/native"
 import {
   BackButtonWithBackground,
   Button,
@@ -7,11 +8,13 @@ import {
   Screen,
   Spacer,
   Text,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
@@ -36,6 +39,7 @@ import { useTracking } from "react-tracking"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
+const EDIT_ICON_SIZE = 24
 
 /**
  * Drops a swipe-deleted stop from both the list and the map without waiting on a refetch of
@@ -106,6 +110,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const itinerary = data.itinerary
   const [isMapView, setIsMapView] = useState(false)
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
+  const [isEditing, setIsEditing] = useState(false)
 
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -308,6 +313,22 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                   />
                 )}
 
+                {/*
+                  Only for your own itinerary — `isMine` compares Gravity's owner id against the
+                  viewer, since `isCurated` alone can't tell your own guide from one of someone
+                  else's opened via a share link.
+                */}
+                {!!itinerary.isMine && (
+                  <Touchable
+                    testID="itinerary-edit"
+                    accessibilityRole="button"
+                    accessibilityLabel={`Edit ${itinerary.title}`}
+                    onPress={() => setIsEditing(true)}
+                  >
+                    <EditIcon width={EDIT_ICON_SIZE} height={EDIT_ICON_SIZE} />
+                  </Touchable>
+                )}
+
                 <ItineraryShareButton itinerary={itinerary} />
               </Flex>
             </Flex>
@@ -412,6 +433,20 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
             </MotiView>
           </Screen.Body>
         </Screen>
+
+        {!!isEditing && (
+          <ItineraryEditSheet
+            visible
+            onClose={() => setIsEditing(false)}
+            itinerary={{
+              internalID: itinerary.internalID,
+              name: itinerary.title,
+              description: itinerary.description,
+            }}
+            // The guide is gone once deleted — leave, rather than refetch it.
+            onDeleted={goBack}
+          />
+        )}
       </AddToItineraryProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -426,8 +461,10 @@ export const itineraryQuery = graphql`
     itinerary(id: $id, shareToken: $shareToken) {
       internalID
       isCurated
+      isMine
       citySlug
       title
+      description
       slug
       shareToken
       ...ItineraryHeader_itinerary
