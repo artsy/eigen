@@ -86,8 +86,7 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
 
 const CityGuideNewSectionsWithSuspense = withSuspense({
   Component: CityGuideNewSections,
-  // A skeleton that approximates the loaded sections' height, so the initial load doesn't
-  // blank the screen and then shift everything below once data arrives.
+  // A spinner, so the initial load doesn't blank the screen outright.
   LoadingFallback: CityGuideNewPlaceholder,
   ErrorFallback: NoFallback,
 })

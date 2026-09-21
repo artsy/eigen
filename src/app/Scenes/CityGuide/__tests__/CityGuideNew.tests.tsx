@@ -46,13 +46,13 @@ describe("CityGuideNew", () => {
   // cases above cover what a user sees.
 
   describe("the loading placeholder", () => {
-    it("shows a skeleton before the query resolves", () => {
+    it("shows a spinner before the query resolves", () => {
       renderWithWrappers(<CityGuideNew />)
 
       expect(screen.getByTestId("city-guide-new-placeholder")).toBeOnTheScreen()
     })
 
-    it("replaces the skeleton with the real sections once the query resolves", async () => {
+    it("replaces the spinner with the real sections once the query resolves", async () => {
       renderWithWrappers(<CityGuideNew />)
 
       await act(async () => {
