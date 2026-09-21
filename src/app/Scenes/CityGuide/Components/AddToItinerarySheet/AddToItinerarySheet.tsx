@@ -223,7 +223,10 @@ const Sheet: React.FC<Props> = ({
     <>
       <BottomSheetView style={{ flex: 1 }}>
         <Flex px={2} pb={2}>
-          <Text variant="md">Add to Itinerary</Text>
+          {/* Neutral on purpose: this sheet both adds and removes the stop across several
+           *  itineraries at once, so a static "Add to Itinerary" reads wrong when you're here
+           *  to untick one (FIREWORKS-53). */}
+          <Text variant="md">Save to Itinerary</Text>
         </Flex>
 
         <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
