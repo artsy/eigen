@@ -142,11 +142,17 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
 
   const handleReorderStop = useCallback(
     async (sectionID: string, stopID: string, fromIndex: number, toIndex: number) => {
-      const section = itinerary?.sections.find((candidate) => candidate.internalID === sectionID)
+      if (!itinerary) return
+
+      // `fromIndex`/`toIndex` are indices into the section as displayed — deleted stops
+      // filtered out and any earlier drag this session already applied — so the section and
+      // its previous order must come from that same displayed itinerary, not the raw one.
+      const displayed = withoutDeletedStops(withStopOrder(itinerary, stopOrder), deletedStopIDs)
+      const section = displayed.sections.find((candidate) => candidate.internalID === sectionID)
 
       if (!section) return
 
-      const previousOrder = stopOrder.get(sectionID) ?? section.stops.map((stop) => stop.internalID)
+      const previousOrder = section.stops.map((stop) => stop.internalID)
       const nextOrder = moveStop(previousOrder, fromIndex, toIndex)
 
       setStopOrder((current) => new Map(current).set(sectionID, nextOrder))
@@ -159,7 +165,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
         showToast("Could not reorder that stop, try again", "bottom", { backgroundColor: "red100" })
       }
     },
-    [itinerary, stopOrder, reorderItineraryStop, showToast]
+    [itinerary, stopOrder, deletedStopIDs, reorderItineraryStop, showToast]
   )
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
