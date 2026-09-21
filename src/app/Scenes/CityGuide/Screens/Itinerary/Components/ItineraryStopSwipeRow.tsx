@@ -2,6 +2,7 @@ import { TrashIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useDeleteItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDeleteItineraryStop"
 import { Schema } from "app/utils/track"
+import { useRef } from "react"
 import { Alert } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
@@ -15,6 +16,8 @@ import { useTracking } from "react-tracking"
 
 /** Same reveal width and gesture thresholds as `SavedSearchListItem`, the pattern this mirrors. */
 const DELETE_BUTTON_WIDTH = 91
+/** Matches `StopCard`'s own `CARD_RADIUS`, so the panel's exposed edge isn't square against a rounded row. */
+const CARD_RADIUS = 8
 
 interface ItineraryStopSwipeRowProps {
   stopID: string
@@ -40,6 +43,22 @@ export const ItineraryStopSwipeRow: React.FC<
 
   const isDeleteButtonVisible = useSharedValue(false)
   const translateX = useSharedValue(0)
+
+  /*
+    `Join` (the separator wrapper `ItinerarySectionRow` renders these in) clones every child
+    with a plain positional key, discarding whatever key we set — so deleting a stop doesn't
+    unmount its row; it shifts the *next* stop's data into this same component instance,
+    shared values and all. Without this, a row that was mid-swipe (or fully open) when its
+    stop got deleted would hand that open, animating-closed panel to whichever stop slides
+    into its slot. Snapping shut synchronously, in the same render the `stopID` prop changes,
+    is what keeps that from ever painting.
+  */
+  const previousStopID = useRef(stopID)
+  if (previousStopID.current !== stopID) {
+    previousStopID.current = stopID
+    translateX.set(0)
+    isDeleteButtonVisible.set(false)
+  }
 
   // Reset the swipe when the user swipes another row.
   if (!isSwipingActive) {
@@ -142,6 +161,8 @@ export const ItineraryStopSwipeRow: React.FC<
             alignItems="center"
             backgroundColor="red100"
             width={DELETE_BUTTON_WIDTH}
+            borderTopRightRadius={CARD_RADIUS}
+            borderBottomRightRadius={CARD_RADIUS}
           >
             <Touchable
               accessibilityRole="button"
@@ -157,7 +178,9 @@ export const ItineraryStopSwipeRow: React.FC<
             </Touchable>
           </Flex>
 
-          <Animated.View style={animatedStyles}>{children}</Animated.View>
+          <Animated.View testID={`itinerary-stop-swipe-content-${stopID}`} style={animatedStyles}>
+            {children}
+          </Animated.View>
         </Animated.View>
       </GestureDetector>
     </Flex>

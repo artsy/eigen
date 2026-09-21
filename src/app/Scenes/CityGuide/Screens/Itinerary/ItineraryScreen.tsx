@@ -271,9 +271,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       canDelete={canDelete}
                       swipingStopID={swipingStopID}
                       onSwipeBegin={setSwipingStopID}
-                      onStopDeleted={(stopID) =>
+                      onStopDeleted={(stopID) => {
+                        // Otherwise the next row briefly reads as the active swipe row: it
+                        // shares the id's now-stale reference until this state catches up.
+                        setSwipingStopID(null)
                         setDeletedStopIDs((current) => new Set(current).add(stopID))
-                      }
+                      }}
                     />
                   ))}
                 </Join>
