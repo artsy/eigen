@@ -1,4 +1,4 @@
-import { CheckmarkStrokeIcon, EmptyCheckCircleIcon, NoArtIcon } from "@artsy/icons/native"
+import { CheckmarkFillIcon, EmptyCheckCircleIcon, NoArtIcon } from "@artsy/icons/native"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { pluralize } from "app/utils/pluralize"
 // TODO: Replace with Image from @artsy/palette-mobile once the itinerary hero is a real image.
@@ -80,7 +80,7 @@ export const AddToItineraryRow: React.FC<Props> = ({
         </Flex>
 
         {selected ? (
-          <CheckmarkStrokeIcon
+          <CheckmarkFillIcon
             testID="add-to-itinerary-row-selected"
             width={TICK_SIZE}
             height={TICK_SIZE}
