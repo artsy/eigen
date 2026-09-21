@@ -290,16 +290,16 @@ describe("AddToItinerarySheet", () => {
 
       await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("b"))
 
-      // "Second" already has a My Stops section, so the stop is created straight away.
+      // The bulk endpoint resolves "Second"'s own "My Stops" section, so the sheet only reads
+      // its stops for dedupe before firing the one add call.
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
           "useApplyItinerarySelectionAddMutation"
         )
       )
       expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
-        itinerarySectionID: "b-s",
-        itemType: "SHOW",
-        itemID: "show-1",
+        itineraryID: "b",
+        stops: [{ itemType: "SHOW", itemID: "show-1" }],
       })
     })
 
@@ -333,11 +333,15 @@ describe("AddToItinerarySheet", () => {
         )
       )
       expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
-        itinerarySectionID: "a-s",
-        title: "Coffee at London Cafe",
-        sourceStopID: "source-stop",
-        sourceShareToken: "source-token",
-        address: "12 Bermondsey Street",
+        itineraryID: "a",
+        stops: [
+          {
+            title: "Coffee at London Cafe",
+            sourceStopID: "source-stop",
+            sourceShareToken: "source-token",
+            address: "12 Bermondsey Street",
+          },
+        ],
       })
     })
 
@@ -426,10 +430,10 @@ describe("AddToItinerarySheet", () => {
       await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("b"))
       await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
         Mutation: () => ({
-          createItineraryStop: {
+          addItineraryStops: {
             responseOrError: {
-              __typename: "ItineraryStopMutationSuccess",
-              itineraryStop: { internalID: "new-stop" },
+              __typename: "AddItineraryStopsMutationSuccess",
+              stops: [{ internalID: "new-stop" }],
             },
           },
         }),
@@ -466,10 +470,10 @@ describe("AddToItinerarySheet", () => {
       await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
       await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
         Mutation: () => ({
-          createItineraryStop: {
+          addItineraryStops: {
             responseOrError: {
-              __typename: "ItineraryStopMutationSuccess",
-              itineraryStop: { internalID: "new-stop" },
+              __typename: "AddItineraryStopsMutationSuccess",
+              stops: [{ internalID: "new-stop" }],
             },
           },
         }),
@@ -708,20 +712,20 @@ describe("AddToItinerarySheet", () => {
 
       fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
-      // The itinerary just made has no "My Stops" section yet, so applying its tick creates
-      // one first, same as any other itinerary that arrived without one.
+      // The itinerary just made has no stops yet, so the read finds nothing to skip and the
+      // bulk endpoint resolves (or creates) its "My Stops" section on its own.
       await resolveNext(view, "fetchItinerarySectionsQuery", {
         Itinerary: () => ({ sections: [] }),
       })
 
       await waitFor(() =>
         expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "useApplyItinerarySelectionCreateSectionMutation"
+          "useApplyItinerarySelectionAddMutation"
         )
       )
       expect(view.env.mock.getMostRecentOperation().request.variables.input).toEqual({
         itineraryID: "new-itinerary",
-        title: "My Stops",
+        stops: [{ itemType: "SHOW", itemID: "show-1" }],
       })
     })
   })
@@ -778,7 +782,7 @@ describe("AddToItinerarySheet", () => {
       expect(screen.queryByTestId("add-to-itinerary-row-selected")).not.toBeOnTheScreen()
     })
 
-    it("adds every stop, in one mutation each, to the same newly-created section", async () => {
+    it("adds every stop in a single mutation", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
 
       fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
@@ -786,21 +790,18 @@ describe("AddToItinerarySheet", () => {
 
       await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(2))
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
 
-      const operations = view.env.mock.getAllOperations()
+      const operation = view.env.mock.getMostRecentOperation()
 
-      expect(
-        operations.every(
-          (op) => op.request.node.params.name === "useApplyItinerarySelectionAddMutation"
-        )
-      ).toBe(true)
-      expect(operations.map((op) => op.request.variables.input)).toEqual(
-        expect.arrayContaining([
-          { itinerarySectionID: "a-s", itemType: "SHOW", itemID: "show-1" },
-          { itinerarySectionID: "a-s", itemType: "FAIR", itemID: "fair-1" },
-        ])
-      )
+      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
+      expect(operation.request.variables.input).toEqual({
+        itineraryID: "a",
+        stops: [
+          { itemType: "SHOW", itemID: "show-1" },
+          { itemType: "FAIR", itemID: "fair-1" },
+        ],
+      })
     })
 
     it("skips a target the destination itinerary already holds", async () => {
@@ -829,9 +830,8 @@ describe("AddToItinerarySheet", () => {
 
       expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
       expect(operation.request.variables.input).toEqual({
-        itinerarySectionID: "a-s",
-        itemType: "FAIR",
-        itemID: "fair-1",
+        itineraryID: "a",
+        stops: [{ itemType: "FAIR", itemID: "fair-1" }],
       })
     })
 
@@ -849,7 +849,7 @@ describe("AddToItinerarySheet", () => {
       expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
     })
 
-    it("leaves the sheet open and says so when every add for a itinerary fails", async () => {
+    it("leaves the sheet open and says so when the add for an itinerary fails", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
 
       fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
@@ -857,23 +857,16 @@ describe("AddToItinerarySheet", () => {
 
       await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
 
-      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(2))
-
-      for (const operation of view.env.mock.getAllOperations()) {
-        view.env.mock.resolve(
-          operation,
-          MockPayloadGenerator.generate(operation, {
-            Mutation: () => ({
-              createItineraryStop: {
-                responseOrError: {
-                  __typename: "ItineraryStopMutationFailure",
-                  mutationError: { message: "Nope" },
-                },
-              },
-            }),
-          })
-        )
-      }
+      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+        Mutation: () => ({
+          addItineraryStops: {
+            responseOrError: {
+              __typename: "AddItineraryStopsMutationFailure",
+              mutationError: { message: "Nope" },
+            },
+          },
+        }),
+      })
 
       await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(0))
       expect(bulkProps.onClose).not.toHaveBeenCalled()
