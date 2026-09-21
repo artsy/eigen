@@ -23498,6 +23498,11 @@ type Itinerary {
   """
   internalID: String!
   isCurated: Boolean!
+
+  """
+  Whether the requesting user owns this itinerary. False for a curated guide, and for another user's personal itinerary opened via a share link.
+  """
+  isMine: Boolean!
   publishedAt(
     format: String
 
