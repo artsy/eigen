@@ -9,14 +9,17 @@ import {
 } from "@artsy/palette-mobile"
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { useToast } from "app/Components/Toast/toastHook"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
+import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -43,6 +46,33 @@ const withoutDeletedStops = (
     ...section,
     stops: section.stops.filter((stop) => !deletedStopIDs.has(stop.internalID)),
   })),
+})
+
+/**
+ * Applies a section's locally-dragged stop order on top of the itinerary Relay handed back,
+ * without waiting on a refetch. `stopOrder` maps a section id to the stop ids in their new
+ * order; a stop added since the drag (or one this map doesn't mention) keeps its place at the
+ * end rather than disappearing.
+ */
+const withStopOrder = (
+  itinerary: ItineraryData,
+  stopOrder: ReadonlyMap<string, readonly string[]>
+): ItineraryData => ({
+  ...itinerary,
+  sections: itinerary.sections.map((section) => {
+    const order = stopOrder.get(section.internalID)
+
+    if (!order) return section
+
+    const byID = new Map(section.stops.map((stop) => [stop.internalID, stop]))
+    const ordered = order
+      .map((stopID) => byID.get(stopID))
+      .filter((stop): stop is (typeof section.stops)[number] => !!stop)
+    const orderedIDs = new Set(ordered.map((stop) => stop.internalID))
+    const unordered = section.stops.filter((stop) => !orderedIDs.has(stop.internalID))
+
+    return { ...section, stops: [...ordered, ...unordered] }
+  }),
 })
 
 interface Props {
@@ -80,6 +110,11 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // must also disappear from the map, which this screen builds from the raw itinerary.
   const [swipingStopID, setSwipingStopID] = useState<string | null>(null)
   const [deletedStopIDs, setDeletedStopIDs] = useState<ReadonlySet<string>>(new Set())
+  // A section id's entry is only ever the order a drag left it in this session — never
+  // refetched into, since a pull-to-refresh should show the server's own order again.
+  const [stopOrder, setStopOrder] = useState<ReadonlyMap<string, readonly string[]>>(new Map())
+  const reorderItineraryStop = useReorderItineraryStop()
+  const { show: showToast } = useToast()
 
   /*
     Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
@@ -95,12 +130,37 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
         { id: itineraryId, citySlug, shareToken },
         { fetchPolicy: "network-only" }
       ).toPromise()
+      // The refetch carries the server's own order, so any local drag this session applied
+      // on top of the old data would otherwise linger and fight it.
+      setStopOrder(new Map())
     } catch {
       // Keep the current itinerary visible when a refresh fails.
     } finally {
       setIsRefreshing(false)
     }
   }, [environment, itineraryId, citySlug, shareToken])
+
+  const handleReorderStop = useCallback(
+    async (sectionID: string, stopID: string, fromIndex: number, toIndex: number) => {
+      const section = itinerary?.sections.find((candidate) => candidate.internalID === sectionID)
+
+      if (!section) return
+
+      const previousOrder = stopOrder.get(sectionID) ?? section.stops.map((stop) => stop.internalID)
+      const nextOrder = moveStop(previousOrder, fromIndex, toIndex)
+
+      setStopOrder((current) => new Map(current).set(sectionID, nextOrder))
+
+      try {
+        // `acts_as_list`'s `insert_at` is 1-indexed; `toIndex` here is a plain array index.
+        await reorderItineraryStop(stopID, toIndex + 1)
+      } catch {
+        setStopOrder((current) => new Map(current).set(sectionID, previousOrder))
+        showToast("Could not reorder that stop, try again", "bottom", { backgroundColor: "red100" })
+      }
+    },
+    [itinerary, stopOrder, reorderItineraryStop, showToast]
+  )
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
   // about whether the map is a mode or a screen. Returning false lets it pop as usual.
@@ -122,12 +182,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     () =>
       itinerary
         ? itineraryStopsToMapSections(
-            withoutDeletedStops(itinerary, deletedStopIDs),
+            withoutDeletedStops(withStopOrder(itinerary, stopOrder), deletedStopIDs),
             citySlug,
             data.city?.name ?? ""
           )
         : [],
-    [itinerary, deletedStopIDs, citySlug, data.city?.name]
+    [itinerary, stopOrder, deletedStopIDs, citySlug, data.city?.name]
   )
 
   if (!itinerary) {
@@ -150,12 +210,17 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // this); a personal itinerary reached without a share token is the closest signal available
   // today that it's actually yours to edit.
   const canDelete = !itinerary.isCurated && !shareToken
+  // Same gate as `canDelete` — reordering somebody else's guide isn't yours to do either, and
+  // cross-section drag isn't possible regardless: `updateItineraryStopInput` has no section
+  // field, so a stop's section is fixed at creation.
+  const canReorder = canDelete
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
   // removing its last stop (or swipe-deleting it) leaves it behind on the itinerary, so this
   // is the common case.
-  const sections = withoutDeletedStops(itinerary, deletedStopIDs).sections.filter(
-    (section) => section.stops.length > 0
-  )
+  const sections = withoutDeletedStops(
+    withStopOrder(itinerary, stopOrder),
+    deletedStopIDs
+  ).sections.filter((section) => section.stops.length > 0)
   /*
     A guide always names its days. Your own itinerary usually has just the one section, whose
     name would be a redundant subheading over the whole list — but once it has several (a
@@ -269,6 +334,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       shareToken={shareToken}
                       cityName={data.city?.name ?? ""}
                       canDelete={canDelete}
+                      canReorder={canReorder}
                       swipingStopID={swipingStopID}
                       onSwipeBegin={setSwipingStopID}
                       onStopDeleted={(stopID) => {
@@ -277,6 +343,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                         setSwipingStopID(null)
                         setDeletedStopIDs((current) => new Set(current).add(stopID))
                       }}
+                      onReorderStop={handleReorderStop}
                     />
                   ))}
                 </Join>
