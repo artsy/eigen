@@ -40,16 +40,19 @@ describe("ArtAssistant", () => {
     })
   })
 
-  it("fills the prompt from a suggestion", () => {
-    renderWithWrappers(<ArtAssistant />)
+  it("sends a suggestion as soon as it is picked", () => {
+    const environment = createMockEnvironment()
+    renderWithHookWrappersTL(<ArtAssistant />, environment)
 
     fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
 
-    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp(
-      "value",
-      ART_ASSISTANT_SUGGESTIONS[0]
+    expect(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0])).toBeOnTheScreen()
+    expect(screen.getByTestId("art-assistant-user-message")).toBeOnTheScreen()
+    expect(screen.getByText("Thinking...")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Art Assistant prompt")).toHaveProp("value", "")
+    expect(environment.mock.getMostRecentOperation().request.variables.input).toEqual(
+      expect.objectContaining({ message: ART_ASSISTANT_SUGGESTIONS[0] })
     )
-    expect(screen.getByLabelText("Send")).toBeEnabled()
   })
 
   it("enables Send when the prompt has text", () => {
@@ -325,22 +328,17 @@ describe("ArtAssistant", () => {
     renderWithHookWrappersTL(<ArtAssistant />, environment)
 
     fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
-    fireEvent.press(screen.getByLabelText("Send"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ action: "sentArtAssistantMessage", type: "suggestion" })
     )
   })
 
-  it("reports a suggestion the user rewrote as their own prompt", () => {
+  it("reports a prompt the user wrote as their own prompt", () => {
     const environment = createMockEnvironment()
     renderWithHookWrappersTL(<ArtAssistant />, environment)
 
-    fireEvent.press(screen.getByText(ART_ASSISTANT_SUGGESTIONS[0]))
-    fireEvent.changeText(
-      screen.getByLabelText("Art Assistant prompt"),
-      `${ART_ASSISTANT_SUGGESTIONS[0]} in blue`
-    )
+    fireEvent.changeText(screen.getByLabelText("Art Assistant prompt"), "blue painting")
     fireEvent.press(screen.getByLabelText("Send"))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(

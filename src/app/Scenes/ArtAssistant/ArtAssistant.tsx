@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
 import { CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
@@ -47,7 +47,6 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
   const anchoredTurnID = useRef<string | null>(null)
-  const suggestionPrompt = useRef<string | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
 
@@ -69,31 +68,31 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
     anchoredTurnID.current = null
-    suggestionPrompt.current = null
     startNewConversation()
   }
 
-  const handleSelectSuggestion = (suggestion: string) => {
-    suggestionPrompt.current = suggestion
-    setPrompt(suggestion)
-  }
+  const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
+    const text = promptText.trim()
 
-  const handleSend = () => {
-    const text = prompt.trim()
-
-    if (!text) {
+    if (!text || isResponding) {
       return
     }
 
     const userMessageIndex = messages.length
-    // A suggestion the user edited before sending is their own prompt, not ours.
-    const type = text === suggestionPrompt.current ? "suggestion" : "typed"
 
-    suggestionPrompt.current = null
     pendingScrollIndex.current = userMessageIndex
     void submit(text, { type })
     setPrompt("")
     dismissComposerKeyboard()
+  }
+
+  // A suggestion is sent the moment it is picked, so it never becomes a typed prompt.
+  const handleSelectSuggestion = (suggestion: string) => {
+    sendPrompt(suggestion, "suggestion")
+  }
+
+  const handleSend = () => {
+    sendPrompt(prompt, "typed")
   }
 
   const scrollToPendingTurn = useCallback(() => {
