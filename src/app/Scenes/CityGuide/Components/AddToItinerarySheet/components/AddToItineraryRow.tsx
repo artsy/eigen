@@ -14,6 +14,9 @@ interface Props {
   title: string
   /** Omitted when nothing knows the count — see `itineraryStopsCount`. */
   stopsCount?: number
+  /** Bulk mode's "9 of 14 added" / "All stops added" — takes the place of the stop count when
+   *  given, since bulk mode is about a whole guide, not this one itinerary's own length. */
+  subtitle?: string
   imageUrl?: string | null
   selected: boolean
   onPress: () => void
@@ -23,6 +26,7 @@ interface Props {
 export const AddToItineraryRow: React.FC<Props> = ({
   title,
   stopsCount,
+  subtitle,
   imageUrl,
   selected,
   onPress,
@@ -72,10 +76,16 @@ export const AddToItineraryRow: React.FC<Props> = ({
             {title}
           </Text>
 
-          {stopsCount !== undefined && (
+          {subtitle !== undefined ? (
             <Text variant="xs" color="mono60">
-              {`${stopsCount} ${pluralize("stop", stopsCount)}`}
+              {subtitle}
             </Text>
+          ) : (
+            stopsCount !== undefined && (
+              <Text variant="xs" color="mono60">
+                {`${stopsCount} ${pluralize("stop", stopsCount)}`}
+              </Text>
+            )
           )}
         </Flex>
 

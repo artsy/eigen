@@ -6,7 +6,9 @@ import { graphql } from "react-relay"
 
 describe("ItineraryHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ItineraryHeaderTestsQuery>({
-    Component: (props) => <ItineraryHeader itinerary={props.itinerary!} topInset={90} />,
+    Component: (props) => (
+      <ItineraryHeader itinerary={props.itinerary!} topInset={90} addFullListTargets={[]} />
+    ),
     query: graphql`
       query ItineraryHeaderTestsQuery @relay_test_operation {
         itinerary(id: "chill-vibes-only") {

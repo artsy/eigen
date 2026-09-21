@@ -4,12 +4,11 @@ import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventS
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { StopCard } from "app/Scenes/CityGuide/Components/StopCard"
 import {
-  itineraryStopCategory,
-  itineraryStopCoordinates,
   itineraryStopImage,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import { itineraryStopTarget } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopTarget"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 
@@ -46,7 +45,6 @@ export const ItineraryStopRow: React.FC<Props> = ({
   const title = itineraryStopTitle(stop)
   const image = itineraryStopImage(stop)
   const saveTarget = itineraryStopSaveTarget(stop)
-  const coordinates = itineraryStopCoordinates(stop)
   const card = stopCardFields(stop, stop.item)
   // Nothing resolved from Artsy: no entity to follow and no entity page to open.
   const isCustom = !stop.item && !saveTarget
@@ -55,6 +53,9 @@ export const ItineraryStopRow: React.FC<Props> = ({
   const href = isCustom
     ? `/city-guide/${citySlug}/itinerary/${itineraryId}/stop/${stop.internalID}`
     : card.href
+  // What the plus below would add — shared with the "Add Full List" button so the two can't
+  // drift apart. `null` for a stop whose entity didn't resolve, which renders no plus at all.
+  const target = itineraryStopTarget(stop, shareToken)
 
   return (
     // `width="100%"`: without a definite width here, `StopCard`'s own `flex={1}` has nothing
@@ -82,24 +83,28 @@ export const ItineraryStopRow: React.FC<Props> = ({
         href={href}
         accessibilityLabel={title}
         saveControl={
-          // A custom stop has no entity to resolve, so its control renders straight away
-          // rather than waiting on a lookup, and copies the stop's own fields.
-          isCustom ? (
+          !target ? undefined : target.itemType ? (
+            // The stop already knows what it points at, so the plus needs no lookup of its
+            // own.
+            <CityEventSaveControl
+              itemType={target.itemType}
+              itemID={target.itemID}
+              itemSlug={saveTarget?.itemSlug}
+              name={title}
+              isOnMyItineraries={target.isOnMyItineraries}
+              myItineraries={target.myItineraries}
+              sourceStopID={target.sourceStopID}
+              sourceShareToken={target.sourceShareToken}
+              contextScreenOwnerType={OwnerType.cityGuideGuide}
+              contextScreenOwnerId={itineraryId}
+              contextScreenOwnerSlug={itinerarySlug}
+              isCuratedGuide={isCuratedGuide}
+            />
+          ) : (
+            // A custom stop has no entity to resolve, so its control renders straight away
+            // rather than waiting on a lookup, and copies the stop's own fields.
             <CustomStopSaveControl
-              stop={{
-                sourceStopID: stop.internalID,
-                sourceShareToken: shareToken,
-                isOnMyItineraries: stop.isOnMyItineraries,
-                myItineraries: stop.myItineraries,
-                title,
-                address: stop.address ?? undefined,
-                note: stop.note ?? undefined,
-                sourceURL: stop.sourceURL ?? undefined,
-                category: itineraryStopCategory(stop.category),
-                isFreeAdmission: stop.isFreeAdmission ?? undefined,
-                latitude: coordinates?.lat,
-                longitude: coordinates?.lng,
-              }}
+              stop={target}
               citySlug={citySlug}
               cityName={cityName}
               contextScreenOwnerType={OwnerType.cityGuideGuide}
@@ -107,25 +112,6 @@ export const ItineraryStopRow: React.FC<Props> = ({
               contextScreenOwnerSlug={itinerarySlug}
               isCuratedGuide={isCuratedGuide}
             />
-          ) : (
-            !!saveTarget && (
-              // The stop already knows what it points at, so the plus needs no lookup of its
-              // own.
-              <CityEventSaveControl
-                itemType={saveTarget.itemType}
-                itemID={saveTarget.itemID}
-                itemSlug={saveTarget.itemSlug}
-                name={title}
-                isOnMyItineraries={stop.isOnMyItineraries}
-                myItineraries={stop.myItineraries}
-                sourceStopID={stop.internalID}
-                sourceShareToken={shareToken}
-                contextScreenOwnerType={OwnerType.cityGuideGuide}
-                contextScreenOwnerId={itineraryId}
-                contextScreenOwnerSlug={itinerarySlug}
-                isCuratedGuide={isCuratedGuide}
-              />
-            )
           )
         }
       />

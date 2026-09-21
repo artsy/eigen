@@ -2,8 +2,10 @@ import { ActionType, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { MockPayloadGenerator } from "relay-test-utils"
+import { RelayEnvironmentProvider } from "react-relay"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 
 // The bottom-sheet mock does not mount its footer host. Render portal children
 // inline here so these tests can exercise the Done button's mutation behavior.
@@ -27,9 +29,8 @@ describe("AddToItinerarySheet", () => {
   type View = ReturnType<typeof renderWithRelay>
 
   const props = {
-    target: {
-      itemType: "SHOW" as const,
-      itemID: "show-1",
+    request: {
+      targets: [{ itemType: "SHOW" as const, itemID: "show-1" }],
       citySlug: "london-united-kingdom",
       cityName: "London",
     },
@@ -80,7 +81,10 @@ describe("AddToItinerarySheet", () => {
             },
           }),
         },
-        { ...props, target: { ...props.target, itemType } }
+        {
+          ...props,
+          request: { ...props.request, targets: [{ ...props.request.targets[0], itemType }] },
+        }
       )
 
       expect(await screen.findByText("My trip")).toBeOnTheScreen()
@@ -146,10 +150,15 @@ describe("AddToItinerarySheet", () => {
       },
       {
         ...props,
-        target: {
-          ...props.target,
-          sourceStopID: "source-stop",
-          myItineraries: [{ internalID: "a" }],
+        request: {
+          ...props.request,
+          targets: [
+            {
+              ...props.request.targets[0],
+              sourceStopID: "source-stop",
+              myItineraries: [{ internalID: "a" }],
+            },
+          ],
         },
       }
     )
@@ -209,7 +218,10 @@ describe("AddToItinerarySheet", () => {
       },
       {
         ...props,
-        target: { ...props.target, sourceStopID: "copied-stop-1" },
+        request: {
+          ...props.request,
+          targets: [{ ...props.request.targets[0], sourceStopID: "copied-stop-1" }],
+        },
       }
     )
 
@@ -296,11 +308,15 @@ describe("AddToItinerarySheet", () => {
     it("adds a custom stop's own fields, not itemType/itemID", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
         ...props,
-        target: {
-          title: "Coffee at London Cafe",
-          sourceStopID: "source-stop",
-          sourceShareToken: "source-token",
-          address: "12 Bermondsey Street",
+        request: {
+          targets: [
+            {
+              title: "Coffee at London Cafe",
+              sourceStopID: "source-stop",
+              sourceShareToken: "source-token",
+              address: "12 Bermondsey Street",
+            },
+          ],
           citySlug: "london-united-kingdom",
           cityName: "London",
         },
@@ -393,7 +409,13 @@ describe("AddToItinerarySheet", () => {
           ...withItineraries([itinerary("a", "First"), itinerary("b", "Second")]),
           ...heldBy([{ itineraryID: "a", stopIDs: ["stop-1"] }]),
         },
-        { ...props, target: { ...props.target, itemSlug: "frida-kahlo" } }
+        {
+          ...props,
+          request: {
+            ...props.request,
+            targets: [{ ...props.request.targets[0], itemSlug: "frida-kahlo" }],
+          },
+        }
       )
 
       await screen.findByText("Second")
@@ -431,8 +453,8 @@ describe("AddToItinerarySheet", () => {
     it("tracks a custom stop's own owner type with no destination entity", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), {
         ...props,
-        target: {
-          title: "Coffee at London Cafe",
+        request: {
+          targets: [{ title: "Coffee at London Cafe" }],
           citySlug: "london-united-kingdom",
           cityName: "London",
         },
@@ -489,7 +511,10 @@ describe("AddToItinerarySheet", () => {
     it("tracks addedStopToItinerary when Done auto-creates the only itinerary", async () => {
       const view = renderWithRelay(withItineraries([]), {
         ...props,
-        target: { ...props.target, itemSlug: "frida-kahlo" },
+        request: {
+          ...props.request,
+          targets: [{ ...props.request.targets[0], itemSlug: "frida-kahlo" }],
+        },
       })
 
       await screen.findByTestId("add-to-itinerary-done")
@@ -568,7 +593,10 @@ describe("AddToItinerarySheet", () => {
 
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a city.
   describe("with no city", () => {
-    const noCity = { ...props, target: { itemType: "SHOW" as const, itemID: "show-1" } }
+    const noCity = {
+      ...props,
+      request: { targets: [{ itemType: "SHOW" as const, itemID: "show-1" }] },
+    }
 
     it("offers no way to create one", async () => {
       renderWithRelay(withItineraries([itinerary("a", "First")]), noCity)
@@ -695,6 +723,192 @@ describe("AddToItinerarySheet", () => {
         itineraryID: "new-itinerary",
         title: "My Stops",
       })
+    })
+  })
+
+  // "Add Full List": every stop in a guide, opened at once. Add-only, so nothing is pre-ticked
+  // and nothing can be un-ticked — see `AddToItineraryRequest`.
+  describe("bulk mode (multiple targets)", () => {
+    const bulkProps = {
+      ...props,
+      request: {
+        targets: [
+          { itemType: "SHOW" as const, itemID: "show-1" },
+          { itemType: "FAIR" as const, itemID: "fair-1" },
+        ],
+        citySlug: "london-united-kingdom",
+        cityName: "London",
+      },
+      onClose: jest.fn(),
+    }
+
+    // `setupTestWrapper`'s `renderWithRelay` auto-resolves (and so discards) the first pending
+    // operation, so a fresh, manually-driven environment is used here to inspect its variables
+    // before that happens.
+    it("fires no per-entity membership query — only the itinerary list", async () => {
+      const env = createMockEnvironment()
+
+      renderWithWrappers(
+        <RelayEnvironmentProvider environment={env}>
+          <AddToItinerarySheet request={bulkProps.request} onClose={jest.fn()} />
+        </RelayEnvironmentProvider>
+      )
+
+      await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
+      const operation = env.mock.getMostRecentOperation()
+
+      expect(operation.request.node.params.name).toBe("AddToItinerarySheetQuery")
+      expect(operation.request.variables).toEqual(
+        expect.objectContaining({
+          hasShow: false,
+          hasFair: false,
+          hasSourceStopID: false,
+          itemID: "",
+          sourceStopID: "",
+        })
+      )
+    })
+
+    it("opens with nothing ticked, even when every target is already on an itinerary", async () => {
+      renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
+
+      await screen.findByText("First")
+
+      expect(screen.getByText("0 selected")).toBeOnTheScreen()
+      expect(screen.queryByTestId("add-to-itinerary-row-selected")).not.toBeOnTheScreen()
+    })
+
+    it("shows how many of the guide's stops each itinerary already holds", async () => {
+      renderWithRelay(
+        {
+          ...withItineraries([
+            itinerary("a", "Partial"),
+            itinerary("b", "Full"),
+            itinerary("c", "None"),
+          ]),
+        },
+        {
+          ...bulkProps,
+          request: {
+            ...bulkProps.request,
+            targets: [
+              {
+                itemType: "SHOW" as const,
+                itemID: "show-1",
+                myItineraries: [{ internalID: "a" }, { internalID: "b" }],
+              },
+              { itemType: "FAIR" as const, itemID: "fair-1", myItineraries: [{ internalID: "b" }] },
+            ],
+          },
+        }
+      )
+
+      await screen.findByText("Partial")
+
+      expect(screen.getByText("1 of 2 added")).toBeOnTheScreen()
+      expect(screen.getByText("All stops added")).toBeOnTheScreen()
+      expect(screen.getByText("0 of 2 added")).toBeOnTheScreen()
+    })
+
+    it("adds every stop, in one mutation each, to the same newly-created section", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(2))
+
+      const operations = view.env.mock.getAllOperations()
+
+      expect(
+        operations.every(
+          (op) => op.request.node.params.name === "useApplyItinerarySelectionAddMutation"
+        )
+      ).toBe(true)
+      expect(operations.map((op) => op.request.variables.input)).toEqual(
+        expect.arrayContaining([
+          { itinerarySectionID: "a-s", itemType: "SHOW", itemID: "show-1" },
+          { itinerarySectionID: "a-s", itemType: "FAIR", itemID: "fair-1" },
+        ])
+      )
+    })
+
+    it("skips a target the destination itinerary already holds", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", {
+        Itinerary: () => ({
+          sections: [
+            {
+              internalID: "a-s",
+              title: "My Stops",
+              stops: [
+                { internalID: "existing", item: { __typename: "Show", internalID: "show-1" } },
+              ],
+            },
+          ],
+        }),
+      })
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+
+      const operation = view.env.mock.getMostRecentOperation()
+
+      expect(operation.request.node.params.name).toBe("useApplyItinerarySelectionAddMutation")
+      expect(operation.request.variables.input).toEqual({
+        itinerarySectionID: "a-s",
+        itemType: "FAIR",
+        itemID: "fair-1",
+      })
+    })
+
+    // Bulk mode is add-only: with nothing pre-ticked, ticking then un-ticking a row is the
+    // only way to try to "remove" something — and Done disables itself right back, the same
+    // way it does with nothing selected at all, so there is no way to fire one.
+    it("disables Done again once a tick is cleared, the same as opening with nothing selected", async () => {
+      renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
+
+      const row = await screen.findByTestId("add-to-itinerary-row")
+
+      fireEvent.press(row)
+      fireEvent.press(row)
+
+      expect(screen.getByTestId("add-to-itinerary-done")).toBeDisabled()
+    })
+
+    it("leaves the sheet open and says so when every add for a itinerary fails", async () => {
+      const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(2))
+
+      for (const operation of view.env.mock.getAllOperations()) {
+        view.env.mock.resolve(
+          operation,
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              createItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationFailure",
+                  mutationError: { message: "Nope" },
+                },
+              },
+            }),
+          })
+        )
+      }
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(0))
+      expect(bulkProps.onClose).not.toHaveBeenCalled()
     })
   })
 })

@@ -14,6 +14,8 @@ import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddT
 import {
   PayloadItinerary,
   StopTarget,
+  heldCount,
+  stopMutationInput,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import {
   defaultItineraryTitle,
@@ -46,46 +48,55 @@ export type AddToItineraryTarget = StopTarget & {
   /** Absent where no city is known — the sheet then lists every itinerary. */
   citySlug?: string
   cityName?: string
-  /** For `addedStopToItinerary`'s `context_owner_slug` only — never part of `StopInput`, so it
-   *  is stripped out below rather than spread into a `createItineraryStopInput`. */
-  itemSlug?: string
 }
 
-type Props = AddToItineraryTarget & {
+/**
+ * What the sheet was opened for: one target (a single show/fair/custom stop, the normal case),
+ * or several at once ("Add Full List", every stop in a guide). Bulk mode — more than one
+ * target — is add-only: nothing is pre-ticked, so nothing can be un-ticked, so no deletes ever
+ * run. That avoids a destructive "untick removes 14 stops" gesture; single-target behavior
+ * (pre-tick/untick/remove) is unchanged. Bulk mode also tracks no `addedStopToItinerary` event
+ * of its own — that event names a single entity, which a "several different stops at once" add
+ * has none of.
+ */
+export type AddToItineraryRequest = {
+  targets: StopTarget[]
+  citySlug?: string
+  cityName?: string
+}
+
+type Props = AddToItineraryRequest & {
   onClose: () => void
   /** Called after Done actually changes something, so the screen this sheet was opened from
    *  can refetch and stop showing a stale membership state. */
   onSaved?: () => void
 }
 
-const Sheet: React.FC<Props> = ({
-  citySlug,
-  cityName,
-  onClose,
-  onSaved,
-  isOnMyItineraries: _isOnMyItineraries,
-  myItineraries,
-  itemSlug,
-  ...target
-}) => {
+const Sheet: React.FC<Props> = ({ targets, citySlug, cityName, onClose, onSaved }) => {
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
   const { trackEvent: trackCohesionEvent } = useTracking()
-  // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
+  // Only for the empty case: with no itineraries at all, Done creates one and adds every target.
   const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
+
+  const isBulk = targets.length > 1
+  // Membership resolves per-entity, which only makes sense for one entity — bulk mode relies
+  // instead on each target's own `myItineraries` (already selected by `ItineraryScreenQuery`)
+  // for its row hints, and on the destination itinerary's own stops for duplicate protection.
+  const singleTarget = isBulk ? undefined : targets[0]
 
   const data = useLazyLoadQuery<AddToItinerarySheetQuery>(
     Query,
     {
       citySlug: citySlug ?? null,
       first: PAGE_SIZE,
-      sourceStopID: target.sourceStopID ?? "",
-      sourceShareToken: target.sourceShareToken ?? null,
-      hasSourceStopID: !!target.sourceStopID,
-      itemID: target.itemType ? target.itemID : "",
-      hasShow: !target.sourceStopID && target.itemType === "SHOW",
-      hasFair: !target.sourceStopID && target.itemType === "FAIR",
+      sourceStopID: singleTarget?.sourceStopID ?? "",
+      sourceShareToken: singleTarget?.sourceShareToken ?? null,
+      hasSourceStopID: !!singleTarget?.sourceStopID,
+      itemID: singleTarget?.itemType ? singleTarget.itemID : "",
+      hasShow: !!singleTarget && !singleTarget.sourceStopID && singleTarget.itemType === "SHOW",
+      hasFair: !!singleTarget && !singleTarget.sourceStopID && singleTarget.itemType === "FAIR",
     },
     { fetchPolicy: "network-only" }
   )
@@ -103,11 +114,14 @@ const Sheet: React.FC<Props> = ({
   const canCreate = !!citySlug
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
-  // stop it came from) say already hold it, kept to the ones actually listed.
-  const [initial] = useState(() => {
+  // stop it came from) say already hold it, kept to the ones actually listed. Bulk mode opens
+  // with nothing ticked — see `AddToItineraryRequest`.
+  const [initial] = useState<string[]>(() => {
+    if (isBulk) return []
+
     const holdingIDs =
       memberships?.map(({ itineraryID }) => itineraryID) ??
-      myItineraries?.map(({ internalID }) => internalID) ??
+      singleTarget?.myItineraries?.map(({ internalID }) => internalID) ??
       []
 
     return holdingIDs.filter((id) =>
@@ -171,13 +185,17 @@ const Sheet: React.FC<Props> = ({
   /** One event however many itineraries the stop landed on — the bulk "Add Full List" case
    *  still lands on several itineraries in a single Done tap, not several taps. */
   const trackAddedStop = (ownerIDs: string[]) => {
+    // Only meaningful for a single target — see `AddToItineraryRequest` for why bulk mode
+    // fires no `addedStopToItinerary` event of its own.
+    if (!singleTarget) return
+
     trackCohesionEvent({
       action: ActionType.addedStopToItinerary,
-      context_owner_type: target.itemType
-        ? STOP_OWNER_TYPE[target.itemType]
+      context_owner_type: singleTarget.itemType
+        ? STOP_OWNER_TYPE[singleTarget.itemType]
         : OwnerType.cityGuideCustomStop,
-      context_owner_id: target.itemType ? target.itemID : undefined,
-      context_owner_slug: target.itemType ? itemSlug : undefined,
+      context_owner_id: singleTarget.itemType ? singleTarget.itemID : undefined,
+      context_owner_slug: singleTarget.itemType ? singleTarget.itemSlug : undefined,
       owner_ids: ownerIDs,
     })
   }
@@ -189,27 +207,52 @@ const Sheet: React.FC<Props> = ({
       // Done means "make me one" — which is what `addStop` already does, including naming it
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
-        // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
-        const { itineraryID } = await addStop(target)
+        // Always a membership change: `addStop` makes the one itinerary these stops now sit
+        // on. One at a time: `addStop` serialises internally, so the first call makes the
+        // itinerary (and its section) and the rest land straight on it.
+        let createdItineraryID: string | undefined
+
+        for (const eachTarget of targets) {
+          createdItineraryID = (await addStop(stopMutationInput(eachTarget))).itineraryID
+        }
+
         onSaved?.()
-        trackAddedStop([itineraryID])
-      } else {
-        const changes = await applySelection({ target, initial, selected, memberships })
 
-        if (changes.added.length > 0 || changes.removed.length > 0) {
-          onSaved?.()
+        if (!isBulk && createdItineraryID) {
+          trackAddedStop([createdItineraryID])
+        }
 
-          if (changes.added.length > 0) {
-            trackAddedStop(changes.added)
-          }
+        toast.show("Changes Saved", "bottom")
+        onClose()
+        return
+      }
 
-          if (citySlug) {
-            refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
-          }
+      const changes = await applySelection({ targets, initial, selected, memberships })
+      const changedSomething = changes.added.length > 0 || changes.removed.length > 0
+
+      if (changedSomething) {
+        onSaved?.()
+
+        if (!isBulk && changes.added.length > 0) {
+          trackAddedStop(changes.added)
+        }
+
+        if (citySlug) {
+          refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
         }
       }
 
-      toast.show("Changes Saved", "bottom")
+      // Left open on total failure: dismissing would claim the change stuck. A partial one
+      // still closes — some of it did stick — but says so, rather than a plain "Changes Saved".
+      if (changes.failed > 0 && !changedSomething) {
+        toast.show("Something went wrong. Please try again.", "bottom")
+        return
+      }
+
+      toast.show(
+        changes.failed > 0 ? "Some stops could not be added. Please try again." : "Changes Saved",
+        "bottom"
+      )
       onClose()
     } catch {
       // Left open on failure: dismissing would claim the change stuck.
@@ -224,6 +267,12 @@ const Sheet: React.FC<Props> = ({
       <BottomSheetView style={{ flex: 1 }}>
         <Flex px={2} pb={2}>
           <Text variant="md">Add to Itinerary</Text>
+
+          {!!isBulk && (
+            <Text variant="xs" color="mono60">
+              {`Add all ${targets.length} stops to one or more of your itineraries.`}
+            </Text>
+          )}
         </Flex>
 
         <Flex px={2} flexDirection="row" alignItems="center" justifyContent="space-between">
@@ -267,16 +316,27 @@ const Sheet: React.FC<Props> = ({
             </Text>
           )}
 
-          {itineraries.map((itinerary) => (
-            <AddToItineraryRow
-              key={`${itinerary.internalID}`}
-              title={itinerary.title}
-              stopsCount={itineraryStopsCount(itinerary)}
-              imageUrl={itinerary.heroImage?.url}
-              selected={selected.includes(itinerary.internalID)}
-              onPress={() => toggle(itinerary.internalID)}
-            />
-          ))}
+          {itineraries.map((itinerary) => {
+            const held = isBulk ? heldCount(targets, itinerary.internalID) : undefined
+
+            return (
+              <AddToItineraryRow
+                key={`${itinerary.internalID}`}
+                title={itinerary.title}
+                stopsCount={itineraryStopsCount(itinerary)}
+                subtitle={
+                  held === undefined
+                    ? undefined
+                    : held >= targets.length
+                      ? "All stops added"
+                      : `${held} of ${targets.length} added`
+                }
+                imageUrl={itinerary.heroImage?.url}
+                selected={selected.includes(itinerary.internalID)}
+                onPress={() => toggle(itinerary.internalID)}
+              />
+            )
+          })}
         </BottomSheetScrollView>
 
         <Portal hostName={FOOTER_PORTAL_HOST}>
@@ -327,12 +387,12 @@ const SheetWithSuspense = withSuspense({
  * untick without firing a mutation per tap.
  */
 export const AddToItinerarySheet: React.FC<{
-  target: AddToItineraryTarget | null
+  request: AddToItineraryRequest | null
   onClose: () => void
   onSaved?: () => void
-}> = ({ target, onClose, onSaved }) => (
+}> = ({ request, onClose, onSaved }) => (
   <AutomountedBottomSheetModal
-    visible={!!target}
+    visible={!!request}
     name="AddToItinerary"
     snapPoints={SNAP_POINTS}
     enableDynamicSizing={false}
@@ -343,10 +403,10 @@ export const AddToItinerarySheet: React.FC<{
       </BottomSheetFooter>
     )}
   >
-    {!!target && (
+    {!!request && (
       <SheetWithSuspense
-        key={sheetTargetKey(target)}
-        {...target}
+        key={sheetRequestKey(request)}
+        {...request}
         onClose={onClose}
         onSaved={onSaved}
       />
@@ -363,10 +423,12 @@ const STOP_OWNER_TYPE: Record<"SHOW" | "FAIR" | "LOCATION", OwnerType> = {
   LOCATION: OwnerType.partner,
 }
 
-const sheetTargetKey = (target: AddToItineraryTarget) =>
+const targetKey = (target: StopTarget) =>
   target.itemType
     ? `${target.itemType}:${target.itemID}`
     : `custom:${target.sourceStopID ?? target.title}:${target.address ?? ""}`
+
+const sheetRequestKey = (request: AddToItineraryRequest) => request.targets.map(targetKey).join("|")
 
 const Query = graphql`
   query AddToItinerarySheetQuery(

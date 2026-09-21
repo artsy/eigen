@@ -1,5 +1,6 @@
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ItineraryHeader_itinerary$key } from "__generated__/ItineraryHeader_itinerary.graphql"
+import { StopTarget } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
@@ -14,9 +15,16 @@ interface Props {
    * hero the title would otherwise render right under the button.
    */
   topInset: number
+  /** Every stop in the guide, for "Add Full List" to open the sheet with. Computed by
+   *  `ItineraryScreen` — this fragment carries no sections. */
+  addFullListTargets: StopTarget[]
 }
 
-export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topInset }) => {
+export const ItineraryHeader: React.FC<Props> = ({
+  itinerary: itineraryRef,
+  topInset,
+  addFullListTargets,
+}) => {
   const itinerary = useFragment(fragment, itineraryRef)
   const heroImage = itinerary.heroImage
 
@@ -81,10 +89,9 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
               )}
 
               <ItineraryAddFullListButton
-                citySlug={itinerary.citySlug}
                 itineraryId={itinerary.internalID}
                 itinerarySlug={itinerary.slug ?? undefined}
-                title={itinerary.title}
+                targets={addFullListTargets}
               />
             </Flex>
           </>
@@ -104,7 +111,6 @@ const fragment = graphql`
   fragment ItineraryHeader_itinerary on Itinerary {
     internalID
     isCurated
-    citySlug
     slug
     title
     subtitle

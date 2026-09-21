@@ -18,6 +18,7 @@ import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Componen
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
+import { itineraryStopTargets } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopTarget"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
@@ -200,6 +201,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
         : [],
     [itinerary, stopOrder, deletedStopIDs, citySlug, data.city?.name]
   )
+  // What "Add Full List" opens the sheet with — every stop in the guide, in reading order.
+  // Computed here rather than in the button itself: the header's fragment carries no sections.
+  const addFullListTargets = useMemo(
+    () => (itinerary ? itineraryStopTargets(itinerary.sections, shareToken) : []),
+    [itinerary, shareToken]
+  )
 
   if (!itinerary) {
     return (
@@ -337,7 +344,11 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                   />
                 }
               >
-                <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
+                <ItineraryHeader
+                  itinerary={itinerary}
+                  topInset={top + NAVBAR_HEIGHT}
+                  addFullListTargets={addFullListTargets}
+                />
 
                 <Flex px={2} pt={2}>
                   <Join separator={<Spacer y={2} />}>

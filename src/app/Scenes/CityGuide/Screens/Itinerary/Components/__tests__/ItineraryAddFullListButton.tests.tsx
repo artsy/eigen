@@ -1,118 +1,59 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { useAddToItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { StopTarget } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Schema } from "app/utils/track"
-import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+jest.mock("app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider", () => ({
+  useAddToItinerary: jest.fn(),
+}))
+
+const mockUseAddToItinerary = useAddToItinerary as jest.Mock
 
 describe("ItineraryAddFullListButton", () => {
-  let env: ReturnType<typeof createMockEnvironment>
+  const mockOpen = jest.fn()
+
+  const targets: StopTarget[] = [
+    { itemType: "SHOW", itemID: "show-1" },
+    { itemType: "FAIR", itemID: "fair-1" },
+  ]
 
   beforeEach(() => {
-    env = createMockEnvironment()
     jest.clearAllMocks()
+    mockUseAddToItinerary.mockReturnValue({ open: mockOpen })
   })
 
-  const renderIt = async (ownTitles: string[] = []) => {
-    const view = renderWithWrappers(
-      <RelayEnvironmentProvider environment={env}>
-        <ItineraryAddFullListButton
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          itinerarySlug="chill-vibes-only"
-          title="Chill Vibes Only"
-        />
-      </RelayEnvironmentProvider>
+  const renderIt = () =>
+    renderWithWrappers(
+      <ItineraryAddFullListButton
+        itineraryId="guide-1"
+        itinerarySlug="chill-vibes-only"
+        targets={targets}
+      />
     )
 
-    await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
+  it("opens the sheet with every stop in the guide", () => {
+    renderIt()
 
-    await act(async () => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            itinerariesConnection: { edges: ownTitles.map((title) => ({ node: { title } })) },
-          }),
-        })
-      )
-    })
+    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
 
-    return view
-  }
+    expect(mockOpen).toHaveBeenCalledWith(targets)
+  })
 
-  /** Resolves the pending copy with a success or a failure payload. */
-  const resolveCopy = async (responseOrError: object) => {
-    await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
+  // A tap that did nothing would be worse than no button at all — same rule as every other
+  // plus in City Guide.
+  it("renders nothing without an AddToItineraryProvider above it", () => {
+    mockUseAddToItinerary.mockReturnValue(null)
 
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          copyItineraryPayload: () => ({ responseOrError }),
-        })
-      )
-    })
-  }
+    renderIt()
 
-  it("shows as already added when you own an itinerary with the same title", async () => {
-    await renderIt(["Chill Vibes Only"])
-
-    expect(await screen.findByText("Added")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-add-full-list")).not.toBeOnTheScreen()
   })
 
-  it("ignores case and surrounding whitespace when matching titles", async () => {
-    await renderIt([" chill vibes only "])
-
-    expect(await screen.findByText("Added")).toBeOnTheScreen()
-  })
-
-  // One server-side call, rather than following each of the guide's entities in turn.
-  it("copies the itinerary in one mutation", async () => {
-    await renderIt()
-
-    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
-
-    await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
-
-    const operation = env.mock.getMostRecentOperation()
-
-    expect(operation.request.node.params.name).toBe("ItineraryAddFullListButtonCopyMutation")
-    expect(operation.request.variables).toEqual({ input: { id: "guide-1" } })
-  })
-
-  it("reports the guide as added once the copy lands", async () => {
-    await renderIt()
-
-    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
-    await resolveCopy({
-      __typename: "ItineraryMutationSuccess",
-      itinerary: { internalID: "copy-1" },
-    })
-
-    expect(await screen.findByText("Added")).toBeOnTheScreen()
-    expect(screen.queryByText("Add Full List")).not.toBeOnTheScreen()
-  })
-
-  it("stays actionable and says so when the copy fails", async () => {
-    await renderIt()
-
-    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
-    await resolveCopy({
-      __typename: "ItineraryMutationFailure",
-      mutationError: { message: "Nope" },
-    })
-
-    // Still offering the copy rather than claiming it worked.
-    expect(await screen.findByText("Add Full List")).toBeOnTheScreen()
-    expect(screen.queryByText("Added")).not.toBeOnTheScreen()
-  })
-
-  // Fired at tap-time, before the mutation even starts — separate from (and not a
-  // replacement for) the legacy Success/Fail outcome tracking below.
-  it("tracks the cohesion tap event as soon as the button is pressed", async () => {
-    await renderIt()
+  it("tracks the cohesion tap event as soon as the button is pressed", () => {
+    renderIt()
 
     fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
 
@@ -122,24 +63,5 @@ describe("ItineraryAddFullListButton", () => {
       context_screen_owner_id: "guide-1",
       context_screen_owner_slug: "chill-vibes-only",
     })
-  })
-
-  it("tracks the copy against the itinerary", async () => {
-    await renderIt()
-
-    fireEvent.press(screen.getByTestId("itinerary-add-full-list"))
-    await resolveCopy({
-      __typename: "ItineraryMutationSuccess",
-      itinerary: { internalID: "copy-1" },
-    })
-
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      expect.objectContaining({
-        action_name: Schema.ActionNames.TappedAddFullList,
-        action_type: Schema.ActionTypes.Success,
-        owner_slug: "london-united-kingdom",
-        owner_id: "guide-1",
-      })
-    )
   })
 })
