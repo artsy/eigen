@@ -26,6 +26,11 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+const COMPOSER_LINE_HEIGHT = 20
+const COMPOSER_COLLAPSED_HEIGHT = 50
+const COMPOSER_VERTICAL_PADDING = (COMPOSER_COLLAPSED_HEIGHT - COMPOSER_LINE_HEIGHT) / 2
+const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
+
 interface ArtAssistantProps {
   onClose?: () => void
 }
@@ -206,11 +211,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
             <Flex
               flex={1}
               borderColor={isComposerFocused ? "blue100" : "mono15"}
-              borderRadius={50}
+              borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
               borderWidth={1}
-              minHeight={50}
+              minHeight={COMPOSER_COLLAPSED_HEIGHT}
               justifyContent="center"
               px={2}
+              py={`${COMPOSER_VERTICAL_PADDING}px`}
               testID="art-assistant-composer-input-container"
             >
               <Input
@@ -225,9 +231,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
                 style={{
                   borderWidth: 0,
                   height: undefined,
-                  maxHeight: 100,
-                  minHeight: 50,
-                  paddingHorizontal: 0,
+                  maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
+                  minHeight: COMPOSER_LINE_HEIGHT,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  paddingTop: 0,
                 }}
                 value={prompt}
               />
