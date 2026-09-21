@@ -19,7 +19,7 @@ interface Props {
   href: string
   /** The share icon on the list screen's rows. The home rail's cards have none. */
   rightSlot?: React.ReactNode
-  /** "card" is the home rail's white rounded tile; "row" is the list screen's plain row. */
+  /** "card" is the home rail's rounded tile; "row" is the list screen's plain row. */
   variant?: "row" | "card"
   /**
    * Fired before RouterLink's default navigate-on-press. Optional: shared with the
@@ -49,14 +49,21 @@ export const ItineraryListItem: React.FC<Props> = ({
         isCard
           ? {
               width: CARD_WIDTH,
-              backgroundColor: "white",
               borderRadius: CARD_RADIUS,
               ...CARD_SHADOW,
             }
           : undefined
       }
     >
-      <Flex flexDirection="row" alignItems="center" gap={1} pr={isCard ? 0.5 : 0}>
+      <Flex
+        testID="itinerary-list-item-card"
+        flexDirection="row"
+        alignItems="center"
+        gap={1}
+        pr={isCard ? 0.5 : 0}
+        backgroundColor={isCard ? "mono0" : undefined}
+        borderRadius={isCard ? CARD_RADIUS : undefined}
+      >
         {imageUrl ? (
           <Image
             testID="itinerary-list-item-image"

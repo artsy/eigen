@@ -114,4 +114,16 @@ describe("ItineraryListItem", () => {
 
     expect(screen.getByTestId("itinerary-list-item-image")).toBeOnTheScreen()
   })
+
+  // The card's tile used a hardcoded literal white background while the title used the
+  // theme's default (dark-mode-aware) text color, so in dark mode both the background and
+  // the text turned white — the title became invisible. The tile must use a themed token
+  // (`mono0`) so it flips dark alongside the title's themed color.
+  it("gives the card a themed background rather than a hardcoded literal color", () => {
+    renderWithWrappers(<ItineraryListItem {...props} variant="card" />)
+
+    expect(screen.getByTestId("itinerary-list-item-card")).not.toHaveStyle({
+      backgroundColor: "white",
+    })
+  })
 })
