@@ -198,6 +198,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
             testID="art-assistant-content"
           />
 
+          <Flex backgroundColor="background" px={2} pt={1}>
+            <Text variant="xs" color="mono60" textAlign="center">
+              Art Assistant is AI and can make mistakes
+            </Text>
+          </Flex>
+
           <Flex
             flexDirection="row"
             alignItems="center"
