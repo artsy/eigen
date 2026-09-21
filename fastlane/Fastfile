@@ -639,7 +639,7 @@ lane :deploy_to_expo_updates do |options|
 
   sh("pushd ../ > /dev/null && \
       set -o pipefail && \
-      #{expo_command} | tail -n1 && \
+      #{expo_command} | tail -n 30 && \
       popd > /dev/null")
 
   # `--platform all` publishes both platforms in one eas update call, so the
