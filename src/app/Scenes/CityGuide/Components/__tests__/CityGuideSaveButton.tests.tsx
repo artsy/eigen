@@ -1,3 +1,4 @@
+import { CheckmarkFillIcon, CheckmarkIcon } from "@artsy/icons/native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -15,6 +16,13 @@ describe("CityGuideSaveButton", () => {
 
     expect(screen.getByTestId("city-guide-save-button-check-icon")).toBeTruthy()
     expect(screen.queryByTestId("city-guide-save-button-add-icon")).toBeNull()
+  })
+
+  it("renders a filled checkmark when saved", () => {
+    renderWithWrappers(<CityGuideSaveButton isSaved onPress={jest.fn()} />)
+
+    expect(screen.UNSAFE_getByType(CheckmarkFillIcon)).toBeTruthy()
+    expect(screen.UNSAFE_queryAllByType(CheckmarkIcon)).toHaveLength(0)
   })
 
   it("calls onPress when tapped", () => {
