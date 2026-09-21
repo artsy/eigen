@@ -1,5 +1,6 @@
 import {
   dropIndex,
+  heightsForStops,
   moveStop,
   siblingShifts,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
@@ -93,6 +94,41 @@ describe("dropIndex", () => {
 
   it("clamps an out-of-range source index before computing", () => {
     expect(dropIndex(uniform, 10, 0)).toBe(uniform.length - 1)
+  })
+})
+
+describe("heightsForStops", () => {
+  it("looks up each stop's measured height by id, in the given order", () => {
+    expect(heightsForStops(["a", "b", "c"], { a: 40, c: 40, b: 160 })).toEqual([40, 160, 40])
+  })
+
+  it("defaults to 0 for a stop that hasn't measured yet", () => {
+    expect(heightsForStops(["a", "b"], { a: 40 })).toEqual([40, 0])
+  })
+
+  it("keeps every other stop's height when one is added elsewhere in the section (FIREWORKS-45)", () => {
+    // "a" through "d" were already measured at a real height; "e" is a stop just added to the
+    // end of the section and hasn't laid out yet. A row whose frame doesn't change never
+    // re-fires `onLayout`, so a through d's heights have to come from the map as they already
+    // stood, not get reset just because the section's stop count changed.
+    const heightsByID = { a: 96, b: 96, c: 96, d: 96 }
+
+    expect(heightsForStops(["a", "b", "c", "d", "e"], heightsByID)).toEqual([96, 96, 96, 96, 0])
+  })
+
+  it("reproduces the FIREWORKS-45 snap bug when heights are wrongly reset to zero", () => {
+    // Four stops, each a real 96px row with an 8px gap between them (104px span). Dragging
+    // row 0 down by 60px — just over half of row 1's span (52px) — should land it on index 1.
+    const measured = heightsForStops(["a", "b", "c", "d"], { a: 96, b: 96, c: 96, d: 96 })
+    expect(dropIndex(measured, 0, 60, 8)).toBe(1)
+
+    // The bug: an earlier version reset every row's height to 0 whenever the section's stop
+    // count changed (an add or delete), even though none of the existing rows' frames had
+    // actually moved. The same 60px nudge, now measured against an all-zero section, blows
+    // straight past every stop and lands on the last one instead of the very next row — the
+    // reorder "doesn't snap between items" and "breaks the order" exactly as reported.
+    const zeroed = heightsForStops(["a", "b", "c", "d"], {})
+    expect(dropIndex(zeroed, 0, 60, 8)).toBe(3)
   })
 })
 

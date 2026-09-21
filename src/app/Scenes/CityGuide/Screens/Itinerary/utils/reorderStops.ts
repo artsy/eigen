@@ -6,6 +6,29 @@
  * Jest test and from a `useAnimatedStyle` callback in another file).
  */
 
+/**
+ * Turns a section's rows' measured heights — kept keyed by stop id, so a row's own layout is
+ * the only thing that ever changes its own entry — into the positional array `dropIndex` and
+ * `siblingShifts` need. Missing a stop (never yet laid out) defaults it to 0, matching its
+ * first-ever render before any `onLayout` has fired.
+ *
+ * Keying by id rather than position is what makes this safe to call after a stop's been added,
+ * deleted, or reordered elsewhere in the section: every *other* row's height survives, since
+ * nothing here depends on where a row used to sit. An earlier version tracked heights in a
+ * plain positional array and reset the whole thing to zero on any count change — React Native
+ * never re-fires `onLayout` for a row whose frame didn't actually move, so that reset left
+ * every already-measured row stuck at 0 for the rest of the session, breaking the drop math
+ * for the whole section (FIREWORKS-45).
+ */
+export const heightsForStops = (
+  stopIDs: readonly string[],
+  heightsByID: Readonly<Record<string, number>>
+): number[] => {
+  "worklet"
+
+  return stopIDs.map((id) => heightsByID[id] ?? 0)
+}
+
 /** Moves the item at `fromIndex` to `toIndex`, shifting everything between. Out-of-range or
  *  no-op indices return a copy of the original order, unchanged. */
 export const moveStop = <T>(items: readonly T[], fromIndex: number, toIndex: number): T[] => {

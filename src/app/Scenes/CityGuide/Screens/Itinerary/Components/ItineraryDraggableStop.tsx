@@ -1,5 +1,9 @@
 import { ItineraryStopSwipeRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSwipeRow"
-import { dropIndex, siblingShifts } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import {
+  dropIndex,
+  heightsForStops,
+  siblingShifts,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { LayoutChangeEvent } from "react-native"
 import { Gesture } from "react-native-gesture-handler"
 import Animated, {
@@ -23,8 +27,16 @@ interface Props {
   isSwipingActive?: boolean
   onSwipeBegin: (id: string) => void
   onDeleted?: (id: string) => void
-  /** Owned by the section, not this row, so every row's shift math can see every row's height. */
-  rowHeights: SharedValue<number[]>
+  /**
+   * Owned by the section, not this row, so every row's shift math can see every row's height.
+   * Keyed by stop id rather than position — a row's own layout is the only thing that ever
+   * changes its own entry, so a measured height survives an add, delete, or reorder elsewhere
+   * in the section instead of being invalidated by it.
+   */
+  rowHeights: SharedValue<Record<string, number>>
+  /** Every stop id in this section, in its current order — turns `rowHeights`' by-id map into
+   *  the positional array `dropIndex`/`siblingShifts` need. */
+  stopIDs: readonly string[]
   /** -1 when nothing in the section is being dragged. */
   draggedIndex: SharedValue<number>
   dragOffsetY: SharedValue<number>
@@ -52,6 +64,7 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   onSwipeBegin,
   onDeleted,
   rowHeights,
+  stopIDs,
   draggedIndex,
   dragOffsetY,
   gap,
@@ -61,9 +74,7 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   const ownOffsetY = useSharedValue(0)
 
   const onLayout = (event: LayoutChangeEvent) => {
-    const heights = rowHeights.get().slice()
-    heights[index] = event.nativeEvent.layout.height
-    rowHeights.set(heights)
+    rowHeights.set({ ...rowHeights.get(), [stopID]: event.nativeEvent.layout.height })
   }
 
   // No offset threshold, unlike the swipe pan's `activeOffsetX` — this should lose to a real
@@ -94,7 +105,7 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
     if (from === index) return ownOffsetY.get()
     if (from === -1) return 0
 
-    const heights = rowHeights.get()
+    const heights = heightsForStops(stopIDs, rowHeights.get())
     const target = dropIndex(heights, from, dragOffsetY.get(), gap)
     const shifts = siblingShifts(heights, from, target, gap)
 
@@ -122,7 +133,11 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   }
 
   return (
-    <Animated.View onLayout={onLayout} style={containerStyle}>
+    <Animated.View
+      testID={`itinerary-draggable-stop-${stopID}`}
+      onLayout={onLayout}
+      style={containerStyle}
+    >
       <ItineraryStopSwipeRow
         stopID={stopID}
         citySlug={citySlug}

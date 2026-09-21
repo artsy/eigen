@@ -4,8 +4,11 @@ import { ItineraryDraggableStop } from "app/Scenes/CityGuide/Screens/Itinerary/C
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { dropIndex } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
-import { useEffect, useState } from "react"
+import {
+  dropIndex,
+  heightsForStops,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import { useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 
 /** Approximates the `Join`'s `Spacer y={1}` gap below — folded into the drag's drop-position
@@ -76,22 +79,19 @@ export const ItinerarySectionRow: React.FC<Props> = ({
 
   // Shared across every row in the section (not owned by any one row) so a dragged row's
   // shift math can see every row's measured height, and so only one row can be "the" dragged
-  // one at a time.
-  const rowHeights = useSharedValue<number[]>(section.stops.map(() => 0))
+  // one at a time. Keyed by stop id, not position — a row's own layout is the only thing that
+  // ever changes its own entry, so an add, delete, or reorder elsewhere in the section can't
+  // invalidate a height that's already been measured (RN never re-fires `onLayout` for a row
+  // whose frame didn't actually move, so a positional reset left it stuck at 0 forever).
+  const rowHeights = useSharedValue<Record<string, number>>({})
   const draggedIndex = useSharedValue(-1)
   const dragOffsetY = useSharedValue(0)
-
-  // Reset when the stop count changes (added, swipe-deleted, or reordered elsewhere) — heights
-  // are read by index, and a stale array of the wrong length would misindex the shift math.
-  useEffect(() => {
-    rowHeights.set(section.stops.map(() => 0))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [section.stops.length])
+  const stopIDs = section.stops.map((stop) => stop.internalID)
 
   const handleDragEnd = (fromIndex: number, offsetY: number) => {
     if (!onReorderStop) return
 
-    const heights = rowHeights.get()
+    const heights = heightsForStops(stopIDs, rowHeights.get())
     const toIndex = dropIndex(heights, fromIndex, offsetY, SECTION_ROW_GAP)
 
     if (toIndex === fromIndex) return
@@ -135,6 +135,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
               onSwipeBegin={onSwipeBegin ?? (() => undefined)}
               onDeleted={onStopDeleted}
               rowHeights={rowHeights}
+              stopIDs={stopIDs}
               draggedIndex={draggedIndex}
               dragOffsetY={dragOffsetY}
               gap={SECTION_ROW_GAP}
