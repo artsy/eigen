@@ -778,38 +778,6 @@ describe("AddToItinerarySheet", () => {
       expect(screen.queryByTestId("add-to-itinerary-row-selected")).not.toBeOnTheScreen()
     })
 
-    it("shows how many of the guide's stops each itinerary already holds", async () => {
-      renderWithRelay(
-        {
-          ...withItineraries([
-            itinerary("a", "Partial"),
-            itinerary("b", "Full"),
-            itinerary("c", "None"),
-          ]),
-        },
-        {
-          ...bulkProps,
-          request: {
-            ...bulkProps.request,
-            targets: [
-              {
-                itemType: "SHOW" as const,
-                itemID: "show-1",
-                myItineraries: [{ internalID: "a" }, { internalID: "b" }],
-              },
-              { itemType: "FAIR" as const, itemID: "fair-1", myItineraries: [{ internalID: "b" }] },
-            ],
-          },
-        }
-      )
-
-      await screen.findByText("Partial")
-
-      expect(screen.getByText("1 of 2 added")).toBeOnTheScreen()
-      expect(screen.getByText("All stops added")).toBeOnTheScreen()
-      expect(screen.getByText("0 of 2 added")).toBeOnTheScreen()
-    })
-
     it("adds every stop, in one mutation each, to the same newly-created section", async () => {
       const view = renderWithRelay(withItineraries([itinerary("a", "First")]), bulkProps)
 

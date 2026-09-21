@@ -1,5 +1,4 @@
 import {
-  heldCount,
   selectionChanges,
   stopMutationInput,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
@@ -55,25 +54,5 @@ describe("stopMutationInput", () => {
       sourceShareToken: "source-token",
       address: "12 Bermondsey Street",
     })
-  })
-})
-
-describe("heldCount", () => {
-  const target = (itineraryIDs: string[]) => ({
-    itemType: "SHOW" as const,
-    itemID: "show-1",
-    myItineraries: itineraryIDs.map((internalID) => ({ internalID })),
-  })
-
-  it("counts only the targets that name this itinerary", () => {
-    expect(heldCount([target(["a"]), target(["b"]), target(["a", "b"])], "a")).toBe(2)
-  })
-
-  it("is zero when nothing names this itinerary", () => {
-    expect(heldCount([target(["b"])], "a")).toBe(0)
-  })
-
-  it("is zero for a target with no membership data at all", () => {
-    expect(heldCount([{ itemType: "SHOW", itemID: "show-1" }], "a")).toBe(0)
   })
 })

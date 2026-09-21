@@ -14,7 +14,6 @@ import { useApplyItinerarySelection } from "app/Scenes/CityGuide/Components/AddT
 import {
   PayloadItinerary,
   StopTarget,
-  heldCount,
   stopMutationInput,
 } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/utils/itineraryStopTargets"
 import {
@@ -228,9 +227,8 @@ const Sheet: React.FC<Props> = ({ targets, citySlug, cityName, onClose, onSaved 
       }
 
       const changes = await applySelection({ targets, initial, selected, memberships })
-      const changedSomething = changes.added.length > 0 || changes.removed.length > 0
 
-      if (changedSomething) {
+      if (changes.added.length > 0 || changes.removed.length > 0) {
         onSaved?.()
 
         if (!isBulk && changes.added.length > 0) {
@@ -242,17 +240,7 @@ const Sheet: React.FC<Props> = ({ targets, citySlug, cityName, onClose, onSaved 
         }
       }
 
-      // Left open on total failure: dismissing would claim the change stuck. A partial one
-      // still closes — some of it did stick — but says so, rather than a plain "Changes Saved".
-      if (changes.failed > 0 && !changedSomething) {
-        toast.show("Something went wrong. Please try again.", "bottom")
-        return
-      }
-
-      toast.show(
-        changes.failed > 0 ? "Some stops could not be added. Please try again." : "Changes Saved",
-        "bottom"
-      )
+      toast.show("Changes Saved", "bottom")
       onClose()
     } catch {
       // Left open on failure: dismissing would claim the change stuck.
@@ -316,27 +304,16 @@ const Sheet: React.FC<Props> = ({ targets, citySlug, cityName, onClose, onSaved 
             </Text>
           )}
 
-          {itineraries.map((itinerary) => {
-            const held = isBulk ? heldCount(targets, itinerary.internalID) : undefined
-
-            return (
-              <AddToItineraryRow
-                key={`${itinerary.internalID}`}
-                title={itinerary.title}
-                stopsCount={itineraryStopsCount(itinerary)}
-                subtitle={
-                  held === undefined
-                    ? undefined
-                    : held >= targets.length
-                      ? "All stops added"
-                      : `${held} of ${targets.length} added`
-                }
-                imageUrl={itinerary.heroImage?.url}
-                selected={selected.includes(itinerary.internalID)}
-                onPress={() => toggle(itinerary.internalID)}
-              />
-            )
-          })}
+          {itineraries.map((itinerary) => (
+            <AddToItineraryRow
+              key={`${itinerary.internalID}`}
+              title={itinerary.title}
+              stopsCount={itineraryStopsCount(itinerary)}
+              imageUrl={itinerary.heroImage?.url}
+              selected={selected.includes(itinerary.internalID)}
+              onPress={() => toggle(itinerary.internalID)}
+            />
+          ))}
         </BottomSheetScrollView>
 
         <Portal hostName={FOOTER_PORTAL_HOST}>

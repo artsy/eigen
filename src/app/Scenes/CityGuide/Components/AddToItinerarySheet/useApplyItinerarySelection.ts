@@ -30,23 +30,32 @@ const ADD_CONCURRENCY = 5
  * hold, and — single-target mode only — a newly unticked one loses it. A row nobody touched is
  * left alone.
  *
- * Never throws on the first failure: a guide's worth of stops shouldn't be lost because one
- * itinerary's section failed to create. Callers read `failed` to decide what to tell the user.
+ * One itinerary at a time rather than in parallel: each add may have to create a "My Stops"
+ * section first, and a half-applied set is easier to reason about in order. Throws on the
+ * first failure, so the sheet's own catch can tell the user something went wrong.
  */
 export const useApplyItinerarySelection = () => {
   const environment = useRelayEnvironment()
 
-  /** The itinerary's "My Stops" section (created if it has none) and the stops it already holds. */
-  const resolveDestination = useCallback(
+  /** The itinerary's stops, read straight off its sections. */
+  const fetchStops = useCallback(
     async (itineraryID: string) => {
       const sections = await fetchItinerarySections(environment, itineraryID)
 
-      // Rather than carry on and add a second "My Stops" to an itinerary that already has one.
       if (!sections) throw new Error("Could not read that itinerary")
 
-      const stops = sections.flatMap((section) => section.stops)
+      return { sections, stops: sections.flatMap((section) => section.stops) }
+    },
+    [environment]
+  )
+
+  /** The itinerary's "My Stops" section (created if it has none) and the stops it already holds. */
+  const resolveDestination = useCallback(
+    async (itineraryID: string) => {
+      const { sections, stops } = await fetchStops(itineraryID)
       const existing = sections.find(isMyStopsSection)
 
+      // Rather than carry on and add a second "My Stops" to an itinerary that already has one.
       if (existing) return { sectionID: existing.internalID, stops }
 
       const created = await mutate<useApplyItinerarySelectionCreateSectionMutation>(
@@ -70,7 +79,7 @@ export const useApplyItinerarySelection = () => {
 
       return { sectionID, stops }
     },
-    [environment]
+    [fetchStops, environment]
   )
 
   /** Adds whichever of `targets` this destination doesn't already hold, `ADD_CONCURRENCY` at a time. */
@@ -80,9 +89,6 @@ export const useApplyItinerarySelection = () => {
       targets: readonly StopTarget[]
     ) => {
       const missing = targets.filter((target) => !findStop(destination.stops, target))
-
-      let added = 0
-      let anyFailed = false
 
       for (let i = 0; i < missing.length; i += ADD_CONCURRENCY) {
         const chunk = missing.slice(i, i + ADD_CONCURRENCY)
@@ -97,18 +103,14 @@ export const useApplyItinerarySelection = () => {
 
         for (const result of results) {
           if (
-            result.status === "fulfilled" &&
-            result.value.createItineraryStop?.responseOrError?.__typename ===
+            result.status !== "fulfilled" ||
+            result.value.createItineraryStop?.responseOrError?.__typename !==
               "ItineraryStopMutationSuccess"
           ) {
-            added++
-          } else {
-            anyFailed = true
+            throw new Error("Could not add the stop")
           }
         }
       }
-
-      return { added, anyFailed }
     },
     [environment]
   )
@@ -132,20 +134,10 @@ export const useApplyItinerarySelection = () => {
     }) => {
       const { added, removed } = selectionChanges(initial, selected)
 
-      const addedIDs: string[] = []
-      const removedIDs: string[] = []
-      let failed = 0
-
       for (const itineraryID of added) {
-        try {
-          const destination = await resolveDestination(itineraryID)
-          const result = await addMissing(destination, targets)
+        const destination = await resolveDestination(itineraryID)
 
-          if (result.added > 0) addedIDs.push(itineraryID)
-          if (result.anyFailed) failed++
-        } catch {
-          failed++
-        }
+        await addMissing(destination, targets)
       }
 
       // Bulk mode (>1 target) never pre-ticks anything, so `initial` is always `[]` there and
@@ -155,57 +147,49 @@ export const useApplyItinerarySelection = () => {
         const [target] = targets
 
         for (const itineraryID of removed) {
-          try {
-            const membership = memberships?.find((each) => each.itineraryID === itineraryID)
-            const matchingStopIDs = membership?.stopIDs ?? []
-            const stopIDs =
-              target.sourceStopID && matchingStopIDs.includes(target.sourceStopID)
-                ? [target.sourceStopID]
-                : matchingStopIDs.length
-                  ? matchingStopIDs
-                  : await findStopIDByTarget(itineraryID, target)
+          const membership = memberships?.find((each) => each.itineraryID === itineraryID)
+          const matchingStopIDs = membership?.stopIDs ?? []
+          const stopIDs =
+            target.sourceStopID && matchingStopIDs.includes(target.sourceStopID)
+              ? [target.sourceStopID]
+              : matchingStopIDs.length
+                ? matchingStopIDs
+                : await findStopIDByTarget(itineraryID, target)
 
-            // Nothing to remove is success: the row already shows the state the user asked for.
-            if (stopIDs.length) {
-              for (const stopID of stopIDs) {
-                const deleted = await mutate<useApplyItinerarySelectionRemoveMutation>(
-                  environment,
-                  RemoveMutation,
-                  { input: { id: stopID } }
-                )
-                const response = deleted.deleteItineraryStop?.responseOrError
+          // Nothing to remove is success: the row already shows the state the user asked for.
+          if (!stopIDs.length) continue
 
-                if (response?.__typename !== "ItineraryStopMutationSuccess") {
-                  throw new Error(
-                    response?.__typename === "ItineraryStopMutationFailure"
-                      ? response.mutationError?.message ?? "Could not remove the stop"
-                      : "Could not remove the stop"
-                  )
-                }
-              }
+          for (const stopID of stopIDs) {
+            const deleted = await mutate<useApplyItinerarySelectionRemoveMutation>(
+              environment,
+              RemoveMutation,
+              { input: { id: stopID } }
+            )
+            const response = deleted.deleteItineraryStop?.responseOrError
+
+            if (response?.__typename !== "ItineraryStopMutationSuccess") {
+              throw new Error(
+                response?.__typename === "ItineraryStopMutationFailure"
+                  ? response.mutationError?.message ?? "Could not remove the stop"
+                  : "Could not remove the stop"
+              )
             }
-
-            removedIDs.push(itineraryID)
-          } catch {
-            failed++
           }
         }
       }
 
-      return { added: addedIDs, removed: removedIDs, failed }
+      return { added, removed }
 
-      /** Without membership data, the stop is found by what it points at. */
+      /** Without membership data, the stop is found by what it points at — reusing the same
+       *  fetch `resolveDestination` uses for adds, rather than a second fetch of its own. */
       async function findStopIDByTarget(itineraryID: string, target: StopTarget) {
-        const sections = (await fetchItinerarySections(environment, itineraryID)) ?? []
-        const stop = findStop(
-          sections.flatMap((section) => section.stops),
-          target
-        )
+        const { stops } = await fetchStops(itineraryID)
+        const stop = findStop(stops, target)
 
         return stop ? [stop.internalID] : []
       }
     },
-    [environment, resolveDestination, addMissing]
+    [environment, resolveDestination, addMissing, fetchStops]
   )
 }
 

@@ -47,9 +47,3 @@ export const stopMutationInput = (target: StopTarget): StopInput => {
 
   return input
 }
-
-/** How many of `targets` this itinerary already holds, for a "9 of 14 added" row hint. */
-export const heldCount = (targets: readonly StopTarget[], itineraryID: string): number =>
-  targets.filter(
-    (target) => target.myItineraries?.some((itinerary) => itinerary.internalID === itineraryID)
-  ).length

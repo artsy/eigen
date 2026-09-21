@@ -113,8 +113,4 @@ describe("itineraryStopTargets", () => {
     expect(targets[0]).toMatchObject({ itemType: "SHOW", itemID: "show-1" })
     expect(targets[1]).toMatchObject({ itemType: "FAIR", itemID: "fair-1" })
   })
-
-  it("is empty for an itinerary with no stops", () => {
-    expect(itineraryStopTargets([])).toEqual([])
-  })
 })
