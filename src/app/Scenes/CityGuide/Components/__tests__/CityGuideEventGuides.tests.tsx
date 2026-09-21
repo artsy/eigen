@@ -110,10 +110,7 @@ describe("CityGuideEventGuides", () => {
   })
 
   it("tracks the tap on a guide row", async () => {
-    renderWithRelay(
-      connection([event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])]),
-      props
-    )
+    renderWithRelay(connection([itinerary("chill-vibes-only", "Chill Vibes Only")]), props)
 
     fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
 

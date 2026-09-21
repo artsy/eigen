@@ -86,7 +86,7 @@ describe("CityGuideNew", () => {
       })
 
       expect(screen.queryByTestId("city-guide-new-placeholder")).not.toBeOnTheScreen()
-      expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
+      expect(screen.getByText("City Guides")).toBeOnTheScreen()
     })
   })
 
