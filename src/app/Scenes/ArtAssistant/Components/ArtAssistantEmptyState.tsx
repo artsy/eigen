@@ -1,7 +1,6 @@
 import { SparklesSquareStrokeIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAssistantTracking"
-import { StyleSheet } from "react-native"
 
 const EMPTY_STATE_ICON_SIZE = 20
 
@@ -63,7 +62,7 @@ export const ArtAssistantEmptyState: React.FC<ArtAssistantEmptyStateProps> = ({
             <Flex
               borderColor="mono15"
               borderRadius={20}
-              borderWidth={StyleSheet.hairlineWidth}
+              borderWidth={1}
               justifyContent="center"
               minHeight={56}
               px={2}

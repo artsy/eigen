@@ -23,7 +23,6 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -208,7 +207,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               flex={1}
               borderColor={isComposerFocused ? "blue100" : "mono15"}
               borderRadius={50}
-              borderWidth={StyleSheet.hairlineWidth}
+              borderWidth={1}
               minHeight={50}
               justifyContent="center"
               px={2}
