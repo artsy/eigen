@@ -3,6 +3,7 @@ import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
+import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
 import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
@@ -26,7 +27,7 @@ import {
   MinZoomLevel,
 } from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
-import { DrawerPosition, Fair, Show } from "app/Scenes/CityGuide/utils/types"
+import { DrawerPosition, Fair, MapTab, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -90,6 +91,9 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
+  // Measured from CityFilterPills' onLayout so the Android scale bar (which otherwise sits at a
+  // fixed offset) can be pushed below the pill row instead of overlapping it.
+  const [pillsRowHeight, setPillsRowHeight] = useState(0)
 
   const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
 
@@ -133,6 +137,50 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     setActiveIndex(activeIndex)
     setActivePin(null)
     setActiveShows([])
+  }
+
+  const handleSelectMapFilterPill = (tab: MapTab) => {
+    const index = cityTabs.findIndex((cityTab) => cityTab.id === tab.id)
+
+    if (index === -1) {
+      return
+    }
+
+    trackFilterPillTap(tab.id)
+
+    // Dispatch through the EventEmitter (rather than calling handleFilterChange directly) so
+    // there's exactly one path into the filter state — a tab press elsewhere and a pill press
+    // both stay in sync for free.
+    EventEmitter.dispatch("filters:change", index)
+  }
+
+  // Mirrors CityGuideTabs' trackTab, which fires the same event for the bottom-sheet tabs.
+  // context_module distinguishes a pill press from a tab press on the same underlying filter.
+  const trackFilterPillTap = (filter: MapTab["id"]) => {
+    let actionName
+    switch (filter) {
+      case "all":
+        actionName = Schema.ActionNames.AllTab
+        break
+      case "saved":
+        actionName = Schema.ActionNames.SavedTab
+        break
+      case "fairs":
+        actionName = Schema.ActionNames.FairsTab
+        break
+      case "galleries":
+        actionName = Schema.ActionNames.GalleriesTab
+        break
+      case "museums":
+        actionName = Schema.ActionNames.MuseumsTab
+        break
+      default:
+        actionName = null
+        break
+    }
+    if (actionName) {
+      trackEvent(tracks.trackFilterPillTap(actionName))
+    }
   }
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
@@ -301,6 +349,14 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         onPressCitySwitcherButton={onPressCitySwitcherButton}
         onPressUserPositionButton={onPressUserPositionButton}
       />
+      {!showCityPicker && (
+        <CityFilterPills
+          selectedTabId={cityTabs[activeIndex].id}
+          onSelectTab={handleSelectMapFilterPill}
+          bucketResults={bucketResults}
+          onLayout={setPillsRowHeight}
+        />
+      )}
       <CityGuideCityPicker
         showCityPicker={showCityPicker}
         setShowCityPicker={setShowCityPicker}
@@ -326,7 +382,12 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           }}
           onPress={onPressMap}
           scaleBarPosition={{
-            top: Platform.OS === "ios" ? safeAreaInsets.top - 20 : safeAreaInsets.top + 40,
+            // On Android the scale bar's default offset lands under the new pill row (which
+            // Map/MapView.tsx also has to account for); push it below the pills once measured.
+            top:
+              Platform.OS === "ios"
+                ? safeAreaInsets.top - 20
+                : safeAreaInsets.top + 40 + pillsRowHeight,
             left: space(2),
           }}
         >
@@ -404,6 +465,13 @@ const tracks = {
       owner_id: !!show ? show[0].internalID : "",
       owner_slug: !!show ? show[0].id : "",
       owner_type: !!type ? type : "",
+    } as any
+  },
+  trackFilterPillTap: (filter: string) => {
+    return {
+      action_name: filter,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: "MapFilterPills",
     } as any
   },
 }
