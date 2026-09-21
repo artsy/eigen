@@ -45,6 +45,35 @@ describe("CityGuideNew", () => {
   // reachably distinct from the switcher, so driving a selection is unreliable. The two
   // cases above cover what a user sees.
 
+  describe("the loading placeholder", () => {
+    it("shows a skeleton before the query resolves", () => {
+      renderWithWrappers(<CityGuideNew />)
+
+      expect(screen.getByTestId("city-guide-new-placeholder")).toBeOnTheScreen()
+    })
+
+    it("replaces the skeleton with the real sections once the query resolves", async () => {
+      renderWithWrappers(<CityGuideNew />)
+
+      await act(async () => {
+        await flushPromiseQueue()
+      })
+
+      act(() => {
+        getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, DefaultMockResolvers)
+        )
+      })
+
+      await act(async () => {
+        await flushPromiseQueue()
+      })
+
+      expect(screen.queryByTestId("city-guide-new-placeholder")).not.toBeOnTheScreen()
+      expect(screen.getByText("Curated City Guides")).toBeOnTheScreen()
+    })
+  })
+
   describe("the editorial sections", () => {
     /**
      * One current event carrying both a video and an article, which is what the designs show.
