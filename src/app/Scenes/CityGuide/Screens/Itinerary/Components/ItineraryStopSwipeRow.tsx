@@ -127,9 +127,18 @@ export const ItineraryStopSwipeRow: React.FC<
 
   const gesture = dragGesture ? Gesture.Race(pan, dragGesture) : pan
 
-  const animatedStyles = useAnimatedStyle(() => {
+  // Moves the whole row — delete panel included, since it's a sibling of the content below,
+  // not a child of it — so a drag shifting this row out of the way doesn't leave the panel
+  // behind while the content it's meant to sit behind slides off on its own.
+  const rowStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.get() }, { translateY: dragTranslateY?.get() ?? 0 }],
+      transform: [{ translateY: dragTranslateY?.get() ?? 0 }],
+    }
+  })
+
+  const contentStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.get() }],
     }
   })
 
@@ -174,7 +183,7 @@ export const ItineraryStopSwipeRow: React.FC<
   return (
     <Flex>
       <GestureDetector gesture={gesture}>
-        <Animated.View>
+        <Animated.View style={rowStyle}>
           {!!canDelete && (
             <Flex
               position="absolute"
@@ -204,7 +213,7 @@ export const ItineraryStopSwipeRow: React.FC<
             </Flex>
           )}
 
-          <Animated.View testID={`itinerary-stop-swipe-content-${stopID}`} style={animatedStyles}>
+          <Animated.View testID={`itinerary-stop-swipe-content-${stopID}`} style={contentStyles}>
             {children}
           </Animated.View>
         </Animated.View>
