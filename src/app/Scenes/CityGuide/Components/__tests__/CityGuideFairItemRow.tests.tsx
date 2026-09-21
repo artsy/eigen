@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { CityGuideFairItemRow } from "app/Scenes/CityGuide/Components/CityGuideFairItemRow"
 import { Fair } from "app/Scenes/CityGuide/utils/types"
@@ -26,5 +27,22 @@ describe("CityGuideFairItemRow", () => {
     renderWithWrappers(<CityGuideFairItemRow item={fairData} />)
 
     expect(screen.getByText("TEFAF New York Spring 2019")).toBeTruthy()
+  })
+
+  it("renders no save control when none is passed", () => {
+    renderWithWrappers(<CityGuideFairItemRow item={fairData} />)
+
+    expect(screen.queryByTestId("fair-item-row-save-control")).toBeNull()
+  })
+
+  it("renders a save control when one is passed", () => {
+    renderWithWrappers(
+      <CityGuideFairItemRow
+        item={fairData}
+        saveControl={<Text testID="fair-item-row-save-control">+</Text>}
+      />
+    )
+
+    expect(screen.getByTestId("fair-item-row-save-control")).toBeTruthy()
   })
 })

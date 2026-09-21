@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@artsy/palette-mobile"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
+import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CityGuideFairItemRow } from "app/Scenes/CityGuide/Components/CityGuideFairItemRow"
 import { Fair, Show } from "app/Scenes/CityGuide/utils/types"
 // eslint-disable-next-line no-restricted-imports
@@ -89,14 +90,32 @@ export class CityGuideShowCard extends Component<CityGuideShowCardProps, CityGui
       >
         <TouchableOpacity accessibilityRole="button" onPress={this.handleTap.bind(this, item)}>
           {item.type === "Show" ? (
-            <ShowItemRow
-              show={item}
-              onSaveStarted={this.props.onSaveStarted}
-              onSaveEnded={this.props.onSaveEnded}
-              shouldHideSaveButton
-            />
+            <Flex flexDirection="row" alignItems="center">
+              <Box flex={1}>
+                <ShowItemRow
+                  show={item}
+                  onSaveStarted={this.props.onSaveStarted}
+                  onSaveEnded={this.props.onSaveEnded}
+                  shouldHideSaveButton
+                />
+              </Box>
+              <CityEventSaveControl
+                itemType="SHOW"
+                itemID={item.internalID}
+                name={item.name ?? ""}
+              />
+            </Flex>
           ) : (
-            <CityGuideFairItemRow item={item} />
+            <CityGuideFairItemRow
+              item={item}
+              saveControl={
+                <CityEventSaveControl
+                  itemType="FAIR"
+                  itemID={item.internalID}
+                  name={item.name ?? ""}
+                />
+              }
+            />
           )}
         </TouchableOpacity>
       </Box>

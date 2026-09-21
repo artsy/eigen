@@ -3,6 +3,7 @@ import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
+import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
 import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -337,100 +338,102 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      <CityGuideMapHeader
-        safeAreaInsetTop={safeAreaInsets.top}
-        cityName={viewer.city?.name}
-        userLocation={userLocation}
-        currentLocation={currentLocation}
-        onPressCitySwitcherButton={onPressCitySwitcherButton}
-        onPressUserPositionButton={onPressUserPositionButton}
-      />
-      {!showCityPicker && (
-        <CityFilterPills
-          selectedTabId={cityTabs[activeIndex].id}
-          onSelectTab={handleSelectMapFilterPill}
-          bucketResults={bucketResults}
+      <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
+        <CityGuideMapHeader
+          safeAreaInsetTop={safeAreaInsets.top}
+          cityName={viewer.city?.name}
+          userLocation={userLocation}
+          currentLocation={currentLocation}
+          onPressCitySwitcherButton={onPressCitySwitcherButton}
+          onPressUserPositionButton={onPressUserPositionButton}
         />
-      )}
-      <CityGuideCityPicker
-        showCityPicker={showCityPicker}
-        setShowCityPicker={setShowCityPicker}
-        selectedCity={city?.name ?? ""}
-        onSelectCity={onSelectCity}
-      />
-      <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
-        <MapboxGL.MapView
-          ref={mapRef}
-          style={{ width: "100%", height: "100%" }}
-          {...mapProps}
-          onCameraChanged={onRegionIsChanging}
-          onDidFinishLoadingMap={onDidFinishLoadingMap}
-          attributionEnabled
-          logoEnabled
-          attributionPosition={{
-            bottom: space(2),
-            right: space(2),
-          }}
-          logoPosition={{
-            bottom: space(2),
-            left: space(2),
-          }}
-          onPress={onPressMap}
-          scaleBarEnabled={false}
-        >
-          <MapboxGL.Camera
-            ref={cameraRef}
-            animationMode="moveTo"
-            zoomLevel={DefaultZoomLevel}
-            minZoomLevel={MinZoomLevel}
-            maxZoomLevel={MaxZoomLevel}
-            centerCoordinate={[centerLng, centerLat]}
+        {!showCityPicker && (
+          <CityFilterPills
+            selectedTabId={cityTabs[activeIndex].id}
+            onSelectTab={handleSelectMapFilterPill}
+            bucketResults={bucketResults}
           />
-          <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
-          {!!city && (
-            <>
-              {!!featureCollections && !!mapLoaded && (
-                <CityGuideMapPins
-                  filterID={cityTabs[activeIndex].id}
-                  featureCollections={featureCollections}
-                  onPress={(e) => handleFeaturePress(e)}
-                  shapeSourceRef={shapeSourceRef}
-                  activePinSlug={
-                    activePin?.properties?.cluster ? null : activePin?.properties?.slug
-                  }
-                  activeClusterId={
-                    activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
-                  }
-                />
-              )}
-            </>
-          )}
-        </MapboxGL.MapView>
-        {!!city && activeShows.length > 0 && (
-          <Flex
-            position="absolute"
-            bottom={0}
-            left={0}
-            right={0}
-            height={SHOW_CARD_HEIGHT}
-            justifyContent="flex-end"
+        )}
+        <CityGuideCityPicker
+          showCityPicker={showCityPicker}
+          setShowCityPicker={setShowCityPicker}
+          selectedCity={city?.name ?? ""}
+          onSelectCity={onSelectCity}
+        />
+        <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
+          <MapboxGL.MapView
+            ref={mapRef}
+            style={{ width: "100%", height: "100%" }}
+            {...mapProps}
+            onCameraChanged={onRegionIsChanging}
+            onDidFinishLoadingMap={onDidFinishLoadingMap}
+            attributionEnabled
+            logoEnabled
+            attributionPosition={{
+              bottom: space(2),
+              right: space(2),
+            }}
+            logoPosition={{
+              bottom: space(2),
+              left: space(2),
+            }}
+            onPress={onPressMap}
+            scaleBarEnabled={false}
           >
-            <CityGuideShowCardOverlay
-              activeShows={activeShows}
-              showsRef={showsRef}
-              fairsRef={fairsRef}
-              onSaveStarted={() => setIsSavingShow(true)}
-              onSaveEnded={() => setIsSavingShow(false)}
+            <MapboxGL.Camera
+              ref={cameraRef}
+              animationMode="moveTo"
+              zoomLevel={DefaultZoomLevel}
+              minZoomLevel={MinZoomLevel}
+              maxZoomLevel={MaxZoomLevel}
+              centerCoordinate={[centerLng, centerLat]}
             />
-          </Flex>
-        )}
-        {!enableGlobalMapList && (
-          <CityGuideBottomSheet
-            drawerPosition={drawerPosition}
-            citySlug={viewer.city?.slug || ""}
-          />
-        )}
-      </Flex>
+            <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
+            {!!city && (
+              <>
+                {!!featureCollections && !!mapLoaded && (
+                  <CityGuideMapPins
+                    filterID={cityTabs[activeIndex].id}
+                    featureCollections={featureCollections}
+                    onPress={(e) => handleFeaturePress(e)}
+                    shapeSourceRef={shapeSourceRef}
+                    activePinSlug={
+                      activePin?.properties?.cluster ? null : activePin?.properties?.slug
+                    }
+                    activeClusterId={
+                      activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
+                    }
+                  />
+                )}
+              </>
+            )}
+          </MapboxGL.MapView>
+          {!!city && activeShows.length > 0 && (
+            <Flex
+              position="absolute"
+              bottom={0}
+              left={0}
+              right={0}
+              height={SHOW_CARD_HEIGHT}
+              justifyContent="flex-end"
+            >
+              <CityGuideShowCardOverlay
+                activeShows={activeShows}
+                showsRef={showsRef}
+                fairsRef={fairsRef}
+                onSaveStarted={() => setIsSavingShow(true)}
+                onSaveEnded={() => setIsSavingShow(false)}
+              />
+            </Flex>
+          )}
+          {!enableGlobalMapList && (
+            <CityGuideBottomSheet
+              drawerPosition={drawerPosition}
+              citySlug={viewer.city?.slug || ""}
+            />
+          )}
+        </Flex>
+      </AddToItineraryProvider>
     </ProvideScreenTracking>
   )
 }

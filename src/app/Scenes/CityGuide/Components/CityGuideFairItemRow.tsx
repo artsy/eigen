@@ -10,9 +10,13 @@ const FAIR_IMAGE_BORDER_RADIUS = 30
 
 export interface Props {
   item: Fair
+  /** Rendered after the text box, narrowing it by the control's own width. Omit to keep the row full-width. */
+  saveControl?: React.ReactNode
 }
 
-export const CityGuideFairItemRow: React.FC<Props> = ({ item }) => {
+const SAVE_CONTROL_WIDTH = 40
+
+export const CityGuideFairItemRow: React.FC<Props> = ({ item, saveControl }) => {
   const space = useSpace()
 
   const handleTap = () => {
@@ -20,7 +24,12 @@ export const CityGuideFairItemRow: React.FC<Props> = ({ item }) => {
   }
 
   const fairImage = item.image ? item.image.url : null
-  const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
+  const boxWidth =
+    Dimensions.get("window").width -
+    62 -
+    space(4) -
+    space(1) -
+    (saveControl ? SAVE_CONTROL_WIDTH + space(1) : 0)
 
   return (
     <TouchableWithoutFeedback accessibilityRole="button" onPress={handleTap}>
@@ -47,6 +56,7 @@ export const CityGuideFairItemRow: React.FC<Props> = ({ item }) => {
             </Text>
           )}
         </Box>
+        {!!saveControl && <Box ml={1}>{saveControl}</Box>}
       </Flex>
     </TouchableWithoutFeedback>
   )
