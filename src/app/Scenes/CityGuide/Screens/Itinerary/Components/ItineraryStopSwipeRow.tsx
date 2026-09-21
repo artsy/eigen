@@ -1,6 +1,7 @@
 import { TrashIcon } from "@artsy/icons/native"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useDeleteItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDeleteItineraryStop"
+import { Schema } from "app/utils/track"
 import { Alert } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
@@ -10,6 +11,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
+import { useTracking } from "react-tracking"
 
 /** Same reveal width and gesture thresholds as `SavedSearchListItem`, the pattern this mirrors. */
 const DELETE_BUTTON_WIDTH = 91
@@ -34,6 +36,7 @@ export const ItineraryStopSwipeRow: React.FC<
   React.PropsWithChildren<ItineraryStopSwipeRowProps>
 > = ({ stopID, citySlug, canDelete, isSwipingActive, onSwipeBegin, onDeleted, children }) => {
   const deleteItineraryStop = useDeleteItineraryStop(citySlug)
+  const { trackEvent } = useTracking<Schema.Entity>()
 
   const isDeleteButtonVisible = useSharedValue(false)
   const translateX = useSharedValue(0)
@@ -91,6 +94,13 @@ export const ItineraryStopSwipeRow: React.FC<
   const onDeletePress = async () => {
     try {
       await deleteItineraryStop(stopID)
+      trackEvent({
+        action_name: Schema.ActionNames.DeletedItineraryStop,
+        action_type: Schema.ActionTypes.Swipe,
+        owner_type: Schema.OwnerEntityTypes.CityGuide,
+        owner_slug: citySlug,
+        owner_id: stopID,
+      })
       onDeleted?.(stopID)
     } catch (error) {
       console.error(error)

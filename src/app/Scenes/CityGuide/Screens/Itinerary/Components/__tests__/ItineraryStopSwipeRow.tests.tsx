@@ -1,6 +1,8 @@
 import { Theme } from "@artsy/palette-mobile"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryStopSwipeRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSwipeRow"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { Schema } from "app/utils/track"
 import { Alert, Text } from "react-native"
 import { PanGesture } from "react-native-gesture-handler"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
@@ -27,6 +29,7 @@ describe("ItineraryStopSwipeRow", () => {
   beforeEach(() => {
     env = createMockEnvironment()
     jest.spyOn(Alert, "alert").mockImplementation(() => undefined)
+    mockTrackEvent.mockClear()
   })
 
   afterEach(() => {
@@ -108,6 +111,14 @@ describe("ItineraryStopSwipeRow", () => {
     )
 
     await waitFor(() => expect(onDeleted).toHaveBeenCalledWith("stop-1"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action_name: Schema.ActionNames.DeletedItineraryStop,
+      action_type: Schema.ActionTypes.Swipe,
+      owner_type: Schema.OwnerEntityTypes.CityGuide,
+      owner_slug: "london-united-kingdom",
+      owner_id: "stop-1",
+    })
   })
 
   it("keeps the row and does not call onDeleted when the delete mutation fails", async () => {
@@ -140,6 +151,7 @@ describe("ItineraryStopSwipeRow", () => {
 
     await waitFor(() => expect(consoleError).toHaveBeenCalled())
     expect(onDeleted).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalled()
     expect(screen.getByText("Museum")).toBeTruthy()
   })
 })

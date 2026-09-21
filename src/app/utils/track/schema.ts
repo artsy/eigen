@@ -267,6 +267,7 @@ export enum ActionNames {
    * City Guide itinerary events
    */
   TappedAddFullList = "tappedAddFullList",
+  DeletedItineraryStop = "deletedItineraryStop",
 
   /**
    * Fair page events
