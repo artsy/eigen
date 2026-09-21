@@ -146,10 +146,41 @@ export const CityGuideMap: React.FC<Props> = (props) => {
       return
     }
 
+    trackFilterPillTap(tab.id)
+
     // Dispatch through the EventEmitter (rather than calling handleFilterChange directly) so
     // there's exactly one path into the filter state — a tab press elsewhere and a pill press
     // both stay in sync for free.
     EventEmitter.dispatch("filters:change", index)
+  }
+
+  // Mirrors CityGuideTabs' trackTab, which fires the same event for the bottom-sheet tabs.
+  // context_module distinguishes a pill press from a tab press on the same underlying filter.
+  const trackFilterPillTap = (filter: MapTab["id"]) => {
+    let actionName
+    switch (filter) {
+      case "all":
+        actionName = Schema.ActionNames.AllTab
+        break
+      case "saved":
+        actionName = Schema.ActionNames.SavedTab
+        break
+      case "fairs":
+        actionName = Schema.ActionNames.FairsTab
+        break
+      case "galleries":
+        actionName = Schema.ActionNames.GalleriesTab
+        break
+      case "museums":
+        actionName = Schema.ActionNames.MuseumsTab
+        break
+      default:
+        actionName = null
+        break
+    }
+    if (actionName) {
+      trackEvent(tracks.trackFilterPillTap(actionName))
+    }
   }
 
   const trackPinTap = (actionName: string, show: any, type: string) => {
@@ -434,6 +465,13 @@ const tracks = {
       owner_id: !!show ? show[0].internalID : "",
       owner_slug: !!show ? show[0].id : "",
       owner_type: !!type ? type : "",
+    } as any
+  },
+  trackFilterPillTap: (filter: string) => {
+    return {
+      action_name: filter,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: "MapFilterPills",
     } as any
   },
 }
