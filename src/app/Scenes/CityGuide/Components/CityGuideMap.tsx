@@ -1,4 +1,4 @@
-import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
+import { Flex, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
@@ -9,10 +9,8 @@ import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideB
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
-import {
-  CityGuideShowCardOverlay,
-  SHOW_CARD_HEIGHT,
-} from "app/Scenes/CityGuide/Components/CityGuideShowCardOverlay"
+import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
+import { MapPlace } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
 import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
@@ -20,6 +18,7 @@ import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeature
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
+import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import {
@@ -28,6 +27,7 @@ import {
   MinZoomLevel,
 } from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
+import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
 import { DrawerPosition, Fair, MapTab, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -35,6 +35,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useMemo, useRef, useState } from "react"
+import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -54,6 +55,8 @@ interface Props {
 export const CityGuideMap: React.FC<Props> = (props) => {
   const color = useColor()
   const space = useSpace()
+  const { width: screenWidth } = useScreenDimensions()
+  const cardWidth = screenWidth - 2 * space(2)
   const safeAreaInsets = useSafeAreaInsets()
 
   const [viewer, refetch] = useRefetchableFragment(cityGuideMapFragment, props.viewer)
@@ -86,7 +89,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   )
   const featureCollections = useMemo(() => buildFeatureCollections(bucketResults), [bucketResults])
 
-  const [isSavingShow, setIsSavingShow] = useState(false)
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
@@ -242,10 +244,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   }
 
   const onPressMap = () => {
-    if (!isSavingShow) {
-      setActiveShows([])
-      setActivePin(null)
-    }
+    setActiveShows([])
+    setActivePin(null)
   }
 
   const onDidFinishLoadingMap = () => {
@@ -329,6 +329,34 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
   }
 
+  // Reuses the same adapters the event-list map already builds its pins' cards from
+  // (`showsToMapSections`/`fairsToMapSections`), so a pin here previews exactly like it does
+  // there — rather than the older, map-only `CityGuideShowCard`. A fair carries `profile`,
+  // which a show's fragment never selects, so that's the split.
+  const activePlaces = useMemo<MapPlace[]>(() => {
+    if (activeShows.length === 0) {
+      return []
+    }
+
+    const fairItems = activeShows.filter((item): item is Fair => "profile" in item)
+    const showItems = activeShows.filter((item): item is Show => !("profile" in item))
+
+    const placesById = new Map<string, MapPlace>()
+
+    showsToMapSections([{ id: "active", title: "", items: showItems }])[0].places.forEach((place) =>
+      placesById.set(place.id, place)
+    )
+    fairsToMapSections([{ id: "active", title: "", items: fairItems }])[0].places.forEach((place) =>
+      placesById.set(place.id, place)
+    )
+
+    // Preserves the tapped feature's own order (single pin, or a cluster's leaf order).
+    return activeShows.flatMap((item) => {
+      const place = placesById.get(item.id)
+      return place ? [place] : []
+    })
+  }, [activeShows])
+
   return (
     <ProvideScreenTracking
       info={{
@@ -408,22 +436,21 @@ export const CityGuideMap: React.FC<Props> = (props) => {
               </>
             )}
           </MapboxGL.MapView>
-          {!!city && activeShows.length > 0 && (
-            <Flex
-              position="absolute"
-              bottom={0}
-              left={0}
-              right={0}
-              height={SHOW_CARD_HEIGHT}
-              justifyContent="flex-end"
-            >
-              <CityGuideShowCardOverlay
-                activeShows={activeShows}
-                showsRef={showsRef}
-                fairsRef={fairsRef}
-                onSaveStarted={() => setIsSavingShow(true)}
-                onSaveEnded={() => setIsSavingShow(false)}
-              />
+          {!!city && activePlaces.length > 0 && (
+            <Flex position="absolute" bottom={0} left={0} right={0}>
+              {activePlaces.length === 1 ? (
+                <MapPreviewCard place={activePlaces[0]} />
+              ) : (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <Flex flexDirection="row">
+                    {activePlaces.map((place, index) => (
+                      <Flex key={place.id} width={cardWidth}>
+                        <MapPreviewCard place={place} isLast={index === activePlaces.length - 1} />
+                      </Flex>
+                    ))}
+                  </Flex>
+                </ScrollView>
+              )}
             </Flex>
           )}
           {!enableGlobalMapList && (
