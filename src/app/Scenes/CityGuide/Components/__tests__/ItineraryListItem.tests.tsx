@@ -93,16 +93,15 @@ describe("ItineraryListItem", () => {
     expect(screen.getByText("16 stops")).toBeOnTheScreen()
   })
 
-  // The list screen's plain row just drops the image section when there is none.
-  it("hides the image section for a row with no image", () => {
+  // Both the row and the card show a placeholder instead of an empty box.
+  it("shows a placeholder for a row with no image", () => {
     renderWithWrappers(<ItineraryListItem {...props} imageUrl={null} />)
 
     expect(screen.getByText("London Oct 2026")).toBeOnTheScreen()
     expect(screen.queryByTestId("itinerary-list-item-image")).not.toBeOnTheScreen()
-    expect(screen.queryByTestId("itinerary-list-item-no-image")).not.toBeOnTheScreen()
+    expect(screen.getByTestId("itinerary-list-item-no-image")).toBeOnTheScreen()
   })
 
-  // The home rail's card keeps a placeholder instead of an empty box.
   it("shows a placeholder for a card with no image", () => {
     renderWithWrappers(<ItineraryListItem {...props} variant="card" imageUrl={null} />)
 

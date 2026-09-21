@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { goBack } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, RefreshControl } from "react-native"
@@ -53,6 +54,7 @@ const stop = (n: number) => ({
 const ITINERARY = {
   internalID: "chill-vibes-only",
   isCurated: true,
+  isMine: false,
   citySlug: "london-united-kingdom",
   slug: "chill-vibes-only",
   shareToken: null,
@@ -174,9 +176,7 @@ describe("ItineraryScreen", () => {
   })
 
   describe("your own itinerary", () => {
-    // `isCurated` is the only ownership signal available: Query.itinerary exposes no
-    // "is this mine".
-    const own = { ...ITINERARY, isCurated: false }
+    const own = { ...ITINERARY, isCurated: false, isMine: true }
 
     it("labels it Your Itinerary and drops the byline", async () => {
       renderWithRelay({ Itinerary: () => own }, props)
@@ -263,6 +263,30 @@ describe("ItineraryScreen", () => {
       // Still no numbering: the headings say where you are, not in what order.
       expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
     })
+
+    it("offers to edit it", async () => {
+      renderWithRelay({ Itinerary: () => own }, props)
+
+      fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
+
+      expect(await screen.findByText("Edit Itinerary")).toBeOnTheScreen()
+      expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "Chill Vibes Only")
+    })
+
+    it("goes back once the itinerary is deleted from its own edit sheet", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      fireEvent.press(await screen.findByLabelText("Edit Chill Vibes Only"))
+      fireEvent.press(await screen.findByTestId("itinerary-edit-delete"))
+
+      view.mockResolveLastOperation({
+        deleteItineraryPayload: () => ({
+          responseOrError: { __typename: "ItineraryMutationSuccess" },
+        }),
+      })
+
+      await waitFor(() => expect(goBack).toHaveBeenCalled())
+    })
   })
 
   describe("a curated guide", () => {
@@ -284,6 +308,27 @@ describe("ItineraryScreen", () => {
 
       expect(screen.queryByTestId("itinerary-picker")).not.toBeOnTheScreen()
     })
+
+    it("offers no way to edit it", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      await screen.findByText("Chill Vibes Only")
+
+      expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
+    })
+  })
+
+  // `isCurated` alone can't distinguish your own itinerary from someone else's personal one
+  // opened via their share link — only `isMine` can.
+  it("offers no way to edit someone else's personal itinerary opened via a share link", async () => {
+    renderWithRelay(
+      { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: false, shareToken: "tok" }) },
+      { ...props, shareToken: "tok" }
+    )
+
+    await screen.findByText("Chill Vibes Only")
+
+    expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
   })
 
   // `ItineraryStop.image` is the curator's uploaded one, and the app sends none when it

@@ -4,7 +4,7 @@ import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditShe
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useState } from "react"
-import { graphql, useMutation } from "react-relay"
+import { ConnectionHandler, graphql, useMutation } from "react-relay"
 
 const NOTES_LIMIT = 200
 
@@ -17,6 +17,12 @@ interface Props {
     /** The designs label this "Notes"; it is the itinerary's `description`. */
     description?: string | null
   }
+  /**
+   * Identifies the `CityItineraries_itinerariesConnection` to evict a deleted itinerary from,
+   * so the itineraries list isn't left showing it stale. Safe to pass even when that list was
+   * never loaded — the eviction is a no-op if the connection isn't in the Relay store.
+   */
+  citySlug: string
   /** Called after a successful delete, so the caller can leave the screen or refresh. */
   onDeleted?: () => void
 }
@@ -26,11 +32,17 @@ interface Props {
  * among them — changing one means `updateItinerary`'s `arImageID`, which needs an image picked
  * and uploaded as an ArImage, a flow that does not exist yet.
  *
- * Only reachable from the itineraries list, which queries through `me`, so the caller always
- * owns what it is editing. `Query.itinerary` exposes no ownership flag, so the itinerary
- * screen itself could not tell whether to offer this.
+ * Reachable from the itineraries list, which queries through `me` and so always owns what it
+ * is editing, and from the itinerary's own detail page, gated there by `Query.itinerary`'s
+ * `isMine` field.
  */
-export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerary, onDeleted }) => {
+export const ItineraryEditSheet: React.FC<Props> = ({
+  visible,
+  onClose,
+  itinerary,
+  citySlug,
+  onDeleted,
+}) => {
   const toast = useToast()
   const [name, setName] = useState(itinerary.name)
   const [notes, setNotes] = useState(itinerary.description ?? "")
@@ -56,6 +68,25 @@ export const ItineraryEditSheet: React.FC<Props> = ({ visible, onClose, itinerar
   const destroy = () => {
     commitDelete({
       variables: { input: { id: itinerary.internalID } },
+      updater: (store, data) => {
+        const responseOrError = data?.deleteItinerary?.responseOrError
+
+        if (responseOrError?.__typename !== "ItineraryMutationSuccess") {
+          return
+        }
+
+        const deletedItineraryId = responseOrError.itinerary?.id
+        const me = store.getRoot().getLinkedRecord("me")
+        const connection =
+          me &&
+          ConnectionHandler.getConnection(me, "CityItineraries_itinerariesConnection", {
+            citySlug,
+          })
+
+        if (connection && deletedItineraryId) {
+          ConnectionHandler.deleteNode(connection, deletedItineraryId)
+        }
+      },
       onCompleted: (_response, errors) => {
         if (errors?.length) {
           toast.show("Could not delete this itinerary", "bottom")
@@ -151,6 +182,11 @@ const deleteMutation = graphql`
     deleteItinerary(input: $input) {
       responseOrError {
         __typename
+        ... on ItineraryMutationSuccess {
+          itinerary {
+            id
+          }
+        }
         ... on ItineraryMutationFailure {
           mutationError {
             message

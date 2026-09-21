@@ -1,10 +1,9 @@
-import { EditIcon, ShareIcon } from "@artsy/icons/native"
+import { ShareIcon } from "@artsy/icons/native"
 import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
 import { CityItineraries_me$key } from "__generated__/CityItineraries_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
 import { useItineraryShare } from "app/Scenes/CityGuide/hooks/useItineraryShare"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
@@ -12,7 +11,6 @@ import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SHARE_ICON_SIZE = 24
@@ -69,10 +67,6 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
     (itinerary) => !itinerary.isCurated
   )
 
-  // The itinerary the edit sheet is open for. Held here rather than per row so only one sheet
-  // ever mounts.
-  const [editing, setEditing] = useState<(typeof itineraries)[number] | null>(null)
-
   return (
     <Screen>
       <Screen.Header onBack={goBack} />
@@ -111,45 +105,18 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               stopsCount={itineraryStopsCount(item)}
               imageUrl={item.heroImage?.url}
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
-              rightSlot={
-                <Flex flexDirection="row" alignItems="center" gap={1}>
-                  {/*
-                    Not in the designs (share only). This screen is the only place ownership
-                    is guaranteed — it queries through `me`, unlike `Query.itinerary`.
-                  */}
-                  <Touchable
-                    testID="itinerary-edit"
-                    accessibilityRole="button"
-                    accessibilityLabel={`Edit ${item.title}`}
-                    onPress={() => setEditing(item)}
-                  >
-                    <EditIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                  </Touchable>
-
-                  <ItineraryShareTouchable item={item} citySlug={citySlug} />
-                </Flex>
-              }
+              rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
             />
           )}
         />
-
-        {!!editing && (
-          <ItineraryEditSheet
-            visible
-            onClose={() => setEditing(null)}
-            itinerary={{
-              internalID: editing.internalID,
-              name: editing.title,
-              description: editing.description,
-            }}
-            onDeleted={() => refetch({ count: PAGE_SIZE }, { fetchPolicy: "network-only" })}
-          />
-        )}
       </Screen.Body>
     </Screen>
   )
 }
 
+// `id` isn't rendered here, but a delete on the itinerary's own detail page needs it to evict
+// this node from the connection: `ConnectionHandler.deleteNode` matches by Relay's `id`, not
+// `internalID`.
 const fragment = graphql`
   fragment CityItineraries_me on Me
   @refetchable(queryName: "CityItinerariesPaginationQuery")
@@ -162,10 +129,10 @@ const fragment = graphql`
       @connection(key: "CityItineraries_itinerariesConnection") {
       edges {
         node {
+          id
           internalID
           slug
           title
-          description
           isCurated
           shareToken
           heroImage {
