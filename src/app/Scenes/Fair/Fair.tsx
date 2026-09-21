@@ -127,7 +127,11 @@ export const Fair: React.FC<FairProps> = ({ fair, initialTab = "Overview" }) => 
                   <ItineraryItemSaveControl
                     itemType="FAIR"
                     itemID={data.internalID}
+                    itemSlug={data.slug ?? undefined}
                     name={data.name ?? ""}
+                    contextScreenOwnerType={OwnerType.fair}
+                    contextScreenOwnerId={data.internalID}
+                    contextScreenOwnerSlug={data.slug ?? undefined}
                   />
                 )}
                 <TouchableOpacity

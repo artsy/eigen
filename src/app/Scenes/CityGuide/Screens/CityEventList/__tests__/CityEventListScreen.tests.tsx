@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -155,6 +156,18 @@ describe("CityEventListScreen", () => {
     )
   })
 
+  it("tracks the cohesion screen view against cityGuideEventList", async () => {
+    renderWithRelay({}, { citySlug: "london-united-kingdom", section: "fairs" })
+
+    await screen.findAllByText("Current Fairs")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.screen,
+      context_screen_owner_type: OwnerType.cityGuideEventList,
+      context_screen_owner_slug: "london-united-kingdom",
+    })
+  })
+
   it("shows a map toggle when there are places to map, and switches list/map mode when pressed", async () => {
     const shows = [
       {
@@ -190,12 +203,28 @@ describe("CityEventListScreen", () => {
         owner_slug: "london-united-kingdom",
       })
     )
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: ActionType.tappedNavigationTab,
+        context_module: ContextModule.cityGuideMapToggle,
+        context_screen_owner_type: OwnerType.cityGuideEventList,
+        context_screen_owner_slug: "london-united-kingdom",
+        subject: "map",
+      })
+    )
 
     fireEvent.press(screen.getByTestId("city-event-list-view-toggle"))
 
     expect(await screen.findAllByTestId("city-event-row")).toHaveLength(shows.length)
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({ action_name: "cityGuideShowList" })
+    )
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: ActionType.tappedNavigationTab,
+        context_module: ContextModule.cityGuideMapToggle,
+        subject: "list",
+      })
     )
   })
 

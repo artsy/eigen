@@ -258,6 +258,24 @@ describe("CityGuideEvents", () => {
     expect(navigate).not.toHaveBeenCalled()
   })
 
+  it("tracks tappedAddToItinerary against the home screen's own context", async () => {
+    renderWithRelay(resolvers, props)
+
+    fireEvent.press(await screen.findByLabelText("Add One Fly Makes No Summer to an itinerary"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedAddToItinerary",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "show",
+        destination_screen_owner_id: "show-1",
+        destination_screen_owner_slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
+        is_curated_guide: false,
+      })
+    )
+  })
+
   it("still navigates when the card itself is tapped", async () => {
     renderWithRelay(resolvers, props)
 

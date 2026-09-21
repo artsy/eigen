@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   BackButtonWithBackground,
   Button,
@@ -24,11 +25,14 @@ import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
 import { useCallback, useMemo, useState } from "react"
 import { RefreshControl } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
@@ -115,6 +119,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const [stopOrder, setStopOrder] = useState<ReadonlyMap<string, readonly string[]>>(new Map())
   const reorderItineraryStop = useReorderItineraryStop()
   const { show: showToast } = useToast()
+  const { trackEvent: trackCohesionEvent } = useTracking()
 
   /*
     Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
@@ -243,152 +248,172 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   })
 
   return (
-    <AddToItineraryProvider
-      citySlug={itinerary.citySlug}
-      cityName={data.city?.name ?? undefined}
-      onSaved={refresh}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.cityGuideGuide,
+        context_screen_owner_id: itinerary.internalID,
+        context_screen_owner_slug: itinerary.slug ?? undefined,
+      })}
     >
-      <Screen safeArea={false}>
-        {/*
-          The map fills the screen, so it gets a floating back button rather than a header
-          bar: Screen.Header paints a solid background and can't be made transparent.
-        */}
-        {/* {!isMapView && <Screen.AnimatedHeader title={itinerary.title} hideLeftElements hideTitle />} */}
-
-        <Flex
-          style={{ top, position: "absolute", zIndex: 1000 }}
-          // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2} —
-          // matching both keeps the button from jumping between list and map.
-          height={NAVBAR_HEIGHT}
-          justifyContent="center"
-          px={2}
-          // Always full width now: the share button sits on the right in both list and map
-          // mode, not just when the map's itinerary picker is there too.
-          left={0}
-          right={0}
-        >
+      <AddToItineraryProvider
+        citySlug={itinerary.citySlug}
+        cityName={data.city?.name ?? undefined}
+        onSaved={refresh}
+      >
+        <Screen safeArea={false}>
           {/*
-            On the map, back means "back to the list", not "leave the guide" — the map is a
-            mode of this screen, not a screen of its own.
+            The map fills the screen, so it gets a floating back button rather than a header
+            bar: Screen.Header paints a solid background and can't be made transparent.
           */}
-          <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <BackButtonWithBackground
-              onPress={() => {
-                if (isMapView) {
-                  setIsMapView(false)
-                  return
-                }
+          {/* {!isMapView && <Screen.AnimatedHeader title={itinerary.title} hideLeftElements hideTitle />} */}
 
-                goBack()
-              }}
-            />
+          <Flex
+            style={{ top, position: "absolute", zIndex: 1000 }}
+            // Screen.Header centres its back button inside a NAVBAR_HEIGHT bar at px={2} —
+            // matching both keeps the button from jumping between list and map.
+            height={NAVBAR_HEIGHT}
+            justifyContent="center"
+            px={2}
+            // Always full width now: the share button sits on the right in both list and map
+            // mode, not just when the map's itinerary picker is there too.
+            left={0}
+            right={0}
+          >
+            {/*
+              On the map, back means "back to the list", not "leave the guide" — the map is a
+              mode of this screen, not a screen of its own.
+            */}
+            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+              <BackButtonWithBackground
+                onPress={() => {
+                  if (isMapView) {
+                    setIsMapView(false)
+                    return
+                  }
 
-            <Flex flexDirection="row" alignItems="center" gap={1}>
-              {/*
-                Only on the map, and only for your own itineraries — the picker switches
-                between yours, so it has nothing to offer on a curated guide.
-              */}
-              {!!isMapView && !isEditorial && (
-                <ItineraryPicker
-                  citySlug={itinerary.citySlug}
-                  currentItineraryId={itinerary.internalID}
-                  currentItineraryName={itinerary.title}
-                />
-              )}
+                  goBack()
+                }}
+              />
 
-              <ItineraryShareButton itinerary={itinerary} />
+              <Flex flexDirection="row" alignItems="center" gap={1}>
+                {/*
+                  Only on the map, and only for your own itineraries — the picker switches
+                  between yours, so it has nothing to offer on a curated guide.
+                */}
+                {!!isMapView && !isEditorial && (
+                  <ItineraryPicker
+                    citySlug={itinerary.citySlug}
+                    currentItineraryId={itinerary.internalID}
+                    currentItineraryName={itinerary.title}
+                  />
+                )}
+
+                <ItineraryShareButton itinerary={itinerary} />
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
 
-        <Screen.Body fullwidth>
-          {isMapView ? (
-            <MapView
-              sections={mapSections}
-              citySlug={citySlug}
-              selectedPlaceId={selectedStopId}
-              onSelectPlace={setSelectedStopId}
-              numbered={isEditorial}
-              showRoute={showRoute}
-              safeArea
-            />
-          ) : (
-            <Screen.ScrollView
-              contentContainerStyle={{ paddingBottom: 40 }}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={refresh}
-                  // Without this, the spinner sits right under the floating back/share bar
-                  // above (`top` to `top + NAVBAR_HEIGHT`), which paints over it.
-                  progressViewOffset={top + NAVBAR_HEIGHT}
-                />
-              }
-            >
-              <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
-
-              <Flex px={2} pt={2}>
-                <Join separator={<Spacer y={2} />}>
-                  {sections.map((section, index) => (
-                    <ItinerarySectionRow
-                      key={section.internalID}
-                      section={section}
-                      sectionIndex={index}
-                      startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
-                      showHeader={showSectionHeaders}
-                      citySlug={itinerary.citySlug}
-                      itineraryId={itineraryId}
-                      shareToken={shareToken}
-                      cityName={data.city?.name ?? ""}
-                      canDelete={canDelete}
-                      canReorder={canReorder}
-                      swipingStopID={swipingStopID}
-                      onSwipeBegin={setSwipingStopID}
-                      onStopDeleted={(stopID) => {
-                        // Otherwise the next row briefly reads as the active swipe row: it
-                        // shares the id's now-stale reference until this state catches up.
-                        setSwipingStopID(null)
-                        setDeletedStopIDs((current) => new Set(current).add(stopID))
-                      }}
-                      onReorderStop={handleReorderStop}
-                    />
-                  ))}
-                </Join>
-              </Flex>
-            </Screen.ScrollView>
-          )}
-
-          {/*
-            Positioning copied from CityGuideFloatingMapButton for matching height. Not
-            reused directly since that component hardcodes a navigate to /local-discovery.
-          */}
-          <MotiView
-            from={{ opacity: 0.5, translateY: 0 }}
-            animate={{ opacity: 1, translateY: -60 }}
-            transition={{ type: "timing", duration: 300, delay: 200 }}
-          >
-            <Flex
-              style={{
-                width: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                bottom: -50,
-                zIndex: 1000,
-              }}
-            >
-              <Button
-                testID="itinerary-view-toggle"
-                size="small"
-                onPress={() => setIsMapView((current) => !current)}
+          <Screen.Body fullwidth>
+            {isMapView ? (
+              <MapView
+                sections={mapSections}
+                citySlug={citySlug}
+                selectedPlaceId={selectedStopId}
+                onSelectPlace={setSelectedStopId}
+                numbered={isEditorial}
+                showRoute={showRoute}
+                safeArea
+              />
+            ) : (
+              <Screen.ScrollView
+                contentContainerStyle={{ paddingBottom: 40 }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={refresh}
+                    // Without this, the spinner sits right under the floating back/share bar
+                    // above (`top` to `top + NAVBAR_HEIGHT`), which paints over it.
+                    progressViewOffset={top + NAVBAR_HEIGHT}
+                  />
+                }
               >
-                {isMapView ? "Show in List" : "Show in Map"}
-              </Button>
-            </Flex>
-          </MotiView>
-        </Screen.Body>
-      </Screen>
-    </AddToItineraryProvider>
+                <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
+
+                <Flex px={2} pt={2}>
+                  <Join separator={<Spacer y={2} />}>
+                    {sections.map((section, index) => (
+                      <ItinerarySectionRow
+                        key={section.internalID}
+                        section={section}
+                        sectionIndex={index}
+                        startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
+                        showHeader={showSectionHeaders}
+                        citySlug={itinerary.citySlug}
+                        itineraryId={itineraryId}
+                        itinerarySlug={itinerary.slug ?? undefined}
+                        shareToken={shareToken}
+                        cityName={data.city?.name ?? ""}
+                        isCuratedGuide={isEditorial}
+                        canDelete={canDelete}
+                        canReorder={canReorder}
+                        swipingStopID={swipingStopID}
+                        onSwipeBegin={setSwipingStopID}
+                        onStopDeleted={(stopID) => {
+                          // Otherwise the next row briefly reads as the active swipe row: it
+                          // shares the id's now-stale reference until this state catches up.
+                          setSwipingStopID(null)
+                          setDeletedStopIDs((current) => new Set(current).add(stopID))
+                        }}
+                        onReorderStop={handleReorderStop}
+                      />
+                    ))}
+                  </Join>
+                </Flex>
+              </Screen.ScrollView>
+            )}
+
+            {/*
+              Positioning copied from CityGuideFloatingMapButton for matching height. Not
+              reused directly since that component hardcodes a navigate to /local-discovery.
+            */}
+            <MotiView
+              from={{ opacity: 0.5, translateY: 0 }}
+              animate={{ opacity: 1, translateY: -60 }}
+              transition={{ type: "timing", duration: 300, delay: 200 }}
+            >
+              <Flex
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  bottom: -50,
+                  zIndex: 1000,
+                }}
+              >
+                <Button
+                  testID="itinerary-view-toggle"
+                  size="small"
+                  onPress={() => {
+                    trackCohesionEvent({
+                      action: ActionType.tappedNavigationTab,
+                      context_module: ContextModule.cityGuideMapToggle,
+                      context_screen_owner_type: OwnerType.cityGuideGuide,
+                      context_screen_owner_id: itinerary.internalID,
+                      context_screen_owner_slug: itinerary.slug ?? undefined,
+                      subject: isMapView ? "list" : "map",
+                    })
+                    setIsMapView((current) => !current)
+                  }}
+                >
+                  {isMapView ? "Show in List" : "Show in Map"}
+                </Button>
+              </Flex>
+            </MotiView>
+          </Screen.Body>
+        </Screen>
+      </AddToItineraryProvider>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

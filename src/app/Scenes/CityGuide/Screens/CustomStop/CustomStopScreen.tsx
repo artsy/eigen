@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Image, Screen, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { CustomStopScreenQuery } from "__generated__/CustomStopScreenQuery.graphql"
@@ -13,6 +14,8 @@ import {
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useCallback, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
@@ -111,84 +114,94 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
     stop.isFreeAdmission == null ? undefined : stop.isFreeAdmission ? "Free" : "Paid Entry"
 
   return (
-    <AddToItineraryProvider
-      citySlug={citySlug}
-      cityName={data.city?.name ?? undefined}
-      onSaved={refresh}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.cityGuideCustomStop,
+        context_screen_owner_slug: citySlug,
+      })}
     >
-      <Screen>
-        <Screen.Header onBack={goBack} />
+      <AddToItineraryProvider
+        citySlug={citySlug}
+        cityName={data.city?.name ?? undefined}
+        onSaved={refresh}
+      >
+        <Screen>
+          <Screen.Header onBack={goBack} />
 
-        <Screen.Body fullwidth>
-          <Screen.ScrollView
-            contentContainerStyle={{ paddingBottom: 40 }}
-            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
-          >
-            {!!stop.imageUrl && (
-              <Image
-                testID="custom-stop-image"
-                src={stop.imageUrl}
-                resizeMode="cover"
-                style={{ width: "100%", height: HERO_HEIGHT }}
-              />
-            )}
+          <Screen.Body fullwidth>
+            <Screen.ScrollView
+              contentContainerStyle={{ paddingBottom: 40 }}
+              refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+            >
+              {!!stop.imageUrl && (
+                <Image
+                  testID="custom-stop-image"
+                  src={stop.imageUrl}
+                  resizeMode="cover"
+                  style={{ width: "100%", height: HERO_HEIGHT }}
+                />
+              )}
 
-            <Flex px={2} pt={2} pb={1}>
-              <Flex flexDirection="row" alignItems="center" gap={1}>
-                <Flex flex={1}>
-                  <Text variant="lg-display">{stop.title}</Text>
+              <Flex px={2} pt={2} pb={1}>
+                <Flex flexDirection="row" alignItems="center" gap={1}>
+                  <Flex flex={1}>
+                    <Text variant="lg-display">{stop.title}</Text>
+                  </Flex>
+
+                  {!!stop.category && (
+                    <Flex testID="custom-stop-category" backgroundColor="mono100" px={0.5} py={0.5}>
+                      <Text variant="xxs" color="mono0">
+                        {stop.category}
+                      </Text>
+                    </Flex>
+                  )}
+
+                  {/*
+                    The plus sits to the right of the title, as it does in the show header. Only
+                    on a curated guide: on your own itinerary the stop is already on it.
+                  */}
+                  {!!data.itinerary?.isCurated && (
+                    <CustomStopSaveControl
+                      stop={customStopInput(stop)}
+                      citySlug={citySlug}
+                      cityName={data.city?.name ?? ""}
+                      contextScreenOwnerType={OwnerType.cityGuideCustomStop}
+                      contextScreenOwnerSlug={citySlug}
+                      isCuratedGuide
+                    />
+                  )}
                 </Flex>
 
-                {!!stop.category && (
-                  <Flex testID="custom-stop-category" backgroundColor="mono100" px={0.5} py={0.5}>
-                    <Text variant="xxs" color="mono0">
-                      {stop.category}
-                    </Text>
-                  </Flex>
-                )}
-
-                {/*
-                  The plus sits to the right of the title, as it does in the show header. Only
-                  on a curated guide: on your own itinerary the stop is already on it.
-                */}
-                {!!data.itinerary?.isCurated && (
-                  <CustomStopSaveControl
-                    stop={customStopInput(stop)}
-                    citySlug={citySlug}
-                    cityName={data.city?.name ?? ""}
-                  />
-                )}
-              </Flex>
-
-              {(!!stop.hours || !!admission) && (
-                <Text variant="sm" color="mono60" mt={0.5}>
-                  {[stop.hours, admission].filter(Boolean).join(" · ")}
-                </Text>
-              )}
-            </Flex>
-
-            <StopAddress stop={stop} />
-
-            {!!stop.description && (
-              <Flex px={2} pt={2}>
-                <Text variant="sm">{stop.description}</Text>
-              </Flex>
-            )}
-
-            {/* Leads off Artsy, so it is offered as a link rather than navigated to. */}
-            {!!stop.sourceURL && (
-              <Flex px={2} pt={2} alignItems="flex-start">
-                <RouterLink testID="custom-stop-source" to={stop.sourceURL}>
-                  <Text variant="sm" underline>
-                    More information
+                {(!!stop.hours || !!admission) && (
+                  <Text variant="sm" color="mono60" mt={0.5}>
+                    {[stop.hours, admission].filter(Boolean).join(" · ")}
                   </Text>
-                </RouterLink>
+                )}
               </Flex>
-            )}
-          </Screen.ScrollView>
-        </Screen.Body>
-      </Screen>
-    </AddToItineraryProvider>
+
+              <StopAddress stop={stop} />
+
+              {!!stop.description && (
+                <Flex px={2} pt={2}>
+                  <Text variant="sm">{stop.description}</Text>
+                </Flex>
+              )}
+
+              {/* Leads off Artsy, so it is offered as a link rather than navigated to. */}
+              {!!stop.sourceURL && (
+                <Flex px={2} pt={2} alignItems="flex-start">
+                  <RouterLink testID="custom-stop-source" to={stop.sourceURL}>
+                    <Text variant="sm" underline>
+                      More information
+                    </Text>
+                  </RouterLink>
+                </Flex>
+              )}
+            </Screen.ScrollView>
+          </Screen.Body>
+        </Screen>
+      </AddToItineraryProvider>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

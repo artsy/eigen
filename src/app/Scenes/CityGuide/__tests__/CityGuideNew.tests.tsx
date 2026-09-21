@@ -1,8 +1,10 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, within } from "@testing-library/react-native"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { DefaultMockResolvers } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -44,6 +46,20 @@ describe("CityGuideNew", () => {
   // No test for the write itself: the picker's rows live inside a Modal and are not
   // reachably distinct from the switcher, so driving a selection is unreliable. The two
   // cases above cover what a user sees.
+
+  it("tracks the screen view against the city it opened on", () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
+    })
+
+    renderWithWrappers(<CityGuideNew />)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.screen,
+      context_screen_owner_type: OwnerType.cityGuide,
+      context_screen_owner_slug: "berlin-germany",
+    })
+  })
 
   describe("the loading placeholder", () => {
     it("shows a spinner before the query resolves", () => {

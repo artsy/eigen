@@ -130,7 +130,7 @@ export const useApplyItinerarySelection = () => {
         }
       }
 
-      return { added: added.length, removed: removed.length }
+      return { added, removed }
 
       /** Without membership data, the stop is found by what it points at. */
       async function findStopIDByTarget(itineraryID: string) {

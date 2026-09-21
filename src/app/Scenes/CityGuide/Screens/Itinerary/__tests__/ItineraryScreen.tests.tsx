@@ -1,5 +1,7 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Alert, RefreshControl } from "react-native"
 import { PanGesture } from "react-native-gesture-handler"
@@ -81,6 +83,36 @@ describe("ItineraryScreen", () => {
     expect(await screen.findByText("Chill Vibes Only")).toBeTruthy()
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Day 2 — London Frieze")).toBeTruthy()
+  })
+
+  it("tracks the screen view against the guide's own id and slug", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+    await screen.findByText("Chill Vibes Only")
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: ActionType.screen,
+      context_screen_owner_type: OwnerType.cityGuideGuide,
+      context_screen_owner_id: "chill-vibes-only",
+      context_screen_owner_slug: "chill-vibes-only",
+    })
+  })
+
+  it("tracks the map/list toggle under the cityGuideMapToggle module", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+    fireEvent.press(await screen.findByTestId("itinerary-view-toggle"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: ActionType.tappedNavigationTab,
+        context_module: ContextModule.cityGuideMapToggle,
+        context_screen_owner_type: OwnerType.cityGuideGuide,
+        context_screen_owner_id: "chill-vibes-only",
+        context_screen_owner_slug: "chill-vibes-only",
+        subject: "map",
+      })
+    )
   })
 
   it("numbers stops continuously across sections", async () => {

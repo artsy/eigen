@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { useAddToItinerary } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideSaveButton } from "app/Scenes/CityGuide/Components/CityGuideSaveButton"
 import { CityItineraryItemType } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
@@ -9,6 +10,9 @@ interface Props {
   itemType: CityItineraryItemType
   /** The entity's own id, not its profile's — that is what a stop stores. */
   itemID: string
+  /** The entity's own slug, when the caller has one on hand. Only fills
+   *  `destination_screen_owner_slug`; never required to render. */
+  itemSlug?: string
   /** Used for the accessibility label and nothing else. */
   name: string
   isOnMyItineraries?: boolean | null
@@ -18,6 +22,23 @@ interface Props {
   sourceShareToken?: string | null
   /** Forwarded to `CityGuideSaveButton`. The rail cards pass 18, per their designs. */
   iconSize?: number
+  /** Where this plus is rendered — every caller renders from a different screen, so this has
+   *  no sensible default. */
+  contextScreenOwnerType: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
+  /** Whether this plus sits on a curated guide's own stop list, rather than the viewer's
+   *  personal itinerary or somewhere outside City Guide entirely. */
+  isCuratedGuide?: boolean
+}
+
+/** What a stop of this type points at, for `destination_screen_owner_type`. `LOCATION` has no
+ *  `OwnerType` of its own — a stop names the place, but cohesion tracks the gallery as a
+ *  `partner`, matching the legacy `OwnerEntityTypes.Partner` tracking above. */
+const DESTINATION_OWNER_TYPE: Record<CityItineraryItemType, OwnerType> = {
+  SHOW: OwnerType.show,
+  FAIR: OwnerType.fair,
+  LOCATION: OwnerType.partner,
 }
 
 /** Which tracking names each type sends. Eigen already had all six. */
@@ -47,15 +68,21 @@ const TRACKING: Record<
 export const CityEventSaveControl: React.FC<Props> = ({
   itemType,
   itemID,
+  itemSlug,
   name,
   iconSize,
   isOnMyItineraries,
   myItineraries,
   sourceStopID,
   sourceShareToken,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  isCuratedGuide = false,
 }) => {
   const addToItinerary = useAddToItinerary()
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
 
   if (!addToItinerary) {
     return null
@@ -78,9 +105,21 @@ export const CityEventSaveControl: React.FC<Props> = ({
           owner_id: itemID,
         })
 
+        trackCohesionEvent({
+          action: ActionType.tappedAddToItinerary,
+          context_screen_owner_type: contextScreenOwnerType,
+          context_screen_owner_id: contextScreenOwnerId,
+          context_screen_owner_slug: contextScreenOwnerSlug,
+          destination_screen_owner_type: DESTINATION_OWNER_TYPE[itemType],
+          destination_screen_owner_id: itemID,
+          destination_screen_owner_slug: itemSlug,
+          is_curated_guide: isCuratedGuide,
+        })
+
         addToItinerary.open({
           itemType,
           itemID,
+          itemSlug,
           isOnMyItineraries,
           myItineraries,
           sourceStopID,

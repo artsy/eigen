@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { MapSection } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
@@ -77,15 +78,24 @@ export const itineraryStopsToMapSections = (
               stop={customStopInput(stop, coordinates, itinerary.shareToken)}
               citySlug={citySlug}
               cityName={cityName}
+              contextScreenOwnerType={OwnerType.cityGuideGuide}
+              contextScreenOwnerId={itinerary.internalID}
+              contextScreenOwnerSlug={itinerary.slug ?? undefined}
+              isCuratedGuide={itinerary.isCurated}
             />
           ) : (
             saveTarget && (
               <CityEventSaveControl
                 itemType={saveTarget.itemType}
                 itemID={saveTarget.itemID}
+                itemSlug={saveTarget.itemSlug}
                 name={title}
                 sourceStopID={stop.internalID}
                 sourceShareToken={itinerary.shareToken}
+                contextScreenOwnerType={OwnerType.cityGuideGuide}
+                contextScreenOwnerId={itinerary.internalID}
+                contextScreenOwnerSlug={itinerary.slug ?? undefined}
+                isCuratedGuide={itinerary.isCurated}
               />
             )
           ),

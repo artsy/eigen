@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
@@ -22,9 +23,14 @@ interface Props {
   /** Where a custom stop's own screen lives, which needs the itinerary this stop belongs to. */
   citySlug: string
   itineraryId: string
+  /** The itinerary's own slug, for the save control's tracking only. */
+  itinerarySlug?: string
   shareToken?: string
   /** What a new itinerary gets called when a custom stop is copied onto one. */
   cityName: string
+  /** Whether this row belongs to a curated guide's own stop list, rather than the viewer's
+   *  personal itinerary. */
+  isCuratedGuide?: boolean
 }
 
 export const ItineraryStopRow: React.FC<Props> = ({
@@ -32,8 +38,10 @@ export const ItineraryStopRow: React.FC<Props> = ({
   number,
   citySlug,
   itineraryId,
+  itinerarySlug,
   shareToken,
   cityName,
+  isCuratedGuide = false,
 }) => {
   const title = itineraryStopTitle(stop)
   const image = itineraryStopImage(stop)
@@ -94,6 +102,10 @@ export const ItineraryStopRow: React.FC<Props> = ({
               }}
               citySlug={citySlug}
               cityName={cityName}
+              contextScreenOwnerType={OwnerType.cityGuideGuide}
+              contextScreenOwnerId={itineraryId}
+              contextScreenOwnerSlug={itinerarySlug}
+              isCuratedGuide={isCuratedGuide}
             />
           ) : (
             !!saveTarget && (
@@ -102,11 +114,16 @@ export const ItineraryStopRow: React.FC<Props> = ({
               <CityEventSaveControl
                 itemType={saveTarget.itemType}
                 itemID={saveTarget.itemID}
+                itemSlug={saveTarget.itemSlug}
                 name={title}
                 isOnMyItineraries={stop.isOnMyItineraries}
                 myItineraries={stop.myItineraries}
                 sourceStopID={stop.internalID}
                 sourceShareToken={shareToken}
+                contextScreenOwnerType={OwnerType.cityGuideGuide}
+                contextScreenOwnerId={itineraryId}
+                contextScreenOwnerSlug={itinerarySlug}
+                isCuratedGuide={isCuratedGuide}
               />
             )
           )

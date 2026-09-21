@@ -274,7 +274,7 @@ export const useCityItineraryStops = ({
         // identical stops on the itinerary.
         const already = findStop(target.stops, stop)
 
-        if (already) return already
+        if (already) return { itineraryID: target.itineraryID, stop: already }
 
         const created = await mutate<useCityItineraryStopsAddMutation>(
           environment,
@@ -293,7 +293,7 @@ export const useCityItineraryStops = ({
 
         refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
 
-        return response.itineraryStop
+        return { itineraryID: target.itineraryID, stop: response.itineraryStop }
       }),
     [serialise, resolveTarget, environment, citySlug]
   )

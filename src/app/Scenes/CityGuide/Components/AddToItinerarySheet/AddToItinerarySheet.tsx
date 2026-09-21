@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { AddIcon } from "@artsy/icons/native"
 import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
@@ -25,6 +26,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 /** Well above the number of itineraries a user has for one city. */
 const PAGE_SIZE = 20
@@ -44,6 +46,9 @@ export type AddToItineraryTarget = StopTarget & {
   /** Absent where no city is known — the sheet then lists every itinerary. */
   citySlug?: string
   cityName?: string
+  /** For `addedStopToItinerary`'s `context_owner_slug` only — never part of `StopInput`, so it
+   *  is stripped out below rather than spread into a `createItineraryStopInput`. */
+  itemSlug?: string
 }
 
 type Props = AddToItineraryTarget & {
@@ -60,11 +65,13 @@ const Sheet: React.FC<Props> = ({
   onSaved,
   isOnMyItineraries: _isOnMyItineraries,
   myItineraries,
+  itemSlug,
   ...target
 }) => {
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
   const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
 
@@ -161,6 +168,20 @@ const Sheet: React.FC<Props> = ({
     }
   }
 
+  /** One event however many itineraries the stop landed on — the bulk "Add Full List" case
+   *  still lands on several itineraries in a single Done tap, not several taps. */
+  const trackAddedStop = (ownerIDs: string[]) => {
+    trackCohesionEvent({
+      action: ActionType.addedStopToItinerary,
+      context_owner_type: target.itemType
+        ? STOP_OWNER_TYPE[target.itemType]
+        : OwnerType.cityGuideCustomStop,
+      context_owner_id: target.itemType ? target.itemID : undefined,
+      context_owner_slug: target.itemType ? itemSlug : undefined,
+      owner_ids: ownerIDs,
+    })
+  }
+
   const done = async () => {
     setIsApplying(true)
 
@@ -169,13 +190,18 @@ const Sheet: React.FC<Props> = ({
       // and its section (and refetching the rail itself).
       if (canAutoCreate) {
         // Always a membership change: `addStop` makes the one itinerary this stop now sits on.
-        await addStop(target)
+        const { itineraryID } = await addStop(target)
         onSaved?.()
+        trackAddedStop([itineraryID])
       } else {
         const changes = await applySelection({ target, initial, selected, memberships })
 
-        if (changes.added > 0 || changes.removed > 0) {
+        if (changes.added.length > 0 || changes.removed.length > 0) {
           onSaved?.()
+
+          if (changes.added.length > 0) {
+            trackAddedStop(changes.added)
+          }
 
           if (citySlug) {
             refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
@@ -208,7 +234,14 @@ const Sheet: React.FC<Props> = ({
               <Text
                 testID="add-to-itinerary-create"
                 variant="xs"
-                onPress={() => setIsNaming(true)}
+                onPress={() => {
+                  trackCohesionEvent({
+                    action: ActionType.tappedCreateItinerary,
+                    context_screen_owner_type: OwnerType.cityGuide,
+                    context_screen_owner_slug: citySlug,
+                  })
+                  setIsNaming(true)
+                }}
                 accessibilityRole="button"
               >
                 Create New Itinerary
@@ -320,6 +353,15 @@ export const AddToItinerarySheet: React.FC<{
     )}
   </AutomountedBottomSheetModal>
 )
+
+/** What the stop being added points at, for `addedStopToItinerary`'s `context_owner_type`. A
+ *  custom stop has no Artsy entity, so it is tracked under its own City Guide owner type
+ *  rather than left without one — the field is required. */
+const STOP_OWNER_TYPE: Record<"SHOW" | "FAIR" | "LOCATION", OwnerType> = {
+  SHOW: OwnerType.show,
+  FAIR: OwnerType.fair,
+  LOCATION: OwnerType.partner,
+}
 
 const sheetTargetKey = (target: AddToItineraryTarget) =>
   target.itemType

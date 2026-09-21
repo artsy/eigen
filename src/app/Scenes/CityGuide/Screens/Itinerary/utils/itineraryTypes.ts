@@ -13,6 +13,8 @@ export interface ItinerarySaveTarget {
   itemType: CityItineraryItemType
   /** The entity's own id, which is what a stop stores. */
   itemID: string
+  /** For tracking only. Absent for a `LOCATION`, which has no slug of its own. */
+  itemSlug?: string
 }
 
 /**
