@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideEventArticlesTestQuery } from "__generated__/CityGuideEventArticlesTestQuery.graphql"
 import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -14,7 +15,9 @@ jest.mock("@artsy/palette-mobile", () => ({
 
 describe("CityGuideEventArticles", () => {
   const { renderWithRelay } = setupTestWrapper<CityGuideEventArticlesTestQuery>({
-    Component: CityGuideEventArticles,
+    Component: (props: any) => (
+      <CityGuideEventArticles {...props} citySlug="london-united-kingdom" />
+    ),
     query: graphql`
       query CityGuideEventArticlesTestQuery($citySlug: String!, $first: Int!)
       @relay_test_operation {
@@ -26,11 +29,16 @@ describe("CityGuideEventArticles", () => {
     variables: { citySlug: "london-united-kingdom", first: 10 },
   })
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   const article = (title: string, position = 0, overrides: object = {}) => ({
     internalID: `attachment-for-${title}`,
     position,
     article: {
       internalID: `id-for-${title}`,
+      slug: `slug-for-${title}`,
       title: `${title} (headline)`,
       thumbnailTitle: title,
       byline: "Natalie Stoclet",
@@ -93,6 +101,24 @@ describe("CityGuideEventArticles", () => {
     fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
     expect(navigate).toHaveBeenCalledWith("/article/An Art Lover's Guide to London")
+  })
+
+  it("tracks the tap on an article row", async () => {
+    renderWithRelay(connection([event([article("An Art Lover's Guide to London")])]))
+
+    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleGroup",
+        context_module: "articles",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "article",
+        destination_screen_owner_id: "id-for-An Art Lover's Guide to London",
+        destination_screen_owner_slug: "slug-for-An Art Lover's Guide to London",
+      })
+    )
   })
 
   it("falls back to a placeholder for an article with no thumbnail", async () => {

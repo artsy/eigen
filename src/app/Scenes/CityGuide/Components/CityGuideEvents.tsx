@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { CityGuideEvents_city$key } from "__generated__/CityGuideEvents_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -80,6 +81,7 @@ const EventRail = <T,>({
 
 export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cityRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   const city = useFragment(fragment, cityRef)
 
   const sectionHref = (section: CityEventSectionKey) => `/city-guide/${citySlug}/events/${section}`
@@ -116,6 +118,9 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
               title={fair.name ?? ""}
               image={fair.image?.url ?? ""}
               href={fair.href ?? ""}
+              onPress={() =>
+                trackCohesionEvent(tracks.tappedFair(citySlug, fair.internalID, fair.slug ?? ""))
+              }
               saveControl={
                 <CityEventSaveControl
                   itemType="FAIR"
@@ -144,6 +149,16 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
               href={show.href ?? ""}
               meta={show.exhibitionPeriod ?? ""}
               admission={admissionLabel(show.isFreeAdmission)}
+              onPress={() =>
+                trackCohesionEvent(
+                  tracks.tappedShow(
+                    citySlug,
+                    show.internalID,
+                    show.slug ?? "",
+                    ContextModule.currentShowsRail
+                  )
+                )
+              }
               saveControl={
                 <CityEventSaveControl
                   itemType="SHOW"
@@ -179,6 +194,16 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
               href={show.href ?? ""}
               meta={show.opensAt ?? ""}
               archTopImage
+              onPress={() =>
+                trackCohesionEvent(
+                  tracks.tappedShow(
+                    citySlug,
+                    show.internalID,
+                    show.slug ?? "",
+                    ContextModule.showsRail
+                  )
+                )
+              }
               saveControl={
                 <CityEventSaveControl
                   itemType="SHOW"
@@ -210,6 +235,7 @@ const fragment = graphql`
       edges {
         node {
           internalID
+          slug
           isOnMyItineraries
           name
           href
@@ -235,6 +261,7 @@ const fragment = graphql`
         node {
           id
           internalID
+          slug
           name
           href
           isFollowed
@@ -258,6 +285,7 @@ const fragment = graphql`
         node {
           id
           internalID
+          slug
           name
           href
           isFollowed
@@ -271,3 +299,24 @@ const fragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedFair: (citySlug: string, fairId: string, slug: string) => ({
+    action: ActionType.tappedFairGroup,
+    context_module: ContextModule.fairRail,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.fair,
+    destination_screen_owner_id: fairId,
+    destination_screen_owner_slug: slug,
+  }),
+  tappedShow: (citySlug: string, showId: string, slug: string, contextModule: ContextModule) => ({
+    action: ActionType.tappedShowGroup,
+    context_module: contextModule,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.show,
+    destination_screen_owner_id: showId,
+    destination_screen_owner_slug: slug,
+  }),
+}

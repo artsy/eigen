@@ -18,6 +18,8 @@ interface Props {
    * over the image but outside the link, so tapping it saves instead of navigating.
    */
   saveControl?: React.ReactNode
+  /** Fired before the link's default navigate-on-press, so a caller can track the tap. */
+  onPress?: () => void
 }
 
 /**
@@ -25,12 +27,12 @@ interface Props {
  * than beneath it. Kept separate from `CityEventRailCard` because almost nothing is shared:
  * different proportions, a scrim, an overlaid caption, and a larger type ramp.
  */
-export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveControl }) => {
+export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveControl, onPress }) => {
   const space = useSpace()
 
   return (
     <Flex width={CARD_WIDTH} height={CARD_HEIGHT}>
-      <RouterLink to={href} disablePrefetch>
+      <RouterLink to={href} disablePrefetch onPress={onPress}>
         <ImageBackground
           source={{ uri: image }}
           resizeMode="cover"

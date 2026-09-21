@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideItinerariesRailTestQuery } from "__generated__/CityGuideItinerariesRailTestQuery.graphql"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -61,6 +62,23 @@ describe("CityGuideItinerariesRail", () => {
     fireEvent.press(await screen.findByText("London Oct 2026"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/itinerary/a")
+  })
+
+  it("tracks the tap on an itinerary card", async () => {
+    renderWithRelay(connection([itinerary("a", "London Oct 2026", [1])]), props)
+
+    fireEvent.press(await screen.findByText("London Oct 2026"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedCardGroup",
+        context_module: "cityGuideCard",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "cityGuideGuide",
+        destination_screen_owner_id: "a",
+      })
+    )
   })
 
   it("opens the full list from the header", async () => {

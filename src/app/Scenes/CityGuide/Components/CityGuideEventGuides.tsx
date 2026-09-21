@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NoArtIcon } from "@artsy/icons/native"
 import {
   Flex,
@@ -18,6 +19,7 @@ import { cityGuideEventDateRange } from "app/Scenes/CityGuide/utils/cityGuideEve
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const IMAGE_SIZE = 70
 const HERO_HEIGHT = 198
@@ -37,12 +39,16 @@ interface GuideRow {
   id: string
   /** What `Query.itinerary` is addressed by: a published guide's slug, else its id. */
   itineraryId: string
+  internalID: string
+  slug: string | null
   title: string
   authorName: string
   imageUrl: string
 }
 
 const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string }) => {
+  const { trackEvent } = useTracking()
+
   return (
     // No `hasChildTouchable`: that mode makes RouterLink render nothing itself and clone
     // onPress onto its child (RouterLink.tsx:92-99). The child here is a styled View, which
@@ -51,6 +57,7 @@ const GuideListItem = ({ item, citySlug }: { item: GuideRow; citySlug: string })
     <RouterLink
       testID="event-guide-row"
       to={`/city-guide/${citySlug}/itinerary/${item.itineraryId}`}
+      onPress={() => trackEvent(tracks.tappedGuide(citySlug, item.internalID, item.slug))}
     >
       <Flex flexDirection="row" gap={1}>
         {item.imageUrl ? (
@@ -98,6 +105,8 @@ const EventGroup = ({ event, citySlug }: { event: CityGuideEventNode; citySlug: 
     .map((attachment) => ({
       id: attachment.internalID,
       itineraryId: attachment.itinerary.slug ?? attachment.itinerary.internalID,
+      internalID: attachment.itinerary.internalID,
+      slug: attachment.itinerary.slug ?? null,
       title: attachment.itinerary.title,
       authorName: attachment.itinerary.authorName ?? "",
       imageUrl: attachment.itinerary.heroImage?.url ?? "",
@@ -218,6 +227,8 @@ export const CityGuideEventGuides: React.FC<Props> = ({
     .map((itinerary) => ({
       id: itinerary.internalID,
       itineraryId: itinerary.slug ?? itinerary.internalID,
+      internalID: itinerary.internalID,
+      slug: itinerary.slug ?? null,
       title: itinerary.title,
       authorName: itinerary.authorName ?? "",
       imageUrl: itinerary.heroImage?.url ?? "",
@@ -302,3 +313,15 @@ const queryFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedGuide: (citySlug: string, guideId: string, slug: string | null) => ({
+    action: ActionType.tappedExploreGroup,
+    context_module: ContextModule.cityGuideCard,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.cityGuideGuide,
+    destination_screen_owner_id: guideId,
+    ...(slug ? { destination_screen_owner_slug: slug } : {}),
+  }),
+}

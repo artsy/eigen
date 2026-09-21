@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { CityGuideItinerariesRail_me$key } from "__generated__/CityGuideItinerariesRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -18,6 +19,7 @@ interface Props {
 
 export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef }) => {
   const { trackEvent } = useTracking<Schema.Entity>()
+  const { trackEvent: trackCohesionEvent } = useTracking()
   const me = useFragment(fragment, meRef)
 
   const itineraries = extractNodes(me?.itinerariesConnection).filter(
@@ -68,6 +70,11 @@ export const CityGuideItinerariesRail: React.FC<Props> = ({ citySlug, me: meRef 
             imageUrl={item.heroImage?.url}
             // Addressed by slug when it has one, else its id — Query.itinerary takes either.
             href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
+            onPress={() =>
+              trackCohesionEvent(
+                tracks.tappedItinerary(citySlug, item.internalID, item.slug ?? null)
+              )
+            }
           />
         )}
       />
@@ -99,3 +106,15 @@ const fragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedItinerary: (citySlug: string, itineraryId: string, slug: string | null) => ({
+    action: ActionType.tappedCardGroup,
+    context_module: ContextModule.cityGuideCard,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.cityGuideGuide,
+    destination_screen_owner_id: itineraryId,
+    ...(slug ? { destination_screen_owner_slug: slug } : {}),
+  }),
+}

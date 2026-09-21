@@ -305,6 +305,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
           {isMapView ? (
             <MapView
               sections={mapSections}
+              citySlug={citySlug}
               selectedPlaceId={selectedStopId}
               onSelectPlace={setSelectedStopId}
               numbered={isEditorial}

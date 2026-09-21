@@ -3,6 +3,7 @@ import { CityGuideEventsTestQuery } from "__generated__/CityGuideEventsTestQuery
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -35,6 +36,7 @@ describe("CityGuideEvents", () => {
         {
           node: {
             internalID: "fair-1",
+            slug: "frieze-london-2025",
             name: "Frieze London",
             profile: { id: "profile-node-1", internalID: "profile-1", isFollowed: false },
             href: "/fair/frieze-london-2025",
@@ -49,6 +51,7 @@ describe("CityGuideEvents", () => {
           node: {
             id: "show-node-1",
             internalID: "show-1",
+            slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
             isFollowed: false,
             name: "One Fly Makes No Summer",
             href: "/show/kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
@@ -65,6 +68,7 @@ describe("CityGuideEvents", () => {
           node: {
             id: "opening-node-1",
             internalID: "opening-1",
+            slug: "annely-juda-fine-art-vestiges",
             isFollowed: false,
             name: "Vestiges",
             href: "/show/annely-juda-fine-art-vestiges",
@@ -167,6 +171,57 @@ describe("CityGuideEvents", () => {
     fireEvent.press(await screen.findByText("Current London Fairs"))
 
     expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/events/fairs")
+  })
+
+  it("tracks the tap on a fair card", async () => {
+    renderWithRelay(resolvers, props)
+
+    fireEvent.press(await screen.findByText("Frieze London"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedFairGroup",
+        context_module: "fairRail",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "fair",
+        destination_screen_owner_id: "fair-1",
+        destination_screen_owner_slug: "frieze-london-2025",
+      })
+    )
+  })
+
+  it("tracks the tap on a current show card with the current-shows-rail module", async () => {
+    renderWithRelay(resolvers, props)
+
+    fireEvent.press(await screen.findByText("One Fly Makes No Summer"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedShowGroup",
+        context_module: "currentShowsRail",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "show",
+        destination_screen_owner_id: "show-1",
+        destination_screen_owner_slug: "kristin-hjellegjerde-gallery-one-fly-makes-no-summer",
+      })
+    )
+  })
+
+  it("tracks the tap on an opening-soon show card with the shows-rail module", async () => {
+    renderWithRelay(resolvers, props)
+
+    fireEvent.press(await screen.findByText("Vestiges"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedShowGroup",
+        context_module: "showsRail",
+        destination_screen_owner_id: "opening-1",
+        destination_screen_owner_slug: "annely-juda-fine-art-vestiges",
+      })
+    )
   })
 
   it("hides a section that has no results, header included", async () => {

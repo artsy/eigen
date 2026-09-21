@@ -19,6 +19,8 @@ interface Props {
   /** Arches the top of the image. The Opening Soon rail is the only one that asks for it. */
   archTopImage?: boolean
   saveControl?: React.ReactNode
+  /** Fired before either link's default navigate-on-press, so a caller can track the tap. */
+  onPress?: () => void
 }
 
 /**
@@ -34,10 +36,11 @@ export const CityEventRailCard: React.FC<Props> = ({
   admission,
   archTopImage = false,
   saveControl,
+  onPress,
 }) => {
   return (
     <Flex width={CARD_SIZE} gap={0.5}>
-      <RouterLink to={href} disablePrefetch>
+      <RouterLink to={href} disablePrefetch onPress={onPress}>
         <Image
           testID="city-event-rail-card-image"
           src={image}
@@ -54,7 +57,7 @@ export const CityEventRailCard: React.FC<Props> = ({
       {/* alignItems="flex-start" keeps the control level with the title rather than centred
           against a caption whose height changes with the admission line. */}
       <Flex flexDirection="row" alignItems="flex-start">
-        <RouterLink to={href} disablePrefetch style={{ flex: 1 }}>
+        <RouterLink to={href} disablePrefetch onPress={onPress} style={{ flex: 1 }}>
           <Flex flex={1}>
             <Text variant="xs" weight="medium" numberOfLines={1}>
               {title}

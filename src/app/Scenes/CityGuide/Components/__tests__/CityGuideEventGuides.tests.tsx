@@ -2,6 +2,7 @@ import { fireEvent, screen, within } from "@testing-library/react-native"
 import { CityGuideEventGuidesTestQuery } from "__generated__/CityGuideEventGuidesTestQuery.graphql"
 import { CityGuideEventGuides } from "app/Scenes/CityGuide/Components/CityGuideEventGuides"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -123,6 +124,27 @@ describe("CityGuideEventGuides", () => {
 
     expect(navigate).toHaveBeenCalledWith(
       "/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
+    )
+  })
+
+  it("tracks the tap on a guide row", async () => {
+    renderWithRelay(
+      connection([event("London Art Week", [itinerary("chill-vibes-only", "Chill Vibes Only")])]),
+      props
+    )
+
+    fireEvent.press((await screen.findAllByTestId("event-guide-row"))[0])
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedExploreGroup",
+        context_module: "cityGuideCard",
+        context_screen_owner_type: "cityGuide",
+        context_screen_owner_slug: "london-united-kingdom",
+        destination_screen_owner_type: "cityGuideGuide",
+        destination_screen_owner_id: "id-for-Chill Vibes Only",
+        destination_screen_owner_slug: "chill-vibes-only",
+      })
     )
   })
 

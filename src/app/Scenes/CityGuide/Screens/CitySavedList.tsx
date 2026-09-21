@@ -159,6 +159,7 @@ const CitySavedList: React.FC<Props> = ({ me, cityName, citySlug, city }) => {
         {isMapView ? (
           <MapView
             sections={mapSections}
+            citySlug={citySlug}
             selectedPlaceId={selectedPlaceId}
             onSelectPlace={setSelectedPlaceId}
             // This screen has no in-flow header of its own (unlike the itinerary, which

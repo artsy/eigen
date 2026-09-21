@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NoArtIcon } from "@artsy/icons/native"
 import { Flex, Image, Join, Separator, Text } from "@artsy/palette-mobile"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
@@ -5,6 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const IMAGE_SIZE = 50
 const NO_ICON_SIZE = 20
@@ -12,6 +14,8 @@ const NO_ICON_SIZE = 20
 interface ArticleRow {
   /** The attachment's own id, which is what makes a row unique when one article is attached twice. */
   id: string
+  articleId: string
+  slug: string
   title: string
   byline: string
   publishedAt: string
@@ -19,12 +23,18 @@ interface ArticleRow {
   imageUrl: string
 }
 
-const ArticleListItem = ({ item }: { item: ArticleRow }) => {
+const ArticleListItem = ({ item, citySlug }: { item: ArticleRow; citySlug: string }) => {
+  const { trackEvent } = useTracking()
+
   return (
     // No `hasChildTouchable`: that mode clones onPress onto the child instead of rendering a
     // Touchable, and the child here is a styled View, which ignores it — the row would not be
     // pressable at all. Same reasoning as CityGuideEventGuides' guide rows.
-    <RouterLink testID="event-article-row" to={item.href}>
+    <RouterLink
+      testID="event-article-row"
+      to={item.href}
+      onPress={() => trackEvent(tracks.tappedArticle(citySlug, item.articleId, item.slug))}
+    >
       <Flex flexDirection="row" gap={1}>
         {item.imageUrl ? (
           <Image
@@ -68,10 +78,11 @@ const ArticleListItem = ({ item }: { item: ArticleRow }) => {
 }
 
 interface Props {
+  citySlug: string
   city: CityGuideEventArticles_city$key | null | undefined
 }
 
-export const CityGuideEventArticles: React.FC<Props> = ({ city: cityRef }) => {
+export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRef }) => {
   const city = useFragment(fragment, cityRef)
 
   const rows: ArticleRow[] = extractNodes(city?.cityGuideEventsConnection).flatMap((event) =>
@@ -82,6 +93,8 @@ export const CityGuideEventArticles: React.FC<Props> = ({ city: cityRef }) => {
       .sort((a, b) => a.position - b.position)
       .map((attachment) => ({
         id: attachment.internalID,
+        articleId: attachment.article.internalID,
+        slug: attachment.article.slug ?? "",
         // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
         // the in-article headline, which can be longer.
         title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
@@ -105,7 +118,7 @@ export const CityGuideEventArticles: React.FC<Props> = ({ city: cityRef }) => {
 
       <Join separator={<Separator my={2} />}>
         {rows.map((item) => (
-          <ArticleListItem key={item.id} item={item} />
+          <ArticleListItem key={item.id} item={item} citySlug={citySlug} />
         ))}
       </Join>
     </Flex>
@@ -123,6 +136,7 @@ const fragment = graphql`
             position
             article {
               internalID
+              slug
               title
               thumbnailTitle
               byline
@@ -138,3 +152,15 @@ const fragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedArticle: (citySlug: string, articleId: string, slug: string) => ({
+    action: ActionType.tappedArticleGroup,
+    context_module: ContextModule.articles,
+    context_screen_owner_type: OwnerType.cityGuide,
+    context_screen_owner_slug: citySlug,
+    destination_screen_owner_type: OwnerType.article,
+    destination_screen_owner_id: articleId,
+    destination_screen_owner_slug: slug,
+  }),
+}

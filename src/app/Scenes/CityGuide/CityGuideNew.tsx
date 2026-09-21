@@ -79,7 +79,7 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
         </Flex>
       )}
 
-      {!!enableEditorialContent && <CityGuideEventArticles city={data.city} />}
+      {!!enableEditorialContent && <CityGuideEventArticles citySlug={citySlug} city={data.city} />}
     </Join>
   )
 }
