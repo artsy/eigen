@@ -9,6 +9,7 @@ import { CityGuideEventVideos } from "app/Scenes/CityGuide/Components/CityGuideE
 import { CityGuideEvents } from "app/Scenes/CityGuide/Components/CityGuideEvents"
 import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/CityGuideFloatingMapButton"
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
+import { CityGuideNewPlaceholder } from "app/Scenes/CityGuide/Components/CityGuideNewPlaceholder"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -85,9 +86,8 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
 
 const CityGuideNewSectionsWithSuspense = withSuspense({
   Component: CityGuideNewSections,
-  // The sections sit mid-scroll on the home screen, so they stay absent until they have data
-  // rather than reserving space and shifting everything below.
-  LoadingFallback: () => null,
+  // A spinner, so the initial load doesn't blank the screen outright.
+  LoadingFallback: CityGuideNewPlaceholder,
   ErrorFallback: NoFallback,
 })
 
