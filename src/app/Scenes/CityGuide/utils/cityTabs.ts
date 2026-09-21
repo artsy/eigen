@@ -1,4 +1,8 @@
+import { BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { MapTab } from "app/Scenes/CityGuide/utils/types"
+
+export const tabHasResults = (tab: MapTab, bucketResults: BucketResults) =>
+  tab.getShows(bucketResults).length > 0 || tab.getFairs(bucketResults).length > 0
 
 export const cityTabs: MapTab[] = [
   {
