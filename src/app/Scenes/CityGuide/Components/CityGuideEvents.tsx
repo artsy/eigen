@@ -304,7 +304,7 @@ const tracks = {
   tappedFair: (citySlug: string, fairId: string, slug: string) => ({
     action: ActionType.tappedFairGroup,
     context_module: ContextModule.fairRail,
-    context_screen_owner_type: OwnerType.cityGuideGuide,
+    context_screen_owner_type: OwnerType.cityGuide,
     context_screen_owner_slug: citySlug,
     destination_screen_owner_type: OwnerType.fair,
     destination_screen_owner_id: fairId,
@@ -313,7 +313,7 @@ const tracks = {
   tappedShow: (citySlug: string, showId: string, slug: string, contextModule: ContextModule) => ({
     action: ActionType.tappedShowGroup,
     context_module: contextModule,
-    context_screen_owner_type: OwnerType.cityGuideGuide,
+    context_screen_owner_type: OwnerType.cityGuide,
     context_screen_owner_slug: citySlug,
     destination_screen_owner_type: OwnerType.show,
     destination_screen_owner_id: showId,

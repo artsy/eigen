@@ -73,7 +73,7 @@ describe("CityGuideItinerariesRail", () => {
       expect.objectContaining({
         action: "tappedCardGroup",
         context_module: "cityGuideCard",
-        context_screen_owner_type: "cityGuideGuide",
+        context_screen_owner_type: "cityGuide",
         context_screen_owner_slug: "london-united-kingdom",
         destination_screen_owner_type: "cityGuideGuide",
         destination_screen_owner_id: "a",

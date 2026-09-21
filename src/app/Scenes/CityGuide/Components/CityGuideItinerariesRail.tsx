@@ -111,7 +111,7 @@ const tracks = {
   tappedItinerary: (citySlug: string, itineraryId: string, slug: string | null) => ({
     action: ActionType.tappedCardGroup,
     context_module: ContextModule.cityGuideCard,
-    context_screen_owner_type: OwnerType.cityGuideGuide,
+    context_screen_owner_type: OwnerType.cityGuide,
     context_screen_owner_slug: citySlug,
     destination_screen_owner_type: OwnerType.cityGuideGuide,
     destination_screen_owner_id: itineraryId,

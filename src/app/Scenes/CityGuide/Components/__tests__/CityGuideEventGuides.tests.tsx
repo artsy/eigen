@@ -139,7 +139,7 @@ describe("CityGuideEventGuides", () => {
       expect.objectContaining({
         action: "tappedExploreGroup",
         context_module: "cityGuideCard",
-        context_screen_owner_type: "cityGuideGuide",
+        context_screen_owner_type: "cityGuide",
         context_screen_owner_slug: "london-united-kingdom",
         destination_screen_owner_type: "cityGuideGuide",
         destination_screen_owner_id: "id-for-Chill Vibes Only",

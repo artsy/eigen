@@ -157,7 +157,7 @@ const tracks = {
   tappedArticle: (citySlug: string, articleId: string, slug: string) => ({
     action: ActionType.tappedArticleGroup,
     context_module: ContextModule.articles,
-    context_screen_owner_type: OwnerType.cityGuideGuide,
+    context_screen_owner_type: OwnerType.cityGuide,
     context_screen_owner_slug: citySlug,
     destination_screen_owner_type: OwnerType.article,
     destination_screen_owner_id: articleId,

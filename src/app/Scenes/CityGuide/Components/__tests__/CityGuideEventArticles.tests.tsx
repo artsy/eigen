@@ -112,7 +112,7 @@ describe("CityGuideEventArticles", () => {
       expect.objectContaining({
         action: "tappedArticleGroup",
         context_module: "articles",
-        context_screen_owner_type: "cityGuideGuide",
+        context_screen_owner_type: "cityGuide",
         context_screen_owner_slug: "london-united-kingdom",
         destination_screen_owner_type: "article",
         destination_screen_owner_id: "id-for-An Art Lover's Guide to London",

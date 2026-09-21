@@ -182,7 +182,7 @@ describe("CityGuideEvents", () => {
       expect.objectContaining({
         action: "tappedFairGroup",
         context_module: "fairRail",
-        context_screen_owner_type: "cityGuideGuide",
+        context_screen_owner_type: "cityGuide",
         context_screen_owner_slug: "london-united-kingdom",
         destination_screen_owner_type: "fair",
         destination_screen_owner_id: "fair-1",
@@ -200,7 +200,7 @@ describe("CityGuideEvents", () => {
       expect.objectContaining({
         action: "tappedShowGroup",
         context_module: "currentShowsRail",
-        context_screen_owner_type: "cityGuideGuide",
+        context_screen_owner_type: "cityGuide",
         context_screen_owner_slug: "london-united-kingdom",
         destination_screen_owner_type: "show",
         destination_screen_owner_id: "show-1",
