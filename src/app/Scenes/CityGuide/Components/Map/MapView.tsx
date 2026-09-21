@@ -65,7 +65,12 @@ export const MapView: React.FC<Props> = ({
 }) => {
   const [selectedSectionId, setSelectedSectionId] = useState(ALL_PILL_ID)
   const [isMapLoaded, setIsMapLoaded] = useState(false)
-  const [overlayHeight, setOverlayHeight] = useState(0)
+  // Starts at `pillsTopOffset` (the caller's own header clearance), not 0 — the pills row
+  // below only renders, and only then measures a bigger value, when there's more than one
+  // section to filter by. A single-section itinerary never reaches that `onLayout`, so
+  // without this default the scale bar would sit with no clearance at all, right under the
+  // caller's own header.
+  const [overlayHeight, setOverlayHeight] = useState(pillsTopOffset)
   // The tapped cluster's id (to recolour its circle) and places (for the rail), kept as one
   // state so the two can never drift apart.
   const [clusterSelection, setClusterSelection] = useState<{
