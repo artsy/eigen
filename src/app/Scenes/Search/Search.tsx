@@ -7,6 +7,7 @@ import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { ArtAssistantSearchButton } from "app/Components/GlobalSearchInput/ArtAssistantSearchButton"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { tappedArtAssistant } from "app/Components/GlobalSearchInput/artAssistantTracks"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
@@ -100,7 +101,18 @@ export const Search: React.FC = () => {
         </Flex>
 
         {!!showArtAssistant && (
-          <ArtAssistantSearchButton onPress={() => navigate("/art-assistant")} />
+          <ArtAssistantSearchButton
+            onPress={() => {
+              trackEvent(
+                tappedArtAssistant({
+                  contextModule: ContextModule.header,
+                  contextScreenOwnerType: OwnerType.search,
+                  type: "icon",
+                })
+              )
+              navigate("/art-assistant")
+            }}
+          />
         )}
       </Flex>
 

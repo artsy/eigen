@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
@@ -19,6 +20,8 @@ import { useArtAssistantConversation } from "app/Scenes/ArtAssistant/hooks/useAr
 import { ArtAssistantMessage as ArtAssistantMessageType } from "app/Scenes/ArtAssistant/types"
 import { goBack } from "app/system/navigation/navigate"
 import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingContainer"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
@@ -40,6 +43,7 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
   const anchoredTurnID = useRef<string | null>(null)
+  const suggestionPrompt = useRef<string | null>(null)
   const composerKeyboardGap = space(1)
   const canSend = prompt.trim().length > 0 && !isResponding
 
@@ -61,7 +65,13 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
     anchoredTurnID.current = null
+    suggestionPrompt.current = null
     startNewConversation()
+  }
+
+  const handleSelectSuggestion = (suggestion: string) => {
+    suggestionPrompt.current = suggestion
+    setPrompt(suggestion)
   }
 
   const handleSend = () => {
@@ -72,9 +82,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
     }
 
     const userMessageIndex = messages.length
+    // A suggestion the user edited before sending is their own prompt, not ours.
+    const type = text === suggestionPrompt.current ? "suggestion" : "typed"
 
+    suggestionPrompt.current = null
     pendingScrollIndex.current = userMessageIndex
-    void submit(text)
+    void submit(text, { type })
     setPrompt("")
     dismissComposerKeyboard()
   }
@@ -120,140 +133,146 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   }, [messages, scrollToPendingTurn])
 
   return (
-    <Screen>
-      <Screen.Header
-        hideTitle
-        hideLeftElements={messages.length === 0}
-        leftElements={
-          <Button
-            accessibilityLabel="Start a new chat"
-            icon={<EditIcon />}
-            onPress={handleOpenNewChatDialog}
-            size="small"
-            variant="outline"
-          >
-            New
-          </Button>
-        }
-        rightElements={
-          <Touchable
-            accessibilityLabel="Close Art Assistant"
-            accessibilityRole="button"
-            hitSlop={DEFAULT_HIT_SLOP}
-            onPress={() => onClose()}
-            underlayColor="transparent"
-          >
-            <CloseIcon fill="mono100" />
-          </Touchable>
-        }
-      />
-
-      <KeyboardAvoidingContainer
-        automaticOffset
-        keyboardVerticalOffset={-bottom}
-        testID="art-assistant-layout"
-      >
-        <FlashList
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: space(2),
-            paddingVertical: space(2),
-          }}
-          data={messages}
-          ref={messageListRef}
-          keyExtractor={(message) => message.id}
-          keyboardDismissMode="none"
-          keyboardShouldPersistTaps="handled"
-          ListEmptyComponent={<ArtAssistantEmptyState onSelectSuggestion={setPrompt} />}
-          onContentSizeChange={scrollToPendingTurn}
-          onScrollBeginDrag={handleScrollBeginDrag}
-          renderItem={({ item, index }) => (
-            <Flex mb={index === messages.length - 1 ? 0 : 2}>
-              <ArtAssistantMessage message={item} />
-            </Flex>
-          )}
-          style={{ flex: 1 }}
-          testID="art-assistant-content"
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.artAssistant })}
+    >
+      <Screen>
+        <Screen.Header
+          hideTitle
+          hideLeftElements={messages.length === 0}
+          leftElements={
+            <Button
+              accessibilityLabel="Start a new chat"
+              icon={<EditIcon />}
+              onPress={handleOpenNewChatDialog}
+              size="small"
+              variant="outline"
+            >
+              New
+            </Button>
+          }
+          rightElements={
+            <Touchable
+              accessibilityLabel="Close Art Assistant"
+              accessibilityRole="button"
+              hitSlop={DEFAULT_HIT_SLOP}
+              onPress={() => onClose()}
+              underlayColor="transparent"
+            >
+              <CloseIcon fill="mono100" />
+            </Touchable>
+          }
         />
 
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          backgroundColor="background"
-          gap={1}
-          pb={`${bottom + composerKeyboardGap}px`}
-          px={2}
-          pt={1}
-          testID="art-assistant-composer"
+        <KeyboardAvoidingContainer
+          automaticOffset
+          keyboardVerticalOffset={-bottom}
+          testID="art-assistant-layout"
         >
-          <Flex
-            flex={1}
-            borderColor={isComposerFocused ? "blue100" : "mono15"}
-            borderRadius={50}
-            borderWidth={StyleSheet.hairlineWidth}
-            minHeight={50}
-            justifyContent="center"
-            px={2}
-            testID="art-assistant-composer-input-container"
-          >
-            <Input
-              accessibilityLabel="Art Assistant prompt"
-              multiline
-              onBlur={() => setIsComposerFocused(false)}
-              onChangeText={setPrompt}
-              onFocus={() => setIsComposerFocused(true)}
-              placeholder="Tell us what you'd like..."
-              placeholderTextColor={color("mono60")}
-              ref={composerInputRef}
-              style={{
-                borderWidth: 0,
-                height: undefined,
-                maxHeight: 100,
-                minHeight: 50,
-                paddingHorizontal: 0,
-              }}
-              value={prompt}
-            />
-          </Flex>
+          <FlashList
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: space(2),
+              paddingVertical: space(2),
+            }}
+            data={messages}
+            ref={messageListRef}
+            keyExtractor={(message) => message.id}
+            keyboardDismissMode="none"
+            keyboardShouldPersistTaps="handled"
+            ListEmptyComponent={
+              <ArtAssistantEmptyState onSelectSuggestion={handleSelectSuggestion} />
+            }
+            onContentSizeChange={scrollToPendingTurn}
+            onScrollBeginDrag={handleScrollBeginDrag}
+            renderItem={({ item, index }) => (
+              <Flex mb={index === messages.length - 1 ? 0 : 2}>
+                <ArtAssistantMessage message={item} />
+              </Flex>
+            )}
+            style={{ flex: 1 }}
+            testID="art-assistant-content"
+          />
 
-          <Touchable
-            accessibilityLabel="Send"
-            accessibilityRole="button"
-            accessibilityState={{ disabled: !canSend }}
-            disabled={!canSend}
-            onPress={handleSend}
-            style={{ borderRadius: 50, overflow: "hidden" }}
+          <Flex
+            flexDirection="row"
+            alignItems="center"
+            backgroundColor="background"
+            gap={1}
+            pb={`${bottom + composerKeyboardGap}px`}
+            px={2}
+            pt={1}
+            testID="art-assistant-composer"
           >
             <Flex
-              alignItems="center"
-              backgroundColor={canSend ? "blue100" : "mono30"}
+              flex={1}
+              borderColor={isComposerFocused ? "blue100" : "mono15"}
               borderRadius={50}
-              height={50}
+              borderWidth={StyleSheet.hairlineWidth}
+              minHeight={50}
               justifyContent="center"
               px={2}
+              testID="art-assistant-composer-input-container"
             >
-              <Text variant="sm" color="mono0">
-                Send
-              </Text>
+              <Input
+                accessibilityLabel="Art Assistant prompt"
+                multiline
+                onBlur={() => setIsComposerFocused(false)}
+                onChangeText={setPrompt}
+                onFocus={() => setIsComposerFocused(true)}
+                placeholder="Tell us what you'd like..."
+                placeholderTextColor={color("mono60")}
+                ref={composerInputRef}
+                style={{
+                  borderWidth: 0,
+                  height: undefined,
+                  maxHeight: 100,
+                  minHeight: 50,
+                  paddingHorizontal: 0,
+                }}
+                value={prompt}
+              />
             </Flex>
-          </Touchable>
-        </Flex>
-      </KeyboardAvoidingContainer>
 
-      <Dialog
-        detail="Your current chat will be lost."
-        isVisible={isNewChatDialogVisible}
-        onBackgroundPress={() => setIsNewChatDialogVisible(false)}
-        primaryCta={{
-          text: "Start new chat",
-          onPress: handleStartNewConversation,
-        }}
-        secondaryCta={{
-          text: "Cancel",
-          onPress: () => setIsNewChatDialogVisible(false),
-        }}
-        title="Start a new chat?"
-      />
-    </Screen>
+            <Touchable
+              accessibilityLabel="Send"
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !canSend }}
+              disabled={!canSend}
+              onPress={handleSend}
+              style={{ borderRadius: 50, overflow: "hidden" }}
+            >
+              <Flex
+                alignItems="center"
+                backgroundColor={canSend ? "blue100" : "mono30"}
+                borderRadius={50}
+                height={50}
+                justifyContent="center"
+                px={2}
+              >
+                <Text variant="sm" color="mono0">
+                  Send
+                </Text>
+              </Flex>
+            </Touchable>
+          </Flex>
+        </KeyboardAvoidingContainer>
+
+        <Dialog
+          detail="Your current chat will be lost."
+          isVisible={isNewChatDialogVisible}
+          onBackgroundPress={() => setIsNewChatDialogVisible(false)}
+          primaryCta={{
+            text: "Start new chat",
+            onPress: handleStartNewConversation,
+          }}
+          secondaryCta={{
+            text: "Cancel",
+            onPress: () => setIsNewChatDialogVisible(false),
+          }}
+          title="Start a new chat?"
+        />
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
