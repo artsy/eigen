@@ -114,6 +114,9 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
   )
 }
 
+// `id` isn't rendered here, but a delete on the itinerary's own detail page needs it to evict
+// this node from the connection: `ConnectionHandler.deleteNode` matches by Relay's `id`, not
+// `internalID`.
 const fragment = graphql`
   fragment CityItineraries_me on Me
   @refetchable(queryName: "CityItinerariesPaginationQuery")
@@ -126,6 +129,7 @@ const fragment = graphql`
       @connection(key: "CityItineraries_itinerariesConnection") {
       edges {
         node {
+          id
           internalID
           slug
           title
