@@ -1,8 +1,10 @@
-import { Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
-import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useToast } from "app/Components/Toast/toastHook"
+import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { useState } from "react"
 import { ConnectionHandler, graphql, useMutation } from "react-relay"
 
@@ -101,57 +103,69 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   }
 
   return (
-    <AutoHeightBottomSheet visible={visible} onDismiss={onClose}>
-      <Flex pt={1} pb={2}>
-        <Flex px={2} pb={2}>
-          <Text variant="md">Edit Itinerary</Text>
-        </Flex>
+    <AutomountedBottomSheetModal
+      sentryName="ItineraryEditSheet"
+      visible={visible}
+      onDismiss={onClose}
+      enableDynamicSizing
+    >
+      <BottomSheetKeyboardAwareScrollView keyboardShouldPersistTaps="always">
+        <Flex pt={1} pb={2}>
+          <Flex px={2} pb={2}>
+            <Text variant="md">Edit Itinerary</Text>
+          </Flex>
 
-        <Flex px={2} gap={2}>
-          <Input title="Name" value={name} onChangeText={setName} testID="itinerary-edit-name" />
-
-          <Flex>
-            <Input
-              title="Notes"
-              value={notes}
-              onChangeText={setNotes}
-              multiline
-              maxLength={NOTES_LIMIT}
-              testID="itinerary-edit-notes"
+          <Flex px={2} gap={2}>
+            <BottomSheetInput
+              title="Name"
+              value={name}
+              onChangeText={setName}
+              testID="itinerary-edit-name"
             />
 
-            <Text variant="xs" color="mono60" textAlign="right" mt={0.5}>
-              {`${notes.length} / ${NOTES_LIMIT}`}
-            </Text>
+            <Flex>
+              <BottomSheetInput
+                title="Notes"
+                value={notes}
+                onChangeText={setNotes}
+                multiline
+                maxLength={NOTES_LIMIT}
+                testID="itinerary-edit-notes"
+              />
+
+              <Text variant="xs" color="mono60" textAlign="right" mt={0.5}>
+                {`${notes.length} / ${NOTES_LIMIT}`}
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex px={2} pt={2} gap={2}>
+            <Button
+              block
+              testID="itinerary-edit-save"
+              loading={isUpdating}
+              disabled={!name.trim()}
+              onPress={save}
+            >
+              Save Changes
+            </Button>
+
+            {/* Red and underlined, per the designs — a text link rather than a button. */}
+            <Touchable
+              testID="itinerary-edit-delete"
+              accessibilityRole="button"
+              accessibilityLabel="Delete Itinerary"
+              disabled={isDeleting}
+              onPress={destroy}
+            >
+              <Text variant="sm" color="red100" textAlign="center" underline>
+                Delete Itinerary
+              </Text>
+            </Touchable>
           </Flex>
         </Flex>
-
-        <Flex px={2} pt={2} gap={2}>
-          <Button
-            block
-            testID="itinerary-edit-save"
-            loading={isUpdating}
-            disabled={!name.trim()}
-            onPress={save}
-          >
-            Save Changes
-          </Button>
-
-          {/* Red and underlined, per the designs — a text link rather than a button. */}
-          <Touchable
-            testID="itinerary-edit-delete"
-            accessibilityRole="button"
-            accessibilityLabel="Delete Itinerary"
-            disabled={isDeleting}
-            onPress={destroy}
-          >
-            <Text variant="sm" color="red100" textAlign="center" underline>
-              Delete Itinerary
-            </Text>
-          </Touchable>
-        </Flex>
-      </Flex>
-    </AutoHeightBottomSheet>
+      </BottomSheetKeyboardAwareScrollView>
+    </AutomountedBottomSheetModal>
   )
 }
 
