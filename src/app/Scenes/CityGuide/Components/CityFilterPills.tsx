@@ -26,11 +26,6 @@ interface CityFilterPillsProps {
   bottomSheetAnimatedIndex?: SharedValue<number>
   /** Used to figure out which tabs have results, so empty ones can be hidden. */
   bucketResults: BucketResults
-  /**
-   * Reports the row's rendered height, so a caller drawing something else below it (e.g. the
-   * map's scale bar on Android) can offset around it instead of guessing a fixed value.
-   */
-  onLayout?: (height: number) => void
 }
 
 export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
@@ -38,7 +33,6 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
   onSelectTab,
   bottomSheetAnimatedIndex,
   bucketResults,
-  onLayout,
 }) => {
   const space = useSpace()
   const safeAreaInsets = useSafeAreaInsets()
@@ -73,7 +67,6 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
 
   return (
     <Animated.View
-      onLayout={(event) => onLayout?.(event.nativeEvent.layout.height)}
       style={[
         {
           top: safeAreaInsets.top + BACK_BUTTON_SIZE_SIZE + space(1),

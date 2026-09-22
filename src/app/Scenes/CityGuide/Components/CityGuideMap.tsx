@@ -34,7 +34,6 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -91,9 +90,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
   const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
-  // Measured from CityFilterPills' onLayout so the Android scale bar (which otherwise sits at a
-  // fixed offset) can be pushed below the pill row instead of overlapping it.
-  const [pillsRowHeight, setPillsRowHeight] = useState(0)
 
   const enableGlobalMapList = useFeatureFlag("AREnableCityGuideItineraries")
 
@@ -354,7 +350,6 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           selectedTabId={cityTabs[activeIndex].id}
           onSelectTab={handleSelectMapFilterPill}
           bucketResults={bucketResults}
-          onLayout={setPillsRowHeight}
         />
       )}
       <CityGuideCityPicker
@@ -381,15 +376,7 @@ export const CityGuideMap: React.FC<Props> = (props) => {
             left: space(2),
           }}
           onPress={onPressMap}
-          scaleBarPosition={{
-            // On Android the scale bar's default offset lands under the new pill row (which
-            // Map/MapView.tsx also has to account for); push it below the pills once measured.
-            top:
-              Platform.OS === "ios"
-                ? safeAreaInsets.top - 20
-                : safeAreaInsets.top + 40 + pillsRowHeight,
-            left: space(2),
-          }}
+          scaleBarEnabled={false}
         >
           <MapboxGL.Camera
             ref={cameraRef}
