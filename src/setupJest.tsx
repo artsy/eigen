@@ -783,10 +783,19 @@ jest.mock("@gorhom/bottom-sheet", () => {
 })
 
 jest.mock("@shopify/flash-list", () => {
+  const React = require("react")
   const { FlatList } = require("react-native")
+
+  // The real FlashList measures items itself, so `scrollToIndex` never needs
+  // `getItemLayout`/`onScrollToIndexFailed`. The mocked FlatList does, or it throws — default it
+  // here so callers don't have to pass a FlatList-only prop just to satisfy this mock.
+  const MockFlashList = React.forwardRef((props: any, ref: any) => (
+    <FlatList onScrollToIndexFailed={() => {}} {...props} ref={ref} />
+  ))
+
   return {
     ...jest.requireActual("@shopify/flash-list"),
-    FlashList: FlatList,
+    FlashList: MockFlashList,
   }
 })
 
