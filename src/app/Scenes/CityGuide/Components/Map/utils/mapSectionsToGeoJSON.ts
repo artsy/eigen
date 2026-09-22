@@ -91,36 +91,3 @@ export const mapPlacesToGeoJSON = (
     },
   })),
 })
-
-export interface MapRouteCollection {
-  type: "FeatureCollection"
-  features: {
-    type: "Feature"
-    geometry: { type: "LineString"; coordinates: [number, number][] }
-    properties: Record<string, never>
-  }[]
-}
-
-/**
- * The path through a list of places, in order. Returns no features for fewer than two
- * places, since a line needs two ends.
- */
-export const mapPlacesToRouteGeoJSON = (flattened: FlattenedMapPlace[]): MapRouteCollection => {
-  if (flattened.length < 2) {
-    return { type: "FeatureCollection", features: [] }
-  }
-
-  return {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: {
-          type: "LineString",
-          coordinates: flattened.map(({ place }) => [place.coordinates.lng, place.coordinates.lat]),
-        },
-        properties: {},
-      },
-    ],
-  }
-}
