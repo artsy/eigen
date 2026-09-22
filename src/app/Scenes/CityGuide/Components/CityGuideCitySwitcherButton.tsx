@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from "@artsy/icons/native"
-import { Button } from "@artsy/palette-mobile"
+import { Button, Theme } from "@artsy/palette-mobile"
 import Spinner from "app/Components/Spinner"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface Props {
   onPress?: () => void
@@ -11,23 +10,23 @@ interface Props {
 const ICON_SIZE = 18
 
 export const CityGuideCitySwitcherButton: React.FC<Props> = ({ cityName, onPress }) => {
-  const enableCityGuideList = useFeatureFlag("AREnableCityGuideItineraries")
-
   return (
-    <Button
-      testID="city-guide-city-switcher"
-      variant="outline"
-      onPress={onPress}
-      size="small"
-      iconPosition="right"
-      icon={<ChevronDownIcon color="mono100" width={ICON_SIZE} height={ICON_SIZE} />}
-      transparent={enableCityGuideList}
-    >
-      {cityName ? (
-        cityName
-      ) : (
-        <Spinner spinnerColor="mono60" style={{ backgroundColor: "transparent" }} size="medium" />
-      )}
-    </Button>
+    // Always use dark mode for the city switcher button
+    <Theme theme="v3dark">
+      <Button
+        testID="city-guide-city-switcher"
+        variant="outlineLight"
+        onPress={onPress}
+        size="small"
+        iconPosition="right"
+        icon={<ChevronDownIcon color="mono100" width={ICON_SIZE} height={ICON_SIZE} />}
+      >
+        {cityName ? (
+          cityName
+        ) : (
+          <Spinner spinnerColor="mono60" style={{ backgroundColor: "transparent" }} size="medium" />
+        )}
+      </Button>
+    </Theme>
   )
 }

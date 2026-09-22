@@ -1,5 +1,5 @@
 import { NoArtIcon } from "@artsy/icons/native"
-import { Flex, Image, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { CARD_SHADOW } from "app/Scenes/CityGuide/utils/constants"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { pluralize } from "app/utils/pluralize"
@@ -38,6 +38,7 @@ export const ItineraryListItem: React.FC<Props> = ({
   onPress,
 }) => {
   const isCard = variant === "card"
+  const color = useColor()
 
   return (
     <RouterLink
@@ -49,7 +50,7 @@ export const ItineraryListItem: React.FC<Props> = ({
         isCard
           ? {
               width: CARD_WIDTH,
-              backgroundColor: "white",
+              backgroundColor: color("mono0"),
               borderRadius: CARD_RADIUS,
               ...CARD_SHADOW,
             }

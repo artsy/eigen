@@ -1,4 +1,4 @@
-import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { StopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -15,7 +15,6 @@ const ROW_STYLE = { flex: 1 } as const
 
 /** Figma's `Dropshadow/100`: #00000014, offset (0, 2), blur 10. */
 const CARD_SHADOW = {
-  shadowColor: "#000",
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.08,
   shadowRadius: 10,
@@ -52,6 +51,7 @@ export const StopCard: React.FC<Props> = ({
   // accessibility text — pushes the card past its normal 70; never below that floor.
   const [textHeight, setTextHeight] = useState(CARD_HEIGHT)
   const cardHeight = Math.max(CARD_HEIGHT, textHeight)
+  const color = useColor()
 
   const handlePress = () => {
     onPress?.()
@@ -74,7 +74,10 @@ export const StopCard: React.FC<Props> = ({
       // instead of being clipped to it. The image (below) is kept in sync with this via
       // `textHeight`, so it always covers the card's full height, not just the design floor.
       minHeight={cardHeight}
-      style={CARD_SHADOW}
+      style={{
+        ...CARD_SHADOW,
+        shadowColor: color("mono100"),
+      }}
     >
       {/*
         Only the image and text are tappable. The save control renders inside this same card,
