@@ -959,6 +959,28 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to CityGuide", () => {
+    expect(matchRoute("/city-guide")).toMatchInlineSnapshot(`
+      {
+        "module": "CityGuide",
+        "params": {},
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to CityGuide with a preselected city slug", () => {
+    expect(matchRoute("/city-guide?citySlug=london-united-kingdom")).toMatchInlineSnapshot(`
+      {
+        "module": "CityGuide",
+        "params": {
+          "citySlug": "london-united-kingdom",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to PrivacyRequest", () => {
     expect(matchRoute("/privacy-request")).toMatchInlineSnapshot(`
       {
