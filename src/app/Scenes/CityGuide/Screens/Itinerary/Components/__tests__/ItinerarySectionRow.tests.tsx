@@ -5,6 +5,26 @@ import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/i
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PanGesture } from "react-native-gesture-handler"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
+import { SharedValue } from "react-native-reanimated"
+
+/** Reanimated's own mock only hands out shared values from a hook, and these belong to a
+ *  fake auto-scroller rather than to a component. */
+const makeSharedValue = <T,>(initial: T): SharedValue<T> => {
+  let current = initial
+
+  return {
+    get value() {
+      return current
+    },
+    set value(next: T) {
+      current = next
+    },
+    get: () => current,
+    set: (next: T | ((currentValue: T) => T)) => {
+      current = typeof next === "function" ? (next as (currentValue: T) => T)(current) : next
+    },
+  } as SharedValue<T>
+}
 
 // Both fixture stops have no item, so no query fires and setupTestWrapper would throw.
 // See the harness rule in the ItineraryStopRow test.
@@ -183,6 +203,97 @@ describe("ItinerarySectionRow", () => {
       ])
 
       expect(onReorderStop).not.toHaveBeenCalled()
+    })
+
+    it("does not call onReorderStop for a held finger's jitter", () => {
+      const onReorderStop = jest.fn()
+
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canReorder
+          onReorderStop={onReorderStop}
+        />
+      )
+
+      // Four pixels would be enough to cross a neighbour on unmeasured rows, where half the
+      // section's row gap is the whole threshold — the jitter guard is what stops it.
+      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+        { translationY: 0 },
+        { translationY: 4 },
+      ])
+
+      expect(onReorderStop).not.toHaveBeenCalled()
+    })
+
+    it("starts the container's auto-scroll on drag, tracks the finger, and stops on release", () => {
+      const dragAutoScroll = {
+        offset: makeSharedValue(0),
+        fingerY: makeSharedValue(0),
+        start: jest.fn(),
+        stop: jest.fn(),
+      }
+
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canReorder
+          dragAutoScroll={dragAutoScroll}
+          onReorderStop={jest.fn()}
+        />
+      )
+
+      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+        { absoluteY: 100, translationY: 0 },
+        { absoluteY: 400, translationY: 300 },
+      ])
+
+      expect(dragAutoScroll.start).toHaveBeenCalled()
+      expect(dragAutoScroll.stop).toHaveBeenCalled()
+      expect(dragAutoScroll.fingerY.get()).toBe(400)
+    })
+
+    it("counts what the container auto-scrolled as part of the drag's own movement", () => {
+      const onReorderStop = jest.fn()
+      const dragAutoScroll = {
+        offset: makeSharedValue(40),
+        fingerY: makeSharedValue(0),
+        start: jest.fn(),
+        stop: jest.fn(),
+      }
+
+      renderWithWrappers(
+        <ItinerarySectionRow
+          section={section}
+          sectionIndex={0}
+          startNumber={1}
+          citySlug="london-united-kingdom"
+          itineraryId="guide-1"
+          cityName="London"
+          canReorder
+          dragAutoScroll={dragAutoScroll}
+          onReorderStop={onReorderStop}
+        />
+      )
+
+      // The finger barely moved, but the list scrolled 40px out from under it, which is the
+      // same thing as far as where the row now belongs.
+      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
+        { translationY: 0 },
+        { translationY: 1 },
+      ])
+
+      expect(onReorderStop).toHaveBeenCalledWith("day-1", "stop-1", 0, 1)
     })
   })
 })

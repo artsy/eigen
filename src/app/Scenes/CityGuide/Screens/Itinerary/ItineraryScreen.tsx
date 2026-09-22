@@ -20,6 +20,10 @@ import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
+import {
+  DragAutoScrollRef,
+  useDragAutoScroll,
+} from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDragAutoScroll"
 import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
@@ -32,7 +36,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
 import { useCallback, useMemo, useState } from "react"
-import { RefreshControl } from "react-native"
+import { RefreshControl, ScrollViewProps } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,6 +44,18 @@ import { useTracking } from "react-tracking"
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
 const EDIT_ICON_SIZE = 24
+
+/**
+ * palette types `Screen.ScrollView` as a plain `React.FC<ScrollViewProps>`, so a ref isn't part
+ * of its props — but it spreads everything it is handed straight onto its own
+ * `Animated.ScrollView`, and React 19 passes `ref` through as an ordinary prop. This is the
+ * only way to reach the scroll view the drag has to nudge without forking the palette
+ * component; if it ever stops arriving, `measure` returns null and auto-scroll just does
+ * nothing.
+ */
+const ScrollViewWithRef = Screen.ScrollView as React.FC<
+  ScrollViewProps & { ref?: DragAutoScrollRef }
+>
 
 /**
  * Drops a swipe-deleted stop from both the list and the map without waiting on a refetch of
@@ -123,6 +139,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // refetched into, since a pull-to-refresh should show the server's own order again.
   const [stopOrder, setStopOrder] = useState<ReadonlyMap<string, readonly string[]>>(new Map())
   const reorderItineraryStop = useReorderItineraryStop()
+  const { scrollRef, onContentSizeChange, dragAutoScroll } = useDragAutoScroll()
   const { show: showToast } = useToast()
   const { trackEvent: trackCohesionEvent } = useTracking()
 
@@ -346,7 +363,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                 safeArea
               />
             ) : (
-              <Screen.ScrollView
+              <ScrollViewWithRef
+                ref={scrollRef}
+                onContentSizeChange={onContentSizeChange}
                 contentContainerStyle={{ paddingBottom: 40 }}
                 refreshControl={
                   <RefreshControl
@@ -378,6 +397,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                         canDelete={canDelete}
                         canReorder={canReorder}
                         swipingStopID={swipingStopID}
+                        dragAutoScroll={dragAutoScroll}
                         onSwipeBegin={setSwipingStopID}
                         onStopDeleted={(stopID) => {
                           // Otherwise the next row briefly reads as the active swipe row: it
@@ -390,7 +410,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     ))}
                   </Join>
                 </Flex>
-              </Screen.ScrollView>
+              </ScrollViewWithRef>
             )}
 
             {/*

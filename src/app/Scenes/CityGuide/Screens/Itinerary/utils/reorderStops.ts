@@ -6,6 +6,25 @@
  * Jest test and from a `useAnimatedStyle` callback in another file).
  */
 
+/**
+ * Below this much total vertical movement a drag counts as a finger that never went anywhere.
+ * The same 5px the swipe gesture needs before it activates, so both agree about what counts as
+ * a still finger.
+ */
+export const DRAG_JITTER_THRESHOLD = 5
+
+/**
+ * Whether a finished drag moved far enough to mean anything. `dropIndex` already refuses to
+ * cross a neighbour on a small offset — but only once rows have been measured: with heights
+ * still at 0 the row gap alone decides, and half a gap is a few pixels, so a held finger's
+ * tremor would otherwise read as a real reorder.
+ */
+export const isDragJitter = (offsetY: number): boolean => {
+  "worklet"
+
+  return Math.abs(offsetY) < DRAG_JITTER_THRESHOLD
+}
+
 /** Moves the item at `fromIndex` to `toIndex`, shifting everything between. Out-of-range or
  *  no-op indices return a copy of the original order, unchanged. */
 export const moveStop = <T>(items: readonly T[], fromIndex: number, toIndex: number): T[] => {

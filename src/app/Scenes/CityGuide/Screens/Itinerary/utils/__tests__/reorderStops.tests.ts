@@ -1,8 +1,27 @@
 import {
+  DRAG_JITTER_THRESHOLD,
   dropIndex,
+  isDragJitter,
   moveStop,
   siblingShifts,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+
+describe("isDragJitter", () => {
+  it("treats a drag that never moved as jitter", () => {
+    expect(isDragJitter(0)).toBe(true)
+  })
+
+  it("treats a tremor either way as jitter", () => {
+    expect(isDragJitter(DRAG_JITTER_THRESHOLD - 1)).toBe(true)
+    expect(isDragJitter(-(DRAG_JITTER_THRESHOLD - 1))).toBe(true)
+  })
+
+  it("lets a drag of at least the threshold through", () => {
+    expect(isDragJitter(DRAG_JITTER_THRESHOLD)).toBe(false)
+    expect(isDragJitter(-DRAG_JITTER_THRESHOLD)).toBe(false)
+    expect(isDragJitter(200)).toBe(false)
+  })
+})
 
 describe("moveStop", () => {
   it("moves an item forward, shifting the ones in between back", () => {

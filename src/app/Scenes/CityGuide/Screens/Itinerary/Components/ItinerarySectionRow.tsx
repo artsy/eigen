@@ -2,9 +2,10 @@ import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryDraggableStop } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryDraggableStop"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
+import { DragAutoScroll } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDragAutoScroll"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { dropIndex } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import { dropIndex, isDragJitter } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { useEffect, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 
@@ -45,6 +46,9 @@ interface Props {
   canReorder?: boolean
   /** The stop id whose swipe row is currently open, so opening another one closes it. */
   swipingStopID?: string | null
+  /** Scrolls the screen's scroll view while a drag is held near its top or bottom edge. Every
+   *  section shares the one the screen owns, so it's threaded down rather than made here. */
+  dragAutoScroll?: DragAutoScroll
   onSwipeBegin?: (id: string) => void
   onStopDeleted?: (id: string) => void
   /** Fires once a hold-and-drag ends on a real move — a drop back on the source index never
@@ -67,6 +71,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   canDelete = false,
   canReorder = false,
   swipingStopID,
+  dragAutoScroll,
   onSwipeBegin,
   onStopDeleted,
   onReorderStop,
@@ -90,6 +95,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
 
   const handleDragEnd = (fromIndex: number, offsetY: number) => {
     if (!onReorderStop) return
+
+    // A hold that never went anywhere is a hold, not a reorder — and with rows still
+    // unmeasured it could otherwise compute a real index change out of a few pixels of tremor.
+    if (isDragJitter(offsetY)) return
 
     const heights = rowHeights.get()
     const toIndex = dropIndex(heights, fromIndex, offsetY, SECTION_ROW_GAP)
@@ -138,6 +147,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
               draggedIndex={draggedIndex}
               dragOffsetY={dragOffsetY}
               gap={SECTION_ROW_GAP}
+              dragAutoScroll={dragAutoScroll}
               onDragEnd={handleDragEnd}
             >
               <ItineraryStopRow

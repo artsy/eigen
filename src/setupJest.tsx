@@ -322,7 +322,17 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-reanimated", () => {
+  const reanimated = require("react-native-reanimated/mock")
+
+  return {
+    ...reanimated,
+    // The package's own mock leaves this one out ("ADD ME IF NEEDED").
+    useFrameCallback: () => ({ setActive: () => undefined, isActive: false }),
+    // ...and returns a bare `{ value }` here, without the `get`/`set` a shared value has.
+    useScrollViewOffset: () => reanimated.useSharedValue(0),
+  }
+})
 jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
