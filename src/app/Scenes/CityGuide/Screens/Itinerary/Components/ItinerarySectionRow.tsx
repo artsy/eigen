@@ -83,6 +83,9 @@ export const ItinerarySectionRow: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [stopIDsKey]
   )
+  // Keyed on the stops themselves, not on `stopIDsKey` like `stopIDs` above: a stop's fields
+  // change without its id doing so (saving one flips `isOnMyItineraries`), and the id key
+  // would then hand the rows the stop as it was before.
   const stopsByID = useMemo(
     () => new Map(section.stops.map((stop) => [stop.internalID, stop])),
     [section.stops]
@@ -102,6 +105,10 @@ export const ItinerarySectionRow: React.FC<Props> = ({
 
   // The handle is rebuilt each render, but everything the listeners touch behind it (shared
   // values, refs) is stable — so register once and read the current handle through this.
+  // A collapsed section keeps its listeners registered, which is deliberate: both only write
+  // to those shared values/refs, which nothing reads until a drag starts, and a collapsed
+  // section renders no `SortableItem` to start one from. Re-registering on collapse would
+  // churn the screen's map for nothing.
   const sortableRef = useRef(sortable)
   sortableRef.current = sortable
 
