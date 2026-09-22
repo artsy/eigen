@@ -3,8 +3,9 @@ import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Comp
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { PanGesture } from "react-native-gesture-handler"
-import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
+import { createRef } from "react"
+import { ScrollView } from "react-native"
+import { DraxProvider } from "react-native-drax"
 
 // Both fixture stops have no item, so no query fires and setupTestWrapper would throw.
 // See the harness rule in the ItineraryStopRow test.
@@ -33,9 +34,11 @@ const section = {
   ],
 } as ItinerarySection
 
-describe("ItinerarySectionRow", () => {
-  it("renders the title and its stops expanded by default", () => {
-    renderWithWrappers(
+// Drax's sortable items read the provider's context, and the section registers its scroll
+// listeners against the screen's scroll view — both stubbed here.
+const renderSection = (props: Partial<React.ComponentProps<typeof ItinerarySectionRow>> = {}) =>
+  renderWithWrappers(
+    <DraxProvider>
       <ItinerarySectionRow
         section={section}
         sectionIndex={0}
@@ -43,8 +46,16 @@ describe("ItinerarySectionRow", () => {
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
+        scrollRef={createRef<ScrollView>()}
+        registerScrollHandlers={jest.fn()}
+        {...props}
       />
-    )
+    </DraxProvider>
+  )
+
+describe("ItinerarySectionRow", () => {
+  it("renders the title and its stops expanded by default", () => {
+    renderSection()
 
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
@@ -52,32 +63,14 @@ describe("ItinerarySectionRow", () => {
   })
 
   it("numbers stops from startNumber", () => {
-    renderWithWrappers(
-      <ItinerarySectionRow
-        section={section}
-        sectionIndex={0}
-        startNumber={4}
-        citySlug="london-united-kingdom"
-        itineraryId="guide-1"
-        cityName="London"
-      />
-    )
+    renderSection({ startNumber: 4 })
 
     expect(screen.getByText("4")).toBeTruthy()
     expect(screen.getByText("5")).toBeTruthy()
   })
 
   it("hides the stops when the header is tapped", () => {
-    renderWithWrappers(
-      <ItinerarySectionRow
-        section={section}
-        sectionIndex={0}
-        startNumber={1}
-        citySlug="london-united-kingdom"
-        itineraryId="guide-1"
-        cityName="London"
-      />
-    )
+    renderSection()
 
     fireEvent.press(screen.getByTestId("itinerary-section-header"))
 
@@ -85,104 +78,11 @@ describe("ItinerarySectionRow", () => {
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
   })
 
-  describe("swipe to delete", () => {
-    it("offers no swipe gesture by default", () => {
-      renderWithWrappers(
-        <ItinerarySectionRow
-          section={section}
-          sectionIndex={0}
-          startNumber={1}
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          cityName="London"
-        />
-      )
+  it("registers its scroll listeners with the screen's scroll view", () => {
+    const registerScrollHandlers = jest.fn()
 
-      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
-    })
+    renderSection({ registerScrollHandlers })
 
-    it("wraps every stop with a swipe row once canDelete is true", () => {
-      renderWithWrappers(
-        <ItinerarySectionRow
-          section={section}
-          sectionIndex={0}
-          startNumber={1}
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          cityName="London"
-          canDelete
-        />
-      )
-
-      // The delete panel sits behind the row, off-screen until swiped, but RNTL renders both.
-      expect(screen.getByTestId("delete-button-stop-1")).toBeTruthy()
-      expect(screen.getByTestId("delete-button-stop-2")).toBeTruthy()
-    })
-  })
-
-  describe("hold-and-drag to reorder", () => {
-    it("does not bind a drag gesture by default", () => {
-      renderWithWrappers(
-        <ItinerarySectionRow
-          section={section}
-          sectionIndex={0}
-          startNumber={1}
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          cityName="London"
-        />
-      )
-
-      expect(() => getByGestureTestId("drag-itinerary-stop-stop-1")).toThrow()
-    })
-
-    it("calls onReorderStop with the section, the dragged stop, and both indices once the drag crosses into a neighbour", () => {
-      const onReorderStop = jest.fn()
-
-      renderWithWrappers(
-        <ItinerarySectionRow
-          section={section}
-          sectionIndex={0}
-          startNumber={1}
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          cityName="London"
-          canReorder
-          onReorderStop={onReorderStop}
-        />
-      )
-
-      // Rows measure 0 in RNTL (no real layout pass), so the section's row gap alone decides
-      // the threshold — any downward drag past half of it crosses into the next stop.
-      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
-        { translationY: 0 },
-        { translationY: 20 },
-      ])
-
-      expect(onReorderStop).toHaveBeenCalledWith("day-1", "stop-1", 0, 1)
-    })
-
-    it("does not call onReorderStop when the drag ends back where it started", () => {
-      const onReorderStop = jest.fn()
-
-      renderWithWrappers(
-        <ItinerarySectionRow
-          section={section}
-          sectionIndex={0}
-          startNumber={1}
-          citySlug="london-united-kingdom"
-          itineraryId="guide-1"
-          cityName="London"
-          canReorder
-          onReorderStop={onReorderStop}
-        />
-      )
-
-      fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
-        { translationY: 0 },
-      ])
-
-      expect(onReorderStop).not.toHaveBeenCalled()
-    })
+    expect(registerScrollHandlers).toHaveBeenCalledWith("day-1", expect.any(Object))
   })
 })

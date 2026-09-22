@@ -22,7 +22,10 @@ import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Comp
 import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
-import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import {
+  ItineraryScrollHandlers,
+  Itinerary as ItineraryData,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
@@ -31,8 +34,9 @@ import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
-import { useCallback, useMemo, useState } from "react"
-import { RefreshControl } from "react-native"
+import { useCallback, useMemo, useRef, useState } from "react"
+import { RefreshControl, ScrollView } from "react-native"
+import { DraxProvider } from "react-native-drax"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,21 +44,6 @@ import { useTracking } from "react-tracking"
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
 const EDIT_ICON_SIZE = 24
-
-/**
- * Drops a swipe-deleted stop from both the list and the map without waiting on a refetch of
- * the whole itinerary.
- */
-const withoutDeletedStops = (
-  itinerary: ItineraryData,
-  deletedStopIDs: ReadonlySet<string>
-): ItineraryData => ({
-  ...itinerary,
-  sections: itinerary.sections.map((section) => ({
-    ...section,
-    stops: section.stops.filter((stop) => !deletedStopIDs.has(stop.internalID)),
-  })),
-})
 
 /**
  * Applies a section's locally-dragged stop order on top of the itinerary Relay handed back,
@@ -114,17 +103,31 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
 
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
-  // The stop whose swipe row is currently open, so opening another one closes it, and the
-  // stops removed this session, tracked here (not in the section row) because a deleted stop
-  // must also disappear from the map, which this screen builds from the raw itinerary.
-  const [swipingStopID, setSwipingStopID] = useState<string | null>(null)
-  const [deletedStopIDs, setDeletedStopIDs] = useState<ReadonlySet<string>>(new Set())
   // A section id's entry is only ever the order a drag left it in this session — never
   // refetched into, since a pull-to-refresh should show the server's own order again.
   const [stopOrder, setStopOrder] = useState<ReadonlyMap<string, readonly string[]>>(new Map())
   const reorderItineraryStop = useReorderItineraryStop()
   const { show: showToast } = useToast()
   const { trackEvent: trackCohesionEvent } = useTracking()
+
+  /*
+    Every section drags within the one scroll view below, so each registers its own drax
+    listeners here instead of owning a scroll view of its own. Plain react-native's
+    `ScrollView` rather than palette's `Screen.ScrollView`: that one leaves `ref` off its
+    props type and folds a caller's `onScroll` into its own handler, and drax needs both.
+  */
+  const scrollRef = useRef<ScrollView>(null)
+  const scrollHandlers = useRef(new Map<string, ItineraryScrollHandlers>())
+  const registerScrollHandlers = useCallback(
+    (sectionID: string, handlers: ItineraryScrollHandlers | null) => {
+      if (handlers) {
+        scrollHandlers.current.set(sectionID, handlers)
+      } else {
+        scrollHandlers.current.delete(sectionID)
+      }
+    },
+    []
+  )
 
   /*
     Refetched via `fetchQuery`, not by bumping fetchKey — a network-only re-render would
@@ -154,10 +157,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     async (sectionID: string, stopID: string, fromIndex: number, toIndex: number) => {
       if (!itinerary) return
 
-      // `fromIndex`/`toIndex` are indices into the section as displayed — deleted stops
-      // filtered out and any earlier drag this session already applied — so the section and
-      // its previous order must come from that same displayed itinerary, not the raw one.
-      const displayed = withoutDeletedStops(withStopOrder(itinerary, stopOrder), deletedStopIDs)
+      // `fromIndex`/`toIndex` are indices into the section as displayed — any earlier drag
+      // this session already applied — so the section and its previous order must come from
+      // that same displayed itinerary, not the raw one.
+      const displayed = withStopOrder(itinerary, stopOrder)
       const section = displayed.sections.find((candidate) => candidate.internalID === sectionID)
 
       if (!section) return
@@ -175,7 +178,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
         showToast("Could not reorder that stop, try again", "bottom", { backgroundColor: "red100" })
       }
     },
-    [itinerary, stopOrder, deletedStopIDs, reorderItineraryStop, showToast]
+    [itinerary, stopOrder, reorderItineraryStop, showToast]
   )
 
   // Android's hardware back has to agree with the on-screen one, or the two disagree
@@ -198,12 +201,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     () =>
       itinerary
         ? itineraryStopsToMapSections(
-            withoutDeletedStops(withStopOrder(itinerary, stopOrder), deletedStopIDs),
+            withStopOrder(itinerary, stopOrder),
             citySlug,
             data.city?.name ?? ""
           )
         : [],
-    [itinerary, stopOrder, deletedStopIDs, citySlug, data.city?.name]
+    [itinerary, stopOrder, citySlug, data.city?.name]
   )
 
   if (!itinerary) {
@@ -224,19 +227,14 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const isEditorial = itinerary.isCurated
   // No real ownership field yet (FIREWORKS-36 is adding `Itinerary.isMine` to metaphysics for
   // this); a personal itinerary reached without a share token is the closest signal available
-  // today that it's actually yours to edit.
-  const canDelete = !itinerary.isCurated && !shareToken
-  // Same gate as `canDelete` — reordering somebody else's guide isn't yours to do either, and
-  // cross-section drag isn't possible regardless: `updateItineraryStopInput` has no section
-  // field, so a stop's section is fixed at creation.
-  const canReorder = canDelete
+  // today that it's actually yours to reorder. Cross-section drag isn't possible regardless:
+  // `updateItineraryStopInput` has no section field, so a stop's section is fixed at creation.
+  const canReorder = !itinerary.isCurated && !shareToken
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
-  // removing its last stop (or swipe-deleting it) leaves it behind on the itinerary, so this
-  // is the common case.
-  const sections = withoutDeletedStops(
-    withStopOrder(itinerary, stopOrder),
-    deletedStopIDs
-  ).sections.filter((section) => section.stops.length > 0)
+  // removing its last stop leaves it behind on the itinerary, so this is the common case.
+  const sections = withStopOrder(itinerary, stopOrder).sections.filter(
+    (section) => section.stops.length > 0
+  )
   /*
     A guide always names its days. Your own itinerary usually has just the one section, whose
     name would be a redundant subheading over the whole list — but once it has several (a
@@ -346,51 +344,59 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                 safeArea
               />
             ) : (
-              <Screen.ScrollView
-                contentContainerStyle={{ paddingBottom: 40 }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={refresh}
-                    // Without this, the spinner sits right under the floating back/share bar
-                    // above (`top` to `top + NAVBAR_HEIGHT`), which paints over it.
-                    progressViewOffset={top + NAVBAR_HEIGHT}
-                  />
-                }
-              >
-                <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
+              // Scoped to this screen rather than the app root: the provider keeps all its
+              // state in its own context and measures drag positions against its own root
+              // view, so the dragged row floats over the list and nothing else.
+              <DraxProvider>
+                <ScrollView
+                  ref={scrollRef}
+                  scrollEventThrottle={16}
+                  onScroll={(event) => {
+                    scrollHandlers.current.forEach((handlers) => handlers.onScroll(event))
+                  }}
+                  onContentSizeChange={(width, height) => {
+                    scrollHandlers.current.forEach((handlers) =>
+                      handlers.onContentSizeChange(width, height)
+                    )
+                  }}
+                  contentContainerStyle={{ paddingBottom: 40 }}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={isRefreshing}
+                      onRefresh={refresh}
+                      // Without this, the spinner sits right under the floating back/share bar
+                      // above (`top` to `top + NAVBAR_HEIGHT`), which paints over it.
+                      progressViewOffset={top + NAVBAR_HEIGHT}
+                    />
+                  }
+                >
+                  <ItineraryHeader itinerary={itinerary} topInset={top + NAVBAR_HEIGHT} />
 
-                <Flex px={2} pt={2}>
-                  <Join separator={<Spacer y={2} />}>
-                    {sections.map((section, index) => (
-                      <ItinerarySectionRow
-                        key={section.internalID}
-                        section={section}
-                        sectionIndex={index}
-                        startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
-                        showHeader={showSectionHeaders}
-                        citySlug={itinerary.citySlug}
-                        itineraryId={itineraryId}
-                        itinerarySlug={itinerary.slug ?? undefined}
-                        shareToken={shareToken}
-                        cityName={data.city?.name ?? ""}
-                        isCuratedGuide={isEditorial}
-                        canDelete={canDelete}
-                        canReorder={canReorder}
-                        swipingStopID={swipingStopID}
-                        onSwipeBegin={setSwipingStopID}
-                        onStopDeleted={(stopID) => {
-                          // Otherwise the next row briefly reads as the active swipe row: it
-                          // shares the id's now-stale reference until this state catches up.
-                          setSwipingStopID(null)
-                          setDeletedStopIDs((current) => new Set(current).add(stopID))
-                        }}
-                        onReorderStop={handleReorderStop}
-                      />
-                    ))}
-                  </Join>
-                </Flex>
-              </Screen.ScrollView>
+                  <Flex px={2} pt={2}>
+                    <Join separator={<Spacer y={2} />}>
+                      {sections.map((section, index) => (
+                        <ItinerarySectionRow
+                          key={section.internalID}
+                          section={section}
+                          sectionIndex={index}
+                          startNumber={isEditorial ? sectionStartNumbers[index] : undefined}
+                          showHeader={showSectionHeaders}
+                          citySlug={itinerary.citySlug}
+                          itineraryId={itineraryId}
+                          itinerarySlug={itinerary.slug ?? undefined}
+                          shareToken={shareToken}
+                          cityName={data.city?.name ?? ""}
+                          isCuratedGuide={isEditorial}
+                          canReorder={canReorder}
+                          scrollRef={scrollRef}
+                          registerScrollHandlers={registerScrollHandlers}
+                          onReorderStop={handleReorderStop}
+                        />
+                      ))}
+                    </Join>
+                  </Flex>
+                </ScrollView>
+              </DraxProvider>
             )}
 
             {/*

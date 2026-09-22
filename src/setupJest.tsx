@@ -322,7 +322,32 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+jest.mock("react-native-reanimated", () => {
+  const mock = require("react-native-reanimated/mock")
+
+  return {
+    ...mock,
+    // Left out of the stock mock ("ADD ME IF NEEDED"); react-native-drax calls it.
+    useReducedMotion: () => false,
+    // The stock mock's shared value has `get`/`set` but no `modify`, which drax uses to
+    // update its registry in place.
+    useSharedValue: (init: unknown) => {
+      const sharedValue = mock.useSharedValue(init)
+
+      return new Proxy(sharedValue, {
+        get(target: any, prop) {
+          if (prop === "modify") {
+            return (modifier: (current: unknown) => unknown) => {
+              target.value = modifier(target.value)
+            }
+          }
+
+          return target[prop]
+        },
+      })
+    },
+  }
+})
 jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
