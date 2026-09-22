@@ -225,11 +225,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // Your own itinerary shows no order: it is an unordered list, so numbering would be noise.
   // A curated guide keeps it.
   const isEditorial = itinerary.isCurated
-  // No real ownership field yet (FIREWORKS-36 is adding `Itinerary.isMine` to metaphysics for
-  // this); a personal itinerary reached without a share token is the closest signal available
-  // today that it's actually yours to reorder. Cross-section drag isn't possible regardless:
+  // `isMine` is false for a curated guide and for another user's itinerary opened via a share
+  // link, so it alone gates reordering. Cross-section drag isn't possible regardless:
   // `updateItineraryStopInput` has no section field, so a stop's section is fixed at creation.
-  const canReorder = !itinerary.isCurated && !shareToken
+  const canReorder = itinerary.isMine
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
   // removing its last stop leaves it behind on the itinerary, so this is the common case.
   const sections = withStopOrder(itinerary, stopOrder).sections.filter(
