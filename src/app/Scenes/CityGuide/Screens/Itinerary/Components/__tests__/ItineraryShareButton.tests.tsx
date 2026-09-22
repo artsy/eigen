@@ -50,6 +50,40 @@ describe("ItineraryShareButton", () => {
     )
   })
 
+  it("renders nothing for someone else's personal itinerary", async () => {
+    renderWithRelay({
+      Itinerary: () => ({
+        internalID: "guide-1",
+        slug: null,
+        citySlug: "london-united-kingdom",
+        title: "Someone Else's Trip",
+        isCurated: false,
+        isMine: false,
+        shareToken: "tok",
+      }),
+    })
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
+  })
+
+  it("shares your own personal itinerary", async () => {
+    renderWithRelay({
+      Itinerary: () => ({
+        internalID: "guide-1",
+        slug: null,
+        citySlug: "london-united-kingdom",
+        title: "My Trip",
+        isCurated: false,
+        isMine: true,
+        shareToken: "tok",
+      }),
+    })
+
+    expect(await screen.findByTestId("itinerary-share")).toBeOnTheScreen()
+  })
+
   it("does not extend hitSlop toward the Edit button on its left (FIREWORKS-48)", async () => {
     renderWithRelay({
       Itinerary: () => ({

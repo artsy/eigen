@@ -66,8 +66,9 @@ export const useItineraryShare = ({
 
       const path = `/city-guide/${citySlug}/itinerary/${slug ?? internalID}`
       // Only a personal itinerary needs the token in the link — a curated guide's slug is
-      // already public.
-      const url = getShareURL(token ? `${path}?shareToken=${token}` : path)
+      // already public. `shareToken` is base64 and can contain `+`, `/`, `=` — encode it so
+      // it survives as a literal in the query string rather than as space-substituted `+`.
+      const url = getShareURL(token ? `${path}?shareToken=${encodeURIComponent(token)}` : path)
 
       trackEvent({
         action_name: Schema.ActionNames.Share,
