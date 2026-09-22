@@ -1,6 +1,7 @@
 import { ArtAssistantTurnFailed, OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
 import {
   AIAgentActivity,
+  AIAgentMessageInput,
   ArtAssistantAgentTurnSubscription,
   ArtAssistantAgentTurnSubscription$data,
   ArtAssistantAgentTurnSubscription$variables,
@@ -14,10 +15,6 @@ import {
   stopReasonMessage,
   subscriptionErrorMessage,
 } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
-import {
-  ArtAssistantHistoryEntry,
-  trimArtAssistantHistory,
-} from "app/Scenes/ArtAssistant/utils/conversationHistory"
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -44,7 +41,7 @@ const ACTIVITY_COPY: Record<Exclude<AIAgentActivity, "%future added value">, str
   SEARCHING_ARTSY: "Searching Artsy...",
 }
 
-export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 60_000
+export const ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS = 120_000
 
 export const useArtAssistantConversation = () => {
   const environment = useRelayEnvironment()
@@ -167,7 +164,7 @@ export const useArtAssistantConversation = () => {
       const input = {
         conversationID: conversationID.current,
         message: text,
-        history: trimArtAssistantHistory(toHistory(previousMessages), text),
+        history: toHistory(previousMessages),
       }
       const variables: ArtAssistantAgentTurnSubscription$variables = { input }
 
@@ -368,8 +365,8 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
   }
 }
 
-export const toHistory = (messages: ArtAssistantMessage[]): ArtAssistantHistoryEntry[] =>
-  messages.flatMap<ArtAssistantHistoryEntry>((message) => {
+export const toHistory = (messages: ArtAssistantMessage[]): AIAgentMessageInput[] =>
+  messages.flatMap<AIAgentMessageInput>((message) => {
     if (message.role === "user") {
       return [{ role: "USER" as const, content: message.text }]
     }
