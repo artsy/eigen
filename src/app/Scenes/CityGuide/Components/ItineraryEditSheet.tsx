@@ -1,7 +1,8 @@
-import { Button, Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { useToast } from "app/Components/Toast/toastHook"
 import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { useState } from "react"
@@ -115,10 +116,15 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           </Flex>
 
           <Flex px={2} gap={2}>
-            <Input title="Name" value={name} onChangeText={setName} testID="itinerary-edit-name" />
+            <BottomSheetInput
+              title="Name"
+              value={name}
+              onChangeText={setName}
+              testID="itinerary-edit-name"
+            />
 
             <Flex>
-              <Input
+              <BottomSheetInput
                 title="Notes"
                 value={notes}
                 onChangeText={setNotes}
