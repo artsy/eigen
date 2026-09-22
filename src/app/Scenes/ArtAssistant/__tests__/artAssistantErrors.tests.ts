@@ -1,63 +1,6 @@
 import { captureException, captureMessage } from "@sentry/react-native"
-import {
-  ART_ASSISTANT_GENERIC_ERROR,
-  reportArtAssistantTurnFailure,
-  stopReasonMessage,
-  subscriptionErrorMessage,
-} from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
+import { reportArtAssistantTurnFailure } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
-
-describe("stopReasonMessage", () => {
-  it("explains a known stop reason", () => {
-    expect(stopReasonMessage("max_iterations")).toBe("I ran out of steps. Try a narrower request.")
-  })
-
-  it("falls back when the server adds a stop reason we do not know", () => {
-    expect(stopReasonMessage("context_window_exceeded")).toBe(ART_ASSISTANT_GENERIC_ERROR)
-  })
-})
-
-describe("subscriptionErrorMessage", () => {
-  beforeAll(() => {
-    // @ts-ignore
-    __DEV__ = false
-  })
-
-  afterAll(() => {
-    // @ts-ignore
-    __DEV__ = true
-  })
-
-  it.each([401, 403])("asks the user to sign in again on %s", (status) => {
-    const error = new MetaphysicsSubscriptionError("Server responded with a failure", { status })
-
-    expect(subscriptionErrorMessage(error)).toBe("Please sign in again to use Art Assistant.")
-  })
-
-  it("explains rate limiting on 429", () => {
-    const error = new MetaphysicsSubscriptionError("Server responded with a failure", {
-      status: 429,
-    })
-
-    expect(subscriptionErrorMessage(error)).toBe(
-      "You've reached the request limit. Please try again shortly."
-    )
-  })
-
-  it("does not show server copy for any other status", () => {
-    const error = new MetaphysicsSubscriptionError("Server responded with 500: Bad Gateway", {
-      status: 500,
-    })
-
-    expect(subscriptionErrorMessage(error)).toBe(ART_ASSISTANT_GENERIC_ERROR)
-  })
-
-  it("ignores status-looking text in an untyped error", () => {
-    expect(subscriptionErrorMessage(new Error("401 Unauthorized"))).toBe(
-      ART_ASSISTANT_GENERIC_ERROR
-    )
-  })
-})
 
 describe("reportArtAssistantTurnFailure", () => {
   beforeEach(() => {

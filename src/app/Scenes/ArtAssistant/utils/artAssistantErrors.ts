@@ -1,34 +1,7 @@
 import { captureException, captureMessage } from "@sentry/react-native"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
 
-export const ART_ASSISTANT_GENERIC_ERROR = "Something went wrong. Please try again."
-
-const STOP_REASON_MESSAGES: Record<string, string> = {
-  aborted: "That took too long, so I stopped. Try narrowing your request.",
-  error: ART_ASSISTANT_GENERIC_ERROR,
-  max_iterations: "I ran out of steps. Try a narrower request.",
-}
-
-/** Copy for a turn the agent ended without an answer. */
-export const stopReasonMessage = (stopReason: string) =>
-  STOP_REASON_MESSAGES[stopReason] ?? ART_ASSISTANT_GENERIC_ERROR
-
-/** Copy for a turn that failed in transit. */
-export const subscriptionErrorMessage = (error: unknown) => {
-  if (__DEV__ && error instanceof Error) {
-    return error.message
-  }
-
-  switch (metaphysicsSubscriptionErrorStatus(error)) {
-    case 401:
-    case 403:
-      return "Please sign in again to use Art Assistant."
-    case 429:
-      return "You've reached the request limit. Please try again shortly."
-    default:
-      return ART_ASSISTANT_GENERIC_ERROR
-  }
-}
+export const ART_ASSISTANT_GENERIC_ERROR = "Something went wrong. Please try again later."
 
 export type ArtAssistantTurnOutcome =
   | "stream_error"

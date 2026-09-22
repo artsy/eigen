@@ -8,6 +8,7 @@ import {
   useArtAssistantConversation,
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
+import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
@@ -21,7 +22,7 @@ jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
 }))
 
 describe("Art Assistant conversation reducer", () => {
-  it("keeps text deltas private until the terminal event", () => {
+  it("ignores text deltas until the terminal event", () => {
     const responding = createActiveTurn()
 
     const streaming = reduceActiveTurn(responding, {
@@ -29,7 +30,7 @@ describe("Art Assistant conversation reducer", () => {
       text: "A partial answer",
     })
 
-    expect(streaming.streamedText).toBe("A partial answer")
+    expect(streaming).toBe(responding)
     expect(streaming.message.text).toBe("")
     expect(streaming.message.phase).toBe("responding")
   })
@@ -77,7 +78,7 @@ describe("Art Assistant conversation reducer", () => {
     })
   })
 
-  it("uses accumulated deltas when the terminal message is null", () => {
+  it("shows a generic error when the terminal message is null, even after text deltas", () => {
     const streaming = reduceActiveTurn(createActiveTurn(), {
       __typename: "AIAgentTextDelta",
       text: "Recovered answer",
@@ -91,7 +92,10 @@ describe("Art Assistant conversation reducer", () => {
       artworks: [],
     })
 
-    expect(result.message).toMatchObject({ phase: "complete", text: "Recovered answer" })
+    expect(result.message).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("includes previously shown artwork IDs in follow-up history", () => {
@@ -143,7 +147,7 @@ describe("useArtAssistantConversation", () => {
     act(() => {
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
-        message: null,
+        message: "Final answer",
         stopReason: "end_turn",
         toolCallCount: 0,
         artworks: [],
@@ -153,7 +157,7 @@ describe("useArtAssistantConversation", () => {
     expect(result.current.messages).not.toBe(messagesAfterSubmit)
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "complete",
-      text: "A partial answer",
+      text: "Final answer",
     })
   })
 
@@ -204,7 +208,6 @@ const emit = (
 type NormalizedEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
 
 const createActiveTurn = (): ActiveTurn => ({
-  streamedText: "",
   didReceiveTerminalEvent: false,
   message: {
     id: "assistant",
@@ -343,6 +346,7 @@ describe("useArtAssistantConversation tracking", () => {
     const operation = environment.mock.getMostRecentOperation()
 
     act(() => {
+      emit(environment, operation, { __typename: "AIAgentTextDelta", text: "An unfinished answer" })
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
         message: null,
@@ -360,6 +364,10 @@ describe("useArtAssistantConversation tracking", () => {
       context_screen_owner_type: "artAssistant",
       outcome: "stopped_without_answer",
       stop_reason: "max_iterations",
+    })
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
     })
     expect(trackedEventsOfType("receivedArtAssistantResponse")).toHaveLength(0)
   })
@@ -382,6 +390,23 @@ describe("useArtAssistantConversation tracking", () => {
       error_status: 429,
       outcome: "stream_error",
     })
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
+  })
+
+  it("uses the generic error when the stream ends without an answer", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("reports a message sent without a valid session", () => {
@@ -395,6 +420,10 @@ describe("useArtAssistantConversation tracking", () => {
 
     expect(failed).toMatchObject({ outcome: "unauthenticated" })
     expect(failed.prompt_message_id).toEqual(sent.message_id)
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("reports the conversation that was discarded for a new chat", () => {

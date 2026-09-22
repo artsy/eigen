@@ -13,11 +13,6 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({ messag
     return <ArtAssistantActivityStatus text={message.activity ?? "Thinking..."} />
   }
 
-  const text =
-    message.role === "assistant" && message.phase === "error"
-      ? message.errorMessage ?? "Something went wrong. Please try again."
-      : message.text
-
   return (
     <Flex alignItems={isUser ? "flex-end" : "flex-start"}>
       <Flex
@@ -30,7 +25,7 @@ export const ArtAssistantMessage: React.FC<ArtAssistantMessageProps> = ({ messag
         testID={`art-assistant-${message.role}-message`}
       >
         <Text color={isUser ? "mono0" : "mono100"} variant="sm">
-          {text}
+          {message.text}
         </Text>
       </Flex>
 

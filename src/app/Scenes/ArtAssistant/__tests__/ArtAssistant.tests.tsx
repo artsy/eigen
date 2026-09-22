@@ -3,6 +3,7 @@ import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtAssistant } from "app/Scenes/ArtAssistant/ArtAssistant"
 import { ART_ASSISTANT_SUGGESTIONS } from "app/Scenes/ArtAssistant/Components/ArtAssistantEmptyState"
 import { ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
+import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -192,7 +193,7 @@ describe("ArtAssistant", () => {
     fireEvent.press(screen.getByLabelText("Send"))
 
     const operation = environment.mock.getMostRecentOperation()
-    const timeout = "This is taking longer than expected. Please try again."
+    const timeout = ART_ASSISTANT_GENERIC_ERROR
 
     act(() => {
       jest.advanceTimersByTime(ART_ASSISTANT_TURN_IDLE_TIMEOUT_MS - 1)
