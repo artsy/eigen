@@ -92,6 +92,24 @@ describe("CityFilterPills", () => {
     expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
   })
 
+  it("falls back to highlighting All when the selected tab has no results", () => {
+    // Simulates the drawer/pager selecting a tab that CityFilterPills has hidden because it
+    // has no results — the pill row should still show a sensible highlight, not none at all.
+    renderWithWrappers(
+      <CityFilterPills
+        selectedTabId="museums"
+        onSelectTab={jest.fn()}
+        bottomSheetAnimatedIndex={bottomSheetAnimatedIndex}
+        bucketResults={{ ...bucketResultsWithResults, museums: [] }}
+      />
+    )
+
+    expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
+    expect(screen.getByTestId("city-filter-pill-all")).toHaveProp("accessibilityState", {
+      selected: true,
+    })
+  })
+
   it("renders fine with bottomSheetAnimatedIndex omitted", () => {
     // The itineraries-flagged map never mounts a bottom sheet, so there's nothing to fade
     // against — the pill row must still render without one.

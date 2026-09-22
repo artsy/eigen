@@ -51,6 +51,12 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
     [bucketResults]
   )
 
+  // The drawer/pager can select a tab that has since dropped out of visibleTabs (e.g. it has
+  // no results). Fall back to "All" rather than showing no pill highlighted.
+  const effectiveSelectedTabId = visibleTabs.some((tab) => tab.id === selectedTabId)
+    ? selectedTabId
+    : "all"
+
   const mountOpacity = useSharedValue(0)
 
   useEffect(() => {
@@ -87,7 +93,7 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
         contentContainerStyle={{ paddingHorizontal: space(2) }}
       >
         {visibleTabs.map((tab) => {
-          const selected = tab.id === selectedTabId
+          const selected = tab.id === effectiveSelectedTabId
 
           return (
             <Pill
