@@ -14,7 +14,7 @@ import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/
 import { BOUNDS_PADDING, PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Platform, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 configureMapbox()
@@ -215,10 +215,7 @@ export const MapView: React.FC<Props> = ({
         // Tapping empty map dismisses the rail, the same way tapping empty map dismisses
         // the frozen City Guide map's selection (CityGuideMap.tsx's onPressMap).
         onPress={dismissClusterRail}
-        scaleBarPosition={{
-          top: overlayHeight + (Platform.OS === "ios" ? space(2) : top),
-          left: space(2),
-        }}
+        scaleBarEnabled={false}
       >
         <MapboxGL.Camera
           ref={cameraRef}
