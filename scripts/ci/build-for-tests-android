@@ -11,9 +11,9 @@ else
 fi
 CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
 
-# These are verification builds, not deploys — don't push R8 mapping files to Sentry.
-# Deploy lanes (fastlane) leave this unset so the mapping upload runs there.
-export SENTRY_DISABLE_AUTO_UPLOAD=true
+# These are verification builds, not deploys. The R8 mapping upload is opt-in via
+# SENTRY_UPLOAD_PROGUARD_MAPPING, which only the fastlane deploy lanes set, so there is
+# nothing to disable here.
 
 pushd android
 
