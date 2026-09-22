@@ -435,8 +435,7 @@ describe("ItineraryScreen", () => {
 
       await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
 
-      // No share-token mutation for a curated guide — its slug is already public. (A curated
-      // guide's own Add Full List button fires an unrelated query of its own on mount.)
+      // No share-token mutation for a curated guide — its slug is already public.
       expect(
         view.env.mock
           .getAllOperations()
@@ -495,14 +494,6 @@ describe("ItineraryScreen", () => {
 
       await screen.findByText("Chill Vibes Only")
 
-      // A curated guide's own Add Full List button fires its own query to check for a
-      // same-named itinerary you already own; resolve it so it doesn't count below.
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, { Me: () => ({ itinerariesConnection: null }) })
-        )
-      })
-
       // The RefreshControl element itself does not surface in the tree, so the refresh is
       // fired through the scroll view that owns it.
       act(() => {
@@ -522,12 +513,6 @@ describe("ItineraryScreen", () => {
       const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
-
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, { Me: () => ({ itinerariesConnection: null }) })
-        )
-      })
 
       act(() => {
         screen.UNSAFE_getByType(RefreshControl).props.onRefresh()
