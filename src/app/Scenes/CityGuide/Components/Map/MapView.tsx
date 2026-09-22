@@ -2,12 +2,10 @@ import { Flex, Pill, useScreenDimensions, useSpace } from "@artsy/palette-mobile
 import MapboxGL, { ShapeSource } from "@rnmapbox/maps"
 import { MapPins } from "app/Scenes/CityGuide/Components/Map/MapPins"
 import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
-import { MapRoute } from "app/Scenes/CityGuide/Components/Map/MapRoute"
 import {
   flattenMapSections,
   MapPlace,
   mapPlacesToGeoJSON,
-  mapPlacesToRouteGeoJSON,
   MapSection,
 } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 import { matchClusterLeavesToPlaces } from "app/Scenes/CityGuide/Components/Map/utils/matchClusterLeavesToPlaces"
@@ -37,11 +35,6 @@ interface Props {
    */
   numbered?: boolean
   /**
-   * Off by default. Only the itinerary map draws a route, and only within a single section —
-   * across the whole map the line would jump between sections and imply an order nobody walks.
-   */
-  showRoute?: boolean
-  /**
    * Extra space above the pill overlay, on top of the safe-area inset. Defaults to 60, tuned
    * for the itinerary map's headerless screen — pass less (or 0) when the screen has its own header.
    */
@@ -59,7 +52,6 @@ export const MapView: React.FC<Props> = ({
   selectedPlaceId,
   onSelectPlace,
   numbered = false,
-  showRoute = false,
   pillsTopOffset = 60,
   safeArea = false,
 }) => {
@@ -134,14 +126,6 @@ export const MapView: React.FC<Props> = ({
 
     setClusterSelection({ clusterId, places })
   }
-
-  const routeCollection = useMemo(
-    () =>
-      showRoute && selectedSectionId !== ALL_PILL_ID
-        ? mapPlacesToRouteGeoJSON(visible)
-        : { type: "FeatureCollection" as const, features: [] },
-    [showRoute, selectedSectionId, visible]
-  )
 
   const cameraStop = useMemo(() => {
     if (!visible.length) return undefined
@@ -222,8 +206,6 @@ export const MapView: React.FC<Props> = ({
           animationMode="moveTo"
           defaultSettings={initialCameraStop}
         />
-
-        <MapRoute collection={routeCollection} />
 
         <MapPins
           collection={collection}

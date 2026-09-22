@@ -2,7 +2,6 @@ import {
   flattenMapSections,
   MapSection,
   mapPlacesToGeoJSON,
-  mapPlacesToRouteGeoJSON,
 } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
 
 // These assert on the shape of the transform, not on how much mock data happens to exist,
@@ -113,25 +112,5 @@ describe("mapPlacesToGeoJSON", () => {
 
   it("returns an empty collection for no places", () => {
     expect(mapPlacesToGeoJSON([])).toEqual({ type: "FeatureCollection", features: [] })
-  })
-})
-
-describe("mapPlacesToRouteGeoJSON", () => {
-  it("traces one line through the places in order", () => {
-    const flattened = flattenMapSections(SECTIONS)
-    const firstSectionPlaces = flattened.filter((f) => f.sectionId === FIRST_SECTION.id)
-    const route = mapPlacesToRouteGeoJSON(firstSectionPlaces)
-
-    expect(route.features).toHaveLength(1)
-    expect(route.features[0].geometry.coordinates).toEqual(
-      FIRST_SECTION.places.map((place) => [place.coordinates.lng, place.coordinates.lat])
-    )
-  })
-
-  it("draws nothing for a single place, which has no line to draw", () => {
-    const flattened = flattenMapSections(SECTIONS)
-
-    expect(mapPlacesToRouteGeoJSON(flattened.slice(0, 1)).features).toEqual([])
-    expect(mapPlacesToRouteGeoJSON([]).features).toEqual([])
   })
 })

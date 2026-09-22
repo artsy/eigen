@@ -26,7 +26,6 @@ import { Itinerary as ItineraryData } from "app/Scenes/CityGuide/Screens/Itinera
 import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -191,7 +190,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
     }, [isMapView])
   )
   const { top } = useSafeAreaInsets()
-  const showRoute = useFeatureFlag("AREnableCityGuideItineraries")
 
   // Computed ahead of the null check to keep hook order stable.
   const mapSections = useMemo(
@@ -342,7 +340,6 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                 selectedPlaceId={selectedStopId}
                 onSelectPlace={setSelectedStopId}
                 numbered={isEditorial}
-                showRoute={showRoute}
                 safeArea
               />
             ) : (
