@@ -1,16 +1,17 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import { Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { ItineraryDraggableStop } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryDraggableStop"
 import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopRow"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
-import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { dropIndex } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
-import { useEffect, useState } from "react"
-import { useSharedValue } from "react-native-reanimated"
+import {
+  ItineraryScrollHandlers,
+  ItinerarySection,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { RefObject, useEffect, useMemo, useRef, useState } from "react"
+import { ScrollView } from "react-native"
+import { SortableContainer, SortableItem, useSortableList } from "react-native-drax"
 
-/** Approximates the `Join`'s `Spacer y={1}` gap below — folded into the drag's drop-position
- *  math for a smoother feel; the actual reorder decision doesn't depend on this being exact. */
-const SECTION_ROW_GAP = 8
+/** Drax sorts the stop ids; the row each one renders is looked up by id below. */
+const stopIDKey = (stopID: string) => stopID
 
 interface Props {
   section: ItinerarySection
@@ -37,17 +38,14 @@ interface Props {
   /** Whether this section belongs to a curated guide's own stop list, rather than the
    *  viewer's personal itinerary. */
   isCuratedGuide?: boolean
-  /** False on a curated guide or a shared link — neither is yours to edit. */
-  canDelete?: boolean
-  /** Same ownership gate as `canDelete` — reordering somebody else's guide isn't yours to do
-   *  either. Kept as its own prop since the two are conceptually separate affordances that
-   *  happen to share a gate today, not because they're expected to diverge. */
+  /** False on a curated guide or a shared link — neither is yours to reorder. */
   canReorder?: boolean
-  /** The stop id whose swipe row is currently open, so opening another one closes it. */
-  swipingStopID?: string | null
-  onSwipeBegin?: (id: string) => void
-  onStopDeleted?: (id: string) => void
-  /** Fires once a hold-and-drag ends on a real move — a drop back on the source index never
+  /** The screen's scroll view, which drax scrolls on its own while a stop is held near an edge. */
+  scrollRef: RefObject<ScrollView | null>
+  /** Every section shares the screen's one scroll view, so each registers its own listeners
+   *  with it rather than owning a scroll view of its own. */
+  registerScrollHandlers: (sectionID: string, handlers: ItineraryScrollHandlers | null) => void
+  /** Fires once a drag is dropped on a real move — a drop back on the source index never
    *  calls this. `fromIndex`/`toIndex` are both positions within this section only; there is
    *  no cross-section drag, since `updateItineraryStopInput` has no section field to move one. */
   onReorderStop?: (sectionID: string, stopID: string, fromIndex: number, toIndex: number) => void
@@ -64,44 +62,65 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   shareToken,
   cityName,
   isCuratedGuide = false,
-  canDelete = false,
   canReorder = false,
-  swipingStopID,
-  onSwipeBegin,
-  onStopDeleted,
+  scrollRef,
+  registerScrollHandlers,
   onReorderStop,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true)
   const title = itinerarySectionTitle(section, sectionIndex)
+  const sectionID = section.internalID
 
-  // Shared across every row in the section (not owned by any one row) so a dragged row's
-  // shift math can see every row's measured height, and so only one row can be "the" dragged
-  // one at a time.
-  const rowHeights = useSharedValue<number[]>(section.stops.map(() => 0))
-  const draggedIndex = useSharedValue(-1)
-  const dragOffsetY = useSharedValue(0)
-
-  // Reset when the stop count changes (added, swipe-deleted, or reordered elsewhere) — heights
-  // are read by index, and a stale array of the wrong length would misindex the shift math.
-  useEffect(() => {
-    rowHeights.set(section.stops.map(() => 0))
+  const stopIDsKey = section.stops.map((stop) => stop.internalID).join(",")
+  /*
+    The screen rebuilds `section.stops` on every render (it overlays the locally dragged order
+    on Relay's data fresh each time), so a plain `.map` here would hand drax a new array every
+    render and it would read each one as an external data change, dropping its shifts. Pinning
+    the identity to the ids themselves keeps it stable until the order actually changes.
+  */
+  const stopIDs = useMemo(
+    () => section.stops.map((stop) => stop.internalID),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [section.stops.length])
+    [stopIDsKey]
+  )
+  // Keyed on the stops themselves, not on `stopIDsKey` like `stopIDs` above: a stop's fields
+  // change without its id doing so (saving one flips `isOnMyItineraries`), and the id key
+  // would then hand the rows the stop as it was before.
+  const stopsByID = useMemo(
+    () => new Map(section.stops.map((stop) => [stop.internalID, stop])),
+    [section.stops]
+  )
 
-  const handleDragEnd = (fromIndex: number, offsetY: number) => {
-    if (!onReorderStop) return
+  const sortable = useSortableList<string>({
+    data: stopIDs,
+    keyExtractor: stopIDKey,
+    onReorder: ({ fromIndex, toIndex }) => {
+      const stopID = stopIDs[fromIndex]
 
-    const heights = rowHeights.get()
-    const toIndex = dropIndex(heights, fromIndex, offsetY, SECTION_ROW_GAP)
+      if (!stopID) return
 
-    if (toIndex === fromIndex) return
+      onReorderStop?.(sectionID, stopID, fromIndex, toIndex)
+    },
+  })
 
-    const stop = section.stops[fromIndex]
+  // The handle is rebuilt each render, but everything the listeners touch behind it (shared
+  // values, refs) is stable — so register once and read the current handle through this.
+  // A collapsed section keeps its listeners registered, which is deliberate: both only write
+  // to those shared values/refs, which nothing reads until a drag starts, and a collapsed
+  // section renders no `SortableItem` to start one from. Re-registering on collapse would
+  // churn the screen's map for nothing.
+  const sortableRef = useRef(sortable)
+  sortableRef.current = sortable
 
-    if (!stop) return
+  useEffect(() => {
+    registerScrollHandlers(sectionID, {
+      onScroll: (event) => sortableRef.current.onScroll(event),
+      onContentSizeChange: (width, height) =>
+        sortableRef.current.onContentSizeChange(width, height),
+    })
 
-    onReorderStop(section.internalID, stop.internalID, fromIndex, toIndex)
-  }
+    return () => registerScrollHandlers(sectionID, null)
+  }, [registerScrollHandlers, sectionID])
 
   return (
     <Flex>
@@ -122,37 +141,37 @@ export const ItinerarySectionRow: React.FC<Props> = ({
       {/* Reorder only binds while the section is expanded — collapsed rows aren't rendered at
           all here, so there is nothing further to gate. */}
       {!!isExpanded && (
-        <Join separator={<Spacer y={1} />}>
-          {section.stops.map((stop, index) => (
-            <ItineraryDraggableStop
-              key={stop.internalID}
-              stopID={stop.internalID}
-              citySlug={citySlug}
-              index={index}
-              canDelete={canDelete}
-              canReorder={canReorder}
-              isSwipingActive={swipingStopID === stop.internalID}
-              onSwipeBegin={onSwipeBegin ?? (() => undefined)}
-              onDeleted={onStopDeleted}
-              rowHeights={rowHeights}
-              draggedIndex={draggedIndex}
-              dragOffsetY={dragOffsetY}
-              gap={SECTION_ROW_GAP}
-              onDragEnd={handleDragEnd}
-            >
-              <ItineraryStopRow
-                stop={stop}
-                number={startNumber === undefined ? undefined : startNumber + index}
-                citySlug={citySlug}
-                itineraryId={itineraryId}
-                itinerarySlug={itinerarySlug}
-                shareToken={shareToken}
-                cityName={cityName}
-                isCuratedGuide={isCuratedGuide}
-              />
-            </ItineraryDraggableStop>
-          ))}
-        </Join>
+        <SortableContainer sortable={sortable} scrollRef={scrollRef}>
+          <Join separator={<Spacer y={1} />}>
+            {/*
+              Rendered from drax's own copy of the ids rather than `section.stops`: after a drop
+              it holds the rows at their original positions and moves them with transforms, so
+              rendering our reordered array here would apply the same move twice.
+            */}
+            {sortable.data.map((stopID, index) => {
+              const stop = stopsByID.get(stopID)
+
+              if (!stop) return null
+
+              return (
+                <SortableItem key={stopID} sortable={sortable} index={index} draggable={canReorder}>
+                  <ItineraryStopRow
+                    stop={stop}
+                    // Only a curated guide numbers its stops, and a curated guide is never
+                    // reorderable, so this index is always the displayed position.
+                    number={startNumber === undefined ? undefined : startNumber + index}
+                    citySlug={citySlug}
+                    itineraryId={itineraryId}
+                    itinerarySlug={itinerarySlug}
+                    shareToken={shareToken}
+                    cityName={cityName}
+                    isCuratedGuide={isCuratedGuide}
+                  />
+                </SortableItem>
+              )
+            })}
+          </Join>
+        </SortableContainer>
       )}
     </Flex>
   )

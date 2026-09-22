@@ -2,11 +2,10 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Alert, RefreshControl } from "react-native"
-import { PanGesture } from "react-native-gesture-handler"
-import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
+import { RefreshControl } from "react-native"
 import RNShare from "react-native-share"
 import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -20,14 +19,19 @@ jest.mock("@artsy/palette-mobile", () => ({
 
 jest.mock("react-native-share", () => ({ open: jest.fn() }))
 
-// A stop title `Text` renders its string directly, or as the lone string among other
-// (falsy, conditional) children — either way, this pulls out just the string.
-const stopTitleText = (element: ReactTestInstance) => {
-  // eslint-disable-next-line testing-library/no-node-access -- React props, not a DOM node.
-  const children = element.props.children
+// Drax needs more of reanimated than the stock jest mock offers, and its drag can only be
+// fired by invoking `onReorder` directly — both scoped to this file rather than setupJest.
+jest.mock("react-native-reanimated", () =>
+  require("app/utils/tests/draxReanimatedMock").draxReanimatedMock()
+)
+jest.mock("react-native-drax", () => require("app/utils/tests/draxSortableListSpy").mockDrax())
 
-  return Array.isArray(children) ? children.find((child) => typeof child === "string") : children
-}
+const mockShowToast = jest.fn()
+
+jest.mock("app/Components/Toast/toastHook", () => ({
+  ...jest.requireActual("app/Components/Toast/toastHook"),
+  useToast: () => ({ show: mockShowToast, hide: jest.fn(), hideOldest: jest.fn() }),
+}))
 
 const stop = (n: number) => ({
   internalID: `stop-${n}`,
@@ -77,6 +81,7 @@ describe("ItineraryScreen", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    resetSortableListSpy()
   })
 
   it("renders the header and every section", async () => {
@@ -486,6 +491,100 @@ describe("ItineraryScreen", () => {
     })
   })
 
+  // A stop title `Text` renders its string directly, or as the lone string among other
+  // (falsy, conditional) children — either way, this pulls out just the string.
+  const stopTitleText = (element: ReactTestInstance) => {
+    // eslint-disable-next-line testing-library/no-node-access -- React props, not a DOM node.
+    const children = element.props.children
+
+    return Array.isArray(children) ? children.find((child) => typeof child === "string") : children
+  }
+
+  const displayedStopTitles = () => screen.getAllByText(/^Stop \d$/).map(stopTitleText)
+
+  // The drag itself is native, so it can't be fired here; `onReorder` is where drax hands the
+  // drop back and is invoked directly. What follows it — the optimistic order, the mutation's
+  // 1-indexed position, and the revert — is all this screen's own.
+  describe("reordering a stop", () => {
+    const own = {
+      ...ITINERARY,
+      isCurated: false,
+      isMine: true,
+      sections: [{ internalID: "day-1", title: "Day 1", stops: [stop(1), stop(2), stop(3)] }],
+    }
+
+    const dropFirstStopLast = () =>
+      act(() => {
+        dropSortableItem(0, 0, 2)
+      })
+
+    it("shows the new order before the mutation answers, and sends a 1-indexed position", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      dropFirstStopLast()
+
+      // Optimistic: the list reads in the dropped order with the mutation still in flight.
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useReorderItineraryStopMutation"
+        )
+      )
+      // `acts_as_list`'s `insert_at` is 1-indexed, so display index 2 goes over as 3.
+      expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
+        input: { id: "stop-1", position: 3 },
+      })
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              updateItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-1" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+      expect(mockShowToast).not.toHaveBeenCalled()
+    })
+
+    it("puts the stop back and says so when the mutation fails", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      dropFirstStopLast()
+
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useReorderItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.rejectMostRecentOperation(new Error("network is down"))
+      })
+
+      await waitFor(() => expect(displayedStopTitles()).toEqual(["Stop 1", "Stop 2", "Stop 3"]))
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "Could not reorder that stop, try again",
+        "bottom",
+        { backgroundColor: "red100" }
+      )
+    })
+  })
+
   // Refreshed through fetchQuery rather than this query's fetchKey: a network-only re-render
   // would suspend and replace the guide with a spinner.
   describe("pull to refresh", () => {
@@ -595,207 +694,6 @@ describe("ItineraryScreen", () => {
       expect(await screen.findAllByText("Chill Vibes Only")).toHaveLength(2)
       expect(screen.getByText("Stop 1")).toBeOnTheScreen()
       expect(screen.getByText("Stop 2")).toBeOnTheScreen()
-    })
-  })
-
-  // No real ownership field on `Query.itinerary` yet (FIREWORKS-36 is adding one), so the gate
-  // is `!isCurated && !shareToken` — exercised here rather than restated per screen.
-  describe("swipe to delete a stop", () => {
-    const own = { ...ITINERARY, isCurated: false, shareToken: null }
-
-    beforeEach(() => {
-      jest.spyOn(Alert, "alert").mockImplementation((_title, _message, buttons) => {
-        buttons?.find((button) => button.style === "destructive")?.onPress?.()
-      })
-    })
-
-    afterEach(() => {
-      jest.restoreAllMocks()
-    })
-
-    const swipeAndConfirmDelete = (stopID: string) => {
-      fireGestureHandler<PanGesture>(getByGestureTestId(`pan-itinerary-stop-${stopID}`), [
-        { translationX: 0 },
-        { translationX: -100 },
-      ])
-      fireEvent.press(screen.getByTestId(`delete-button-${stopID}`))
-    }
-
-    it("offers no swipe gesture on a curated guide", async () => {
-      renderWithRelay({ Itinerary: () => ITINERARY }, props)
-
-      await screen.findByText("Stop 1")
-
-      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
-    })
-
-    it("offers no swipe gesture on a shared link to somebody else's itinerary", async () => {
-      renderWithRelay(
-        { Itinerary: () => ({ ...own, shareToken: "abc123" }) },
-        { ...props, shareToken: "abc123" }
-      )
-
-      await screen.findByText("Stop 1")
-
-      expect(screen.queryByTestId("delete-button-stop-1")).toBeNull()
-    })
-
-    it("removes the swiped stop from the list and the map after a confirmed delete", async () => {
-      const view = renderWithRelay({ Itinerary: () => own }, props)
-
-      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
-
-      swipeAndConfirmDelete("stop-1")
-
-      await waitFor(() =>
-        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "useDeleteItineraryStopMutation"
-        )
-      )
-
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Mutation: () => ({
-              deleteItineraryStop: {
-                responseOrError: {
-                  __typename: "ItineraryStopMutationSuccess",
-                  itineraryStop: { internalID: "stop-1" },
-                },
-              },
-            }),
-          })
-        )
-      })
-
-      await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
-      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
-    })
-
-    // Removing the only stop left in a day empties that section, which the screen already
-    // drops rather than showing a heading over nothing.
-    it("drops a section once its last stop is swipe-deleted", async () => {
-      const twoDays = {
-        ...own,
-        sections: [
-          { internalID: "day-1", title: "Day 1 — Easing in", stops: [stop(1)] },
-          { internalID: "day-2", title: "Day 2 — London Frieze", stops: [stop(2)] },
-        ],
-      }
-      const view = renderWithRelay({ Itinerary: () => twoDays }, props)
-
-      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
-
-      swipeAndConfirmDelete("stop-1")
-
-      await waitFor(() =>
-        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "useDeleteItineraryStopMutation"
-        )
-      )
-
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Mutation: () => ({
-              deleteItineraryStop: {
-                responseOrError: {
-                  __typename: "ItineraryStopMutationSuccess",
-                  itineraryStop: { internalID: "stop-1" },
-                },
-              },
-            }),
-          })
-        )
-      })
-
-      await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
-      // The section itself is gone too, not just its stop, since it now has none left.
-      expect(screen.queryByText("Day 1 — Easing in")).not.toBeOnTheScreen()
-      expect(screen.getByText("Stop 2")).toBeOnTheScreen()
-    })
-
-    // Regression test: `handleReorderStop` used to resolve its section and previous order from
-    // the raw itinerary rather than the displayed one, so a drag after a delete in the same
-    // section ran `moveStop` on stale indices and produced the wrong order.
-    it("keeps the order correct when a stop is dragged after an earlier delete in the same section", async () => {
-      const fourStops = {
-        ...own,
-        sections: [
-          {
-            internalID: "day-1",
-            title: "Day 1 — Easing in",
-            stops: [stop(1), stop(2), stop(3), stop(4)],
-          },
-        ],
-      }
-      const view = renderWithRelay({ Itinerary: () => fourStops }, props)
-
-      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
-
-      // Delete Stop 2, so the displayed section is [Stop 1, Stop 3, Stop 4] while the raw
-      // itinerary this screen still holds keeps all four.
-      swipeAndConfirmDelete("stop-2")
-
-      await waitFor(() =>
-        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "useDeleteItineraryStopMutation"
-        )
-      )
-
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Mutation: () => ({
-              deleteItineraryStop: {
-                responseOrError: {
-                  __typename: "ItineraryStopMutationSuccess",
-                  itineraryStop: { internalID: "stop-2" },
-                },
-              },
-            }),
-          })
-        )
-      })
-
-      await waitFor(() => expect(screen.queryByText("Stop 2")).not.toBeOnTheScreen())
-
-      // Drag Stop 1 (displayed index 0 of 3) to the end of the displayed section.
-      act(() => {
-        fireGestureHandler<PanGesture>(getByGestureTestId("drag-itinerary-stop-stop-1"), [
-          { translationY: 0 },
-          { translationY: 20 },
-        ])
-      })
-
-      await waitFor(() =>
-        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "useReorderItineraryStopMutation"
-        )
-      )
-
-      await act(async () => {
-        view.env.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Mutation: () => ({
-              updateItineraryStop: {
-                responseOrError: {
-                  __typename: "ItineraryStopMutationSuccess",
-                  itineraryStop: { internalID: "stop-1" },
-                },
-              },
-            }),
-          })
-        )
-      })
-
-      // Dragging Stop 1 to the end of the displayed [Stop 1, Stop 3, Stop 4] gives
-      // [Stop 3, Stop 4, Stop 1] — resolving the section against the raw (undeleted)
-      // itinerary would instead have produced [Stop 3, Stop 1, Stop 4].
-      await waitFor(() => {
-        const titles = screen.getAllByText(/^Stop \d$/).map(stopTitleText)
-        expect(titles).toEqual(["Stop 3", "Stop 4", "Stop 1"])
-      })
     })
   })
 })

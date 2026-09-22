@@ -1,9 +1,19 @@
 import { ItineraryScreenQuery$data } from "__generated__/ItineraryScreenQuery.graphql"
 import { CityItineraryItemType } from "app/Scenes/CityGuide/hooks/useCityItineraryStops"
+import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 
 export type Itinerary = NonNullable<ItineraryScreenQuery$data["itinerary"]>
 export type ItinerarySection = Itinerary["sections"][number]
 export type ItineraryStop = ItinerarySection["stops"][number]
+
+/**
+ * A section's drag-to-reorder listeners, which the screen wires into the single scroll view
+ * every section shares so drax can track its offset and auto-scroll it.
+ */
+export interface ItineraryScrollHandlers {
+  onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+  onContentSizeChange: (width: number, height: number) => void
+}
 
 /**
  * What a stop points at, in the shape `createItineraryStop` takes, so the plus can add the
