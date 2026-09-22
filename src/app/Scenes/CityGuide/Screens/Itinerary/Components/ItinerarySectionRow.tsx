@@ -5,8 +5,7 @@ import { ItineraryStopRow } from "app/Scenes/CityGuide/Screens/Itinerary/Compone
 import { DragAutoScroll } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDragAutoScroll"
 import { itinerarySectionTitle } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItinerarySection } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
-import { dropIndex, isDragJitter } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 
 /** Approximates the `Join`'s `Spacer y={1}` gap below — folded into the drag's drop-position
@@ -85,6 +84,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
   const rowHeights = useSharedValue<number[]>(section.stops.map(() => 0))
   const draggedIndex = useSharedValue(-1)
   const dragOffsetY = useSharedValue(0)
+  const settleToIndex = useSharedValue(-1)
 
   // Reset when the stop count changes (added, swipe-deleted, or reordered elsewhere) — heights
   // are read by index, and a stale array of the wrong length would misindex the shift math.
@@ -93,21 +93,34 @@ export const ItinerarySectionRow: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section.stops.length])
 
-  const handleDragEnd = (fromIndex: number, offsetY: number) => {
-    if (!onReorderStop) return
+  const clearDragState = () => {
+    draggedIndex.set(-1)
+    settleToIndex.set(-1)
+    dragOffsetY.set(0)
+  }
 
-    // A hold that never went anywhere is a hold, not a reorder — and with rows still
-    // unmeasured it could otherwise compute a real index change out of a few pixels of tremor.
-    if (isDragJitter(offsetY)) return
+  /*
+    The reorder a drag asked for has landed. Every row is now laid out exactly where the
+    settle animation had already put it, so the drag state that got them there has to go in
+    this same render — a frame later and the rows would flick back to their old slots before
+    the new layout caught up. `stopID` changing is each row's own cue to drop its offset; this
+    is the section-wide half of the same reset.
+  */
+  const stopOrder = section.stops.map((stop) => stop.internalID).join()
+  const previousStopOrder = useRef(stopOrder)
+  if (previousStopOrder.current !== stopOrder) {
+    previousStopOrder.current = stopOrder
+    clearDragState()
+  }
 
-    const heights = rowHeights.get()
-    const toIndex = dropIndex(heights, fromIndex, offsetY, SECTION_ROW_GAP)
-
-    if (toIndex === fromIndex) return
-
+  const handleDragEnd = (fromIndex: number, toIndex: number) => {
     const stop = section.stops[fromIndex]
 
-    if (!stop) return
+    // Nothing to reorder: let go of the drag state here, since no new order is coming to do it.
+    if (!onReorderStop || !stop || toIndex === fromIndex) {
+      clearDragState()
+      return
+    }
 
     onReorderStop(section.internalID, stop.internalID, fromIndex, toIndex)
   }
@@ -146,6 +159,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
               rowHeights={rowHeights}
               draggedIndex={draggedIndex}
               dragOffsetY={dragOffsetY}
+              settleToIndex={settleToIndex}
               gap={SECTION_ROW_GAP}
               dragAutoScroll={dragAutoScroll}
               onDragEnd={handleDragEnd}

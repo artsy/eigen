@@ -96,6 +96,38 @@ export const dropIndex = (
 }
 
 /**
+ * How far (in px) the dragged row itself has to travel to sit in `toIndex`'s slot — the sum of
+ * the spans (height plus gap) of every row it passes on the way. Positive downwards. This is
+ * what the row settles to when the finger lifts, rather than back to where the drag started:
+ * the list only reorders once the row has landed, and the reorder moves its slot by exactly
+ * this much, so the two cancel out and nothing visibly moves twice.
+ */
+export const draggedShift = (
+  heights: readonly number[],
+  fromIndex: number,
+  toIndex: number,
+  gap = 0
+): number => {
+  "worklet"
+
+  if (fromIndex === toIndex || fromIndex < 0 || fromIndex >= heights.length) return 0
+
+  let shift = 0
+
+  if (fromIndex < toIndex) {
+    for (let i = fromIndex + 1; i <= Math.min(toIndex, heights.length - 1); i++) {
+      shift += heights[i] + gap
+    }
+  } else {
+    for (let i = Math.max(toIndex, 0); i < fromIndex; i++) {
+      shift -= heights[i] + gap
+    }
+  }
+
+  return shift
+}
+
+/**
  * How far (in px) each row other than the dragged one should shift out of the way, so the gap
  * it leaves behind — and the gap it opens up ahead of it — both track the drag live. Only the
  * rows strictly between `fromIndex` and `toIndex` (inclusive of `toIndex`) move; everything

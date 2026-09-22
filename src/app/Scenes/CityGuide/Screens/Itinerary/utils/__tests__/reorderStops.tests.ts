@@ -1,5 +1,6 @@
 import {
   DRAG_JITTER_THRESHOLD,
+  draggedShift,
   dropIndex,
   isDragJitter,
   moveStop,
@@ -112,6 +113,40 @@ describe("dropIndex", () => {
 
   it("clamps an out-of-range source index before computing", () => {
     expect(dropIndex(uniform, 10, 0)).toBe(uniform.length - 1)
+  })
+})
+
+describe("draggedShift", () => {
+  const heights = [50, 60, 70, 80]
+
+  it("is zero when the row was dropped back on its own slot", () => {
+    expect(draggedShift(heights, 1, 1)).toBe(0)
+  })
+
+  it("covers every row passed on the way down", () => {
+    // Row 0 dropped on index 2 travels past rows 1 and 2.
+    expect(draggedShift(heights, 0, 2)).toBe(130)
+  })
+
+  it("covers every row passed on the way up, as a negative", () => {
+    // Row 3 dropped on index 1 travels back past rows 1 and 2.
+    expect(draggedShift(heights, 3, 1)).toBe(-130)
+  })
+
+  it("includes the gap between rows when one is given", () => {
+    expect(draggedShift(heights, 0, 2, 10)).toBe(150)
+  })
+
+  it("lands on the same span a neighbour swap moves either row by", () => {
+    // Swapping two adjacent rows moves each by the other's span, in opposite directions —
+    // which is why the list can reorder under a settled row without anything moving twice.
+    expect(draggedShift(heights, 0, 1, 10)).toBe(heights[1] + 10)
+    expect(siblingShifts(heights, 0, 1, 10)[1]).toBe(-(heights[0] + 10))
+  })
+
+  it("is zero for an out-of-range source index", () => {
+    expect(draggedShift(heights, -1, 2)).toBe(0)
+    expect(draggedShift(heights, 10, 2)).toBe(0)
   })
 })
 

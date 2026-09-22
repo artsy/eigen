@@ -1,6 +1,12 @@
 import { ItineraryStopSwipeRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryStopSwipeRow"
 import { DragAutoScroll } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useDragAutoScroll"
-import { dropIndex, siblingShifts } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import {
+  draggedShift,
+  dropIndex,
+  isDragJitter,
+  siblingShifts,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
+import { useRef } from "react"
 import { LayoutChangeEvent } from "react-native"
 import { Gesture } from "react-native-gesture-handler"
 import Animated, {
@@ -17,8 +23,8 @@ import Animated, {
 /**
  * Critically damped — `damping` is exactly `2 * sqrt(stiffness * mass)` — so a row eases home
  * in about a quarter of a second without overshooting past a slot it has only just been laid
- * out into. Used for every return to rest: the dragged row, the siblings it pushed aside, and
- * the auto-scroll offset.
+ * out into. Used for every settle: the dragged row into the slot it was dropped on, the
+ * siblings it pushed aside, and the auto-scroll offset.
  */
 const SETTLE_SPRING = { damping: 20, stiffness: 200, mass: 0.5 } as const
 
@@ -33,8 +39,8 @@ const LIFT_TIMING = { duration: 150 } as const
 interface Props {
   stopID: string
   citySlug: string
-  /** This row's position among its section's stops right now — read on the JS thread only
-   *  when the gesture ends, so a reorder mid-drag from elsewhere can't leave it stale. */
+  /** This row's slot among its section's stops. `Join` re-keys these rows positionally, so a
+   *  slot keeps its component instance across a reorder and only its `stopID` changes. */
   index: number
   canDelete: boolean
   /** False on a curated guide, a shared link, or a collapsed section — none of those bind the
@@ -45,15 +51,23 @@ interface Props {
   onDeleted?: (id: string) => void
   /** Owned by the section, not this row, so every row's shift math can see every row's height. */
   rowHeights: SharedValue<number[]>
-  /** -1 when nothing in the section is being dragged. */
+  /** -1 when nothing in the section is being dragged. Stays set for the whole settle, and is
+   *  only cleared by the render that lands the new order. */
   draggedIndex: SharedValue<number>
   dragOffsetY: SharedValue<number>
+  /** The slot the drop chose, from the moment the finger lifts until the settle has landed;
+   *  -1 the rest of the time. It holds the siblings still while the dragged row comes to rest,
+   *  which the live drag offset alone can't do once auto-scroll starts unwinding. */
+  settleToIndex: SharedValue<number>
   /** The gap `Join`'s `Spacer` leaves between rows, folded into the drop-position math. */
   gap: number
   /** Scrolls the containing scroll view while the drag is held near its top or bottom edge.
    *  Absent wherever the rows aren't inside one this screen owns. */
   dragAutoScroll?: DragAutoScroll
-  onDragEnd: (fromIndex: number, offsetY: number) => void
+  /** Fires once the dropped row has settled into `toIndex`'s slot, not the moment the finger
+   *  lifts — reordering the list under a row that is still moving is what made it appear to
+   *  jump back to where it came from. */
+  onDragEnd: (fromIndex: number, toIndex: number) => void
 }
 
 /**
@@ -77,6 +91,7 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   rowHeights,
   draggedIndex,
   dragOffsetY,
+  settleToIndex,
   gap,
   dragAutoScroll,
   onDragEnd,
@@ -87,6 +102,23 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   const lift = useSharedValue(0)
   /** Where a sibling has eased to, as opposed to the whole-row step it is easing towards. */
   const shift = useSharedValue(0)
+
+  /*
+    `Join` re-keys these rows positionally, so a reorder doesn't move this component instance —
+    it hands this slot a different stop. The offsets this slot is carrying got the previous
+    stop to where the new layout now puts it, so they belong to that stop, not to this one,
+    which is already exactly where it should be. Dropping them in the same render the `stopID`
+    prop changes is what keeps the swap from painting: a frame later and the row would flick
+    back a slot before easing forward again. Same trick, same reason, as the swipe row's own
+    `previousStopID` reset.
+  */
+  const previousStopID = useRef(stopID)
+  if (previousStopID.current !== stopID) {
+    previousStopID.current = stopID
+    ownOffsetY.set(0)
+    shift.set(0)
+    lift.set(0)
+  }
 
   const onLayout = (event: LayoutChangeEvent) => {
     const heights = rowHeights.get().slice()
@@ -102,6 +134,7 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
     .withTestId(`drag-itinerary-stop-${stopID}`)
     .onStart((event) => {
       draggedIndex.set(index)
+      settleToIndex.set(-1)
       lift.set(withTiming(1, LIFT_TIMING))
 
       if (dragAutoScroll) {
@@ -114,23 +147,37 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
       ownOffsetY.set(event.translationY)
       dragOffsetY.set(event.translationY)
     })
+    // Where the row lands is decided here, on the UI thread, so the settle can start from the
+    // finger's last position without waiting on a round trip to the JS thread.
     .onEnd((event) => {
-      runOnJS(onDragEnd)(index, event.translationY + (dragAutoScroll?.offset.get() ?? 0))
+      const offsetY = event.translationY + (dragAutoScroll?.offset.get() ?? 0)
+
+      settleToIndex.set(
+        isDragJitter(offsetY) ? index : dropIndex(rowHeights.get(), index, offsetY, gap)
+      )
     })
     .onFinalize(() => {
+      // A cancelled gesture never reaches `onEnd`, and belongs back where it started.
+      if (settleToIndex.get() < 0) settleToIndex.set(index)
+
+      const toIndex = settleToIndex.get()
+
       if (dragAutoScroll) {
         runOnJS(dragAutoScroll.stop)()
         dragAutoScroll.offset.set(withSpring(0, SETTLE_SPRING))
       }
 
       lift.set(withTiming(0, LIFT_TIMING))
-      ownOffsetY.set(withSpring(0, SETTLE_SPRING))
-      // The siblings' shifts are read off `dragOffsetY`, so they unwind with it rather than
-      // snapping back the moment the finger lifts. `draggedIndex` only clears once that has
-      // finished, which is also what keeps this row above them until it has landed.
-      dragOffsetY.set(
-        withSpring(0, SETTLE_SPRING, (finished) => {
-          if (finished) draggedIndex.set(-1)
+
+      // Carries on from wherever the finger left the row, into the slot it was dropped on —
+      // never back to where the drag started. `draggedIndex` and the siblings' shifts hold
+      // still throughout, so the row stays above them and nothing resets under it; the list
+      // itself only reorders once this has landed.
+      const settleTarget = draggedShift(rowHeights.get(), index, toIndex, gap)
+
+      ownOffsetY.set(
+        withSpring(settleTarget, SETTLE_SPRING, (finished) => {
+          if (finished) runOnJS(onDragEnd)(index, toIndex)
         })
       )
     })
@@ -142,8 +189,13 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
     if (from === index || from === -1) return 0
 
     const heights = rowHeights.get()
-    const offsetY = dragOffsetY.get() + (dragAutoScroll?.offset.get() ?? 0)
-    const target = dropIndex(heights, from, offsetY, gap)
+    const settling = settleToIndex.get()
+    // Once the finger is up the drop is decided, and reading the live offset again would only
+    // walk this sibling back out of place as the auto-scroll offset unwinds to zero.
+    const target =
+      settling >= 0
+        ? settling
+        : dropIndex(heights, from, dragOffsetY.get() + (dragAutoScroll?.offset.get() ?? 0), gap)
     const shifts = siblingShifts(heights, from, target, gap)
 
     return shifts[index] ?? 0
@@ -170,6 +222,9 @@ export const ItineraryDraggableStop: React.FC<React.PropsWithChildren<Props>> = 
   })
 
   const containerStyle = useAnimatedStyle(() => {
+    // True for the whole drag *and* the settle after it, so the row stays over the ones it is
+    // still sliding past. It only goes false on the render that lands the new order, by which
+    // point the row is at rest in its own slot and has nothing left to overlap.
     const isDragged = draggedIndex.get() === index
     const progress = lift.get()
 
