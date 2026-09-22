@@ -24,7 +24,7 @@ interface CityFilterPillsProps {
    * the pills must still render without one to fade against.
    */
   bottomSheetAnimatedIndex?: SharedValue<number>
-  /** Used to figure out which tabs have results, so empty ones can be deprioritized. */
+  /** Used to figure out which tabs have results, so empty ones can be hidden. */
   bucketResults: BucketResults
   /**
    * Reports the row's rendered height, so a caller drawing something else below it (e.g. the
@@ -43,21 +43,13 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
   const space = useSpace()
   const safeAreaInsets = useSafeAreaInsets()
 
-  // Tabs with results lead the list; empty ones are pushed to the end and shown disabled.
-  const orderedTabs = useMemo(() => {
-    const withResults: MapTab[] = []
-    const withoutResults: MapTab[] = []
-
-    cityTabs.forEach((tab) => {
-      if (tabHasResults(tab, bucketResults)) {
-        withResults.push(tab)
-      } else {
-        withoutResults.push(tab)
-      }
-    })
-
-    return [...withResults, ...withoutResults]
-  }, [bucketResults])
+  // Tabs with no content aren't shown at all, since a disabled pill reads as barely-there
+  // rather than intentionally hidden. "All" always renders, since it's the selection anchor
+  // and its own content mirrors what's already on the map.
+  const visibleTabs = useMemo(
+    () => cityTabs.filter((tab) => tab.id === "all" || tabHasResults(tab, bucketResults)),
+    [bucketResults]
+  )
 
   const mountOpacity = useSharedValue(0)
 
@@ -94,9 +86,8 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: space(2) }}
       >
-        {orderedTabs.map((tab) => {
+        {visibleTabs.map((tab) => {
           const selected = tab.id === selectedTabId
-          const disabled = !tabHasResults(tab, bucketResults)
 
           return (
             <Pill
@@ -105,9 +96,8 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
               mr={0.5}
               variant="link"
               selected={selected}
-              disabled={disabled}
-              accessibilityState={{ selected, disabled }}
-              onPress={disabled ? undefined : () => onSelectTab(tab)}
+              accessibilityState={{ selected }}
+              onPress={() => onSelectTab(tab)}
             >
               {tab.text}
             </Pill>

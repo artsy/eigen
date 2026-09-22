@@ -50,8 +50,8 @@ describe("CityGuideMap", () => {
     jest.clearAllMocks()
   })
 
-  // At least one museum show is needed so the "Museums" pill isn't disabled (empty tabs are
-  // disabled by CityFilterPills and can't be pressed).
+  // At least one museum show is needed so the "Museums" pill renders at all (empty tabs are
+  // hidden by CityFilterPills).
   const cityResolvers = {
     City: () => ({
       name: "New York",
