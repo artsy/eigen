@@ -10,10 +10,9 @@ import { useArtAssistantTracking } from "app/Scenes/ArtAssistant/hooks/useArtAss
 import { artAssistantAgentTurnSubscription } from "app/Scenes/ArtAssistant/transport/ArtAssistantAgentTurnSubscription"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
 import {
+  ART_ASSISTANT_GENERIC_ERROR,
   ArtAssistantTurnFailure,
   reportArtAssistantTurnFailure,
-  stopReasonMessage,
-  subscriptionErrorMessage,
 } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { GlobalStore } from "app/store/GlobalStore"
 import { metaphysicsSubscriptionErrorStatus } from "app/system/relay/helpers/metaphysicsSubscriptionError"
@@ -154,7 +153,7 @@ export const useArtAssistantConversation = () => {
       }
 
       if (!userID || !authenticationToken) {
-        updateAssistant(failActiveTurn(activeTurn, "Please sign in again to use Art Assistant."))
+        updateAssistant(failActiveTurn(activeTurn))
         trackFailure("unauthenticated")
         isRespondingRef.current = false
         setIsResponding(false)
@@ -218,9 +217,7 @@ export const useArtAssistantConversation = () => {
         }
 
         reportFailure({ outcome: "idle_timeout" })
-        updateAssistant(
-          failActiveTurn(activeTurn, "This is taking longer than expected. Please try again.")
-        )
+        updateAssistant(failActiveTurn(activeTurn))
         finish()
       }
 
@@ -285,15 +282,13 @@ export const useArtAssistantConversation = () => {
           }
 
           reportFailure({ outcome: "stream_error", error })
-          updateAssistant(failActiveTurn(activeTurn, subscriptionErrorMessage(error)))
+          updateAssistant(failActiveTurn(activeTurn))
           finish()
         },
         onCompleted: () => {
           if (!activeTurn.didReceiveTerminalEvent && activeTurn.message.phase === "responding") {
             reportFailure({ outcome: "ended_without_answer" })
-            updateAssistant(
-              failActiveTurn(activeTurn, "The response ended unexpectedly. Please try again.")
-            )
+            updateAssistant(failActiveTurn(activeTurn))
           }
 
           finish()
@@ -339,10 +334,7 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
       const text = event.message ?? turn.streamedText
 
       if (!text) {
-        return failActiveTurn(
-          { ...turn, didReceiveTerminalEvent: true },
-          stopReasonMessage(event.stopReason)
-        )
+        return failActiveTurn({ ...turn, didReceiveTerminalEvent: true })
       }
 
       const artworks = event.artworks ?? []
@@ -391,13 +383,13 @@ const activityCopy = (activity: AIAgentActivity) =>
 const setActivity = (message: AssistantMessage, activity: string): AssistantMessage =>
   message.activity === activity ? message : { ...message, activity }
 
-const failActiveTurn = (turn: ActiveTurn, errorMessage: string): ActiveTurn => ({
+const failActiveTurn = (turn: ActiveTurn): ActiveTurn => ({
   ...turn,
   message: {
     ...turn.message,
+    text: ART_ASSISTANT_GENERIC_ERROR,
     phase: "error",
     activity: undefined,
     artworkRail: undefined,
-    errorMessage,
   },
 })

@@ -8,6 +8,7 @@ import {
   useArtAssistantConversation,
 } from "app/Scenes/ArtAssistant/hooks/useArtAssistantConversation"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/types"
+import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { useExperimentFlag } from "app/system/flags/hooks/useExperimentFlag"
 import { MetaphysicsSubscriptionError } from "app/system/relay/helpers/metaphysicsSubscriptionError"
@@ -361,6 +362,10 @@ describe("useArtAssistantConversation tracking", () => {
       outcome: "stopped_without_answer",
       stop_reason: "max_iterations",
     })
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
     expect(trackedEventsOfType("receivedArtAssistantResponse")).toHaveLength(0)
   })
 
@@ -382,6 +387,23 @@ describe("useArtAssistantConversation tracking", () => {
       error_status: 429,
       outcome: "stream_error",
     })
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
+  })
+
+  it("uses the generic error when the stream ends without an answer", () => {
+    const { environment, result } = renderConversation()
+
+    act(() => result.current.submit("blue painting"))
+
+    act(() => environment.mock.complete(environment.mock.getMostRecentOperation()))
+
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("reports a message sent without a valid session", () => {
@@ -395,6 +417,10 @@ describe("useArtAssistantConversation tracking", () => {
 
     expect(failed).toMatchObject({ outcome: "unauthenticated" })
     expect(failed.prompt_message_id).toEqual(sent.message_id)
+    expect(result.current.messages.at(-1)).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("reports the conversation that was discarded for a new chat", () => {

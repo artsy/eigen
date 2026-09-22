@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette-mobile"
 import { render, screen } from "@testing-library/react-native"
 import { ArtAssistantMessage } from "app/Scenes/ArtAssistant/Components/ArtAssistantMessage"
+import { ART_ASSISTANT_GENERIC_ERROR } from "app/Scenes/ArtAssistant/utils/artAssistantErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtAssistantMessage", () => {
@@ -88,13 +89,12 @@ describe("ArtAssistantMessage", () => {
         message={{
           id: "assistant-1",
           role: "assistant",
-          text: "",
+          text: ART_ASSISTANT_GENERIC_ERROR,
           phase: "error",
-          errorMessage: "Please try again later.",
         }}
       />
     )
 
-    expect(screen.getByText("Please try again later.")).toBeOnTheScreen()
+    expect(screen.getByText(ART_ASSISTANT_GENERIC_ERROR)).toBeOnTheScreen()
   })
 })
