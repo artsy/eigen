@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { OwnerType, SentArtAssistantMessage } from "@artsy/cohesion"
 import { CloseIcon, EditIcon } from "@artsy/icons/native"
 import {
   Button,
@@ -23,9 +23,13 @@ import { KeyboardAvoidingContainer } from "app/utils/keyboard/KeyboardAvoidingCo
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { StyleSheet } from "react-native"
 import { KeyboardController } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+const COMPOSER_LINE_HEIGHT = 20
+const COMPOSER_COLLAPSED_HEIGHT = 50
+const COMPOSER_VERTICAL_PADDING = (COMPOSER_COLLAPSED_HEIGHT - COMPOSER_LINE_HEIGHT) / 2
+const COMPOSER_MAX_TEXT_HEIGHT = 4 * COMPOSER_LINE_HEIGHT
 
 interface ArtAssistantProps {
   onClose?: () => void
@@ -39,12 +43,14 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isNewChatDialogVisible, setIsNewChatDialogVisible] = useState(false)
   const { isResponding, messages, startNewConversation, submit } = useArtAssistantConversation()
+  const [messageHeights, setMessageHeights] = useState<Record<string, number>>({})
   const composerInputRef = useRef<InputRef>(null)
   const messageListRef = useRef<FlashListRef<ArtAssistantMessageType>>(null)
   const pendingScrollIndex = useRef<number | null>(null)
-  const anchoredTurnID = useRef<string | null>(null)
-  const suggestionPrompt = useRef<string | null>(null)
+  const anchoredTurn = useRef<{ id: string; index: number } | null>(null)
+  const messageListHeight = useRef(0)
   const composerKeyboardGap = space(1)
+  const messageGap = space(2)
   const canSend = prompt.trim().length > 0 && !isResponding
 
   const dismissComposerKeyboard = () => {
@@ -64,32 +70,39 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
   const handleStartNewConversation = () => {
     setIsNewChatDialogVisible(false)
     pendingScrollIndex.current = null
-    anchoredTurnID.current = null
-    suggestionPrompt.current = null
+    anchoredTurn.current = null
+    setMessageHeights({})
     startNewConversation()
   }
 
-  const handleSelectSuggestion = (suggestion: string) => {
-    suggestionPrompt.current = suggestion
-    setPrompt(suggestion)
-  }
+  const handleMessageLayout = useCallback((messageID: string, height: number) => {
+    setMessageHeights((heights) =>
+      heights[messageID] === height ? heights : { ...heights, [messageID]: height }
+    )
+  }, [])
 
-  const handleSend = () => {
-    const text = prompt.trim()
+  const sendPrompt = (promptText: string, type: SentArtAssistantMessage["type"]) => {
+    const text = promptText.trim()
 
-    if (!text) {
+    if (!text || isResponding) {
       return
     }
 
     const userMessageIndex = messages.length
-    // A suggestion the user edited before sending is their own prompt, not ours.
-    const type = text === suggestionPrompt.current ? "suggestion" : "typed"
 
-    suggestionPrompt.current = null
     pendingScrollIndex.current = userMessageIndex
     void submit(text, { type })
     setPrompt("")
     dismissComposerKeyboard()
+  }
+
+  // A suggestion is sent the moment it is picked, so it never becomes a typed prompt.
+  const handleSelectSuggestion = (suggestion: string) => {
+    sendPrompt(suggestion, "suggestion")
+  }
+
+  const handleSend = () => {
+    sendPrompt(prompt, "typed")
   }
 
   const scrollToPendingTurn = useCallback(() => {
@@ -121,16 +134,27 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
       return
     }
 
+    const answerIndex = messages.length - 1
+    const questionIndex = Math.max(0, answerIndex - 1)
+    const questionHeight =
+      questionIndex === answerIndex ? 0 : messageHeights[messages[questionIndex].id] ?? 0
+    const turnHeight = questionHeight + messageGap + (messageHeights[lastMessage.id] ?? 0)
+    // A turn taller than the list is anchored on the answer instead of the question, so the end
+    // of the answer clears the composer.
+    const turnFitsList = turnHeight + composerKeyboardGap <= messageListHeight.current
+    const index = turnFitsList ? questionIndex : answerIndex
+    const anchor = anchoredTurn.current
+
     // Only a turn that just became final earns an autoscroll. Focusing the composer or typing
     // re-renders the screen with the same messages, and those must not move the list.
-    if (anchoredTurnID.current === lastMessage.id) {
+    if (anchor?.id === lastMessage.id && anchor.index >= index) {
       return
     }
 
-    anchoredTurnID.current = lastMessage.id
-    pendingScrollIndex.current = Math.max(0, messages.length - 2)
+    anchoredTurn.current = { id: lastMessage.id, index }
+    pendingScrollIndex.current = index
     requestAnimationFrame(scrollToPendingTurn)
-  }, [messages, scrollToPendingTurn])
+  }, [composerKeyboardGap, messageGap, messageHeights, messages, scrollToPendingTurn])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -184,15 +208,27 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
               <ArtAssistantEmptyState onSelectSuggestion={handleSelectSuggestion} />
             }
             onContentSizeChange={scrollToPendingTurn}
+            onLayout={(event) => {
+              messageListHeight.current = event.nativeEvent.layout.height
+            }}
             onScrollBeginDrag={handleScrollBeginDrag}
             renderItem={({ item, index }) => (
-              <Flex mb={index === messages.length - 1 ? 0 : 2}>
+              <Flex
+                mb={index === messages.length - 1 ? 0 : 2}
+                onLayout={(event) => handleMessageLayout(item.id, event.nativeEvent.layout.height)}
+              >
                 <ArtAssistantMessage message={item} />
               </Flex>
             )}
             style={{ flex: 1 }}
             testID="art-assistant-content"
           />
+
+          <Flex backgroundColor="background" px={2} pt={1}>
+            <Text variant="xs" color="mono60" textAlign="center">
+              Art Assistant is AI and can make mistakes
+            </Text>
+          </Flex>
 
           <Flex
             flexDirection="row"
@@ -207,11 +243,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
             <Flex
               flex={1}
               borderColor={isComposerFocused ? "blue100" : "mono15"}
-              borderRadius={50}
-              borderWidth={StyleSheet.hairlineWidth}
-              minHeight={50}
+              borderRadius={COMPOSER_COLLAPSED_HEIGHT / 2}
+              borderWidth={1}
+              minHeight={COMPOSER_COLLAPSED_HEIGHT}
               justifyContent="center"
               px={2}
+              py={`${COMPOSER_VERTICAL_PADDING}px`}
               testID="art-assistant-composer-input-container"
             >
               <Input
@@ -226,9 +263,12 @@ export const ArtAssistant: React.FC<ArtAssistantProps> = ({ onClose = goBack }) 
                 style={{
                   borderWidth: 0,
                   height: undefined,
-                  maxHeight: 100,
-                  minHeight: 50,
-                  paddingHorizontal: 0,
+                  maxHeight: COMPOSER_MAX_TEXT_HEIGHT,
+                  minHeight: COMPOSER_LINE_HEIGHT,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  paddingTop: 0,
                 }}
                 value={prompt}
               />
