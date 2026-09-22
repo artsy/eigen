@@ -2,10 +2,12 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
 import RNShare from "react-native-share"
+import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
@@ -16,6 +18,20 @@ jest.mock("@artsy/palette-mobile", () => ({
 }))
 
 jest.mock("react-native-share", () => ({ open: jest.fn() }))
+
+// Drax needs more of reanimated than the stock jest mock offers, and its drag can only be
+// fired by invoking `onReorder` directly — both scoped to this file rather than setupJest.
+jest.mock("react-native-reanimated", () =>
+  require("app/utils/tests/draxReanimatedMock").draxReanimatedMock()
+)
+jest.mock("react-native-drax", () => require("app/utils/tests/draxSortableListSpy").mockDrax())
+
+const mockShowToast = jest.fn()
+
+jest.mock("app/Components/Toast/toastHook", () => ({
+  ...jest.requireActual("app/Components/Toast/toastHook"),
+  useToast: () => ({ show: mockShowToast, hide: jest.fn(), hideOldest: jest.fn() }),
+}))
 
 const stop = (n: number) => ({
   internalID: `stop-${n}`,
@@ -65,6 +81,7 @@ describe("ItineraryScreen", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    resetSortableListSpy()
   })
 
   it("renders the header and every section", async () => {
@@ -470,6 +487,100 @@ describe("ItineraryScreen", () => {
             "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only?shareToken=abc123"
           ),
         })
+      )
+    })
+  })
+
+  // A stop title `Text` renders its string directly, or as the lone string among other
+  // (falsy, conditional) children — either way, this pulls out just the string.
+  const stopTitleText = (element: ReactTestInstance) => {
+    // eslint-disable-next-line testing-library/no-node-access -- React props, not a DOM node.
+    const children = element.props.children
+
+    return Array.isArray(children) ? children.find((child) => typeof child === "string") : children
+  }
+
+  const displayedStopTitles = () => screen.getAllByText(/^Stop \d$/).map(stopTitleText)
+
+  // The drag itself is native, so it can't be fired here; `onReorder` is where drax hands the
+  // drop back and is invoked directly. What follows it — the optimistic order, the mutation's
+  // 1-indexed position, and the revert — is all this screen's own.
+  describe("reordering a stop", () => {
+    const own = {
+      ...ITINERARY,
+      isCurated: false,
+      isMine: true,
+      sections: [{ internalID: "day-1", title: "Day 1", stops: [stop(1), stop(2), stop(3)] }],
+    }
+
+    const dropFirstStopLast = () =>
+      act(() => {
+        dropSortableItem(0, 0, 2)
+      })
+
+    it("shows the new order before the mutation answers, and sends a 1-indexed position", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      dropFirstStopLast()
+
+      // Optimistic: the list reads in the dropped order with the mutation still in flight.
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useReorderItineraryStopMutation"
+        )
+      )
+      // `acts_as_list`'s `insert_at` is 1-indexed, so display index 2 goes over as 3.
+      expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
+        input: { id: "stop-1", position: 3 },
+      })
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Mutation: () => ({
+              updateItineraryStop: {
+                responseOrError: {
+                  __typename: "ItineraryStopMutationSuccess",
+                  itineraryStop: { internalID: "stop-1" },
+                },
+              },
+            }),
+          })
+        )
+      })
+
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+      expect(mockShowToast).not.toHaveBeenCalled()
+    })
+
+    it("puts the stop back and says so when the mutation fails", async () => {
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+      dropFirstStopLast()
+
+      expect(displayedStopTitles()).toEqual(["Stop 2", "Stop 3", "Stop 1"])
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useReorderItineraryStopMutation"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.rejectMostRecentOperation(new Error("network is down"))
+      })
+
+      await waitFor(() => expect(displayedStopTitles()).toEqual(["Stop 1", "Stop 2", "Stop 3"]))
+      expect(mockShowToast).toHaveBeenCalledWith(
+        "Could not reorder that stop, try again",
+        "bottom",
+        { backgroundColor: "red100" }
       )
     })
   })

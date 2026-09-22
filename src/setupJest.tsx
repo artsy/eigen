@@ -322,33 +322,7 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-jest.mock("react-native-reanimated", () => {
-  const mock = require("react-native-reanimated/mock")
-
-  return {
-    ...mock,
-    // Left out of the stock mock ("ADD ME IF NEEDED"); react-native-drax calls it.
-    useReducedMotion: () => false,
-    // The stock mock's shared value is a Proxy whose `set` trap rejects any property but
-    // `value`, so `modify`, which drax uses to update its registry in place, can't be
-    // attached to it after the fact. Reimplement the shared value as a plain object instead.
-    useSharedValue: (init: unknown) => {
-      const sharedValue = {
-        value: init,
-        get: () => sharedValue.value,
-        set: (newValue: unknown) => {
-          sharedValue.value =
-            typeof newValue === "function" ? (newValue as Function)(sharedValue.value) : newValue
-        },
-        modify: (modifier: (current: unknown) => unknown) => {
-          sharedValue.value = modifier(sharedValue.value)
-        },
-      }
-
-      return sharedValue
-    },
-  }
-})
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 jest.mock("react-native-worklets", () => require("react-native-worklets/src/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
@@ -784,19 +758,10 @@ jest.mock("@gorhom/bottom-sheet", () => {
 })
 
 jest.mock("@shopify/flash-list", () => {
-  const React = require("react")
   const { FlatList } = require("react-native")
-
-  // The real FlashList measures items itself, so `scrollToIndex` never needs
-  // `getItemLayout`/`onScrollToIndexFailed`. The mocked FlatList does, or it throws — default it
-  // here so callers don't have to pass a FlatList-only prop just to satisfy this mock.
-  const MockFlashList = React.forwardRef((props: any, ref: any) => (
-    <FlatList onScrollToIndexFailed={() => {}} {...props} ref={ref} />
-  ))
-
   return {
     ...jest.requireActual("@shopify/flash-list"),
-    FlashList: MockFlashList,
+    FlashList: FlatList,
   }
 })
 
