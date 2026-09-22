@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { ArtistAbout } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "app/Components/Artist/ArtistAbout/ArtistAboutShows"
+import { ArtistCareerHighlights } from "app/Components/Artist/ArtistAbout/ArtistCareerHighlights"
 import { Biography } from "app/Components/Artist/Biography"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -61,6 +62,38 @@ describe("ArtistAbout", () => {
       })
 
       expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(0)
+    })
+  })
+
+  describe("ArtistCareerHighlights", () => {
+    it("is shown when some highlight contains entities", () => {
+      renderWithRelay({
+        ArtistInsight: () => {
+          return { entities: ["A fancy museum"] }
+        },
+      })
+
+      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
+    })
+
+    it("is shown when some highlight contains a description", () => {
+      renderWithRelay({
+        ArtistInsight: () => {
+          return { entities: [], description: "Recognized by bigwigs" }
+        },
+      })
+
+      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
+    })
+
+    it("is hidden when no highlight contains entities or descriptions", () => {
+      renderWithRelay({
+        ArtistInsight: () => {
+          return { entities: [], description: null }
+        },
+      })
+
+      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(0)
     })
   })
 

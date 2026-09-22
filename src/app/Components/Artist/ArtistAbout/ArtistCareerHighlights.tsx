@@ -11,14 +11,16 @@ interface ArtistCareerHighlightsProps {
 export const ArtistCareerHighlights: React.FC<ArtistCareerHighlightsProps> = ({ artist }) => {
   const data = useFragment(fragment, artist)
 
-  if (!data || data.insights.length === 0) {
+  const allInsights = (data.insights ?? []).filter(isRenderableArtistInsight)
+
+  if (allInsights.length === 0) {
     return null
   }
 
   const insights =
-    data.insights.length > 4
-      ? data.insights.slice(data.insights.length / 2, data.insights.length)
-      : data.insights
+    allInsights.length > 4
+      ? allInsights.slice(allInsights.length / 2, allInsights.length)
+      : allInsights
 
   return (
     <Flex px={2}>
@@ -55,3 +57,13 @@ const fragment = graphql`
     }
   }
 `
+
+// An insight only renders if it has a description or at least one entity.
+// Both the parent and this component must filter on this so as to correctly
+// show/hide the entire section, as well as individual insights.
+export const isRenderableArtistInsight = (insight: {
+  description?: string | null
+  entities?: readonly string[] | null
+}): boolean => {
+  return !!insight.description || (insight.entities?.length ?? 0) > 0
+}

@@ -15,7 +15,7 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
-import { ArtistCareerHighlights } from "./ArtistCareerHighlights"
+import { ArtistCareerHighlights, isRenderableArtistInsight } from "./ArtistCareerHighlights"
 
 interface ArtistAboutProps {
   artist: ArtistAbout_artist$key
@@ -29,7 +29,7 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
   const relatedGenes = extractNodes(artist.related?.genes)
 
-  const hasInsights = artist.hasArtistInsights.length > 0
+  const hasInsights = artist.insights.filter(isRenderableArtistInsight).length > 0
   const hasArtistSeries = (artist.hasArtistSeriesConnection?.totalCount ?? 0) > 0
   const hasShows = (artist.hasArtistShows?.totalCount ?? 0) > 0
   const hasBiography = !!artist.hasBiographyBlurb?.text
@@ -120,8 +120,9 @@ const artistAboutFragment = graphql`
       text
     }
     internalID
-    hasArtistInsights: insights {
+    insights {
       entities
+      description
     }
     hasArtistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
       totalCount
