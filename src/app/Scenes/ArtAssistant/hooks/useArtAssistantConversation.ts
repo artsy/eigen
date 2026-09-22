@@ -25,7 +25,6 @@ type NormalizedAgentEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["
 
 export interface ActiveTurn {
   message: AssistantMessage
-  streamedText: string
   didReceiveTerminalEvent: boolean
 }
 
@@ -105,7 +104,6 @@ export const useArtAssistantConversation = () => {
       }
       let activeTurn: ActiveTurn = {
         message: assistantMessage,
-        streamedText: "",
         didReceiveTerminalEvent: false,
       }
       const trackFailure = (
@@ -139,8 +137,7 @@ export const useArtAssistantConversation = () => {
 
         activeTurn = nextTurn
 
-        // A text delta only grows `streamedText`; the rendered message is the same object, so
-        // skip the state update instead of re-rendering the whole list on every token.
+        // Events that do not change the rendered message should not re-render the whole list.
         if (nextTurn.message === previousMessage) {
           return
         }
@@ -320,7 +317,7 @@ export const useArtAssistantConversation = () => {
 export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent): ActiveTurn => {
   switch (event.__typename) {
     case "AIAgentTextDelta":
-      return { ...turn, streamedText: turn.streamedText + event.text }
+      return turn
     case "AIAgentToolCall":
       return {
         ...turn,
@@ -331,9 +328,9 @@ export const reduceActiveTurn = (turn: ActiveTurn, event: NormalizedAgentEvent):
       // network chunk, so replacing it with Thinking here could prevent it from rendering at all.
       return turn
     case "AIAgentTurnComplete": {
-      const text = event.message ?? turn.streamedText
+      const text = event.message
 
-      if (!text) {
+      if (!text?.trim()) {
         return failActiveTurn({ ...turn, didReceiveTerminalEvent: true })
       }
 

@@ -22,7 +22,7 @@ jest.mock("app/system/flags/hooks/useExperimentFlag", () => ({
 }))
 
 describe("Art Assistant conversation reducer", () => {
-  it("keeps text deltas private until the terminal event", () => {
+  it("ignores text deltas until the terminal event", () => {
     const responding = createActiveTurn()
 
     const streaming = reduceActiveTurn(responding, {
@@ -30,7 +30,7 @@ describe("Art Assistant conversation reducer", () => {
       text: "A partial answer",
     })
 
-    expect(streaming.streamedText).toBe("A partial answer")
+    expect(streaming).toBe(responding)
     expect(streaming.message.text).toBe("")
     expect(streaming.message.phase).toBe("responding")
   })
@@ -78,7 +78,7 @@ describe("Art Assistant conversation reducer", () => {
     })
   })
 
-  it("uses accumulated deltas when the terminal message is null", () => {
+  it("shows a generic error when the terminal message is null, even after text deltas", () => {
     const streaming = reduceActiveTurn(createActiveTurn(), {
       __typename: "AIAgentTextDelta",
       text: "Recovered answer",
@@ -92,7 +92,10 @@ describe("Art Assistant conversation reducer", () => {
       artworks: [],
     })
 
-    expect(result.message).toMatchObject({ phase: "complete", text: "Recovered answer" })
+    expect(result.message).toMatchObject({
+      phase: "error",
+      text: ART_ASSISTANT_GENERIC_ERROR,
+    })
   })
 
   it("includes previously shown artwork IDs in follow-up history", () => {
@@ -144,7 +147,7 @@ describe("useArtAssistantConversation", () => {
     act(() => {
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
-        message: null,
+        message: "Final answer",
         stopReason: "end_turn",
         toolCallCount: 0,
         artworks: [],
@@ -154,7 +157,7 @@ describe("useArtAssistantConversation", () => {
     expect(result.current.messages).not.toBe(messagesAfterSubmit)
     expect(result.current.messages.at(-1)).toMatchObject({
       phase: "complete",
-      text: "A partial answer",
+      text: "Final answer",
     })
   })
 
@@ -205,7 +208,6 @@ const emit = (
 type NormalizedEvent = NonNullable<ArtAssistantAgentTurnSubscription$data["aiAgentTurn"]>
 
 const createActiveTurn = (): ActiveTurn => ({
-  streamedText: "",
   didReceiveTerminalEvent: false,
   message: {
     id: "assistant",
@@ -344,6 +346,7 @@ describe("useArtAssistantConversation tracking", () => {
     const operation = environment.mock.getMostRecentOperation()
 
     act(() => {
+      emit(environment, operation, { __typename: "AIAgentTextDelta", text: "An unfinished answer" })
       emit(environment, operation, {
         __typename: "AIAgentTurnComplete",
         message: null,
