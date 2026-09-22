@@ -101,6 +101,7 @@ export const CityFilterPills: React.FC<CityFilterPillsProps> = ({
               testID={`city-filter-pill-${tab.id}`}
               mr={0.5}
               variant="link"
+              color={selected ? "mono0" : "mono100"}
               selected={selected}
               accessibilityState={{ selected }}
               onPress={() => onSelectTab(tab)}

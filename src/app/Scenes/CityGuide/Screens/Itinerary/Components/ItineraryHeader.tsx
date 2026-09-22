@@ -44,16 +44,16 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
             {/* The designs label your own itinerary above its name. A curated guide has its
                 byline instead, below. */}
             {!itinerary.isCurated && (
-              <Text variant="xs" color="mono0">
+              <Text variant="xs" color="white">
                 Your Itinerary
               </Text>
             )}
 
-            <Text variant="xl" color="mono0">
+            <Text variant="xl" color="white">
               {itinerary.title}
             </Text>
             {!!itinerary.subtitle && (
-              <Text variant="sm" color="mono0">
+              <Text variant="sm" color="white">
                 {itinerary.subtitle}
               </Text>
             )}
