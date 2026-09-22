@@ -57,7 +57,7 @@ describe("CityFilterPills", () => {
     expect(onSelectTab).toHaveBeenCalledWith(cityTabs.find((tab) => tab.id === "museums"))
   })
 
-  it("pushes tabs without results to the end and disables them", () => {
+  it("does not render tabs without results", () => {
     renderWithWrappers(
       <CityFilterPills
         selectedTabId="all"
@@ -67,15 +67,14 @@ describe("CityFilterPills", () => {
       />
     )
 
-    // The last two pills rendered should be the ones without results (Fairs, Museums).
-    const renderedOrder = screen.getAllByTestId(/^city-filter-pill-/).map((el) => el.props.testID)
-
-    expect(renderedOrder.slice(-2)).toEqual(
-      expect.arrayContaining(["city-filter-pill-fairs", "city-filter-pill-museums"])
-    )
+    expect(screen.queryByText("Fairs")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
+    expect(screen.getByText("All")).toBeOnTheScreen()
+    expect(screen.getByText("Saved")).toBeOnTheScreen()
+    expect(screen.getByText("Galleries")).toBeOnTheScreen()
   })
 
-  it("does not call onSelectTab for a disabled (empty) tab", () => {
+  it("renders only the All pill when every other tab is empty", () => {
     const onSelectTab = jest.fn()
     renderWithWrappers(
       <CityFilterPills
@@ -86,9 +85,29 @@ describe("CityFilterPills", () => {
       />
     )
 
-    fireEvent.press(screen.getByText("Saved"))
+    expect(screen.getByText("All")).toBeOnTheScreen()
+    expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Fairs")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Galleries")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
+  })
 
-    expect(onSelectTab).not.toHaveBeenCalled()
+  it("falls back to highlighting All when the selected tab has no results", () => {
+    // Simulates the drawer/pager selecting a tab that CityFilterPills has hidden because it
+    // has no results — the pill row should still show a sensible highlight, not none at all.
+    renderWithWrappers(
+      <CityFilterPills
+        selectedTabId="museums"
+        onSelectTab={jest.fn()}
+        bottomSheetAnimatedIndex={bottomSheetAnimatedIndex}
+        bucketResults={{ ...bucketResultsWithResults, museums: [] }}
+      />
+    )
+
+    expect(screen.queryByText("Museums")).not.toBeOnTheScreen()
+    expect(screen.getByTestId("city-filter-pill-all")).toHaveProp("accessibilityState", {
+      selected: true,
+    })
   })
 
   it("renders fine with bottomSheetAnimatedIndex omitted", () => {
