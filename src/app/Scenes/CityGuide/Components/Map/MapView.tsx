@@ -166,13 +166,15 @@ export const MapView: React.FC<Props> = ({
       bounds: {
         ne: [maxLng, maxLat] as [number, number],
         sw: [minLng, minLat] as [number, number],
-        paddingTop: BOUNDS_PADDING + overlayHeight,
+        // `top` (the safe-area inset) clears the notch/Dynamic Island even when there's no
+        // pills row yet to push pins down (e.g. a single-section itinerary shows no pills).
+        paddingTop: BOUNDS_PADDING + top + overlayHeight,
         paddingBottom: BOUNDS_PADDING,
         paddingLeft: BOUNDS_PADDING,
         paddingRight: BOUNDS_PADDING,
       },
     }
-  }, [visible, overlayHeight])
+  }, [visible, overlayHeight, top])
 
   // The first frame comes from defaultSettings, not the effect below — on mount the camera
   // ref isn't attached yet, so an imperative setCamera silently no-ops.
