@@ -94,7 +94,11 @@ const CityGuideNewSectionsWithSuspense = withSuspense({
   ErrorFallback: NoFallback,
 })
 
-export const CityGuideNew: React.FC = () => {
+interface CityGuideNewProps {
+  citySlug?: string
+}
+
+export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselectedCitySlug }) => {
   const [showCityPicker, setShowCityPicker] = useState(false)
 
   /*
@@ -139,8 +143,9 @@ export const CityGuideNew: React.FC = () => {
     [viewportHeight]
   )
 
-  // Same order the map's City Guide uses: where you were last, else nearest, else New York.
-  const initialCitySlug = useInitialLocation()
+  // Same order the map's City Guide uses: preselected via URL, else where you were last, else
+  // nearest, else New York.
+  const initialCitySlug = useInitialLocation(preselectedCitySlug)
   const [city, setCity] = useState<CityData>(
     () => cities.find((option) => option.slug === initialCitySlug) ?? fallbackCity
   )

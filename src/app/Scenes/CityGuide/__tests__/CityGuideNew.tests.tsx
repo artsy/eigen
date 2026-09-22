@@ -47,6 +47,30 @@ describe("CityGuideNew", () => {
   // reachably distinct from the switcher, so driving a selection is unreliable. The two
   // cases above cover what a user sees.
 
+  it("prefers a valid preselected city slug over the previously selected city", () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
+    })
+
+    renderWithWrappers(<CityGuideNew citySlug="london-united-kingdom" />)
+
+    expect(
+      within(screen.getByTestId("city-guide-city-switcher")).getByText("London")
+    ).toBeOnTheScreen()
+  })
+
+  it("falls back to the previously selected city when the preselected slug is invalid", () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
+    })
+
+    renderWithWrappers(<CityGuideNew citySlug="not-a-real-city" />)
+
+    expect(
+      within(screen.getByTestId("city-guide-city-switcher")).getByText("Berlin")
+    ).toBeOnTheScreen()
+  })
+
   it("tracks the screen view against the city it opened on", () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
