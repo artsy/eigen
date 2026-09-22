@@ -1,6 +1,5 @@
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ItineraryHeader_itinerary$key } from "__generated__/ItineraryHeader_itinerary.graphql"
-import { ItineraryAddFullListButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryAddFullListButton"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 
@@ -70,24 +69,11 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
       )}
 
       <Flex px={2} pt={itinerary.isCurated ? 2 : 0}>
-        {/* Both belong to a curated guide: your own list has no byline and nothing to bulk-add. */}
-        {!!itinerary.isCurated && (
-          <>
-            <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-              {!!itinerary.authorName && (
-                <Text variant="xs" color="mono60">
-                  By {itinerary.authorName}
-                </Text>
-              )}
-
-              <ItineraryAddFullListButton
-                citySlug={itinerary.citySlug}
-                itineraryId={itinerary.internalID}
-                itinerarySlug={itinerary.slug ?? undefined}
-                title={itinerary.title}
-              />
-            </Flex>
-          </>
+        {/* Only a curated guide has a byline: your own list has none. */}
+        {!!itinerary.isCurated && !!itinerary.authorName && (
+          <Text variant="xs" color="mono60">
+            By {itinerary.authorName}
+          </Text>
         )}
 
         {!!itinerary.description && (
@@ -102,10 +88,7 @@ export const ItineraryHeader: React.FC<Props> = ({ itinerary: itineraryRef, topI
 
 const fragment = graphql`
   fragment ItineraryHeader_itinerary on Itinerary {
-    internalID
     isCurated
-    citySlug
-    slug
     title
     subtitle
     description
