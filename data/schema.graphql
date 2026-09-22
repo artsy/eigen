@@ -8631,6 +8631,11 @@ enum ChannelType {
 
 type City {
   """
+  This city's attached editorial articles, in order.
+  """
+  cityArticles: [CityArticle!]!
+
+  """
   A connection of City Guide events for this city
   """
   cityGuideEventsConnection(
@@ -8646,6 +8651,11 @@ type City {
     """
     status: CityGuideEventStatus
   ): CityGuideEventsConnection
+
+  """
+  This city's attached videos, in order.
+  """
+  cityVideos: [CityVideo!]!
   coordinates: LatLng
   fairsConnection(
     after: String
@@ -8693,6 +8703,36 @@ type City {
   ): ShowConnection
   slug: String!
   sponsoredContent: CitySponsoredContent
+}
+
+type CityArticle {
+  article: Article!
+  citySlug: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The attachment's own UUID, not the article's
+  """
+  internalID: String!
+  position: Int!
+}
+
+type CityArticleMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union CityArticleMutationResponseOrError = CityArticleMutationFailure | CityArticleMutationSuccess
+
+type CityArticleMutationSuccess {
+  """
+  The city's articles, in their new order.
+  """
+  articles: [CityArticle!]!
+  citySlug: String!
 }
 
 type CityGuideEvent {
@@ -8868,6 +8908,37 @@ type CitySponsoredContent {
     sort: ShowSorts
     status: EventStatus
   ): ShowConnection
+}
+
+type CityVideo {
+  citySlug: String!
+
+  """
+  A globally unique ID.
+  """
+  id: ID!
+
+  """
+  The attachment's own UUID, not the video's
+  """
+  internalID: String!
+  position: Int!
+  video: Video!
+}
+
+type CityVideoMutationFailure {
+  mutationError: GravityMutationError
+}
+
+union CityVideoMutationResponseOrError = CityVideoMutationFailure | CityVideoMutationSuccess
+
+type CityVideoMutationSuccess {
+  citySlug: String!
+
+  """
+  The city's videos, in their new order.
+  """
+  videos: [CityVideo!]!
 }
 
 """
@@ -26696,6 +26767,11 @@ type Mutation {
   ): CreateCatalogArtworkDocumentMutationPayload
 
   """
+  Attach an editorial article to a city, at the end of its list. Needs the editorial or content_manager role.
+  """
+  createCityArticle(input: createCityArticleInput!): createCityArticlePayload
+
+  """
   Create a city guide event. Needs the editorial or content-manager role.
   """
   createCityGuideEvent(input: createCityGuideEventInput!): createCityGuideEventPayload
@@ -26713,6 +26789,11 @@ type Mutation {
   createCityGuideEventItinerary(
     input: createCityGuideEventItineraryInput!
   ): createCityGuideEventItineraryPayload
+
+  """
+  Attach a video to a city, at the end of its list. Needs the editorial or content_manager role.
+  """
+  createCityVideo(input: createCityVideoInput!): createCityVideoPayload
 
   """
   Create a collection
@@ -27030,6 +27111,11 @@ type Mutation {
   ): DeleteCatalogArtworkDocumentMutationPayload
 
   """
+  Detach an article from a city. Needs the editorial or content_manager role.
+  """
+  deleteCityArticle(input: deleteCityArticleInput!): deleteCityArticlePayload
+
+  """
   Delete a city guide event and its itinerary attachments. The itineraries themselves are left alone.
   """
   deleteCityGuideEvent(input: deleteCityGuideEventInput!): deleteCityGuideEventPayload
@@ -27047,6 +27133,11 @@ type Mutation {
   deleteCityGuideEventItinerary(
     input: deleteCityGuideEventItineraryInput!
   ): deleteCityGuideEventItineraryPayload
+
+  """
+  Detach a video from a city. Needs the editorial or content_manager role.
+  """
+  deleteCityVideo(input: deleteCityVideoInput!): deleteCityVideoPayload
 
   """
   Delete a collection
@@ -27746,6 +27837,11 @@ type Mutation {
   updateCatalogEditionSet(input: UpdateCatalogEditionSetInput!): UpdateCatalogEditionSetPayload
 
   """
+  Move an article within its city's list. Needs the editorial or content_manager role.
+  """
+  updateCityArticle(input: updateCityArticleInput!): updateCityArticlePayload
+
+  """
   Update a city guide event. Only the fields sent are changed.
   """
   updateCityGuideEvent(input: updateCityGuideEventInput!): updateCityGuideEventPayload
@@ -27763,6 +27859,11 @@ type Mutation {
   updateCityGuideEventItinerary(
     input: updateCityGuideEventItineraryInput!
   ): updateCityGuideEventItineraryPayload
+
+  """
+  Move a video within its city's list. Needs the editorial or content_manager role.
+  """
+  updateCityVideo(input: updateCityVideoInput!): updateCityVideoPayload
 
   """
   Update a collection
@@ -45412,6 +45513,24 @@ type createBuyerOfferPayload {
   offerOrError: OfferMutationResponse
 }
 
+input createCityArticleInput {
+  """
+  The Positron article's id.
+  """
+  articleID: String!
+
+  """
+  The city slug, e.g. london-united-kingdom.
+  """
+  citySlug: String!
+  clientMutationId: String
+}
+
+type createCityArticlePayload {
+  clientMutationId: String
+  responseOrError: CityArticleMutationResponseOrError
+}
+
 input createCityGuideEventArticleInput {
   """
   The Positron article's id.
@@ -45492,6 +45611,24 @@ type createCityGuideEventItineraryPayload {
 type createCityGuideEventPayload {
   clientMutationId: String
   responseOrError: CityGuideEventMutationResponseOrError
+}
+
+input createCityVideoInput {
+  """
+  The city slug, e.g. london-united-kingdom.
+  """
+  citySlug: String!
+  clientMutationId: String
+
+  """
+  The Gravity Video's id.
+  """
+  videoID: String!
+}
+
+type createCityVideoPayload {
+  clientMutationId: String
+  responseOrError: CityVideoMutationResponseOrError
 }
 
 input createCollectionInput {
@@ -45715,6 +45852,20 @@ type deleteAlertPayload {
   responseOrError: DeleteAlertResponseOrError
 }
 
+input deleteCityArticleInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the article's).
+  """
+  id: String!
+}
+
+type deleteCityArticlePayload {
+  clientMutationId: String
+  responseOrError: CityArticleMutationResponseOrError
+}
+
 input deleteCityGuideEventArticleInput {
   clientMutationId: String
 
@@ -45755,6 +45906,20 @@ type deleteCityGuideEventItineraryPayload {
 type deleteCityGuideEventPayload {
   clientMutationId: String
   responseOrError: CityGuideEventMutationResponseOrError
+}
+
+input deleteCityVideoInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the video's).
+  """
+  id: String!
+}
+
+type deleteCityVideoPayload {
+  clientMutationId: String
+  responseOrError: CityVideoMutationResponseOrError
 }
 
 input deleteCollectionInput {
@@ -46292,6 +46457,25 @@ type updateBuyerOfferPayload {
   offerOrError: OfferMutationResponse
 }
 
+input updateCityArticleInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the article's).
+  """
+  id: String!
+
+  """
+  Zero-based position among the city's articles, via acts_as_list's insert_at.
+  """
+  position: Int!
+}
+
+type updateCityArticlePayload {
+  clientMutationId: String
+  responseOrError: CityArticleMutationResponseOrError
+}
+
 input updateCityGuideEventArticleInput {
   clientMutationId: String
 
@@ -46379,6 +46563,25 @@ type updateCityGuideEventItineraryPayload {
 type updateCityGuideEventPayload {
   clientMutationId: String
   responseOrError: CityGuideEventMutationResponseOrError
+}
+
+input updateCityVideoInput {
+  clientMutationId: String
+
+  """
+  The attachment's id (not the video's).
+  """
+  id: String!
+
+  """
+  Zero-based position among the city's videos, via acts_as_list's insert_at.
+  """
+  position: Int!
+}
+
+type updateCityVideoPayload {
+  clientMutationId: String
+  responseOrError: CityVideoMutationResponseOrError
 }
 
 input updateCollectionInput {

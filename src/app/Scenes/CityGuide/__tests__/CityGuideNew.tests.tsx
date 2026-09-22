@@ -116,9 +116,9 @@ describe("CityGuideNew", () => {
 
   describe("the editorial sections", () => {
     /**
-     * One current event carrying both a video and an article, which is what the designs show.
-     * The flushes matter: the query is issued under a suspense boundary, so it is not pending
-     * on the first tick, and the sections only mount once the payload has propagated.
+     * A city with one attached video and one attached article, which is what the designs
+     * show. The flushes matter: the query is issued under a suspense boundary, so it is not
+     * pending on the first tick, and the sections only mount once the payload has propagated.
      */
     /** The visible scroll area, which is the screen without the header or the bottom tabs. */
     const VIEWPORT_HEIGHT = 700
@@ -145,36 +145,33 @@ describe("CityGuideNew", () => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             ...DefaultMockResolvers,
-            CityGuideEventsConnection: () => ({
-              edges: [
-                {
-                  node: {
-                    internalID: "london-art-week",
-                    itineraries: [],
-                    video: withVideo
-                      ? {
-                          internalID: "video-1",
-                          playerUrl: "https://player.vimeo.com/video/76979871",
-                          width: 352,
-                          height: 471,
-                          aspectRatio: 0.75,
-                        }
-                      : null,
-                    articles: [
-                      {
-                        internalID: "attachment-1",
-                        position: 0,
-                        article: {
-                          internalID: "article-1",
-                          title: "An Art Lover's Guide to London (headline)",
-                          thumbnailTitle: "An Art Lover's Guide to London",
-                          byline: "Natalie Stoclet",
-                          href: "/article/an-art-lovers-guide-to-london",
-                          publishedAt: "July 19, 2026",
-                          thumbnailImage: { url: "https://example.com/thumb.jpg" },
-                        },
+            City: () => ({
+              cityVideos: withVideo
+                ? [
+                    {
+                      internalID: "video-attachment-1",
+                      video: {
+                        internalID: "video-1",
+                        playerUrl: "https://player.vimeo.com/video/76979871",
+                        width: 352,
+                        height: 471,
+                        aspectRatio: 0.75,
                       },
-                    ],
+                    },
+                  ]
+                : [],
+              cityArticles: [
+                {
+                  internalID: "attachment-1",
+                  position: 0,
+                  article: {
+                    internalID: "article-1",
+                    title: "An Art Lover's Guide to London (headline)",
+                    thumbnailTitle: "An Art Lover's Guide to London",
+                    byline: "Natalie Stoclet",
+                    href: "/article/an-art-lovers-guide-to-london",
+                    publishedAt: "July 19, 2026",
+                    thumbnailImage: { url: "https://example.com/thumb.jpg" },
                   },
                 },
               ],

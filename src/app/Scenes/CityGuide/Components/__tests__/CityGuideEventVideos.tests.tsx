@@ -11,13 +11,13 @@ describe("CityGuideEventVideos", () => {
   const { renderWithRelay } = setupTestWrapper<CityGuideEventVideosTestQuery>({
     Component: (props: any) => <CityGuideEventVideos {...props} pageHeight={PAGE_HEIGHT} />,
     query: graphql`
-      query CityGuideEventVideosTestQuery($citySlug: String!, $first: Int!) @relay_test_operation {
+      query CityGuideEventVideosTestQuery($citySlug: String!) @relay_test_operation {
         city(slug: $citySlug) {
-          ...CityGuideEventVideos_city @arguments(first: $first)
+          ...CityGuideEventVideos_city
         }
       }
     `,
-    variables: { citySlug: "london-united-kingdom", first: 10 },
+    variables: { citySlug: "london-united-kingdom" },
   })
 
   const video = (overrides: object = {}) => ({
@@ -29,13 +29,13 @@ describe("CityGuideEventVideos", () => {
     ...overrides,
   })
 
-  const event = (videoValue: object | null, internalID = "id-for-london-art-week") => ({
+  const attachment = (videoValue: object, internalID = "id-for-video-attachment") => ({
     internalID,
     video: videoValue,
   })
 
-  const connection = (eventNodes: object[]) => ({
-    CityGuideEventsConnection: () => ({ edges: eventNodes.map((node) => ({ node })) }),
+  const cityVideos = (attachments: object[]) => ({
+    City: () => ({ cityVideos: attachments }),
   })
 
   /**
@@ -54,14 +54,14 @@ describe("CityGuideEventVideos", () => {
   }
 
   it("renders the static, unpressable section title", async () => {
-    renderWithRelay(connection([event(video())]))
+    renderWithRelay(cityVideos([attachment(video())]))
 
     expect(await screen.findByText("Videos")).toBeOnTheScreen()
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
   })
 
-  it("renders a player for the event's video", async () => {
-    renderWithRelay(connection([event(video())]))
+  it("renders a player for the attached video", async () => {
+    renderWithRelay(cityVideos([attachment(video())]))
     await layoutPages()
 
     expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
@@ -73,7 +73,7 @@ describe("CityGuideEventVideos", () => {
     can never snap flush.
   */
   it("sizes every page to the viewport it was given", async () => {
-    renderWithRelay(connection([event(video())]))
+    renderWithRelay(cityVideos([attachment(video())]))
 
     const page = (await screen.findAllByTestId("city-guide-video-page"))[0]
     const { height: screenHeight } = require("react-native").Dimensions.get("window")
@@ -86,7 +86,7 @@ describe("CityGuideEventVideos", () => {
   // is what decides the height. Asserting the relationship rather than the pixels keeps this
   // independent of the test renderer's screen width.
   it("sizes the player from the video's own aspect ratio, keeping it portrait", async () => {
-    renderWithRelay(connection([event(video())]))
+    renderWithRelay(cityVideos([attachment(video())]))
     await layoutPages(2000)
 
     const player = screen.getByTestId("FeatureVideo")
@@ -96,7 +96,7 @@ describe("CityGuideEventVideos", () => {
   })
 
   it("falls back to the width/height pair when aspectRatio is absent", async () => {
-    renderWithRelay(connection([event(video({ aspectRatio: null }))]))
+    renderWithRelay(cityVideos([attachment(video({ aspectRatio: null }))]))
     await layoutPages(2000)
 
     const player = screen.getByTestId("FeatureVideo")
@@ -106,28 +106,21 @@ describe("CityGuideEventVideos", () => {
 
   // Letterboxed rather than overflowing its page when the clip is taller than the space.
   it("never makes the player taller than its page", async () => {
-    renderWithRelay(connection([event(video())]))
+    renderWithRelay(cityVideos([attachment(video())]))
     await layoutPages(300)
 
     expect(screen.getByTestId("FeatureVideo").props.height).toBeLessThanOrEqual(300)
   })
 
-  it("renders a player per current event that has a video", async () => {
-    renderWithRelay(connection([event(video()), event(video(), "second-event")]))
+  it("renders a player per video attached to the city", async () => {
+    renderWithRelay(cityVideos([attachment(video()), attachment(video(), "second-attachment")]))
     await layoutPages()
 
     expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(2)
   })
 
-  it("skips an event with no video", async () => {
-    renderWithRelay(connection([event(null), event(video(), "second-event")]))
-    await layoutPages()
-
-    expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
-  })
-
-  it("renders nothing, heading included, when no event has a video", () => {
-    renderWithRelay(connection([event(null)]))
+  it("renders nothing, heading included, when the city has no videos", () => {
+    renderWithRelay(cityVideos([]))
 
     expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
     expect(screen.queryByText("Videos")).not.toBeOnTheScreen()
@@ -138,7 +131,7 @@ describe("CityGuideEventVideos", () => {
     as an empty heading. It is counted as no video rather than as a video that fails to draw.
   */
   it("ignores a video the player cannot handle", () => {
-    renderWithRelay(connection([event(video({ playerUrl: "https://example.com/clip.mp4" }))]))
+    renderWithRelay(cityVideos([attachment(video({ playerUrl: "https://example.com/clip.mp4" }))]))
 
     expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
     expect(screen.queryByTestId("FeatureVideo")).not.toBeOnTheScreen()
