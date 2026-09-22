@@ -20,5 +20,4 @@ export type ArtAssistantMessage =
       phase: "responding" | "complete" | "error"
       activity?: string
       artworkRail?: ArtAssistantArtworkRailState
-      errorMessage?: string
     }
