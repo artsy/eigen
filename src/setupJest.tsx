@@ -329,22 +329,23 @@ jest.mock("react-native-reanimated", () => {
     ...mock,
     // Left out of the stock mock ("ADD ME IF NEEDED"); react-native-drax calls it.
     useReducedMotion: () => false,
-    // The stock mock's shared value has `get`/`set` but no `modify`, which drax uses to
-    // update its registry in place.
+    // The stock mock's shared value is a Proxy whose `set` trap rejects any property but
+    // `value`, so `modify`, which drax uses to update its registry in place, can't be
+    // attached to it after the fact. Reimplement the shared value as a plain object instead.
     useSharedValue: (init: unknown) => {
-      const sharedValue = mock.useSharedValue(init)
-
-      return new Proxy(sharedValue, {
-        get(target: any, prop) {
-          if (prop === "modify") {
-            return (modifier: (current: unknown) => unknown) => {
-              target.value = modifier(target.value)
-            }
-          }
-
-          return target[prop]
+      const sharedValue = {
+        value: init,
+        get: () => sharedValue.value,
+        set: (newValue: unknown) => {
+          sharedValue.value =
+            typeof newValue === "function" ? (newValue as Function)(sharedValue.value) : newValue
         },
-      })
+        modify: (modifier: (current: unknown) => unknown) => {
+          sharedValue.value = modifier(sharedValue.value)
+        },
+      }
+
+      return sharedValue
     },
   }
 })
