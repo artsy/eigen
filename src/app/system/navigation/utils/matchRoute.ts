@@ -42,7 +42,14 @@ function isProtocolEncoded(url: string): boolean {
 }
 
 function isEncoded(url: string): boolean {
-  return url !== decodeURIComponent(url)
+  try {
+    return url !== decodeURIComponent(url)
+  } catch {
+    // A stray `%` that isn't a valid escape (e.g. a literal "%" in a query value, like
+    // "100%") can't be decoded any further — treat it as already fully decoded rather than
+    // throwing and aborting the whole match.
+    return false
+  }
 }
 
 function decodeUrl(url: string): string {
@@ -68,11 +75,24 @@ function decodeProtocolURL(maybeEncodedURL: string): string {
 }
 
 function parseURL(url: string) {
-  let parsed = parse(url)
+  const parsed = parse(url)
   if (parsed.host && isEncoded(url)) {
     // likely from a deeplinked universal link as we do not pass urls with host in app
     // special characters in paths passed as props in app must be intentional
-    parsed = parse(decodeUrl(url))
+    const decoded = parse(decodeUrl(url))
+
+    // A URL with a literal `?` already separated its query at the raw level, so that query's
+    // values are singly percent-encoded and get decoded properly downstream by
+    // `parseQueryString`. Re-decoding the whole URL here would decode them a second time —
+    // e.g. a `+` in a base64 `shareToken` survives as `%2B`, gets decoded back to `+` here,
+    // then read as a literal space by `parseQueryString`. Only the pathname needs this extra
+    // decode, for links whose special characters (or the `?` itself) arrived percent-encoded
+    // from an upstream redirector.
+    if (parsed.query) {
+      return { ...decoded, query: parsed.query, search: parsed.search }
+    }
+
+    return decoded
   }
 
   return parsed
