@@ -9,13 +9,24 @@ import {
   InstitutionIcon,
   PublicationIcon,
 } from "@artsy/icons/native"
-import { Flex, FlexProps, Pill, Skeleton, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  Flex,
+  FlexProps,
+  Pill,
+  Skeleton,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
   HomeViewSectionNavigationPills_section$data,
   HomeViewSectionNavigationPills_section$key,
 } from "__generated__/HomeViewSectionNavigationPills_section.graphql"
+import { Pin } from "app/Components/Icons/Pin"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { FeaturedPillGlow } from "app/Scenes/HomeView/Sections/Components/FeaturedPillGlow"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -108,30 +119,35 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         ]}
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: pill, index }) => (
-          <RouterLink
-            hasChildTouchable
-            to={pill.href}
-            key={pill.title}
-            onPress={() => {
-              tracking.tappedNavigationPillsGroup({
-                title: pill.title,
-                href: pill.href,
-                index: index,
-              })
-            }}
-          >
-            <Pill
-              accessibilityLabel={pill.title}
-              accessibilityRole="link"
-              testID={`pill-${pill.title}`}
-              variant="link"
-              Icon={SUPPORTED_ICONS[pill.icon as string]}
+          <Flex key={pill.title} style={{ position: "relative" }}>
+            <RouterLink
+              hasChildTouchable
+              to={pill.href}
+              onPress={() => {
+                tracking.tappedNavigationPillsGroup({
+                  title: pill.title,
+                  href: pill.href,
+                  index: index,
+                })
+              }}
             >
-              <Text variant="xs" color="mono100">
-                {pill.title}
-              </Text>
-            </Pill>
-          </RouterLink>
+              <Pill
+                accessibilityLabel={pill.title}
+                accessibilityRole="link"
+                testID={`pill-${pill.title}`}
+                variant="link"
+                Icon={SUPPORTED_ICONS[pill.icon as string]}
+              >
+                <Text variant="xs" color="mono100">
+                  {pill.title}
+                </Text>
+              </Pill>
+            </RouterLink>
+
+            {/* Painted after the pill, not before: `Pill`'s own opaque background would
+                otherwise cover the ring, since both share the same box. */}
+            {!!pill.isFeatured && <FeaturedPillGlow />}
+          </Flex>
         )}
       />
 
@@ -152,6 +168,7 @@ const sectionFragment = graphql`
       href
       ownerType
       icon
+      isFeatured
     }
   }
 `
@@ -231,13 +248,58 @@ export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionShared
 )
 
 export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
-  { title: "Follows", href: "/favorites", ownerType: "whatever", icon: "HeartIcon" },
-  { title: "Auctions", href: "/auctions", ownerType: "whatever", icon: "HeartIcon" },
-  { title: "Saves", href: "/favorites/saves", ownerType: "whatever", icon: "HeartIcon" },
-  { title: "Art under $1000", href: "/collect", ownerType: "whatever", icon: "HeartIcon" },
-  { title: "Price Database", href: "/price-database", ownerType: "whatever", icon: "HeartIcon" },
-  { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
+  {
+    title: "Follows",
+    href: "/favorites",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
+  {
+    title: "Auctions",
+    href: "/auctions",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
+  {
+    title: "Saves",
+    href: "/favorites/saves",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
+  {
+    title: "Art under $1000",
+    href: "/collect",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
+  {
+    title: "Price Database",
+    href: "/price-database",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
+  {
+    title: "Editorial",
+    href: "/news",
+    ownerType: "whatever",
+    icon: "HeartIcon",
+    isFeatured: false,
+  },
 ]
+
+const MapPinIcon = () => {
+  const color = useColor()
+  return (
+    <Flex mr={0.5}>
+      <Pin color={color("mono100")} pinWidth={16} pinHeight={16} />
+    </Flex>
+  )
+}
 
 const SUPPORTED_ICONS: Record<string, React.FC> = {
   ArtworkIcon,
@@ -248,4 +310,5 @@ const SUPPORTED_ICONS: Record<string, React.FC> = {
   ImageSetIcon,
   InstitutionIcon,
   PublicationIcon,
+  MapPinIcon,
 }
