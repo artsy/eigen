@@ -4,7 +4,6 @@ import { Flex, Image, Join, Separator, Text } from "@artsy/palette-mobile"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -85,27 +84,25 @@ interface Props {
 export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRef }) => {
   const city = useFragment(fragment, cityRef)
 
-  const rows: ArticleRow[] = extractNodes(city?.cityGuideEventsConnection).flatMap((event) =>
-    // The join row's own position, not the order the field happened to return — the
-    // attachments are reorderable in Forque, so this can't be assumed stable. Same as the
-    // itinerary attachments in CityGuideEventGuides.
-    [...event.articles]
-      .sort((a, b) => a.position - b.position)
-      .map((attachment) => ({
-        id: attachment.internalID,
-        articleId: attachment.article.internalID,
-        slug: attachment.article.slug ?? "",
-        // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
-        // the in-article headline, which can be longer.
-        title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
-        byline: attachment.article.byline ?? "",
-        publishedAt: attachment.article.publishedAt ?? "",
-        href: attachment.article.href ?? "",
-        imageUrl: attachment.article.thumbnailImage?.url ?? "",
-      }))
-  )
+  // The join row's own position, not the order the field happened to return — the
+  // attachments are reorderable in Forque, so this can't be assumed stable. Same as the
+  // itinerary attachments in CityGuideEventGuides.
+  const rows: ArticleRow[] = [...(city?.cityArticles ?? [])]
+    .sort((a, b) => a.position - b.position)
+    .map((attachment) => ({
+      id: attachment.internalID,
+      articleId: attachment.article.internalID,
+      slug: attachment.article.slug ?? "",
+      // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
+      // the in-article headline, which can be longer.
+      title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
+      byline: attachment.article.byline ?? "",
+      publishedAt: attachment.article.publishedAt ?? "",
+      href: attachment.article.href ?? "",
+      imageUrl: attachment.article.thumbnailImage?.url ?? "",
+    }))
 
-  // Metaphysics already drops attachments whose article is unpublished or deleted, so an event
+  // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
   if (!rows.length) {
     return null
@@ -126,27 +123,20 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
 }
 
 const fragment = graphql`
-  fragment CityGuideEventArticles_city on City @argumentDefinitions(first: { type: "Int!" }) {
-    cityGuideEventsConnection(first: $first, status: CURRENT) {
-      edges {
-        node {
-          internalID
-          articles {
-            internalID
-            position
-            article {
-              internalID
-              slug
-              title
-              thumbnailTitle
-              byline
-              href
-              publishedAt(format: "MMMM D, YYYY")
-              thumbnailImage {
-                url
-              }
-            }
-          }
+  fragment CityGuideEventArticles_city on City {
+    cityArticles {
+      internalID
+      position
+      article {
+        internalID
+        slug
+        title
+        thumbnailTitle
+        byline
+        href
+        publishedAt(format: "MMMM D, YYYY")
+        thumbnailImage {
+          url
         }
       }
     }

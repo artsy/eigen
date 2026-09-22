@@ -249,8 +249,8 @@ const Query = graphql`
     }
     city(slug: $citySlug) {
       ...CityGuideEvents_city @arguments(first: $first)
-      ...CityGuideEventVideos_city @arguments(first: $first)
-      ...CityGuideEventArticles_city @arguments(first: $first)
+      ...CityGuideEventVideos_city
+      ...CityGuideEventArticles_city
     }
     ...CityGuideEventGuides_query @arguments(citySlug: $citySlug, first: $first)
   }

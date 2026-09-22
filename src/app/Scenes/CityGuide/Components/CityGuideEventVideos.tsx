@@ -1,8 +1,7 @@
-import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { CityGuideEventVideos_city$key } from "__generated__/CityGuideEventVideos_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
-import { extractNodes } from "app/utils/extractNodes"
 import { isValidVideoUrl } from "app/utils/videoHelpers"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -24,18 +23,16 @@ interface Props {
 export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef, pageHeight }) => {
   const city = useFragment(fragment, cityRef)
   const { width: screenWidth } = useScreenDimensions()
-  const space = useSpace()
 
   /*
-    An event carries at most one video, so this is one row per event that has one — not a
-    rail. Cities normally have a single current event, which is the one video the designs show.
+    A city has an ordered list of videos, attached directly rather than through an event.
 
     Filtered by `isValidVideoUrl` because that is what decides whether `FeatureVideo` renders
     a player at all: it bails on anything that isn't Vimeo or YouTube. Counting a video the
     player will refuse would leave the heading standing over blank space.
   */
-  const videos = extractNodes(city?.cityGuideEventsConnection).flatMap((event) =>
-    event.video && isValidVideoUrl(event.video.playerUrl) ? [event.video] : []
+  const videos = (city?.cityVideos ?? []).flatMap((attachment) =>
+    isValidVideoUrl(attachment.video.playerUrl) ? [attachment.video] : []
   )
 
   // No videos means no heading either: a "Videos" title over nothing reads as a broken screen.
@@ -45,7 +42,8 @@ export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef, pageHeigh
     return null
   }
 
-  const videoWidth = screenWidth - 2 * space(2)
+  // Full-bleed: no side gutters, unlike the heading above it.
+  const videoWidth = screenWidth
 
   return (
     <Flex testID="city-guide-event-videos" backgroundColor="black">
@@ -101,7 +99,7 @@ const VideoPage = ({
         list screen to send anyone to, so the heading is text rather than a tap target.
       */}
       {!!showHeading && (
-        <Flex px={2}>
+        <Flex px={2} pt={1}>
           <SectionTitle variant="large" title="Videos" titleColor="white" />
         </Flex>
       )}
@@ -109,7 +107,6 @@ const VideoPage = ({
       <Flex
         testID="city-guide-video-box"
         flex={1}
-        px={2}
         justifyContent="center"
         backgroundColor="black"
         onLayout={(event) => setBoxHeight(event.nativeEvent.layout.height)}
@@ -144,19 +141,15 @@ const videoAspectRatio = (video: {
 }
 
 const fragment = graphql`
-  fragment CityGuideEventVideos_city on City @argumentDefinitions(first: { type: "Int!" }) {
-    cityGuideEventsConnection(first: $first, status: CURRENT) {
-      edges {
-        node {
-          internalID
-          video {
-            internalID
-            playerUrl
-            width
-            height
-            aspectRatio
-          }
-        }
+  fragment CityGuideEventVideos_city on City {
+    cityVideos {
+      internalID
+      video {
+        internalID
+        playerUrl
+        width
+        height
+        aspectRatio
       }
     }
   }

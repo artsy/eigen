@@ -19,14 +19,13 @@ describe("CityGuideEventArticles", () => {
       <CityGuideEventArticles {...props} citySlug="london-united-kingdom" />
     ),
     query: graphql`
-      query CityGuideEventArticlesTestQuery($citySlug: String!, $first: Int!)
-      @relay_test_operation {
+      query CityGuideEventArticlesTestQuery($citySlug: String!) @relay_test_operation {
         city(slug: $citySlug) {
-          ...CityGuideEventArticles_city @arguments(first: $first)
+          ...CityGuideEventArticles_city
         }
       }
     `,
-    variables: { citySlug: "london-united-kingdom", first: 10 },
+    variables: { citySlug: "london-united-kingdom" },
   })
 
   beforeEach(() => {
@@ -49,24 +48,19 @@ describe("CityGuideEventArticles", () => {
     },
   })
 
-  const event = (articles: object[]) => ({
-    internalID: "id-for-london-art-week",
-    articles,
-  })
-
-  const connection = (eventNodes: object[]) => ({
-    CityGuideEventsConnection: () => ({ edges: eventNodes.map((node) => ({ node })) }),
+  const cityArticles = (attachments: object[]) => ({
+    City: () => ({ cityArticles: attachments }),
   })
 
   it("renders the static, unpressable section title", async () => {
-    renderWithRelay(connection([event([article("An Art Lover's Guide to London")])]))
+    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
   })
 
   it("renders each article's thumbnail, title, byline and date", async () => {
-    renderWithRelay(connection([event([article("An Art Lover's Guide to London")])]))
+    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     expect(await screen.findByTestId("event-article-image")).toHaveProp(
       "src",
@@ -81,11 +75,9 @@ describe("CityGuideEventArticles", () => {
 
   it("orders rows by the attachment's position, not the order the field returned", async () => {
     renderWithRelay(
-      connection([
-        event([
-          article("10 Exhibitions to see in London this summer", 1),
-          article("An Art Lover's Guide to London", 0),
-        ]),
+      cityArticles([
+        article("10 Exhibitions to see in London this summer", 1),
+        article("An Art Lover's Guide to London", 0),
       ])
     )
 
@@ -96,7 +88,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("navigates to the article when a row is tapped", async () => {
-    renderWithRelay(connection([event([article("An Art Lover's Guide to London")])]))
+    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
@@ -104,7 +96,7 @@ describe("CityGuideEventArticles", () => {
   })
 
   it("tracks the tap on an article row", async () => {
-    renderWithRelay(connection([event([article("An Art Lover's Guide to London")])]))
+    renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
@@ -123,28 +115,23 @@ describe("CityGuideEventArticles", () => {
 
   it("falls back to a placeholder for an article with no thumbnail", async () => {
     renderWithRelay(
-      connection([event([article("An Art Lover's Guide to London", 0, { thumbnailImage: null })])])
+      cityArticles([article("An Art Lover's Guide to London", 0, { thumbnailImage: null })])
     )
 
     expect(await screen.findByTestId("event-article-no-image")).toBeOnTheScreen()
     expect(screen.queryByTestId("event-article-image")).not.toBeOnTheScreen()
   })
 
-  it("renders rows from every current event", async () => {
-    renderWithRelay(
-      connection([
-        event([article("First")]),
-        { internalID: "second", articles: [article("Second")] },
-      ])
-    )
+  it("renders a row per article attached to the city", async () => {
+    renderWithRelay(cityArticles([article("First"), article("Second", 1)]))
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
   })
 
   // Metaphysics drops attachments whose article is unpublished or deleted, so this arrives as
-  // an event with an empty list rather than as no event at all.
+  // an empty list rather than as no field at all.
   it("renders nothing, heading included, when no article resolved", () => {
-    renderWithRelay(connection([event([])]))
+    renderWithRelay(cityArticles([]))
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artsy Editorial")).not.toBeOnTheScreen()
