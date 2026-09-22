@@ -28385,6 +28385,11 @@ type NavigationPill {
   icon: String
 
   """
+  Whether this link should be displayed as featured
+  """
+  isFeatured: Boolean!
+
+  """
   The context module for analytics
   """
   ownerType: String!
