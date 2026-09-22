@@ -320,7 +320,7 @@ describe("ItineraryScreen", () => {
 
   // `isCurated` alone can't distinguish your own itinerary from someone else's personal one
   // opened via their share link — only `isMine` can.
-  it("offers no way to edit someone else's personal itinerary opened via a share link", async () => {
+  it("offers no way to edit or share someone else's personal itinerary opened via a share link", async () => {
     renderWithRelay(
       { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: false, shareToken: "tok" }) },
       { ...props, shareToken: "tok" }
@@ -329,6 +329,7 @@ describe("ItineraryScreen", () => {
     await screen.findByText("Chill Vibes Only")
 
     expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
   })
 
   // `ItineraryStop.image` is the curator's uploaded one, and the app sends none when it
@@ -451,7 +452,7 @@ describe("ItineraryScreen", () => {
     })
 
     it("mints a share token for a personal itinerary and includes it in the link", async () => {
-      const own = { ...ITINERARY, isCurated: false, slug: null, shareToken: null }
+      const own = { ...ITINERARY, isCurated: false, isMine: true, slug: null, shareToken: null }
       const view = renderWithRelay({ Itinerary: () => own }, props)
 
       fireEvent.press(await screen.findByTestId("itinerary-share"))
