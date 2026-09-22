@@ -1,12 +1,11 @@
 import { ShareIcon } from "@artsy/icons/native"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { ItineraryShareButton_itinerary$key } from "__generated__/ItineraryShareButton_itinerary.graphql"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useItineraryShare } from "app/Scenes/CityGuide/hooks/useItineraryShare"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 const BUTTON_SIZE = 40
-const ICON_SIZE = 20
 
 // The Edit button sits directly to the left of this one with only a small gap between them
 // (FIREWORKS-48). The default hitSlop extends 20pt on every side, which reaches past that gap
@@ -34,7 +33,7 @@ export const ItineraryShareButton: React.FC<Props> = ({ itinerary: itineraryRef 
   }
 
   return (
-    <TouchableOpacity
+    <Touchable
       testID="itinerary-share"
       accessibilityRole="button"
       accessibilityLabel={`Share ${itinerary.title}`}
@@ -50,9 +49,9 @@ export const ItineraryShareButton: React.FC<Props> = ({ itinerary: itineraryRef 
         alignItems="center"
         justifyContent="center"
       >
-        <ShareIcon width={ICON_SIZE} height={ICON_SIZE} />
+        <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
 

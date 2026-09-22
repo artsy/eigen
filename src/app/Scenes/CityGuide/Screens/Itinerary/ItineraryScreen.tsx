@@ -13,6 +13,7 @@ import {
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
@@ -42,7 +43,11 @@ import { useTracking } from "react-tracking"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
-const EDIT_ICON_SIZE = 24
+
+// The Share button sits directly to the right of this one with only a small gap between them
+// (FIREWORKS-48, see ItineraryShareButton's own SHARE_HIT_SLOP). A full hitSlop would reach past
+// that gap — and into Share's own button — so the right side is left untouched here.
+const EDIT_HIT_SLOP = { top: 20, bottom: 20, left: 20, right: 0 }
 
 /**
  * Applies a section's locally-dragged stop order on top of the itinerary Relay handed back,
@@ -319,8 +324,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     accessibilityRole="button"
                     accessibilityLabel={`Edit ${itinerary.title}`}
                     onPress={() => setIsEditing(true)}
+                    hitSlop={EDIT_HIT_SLOP}
                   >
-                    <EditIcon width={EDIT_ICON_SIZE} height={EDIT_ICON_SIZE} />
+                    <EditIcon
+                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                    />
                   </Touchable>
                 )}
 
