@@ -1,6 +1,7 @@
 import {
   extractVimeoVideoDataFromUrl,
   extractYouTubeId,
+  getYouTubeThumbnailUrl,
   isValidVideoUrl,
   isVimeo,
   isYouTube,
@@ -117,6 +118,34 @@ describe("videoUtils.ts", () => {
       expect(extractYouTubeId("https://vimeo.com/123456")).toBe(null)
       expect(extractYouTubeId("not a url")).toBe(null)
       expect(extractYouTubeId("")).toBe(null)
+    })
+  })
+
+  describe("getYouTubeThumbnailUrl", () => {
+    it("builds the hqdefault thumbnail url from a youtube.com watch url", () => {
+      expect(getYouTubeThumbnailUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")).toBe(
+        "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+      )
+    })
+
+    it("builds the thumbnail url from a youtu.be short link", () => {
+      expect(getYouTubeThumbnailUrl("https://youtu.be/abc123XYZ")).toBe(
+        "https://img.youtube.com/vi/abc123XYZ/hqdefault.jpg"
+      )
+    })
+
+    it("builds the thumbnail url from a youtube embed link", () => {
+      expect(getYouTubeThumbnailUrl("https://youtube.com/embed/abc123?autoplay=1")).toBe(
+        "https://img.youtube.com/vi/abc123/hqdefault.jpg"
+      )
+    })
+
+    it("returns null for a vimeo url", () => {
+      expect(getYouTubeThumbnailUrl("https://player.vimeo.com/video/76979871")).toBe(null)
+    })
+
+    it("returns null for a youtube url with no video id", () => {
+      expect(getYouTubeThumbnailUrl("https://www.youtube.com/channel/UCxxxxxxx")).toBe(null)
     })
   })
 })

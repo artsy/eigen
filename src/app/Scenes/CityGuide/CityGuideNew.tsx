@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
+import { Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -29,27 +29,12 @@ const fallbackCity = cities.find((city) => city.slug === "new-york-ny-usa") as C
 /** Well above the number of rows any one of the three sections shows on the home screen. */
 const PAGE_SIZE = 10
 
-/**
- * How much of the first video page has to be showing before scrolling down commits to it.
- * This rides in `snapToOffsets` as an offset just above the block, because with `snapToStart`
- * off the scroll runs free below the *first* offset — so while the video's own top was that
- * first offset, coming down onto it never snapped, and only leaving it upwards did.
- */
-const VIDEO_ENTRY_VISIBLE_RATIO = 0.7
-
 interface SectionsProps {
   citySlug: string
   cityName: string
-  videoPageHeight: number
-  onVideosLayout: (layout: { y: number; height: number }) => void
 }
 
-const CityGuideNewSections: React.FC<SectionsProps> = ({
-  citySlug,
-  cityName,
-  videoPageHeight,
-  onVideosLayout,
-}) => {
+const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) => {
   const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE })
   const enableEditorialContent = useFeatureFlag("AREnableCityGuideEditorialContent")
 
@@ -71,19 +56,7 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
         the screen rather than inside that dark block, which is where the designs put them.
         `Join` drops falsy children, so the flag being off leaves no stray separator behind.
       */}
-      {!!enableEditorialContent && (
-        // Measured, not self-reporting: `y` here is the offset within the scroll content,
-        // which is what the scroll view needs to snap to. The videos themselves only know
-        // their own size.
-        <Flex
-          onLayout={(event) => {
-            const { y, height } = event.nativeEvent.layout
-            onVideosLayout({ y, height })
-          }}
-        >
-          <CityGuideEventVideos city={data.city} pageHeight={videoPageHeight} />
-        </Flex>
-      )}
+      {!!enableEditorialContent && <CityGuideEventVideos city={data.city} />}
 
       {!!enableEditorialContent && <CityGuideEventArticles citySlug={citySlug} city={data.city} />}
     </Join>
@@ -103,48 +76,6 @@ interface CityGuideNewProps {
 
 export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselectedCitySlug }) => {
   const [showCityPicker, setShowCityPicker] = useState(false)
-
-  /*
-    The scroll view's own visible height — the screen without the animated header or the
-    bottom tabs. Measured rather than assembled out of constants: the two pieces of chrome
-    and the safe-area insets all move between devices, and a page built from the raw screen
-    height runs under both and can never snap flush.
-  */
-  const [viewportHeight, setViewportHeight] = useState(0)
-  const [videoSnapOffsets, setVideoSnapOffsets] = useState<number[]>([])
-
-  /*
-    Turns the videos block into a run of viewport-height pages the scroll can stop on. Paired
-    with `snapToStart`/`snapToEnd` off, this is what makes the video behave like a story
-    page: everything above and below scrolls freely, but a release that would leave the
-    video half on screen resolves to either the page's top or the content after it.
-  */
-  const handleVideosLayout = useCallback(
-    ({ y, height }: { y: number; height: number }) => {
-      // The block collapses to nothing when the city has no video, and a zero-height
-      // "page" would otherwise pin the scroll to a single offset.
-      if (height < 1 || viewportHeight <= 0) {
-        setVideoSnapOffsets((current) => (current.length ? [] : current))
-        return
-      }
-
-      const pages = Math.max(1, Math.round(height / viewportHeight))
-      const pageOffsets = Array.from({ length: pages + 1 }, (_, page) => y + page * viewportHeight)
-
-      // Clamped so a video sitting near the top of the content can't produce an offset above
-      // the scroll's own start, and dropped when it collides with the block's top — an
-      // out-of-order or duplicated first offset would make `snapToStart` read the wrong end.
-      const entryOffset = Math.max(0, y - viewportHeight * (1 - VIDEO_ENTRY_VISIBLE_RATIO))
-      const offsets = entryOffset < y ? [entryOffset, ...pageOffsets] : pageOffsets
-
-      setVideoSnapOffsets((current) =>
-        current.length === offsets.length && current.every((offset, i) => offset === offsets[i])
-          ? current
-          : offsets
-      )
-    },
-    [viewportHeight]
-  )
 
   // Same order the map's City Guide uses: preselected via URL, else where you were last, else
   // nearest, else New York.
@@ -211,17 +142,6 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
             <Screen.ScrollView
               contentContainerStyle={{ paddingBottom: 40 }}
               refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
-              // The scroll view's frame is the viewport the video pages have to match, so it
-              // reports its own height rather than anyone computing it.
-              onLayout={(event) => setViewportHeight(event.nativeEvent.layout.height)}
-              // Undefined rather than an empty array when there is no video: an empty list
-              // still puts the scroll view into snapping mode.
-              snapToOffsets={videoSnapOffsets.length ? videoSnapOffsets : undefined}
-              // Both off so the only snap points are the video's own pages — the rest of the
-              // screen keeps scrolling freely.
-              snapToStart={false}
-              snapToEnd={false}
-              decelerationRate="fast"
             >
               <CityGuideCityPicker
                 showCityPicker={showCityPicker}
@@ -230,12 +150,7 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
                 onSelectCity={onSelectCity}
               />
 
-              <CityGuideNewSectionsWithSuspense
-                citySlug={citySlug}
-                cityName={city?.name ?? ""}
-                videoPageHeight={viewportHeight}
-                onVideosLayout={handleVideosLayout}
-              />
+              <CityGuideNewSectionsWithSuspense citySlug={citySlug} cityName={city?.name ?? ""} />
             </Screen.ScrollView>
 
             <CityGuideFloatingMapButton cityName={city?.name ?? ""} citySlug={citySlug} />
