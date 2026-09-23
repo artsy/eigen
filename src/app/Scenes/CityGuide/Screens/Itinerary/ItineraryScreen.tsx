@@ -375,7 +375,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       handlers.onContentSizeChange(width, height)
                     )
                   }}
-                  contentContainerStyle={{ paddingBottom: 40 }}
+                  contentContainerStyle={{ paddingBottom: 60 }}
                   refreshControl={
                     <RefreshControl
                       refreshing={isRefreshing}
