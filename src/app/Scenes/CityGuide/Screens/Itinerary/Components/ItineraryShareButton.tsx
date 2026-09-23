@@ -26,9 +26,9 @@ export const ItineraryShareButton: React.FC<Props> = ({ itinerary: itineraryRef 
     itinerary ?? { internalID: "", citySlug: "", title: "", isCurated: false }
   )
 
-  // A curated guide's link is meant to be shared. A personal itinerary's isn't, unless it's
-  // yours — reached via someone else's share link, there's nothing here to give out.
-  if (!itinerary || (!itinerary.isCurated && !itinerary.isMine)) {
+  // Curated guides aren't shareable. A personal itinerary is, but only when it's yours —
+  // reached via someone else's share link, there's nothing here to give out.
+  if (!itinerary || itinerary.isCurated || !itinerary.isMine) {
     return null
   }
 

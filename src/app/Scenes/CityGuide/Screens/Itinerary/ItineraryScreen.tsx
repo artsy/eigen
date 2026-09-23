@@ -13,7 +13,7 @@ import {
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE, BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
@@ -327,10 +327,20 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     onPress={() => setIsEditing(true)}
                     hitSlop={EDIT_HIT_SLOP}
                   >
-                    <EditIcon
-                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                    />
+                    <Flex
+                      backgroundColor="background"
+                      width={BACK_BUTTON_SIZE_SIZE}
+                      height={BACK_BUTTON_SIZE_SIZE}
+                      borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <EditIcon
+                        fill="onBackgroundHigh"
+                        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      />
+                    </Flex>
                   </Touchable>
                 )}
 

@@ -24,7 +24,7 @@ describe("ItineraryShareButton", () => {
     jest.clearAllMocks()
   })
 
-  it("shares a curated guide's public link", async () => {
+  it("renders nothing for a curated itinerary", async () => {
     renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
@@ -36,18 +36,9 @@ describe("ItineraryShareButton", () => {
       }),
     })
 
-    fireEvent.press(await screen.findByTestId("itinerary-share"))
-
     await new Promise((resolve) => setTimeout(resolve, 0))
 
-    expect(RNShare.open).toHaveBeenCalledWith(
-      expect.objectContaining({
-        title: "Chill Vibes Only",
-        message: expect.stringContaining(
-          "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
-        ),
-      })
-    )
+    expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
   })
 
   it("renders nothing for someone else's personal itinerary", async () => {
@@ -81,18 +72,30 @@ describe("ItineraryShareButton", () => {
       }),
     })
 
-    expect(await screen.findByTestId("itinerary-share")).toBeOnTheScreen()
+    fireEvent.press(await screen.findByTestId("itinerary-share"))
+
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(RNShare.open).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: "My Trip",
+        message: expect.stringContaining(
+          "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/guide-1?shareToken=tok"
+        ),
+      })
+    )
   })
 
   it("does not extend hitSlop toward the Edit button on its left (FIREWORKS-48)", async () => {
     renderWithRelay({
       Itinerary: () => ({
         internalID: "guide-1",
-        slug: "chill-vibes-only",
+        slug: null,
         citySlug: "london-united-kingdom",
-        title: "Chill Vibes Only",
-        isCurated: true,
-        shareToken: null,
+        title: "My Trip",
+        isCurated: false,
+        isMine: true,
+        shareToken: "tok",
       }),
     })
 

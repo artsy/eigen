@@ -464,26 +464,12 @@ describe("ItineraryScreen", () => {
   })
 
   describe("the share button", () => {
-    it("shares a curated guide's public link, minting nothing", async () => {
-      const view = renderWithRelay({ Itinerary: () => ITINERARY }, props)
+    it("offers no way to share a curated guide", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-      fireEvent.press(await screen.findByTestId("itinerary-share"))
+      await screen.findByText("Chill Vibes Only")
 
-      await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
-
-      // No share-token mutation for a curated guide — its slug is already public.
-      expect(
-        view.env.mock
-          .getAllOperations()
-          .some((op) => op.request.node.params.name === "useItineraryShareMintTokenMutation")
-      ).toBe(false)
-      expect(RNShare.open).toHaveBeenCalledWith(
-        expect.objectContaining({
-          message: expect.stringContaining(
-            "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only"
-          ),
-        })
-      )
+      expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
     })
 
     it("mints a share token for a personal itinerary and includes it in the link", async () => {
