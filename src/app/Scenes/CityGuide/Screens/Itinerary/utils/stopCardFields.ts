@@ -13,8 +13,11 @@ import { DateTime } from "luxon"
 
 const MUSEUM_EMOJI = "🏛"
 
-/** Display label for a custom stop's category. MUSEUM/GALLERY/SHOW/FAIR never reach here — they
- * only apply to a stop with a resolved item, which renders through its own case below. */
+/**
+ * Display label for a custom stop's category. A curator can pick any category for a custom
+ * stop, including one that also names an item-backed kind (e.g. MUSEUM) — this only covers
+ * the ones the "custom" case below still needs a label for.
+ */
 export const CUSTOM_CATEGORY_LABELS: Partial<Record<ItineraryStopCategory, string>> = {
   CAFE: "Cafe",
   RESTAURANT: "Restaurant",

@@ -245,6 +245,11 @@ const Query = graphql`
           startTime: startAt(format: "h:mma")
           endTime: endAt(format: "h:mma")
 
+          openingHours {
+            days
+            hours
+          }
+
           item {
             __typename
           }

@@ -7,6 +7,7 @@ import {
   itineraryStopCategory,
   itineraryStopCoordinates,
   itineraryStopImage,
+  itineraryStopOpeningHoursInput,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -102,6 +103,7 @@ export const ItineraryStopRow: React.FC<Props> = ({
                 isFreeAdmission: stop.isFreeAdmission ?? undefined,
                 latitude: coordinates?.lat,
                 longitude: coordinates?.lng,
+                openingHours: itineraryStopOpeningHoursInput(stop.openingHours),
               }}
               citySlug={citySlug}
               cityName={cityName}

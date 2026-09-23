@@ -78,26 +78,41 @@ export const itineraryStopCategory = (
   }
 }
 
-/** "Sat – Thurs 10am–5pm", one per line, for a museum or gallery's weekly opening hours. */
+/**
+ * "Sat – Thurs 10am–5pm", one per line. Either field can be blank server-side; a line with
+ * neither is dropped rather than shown empty, and a line with only one still shows that part.
+ */
 export const formatItineraryStopOpeningHours = (
-  openingHours: readonly { readonly days: string; readonly hours: string }[]
-): string => openingHours.map((entry) => `${entry.days} ${entry.hours}`).join("\n")
+  openingHours: readonly { readonly days?: string | null; readonly hours?: string | null }[]
+): string =>
+  openingHours
+    .map((entry) => [entry.days, entry.hours].filter(Boolean).join(" "))
+    .filter(Boolean)
+    .join("\n")
 
 /**
- * Backend-formatted for display. e.g. "11am-4pm" — or, for a museum/gallery with weekly
- * opening hours on file, those hours instead, since a single start/end pair can't say what
- * a place is open the rest of the week.
+ * For copying a stop's own opening-hours lines into another mutation's input, e.g. adding a
+ * custom stop to a second itinerary. Nulls become "", and a line left entirely blank is
+ * dropped rather than sent on to Gravity.
+ */
+export const itineraryStopOpeningHoursInput = (
+  openingHours: readonly { readonly days?: string | null; readonly hours?: string | null }[]
+): { days: string; hours: string }[] =>
+  openingHours
+    .map((entry) => ({ days: entry.days ?? "", hours: entry.hours ?? "" }))
+    .filter((entry) => entry.days || entry.hours)
+
+/**
+ * Backend-formatted for display. e.g. "11am-4pm" — the curator's own start/end always wins,
+ * since a specific time is more useful than a general schedule. Otherwise falls back to
+ * `displayOpeningHours`: the stop's own weekly hours if the curator set them, else the linked
+ * show's or location's, for any stop kind — not only a museum or gallery.
  */
 export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
-  const category = itineraryStopCategory(stop.category)
-
-  if ((category === "MUSEUM" || category === "GALLERY") && stop.openingHours.length > 0) {
-    return formatItineraryStopOpeningHours(stop.openingHours)
-  }
-
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+  if (stop.startTime || stop.endTime) return stop.startTime ?? stop.endTime ?? ""
 
-  return stop.startTime ?? stop.endTime ?? ""
+  return formatItineraryStopOpeningHours(stop.displayOpeningHours)
 }
 
 /**

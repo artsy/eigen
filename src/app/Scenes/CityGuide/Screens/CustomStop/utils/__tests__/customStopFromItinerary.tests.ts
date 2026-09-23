@@ -15,6 +15,7 @@ const stop = (overrides: object = {}) => ({
   longitude: -0.1,
   startTime: "10am",
   endTime: "6pm",
+  openingHours: [],
   image: { url: "https://example.com/cafe.jpg" },
   item: null,
   ...overrides,
@@ -47,6 +48,7 @@ describe("customStopFromItinerary", () => {
       sourceURL: "https://timeout.com/london-cafe",
       isFreeAdmission: true,
       hours: "10am-6pm",
+      openingHours: [],
       imageUrl: "https://example.com/cafe.jpg",
       coordinates: { lat: 51.5, lng: -0.1 },
     })
@@ -98,6 +100,7 @@ describe("customStopFromItinerary", () => {
       sourceURL: undefined,
       isFreeAdmission: undefined,
       hours: undefined,
+      openingHours: [],
       imageUrl: undefined,
       coordinates: undefined,
     })
@@ -124,5 +127,57 @@ describe("customStopFromItinerary", () => {
     const result = customStopFromItinerary(itinerary([stop({ longitude: null })]) as any, "stop-2")
 
     expect(result?.coordinates).toBeUndefined()
+  })
+
+  // A custom stop's category can be MUSEUM or GALLERY too (Forque's custom-place category
+  // picker offers them), so it can carry its own weekly opening hours like an entity-backed one.
+  it("shows a museum/gallery custom stop's own opening hours when it has no start/end time", () => {
+    const result = customStopFromItinerary(
+      itinerary([
+        stop({
+          category: "MUSEUM",
+          startTime: null,
+          endTime: null,
+          openingHours: [
+            { days: "Sat – Thurs", hours: "10am–5pm" },
+            { days: "Fri", hours: "10am–8:30pm" },
+          ],
+        }),
+      ]) as any,
+      "stop-2"
+    )
+
+    expect(result?.hours).toBe("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")
+    expect(result?.openingHours).toEqual([
+      { days: "Sat – Thurs", hours: "10am–5pm" },
+      { days: "Fri", hours: "10am–8:30pm" },
+    ])
+  })
+
+  it("sanitizes opening hours for the copy: nulls become '', a blank line is dropped", () => {
+    const result = customStopFromItinerary(
+      itinerary([
+        stop({
+          category: "GALLERY",
+          openingHours: [
+            { days: "Tues – Sat", hours: null },
+            { days: null, hours: null },
+          ],
+        }),
+      ]) as any,
+      "stop-2"
+    )
+
+    expect(result?.openingHours).toEqual([{ days: "Tues – Sat", hours: "" }])
+  })
+
+  it("carries a stop's opening hours over into what a copy sends", () => {
+    const input = customStopInput({
+      id: "source-stop",
+      title: "Victoria Miro",
+      openingHours: [{ days: "Tues – Sat", hours: "11am–6pm" }],
+    })
+
+    expect(input.openingHours).toEqual([{ days: "Tues – Sat", hours: "11am–6pm" }])
   })
 })

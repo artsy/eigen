@@ -1,3 +1,7 @@
+import {
+  formatItineraryStopOpeningHours,
+  itineraryStopOpeningHoursInput,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStopCategory } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 /**
@@ -16,6 +20,9 @@ export interface CustomStop {
   isFreeAdmission?: boolean
   /** Server-formatted for display; this never parses a date. */
   hours?: string
+  /** A museum or gallery's own weekly hours — this stop's raw editor lines, sanitized — so
+   *  a copy elsewhere can carry them across. Empty for any other category. */
+  openingHours?: { days: string; hours: string }[]
   imageUrl?: string
   coordinates?: { lat: number; lng: number }
   isOnMyItineraries?: boolean | null
@@ -35,6 +42,10 @@ interface PayloadStop {
   readonly longitude?: number | null
   readonly startTime?: string | null
   readonly endTime?: string | null
+  readonly openingHours?: readonly {
+    readonly days?: string | null
+    readonly hours?: string | null
+  }[]
   readonly image?: { readonly url?: string | null } | null
   readonly item?: { readonly __typename: string } | null
   readonly isOnMyItineraries?: boolean | null
@@ -69,10 +80,11 @@ const toCategory = (category: string | null | undefined): ItineraryStopCategory 
   }
 }
 
-const toHours = (stop: PayloadStop) => {
+const toHours = (stop: PayloadStop, openingHours: { days: string; hours: string }[]) => {
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+  if (stop.startTime || stop.endTime) return stop.startTime ?? stop.endTime ?? undefined
 
-  return stop.startTime ?? stop.endTime ?? undefined
+  return formatItineraryStopOpeningHours(openingHours) || undefined
 }
 
 /**
@@ -89,6 +101,8 @@ export const customStopFromItinerary = (
 
   if (!stop || stop.item) return null
 
+  const openingHours = itineraryStopOpeningHoursInput(stop.openingHours ?? [])
+
   return {
     id: stop.internalID,
     title: stop.title ?? "",
@@ -97,7 +111,8 @@ export const customStopFromItinerary = (
     description: stop.note ?? undefined,
     sourceURL: stop.sourceURL ?? undefined,
     isFreeAdmission: stop.isFreeAdmission ?? undefined,
-    hours: toHours(stop),
+    hours: toHours(stop, openingHours),
+    openingHours,
     imageUrl: stop.image?.url ?? undefined,
     // Both nullable server-side, and a stop is only mappable with both.
     coordinates:
@@ -120,6 +135,7 @@ export const customStopInput = (stop: CustomStop) => ({
   isFreeAdmission: stop.isFreeAdmission,
   latitude: stop.coordinates?.lat,
   longitude: stop.coordinates?.lng,
+  openingHours: stop.openingHours ?? [],
   isOnMyItineraries: stop.isOnMyItineraries,
   myItineraries: stop.myItineraries,
 })

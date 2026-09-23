@@ -197,11 +197,13 @@ describe("stopCardFields", () => {
       expect(fields.subtitle).toEqual("London")
     })
 
-    it("shows its weekly opening hours over its own start/end time", () => {
+    it("shows displayOpeningHours when the stop has no start/end time of its own", () => {
       const fields = stopCardFields(
         stop({
           category: "MUSEUM",
-          openingHours: [
+          startTime: null,
+          endTime: null,
+          displayOpeningHours: [
             { days: "Sat – Thurs", hours: "10am–5pm" },
             { days: "Fri", hours: "10am–8:30pm" },
           ],
@@ -212,14 +214,36 @@ describe("stopCardFields", () => {
       expect(fields.hours).toEqual("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")
     })
 
-    it("falls back to its own start/end time when it has no opening hours on file", () => {
-      const fields = stopCardFields(stop({ category: "GALLERY", openingHours: [] }), {
-        __typename: "Partner",
-        name: "White Cube",
-      })
+    it("prefers its own start/end time over displayOpeningHours", () => {
+      const fields = stopCardFields(
+        stop({
+          category: "GALLERY",
+          displayOpeningHours: [{ days: "Tues – Sat", hours: "11am–6pm" }],
+        }),
+        { __typename: "Partner", name: "White Cube" }
+      )
 
       expect(fields.hours).toEqual("10am-6pm")
     })
+  })
+
+  it("infers hours from displayOpeningHours for a show, not only a museum or gallery", () => {
+    const fields = stopCardFields(
+      stop({
+        startTime: null,
+        endTime: null,
+        displayOpeningHours: [{ days: "Tues – Sun", hours: "10am–6pm" }],
+      }),
+      {
+        __typename: "Show",
+        name: "Georg Baselitz: Back Again",
+        exhibitionPeriod: "Feb 25 - May 24",
+      }
+    )
+
+    // The show's inferred weekly hours win over its running dates, since they say when to
+    // actually visit rather than just when the show is on.
+    expect(fields.hours).toEqual("Tues – Sun 10am–6pm")
   })
 
   describe("a custom stop", () => {
