@@ -1,4 +1,4 @@
-import { Flex, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { CityGuideEventVideos_city$key } from "__generated__/CityGuideEventVideos_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
@@ -136,30 +136,34 @@ const CityGuideVideoCard: React.FC<{
 const PLAY_GLYPH_SIZE = 48
 
 /** @artsy/icons has no play glyph, so this draws the standard filled triangle directly. */
-const PlayGlyph: React.FC = () => (
-  <Flex
-    testID="city-guide-video-play-icon"
-    width={PLAY_GLYPH_SIZE}
-    height={PLAY_GLYPH_SIZE}
-    borderRadius={PLAY_GLYPH_SIZE / 2}
-    backgroundColor="mono100"
-    opacity={0.7}
-    alignItems="center"
-    justifyContent="center"
-  >
-    <View
-      style={{
-        marginLeft: 4,
-        borderTopWidth: 10,
-        borderBottomWidth: 10,
-        borderLeftWidth: 14,
-        borderTopColor: "transparent",
-        borderBottomColor: "transparent",
-        borderLeftColor: "white",
-      }}
-    />
-  </Flex>
-)
+const PlayGlyph: React.FC = () => {
+  const color = useColor()
+
+  return (
+    <Flex
+      testID="city-guide-video-play-icon"
+      width={PLAY_GLYPH_SIZE}
+      height={PLAY_GLYPH_SIZE}
+      borderRadius={PLAY_GLYPH_SIZE / 2}
+      backgroundColor="mono100"
+      opacity={0.7}
+      alignItems="center"
+      justifyContent="center"
+    >
+      <View
+        style={{
+          marginLeft: 4,
+          borderTopWidth: 10,
+          borderBottomWidth: 10,
+          borderLeftWidth: 14,
+          borderTopColor: "transparent",
+          borderBottomColor: "transparent",
+          borderLeftColor: color("mono0"),
+        }}
+      />
+    </Flex>
+  )
+}
 
 const fragment = graphql`
   fragment CityGuideEventVideos_city on City {
