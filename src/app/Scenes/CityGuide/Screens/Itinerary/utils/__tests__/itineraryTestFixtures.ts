@@ -20,11 +20,12 @@ export const makeItineraryStop = (overrides: Record<string, unknown> = {}): Itin
     longitude: null,
     startTime: "10am",
     endTime: "6pm",
+    openingHours: [],
     startAtISO: null,
     endAtISO: null,
     item: null,
     ...overrides,
-  }) as ItineraryStop
+  }) as unknown as ItineraryStop
 
 export const makeItinerary = (
   stops: ItineraryStop[],

@@ -78,8 +78,23 @@ export const itineraryStopCategory = (
   }
 }
 
-/** Backend-formatted for display. e.g. "11am-4pm" */
+/** "Sat – Thurs 10am–5pm", one per line, for a museum or gallery's weekly opening hours. */
+export const formatItineraryStopOpeningHours = (
+  openingHours: readonly { readonly days: string; readonly hours: string }[]
+): string => openingHours.map((entry) => `${entry.days} ${entry.hours}`).join("\n")
+
+/**
+ * Backend-formatted for display. e.g. "11am-4pm" — or, for a museum/gallery with weekly
+ * opening hours on file, those hours instead, since a single start/end pair can't say what
+ * a place is open the rest of the week.
+ */
 export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
+  const category = itineraryStopCategory(stop.category)
+
+  if ((category === "MUSEUM" || category === "GALLERY") && stop.openingHours.length > 0) {
+    return formatItineraryStopOpeningHours(stop.openingHours)
+  }
+
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
 
   return stop.startTime ?? stop.endTime ?? ""

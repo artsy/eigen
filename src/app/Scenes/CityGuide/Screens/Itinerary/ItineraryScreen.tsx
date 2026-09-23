@@ -535,6 +535,11 @@ export const itineraryQuery = graphql`
           startTime: startAt(format: "h:mma")
           endTime: endAt(format: "h:mma")
 
+          openingHours {
+            days
+            hours
+          }
+
           startAtISO: startAt
           endAtISO: endAt
 

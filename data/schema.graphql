@@ -23730,6 +23730,7 @@ type ItineraryStop {
   """
   myItineraryStopMemberships: [ItineraryStopMembership!]
   note: String
+  openingHours: [ItineraryStopOpeningHours!]!
   position: Int!
 
   """
@@ -23800,6 +23801,11 @@ input ItineraryStopInput {
   note: String
 
   """
+  Replaces the stop's opening hours. Omit to leave them unchanged; pass `[]` to clear them.
+  """
+  openingHours: [ItineraryStopOpeningHoursInput!]
+
+  """
   The source stop's parent itinerary share token, when unlisted
   """
   sourceShareToken: String
@@ -23847,6 +23853,16 @@ union ItineraryStopMutationResponseOrError =
 
 type ItineraryStopMutationSuccess {
   itineraryStop: ItineraryStop
+}
+
+type ItineraryStopOpeningHours {
+  days: String!
+  hours: String!
+}
+
+input ItineraryStopOpeningHoursInput {
+  days: String!
+  hours: String!
 }
 
 enum ItineraryVisibility {
@@ -45734,6 +45750,11 @@ input createItineraryStopInput {
   note: String
 
   """
+  Replaces the stop's opening hours. Omit to leave them unchanged; pass `[]` to clear them.
+  """
+  openingHours: [ItineraryStopOpeningHoursInput!]
+
+  """
   The source stop's parent itinerary share token, when unlisted
   """
   sourceShareToken: String
@@ -46709,6 +46730,11 @@ input updateItineraryStopInput {
   latitude: Float
   longitude: Float
   note: String
+
+  """
+  Replaces the stop's opening hours. Omit to leave them unchanged; pass `[]` to clear them.
+  """
+  openingHours: [ItineraryStopOpeningHoursInput!]
 
   """
   Reorders the stop among its section's stops via acts_as_list's insert_at. There is no separate reposition mutation for stops.

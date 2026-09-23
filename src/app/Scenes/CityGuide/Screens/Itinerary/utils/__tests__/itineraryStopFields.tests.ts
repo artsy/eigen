@@ -1,5 +1,9 @@
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
-import { itineraryStopCoordinates } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import {
+  formatItineraryStopOpeningHours,
+  itineraryStopCoordinates,
+  itineraryStopDisplayTime,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 const stop = (overrides: Record<string, unknown> = {}) => makeItineraryStop(overrides)
@@ -76,5 +80,66 @@ describe("itineraryStopCoordinates", () => {
 
   it("leaves a stop with no item unmapped", () => {
     expect(itineraryStopCoordinates(stop({}))).toBeUndefined()
+  })
+})
+
+describe("formatItineraryStopOpeningHours", () => {
+  it("puts each day's hours on its own line", () => {
+    expect(
+      formatItineraryStopOpeningHours([
+        { days: "Sat – Thurs", hours: "10am–5pm" },
+        { days: "Fri", hours: "10am–8:30pm" },
+      ])
+    ).toBe("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")
+  })
+})
+
+describe("itineraryStopDisplayTime", () => {
+  it("shows a museum's weekly opening hours over its own start/end time", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          category: "MUSEUM",
+          startTime: "10am",
+          endTime: "5pm",
+          openingHours: [
+            { days: "Sat – Thurs", hours: "10am–5pm" },
+            { days: "Fri", hours: "10am–8:30pm" },
+          ],
+        })
+      )
+    ).toBe("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")
+  })
+
+  it("shows a gallery's weekly opening hours over its own start/end time", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          category: "GALLERY",
+          openingHours: [{ days: "Tues – Sat", hours: "11am–6pm" }],
+        })
+      )
+    ).toBe("Tues – Sat 11am–6pm")
+  })
+
+  it("falls back to start/end time when a museum has no opening hours on file", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({ category: "MUSEUM", startTime: "10am", endTime: "5pm", openingHours: [] })
+      )
+    ).toBe("10am-5pm")
+  })
+
+  it("ignores opening hours for a stop type that isn't a museum or gallery", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          category: "SHOW",
+          startTime: "11am",
+          endTime: "4pm",
+          openingHours: [{ days: "Sat – Thurs", hours: "10am–5pm" }],
+        })
+      )
+    ).toBe("11am-4pm")
   })
 })

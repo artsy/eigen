@@ -196,6 +196,30 @@ describe("stopCardFields", () => {
 
       expect(fields.subtitle).toEqual("London")
     })
+
+    it("shows its weekly opening hours over its own start/end time", () => {
+      const fields = stopCardFields(
+        stop({
+          category: "MUSEUM",
+          openingHours: [
+            { days: "Sat – Thurs", hours: "10am–5pm" },
+            { days: "Fri", hours: "10am–8:30pm" },
+          ],
+        }),
+        { __typename: "Partner", name: "White Cube" }
+      )
+
+      expect(fields.hours).toEqual("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")
+    })
+
+    it("falls back to its own start/end time when it has no opening hours on file", () => {
+      const fields = stopCardFields(stop({ category: "GALLERY", openingHours: [] }), {
+        __typename: "Partner",
+        name: "White Cube",
+      })
+
+      expect(fields.hours).toEqual("10am-6pm")
+    })
   })
 
   describe("a custom stop", () => {
