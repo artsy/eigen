@@ -40,10 +40,6 @@ const SNAP_POINTS = ["50%", "95%"]
  * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
  */
 const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
-/** Where the create-itinerary sub-sheet is portaled to — a sibling of the outer sheet's own
- *  `AutomountedBottomSheetModal`, so only one modal/backdrop is ever open at a time instead of
- *  the sub-sheet stacking on top of the still-open outer one. */
-const CREATE_PORTAL_HOST = "add-to-itinerary-create"
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
 export type AddToItineraryTarget = StopTarget & {
@@ -215,8 +211,8 @@ const Sheet: React.FC<Props> = ({
             trackAddedStop(changes.added)
           }
 
-          if (citySlug) {
-            refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
+          if (effectiveCitySlug) {
+            refetchCityGuideItinerariesRail(environment, effectiveCitySlug).catch(() => undefined)
           }
         }
       }
@@ -306,24 +302,24 @@ const Sheet: React.FC<Props> = ({
         </Portal>
       </BottomSheetView>
 
-      {/* Portaled out to a sibling of the outer sheet's own modal, so this one never stacks
-          on top of it — see `CREATE_PORTAL_HOST`. */}
-      <Portal hostName={CREATE_PORTAL_HOST}>
-        <AutoHeightBottomSheet
-          visible={isNaming}
-          name="CreateItinerary"
-          onDismiss={() => setIsNaming(false)}
-        >
-          <Flex mt={2}>
-            <CreateItineraryForm
-              initialName={defaultItineraryTitle(effectiveCityName)}
-              isCreating={isCreating}
-              onCreate={create}
-              onCancel={() => setIsNaming(false)}
-            />
-          </Flex>
-        </AutoHeightBottomSheet>
-      </Portal>
+      <AutoHeightBottomSheet
+        visible={isNaming}
+        name="CreateItinerary"
+        onDismiss={() => setIsNaming(false)}
+        // Both this and the outer sheet stay presented at once (that's the point — you can
+        // still see your selections behind the form), so a second backdrop of its own would
+        // double the dimming. The outer sheet's backdrop is enough.
+        backdropComponent={() => null}
+      >
+        <Flex mt={2}>
+          <CreateItineraryForm
+            initialName={defaultItineraryTitle(effectiveCityName)}
+            isCreating={isCreating}
+            onCreate={create}
+            onCancel={() => setIsNaming(false)}
+          />
+        </Flex>
+      </AutoHeightBottomSheet>
     </>
   )
 }
@@ -347,33 +343,27 @@ export const AddToItinerarySheet: React.FC<{
   onClose: () => void
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => (
-  <>
-    <AutomountedBottomSheetModal
-      visible={!!target}
-      name="AddToItinerary"
-      snapPoints={SNAP_POINTS}
-      enableDynamicSizing={false}
-      onDismiss={onClose}
-      footerComponent={({ animatedFooterPosition }) => (
-        <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-          <PortalHost name={FOOTER_PORTAL_HOST} />
-        </BottomSheetFooter>
-      )}
-    >
-      {!!target && (
-        <SheetWithSuspense
-          key={sheetTargetKey(target)}
-          {...target}
-          onClose={onClose}
-          onSaved={onSaved}
-        />
-      )}
-    </AutomountedBottomSheetModal>
-
-    {/* A sibling of the outer sheet's modal, so the create-itinerary sub-sheet it hosts never
-        stacks on top of the still-open outer one — a single backdrop at a time. */}
-    <PortalHost name={CREATE_PORTAL_HOST} />
-  </>
+  <AutomountedBottomSheetModal
+    visible={!!target}
+    name="AddToItinerary"
+    snapPoints={SNAP_POINTS}
+    enableDynamicSizing={false}
+    onDismiss={onClose}
+    footerComponent={({ animatedFooterPosition }) => (
+      <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
+        <PortalHost name={FOOTER_PORTAL_HOST} />
+      </BottomSheetFooter>
+    )}
+  >
+    {!!target && (
+      <SheetWithSuspense
+        key={sheetTargetKey(target)}
+        {...target}
+        onClose={onClose}
+        onSaved={onSaved}
+      />
+    )}
+  </AutomountedBottomSheetModal>
 )
 
 /** What the stop being added points at, for `addedStopToItinerary`'s `context_owner_type`. A

@@ -637,6 +637,40 @@ describe("AddToItinerarySheet", () => {
         title: "Paris trip",
       })
     })
+
+    // A regression: Done used to refetch the rail with the sheet's own (absent) `citySlug`
+    // prop, so a Paris City Guide screen still mounted below never picked up the change.
+    it("refetches the itineraries rail against the derived city on Done", async () => {
+      const view = renderWithRelay(
+        { ...withItineraries([itinerary("a", "First")]), ...withDerivedCity },
+        noCitySlug
+      )
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+        Mutation: () => ({
+          createItineraryStop: {
+            responseOrError: {
+              __typename: "ItineraryStopMutationSuccess",
+              itineraryStop: { internalID: "new-stop" },
+            },
+          },
+        }),
+      })
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "CityGuideItinerariesRailQuery"
+        )
+      )
+      expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
+        citySlug: "paris-france",
+        first: 10,
+      })
+    })
   })
 
   describe("creating one", () => {
