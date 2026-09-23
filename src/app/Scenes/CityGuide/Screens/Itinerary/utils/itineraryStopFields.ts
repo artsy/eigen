@@ -105,7 +105,7 @@ export const wholeDayDateRangeLabel = (stop: WholeDayStop): string | undefined =
   const startLabel = start.toFormat("MMM d")
   if (start.hasSame(end, "day")) return startLabel
 
-  const sameMonth = start.hasSame(end, "month") && start.hasSame(end, "year")
+  const sameMonth = start.hasSame(end, "month")
   return `${startLabel} – ${end.toFormat(sameMonth ? "d" : "MMM d")}`
 }
 
