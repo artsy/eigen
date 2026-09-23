@@ -175,8 +175,9 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
   }
 
   // The flagged guide leads the section whatever order the connection returned it in. With
-  // none flagged the section is all rows — nothing is promoted by position alone.
-  const featuredRow = rows.find((row) => row.featured)
+  // none flagged, a lone guide leads by default; with several and none flagged, nothing is
+  // promoted by position alone.
+  const featuredRow = rows.find((row) => row.featured) ?? (rows.length === 1 ? rows[0] : undefined)
   const restRows = rows.filter((row) => row !== featuredRow)
 
   return (
