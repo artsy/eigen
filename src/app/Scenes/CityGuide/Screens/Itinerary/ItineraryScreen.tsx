@@ -13,14 +13,17 @@ import {
 import { ItineraryScreenQuery } from "__generated__/ItineraryScreenQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
+import {
+  ACCESSIBLE_DEFAULT_ICON_SIZE,
+  BACK_BUTTON_SIZE_SIZE,
+  ICON_HIT_SLOP,
+} from "app/Components/constants"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { ItineraryPicker } from "app/Scenes/CityGuide/Components/ItineraryPicker"
 import { MapView } from "app/Scenes/CityGuide/Components/Map/MapView"
 import { ItineraryHeader } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryHeader"
 import { ItinerarySectionRow } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItinerarySectionRow"
-import { ItineraryShareButton } from "app/Scenes/CityGuide/Screens/Itinerary/Components/ItineraryShareButton"
 import { useReorderItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/hooks/useReorderItineraryStop"
 import { itineraryStopsToMapSections } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopsToMapSections"
 import {
@@ -43,11 +46,6 @@ import { useTracking } from "react-tracking"
 
 /** Screen.Header's bar height (palette Screen/constants.js:5), not exported from the package root. */
 const NAVBAR_HEIGHT = 50
-
-// The Share button sits directly to the right of this one with only a small gap between them
-// (FIREWORKS-48, see ItineraryShareButton's own SHARE_HIT_SLOP). A full hitSlop would reach past
-// that gap — and into Share's own button — so the right side is left untouched here.
-const EDIT_HIT_SLOP = { top: 20, bottom: 20, left: 20, right: 0 }
 
 /**
  * Applies a section's locally-dragged stop order on top of the itinerary Relay handed back,
@@ -279,7 +277,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
             height={NAVBAR_HEIGHT}
             justifyContent="center"
             px={2}
-            // Always full width now: the share button sits on the right in both list and map
+            // Always full width now: the edit button sits on the right in both list and map
             // mode, not just when the map's itinerary picker is there too.
             left={0}
             right={0}
@@ -324,16 +322,24 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                     accessibilityRole="button"
                     accessibilityLabel={`Edit ${itinerary.title}`}
                     onPress={() => setIsEditing(true)}
-                    hitSlop={EDIT_HIT_SLOP}
+                    hitSlop={ICON_HIT_SLOP}
                   >
-                    <EditIcon
-                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                    />
+                    <Flex
+                      backgroundColor="background"
+                      width={BACK_BUTTON_SIZE_SIZE}
+                      height={BACK_BUTTON_SIZE_SIZE}
+                      borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <EditIcon
+                        fill="onBackgroundHigh"
+                        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      />
+                    </Flex>
                   </Touchable>
                 )}
-
-                <ItineraryShareButton itinerary={itinerary} />
               </Flex>
             </Flex>
           </Flex>
@@ -482,7 +488,6 @@ export const itineraryQuery = graphql`
       slug
       shareToken
       ...ItineraryHeader_itinerary
-      ...ItineraryShareButton_itinerary
 
       sections {
         internalID

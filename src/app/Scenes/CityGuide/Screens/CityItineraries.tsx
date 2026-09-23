@@ -1,11 +1,9 @@
-import { ShareIcon } from "@artsy/icons/native"
-import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { CityItinerariesQuery } from "__generated__/CityItinerariesQuery.graphql"
 import { CityItineraries_me$key } from "__generated__/CityItineraries_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
-import { useItineraryShare } from "app/Scenes/CityGuide/hooks/useItineraryShare"
 import { itineraryStopsCount } from "app/Scenes/CityGuide/utils/itineraryStopsCount"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -13,50 +11,9 @@ import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const SHARE_ICON_SIZE = 24
-
 interface Props {
   citySlug: string
   me: CityItineraries_me$key
-}
-
-interface ShareableItinerary {
-  internalID: string
-  title: string
-  isCurated?: boolean | null
-  slug?: string | null
-  shareToken?: string | null
-}
-
-/**
- * Its own component, not inlined in `renderItem`: `Screen.FlatList` renders each row through a
- * class-based cell renderer, and `useItineraryShare` — a hook — needs a real function
- * component to run in.
- */
-const ItineraryShareTouchable: React.FC<{ item: ShareableItinerary; citySlug: string }> = ({
-  item,
-  citySlug,
-}) => {
-  const { share, isSharing } = useItineraryShare({
-    internalID: item.internalID,
-    slug: item.slug,
-    citySlug,
-    title: item.title,
-    isCurated: !!item.isCurated,
-    shareToken: item.shareToken,
-  })
-
-  return (
-    <Touchable
-      testID="itinerary-share"
-      accessibilityRole="button"
-      accessibilityLabel={`Share ${item.title}`}
-      disabled={isSharing}
-      onPress={share}
-    >
-      <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-    </Touchable>
-  )
 }
 
 const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
@@ -105,7 +62,6 @@ const CityItineraries: React.FC<Props> = ({ citySlug, me }) => {
               stopsCount={itineraryStopsCount(item)}
               imageUrl={item.heroImage?.url}
               href={`/city-guide/${citySlug}/itinerary/${item.slug ?? item.internalID}`}
-              rightSlot={<ItineraryShareTouchable item={item} citySlug={citySlug} />}
             />
           )}
         />
@@ -134,7 +90,6 @@ const fragment = graphql`
           slug
           title
           isCurated
-          shareToken
           heroImage {
             url(version: "small")
           }
