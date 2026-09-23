@@ -30,13 +30,18 @@ describe("CityGuideEventGuides", () => {
   )
   const props = { citySlug: "london-united-kingdom" }
 
-  const itinerary = (slug: string | null, name: string, { featured = false } = {}) => ({
+  const itinerary = (
+    slug: string | null,
+    name: string,
+    { featured = false, visibility = "PUBLIC" } = {}
+  ) => ({
     internalID: `id-for-${name}`,
     slug,
     title: name,
     subtitle: `${name} subtitle`,
     authorName: "Casey Lesser",
     featured,
+    visibility,
     heroImage: {
       url: "https://example.com/hero-240.jpg",
       featuredUrl: "https://example.com/hero-1024.jpg",
@@ -66,6 +71,31 @@ describe("CityGuideEventGuides", () => {
     expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
     expect(screen.getByText("36 Hours in London")).toBeOnTheScreen()
     expect(screen.getAllByText("By Casey Lesser")).toHaveLength(2)
+  })
+
+  it("hides a draft guide the requesting editor authored", async () => {
+    renderWithRelay(
+      connection([
+        itinerary("chill-vibes-only", "Chill Vibes Only"),
+        itinerary(null, "Editor's Private Draft", { visibility: "PRIVATE" }),
+        itinerary(null, "Editor's Unlisted Draft", { visibility: "UNLISTED" }),
+      ]),
+      props
+    )
+
+    expect(await screen.findByText("Chill Vibes Only")).toBeOnTheScreen()
+    expect(screen.queryByText("Editor's Private Draft")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Editor's Unlisted Draft")).not.toBeOnTheScreen()
+  })
+
+  it("renders nothing when every guide is an unpublished draft", async () => {
+    renderWithRelay(
+      connection([itinerary(null, "Editor's Private Draft", { visibility: "PRIVATE" })]),
+      props
+    )
+
+    expect(screen.queryByTestId("city-guides-list")).not.toBeOnTheScreen()
+    expect(screen.queryByText("City Guides")).not.toBeOnTheScreen()
   })
 
   it("shows a guide's subtitle above its author", async () => {
