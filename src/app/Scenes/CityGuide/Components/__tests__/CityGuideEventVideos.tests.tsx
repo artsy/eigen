@@ -1,15 +1,12 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideEventVideosTestQuery } from "__generated__/CityGuideEventVideosTestQuery.graphql"
 import { CityGuideEventVideos } from "app/Scenes/CityGuide/Components/CityGuideEventVideos"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("CityGuideEventVideos", () => {
-  /** Stands in for the scroll view's measured viewport, which the screen passes down. */
-  const PAGE_HEIGHT = 700
-
   const { renderWithRelay } = setupTestWrapper<CityGuideEventVideosTestQuery>({
-    Component: (props: any) => <CityGuideEventVideos {...props} pageHeight={PAGE_HEIGHT} />,
+    Component: (props: any) => <CityGuideEventVideos {...props} />,
     query: graphql`
       query CityGuideEventVideosTestQuery($citySlug: String!) @relay_test_operation {
         city(slug: $citySlug) {
@@ -22,10 +19,7 @@ describe("CityGuideEventVideos", () => {
 
   const video = (overrides: object = {}) => ({
     internalID: "id-for-video",
-    playerUrl: "https://player.vimeo.com/video/76979871",
-    width: 352,
-    height: 471,
-    aspectRatio: 0.75,
+    playerUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     ...overrides,
   })
 
@@ -38,85 +32,10 @@ describe("CityGuideEventVideos", () => {
     City: () => ({ cityVideos: attachments }),
   })
 
-  /**
-   * Each page sizes its player from the space the heading leaves behind, which it learns
-   * from `onLayout` — nothing lays out in the test renderer, so the pages are handed a
-   * height the way the device would.
-   */
-  const layoutPages = async (height = 800) => {
-    const boxes = await screen.findAllByTestId("city-guide-video-box")
-
-    act(() => {
-      boxes.forEach((box) => {
-        fireEvent(box, "layout", { nativeEvent: { layout: { width: 710, height } } })
-      })
-    })
-  }
-
-  it("renders the static, unpressable section title", async () => {
+  it("renders the section title", () => {
     renderWithRelay(cityVideos([attachment(video())]))
 
-    expect(await screen.findByText("Videos")).toBeOnTheScreen()
-    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
-  })
-
-  it("renders a player for the attached video", async () => {
-    renderWithRelay(cityVideos([attachment(video())]))
-    await layoutPages()
-
-    expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
-  })
-
-  /*
-    The page matches the scroll view's viewport, not the screen: the screen height includes
-    the animated header and the bottom tabs, so a page built from it hangs under both and
-    can never snap flush.
-  */
-  it("sizes every page to the viewport it was given", async () => {
-    renderWithRelay(cityVideos([attachment(video())]))
-
-    const page = (await screen.findAllByTestId("city-guide-video-page"))[0]
-    const { height: screenHeight } = require("react-native").Dimensions.get("window")
-
-    expect(page).toHaveStyle({ height: PAGE_HEIGHT })
-    expect(PAGE_HEIGHT).toBeLessThan(screenHeight)
-  })
-
-  // The player fills the gutters, so the width is whatever the screen gives it and the ratio
-  // is what decides the height. Asserting the relationship rather than the pixels keeps this
-  // independent of the test renderer's screen width.
-  it("sizes the player from the video's own aspect ratio, keeping it portrait", async () => {
-    renderWithRelay(cityVideos([attachment(video())]))
-    await layoutPages(2000)
-
-    const player = screen.getByTestId("FeatureVideo")
-
-    expect(player.props.height).toBeCloseTo(player.props.width / 0.75)
-    expect(player.props.height).toBeGreaterThan(player.props.width)
-  })
-
-  it("falls back to the width/height pair when aspectRatio is absent", async () => {
-    renderWithRelay(cityVideos([attachment(video({ aspectRatio: null }))]))
-    await layoutPages(2000)
-
-    const player = screen.getByTestId("FeatureVideo")
-
-    expect(player.props.height).toBeCloseTo(player.props.width / (352 / 471))
-  })
-
-  // Letterboxed rather than overflowing its page when the clip is taller than the space.
-  it("never makes the player taller than its page", async () => {
-    renderWithRelay(cityVideos([attachment(video())]))
-    await layoutPages(300)
-
-    expect(screen.getByTestId("FeatureVideo").props.height).toBeLessThanOrEqual(300)
-  })
-
-  it("renders a player per video attached to the city", async () => {
-    renderWithRelay(cityVideos([attachment(video()), attachment(video(), "second-attachment")]))
-    await layoutPages()
-
-    expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(2)
+    expect(screen.getByText("Videos")).toBeOnTheScreen()
   })
 
   it("renders nothing, heading included, when the city has no videos", () => {
@@ -134,6 +53,68 @@ describe("CityGuideEventVideos", () => {
     renderWithRelay(cityVideos([attachment(video({ playerUrl: "https://example.com/clip.mp4" }))]))
 
     expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
-    expect(screen.queryByTestId("FeatureVideo")).not.toBeOnTheScreen()
+    expect(screen.queryAllByTestId("city-guide-video-card")).toHaveLength(0)
+  })
+
+  describe("with a single video", () => {
+    it("renders one card and no horizontal rail", () => {
+      renderWithRelay(cityVideos([attachment(video())]))
+
+      expect(screen.getAllByTestId("city-guide-video-card")).toHaveLength(1)
+    })
+
+    it("shows a YouTube thumbnail before playback", () => {
+      renderWithRelay(cityVideos([attachment(video())]))
+
+      const thumbnail = screen.getByTestId("city-guide-video-thumbnail")
+
+      expect(thumbnail.props.source).toEqual({
+        uri: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+      })
+    })
+
+    it("shows the fixed placeholder for a video with no YouTube id", () => {
+      renderWithRelay(
+        cityVideos([attachment(video({ playerUrl: "https://player.vimeo.com/video/76979871" }))])
+      )
+
+      expect(screen.queryByTestId("city-guide-video-thumbnail")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("city-guide-video-placeholder")).toBeOnTheScreen()
+    })
+
+    it("starts playback in place when the card is tapped", () => {
+      renderWithRelay(cityVideos([attachment(video())]))
+
+      expect(screen.queryByTestId("FeatureVideo")).not.toBeOnTheScreen()
+
+      fireEvent.press(screen.getByTestId("city-guide-video-card"))
+
+      expect(screen.getByTestId("FeatureVideo")).toBeOnTheScreen()
+    })
+  })
+
+  describe("with more than one video", () => {
+    it("renders a rail with one card per video", () => {
+      renderWithRelay(cityVideos([attachment(video()), attachment(video(), "second-attachment")]))
+
+      expect(screen.getAllByTestId("city-guide-video-card")).toHaveLength(2)
+    })
+
+    it("plays only one video at a time", () => {
+      renderWithRelay(
+        cityVideos([
+          attachment(video({ internalID: "video-1" })),
+          attachment(video({ internalID: "video-2" }), "second-attachment"),
+        ])
+      )
+
+      const [firstCard, secondCard] = screen.getAllByTestId("city-guide-video-card")
+
+      fireEvent.press(firstCard)
+      expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
+
+      fireEvent.press(secondCard)
+      expect(screen.getAllByTestId("FeatureVideo")).toHaveLength(1)
+    })
   })
 })

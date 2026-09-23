@@ -81,3 +81,9 @@ export const extractYouTubeId = (urlString: string): string | null => {
     return null
   }
 }
+
+/** Null for a non-YouTube url, or a YouTube one with no id (eg a channel link). */
+export const getYouTubeThumbnailUrl = (urlString: string): string | null => {
+  const id = extractYouTubeId(urlString)
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null
+}

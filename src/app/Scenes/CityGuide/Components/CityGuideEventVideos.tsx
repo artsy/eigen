@@ -1,28 +1,36 @@
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { CityGuideEventVideos_city$key } from "__generated__/CityGuideEventVideos_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
-import { isValidVideoUrl } from "app/utils/videoHelpers"
+import { getYouTubeThumbnailUrl, isValidVideoUrl } from "app/utils/videoHelpers"
 import { useState } from "react"
+import { FlatList, Image, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-/** Falls back to 16:9 the way Feature.tsx does, for a video that reports no usable dimensions. */
-const FALLBACK_ASPECT_RATIO = 16 / 9
+/** Every card keeps this shape, regardless of the source video's own aspect ratio. */
+const CARD_ASPECT_RATIO = 16 / 9
+const SIDE_PADDING = 20
+
+/** Matches CityGuideItinerariesRail's own rail. */
+const RAIL_GAP = 10
+/** Leaves the next card peeking. */
+const RAIL_CARD_WIDTH_RATIO = 0.85
+
+interface Video {
+  internalID: string
+  playerUrl: string
+}
 
 interface Props {
   city: CityGuideEventVideos_city$key | null | undefined
-  /**
-   * The scroll view's own visible height, which is the screen minus the header and the
-   * bottom tabs. Measured and passed down rather than derived from the screen height here:
-   * a page built from the full screen height runs under both chrome and can never sit
-   * flush, however the scroll is snapped.
-   */
-  pageHeight: number
 }
 
-export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef, pageHeight }) => {
+export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef }) => {
   const city = useFragment(fragment, cityRef)
   const { width: screenWidth } = useScreenDimensions()
+
+  // Only one video plays at a time, so its id is enough state for the whole section.
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null)
 
   /*
     A city has an ordered list of videos, attached directly rather than through an event.
@@ -31,113 +39,130 @@ export const CityGuideEventVideos: React.FC<Props> = ({ city: cityRef, pageHeigh
     a player at all: it bails on anything that isn't Vimeo or YouTube. Counting a video the
     player will refuse would leave the heading standing over blank space.
   */
-  const videos = (city?.cityVideos ?? []).flatMap((attachment) =>
+  const videos: Video[] = (city?.cityVideos ?? []).flatMap((attachment) =>
     isValidVideoUrl(attachment.video.playerUrl) ? [attachment.video] : []
   )
 
   // No videos means no heading either: a "Videos" title over nothing reads as a broken screen.
-  // Nothing renders before the scroll view has been measured either, so a page is never
-  // laid out at the wrong height and then resized under the reader.
-  if (!videos.length || pageHeight <= 0) {
+  if (!videos.length) {
     return null
   }
 
-  // Full-bleed: no side gutters, unlike the heading above it.
-  const videoWidth = screenWidth
-
-  return (
-    <Flex testID="city-guide-event-videos" backgroundColor="black">
-      {videos.map((video, index) => (
-        <VideoPage
-          key={video.internalID}
-          video={video}
-          videoWidth={videoWidth}
-          pageHeight={pageHeight}
-          // The heading belongs to the first page, so the section reads as "Videos" once
-          // rather than repeating above every clip.
-          showHeading={index === 0}
-        />
-      ))}
-    </Flex>
+  const renderCard = (video: Video, width: number) => (
+    <CityGuideVideoCard
+      key={video.internalID}
+      video={video}
+      width={width}
+      isPlaying={playingVideoId === video.internalID}
+      onPlay={() => setPlayingVideoId(video.internalID)}
+    />
   )
-}
-
-/**
- * One video, one viewportful. The page matches the scroll view's visible height exactly, so
- * that snapping to its top lands it flush between the header and the tabs — see CityGuideNew,
- * which owns both the measurement and the snap offsets built from it.
- */
-const VideoPage = ({
-  video,
-  videoWidth,
-  pageHeight,
-  showHeading,
-}: {
-  video: {
-    playerUrl: string
-    aspectRatio: number | null | undefined
-    width: number
-    height: number
-  }
-  videoWidth: number
-  pageHeight: number
-  showHeading: boolean
-}) => {
-  // The player takes pixel dimensions, so the space the heading leaves behind has to be
-  // measured rather than handed to it as `flex`.
-  const [boxHeight, setBoxHeight] = useState(0)
-
-  // Letterboxed rather than cropped when the video is a different shape than the space:
-  // the page is the full screen, so a portrait clip fills it and a landscape one centres.
-  const naturalHeight = videoWidth / videoAspectRatio(video)
-  const height = boxHeight > 0 ? Math.min(naturalHeight, boxHeight) : 0
 
   return (
-    <Flex testID="city-guide-video-page" height={pageHeight}>
-      {/*
-        No chevron, unlike the rails above: an event has one video and there is no
-        list screen to send anyone to, so the heading is text rather than a tap target.
-      */}
-      {!!showHeading && (
-        <Flex px={2} pt={1}>
-          <SectionTitle variant="large" title="Videos" titleColor="white" />
-        </Flex>
-      )}
-
-      <Flex
-        testID="city-guide-video-box"
-        flex={1}
-        justifyContent="center"
-        backgroundColor="black"
-        onLayout={(event) => setBoxHeight(event.nativeEvent.layout.height)}
-      >
-        {height > 0 && (
-          <FeatureVideo videoUrl={video.playerUrl} width={videoWidth} height={height} />
-        )}
+    <Flex testID="city-guide-event-videos">
+      <Flex px={2}>
+        <SectionTitle variant="large" title="Videos" />
       </Flex>
+
+      {videos.length === 1 ? (
+        <Flex px={2}>{renderCard(videos[0], screenWidth - SIDE_PADDING * 2)}</Flex>
+      ) : (
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={videos}
+          keyExtractor={(video) => video.internalID}
+          contentContainerStyle={{ paddingHorizontal: SIDE_PADDING }}
+          ItemSeparatorComponent={() => <Flex width={RAIL_GAP} />}
+          renderItem={({ item }) =>
+            renderCard(item, Math.round(screenWidth * RAIL_CARD_WIDTH_RATIO))
+          }
+        />
+      )}
     </Flex>
   )
 }
 
 /**
- * `aspectRatio` is width / height, computed by Gravity when the video is uploaded. The
- * width/height fallback covers a record saved before that ran; either way the player keeps
- * the video's own shape, which the designs rely on — the editorial videos are portrait.
+ * One card, always 16:9. Shows a thumbnail with a play glyph until tapped, then swaps in the
+ * real player at the same size — so every video looks the same before playback and nothing
+ * resizes when it starts.
  */
-const videoAspectRatio = (video: {
-  aspectRatio: number | null | undefined
+const CityGuideVideoCard: React.FC<{
+  video: Video
   width: number
-  height: number
-}) => {
-  if (video.aspectRatio) {
-    return video.aspectRatio
+  isPlaying: boolean
+  onPlay: () => void
+}> = ({ video, width, isPlaying, onPlay }) => {
+  const height = width / CARD_ASPECT_RATIO
+
+  if (isPlaying) {
+    return (
+      <Flex testID="city-guide-video-card" width={width} height={height} backgroundColor="black">
+        <FeatureVideo videoUrl={video.playerUrl} width={width} height={height} />
+      </Flex>
+    )
   }
 
-  if (video.height > 0) {
-    return video.width / video.height
-  }
+  // Vimeo (and anything else) has no thumbnail source here, so it gets the fixed placeholder
+  // instead — every card still keeps the same size and the same play glyph.
+  const thumbnailUrl = getYouTubeThumbnailUrl(video.playerUrl)
 
-  return FALLBACK_ASPECT_RATIO
+  return (
+    <Touchable testID="city-guide-video-card" onPress={onPlay} accessibilityLabel="Play video">
+      <Flex
+        testID={thumbnailUrl ? undefined : "city-guide-video-placeholder"}
+        width={width}
+        height={height}
+        backgroundColor={thumbnailUrl ? "black" : "mono10"}
+        alignItems="center"
+        justifyContent="center"
+      >
+        {!!thumbnailUrl && (
+          <Image
+            testID="city-guide-video-thumbnail"
+            source={{ uri: thumbnailUrl }}
+            style={{ position: "absolute", width, height }}
+            resizeMode="cover"
+          />
+        )}
+
+        <PlayGlyph />
+      </Flex>
+    </Touchable>
+  )
+}
+
+const PLAY_GLYPH_SIZE = 48
+
+/** @artsy/icons has no play glyph, so this draws the standard filled triangle directly. */
+const PlayGlyph: React.FC = () => {
+  const color = useColor()
+
+  return (
+    <Flex
+      testID="city-guide-video-play-icon"
+      width={PLAY_GLYPH_SIZE}
+      height={PLAY_GLYPH_SIZE}
+      borderRadius={PLAY_GLYPH_SIZE / 2}
+      backgroundColor="mono100"
+      opacity={0.7}
+      alignItems="center"
+      justifyContent="center"
+    >
+      <View
+        style={{
+          marginLeft: 4,
+          borderTopWidth: 10,
+          borderBottomWidth: 10,
+          borderLeftWidth: 14,
+          borderTopColor: "transparent",
+          borderBottomColor: "transparent",
+          borderLeftColor: color("mono0"),
+        }}
+      />
+    </Flex>
+  )
 }
 
 const fragment = graphql`
@@ -147,9 +172,6 @@ const fragment = graphql`
       video {
         internalID
         playerUrl
-        width
-        height
-        aspectRatio
       }
     }
   }

@@ -1,5 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { act, fireEvent, screen, within } from "@testing-library/react-native"
+import { act, screen, within } from "@testing-library/react-native"
 import { CityGuideNew } from "app/Scenes/CityGuide/CityGuideNew"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -120,22 +120,6 @@ describe("CityGuideNew", () => {
      * show. The flushes matter: the query is issued under a suspense boundary, so it is not
      * pending on the first tick, and the sections only mount once the payload has propagated.
      */
-    /** The visible scroll area, which is the screen without the header or the bottom tabs. */
-    const VIEWPORT_HEIGHT = 700
-
-    const getScrollView = () =>
-      screen.UNSAFE_getByType(require("react-native-reanimated").default.ScrollView)
-
-    /*
-     * The video pages size themselves from the scroll view's measured height, and nothing
-     * lays out in the test renderer — so the viewport is reported the way a device would.
-     */
-    const layoutViewport = () => {
-      fireEvent(getScrollView(), "layout", {
-        nativeEvent: { layout: { width: 390, height: VIEWPORT_HEIGHT } },
-      })
-    }
-
     const resolveWithEditorialContent = async ({ withVideo = true } = {}) => {
       await act(async () => {
         await flushPromiseQueue()
@@ -153,9 +137,6 @@ describe("CityGuideNew", () => {
                       video: {
                         internalID: "video-1",
                         playerUrl: "https://player.vimeo.com/video/76979871",
-                        width: 352,
-                        height: 471,
-                        aspectRatio: 0.75,
                       },
                     },
                   ]
@@ -183,8 +164,6 @@ describe("CityGuideNew", () => {
       await act(async () => {
         await flushPromiseQueue()
       })
-
-      layoutViewport()
     }
 
     it("shows the videos and Artsy Editorial sections when the flag is on", async () => {
@@ -213,85 +192,14 @@ describe("CityGuideNew", () => {
       expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     })
 
-    /*
-      The videos block is a run of screen-height pages, and these offsets are what stop the
-      scroll on one of them. Paired with snapToStart/snapToEnd off, that is the whole story-
-      page behaviour: free scrolling either side, but never a video left half on screen.
-    */
-    it("snaps the scroll view to the video's pages, and only those", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
-
-      renderWithWrappers(<CityGuideNew />)
-      await resolveWithEditorialContent()
-
-      const videos = screen.getByTestId("city-guide-event-videos")
-
-      fireEvent(videos.parent as any, "layout", {
-        nativeEvent: { layout: { y: 900, height: VIEWPORT_HEIGHT } },
-      })
-
-      const scrollView = getScrollView()
-
-      // The viewport, not the screen: snapping to a screen-height page would leave the
-      // video tucked under the header and the tabs. The leading offset is the entry point,
-      // 70% of a page above the block — see VIDEO_ENTRY_VISIBLE_RATIO.
-      expect(scrollView.props.snapToOffsets).toEqual([
-        900 - VIEWPORT_HEIGHT * 0.3,
-        900,
-        900 + VIEWPORT_HEIGHT,
-      ])
-      expect(scrollView.props.snapToStart).toBe(false)
-      expect(scrollView.props.snapToEnd).toBe(false)
-    })
-
-    /*
-      The asymmetry this guards against: with the block's own top as the first offset and
-      snapToStart off, RN scrolls free whenever the target is at or before that offset, so
-      the video clamped on the way up but never on the way down. The entry offset below it
-      is what puts a downward release inside the snapping range.
-    */
-    it("puts a snap offset above the video so scrolling down onto it clamps", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
-
-      renderWithWrappers(<CityGuideNew />)
-      await resolveWithEditorialContent()
-
-      fireEvent(screen.getByTestId("city-guide-event-videos").parent as any, "layout", {
-        nativeEvent: { layout: { y: 900, height: VIEWPORT_HEIGHT } },
-      })
-
-      const [firstOffset] = getScrollView().props.snapToOffsets
-
-      expect(firstOffset).toBeLessThan(900)
-    })
-
-    // A video close to the top of the content would otherwise be handed a negative entry
-    // offset, which sorts before the scroll's own start and breaks the snapToStart check.
-    it("never places the entry offset above the top of the scroll", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
-
-      renderWithWrappers(<CityGuideNew />)
-      await resolveWithEditorialContent()
-
-      fireEvent(screen.getByTestId("city-guide-event-videos").parent as any, "layout", {
-        nativeEvent: { layout: { y: 50, height: VIEWPORT_HEIGHT } },
-      })
-
-      const offsets = getScrollView().props.snapToOffsets
-
-      expect(offsets[0]).toBe(0)
-      expect(offsets).toEqual([...offsets].sort((a: number, b: number) => a - b))
-    })
-
-    // An empty offsets array would still put the scroll view into snapping mode, so a city
-    // with no video has to leave the prop off entirely.
-    it("leaves scrolling alone when there is no video", async () => {
+    it("shows nothing for the videos section when the city has no video", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideEditorialContent: true })
 
       renderWithWrappers(<CityGuideNew />)
       await resolveWithEditorialContent({ withVideo: false })
 
-      expect(getScrollView().props.snapToOffsets).toBeUndefined()
+      expect(screen.queryByTestId("city-guide-event-videos")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("city-guide-event-articles")).toBeOnTheScreen()
     })
   })
 })
