@@ -16,7 +16,7 @@ const STOP = {
   internalID: "stop-1",
   title: "Coffee at London Cafe",
   address: "12 Bermondsey Street",
-  category: "GALLERY",
+  category: "RESTAURANT",
   note: "Small place, good pastries.",
   sourceURL: "https://timeout.com/london-cafe",
   isFreeAdmission: true,
@@ -63,8 +63,9 @@ describe("CustomStopScreen", () => {
     expect(screen.getByText("12 Bermondsey Street")).toBeOnTheScreen()
     expect(screen.getByText("Small place, good pastries.")).toBeOnTheScreen()
     expect(screen.getByText("10am-6pm · Free")).toBeOnTheScreen()
-    expect(screen.getByTestId("custom-stop-category")).toBeOnTheScreen()
+    expect(screen.getByTestId("custom-stop-category")).toHaveTextContent("Restaurant")
     expect(screen.getByTestId("custom-stop-source")).toBeOnTheScreen()
+    expect(screen.getByText("Visit Website")).toBeOnTheScreen()
     expect(screen.getByTestId("custom-stop-image")).toHaveProp(
       "src",
       "https://example.com/cafe.jpg"

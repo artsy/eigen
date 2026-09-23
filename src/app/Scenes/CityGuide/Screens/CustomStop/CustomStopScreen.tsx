@@ -11,6 +11,7 @@ import {
   customStopFromItinerary,
   customStopInput,
 } from "app/Scenes/CityGuide/Screens/CustomStop/utils/customStopFromItinerary"
+import { CUSTOM_CATEGORY_LABELS } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { goBack } from "app/system/navigation/navigate"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -112,6 +113,7 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
 
   const admission =
     stop.isFreeAdmission == null ? undefined : stop.isFreeAdmission ? "Free" : "Paid Entry"
+  const categoryLabel = stop.category ? CUSTOM_CATEGORY_LABELS[stop.category] : undefined
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -138,23 +140,22 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
                   testID="custom-stop-image"
                   src={stop.imageUrl}
                   resizeMode="cover"
+                  height={HERO_HEIGHT}
                   style={{ width: "100%", height: HERO_HEIGHT }}
                 />
               )}
 
               <Flex px={2} pt={2} pb={1}>
+                {!!categoryLabel && (
+                  <Text testID="custom-stop-category" variant="xs" color="mono60" mb={0.5}>
+                    {categoryLabel}
+                  </Text>
+                )}
+
                 <Flex flexDirection="row" alignItems="center" gap={1}>
                   <Flex flex={1}>
                     <Text variant="lg-display">{stop.title}</Text>
                   </Flex>
-
-                  {!!stop.category && (
-                    <Flex testID="custom-stop-category" backgroundColor="mono100" px={0.5} py={0.5}>
-                      <Text variant="xxs" color="mono0">
-                        {stop.category}
-                      </Text>
-                    </Flex>
-                  )}
 
                   {/*
                     The plus sits to the right of the title, as it does in the show header. Only
@@ -192,7 +193,7 @@ const Stop: React.FC<Props> = ({ citySlug, itineraryId, stopId }) => {
                 <Flex px={2} pt={2} alignItems="flex-start">
                   <RouterLink testID="custom-stop-source" to={stop.sourceURL}>
                     <Text variant="sm" underline>
-                      More information
+                      Visit Website
                     </Text>
                   </RouterLink>
                 </Flex>
