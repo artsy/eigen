@@ -21,6 +21,7 @@ export const cityGuideArticleFragment = graphql`
       byline
       href
       publishedAt(format: "MMMM D, YYYY")
+      publishedAtISO: publishedAt
       thumbnailImage {
         url
       }
@@ -44,22 +45,38 @@ export interface ArticleRow {
 }
 
 /**
- * The join row's own position, not the order the field happened to return — the attachments
- * are reorderable in Forque, so this can't be assumed stable. Same as the itinerary
- * attachments in CityGuideEventGuides.
+ * Newest published article first. `position` is just Gravity's attach-order counter — Forque
+ * has no reorder UI, so it never reflects curator intent — it's only used to keep ties (equal
+ * or missing `publishedAt`) in a stable order instead of Gravity's own row order.
  */
+const compareByPublishedAtThenPosition = (
+  a: CityGuideArticle_articles$data[number],
+  b: CityGuideArticle_articles$data[number]
+): number => {
+  const aDate = a.article.publishedAtISO
+  const bDate = b.article.publishedAtISO
+
+  if (aDate && bDate && aDate !== bDate) {
+    return aDate > bDate ? -1 : 1
+  }
+
+  if (!aDate !== !bDate) {
+    return aDate ? -1 : 1
+  }
+
+  return a.position - b.position
+}
+
 export const toArticleRows = (attachments: CityGuideArticle_articles$data): ArticleRow[] =>
-  [...attachments]
-    .sort((a, b) => a.position - b.position)
-    .map((attachment) => ({
-      id: attachment.internalID,
-      articleId: attachment.article.internalID,
-      slug: attachment.article.slug ?? "",
-      // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
-      // the in-article headline, which can be longer.
-      title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
-      byline: attachment.article.byline ?? "",
-      publishedAt: attachment.article.publishedAt ?? "",
-      href: attachment.article.href ?? "",
-      imageUrl: attachment.article.thumbnailImage?.url ?? "",
-    }))
+  [...attachments].sort(compareByPublishedAtThenPosition).map((attachment) => ({
+    id: attachment.internalID,
+    articleId: attachment.article.internalID,
+    slug: attachment.article.slug ?? "",
+    // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
+    // the in-article headline, which can be longer.
+    title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
+    byline: attachment.article.byline ?? "",
+    publishedAt: attachment.article.publishedAt ?? "",
+    href: attachment.article.href ?? "",
+    imageUrl: attachment.article.thumbnailImage?.url ?? "",
+  }))
