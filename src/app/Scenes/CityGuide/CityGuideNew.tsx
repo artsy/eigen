@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Join, Screen, Spacer } from "@artsy/palette-mobile"
+import { Flex, Join, Screen, Spacer, Theme } from "@artsy/palette-mobile"
 import { CityGuideNewQuery } from "__generated__/CityGuideNewQuery.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -58,7 +58,10 @@ const CityGuideNewSections: React.FC<SectionsProps> = ({
       <>
         <CityGuideItinerariesRail citySlug={citySlug} me={data.me} />
 
-        <CityGuideEventGuides citySlug={citySlug} query={data} />
+        {/* Always light: the block is styled as a black card, which flips its palette tokens in dark mode. */}
+        <Theme theme="v3light">
+          <CityGuideEventGuides citySlug={citySlug} query={data} />
+        </Theme>
       </>
 
       <CityGuideEvents citySlug={citySlug} cityName={cityName} city={data.city} />
