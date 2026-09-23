@@ -88,6 +88,19 @@ describe("ItinerarySectionRow", () => {
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
   })
 
+  it("renders no header when the title was cleared to an empty string", () => {
+    renderSection({ section: { ...section, title: "" } })
+
+    expect(screen.queryByTestId("itinerary-section-header")).toBeNull()
+    expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
+  })
+
+  it("falls back to a Day N label when the title is null", () => {
+    renderSection({ section: { ...section, title: null }, sectionIndex: 2 })
+
+    expect(screen.getByText("Day 3")).toBeTruthy()
+  })
+
   it("registers its scroll listeners with the screen's scroll view", () => {
     const registerScrollHandlers = jest.fn()
 
