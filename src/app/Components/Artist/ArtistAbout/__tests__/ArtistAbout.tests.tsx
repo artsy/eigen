@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { ArtistAbout } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "app/Components/Artist/ArtistAbout/ArtistAboutShows"
+import { ArtistCareerHighlights } from "app/Components/Artist/ArtistAbout/ArtistCareerHighlights"
 import { Biography } from "app/Components/Artist/Biography"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -61,6 +62,28 @@ describe("ArtistAbout", () => {
       })
 
       expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(0)
+    })
+  })
+
+  describe("ArtistCareerHighlights", () => {
+    it("is shown when there are insights", () => {
+      renderWithRelay({
+        Artist: () => {
+          return { insights: [{ label: "Fancy pants", entities: ["A fancy museum"] }] }
+        },
+      })
+
+      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
+    })
+
+    it("is hidden when there are no insights", () => {
+      renderWithRelay({
+        Artist: () => {
+          return { insights: [] }
+        },
+      })
+
+      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(0)
     })
   })
 

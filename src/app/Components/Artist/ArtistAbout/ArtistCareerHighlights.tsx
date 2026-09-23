@@ -47,7 +47,7 @@ const formatList = (entities: readonly string[]) => {
 
 const fragment = graphql`
   fragment ArtistCareerHighlights_artist on Artist {
-    insights {
+    insights(excludeBlanks: true) {
       entities
       description
       label

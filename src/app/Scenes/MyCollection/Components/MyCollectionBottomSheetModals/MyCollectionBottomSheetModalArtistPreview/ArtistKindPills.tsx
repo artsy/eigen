@@ -38,7 +38,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
 
 const ArtistKindPillsFragment = graphql`
   fragment ArtistKindPills_artist on Artist {
-    insights {
+    insights(excludeBlanks: true) {
       kind
       label
     }

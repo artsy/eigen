@@ -29,7 +29,7 @@ export const ArtistAbout: React.FC<ArtistAboutProps> = ({ artist: artistProp }) 
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
   const relatedGenes = extractNodes(artist.related?.genes)
 
-  const hasInsights = artist.hasArtistInsights.length > 0
+  const hasInsights = artist.insights.length > 0
   const hasArtistSeries = (artist.hasArtistSeriesConnection?.totalCount ?? 0) > 0
   const hasShows = (artist.hasArtistShows?.totalCount ?? 0) > 0
   const hasBiography = !!artist.hasBiographyBlurb?.text
@@ -120,8 +120,8 @@ const artistAboutFragment = graphql`
       text
     }
     internalID
-    hasArtistInsights: insights {
-      entities
+    insights(excludeBlanks: true) {
+      label
     }
     hasArtistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
       totalCount
