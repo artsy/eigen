@@ -15,7 +15,7 @@ const MUSEUM_EMOJI = "🏛"
 
 /** Display label for a custom stop's category. MUSEUM/GALLERY/SHOW/FAIR never reach here — they
  * only apply to a stop with a resolved item, which renders through its own case below. */
-const CUSTOM_CATEGORY_LABELS: Partial<Record<ItineraryStopCategory, string>> = {
+export const CUSTOM_CATEGORY_LABELS: Partial<Record<ItineraryStopCategory, string>> = {
   CAFE: "Cafe",
   RESTAURANT: "Restaurant",
   BAR: "Bar",
