@@ -466,6 +466,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
               internalID: itinerary.internalID,
               name: itinerary.title,
               description: itinerary.description,
+              heroImage: itinerary.heroImage,
             }}
             citySlug={itinerary.citySlug}
             // The guide is gone once deleted — leave, rather than refetch it. The itineraries
@@ -494,6 +495,9 @@ export const itineraryQuery = graphql`
       description
       slug
       shareToken
+      heroImage {
+        url(version: "large")
+      }
       ...ItineraryHeader_itinerary
       ...ItineraryShareButton_itinerary
 

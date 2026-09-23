@@ -1,19 +1,36 @@
 import { Text } from "@artsy/palette-mobile"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryEditSheetTestsQuery$data } from "__generated__/ItineraryEditSheetTestsQuery.graphql"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
 import { extractNodes } from "app/utils/extractNodes"
+import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+
+const photos = [{ path: "localCoverPath" }]
+
+jest.mock("app/utils/requestPhotos", () => ({
+  showPhotoActionSheet: jest.fn(() => Promise.resolve(photos)),
+}))
+
+// The real Image reads `src` through FastImage's `source.uri`, dropping `src` itself from
+// the tree — swap in plain RN Image so tests can assert on `src` directly.
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
 
 describe("ItineraryEditSheet", () => {
   const onClose = jest.fn()
   const onDeleted = jest.fn()
 
-  const itinerary = {
+  // Mutated by the cover-image tests that need a different starting itinerary — reassigned
+  // per test rather than a fresh `const`, since `Component` below closes over this binding.
+  let itinerary = {
     internalID: "itinerary-1",
     name: "London Oct 2026",
     description: "If time, check out Borough Market",
+    heroImage: { url: "https://example.com/current-cover.jpg" } as { url: string | null } | null,
   }
 
   // No fragment of its own: the sheet takes plain props, but it commits mutations, so it
@@ -61,6 +78,12 @@ describe("ItineraryEditSheet", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    itinerary = {
+      internalID: "itinerary-1",
+      name: "London Oct 2026",
+      description: "If time, check out Borough Market",
+      heroImage: { url: "https://example.com/current-cover.jpg" },
+    }
   })
 
   it("prefills the name and notes", () => {
@@ -156,12 +179,64 @@ describe("ItineraryEditSheet", () => {
     expect(onDeleted).toHaveBeenCalled()
   })
 
-  // Changing one needs an ArImage upload flow that does not exist yet, so the sheet says
-  // nothing about cover images at all rather than showing one it cannot edit.
-  it("says nothing about the cover image", () => {
+  it("shows the current cover image and a remove option", async () => {
     renderWithRelay({})
 
-    expect(screen.queryByText("Cover image")).not.toBeOnTheScreen()
-    expect(screen.queryByText("Change image")).not.toBeOnTheScreen()
+    expect(await screen.findByTestId("itinerary-edit-cover-image")).toHaveProp(
+      "src",
+      "https://example.com/current-cover.jpg"
+    )
+    expect(screen.getByTestId("itinerary-edit-cover-remove")).toBeOnTheScreen()
+  })
+
+  it("shows a placeholder and no remove option when there is no cover", () => {
+    itinerary = { ...itinerary, heroImage: null }
+
+    renderWithRelay({})
+
+    expect(screen.queryByTestId("itinerary-edit-cover-image")).not.toBeOnTheScreen()
+    expect(screen.getByText("No cover")).toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-edit-cover-remove")).not.toBeOnTheScreen()
+  })
+
+  it("uploads the picked photo and saves its URL when saving", async () => {
+    const uploadSpy = jest
+      .spyOn(imageUtils, "getConvertedImageUrlFromS3")
+      .mockResolvedValue("https://s3.example.com/new-cover.jpg")
+
+    const { env } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-cover-change"))
+
+    expect(await screen.findByTestId("itinerary-edit-cover-image")).toHaveProp(
+      "src",
+      "localCoverPath"
+    )
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+
+    await waitFor(() => expect(uploadSpy).toHaveBeenCalledWith("localCoverPath"))
+    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
+        id: "itinerary-1",
+        title: "London Oct 2026",
+        description: "If time, check out Borough Market",
+        imageURL: "https://s3.example.com/new-cover.jpg",
+      })
+    )
+  })
+
+  it("sends a null imageURL when removing the cover", () => {
+    const { env } = renderWithRelay({})
+
+    fireEvent.press(screen.getByTestId("itinerary-edit-cover-remove"))
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+
+    expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
+      id: "itinerary-1",
+      title: "London Oct 2026",
+      description: "If time, check out Borough Market",
+      imageURL: null,
+    })
   })
 })
