@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Box, BoxProps, Flex, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
+import { TypeEyebrow } from "app/Components/TypeEyebrow"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import React, { useEffect, useState } from "react"
@@ -32,6 +33,8 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
+      <TypeEyebrow>Show</TypeEyebrow>
+
       {/*
         The designs put the follow control on the title's own row, so the title takes the
         remaining width and truncates instead of pushing the control off the edge.
