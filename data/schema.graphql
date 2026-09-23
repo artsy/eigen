@@ -23810,7 +23810,7 @@ input ItineraryStopInput {
   note: String
 
   """
-  Replaces the stop's opening hours. Omit to leave them unchanged; pass `[]` to clear them.
+  The stop's opening hours.
   """
   openingHours: [ItineraryStopOpeningHoursInput!]
 
@@ -45754,7 +45754,7 @@ input createItineraryStopInput {
   note: String
 
   """
-  Replaces the stop's opening hours. Omit to leave them unchanged; pass `[]` to clear them.
+  The stop's opening hours.
   """
   openingHours: [ItineraryStopOpeningHoursInput!]
 
