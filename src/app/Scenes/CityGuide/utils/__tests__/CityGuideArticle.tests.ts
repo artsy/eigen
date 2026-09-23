@@ -53,6 +53,28 @@ describe("toArticleRows", () => {
     expect(rows.map((row) => row.id)).toEqual(["dated", "no-date-a", "no-date-b"])
   })
 
+  it("orders by real time, not string order, across timezone offsets", () => {
+    // "2024-06-16T00:30:00+05:00" is 2024-06-15T19:30:00Z — earlier in real time — but its
+    // string starts with "2024-06-16", so a plain string comparison would rank it after
+    // "2024-06-15T23:30:00-04:00" (2024-06-16T03:30:00Z), which is actually later.
+    const rows = toArticleRows(
+      asAttachments([
+        attachment({
+          id: "real-earlier",
+          position: 0,
+          publishedAtISO: "2024-06-16T00:30:00+05:00",
+        }),
+        attachment({
+          id: "real-later",
+          position: 1,
+          publishedAtISO: "2024-06-15T23:30:00-04:00",
+        }),
+      ])
+    )
+
+    expect(rows.map((row) => row.id)).toEqual(["real-later", "real-earlier"])
+  })
+
   it("breaks ties (equal or missing publishedAt) by position", () => {
     const rows = toArticleRows(
       asAttachments([

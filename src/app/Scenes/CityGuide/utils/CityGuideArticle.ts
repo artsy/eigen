@@ -56,11 +56,16 @@ const compareByPublishedAtThenPosition = (
   const aDate = a.article.publishedAtISO
   const bDate = b.article.publishedAtISO
 
-  if (aDate && bDate && aDate !== bDate) {
-    return aDate > bDate ? -1 : 1
-  }
-
-  if (!aDate !== !bDate) {
+  if (aDate && bDate) {
+    // Metaphysics' `date` resolver applies a timezone offset when no explicit `timezone`
+    // argument is passed, so the string isn't guaranteed to sort lexically across DST — parse
+    // to a timestamp instead.
+    const aTime = Date.parse(aDate)
+    const bTime = Date.parse(bDate)
+    if (aTime !== bTime) {
+      return aTime > bTime ? -1 : 1
+    }
+  } else if (!aDate !== !bDate) {
     return aDate ? -1 : 1
   }
 
