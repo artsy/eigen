@@ -43,6 +43,7 @@ describe("CityGuideEventArticles", () => {
       byline: "Natalie Stoclet",
       href: `/article/${title}`,
       publishedAt: "July 19, 2026",
+      publishedAtISO: "2026-07-19T12:00:00Z",
       thumbnailImage: { url: "https://example.com/article-thumb.jpg" },
       ...overrides,
     },
@@ -117,18 +118,22 @@ describe("CityGuideEventArticles", () => {
     expect(screen.getByText("July 19, 2026")).toBeOnTheScreen()
   })
 
-  it("orders rows by the attachment's position, not the order the field returned", async () => {
+  it("orders rows newest first, whatever the attachment position", async () => {
     renderWithRelay(
       cityArticles([
-        article("10 Exhibitions to see in London this summer", 1),
-        article("An Art Lover's Guide to London", 0),
+        article("An Art Lover's Guide to London", 0, { publishedAtISO: "2026-06-01T12:00:00Z" }),
+        article("10 Exhibitions to see in London this summer", 1, {
+          publishedAtISO: "2026-07-19T12:00:00Z",
+        }),
       ])
     )
 
     const rows = await screen.findAllByTestId("event-article-row")
 
     expect(rows).toHaveLength(2)
-    expect(rows[0]).toContainElement(screen.getByText("An Art Lover's Guide to London"))
+    expect(rows[0]).toContainElement(
+      screen.getByText("10 Exhibitions to see in London this summer")
+    )
   })
 
   it("navigates to the article when a row is tapped", async () => {
