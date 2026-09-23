@@ -197,6 +197,7 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
                 onPress={() => {
                   setShowCityPicker(true)
                 }}
+                isListView
               />
             }
             onBack={goBack}
