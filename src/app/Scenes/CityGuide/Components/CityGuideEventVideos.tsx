@@ -142,14 +142,14 @@ const CityGuideVideoCard: React.FC<{
   )
 }
 
-/** Hidden when empty, matching how the other rails skip a blank title line. */
+/** Guarded so an empty title doesn't leave a blank Text with mt={0.5} under the card. */
 const VideoTitle: React.FC<{ title: string }> = ({ title }) => {
   if (!title) {
     return null
   }
 
   return (
-    <Text variant="sm" weight="medium" numberOfLines={1} mt={0.5}>
+    <Text testID="city-guide-video-title" variant="sm" weight="medium" numberOfLines={1} mt={0.5}>
       {title}
     </Text>
   )

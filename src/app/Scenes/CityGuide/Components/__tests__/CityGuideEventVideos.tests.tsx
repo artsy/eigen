@@ -68,11 +68,13 @@ describe("CityGuideEventVideos", () => {
       renderWithRelay(cityVideos([attachment(video())]))
 
       expect(screen.getByText("A Day at the Fair")).toBeOnTheScreen()
+      expect(screen.getByTestId("city-guide-video-title")).toBeOnTheScreen()
     })
 
     it("renders no title when the video has none", () => {
       renderWithRelay(cityVideos([attachment(video({ title: "" }))]))
 
+      expect(screen.queryByTestId("city-guide-video-title")).not.toBeOnTheScreen()
       expect(screen.queryByText("A Day at the Fair")).not.toBeOnTheScreen()
     })
 
