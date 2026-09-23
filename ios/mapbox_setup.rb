@@ -7,7 +7,7 @@ def setup_mapbox_credentials
   end
 
   $netrc_path = File.expand_path('~/.netrc')
-  if File.exists?($netrc_path)
+  if File.exist?($netrc_path)
     system("touch .i-had-a-netrc-file")
   else
     system("rm -rf .i-had-a-netrc-file")
