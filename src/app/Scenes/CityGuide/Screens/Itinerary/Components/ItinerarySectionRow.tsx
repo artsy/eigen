@@ -122,9 +122,13 @@ export const ItinerarySectionRow: React.FC<Props> = ({
     return () => registerScrollHandlers(sectionID, null)
   }, [registerScrollHandlers, sectionID])
 
+  // An explicitly blank title (as opposed to null, which falls back to "Day N" above) means
+  // the section was cleared on purpose, so it renders with no header at all.
+  const hasHeader = showHeader && section.title?.trim() !== ""
+
   return (
     <Flex>
-      {!!showHeader && (
+      {!!hasHeader && (
         <Touchable
           testID="itinerary-section-header"
           accessibilityRole="button"
