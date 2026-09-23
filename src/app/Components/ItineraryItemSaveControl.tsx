@@ -33,6 +33,7 @@ const Control: React.FC<Props> = ({
     fetchPolicy: "network-only",
   })
   const item = data.show ?? data.fair
+  const cityGuideCity = data.show?.cityGuideCity ?? data.fair?.cityGuideCity
 
   const refresh = () => {
     fetchQuery<ItineraryItemSaveControlQuery>(environment, Query, variables, {
@@ -47,7 +48,11 @@ const Control: React.FC<Props> = ({
   if (!item) return null
 
   return (
-    <AddToItineraryProvider onSaved={refresh}>
+    <AddToItineraryProvider
+      citySlug={cityGuideCity?.slug}
+      cityName={cityGuideCity?.name ?? undefined}
+      onSaved={refresh}
+    >
       <CityEventSaveControl
         itemType={itemType}
         itemID={itemID}
@@ -77,9 +82,17 @@ const Query = graphql`
   query ItineraryItemSaveControlQuery($itemID: String!, $isShow: Boolean!, $isFair: Boolean!) {
     show(id: $itemID) @include(if: $isShow) {
       isOnMyItineraries
+      cityGuideCity {
+        slug
+        name
+      }
     }
     fair(id: $itemID) @include(if: $isFair) {
       isOnMyItineraries
+      cityGuideCity {
+        slug
+        name
+      }
     }
   }
 `

@@ -78,15 +78,10 @@ export const isMyStopsSection = (section: { readonly title?: string | null }) =>
   section.title?.trim().toLowerCase() === MY_STOPS_SECTION.toLowerCase()
 
 /**
- * What a new itinerary is called: "London October 2026", or "October 2026" where no city is
- * known. It reads as a trip rather than a place, so a second visit does not collide with the
- * first.
+ * What a new itinerary is called: "October 2026". It reads as a trip rather than a place, so a
+ * second visit does not collide with the first.
  */
-export const defaultItineraryTitle = (cityName?: string) => {
-  const monthAndYear = DateTime.local().toFormat("MMMM yyyy")
-
-  return cityName ? `${cityName} ${monthAndYear}` : monthAndYear
-}
+export const defaultItineraryTitle = () => DateTime.local().toFormat("MMMM yyyy")
 
 /** How a stop's `item` union member maps onto the item type the caller passes in. */
 const ITEM_TYPENAMES: Record<CityItineraryItemType, string> = {
@@ -169,14 +164,7 @@ export const isSameCustomStop = (
  * A single in-flight promise per hook instance serialises calls: two quick taps would
  * otherwise each find no itinerary and create one, leaving the user with two.
  */
-export const useCityItineraryStops = ({
-  citySlug,
-  cityName,
-}: {
-  citySlug: string
-  /** Absent where no city is known, which leaves it out of a new itinerary's name. */
-  cityName?: string
-}) => {
+export const useCityItineraryStops = ({ citySlug }: { citySlug: string }) => {
   const environment = useRelayEnvironment()
   const inFlight = useRef<Promise<unknown>>(Promise.resolve())
 
@@ -213,7 +201,7 @@ export const useCityItineraryStops = ({
         const created = await mutate<useCityItineraryStopsCreateItineraryMutation>(
           environment,
           createItineraryMutation,
-          { input: { citySlug, title: defaultItineraryTitle(cityName) } }
+          { input: { citySlug, title: defaultItineraryTitle() } }
         )
         const response = created.createItinerary?.responseOrError
 
@@ -259,7 +247,7 @@ export const useCityItineraryStops = ({
 
       return { itineraryID, sectionID, stops }
     },
-    [environment, citySlug, cityName]
+    [environment, citySlug]
   )
 
   /** Queues `work` behind whatever is already running, so adds cannot interleave. */

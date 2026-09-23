@@ -60,7 +60,7 @@ type Props = AddToItineraryTarget & {
 
 const Sheet: React.FC<Props> = ({
   citySlug,
-  cityName,
+  cityName: _cityName,
   onClose,
   onSaved,
   isOnMyItineraries: _isOnMyItineraries,
@@ -73,7 +73,7 @@ const Sheet: React.FC<Props> = ({
   const applySelection = useApplyItinerarySelection()
   const { trackEvent: trackCohesionEvent } = useTracking()
   // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
-  const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
+  const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "" })
 
   const data = useLazyLoadQuery<AddToItinerarySheetQuery>(
     Query,
@@ -301,7 +301,7 @@ const Sheet: React.FC<Props> = ({
       >
         <Flex mt={2}>
           <CreateItineraryForm
-            initialName={defaultItineraryTitle(cityName)}
+            initialName={defaultItineraryTitle()}
             isCreating={isCreating}
             onCreate={create}
             onCancel={() => setIsNaming(false)}

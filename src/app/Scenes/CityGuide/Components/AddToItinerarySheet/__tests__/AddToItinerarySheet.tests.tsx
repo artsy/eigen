@@ -600,14 +600,14 @@ describe("AddToItinerarySheet", () => {
       })
     })
 
-    it("names it after the city, month and year, and counts the characters", async () => {
+    it("names it after the month and year, and counts the characters", async () => {
       renderWithRelay(withItineraries([]), props)
 
       fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
 
       const input = screen.getByTestId("create-itinerary-name")
 
-      expect(input.props.value).toMatch(/^London \w+ \d{4}$/)
+      expect(input.props.value).toMatch(/^\w+ \d{4}$/)
       expect(screen.getByText(`${input.props.value.length} / 40`)).toBeOnTheScreen()
     })
 

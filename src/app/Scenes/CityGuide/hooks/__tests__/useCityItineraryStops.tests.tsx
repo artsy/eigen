@@ -51,10 +51,7 @@ describe("useCityItineraryStops", () => {
   )
 
   const renderIt = () =>
-    renderHook(
-      () => useCityItineraryStops({ citySlug: "london-united-kingdom", cityName: "London" }),
-      { wrapper }
-    )
+    renderHook(() => useCityItineraryStops({ citySlug: "london-united-kingdom" }), { wrapper })
 
   /** Resolves the next pending operation, whatever it is, with the given resolvers. */
   const resolveNext = async (name: string, resolvers: object) => {
@@ -221,9 +218,8 @@ describe("useCityItineraryStops", () => {
     )
   })
 
-  it("leaves the city out of the name when none is known", () => {
-    expect(defaultItineraryTitle()).toBe(defaultItineraryTitle(undefined))
-    expect(defaultItineraryTitle("London")).toBe(`London ${defaultItineraryTitle()}`)
+  it("names a new itinerary after the current month and year", () => {
+    expect(defaultItineraryTitle()).toMatch(/^[A-Za-z]+ \d{4}$/)
   })
 
   // A custom stop has no Artsy entity to point at, so its fields are copied instead. The
@@ -317,10 +313,10 @@ describe("useCityItineraryStops", () => {
       )
     )
 
-    // "London October 2026" — a trip rather than a place, so a second visit does not collide.
+    // "October 2026" — a trip rather than a place, so a second visit does not collide.
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       citySlug: "london-united-kingdom",
-      title: defaultItineraryTitle("London"),
+      title: defaultItineraryTitle(),
     })
 
     env.mock.resolveMostRecentOperation((operation) =>

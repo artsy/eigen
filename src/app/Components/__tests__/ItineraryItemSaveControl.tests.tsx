@@ -1,8 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryItemSaveControl } from "app/Components/ItineraryItemSaveControl"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { MockPayloadGenerator } from "relay-test-utils"
 
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({ useFeatureFlag: () => true }))
 
@@ -46,6 +47,89 @@ describe("ItineraryItemSaveControl", () => {
           destination_screen_owner_id: "entity-id",
         })
       )
+    }
+  )
+
+  it.each(["SHOW", "FAIR"] as const)(
+    "offers Create New Itinerary when the %s resolves to a City Guide city",
+    async (itemType) => {
+      const view = renderWithRelay(
+        {
+          Query: () => ({
+            [itemType === "SHOW" ? "show" : "fair"]: {
+              isOnMyItineraries: false,
+              cityGuideCity: { slug: "london-united-kingdom", name: "London" },
+            },
+          }),
+        },
+        {
+          itemType,
+          itemID: "entity-id",
+          name: "My event",
+          contextScreenOwnerType: itemType === "SHOW" ? OwnerType.show : OwnerType.fair,
+          contextScreenOwnerId: "entity-id",
+        }
+      )
+
+      fireEvent.press(await screen.findByLabelText("Add My event to an itinerary"))
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "AddToItinerarySheetQuery"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Me: () => ({ itinerariesConnection: { edges: [] } }),
+          })
+        )
+      })
+
+      expect(await screen.findByTestId("add-to-itinerary-create")).toBeOnTheScreen()
+    }
+  )
+
+  it.each(["SHOW", "FAIR"] as const)(
+    "keeps the empty state when the %s resolves to no City Guide city",
+    async (itemType) => {
+      const view = renderWithRelay(
+        {
+          Query: () => ({
+            [itemType === "SHOW" ? "show" : "fair"]: {
+              isOnMyItineraries: false,
+              cityGuideCity: null,
+            },
+          }),
+        },
+        {
+          itemType,
+          itemID: "entity-id",
+          name: "My event",
+          contextScreenOwnerType: itemType === "SHOW" ? OwnerType.show : OwnerType.fair,
+          contextScreenOwnerId: "entity-id",
+        }
+      )
+
+      fireEvent.press(await screen.findByLabelText("Add My event to an itinerary"))
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "AddToItinerarySheetQuery"
+        )
+      )
+
+      await act(async () => {
+        view.env.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Me: () => ({ itinerariesConnection: { edges: [] } }),
+          })
+        )
+      })
+
+      expect(
+        await screen.findByText("You have no itineraries yet. Start one from a city guide.")
+      ).toBeOnTheScreen()
+      expect(screen.queryByTestId("add-to-itinerary-create")).not.toBeOnTheScreen()
     }
   )
 })
