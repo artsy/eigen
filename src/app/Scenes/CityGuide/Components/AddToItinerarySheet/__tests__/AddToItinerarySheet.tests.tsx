@@ -587,6 +587,58 @@ describe("AddToItinerarySheet", () => {
     })
   })
 
+  // Opened from a show or fair page outside City Guide, there is no `citySlug` — but the
+  // entity's own City Guide city still lets a user create their first itinerary from there.
+  describe("with no citySlug but a derivable city", () => {
+    const noCitySlug = {
+      ...props,
+      target: { itemType: "SHOW" as const, itemID: "show-1" },
+      citySlug: undefined,
+      cityName: undefined,
+    }
+
+    const withDerivedCity = {
+      Query: () => ({
+        sourceShow: { cityGuideCity: { slug: "paris-france", name: "Paris" } },
+        sourceFair: null,
+      }),
+    }
+
+    it("still offers Create New Itinerary", async () => {
+      renderWithRelay(
+        { ...withItineraries([itinerary("a", "First")]), ...withDerivedCity },
+        noCitySlug
+      )
+
+      expect(await screen.findByTestId("add-to-itinerary-create")).toBeOnTheScreen()
+    })
+
+    it("names the new itinerary after the derived city", async () => {
+      renderWithRelay({ ...withItineraries([]), ...withDerivedCity }, noCitySlug)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      expect(screen.getByTestId("create-itinerary-name").props.value).toMatch(/^Paris \w+ \d{4}$/)
+    })
+
+    it("creates it against the derived city", async () => {
+      const view = renderWithRelay({ ...withItineraries([]), ...withDerivedCity }, noCitySlug)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+      fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Paris trip")
+      fireEvent.press(screen.getByTestId("create-itinerary-submit"))
+
+      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
+
+      const operation = view.env.mock.getMostRecentOperation()
+      expect(operation.request.node.params.name).toBe("AddToItinerarySheetCreateMutation")
+      expect(operation.request.variables.input).toEqual({
+        citySlug: "paris-france",
+        title: "Paris trip",
+      })
+    })
+  })
+
   describe("creating one", () => {
     it("tracks tappedCreateItinerary against the sheet's own city", async () => {
       renderWithRelay(withItineraries([]), props)

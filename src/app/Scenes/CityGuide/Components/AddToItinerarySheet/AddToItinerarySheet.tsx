@@ -40,6 +40,10 @@ const SNAP_POINTS = ["50%", "95%"]
  * footer, so it renders in the right place while still being driven by `Sheet`'s own state.
  */
 const FOOTER_PORTAL_HOST = "add-to-itinerary-footer"
+/** Where the create-itinerary sub-sheet is portaled to — a sibling of the outer sheet's own
+ *  `AutomountedBottomSheetModal`, so only one modal/backdrop is ever open at a time instead of
+ *  the sub-sheet stacking on top of the still-open outer one. */
+const CREATE_PORTAL_HOST = "add-to-itinerary-create"
 
 /** An Artsy entity or a custom stop — whatever the sheet was opened for. */
 export type AddToItineraryTarget = StopTarget & {
@@ -72,8 +76,6 @@ const Sheet: React.FC<Props> = ({
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
   const { trackEvent: trackCohesionEvent } = useTracking()
-  // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
-  const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
 
   const data = useLazyLoadQuery<AddToItinerarySheetQuery>(
     Query,
@@ -98,9 +100,19 @@ const Sheet: React.FC<Props> = ({
   const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
     (itinerary) => !itinerary.isCurated
   )
+  // Reached from outside City Guide, `citySlug`/`cityName` are absent — fall back to the city
+  // the entity itself sits in, so Create New Itinerary is still on offer there.
+  const derivedCity = data.sourceShow?.cityGuideCity ?? data.sourceFair?.cityGuideCity ?? null
+  const effectiveCitySlug = citySlug ?? derivedCity?.slug
+  const effectiveCityName = cityName ?? derivedCity?.name
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
-  // city. Reached from outside City Guide you can only add to one you already have.
-  const canCreate = !!citySlug
+  // city at all — a custom stop, or an entity with no City Guide city nearby.
+  const canCreate = !!effectiveCitySlug
+  // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
+  const { addStop } = useCityItineraryStops({
+    citySlug: effectiveCitySlug ?? "",
+    cityName: effectiveCityName,
+  })
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
   // stop it came from) say already hold it, kept to the ones actually listed.
@@ -142,7 +154,7 @@ const Sheet: React.FC<Props> = ({
         environment,
         CreateMutation,
         // Guarded by `canCreate`, which is what gates this whole view.
-        { input: { citySlug: citySlug as string, title } }
+        { input: { citySlug: effectiveCitySlug as string, title } }
       )
       const response = created.createItinerary?.responseOrError
       const internalID =
@@ -238,7 +250,7 @@ const Sheet: React.FC<Props> = ({
                   trackCohesionEvent({
                     action: ActionType.tappedCreateItinerary,
                     context_screen_owner_type: OwnerType.cityGuide,
-                    context_screen_owner_slug: citySlug,
+                    context_screen_owner_slug: effectiveCitySlug,
                   })
                   setIsNaming(true)
                 }}
@@ -294,20 +306,24 @@ const Sheet: React.FC<Props> = ({
         </Portal>
       </BottomSheetView>
 
-      <AutoHeightBottomSheet
-        visible={isNaming}
-        name="CreateItinerary"
-        onDismiss={() => setIsNaming(false)}
-      >
-        <Flex mt={2}>
-          <CreateItineraryForm
-            initialName={defaultItineraryTitle(cityName)}
-            isCreating={isCreating}
-            onCreate={create}
-            onCancel={() => setIsNaming(false)}
-          />
-        </Flex>
-      </AutoHeightBottomSheet>
+      {/* Portaled out to a sibling of the outer sheet's own modal, so this one never stacks
+          on top of it — see `CREATE_PORTAL_HOST`. */}
+      <Portal hostName={CREATE_PORTAL_HOST}>
+        <AutoHeightBottomSheet
+          visible={isNaming}
+          name="CreateItinerary"
+          onDismiss={() => setIsNaming(false)}
+        >
+          <Flex mt={2}>
+            <CreateItineraryForm
+              initialName={defaultItineraryTitle(effectiveCityName)}
+              isCreating={isCreating}
+              onCreate={create}
+              onCancel={() => setIsNaming(false)}
+            />
+          </Flex>
+        </AutoHeightBottomSheet>
+      </Portal>
     </>
   )
 }
@@ -331,27 +347,33 @@ export const AddToItinerarySheet: React.FC<{
   onClose: () => void
   onSaved?: () => void
 }> = ({ target, onClose, onSaved }) => (
-  <AutomountedBottomSheetModal
-    visible={!!target}
-    name="AddToItinerary"
-    snapPoints={SNAP_POINTS}
-    enableDynamicSizing={false}
-    onDismiss={onClose}
-    footerComponent={({ animatedFooterPosition }) => (
-      <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-        <PortalHost name={FOOTER_PORTAL_HOST} />
-      </BottomSheetFooter>
-    )}
-  >
-    {!!target && (
-      <SheetWithSuspense
-        key={sheetTargetKey(target)}
-        {...target}
-        onClose={onClose}
-        onSaved={onSaved}
-      />
-    )}
-  </AutomountedBottomSheetModal>
+  <>
+    <AutomountedBottomSheetModal
+      visible={!!target}
+      name="AddToItinerary"
+      snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
+      onDismiss={onClose}
+      footerComponent={({ animatedFooterPosition }) => (
+        <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
+          <PortalHost name={FOOTER_PORTAL_HOST} />
+        </BottomSheetFooter>
+      )}
+    >
+      {!!target && (
+        <SheetWithSuspense
+          key={sheetTargetKey(target)}
+          {...target}
+          onClose={onClose}
+          onSaved={onSaved}
+        />
+      )}
+    </AutomountedBottomSheetModal>
+
+    {/* A sibling of the outer sheet's modal, so the create-itinerary sub-sheet it hosts never
+        stacks on top of the still-open outer one — a single backdrop at a time. */}
+    <PortalHost name={CREATE_PORTAL_HOST} />
+  </>
 )
 
 /** What the stop being added points at, for `addedStopToItinerary`'s `context_owner_type`. A
@@ -380,12 +402,20 @@ const Query = graphql`
     $hasFair: Boolean!
   ) {
     sourceShow: show(id: $itemID) @include(if: $hasShow) {
+      cityGuideCity {
+        slug
+        name
+      }
       myItineraryStopMemberships {
         itineraryID
         stopIDs
       }
     }
     sourceFair: fair(id: $itemID) @include(if: $hasFair) {
+      cityGuideCity {
+        slug
+        name
+      }
       myItineraryStopMemberships {
         itineraryID
         stopIDs
