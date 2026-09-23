@@ -155,20 +155,23 @@ export const CityGuideEventGuides: React.FC<Props> = ({ citySlug, query: queryRe
 
   /*
     Filtered to this city by Gravity: a city's curated guides stand on their own and do not
-    depend on an event being on right now.
+    depend on an event being on right now. Gravity's endpoint also returns the requesting
+    editor's own drafts, so drop anything not published before it reaches the app.
   */
-  const rows: GuideRow[] = extractNodes(query?.itinerariesConnection).map((itinerary) => ({
-    id: itinerary.internalID,
-    itineraryId: itinerary.slug ?? itinerary.internalID,
-    internalID: itinerary.internalID,
-    slug: itinerary.slug ?? null,
-    title: itinerary.title,
-    subtitle: itinerary.subtitle ?? "",
-    authorName: itinerary.authorName ?? "",
-    imageUrl: itinerary.heroImage?.url ?? "",
-    featuredImageUrl: itinerary.heroImage?.featuredUrl ?? "",
-    featured: itinerary.featured,
-  }))
+  const rows: GuideRow[] = extractNodes(query?.itinerariesConnection)
+    .filter((itinerary) => itinerary.visibility === "PUBLIC")
+    .map((itinerary) => ({
+      id: itinerary.internalID,
+      itineraryId: itinerary.slug ?? itinerary.internalID,
+      internalID: itinerary.internalID,
+      slug: itinerary.slug ?? null,
+      title: itinerary.title,
+      subtitle: itinerary.subtitle ?? "",
+      authorName: itinerary.authorName ?? "",
+      imageUrl: itinerary.heroImage?.url ?? "",
+      featuredImageUrl: itinerary.heroImage?.featuredUrl ?? "",
+      featured: itinerary.featured,
+    }))
 
   if (!rows.length) {
     return null
@@ -212,6 +215,7 @@ const queryFragment = graphql`
           subtitle
           authorName
           featured
+          visibility
           heroImage {
             url(version: "small")
             featuredUrl: url(version: "large")
