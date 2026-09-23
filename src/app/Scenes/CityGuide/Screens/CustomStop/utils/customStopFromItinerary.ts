@@ -1,3 +1,4 @@
+import { formatStopClockTime } from "app/Scenes/CityGuide/Screens/Itinerary/utils/formatStopClockTime"
 import { ItineraryStopCategory } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 /**
@@ -70,9 +71,12 @@ const toCategory = (category: string | null | undefined): ItineraryStopCategory 
 }
 
 const toHours = (stop: PayloadStop) => {
-  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+  if (stop.startTime && stop.endTime) {
+    return `${formatStopClockTime(stop.startTime)}-${formatStopClockTime(stop.endTime)}`
+  }
 
-  return stop.startTime ?? stop.endTime ?? undefined
+  const time = stop.startTime ?? stop.endTime
+  return time ? formatStopClockTime(time) : undefined
 }
 
 /**

@@ -119,6 +119,24 @@ describe("customStopFromItinerary", () => {
     expect(result?.hours).toBe("10am")
   })
 
+  it("trims a zero minute off each end, but keeps a non-zero one", () => {
+    const result = customStopFromItinerary(
+      itinerary([stop({ startTime: "11:00am", endTime: "6:40pm" })]) as any,
+      "stop-2"
+    )
+
+    expect(result?.hours).toBe("11am-6:40pm")
+  })
+
+  it("trims a zero minute for both ends of a whole-hour range", () => {
+    const result = customStopFromItinerary(
+      itinerary([stop({ startTime: "8:00pm", endTime: "11:00pm" })]) as any,
+      "stop-2"
+    )
+
+    expect(result?.hours).toBe("8pm-11pm")
+  })
+
   // Left undefined rather than defaulted to 0,0 — a half-placed stop is not mappable.
   it("leaves a half-placed stop unmapped", () => {
     const result = customStopFromItinerary(itinerary([stop({ longitude: null })]) as any, "stop-2")

@@ -1,8 +1,25 @@
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
-import { itineraryStopCoordinates } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import {
+  itineraryStopCoordinates,
+  itineraryStopDisplayTime,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 const stop = (overrides: Record<string, unknown> = {}) => makeItineraryStop(overrides)
+
+describe("itineraryStopDisplayTime", () => {
+  it("trims a zero minute off each end, but keeps a non-zero one", () => {
+    expect(itineraryStopDisplayTime(stop({ startTime: "11:00am", endTime: "6:40pm" }))).toEqual(
+      "11am-6:40pm"
+    )
+  })
+
+  it("trims a zero minute for both ends of a whole-hour range", () => {
+    expect(itineraryStopDisplayTime(stop({ startTime: "8:00pm", endTime: "11:00pm" }))).toEqual(
+      "8pm-11pm"
+    )
+  })
+})
 
 describe("itineraryStopCoordinates", () => {
   it("prefers the stop's own over the item's", () => {
