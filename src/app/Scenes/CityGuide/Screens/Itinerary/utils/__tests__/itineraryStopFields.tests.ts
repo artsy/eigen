@@ -1,5 +1,8 @@
 import { makeItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/__tests__/itineraryTestFixtures"
-import { itineraryStopCoordinates } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
+import {
+  itineraryStopCoordinates,
+  itineraryStopDisplayTime,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 const stop = (overrides: Record<string, unknown> = {}) => makeItineraryStop(overrides)
@@ -76,5 +79,70 @@ describe("itineraryStopCoordinates", () => {
 
   it("leaves a stop with no item unmapped", () => {
     expect(itineraryStopCoordinates(stop({}))).toBeUndefined()
+  })
+})
+
+describe("itineraryStopDisplayTime", () => {
+  it("shows only the date range for a whole-day stop spanning multiple days", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          startAtISO: "2026-09-24T00:00:00.000Z",
+          endAtISO: "2026-09-27T23:59:00.000Z",
+          timeZone: "utc",
+        })
+      )
+    ).toEqual("Sep 24 – 27")
+  })
+
+  it("shows a single date for a whole-day stop lasting one day", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          startAtISO: "2026-09-24T00:00:00.000Z",
+          endAtISO: "2026-09-24T23:59:00.000Z",
+          timeZone: "utc",
+        })
+      )
+    ).toEqual("Sep 24")
+  })
+
+  it("spells out the month on both ends when a whole-day stop crosses a month boundary", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          startAtISO: "2026-09-30T00:00:00.000Z",
+          endAtISO: "2026-10-02T23:59:00.000Z",
+          timeZone: "utc",
+        })
+      )
+    ).toEqual("Sep 30 – Oct 2")
+  })
+
+  it("checks the whole-day window against the stop's own time zone, not UTC", () => {
+    // 00:00-23:59 in New York is 04:00-03:59 the next day in UTC — not whole-day by a naive UTC check.
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          startAtISO: "2026-09-24T04:00:00.000Z",
+          endAtISO: "2026-09-25T03:59:00.000Z",
+          timeZone: "America/New_York",
+        })
+      )
+    ).toEqual("Sep 24")
+  })
+
+  it("shows the formatted hours for a normal timed range, unchanged", () => {
+    expect(
+      itineraryStopDisplayTime(stop({ startTime: "11am", endTime: "4pm", timeZone: "utc" }))
+    ).toEqual("11am-4pm")
+  })
+
+  it("shows a single formatted time when only one end is set, unchanged", () => {
+    expect(itineraryStopDisplayTime(stop({ startTime: "11am", endTime: null }))).toEqual("11am")
+  })
+
+  it("shows nothing for a stop with no times at all, unchanged", () => {
+    expect(itineraryStopDisplayTime(stop({ startTime: null, endTime: null }))).toEqual("")
   })
 })

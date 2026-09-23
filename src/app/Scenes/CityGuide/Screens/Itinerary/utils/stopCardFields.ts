@@ -43,7 +43,7 @@ export interface StopCardFields {
   eventKind?: string
   /** Second line: where it is. Absent on a custom stop, which has no resolved place. */
   subtitle?: string
-  /** Third line, left of the dot. Server-formatted; this never parses a date. */
+  /** Third line, left of the dot. Server-formatted hours, or the date range for a whole-day stop. */
   hours?: string
   /** Third line, right of the dot. */
   admission?: string

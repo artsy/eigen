@@ -4,6 +4,7 @@ import {
   ItineraryStop,
   ItineraryStopCategory,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import { DateTime } from "luxon"
 
 /**
  * Narrows the `Show | Fair | Location` union to the members this client knows. Relay adds a
@@ -78,8 +79,41 @@ export const itineraryStopCategory = (
   }
 }
 
-/** Backend-formatted for display. e.g. "11am-4pm" */
+/**
+ * A stop with no specific times set is saved as 00:00-23:59 in its own time zone (forque's
+ * "no specific time" toggle). Rendered as hours, that would misleadingly read as "12:00AM-11:59PM"
+ * instead of the whole-day range it actually means.
+ */
+interface WholeDayStop {
+  readonly startAtISO?: string | null
+  readonly endAtISO?: string | null
+  readonly timeZone?: string | null
+}
+
+/** "Sep 24 – 27" for a multi-day whole-day stop, "Sep 24" for a single day, else `undefined`. */
+export const wholeDayDateRangeLabel = (stop: WholeDayStop): string | undefined => {
+  const { startAtISO, endAtISO, timeZone } = stop
+  if (!startAtISO || !endAtISO) return undefined
+
+  const start = DateTime.fromISO(startAtISO, { zone: timeZone ?? undefined })
+  const end = DateTime.fromISO(endAtISO, { zone: timeZone ?? undefined })
+  if (!start.isValid || !end.isValid) return undefined
+
+  const isWholeDay = start.hour === 0 && start.minute === 0 && end.hour === 23 && end.minute === 59
+  if (!isWholeDay) return undefined
+
+  const startLabel = start.toFormat("MMM d")
+  if (start.hasSame(end, "day")) return startLabel
+
+  const sameMonth = start.hasSame(end, "month") && start.hasSame(end, "year")
+  return `${startLabel} – ${end.toFormat(sameMonth ? "d" : "MMM d")}`
+}
+
+/** Backend-formatted for display. e.g. "11am-4pm", or the date range for a whole-day stop. */
 export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
+  const wholeDayLabel = wholeDayDateRangeLabel(stop)
+  if (wholeDayLabel) return wholeDayLabel
+
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
 
   return stop.startTime ?? stop.endTime ?? ""

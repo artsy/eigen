@@ -1,3 +1,4 @@
+import { wholeDayDateRangeLabel } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import { ItineraryStopCategory } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 
 /**
@@ -14,7 +15,7 @@ export interface CustomStop {
   /** Where the curator found it. Leads off Artsy. */
   sourceURL?: string
   isFreeAdmission?: boolean
-  /** Server-formatted for display; this never parses a date. */
+  /** Server-formatted hours, or the date range for a whole-day stop. */
   hours?: string
   imageUrl?: string
   coordinates?: { lat: number; lng: number }
@@ -35,6 +36,9 @@ interface PayloadStop {
   readonly longitude?: number | null
   readonly startTime?: string | null
   readonly endTime?: string | null
+  readonly startAtISO?: string | null
+  readonly endAtISO?: string | null
+  readonly timeZone?: string | null
   readonly image?: { readonly url?: string | null } | null
   readonly item?: { readonly __typename: string } | null
   readonly isOnMyItineraries?: boolean | null
@@ -70,6 +74,9 @@ const toCategory = (category: string | null | undefined): ItineraryStopCategory 
 }
 
 const toHours = (stop: PayloadStop) => {
+  const wholeDayLabel = wholeDayDateRangeLabel(stop)
+  if (wholeDayLabel) return wholeDayLabel
+
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
 
   return stop.startTime ?? stop.endTime ?? undefined
