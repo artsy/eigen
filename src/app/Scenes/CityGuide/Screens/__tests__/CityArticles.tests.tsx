@@ -14,7 +14,7 @@ describe("CityArticlesScreen", () => {
     Component: () => <CityArticlesScreen citySlug="london-united-kingdom" />,
   })
 
-  const article = (title: string, position: number) => ({
+  const article = (title: string, position: number, publishedAtISO = "2026-07-19T12:00:00Z") => ({
     internalID: `attachment-for-${title}`,
     position,
     article: {
@@ -25,6 +25,7 @@ describe("CityArticlesScreen", () => {
       byline: "Natalie Stoclet",
       href: `/article/${title}`,
       publishedAt: "July 19, 2026",
+      publishedAtISO,
       thumbnailImage: { url: "https://example.com/article-thumb.jpg" },
     },
   })
@@ -45,10 +46,13 @@ describe("CityArticlesScreen", () => {
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(attachments.length)
   })
 
-  it("orders rows by the attachment's position", async () => {
+  it("orders rows newest first, whatever the attachment position", async () => {
     renderWithRelay({
       City: () => ({
-        cityArticles: [article("Second", 1), article("First", 0)],
+        cityArticles: [
+          article("Second", 0, "2026-06-01T12:00:00Z"),
+          article("First", 1, "2026-07-19T12:00:00Z"),
+        ],
       }),
     })
 
