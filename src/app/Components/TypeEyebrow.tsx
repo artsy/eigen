@@ -5,8 +5,9 @@ interface TypeEyebrowProps extends TextProps {
 }
 
 /**
- * The small "Show" / "Event" / "Museum" / "Gallery" label a detail page's title sits under.
- * Shared so every entity header renders the same size and colour for it.
+ * A small grey label naming what the title below it is — a detail page's "Show", or a stop
+ * card's free-text event kind ("Closing Reception"). Shared so every caller renders it at the
+ * same size and colour.
  */
 export const TypeEyebrow: React.FC<TypeEyebrowProps> = ({ children, ...rest }) => {
   return (
