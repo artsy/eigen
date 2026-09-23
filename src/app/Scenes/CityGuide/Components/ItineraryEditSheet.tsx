@@ -63,7 +63,9 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   const [commitDelete, isDeleting] = useMutation<ItineraryEditSheetDeleteMutation>(deleteMutation)
 
   const currentCoverUrl = itinerary.heroImage?.url ?? null
-  const hasCover = !!localCoverPath || (!!currentCoverUrl && !coverRemoved)
+  const coverImageUrl = localCoverPath || (coverRemoved ? null : currentCoverUrl)
+  const hasCover = !!coverImageUrl
+  const isSaving = isUpdating || isUploadingCover
 
   const chooseCoverImage = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
@@ -105,6 +107,29 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             ...(imageURL !== undefined ? { imageURL } : {}),
           },
         },
+        // Gravity builds the cover's versions in a background job, so the response still has
+        // the old image: show the local photo (or no cover) straight away.
+        updater:
+          imageURL === undefined
+            ? undefined
+            : (store, data) => {
+                const responseOrError = data?.updateItinerary?.responseOrError
+
+                if (responseOrError?.__typename !== "ItineraryMutationSuccess") {
+                  return
+                }
+
+                const updatedItineraryId = responseOrError.itinerary?.id
+                const record = updatedItineraryId ? store.get(updatedItineraryId) : null
+                const heroImage =
+                  imageURL === null
+                    ? record?.getLinkedRecord("heroImage")
+                    : record?.getOrCreateLinkedRecord("heroImage", "Image")
+                const newUrl = imageURL === null ? null : localCoverPath
+
+                heroImage?.setValue(newUrl, 'url(version:"large")')
+                heroImage?.setValue(newUrl, 'url(version:"small")')
+              },
         onCompleted: (_response, errors) => {
           if (errors?.length) {
             toast.show("Could not save your changes", "bottom")
@@ -174,9 +199,11 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           <Flex px={2} pb={2} flexDirection="row" alignItems="center" gap={2}>
             <Touchable
               testID="itinerary-edit-cover"
-              accessibilityRole="button"
-              accessibilityLabel="Change cover photo"
+              disabled={isSaving}
               onPress={chooseCoverImage}
+              // The "Change cover photo" link next to it does the same, so screen readers
+              // skip this swatch rather than read a second, identical button.
+              accessible={false}
             >
               <Flex
                 width={COVER_SIZE}
@@ -187,10 +214,10 @@ export const ItineraryEditSheet: React.FC<Props> = ({
                 alignItems="center"
                 overflow="hidden"
               >
-                {hasCover ? (
+                {coverImageUrl ? (
                   <Image
                     testID="itinerary-edit-cover-image"
-                    src={localCoverPath || currentCoverUrl || ""}
+                    src={coverImageUrl}
                     width={COVER_SIZE}
                     height={COVER_SIZE}
                     resizeMode="cover"
@@ -207,6 +234,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
               <Touchable
                 testID="itinerary-edit-cover-change"
                 accessibilityRole="button"
+                disabled={isSaving}
                 onPress={chooseCoverImage}
               >
                 <Text variant="sm" underline>
@@ -218,6 +246,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
                 <Touchable
                   testID="itinerary-edit-cover-remove"
                   accessibilityRole="button"
+                  disabled={isSaving}
                   onPress={removeCoverImage}
                 >
                   <Text variant="sm" color="red100" underline>
@@ -256,7 +285,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             <Button
               block
               testID="itinerary-edit-save"
-              loading={isUpdating || isUploadingCover}
+              loading={isSaving}
               disabled={!name.trim()}
               onPress={save}
             >
@@ -268,7 +297,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
               testID="itinerary-edit-delete"
               accessibilityRole="button"
               accessibilityLabel="Delete Itinerary"
-              disabled={isDeleting}
+              disabled={isDeleting || isSaving}
               onPress={destroy}
             >
               <Text variant="sm" color="red100" textAlign="center" underline>
@@ -289,6 +318,7 @@ const updateMutation = graphql`
         __typename
         ... on ItineraryMutationSuccess {
           itinerary {
+            id
             internalID
             title
             description
