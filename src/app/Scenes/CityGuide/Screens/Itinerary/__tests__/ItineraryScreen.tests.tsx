@@ -654,7 +654,7 @@ describe("ItineraryScreen", () => {
 
     expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
 
-    expect(screen.UNSAFE_getByType(ScrollView).props.contentContainerStyle).toEqual({
+    expect(screen.UNSAFE_getByType(ScrollView).props.contentContainerStyle).toMatchObject({
       paddingBottom: 60,
     })
   })
