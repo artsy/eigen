@@ -101,7 +101,10 @@ describe("CityGuideNew", () => {
 
       act(() => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, DefaultMockResolvers)
+          MockPayloadGenerator.generate(operation, {
+            ...DefaultMockResolvers,
+            Itinerary: () => ({ visibility: "PUBLIC" }),
+          })
         )
       })
 
@@ -129,6 +132,7 @@ describe("CityGuideNew", () => {
         getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
             ...DefaultMockResolvers,
+            Itinerary: () => ({ visibility: "PUBLIC" }),
             City: () => ({
               cityVideos: withVideo
                 ? [
