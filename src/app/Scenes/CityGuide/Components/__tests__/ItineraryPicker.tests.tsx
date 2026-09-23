@@ -12,10 +12,11 @@ describe("ItineraryPicker", () => {
     currentItineraryName: "London Oct 2026",
   }
 
-  const itinerary = (internalID: string, name: string) => ({
+  const itinerary = (internalID: string, name: string, isCurated = false) => ({
     internalID,
     slug: null,
     title: name,
+    isCurated,
     stopsCount: 4,
   })
 
@@ -56,6 +57,20 @@ describe("ItineraryPicker", () => {
     fireEvent.press(screen.getByText("London Oct 2026"))
 
     expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
+  })
+
+  // A curated guide is owned by the editor who created it in forque, so it can turn up in
+  // `me.itinerariesConnection` — it has no peers to switch between, so it doesn't belong here.
+  it("filters out curated guides", async () => {
+    renderWithRelay(
+      connection([itinerary("a", "London Oct 2026"), itinerary("b", "Armory Week 2026", true)]),
+      props
+    )
+
+    fireEvent.press(await screen.findByText("London Oct 2026"))
+
+    expect(await screen.findByText("Your Itineraries")).toBeOnTheScreen()
+    expect(screen.queryByText("Armory Week 2026")).not.toBeOnTheScreen()
   })
 
   it("lists the others once there is more than one", async () => {

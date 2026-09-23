@@ -228,10 +228,12 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   // Your own itinerary shows no order: it is an unordered list, so numbering would be noise.
   // A curated guide keeps it.
   const isEditorial = itinerary.isCurated
-  // `isMine` is false for a curated guide and for another user's itinerary opened via a share
-  // link, so it alone gates reordering. Cross-section drag isn't possible regardless:
-  // `updateItineraryStopInput` has no section field, so a stop's section is fixed at creation.
-  const canReorder = itinerary.isMine
+  // `isMine` alone isn't enough: a curated guide can be "mine" too, since gravity makes its
+  // editor the owner. Editing and reordering are for personal itineraries only.
+  // Cross-section drag isn't possible regardless: `updateItineraryStopInput` has no section
+  // field, so a stop's section is fixed at creation.
+  const canEdit = !!itinerary.isMine && !itinerary.isCurated
+  const canReorder = canEdit
   // A section with nothing in it is nothing to show — not even its heading. Emptying one by
   // removing its last stop leaves it behind on the itinerary, so this is the common case.
   const sections = withStopOrder(itinerary, stopOrder).sections.filter(
@@ -314,11 +316,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                 )}
 
                 {/*
-                  Only for your own itinerary — `isMine` compares Gravity's owner id against the
-                  viewer, since `isCurated` alone can't tell your own guide from one of someone
-                  else's opened via a share link.
+                  Only for your own personal itinerary — never a curated guide, even one "mine"
+                  because gravity made its editor the owner.
                 */}
-                {!!itinerary.isMine && (
+                {!!canEdit && (
                   <Touchable
                     testID="itinerary-edit"
                     accessibilityRole="button"
