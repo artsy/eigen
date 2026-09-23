@@ -196,6 +196,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableCityGuideEditorialContent",
   },
+  AREnableCityGuideShowsForYou: {
+    description: "Rank City Guide's current shows by the signed-in user's taste",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableCityGuideShowsForYou",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

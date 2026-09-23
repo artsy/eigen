@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -226,6 +227,105 @@ describe("CityEventListScreen", () => {
         subject: "list",
       })
     )
+  })
+
+  describe("the forYou variable and its ranked list", () => {
+    // The query resolves synchronously inside `renderWithRelay`, which drops the completed
+    // operation from the mock environment's pending list. `execute` is a jest mock of its
+    // own, so its call args still carry the variables the operation was issued with.
+    const requestedVariables = (env: ReturnType<typeof renderWithRelay>["env"]) =>
+      (env.execute as jest.Mock).mock.calls[0][0].operation.request.variables
+
+    it("is false for the shows section when the flag is off, even when signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("is false for the shows section when signed out, even when the flag is on", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("is true for the shows section when the flag is on and the viewer is signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(true)
+    })
+
+    // Opening Soon keeps date order regardless of the flag: ranking is scoped to Current Shows.
+    it("stays false for the opening section even when the flag is on and the viewer is signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "opening" })
+      await screen.findAllByText("Opening Soon")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("renders one flat, unheaded-by-neighbourhood section in the returned order when forYou is true", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const shows = [
+        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
+        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      // One header for the whole list, not one per neighbourhood, even with two postcodes.
+      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(1)
+      expect(screen.getByText("For You")).toBeOnTheScreen()
+
+      const rows = screen.getAllByTestId("city-event-row")
+      expect(rows).toHaveLength(shows.length)
+    })
+
+    it("still groups by neighbourhood when forYou is false", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
+
+      const shows = [
+        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
+        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      // Two different outward codes, so two named sections rather than one flat one.
+      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(2)
+      expect(screen.queryByText("For You")).toBeNull()
+    })
   })
 
   it("hides the map toggle when nothing has valid coordinates", async () => {
