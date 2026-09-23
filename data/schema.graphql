@@ -2803,6 +2803,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   initials(length: Int = 3): String
   insights(
     """
+    Whether to exclude insights with no data.
+    """
+    excludeBlanks: Boolean = false
+
+    """
     The specific insights to return.
     """
     kind: [ArtistInsightKind] = [
