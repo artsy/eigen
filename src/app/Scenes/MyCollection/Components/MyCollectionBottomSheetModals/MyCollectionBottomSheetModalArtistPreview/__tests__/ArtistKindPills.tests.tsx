@@ -1,3 +1,4 @@
+import { Pill } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -15,39 +16,29 @@ describe("ArtistKindPills", () => {
     `,
   })
 
-  it("renders a pill for an insight with entities", () => {
+  it("renders a pill for an artist with insights", () => {
     renderWithRelay({
-      ArtistInsight: () => ({
-        label: "Collected by a major institution",
-        entities: ["A fancy museum"],
-        description: null,
+      Artist: () => ({
+        insights: [
+          {
+            label: "Fancy pants",
+            entities: ["A fancy museum"],
+          },
+        ],
       }),
     })
 
-    expect(screen.getByText("Collected by a major institution")).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryAllByType(Pill)).toHaveLength(1)
+    expect(screen.getByText("Fancy pants")).toBeOnTheScreen()
   })
 
-  it("renders a pill for an insight with a description", () => {
+  it("renders no pill for an artist with no insights", () => {
     renderWithRelay({
-      ArtistInsight: () => ({
-        label: "Critically acclaimed",
-        entities: [],
-        description: "Recognized by bigwigs",
+      Artist: () => ({
+        insights: [],
       }),
     })
 
-    expect(screen.getByText("Critically acclaimed")).toBeOnTheScreen()
-  })
-
-  it("renders nothing for an insight with neither entities nor a description", () => {
-    renderWithRelay({
-      ArtistInsight: () => ({
-        label: "Collected by nobody",
-        entities: [],
-        description: null,
-      }),
-    })
-
-    expect(screen.queryByText("Collected by nobody")).not.toBeOnTheScreen()
+    expect(screen.UNSAFE_queryAllByType(Pill)).toHaveLength(0)
   })
 })

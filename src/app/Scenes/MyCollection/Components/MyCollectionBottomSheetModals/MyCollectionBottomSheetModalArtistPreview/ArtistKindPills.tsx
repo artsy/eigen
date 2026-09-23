@@ -1,6 +1,5 @@
 import { Join, Pill, Spacer, useSpace } from "@artsy/palette-mobile"
 import { ArtistKindPills_artist$key } from "__generated__/ArtistKindPills_artist.graphql"
-import { isRenderableArtistInsight } from "app/Components/Artist/ArtistAbout/ArtistCareerHighlights"
 import { ScrollView } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
@@ -12,9 +11,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
   const space = useSpace()
   const data = useFragment(ArtistKindPillsFragment, artist)
 
-  const allInsights = (data.insights ?? []).filter(isRenderableArtistInsight)
-
-  if (allInsights.length === 0) return null
+  if (!data.insights || data.insights.length === 0) return null
 
   return (
     <ScrollView
@@ -29,7 +26,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
       }}
     >
       <Join separator={<Spacer x={1} />}>
-        {allInsights.map((i: any, index: number) => (
+        {data.insights.map((i: any, index: number) => (
           <Pill key={index} variant="badge" disabled>
             {i.label}
           </Pill>
@@ -41,11 +38,9 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
 
 const ArtistKindPillsFragment = graphql`
   fragment ArtistKindPills_artist on Artist {
-    insights {
+    insights(excludeBlanks: true) {
       kind
       label
-      description
-      entities
     }
   }
 `

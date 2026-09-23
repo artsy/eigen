@@ -66,30 +66,20 @@ describe("ArtistAbout", () => {
   })
 
   describe("ArtistCareerHighlights", () => {
-    it("is shown when some highlight contains entities", () => {
+    it("is shown when there are insights", () => {
       renderWithRelay({
-        ArtistInsight: () => {
-          return { entities: ["A fancy museum"] }
+        Artist: () => {
+          return { insights: [{ label: "Fancy pants", entities: ["A fancy museum"] }] }
         },
       })
 
       expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
     })
 
-    it("is shown when some highlight contains a description", () => {
+    it("is hidden when there are no insights", () => {
       renderWithRelay({
-        ArtistInsight: () => {
-          return { entities: [], description: "Recognized by bigwigs" }
-        },
-      })
-
-      expect(screen.UNSAFE_queryAllByType(ArtistCareerHighlights)).toHaveLength(1)
-    })
-
-    it("is hidden when no highlight contains entities or descriptions", () => {
-      renderWithRelay({
-        ArtistInsight: () => {
-          return { entities: [], description: null }
+        Artist: () => {
+          return { insights: [] }
         },
       })
 
