@@ -244,6 +244,9 @@ const Query = graphql`
 
           startTime: startAt(format: "h:mma")
           endTime: endAt(format: "h:mma")
+          startAtISO: startAt
+          endAtISO: endAt
+          timeZone
 
           item {
             __typename

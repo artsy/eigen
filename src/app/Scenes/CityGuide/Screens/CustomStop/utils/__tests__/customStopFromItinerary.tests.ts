@@ -119,6 +119,21 @@ describe("customStopFromItinerary", () => {
     expect(result?.hours).toBe("10am")
   })
 
+  it("shows only the date range for a whole-day stop", () => {
+    const result = customStopFromItinerary(
+      itinerary([
+        stop({
+          startAtISO: "2026-09-24T00:00:00.000Z",
+          endAtISO: "2026-09-27T23:59:00.000Z",
+          timeZone: "utc",
+        }),
+      ]) as any,
+      "stop-2"
+    )
+
+    expect(result?.hours).toBe("Sep 24 – 27")
+  })
+
   // Left undefined rather than defaulted to 0,0 — a half-placed stop is not mappable.
   it("leaves a half-placed stop unmapped", () => {
     const result = customStopFromItinerary(itinerary([stop({ longitude: null })]) as any, "stop-2")

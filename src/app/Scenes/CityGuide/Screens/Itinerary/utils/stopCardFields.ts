@@ -3,6 +3,7 @@ import {
   itineraryStopDisplayTime,
   itineraryStopEvent,
   itineraryStopTitle,
+  wholeDayDateRangeLabel,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
 import {
   ItineraryStop,
@@ -43,7 +44,7 @@ export interface StopCardFields {
   eventKind?: string
   /** Second line: where it is. Absent on a custom stop, which has no resolved place. */
   subtitle?: string
-  /** Third line, left of the dot. Server-formatted; this never parses a date. */
+  /** Third line, left of the dot. Server-formatted hours, or the date range for a whole-day stop. */
   hours?: string
   /** Third line, right of the dot. */
   admission?: string
@@ -135,8 +136,11 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
   if (stop.eventType) {
     // The stop's own date wins, as with title and admission elsewhere in here — a curator's
     // override beats what the linked event says. Falls back to the event's own date when the
-    // curator set none.
-    const eventDate = eventDateLabel(stop.startAtISO ?? event?.startAt)
+    // curator set none. Skipped for a whole-day stop: `hours` already carries that date range,
+    // in the stop's own time zone rather than this label's UTC.
+    const eventDate = wholeDayDateRangeLabel(stop)
+      ? undefined
+      : eventDateLabel(stop.startAtISO ?? event?.startAt)
 
     return {
       kind: "event",

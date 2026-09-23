@@ -100,6 +100,40 @@ describe("stopCardFields", () => {
       expect(fields.eventKind).toBeUndefined()
       expect(fields.kind).toEqual("event")
     })
+
+    // The whole-day range from `hours` already says which day(s) it is; leading with
+    // `eventDateLabel` too would repeat it, and disagree since that label is UTC-only.
+    it("doesn't repeat the date for a whole-day event stop", () => {
+      const fields = stopCardFields(
+        stop({
+          title: "",
+          eventType: "SHOW_EVENT",
+          event: showEvent("Closing Reception", null),
+          startAtISO: "2026-09-24T00:00:00.000Z",
+          endAtISO: "2026-09-27T23:59:00.000Z",
+          timeZone: "utc",
+        }),
+        show
+      )
+
+      expect(fields.hours).toEqual("Sep 24 – 27")
+    })
+
+    it("doesn't repeat the date for a single-day whole-day event stop", () => {
+      const fields = stopCardFields(
+        stop({
+          title: "",
+          eventType: "SHOW_EVENT",
+          event: showEvent("Closing Reception", null),
+          startAtISO: "2026-09-24T00:00:00.000Z",
+          endAtISO: "2026-09-24T23:59:00.000Z",
+          timeZone: "utc",
+        }),
+        show
+      )
+
+      expect(fields.hours).toEqual("Sep 24")
+    })
   })
 
   describe("a show", () => {

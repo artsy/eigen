@@ -537,6 +537,7 @@ export const itineraryQuery = graphql`
 
           startAtISO: startAt
           endAtISO: endAt
+          timeZone
 
           item {
             __typename

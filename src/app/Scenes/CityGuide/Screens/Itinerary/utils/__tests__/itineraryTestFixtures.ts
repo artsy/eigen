@@ -22,6 +22,7 @@ export const makeItineraryStop = (overrides: Record<string, unknown> = {}): Itin
     endTime: "6pm",
     startAtISO: null,
     endAtISO: null,
+    timeZone: null,
     item: null,
     ...overrides,
   }) as ItineraryStop
