@@ -38,7 +38,6 @@ export const cityAndPostalCode = (
 
 enum MapServiceURLType {
   Apple,
-  CityMapper,
   GoogleApp,
   GoogleWeb,
 }
@@ -48,17 +47,12 @@ const mapLinkForService = (
   lat: number | null | undefined,
   lng: number | null | undefined,
   addressOrName: string | null | undefined,
-  partnerName: string | null | undefined,
-  address: string | null | undefined,
   suffix: string | null
 ) => {
   switch (urlType) {
     case MapServiceURLType.Apple:
       // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
       return `http://maps.apple.com/?q=${addressOrName}${suffix}&ll=${lat},${lng}`
-    case MapServiceURLType.CityMapper:
-      // https://citymapper.com/tools/1053/launch-citymapper-for-directions
-      return `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
     case MapServiceURLType.GoogleApp:
       // https://developers.google.com/maps/documentation/urls/ios-urlscheme
       return `comgooglemaps-x-callback://?daddr=${lat},${lng}&x-success=artsy://?resume=true&x-source=Artsy`
@@ -89,13 +83,7 @@ export const tappedOnMap = (
   return [
     {
       title,
-      options: [
-        "Open in Apple Maps",
-        "Open in City Mapper",
-        "Open in Google Maps",
-        "Copy Address",
-        "Cancel",
-      ],
+      options: ["Open in Google Maps", "Open in Apple Maps", "Copy Address", "Cancel"],
       ...__unsafe__useAndroidActionSheetStyles(),
       get cancelButtonIndex() {
         return this.options.length - 1
@@ -103,35 +91,11 @@ export const tappedOnMap = (
     },
     (buttonIndex: number | undefined) => {
       if (buttonIndex === 0) {
-        const mapLink = mapLinkForService(
-          MapServiceURLType.Apple,
-          lat,
-          lng,
-          addressOrName,
-          partnerName,
-          address,
-          suffix
-        )
-        Linking.openURL(mapLink)
-      } else if (buttonIndex === 1) {
-        const mapLink = mapLinkForService(
-          MapServiceURLType.CityMapper,
-          lat,
-          lng,
-          addressOrName,
-          partnerName,
-          address,
-          suffix
-        )
-        Linking.openURL(mapLink)
-      } else if (buttonIndex === 2) {
         const appLink = mapLinkForService(
           MapServiceURLType.GoogleApp,
           lat,
           lng,
           addressOrName,
-          partnerName,
-          address,
           suffix
         )
         const webLink = mapLinkForService(
@@ -139,8 +103,6 @@ export const tappedOnMap = (
           lat,
           lng,
           addressOrName,
-          partnerName,
-          address,
           suffix
         )
         Linking.canOpenURL(appLink)
@@ -154,7 +116,10 @@ export const tappedOnMap = (
           .catch(() => {
             Linking.openURL(webLink)
           })
-      } else if (buttonIndex === 3) {
+      } else if (buttonIndex === 1) {
+        const mapLink = mapLinkForService(MapServiceURLType.Apple, lat, lng, addressOrName, suffix)
+        Linking.openURL(mapLink)
+      } else if (buttonIndex === 2) {
         // Copy to pasteboard
         Clipboard.setString(title)
       }
