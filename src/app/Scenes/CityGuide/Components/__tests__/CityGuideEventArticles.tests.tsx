@@ -52,11 +52,55 @@ describe("CityGuideEventArticles", () => {
     City: () => ({ cityArticles: attachments }),
   })
 
-  it("renders the static, unpressable section title", async () => {
+  it("renders an unpressable section title when there are 4 or fewer articles", async () => {
     renderWithRelay(cityArticles([article("An Art Lover's Guide to London")]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+  })
+
+  it("caps the section at 4 articles", async () => {
+    renderWithRelay(
+      cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
+    )
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
+  })
+
+  it("gives the section title a chevron only when there are more than 4 articles", async () => {
+    renderWithRelay(
+      cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
+    )
+
+    expect(await screen.findByTestId("touchable-wrapper")).toBeOnTheScreen()
+  })
+
+  it("navigates to the full article list when the chevron is tapped", async () => {
+    renderWithRelay(
+      cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
+    )
+
+    fireEvent.press(await screen.findByTestId("touchable-wrapper"))
+
+    expect(navigate).toHaveBeenCalledWith("/city-guide/london-united-kingdom/articles")
+  })
+
+  it("tracks the chevron tap", async () => {
+    renderWithRelay(
+      cityArticles([0, 1, 2, 3, 4].map((position) => article(`Article ${position}`, position)))
+    )
+
+    fireEvent.press(await screen.findByTestId("touchable-wrapper"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action_name: "viewAll",
+        action_type: "tap",
+        owner_type: "CityGuide",
+        owner_slug: "london-united-kingdom",
+        context_module: "articles",
+      })
+    )
   })
 
   it("renders each article's thumbnail, title, byline and date", async () => {
