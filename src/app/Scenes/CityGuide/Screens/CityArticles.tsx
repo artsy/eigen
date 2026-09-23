@@ -38,7 +38,9 @@ const CityArticles: React.FC<Props> = ({ citySlug }) => {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
           ItemSeparatorComponent={() => <Flex height={20} />}
-          renderItem={({ item }) => <CityArticleListItem item={item} citySlug={citySlug} />}
+          renderItem={({ item }) => (
+            <CityArticleListItem article={item.article} citySlug={citySlug} />
+          )}
         />
       </Screen.Body>
     </Screen>

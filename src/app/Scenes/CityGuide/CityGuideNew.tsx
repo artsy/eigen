@@ -37,8 +37,14 @@ interface SectionsProps {
 
 const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) => {
   const forYou = useShowsForYou()
-  const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE, forYou })
   const enableEditorialContent = useFeatureFlag("AREnableCityGuideEditorialContent")
+  const enableArticlesForYou = useFeatureFlag("AREnableCityGuideArticlesForYou")
+  const data = useLazyLoadQuery<CityGuideNewQuery>(Query, {
+    citySlug,
+    first: PAGE_SIZE,
+    forYou,
+    enableArticlesForYou,
+  })
 
   return (
     <Join separator={<Spacer y={4} />}>
@@ -89,6 +95,7 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const forYou = useShowsForYou()
+  const enableArticlesForYou = useFeatureFlag("AREnableCityGuideArticlesForYou")
 
   const citySlug = city?.slug ?? ""
 
@@ -103,13 +110,13 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
     fetchQuery<CityGuideNewQuery>(
       environment,
       Query,
-      { citySlug, first: PAGE_SIZE, forYou },
+      { citySlug, first: PAGE_SIZE, forYou, enableArticlesForYou },
       { fetchPolicy: "network-only" }
     ).subscribe({
       complete: () => setIsRefreshing(false),
       error: () => setIsRefreshing(false),
     })
-  }, [environment, citySlug, forYou])
+  }, [environment, citySlug, forYou, enableArticlesForYou])
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
@@ -165,14 +172,19 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
 }
 
 const Query = graphql`
-  query CityGuideNewQuery($citySlug: String!, $first: Int!, $forYou: Boolean!) {
+  query CityGuideNewQuery(
+    $citySlug: String!
+    $first: Int!
+    $forYou: Boolean!
+    $enableArticlesForYou: Boolean!
+  ) {
     me {
       ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
     }
     city(slug: $citySlug) {
       ...CityGuideEvents_city @arguments(first: $first, forYou: $forYou)
       ...CityGuideEventVideos_city
-      ...CityGuideEventArticles_city
+      ...CityGuideEventArticles_city @arguments(enableArticlesForYou: $enableArticlesForYou)
     }
     ...CityGuideEventGuides_query @arguments(citySlug: $citySlug, first: $first)
   }

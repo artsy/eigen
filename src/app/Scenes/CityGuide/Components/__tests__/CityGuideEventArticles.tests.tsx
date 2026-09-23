@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideEventArticlesRecommendedTestQuery } from "__generated__/CityGuideEventArticlesRecommendedTestQuery.graphql"
 import { CityGuideEventArticlesTestQuery } from "__generated__/CityGuideEventArticlesTestQuery.graphql"
 import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
 import { navigate } from "app/system/navigation/navigate"
@@ -179,5 +180,111 @@ describe("CityGuideEventArticles", () => {
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artsy Editorial")).not.toBeOnTheScreen()
+  })
+
+  it("does not render recommended articles when the flag is off, even if the server returns them", () => {
+    renderWithRelay({
+      City: () => ({
+        cityArticles: [article("An Art Lover's Guide to London")],
+        recommendedArticlesConnection: {
+          edges: [{ node: article("A recommended read") }],
+        },
+      }),
+    })
+
+    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+  })
+})
+
+describe("CityGuideEventArticles, recommended for you", () => {
+  const { renderWithRelay } = setupTestWrapper<CityGuideEventArticlesRecommendedTestQuery>({
+    Component: (props: any) => (
+      <CityGuideEventArticles {...props} citySlug="london-united-kingdom" />
+    ),
+    query: graphql`
+      query CityGuideEventArticlesRecommendedTestQuery(
+        $citySlug: String!
+        $enableArticlesForYou: Boolean!
+      ) @relay_test_operation {
+        city(slug: $citySlug) {
+          ...CityGuideEventArticles_city @arguments(enableArticlesForYou: $enableArticlesForYou)
+        }
+      }
+    `,
+    variables: { citySlug: "london-united-kingdom", enableArticlesForYou: true },
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  const article = (title: string, overrides: object = {}) => ({
+    internalID: `id-for-${title}`,
+    slug: `slug-for-${title}`,
+    title: `${title} (headline)`,
+    thumbnailTitle: title,
+    byline: "Natalie Stoclet",
+    href: `/article/${title}`,
+    publishedAt: "July 19, 2026",
+    thumbnailImage: { url: "https://example.com/article-thumb.jpg" },
+    ...overrides,
+  })
+
+  const cityData = (curated: object[], recommended: object[]) => ({
+    City: () => ({
+      cityArticles: curated,
+      recommendedArticlesConnection: { edges: recommended.map((node) => ({ node })) },
+    }),
+  })
+
+  it("shows a 'Recommended for you' subheading and rows below the curated ones", async () => {
+    renderWithRelay(
+      cityData(
+        [{ internalID: "attachment-1", position: 0, article: article("Curated read") }],
+        [article("A recommended read")]
+      )
+    )
+
+    expect(await screen.findByText("Recommended for you")).toBeOnTheScreen()
+    expect(screen.getByText("A recommended read")).toBeOnTheScreen()
+    expect(screen.getByText("Curated read")).toBeOnTheScreen()
+  })
+
+  it("shows the section title and only the recommended block when there are no curated articles", async () => {
+    renderWithRelay(cityData([], [article("A recommended read")]))
+
+    expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
+    expect(screen.getByText("Recommended for you")).toBeOnTheScreen()
+    expect(screen.getByText("A recommended read")).toBeOnTheScreen()
+  })
+
+  it("renders nothing when both the curated and recommended lists are empty", () => {
+    renderWithRelay(cityData([], []))
+
+    expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
+  })
+
+  it("does not render the recommended block when the connection is empty", async () => {
+    renderWithRelay(
+      cityData([{ internalID: "attachment-1", position: 0, article: article("Curated read") }], [])
+    )
+
+    expect(await screen.findByText("Curated read")).toBeOnTheScreen()
+    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+  })
+
+  it("tracks a tap on a recommended row with a distinct context_module", async () => {
+    renderWithRelay(cityData([], [article("A recommended read")]))
+
+    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+
+    expect(navigate).toHaveBeenCalledWith("/article/A recommended read")
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleGroup",
+        context_module: "relatedArticles",
+        destination_screen_owner_id: "id-for-A recommended read",
+      })
+    )
   })
 })

@@ -1,4 +1,5 @@
-import { Flex, Join, Separator } from "@artsy/palette-mobile"
+import { ContextModule } from "@artsy/cohesion"
+import { Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { CityGuideArticle_articles$key } from "__generated__/CityGuideArticle_articles.graphql"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -8,6 +9,7 @@ import {
   NO_CITY_ARTICLES,
   toArticleRows,
 } from "app/Scenes/CityGuide/utils/CityGuideArticle"
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,10 +29,11 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     city?.cityArticles ?? NO_CITY_ARTICLES
   )
   const rows = toArticleRows(attachments)
+  const recommended = extractNodes(city?.recommendedArticlesConnection)
 
   // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
-  if (!rows.length) {
+  if (!rows.length && !recommended.length) {
     return null
   }
 
@@ -57,19 +60,51 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
         }
       />
 
-      <Join separator={<Separator my={2} />}>
-        {rows.slice(0, MAX_VISIBLE_ARTICLES).map((item) => (
-          <CityArticleListItem key={item.id} item={item} citySlug={citySlug} />
-        ))}
+      <Join separator={<Spacer y={4} />}>
+        {!!rows.length && (
+          <Join separator={<Separator my={2} />}>
+            {rows.slice(0, MAX_VISIBLE_ARTICLES).map((row) => (
+              <CityArticleListItem key={row.id} article={row.article} citySlug={citySlug} />
+            ))}
+          </Join>
+        )}
+
+        {!!recommended.length && (
+          <Flex testID="city-guide-recommended-articles">
+            <Text variant="sm-display" mb={2}>
+              Recommended for you
+            </Text>
+
+            <Join separator={<Separator my={2} />}>
+              {recommended.map((article) => (
+                <CityArticleListItem
+                  key={article.internalID}
+                  article={article}
+                  citySlug={citySlug}
+                  contextModule={ContextModule.relatedArticles}
+                />
+              ))}
+            </Join>
+          </Flex>
+        )}
       </Join>
     </Flex>
   )
 }
 
 const fragment = graphql`
-  fragment CityGuideEventArticles_city on City {
+  fragment CityGuideEventArticles_city on City
+  @argumentDefinitions(enableArticlesForYou: { type: "Boolean!", defaultValue: false }) {
     cityArticles {
       ...CityGuideArticle_articles
+    }
+    recommendedArticlesConnection(first: 4) @include(if: $enableArticlesForYou) {
+      edges {
+        node {
+          internalID
+          ...CityGuideArticleRow_article
+        }
+      }
     }
   }
 `
