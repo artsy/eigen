@@ -6,6 +6,7 @@ import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSort
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
+import RNShare from "react-native-share"
 import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
 
@@ -15,6 +16,8 @@ jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
   Image: require("react-native").Image,
 }))
+
+jest.mock("react-native-share", () => ({ open: jest.fn() }))
 
 // Drax needs more of reanimated than the stock jest mock offers, and its drag can only be
 // fired by invoking `onReorder` directly — both scoped to this file rather than setupJest.
@@ -322,7 +325,7 @@ describe("ItineraryScreen", () => {
 
   // `isCurated` alone can't distinguish your own itinerary from someone else's personal one
   // opened via their share link — only `isMine` can.
-  it("offers no way to edit someone else's personal itinerary opened via a share link", async () => {
+  it("offers no way to edit or share someone else's personal itinerary opened via a share link", async () => {
     renderWithRelay(
       { Itinerary: () => ({ ...ITINERARY, isCurated: false, isMine: false, shareToken: "tok" }) },
       { ...props, shareToken: "tok" }
@@ -331,6 +334,7 @@ describe("ItineraryScreen", () => {
     await screen.findByText("Chill Vibes Only")
 
     expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
   })
 
   // `ItineraryStop.image` is the curator's uploaded one, and the app sends none when it
@@ -425,6 +429,51 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("stop-card-image")).toHaveProp(
         "src",
         "https://example.com/gallery.jpg"
+      )
+    })
+  })
+
+  describe("the share button", () => {
+    it("offers no way to share a curated guide", async () => {
+      renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+      await screen.findByText("Chill Vibes Only")
+
+      expect(screen.queryByTestId("itinerary-share")).not.toBeOnTheScreen()
+    })
+
+    it("mints a share token for a personal itinerary and includes it in the link", async () => {
+      const own = { ...ITINERARY, isCurated: false, isMine: true, slug: null, shareToken: null }
+      const view = renderWithRelay({ Itinerary: () => own }, props)
+
+      fireEvent.press(await screen.findByTestId("itinerary-share"))
+
+      await waitFor(() =>
+        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+          "useItineraryShareMintTokenMutation"
+        )
+      )
+
+      view.env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Mutation: () => ({
+            updateItinerary: {
+              responseOrError: {
+                __typename: "ItineraryMutationSuccess",
+                itinerary: { internalID: "chill-vibes-only", shareToken: "abc123" },
+              },
+            },
+          }),
+        })
+      )
+
+      await waitFor(() => expect(RNShare.open).toHaveBeenCalled())
+      expect(RNShare.open).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: expect.stringContaining(
+            "https://staging.artsy.net/city-guide/london-united-kingdom/itinerary/chill-vibes-only?shareToken=abc123"
+          ),
+        })
       )
     })
   })
