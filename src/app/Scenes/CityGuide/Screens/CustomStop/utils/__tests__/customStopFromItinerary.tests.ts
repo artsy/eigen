@@ -154,6 +154,25 @@ describe("customStopFromItinerary", () => {
     ])
   })
 
+  // Switching a stop to MUSEUM/GALLERY hides Forque's date pickers but leaves whatever
+  // start/end it already had, so a stop can carry both — the lines are what the editor
+  // actually meant, and win outright over the legacy time.
+  it("prefers its own opening-hours lines over a legacy start/end time still on the stop", () => {
+    const result = customStopFromItinerary(
+      itinerary([
+        stop({
+          category: "MUSEUM",
+          startTime: "10am",
+          endTime: "6pm",
+          openingHours: [{ days: "Sat – Thurs", hours: "11am–5pm" }],
+        }),
+      ]) as any,
+      "stop-2"
+    )
+
+    expect(result?.hours).toBe("Sat – Thurs 11am–5pm")
+  })
+
   it("sanitizes opening hours for the copy: nulls become '', a blank line is dropped", () => {
     const result = customStopFromItinerary(
       itinerary([

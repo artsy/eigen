@@ -48,6 +48,8 @@ const stop = (n: number) => ({
   longitude: -0.1,
   startTime: "11:00am",
   endTime: "4:00pm",
+  openingHours: [],
+  displayOpeningHours: [],
   startAtISO: null,
   endAtISO: null,
   // Left null so no save control query fires: `item` resolving to null is the

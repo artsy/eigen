@@ -103,12 +103,18 @@ export const itineraryStopOpeningHoursInput = (
     .filter((entry) => entry.days || entry.hours)
 
 /**
- * Backend-formatted for display. e.g. "11am-4pm" — the curator's own start/end always wins,
- * since a specific time is more useful than a general schedule. Otherwise falls back to
- * `displayOpeningHours`: the stop's own weekly hours if the curator set them, else the linked
- * show's or location's, for any stop kind — not only a museum or gallery.
+ * Backend-formatted for display. e.g. "11am-4pm" — unless the curator has typed opening-hours
+ * lines for this stop, which win outright: switching a stop to a MUSEUM/GALLERY category
+ * hides Forque's date pickers but leaves whatever start/end it already had, so a stop can
+ * carry both, and the lines are what the editor actually meant. Absent those, the curator's
+ * own start/end wins, since a specific time is more useful than a general schedule. Otherwise
+ * falls back to `displayOpeningHours`: the linked show's or location's own schedule, for any
+ * stop kind — not only a museum or gallery.
  */
 export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
+  const ownOpeningHours = formatItineraryStopOpeningHours(stop.openingHours)
+  if (ownOpeningHours) return ownOpeningHours
+
   if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
   if (stop.startTime || stop.endTime) return stop.startTime ?? stop.endTime ?? ""
 

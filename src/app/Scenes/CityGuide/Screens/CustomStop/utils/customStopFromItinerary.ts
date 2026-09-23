@@ -80,11 +80,16 @@ const toCategory = (category: string | null | undefined): ItineraryStopCategory 
   }
 }
 
+// Opening-hours lines win outright, ahead of start/end: switching a stop to MUSEUM/GALLERY
+// hides Forque's date pickers but leaves whatever start/end it already had, so a stop can
+// carry both, and the lines are what the editor actually meant.
 const toHours = (stop: PayloadStop, openingHours: { days: string; hours: string }[]) => {
-  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
-  if (stop.startTime || stop.endTime) return stop.startTime ?? stop.endTime ?? undefined
+  const ownOpeningHours = formatItineraryStopOpeningHours(openingHours)
+  if (ownOpeningHours) return ownOpeningHours
 
-  return formatItineraryStopOpeningHours(openingHours) || undefined
+  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+
+  return stop.startTime ?? stop.endTime ?? undefined
 }
 
 /**

@@ -24,6 +24,7 @@ const STOP = {
   longitude: -0.1,
   startTime: "10am",
   endTime: "6pm",
+  openingHours: [],
   image: { url: "https://example.com/cafe.jpg" },
   item: null,
 }

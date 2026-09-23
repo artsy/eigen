@@ -128,12 +128,28 @@ describe("itineraryStopOpeningHoursInput", () => {
 })
 
 describe("itineraryStopDisplayTime", () => {
-  it("prefers the curator's own start/end time over displayOpeningHours", () => {
+  // Switching a stop to MUSEUM/GALLERY in Forque hides the date pickers but leaves whatever
+  // start/end it already had, so a stop can carry both — the lines are what the editor
+  // actually meant, and win outright over the legacy time.
+  it("prefers the stop's own opening-hours lines over its legacy start/end time", () => {
     expect(
       itineraryStopDisplayTime(
         stop({
           startTime: "10am",
           endTime: "5pm",
+          openingHours: [{ days: "Sat – Thurs", hours: "11am–6pm" }],
+        })
+      )
+    ).toBe("Sat – Thurs 11am–6pm")
+  })
+
+  it("prefers the curator's own start/end time over displayOpeningHours, absent any lines", () => {
+    expect(
+      itineraryStopDisplayTime(
+        stop({
+          startTime: "10am",
+          endTime: "5pm",
+          openingHours: [],
           displayOpeningHours: [{ days: "Sat – Thurs", hours: "10am–5pm" }],
         })
       )
