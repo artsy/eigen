@@ -43,7 +43,19 @@ export interface CustomStopInput {
   address?: string
   note?: string
   sourceURL?: string
-  category?: "MUSEUM" | "GALLERY" | "SHOW" | "FAIR"
+  category?:
+    | "MUSEUM"
+    | "GALLERY"
+    | "SHOW"
+    | "FAIR"
+    | "CAFE"
+    | "RESTAURANT"
+    | "BAR"
+    | "HOTEL"
+    | "SHOP"
+    | "PARK"
+    | "LANDMARK"
+    | "OTHER"
   isFreeAdmission?: boolean
   latitude?: number
   longitude?: number

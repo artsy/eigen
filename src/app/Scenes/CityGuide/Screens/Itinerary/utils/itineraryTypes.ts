@@ -31,4 +31,16 @@ export interface ItinerarySaveTarget {
  * The badge shown on a stop. Editorial: whoever adds the stop picks it, because it is
  * finer-grained than the save target — a museum and a gallery are both Partners.
  */
-export type ItineraryStopCategory = "MUSEUM" | "GALLERY" | "SHOW" | "FAIR"
+export type ItineraryStopCategory =
+  | "MUSEUM"
+  | "GALLERY"
+  | "SHOW"
+  | "FAIR"
+  | "CAFE"
+  | "RESTAURANT"
+  | "BAR"
+  | "HOTEL"
+  | "SHOP"
+  | "PARK"
+  | "LANDMARK"
+  | "OTHER"

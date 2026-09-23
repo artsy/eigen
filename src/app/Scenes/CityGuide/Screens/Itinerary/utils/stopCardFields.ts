@@ -4,11 +4,27 @@ import {
   itineraryStopEvent,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
-import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
+import {
+  ItineraryStop,
+  ItineraryStopCategory,
+} from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { Show } from "app/Scenes/CityGuide/utils/types"
 import { DateTime } from "luxon"
 
 const MUSEUM_EMOJI = "🏛"
+
+/** Display label for a custom stop's category. MUSEUM/GALLERY/SHOW/FAIR never reach here — they
+ * only apply to a stop with a resolved item, which renders through its own case below. */
+const CUSTOM_CATEGORY_LABELS: Partial<Record<ItineraryStopCategory, string>> = {
+  CAFE: "Cafe",
+  RESTAURANT: "Restaurant",
+  BAR: "Bar",
+  HOTEL: "Hotel",
+  SHOP: "Shop",
+  PARK: "Park",
+  LANDMARK: "Landmark",
+  OTHER: "Other",
+}
 
 /**
  * Which card a stop renders as. Inferred rather than stored, from the resolved item's type
@@ -187,9 +203,9 @@ export const stopCardFields = (stop: ItineraryStop, item?: StopCardItem | null):
       return {
         kind: "custom",
         title,
-        // The designs put the place's type here ("Cafe", "Landmark") pulled from the source
-        // link. Nothing exposes it, so the stop's address stands in instead.
-        subtitle: stop.address ?? undefined,
+        // The designs put the place's type here ("Cafe", "Landmark"). Falls back to the
+        // address when the curator left the category unset.
+        subtitle: (category && CUSTOM_CATEGORY_LABELS[category]) || stop.address || undefined,
         hours,
         admission,
         // Where the curator found it — the only thing a custom stop can link to.

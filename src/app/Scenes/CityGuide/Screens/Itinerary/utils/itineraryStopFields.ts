@@ -64,6 +64,14 @@ export const itineraryStopCategory = (
     case "GALLERY":
     case "SHOW":
     case "FAIR":
+    case "CAFE":
+    case "RESTAURANT":
+    case "BAR":
+    case "HOTEL":
+    case "SHOP":
+    case "PARK":
+    case "LANDMARK":
+    case "OTHER":
       return category
     default:
       return undefined
