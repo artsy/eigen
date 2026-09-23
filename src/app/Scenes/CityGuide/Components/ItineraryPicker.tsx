@@ -29,7 +29,9 @@ const Picker: React.FC<Props> = ({ citySlug, currentItineraryId, currentItinerar
   const environment = useRelayEnvironment()
   const data = useLazyLoadQuery<ItineraryPickerQuery>(Query, { citySlug, first: 20 })
 
-  const itineraries = extractNodes(data.me?.itinerariesConnection)
+  const itineraries = extractNodes(data.me?.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated
+  )
 
   // Always tappable once anything has loaded — gating on "more than one itinerary" read as a
   // dead button for the common case of having exactly one, while nothing can create more yet.
@@ -123,6 +125,7 @@ const Query = graphql`
             internalID
             slug
             title
+            isCurated
             stopsCount
           }
         }

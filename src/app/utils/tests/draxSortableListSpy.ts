@@ -1,3 +1,4 @@
+import { createElement } from "react"
 import type {
   SortableListHandle,
   SortableReorderEvent,
@@ -13,6 +14,13 @@ import type {
  *   jest.mock("react-native-drax", () => require("app/utils/tests/draxSortableListSpy").mockDrax())
  */
 const mounted: UseSortableListOptions<string>[] = []
+
+/**
+ * Whether each mounted `SortableItem` was given `draggable`. `draggable` only gates the real
+ * gesture, which nothing here can fire — this is how a test instead confirms a screen passed
+ * `canReorder={false}` all the way down to the item drax actually drags.
+ */
+let itemDraggableFlags: boolean[] = []
 
 /**
  * Two options are "the same list" if they hold the same set of stop ids, regardless of order —
@@ -41,8 +49,16 @@ export const mockDrax = () => {
 
       return actual.useSortableList(options)
     },
+    SortableItem: (props: { draggable?: boolean }) => {
+      itemDraggableFlags.push(!!props.draggable)
+
+      return createElement(actual.SortableItem, props)
+    },
   }
 }
+
+/** `draggable` as given to every `SortableItem` mounted since the last reset, in mount order. */
+export const sortableItemDraggableFlags = () => itemDraggableFlags
 
 /**
  * Drops the stop at `fromIndex` onto `toIndex` in the nth sortable list to have mounted —
@@ -71,4 +87,5 @@ export const dropSortableItem = (sortableIndex: number, fromIndex: number, toInd
 
 export const resetSortableListSpy = () => {
   mounted.length = 0
+  itemDraggableFlags = []
 }

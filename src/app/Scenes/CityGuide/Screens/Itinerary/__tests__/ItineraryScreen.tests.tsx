@@ -2,7 +2,11 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryScreen } from "app/Scenes/CityGuide/Screens/Itinerary/ItineraryScreen"
 import { goBack } from "app/system/navigation/navigate"
-import { dropSortableItem, resetSortableListSpy } from "app/utils/tests/draxSortableListSpy"
+import {
+  dropSortableItem,
+  resetSortableListSpy,
+  sortableItemDraggableFlags,
+} from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { RefreshControl } from "react-native"
@@ -278,6 +282,17 @@ describe("ItineraryScreen", () => {
       expect(screen.getByTestId("itinerary-edit-name")).toHaveProp("value", "Chill Vibes Only")
     })
 
+    it("lets its stops be reordered", async () => {
+      renderWithRelay({ Itinerary: () => own }, props)
+
+      await screen.findByText("Stop 1")
+
+      const flags = sortableItemDraggableFlags()
+
+      expect(flags.length).toBeGreaterThan(0)
+      expect(flags.every(Boolean)).toBe(true)
+    })
+
     it("goes back once the itinerary is deleted from its own edit sheet", async () => {
       const view = renderWithRelay({ Itinerary: () => own }, props)
 
@@ -320,6 +335,21 @@ describe("ItineraryScreen", () => {
       await screen.findByText("Chill Vibes Only")
 
       expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
+    })
+
+    // Gravity makes a curated guide's editor its owner, so `isMine` alone can't be trusted —
+    // this is the FIREWORKS-68 case: the account that built the guide in forque still sees it
+    // as "mine" in the app.
+    it("offers no way to edit or reorder it even when isMine is true", async () => {
+      renderWithRelay({ Itinerary: () => ({ ...ITINERARY, isMine: true }) }, props)
+
+      await screen.findByText("Stop 1")
+
+      const flags = sortableItemDraggableFlags()
+
+      expect(screen.queryByTestId("itinerary-edit")).not.toBeOnTheScreen()
+      expect(flags.length).toBeGreaterThan(0)
+      expect(flags.every((draggable) => !draggable)).toBe(true)
     })
   })
 
