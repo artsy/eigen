@@ -19188,7 +19188,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   cached: Int
 
   """
-  The City Guide city nearest to this fair's location, if one is within range
+  The City Guide city nearest to this fair's location, if one is within range. Without coordinates, the City Guide city whose name exactly matches the fair's city
   """
   cityGuideCity: City
   contact(format: Format): String
@@ -37483,7 +37483,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   city: String
 
   """
-  The City Guide city nearest to this show's location (fair location, then show location), if one is within range
+  The City Guide city nearest to this show's location (fair location, then show location), if one is within range. Without coordinates, the City Guide city whose name exactly matches the show's city
   """
   cityGuideCity: City
 
