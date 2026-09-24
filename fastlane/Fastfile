@@ -631,7 +631,9 @@ lane :deploy_to_expo_updates do |options|
   # eas-cli >= 18.0.5 prompts for `--environment` on SDK 55+ unless CI/EAS_BUILD is set.
   # This lane is usually run locally, and passing `--environment` would also pull server-side
   # env vars into the bundle and force a cache clear, so opt out of the check instead.
-  expo_command = "EAS_UPDATE_SKIP_ENVIRONMENT_CHECK=1 ./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  # NODE_OPTIONS is needed to prevent a SIGABRT, due to Metro running out of heap while it bundles
+  # and source-maps both platforms in one Node process.
+  expo_command = "NODE_OPTIONS=--max-old-space-size=4096 EAS_UPDATE_SKIP_ENVIRONMENT_CHECK=1 ./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --rollout-percentage=#{rollout_percentage}"
