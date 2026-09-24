@@ -18,7 +18,11 @@ const makeFair = (overrides: Partial<Fair> = {}): Fair =>
     slug: "frieze-london",
     name: "Frieze London",
     exhibition_period: "Oct 9 – Oct 12, 2026",
-    location: { postalCode: "NW1 4NR", coordinates: { lat: 51.53, lng: -0.15 } },
+    location: {
+      address: "The Regent's Park, London NW1 4NR",
+      postalCode: "NW1 4NR",
+      coordinates: { lat: 51.53, lng: -0.15 },
+    },
     profile: { id: "profile-1", internalID: "profile-internal-1", isFollowed: false },
     ...overrides,
   }) as unknown as Fair
@@ -51,7 +55,11 @@ describe("fairsToMapSections", () => {
     const valid = makeFair({ id: "valid" })
     const invalid = makeFair({
       id: "invalid",
-      location: { postalCode: "NW1 4NR", coordinates: { lat: null, lng: null } },
+      location: {
+        address: "The Regent's Park, London NW1 4NR",
+        postalCode: "NW1 4NR",
+        coordinates: { lat: null, lng: null },
+      },
     })
 
     const sections = fairsToMapSections(makeSection([valid, invalid]), TEST_CONTEXT)
@@ -61,7 +69,11 @@ describe("fairsToMapSections", () => {
 
   it("leaves a section with no valid places rather than dropping it", () => {
     const invalid = makeFair({
-      location: { postalCode: "NW1 4NR", coordinates: { lat: undefined, lng: undefined } },
+      location: {
+        address: "The Regent's Park, London NW1 4NR",
+        postalCode: "NW1 4NR",
+        coordinates: { lat: undefined, lng: undefined },
+      },
     })
 
     const sections = fairsToMapSections(makeSection([invalid]), TEST_CONTEXT)
@@ -97,5 +109,23 @@ describe("fairsToMapSections", () => {
     const sections = fairsToMapSections(makeSection([makeFair({ profile: null })]), TEST_CONTEXT)
 
     expect(sections[0].places[0].saveControl).toBeTruthy()
+  })
+
+  // A stop needs a place to go, same rule the Fair page header's own plus follows.
+  it("offers no control for a fair with no address", () => {
+    const sections = fairsToMapSections(
+      makeSection([
+        makeFair({
+          location: {
+            address: null,
+            postalCode: "NW1 4NR",
+            coordinates: { lat: 51.53, lng: -0.15 },
+          },
+        }),
+      ]),
+      TEST_CONTEXT
+    )
+
+    expect(sections[0].places[0].saveControl).toBeFalsy()
   })
 })

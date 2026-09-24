@@ -39,8 +39,9 @@ export const fairsToMapSections = (
           </Text>
         ) : undefined,
         // No longer gated on the fair having a profile: a stop stores the fair itself, so
-        // there is nothing a missing profile would stop.
-        saveControl: (
+        // there is nothing a missing profile would stop. Gated on the fair having an address
+        // instead: a stop needs a place to go, same as the Fair page header.
+        saveControl: fair.location?.address ? (
           <CityEventSaveControl
             itemType="FAIR"
             itemID={fair.internalID}
@@ -49,6 +50,6 @@ export const fairsToMapSections = (
             contextScreenOwnerType={context.contextScreenOwnerType}
             contextScreenOwnerSlug={context.contextScreenOwnerSlug}
           />
-        ),
+        ) : undefined,
       })),
   }))
