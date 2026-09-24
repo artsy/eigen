@@ -29,18 +29,26 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     city?.cityArticles ?? NO_CITY_ARTICLES
   )
   const rows = toArticleRows(attachments)
-  const recommended = extractNodes(city?.recommendedArticlesConnection)
 
-  // Curated articles come first; recommendations only fill the slots they leave. Metaphysics
-  // already excludes curated articles from the recommendations, so the two never overlap.
-  const visible = [
-    ...rows.map((row) => ({ key: row.id, article: row.article, contextModule: undefined })),
-    ...recommended.map((article) => ({
-      key: article.internalID,
-      article,
-      contextModule: ContextModule.relatedArticles,
-    })),
-  ].slice(0, MAX_VISIBLE_ARTICLES)
+  // The connection is only requested when the flag is on, so its presence tells us which
+  // path we're on. When it's there, Metaphysics has already merged and sorted curated and
+  // recommended articles into one list, capped to the section's 4 slots.
+  const connection = city?.recommendedArticlesConnection
+  const curatedIds = new Set(rows.map((row) => row.articleInternalID))
+
+  const visible = connection
+    ? extractNodes(connection).map((article) => ({
+        key: article.internalID,
+        article,
+        contextModule: curatedIds.has(article.internalID)
+          ? ContextModule.articles
+          : ContextModule.relatedArticles,
+      }))
+    : rows.slice(0, MAX_VISIBLE_ARTICLES).map((row) => ({
+        key: row.id,
+        article: row.article,
+        contextModule: undefined,
+      }))
 
   // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
@@ -48,7 +56,9 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     return null
   }
 
-  const hasMore = rows.length + recommended.length > MAX_VISIBLE_ARTICLES
+  const hasMore = connection
+    ? !!connection.pageInfo.hasNextPage || (connection.totalCount ?? 0) > MAX_VISIBLE_ARTICLES
+    : rows.length > MAX_VISIBLE_ARTICLES
 
   return (
     <Flex testID="city-guide-event-articles" px={2}>
@@ -88,11 +98,17 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
 const fragment = graphql`
   fragment CityGuideEventArticles_city on City
   @argumentDefinitions(enableArticlesForYou: { type: "Boolean!", defaultValue: false }) {
+    # Only used to tag which of the connection's rows are curated for tracking; Metaphysics
+    # shares the loader with the connection below, so this doesn't cost an extra request.
     cityArticles {
       ...CityGuideArticle_articles
     }
-    # One past the section's 4 slots, so the chevron knows there's more to see.
-    recommendedArticlesConnection(first: 5) @include(if: $enableArticlesForYou) {
+    recommendedArticlesConnection(first: 4, includeFeatured: true)
+      @include(if: $enableArticlesForYou) {
+      totalCount
+      pageInfo {
+        hasNextPage
+      }
       edges {
         node {
           internalID

@@ -34,6 +34,7 @@ export const cityGuideArticleFragment = graphql`
     internalID
     position
     article {
+      internalID
       ...CityGuideArticleRow_article
     }
   }
@@ -45,7 +46,9 @@ export const NO_CITY_ARTICLES: CityGuideArticle_articles$key = []
 export interface CityArticleRow {
   /** The attachment's own id, which is what makes a row unique when one article is attached twice. */
   id: string
-  article: CityGuideArticleRow_article$key
+  /** The article's own id, used to tell curated apart from recommended rows in the connection. */
+  articleInternalID: string
+  article: CityGuideArticleRow_article$key & { internalID: string }
 }
 
 /**
@@ -58,5 +61,6 @@ export const toArticleRows = (attachments: CityGuideArticle_articles$data): City
     .sort((a, b) => a.position - b.position)
     .map((attachment) => ({
       id: attachment.internalID,
+      articleInternalID: attachment.article.internalID,
       article: attachment.article,
     }))

@@ -230,13 +230,6 @@ describe("CityGuideEventArticles, recommended for you", () => {
     ...overrides,
   })
 
-  const cityData = (curated: object[], recommended: object[]) => ({
-    City: () => ({
-      cityArticles: curated,
-      recommendedArticlesConnection: { edges: recommended.map((node) => ({ node })) },
-    }),
-  })
-
   const curated = (titles: string[]) =>
     titles.map((title, index) => ({
       internalID: `attachment-${index}`,
@@ -244,79 +237,86 @@ describe("CityGuideEventArticles, recommended for you", () => {
       article: article(title),
     }))
 
-  it("fills the slots curated articles leave with recommendations, in one list of up to 4", async () => {
+  // Metaphysics already merges, sorts and caps the connection to the section's 4 slots, so the
+  // mock reflects that: `curatedTitles` says which of the connection's rows are curated, for
+  // tagging tracking context, and `connectionTitles` is exactly the rows to render.
+  const cityData = (
+    curatedTitles: string[],
+    connectionTitles: string[],
+    { totalCount = connectionTitles.length, hasNextPage = false } = {}
+  ) => ({
+    City: () => ({
+      cityArticles: curated(curatedTitles),
+      recommendedArticlesConnection: {
+        totalCount,
+        pageInfo: { hasNextPage },
+        edges: connectionTitles.map((title) => ({ node: article(title) })),
+      },
+    }),
+  })
+
+  it("renders the connection's rows, in the order Metaphysics returns them", async () => {
     renderWithRelay(
-      cityData(curated(["Curated 1", "Curated 2", "Curated 3"]), [
-        article("Recommended 1"),
-        article("Recommended 2"),
-      ])
+      cityData(["Curated 1", "Curated 2"], ["Curated 1", "Curated 2", "Recommended 1"])
     )
 
     const rows = await screen.findAllByTestId("event-article-row")
-    expect(rows).toHaveLength(4)
+    expect(rows).toHaveLength(3)
     expect(rows[0]).toHaveTextContent(/Curated 1/)
-    expect(rows[2]).toHaveTextContent(/Curated 3/)
-    expect(rows[3]).toHaveTextContent(/Recommended 1/)
-    expect(screen.queryByText("Recommended 2")).not.toBeOnTheScreen()
-    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+    expect(rows[2]).toHaveTextContent(/Recommended 1/)
   })
 
-  it("gives the section title a chevron when curated plus recommended articles exceed 4", async () => {
+  it("gives the section title a chevron when totalCount exceeds 4", async () => {
     renderWithRelay(
-      cityData(curated(["Curated 1", "Curated 2"]), [
-        article("Recommended 1"),
-        article("Recommended 2"),
-        article("Recommended 3"),
-      ])
+      cityData(["Curated 1"], ["Curated 1", "Rec 1", "Rec 2", "Rec 3"], { totalCount: 5 })
     )
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
     expect(screen.getByTestId("touchable-wrapper")).toBeOnTheScreen()
   })
 
-  it("gives no chevron when curated plus recommended articles fit in 4", async () => {
-    renderWithRelay(cityData(curated(["Curated 1"]), [article("Recommended 1")]))
+  it("gives the section title a chevron when the connection has a next page", async () => {
+    renderWithRelay(cityData(["Curated 1"], ["Curated 1"], { hasNextPage: true }))
+
+    expect(await screen.findByTestId("touchable-wrapper")).toBeOnTheScreen()
+  })
+
+  it("gives no chevron when totalCount is 4 or fewer and there's no next page", async () => {
+    renderWithRelay(cityData(["Curated 1"], ["Curated 1", "Rec 1"]))
 
     expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
     expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
   })
 
-  it("shows no recommendations when curated articles fill all 4 slots", async () => {
-    renderWithRelay(
-      cityData(curated(["Curated 1", "Curated 2", "Curated 3", "Curated 4"]), [
-        article("Recommended 1"),
-      ])
-    )
-
-    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
-    expect(screen.queryByText("Recommended 1")).not.toBeOnTheScreen()
-  })
-
   it("shows the section with only recommendations when there are no curated articles", async () => {
-    renderWithRelay(cityData([], [article("A recommended read")]))
+    renderWithRelay(cityData([], ["A recommended read"]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
     expect(screen.getByText("A recommended read")).toBeOnTheScreen()
-    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
   })
 
-  it("renders nothing when both the curated and recommended lists are empty", () => {
+  it("renders nothing when the connection is empty", () => {
     renderWithRelay(cityData([], []))
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
   })
 
-  it("does not render the recommended block when the connection is empty", async () => {
-    renderWithRelay(
-      cityData([{ internalID: "attachment-1", position: 0, article: article("Curated read") }], [])
-    )
+  it("tracks a tap on a curated row with the curated context_module", async () => {
+    renderWithRelay(cityData(["Curated read"], ["Curated read"]))
 
-    expect(await screen.findByText("Curated read")).toBeOnTheScreen()
-    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleGroup",
+        context_module: "articles",
+        destination_screen_owner_id: "id-for-Curated read",
+      })
+    )
   })
 
   it("tracks a tap on a recommended row with a distinct context_module", async () => {
-    renderWithRelay(cityData([], [article("A recommended read")]))
+    renderWithRelay(cityData([], ["A recommended read"]))
 
     fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
 
