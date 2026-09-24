@@ -1,4 +1,4 @@
-import { GavelIcon } from "@artsy/icons/native"
+import { BellStrokeIcon } from "@artsy/icons/native"
 import { Box, VisualClueDot } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -26,7 +26,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
         onPress={navigateToActivityPanel}
       >
         <>
-          <GavelIcon height={24} width={30} />
+          <BellStrokeIcon height={24} width={30} />
 
           {!!hasUnseenNotifications && (
             <Box
