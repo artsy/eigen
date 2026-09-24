@@ -8,7 +8,8 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Image as PickedImage } from "react-native-image-crop-picker"
 import { ConnectionHandler, graphql, useMutation } from "react-relay"
 
 const NOTES_LIMIT = 200
@@ -53,17 +54,25 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   const { showActionSheetWithOptions } = useActionSheet()
   const [name, setName] = useState(itinerary.name)
   const [notes, setNotes] = useState(itinerary.description ?? "")
-  // A newly picked, not-yet-uploaded local image path, shown as an optimistic preview.
-  const [localCoverPath, setLocalCoverPath] = useState<string>()
+  // A newly picked, not-yet-uploaded local image, shown as an optimistic preview.
+  const [localCover, setLocalCover] = useState<Pick<PickedImage, "path" | "width" | "height">>()
   // True once the user has explicitly removed the cover, so save sends `imageURL: null`.
   const [coverRemoved, setCoverRemoved] = useState(false)
   const [isUploadingCover, setIsUploadingCover] = useState(false)
+  const isMountedRef = useRef(false)
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   const [commitUpdate, isUpdating] = useMutation<ItineraryEditSheetUpdateMutation>(updateMutation)
   const [commitDelete, isDeleting] = useMutation<ItineraryEditSheetDeleteMutation>(deleteMutation)
 
   const currentCoverUrl = itinerary.heroImage?.url ?? null
-  const coverImageUrl = localCoverPath || (coverRemoved ? null : currentCoverUrl)
+  const coverImageUrl = localCover?.path || (coverRemoved ? null : currentCoverUrl)
   const hasCover = !!coverImageUrl
   const isSaving = isUpdating || isUploadingCover
 
@@ -71,7 +80,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
       .then((images) => {
         if (images?.length >= 1) {
-          setLocalCoverPath(images[0].path)
+          const { path, width, height } = images[0]
+          setLocalCover({ path, width, height })
           setCoverRemoved(false)
         }
       })
@@ -81,7 +91,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   }
 
   const removeCoverImage = () => {
-    setLocalCoverPath(undefined)
+    setLocalCover(undefined)
     setCoverRemoved(true)
   }
 
@@ -91,11 +101,16 @@ export const ItineraryEditSheet: React.FC<Props> = ({
       // user actually picked or removed a photo.
       let imageURL: string | null | undefined
 
-      if (localCoverPath) {
+      if (localCover) {
         setIsUploadingCover(true)
-        imageURL = await getConvertedImageUrlFromS3(localCoverPath)
+        imageURL = await getConvertedImageUrlFromS3(localCover.path)
       } else if (coverRemoved) {
         imageURL = null
+      }
+
+      // Android back can still close the sheet mid-upload: treat that as cancelling the save.
+      if (!isMountedRef.current) {
+        return
       }
 
       commitUpdate({
@@ -121,14 +136,25 @@ export const ItineraryEditSheet: React.FC<Props> = ({
 
                 const updatedItineraryId = responseOrError.itinerary?.id
                 const record = updatedItineraryId ? store.get(updatedItineraryId) : null
-                const heroImage =
-                  imageURL === null
-                    ? record?.getLinkedRecord("heroImage")
-                    : record?.getOrCreateLinkedRecord("heroImage", "Image")
-                const newUrl = imageURL === null ? null : localCoverPath
 
-                heroImage?.setValue(newUrl, 'url(version:"large")')
-                heroImage?.setValue(newUrl, 'url(version:"small")')
+                if (!record) {
+                  return
+                }
+
+                if (!localCover) {
+                  record.setValue(null, "heroImage")
+                  return
+                }
+
+                const { path, width, height } = localCover
+                const heroImage = record.getOrCreateLinkedRecord("heroImage", "Image")
+
+                heroImage.setValue(path, 'url(version:"large")')
+                heroImage.setValue(path, 'url(version:"small")')
+                heroImage.setValue(width, "width")
+                heroImage.setValue(height, "height")
+                heroImage.setValue((width || 1) / (height || 1), "aspectRatio")
+                heroImage.setValue(null, "blurhash")
               },
         onCompleted: (_response, errors) => {
           if (errors?.length) {
@@ -136,13 +162,19 @@ export const ItineraryEditSheet: React.FC<Props> = ({
             return
           }
 
-          onClose()
+          // A later sheet may be open by now; this one's close must not close it.
+          if (isMountedRef.current) {
+            onClose()
+          }
         },
         onError: () => toast.show("Could not save your changes", "bottom"),
       })
     } catch (error) {
       console.error("Failed to upload itinerary cover image", error)
-      toast.show("Could not upload your photo", "bottom")
+
+      if (isMountedRef.current) {
+        toast.show("Could not upload your photo", "bottom")
+      }
     } finally {
       setIsUploadingCover(false)
     }
@@ -189,6 +221,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
       visible={visible}
       onDismiss={onClose}
       enableDynamicSizing
+      enablePanDownToClose={!isSaving}
+      closeOnBackdropClick={!isSaving}
     >
       <BottomSheetKeyboardAwareScrollView keyboardShouldPersistTaps="always">
         <Flex pt={1} pb={2}>
@@ -201,7 +235,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
               testID="itinerary-edit-cover"
               disabled={isSaving}
               onPress={chooseCoverImage}
-              // The "Change cover photo" link next to it does the same, so screen readers
+              // The "Change/Add cover photo" link next to it does the same, so screen readers
               // skip this swatch rather than read a second, identical button.
               accessible={false}
             >
@@ -234,11 +268,12 @@ export const ItineraryEditSheet: React.FC<Props> = ({
               <Touchable
                 testID="itinerary-edit-cover-change"
                 accessibilityRole="button"
+                accessibilityLabel={hasCover ? "Change cover photo" : "Add cover photo"}
                 disabled={isSaving}
                 onPress={chooseCoverImage}
               >
                 <Text variant="sm" underline>
-                  Change cover photo
+                  {hasCover ? "Change cover photo" : "Add cover photo"}
                 </Text>
               </Touchable>
 
