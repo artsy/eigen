@@ -237,7 +237,7 @@ describe("CityGuideEventArticles, recommended for you", () => {
     }),
   })
 
-  it("shows a 'Recommended for you' subheading and rows below the curated ones", async () => {
+  it("shows only the curated articles when the city has any, even with recommendations", async () => {
     renderWithRelay(
       cityData(
         [{ internalID: "attachment-1", position: 0, article: article("Curated read") }],
@@ -245,9 +245,9 @@ describe("CityGuideEventArticles, recommended for you", () => {
       )
     )
 
-    expect(await screen.findByText("Recommended for you")).toBeOnTheScreen()
-    expect(screen.getByText("A recommended read")).toBeOnTheScreen()
-    expect(screen.getByText("Curated read")).toBeOnTheScreen()
+    expect(await screen.findByText("Curated read")).toBeOnTheScreen()
+    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+    expect(screen.queryByText("A recommended read")).not.toBeOnTheScreen()
   })
 
   it("shows the section title and only the recommended block when there are no curated articles", async () => {

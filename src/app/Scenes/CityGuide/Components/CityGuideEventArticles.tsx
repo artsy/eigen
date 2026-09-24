@@ -29,7 +29,8 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     city?.cityArticles ?? NO_CITY_ARTICLES
   )
   const rows = toArticleRows(attachments)
-  const recommended = extractNodes(city?.recommendedArticlesConnection)
+  // Recommendations only fill the section when the city has no curated articles to show.
+  const recommended = rows.length ? [] : extractNodes(city?.recommendedArticlesConnection)
 
   // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
