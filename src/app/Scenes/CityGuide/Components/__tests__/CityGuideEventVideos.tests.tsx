@@ -20,6 +20,7 @@ describe("CityGuideEventVideos", () => {
   const video = (overrides: object = {}) => ({
     internalID: "id-for-video",
     playerUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "A Day at the Fair",
     ...overrides,
   })
 
@@ -61,6 +62,20 @@ describe("CityGuideEventVideos", () => {
       renderWithRelay(cityVideos([attachment(video())]))
 
       expect(screen.getAllByTestId("city-guide-video-card")).toHaveLength(1)
+    })
+
+    it("renders the video's title underneath it", () => {
+      renderWithRelay(cityVideos([attachment(video())]))
+
+      expect(screen.getByText("A Day at the Fair")).toBeOnTheScreen()
+      expect(screen.getByTestId("city-guide-video-title")).toBeOnTheScreen()
+    })
+
+    it("renders no title when the video has none", () => {
+      renderWithRelay(cityVideos([attachment(video({ title: "" }))]))
+
+      expect(screen.queryByTestId("city-guide-video-title")).not.toBeOnTheScreen()
+      expect(screen.queryByText("A Day at the Fair")).not.toBeOnTheScreen()
     })
 
     it("shows a YouTube thumbnail before playback", () => {

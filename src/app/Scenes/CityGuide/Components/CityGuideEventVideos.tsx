@@ -1,4 +1,4 @@
-import { Flex, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { CityGuideEventVideos_city$key } from "__generated__/CityGuideEventVideos_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { FeatureVideo } from "app/Scenes/Feature/FeatureVideo"
@@ -19,6 +19,7 @@ const RAIL_CARD_WIDTH_RATIO = 0.85
 interface Video {
   internalID: string
   playerUrl: string
+  title: string
 }
 
 interface Props {
@@ -98,8 +99,12 @@ const CityGuideVideoCard: React.FC<{
 
   if (isPlaying) {
     return (
-      <Flex testID="city-guide-video-card" width={width} height={height} backgroundColor="black">
-        <FeatureVideo videoUrl={video.playerUrl} width={width} height={height} />
+      <Flex width={width}>
+        <Flex testID="city-guide-video-card" width={width} height={height} backgroundColor="black">
+          <FeatureVideo videoUrl={video.playerUrl} width={width} height={height} />
+        </Flex>
+
+        <VideoTitle title={video.title} />
       </Flex>
     )
   }
@@ -109,27 +114,50 @@ const CityGuideVideoCard: React.FC<{
   const thumbnailUrl = getYouTubeThumbnailUrl(video.playerUrl)
 
   return (
-    <Touchable testID="city-guide-video-card" onPress={onPlay} accessibilityLabel="Play video">
-      <Flex
-        testID={thumbnailUrl ? undefined : "city-guide-video-placeholder"}
-        width={width}
-        height={height}
-        backgroundColor={thumbnailUrl ? "black" : "mono10"}
-        alignItems="center"
-        justifyContent="center"
-      >
-        {!!thumbnailUrl && (
-          <Image
-            testID="city-guide-video-thumbnail"
-            source={{ uri: thumbnailUrl }}
-            style={{ position: "absolute", width, height }}
-            resizeMode="cover"
-          />
-        )}
+    <Flex width={width}>
+      <Touchable testID="city-guide-video-card" onPress={onPlay} accessibilityLabel="Play video">
+        <Flex
+          testID={thumbnailUrl ? undefined : "city-guide-video-placeholder"}
+          width={width}
+          height={height}
+          backgroundColor={thumbnailUrl ? "black" : "mono10"}
+          alignItems="center"
+          justifyContent="center"
+        >
+          {!!thumbnailUrl && (
+            <Image
+              testID="city-guide-video-thumbnail"
+              source={{ uri: thumbnailUrl }}
+              style={{ position: "absolute", width, height }}
+              resizeMode="cover"
+            />
+          )}
 
-        <PlayGlyph />
-      </Flex>
-    </Touchable>
+          <PlayGlyph />
+        </Flex>
+      </Touchable>
+
+      <VideoTitle title={video.title} />
+    </Flex>
+  )
+}
+
+/** Guarded so an empty title doesn't leave a blank Text with mt={0.5} under the card. */
+const VideoTitle: React.FC<{ title: string }> = ({ title }) => {
+  if (!title) {
+    return null
+  }
+
+  return (
+    <Text
+      testID="city-guide-video-title"
+      variant="sm-display"
+      weight="medium"
+      numberOfLines={2}
+      mt={0.5}
+    >
+      {title}
+    </Text>
   )
 }
 
@@ -172,6 +200,7 @@ const fragment = graphql`
       video {
         internalID
         playerUrl
+        title
       }
     }
   }
