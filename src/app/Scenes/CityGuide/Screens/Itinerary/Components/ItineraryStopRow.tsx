@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { CityEventSaveControl } from "app/Scenes/CityGuide/Components/CityEventSaveControls"
 import { CustomStopSaveControl } from "app/Scenes/CityGuide/Components/CustomStopSaveControl"
 import { StopCard } from "app/Scenes/CityGuide/Components/StopCard"
@@ -13,13 +13,8 @@ import {
 import { ItineraryStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { stopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 
-const BULLET_SIZE = 16
-
 interface Props {
   stop: ItineraryStop
-  /** Derived from the flattened stop index, never stored on the stop. Absent on your own
-   *  itinerary, which is unordered and renders no bullet. */
-  number?: number
   /** Where a custom stop's own screen lives, which needs the itinerary this stop belongs to. */
   citySlug: string
   itineraryId: string
@@ -35,7 +30,6 @@ interface Props {
 
 export const ItineraryStopRow: React.FC<Props> = ({
   stop,
-  number,
   citySlug,
   itineraryId,
   itinerarySlug,
@@ -60,25 +54,6 @@ export const ItineraryStopRow: React.FC<Props> = ({
     // `width="100%"`: without a definite width here, `StopCard`'s own `flex={1}` has nothing
     // to resolve against and collapses to its content's minimum size instead of filling the row.
     <Flex width="100%" flexDirection="row" alignItems="center" gap={1}>
-      {number !== undefined && (
-        <Flex
-          testID="itinerary-stop-number"
-          width={BULLET_SIZE}
-          height={BULLET_SIZE}
-          borderRadius={BULLET_SIZE / 2}
-          backgroundColor="mono100"
-          alignItems="center"
-          justifyContent="center"
-        >
-          {/* xxs's default 14px line height sits the digit ~1px low in this 16px circle
-              (iOS puts all of a Text's extra leading above the baseline); 12px removes
-              enough of the gap to center it. */}
-          <Text variant="xxs" color="mono0" lineHeight="12px">
-            {number}
-          </Text>
-        </Flex>
-      )}
-
       <StopCard
         card={card}
         image={image}

@@ -126,15 +126,6 @@ describe("ItineraryScreen", () => {
     )
   })
 
-  it("numbers stops continuously across sections", async () => {
-    renderWithRelay({ Itinerary: () => ITINERARY }, props)
-
-    // Numbering runs 1..N across the whole itinerary rather than restarting per section,
-    // so the last number only exists if every earlier section was counted.
-    expect(await screen.findByText("4")).toBeTruthy()
-    expect(screen.queryByText("5")).toBeNull()
-  })
-
   it("falls back to a positional section title when the server sends none", async () => {
     renderWithRelay(
       {
@@ -212,14 +203,6 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByTestId("itinerary-picker")).toBeOnTheScreen()
     })
 
-    it("shows no stop numbers, since it has no running order", async () => {
-      renderWithRelay({ Itinerary: () => own }, props)
-
-      await screen.findByText("Stop 1")
-
-      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
-    })
-
     // One section is the whole list, so its name would be a redundant subheading.
     it("hides the heading while it has a single section", async () => {
       renderWithRelay(
@@ -269,8 +252,6 @@ describe("ItineraryScreen", () => {
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("Day 2 — London Frieze")).toBeOnTheScreen()
       expect(screen.queryAllByTestId("itinerary-section-header")).toHaveLength(2)
-      // Still no numbering: the headings say where you are, not in what order.
-      expect(screen.queryAllByTestId("itinerary-stop-number")).toHaveLength(0)
     })
 
     it("offers to edit it", async () => {
@@ -310,12 +291,11 @@ describe("ItineraryScreen", () => {
   })
 
   describe("a curated guide", () => {
-    it("keeps its numbering, section headings and byline", async () => {
+    it("keeps its section headings and byline", async () => {
       renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
       expect(await screen.findByText("Day 1 — Easing in")).toBeOnTheScreen()
       expect(screen.getByText("By Casey Lesser")).toBeOnTheScreen()
-      expect(screen.queryAllByTestId("itinerary-stop-number")).not.toHaveLength(0)
       expect(screen.queryByText("Your Itinerary")).not.toBeOnTheScreen()
     })
 
