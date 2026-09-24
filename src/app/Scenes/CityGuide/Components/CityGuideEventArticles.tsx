@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Separator } from "@artsy/palette-mobile"
 import { CityGuideArticle_articles$key } from "__generated__/CityGuideArticle_articles.graphql"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -29,12 +29,22 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     city?.cityArticles ?? NO_CITY_ARTICLES
   )
   const rows = toArticleRows(attachments)
-  // Recommendations only fill the section when the city has no curated articles to show.
-  const recommended = rows.length ? [] : extractNodes(city?.recommendedArticlesConnection)
+  const recommended = extractNodes(city?.recommendedArticlesConnection)
+
+  // Curated articles come first; recommendations only fill the slots they leave. Metaphysics
+  // already excludes curated articles from the recommendations, so the two never overlap.
+  const visible = [
+    ...rows.map((row) => ({ key: row.id, article: row.article, contextModule: undefined })),
+    ...recommended.map((article) => ({
+      key: article.internalID,
+      article,
+      contextModule: ContextModule.relatedArticles,
+    })),
+  ].slice(0, MAX_VISIBLE_ARTICLES)
 
   // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
-  if (!rows.length && !recommended.length) {
+  if (!visible.length) {
     return null
   }
 
@@ -61,33 +71,15 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
         }
       />
 
-      <Join separator={<Spacer y={4} />}>
-        {!!rows.length && (
-          <Join separator={<Separator my={2} />}>
-            {rows.slice(0, MAX_VISIBLE_ARTICLES).map((row) => (
-              <CityArticleListItem key={row.id} article={row.article} citySlug={citySlug} />
-            ))}
-          </Join>
-        )}
-
-        {!!recommended.length && (
-          <Flex testID="city-guide-recommended-articles">
-            <Text variant="sm-display" mb={2}>
-              Recommended for you
-            </Text>
-
-            <Join separator={<Separator my={2} />}>
-              {recommended.map((article) => (
-                <CityArticleListItem
-                  key={article.internalID}
-                  article={article}
-                  citySlug={citySlug}
-                  contextModule={ContextModule.relatedArticles}
-                />
-              ))}
-            </Join>
-          </Flex>
-        )}
+      <Join separator={<Separator my={2} />}>
+        {visible.map(({ key, article, contextModule }) => (
+          <CityArticleListItem
+            key={key}
+            article={article}
+            citySlug={citySlug}
+            contextModule={contextModule}
+          />
+        ))}
       </Join>
     </Flex>
   )

@@ -237,25 +237,47 @@ describe("CityGuideEventArticles, recommended for you", () => {
     }),
   })
 
-  it("shows only the curated articles when the city has any, even with recommendations", async () => {
+  const curated = (titles: string[]) =>
+    titles.map((title, index) => ({
+      internalID: `attachment-${index}`,
+      position: index,
+      article: article(title),
+    }))
+
+  it("fills the slots curated articles leave with recommendations, in one list of up to 4", async () => {
     renderWithRelay(
-      cityData(
-        [{ internalID: "attachment-1", position: 0, article: article("Curated read") }],
-        [article("A recommended read")]
-      )
+      cityData(curated(["Curated 1", "Curated 2", "Curated 3"]), [
+        article("Recommended 1"),
+        article("Recommended 2"),
+      ])
     )
 
-    expect(await screen.findByText("Curated read")).toBeOnTheScreen()
+    const rows = await screen.findAllByTestId("event-article-row")
+    expect(rows).toHaveLength(4)
+    expect(rows[0]).toHaveTextContent(/Curated 1/)
+    expect(rows[2]).toHaveTextContent(/Curated 3/)
+    expect(rows[3]).toHaveTextContent(/Recommended 1/)
+    expect(screen.queryByText("Recommended 2")).not.toBeOnTheScreen()
     expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
-    expect(screen.queryByText("A recommended read")).not.toBeOnTheScreen()
   })
 
-  it("shows the section title and only the recommended block when there are no curated articles", async () => {
+  it("shows no recommendations when curated articles fill all 4 slots", async () => {
+    renderWithRelay(
+      cityData(curated(["Curated 1", "Curated 2", "Curated 3", "Curated 4"]), [
+        article("Recommended 1"),
+      ])
+    )
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
+    expect(screen.queryByText("Recommended 1")).not.toBeOnTheScreen()
+  })
+
+  it("shows the section with only recommendations when there are no curated articles", async () => {
     renderWithRelay(cityData([], [article("A recommended read")]))
 
     expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
-    expect(screen.getByText("Recommended for you")).toBeOnTheScreen()
     expect(screen.getByText("A recommended read")).toBeOnTheScreen()
+    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
   })
 
   it("renders nothing when both the curated and recommended lists are empty", () => {
