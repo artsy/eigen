@@ -1,4 +1,4 @@
-import { Text, Touchable } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryEditSheetTestsQuery$data } from "__generated__/ItineraryEditSheetTestsQuery.graphql"
@@ -6,10 +6,8 @@ import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEdi
 import { extractNodes } from "app/utils/extractNodes"
 import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { useState } from "react"
 import { graphql } from "react-relay"
-import { OperationDescriptor } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 
 const photos = [{ path: "localCoverPath", width: 1200, height: 800 }]
 
@@ -37,9 +35,6 @@ describe("ItineraryEditSheet", () => {
   const onClose = jest.fn()
   const onDeleted = jest.fn()
 
-  // Saves are queued per itinerary at module level, so each test gets an itinerary of its own.
-  let itineraryCount = 0
-
   // Mutated by the cover-image tests that need a different starting itinerary — reassigned
   // per test rather than a fresh `const`, since `Component` below closes over this binding.
   let itinerary = {
@@ -52,36 +47,16 @@ describe("ItineraryEditSheet", () => {
 
   // No fragment of its own: the sheet takes plain props, but it commits mutations, so it
   // needs a Relay environment around it.
-  // Callers unmount the sheet when it closes, so reopening it starts from fresh state.
-  const ReopenableSheet: React.FC = () => {
-    const [openCount, setOpenCount] = useState(0)
-
-    return (
+  const { renderWithRelay } = setupTestWrapper({
+    Component: ({ me }: ItineraryEditSheetTestsQuery$data) => (
       <>
         <ItineraryEditSheet
-          key={openCount}
           visible
           onClose={onClose}
           itinerary={itinerary}
           citySlug="london"
           onDeleted={onDeleted}
         />
-
-        <Touchable
-          accessibilityRole="button"
-          testID="reopen-sheet"
-          onPress={() => setOpenCount((count) => count + 1)}
-        >
-          <Text>Reopen</Text>
-        </Touchable>
-      </>
-    )
-  }
-
-  const { renderWithRelay } = setupTestWrapper({
-    Component: ({ me }: ItineraryEditSheetTestsQuery$data) => (
-      <>
-        <ReopenableSheet />
 
         {/* Surfaces the connection's contents so the delete updater's effect on it is
             observable, the same way the itineraries list would render it. */}
@@ -167,40 +142,12 @@ describe("ItineraryEditSheet", () => {
     fireEvent.press(screen.getByTestId("itinerary-edit-save"))
   }
 
-  const reopen = () => fireEvent.press(screen.getByTestId("reopen-sheet"))
-
-  // Only pending operations: a resolved one drops out of the list.
-  const operationsNamed = (env: ReturnType<typeof createMockEnvironment>, name: string) =>
+  const updateMutations = (env: ReturnType<typeof createMockEnvironment>) =>
     env.mock
       .getAllOperations()
-      .filter((operation) => operation.request.node.operation.name === name)
-
-  const textMutations = (env: ReturnType<typeof createMockEnvironment>) =>
-    operationsNamed(env, "itinerarySaveUpdateMutation")
-
-  const coverMutations = (env: ReturnType<typeof createMockEnvironment>) =>
-    operationsNamed(env, "itinerarySaveUpdateCoverMutation")
-
-  const succeed = (
-    env: ReturnType<typeof createMockEnvironment>,
-    operation: OperationDescriptor
-  ) => {
-    const { title, description } = operation.request.variables.input
-
-    act(() =>
-      env.mock.resolve(
-        operation,
-        MockPayloadGenerator.generate(operation, {
-          updateItineraryPayload: () => ({
-            responseOrError: {
-              __typename: "ItineraryMutationSuccess",
-              itinerary: { id: "itinerary-id-1", title, description },
-            },
-          }),
-        })
+      .filter(
+        (operation) => operation.request.node.operation.name === "ItineraryEditSheetUpdateMutation"
       )
-    )
-  }
 
   /** Each call to the upload returns a promise the test settles itself. */
   const controlUploads = () => {
@@ -221,7 +168,7 @@ describe("ItineraryEditSheet", () => {
     await AsyncStorage.clear()
     itinerary = {
       id: "itinerary-id-1",
-      internalID: `itinerary-${++itineraryCount}`,
+      internalID: "itinerary-1",
       name: "London Oct 2026",
       description: "If time, check out Borough Market",
       heroImage: { url: "https://example.com/current-cover.jpg" },
@@ -279,15 +226,37 @@ describe("ItineraryEditSheet", () => {
     })
   })
 
-  it("puts the old title back and tells the user when the update fails", () => {
+  it("puts the old title back and tells the user when the update fails", async () => {
     const { env, mockRejectLastOperation } = renderWithRelay({ Query })
 
     fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
     fireEvent.press(screen.getByTestId("itinerary-edit-save"))
     mockRejectLastOperation(new Error("Gravity down"))
 
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+    )
     expect(env.getStore().getSource().get("itinerary-id-1")?.title).toEqual("London Oct 2026")
-    expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+  })
+
+  it("treats an ItineraryMutationFailure response as a failure", async () => {
+    const { env, mockResolveLastOperation } = renderWithRelay({ Query })
+
+    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    mockResolveLastOperation({
+      updateItineraryPayload: () => ({
+        responseOrError: {
+          __typename: "ItineraryMutationFailure",
+          mutationError: { message: "Nope" },
+        },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+    )
+    expect(env.getStore().getSource().get("itinerary-id-1")?.title).toEqual("London Oct 2026")
   })
 
   it("deletes by id, then tells the caller", () => {
@@ -355,58 +324,55 @@ describe("ItineraryEditSheet", () => {
   })
 
   describe("saving a new cover", () => {
-    it("closes the sheet, shows the local photo and sends no text mutation for a cover-only save", async () => {
+    it("closes the sheet and shows the local photo before the upload finishes", async () => {
       const { spy } = controlUploads()
 
       const { env } = renderWithRelay({ Query })
       await pickAndSave()
 
       expect(onClose).toHaveBeenCalled()
-      await waitFor(() => expect(heroImageInStore(env)).toMatchObject(localHeroImage))
+      expect(heroImageInStore(env)).toMatchObject(localHeroImage)
       await waitFor(() => expect(spy).toHaveBeenCalledWith("localCoverPath"))
-      expect(textMutations(env)).toHaveLength(0)
-      expect(mockShowToast).not.toHaveBeenCalled()
+      expect(updateMutations(env)).toHaveLength(0)
     })
 
-    it("sends the edited title at once and the cover after the upload", async () => {
+    it("sends the title, notes and uploaded URL in one mutation after the upload", async () => {
       const { uploads, spy } = controlUploads()
 
       const { env } = renderWithRelay({ Query })
       fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
       await pickAndSave()
 
-      expect(textMutations(env)[0].request.variables.input).toEqual({
-        id: itinerary.internalID,
-        title: "London November",
-        description: "If time, check out Borough Market",
-      })
-
       await waitFor(() => expect(spy).toHaveBeenCalledWith("localCoverPath"))
       uploads[0].resolve("https://s3.example.com/new-cover.jpg")
 
-      await waitFor(() => expect(coverMutations(env)).toHaveLength(1))
-      expect(coverMutations(env)[0].request.variables.input).toEqual({
+      await waitFor(() => expect(updateMutations(env)).toHaveLength(1))
+      expect(updateMutations(env)[0].request.variables.input).toEqual({
         id: itinerary.internalID,
+        title: "London November",
+        description: "If time, check out Borough Market",
         imageURL: "https://s3.example.com/new-cover.jpg",
       })
     })
 
-    it("disables Delete until the cover save finishes", async () => {
+    it("puts the old cover back and tells the user when the upload fails", async () => {
       const { uploads, spy } = controlUploads()
 
       const { env } = renderWithRelay({ Query })
       await pickAndSave()
+
       await waitFor(() => expect(spy).toHaveBeenCalled())
+      act(() => uploads[0].reject(new Error("S3 down")))
 
-      reopen()
-      expect(screen.getByTestId("itinerary-edit-delete")).toBeDisabled()
-
-      uploads[0].resolve("https://s3.example.com/new-cover.jpg")
-      await waitFor(() => expect(coverMutations(env)).toHaveLength(1))
-      expect(screen.getByTestId("itinerary-edit-delete")).toBeDisabled()
-      succeed(env, coverMutations(env)[0])
-
-      await waitFor(() => expect(screen.getByTestId("itinerary-edit-delete")).toBeEnabled())
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+      )
+      expect(heroImageInStore(env)).toMatchObject({
+        'url(version:"large")': "https://example.com/current-cover.jpg",
+        blurhash: "old-blurhash",
+      })
+      expect(await AsyncStorage.getItem("IMAGES_itinerary-cover-itinerary-1")).toBeNull()
+      expect(updateMutations(env)).toHaveLength(0)
     })
   })
 
@@ -418,13 +384,14 @@ describe("ItineraryEditSheet", () => {
       fireEvent.press(screen.getByTestId("itinerary-edit-save"))
 
       expect(onClose).toHaveBeenCalled()
-      expect(textMutations(env)).toHaveLength(0)
-      await waitFor(() => expect(coverMutations(env)).toHaveLength(1))
-      expect(coverMutations(env)[0].request.variables.input).toEqual({
+      expect(heroImageInStore(env)).toBeNull()
+      await waitFor(() => expect(updateMutations(env)).toHaveLength(1))
+      expect(updateMutations(env)[0].request.variables.input).toEqual({
         id: itinerary.internalID,
+        title: "London Oct 2026",
+        description: "If time, check out Borough Market",
         imageURL: null,
       })
-      expect(heroImageInStore(env)).toBeNull()
     })
   })
 
