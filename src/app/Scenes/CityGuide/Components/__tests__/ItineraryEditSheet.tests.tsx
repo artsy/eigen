@@ -146,7 +146,7 @@ describe("ItineraryEditSheet", () => {
     env.mock
       .getAllOperations()
       .filter(
-        (operation) => operation.request.node.operation.name === "ItineraryEditSheetUpdateMutation"
+        (operation) => operation.request.node.operation.name === "saveItineraryUpdateMutation"
       )
 
   /** Each call to the upload returns a promise the test settles itself. */
