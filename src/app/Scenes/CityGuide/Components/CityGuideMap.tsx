@@ -1,9 +1,11 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
+import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
 import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
@@ -333,6 +335,8 @@ export const CityGuideMap: React.FC<Props> = (props) => {
   // (`showsToMapSections`/`fairsToMapSections`), so a pin here previews exactly like it does
   // there — rather than the older, map-only `CityGuideShowCard`. A fair carries `profile`,
   // which a show's fragment never selects, so that's the split.
+  // Follows the city picker: switching cities refetches `viewer.city` without new props.
+  const cardCitySlug = viewer.city?.slug ?? props.citySlug
   const activePlaces = useMemo<MapPlace[]>(() => {
     if (activeShows.length === 0) {
       return []
@@ -342,20 +346,27 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     const showItems = activeShows.filter((item): item is Show => !("profile" in item))
 
     const placesById = new Map<string, MapPlace>()
+    // Save controls on these cards report the general map as the screen they were tapped on.
+    const rowContext: CityEventRowContext = {
+      contextScreenOwnerType: OwnerType.cityGuideMap,
+      contextScreenOwnerSlug: cardCitySlug,
+    }
 
-    showsToMapSections([{ id: "active", title: "", items: showItems }])[0].places.forEach((place) =>
-      placesById.set(place.id, place)
-    )
-    fairsToMapSections([{ id: "active", title: "", items: fairItems }])[0].places.forEach((place) =>
-      placesById.set(place.id, place)
-    )
+    showsToMapSections(
+      [{ id: "active", title: "", items: showItems }],
+      rowContext
+    )[0].places.forEach((place) => placesById.set(place.id, place))
+    fairsToMapSections(
+      [{ id: "active", title: "", items: fairItems }],
+      rowContext
+    )[0].places.forEach((place) => placesById.set(place.id, place))
 
     // Preserves the tapped feature's own order (single pin, or a cluster's leaf order).
     return activeShows.flatMap((item) => {
       const place = placesById.get(item.id)
       return place ? [place] : []
     })
-  }, [activeShows])
+  }, [activeShows, cardCitySlug])
 
   return (
     <ProvideScreenTracking
@@ -439,13 +450,17 @@ export const CityGuideMap: React.FC<Props> = (props) => {
           {!!city && activePlaces.length > 0 && (
             <Flex position="absolute" bottom={0} left={0} right={0}>
               {activePlaces.length === 1 ? (
-                <MapPreviewCard place={activePlaces[0]} />
+                <MapPreviewCard place={activePlaces[0]} citySlug={cardCitySlug} />
               ) : (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <Flex flexDirection="row">
                     {activePlaces.map((place, index) => (
                       <Flex key={place.id} width={cardWidth}>
-                        <MapPreviewCard place={place} isLast={index === activePlaces.length - 1} />
+                        <MapPreviewCard
+                          place={place}
+                          citySlug={cardCitySlug}
+                          isLast={index === activePlaces.length - 1}
+                        />
                       </Flex>
                     ))}
                   </Flex>
