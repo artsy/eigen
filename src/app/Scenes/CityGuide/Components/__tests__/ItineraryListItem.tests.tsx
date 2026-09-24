@@ -1,6 +1,8 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryListItem } from "app/Scenes/CityGuide/Components/ItineraryListItem"
 import { navigate } from "app/system/navigation/navigate"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 
@@ -19,8 +21,22 @@ describe("ItineraryListItem", () => {
     href: "/city-guide/london-united-kingdom/itinerary/abc",
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.clearAllMocks()
+    await AsyncStorage.clear()
+  })
+
+  it("shows a cover saved moments ago instead of the server's old one", async () => {
+    await storeLocalImage("itinerary-cover-itinerary-1", { path: "file:///local-cover.jpg" })
+
+    renderWithWrappers(<ItineraryListItem {...props} itineraryID="itinerary-1" />)
+
+    await waitFor(() =>
+      expect(screen.getByTestId("itinerary-list-item-image")).toHaveProp(
+        "src",
+        "file:///local-cover.jpg"
+      )
+    )
   })
 
   it("renders the name and the stop count", () => {

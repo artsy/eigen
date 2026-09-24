@@ -1,8 +1,9 @@
 import { Text } from "@artsy/palette-mobile"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ItineraryEditSheetTestsQuery$data } from "__generated__/ItineraryEditSheetTestsQuery.graphql"
-import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { ItineraryEditSheet } from "app/Scenes/CityGuide/Components/ItineraryEditSheet"
+import { getLocalImage, storeLocalImage } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import * as imageUtils from "app/utils/getConvertedImageUrlFromS3"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -36,6 +37,7 @@ describe("ItineraryEditSheet", () => {
   // Mutated by the cover-image tests that need a different starting itinerary — reassigned
   // per test rather than a fresh `const`, since `Component` below closes over this binding.
   let itinerary = {
+    id: "itinerary-id-1",
     internalID: "itinerary-1",
     name: "London Oct 2026",
     description: "If time, check out Borough Market",
@@ -81,13 +83,75 @@ describe("ItineraryEditSheet", () => {
             }
           }
         }
+        itinerary(id: "itinerary-1") {
+          id
+          title
+          description
+          heroImage {
+            url(version: "large")
+            smallUrl: url(version: "small")
+            width
+            height
+            aspectRatio
+            blurhash
+          }
+        }
       }
     `,
   })
 
-  beforeEach(() => {
+  // The record the sheet's save updates in the store, as the itinerary screen would hold it.
+  const Query = () => ({
+    itinerary: {
+      id: "itinerary-id-1",
+      title: "London Oct 2026",
+      description: "If time, check out Borough Market",
+      heroImage: {
+        url: "https://example.com/current-cover.jpg",
+        smallUrl: "https://example.com/current-cover-small.jpg",
+        width: 400,
+        height: 800,
+        aspectRatio: 0.5,
+        blurhash: "old-blurhash",
+      },
+    },
+  })
+
+  const heroImageInStore = (env: ReturnType<typeof createMockEnvironment>) => {
+    const source = env.getStore().getSource()
+    const ref = source.get("itinerary-id-1")?.heroImage as { __ref: string } | null | undefined
+
+    return ref ? source.get(ref.__ref) : ref
+  }
+
+  const oldHeroImage = {
+    'url(version:"large")': "https://example.com/current-cover.jpg",
+    'url(version:"small")': "https://example.com/current-cover-small.jpg",
+    blurhash: "old-blurhash",
+  }
+
+  const localHeroImage = {
+    'url(version:"large")': "localCoverPath",
+    'url(version:"small")': "localCoverPath",
+    width: 1200,
+    height: 800,
+    aspectRatio: 1.5,
+    blurhash: null,
+  }
+
+  const pickAndSave = async () => {
+    fireEvent.press(screen.getByTestId("itinerary-edit-cover-change"))
+    await waitFor(() =>
+      expect(screen.getByTestId("itinerary-edit-cover-image")).toHaveProp("src", "localCoverPath")
+    )
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+  }
+
+  beforeEach(async () => {
     jest.clearAllMocks()
+    await AsyncStorage.clear()
     itinerary = {
+      id: "itinerary-id-1",
       internalID: "itinerary-1",
       name: "London Oct 2026",
       description: "If time, check out Borough Market",
@@ -131,17 +195,30 @@ describe("ItineraryEditSheet", () => {
     expect(screen.getByTestId("itinerary-edit-save")).toBeDisabled()
   })
 
-  it("sends the edited title and notes when saved", () => {
-    const { env } = renderWithRelay({})
+  it("sends the edited title and notes when saved, and closes right away", () => {
+    const { env } = renderWithRelay({ Query })
 
     fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
     fireEvent.press(screen.getByTestId("itinerary-edit-save"))
 
+    expect(onClose).toHaveBeenCalled()
+    expect(env.getStore().getSource().get("itinerary-id-1")?.title).toEqual("London November")
     expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
       id: "itinerary-1",
       title: "London November",
       description: "If time, check out Borough Market",
     })
+  })
+
+  it("puts the old title back and tells the user when the update fails", () => {
+    const { env, mockRejectLastOperation } = renderWithRelay({ Query })
+
+    fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
+    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+    mockRejectLastOperation(new Error("Gravity down"))
+
+    expect(env.getStore().getSource().get("itinerary-id-1")?.title).toEqual("London Oct 2026")
+    expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
   })
 
   it("deletes by id, then tells the caller", () => {
@@ -208,135 +285,73 @@ describe("ItineraryEditSheet", () => {
     expect(screen.queryByTestId("itinerary-edit-cover-remove")).not.toBeOnTheScreen()
   })
 
-  it("uploads the picked photo and saves its URL when saving", async () => {
-    const uploadSpy = jest
-      .spyOn(imageUtils, "getConvertedImageUrlFromS3")
-      .mockResolvedValue("https://s3.example.com/new-cover.jpg")
-
-    const { env } = renderWithRelay({})
-
-    fireEvent.press(screen.getByTestId("itinerary-edit-cover-change"))
-
-    expect(await screen.findByTestId("itinerary-edit-cover-image")).toHaveProp(
-      "src",
-      "localCoverPath"
-    )
-
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-
-    await waitFor(() => expect(uploadSpy).toHaveBeenCalledWith("localCoverPath"))
-    await waitFor(() =>
-      expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
-        id: "itinerary-1",
-        title: "London Oct 2026",
-        description: "If time, check out Borough Market",
-        imageURL: "https://s3.example.com/new-cover.jpg",
-      })
-    )
-  })
-
-  it("sends a null imageURL when removing the cover", () => {
-    const { env } = renderWithRelay({})
-
-    fireEvent.press(screen.getByTestId("itinerary-edit-cover-remove"))
-    fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-
-    expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
-      id: "itinerary-1",
-      title: "London Oct 2026",
-      description: "If time, check out Borough Market",
-      imageURL: null,
-    })
-  })
-
-  describe("while the cover uploads", () => {
-    const pickAndSave = async () => {
-      fireEvent.press(screen.getByTestId("itinerary-edit-cover-change"))
-      await screen.findByTestId("itinerary-edit-cover-image")
-      fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-    }
-
-    it("locks Delete and the cover controls", async () => {
+  describe("saving a new cover", () => {
+    it("closes the sheet and shows the local photo before the upload finishes", async () => {
       jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockReturnValue(new Promise(() => {}))
 
-      renderWithRelay({})
+      const { env } = renderWithRelay({ Query })
       await pickAndSave()
 
-      await waitFor(() => expect(screen.getByTestId("itinerary-edit-delete")).toBeDisabled())
-      expect(screen.getByTestId("itinerary-edit-cover-change")).toBeDisabled()
-      expect(screen.getByTestId("itinerary-edit-cover-remove")).toBeDisabled()
+      expect(onClose).toHaveBeenCalled()
+      await waitFor(() => expect(heroImageInStore(env)).toMatchObject(localHeroImage))
+      expect(env.mock.getAllOperations()).toHaveLength(0)
     })
 
-    it("can't be swiped or tapped away", async () => {
+    it("keeps the local photo so a refetch of the old cover doesn't replace it", async () => {
       jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockReturnValue(new Promise(() => {}))
 
-      renderWithRelay({})
-
-      const sheetProps = () => screen.UNSAFE_getByType(AutomountedBottomSheetModal).props
-
-      expect(sheetProps()).toMatchObject({ enablePanDownToClose: true, closeOnBackdropClick: true })
-
+      renderWithRelay({ Query })
       await pickAndSave()
 
-      await waitFor(() =>
-        expect(sheetProps()).toMatchObject({
-          enablePanDownToClose: false,
-          closeOnBackdropClick: false,
+      await waitFor(async () =>
+        expect(await getLocalImage("itinerary-cover-itinerary-1")).toMatchObject({
+          path: "localCoverPath",
+          width: 1200,
+          height: 800,
         })
       )
     })
 
-    it("tells the user when the upload fails, and saves nothing", async () => {
-      jest.spyOn(imageUtils, "getConvertedImageUrlFromS3").mockRejectedValue(new Error("S3 down"))
-      jest.spyOn(console, "error").mockImplementation(() => {})
-
-      const { env } = renderWithRelay({})
-      await pickAndSave()
-
-      await waitFor(() =>
-        expect(mockShowToast).toHaveBeenCalledWith("Could not upload your photo", "bottom")
-      )
-      expect(env.mock.getAllOperations()).toHaveLength(0)
-      expect(onClose).not.toHaveBeenCalled()
-    })
-
-    // Android back still closes the sheet mid-upload; that cancels the save, so a later
-    // sheet can't have its Delete race this update or be closed by it.
-    it("saves nothing and doesn't call onClose once the sheet has closed", async () => {
+    it("sends the uploaded URL with the title and notes once the upload finishes", async () => {
       let finishUpload: (url: string) => void = () => {}
-      jest
+      const uploadSpy = jest
         .spyOn(imageUtils, "getConvertedImageUrlFromS3")
         .mockReturnValue(new Promise((resolve) => (finishUpload = resolve)))
 
-      const { env, unmount } = renderWithRelay({})
+      const { env } = renderWithRelay({ Query })
+      fireEvent.changeText(screen.getByTestId("itinerary-edit-name"), "London November")
       await pickAndSave()
-      unmount()
+
+      await waitFor(() => expect(uploadSpy).toHaveBeenCalledWith("localCoverPath"))
+      expect(env.mock.getAllOperations()).toHaveLength(0)
 
       finishUpload("https://s3.example.com/new-cover.jpg")
-      await new Promise(process.nextTick)
 
-      expect(env.mock.getAllOperations()).toHaveLength(0)
-      expect(onClose).not.toHaveBeenCalled()
+      await waitFor(() =>
+        expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
+          id: "itinerary-1",
+          title: "London November",
+          description: "If time, check out Borough Market",
+          imageURL: "https://s3.example.com/new-cover.jpg",
+        })
+      )
     })
-  })
 
-  describe("the store after saving a cover change", () => {
-    const heroImageInStore = (env: ReturnType<typeof createMockEnvironment>) => {
-      const source = env.getStore().getSource()
-      const ref = source.get("itinerary-id-1")?.heroImage as { __ref: string } | null | undefined
+    // Gravity builds the new cover's versions in the background, so the response still has
+    // the old image.
+    it("keeps the local photo when the response still has the old cover", async () => {
+      jest
+        .spyOn(imageUtils, "getConvertedImageUrlFromS3")
+        .mockResolvedValue("https://s3.example.com/new-cover.jpg")
 
-      return ref ? source.get(ref.__ref) : ref
-    }
+      const { env, mockResolveLastOperation } = renderWithRelay({ Query })
+      await pickAndSave()
 
-    const resolveUpdate = (
-      mockResolveLastOperation: (resolvers: Record<string, () => unknown>) => void
-    ) =>
+      await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
       mockResolveLastOperation({
         updateItineraryPayload: () => ({
           responseOrError: {
             __typename: "ItineraryMutationSuccess",
-            // Gravity processes a new image in the background, so the response still has the
-            // old one.
             itinerary: {
               id: "itinerary-id-1",
               heroImage: {
@@ -352,39 +367,81 @@ describe("ItineraryEditSheet", () => {
         }),
       })
 
-    it("shows the picked photo, with its own shape and no stale blurhash", async () => {
+      expect(heroImageInStore(env)).toMatchObject(localHeroImage)
+      expect(mockShowToast).not.toHaveBeenCalled()
+    })
+
+    it("puts the old cover back and tells the user when the upload fails", async () => {
+      let failUpload: (error: Error) => void = () => {}
+      jest
+        .spyOn(imageUtils, "getConvertedImageUrlFromS3")
+        .mockReturnValue(new Promise((_resolve, reject) => (failUpload = reject)))
+      jest.spyOn(console, "error").mockImplementation(() => {})
+
+      const { env } = renderWithRelay({ Query })
+      await pickAndSave()
+
+      await waitFor(() => expect(heroImageInStore(env)).toMatchObject(localHeroImage))
+      failUpload(new Error("S3 down"))
+
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith("Could not upload your photo", "bottom")
+      )
+      expect(heroImageInStore(env)).toMatchObject(oldHeroImage)
+      expect(await getLocalImage("itinerary-cover-itinerary-1")).toBeNull()
+      expect(env.mock.getAllOperations()).toHaveLength(0)
+    })
+
+    it("puts the old cover back and tells the user when the update fails", async () => {
       jest
         .spyOn(imageUtils, "getConvertedImageUrlFromS3")
         .mockResolvedValue("https://s3.example.com/new-cover.jpg")
 
-      const { env, mockResolveLastOperation } = renderWithRelay({})
-
-      fireEvent.press(screen.getByTestId("itinerary-edit-cover-change"))
-      await screen.findByTestId("itinerary-edit-cover-image")
-      fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+      const { env, mockRejectLastOperation } = renderWithRelay({ Query })
+      await pickAndSave()
 
       await waitFor(() => expect(env.mock.getAllOperations()).toHaveLength(1))
-      resolveUpdate(mockResolveLastOperation)
+      expect(heroImageInStore(env)).toMatchObject(localHeroImage)
+      mockRejectLastOperation(new Error("Gravity down"))
 
-      expect(heroImageInStore(env)).toMatchObject({
-        'url(version:"large")': "localCoverPath",
-        'url(version:"small")': "localCoverPath",
-        width: 1200,
-        height: 800,
-        aspectRatio: 1.5,
-        blurhash: null,
-      })
-      expect(onClose).toHaveBeenCalled()
+      await waitFor(() =>
+        expect(mockShowToast).toHaveBeenCalledWith("Could not save your changes", "bottom")
+      )
+      expect(heroImageInStore(env)).toMatchObject(oldHeroImage)
+      expect(await getLocalImage("itinerary-cover-itinerary-1")).toBeNull()
     })
+  })
 
-    it("clears the cover when it was removed", () => {
-      const { env, mockResolveLastOperation } = renderWithRelay({})
+  describe("removing the cover", () => {
+    it("sends a null imageURL and clears the cover in the store", async () => {
+      const { env } = renderWithRelay({ Query })
 
       fireEvent.press(screen.getByTestId("itinerary-edit-cover-remove"))
       fireEvent.press(screen.getByTestId("itinerary-edit-save"))
-      resolveUpdate(mockResolveLastOperation)
 
+      expect(onClose).toHaveBeenCalled()
+      await waitFor(() =>
+        expect(env.mock.getMostRecentOperation().request.variables.input).toEqual({
+          id: "itinerary-1",
+          title: "London Oct 2026",
+          description: "If time, check out Borough Market",
+          imageURL: null,
+        })
+      )
       expect(heroImageInStore(env)).toBeNull()
+    })
+
+    it("clears a photo saved moments ago, so it can't reappear", async () => {
+      await storeLocalImage("itinerary-cover-itinerary-1", { path: "earlierCoverPath" })
+
+      renderWithRelay({ Query })
+
+      fireEvent.press(screen.getByTestId("itinerary-edit-cover-remove"))
+      fireEvent.press(screen.getByTestId("itinerary-edit-save"))
+
+      await waitFor(async () =>
+        expect(await getLocalImage("itinerary-cover-itinerary-1")).toBeNull()
+      )
     })
   })
 

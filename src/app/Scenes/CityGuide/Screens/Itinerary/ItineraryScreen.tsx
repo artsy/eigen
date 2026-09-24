@@ -29,12 +29,13 @@ import {
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryTypes"
 import { moveStop } from "app/Scenes/CityGuide/Screens/Itinerary/utils/reorderStops"
 import { goBack } from "app/system/navigation/navigate"
+import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { DraxProvider } from "react-native-drax"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -113,6 +114,10 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
   const reorderItineraryStop = useReorderItineraryStop()
   const { show: showToast } = useToast()
   const { trackEvent: trackCohesionEvent } = useTracking()
+
+  useEffect(() => {
+    cleanLocalImages()
+  }, [])
 
   /*
     Every section drags within the one scroll view below, so each registers its own drax
@@ -463,6 +468,7 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
             visible
             onClose={() => setIsEditing(false)}
             itinerary={{
+              id: itinerary.id,
               internalID: itinerary.internalID,
               name: itinerary.title,
               description: itinerary.description,
@@ -487,6 +493,7 @@ export const itineraryQuery = graphql`
     }
 
     itinerary(id: $id, shareToken: $shareToken) {
+      id
       internalID
       isCurated
       isMine
