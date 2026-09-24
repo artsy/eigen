@@ -277,7 +277,7 @@ describe("CityEventListScreen", () => {
       expect(requestedVariables(view.env).forYou).toBe(false)
     })
 
-    it("renders one flat, unheaded-by-neighbourhood section in the returned order when forYou is true", async () => {
+    it("renders one flat list with no section header, in the returned order, when forYou is true", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
@@ -296,12 +296,13 @@ describe("CityEventListScreen", () => {
         { citySlug: "london-united-kingdom", section: "shows" }
       )
 
-      // One header for the whole list, not one per neighbourhood, even with two postcodes.
-      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(1)
-      expect(screen.getByText("For You")).toBeOnTheScreen()
-
-      const rows = screen.getAllByTestId("city-event-row")
+      // No header at all, not one per neighbourhood, even with two postcodes.
+      const rows = await screen.findAllByTestId("city-event-row")
       expect(rows).toHaveLength(shows.length)
+      expect(screen.queryByTestId("city-event-section-header")).toBeNull()
+      expect(screen.queryByText("For You")).toBeNull()
+      expect(rows[0]).toHaveTextContent(/Frida Kahlo/)
+      expect(rows[1]).toHaveTextContent(/Tracey Emin/)
     })
 
     it("still groups by neighbourhood when forYou is false", async () => {

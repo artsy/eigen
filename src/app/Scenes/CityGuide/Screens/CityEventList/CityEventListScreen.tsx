@@ -126,10 +126,11 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
     return groupByNeighborhood<Show>(shows, citySlug, cityName)
   }, [section, forYou, fairs, shows, citySlug, cityName])
 
-  const items = useMemo(
-    () => toCityEventListItems(sections, collapsedSectionIds),
-    [sections, collapsedSectionIds]
-  )
+  const items = useMemo(() => {
+    const listItems = toCityEventListItems(sections, collapsedSectionIds)
+    // Ranked "for you" is one flat section, so a header over it would only repeat the screen.
+    return forYou ? listItems.filter((item) => item.kind !== "header") : listItems
+  }, [sections, collapsedSectionIds, forYou])
 
   // Every save control on this screen — rows and map pins alike — is rendered from the
   // event list, never the home screen's rails.
