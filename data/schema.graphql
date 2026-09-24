@@ -31721,6 +31721,8 @@ type PartnerOrdersEdge {
 }
 
 enum PartnerOrdersSortEnum {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   STATE_EXPIRES_AT_ASC
   STATE_EXPIRES_AT_DESC
   STATE_UPDATED_AT_ASC
