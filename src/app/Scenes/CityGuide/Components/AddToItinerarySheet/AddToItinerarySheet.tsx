@@ -1,7 +1,13 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { AddIcon } from "@artsy/icons/native"
 import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
-import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetFooter,
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet"
 import { Portal, PortalHost } from "@gorhom/portal"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
@@ -49,6 +55,11 @@ export type AddToItineraryTarget = StopTarget & {
   /** For `addedStopToItinerary`'s `context_owner_slug` only — never part of `StopInput`, so it
    *  is stripped out below rather than spread into a `createItineraryStopInput`. */
   itemSlug?: string
+  /** The screen the sheet was opened from, for `tappedCreateItinerary`. Absent inside City
+   *  Guide, where the event is reported against the city guide itself. */
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
 type Props = AddToItineraryTarget & {
@@ -66,12 +77,17 @@ const Sheet: React.FC<Props> = ({
   isOnMyItineraries: _isOnMyItineraries,
   myItineraries,
   itemSlug,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
   ...target
 }) => {
   const toast = useToast()
   const environment = useRelayEnvironment()
   const applySelection = useApplyItinerarySelection()
   const { trackEvent: trackCohesionEvent } = useTracking()
+  // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
+  const { addStop } = useCityItineraryStops({ citySlug: citySlug ?? "", cityName })
 
   const data = useLazyLoadQuery<AddToItinerarySheetQuery>(
     Query,
@@ -93,24 +109,12 @@ const Sheet: React.FC<Props> = ({
     data.sourceShow?.myItineraryStopMemberships ??
     data.sourceFair?.myItineraryStopMemberships ??
     null
-  // Reached from outside City Guide, `citySlug`/`cityName` are absent — fall back to the city
-  // the entity itself sits in, so Create New Itinerary is still on offer there.
-  const derivedCity = data.sourceShow?.cityGuideCity ?? data.sourceFair?.cityGuideCity ?? null
-  // The query can't filter by a city it's fetching itself, so a derived city filters here.
-  const listCitySlug = citySlug ? undefined : derivedCity?.slug
   const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
-    (itinerary) => !itinerary.isCurated && (!listCitySlug || itinerary.citySlug === listCitySlug)
+    (itinerary) => !itinerary.isCurated
   )
-  const effectiveCitySlug = citySlug ?? derivedCity?.slug
-  const effectiveCityName = cityName ?? derivedCity?.name
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
   // city at all — a custom stop, or an entity with no City Guide city nearby.
-  const canCreate = !!effectiveCitySlug
-  // Only for the empty case: with no itineraries at all, Done creates one and adds the stop.
-  const { addStop } = useCityItineraryStops({
-    citySlug: effectiveCitySlug ?? "",
-    cityName: effectiveCityName,
-  })
+  const canCreate = !!citySlug
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
   // stop it came from) say already hold it, kept to the ones actually listed.
@@ -152,7 +156,7 @@ const Sheet: React.FC<Props> = ({
         environment,
         CreateMutation,
         // Guarded by `canCreate`, which is what gates this whole view.
-        { input: { citySlug: effectiveCitySlug as string, title } }
+        { input: { citySlug: citySlug as string, title } }
       )
       const response = created.createItinerary?.responseOrError
       const internalID =
@@ -213,8 +217,8 @@ const Sheet: React.FC<Props> = ({
             trackAddedStop(changes.added)
           }
 
-          if (effectiveCitySlug) {
-            refetchCityGuideItinerariesRail(environment, effectiveCitySlug).catch(() => undefined)
+          if (citySlug) {
+            refetchCityGuideItinerariesRail(environment, citySlug).catch(() => undefined)
           }
         }
       }
@@ -247,8 +251,11 @@ const Sheet: React.FC<Props> = ({
                 onPress={() => {
                   trackCohesionEvent({
                     action: ActionType.tappedCreateItinerary,
-                    context_screen_owner_type: OwnerType.cityGuide,
-                    context_screen_owner_slug: effectiveCitySlug,
+                    context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
+                    context_screen_owner_id: contextScreenOwnerId,
+                    context_screen_owner_slug: contextScreenOwnerType
+                      ? contextScreenOwnerSlug
+                      : citySlug,
                   })
                   setIsNaming(true)
                 }}
@@ -308,14 +315,14 @@ const Sheet: React.FC<Props> = ({
         visible={isNaming}
         name="CreateItinerary"
         onDismiss={() => setIsNaming(false)}
-        // Both this and the outer sheet stay presented at once (that's the point — you can
-        // still see your selections behind the form), so a second backdrop of its own would
-        // double the dimming. The outer sheet's backdrop is enough.
-        backdropComponent={() => null}
+        // gorhom's default "switch" minimises the outer sheet, and its backdrop with it. "push"
+        // keeps it (and its dimming) up, so this sheet's own backdrop only has to catch taps.
+        stackBehavior="push"
+        backdropComponent={CreateSheetBackdrop}
       >
         <Flex mt={2}>
           <CreateItineraryForm
-            initialName={defaultItineraryTitle(effectiveCityName)}
+            initialName={defaultItineraryTitle(cityName)}
             isCreating={isCreating}
             onCreate={create}
             onCancel={() => setIsNaming(false)}
@@ -325,6 +332,19 @@ const Sheet: React.FC<Props> = ({
     </>
   )
 }
+
+/** Invisible, but closes only the create form on a tap outside it. Transparent rather than
+ *  `opacity={0}`: iOS skips views under 0.01 alpha when hit-testing, so those miss the tap. */
+export const CreateSheetBackdrop: React.FC<BottomSheetBackdropProps> = (props) => (
+  <BottomSheetBackdrop
+    {...props}
+    opacity={1}
+    appearsOnIndex={0}
+    disappearsOnIndex={-1}
+    pressBehavior="close"
+    style={[props.style, { backgroundColor: "transparent" }]}
+  />
+)
 
 const SheetWithSuspense = withSuspense({
   Component: Sheet,
@@ -394,20 +414,12 @@ const Query = graphql`
     $hasFair: Boolean!
   ) {
     sourceShow: show(id: $itemID) @include(if: $hasShow) {
-      cityGuideCity {
-        slug
-        name
-      }
       myItineraryStopMemberships {
         itineraryID
         stopIDs
       }
     }
     sourceFair: fair(id: $itemID) @include(if: $hasFair) {
-      cityGuideCity {
-        slug
-        name
-      }
       myItineraryStopMemberships {
         itineraryID
         stopIDs
@@ -427,7 +439,6 @@ const Query = graphql`
           node {
             internalID
             title
-            citySlug
             isCurated
             stopsCount
 

@@ -1,6 +1,10 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import {
+  AddToItinerarySheet,
+  CreateSheetBackdrop,
+} from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -13,10 +17,9 @@ jest.mock("@gorhom/portal", () => ({
 }))
 
 /** What the listing knows about an itinerary: no sections, those come from a second read. */
-const itinerary = (internalID: string, title: string, citySlug = "paris-france") => ({
+const itinerary = (internalID: string, title: string) => ({
   internalID,
   title,
-  citySlug,
   isCurated: false,
   stopsCount: 0,
   heroImage: null,
@@ -588,105 +591,33 @@ describe("AddToItinerarySheet", () => {
     })
   })
 
-  // Opened from a show or fair page outside City Guide, there is no `citySlug` — but the
-  // entity's own City Guide city still lets a user create their first itinerary from there.
-  describe("with no citySlug but a derivable city", () => {
-    const noCitySlug = {
-      ...props,
-      target: { itemType: "SHOW" as const, itemID: "show-1" },
-      citySlug: undefined,
-      cityName: undefined,
-    }
+  // A regression: Done used to skip the rail refetch whenever the sheet had no city of its own.
+  it("refetches the itineraries rail against the sheet's city on Done", async () => {
+    const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
 
-    const withDerivedCity = {
-      Query: () => ({
-        sourceShow: { cityGuideCity: { slug: "paris-france", name: "Paris" } },
-        sourceFair: null,
-      }),
-    }
+    fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+    fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
 
-    it("lists only the derived city's itineraries", async () => {
-      renderWithRelay(
-        {
-          ...withItineraries([
-            itinerary("a", "Paris trip", "paris-france"),
-            itinerary("b", "London trip", "london-united-kingdom"),
-          ]),
-          ...withDerivedCity,
-        },
-        noCitySlug
-      )
-
-      expect(await screen.findByText("Paris trip")).toBeOnTheScreen()
-      expect(screen.queryByText("London trip")).not.toBeOnTheScreen()
-    })
-
-    it("still offers Create New Itinerary", async () => {
-      renderWithRelay(
-        { ...withItineraries([itinerary("a", "First")]), ...withDerivedCity },
-        noCitySlug
-      )
-
-      expect(await screen.findByTestId("add-to-itinerary-create")).toBeOnTheScreen()
-    })
-
-    it("names the new itinerary after the derived city", async () => {
-      renderWithRelay({ ...withItineraries([]), ...withDerivedCity }, noCitySlug)
-
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
-
-      expect(screen.getByTestId("create-itinerary-name").props.value).toMatch(/^Paris \w+ \d{4}$/)
-    })
-
-    it("creates it against the derived city", async () => {
-      const view = renderWithRelay({ ...withItineraries([]), ...withDerivedCity }, noCitySlug)
-
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
-      fireEvent.changeText(screen.getByTestId("create-itinerary-name"), "Paris trip")
-      fireEvent.press(screen.getByTestId("create-itinerary-submit"))
-
-      await waitFor(() => expect(view.env.mock.getAllOperations()).toHaveLength(1))
-
-      const operation = view.env.mock.getMostRecentOperation()
-      expect(operation.request.node.params.name).toBe("AddToItinerarySheetCreateMutation")
-      expect(operation.request.variables.input).toEqual({
-        citySlug: "paris-france",
-        title: "Paris trip",
-      })
-    })
-
-    // A regression: Done used to refetch the rail with the sheet's own (absent) `citySlug`
-    // prop, so a Paris City Guide screen still mounted below never picked up the change.
-    it("refetches the itineraries rail against the derived city on Done", async () => {
-      const view = renderWithRelay(
-        { ...withItineraries([itinerary("a", "First")]), ...withDerivedCity },
-        noCitySlug
-      )
-
-      fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
-      fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
-
-      await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
-      await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
-        Mutation: () => ({
-          createItineraryStop: {
-            responseOrError: {
-              __typename: "ItineraryStopMutationSuccess",
-              itineraryStop: { internalID: "new-stop" },
-            },
+    await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+    await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+      Mutation: () => ({
+        createItineraryStop: {
+          responseOrError: {
+            __typename: "ItineraryStopMutationSuccess",
+            itineraryStop: { internalID: "new-stop" },
           },
-        }),
-      })
+        },
+      }),
+    })
 
-      await waitFor(() =>
-        expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
-          "CityGuideItinerariesRailQuery"
-        )
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+        "CityGuideItinerariesRailQuery"
       )
-      expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
-        citySlug: "paris-france",
-        first: 10,
-      })
+    )
+    expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
+      citySlug: "london-united-kingdom",
+      first: 10,
     })
   })
 
@@ -700,6 +631,53 @@ describe("AddToItinerarySheet", () => {
         action: ActionType.tappedCreateItinerary,
         context_screen_owner_type: OwnerType.cityGuide,
         context_screen_owner_slug: "london-united-kingdom",
+      })
+    })
+
+    it("tracks tappedCreateItinerary against the screen the sheet was opened on", async () => {
+      renderWithRelay(withItineraries([]), {
+        ...props,
+        target: {
+          ...props.target,
+          contextScreenOwnerType: OwnerType.show,
+          contextScreenOwnerId: "show-1",
+          contextScreenOwnerSlug: "frida-kahlo",
+        },
+      })
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedCreateItinerary,
+        context_screen_owner_type: OwnerType.show,
+        context_screen_owner_id: "show-1",
+        context_screen_owner_slug: "frida-kahlo",
+      })
+    })
+
+    // Both sheets stay up at once: the outer one keeps its dimming, and a tap outside the form
+    // lands on this backdrop, closing only the form.
+    it("keeps the outer sheet up and gives the form a transparent, tap-to-close backdrop", async () => {
+      renderWithRelay(withItineraries([]), props)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      const [createSheet] = screen.UNSAFE_getAllByProps({ name: "CreateItinerary" })
+      expect(createSheet.props.stackBehavior).toBe("push")
+      expect(createSheet.props.backdropComponent).toBe(CreateSheetBackdrop)
+
+      const backdrop = CreateSheetBackdrop({
+        animatedIndex: { value: 0 },
+        animatedPosition: { value: 0 },
+        style: { flex: 1 },
+      } as unknown as BottomSheetBackdropProps) as React.ReactElement<any>
+      expect(backdrop.type).toBe(BottomSheetBackdrop)
+      expect(backdrop.props).toMatchObject({
+        opacity: 1,
+        appearsOnIndex: 0,
+        disappearsOnIndex: -1,
+        pressBehavior: "close",
+        style: [{ flex: 1 }, { backgroundColor: "transparent" }],
       })
     })
 
