@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { CityGuideEventArticlesRecommendedTestQuery } from "__generated__/CityGuideEventArticlesRecommendedTestQuery.graphql"
 import { CityGuideEventArticlesTestQuery } from "__generated__/CityGuideEventArticlesTestQuery.graphql"
 import { CityGuideEventArticles } from "app/Scenes/CityGuide/Components/CityGuideEventArticles"
 import { navigate } from "app/system/navigation/navigate"
@@ -179,5 +180,153 @@ describe("CityGuideEventArticles", () => {
 
     expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
     expect(screen.queryByText("Artsy Editorial")).not.toBeOnTheScreen()
+  })
+
+  it("does not render recommended articles when the flag is off, even if the server returns them", () => {
+    renderWithRelay({
+      City: () => ({
+        cityArticles: [article("An Art Lover's Guide to London")],
+        recommendedArticlesConnection: {
+          edges: [{ node: article("A recommended read") }],
+        },
+      }),
+    })
+
+    expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
+  })
+})
+
+describe("CityGuideEventArticles, recommended for you", () => {
+  const { renderWithRelay } = setupTestWrapper<CityGuideEventArticlesRecommendedTestQuery>({
+    Component: (props: any) => (
+      <CityGuideEventArticles {...props} citySlug="london-united-kingdom" />
+    ),
+    query: graphql`
+      query CityGuideEventArticlesRecommendedTestQuery(
+        $citySlug: String!
+        $enableArticlesForYou: Boolean!
+      ) @relay_test_operation {
+        city(slug: $citySlug) {
+          ...CityGuideEventArticles_city @arguments(enableArticlesForYou: $enableArticlesForYou)
+        }
+      }
+    `,
+    variables: { citySlug: "london-united-kingdom", enableArticlesForYou: true },
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  const article = (title: string, overrides: object = {}) => ({
+    internalID: `id-for-${title}`,
+    slug: `slug-for-${title}`,
+    title: `${title} (headline)`,
+    thumbnailTitle: title,
+    byline: "Natalie Stoclet",
+    href: `/article/${title}`,
+    publishedAt: "July 19, 2026",
+    thumbnailImage: { url: "https://example.com/article-thumb.jpg" },
+    ...overrides,
+  })
+
+  const curated = (titles: string[]) =>
+    titles.map((title, index) => ({
+      internalID: `attachment-${index}`,
+      position: index,
+      article: article(title),
+    }))
+
+  // Metaphysics already merges, sorts and caps the connection to the section's 4 slots, so the
+  // mock reflects that: `curatedTitles` says which of the connection's rows are curated, for
+  // tagging tracking context, and `connectionTitles` is exactly the rows to render.
+  const cityData = (
+    curatedTitles: string[],
+    connectionTitles: string[],
+    { totalCount = connectionTitles.length, hasNextPage = false } = {}
+  ) => ({
+    City: () => ({
+      cityArticles: curated(curatedTitles),
+      recommendedArticlesConnection: {
+        totalCount,
+        pageInfo: { hasNextPage },
+        edges: connectionTitles.map((title) => ({ node: article(title) })),
+      },
+    }),
+  })
+
+  it("renders the connection's rows, in the order Metaphysics returns them", async () => {
+    renderWithRelay(
+      cityData(["Curated 1", "Curated 2"], ["Curated 1", "Curated 2", "Recommended 1"])
+    )
+
+    const rows = await screen.findAllByTestId("event-article-row")
+    expect(rows).toHaveLength(3)
+    expect(rows[0]).toHaveTextContent(/Curated 1/)
+    expect(rows[2]).toHaveTextContent(/Recommended 1/)
+  })
+
+  it("gives the section title a chevron when totalCount exceeds 4", async () => {
+    renderWithRelay(
+      cityData(["Curated 1"], ["Curated 1", "Rec 1", "Rec 2", "Rec 3"], { totalCount: 5 })
+    )
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
+    expect(screen.getByTestId("touchable-wrapper")).toBeOnTheScreen()
+  })
+
+  it("gives the section title a chevron when the connection has a next page", async () => {
+    renderWithRelay(cityData(["Curated 1"], ["Curated 1"], { hasNextPage: true }))
+
+    expect(await screen.findByTestId("touchable-wrapper")).toBeOnTheScreen()
+  })
+
+  it("gives no chevron when totalCount is 4 or fewer and there's no next page", async () => {
+    renderWithRelay(cityData(["Curated 1"], ["Curated 1", "Rec 1"]))
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
+    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+  })
+
+  it("shows the section with only recommendations when there are no curated articles", async () => {
+    renderWithRelay(cityData([], ["A recommended read"]))
+
+    expect(await screen.findByText("Artsy Editorial")).toBeOnTheScreen()
+    expect(screen.getByText("A recommended read")).toBeOnTheScreen()
+  })
+
+  it("renders nothing when the connection is empty", () => {
+    renderWithRelay(cityData([], []))
+
+    expect(screen.queryByTestId("city-guide-event-articles")).not.toBeOnTheScreen()
+  })
+
+  it("tracks a tap on a curated row with the curated context_module", async () => {
+    renderWithRelay(cityData(["Curated read"], ["Curated read"]))
+
+    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleGroup",
+        context_module: "articles",
+        destination_screen_owner_id: "id-for-Curated read",
+      })
+    )
+  })
+
+  it("tracks a tap on a recommended row with a distinct context_module", async () => {
+    renderWithRelay(cityData([], ["A recommended read"]))
+
+    fireEvent.press((await screen.findAllByTestId("event-article-row"))[0])
+
+    expect(navigate).toHaveBeenCalledWith("/article/A recommended read")
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleGroup",
+        context_module: "relatedArticles",
+        destination_screen_owner_id: "id-for-A recommended read",
+      })
+    )
   })
 })

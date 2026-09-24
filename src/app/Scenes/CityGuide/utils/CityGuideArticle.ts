@@ -1,8 +1,28 @@
+import { CityGuideArticleRow_article$key } from "__generated__/CityGuideArticleRow_article.graphql"
 import {
   CityGuideArticle_articles$data,
   CityGuideArticle_articles$key,
 } from "__generated__/CityGuideArticle_articles.graphql"
 import { graphql } from "react-relay"
+
+/**
+ * The fields `CityArticleListItem` renders for a row, shared by the curated rows (via
+ * `CityArticle.article`) and the recommended rows (an `Article` directly).
+ */
+export const cityGuideArticleRowFragment = graphql`
+  fragment CityGuideArticleRow_article on Article {
+    internalID
+    slug
+    title
+    thumbnailTitle
+    byline
+    href
+    publishedAt(format: "MMMM D, YYYY")
+    thumbnailImage {
+      url
+    }
+  }
+`
 
 /**
  * Shared shape for an article row across the City Guide home section and its full-list
@@ -15,15 +35,7 @@ export const cityGuideArticleFragment = graphql`
     position
     article {
       internalID
-      slug
-      title
-      thumbnailTitle
-      byline
-      href
-      publishedAt(format: "MMMM D, YYYY")
-      thumbnailImage {
-        url
-      }
+      ...CityGuideArticleRow_article
     }
   }
 `
@@ -31,16 +43,12 @@ export const cityGuideArticleFragment = graphql`
 /** A typed stand-in for `cityArticles` when the parent fragment/query hasn't resolved a city. */
 export const NO_CITY_ARTICLES: CityGuideArticle_articles$key = []
 
-export interface ArticleRow {
+export interface CityArticleRow {
   /** The attachment's own id, which is what makes a row unique when one article is attached twice. */
   id: string
-  articleId: string
-  slug: string
-  title: string
-  byline: string
-  publishedAt: string
-  href: string
-  imageUrl: string
+  /** The article's own id, used to tell curated apart from recommended rows in the connection. */
+  articleInternalID: string
+  article: CityGuideArticleRow_article$key & { internalID: string }
 }
 
 /**
@@ -48,18 +56,11 @@ export interface ArticleRow {
  * are reorderable in Forque, so this can't be assumed stable. Same as the itinerary
  * attachments in CityGuideEventGuides.
  */
-export const toArticleRows = (attachments: CityGuideArticle_articles$data): ArticleRow[] =>
+export const toArticleRows = (attachments: CityGuideArticle_articles$data): CityArticleRow[] =>
   [...attachments]
     .sort((a, b) => a.position - b.position)
     .map((attachment) => ({
       id: attachment.internalID,
-      articleId: attachment.article.internalID,
-      slug: attachment.article.slug ?? "",
-      // `thumbnailTitle` is what Positron wants shown on a link to the article; `title` is
-      // the in-article headline, which can be longer.
-      title: attachment.article.thumbnailTitle ?? attachment.article.title ?? "",
-      byline: attachment.article.byline ?? "",
-      publishedAt: attachment.article.publishedAt ?? "",
-      href: attachment.article.href ?? "",
-      imageUrl: attachment.article.thumbnailImage?.url ?? "",
+      articleInternalID: attachment.article.internalID,
+      article: attachment.article,
     }))

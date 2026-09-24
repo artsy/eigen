@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Join, Separator } from "@artsy/palette-mobile"
 import { CityGuideArticle_articles$key } from "__generated__/CityGuideArticle_articles.graphql"
 import { CityGuideEventArticles_city$key } from "__generated__/CityGuideEventArticles_city.graphql"
@@ -8,6 +9,7 @@ import {
   NO_CITY_ARTICLES,
   toArticleRows,
 } from "app/Scenes/CityGuide/utils/CityGuideArticle"
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,13 +30,35 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
   )
   const rows = toArticleRows(attachments)
 
+  // The connection is only requested when the flag is on, so its presence tells us which
+  // path we're on. When it's there, Metaphysics has already merged and sorted curated and
+  // recommended articles into one list, capped to the section's 4 slots.
+  const connection = city?.recommendedArticlesConnection
+  const curatedIds = new Set(rows.map((row) => row.articleInternalID))
+
+  const visible = connection
+    ? extractNodes(connection).map((article) => ({
+        key: article.internalID,
+        article,
+        contextModule: curatedIds.has(article.internalID)
+          ? ContextModule.articles
+          : ContextModule.relatedArticles,
+      }))
+    : rows.slice(0, MAX_VISIBLE_ARTICLES).map((row) => ({
+        key: row.id,
+        article: row.article,
+        contextModule: undefined,
+      }))
+
   // Metaphysics already drops attachments whose article is unpublished or deleted, so a city
   // with articles attached can still arrive here with none to show. Hide the heading too.
-  if (!rows.length) {
+  if (!visible.length) {
     return null
   }
 
-  const hasMore = rows.length > MAX_VISIBLE_ARTICLES
+  const hasMore = connection
+    ? !!connection.pageInfo.hasNextPage || (connection.totalCount ?? 0) > MAX_VISIBLE_ARTICLES
+    : rows.length > MAX_VISIBLE_ARTICLES
 
   return (
     <Flex testID="city-guide-event-articles" px={2}>
@@ -58,8 +82,13 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
       />
 
       <Join separator={<Separator my={2} />}>
-        {rows.slice(0, MAX_VISIBLE_ARTICLES).map((item) => (
-          <CityArticleListItem key={item.id} item={item} citySlug={citySlug} />
+        {visible.map(({ key, article, contextModule }) => (
+          <CityArticleListItem
+            key={key}
+            article={article}
+            citySlug={citySlug}
+            contextModule={contextModule}
+          />
         ))}
       </Join>
     </Flex>
@@ -67,9 +96,25 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
 }
 
 const fragment = graphql`
-  fragment CityGuideEventArticles_city on City {
+  fragment CityGuideEventArticles_city on City
+  @argumentDefinitions(enableArticlesForYou: { type: "Boolean!", defaultValue: false }) {
+    # Only used to tag which of the connection's rows are curated for tracking; Metaphysics
+    # shares the loader with the connection below, so this doesn't cost an extra request.
     cityArticles {
       ...CityGuideArticle_articles
+    }
+    recommendedArticlesConnection(first: 4, includeFeatured: true)
+      @include(if: $enableArticlesForYou) {
+      totalCount
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          internalID
+          ...CityGuideArticleRow_article
+        }
+      }
     }
   }
 `
