@@ -48,7 +48,6 @@ const renderSection = (props: Partial<React.ComponentProps<typeof ItinerarySecti
       <ItinerarySectionRow
         section={section}
         sectionIndex={0}
-        startNumber={1}
         citySlug="london-united-kingdom"
         itineraryId="guide-1"
         cityName="London"
@@ -70,13 +69,6 @@ describe("ItinerarySectionRow", () => {
     expect(screen.getByText("Day 1 — Easing in")).toBeTruthy()
     expect(screen.getByText("Coffee at London Cafe")).toBeTruthy()
     expect(screen.getByText("Museum")).toBeTruthy()
-  })
-
-  it("numbers stops from startNumber", () => {
-    renderSection({ startNumber: 4 })
-
-    expect(screen.getByText("4")).toBeTruthy()
-    expect(screen.getByText("5")).toBeTruthy()
   })
 
   it("hides the stops when the header is tapped", () => {

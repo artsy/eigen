@@ -30,11 +30,6 @@ interface Props {
   selectedPlaceId: string | null
   onSelectPlace: (placeId: string) => void
   /**
-   * Off by default. The itinerary map turns this on; event maps show plain pins. See
-   * `MapPins` for how clustering reacts to it.
-   */
-  numbered?: boolean
-  /**
    * Extra space above the pill overlay, on top of the safe-area inset. Defaults to 60, tuned
    * for the itinerary map's headerless screen — pass less (or 0) when the screen has its own header.
    */
@@ -51,7 +46,6 @@ export const MapView: React.FC<Props> = ({
   citySlug,
   selectedPlaceId,
   onSelectPlace,
-  numbered = false,
   pillsTopOffset = 60,
   safeArea = false,
 }) => {
@@ -88,9 +82,8 @@ export const MapView: React.FC<Props> = ({
     [flattened, selectedSectionId]
   )
 
-  // Built from the visible places only, never filtered at the layer. The converter numbers
-  // by position, so a filtered section renumbers from 1.
-  const collection = useMemo(() => mapPlacesToGeoJSON(visible, { numbered }), [visible, numbered])
+  // Built from the visible places only, never filtered at the layer.
+  const collection = useMemo(() => mapPlacesToGeoJSON(visible), [visible])
 
   const selectedPlace = visible.find((f) => f.place.id === selectedPlaceId)?.place
 
@@ -214,7 +207,6 @@ export const MapView: React.FC<Props> = ({
           collection={collection}
           selectedPlaceId={selectedPlaceId}
           onSelectPlace={handleSelectPlace}
-          numbered={numbered}
           onSelectCluster={handleSelectCluster}
           shapeSourceRef={shapeSourceRef}
           activeClusterId={clusterSelection?.clusterId}
