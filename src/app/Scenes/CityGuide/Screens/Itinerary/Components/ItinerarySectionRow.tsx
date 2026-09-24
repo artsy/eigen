@@ -140,6 +140,7 @@ export const ItinerarySectionRow: React.FC<Props> = ({
           all here, so there is nothing further to gate. */}
       {!!isExpanded && (
         <SortableContainer sortable={sortable} scrollRef={scrollRef}>
+          <Spacer y={1} />
           <Join separator={<Spacer y={1} />}>
             {/*
               Rendered from drax's own copy of the ids rather than `section.stops`: after a drop
