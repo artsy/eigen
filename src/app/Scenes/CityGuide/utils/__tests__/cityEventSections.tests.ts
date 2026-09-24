@@ -118,12 +118,12 @@ describe("groupByNeighborhood", () => {
   })
 
   it("puts every show in one fallback section for a city with no table entry", () => {
-    const shows = [show("a", "75001"), show("b", "75002")]
+    const shows = [show("a", "0000"), show("b", "00000")]
 
-    const sections = groupByNeighborhood(shows, "paris-france", "Paris")
+    const sections = groupByNeighborhood(shows, "dubai-united-arab-emirates", "Dubai")
 
     expect(sections).toHaveLength(1)
-    expect(sections[0].title).toEqual("More in Paris")
+    expect(sections[0].title).toEqual("More in Dubai")
     expect(sections[0].items).toHaveLength(shows.length)
   })
 
@@ -141,5 +141,47 @@ describe("groupByNeighborhood", () => {
     const sections = groupByNeighborhood([show("a", "EC1M 5RR")], LONDON, "London")
 
     expect(sections.every((s) => s.items.length > 0)).toBe(true)
+  })
+})
+
+describe("groupByNeighborhood outside London", () => {
+  const titlesFor = (postalCodes: string[], citySlug: string, cityName: string) =>
+    groupByNeighborhood(
+      postalCodes.map((code, i) => show(String(i), code)),
+      citySlug,
+      cityName
+    ).map((s) => s.title)
+
+  it("groups Paris shows by arrondissement, including the 16th's 75116 code", () => {
+    expect(titlesFor(["75003", "75116"], "paris-france", "Paris")).toEqual([
+      "3rd arrondissement",
+      "16th arrondissement",
+    ])
+  })
+
+  it("sends a Pantin address outside the périphérique to the Paris fallback", () => {
+    expect(titlesFor(["93500"], "paris-france", "Paris")).toEqual(["More in Paris"])
+  })
+
+  it("groups New York shows by ZIP and sends Jersey City to the fallback", () => {
+    expect(titlesFor(["10011", "11201", "07306"], "new-york-ny-usa", "New York")).toEqual([
+      "Chelsea",
+      "Brooklyn",
+      "More in New York",
+    ])
+  })
+
+  it("reads Berlin codes with a D- country prefix or a stray space", () => {
+    expect(titlesFor(["D-10178", "109 69"], "berlin-germany", "Berlin")).toEqual([
+      "Mitte",
+      "Kreuzberg",
+    ])
+  })
+
+  it("matches both current and old six-digit Seoul codes", () => {
+    expect(titlesFor(["03062", "135-891"], "seoul-south-korea", "Seoul")).toEqual([
+      "Samcheong-dong & Insadong",
+      "Cheongdam & Dosan",
+    ])
   })
 })
