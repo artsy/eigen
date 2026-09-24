@@ -81,9 +81,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .cache/metro
-          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'metro.config.js') }}
-          restore-keys: |
-            metro-v1-${{ runner.os }}-
+          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'alias.js', 'metro.config.js') }}
 
       - name: Deploy to Expo Updates
         id: deploy
