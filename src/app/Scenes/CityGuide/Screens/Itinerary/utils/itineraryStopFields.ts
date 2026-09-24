@@ -78,11 +78,47 @@ export const itineraryStopCategory = (
   }
 }
 
-/** Backend-formatted for display. e.g. "11am-4pm" */
-export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
-  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+/**
+ * "Sat – Thurs 10am–5pm", one per line. Either field can be blank server-side; a line with
+ * neither is dropped rather than shown empty, and a line with only one still shows that part.
+ */
+export const formatItineraryStopOpeningHours = (
+  openingHours: readonly { readonly days?: string | null; readonly hours?: string | null }[]
+): string =>
+  openingHours
+    .map((entry) => [entry.days, entry.hours].filter(Boolean).join(" "))
+    .filter(Boolean)
+    .join("\n")
 
-  return stop.startTime ?? stop.endTime ?? ""
+/**
+ * For copying a stop's own opening-hours lines into another mutation's input, e.g. adding a
+ * custom stop to a second itinerary. Nulls become "", and a line left entirely blank is
+ * dropped rather than sent on to Gravity.
+ */
+export const itineraryStopOpeningHoursInput = (
+  openingHours: readonly { readonly days?: string | null; readonly hours?: string | null }[]
+): { days: string; hours: string }[] =>
+  openingHours
+    .map((entry) => ({ days: entry.days ?? "", hours: entry.hours ?? "" }))
+    .filter((entry) => entry.days || entry.hours)
+
+/**
+ * Backend-formatted for display. e.g. "11am-4pm" — unless the curator has typed opening-hours
+ * lines for this stop, which win outright: switching a stop to a MUSEUM/GALLERY category
+ * hides Forque's date pickers but leaves whatever start/end it already had, so a stop can
+ * carry both, and the lines are what the editor actually meant. Absent those, the curator's
+ * own start/end wins, since a specific time is more useful than a general schedule. Otherwise
+ * falls back to `displayOpeningHours`: the linked show's or location's own schedule, for any
+ * stop kind — not only a museum or gallery.
+ */
+export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
+  const ownOpeningHours = formatItineraryStopOpeningHours(stop.openingHours)
+  if (ownOpeningHours) return ownOpeningHours
+
+  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+  if (stop.startTime || stop.endTime) return stop.startTime ?? stop.endTime ?? ""
+
+  return formatItineraryStopOpeningHours(stop.displayOpeningHours)
 }
 
 /**

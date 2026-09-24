@@ -7,6 +7,7 @@ import {
   itinerarySectionTitle,
   itineraryStopCoordinates,
   itineraryStopImage,
+  itineraryStopOpeningHoursInput,
   itineraryStopSaveTarget,
   itineraryStopTitle,
 } from "app/Scenes/CityGuide/Screens/Itinerary/utils/itineraryStopFields"
@@ -33,6 +34,7 @@ const customStopInput = (
   isFreeAdmission: stop.isFreeAdmission ?? undefined,
   latitude: coordinates.lat,
   longitude: coordinates.lng,
+  openingHours: itineraryStopOpeningHoursInput(stop.openingHours),
 })
 
 /**

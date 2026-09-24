@@ -59,6 +59,8 @@ export interface CustomStopInput {
   isFreeAdmission?: boolean
   latitude?: number
   longitude?: number
+  /** A museum or gallery's own weekly hours, carried over so a copy keeps them too. */
+  openingHours?: readonly { days: string; hours: string }[]
 }
 
 export type StopInput = EntityStopInput | CustomStopInput

@@ -31,6 +31,14 @@ describe("StopCard", () => {
     expect(screen.getByTestId("stop-card")).toHaveStyle({ alignItems: "center" })
   })
 
+  it("renders a museum or gallery's multi-line opening hours as one block of text", () => {
+    renderWithWrappers(
+      <StopCard card={card({ hours: "Sat – Thurs 10am–5pm\nFri 10am–8:30pm" })} image={null} />
+    )
+
+    expect(screen.getByText("Sat – Thurs 10am–5pm\nFri 10am–8:30pm")).toBeOnTheScreen()
+  })
+
   it("shows no dot when only one of hours and admission is present", () => {
     renderWithWrappers(<StopCard card={card({ hours: "7am-4pm" })} image={null} />)
 

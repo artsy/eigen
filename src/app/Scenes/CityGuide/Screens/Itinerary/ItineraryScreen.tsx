@@ -535,6 +535,18 @@ export const itineraryQuery = graphql`
           startTime: startAt(format: "h:mma")
           endTime: endAt(format: "h:mma")
 
+          # The stop's own editor-entered lines, for copying to another itinerary.
+          openingHours {
+            days
+            hours
+          }
+
+          # What to show: the lines above, else the linked show's or location's own schedule.
+          displayOpeningHours {
+            days
+            hours
+          }
+
           startAtISO: startAt
           endAtISO: endAt
 
