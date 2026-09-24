@@ -1,6 +1,6 @@
 # Analytics and tracking
 
-We track user behavior with [Cohesion](https://github.com/artsy/cohesion), Artsy's shared schema library for analytics events. Cohesion types each event, so a missing or misspelled field fails `yarn type-check` instead of shipping broken data. `react-tracking` carries the event from your code to Segment. Use Cohesion for all new tracking code.
+We track user behavior with [Cohesion](https://github.com/artsy/cohesion), Artsy's schema library for analytics events; use it for all new tracking code. Cohesion types each event, so a missing or misspelled field fails `yarn type-check` instead of shipping broken data. `react-tracking` carries the event from your code to Segment.
 
 ### Contents
 
@@ -71,13 +71,13 @@ export const MyFuncComp: React.FC<Props> = (props) => {
 
 You can call a hook method at any point, so one function can track a request, a success, and a failure, each with its own event.
 
-Three things make this pattern worth copying. Annotating `payload` with the Cohesion event type means a missing or misspelled field fails `yarn type-check` instead of shipping a broken event. Taking a single object argument keeps the call site readable when an event grows past two fields. Wrapping the object in `useMemo` keeps the returned methods referentially stable, so a caller can put one in a `useEffect` dependency array without re-firing on every render.
+Annotating `payload` with the Cohesion event type means a missing or misspelled field fails `yarn type-check` instead of shipping a broken event. A single object argument keeps the call site readable when an event grows past two fields. Wrapping the object in `useMemo` keeps the returned methods referentially stable, so a caller can put one in a `useEffect` dependency array without re-firing on every render.
 
 Older hooks return a plain object with no `useMemo`. That's fine and doesn't need rewriting. See [`useOrderDetailsTracking.ts`](../src/app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking.ts) for a full hook and [`useArtAssistantTracking.ts`](../src/app/Scenes/ArtAssistant/hooks/useArtAssistantTracking.ts) for one that memoizes per method with `useCallback` instead.
 
 ### When one event is enough
 
-Reach for a hook once a component tracks more than one event. If a component only ever tracks one, call `useTracking()` in the component and type the payload inline, the way [`ArticleShareButton.tsx`](../src/app/Scenes/Article/Components/ArticleShareButton.tsx) does:
+Reach for a hook once a component tracks more than one event. If a component only ever tracks one, call `useTracking()` in the component and type the payload inline. [`ArticleShareButton.tsx`](../src/app/Scenes/Article/Components/ArticleShareButton.tsx):
 
 ```typescript
 export const ArticleShareButton: React.FC<ArticleShareButtonProps> = (props) => {
@@ -103,32 +103,43 @@ Move it into a hook as soon as a second event shows up. A hook is one more file 
 
 ### Name the methods after the event
 
-Two naming styles are both current in the codebase. Some hooks mirror the Cohesion action name directly, like `useOrderDetailsTracking`'s `tappedBuyerProtection` for `ActionType.tappedBuyerProtection`. Others prefix every method with `track`, like `useArtAssistantTracking`'s `trackSuggestionTapped`. Prefer mirroring the action name: it reads as one name instead of two, and it's what most methods across the codebase already do (`useHomeViewTracking` alone has around 30 of them).
+Two naming styles coexist in the codebase. Some hooks mirror the Cohesion action name directly, like `useOrderDetailsTracking`'s `tappedBuyerProtection` for `ActionType.tappedBuyerProtection`. Others prefix every method with `track`, like `useArtAssistantTracking`'s `trackSuggestionTapped`. Prefer mirroring the action name: it reads as one name instead of two, and it's what most methods across the codebase already do (`useHomeViewTracking` alone has around 30 of them).
 
-Whichever you pick, don't destructure `trackEvent` from `useTracking()` and then also name a hook method `trackEvent`. Keep the two apart, for example by naming the destructured value `tracking` instead:
+Whichever you pick, don't destructure `trackEvent` from `useTracking()` and then also name a hook method `trackEvent`. Keep the two apart by naming the destructured value `tracking` instead, and calling `tracking.trackEvent(payload)` from inside a method named after the event:
 
 ```typescript
 export const useMySceneTracking = () => {
   const tracking = useTracking()
 
-  const trackEvent = useCallback(() => {
-    // ...
-    tracking.trackEvent(payload)
-  }, [])
+  return useMemo(
+    () => ({
+      followedArtist: ({ artistID, artistSlug }: FollowedArtistProps) => {
+        const payload: FollowedArtist = {
+          action: ActionType.followedArtist,
+          context_module: ContextModule.artistHeader,
+          context_owner_type: OwnerType.artist,
+          owner_id: artistID,
+          owner_slug: artistSlug,
+          owner_type: OwnerType.artist,
+        }
 
-  return { trackEvent }
+        tracking.trackEvent(payload)
+      },
+    }),
+    [tracking]
+  )
 }
 ```
 
 ## Choose the right context fields
 
-Three fields describe where an event happened, and it's not always obvious which one an event wants:
+Three fields describe where an event happened:
 
 - `context_module` is the affordance the user touched: a rail, a header, a sheet.
 - `context_screen_owner_type` is the screen that affordance lives on. Most `Tapped*` events need this alongside `context_module`.
 - `context_owner_type` is the field to use instead of `context_screen_owner_type` when the event isn't anchored to a screen at all, like `ExperimentViewed`, `Share`, `Impression`, or a follow or save.
 
-Cohesion's TypeScript types enforce which fields a given event needs, so a payload that mixes them up fails `yarn type-check`. Get this right anyway: `SegmentTrackingProvider` picks between `analytics.screen()` and `analytics.track()` by inspecting the payload's shape, so a well-typed but conceptually wrong payload can still land as the wrong kind of event in Segment.
+Cohesion's TypeScript types enforce which fields a given event needs, so a payload that mixes them up fails `yarn type-check`. Segment records a screen call only when `action` is `ActionType.screen`; every other event is a track call, regardless of which context fields it carries.
 
 ## Track a screen view
 
@@ -143,8 +154,7 @@ Which tool to use depends on how the screen behaves:
 For a static screen, wrap it in `ProvideScreenTrackingWithCohesionSchema` and build the payload with the `screen()` helper:
 
 ```typescript
-export const MyFuncComp: React.FC<Props> = (props) => {
-  const id = 42
+export const MyFuncComp: React.FC<Props> = ({ artwork }) => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -159,7 +169,7 @@ export const MyFuncComp: React.FC<Props> = (props) => {
 }
 ```
 
-`ProvideScreenTrackingWithCohesionSchema` fires once, on mount, and never again. That's correct for a screen you navigate to and from, but wrong for a tab: switching tabs back to an already-mounted screen won't refire it. For a tab screen, give the scene's tracking hook a `screen` method and call it from `useFocusEffect`, the way `HomeView.tsx` does:
+`ProvideScreenTrackingWithCohesionSchema` fires once, on mount, and never again. That's correct for a screen you navigate to and from, but wrong for a tab: switching tabs back to an already-mounted screen won't refire it. For a tab screen, give the scene's tracking hook a `screen` method and call it from `useFocusEffect`. `HomeView.tsx`:
 
 ```typescript
 const tracking = useHomeViewTracking()
@@ -171,27 +181,27 @@ useFocusEffect(
 )
 ```
 
-A card or carousel is a third case: the "screen" changes with every card, not with navigation. `useInfiniteDiscoveryTracking` fires a screen event each time a new card surfaces, from inside the hook itself rather than from the component.
+A card or carousel is a third case: the "screen" changes with every card, not with navigation. `InfiniteDiscovery.tsx` calls `track.displayedNewArtwork` each time a new card surfaces.
 
-> ⚠️ If a component both renders a screen-tracking provider and calls a tracking hook, split it into two components: an outer _screen_ component that renders the provider, and an inner component that calls the hook. `useTracking` expects a provider to already exist above it in the tree, but a hook initializes before the first render. If the provider and the hook sit in the same component, the provider isn't there yet, and the event misses the screen-level context.
->
-> See this [commit](https://github.com/artsy/eigen/pull/3215/commits/1c36dd692d8eb82a2b13354fd9106b8b2d03a05c) from [artsy/eigen#3215](https://github.com/artsy/eigen/pull/3215). `ViewingRoomViewWorksButton` originally lived inline inside `ViewingRoom`, a screen component wrapped in `ProvideScreenTracking`. Because of that, `useTracking` couldn't find a provider when it initialized, so the `tappedViewWorksButton` event never carried the screen context. The commit moved the button into its own component in a separate file, so the provider existed before the hook initialized and the event carried the screen context.
+> `ProvideScreenTrackingWithCohesionSchema` only fires its own event on mount; it renders a plain `<React.Fragment>`, not react-tracking's `<Track>`, so it doesn't hand any context down to children. A tracking hook called by a child component gets nothing from it automatically.
 
 ## Track list impressions
 
-To track which items in a list a user actually saw, use `useItemsImpressionsTracking` from [`useImpressionsTracking.ts`](../src/app/Scenes/HomeView/hooks/useImpressionsTracking.ts). Spread its return value onto your list:
+To track which items in a HomeView rail a user actually saw, use `useItemsImpressionsTracking` from [`useImpressionsTracking.ts`](../src/app/Scenes/HomeView/hooks/useImpressionsTracking.ts). Spread its return value onto your list:
 
 ```typescript
-const { onViewableItemsChanged, viewabilityConfig, resetTracking, trackingKey } =
-  useItemsImpressionsTracking({
-    isInViewport: isRailInViewport,
-    contextModule,
-  })
+const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+  isInViewport: true,
+  contextModule: ContextModule.artworkGrid,
+  contextScreenOwnerType: section.ownerType as OwnerType,
+})
 ```
 
-The hook tracks each item's id in a `Set` so a rescroll never fires the same impression twice, and the whole thing is gated behind the `ARImpressionsTrackingHomeItemViews` feature flag. `HomeViewSectionArtworks.tsx` is a real caller to copy from.
+`contextScreenOwnerType` defaults to `OwnerType.home`, which is right for a rail on the Home screen itself (`HomeViewSectionArtworks.tsx` relies on that default) but wrong anywhere else. Pass it explicitly whenever the list isn't on the literal Home screen, as `HomeViewSectionScreenArtworks.tsx` does above. The hook tracks each item's id in a `Set` so a rescroll never fires the same impression twice, and the whole thing is gated behind the `ARImpressionsTrackingHomeItemViews` feature flag.
 
-> The hook takes a different code path under `__TEST__`, using plain `useState`/`useEffect` instead of the Reanimated viewability tracking it uses in production. Keep that in mind if a list using this hook behaves differently in a test than on device.
+The hook currently lives under `Scenes/HomeView`, so a scene outside HomeView can't import it under the cross-scene import rule in [AGENTS.md](../AGENTS.md). If another scene needs the same pattern, move the hook to `app/utils/hooks` first.
+
+> The hook takes a different code path under `__TEST__`, using plain `useState`/`useEffect` instead of the Reanimated viewability tracking it uses in production. That's why a list using this hook can behave differently in a test than on device.
 
 ## Test your tracking
 
@@ -218,7 +228,20 @@ it("tracks analytics event when button is tapped", () => {
 
 `mockTrackEvent` is wired up globally in Jest setup, so you don't need to mock `react-tracking` yourself, and it's cleared automatically between tests. A `jest.clearAllMocks()` for it in your own test is redundant.
 
-When a component calls a tracking hook and you only care that the right event fired with the right arguments, mock the hook instead of asserting on the raw payload, the way [`InfiniteDiscoveryHeader.tests.tsx`](../src/app/Scenes/InfiniteDiscovery/Components/__tests__/InfiniteDiscoveryHeader.tests.tsx) does:
+The same assertion works for a screen view, as in `ArtAssistant.tests.tsx`:
+
+```typescript
+it("reports the screen view", () => {
+  renderWithWrappers(<ArtAssistant />)
+
+  expect(mockTrackEvent).toHaveBeenCalledWith({
+    action: "screen",
+    context_screen_owner_type: "artAssistant",
+  })
+})
+```
+
+When a component calls a tracking hook and you only care that the right event fired with the right arguments, mock the hook instead of asserting on the raw payload. [`InfiniteDiscoveryHeader.tests.tsx`](../src/app/Scenes/InfiniteDiscovery/Components/__tests__/InfiniteDiscoveryHeader.tests.tsx):
 
 ```typescript
 const mockTrack = { tappedShare: jest.fn() }
@@ -230,7 +253,7 @@ jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () 
 it("tracks the share tap", () => {
   renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-  fireEvent.press(screen.getByLabelText("Share"))
+  fireEvent.press(screen.getByLabelText("Share Artwork"))
 
   expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork", "artwork")
 })
@@ -238,15 +261,34 @@ it("tracks the share tap", () => {
 
 You'll also find tests asserting on `mockTrackEvent.mock.calls[0]` with `toMatchInlineSnapshot`. That still works, but avoid it for new tests: a screen view often fires before your interaction does, so your event can land at `calls[1]` instead of `calls[0]`, and the snapshot won't tell you why it broke. Asserting with `toHaveBeenCalledWith` doesn't care what index the call landed at.
 
-> A screen that fetches data over Relay needs to let that finish before your tracking assertion runs. Use `await flushPromiseQueue()` or `waitFor` around the `expect`, the way `ArtistInsights.tests.tsx` does. `ArtAssistant.tests.tsx` has a clean example of testing a screen-view event once the screen has settled:
+> A screen that fetches data over Relay needs to let that resolve before your tracking assertion runs, or the event won't have fired yet. Wrap the `expect` in `waitFor` instead of adding a manual delay. Never use `flushPromiseQueue`; it's marked deprecated in its own source, in favor of `waitFor`. Trimmed from `ContactGalleryButton.tests.tsx` (the real file also wraps the component in `Suspense` and a screen-context provider):
 >
 > ```typescript
-> it("reports the screen view", () => {
->   renderWithWrappers(<ArtAssistant />)
+> const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
+>   Component: ContactGalleryButton,
+>   query: graphql`
+>     query ContactGalleryButtonTestsQuery @relay_test_operation {
+>       artwork(id: "artwork-id") @required(action: NONE) {
+>         ...ContactGalleryButton_artwork
+>       }
+>     }
+>   `,
+> })
 >
->   expect(mockTrackEvent).toHaveBeenCalledWith({
->     action: "screen",
->     context_screen_owner_type: "artAssistant",
+> it("tracks an event when the 'contact gallery' button is pressed", async () => {
+>   renderWithRelay({
+>     Artwork: () => ({ internalID: "artwork-id", slug: "artwork-slug" }),
+>   })
+>
+>   fireEvent.press(screen.getByText("Contact Gallery"))
+>
+>   await waitFor(() => {
+>     expect(mockTrackEvent).toHaveBeenCalledWith({
+>       action: "tappedContactGallery",
+>       context_owner_id: "artwork-id",
+>       context_owner_slug: "artwork-slug",
+>       context_owner_type: "artwork",
+>     })
 >   })
 > })
 > ```
@@ -255,7 +297,7 @@ You'll also find tests asserting on `mockTrackEvent.mock.calls[0]` with `toMatch
 
 You'll still run into these in older code. Don't write new ones; convert to a tracking hook when you next touch the file.
 
-**The `@screenTrack` decorator**, for screen tracking in a class component:
+The `@screenTrack` decorator handles screen tracking in a class component:
 
 ```typescript
 @screenTrack(tracks.context())
@@ -273,7 +315,7 @@ const tracks = {
 }
 ```
 
-**The `@track` decorator**, for function tracking in a class component:
+The `@track` decorator handles function tracking in a class component:
 
 ```typescript
 @track()
@@ -295,9 +337,9 @@ export class MyClassComp extends React.Component<Props> {
 
 Calling `this.follow` from the `Button` needs `() => this.follow()` or `this.follow.bind(this)`. `this.follow` alone won't call the tracking wrapper.
 
-**A module-scope `const tracks = {}` object** sitting below a functional component, with the component calling `useTracking()` directly and doing `trackEvent(tracks.someEvent())` itself. This still accounts for most tracking code in the app. It works, but splits one event across two places instead of the one place a tracking hook gives you.
+A module-scope `const tracks = {}` object sits below a functional component, which calls `useTracking()` directly and does `trackEvent(tracks.someEvent())` itself. This still accounts for most tracking code in the app. It works, but splits one event across two places instead of the one place a tracking hook gives you.
 
-**`app/utils/track/schema.ts`** holds the pre-Cohesion event schema. It's marked for removal in its own source once every event has moved to Cohesion; don't add to it.
+`app/utils/track/schema.ts` holds the pre-Cohesion event schema. It's marked for removal in its own source once every event has moved to Cohesion; don't add to it.
 
 ## Still need help?
 
