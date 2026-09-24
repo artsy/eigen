@@ -1,26 +1,29 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { CityGuideFair_fair$key } from "__generated__/CityGuideFair_fair.graphql"
 import { CityGuideMap_viewer$key } from "__generated__/CityGuideMap_viewer.graphql"
 import { CityGuideShow_show$key } from "__generated__/CityGuideShow_show.graphql"
 import { AddToItineraryProvider } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItineraryProvider"
-import { CityEventRowContext } from "app/Scenes/CityGuide/Components/CityEventRows"
 import { CityFilterPills } from "app/Scenes/CityGuide/Components/CityFilterPills"
-import { CityGuideBottomSheet } from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
+import {
+  CityGuideBottomSheet,
+  COLLAPSED_SHEET_HEIGHT,
+} from "app/Scenes/CityGuide/Components/CityGuideBottomSheet"
 import { CityData, CityGuideCityPicker } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMapHeader } from "app/Scenes/CityGuide/Components/CityGuideMapHeader"
 import { CityGuideMapPins } from "app/Scenes/CityGuide/Components/CityGuideMapPins"
 import { MapPreviewCard } from "app/Scenes/CityGuide/Components/Map/MapPreviewCard"
-import { MapPlace } from "app/Scenes/CityGuide/Components/Map/utils/mapSectionsToGeoJSON"
+import { MapPreviewCardRail } from "app/Scenes/CityGuide/Components/Map/MapPreviewCardRail"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
+import { activeItemsToMapPlaces } from "app/Scenes/CityGuide/utils/activeItemsToMapPlaces"
 import { bucketCityResults, BucketResults } from "app/Scenes/CityGuide/utils/bucketCityResults"
 import { buildFeatureCollections } from "app/Scenes/CityGuide/utils/buildFeatureCollections"
 import { cityTabs } from "app/Scenes/CityGuide/utils/cityTabs"
+import { PREVIEW_BOTTOM_OFFSET } from "app/Scenes/CityGuide/utils/constants"
 import { EventEmitter } from "app/Scenes/CityGuide/utils/eventEmitter"
 import { extractShowAndFairMaps } from "app/Scenes/CityGuide/utils/extractShowAndFairMaps"
-import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { getNearestFeatureToTap } from "app/Scenes/CityGuide/utils/getNearestFeatureToTap"
 import { isValidLatLng } from "app/Scenes/CityGuide/utils/isValidLatLng"
 import {
@@ -29,7 +32,6 @@ import {
   MinZoomLevel,
 } from "app/Scenes/CityGuide/utils/mapZoomLevels"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
-import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
 import { DrawerPosition, Fair, MapTab, Show } from "app/Scenes/CityGuide/utils/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -37,7 +39,6 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtsyMapStyleURL, configureMapbox } from "app/utils/mapbox"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -57,8 +58,6 @@ interface Props {
 export const CityGuideMap: React.FC<Props> = (props) => {
   const color = useColor()
   const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
-  const cardWidth = screenWidth - 2 * space(2)
   const safeAreaInsets = useSafeAreaInsets()
 
   const [viewer, refetch] = useRefetchableFragment(cityGuideMapFragment, props.viewer)
@@ -331,42 +330,117 @@ export const CityGuideMap: React.FC<Props> = (props) => {
     refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
   }
 
-  // Reuses the same adapters the event-list map already builds its pins' cards from
-  // (`showsToMapSections`/`fairsToMapSections`), so a pin here previews exactly like it does
-  // there — rather than the older, map-only `CityGuideShowCard`. A fair carries `profile`,
-  // which a show's fragment never selects, so that's the split.
   // Follows the city picker: switching cities refetches `viewer.city` without new props.
   const cardCitySlug = viewer.city?.slug ?? props.citySlug
-  const activePlaces = useMemo<MapPlace[]>(() => {
-    if (activeShows.length === 0) {
-      return []
-    }
+  const activePlaces = useMemo(
+    () =>
+      activeItemsToMapPlaces(activeShows, {
+        contextScreenOwnerType: OwnerType.cityGuideMap,
+        contextScreenOwnerSlug: cardCitySlug,
+      }),
+    [activeShows, cardCitySlug]
+  )
 
-    const fairItems = activeShows.filter((item): item is Fair => "profile" in item)
-    const showItems = activeShows.filter((item): item is Show => !("profile" in item))
+  // Without the flag, a pin tap collapses the bottom sheet, which renders over the card.
+  const previewBottomOffset = enableGlobalMapList
+    ? PREVIEW_BOTTOM_OFFSET
+    : COLLAPSED_SHEET_HEIGHT + safeAreaInsets.bottom
 
-    const placesById = new Map<string, MapPlace>()
-    // Save controls on these cards report the general map as the screen they were tapped on.
-    const rowContext: CityEventRowContext = {
-      contextScreenOwnerType: OwnerType.cityGuideMap,
-      contextScreenOwnerSlug: cardCitySlug,
-    }
-
-    showsToMapSections(
-      [{ id: "active", title: "", items: showItems }],
-      rowContext
-    )[0].places.forEach((place) => placesById.set(place.id, place))
-    fairsToMapSections(
-      [{ id: "active", title: "", items: fairItems }],
-      rowContext
-    )[0].places.forEach((place) => placesById.set(place.id, place))
-
-    // Preserves the tapped feature's own order (single pin, or a cluster's leaf order).
-    return activeShows.flatMap((item) => {
-      const place = placesById.get(item.id)
-      return place ? [place] : []
-    })
-  }, [activeShows, cardCitySlug])
+  const content = (
+    <>
+      <CityGuideMapHeader
+        safeAreaInsetTop={safeAreaInsets.top}
+        cityName={viewer.city?.name}
+        userLocation={userLocation}
+        currentLocation={currentLocation}
+        onPressCitySwitcherButton={onPressCitySwitcherButton}
+        onPressUserPositionButton={onPressUserPositionButton}
+      />
+      {!showCityPicker && (
+        <CityFilterPills
+          selectedTabId={cityTabs[activeIndex].id}
+          onSelectTab={handleSelectMapFilterPill}
+          bucketResults={bucketResults}
+        />
+      )}
+      <CityGuideCityPicker
+        showCityPicker={showCityPicker}
+        setShowCityPicker={setShowCityPicker}
+        selectedCity={city?.name ?? ""}
+        onSelectCity={onSelectCity}
+      />
+      <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
+        <MapboxGL.MapView
+          ref={mapRef}
+          style={{ width: "100%", height: "100%" }}
+          {...mapProps}
+          onCameraChanged={onRegionIsChanging}
+          onDidFinishLoadingMap={onDidFinishLoadingMap}
+          attributionEnabled
+          logoEnabled
+          attributionPosition={{
+            bottom: space(2),
+            right: space(2),
+          }}
+          logoPosition={{
+            bottom: space(2),
+            left: space(2),
+          }}
+          onPress={onPressMap}
+          scaleBarEnabled={false}
+        >
+          <MapboxGL.Camera
+            ref={cameraRef}
+            animationMode="moveTo"
+            zoomLevel={DefaultZoomLevel}
+            minZoomLevel={MinZoomLevel}
+            maxZoomLevel={MaxZoomLevel}
+            centerCoordinate={[centerLng, centerLat]}
+          />
+          <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
+          {!!city && (
+            <>
+              {!!featureCollections && !!mapLoaded && (
+                <CityGuideMapPins
+                  filterID={cityTabs[activeIndex].id}
+                  featureCollections={featureCollections}
+                  onPress={(e) => handleFeaturePress(e)}
+                  shapeSourceRef={shapeSourceRef}
+                  activePinSlug={
+                    activePin?.properties?.cluster ? null : activePin?.properties?.slug
+                  }
+                  activeClusterId={
+                    activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
+                  }
+                />
+              )}
+            </>
+          )}
+        </MapboxGL.MapView>
+        {!!city && activePlaces.length > 0 && (
+          <Flex
+            testID="city-guide-map-preview"
+            position="absolute"
+            bottom={previewBottomOffset}
+            left={0}
+            right={0}
+          >
+            {activePlaces.length === 1 ? (
+              <MapPreviewCard place={activePlaces[0]} citySlug={cardCitySlug} />
+            ) : (
+              <MapPreviewCardRail places={activePlaces} citySlug={cardCitySlug} />
+            )}
+          </Flex>
+        )}
+        {!enableGlobalMapList && (
+          <CityGuideBottomSheet
+            drawerPosition={drawerPosition}
+            citySlug={viewer.city?.slug || ""}
+          />
+        )}
+      </Flex>
+    </>
+  )
 
   return (
     <ProvideScreenTracking
@@ -377,105 +451,14 @@ export const CityGuideMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
-        <CityGuideMapHeader
-          safeAreaInsetTop={safeAreaInsets.top}
-          cityName={viewer.city?.name}
-          userLocation={userLocation}
-          currentLocation={currentLocation}
-          onPressCitySwitcherButton={onPressCitySwitcherButton}
-          onPressUserPositionButton={onPressUserPositionButton}
-        />
-        {!showCityPicker && (
-          <CityFilterPills
-            selectedTabId={cityTabs[activeIndex].id}
-            onSelectTab={handleSelectMapFilterPill}
-            bucketResults={bucketResults}
-          />
-        )}
-        <CityGuideCityPicker
-          showCityPicker={showCityPicker}
-          setShowCityPicker={setShowCityPicker}
-          selectedCity={city?.name ?? ""}
-          onSelectCity={onSelectCity}
-        />
-        <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
-          <MapboxGL.MapView
-            ref={mapRef}
-            style={{ width: "100%", height: "100%" }}
-            {...mapProps}
-            onCameraChanged={onRegionIsChanging}
-            onDidFinishLoadingMap={onDidFinishLoadingMap}
-            attributionEnabled
-            logoEnabled
-            attributionPosition={{
-              bottom: space(2),
-              right: space(2),
-            }}
-            logoPosition={{
-              bottom: space(2),
-              left: space(2),
-            }}
-            onPress={onPressMap}
-            scaleBarEnabled={false}
-          >
-            <MapboxGL.Camera
-              ref={cameraRef}
-              animationMode="moveTo"
-              zoomLevel={DefaultZoomLevel}
-              minZoomLevel={MinZoomLevel}
-              maxZoomLevel={MaxZoomLevel}
-              centerCoordinate={[centerLng, centerLat]}
-            />
-            <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
-            {!!city && (
-              <>
-                {!!featureCollections && !!mapLoaded && (
-                  <CityGuideMapPins
-                    filterID={cityTabs[activeIndex].id}
-                    featureCollections={featureCollections}
-                    onPress={(e) => handleFeaturePress(e)}
-                    shapeSourceRef={shapeSourceRef}
-                    activePinSlug={
-                      activePin?.properties?.cluster ? null : activePin?.properties?.slug
-                    }
-                    activeClusterId={
-                      activePin?.properties?.cluster ? activePin?.properties?.cluster_id : null
-                    }
-                  />
-                )}
-              </>
-            )}
-          </MapboxGL.MapView>
-          {!!city && activePlaces.length > 0 && (
-            <Flex position="absolute" bottom={0} left={0} right={0}>
-              {activePlaces.length === 1 ? (
-                <MapPreviewCard place={activePlaces[0]} citySlug={cardCitySlug} />
-              ) : (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <Flex flexDirection="row">
-                    {activePlaces.map((place, index) => (
-                      <Flex key={place.id} width={cardWidth}>
-                        <MapPreviewCard
-                          place={place}
-                          citySlug={cardCitySlug}
-                          isLast={index === activePlaces.length - 1}
-                        />
-                      </Flex>
-                    ))}
-                  </Flex>
-                </ScrollView>
-              )}
-            </Flex>
-          )}
-          {!enableGlobalMapList && (
-            <CityGuideBottomSheet
-              drawerPosition={drawerPosition}
-              citySlug={viewer.city?.slug || ""}
-            />
-          )}
-        </Flex>
-      </AddToItineraryProvider>
+      {/* The provider is what makes the cards' add-to-itinerary plus render at all. */}
+      {enableGlobalMapList ? (
+        <AddToItineraryProvider citySlug={viewer.city?.slug} cityName={viewer.city?.name ?? ""}>
+          {content}
+        </AddToItineraryProvider>
+      ) : (
+        content
+      )}
     </ProvideScreenTracking>
   )
 }
