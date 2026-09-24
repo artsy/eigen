@@ -149,7 +149,13 @@ const VideoTitle: React.FC<{ title: string }> = ({ title }) => {
   }
 
   return (
-    <Text testID="city-guide-video-title" variant="sm" weight="medium" numberOfLines={1} mt={0.5}>
+    <Text
+      testID="city-guide-video-title"
+      variant="sm-display"
+      weight="medium"
+      numberOfLines={2}
+      mt={0.5}
+    >
       {title}
     </Text>
   )
