@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { CityArticlesScreen } from "app/Scenes/CityGuide/Screens/CityArticles"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile
@@ -55,5 +56,42 @@ describe("CityArticlesScreen", () => {
     const rows = await screen.findAllByTestId("event-article-row")
 
     expect(rows[0]).toContainElement(screen.getByText("First"))
+  })
+  describe("recommended articles", () => {
+    const recommended = (title: string) => ({ ...article(title, 0).article })
+
+    it("lists every recommendation after the curated articles when the flag is on", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: true })
+
+      renderWithRelay({
+        City: () => ({
+          cityArticles: [article("Curated", 0)],
+          recommendedArticlesConnection: {
+            edges: ["Rec 1", "Rec 2", "Rec 3", "Rec 4", "Rec 5"].map((title) => ({
+              node: recommended(title),
+            })),
+          },
+        }),
+      })
+
+      const rows = await screen.findAllByTestId("event-article-row")
+      expect(rows).toHaveLength(6)
+      expect(rows[0]).toContainElement(screen.getByText("Curated"))
+      expect(rows[5]).toContainElement(screen.getByText("Rec 5"))
+    })
+
+    it("lists only the curated articles when the flag is off", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideArticlesForYou: false })
+
+      renderWithRelay({
+        City: () => ({
+          cityArticles: [article("Curated", 0)],
+          recommendedArticlesConnection: { edges: [{ node: recommended("Rec 1") }] },
+        }),
+      })
+
+      expect(await screen.findAllByTestId("event-article-row")).toHaveLength(1)
+      expect(screen.queryByText("Rec 1")).not.toBeOnTheScreen()
+    })
   })
 })

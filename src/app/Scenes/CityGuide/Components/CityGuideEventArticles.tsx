@@ -48,7 +48,7 @@ export const CityGuideEventArticles: React.FC<Props> = ({ citySlug, city: cityRe
     return null
   }
 
-  const hasMore = rows.length > MAX_VISIBLE_ARTICLES
+  const hasMore = rows.length + recommended.length > MAX_VISIBLE_ARTICLES
 
   return (
     <Flex testID="city-guide-event-articles" px={2}>
@@ -91,7 +91,8 @@ const fragment = graphql`
     cityArticles {
       ...CityGuideArticle_articles
     }
-    recommendedArticlesConnection(first: 4) @include(if: $enableArticlesForYou) {
+    # One past the section's 4 slots, so the chevron knows there's more to see.
+    recommendedArticlesConnection(first: 5) @include(if: $enableArticlesForYou) {
       edges {
         node {
           internalID

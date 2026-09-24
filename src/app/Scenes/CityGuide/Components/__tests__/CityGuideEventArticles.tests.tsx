@@ -261,6 +261,26 @@ describe("CityGuideEventArticles, recommended for you", () => {
     expect(screen.queryByText("Recommended for you")).not.toBeOnTheScreen()
   })
 
+  it("gives the section title a chevron when curated plus recommended articles exceed 4", async () => {
+    renderWithRelay(
+      cityData(curated(["Curated 1", "Curated 2"]), [
+        article("Recommended 1"),
+        article("Recommended 2"),
+        article("Recommended 3"),
+      ])
+    )
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(4)
+    expect(screen.getByTestId("touchable-wrapper")).toBeOnTheScreen()
+  })
+
+  it("gives no chevron when curated plus recommended articles fit in 4", async () => {
+    renderWithRelay(cityData(curated(["Curated 1"]), [article("Recommended 1")]))
+
+    expect(await screen.findAllByTestId("event-article-row")).toHaveLength(2)
+    expect(screen.queryByTestId("touchable-wrapper")).not.toBeOnTheScreen()
+  })
+
   it("shows no recommendations when curated articles fill all 4 slots", async () => {
     renderWithRelay(
       cityData(curated(["Curated 1", "Curated 2", "Curated 3", "Curated 4"]), [

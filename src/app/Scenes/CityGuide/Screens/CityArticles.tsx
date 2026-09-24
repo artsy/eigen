@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import { CityArticlesQuery } from "__generated__/CityArticlesQuery.graphql"
 import { CityGuideArticle_articles$key } from "__generated__/CityGuideArticle_articles.graphql"
@@ -9,6 +10,8 @@ import {
   toArticleRows,
 } from "app/Scenes/CityGuide/utils/CityGuideArticle"
 import { goBack } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -17,12 +20,25 @@ interface Props {
 }
 
 const CityArticles: React.FC<Props> = ({ citySlug }) => {
-  const data = useLazyLoadQuery<CityArticlesQuery>(Query, { citySlug })
+  const enableArticlesForYou = useFeatureFlag("AREnableCityGuideArticlesForYou")
+  const data = useLazyLoadQuery<CityArticlesQuery>(Query, { citySlug, enableArticlesForYou })
   const attachments = useFragment<CityGuideArticle_articles$key>(
     cityGuideArticleFragment,
     data.city?.cityArticles ?? NO_CITY_ARTICLES
   )
-  const rows = toArticleRows(attachments)
+  // Same order as the home section: every curated article, then the recommendations.
+  const items = [
+    ...toArticleRows(attachments).map((row) => ({
+      key: row.id,
+      article: row.article,
+      contextModule: undefined,
+    })),
+    ...extractNodes(data.city?.recommendedArticlesConnection).map((article) => ({
+      key: article.internalID,
+      article,
+      contextModule: ContextModule.relatedArticles,
+    })),
+  ]
 
   return (
     <Screen>
@@ -34,12 +50,16 @@ const CityArticles: React.FC<Props> = ({ citySlug }) => {
         </Flex>
 
         <Screen.FlatList
-          data={rows}
-          keyExtractor={(item) => item.id}
+          data={items}
+          keyExtractor={(item) => item.key}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }}
           ItemSeparatorComponent={() => <Flex height={20} />}
           renderItem={({ item }) => (
-            <CityArticleListItem article={item.article} citySlug={citySlug} />
+            <CityArticleListItem
+              article={item.article}
+              citySlug={citySlug}
+              contextModule={item.contextModule}
+            />
           )}
         />
       </Screen.Body>
@@ -48,10 +68,20 @@ const CityArticles: React.FC<Props> = ({ citySlug }) => {
 }
 
 const Query = graphql`
-  query CityArticlesQuery($citySlug: String!) @relay_test_operation {
+  query CityArticlesQuery($citySlug: String!, $enableArticlesForYou: Boolean!)
+  @relay_test_operation {
     city(slug: $citySlug) {
       cityArticles {
         ...CityGuideArticle_articles
+      }
+      # Metaphysics caps the pool at 10 artists × 3 articles, so this is everything it has.
+      recommendedArticlesConnection(first: 30) @include(if: $enableArticlesForYou) {
+        edges {
+          node {
+            internalID
+            ...CityGuideArticleRow_article
+          }
+        }
       }
     }
   }
