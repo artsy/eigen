@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -277,13 +277,16 @@ describe("CityEventListScreen", () => {
       expect(requestedVariables(view.env).forYou).toBe(false)
     })
 
-    it("renders one flat list with no section header, in the returned order, when forYou is true", async () => {
+    it("groups ranked shows by neighbourhood, keeping the ranked order within each, when forYou is true", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
       __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
 
+      // The server's ranked order: two shows share a neighbourhood, and the one ranked first
+      // doesn't come first alphabetically, so a re-sort would show up.
       const shows = [
-        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
-        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+        { name: "Tracey Emin", location: { postalCode: "EC1M 5RR" } },
+        { name: "Anish Kapoor", location: { postalCode: "W1S 4BS" } },
+        { name: "Frida Kahlo", location: { postalCode: "EC1M 6BN" } },
       ]
 
       renderWithRelay(
@@ -296,13 +299,14 @@ describe("CityEventListScreen", () => {
         { citySlug: "london-united-kingdom", section: "shows" }
       )
 
-      // No header at all, not one per neighbourhood, even with two postcodes.
-      const rows = await screen.findAllByTestId("city-event-row")
-      expect(rows).toHaveLength(shows.length)
-      expect(screen.queryByTestId("city-event-section-header")).toBeNull()
-      expect(screen.queryByText("For You")).toBeNull()
-      expect(rows[0]).toHaveTextContent(/Frida Kahlo/)
-      expect(rows[1]).toHaveTextContent(/Tracey Emin/)
+      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(2)
+
+      const rows = screen.getAllByTestId("city-event-row")
+      const rowIndexOf = (name: string) =>
+        rows.findIndex((row) => within(row).queryByText(name) !== null)
+
+      expect(rowIndexOf("Tracey Emin")).toBeGreaterThanOrEqual(0)
+      expect(rowIndexOf("Tracey Emin")).toBeLessThan(rowIndexOf("Frida Kahlo"))
     })
 
     it("keeps the map's neighbourhood filter pills when forYou is true", async () => {
