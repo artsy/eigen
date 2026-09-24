@@ -40,6 +40,7 @@ describe("CityGuideEvents", () => {
             name: "Frieze London",
             profile: { id: "profile-node-1", internalID: "profile-1", isFollowed: false },
             href: "/fair/frieze-london-2025",
+            location: { address: "The Regent's Park, London NW1 4NR" },
             image: { url: "https://example.com/fair.jpg" },
           },
         },
@@ -222,6 +223,23 @@ describe("CityGuideEvents", () => {
         destination_screen_owner_slug: "annely-juda-fine-art-vestiges",
       })
     )
+  })
+
+  it("renders no plus for a fair with no address", async () => {
+    renderWithRelay(
+      {
+        City: () => ({
+          ...city,
+          fairsConnection: {
+            edges: [{ node: { ...city.fairsConnection.edges[0].node, location: null } }],
+          },
+        }),
+      },
+      props
+    )
+
+    expect(await screen.findByText("Frieze London")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Add Frieze London to an itinerary")).not.toBeOnTheScreen()
   })
 
   it("hides a section that has no results, header included", async () => {

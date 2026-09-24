@@ -122,17 +122,21 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
                 trackCohesionEvent(tracks.tappedFair(citySlug, fair.internalID, fair.slug ?? ""))
               }
               saveControl={
-                <CityEventSaveControl
-                  itemType="FAIR"
-                  itemID={fair.internalID}
-                  itemSlug={fair.slug ?? undefined}
-                  isOnMyItineraries={fair.isOnMyItineraries}
-                  name={fair.name ?? ""}
-                  iconSize={SAVE_ICON_SIZE}
-                  contextScreenOwnerType={OwnerType.cityGuide}
-                  contextScreenOwnerSlug={citySlug}
-                  isCuratedGuide={false}
-                />
+                // A stop needs a place to go: a fair with no address gets no plus, same as
+                // the Fair page header.
+                !!fair.location?.address && (
+                  <CityEventSaveControl
+                    itemType="FAIR"
+                    itemID={fair.internalID}
+                    itemSlug={fair.slug ?? undefined}
+                    isOnMyItineraries={fair.isOnMyItineraries}
+                    name={fair.name ?? ""}
+                    iconSize={SAVE_ICON_SIZE}
+                    contextScreenOwnerType={OwnerType.cityGuide}
+                    contextScreenOwnerSlug={citySlug}
+                    isCuratedGuide={false}
+                  />
+                )
               }
             />
           )}
@@ -252,6 +256,9 @@ const fragment = graphql`
           isOnMyItineraries
           name
           href
+          location {
+            address
+          }
           image {
             url
           }

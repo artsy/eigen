@@ -42,14 +42,18 @@ export const renderFairRow = (fair: Fair, context: CityEventRowContext) => (
     imageURL={fair.image?.url ?? null}
     href={`/fair/${fair.slug}`}
     saveControl={
-      <CityEventSaveControl
-        itemType="FAIR"
-        itemID={fair.internalID}
-        itemSlug={fair.slug ?? undefined}
-        name={fair.name ?? ""}
-        contextScreenOwnerType={context.contextScreenOwnerType}
-        contextScreenOwnerSlug={context.contextScreenOwnerSlug}
-      />
+      // A stop needs a place to go: a fair with no address gets no plus, same as the Fair
+      // page header.
+      !!fair.location?.address && (
+        <CityEventSaveControl
+          itemType="FAIR"
+          itemID={fair.internalID}
+          itemSlug={fair.slug ?? undefined}
+          name={fair.name ?? ""}
+          contextScreenOwnerType={context.contextScreenOwnerType}
+          contextScreenOwnerSlug={context.contextScreenOwnerSlug}
+        />
+      )
     }
   />
 )
