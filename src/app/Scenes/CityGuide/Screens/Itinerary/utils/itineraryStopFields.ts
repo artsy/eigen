@@ -1,3 +1,4 @@
+import { formatStopClockTime } from "app/Scenes/CityGuide/Screens/Itinerary/utils/formatStopClockTime"
 import {
   ItinerarySaveTarget,
   ItinerarySection,
@@ -80,9 +81,12 @@ export const itineraryStopCategory = (
 
 /** Backend-formatted for display. e.g. "11am-4pm" */
 export const itineraryStopDisplayTime = (stop: ItineraryStop): string => {
-  if (stop.startTime && stop.endTime) return `${stop.startTime}-${stop.endTime}`
+  if (stop.startTime && stop.endTime) {
+    return `${formatStopClockTime(stop.startTime)}-${formatStopClockTime(stop.endTime)}`
+  }
 
-  return stop.startTime ?? stop.endTime ?? ""
+  const time = stop.startTime ?? stop.endTime
+  return time ? formatStopClockTime(time) : ""
 }
 
 /**

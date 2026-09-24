@@ -152,7 +152,7 @@ describe("ItineraryScreen", () => {
   it("joins the two server-formatted times into the row's display time", async () => {
     renderWithRelay({ Itinerary: () => ITINERARY }, props)
 
-    expect(await screen.findAllByText("11:00am-4:00pm")).not.toHaveLength(0)
+    expect(await screen.findAllByText("11am-4pm")).not.toHaveLength(0)
   })
 
   it("renders the unavailable state when the itinerary does not resolve", async () => {
