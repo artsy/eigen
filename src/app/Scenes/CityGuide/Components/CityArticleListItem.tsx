@@ -7,7 +7,7 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-const IMAGE_SIZE = 50
+const IMAGE_SIZE = 80
 const NO_ICON_SIZE = 20
 
 export const CityArticleListItem: React.FC<{
