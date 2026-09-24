@@ -8657,9 +8657,17 @@ type City {
   name: String!
 
   """
-  Recent editorial articles about artists showing in this city now, ranked by the signed-in user's taste. Excludes the city's curated articles. Empty when signed out.
+  Recent editorial articles about artists showing in this city now, ranked by the signed-in user's taste. With `includeFeatured`, the city's curated articles come first; without it, they are left out. Signed out, only the curated articles are returned.
   """
-  recommendedArticlesConnection(first: Int = 4): ArticleConnection
+  recommendedArticlesConnection(
+    after: String
+    first: Int = 4
+
+    """
+    List the city's curated articles first, in their curated order, then the recommendations.
+    """
+    includeFeatured: Boolean = false
+  ): ArticleConnection
   showsConnection(
     after: String
     before: String
