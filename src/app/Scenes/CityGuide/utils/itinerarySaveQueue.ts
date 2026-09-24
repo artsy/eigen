@@ -6,6 +6,7 @@ interface Queue {
   lastSeq: number
 }
 
+// Both keyed by itinerary internalID and kept for the JS session; safe only because those ids are unique.
 const queues = new Map<string, Queue>()
 const deletedItineraries = new Set<string>()
 const listeners = new Set<() => void>()
