@@ -375,7 +375,9 @@ const Itinerary: React.FC<Props> = ({ citySlug, itineraryId, shareToken }) => {
                       handlers.onContentSizeChange(width, height)
                     )
                   }}
-                  contentContainerStyle={{ paddingBottom: 40 }}
+                  // Tied to the map button's `bottom: -50` / `translateY: -60` below:
+                  // changing those offsets changes this gap too.
+                  contentContainerStyle={{ paddingBottom: 60 }}
                   refreshControl={
                     <RefreshControl
                       refreshing={isRefreshing}

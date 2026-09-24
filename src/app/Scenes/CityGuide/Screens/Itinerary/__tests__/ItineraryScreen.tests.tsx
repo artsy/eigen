@@ -9,7 +9,7 @@ import {
 } from "app/utils/tests/draxSortableListSpy"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { RefreshControl } from "react-native"
+import { RefreshControl, ScrollView } from "react-native"
 import RNShare from "react-native-share"
 import { ReactTestInstance } from "react-test-renderer"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -646,6 +646,16 @@ describe("ItineraryScreen", () => {
 
       await waitFor(() => expect(screen.queryByText("Stop 1")).not.toBeOnTheScreen())
       expect(screen.getByText("Chill Vibes Only")).toBeOnTheScreen()
+    })
+  })
+
+  it("keeps the stop list clear of the floating map toggle button", async () => {
+    renderWithRelay({ Itinerary: () => ITINERARY }, props)
+
+    expect(await screen.findByText("Stop 1")).toBeOnTheScreen()
+
+    expect(screen.UNSAFE_getByType(ScrollView).props.contentContainerStyle).toMatchObject({
+      paddingBottom: 60,
     })
   })
 
