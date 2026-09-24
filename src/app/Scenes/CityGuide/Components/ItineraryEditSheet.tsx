@@ -1,6 +1,7 @@
 import { Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ItineraryEditSheetDeleteMutation } from "__generated__/ItineraryEditSheetDeleteMutation.graphql"
+import { ItineraryEditSheetUpdateCoverMutation } from "__generated__/ItineraryEditSheetUpdateCoverMutation.graphql"
 import { ItineraryEditSheetUpdateMutation } from "__generated__/ItineraryEditSheetUpdateMutation.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -10,7 +11,18 @@ import {
   itineraryCoverImageKey,
   useItineraryLocalCover,
 } from "app/Scenes/CityGuide/hooks/useItineraryLocalCover"
-import { removeLocalImage, storeLocalImage } from "app/utils/LocalImageStore"
+import {
+  isItineraryDeleted,
+  markItineraryDeleted,
+  queueItinerarySave,
+  useHasPendingItinerarySave,
+} from "app/Scenes/CityGuide/utils/itinerarySaveQueue"
+import {
+  getLocalImage,
+  LocalImage,
+  removeLocalImage,
+  storeLocalImage,
+} from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import BottomSheetKeyboardAwareScrollView from "app/utils/keyboard/BottomSheetKeyboardAwareScrollView"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -79,6 +91,8 @@ export const ItineraryEditSheet: React.FC<Props> = ({
   const [coverRemoved, setCoverRemoved] = useState(false)
 
   const [commitDelete, isDeleting] = useMutation<ItineraryEditSheetDeleteMutation>(deleteMutation)
+  // A delete during a queued cover save would leave that save failing on a missing itinerary.
+  const hasPendingSave = useHasPendingItinerarySave(itinerary.internalID)
 
   const currentCoverUrl = itinerary.heroImage?.url ?? null
   const savedLocalCover = useItineraryLocalCover(itinerary.internalID, currentCoverUrl)
@@ -144,6 +158,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
           return
         }
 
+        markItineraryDeleted(itinerary.internalID)
         onClose()
         onDeleted?.()
       },
@@ -258,7 +273,7 @@ export const ItineraryEditSheet: React.FC<Props> = ({
               testID="itinerary-edit-delete"
               accessibilityRole="button"
               accessibilityLabel="Delete Itinerary"
-              disabled={isDeleting}
+              disabled={isDeleting || hasPendingSave}
               onPress={destroy}
             >
               <Text variant="sm" color="red100" textAlign="center" underline>
@@ -280,31 +295,29 @@ interface ItineraryChanges {
 }
 
 /**
- * Shows the changes in the store right away, then uploads a new cover and sends the update.
- * On failure it puts the previous values back and tells the user.
+ * Shows the changes in the store right away. The title and notes go to Gravity at once; a cover
+ * change goes in its own mutation, queued behind earlier cover saves for the same itinerary.
  */
-const saveItineraryChanges = async (
+const saveItineraryChanges = (
   environment: Environment,
   itinerary: { id: string; internalID: string },
   { title, description, cover }: ItineraryChanges,
   showToast: (message: string) => void
 ) => {
-  const coverKey = itineraryCoverImageKey(itinerary.internalID)
+  saveItineraryText(environment, itinerary, { title, description }, showToast)
 
-  // Before the store write: readers re-read LocalImageStore when the cover URL changes.
-  try {
-    if (cover) {
-      await storeLocalImage(coverKey, cover)
-    } else if (cover === null) {
-      await removeLocalImage(coverKey)
-    }
-  } catch (error) {
-    console.error("Failed to store the itinerary cover locally", error)
+  if (cover !== undefined) {
+    saveItineraryCover(environment, itinerary, cover, showToast)
   }
+}
 
-  let previous:
-    | { title: string; description: string | null; heroImageID: string | null }
-    | undefined
+const saveItineraryText = (
+  environment: Environment,
+  itinerary: { id: string; internalID: string },
+  { title, description }: Pick<ItineraryChanges, "title" | "description">,
+  showToast: (message: string) => void
+) => {
+  let previous: { title: string; description: string | null } | undefined
 
   commitLocalUpdate(environment, (store) => {
     const record = store.get(itinerary.id)
@@ -316,22 +329,13 @@ const saveItineraryChanges = async (
     previous = {
       title: record.getValue("title") as string,
       description: record.getValue("description") as string | null,
-      heroImageID: record.getLinkedRecord("heroImage")?.getDataID() ?? null,
     }
 
     record.setValue(title, "title")
     record.setValue(description, "description")
-
-    if (cover !== undefined) {
-      writeCover(store, record, cover)
-    }
   })
 
-  const fail = async (message: string) => {
-    if (cover) {
-      await removeLocalImage(coverKey).catch(() => undefined)
-    }
-
+  const fail = () => {
     commitLocalUpdate(environment, (store) => {
       const record = store.get(itinerary.id)
 
@@ -341,67 +345,186 @@ const saveItineraryChanges = async (
 
       record.setValue(previous.title, "title")
       record.setValue(previous.description, "description")
-
-      if (cover !== undefined) {
-        const heroImage = previous.heroImageID ? store.get(previous.heroImageID) : null
-
-        if (heroImage) {
-          record.setLinkedRecord(heroImage, "heroImage")
-        } else {
-          record.setValue(null, "heroImage")
-        }
-      }
     })
 
-    showToast(message)
-  }
-
-  let imageURL: string | null | undefined = cover === null ? null : undefined
-
-  if (cover) {
-    try {
-      imageURL = await getConvertedImageUrlFromS3(cover.path)
-    } catch (error) {
-      console.error("Failed to upload itinerary cover image", error)
-      fail("Could not upload your photo")
-      return
+    if (!isItineraryDeleted(itinerary.internalID)) {
+      showToast("Could not save your changes")
     }
   }
 
   commitMutation<ItineraryEditSheetUpdateMutation>(environment, {
     mutation: updateMutation,
-    variables: {
-      input: {
-        id: itinerary.internalID,
-        title,
-        description,
-        ...(imageURL !== undefined ? { imageURL } : {}),
-      },
-    },
-    // Gravity builds the cover's versions in a background job, so the response still has the
-    // old image: keep the local photo (or no cover) in its place.
-    updater: (store, data) => {
-      const record = store.get(itinerary.id)
-
-      if (
-        cover !== undefined &&
-        record &&
-        data?.updateItinerary?.responseOrError?.__typename === "ItineraryMutationSuccess"
-      ) {
-        writeCover(store, record, cover)
-      }
-    },
+    variables: { input: { id: itinerary.internalID, title, description } },
     onCompleted: (response, errors) => {
       if (
         errors?.length ||
         response.updateItinerary?.responseOrError?.__typename !== "ItineraryMutationSuccess"
       ) {
-        fail("Could not save your changes")
+        fail()
       }
     },
-    onError: () => fail("Could not save your changes"),
+    onError: fail,
   })
 }
+
+interface CoverBaseline {
+  heroImageID: string | null
+  localImage: Promise<LocalImage | null>
+}
+
+/**
+ * Per itinerary, the cover to put back if the latest of its queued cover saves fails: the one
+ * shown before the first of them, or the last one Gravity accepted.
+ */
+const coverBaselines = new Map<string, CoverBaseline>()
+
+const saveItineraryCover = (
+  environment: Environment,
+  itinerary: { id: string; internalID: string },
+  cover: LocalCover | null,
+  showToast: (message: string) => void
+) => {
+  const { id, internalID } = itinerary
+  const coverKey = itineraryCoverImageKey(internalID)
+
+  if (!coverBaselines.has(internalID)) {
+    coverBaselines.set(internalID, {
+      heroImageID: readHeroImageID(environment, id),
+      // Read before this save's local write below, which AsyncStorage runs after it.
+      localImage: getLocalImage(coverKey).catch(() => null),
+    })
+  }
+
+  // Before the store write: readers re-read LocalImageStore when the cover URL changes.
+  const shown = (async () => {
+    try {
+      if (cover) {
+        await storeLocalImage(coverKey, cover)
+      } else {
+        await removeLocalImage(coverKey)
+      }
+    } catch (error) {
+      console.error("Failed to store the itinerary cover locally", error)
+    }
+
+    commitLocalUpdate(environment, (store) => {
+      const record = store.get(id)
+
+      if (record) {
+        writeCover(store, record, cover)
+      }
+    })
+  })()
+
+  queueItinerarySave(internalID, async (isLatest) => {
+    const fail = async (message: string) => {
+      const baseline = coverBaselines.get(internalID)
+
+      if (!baseline || !isLatest() || isItineraryDeleted(internalID)) {
+        return
+      }
+
+      const localImage = await baseline.localImage
+
+      try {
+        if (localImage) {
+          await storeLocalImage(coverKey, localImage)
+        } else {
+          await removeLocalImage(coverKey)
+        }
+      } catch (error) {
+        console.error("Failed to restore the itinerary cover locally", error)
+      }
+
+      // A save made during the restore above now owns the cover.
+      if (!isLatest()) {
+        return
+      }
+
+      commitLocalUpdate(environment, (store) => {
+        const record = store.get(id)
+        const heroImage = baseline.heroImageID ? store.get(baseline.heroImageID) : null
+
+        if (record && heroImage) {
+          record.setLinkedRecord(heroImage, "heroImage")
+        } else {
+          record?.setValue(null, "heroImage")
+        }
+      })
+
+      showToast(message)
+    }
+
+    try {
+      await shown
+
+      if (isItineraryDeleted(internalID)) {
+        return
+      }
+
+      let imageURL: string | null = null
+
+      if (cover) {
+        try {
+          imageURL = await getConvertedImageUrlFromS3(cover.path)
+        } catch (error) {
+          console.error("Failed to upload itinerary cover image", error)
+          await fail("Could not upload your photo")
+          return
+        }
+      }
+
+      if (isItineraryDeleted(internalID)) {
+        return
+      }
+
+      if (await commitCoverMutation(environment, internalID, imageURL)) {
+        coverBaselines.set(internalID, {
+          heroImageID: cover ? localCoverRecordID(id, cover.path) : null,
+          localImage: Promise.resolve(cover),
+        })
+      } else {
+        await fail("Could not save your changes")
+      }
+    } finally {
+      if (isLatest()) {
+        coverBaselines.delete(internalID)
+      }
+    }
+  })
+}
+
+const readHeroImageID = (environment: Environment, recordID: string) => {
+  let heroImageID: string | null = null
+
+  commitLocalUpdate(environment, (store) => {
+    heroImageID = store.get(recordID)?.getLinkedRecord("heroImage")?.getDataID() ?? null
+  })
+
+  return heroImageID
+}
+
+/** Sends only the cover, so a slow upload can't bring back an older title or notes. */
+const commitCoverMutation = (
+  environment: Environment,
+  internalID: string,
+  imageURL: string | null
+) =>
+  new Promise<boolean>((resolve) => {
+    commitMutation<ItineraryEditSheetUpdateCoverMutation>(environment, {
+      mutation: updateCoverMutation,
+      variables: { input: { id: internalID, imageURL } },
+      onCompleted: (response, errors) =>
+        resolve(
+          !errors?.length &&
+            response.updateItinerary?.responseOrError?.__typename === "ItineraryMutationSuccess"
+        ),
+      onError: () => resolve(false),
+    })
+  })
+
+const localCoverRecordID = (recordID: string, path: string) =>
+  `client:${recordID}:localCover:${path}`
 
 /**
  * Links a client record of its own per photo rather than editing the current one in place, so
@@ -414,7 +537,7 @@ const writeCover = (store: RecordSourceProxy, record: RecordProxy, cover: LocalC
   }
 
   const { path, width, height } = cover
-  const localID = `client:${record.getDataID()}:localCover:${path}`
+  const localID = localCoverRecordID(record.getDataID(), path)
   const heroImage = store.get(localID) ?? store.create(localID, "Image")
 
   heroImage.setValue(path, 'url(version:"large")')
@@ -426,6 +549,8 @@ const writeCover = (store: RecordSourceProxy, record: RecordProxy, cover: LocalC
   record.setLinkedRecord(heroImage, "heroImage")
 }
 
+// Neither mutation selects `heroImage`: Gravity builds a new cover's versions in a background
+// job, so the response would still carry the old image over the local one.
 const updateMutation = graphql`
   mutation ItineraryEditSheetUpdateMutation($input: updateItineraryInput!) {
     updateItinerary(input: $input) {
@@ -434,17 +559,28 @@ const updateMutation = graphql`
         ... on ItineraryMutationSuccess {
           itinerary {
             id
-            internalID
             title
             description
-            heroImage {
-              url(version: "large")
-              height
-              width
-              aspectRatio
-              blurhash
-              smallUrl: url(version: "small")
-            }
+          }
+        }
+        ... on ItineraryMutationFailure {
+          mutationError {
+            message
+          }
+        }
+      }
+    }
+  }
+`
+
+const updateCoverMutation = graphql`
+  mutation ItineraryEditSheetUpdateCoverMutation($input: updateItineraryInput!) {
+    updateItinerary(input: $input) {
+      responseOrError {
+        __typename
+        ... on ItineraryMutationSuccess {
+          itinerary {
+            id
           }
         }
         ... on ItineraryMutationFailure {
