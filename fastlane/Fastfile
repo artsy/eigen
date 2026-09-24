@@ -647,13 +647,14 @@ lane :deploy_to_expo_updates do |options|
   # git tag per platform so releases/tags stay platform-scoped, matching
   # eigenSentryReleaseName()'s "<ios|android>-<release>" format at runtime.
   # For a single-platform publish (platform:ios or platform:android) this loop
-  # just runs once.
+  # just runs once. Point each upload at dist/_expo/static/js/<platform> so it
+  # only sees that platform's bundle, not both.
   platforms_to_tag = platform == 'all' ? ['ios', 'android'] : [platform]
 
   platforms_to_tag.each do |p|
     ENV['SENTRY_RELEASE'] = "#{p}-#{release_name_base}"
     puts "🔧 Uploading sourcemaps to Sentry with release: #{p}-#{release_name_base}"
-    sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
+    sh("cd .. && npx sentry-expo-upload-sourcemaps dist/_expo/static/js/#{p}")
     tag_and_push(tag: "#{p}-#{release_name_base}")
   end
 
