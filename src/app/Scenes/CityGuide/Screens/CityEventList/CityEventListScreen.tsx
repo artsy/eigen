@@ -109,9 +109,11 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
       ? data.city?.fairsConnection?.totalCount
       : data.city?.showsConnection?.totalCount) ?? 0
 
+  const neighborhoods = data.city?.neighborhoods
+
   const sections: CityEventSection<Event>[] = useMemo(() => {
     if (section === "fairs") {
-      return groupByNeighborhood<Fair>(fairs, citySlug, cityName)
+      return groupByNeighborhood<Fair>(fairs, neighborhoods ?? [], cityName)
     }
 
     if (section === "opening") {
@@ -120,8 +122,8 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
 
     // Grouping keeps each neighbourhood's shows in the order they came back, so when the list is
     // ranked "for you" the best matches lead every neighbourhood.
-    return groupByNeighborhood<Show>(shows, citySlug, cityName)
-  }, [section, fairs, shows, citySlug, cityName])
+    return groupByNeighborhood<Show>(shows, neighborhoods ?? [], cityName)
+  }, [section, fairs, shows, neighborhoods, cityName])
 
   const items = useMemo(
     () => toCityEventListItems(sections, collapsedSectionIds),
@@ -333,6 +335,10 @@ const Query = graphql`
   ) {
     city(slug: $citySlug) {
       name
+      neighborhoods {
+        slug
+        name
+      }
 
       fairsConnection(first: 100, status: RUNNING, sort: START_AT_ASC) @include(if: $includeFairs) {
         totalCount

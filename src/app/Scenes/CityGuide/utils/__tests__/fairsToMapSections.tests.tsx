@@ -20,7 +20,6 @@ const makeFair = (overrides: Partial<Fair> = {}): Fair =>
     exhibition_period: "Oct 9 – Oct 12, 2026",
     location: {
       address: "The Regent's Park, London NW1 4NR",
-      postalCode: "NW1 4NR",
       coordinates: { lat: 51.53, lng: -0.15 },
     },
     profile: { id: "profile-1", internalID: "profile-internal-1", isFollowed: false },
@@ -57,7 +56,7 @@ describe("fairsToMapSections", () => {
       id: "invalid",
       location: {
         address: "The Regent's Park, London NW1 4NR",
-        postalCode: "NW1 4NR",
+        cityGuideNeighborhood: null,
         coordinates: { lat: null, lng: null },
       },
     })
@@ -71,7 +70,7 @@ describe("fairsToMapSections", () => {
     const invalid = makeFair({
       location: {
         address: "The Regent's Park, London NW1 4NR",
-        postalCode: "NW1 4NR",
+        cityGuideNeighborhood: null,
         coordinates: { lat: undefined, lng: undefined },
       },
     })
@@ -118,7 +117,7 @@ describe("fairsToMapSections", () => {
         makeFair({
           location: {
             address: null,
-            postalCode: "NW1 4NR",
+            cityGuideNeighborhood: null,
             coordinates: { lat: 51.53, lng: -0.15 },
           },
         }),
