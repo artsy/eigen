@@ -1,3 +1,4 @@
+import { normalizePostalCode } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { MOCK_NEIGHBORHOODS } from "app/Scenes/CityGuide/utils/mockCityNeighborhoods"
 
 describe("MOCK_NEIGHBORHOODS", () => {
@@ -21,7 +22,7 @@ describe("MOCK_NEIGHBORHOODS", () => {
       defs.forEach((def) => {
         expect(def.postalPrefixes.length).toBeGreaterThan(0)
         def.postalPrefixes.forEach((prefix) => {
-          expect(prefix).toEqual(prefix.toUpperCase().replace(/\s+/g, ""))
+          expect(normalizePostalCode(prefix)).toEqual(prefix)
           expect(prefix.length).toBeGreaterThan(0)
         })
       })

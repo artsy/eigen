@@ -64,6 +64,17 @@ describe("normalizePostalCode", () => {
     expect(normalizePostalCode(undefined)).toEqual("")
     expect(normalizePostalCode("   ")).toEqual("")
   })
+
+  it("strips a leading country prefix", () => {
+    expect(normalizePostalCode("F-75003")).toEqual("75003")
+    expect(normalizePostalCode("d-10178")).toEqual("10178")
+  })
+
+  it("leaves hyphenated and letter-led codes alone", () => {
+    expect(normalizePostalCode("135-891")).toEqual("135-891")
+    expect(normalizePostalCode("C1414")).toEqual("C1414")
+    expect(normalizePostalCode("M5V 2T6")).toEqual("M5V2T6")
+  })
 })
 
 describe("groupByNeighborhood", () => {
@@ -101,6 +112,34 @@ describe("groupByNeighborhood", () => {
     expect(sections).toHaveLength(1)
     expect(sections[0].title).toEqual("North London")
     expect(sections[0].items).toHaveLength(2)
+  })
+
+  it("matches a UK district exactly, so SW1 takes SW1A and SW1P but not SW11", () => {
+    const sections = groupByNeighborhood(
+      [
+        show("whitehall", "SW1A 2AA"),
+        show("westminster", "SW1P 3JR"),
+        show("battersea", "SW11 1AA"),
+      ],
+      LONDON,
+      "London"
+    )
+
+    const central = sections.find((s) => s.title === "Central London")
+    expect(central?.items.map((i) => i.id)).toEqual(["whitehall", "westminster"])
+  })
+
+  it("keeps NW10 out of North London while NW1 stays in", () => {
+    const sections = groupByNeighborhood(
+      [show("camden", "NW1 5RR"), show("willesden", "NW10 5ES")],
+      LONDON,
+      "London"
+    )
+
+    expect(sections.map((s) => [s.title, s.items.map((i) => i.id)])).toEqual([
+      ["North London", ["camden"]],
+      ["More in London", ["willesden"]],
+    ])
   })
 
   it("sends an empty postcode to the fallback, not to a matching prefix", () => {
@@ -164,11 +203,16 @@ describe("groupByNeighborhood outside London", () => {
   })
 
   it("groups New York shows by ZIP and sends Jersey City to the fallback", () => {
-    expect(titlesFor(["10011", "11201", "07306"], "new-york-ny-usa", "New York")).toEqual([
+    expect(titlesFor(["10011", "11201", "11215", "07306"], "new-york-ny-usa", "New York")).toEqual([
       "Chelsea",
+      "DUMBO & Brooklyn Heights",
       "Brooklyn",
       "More in New York",
     ])
+  })
+
+  it("groups Paris codes that carry an F- country prefix", () => {
+    expect(titlesFor(["F-75003"], "paris-france", "Paris")).toEqual(["3rd arrondissement"])
   })
 
   it("reads Berlin codes with a D- country prefix or a stray space", () => {
@@ -180,8 +224,8 @@ describe("groupByNeighborhood outside London", () => {
 
   it("matches both current and old six-digit Seoul codes", () => {
     expect(titlesFor(["03062", "135-891"], "seoul-south-korea", "Seoul")).toEqual([
-      "Samcheong-dong & Insadong",
-      "Cheongdam & Dosan",
+      "Samcheong-dong & Bukchon",
+      "Gangnam",
     ])
   })
 })
