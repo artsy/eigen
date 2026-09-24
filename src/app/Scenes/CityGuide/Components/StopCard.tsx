@@ -1,4 +1,5 @@
 import { Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { TypeEyebrow } from "app/Components/TypeEyebrow"
 import { StopCardFields } from "app/Scenes/CityGuide/Screens/Itinerary/utils/stopCardFields"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -105,10 +106,10 @@ export const StopCard: React.FC<Props> = ({
           )}
 
           {/*
-            Three lines, per the designs: what it is, where it is, then hours and admission
-            separated by a dot. Which of them are filled depends on what the stop resolved
-            to — see `stopCardFields`. The first runs to two lines, since an event's title
-            carries both the event and the show it belongs to.
+            An event's kind ("Closing Reception") sits above the title as its own eyebrow line;
+            everything else is per the designs: what it is, where it is, then hours and
+            admission separated by a dot. Which of them are filled depends on what the stop
+            resolved to — see `stopCardFields`.
           */}
           <Flex
             flex={1}
@@ -123,16 +124,9 @@ export const StopCard: React.FC<Props> = ({
               if (measured > textHeight) setTextHeight(measured)
             }}
           >
+            {!!card.eventKind && <TypeEyebrow>{card.eventKind}</TypeEyebrow>}
+
             <Text variant="sm-display" numberOfLines={2} ellipsizeMode="tail">
-              {/* What kind of event it is leads the line in bold; the colon stays plain. */}
-              {!!card.eventKind && (
-                <>
-                  <Text variant="sm-display" fontWeight="bold">
-                    {card.eventKind}
-                  </Text>
-                  {": "}
-                </>
-              )}
               {card.title}
             </Text>
 

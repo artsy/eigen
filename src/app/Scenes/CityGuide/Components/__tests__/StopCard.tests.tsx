@@ -46,7 +46,7 @@ describe("StopCard", () => {
     expect(screen.getByText("Georg Baselitz: Back Again")).toHaveProp("numberOfLines", 2)
   })
 
-  it("bolds an event's kind ahead of the show it belongs to", () => {
+  it("renders an event's kind as its own eyebrow above the title", () => {
     renderWithWrappers(
       <StopCard
         card={card({ eventKind: "Closing Reception", title: "Georg Baselitz: Back Again" })}
@@ -54,13 +54,14 @@ describe("StopCard", () => {
       />
     )
 
-    // One line of prose — the kind, a plain colon, then the show — wrapping as one.
-    expect(screen.getByText("Closing Reception: Georg Baselitz: Back Again")).toHaveProp(
-      "numberOfLines",
-      2
-    )
-    // Only the kind is bold; the rest inherits the title's own weight.
-    expect(screen.getByText("Closing Reception")).toHaveStyle({ fontWeight: "bold" })
+    expect(screen.getByText("Closing Reception")).toBeOnTheScreen()
+    expect(screen.getByText("Georg Baselitz: Back Again")).toBeOnTheScreen()
+  })
+
+  it("renders no eyebrow when the stop has no event kind", () => {
+    renderWithWrappers(<StopCard card={card()} image={null} />)
+
+    expect(screen.queryByText("Closing Reception")).not.toBeOnTheScreen()
   })
 
   it("renders the image when present, and nothing when absent", () => {
