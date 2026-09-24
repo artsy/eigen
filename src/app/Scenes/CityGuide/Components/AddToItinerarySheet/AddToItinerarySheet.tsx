@@ -93,12 +93,14 @@ const Sheet: React.FC<Props> = ({
     data.sourceShow?.myItineraryStopMemberships ??
     data.sourceFair?.myItineraryStopMemberships ??
     null
-  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
-    (itinerary) => !itinerary.isCurated
-  )
   // Reached from outside City Guide, `citySlug`/`cityName` are absent — fall back to the city
   // the entity itself sits in, so Create New Itinerary is still on offer there.
   const derivedCity = data.sourceShow?.cityGuideCity ?? data.sourceFair?.cityGuideCity ?? null
+  // The query can't filter by a city it's fetching itself, so a derived city filters here.
+  const listCitySlug = citySlug ? undefined : derivedCity?.slug
+  const fetchedItineraries = extractNodes(data.me?.itinerariesConnection).filter(
+    (itinerary) => !itinerary.isCurated && (!listCitySlug || itinerary.citySlug === listCitySlug)
+  )
   const effectiveCitySlug = citySlug ?? derivedCity?.slug
   const effectiveCityName = cityName ?? derivedCity?.name
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
@@ -425,6 +427,7 @@ const Query = graphql`
           node {
             internalID
             title
+            citySlug
             isCurated
             stopsCount
 

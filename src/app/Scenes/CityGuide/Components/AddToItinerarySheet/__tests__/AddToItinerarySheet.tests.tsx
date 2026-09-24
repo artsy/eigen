@@ -13,9 +13,10 @@ jest.mock("@gorhom/portal", () => ({
 }))
 
 /** What the listing knows about an itinerary: no sections, those come from a second read. */
-const itinerary = (internalID: string, title: string) => ({
+const itinerary = (internalID: string, title: string, citySlug = "paris-france") => ({
   internalID,
   title,
+  citySlug,
   isCurated: false,
   stopsCount: 0,
   heroImage: null,
@@ -603,6 +604,22 @@ describe("AddToItinerarySheet", () => {
         sourceFair: null,
       }),
     }
+
+    it("lists only the derived city's itineraries", async () => {
+      renderWithRelay(
+        {
+          ...withItineraries([
+            itinerary("a", "Paris trip", "paris-france"),
+            itinerary("b", "London trip", "london-united-kingdom"),
+          ]),
+          ...withDerivedCity,
+        },
+        noCitySlug
+      )
+
+      expect(await screen.findByText("Paris trip")).toBeOnTheScreen()
+      expect(screen.queryByText("London trip")).not.toBeOnTheScreen()
+    })
 
     it("still offers Create New Itinerary", async () => {
       renderWithRelay(
