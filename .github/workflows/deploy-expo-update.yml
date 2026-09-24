@@ -77,6 +77,14 @@ jobs:
       - name: Install bin modules
         uses: ./.github/actions/setup-bin-modules
 
+      - name: Cache Metro bundler cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/metro
+          key: metro-v1-${{ runner.os }}-${{ hashFiles('yarn.lock', 'babel.config.js', 'metro.config.js') }}
+          restore-keys: |
+            metro-v1-${{ runner.os }}-
+
       - name: Deploy to Expo Updates
         id: deploy
         env:
