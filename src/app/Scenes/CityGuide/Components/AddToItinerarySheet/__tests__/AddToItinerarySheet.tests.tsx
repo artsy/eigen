@@ -1,6 +1,10 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { BottomSheetBackdrop, BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { AddToItinerarySheet } from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
+import {
+  AddToItinerarySheet,
+  CreateSheetBackdrop,
+} from "app/Scenes/CityGuide/Components/AddToItinerarySheet/AddToItinerarySheet"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -587,6 +591,36 @@ describe("AddToItinerarySheet", () => {
     })
   })
 
+  // A regression: Done used to skip the rail refetch whenever the sheet had no city of its own.
+  it("refetches the itineraries rail against the sheet's city on Done", async () => {
+    const view = renderWithRelay(withItineraries([itinerary("a", "First")]), props)
+
+    fireEvent.press(await screen.findByTestId("add-to-itinerary-row"))
+    fireEvent.press(screen.getByTestId("add-to-itinerary-done"))
+
+    await resolveNext(view, "fetchItinerarySectionsQuery", myStopsSection("a"))
+    await resolveNext(view, "useApplyItinerarySelectionAddMutation", {
+      Mutation: () => ({
+        createItineraryStop: {
+          responseOrError: {
+            __typename: "ItineraryStopMutationSuccess",
+            itineraryStop: { internalID: "new-stop" },
+          },
+        },
+      }),
+    })
+
+    await waitFor(() =>
+      expect(view.env.mock.getMostRecentOperation().request.node.params.name).toBe(
+        "CityGuideItinerariesRailQuery"
+      )
+    )
+    expect(view.env.mock.getMostRecentOperation().request.variables).toEqual({
+      citySlug: "london-united-kingdom",
+      first: 10,
+    })
+  })
+
   describe("creating one", () => {
     it("tracks tappedCreateItinerary against the sheet's own city", async () => {
       renderWithRelay(withItineraries([]), props)
@@ -597,6 +631,53 @@ describe("AddToItinerarySheet", () => {
         action: ActionType.tappedCreateItinerary,
         context_screen_owner_type: OwnerType.cityGuide,
         context_screen_owner_slug: "london-united-kingdom",
+      })
+    })
+
+    it("tracks tappedCreateItinerary against the screen the sheet was opened on", async () => {
+      renderWithRelay(withItineraries([]), {
+        ...props,
+        target: {
+          ...props.target,
+          contextScreenOwnerType: OwnerType.show,
+          contextScreenOwnerId: "show-1",
+          contextScreenOwnerSlug: "frida-kahlo",
+        },
+      })
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: ActionType.tappedCreateItinerary,
+        context_screen_owner_type: OwnerType.show,
+        context_screen_owner_id: "show-1",
+        context_screen_owner_slug: "frida-kahlo",
+      })
+    })
+
+    // Both sheets stay up at once: the outer one keeps its dimming, and a tap outside the form
+    // lands on this backdrop, closing only the form.
+    it("keeps the outer sheet up and gives the form a transparent, tap-to-close backdrop", async () => {
+      renderWithRelay(withItineraries([]), props)
+
+      fireEvent.press(await screen.findByTestId("add-to-itinerary-create"))
+
+      const [createSheet] = screen.UNSAFE_getAllByProps({ name: "CreateItinerary" })
+      expect(createSheet.props.stackBehavior).toBe("push")
+      expect(createSheet.props.backdropComponent).toBe(CreateSheetBackdrop)
+
+      const backdrop = CreateSheetBackdrop({
+        animatedIndex: { value: 0 },
+        animatedPosition: { value: 0 },
+        style: { flex: 1 },
+      } as unknown as BottomSheetBackdropProps) as React.ReactElement<any>
+      expect(backdrop.type).toBe(BottomSheetBackdrop)
+      expect(backdrop.props).toMatchObject({
+        opacity: 1,
+        appearsOnIndex: 0,
+        disappearsOnIndex: -1,
+        pressBehavior: "close",
+        style: [{ flex: 1 }, { backgroundColor: "transparent" }],
       })
     })
 

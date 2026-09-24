@@ -1,7 +1,13 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { ActionType, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { AddIcon } from "@artsy/icons/native"
 import { Button, Flex, Text, useSpace } from "@artsy/palette-mobile"
-import { BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetFooter,
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet"
 import { Portal, PortalHost } from "@gorhom/portal"
 import { AddToItinerarySheetCreateMutation } from "__generated__/AddToItinerarySheetCreateMutation.graphql"
 import { AddToItinerarySheetQuery } from "__generated__/AddToItinerarySheetQuery.graphql"
@@ -49,6 +55,11 @@ export type AddToItineraryTarget = StopTarget & {
   /** For `addedStopToItinerary`'s `context_owner_slug` only — never part of `StopInput`, so it
    *  is stripped out below rather than spread into a `createItineraryStopInput`. */
   itemSlug?: string
+  /** The screen the sheet was opened from, for `tappedCreateItinerary`. Absent inside City
+   *  Guide, where the event is reported against the city guide itself. */
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
 }
 
 type Props = AddToItineraryTarget & {
@@ -66,6 +77,9 @@ const Sheet: React.FC<Props> = ({
   isOnMyItineraries: _isOnMyItineraries,
   myItineraries,
   itemSlug,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
   ...target
 }) => {
   const toast = useToast()
@@ -99,7 +113,7 @@ const Sheet: React.FC<Props> = ({
     (itinerary) => !itinerary.isCurated
   )
   // `createItineraryInput.citySlug` is required, so an itinerary cannot be made without a
-  // city. Reached from outside City Guide you can only add to one you already have.
+  // city at all — a custom stop, or an entity with no City Guide city nearby.
   const canCreate = !!citySlug
 
   // Which rows open ticked: the itineraries the entity's memberships (or, failing those, the
@@ -237,8 +251,11 @@ const Sheet: React.FC<Props> = ({
                 onPress={() => {
                   trackCohesionEvent({
                     action: ActionType.tappedCreateItinerary,
-                    context_screen_owner_type: OwnerType.cityGuide,
-                    context_screen_owner_slug: citySlug,
+                    context_screen_owner_type: contextScreenOwnerType ?? OwnerType.cityGuide,
+                    context_screen_owner_id: contextScreenOwnerId,
+                    context_screen_owner_slug: contextScreenOwnerType
+                      ? contextScreenOwnerSlug
+                      : citySlug,
                   })
                   setIsNaming(true)
                 }}
@@ -298,6 +315,10 @@ const Sheet: React.FC<Props> = ({
         visible={isNaming}
         name="CreateItinerary"
         onDismiss={() => setIsNaming(false)}
+        // gorhom's default "switch" minimises the outer sheet, and its backdrop with it. "push"
+        // keeps it (and its dimming) up, so this sheet's own backdrop only has to catch taps.
+        stackBehavior="push"
+        backdropComponent={CreateSheetBackdrop}
       >
         <Flex mt={2}>
           <CreateItineraryForm
@@ -311,6 +332,19 @@ const Sheet: React.FC<Props> = ({
     </>
   )
 }
+
+/** Invisible, but closes only the create form on a tap outside it. Transparent rather than
+ *  `opacity={0}`: iOS skips views under 0.01 alpha when hit-testing, so those miss the tap. */
+export const CreateSheetBackdrop: React.FC<BottomSheetBackdropProps> = (props) => (
+  <BottomSheetBackdrop
+    {...props}
+    opacity={1}
+    appearsOnIndex={0}
+    disappearsOnIndex={-1}
+    pressBehavior="close"
+    style={[props.style, { backgroundColor: "transparent" }]}
+  />
+)
 
 const SheetWithSuspense = withSuspense({
   Component: Sheet,

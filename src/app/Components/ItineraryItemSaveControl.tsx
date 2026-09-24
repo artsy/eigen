@@ -47,7 +47,15 @@ const Control: React.FC<Props> = ({
   if (!item) return null
 
   return (
-    <AddToItineraryProvider onSaved={refresh}>
+    // The city is resolved here so the sheet's own query can list only that city's itineraries.
+    <AddToItineraryProvider
+      citySlug={item.cityGuideCity?.slug}
+      cityName={item.cityGuideCity?.name ?? undefined}
+      contextScreenOwnerType={contextScreenOwnerType}
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+      onSaved={refresh}
+    >
       <CityEventSaveControl
         itemType={itemType}
         itemID={itemID}
@@ -77,9 +85,17 @@ const Query = graphql`
   query ItineraryItemSaveControlQuery($itemID: String!, $isShow: Boolean!, $isFair: Boolean!) {
     show(id: $itemID) @include(if: $isShow) {
       isOnMyItineraries
+      cityGuideCity {
+        slug
+        name
+      }
     }
     fair(id: $itemID) @include(if: $isFair) {
       isOnMyItineraries
+      cityGuideCity {
+        slug
+        name
+      }
     }
   }
 `

@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import {
   AddToItinerarySheet,
   AddToItineraryTarget,
@@ -21,16 +22,36 @@ const Context = createContext<AddToItineraryContext | null>(null)
 export const AddToItineraryProvider: React.FC<{
   citySlug?: string
   cityName?: string
+  /** Set outside City Guide, so events from the sheet name the screen it was opened on. */
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   /** Called after Done actually changes something, so the screen showing this stop's
    *  membership (its own `isOnMyItineraries`) can refetch and stop showing a stale state. */
   onSaved?: () => void
   children: React.ReactNode
-}> = ({ citySlug, cityName, onSaved, children }) => {
+}> = ({
+  citySlug,
+  cityName,
+  contextScreenOwnerType,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  onSaved,
+  children,
+}) => {
   const [target, setTarget] = useState<AddToItineraryTarget | null>(null)
 
   const open = useCallback(
-    (next: AddToItineraryTarget) => setTarget({ citySlug, cityName, ...next }),
-    [citySlug, cityName]
+    (next: AddToItineraryTarget) =>
+      setTarget({
+        citySlug,
+        cityName,
+        contextScreenOwnerType,
+        contextScreenOwnerId,
+        contextScreenOwnerSlug,
+        ...next,
+      }),
+    [citySlug, cityName, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug]
   )
 
   const value = useMemo(() => ({ open }), [open])
