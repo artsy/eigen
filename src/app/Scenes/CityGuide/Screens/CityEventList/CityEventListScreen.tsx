@@ -145,13 +145,19 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
   // Cast the same way `renderItem` already does below: `sections` is generic over
   // `Show | Fair`, but each branch of the `section` switch above only ever populated it
   // with one of the two.
-  const mapSections = useMemo(
-    () =>
-      section === "fairs"
-        ? fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
-        : showsToMapSections(sections as CityEventSection<Show>[], rowContext),
-    [section, sections, rowContext]
-  )
+  // The map keeps the neighbourhood sections even when the list is ranked "for you": pin order
+  // means nothing on a map, and the neighbourhood pills are its filter.
+  const mapSections = useMemo(() => {
+    if (section === "fairs") {
+      return fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
+    }
+
+    const mapShowSections = forYou
+      ? groupByNeighborhood<Show>(shows, citySlug, cityName)
+      : (sections as CityEventSection<Show>[])
+
+    return showsToMapSections(mapShowSections, rowContext)
+  }, [section, sections, forYou, shows, citySlug, cityName, rowContext])
 
   const hasMappablePlaces = useMemo(
     () => mapSections.some((mapSection) => mapSection.places.length > 0),

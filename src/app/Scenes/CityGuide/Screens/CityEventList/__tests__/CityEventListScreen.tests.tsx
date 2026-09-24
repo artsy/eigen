@@ -305,6 +305,38 @@ describe("CityEventListScreen", () => {
       expect(rows[1]).toHaveTextContent(/Tracey Emin/)
     })
 
+    it("keeps the map's neighbourhood filter pills when forYou is true", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const shows = [
+        {
+          name: "Frida Kahlo",
+          location: { postalCode: "EC1M 5RR", coordinates: { lat: 51.52, lng: -0.1 } },
+        },
+        {
+          name: "Tracey Emin",
+          location: { postalCode: "W1S 4BS", coordinates: { lat: 51.51, lng: -0.14 } },
+        },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      fireEvent.press(await screen.findByTestId("city-event-list-view-toggle"))
+
+      // The pills only render when more than one section has pins, so "All" means the map
+      // still got the two neighbourhoods rather than a single ranked section.
+      expect(await screen.findByText("All")).toBeOnTheScreen()
+    })
+
     it("still groups by neighbourhood when forYou is false", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
 
