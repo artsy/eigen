@@ -56,6 +56,10 @@ export const groupByOpeningWeek = <T extends HasStartAt>(
   ].filter((section) => section.items.length > 0)
 }
 
+/** One section holding every item in the order the server returned it, header included. */
+export const groupFlat = <T>(items: readonly T[]): CityEventSection<T>[] =>
+  items.length ? [{ id: "for-you", title: "For You", items: [...items] }] : []
+
 interface HasPostalCode {
   location?: { postalCode?: string | null } | null
 }

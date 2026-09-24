@@ -85,6 +85,38 @@ describe("CityGuideNew", () => {
     })
   })
 
+  describe("the forYou query variable", () => {
+    const mostRecentVariables = () =>
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.variables
+
+    it("is false when the flag is off, even when signed in", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      renderWithWrappers(<CityGuideNew />)
+
+      expect(mostRecentVariables().forYou).toBe(false)
+    })
+
+    it("is false when signed out, even when the flag is on", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
+
+      renderWithWrappers(<CityGuideNew />)
+
+      expect(mostRecentVariables().forYou).toBe(false)
+    })
+
+    it("is true when the flag is on and the viewer is signed in", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      renderWithWrappers(<CityGuideNew />)
+
+      expect(mostRecentVariables().forYou).toBe(true)
+    })
+  })
+
   describe("the loading placeholder", () => {
     it("shows a spinner before the query resolves", () => {
       renderWithWrappers(<CityGuideNew />)

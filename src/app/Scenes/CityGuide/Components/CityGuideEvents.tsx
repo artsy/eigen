@@ -242,7 +242,8 @@ export const CityGuideEvents: React.FC<Props> = ({ citySlug, cityName, city: cit
  * through Metaphysics' own `format` argument.
  */
 const fragment = graphql`
-  fragment CityGuideEvents_city on City @argumentDefinitions(first: { type: "Int!" }) {
+  fragment CityGuideEvents_city on City
+  @argumentDefinitions(first: { type: "Int!" }, forYou: { type: "Boolean!", defaultValue: false }) {
     fairsConnection(first: $first, status: RUNNING, sort: START_AT_ASC) {
       edges {
         node {
@@ -267,6 +268,7 @@ const fragment = graphql`
       first: $first
       status: RUNNING
       sort: START_AT_ASC
+      forYou: $forYou
       includeStubShows: false
     ) {
       edges {

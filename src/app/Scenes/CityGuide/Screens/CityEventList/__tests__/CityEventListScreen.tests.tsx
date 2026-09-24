@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CityEventListScreen } from "app/Scenes/CityGuide/Screens/CityEventList/CityEventListScreen"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -226,6 +227,138 @@ describe("CityEventListScreen", () => {
         subject: "list",
       })
     )
+  })
+
+  describe("the forYou variable and its ranked list", () => {
+    // The query resolves synchronously inside `renderWithRelay`, which drops the completed
+    // operation from the mock environment's pending list. `execute` is a jest mock of its
+    // own, so its call args still carry the variables the operation was issued with.
+    const requestedVariables = (env: ReturnType<typeof renderWithRelay>["env"]) =>
+      (env.execute as jest.Mock).mock.calls[0][0].operation.request.variables
+
+    it("is false for the shows section when the flag is off, even when signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("is false for the shows section when signed out, even when the flag is on", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: null } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("is true for the shows section when the flag is on and the viewer is signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "shows" })
+      await screen.findAllByText("Current Shows")
+
+      expect(requestedVariables(view.env).forYou).toBe(true)
+    })
+
+    // Opening Soon keeps date order regardless of the flag: ranking is scoped to Current Shows.
+    it("stays false for the opening section even when the flag is on and the viewer is signed in", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const view = renderWithRelay({}, { citySlug: "london-united-kingdom", section: "opening" })
+      await screen.findAllByText("Opening Soon")
+
+      expect(requestedVariables(view.env).forYou).toBe(false)
+    })
+
+    it("renders one flat list with no section header, in the returned order, when forYou is true", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const shows = [
+        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
+        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      // No header at all, not one per neighbourhood, even with two postcodes.
+      const rows = await screen.findAllByTestId("city-event-row")
+      expect(rows).toHaveLength(shows.length)
+      expect(screen.queryByTestId("city-event-section-header")).toBeNull()
+      expect(screen.queryByText("For You")).toBeNull()
+      expect(rows[0]).toHaveTextContent(/Frida Kahlo/)
+      expect(rows[1]).toHaveTextContent(/Tracey Emin/)
+    })
+
+    it("keeps the map's neighbourhood filter pills when forYou is true", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: true })
+      __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
+
+      const shows = [
+        {
+          name: "Frida Kahlo",
+          location: { postalCode: "EC1M 5RR", coordinates: { lat: 51.52, lng: -0.1 } },
+        },
+        {
+          name: "Tracey Emin",
+          location: { postalCode: "W1S 4BS", coordinates: { lat: 51.51, lng: -0.14 } },
+        },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      fireEvent.press(await screen.findByTestId("city-event-list-view-toggle"))
+
+      // The pills only render when more than one section has pins, so "All" means the map
+      // still got the two neighbourhoods rather than a single ranked section.
+      expect(await screen.findByText("All")).toBeOnTheScreen()
+    })
+
+    it("still groups by neighbourhood when forYou is false", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCityGuideShowsForYou: false })
+
+      const shows = [
+        { name: "Frida Kahlo", location: { postalCode: "EC1M 5RR" } },
+        { name: "Tracey Emin", location: { postalCode: "W1S 4BS" } },
+      ]
+
+      renderWithRelay(
+        {
+          City: () => ({
+            name: "London",
+            showsConnection: { totalCount: shows.length, edges: shows.map((node) => ({ node })) },
+          }),
+        },
+        { citySlug: "london-united-kingdom", section: "shows" }
+      )
+
+      // Two different outward codes, so two named sections rather than one flat one.
+      expect(await screen.findAllByTestId("city-event-section-header")).toHaveLength(2)
+      expect(screen.queryByText("For You")).toBeNull()
+    })
   })
 
   it("hides the map toggle when nothing has valid coordinates", async () => {

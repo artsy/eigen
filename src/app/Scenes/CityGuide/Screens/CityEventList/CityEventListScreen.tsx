@@ -16,6 +16,7 @@ import {
   CityEventListItem,
   toCityEventListItems,
 } from "app/Scenes/CityGuide/Screens/CityEventList/utils/cityEventListItems"
+import { useShowsForYou } from "app/Scenes/CityGuide/hooks/useShowsForYou"
 import { cityGuideFairFragment } from "app/Scenes/CityGuide/utils/CityGuideFair"
 import { cityGuideShowFragment } from "app/Scenes/CityGuide/utils/CityGuideShow"
 import {
@@ -26,6 +27,7 @@ import {
   CityEventSection,
   groupByNeighborhood,
   groupByOpeningWeek,
+  groupFlat,
 } from "app/Scenes/CityGuide/utils/cityEventSections"
 import { fairsToMapSections } from "app/Scenes/CityGuide/utils/fairsToMapSections"
 import { showsToMapSections } from "app/Scenes/CityGuide/utils/showsToMapSections"
@@ -61,12 +63,16 @@ type Event = Show | Fair
 const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
   const section = parseCityEventSection(rawSection)
   const { trackEvent } = useTracking<Schema.PageView>()
+  const showsForYou = useShowsForYou()
+  // Ranking only applies to the current shows section; "Opening Soon" stays date-ordered.
+  const forYou = section === "shows" && showsForYou
 
   const data = useLazyLoadQuery<CityEventListScreenQuery>(Query, {
     citySlug,
     includeFairs: section === "fairs",
     includeShows: section !== "fairs",
     showStatus: section === "opening" ? "UPCOMING" : "RUNNING",
+    forYou,
   })
 
   const [collapsedSectionIds, setCollapsedSectionIds] = useState<Set<string>>(new Set())
@@ -113,13 +119,18 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
       return groupByOpeningWeek<Show>(shows, DateTime.now())
     }
 
-    return groupByNeighborhood<Show>(shows, citySlug, cityName)
-  }, [section, fairs, shows, citySlug, cityName])
+    if (forYou) {
+      return groupFlat<Show>(shows)
+    }
 
-  const items = useMemo(
-    () => toCityEventListItems(sections, collapsedSectionIds),
-    [sections, collapsedSectionIds]
-  )
+    return groupByNeighborhood<Show>(shows, citySlug, cityName)
+  }, [section, forYou, fairs, shows, citySlug, cityName])
+
+  const items = useMemo(() => {
+    const listItems = toCityEventListItems(sections, collapsedSectionIds)
+    // Ranked "for you" is one flat section, so a header over it would only repeat the screen.
+    return forYou ? listItems.filter((item) => item.kind !== "header") : listItems
+  }, [sections, collapsedSectionIds, forYou])
 
   // Every save control on this screen — rows and map pins alike — is rendered from the
   // event list, never the home screen's rails.
@@ -134,13 +145,19 @@ const CityEventList: React.FC<Props> = ({ citySlug, section: rawSection }) => {
   // Cast the same way `renderItem` already does below: `sections` is generic over
   // `Show | Fair`, but each branch of the `section` switch above only ever populated it
   // with one of the two.
-  const mapSections = useMemo(
-    () =>
-      section === "fairs"
-        ? fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
-        : showsToMapSections(sections as CityEventSection<Show>[], rowContext),
-    [section, sections, rowContext]
-  )
+  // The map keeps the neighbourhood sections even when the list is ranked "for you": pin order
+  // means nothing on a map, and the neighbourhood pills are its filter.
+  const mapSections = useMemo(() => {
+    if (section === "fairs") {
+      return fairsToMapSections(sections as CityEventSection<Fair>[], rowContext)
+    }
+
+    const mapShowSections = forYou
+      ? groupByNeighborhood<Show>(shows, citySlug, cityName)
+      : (sections as CityEventSection<Show>[])
+
+    return showsToMapSections(mapShowSections, rowContext)
+  }, [section, sections, forYou, shows, citySlug, cityName, rowContext])
 
   const hasMappablePlaces = useMemo(
     () => mapSections.some((mapSection) => mapSection.places.length > 0),
@@ -322,6 +339,7 @@ const Query = graphql`
     $includeFairs: Boolean!
     $includeShows: Boolean!
     $showStatus: EventStatus!
+    $forYou: Boolean!
   ) {
     city(slug: $citySlug) {
       name
@@ -340,6 +358,7 @@ const Query = graphql`
         status: $showStatus
         dayThreshold: 14
         sort: START_AT_ASC
+        forYou: $forYou
         includeStubShows: false
       ) @include(if: $includeShows) {
         totalCount

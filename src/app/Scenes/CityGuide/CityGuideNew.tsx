@@ -12,6 +12,7 @@ import { CityGuideFloatingMapButton } from "app/Scenes/CityGuide/Components/City
 import { CityGuideItinerariesRail } from "app/Scenes/CityGuide/Components/CityGuideItinerariesRail"
 import { CityGuideNewPlaceholder } from "app/Scenes/CityGuide/Components/CityGuideNewPlaceholder"
 import { useInitialLocation } from "app/Scenes/CityGuide/hooks/useInitialLocation"
+import { useShowsForYou } from "app/Scenes/CityGuide/hooks/useShowsForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -35,7 +36,8 @@ interface SectionsProps {
 }
 
 const CityGuideNewSections: React.FC<SectionsProps> = ({ citySlug, cityName }) => {
-  const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE })
+  const forYou = useShowsForYou()
+  const data = useLazyLoadQuery<CityGuideNewQuery>(Query, { citySlug, first: PAGE_SIZE, forYou })
   const enableEditorialContent = useFeatureFlag("AREnableCityGuideEditorialContent")
 
   return (
@@ -86,6 +88,7 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
 
   const environment = useRelayEnvironment()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const forYou = useShowsForYou()
 
   const citySlug = city?.slug ?? ""
 
@@ -100,13 +103,13 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
     fetchQuery<CityGuideNewQuery>(
       environment,
       Query,
-      { citySlug, first: PAGE_SIZE },
+      { citySlug, first: PAGE_SIZE, forYou },
       { fetchPolicy: "network-only" }
     ).subscribe({
       complete: () => setIsRefreshing(false),
       error: () => setIsRefreshing(false),
     })
-  }, [environment, citySlug])
+  }, [environment, citySlug, forYou])
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
@@ -162,12 +165,12 @@ export const CityGuideNew: React.FC<CityGuideNewProps> = ({ citySlug: preselecte
 }
 
 const Query = graphql`
-  query CityGuideNewQuery($citySlug: String!, $first: Int!) {
+  query CityGuideNewQuery($citySlug: String!, $first: Int!, $forYou: Boolean!) {
     me {
       ...CityGuideItinerariesRail_me @arguments(citySlug: $citySlug, first: $first)
     }
     city(slug: $citySlug) {
-      ...CityGuideEvents_city @arguments(first: $first)
+      ...CityGuideEvents_city @arguments(first: $first, forYou: $forYou)
       ...CityGuideEventVideos_city
       ...CityGuideEventArticles_city
     }
