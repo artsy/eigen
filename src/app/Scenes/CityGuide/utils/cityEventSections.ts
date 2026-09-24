@@ -78,9 +78,13 @@ export const groupByNeighborhood = <T extends HasCityGuideNeighborhood>(
   cityName: string
 ): CityEventSection<T>[] => {
   const grouped = new Map<string, T[]>()
+  // Metaphysics picks a location's city from its own coordinates, so a show near a boundary can
+  // carry another city's slug. Anything this city doesn't list falls back instead of vanishing.
+  const known = new Set(neighborhoods.map((neighborhood) => neighborhood.slug))
 
   items.forEach((item) => {
-    const sectionId = item.location?.cityGuideNeighborhood?.slug ?? FALLBACK_SECTION_ID
+    const slug = item.location?.cityGuideNeighborhood?.slug
+    const sectionId = slug && known.has(slug) ? slug : FALLBACK_SECTION_ID
     grouped.set(sectionId, [...(grouped.get(sectionId) ?? []), item])
   })
 

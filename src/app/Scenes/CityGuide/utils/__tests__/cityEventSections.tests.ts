@@ -54,7 +54,7 @@ const NEIGHBORHOODS = [
 
 const show = (id: string, slug: string | null) => ({
   id,
-  location: slug === null ? null : { cityGuideNeighborhood: { slug } },
+  location: { cityGuideNeighborhood: slug === null ? null : { slug } },
 })
 
 describe("groupByNeighborhood", () => {
@@ -93,6 +93,17 @@ describe("groupByNeighborhood", () => {
     expect(sections).toHaveLength(1)
     expect(sections[0].id).toEqual("more")
     expect(sections[0].title).toEqual("More in London")
+  })
+
+  it("sends a slug the city doesn't list to the fallback rather than dropping it", () => {
+    const sections = groupByNeighborhood(
+      [show("a", "somewhere-else"), show("b", "farringdon")],
+      NEIGHBORHOODS,
+      "London"
+    )
+
+    expect(sections.map((section) => section.id)).toEqual(["farringdon", "more"])
+    expect(sections.flatMap((section) => section.items.map((item) => item.id))).toEqual(["b", "a"])
   })
 
   it("sends a null location to the fallback", () => {
