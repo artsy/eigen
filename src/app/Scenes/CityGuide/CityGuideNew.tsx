@@ -173,11 +173,25 @@ const CityGuideNewWithCities: React.FC<CityGuideNewProps> = ({ citySlug: presele
   )
 }
 
+// The route hides the navigation header, so the loading and error states bring their own back button.
+const CityGuideNewLoading: React.FC = () => (
+  <Screen>
+    <Screen.Header onBack={goBack} />
+    <Screen.Body fullwidth>
+      <CityGuideNewPlaceholder />
+    </Screen.Body>
+  </Screen>
+)
+
 export const CityGuideNew = withSuspense<CityGuideNewProps>({
   Component: CityGuideNewWithCities,
-  LoadingFallback: CityGuideNewPlaceholder,
+  LoadingFallback: CityGuideNewLoading,
   ErrorFallback: (fallbackProps) => (
-    <LoadFailureView error={fallbackProps.error} onRetry={fallbackProps.resetErrorBoundary} />
+    <LoadFailureView
+      error={fallbackProps.error}
+      onRetry={fallbackProps.resetErrorBoundary}
+      showBackButton
+    />
   ),
 })
 

@@ -29,6 +29,16 @@ describe("useInitialLocation", () => {
     expect(result.current).toBe("new-york-ny-usa")
   })
 
+  it("ignores a previously selected city that is no longer in the list", () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "atlantis" },
+    })
+
+    const { result } = renderHook(() => useInitialLocation(cities), { wrapper })
+
+    expect(result.current).toBe("new-york-ny-usa")
+  })
+
   it("returns the previously selected city when there is no preselected slug", () => {
     __globalStoreTestUtils__?.injectState({
       userPrefs: { previouslySelectedCitySlug: "berlin-germany" },

@@ -18,7 +18,7 @@ const mockCities = [
 ]
 
 // The first operation the screen issues: the city list, ahead of the per-city content query.
-const resolveCityGuideCities = async () => {
+const resolveCityGuideCities = async (cities: unknown[] = mockCities) => {
   await act(async () => {
     await flushPromiseQueue()
   })
@@ -27,7 +27,7 @@ const resolveCityGuideCities = async () => {
     getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ...DefaultMockResolvers,
-        Query: () => ({ cityGuideCities: mockCities }),
+        Query: () => ({ cityGuideCities: cities }),
       })
     )
   })
@@ -72,14 +72,52 @@ describe("CityGuideNew", () => {
   })
 
   it("lists every city from the query in the picker", async () => {
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { previouslySelectedCitySlug: "berlin-germany" },
+    })
+
     renderWithWrappers(<CityGuideNew />)
     await resolveCityGuideCities()
 
     fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
 
-    mockCities.forEach((city) => {
-      expect(screen.getAllByText(city.name).length).toBeGreaterThan(0)
+    // Berlin is selected, so these two only appear in the picker's rows.
+    expect(screen.getByText("New York")).toBeOnTheScreen()
+    expect(screen.getByText("London")).toBeOnTheScreen()
+  })
+
+  it("leaves a city without coordinates out of the picker", async () => {
+    renderWithWrappers(<CityGuideNew />)
+    await resolveCityGuideCities([
+      ...mockCities,
+      { slug: "nowhere", name: "Nowhere", coordinates: null },
+    ])
+
+    fireEvent.press(screen.getByTestId("city-guide-city-switcher"))
+
+    expect(screen.getByText("London")).toBeOnTheScreen()
+    expect(screen.queryByText("Nowhere")).not.toBeOnTheScreen()
+  })
+
+  it("shows the error view with a back button when the city list fails to load", async () => {
+    renderWithWrappers(<CityGuideNew />)
+
+    await act(async () => {
+      await flushPromiseQueue()
     })
+    act(() => {
+      getMockRelayEnvironment().mock.rejectMostRecentOperation(new Error("network is down"))
+    })
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Go back")).toBeOnTheScreen()
+  })
+
+  it("shows the error view when the query returns no cities", async () => {
+    renderWithWrappers(<CityGuideNew />)
+    await resolveCityGuideCities([])
+
+    expect(await screen.findByText("Unable to load")).toBeOnTheScreen()
   })
 
   // No test for the write itself: the picker's rows live inside a Modal and are not

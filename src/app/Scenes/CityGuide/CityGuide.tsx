@@ -19,6 +19,10 @@ export const CityGuide = withSuspense<CityGuideProps>({
   Component: CityGuideWithCities,
   LoadingFallback: SpinnerFallback,
   ErrorFallback: (fallbackProps) => (
-    <LoadFailureView error={fallbackProps.error} onRetry={fallbackProps.resetErrorBoundary} />
+    <LoadFailureView
+      error={fallbackProps.error}
+      onRetry={fallbackProps.resetErrorBoundary}
+      showBackButton
+    />
   ),
 })

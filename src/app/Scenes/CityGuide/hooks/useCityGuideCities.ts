@@ -23,9 +23,16 @@ export const useCityGuideCities = (): CityData[] => {
     { fetchPolicy: "store-or-network" }
   )
 
-  return data.cityGuideCities.flatMap(({ slug, name, coordinates }) =>
+  const cities = data.cityGuideCities.flatMap(({ slug, name, coordinates }) =>
     coordinates?.lat != null && coordinates.lng != null
       ? [{ slug, name, coordinates: { lat: coordinates.lat, lng: coordinates.lng } }]
       : []
   )
+
+  // Caught by the screens' error fallback: without a city there is nothing to show.
+  if (!cities.length) {
+    throw new Error("No City Guide cities")
+  }
+
+  return cities
 }

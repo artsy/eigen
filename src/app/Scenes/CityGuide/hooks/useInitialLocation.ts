@@ -23,7 +23,10 @@ export const useInitialLocation = (cities: CityData[], preselectedCitySlug?: str
     }
   }
 
-  if (previouslySelectedCitySlug) {
+  if (
+    previouslySelectedCitySlug &&
+    cities.some((city) => city.slug === previouslySelectedCitySlug)
+  ) {
     initialCitySlug = previouslySelectedCitySlug
   }
 
