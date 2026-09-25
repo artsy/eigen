@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { CityGuideMapTestsQuery } from "__generated__/CityGuideMapTestsQuery.graphql"
+import { CityData } from "app/Scenes/CityGuide/Components/CityGuideCityPicker"
 import { CityGuideMap } from "app/Scenes/CityGuide/Components/CityGuideMap"
 import { MAX_GRAPHQL_INT } from "app/Scenes/CityGuide/utils/maxGraphQLInt"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -26,11 +27,15 @@ jest.mock("@rnmapbox/maps", () => ({
   UserTrackingModes: { Follow: "follow" },
 }))
 
+const cities: CityData[] = [
+  { slug: "new-york-ny-usa", name: "New York", coordinates: { lat: 40.7128, lng: -74.006 } },
+]
+
 const TestRenderer: React.FC<CityGuideMapTestsQuery["response"]> = ({ viewer }) => {
   if (!viewer) {
     return null
   }
-  return <CityGuideMap citySlug="new-york-ny-usa" viewer={viewer} />
+  return <CityGuideMap citySlug="new-york-ny-usa" cities={cities} viewer={viewer} />
 }
 
 describe("CityGuideMap", () => {
