@@ -13786,6 +13786,7 @@ __metadata:
     react-native-view-shot: "npm:5.1.1"
     react-native-vimeo-iframe: "npm:1.2.1"
     react-native-vision-camera: "npm:5.2.2"
+    react-native-vision-camera-barcode-scanner: "npm:5.2.2"
     react-native-webview: "npm:13.16.0"
     react-native-worklets: "npm:0.8.3"
     react-native-youtube-iframe: "npm:2.4.1"
@@ -22097,6 +22098,19 @@ __metadata:
     react-native: "*"
     react-native-webview: "*"
   checksum: 10c0/1ef91508bd6d94d7d85b401bf11a0a858fa2dd486600950abc29e1c07f358924926fe31665f424128687f37efafd7167ac5a8e682728eb6322b007ff29c63dbf
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera-barcode-scanner@npm:5.2.2":
+  version: 5.2.2
+  resolution: "react-native-vision-camera-barcode-scanner@npm:5.2.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-nitro-image: "*"
+    react-native-nitro-modules: "*"
+    react-native-vision-camera: "*"
+  checksum: 10c0/a36499eb1a29b4bc620e03afb3cea925f28821e2a7d85f8df0eaa30e454440d861fed26335926f24b02ee501e76d4f6fa5e2764b60697f31b6d5409fdbc2d7a5
   languageName: node
   linkType: hard
 
