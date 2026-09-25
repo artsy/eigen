@@ -2,6 +2,7 @@ import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // TODO: Replace with Image from @artsy/palette-mobile once the images come from the API.
 import { ImageBackground } from "react-native"
+import LinearGradient from "react-native-linear-gradient"
 
 const CARD_WIDTH = 150
 const CARD_HEIGHT = 250
@@ -38,12 +39,25 @@ export const CityFairRailCard: React.FC<Props> = ({ image, title, href, saveCont
           resizeMode="cover"
           style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
         >
+          <LinearGradient
+            testID="city-fair-rail-card-scrim"
+            colors={["transparent", "rgba(0,0,0,0.7)"]}
+            style={{ position: "absolute", bottom: 0, width: "100%", height: CARD_HEIGHT / 2 }}
+          />
           {/* The scrim fills the card and the caption sits inside it, so the two stay in one
               stacking order without absolute positioning. */}
           <Flex flex={1} justifyContent="flex-end" px={1} pb={1} backgroundColor={SCRIM_COLOR}>
             <Flex flexDirection="row" alignItems="flex-end">
               <Flex flex={1}>
-                <Text variant="lg-display" color="mono0">
+                <Text
+                  variant="md"
+                  color="mono0"
+                  // Value intentionally set to match the design value
+                  fontSize="26px"
+                  numberOfLines={4}
+                  fontWeight={500}
+                  adjustsFontSizeToFit
+                >
                   {title}
                 </Text>
               </Flex>
